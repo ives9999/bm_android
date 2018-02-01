@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#a6d903</color>
+    <color name="colorPrimaryDark">#658501</color>
+    <color name="colorAccent">#FF4081</color>
+    <color name="MY_GREEN">#a6d903</color>
+    <color name="MY_RED">#f11b90</color>
+    <color name="WHITE">#ffffff</color>
+    <color name="BLACK">#000000</color>
+    <color name="TAB_BACKGROUND">#3d3f41</color>
+</resources>
+
