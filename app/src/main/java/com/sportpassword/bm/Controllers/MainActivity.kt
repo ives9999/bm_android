@@ -1,5 +1,6 @@
-package com.sportpassword.bm
+package com.sportpassword.bm.Controllers
 
+import android.content.Intent
 import android.graphics.PorterDuff
 import android.os.Build
 import android.os.Bundle
@@ -9,13 +10,13 @@ import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentPagerAdapter
 import android.support.v4.view.GravityCompat
-import android.support.v4.view.ViewPager
 import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.app.AppCompatActivity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
+import com.sportpassword.bm.R
+import com.sportpassword.bm.Utilities.gSimulate
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
 import kotlinx.android.synthetic.main.tab.view.*
@@ -40,6 +41,8 @@ class MainActivity : AppCompatActivity() {
     @RequiresApi(Build.VERSION_CODES.M)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        gSimulate = isEmulator()
+        //println("detect:" + gSimulate)
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
         supportActionBar!!.setDisplayShowTitleEnabled(false)
@@ -163,5 +166,30 @@ class MainActivity : AppCompatActivity() {
                 return fragment
             }
         }
+    }
+
+    fun loginBtnPressed(view: View) {
+        val loginIntent: Intent = Intent(this, LoginActivity::class.java)
+        startActivity(loginIntent)
+    }
+
+    fun registerBtnPressed(view: View){
+
+    }
+
+
+    fun forgetpasswordBtnPressed(view: View) {
+
+    }
+
+    fun isEmulator(): Boolean {
+        return (Build.FINGERPRINT.startsWith("generic")
+                || Build.FINGERPRINT.startsWith("unknown")
+                || Build.MODEL.contains("google_sdk")
+                || Build.MODEL.contains("Emulator")
+                || Build.MODEL.contains("Android SDK built for x86")
+                || Build.MANUFACTURER.contains("Genymotion")
+                || Build.BRAND.startsWith("generic") && Build.DEVICE.startsWith("generic")
+                || "google_sdk" == Build.PRODUCT)
     }
 }
