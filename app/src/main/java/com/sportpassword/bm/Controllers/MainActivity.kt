@@ -21,7 +21,7 @@ import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
 import kotlinx.android.synthetic.main.tab.view.*
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : BaseActivity() {
 
     /**
      * The [android.support.v4.view.PagerAdapter] that will provide
@@ -169,12 +169,11 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun loginBtnPressed(view: View) {
-        val loginIntent: Intent = Intent(this, LoginActivity::class.java)
-        startActivity(loginIntent)
+        goLogin()
     }
 
     fun registerBtnPressed(view: View){
-
+        goRegister()
     }
 
 
@@ -182,14 +181,5 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-    fun isEmulator(): Boolean {
-        return (Build.FINGERPRINT.startsWith("generic")
-                || Build.FINGERPRINT.startsWith("unknown")
-                || Build.MODEL.contains("google_sdk")
-                || Build.MODEL.contains("Emulator")
-                || Build.MODEL.contains("Android SDK built for x86")
-                || Build.MANUFACTURER.contains("Genymotion")
-                || Build.BRAND.startsWith("generic") && Build.DEVICE.startsWith("generic")
-                || "google_sdk" == Build.PRODUCT)
-    }
+
 }
