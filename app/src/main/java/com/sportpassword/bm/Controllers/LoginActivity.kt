@@ -41,7 +41,7 @@ class LoginActivity : BaseActivity() {
     }
 
     fun loginForgetPassword(view: View) {
-
+        goForgetPassword()
     }
 
     fun loginRegister(view: View) {

@@ -61,7 +61,7 @@
         app:srcCompat="@drawable/logo" />
 
     <EditText
-        android:id="@+id/emailTxt"
+        android:id="@+id/registerEmailTxt"
         style="@android:style/Widget.DeviceDefault.Light.EditText"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -87,7 +87,7 @@
         tools:text="Email" />
 
     <EditText
-        android:id="@+id/passwordTxt"
+        android:id="@+id/registerPasswordTxt"
         style="@android:style/Widget.DeviceDefault.Light.EditText"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -109,7 +109,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.32"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/emailTxt" />
+        app:layout_constraintTop_toBottomOf="@+id/registerEmailTxt" />
 
     <Button
         android:id="@+id/button"
@@ -125,7 +125,7 @@
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/passwordTxt" />
+        app:layout_constraintTop_toBottomOf="@+id/registerPasswordTxt" />
 
     <Button
         android:id="@+id/button3"
