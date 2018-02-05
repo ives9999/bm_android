@@ -8,12 +8,16 @@ import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import com.sportpassword.bm.Utilities.URL_REGISTER
+import org.json.JSONException
 import org.json.JSONObject
 
 /**
  * Created by ives on 2018/2/4.
  */
 object MemberService {
+
+    var msg: String = ""
+    var success: Boolean = false
 
     fun register(context: Context, email: String, password: String, repassword: String, complete: (Boolean) -> Unit) {
         val url = URL_REGISTER
@@ -29,11 +33,26 @@ object MemberService {
         println(requestBody)
 
         val request = object : JsonObjectRequest(Request.Method.POST, url, null, Response.Listener { response ->
-            println(response)
-            val success = response.getBoolean("success")
+            //println(response)
+            try {
+                success = response.getBoolean("success")
+            } catch (e: JSONException) {
+                success = false
+                msg = "無法註冊，沒有傳回成功值 " + e.localizedMessage
+            }
+            if (success) {
+                jsonToMember(response)
+            } else {
+                val errors = response.getJSONArray("msg")
+                for (i in 0 .. errors.length()-1) {
+                    val error = errors[i].toString()
+                    msg += error
+                }
+            }
             complete(true)
         }, Response.ErrorListener { error ->
             Log.d("ERROR", "Could not register user: $error")
+            msg = "註冊失敗，網站或網路錯誤"
             complete(false)
         }) {
             override fun getBodyContentType(): String {
@@ -46,6 +65,9 @@ object MemberService {
         }
 
         Volley.newRequestQueue(context).add(request)
+    }
+
+    private fun jsonToMember(json: JSONObject) {
 
     }
 }

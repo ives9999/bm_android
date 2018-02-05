@@ -26,11 +26,18 @@ class RegisterActivity : BaseActivity() {
         val password: String = registerPasswordTxt.text.toString()
         val repassword: String = registerRePasswordTxt.text.toString()
 
-        println("submit: " + URL_REGISTER)
+        //println("submit: " + URL_REGISTER)
 
         MemberService.register(this, email, password, repassword) { success ->
             if (success) {
-                println("ok")
+                println("register ok")
+                if (MemberService.success) {
+                    // register success
+                } else {
+                    // register fail
+                }
+            } else {
+                //register fail
             }
         }
     }
