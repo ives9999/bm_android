@@ -1,16 +1,27 @@
 package com.sportpassword.bm.Controllers
 
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Build
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.preference.PreferenceManager
 import com.sportpassword.bm.Utilities.*
 
 open class BaseActivity : AppCompatActivity() {
 
+    var session: SharedPreferences? = null
+    val prefs_filename = "com.sportpassword.bm.prefs"
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         _setURLConstants()
+        session = this.getSharedPreferences(prefs_filename, 0)
+        //val editor = session!!.edit()
+        //editor.putInt("name", 6)
+        //editor.apply()
+        var name: Int = session!!.getInt("name", 9)
+        println("name" + name)
     }
 
     private fun _setURLConstants() {

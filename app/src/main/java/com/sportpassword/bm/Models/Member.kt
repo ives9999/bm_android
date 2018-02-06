@@ -1,9 +1,15 @@
 package com.sportpassword.bm.Models
 
+import android.content.SharedPreferences
+import android.preference.PreferenceManager
+
 /**
  * Created by ivessun on 2018/2/5.
  */
 object Member {
+
+
+
     var id: Int = 0
     var nickname: String = ""
     var uid: String = ""
