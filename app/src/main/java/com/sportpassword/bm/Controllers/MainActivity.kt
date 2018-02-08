@@ -15,6 +15,7 @@ import android.support.v7.app.AppCompatActivity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.sportpassword.bm.App
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Utilities.gSimulate
 import kotlinx.android.synthetic.main.activity_main.*

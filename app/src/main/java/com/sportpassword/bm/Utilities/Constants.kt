@@ -48,25 +48,25 @@ val MEMBER_ROLE_KEY: String = "role"
 val VALIDATE_KEY: String = "validate"
 
 // member
-val MEMBERS: HashMap<String, HashMap<String, String>> = hashMapOf(
-        ID_KEY to hashMapOf("type" to "Int"),
-        TOKEN_KEY to hashMapOf("type" to "String"),
-        EMAIL_KEY to hashMapOf("type" to "String"),
-        NICKNAME_KEY to hashMapOf("type" to "String"),
-        ISLOGGEDIN_KEY to hashMapOf("type" to "Boolean"),
-        UID_KEY to hashMapOf("type" to "String"),
-        NAME_KEY to hashMapOf("type" to "String"),
-        CHANNEL_KEY to hashMapOf("type" to "String"),
-        DOB_KEY to hashMapOf("type" to "String"),
-        SEX_KEY to hashMapOf("type" to "String"),
-        TEL_KEY to hashMapOf("type" to "String"),
-        MOBILE_KEY to hashMapOf("type" to "String"),
-        PID_KEY to hashMapOf("type" to "String"),
-        AVATAR_KEY to hashMapOf("type" to "String"),
-        MEMBER_TYPE_KEY to hashMapOf("type" to "String"),
-        SOCIAL_KEY to hashMapOf("type" to "String"),
-        MEMBER_ROLE_KEY to hashMapOf("type" to "String"),
-        VALIDATE_KEY to hashMapOf("type" to "String")
+val MEMBERS: Map<String, Map<String, String>> = mapOf(
+        ID_KEY to hashMapOf("type" to "Int", "default" to "0"),
+        TOKEN_KEY to hashMapOf("type" to "String", "default" to ""),
+        EMAIL_KEY to hashMapOf("type" to "String", "default" to ""),
+        NICKNAME_KEY to hashMapOf("type" to "String", "default" to ""),
+        ISLOGGEDIN_KEY to hashMapOf("type" to "Boolean", "default" to "false"),
+        UID_KEY to hashMapOf("type" to "String", "default" to ""),
+        NAME_KEY to hashMapOf("type" to "String", "default" to ""),
+        CHANNEL_KEY to hashMapOf("type" to "String", "default" to "bm"),
+        DOB_KEY to hashMapOf("type" to "String", "default" to ""),
+        SEX_KEY to hashMapOf("type" to "String", "default" to "M"),
+        TEL_KEY to hashMapOf("type" to "String", "default" to ""),
+        MOBILE_KEY to hashMapOf("type" to "String", "default" to ""),
+        PID_KEY to hashMapOf("type" to "String", "default" to ""),
+        AVATAR_KEY to hashMapOf("type" to "String", "default" to ""),
+        MEMBER_TYPE_KEY to hashMapOf("type" to "Int", "default" to "0"),
+        SOCIAL_KEY to hashMapOf("type" to "String", "default" to ""),
+        MEMBER_ROLE_KEY to mapOf("type" to "String", "default" to "member"),
+        VALIDATE_KEY to mapOf("type" to "Int", "default" to "0")
 )
 
 //val MEMBER_FIELD_STRING: Array<String> = arrayOf(TOKEN_KEY,EMAIL_KEY,NICKNAME_KEY,NAME_KEY,UID_KEY,CHANNEL_KEY,DOB_KEY,SEX_KEY,TEL_KEY,MOBILE_KEY,PID_KEY,AVATAR_KEY,MEMBER_ROLE_KEY,SOCIAL_KEY)
