@@ -1,11 +1,22 @@
 package com.sportpassword.bm.Controllers
 
+import android.app.Dialog
+import android.content.Context
 import android.content.Intent
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Build
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.support.v4.content.ContextCompat
+import android.view.ViewGroup
+import android.view.Window
+import android.widget.ProgressBar
+import android.widget.RelativeLayout
+import android.widget.TextView
 import com.sportpassword.bm.Models.MEMBER_ROLE
 import com.sportpassword.bm.Models.Member
+import com.sportpassword.bm.R
 import com.sportpassword.bm.Utilities.*
 import com.sportpassword.bm.member
 import kotlin.reflect.full.memberProperties
@@ -73,5 +84,46 @@ open class BaseActivity : AppCompatActivity() {
                 || Build.MANUFACTURER.contains("Genymotion")
                 || Build.BRAND.startsWith("generic") && Build.DEVICE.startsWith("generic")
                 || "google_sdk" == Build.PRODUCT)
+    }
+}
+
+object Loading {
+    fun show(context: Context): Dialog {
+        val dialog = Dialog(context)
+        dialog.window.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT));
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+
+        val rl = RelativeLayout(context)
+        val rl_lp = RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT,
+                RelativeLayout.LayoutParams.WRAP_CONTENT)
+        rl.layoutParams = rl_lp
+
+
+        val loadingImg = ProgressBar(context)
+        loadingImg.id = R.id.loadingImgID
+        val color = ContextCompat.getColor(context, R.color.MY_GREEN)
+        loadingImg.indeterminateDrawable.setColorFilter(color, android.graphics.PorterDuff.Mode.MULTIPLY)
+
+        val loadingText: TextView = TextView(context)
+        loadingText.id = R.id.loadingTextID
+        loadingText.text = "處理中..."
+
+        val p1 = RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT,
+                RelativeLayout.LayoutParams.WRAP_CONTENT)
+        val p2 = RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT,
+                RelativeLayout.LayoutParams.WRAP_CONTENT)
+        //p1.addRule(RelativeLayout.ABOVE, loadingImg.id)
+        p2.addRule(RelativeLayout.BELOW, loadingImg.id)
+        val _20: Int = (context.resources.getDimension(R.dimen.loadingTextMarginTop)).toInt()
+        p2.setMargins(0, _20, 0, 0)
+
+        rl.addView(loadingImg, p1)
+        rl.addView(loadingText, p2)
+
+        val p = ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT)
+        dialog.addContentView(rl, p)
+        dialog.show()
+        return dialog
     }
 }

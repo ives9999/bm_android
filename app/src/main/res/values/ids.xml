@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="loadingContainer" type="id" />
+    <item name="loadingImgID" type="id" />
+    <item name="loadingTextID" type="id" />
+</resources>

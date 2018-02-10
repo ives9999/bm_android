@@ -1,7 +1,12 @@
 package com.sportpassword.bm.Controllers
 
+import android.app.Dialog
+import android.content.Context
+import android.content.DialogInterface
 import android.content.Intent
+import android.graphics.Color
 import android.graphics.PorterDuff
+import android.graphics.drawable.ColorDrawable
 import android.os.Build
 import android.os.Bundle
 import android.support.annotation.RequiresApi
@@ -15,12 +20,17 @@ import android.support.v7.app.AppCompatActivity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.Window
 import com.sportpassword.bm.App
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Utilities.gSimulate
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
 import kotlinx.android.synthetic.main.tab.view.*
+import org.jetbrains.anko.find
+import android.view.Window.FEATURE_NO_TITLE
+import android.widget.*
+
 
 class MainActivity : BaseActivity() {
 
@@ -89,6 +99,7 @@ class MainActivity : BaseActivity() {
 
             }
         })
+        //Loading.show(this)
     }
 
     override fun onBackPressed() {
@@ -183,3 +194,5 @@ class MainActivity : BaseActivity() {
 
 
 }
+
+

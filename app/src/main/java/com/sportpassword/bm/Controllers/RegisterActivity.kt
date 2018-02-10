@@ -21,6 +21,7 @@ class RegisterActivity : BaseActivity() {
     }
 
     fun registerSubmit(view: View) {
+        val loading = Loading.show(this)
         val email: String = registerEmailTxt.text.toString()
         //println(email)
         val password: String = registerPasswordTxt.text.toString()
@@ -39,6 +40,7 @@ class RegisterActivity : BaseActivity() {
             } else {
                 //register fail
             }
+            loading.dismiss()
         }
     }
 
