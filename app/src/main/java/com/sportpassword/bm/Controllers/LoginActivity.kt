@@ -1,21 +1,31 @@
 package com.sportpassword.bm.Controllers
 
-import android.app.Activity
 import android.content.Intent
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.support.v4.content.LocalBroadcastManager
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.TextView
-import android.widget.Toolbar
+import com.facebook.CallbackManager
+import com.facebook.FacebookCallback
+import com.facebook.FacebookException
+import com.facebook.login.LoginManager
+import com.facebook.login.LoginResult
 import com.sportpassword.bm.R
-import kotlinx.android.synthetic.main.app_bar_main.*
+import com.sportpassword.bm.Services.MemberService
+import com.sportpassword.bm.Utilities.NOTIF_MEMBER_DID_CHANGE
+import kotlinx.android.synthetic.main.activity_login.*
+import java.util.*
 
 class LoginActivity : BaseActivity() {
+
+    private var callbackManager: CallbackManager? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
+        loginEmailTxt.setText("ives@housetube.tw")
+        loginPasswordTxt.setText("K5SD23r6")
         //setSupportActionBar(toolbar)
         //supportActionBar!!.setTitle(resources.getText(R.string.login))
 
@@ -33,11 +43,56 @@ class LoginActivity : BaseActivity() {
     }
 
     fun loginSubmit(view: View) {
+        val loading = Loading.show(this)
+        val email = loginEmailTxt.text.toString()
+        if (email.isEmpty()) {
+            Alert.show(this, "警告", "EMail沒填")
+        }
+        val password = loginPasswordTxt.text.toString()
+        if (password.isEmpty()) {
+            Alert.show(this, "警告", "密碼沒填")
+        }
 
+        MemberService.login(this, email, password) { success ->
+            loading.dismiss()
+            //println(success)
+            if (success) {
+                if (MemberService.success) {
+                    val memberDidChange = Intent(NOTIF_MEMBER_DID_CHANGE)
+                    LocalBroadcastManager.getInstance(this).sendBroadcast(memberDidChange)
+                    finish()
+                } else {
+                    Alert.show(this, "警告", MemberService.msg)
+                }
+            } else {
+                Alert.show(this, "警告", MemberService.msg)
+            }
+        }
     }
 
     fun loginFBSubmit(view: View) {
+        callbackManager = CallbackManager.Factory.create()
+        LoginManager.getInstance().logInWithReadPermissions(this, Arrays.asList("public_profile", "email"))
+        LoginManager.getInstance().registerCallback(callbackManager,
+             object: FacebookCallback<LoginResult> {
+                 override fun onSuccess(result: LoginResult?) {
+                     println(result!!.accessToken)
+                 }
 
+                 override fun onCancel() {
+
+                 }
+
+                 override fun onError(error: FacebookException?) {
+
+                 }
+             })
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        callbackManager?.onActivityResult(requestCode, resultCode, data)
     }
 
     fun loginForgetPassword(view: View) {

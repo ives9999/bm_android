@@ -1,12 +1,10 @@
 package com.sportpassword.bm.Controllers
 
-import android.app.Dialog
+import android.content.BroadcastReceiver
 import android.content.Context
-import android.content.DialogInterface
 import android.content.Intent
-import android.graphics.Color
+import android.content.IntentFilter
 import android.graphics.PorterDuff
-import android.graphics.drawable.ColorDrawable
 import android.os.Build
 import android.os.Bundle
 import android.support.annotation.RequiresApi
@@ -14,22 +12,21 @@ import android.support.design.widget.TabLayout
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentPagerAdapter
+import android.support.v4.content.LocalBroadcastManager
 import android.support.v4.view.GravityCompat
 import android.support.v7.app.ActionBarDrawerToggle
-import android.support.v7.app.AppCompatActivity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.Window
-import com.sportpassword.bm.App
 import com.sportpassword.bm.R
-import com.sportpassword.bm.Utilities.gSimulate
+import com.sportpassword.bm.Services.MemberService
+import com.sportpassword.bm.Utilities.NOTIF_MEMBER_DID_CHANGE
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
 import kotlinx.android.synthetic.main.tab.view.*
-import org.jetbrains.anko.find
-import android.view.Window.FEATURE_NO_TITLE
-import android.widget.*
+import com.sportpassword.bm.member
+import kotlinx.android.synthetic.main.login_out.*
+import kotlinx.android.synthetic.main.nav_header_main.*
 
 
 class MainActivity : BaseActivity() {
@@ -70,6 +67,8 @@ class MainActivity : BaseActivity() {
         //toggle.isDrawerIndicatorEnabled = false
         toggle.syncState()
 
+        LocalBroadcastManager.getInstance(this).registerReceiver(memberDidChange, IntentFilter(NOTIF_MEMBER_DID_CHANGE))
+
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
         mSectionPagerAdapter = SectionsPagerAdapter(supportFragmentManager)
@@ -99,7 +98,18 @@ class MainActivity : BaseActivity() {
 
             }
         })
+        _loginout()
+        member.print()
+
         //Loading.show(this)
+//        alert("Test alert") {
+//            title = "警告"
+//            positiveButton("確定") { toast("Yes") }
+//            negativeButton("取消") {  }
+//        }.show()
+//        Alert.show(this, "警告", "姓名沒填") {
+//            println("test")
+//        }
     }
 
     override fun onBackPressed() {
@@ -128,6 +138,32 @@ class MainActivity : BaseActivity() {
         toolbar_title.text = title
     }
 
+    private val memberDidChange = object : BroadcastReceiver() {
+        override fun onReceive(context: Context?, intent: Intent?) {
+            _loginout()
+        }
+    }
+
+    private fun _loginout() {
+        if (member.isLoggedIn) {
+            _loginBlock()
+        } else {
+            _logoutBlock()
+        }
+    }
+    private fun _loginBlock() {
+        nicknameLbl.text = member.nickname
+        loginBtn.text = "登出"
+        registerBtn.visibility = View.INVISIBLE
+        forgetPasswordBtn.visibility = View.INVISIBLE
+    }
+    private fun _logoutBlock() {
+        nicknameLbl.text = "未登入"
+        loginBtn.text = "登入"
+        registerBtn.visibility = View.VISIBLE
+        forgetPasswordBtn.visibility = View.VISIBLE
+    }
+
     /**
      * A [FragmentPagerAdapter] that returns a fragment corresponding to
      * one of the sections/tabs/pages.
@@ -154,7 +190,7 @@ class MainActivity : BaseActivity() {
         override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                                   savedInstanceState: Bundle?): View? {
             val rootView = inflater.inflate(R.layout.tab, container, false)
-            rootView.section_label.text = getString(R.string.section_format, arguments.getInt(ARG_SECTION_NUMBER))
+            rootView.section_label.text = getString(R.string.section_format, arguments!!.getInt(ARG_SECTION_NUMBER))
             return rootView
         }
 
@@ -180,7 +216,13 @@ class MainActivity : BaseActivity() {
     }
 
     fun loginBtnPressed(view: View) {
-        goLogin()
+        if (member.isLoggedIn) {
+            MemberService.logout()
+            val memberDidChange = Intent(NOTIF_MEMBER_DID_CHANGE)
+            LocalBroadcastManager.getInstance(this).sendBroadcast(memberDidChange)
+        } else {
+            goLogin()
+        }
     }
 
     fun registerBtnPressed(view: View){

@@ -61,7 +61,7 @@
         app:srcCompat="@drawable/logo" />
 
     <EditText
-        android:id="@+id/registerEmailTxt"
+        android:id="@+id/loginEmailTxt"
         style="@android:style/Widget.DeviceDefault.Light.EditText"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -72,7 +72,7 @@
         android:drawableLeft="@drawable/email"
         android:drawablePadding="12dp"
         android:ems="10"
-        android:hint="Email"
+        android:hint="EMail"
         android:inputType="textEmailAddress"
         android:paddingBottom="6dp"
         android:paddingLeft="8dp"
@@ -81,13 +81,13 @@
         android:textColor="@color/WHITE"
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageView"
         tools:text="Email" />
 
     <EditText
-        android:id="@+id/registerPasswordTxt"
+        android:id="@+id/loginPasswordTxt"
         style="@android:style/Widget.DeviceDefault.Light.EditText"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -107,9 +107,9 @@
         android:textColor="@color/WHITE"
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.32"
+        app:layout_constraintHorizontal_bias="0.093"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/registerEmailTxt" />
+        app:layout_constraintTop_toBottomOf="@+id/loginEmailTxt" />
 
     <Button
         android:id="@+id/button"
@@ -125,7 +125,7 @@
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/registerPasswordTxt" />
+        app:layout_constraintTop_toBottomOf="@+id/loginPasswordTxt" />
 
     <Button
         android:id="@+id/button3"

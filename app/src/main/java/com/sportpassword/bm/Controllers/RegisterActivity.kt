@@ -1,13 +1,9 @@
 package com.sportpassword.bm.Controllers
 
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.MemberService
-import com.sportpassword.bm.Utilities.BASE_URL
-import com.sportpassword.bm.Utilities.URL_REGISTER
-import com.sportpassword.bm.Utilities.gSimulate
 import kotlinx.android.synthetic.main.activity_register.*
 
 class RegisterActivity : BaseActivity() {
@@ -23,29 +19,42 @@ class RegisterActivity : BaseActivity() {
     fun registerSubmit(view: View) {
         val loading = Loading.show(this)
         val email: String = registerEmailTxt.text.toString()
-        //println(email)
+        if (email.isEmpty()) {
+            Alert.show(this, "警告", "EMail沒填")
+        }
         val password: String = registerPasswordTxt.text.toString()
+        if (password.isEmpty()) {
+            Alert.show(this, "警告", "密碼沒填")
+        }
         val repassword: String = registerRePasswordTxt.text.toString()
+        if (repassword.isEmpty()) {
+            Alert.show(this, "警告", "密碼確認欄位沒填")
+        }
+        if (password != repassword) {
+            Alert.show(this, "警告", "密碼不一致")
+        }
 
         //println("submit: " + URL_REGISTER)
 
         MemberService.register(this, email, password, repassword) { success ->
+            loading.dismiss()
             if (success) {
-                println("register ok")
+                //println("register ok")
                 if (MemberService.success) {
-                    // register success
+                    Alert.show(this, "成功", "註冊成功，請儘速通過email認證，才能使用更多功能！！") {
+                        home(this)
+                    }
                 } else {
-                    // register fail
+                    Alert.show(this, "警告", MemberService.msg)
                 }
             } else {
-                //register fail
+                Alert.show(this, "警告", MemberService.msg)
             }
-            loading.dismiss()
         }
     }
 
     fun registerFBSubmit(view: View) {
-
+        home(this)
     }
 
     fun registerForgetPassword(view: View) {

@@ -27,6 +27,9 @@ var URL_TEAM_TEMP_PLAY = ""
 var URL_TEAM_TEMP_PLAY_LIST = ""
 var URL_TEAM_PLUSONE = ""
 
+// spinner
+val LOADING: String = "努力加載中..."
+
 // User Defaults
 val ID_KEY: String = "id"
 val TOKEN_KEY: String = "token"
@@ -69,7 +72,10 @@ val MEMBERS: Map<String, Map<String, String>> = mapOf(
         VALIDATE_KEY to mapOf("type" to "Int", "default" to "0")
 )
 
-//val MEMBER_FIELD_STRING: Array<String> = arrayOf(TOKEN_KEY,EMAIL_KEY,NICKNAME_KEY,NAME_KEY,UID_KEY,CHANNEL_KEY,DOB_KEY,SEX_KEY,TEL_KEY,MOBILE_KEY,PID_KEY,AVATAR_KEY,MEMBER_ROLE_KEY,SOCIAL_KEY)
-//val MEMBER_FIELD_INT: Array<String> = arrayOf(ID_KEY,VALIDATE_KEY,MEMBER_TYPE_KEY)
-//val MEMBER_FIELD_BOOL: Array<String> = arrayOf(ISLOGGEDIN_KEY)
+// Notification Constants
+val NOTIF_MEMBER_DID_CHANGE = "notifMemberChanged"
+val NOTIF_MEMBER_UPDATE = "notifMemberUpdate"
+
+// Header
+var HEADER = "application/json; charset=utf-8"
 

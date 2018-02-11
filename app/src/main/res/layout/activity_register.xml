@@ -98,7 +98,7 @@
         android:drawableLeft="@drawable/email"
         android:drawablePadding="12dp"
         android:ems="10"
-        android:hint="Email"
+        android:hint="EMail"
         android:inputType="textEmailAddress"
         android:paddingBottom="6dp"
         android:paddingLeft="8dp"

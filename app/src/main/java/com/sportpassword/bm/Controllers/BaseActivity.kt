@@ -1,5 +1,6 @@
 package com.sportpassword.bm.Controllers
 
+import android.app.AlertDialog
 import android.app.Dialog
 import android.content.Context
 import android.content.Intent
@@ -8,18 +9,18 @@ import android.graphics.drawable.ColorDrawable
 import android.os.Build
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.os.IInterface
 import android.support.v4.content.ContextCompat
 import android.view.ViewGroup
 import android.view.Window
 import android.widget.ProgressBar
 import android.widget.RelativeLayout
 import android.widget.TextView
-import com.sportpassword.bm.Models.MEMBER_ROLE
-import com.sportpassword.bm.Models.Member
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Utilities.*
 import com.sportpassword.bm.member
-import kotlin.reflect.full.memberProperties
+import org.jetbrains.anko.*
+
 
 open class BaseActivity : AppCompatActivity() {
 
@@ -75,6 +76,11 @@ open class BaseActivity : AppCompatActivity() {
         startActivity(forgetPasswordIntent)
     }
 
+    protected fun home(context: Context) {
+        val intent : Intent = Intent(context, MainActivity::class.java)
+        startActivity(intent)
+    }
+
     fun isEmulator(): Boolean {
         return (Build.FINGERPRINT.startsWith("generic")
                 || Build.FINGERPRINT.startsWith("unknown")
@@ -106,7 +112,7 @@ object Loading {
 
         val loadingText: TextView = TextView(context)
         loadingText.id = R.id.loadingTextID
-        loadingText.text = "處理中..."
+        loadingText.text = LOADING
 
         val p1 = RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT,
                 RelativeLayout.LayoutParams.WRAP_CONTENT)
@@ -125,5 +131,31 @@ object Loading {
         dialog.addContentView(rl, p)
         dialog.show()
         return dialog
+    }
+}
+
+object Alert {
+    fun show(context: Context, title: String, msg: String): AlertDialog {
+        val alert = _show(context, title, msg)
+        alert.setButton(AlertDialog.BUTTON_NEGATIVE, "確定", { Interface, j ->
+
+        })
+        alert.show()
+        return alert
+    }
+    fun show(context: Context, title: String, msg: String, ok: ()->Unit): AlertDialog {
+        val alert = _show(context, title, msg)
+        alert.setButton(AlertDialog.BUTTON_NEGATIVE, "確定", { Interface, j ->
+            ok()
+        })
+        alert.show()
+        return alert
+    }
+    private fun _show(context: Context, title: String, msg: String): AlertDialog {
+        val alert = AlertDialog.Builder(context).create()
+        alert.setTitle(title)
+        alert.setMessage(msg)
+
+        return alert
     }
 }
