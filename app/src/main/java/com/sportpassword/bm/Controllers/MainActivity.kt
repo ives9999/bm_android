@@ -4,6 +4,8 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
+import android.content.pm.PackageInfo
+import android.content.pm.PackageManager
 import android.graphics.PorterDuff
 import android.os.Build
 import android.os.Bundle
@@ -15,6 +17,7 @@ import android.support.v4.app.FragmentPagerAdapter
 import android.support.v4.content.LocalBroadcastManager
 import android.support.v4.view.GravityCompat
 import android.support.v7.app.ActionBarDrawerToggle
+import android.util.Base64
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -30,6 +33,7 @@ import kotlinx.android.synthetic.main.tab.view.*
 import com.sportpassword.bm.member
 import kotlinx.android.synthetic.main.login_out.*
 import kotlinx.android.synthetic.main.nav_header_main.*
+import java.security.MessageDigest
 
 
 class MainActivity : BaseActivity() {
@@ -71,6 +75,20 @@ class MainActivity : BaseActivity() {
         toggle.syncState()
 
         LocalBroadcastManager.getInstance(this).registerReceiver(memberDidChange, IntentFilter(NOTIF_MEMBER_DID_CHANGE))
+
+
+        try {
+        val info = getPackageManager().getPackageInfo(
+                "com.sportpassword.bm",
+                PackageManager.GET_SIGNATURES);
+        for (signature in info.signatures) {
+            var md = MessageDigest.getInstance("SHA");
+            md.update(signature.toByteArray());
+            println("KeyHash: ${Base64.encodeToString(md.digest(), Base64.DEFAULT)}");
+            }
+    } catch (e: Exception) {
+
+    }
 
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
