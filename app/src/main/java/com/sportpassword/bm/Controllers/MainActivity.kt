@@ -18,6 +18,9 @@ import android.support.v7.app.ActionBarDrawerToggle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.facebook.FacebookSdk
+import com.facebook.appevents.AppEventsLogger
+import com.facebook.login.LoginManager
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.MemberService
 import com.sportpassword.bm.Utilities.NOTIF_MEMBER_DID_CHANGE
@@ -99,7 +102,7 @@ class MainActivity : BaseActivity() {
             }
         })
         _loginout()
-        member.print()
+        //member.print()
 
         //Loading.show(this)
 //        alert("Test alert") {
@@ -217,6 +220,11 @@ class MainActivity : BaseActivity() {
 
     fun loginBtnPressed(view: View) {
         if (member.isLoggedIn) {
+            if (member.uid.length > 0 && member.social == "fb") {
+                FacebookSdk.sdkInitialize(getApplicationContext());
+                AppEventsLogger.activateApp(this);
+                LoginManager.getInstance().logOut()
+            }
             MemberService.logout()
             val memberDidChange = Intent(NOTIF_MEMBER_DID_CHANGE)
             LocalBroadcastManager.getInstance(this).sendBroadcast(memberDidChange)

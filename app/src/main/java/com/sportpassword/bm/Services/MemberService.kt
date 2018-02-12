@@ -1,6 +1,7 @@
 package com.sportpassword.bm.Services
 
 import android.content.Context
+import android.os.Bundle
 import android.util.Log
 import com.android.volley.Request
 import com.android.volley.Response
@@ -13,7 +14,9 @@ import com.sportpassword.bm.Models.Member
 import com.sportpassword.bm.Utilities.*
 import com.sportpassword.bm.member
 import com.android.volley.VolleyError
-
+import com.facebook.AccessToken
+import com.facebook.GraphRequest
+import com.facebook.GraphResponse
 
 
 /**
@@ -125,6 +128,116 @@ object MemberService {
 //                return requestBody.toByteArray()
 //            }
 //        }
+        Volley.newRequestQueue(context).add(request)
+    }
+
+    fun FBLogin(context: Context, complete: (Boolean) -> Unit) {
+        val accessToken = AccessToken.getCurrentAccessToken()
+        val request = GraphRequest.newMeRequest(accessToken) { json: JSONObject, response: GraphResponse? ->
+            var uid = ""
+            var name = ""
+            var email = ""
+            var sex = ""
+            var avatar = ""
+            var first_name = ""
+            var last_name = ""
+            try {
+                if (json.has("id")) {
+                    uid = json.getString("id")
+                }
+                if (json.has("name")) {
+                    name = json.getString("name")
+                }
+                if (json.has("first_name")) {
+                    name = json.getString("first_name")
+                }
+                if (json.has("last_name")) {
+                    name = json.getString("last_name")
+                }
+                if (json.has("email")) {
+                    email = json.getString("email").toLowerCase()
+                }
+                if (json.has("gender")) {
+                    sex = json.getString("gender")
+                }
+                if (json.has("picture")) {
+                    avatar = json.getJSONObject("picture").getJSONObject("data").getString("url")
+                }
+//                println("uid: $uid")
+//                println("name: $name")
+//                println("first_name: $first_name")
+//                println("last_name: $last_name")
+//                println("email: $email")
+//                println("sex: $sex")
+                println("avatar: $avatar")
+                val body = JSONObject()
+                if (uid.isNotEmpty()) {
+                    body.put("uid", uid)
+                }
+                if (name.isNotEmpty()) {
+                    body.put("name", name)
+                }
+                if (email.isNotEmpty()) {
+                    body.put("email", email)
+                }
+                if (sex.isNotEmpty()) {
+                    body.put("sex", sex)
+                }
+                if (avatar.isNotEmpty()) {
+                    body.put("avatar", avatar)
+                }
+                _FBLogin(context, body) {success ->
+                    complete(success)
+                }
+            } catch (e: Exception) {
+                println(e.localizedMessage)
+            }
+        }
+        val parameters = Bundle()
+        parameters.putString("field", "id,name,link,email,picture.width(300),gender,birthday")
+        request.parameters = parameters
+        request.executeAsync()
+    }
+
+    fun _FBLogin(context: Context, body: JSONObject, complete: (Boolean) -> Unit) {
+        val url = URL_FB_LOGIN
+        //println(url)
+
+        body.put("source", "app")
+        body.put("social", "fb")
+        body.put("channel", CHANNEL)
+        val requestBody = body.toString()
+        //println(requestBody)
+
+        val request = object : JsonObjectRequest(Request.Method.POST, url, null, Response.Listener { json ->
+            try {
+                success = json.getBoolean("success")
+                //println(success)
+            } catch (e: JSONException) {
+                success = false
+                msg = "無法登入，沒有傳回成功值 " + e.localizedMessage
+            }
+            if (success) {
+                //println(json)
+                jsonToMember(json)
+            } else {
+                makeErrorMsg(json)
+            }
+            complete(true)
+        }, Response.ErrorListener { error ->
+            println(error.localizedMessage)
+            msg = "登入失敗，網站或網路錯誤"
+            complete(false)
+        }) {
+            override fun getBodyContentType(): String {
+                return HEADER
+            }
+
+            override fun getBody(): ByteArray {
+                return requestBody.toByteArray()
+            }
+        }
+
         Volley.newRequestQueue(context).add(request)
     }
 

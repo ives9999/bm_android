@@ -6,15 +6,15 @@ import android.support.v4.content.LocalBroadcastManager
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.TextView
-import com.facebook.CallbackManager
-import com.facebook.FacebookCallback
-import com.facebook.FacebookException
+import com.facebook.*
+import com.facebook.appevents.AppEventsLogger
 import com.facebook.login.LoginManager
 import com.facebook.login.LoginResult
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.MemberService
 import com.sportpassword.bm.Utilities.NOTIF_MEMBER_DID_CHANGE
 import kotlinx.android.synthetic.main.activity_login.*
+import org.json.JSONObject
 import java.util.*
 
 class LoginActivity : BaseActivity() {
@@ -71,19 +71,28 @@ class LoginActivity : BaseActivity() {
     }
 
     fun loginFBSubmit(view: View) {
+        val context = this
+        FacebookSdk.sdkInitialize(getApplicationContext());
+        AppEventsLogger.activateApp(this);
         callbackManager = CallbackManager.Factory.create()
-        LoginManager.getInstance().logInWithReadPermissions(this, Arrays.asList("public_profile", "email"))
+        //LoginManager.getInstance().logOut()
+        LoginManager.getInstance().logInWithReadPermissions(this, Arrays.asList("email,public_profile,user_birthday"))
         LoginManager.getInstance().registerCallback(callbackManager,
              object: FacebookCallback<LoginResult> {
                  override fun onSuccess(result: LoginResult?) {
-                     println(result!!.accessToken)
+                     MemberService.FBLogin(context) {success ->
+                         val memberDidChange = Intent(NOTIF_MEMBER_DID_CHANGE)
+                         LocalBroadcastManager.getInstance(context).sendBroadcast(memberDidChange)
+                         finish()
+                     }
                  }
 
                  override fun onCancel() {
-
+                    println("cancel")
                  }
 
                  override fun onError(error: FacebookException?) {
+                     println(error)
 
                  }
              })

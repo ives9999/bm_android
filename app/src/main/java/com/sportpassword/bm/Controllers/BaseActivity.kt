@@ -31,7 +31,6 @@ open class BaseActivity : AppCompatActivity() {
 
         //member.reset()
         member.print()
-        //printMember()
     }
 
 //    protected fun printMember() {
