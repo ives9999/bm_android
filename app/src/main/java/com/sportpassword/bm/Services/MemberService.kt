@@ -131,6 +131,47 @@ object MemberService {
         Volley.newRequestQueue(context).add(request)
     }
 
+    fun forgetPassword(context: Context, email: String, complete: (Boolean) -> Unit) {
+        val lowerCaseEmail = email.toLowerCase()
+        val url = URL_FORGETPASSWORD
+        //println(url)
+
+        val body = JSONObject()
+        body.put("email", email)
+        body.put("source", "app")
+        val requestBody = body.toString()
+        //println(requestBody)
+
+        val request = object : JsonObjectRequest(Request.Method.POST, url, null, Response.Listener { json ->
+            try {
+                success = json.getBoolean("success")
+                //println(json)
+            } catch (e: JSONException) {
+                success = false
+                msg = "無法執行，沒有傳回成功值 " + e.localizedMessage
+            }
+            if (success) {
+                msg = json.getString("msg")
+            } else {
+                makeErrorMsg(json)
+            }
+            complete(true)
+        }, Response.ErrorListener { error ->
+            println(error.localizedMessage)
+            msg = "登入失敗，網站或網路錯誤"
+            complete(false)
+        }) {
+            override fun getBodyContentType(): String {
+                return HEADER
+            }
+
+            override fun getBody(): ByteArray {
+                return requestBody.toByteArray()
+            }
+        }
+        Volley.newRequestQueue(context).add(request)
+    }
+
     fun FBLogin(context: Context, complete: (Boolean) -> Unit) {
         val accessToken = AccessToken.getCurrentAccessToken()
         val request = GraphRequest.newMeRequest(accessToken) { json: JSONObject, response: GraphResponse? ->

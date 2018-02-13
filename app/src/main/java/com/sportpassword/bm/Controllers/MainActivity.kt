@@ -17,6 +17,7 @@ import android.support.v4.app.FragmentPagerAdapter
 import android.support.v4.content.LocalBroadcastManager
 import android.support.v4.view.GravityCompat
 import android.support.v7.app.ActionBarDrawerToggle
+import android.support.v7.widget.LinearLayoutManager
 import android.util.Base64
 import android.util.Log
 import android.view.LayoutInflater
@@ -53,6 +54,7 @@ class MainActivity : BaseActivity() {
     val tabsTextArr: Array<String> = arrayOf<String>("臨打", "教練", "球隊", "更多")
     val tabsIconArr: Array<String> = arrayOf<String>("tempplay", "coach", "team", "more")
     var mainActivity: MainActivity? = null
+    private lateinit var linearLayoutManager: LinearLayoutManager
 
     @RequiresApi(Build.VERSION_CODES.M)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -68,6 +70,7 @@ class MainActivity : BaseActivity() {
         //toolbar.setNavigationOnClickListener(this)
 
         mainActivity = this
+        linearLayoutManager = LinearLayoutManager(this)
 
         val toggle = ActionBarDrawerToggle(
                 this, drawer_layout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close)
@@ -78,6 +81,22 @@ class MainActivity : BaseActivity() {
         LocalBroadcastManager.getInstance(this).registerReceiver(memberDidChange, IntentFilter(NOTIF_MEMBER_DID_CHANGE))
 
 
+<<<<<<< HEAD
+=======
+//        try {
+//        val info = getPackageManager().getPackageInfo(
+//                "com.sportpassword.bm",
+//                PackageManager.GET_SIGNATURES);
+//        for (signature in info.signatures) {
+//            var md = MessageDigest.getInstance("SHA");
+//            md.update(signature.toByteArray());
+//            println("KeyHash: ${Base64.encodeToString(md.digest(), Base64.DEFAULT)}");
+//            }
+//    } catch (e: Exception) {
+//
+//    }
+
+>>>>>>> d97f4c14336f06d97340fd61310613592845c0f4
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
         mSectionPagerAdapter = SectionsPagerAdapter(supportFragmentManager)
@@ -153,6 +172,10 @@ class MainActivity : BaseActivity() {
         }
     }
 
+    private fun initMemberFunction() {
+        menu_member_function.layoutManager = linearLayoutManager
+    }
+
     private fun _loginout() {
         if (member.isLoggedIn) {
             _loginBlock()
@@ -165,12 +188,15 @@ class MainActivity : BaseActivity() {
         loginBtn.text = "登出"
         registerBtn.visibility = View.INVISIBLE
         forgetPasswordBtn.visibility = View.INVISIBLE
+        menu_member_container.visibility = View.VISIBLE
+        initMemberFunction()
     }
     private fun _logoutBlock() {
         nicknameLbl.text = "未登入"
         loginBtn.text = "登入"
         registerBtn.visibility = View.VISIBLE
         forgetPasswordBtn.visibility = View.VISIBLE
+        menu_member_container.visibility = View.INVISIBLE
     }
 
     /**
@@ -245,7 +271,8 @@ class MainActivity : BaseActivity() {
 
 
     fun forgetpasswordBtnPressed(view: View) {
-
+        val forgetPasswordIntent = Intent(this, ForgetPasswordActivity::class.java)
+        startActivity(forgetPasswordIntent)
     }
 
 
