@@ -170,8 +170,8 @@ class MainActivity : BaseActivity() {
         }
     }
 
-    private fun initMemberFunction() {
-        menu_member_function.layoutManager = linearLayoutManager
+    private fun initTeamList() {
+        menu_team_list.layoutManager = linearLayoutManager
     }
 
     private fun _loginout() {
@@ -187,7 +187,7 @@ class MainActivity : BaseActivity() {
         registerBtn.visibility = View.INVISIBLE
         forgetPasswordBtn.visibility = View.INVISIBLE
         menu_member_container.visibility = View.VISIBLE
-        initMemberFunction()
+        initTeamList()
     }
     private fun _logoutBlock() {
         nicknameLbl.text = "未登入"
