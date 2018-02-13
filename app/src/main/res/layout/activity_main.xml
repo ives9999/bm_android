@@ -39,17 +39,8 @@
                 android:id="@+id/menu_member_container"
                 android:layout_below="@+id/menu_member_data"
                 android:orientation="vertical">
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="180dp">
-
-                    </LinearLayout>
-
-                </RelativeLayout>
+                <include
+                    layout="@layout/menu_member_function" />
             </LinearLayout>
             <LinearLayout
                 android:layout_width="match_parent"

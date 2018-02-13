@@ -30,6 +30,7 @@
         android:fontFamily="sans-serif"
         android:text="未登入"
         android:textSize="24sp"
+        android:textStyle="bold"
         app:layout_constraintStart_toEndOf="@+id/avatarView"
         app:layout_constraintTop_toTopOf="parent" />
 
