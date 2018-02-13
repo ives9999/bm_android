@@ -77,18 +77,18 @@ class MainActivity : BaseActivity() {
         LocalBroadcastManager.getInstance(this).registerReceiver(memberDidChange, IntentFilter(NOTIF_MEMBER_DID_CHANGE))
 
 
-        try {
-        val info = getPackageManager().getPackageInfo(
-                "com.sportpassword.bm",
-                PackageManager.GET_SIGNATURES);
-        for (signature in info.signatures) {
-            var md = MessageDigest.getInstance("SHA");
-            md.update(signature.toByteArray());
-            println("KeyHash: ${Base64.encodeToString(md.digest(), Base64.DEFAULT)}");
-            }
-    } catch (e: Exception) {
-
-    }
+//        try {
+//        val info = getPackageManager().getPackageInfo(
+//                "com.sportpassword.bm",
+//                PackageManager.GET_SIGNATURES);
+//        for (signature in info.signatures) {
+//            var md = MessageDigest.getInstance("SHA");
+//            md.update(signature.toByteArray());
+//            println("KeyHash: ${Base64.encodeToString(md.digest(), Base64.DEFAULT)}");
+//            }
+//    } catch (e: Exception) {
+//
+//    }
 
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
@@ -257,7 +257,8 @@ class MainActivity : BaseActivity() {
 
 
     fun forgetpasswordBtnPressed(view: View) {
-
+        val forgetPasswordIntent = Intent(this, ForgetPasswordActivity::class.java)
+        startActivity(forgetPasswordIntent)
     }
 
 
