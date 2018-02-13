@@ -81,8 +81,7 @@ class MainActivity : BaseActivity() {
         LocalBroadcastManager.getInstance(this).registerReceiver(memberDidChange, IntentFilter(NOTIF_MEMBER_DID_CHANGE))
 
 
-<<<<<<< HEAD
-=======
+
 //        try {
 //        val info = getPackageManager().getPackageInfo(
 //                "com.sportpassword.bm",
@@ -96,7 +95,6 @@ class MainActivity : BaseActivity() {
 //
 //    }
 
->>>>>>> d97f4c14336f06d97340fd61310613592845c0f4
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
         mSectionPagerAdapter = SectionsPagerAdapter(supportFragmentManager)
