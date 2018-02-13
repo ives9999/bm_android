@@ -18,6 +18,7 @@ import android.support.v4.content.LocalBroadcastManager
 import android.support.v4.view.GravityCompat
 import android.support.v7.app.ActionBarDrawerToggle
 import android.util.Base64
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -76,19 +77,6 @@ class MainActivity : BaseActivity() {
 
         LocalBroadcastManager.getInstance(this).registerReceiver(memberDidChange, IntentFilter(NOTIF_MEMBER_DID_CHANGE))
 
-
-        try {
-        val info = getPackageManager().getPackageInfo(
-                "com.sportpassword.bm",
-                PackageManager.GET_SIGNATURES);
-        for (signature in info.signatures) {
-            var md = MessageDigest.getInstance("SHA");
-            md.update(signature.toByteArray());
-            println("KeyHash: ${Base64.encodeToString(md.digest(), Base64.DEFAULT)}");
-            }
-    } catch (e: Exception) {
-
-    }
 
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.

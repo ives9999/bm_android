@@ -95,7 +95,8 @@ class LoginActivity : BaseActivity() {
                      println(error)
 
                  }
-             })
+             }
+        )
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
