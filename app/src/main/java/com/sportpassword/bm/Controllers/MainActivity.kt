@@ -35,6 +35,7 @@ import kotlinx.android.synthetic.main.tab.view.*
 import com.sportpassword.bm.member
 import kotlinx.android.synthetic.main.login_out.*
 import kotlinx.android.synthetic.main.menu_member_function.*
+import kotlinx.android.synthetic.main.menu_team_list.*
 import kotlinx.android.synthetic.main.nav_header_main.*
 import java.security.MessageDigest
 
@@ -176,7 +177,7 @@ class MainActivity : BaseActivity() {
             println("aaa")
         }
         menu_updatepassword_container.setOnClickListener { view ->
-            
+
         }
     }
 
@@ -197,6 +198,7 @@ class MainActivity : BaseActivity() {
         registerBtn.visibility = View.INVISIBLE
         forgetPasswordBtn.visibility = View.INVISIBLE
         menu_member_container.visibility = View.VISIBLE
+        menu_team_container.visibility = View.VISIBLE
         initMemberFunction()
         initTeamList()
     }
@@ -206,6 +208,7 @@ class MainActivity : BaseActivity() {
         registerBtn.visibility = View.VISIBLE
         forgetPasswordBtn.visibility = View.VISIBLE
         menu_member_container.visibility = View.INVISIBLE
+        menu_team_container.visibility = View.INVISIBLE
     }
 
     /**
