@@ -22,7 +22,7 @@ import com.facebook.GraphResponse
 /**
  * Created by ives on 2018/2/4.
  */
-object MemberService {
+object MemberService: BaseService() {
 
     var msg: String = ""
     var success: Boolean = false

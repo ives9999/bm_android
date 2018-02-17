@@ -4,8 +4,6 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
-import android.content.pm.PackageInfo
-import android.content.pm.PackageManager
 import android.graphics.PorterDuff
 import android.os.Build
 import android.os.Bundle
@@ -18,16 +16,20 @@ import android.support.v4.content.LocalBroadcastManager
 import android.support.v4.view.GravityCompat
 import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.widget.LinearLayoutManager
-import android.util.Base64
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ArrayAdapter
 import com.facebook.FacebookSdk
 import com.facebook.appevents.AppEventsLogger
 import com.facebook.login.LoginManager
+import com.sportpassword.bm.Adapters.MenuTeamListAdapter
+import com.sportpassword.bm.Models.Team
 import com.sportpassword.bm.R
+import com.sportpassword.bm.Services.DataService
 import com.sportpassword.bm.Services.MemberService
+import com.sportpassword.bm.Services.TeamService
+import com.sportpassword.bm.Utilities.CHANNEL
 import com.sportpassword.bm.Utilities.NOTIF_MEMBER_DID_CHANGE
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
@@ -37,7 +39,6 @@ import kotlinx.android.synthetic.main.login_out.*
 import kotlinx.android.synthetic.main.menu_member_function.*
 import kotlinx.android.synthetic.main.menu_team_list.*
 import kotlinx.android.synthetic.main.nav_header_main.*
-import java.security.MessageDigest
 
 
 class MainActivity : BaseActivity() {
@@ -56,7 +57,8 @@ class MainActivity : BaseActivity() {
     val tabsTextArr: Array<String> = arrayOf<String>("臨打", "教練", "球隊", "更多")
     val tabsIconArr: Array<String> = arrayOf<String>("tempplay", "coach", "team", "more")
     var mainActivity: MainActivity? = null
-    private lateinit var linearLayoutManager: LinearLayoutManager
+
+    lateinit var menuTeamListAdapter: MenuTeamListAdapter
 
     @RequiresApi(Build.VERSION_CODES.M)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -72,17 +74,12 @@ class MainActivity : BaseActivity() {
         //toolbar.setNavigationOnClickListener(this)
 
         mainActivity = this
-        linearLayoutManager = LinearLayoutManager(this)
 
         val toggle = ActionBarDrawerToggle(
                 this, drawer_layout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close)
         drawer_layout.addDrawerListener(toggle)
         //toggle.isDrawerIndicatorEnabled = false
         toggle.syncState()
-
-        LocalBroadcastManager.getInstance(this).registerReceiver(memberDidChange, IntentFilter(NOTIF_MEMBER_DID_CHANGE))
-
-
 
 //        try {
 //        val info = getPackageManager().getPackageInfo(
@@ -127,6 +124,7 @@ class MainActivity : BaseActivity() {
             }
         })
         _loginout()
+        //println("$URL_LIST".format("team"))
         //member.print()
 
         //Loading.show(this)
@@ -138,6 +136,16 @@ class MainActivity : BaseActivity() {
 //        Alert.show(this, "警告", "姓名沒填") {
 //            println("test")
 //        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        LocalBroadcastManager.getInstance(this).registerReceiver(memberDidChange, IntentFilter(NOTIF_MEMBER_DID_CHANGE))
+    }
+
+    override fun onDestroy() {
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(memberDidChange)
+        super.onDestroy()
     }
 
     override fun onBackPressed() {
@@ -182,7 +190,27 @@ class MainActivity : BaseActivity() {
     }
 
     private fun initTeamList() {
-        menu_team_list.layoutManager = linearLayoutManager
+        val filter1: Array<Any> = arrayOf("channel", "=", CHANNEL)
+        val filter2: Array<Any> = arrayOf("manager_id", "=", member.id)
+        val filter: Array<Array<Any>> = arrayOf(filter1, filter2)
+
+        TeamService.getList(this, "team", "name", 1, 100, filter) { success ->
+            if (success) {
+                //val teamLists: ArrayList<Team> = TeamService.dataLists
+//                for (i in 0 until TeamService.dataLists.size) {
+//                    println("id: ${TeamService.dataLists[i].id}, title: ${TeamService.dataLists[i].title}")
+//                }
+                this.menuTeamListAdapter = MenuTeamListAdapter(this, TeamService.dataLists) { team ->
+                    println("click")
+                }
+                menu_team_list.adapter = this.menuTeamListAdapter
+
+                val layoutManager = LinearLayoutManager(this)
+                menu_team_list.layoutManager = layoutManager
+            }
+        }
+
+        //menu_team_list.layoutManager = linearLayoutManager
     }
 
     private fun _loginout() {

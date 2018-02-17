@@ -13,6 +13,8 @@ import android.os.IInterface
 import android.support.v4.content.ContextCompat
 import android.view.ViewGroup
 import android.view.Window
+import android.view.inputmethod.InputMethod
+import android.view.inputmethod.InputMethodManager
 import android.widget.ProgressBar
 import android.widget.RelativeLayout
 import android.widget.TextView
@@ -30,7 +32,7 @@ open class BaseActivity : AppCompatActivity() {
         _setURLConstants()
 
         //member.reset()
-        member.print()
+        //member.print()
     }
 
 //    protected fun printMember() {
@@ -44,7 +46,7 @@ open class BaseActivity : AppCompatActivity() {
         BASE_URL = if (gSimulate) LOCALHOST_BASE_URL else REMOTE_BASE_URL
         //println("os: " + BASE_URL)
         URL_HOME = BASE_URL + "/app/"
-        URL_LIST = "${URL_HOME}%@"
+        URL_LIST = "${URL_HOME}%s"
         URL_SHOW = "${URL_HOME}%@/show/%@?device=app"
         URL_LOGIN = URL_HOME + "login"
         URL_FB_LOGIN = URL_HOME + "member/fb"
@@ -79,6 +81,14 @@ open class BaseActivity : AppCompatActivity() {
     protected fun home(context: Context) {
         val intent : Intent = Intent(context, MainActivity::class.java)
         startActivity(intent)
+    }
+
+    protected fun hideKeyboard() {
+        val inputManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+
+        if (inputManager.isAcceptingText) {
+            inputManager.hideSoftInputFromWindow(currentFocus.windowToken, 0)
+        }
     }
 
     fun isEmulator(): Boolean {

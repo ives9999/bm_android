@@ -17,6 +17,7 @@ class RegisterActivity : BaseActivity() {
     }
 
     fun registerSubmit(view: View) {
+        hideKeyboard()
         val loading = Loading.show(this)
         val email: String = registerEmailTxt.text.toString()
         if (email.isEmpty()) {
