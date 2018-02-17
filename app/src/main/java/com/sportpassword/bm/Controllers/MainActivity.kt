@@ -185,7 +185,8 @@ class MainActivity : BaseActivity() {
             println("aaa")
         }
         menu_updatepassword_container.setOnClickListener { view ->
-
+            val updatePasswordIntent = Intent(this, UpdatePasswordActivity::class.java)
+            startActivity(updatePasswordIntent)
         }
     }
 
@@ -309,13 +310,10 @@ class MainActivity : BaseActivity() {
         goRegister()
     }
 
-
     fun forgetpasswordBtnPressed(view: View) {
         val forgetPasswordIntent = Intent(this, ForgetPasswordActivity::class.java)
         startActivity(forgetPasswordIntent)
     }
-
-
 }
 
 

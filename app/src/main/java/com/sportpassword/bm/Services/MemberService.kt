@@ -158,7 +158,50 @@ object MemberService: BaseService() {
             complete(true)
         }, Response.ErrorListener { error ->
             println(error.localizedMessage)
-            msg = "登入失敗，網站或網路錯誤"
+            msg = "失敗，網站或網路錯誤"
+            complete(false)
+        }) {
+            override fun getBodyContentType(): String {
+                return HEADER
+            }
+
+            override fun getBody(): ByteArray {
+                return requestBody.toByteArray()
+            }
+        }
+        Volley.newRequestQueue(context).add(request)
+    }
+
+    fun changePassword(context: Context, oldPassword: String, newPassword: String, rePassword: String, complete: (Boolean) -> Unit) {
+        val url = URL_CHANGE_PASSWORD
+        //println(url)
+
+        val body = JSONObject()
+        body.put("password_old", oldPassword)
+        body.put("password", newPassword)
+        body.put("repassword", rePassword)
+        body.put("source", "app")
+        body.put("token", member.token)
+        val requestBody = body.toString()
+        //println(requestBody)
+
+        val request = object : JsonObjectRequest(Request.Method.POST, url, null, Response.Listener { json ->
+            //println(json)
+            try {
+                success = json.getBoolean("success")
+            } catch (e: JSONException) {
+                success = false
+                msg = "無法執行，沒有傳回成功值 " + e.localizedMessage
+            }
+            if (success) {
+                msg = "修改密碼成功，之後請用新密碼登入"
+            } else {
+                makeErrorMsg(json)
+            }
+            complete(true)
+        }, Response.ErrorListener { error ->
+            println(error.localizedMessage)
+            msg = "失敗，網站或網路錯誤"
             complete(false)
         }) {
             override fun getBodyContentType(): String {

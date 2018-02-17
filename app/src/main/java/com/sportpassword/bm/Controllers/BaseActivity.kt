@@ -52,6 +52,7 @@ open class BaseActivity : AppCompatActivity() {
         URL_FB_LOGIN = URL_HOME + "member/fb"
         URL_REGISTER = URL_HOME + "register"
         URL_FORGETPASSWORD = "$BASE_URL/member/forget_password"
+        URL_CHANGE_PASSWORD = "$BASE_URL/member/change_password"
         URL_MEMBER_UPDATE = URL_HOME + "member/update"
         URL_CITYS = URL_HOME + "citys"
         URL_ARENA_BY_CITY_ID = URL_HOME + "arena_by_city"
