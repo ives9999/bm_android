@@ -11,6 +11,7 @@ import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.os.IInterface
 import android.support.v4.content.ContextCompat
+import android.view.View
 import android.view.ViewGroup
 import android.view.Window
 import android.view.inputmethod.InputMethod
@@ -101,6 +102,10 @@ open class BaseActivity : AppCompatActivity() {
                 || Build.MANUFACTURER.contains("Genymotion")
                 || Build.BRAND.startsWith("generic") && Build.DEVICE.startsWith("generic")
                 || "google_sdk" == Build.PRODUCT)
+    }
+
+    fun TextView.setMyText(value: String, default: String="") {
+        if (value.isEmpty()) text = default else text = value
     }
 }
 

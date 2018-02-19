@@ -182,7 +182,8 @@ class MainActivity : BaseActivity() {
 
     private fun initMemberFunction() {
         menu_account_container.setOnClickListener {view ->
-            println("aaa")
+            val accountIntent = Intent(this, AccountActivity::class.java)
+            startActivity(accountIntent)
         }
         menu_updatepassword_container.setOnClickListener { view ->
             val updatePasswordIntent = Intent(this, UpdatePasswordActivity::class.java)

@@ -7,7 +7,7 @@
     android:background="@drawable/background"
     android:paddingBottom="3dp"
     android:paddingTop="3dp"
-    tools:context="com.sportpassword.bm.Controllers.LoginActivity"
+    tools:context="com.sportpassword.bm.Controllers.RegisterActivity"
     tools:layout_editor_absoluteY="81dp">
 
 

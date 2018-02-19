@@ -60,7 +60,7 @@ class Member(context: Context) {
         get() = session.getString(SOCIAL_KEY, "")
         set(value) = session.edit().putString(SOCIAL_KEY, value).apply()
     var role: MEMBER_ROLE
-        get() = MEMBER_ROLE.from(session.getString(MEMBER_ROLE_KEY, "member"))
+        get() = MEMBER_ROLE.valueOf(session.getString(MEMBER_ROLE_KEY, "member"))
         //set(value) = session.edit().putString(MEMBER_ROLE_KEY, getMemberRoleRawValue(value)).apply()
         set(value) = session.edit().putString(MEMBER_ROLE_KEY, value.value).apply()
     var validate: Int
@@ -93,7 +93,7 @@ class Member(context: Context) {
         sex = json.getString(SEX_KEY)
         social = json.getString(SOCIAL_KEY)
         val roleString: String = json.getString(MEMBER_ROLE_KEY)
-        role = MEMBER_ROLE.from(roleString)
+        role = MEMBER_ROLE.valueOf(roleString)
 
         isLoggedIn = json.getBoolean(ISLOGGEDIN_KEY)
     }
@@ -128,6 +128,34 @@ class Member(context: Context) {
         }
         setMemberData(json)
     }
+
+    fun validateShow(rawValue: Int): String {
+        var res = "未通過任何認證"
+        if (rawValue and 1 > 0) {
+            res = "已通過email認證"
+        }
+        if (rawValue and 2 > 0) {
+            res = "已通過手機認證"
+        }
+        if (rawValue and 4 > 0) {
+            res = "已通過身分證認證"
+        }
+        return res
+    }
+
+    fun typeShow(rawValue: Int) : String {
+        var res: ArrayList<String> = arrayListOf()
+        if (rawValue and 1 > 0) {
+            res.add("一般會員")
+        }
+        if (rawValue and 2 > 0) {
+            res.add("球隊隊長")
+        }
+        if (rawValue and 4 > 0) {
+            res.add("球場管理員")
+        }
+        return res.joinToString(",")
+    }
 //    private fun setField(fieldName: String): Any {
 //        val a: Field = javaClass.getDeclaredField(fieldName)
 //        println(a.type)
@@ -159,7 +187,15 @@ class Member(context: Context) {
 enum class MEMBER_ROLE(val value: String) {
     member("member"), sale("sale"), designer("designer"), manager("manager"), admin("admin");
 
-    companion object {
-        fun from(findValue: String): MEMBER_ROLE = MEMBER_ROLE.values().first { it.value == findValue }
-    }
+//    companion object {
+//        fun from(findValue: String): MEMBER_ROLE = MEMBER_ROLE.values().first { it.value == findValue }
+//    }
+}
+
+enum class MEMBER_SEX(val value: String) {
+    M("先生"), F("小姐");
+
+//    companion object {
+//        fun from(findValue: String): MEMBER_SEX = MEMBER_SEX.values().first { it.value == findValue }
+//    }
 }
