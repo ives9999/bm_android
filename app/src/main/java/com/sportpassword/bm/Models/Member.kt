@@ -8,6 +8,7 @@ import com.sportpassword.bm.member
 import org.json.JSONObject
 import java.lang.reflect.Field
 import kotlin.reflect.full.memberProperties
+import kotlin.reflect.full.valueParameters
 
 /**
  * Created by ivessun on 2018/2/5.
@@ -96,6 +97,17 @@ class Member(context: Context) {
         role = MEMBER_ROLE.valueOf(roleString)
 
         isLoggedIn = json.getBoolean(ISLOGGEDIN_KEY)
+    }
+
+    public fun fetch(key: String): String {
+        var res = ""
+        this::class.memberProperties.forEach{
+            val name = it.name
+            if (name == key) {
+                res = it.getter.call(this).toString()
+            }
+        }
+        return res
     }
 
     public fun print() {

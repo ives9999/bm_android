@@ -46,7 +46,8 @@
         <activity android:name=".Controllers.BaseActivity" />
         <activity android:name=".Controllers.ForgetPasswordActivity" />
         <activity android:name=".Controllers.UpdatePasswordActivity" />
-        <activity android:name=".Controllers.AccountActivity"></activity>
+        <activity android:name=".Controllers.AccountActivity" />
+        <activity android:name=".Controllers.AccountUpdate1Activity"></activity>
     </application>
 
 </manifest>

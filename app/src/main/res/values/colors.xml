@@ -9,5 +9,7 @@
     <color name="BLACK">#000000</color>
     <color name="FBBLUE">#3e64a2</color>
     <color name="TAB_BACKGROUND">#3d3f41</color>
+    <color name="grey">#808080</color>
+    <color name="TEXTBORDER">#4B4B4B</color>
 </resources>
 

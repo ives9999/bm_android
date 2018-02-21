@@ -1,5 +1,6 @@
 package com.sportpassword.bm.Controllers
 
+import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
@@ -7,6 +8,7 @@ import com.sportpassword.bm.Models.MEMBER_SEX
 import com.sportpassword.bm.R
 import com.sportpassword.bm.member
 import kotlinx.android.synthetic.main.activity_account.*
+import kotlinx.android.synthetic.main.activity_account_update1.*
 
 class AccountActivity : BaseActivity() {
 
@@ -16,6 +18,39 @@ class AccountActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_account)
         setData()
+
+        accountNicknameRow.setOnClickListener { view ->
+//            val accountUpdateIntent = Intent(this, AccountUpdate1Activity::class.java)
+//            accountUpdateIntent.putExtra("type", "nickname")
+//            startActivity(accountUpdateIntent)
+            goIntent("nickname")
+        }
+        accountNameRow.setOnClickListener { view ->
+            goIntent("name")
+        }
+        accountEmailRow.setOnClickListener { view ->
+            goIntent("email")
+        }
+        accountSexRow.setOnClickListener { view ->
+            goIntent("sex")
+        }
+        accountDobRow.setOnClickListener { view ->
+            goIntent("dob")
+        }
+        accountMobileRow.setOnClickListener { view ->
+            goIntent("mobile")
+        }
+        accountTelRow.setOnClickListener { view ->
+            goIntent("tel")
+        }
+
+
+    }
+
+    private fun goIntent(field: String) {
+        val intent = Intent(this, AccountUpdate1Activity::class.java)
+        intent.putExtra("field", field)
+        startActivity(intent)
     }
 
     private fun setData() {

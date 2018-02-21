@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/BLACK"
     tools:layout_editor_absoluteY="81dp">
 
     <RelativeLayout
@@ -61,12 +60,19 @@
                 app:layout_constraintStart_toEndOf="@+id/imageView2"
                 app:layout_constraintTop_toTopOf="parent" />
         </android.support.constraint.ConstraintLayout>
+        <include
+            android:id="@+id/divider_2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            layout="@layout/divider"
+            android:layout_below="@id/menu_team_desc"/>
+
         <android.support.constraint.ConstraintLayout
             android:id="@+id/menu_team_add"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/menu_team_desc"
-            android:paddingBottom="12dp"
+            android:paddingBottom="4dp"
             android:paddingTop="12dp">
 
             <TextView
@@ -88,6 +94,13 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:srcCompat="@android:drawable/ic_media_play" />
         </android.support.constraint.ConstraintLayout>
+        <include
+            android:id="@+id/divider_3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            layout="@layout/divider"
+            android:layout_below="@id/menu_team_add"/>
+
         <android.support.v7.widget.RecyclerView
             android:id="@+id/menu_team_list"
             android:layout_width="match_parent"

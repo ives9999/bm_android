@@ -144,6 +144,13 @@
                             app:layout_constraintTop_toTopOf="parent"
                             app:srcCompat="@android:drawable/ic_media_play" />
                     </android.support.constraint.ConstraintLayout>
+                    <include
+                        android:id="@+id/divider_4"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        layout="@layout/divider"
+                        android:layout_below="@id/accountNicknameRow"/>
+
 
                     <android.support.constraint.ConstraintLayout
                         android:id="@+id/accountNameRow"
@@ -189,6 +196,13 @@
                             app:layout_constraintTop_toTopOf="parent"
                             app:srcCompat="@android:drawable/ic_media_play" />
                     </android.support.constraint.ConstraintLayout>
+                    <include
+                        android:id="@+id/divider_5"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        layout="@layout/divider"
+                        android:layout_below="@id/accountNameRow"/>
+
 
                     <android.support.constraint.ConstraintLayout
                         android:id="@+id/accountEmailRow"
@@ -316,6 +330,13 @@
                             app:layout_constraintTop_toTopOf="parent"
                             app:srcCompat="@android:drawable/ic_media_play" />
                     </android.support.constraint.ConstraintLayout>
+                    <include
+                        android:id="@+id/divider_6"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        layout="@layout/divider"
+                        android:layout_below="@id/accountSexRow"/>
+
 
                     <android.support.constraint.ConstraintLayout
                         android:id="@+id/accountDobRow"
@@ -444,6 +465,13 @@
                             app:layout_constraintTop_toTopOf="parent"
                             app:srcCompat="@android:drawable/ic_media_play" />
                     </android.support.constraint.ConstraintLayout>
+                    <include
+                        android:id="@+id/divider_7"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        layout="@layout/divider"
+                        android:layout_below="@id/accountMobileRow"/>
+
 
                     <android.support.constraint.ConstraintLayout
                         android:id="@+id/accountTelRow"
@@ -564,6 +592,13 @@
 
 
                     </android.support.constraint.ConstraintLayout>
+                    <include
+                        android:id="@+id/divider_8"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        layout="@layout/divider"
+                        android:layout_below="@id/accountValidateRow"/>
+
 
                     <android.support.constraint.ConstraintLayout
                         android:id="@+id/accountTypeRow"
