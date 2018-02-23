@@ -23,7 +23,7 @@ open class DataService: BaseService() {
     var perPage: Int = 0
     var dataLists: ArrayList<Data> = arrayListOf()
 
-    fun getList(context: Context, type:String, titleField:String, page:Int, perPage:Int, filter:Array<Array<Any>>, complete:(Boolean)->Unit) {
+    fun getList(context: Context, type:String, titleField:String, page:Int, perPage:Int, filter:Array<Array<Any>>?, complete:(Boolean)->Unit) {
         val url = "$URL_LIST".format(type)
         //println(url)
 
@@ -32,7 +32,12 @@ open class DataService: BaseService() {
         body.put("page", page.toString())
         body.put("perPage", perPage.toString())
 
-        var requestBody = toJsonString(body, filter)
+        var requestBody: String = ""
+        if (filter != null) {
+            requestBody = toJsonString(body, filter!!)
+        } else {
+            requestBody = body.toString()
+        }
         //println(requestBody)
 
         val request = object : JsonObjectRequest(Request.Method.POST, url, null, Response.Listener { json ->

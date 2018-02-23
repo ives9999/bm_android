@@ -118,3 +118,5 @@ val NOTIF_MEMBER_UPDATE = "notifMemberUpdate"
 // Header
 var HEADER = "application/json; charset=utf-8"
 
+val PERPAGE: Int = 5
+

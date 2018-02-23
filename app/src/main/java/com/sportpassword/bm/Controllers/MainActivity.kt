@@ -92,14 +92,16 @@ class MainActivity : BaseActivity() {
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
 
-        //val adapter = TabAdapter(supportFragmentManager, tabsTextArr)
-        //tab_container.adapter = adapter
+        val adapter = TabAdapter(supportFragmentManager, tabsTextArr)
+        tab_container.adapter = adapter
 
-        mSectionPagerAdapter = SectionsPagerAdapter(supportFragmentManager)
-        tab_container.adapter = mSectionPagerAdapter
+        //mSectionPagerAdapter = SectionsPagerAdapter(supportFragmentManager)
+        //tab_container.adapter = mSectionPagerAdapter
+
+
 
         tab_container.addOnPageChangeListener(TabLayout.TabLayoutOnPageChangeListener(tabs))
-        //tabs.addOnTabSelectedListener(TabLayout.ViewPagerOnTabSelectedListener(pager))
+        tabs.addOnTabSelectedListener(TabLayout.ViewPagerOnTabSelectedListener(tab_container))
         tabs.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab?) {
                 mainActivity!!.setTabIconSelected(tab!!)
@@ -299,7 +301,7 @@ class MainActivity : BaseActivity() {
         override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                                   savedInstanceState: Bundle?): View? {
             val rootView = inflater.inflate(R.layout.tab, container, false)
-            rootView.section_label.text = getString(R.string.section_format, arguments!!.getInt(ARG_SECTION_NUMBER))
+            //rootView.section_label.text = getString(R.string.section_format, arguments!!.getInt(ARG_SECTION_NUMBER))
             return rootView
         }
 
