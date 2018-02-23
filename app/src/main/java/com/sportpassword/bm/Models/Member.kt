@@ -207,7 +207,7 @@ enum class MEMBER_ROLE(val value: String) {
 enum class MEMBER_SEX(val value: String) {
     M("先生"), F("小姐");
 
-//    companion object {
-//        fun from(findValue: String): MEMBER_SEX = MEMBER_SEX.values().first { it.value == findValue }
-//    }
+    companion object {
+        fun from(findValue: String): MEMBER_SEX = MEMBER_SEX.values().first { it.value == findValue }
+    }
 }

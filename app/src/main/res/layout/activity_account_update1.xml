@@ -8,23 +8,43 @@
     android:background="@drawable/background"
     tools:context="com.sportpassword.bm.Controllers.AccountUpdate1Activity">
 
-    <EditText
-        android:id="@+id/accountTxt"
-        android:layout_width="0dp"
-        android:layout_height="50dp"
-        android:background="@drawable/edittext_border"
-        android:ems="10"
-        android:inputType="textPersonName"
-        android:paddingRight="16dp"
-        android:textAlignment="viewEnd"
-        android:textColor="@color/WHITE"
-        android:layout_marginEnd="16dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="32dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:text="ives" />
+    <FrameLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="9dp"
+        android:padding="5dp"
+        android:background="@android:color/transparent">
+
+        <EditText
+            android:id="@+id/accountTxt"
+            android:layout_width="fill_parent"
+            android:layout_height="50dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="32dp"
+            android:background="@drawable/edittext_border"
+            android:ems="10"
+            android:inputType="textPersonName"
+            android:paddingBottom="0dp"
+            android:paddingLeft="0dp"
+            android:paddingRight="36dp"
+            android:textAlignment="viewEnd"
+            android:textColor="@color/WHITE"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="ives" />
+
+        <Button
+            android:id="@+id/calc_clear_txt_Prise"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_gravity="right|center_vertical"
+            android:layout_marginRight="16dp"
+            android:layout_marginTop="16dp"
+            android:background="@android:drawable/ic_delete"
+            android:onClick="clear" />
+    </FrameLayout>
 
     <RadioGroup
         android:id="@+id/accountRadioGroup"
@@ -69,7 +89,7 @@
         style="@style/Widget.AppCompat.Button.Borderless"
         android:layout_width="137dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="112dp"
         android:background="@drawable/button_rc"
         android:onClick="accountSubmit"
         android:text="送出"
@@ -77,9 +97,8 @@
         android:textSize="18sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/accountTxt" />
+        app:layout_constraintTop_toBottomOf="parent" />
 
     <DatePicker
         android:id="@+id/accountDate"
@@ -91,6 +110,7 @@
         android:background="@color/MY_GREEN"
         android:calendarTextColor="@color/WHITE"
         android:headerBackground="@color/MY_RED"
+        android:visibility="invisible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

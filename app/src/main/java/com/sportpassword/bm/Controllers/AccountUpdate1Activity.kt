@@ -1,19 +1,25 @@
 package com.sportpassword.bm.Controllers
 
+import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.constraint.ConstraintLayout
 import android.support.constraint.ConstraintSet
+import android.support.v4.content.LocalBroadcastManager
 import android.view.View
 import android.widget.DatePicker
+import android.widget.RadioButton
+import android.widget.RadioGroup
 import com.sportpassword.bm.Models.MEMBER_SEX
 import com.sportpassword.bm.R
+import com.sportpassword.bm.Services.MemberService
+import com.sportpassword.bm.Utilities.NOTIF_MEMBER_DID_CHANGE
 import com.sportpassword.bm.member
 import kotlinx.android.synthetic.main.activity_account_update1.*
 import kotlinx.android.synthetic.main.tab.*
 import java.util.*
 
-class AccountUpdate1Activity : AppCompatActivity() {
+class AccountUpdate1Activity : BaseActivity() {
 
     var field = ""
     var value = ""
@@ -35,6 +41,11 @@ class AccountUpdate1Activity : AppCompatActivity() {
             else ->textForm()
         }
         //println(value)
+        accountRadioGroup.setOnCheckedChangeListener(RadioGroup.OnCheckedChangeListener{ group, checkedId ->
+            val radio = findViewById<RadioButton>(checkedId)
+            val sex = MEMBER_SEX.from(radio.text.toString()).toString()
+            value = sex
+        })
     }
 
     fun radioForm() {
@@ -61,7 +72,10 @@ class AccountUpdate1Activity : AppCompatActivity() {
         cal.set(Calendar.DAY_OF_MONTH, 1)
         accountDate.minDate = cal.timeInMillis
 
-        accountDate.init(dobs[0], dobs[1], dobs[2], DatePicker.OnDateChangedListener{ datePicker, y, m, d ->
+        accountDate.init(dobs[0], dobs[1]-1, dobs[2], DatePicker.OnDateChangedListener{ datePicker, y, m, d ->
+            //println("y:$y, m:$m, d:$d")
+            value = "$y-${m+1}-$d"
+            //println(value)
 
         })
 
@@ -77,5 +91,34 @@ class AccountUpdate1Activity : AppCompatActivity() {
         accountDate.visibility = View.INVISIBLE
         accountTxt.visibility = View.VISIBLE
         accountTxt.setText(value)
+        accountTxt.setSelection(value.length)
+    }
+
+    fun accountSubmit(view: View) {
+        hideKeyboard()
+        val loading = Loading.show(this)
+        if (accountTxt.visibility == View.VISIBLE) {
+            value = accountTxt.text.toString()
+            //println(value)
+        }
+        MemberService.update(this, member.id, field, value) { success ->
+            loading.dismiss()
+            //println(success)
+            if (success) {
+                if (MemberService.success) {
+                    val memberDidChange = Intent(NOTIF_MEMBER_DID_CHANGE)
+                    LocalBroadcastManager.getInstance(this).sendBroadcast(memberDidChange)
+                    finish()
+                } else {
+                    Alert.show(this, "警告", MemberService.msg)
+                }
+            } else {
+                Alert.show(this, "警告", MemberService.msg)
+            }
+        }
+    }
+
+    fun clear(view: View) {
+        accountTxt.setText("")
     }
 }

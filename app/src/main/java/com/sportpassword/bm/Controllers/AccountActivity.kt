@@ -17,7 +17,7 @@ class AccountActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_account)
-        setData()
+        //setData()
 
         accountNicknameRow.setOnClickListener { view ->
 //            val accountUpdateIntent = Intent(this, AccountUpdate1Activity::class.java)
@@ -45,6 +45,13 @@ class AccountActivity : BaseActivity() {
         }
 
 
+    }
+
+    override fun onResume() {
+        super.onResume()
+        //println("aaccount")
+        //startActivity(getIntent());
+        setData()
     }
 
     private fun goIntent(field: String) {
