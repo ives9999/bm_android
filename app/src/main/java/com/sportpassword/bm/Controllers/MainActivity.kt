@@ -24,6 +24,7 @@ import com.facebook.FacebookSdk
 import com.facebook.appevents.AppEventsLogger
 import com.facebook.login.LoginManager
 import com.sportpassword.bm.Adapters.MenuTeamListAdapter
+import com.sportpassword.bm.Adapters.TabAdapter
 import com.sportpassword.bm.Models.Team
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.DataService
@@ -78,26 +79,7 @@ class MainActivity : BaseActivity() {
         val toggle = ActionBarDrawerToggle(
                 this, drawer_layout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close)
         drawer_layout.addDrawerListener(toggle)
-        //toggle.isDrawerIndicatorEnabled = false
         toggle.syncState()
-
-//        try {
-//        val info = getPackageManager().getPackageInfo(
-//                "com.sportpassword.bm",
-//                PackageManager.GET_SIGNATURES);
-//        for (signature in info.signatures) {
-//            var md = MessageDigest.getInstance("SHA");
-//            md.update(signature.toByteArray());
-//            println("KeyHash: ${Base64.encodeToString(md.digest(), Base64.DEFAULT)}");
-//            }
-//    } catch (e: Exception) {
-//
-//    }
-
-        // Create the adapter that will return a fragment for each of the three
-        // primary sections of the activity.
-        mSectionPagerAdapter = SectionsPagerAdapter(supportFragmentManager)
-        pager.adapter = mSectionPagerAdapter
 
         for (i in tabsTextArr.indices) {
             val text: String = tabsTextArr[i]
@@ -107,8 +89,16 @@ class MainActivity : BaseActivity() {
         val tab: TabLayout.Tab? = tabs.getTabAt(0)
         setTabIconSelected(tab!!)
 
+        // Create the adapter that will return a fragment for each of the three
+        // primary sections of the activity.
 
-        pager.addOnPageChangeListener(TabLayout.TabLayoutOnPageChangeListener(tabs))
+        //val adapter = TabAdapter(supportFragmentManager, tabsTextArr)
+        //tab_container.adapter = adapter
+
+        mSectionPagerAdapter = SectionsPagerAdapter(supportFragmentManager)
+        tab_container.adapter = mSectionPagerAdapter
+
+        tab_container.addOnPageChangeListener(TabLayout.TabLayoutOnPageChangeListener(tabs))
         //tabs.addOnTabSelectedListener(TabLayout.ViewPagerOnTabSelectedListener(pager))
         tabs.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab?) {
@@ -123,6 +113,7 @@ class MainActivity : BaseActivity() {
 
             }
         })
+
         _loginout()
         //println("$URL_LIST".format("team"))
         //member.print()
@@ -136,6 +127,21 @@ class MainActivity : BaseActivity() {
 //        Alert.show(this, "警告", "姓名沒填") {
 //            println("test")
 //        }
+
+//        try {
+//        val info = getPackageManager().getPackageInfo(
+//                "com.sportpassword.bm",
+//                PackageManager.GET_SIGNATURES);
+//        for (signature in info.signatures) {
+//            var md = MessageDigest.getInstance("SHA");
+//            md.update(signature.toByteArray());
+//            println("KeyHash: ${Base64.encodeToString(md.digest(), Base64.DEFAULT)}");
+//            }
+//    } catch (e: Exception) {
+//
+//    }
+
+
     }
 
     override fun onResume() {
@@ -146,26 +152,6 @@ class MainActivity : BaseActivity() {
     override fun onDestroy() {
         LocalBroadcastManager.getInstance(this).unregisterReceiver(memberDidChange)
         super.onDestroy()
-    }
-
-    override fun onBackPressed() {
-        if (drawer_layout.isDrawerOpen(GravityCompat.START)) {
-            drawer_layout.closeDrawer(GravityCompat.START)
-        } else {
-            super.onBackPressed()
-        }
-    }
-
-    @RequiresApi(Build.VERSION_CODES.M)
-    fun setTabIconSelected(tab: TabLayout.Tab) {
-        tab.icon!!.setColorFilter(getColor(R.color.MY_GREEN), PorterDuff.Mode.SRC_IN)
-        val title = tab.text!!.toString()
-        setTitle(title)
-    }
-
-    @RequiresApi(Build.VERSION_CODES.M)
-    fun setTabIconUnSelected(tab: TabLayout.Tab) {
-        tab.icon!!.setColorFilter(getColor(R.color.WHITE), PorterDuff.Mode.SRC_IN)
     }
 
     private fun setTitle(title: String) {
@@ -241,6 +227,52 @@ class MainActivity : BaseActivity() {
         menu_team_container.visibility = View.INVISIBLE
     }
 
+    fun loginBtnPressed(view: View) {
+        if (member.isLoggedIn) {
+            if (member.uid.length > 0 && member.social == "fb") {
+                FacebookSdk.sdkInitialize(getApplicationContext());
+                AppEventsLogger.activateApp(this);
+                LoginManager.getInstance().logOut()
+            }
+            MemberService.logout()
+            val memberDidChange = Intent(NOTIF_MEMBER_DID_CHANGE)
+            LocalBroadcastManager.getInstance(this).sendBroadcast(memberDidChange)
+        } else {
+            goLogin()
+        }
+    }
+
+    fun registerBtnPressed(view: View){
+        goRegister()
+    }
+
+    fun forgetpasswordBtnPressed(view: View) {
+        val forgetPasswordIntent = Intent(this, ForgetPasswordActivity::class.java)
+        startActivity(forgetPasswordIntent)
+    }
+
+
+    override fun onBackPressed() {
+        if (drawer_layout.isDrawerOpen(GravityCompat.START)) {
+            drawer_layout.closeDrawer(GravityCompat.START)
+        } else {
+            super.onBackPressed()
+        }
+    }
+
+    @RequiresApi(Build.VERSION_CODES.M)
+    fun setTabIconSelected(tab: TabLayout.Tab) {
+        tab.icon!!.setColorFilter(getColor(R.color.MY_GREEN), PorterDuff.Mode.SRC_IN)
+        val title = tab.text!!.toString()
+        setTitle(title)
+    }
+
+    @RequiresApi(Build.VERSION_CODES.M)
+    fun setTabIconUnSelected(tab: TabLayout.Tab) {
+        tab.icon!!.setColorFilter(getColor(R.color.WHITE), PorterDuff.Mode.SRC_IN)
+    }
+
+
     /**
      * A [FragmentPagerAdapter] that returns a fragment corresponding to
      * one of the sections/tabs/pages.
@@ -290,30 +322,6 @@ class MainActivity : BaseActivity() {
                 return fragment
             }
         }
-    }
-
-    fun loginBtnPressed(view: View) {
-        if (member.isLoggedIn) {
-            if (member.uid.length > 0 && member.social == "fb") {
-                FacebookSdk.sdkInitialize(getApplicationContext());
-                AppEventsLogger.activateApp(this);
-                LoginManager.getInstance().logOut()
-            }
-            MemberService.logout()
-            val memberDidChange = Intent(NOTIF_MEMBER_DID_CHANGE)
-            LocalBroadcastManager.getInstance(this).sendBroadcast(memberDidChange)
-        } else {
-            goLogin()
-        }
-    }
-
-    fun registerBtnPressed(view: View){
-        goRegister()
-    }
-
-    fun forgetpasswordBtnPressed(view: View) {
-        val forgetPasswordIntent = Intent(this, ForgetPasswordActivity::class.java)
-        startActivity(forgetPasswordIntent)
     }
 }
 
