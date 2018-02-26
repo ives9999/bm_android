@@ -5,9 +5,11 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import com.sportpassword.bm.Models.Data
 import com.sportpassword.bm.R
+import com.squareup.picasso.Picasso
 
 /**
  * Created by ives on 2018/2/23.
@@ -29,9 +31,16 @@ class ListAdapter(val context: Context, val lists: ArrayList<Data>, val itemClic
 
     inner class ViewHolder(itemView: View, val itemClick: (Data) -> Unit): RecyclerView.ViewHolder(itemView) {
         val nameView = itemView.findViewById<TextView>(R.id.listTitleTxt)
+        val featuredView = itemView.findViewById<ImageView>(R.id.listFeatured)
 
         fun bind(data: Data) {
             nameView.text = data.title
+            Picasso.with(context)
+                    .load(data.featured_path)
+                    //.placeholder()
+                    //.error()
+                    .into(featuredView)
+            //println("${data.title} => ${data.featured_path}")
             itemView.setOnClickListener{itemClick(data)}
         }
     }

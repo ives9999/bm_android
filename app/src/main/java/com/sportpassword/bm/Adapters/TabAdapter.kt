@@ -4,6 +4,8 @@ import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentPagerAdapter
 import com.sportpassword.bm.Fragments.CoachFragment
+import com.sportpassword.bm.Fragments.MoreFragment
+import com.sportpassword.bm.Fragments.TeamFragment
 import com.sportpassword.bm.Fragments.TempPlayFragment
 
 /**
@@ -16,8 +18,8 @@ class TabAdapter(fm: FragmentManager, val tabs: Array<String>): FragmentPagerAda
         when(position) {
             0 -> return TempPlayFragment.newInstance("tempPlay", "blah")
             1 -> return CoachFragment.newInstance("coach", "blah")
-            2 -> return TempPlayFragment.newInstance("team", "blah")
-            3 -> return TempPlayFragment.newInstance("more", "blah")
+            2 -> return TeamFragment.newInstance("team", "blah")
+            3 -> return MoreFragment.newInstance("more", "blah")
             else -> return TempPlayFragment.newInstance("tempPlay", "blah")
         }
     }

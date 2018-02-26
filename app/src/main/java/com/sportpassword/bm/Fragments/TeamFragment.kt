@@ -1,23 +1,18 @@
 package com.sportpassword.bm.Fragments
 
-
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.sportpassword.bm.R
-import com.sportpassword.bm.Services.CoachService
+import com.sportpassword.bm.Services.TeamService
 import com.sportpassword.bm.Utilities.PERPAGE
 
-
 /**
- * A simple [Fragment] subclass.
- * Use the [CoachFragment.newInstance] factory method to
- * create an instance of this fragment.
+ * Created by ives on 2018/2/25.
  */
-class CoachFragment : TabFragment() {
-
+class TeamFragment: TabFragment() {
     // TODO: Rename and change types of parameters
     private var mParam1: String? = null
     private var mParam2: String? = null
@@ -25,9 +20,9 @@ class CoachFragment : TabFragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.tab, container, false)
-        CoachService.getList(context!!, "coach", "name", page, PERPAGE, null) { success ->
+        TeamService.getList(context!!, "team", "name", page, PERPAGE, null) { success ->
             if (success) {
-                setAdapter(view, CoachService.dataLists)
+                setAdapter(view, TeamService.dataLists)
             }
         }
         return view
@@ -48,7 +43,7 @@ class CoachFragment : TabFragment() {
          */
         // TODO: Rename and change types and number of parameters
         fun newInstance(param1: String, param2: String): TabFragment {
-            val fragment = CoachFragment()
+            val fragment = TeamFragment()
             val args = Bundle()
             args.putString(ARG_PARAM1, param1)
             args.putString(ARG_PARAM2, param2)
@@ -56,6 +51,4 @@ class CoachFragment : TabFragment() {
             return fragment
         }
     }
-
-
-}// Required empty public constructor
+}

@@ -5,7 +5,9 @@ import com.android.volley.Request
 import com.android.volley.Response
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
+import com.sportpassword.bm.Models.Coach
 import com.sportpassword.bm.Models.Data
+import com.sportpassword.bm.Utilities.BASE_URL
 import com.sportpassword.bm.Utilities.HEADER
 import com.sportpassword.bm.Utilities.URL_LIST
 import org.json.JSONException
@@ -55,11 +57,12 @@ open class DataService: BaseService() {
                     val vimeo = if (obj.has("vimeo")) obj.get("vimeo").toString() else ""
                     val youtube = if (obj.has("youbute")) obj.get("youbute").toString() else ""
                     val id = obj.getInt("id")
-                    val featrued = ""
-                    val path = ""
+                    var featured_path = if (obj.has("featured_path")) obj.get("featured_path").toString() else ""
+                    featured_path = BASE_URL + featured_path
 
-                    val dataList = Data(id, title)
-                    dataLists.add(dataList)
+                    //val dataList: Data = Coach(id, title, featured_path)
+                    val data = setData(id, title, featured_path)
+                    dataLists.add(data)
                     //println(title)
                 }
                 //println(lists)
@@ -107,5 +110,11 @@ open class DataService: BaseService() {
 //
         Volley.newRequestQueue(context).add(request)
 
+    }
+
+    open fun setData(id: Int, title: String, featured_path: String): Data {
+        val data = Data(id, title, featured_path)
+
+        return data
     }
 }
