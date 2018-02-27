@@ -9,7 +9,7 @@ android {
         config {
             keyAlias 'bm'
             keyPassword 'K5SD23r6'
-            storeFile file('/Users/ives/android/bm/bm.jks')
+            storeFile file('/Users/ivessun/android/bm/bm.jks')
             storePassword 'K5SD23r6'
         }
     }

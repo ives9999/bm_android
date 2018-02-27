@@ -15,6 +15,7 @@ import com.sportpassword.bm.Models.Data
 
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.CoachService
+import com.sportpassword.bm.Utilities.PERPAGE
 import kotlinx.android.synthetic.main.tab.*
 
 
@@ -33,8 +34,10 @@ open class TabFragment : Fragment() {
     private var mParam1: String? = null
     private var mParam2: String? = null
     protected var page: Int = 1
+    protected var dataLists: ArrayList<Data> = arrayListOf()
 
     protected lateinit var recyclerView: RecyclerView
+    protected lateinit var refreshLayout: SwipeRefreshLayout
     protected var lastVisibleItemPosition: Int = 0
     protected lateinit var scrollerListenr: RecyclerView.OnScrollListener
     protected lateinit var listAdapter: ListAdapter
@@ -47,10 +50,12 @@ open class TabFragment : Fragment() {
             mParam1 = arguments!!.getString(ARG_PARAM1)
             mParam2 = arguments!!.getString(ARG_PARAM2)
         }
+        //println("TabFragment onCreate")
     }
 
-    protected fun setAdapter(view: View, dataLists: ArrayList<Data>) {
-        listAdapter = ListAdapter(context!!, dataLists) { data ->
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        val view = inflater.inflate(R.layout.tab, container, false)
+        listAdapter = ListAdapter(context!!) { data ->
 
         }
         recyclerView = view.findViewById<RecyclerView>(R.id.list_container)
@@ -61,7 +66,26 @@ open class TabFragment : Fragment() {
         recyclerView.layoutManager = layoutManager
 
         recyclerView.setHasFixedSize(true)
+
+        refreshLayout = view.findViewById<SwipeRefreshLayout>(R.id.tab_refresh)
+
+        getListStart(page, PERPAGE)
+
+        //setRecyclerViewScrollListener()
+        setRecyclerViewRefreshListener()
+
+        return view
     }
+
+    open protected fun getListStart(_page: Int, _perPage: Int) {}
+
+    open protected fun getListEnd(success: Boolean) {
+        if (success) {
+            listAdapter.lists = this.dataLists
+            listAdapter.notifyDataSetChanged()
+        }
+    }
+
     protected fun setRecyclerViewScrollListener() {
         scrollerListenr = object: RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView?, dx: Int, dy: Int) {
@@ -85,14 +109,12 @@ open class TabFragment : Fragment() {
 
     protected fun setRecyclerViewRefreshListener() {
         refreshListener = SwipeRefreshLayout.OnRefreshListener {
-            println("refresh")
-            Thread.sleep(5000)
-
-            //val itemCount =
+            this.getListStart(2, PERPAGE)
+            this.listAdapter.notifyDataSetChanged()
 
             tab_refresh.isRefreshing = false
         }
-        tab_refresh.setOnRefreshListener(refreshListener)
+        refreshLayout.setOnRefreshListener(refreshListener)
     }
 
     companion object {

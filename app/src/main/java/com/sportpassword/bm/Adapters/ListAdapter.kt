@@ -14,7 +14,13 @@ import com.squareup.picasso.Picasso
 /**
  * Created by ives on 2018/2/23.
  */
-class ListAdapter(val context: Context, val lists: ArrayList<Data>, val itemClick: (Data) -> Unit): RecyclerView.Adapter<ListAdapter.ViewHolder>(){
+class ListAdapter(val context: Context, val itemClick: (Data) -> Unit): RecyclerView.Adapter<ListAdapter.ViewHolder>(){
+
+    var lists: ArrayList<Data> = arrayListOf()
+        get() = field
+        set(value) {
+            field = value
+        }
 
     override fun onBindViewHolder(holder: ListAdapter.ViewHolder?, position: Int) {
         holder?.bind(lists[position])

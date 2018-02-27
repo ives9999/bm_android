@@ -41,6 +41,7 @@ open class DataService: BaseService() {
             requestBody = body.toString()
         }
         //println(requestBody)
+        dataLists = arrayListOf()
 
         val request = object : JsonObjectRequest(Request.Method.POST, url, null, Response.Listener { json ->
             //println(json)

@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.CoachService
 import com.sportpassword.bm.Utilities.PERPAGE
+import kotlinx.android.synthetic.main.tab.*
 
 
 /**
@@ -24,16 +25,21 @@ class CoachFragment : TabFragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-        val view = inflater.inflate(R.layout.tab, container, false)
-        CoachService.getList(context!!, "coach", "name", page, PERPAGE, null) { success ->
-            if (success) {
-                setAdapter(view, CoachService.dataLists)
-                setRecyclerViewScrollListener()
-                setRecyclerViewRefreshListener()
-            }
-        }
+        val view = super.onCreateView(inflater, container, savedInstanceState)
         return view
     }
+
+    override fun getListStart(_page: Int, _perPage: Int) {
+        CoachService.getList(context!!, "coach", "name", _page, _perPage, null) { success ->
+            if (success) {
+                this.dataLists = CoachService.dataLists
+                getListEnd(success)
+            } else {
+                getListEnd(false)
+            }
+        }
+    }
+
     companion object {
         // TODO: Rename parameter arguments, choose names that match
         // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER

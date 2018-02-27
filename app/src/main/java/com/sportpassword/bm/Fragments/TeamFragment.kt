@@ -22,7 +22,6 @@ class TeamFragment: TabFragment() {
         val view = inflater.inflate(R.layout.tab, container, false)
         TeamService.getList(context!!, "team", "name", page, PERPAGE, null) { success ->
             if (success) {
-                setAdapter(view, TeamService.dataLists)
             }
         }
         return view
