@@ -28,6 +28,7 @@ class CoachFragment : TabFragment() {
         CoachService.getList(context!!, "coach", "name", page, PERPAGE, null) { success ->
             if (success) {
                 setAdapter(view, CoachService.dataLists)
+                setRecyclerViewScrollListener()
             }
         }
         return view

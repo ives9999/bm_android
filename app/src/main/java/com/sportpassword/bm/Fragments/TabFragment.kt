@@ -3,6 +3,7 @@ package com.sportpassword.bm.Fragments
 
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.support.v4.widget.SwipeRefreshLayout
 import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
@@ -32,6 +33,13 @@ open class TabFragment : Fragment() {
     private var mParam2: String? = null
     protected var page: Int = 1
 
+    protected lateinit var recyclerView: RecyclerView
+    protected var lastVisibleItemPosition: Int = 0
+    protected lateinit var scrollerListenr: RecyclerView.OnScrollListener
+    protected lateinit var listAdapter: ListAdapter
+
+    protected lateinit var refreshListener: SwipeRefreshLayout.OnRefreshListener
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         if (arguments != null) {
@@ -41,19 +49,45 @@ open class TabFragment : Fragment() {
     }
 
     protected fun setAdapter(view: View, dataLists: ArrayList<Data>) {
-        val listAdapter = ListAdapter(context!!, dataLists) { data ->
+        listAdapter = ListAdapter(context!!, dataLists) { data ->
 
         }
-        val recyclerView = view.findViewById<RecyclerView>(R.id.list_container)
+        recyclerView = view.findViewById<RecyclerView>(R.id.list_container)
         recyclerView.adapter = listAdapter
 
         val layoutManager = GridLayoutManager(context, 1)
+        lastVisibleItemPosition = layoutManager.findLastVisibleItemPosition()
         recyclerView.layoutManager = layoutManager
 
         recyclerView.setHasFixedSize(true)
-
-        //val callback = RecyclerViewSc
     }
+    protected fun setRecyclerViewScrollListener() {
+        scrollerListenr = object: RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView?, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+                //println("dy: $dy")
+            }
+            override fun onScrollStateChanged(recyclerView: RecyclerView?, newState: Int) {
+                super.onScrollStateChanged(recyclerView, newState)
+                val totalCount = recyclerView!!.layoutManager.itemCount
+                //val position = recyclerView!!.layoutManager.findL
+                println("totalCount: $totalCount")
+                println("position: $lastVisibleItemPosition")
+
+                if (totalCount == lastVisibleItemPosition + 1) {
+                    recyclerView!!.removeOnScrollListener(scrollerListenr)
+                }
+            }
+        }
+        recyclerView.addOnScrollListener(scrollerListenr)
+    }
+
+    protected fun setRecyclerViewRefreshListener() {
+        refreshListener = SwipeRefreshLayout.OnRefreshListener {
+            Thread.sleep(200)
+        }
+    }
+
     companion object {
         // TODO: Rename parameter arguments, choose names that match
         // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
