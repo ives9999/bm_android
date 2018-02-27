@@ -29,6 +29,7 @@ class CoachFragment : TabFragment() {
             if (success) {
                 setAdapter(view, CoachService.dataLists)
                 setRecyclerViewScrollListener()
+                setRecyclerViewRefreshListener()
             }
         }
         return view

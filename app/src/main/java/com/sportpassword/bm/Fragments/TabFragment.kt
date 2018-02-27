@@ -15,6 +15,7 @@ import com.sportpassword.bm.Models.Data
 
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.CoachService
+import kotlinx.android.synthetic.main.tab.*
 
 
 /**
@@ -84,8 +85,14 @@ open class TabFragment : Fragment() {
 
     protected fun setRecyclerViewRefreshListener() {
         refreshListener = SwipeRefreshLayout.OnRefreshListener {
-            Thread.sleep(200)
+            println("refresh")
+            Thread.sleep(5000)
+
+            //val itemCount =
+
+            tab_refresh.isRefreshing = false
         }
+        tab_refresh.setOnRefreshListener(refreshListener)
     }
 
     companion object {
