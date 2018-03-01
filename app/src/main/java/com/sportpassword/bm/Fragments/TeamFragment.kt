@@ -17,15 +17,24 @@ class TeamFragment: TabFragment() {
     private var mParam1: String? = null
     private var mParam2: String? = null
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        this.dataService = TeamService
+    }
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-        val view = inflater.inflate(R.layout.tab, container, false)
-        TeamService.getList(context!!, "team", "name", page, PERPAGE, null) { success ->
-            if (success) {
-            }
-        }
+        val view = super.onCreateView(inflater, container, savedInstanceState)
         return view
     }
+
+    override fun getDataStart(_page: Int, _perPage: Int) {
+        //println("page: $_page")
+        TeamService.getList(context!!, "team", "name", _page, _perPage, null) { success ->
+            getDataEnd(success)
+        }
+    }
+
     companion object {
         // TODO: Rename parameter arguments, choose names that match
         // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER

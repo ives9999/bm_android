@@ -41,13 +41,14 @@ open class DataService: BaseService() {
             requestBody = body.toString()
         }
         //println(requestBody)
+        //println("coach getList refresh: $refresh")
         dataLists = arrayListOf()
 
         val request = object : JsonObjectRequest(Request.Method.POST, url, null, Response.Listener { json ->
             //println(json)
             try {
                 success = true
-                totalCount = json.getInt("totalCount")
+                this.totalCount = json.getInt("totalCount")
                 this.page = json.getInt("page")
                 this.perPage = json.getInt("perPage")
                 val rows = json.getJSONArray("rows")
@@ -64,8 +65,8 @@ open class DataService: BaseService() {
                     //val dataList: Data = Coach(id, title, featured_path)
                     val data = setData(id, title, featured_path)
                     dataLists.add(data)
-                    //println(title)
                 }
+                //println(dataLists.size)
                 //println(lists)
             } catch (e: JSONException) {
                 println(e.localizedMessage)

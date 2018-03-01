@@ -6,8 +6,10 @@ import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.sportpassword.bm.Models.Coach
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.CoachService
+import com.sportpassword.bm.Services.DataService
 import com.sportpassword.bm.Utilities.PERPAGE
 import kotlinx.android.synthetic.main.tab.*
 
@@ -23,20 +25,21 @@ class CoachFragment : TabFragment() {
     private var mParam1: String? = null
     private var mParam2: String? = null
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        this.dataService = CoachService
+    }
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         val view = super.onCreateView(inflater, container, savedInstanceState)
         return view
     }
 
-    override fun getListStart(_page: Int, _perPage: Int) {
+    override fun getDataStart(_page: Int, _perPage: Int) {
+        //println("page: $_page")
         CoachService.getList(context!!, "coach", "name", _page, _perPage, null) { success ->
-            if (success) {
-                this.dataLists = CoachService.dataLists
-                getListEnd(success)
-            } else {
-                getListEnd(false)
-            }
+            getDataEnd(success)
         }
     }
 
