@@ -43,8 +43,8 @@ class ListAdapter(val context: Context, val itemClick: (Data) -> Unit): Recycler
             nameView.text = data.title
             Picasso.with(context)
                     .load(data.featured_path)
-                    //.placeholder()
-                    //.error()
+                    .placeholder(R.drawable.loading_square)
+                    .error(R.drawable.load_failed_square)
                     .into(featuredView)
             //println("${data.title} => ${data.featured_path}")
             itemView.setOnClickListener{itemClick(data)}
