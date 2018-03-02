@@ -19,21 +19,20 @@ import com.squareup.picasso.Picasso
  * Created by ives on 2018/2/23.
  */
 class ListAdapter(val context: Context, val itemClick: (Data) -> Unit): RecyclerView.Adapter<ListAdapter.ViewHolder>(){
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+        val view: View = LayoutInflater.from(context).inflate(R.layout.tab_list_item, parent, false)
+        return ViewHolder(view, itemClick)
+    }
+
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        holder?.bind(lists[position])
+    }
 
     var lists: ArrayList<Data> = arrayListOf()
         get() = field
         set(value) {
             field = value
         }
-
-    override fun onBindViewHolder(holder: ListAdapter.ViewHolder?, position: Int) {
-        holder?.bind(lists[position])
-    }
-
-    override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): ListAdapter.ViewHolder {
-        val view: View = LayoutInflater.from(context).inflate(R.layout.tab_list_item, parent, false)
-        return ViewHolder(view, itemClick)
-    }
 
     override fun getItemCount(): Int {
         return lists.size

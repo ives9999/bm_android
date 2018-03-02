@@ -37,6 +37,8 @@ import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
 import kotlinx.android.synthetic.main.tab.view.*
 import com.sportpassword.bm.member
+import com.vimeo.networking.Configuration
+import com.vimeo.networking.VimeoClient
 import kotlinx.android.synthetic.main.login_out.*
 import kotlinx.android.synthetic.main.menu_member_function.*
 import kotlinx.android.synthetic.main.menu_team_list.*
@@ -54,7 +56,8 @@ class MainActivity : BaseActivity() {
      * [android.support.v4.app.FragmentStatePagerAdapter].
      */
 
-    private var mSectionPagerAdapter: SectionsPagerAdapter? = null
+    //private var mSectionPagerAdapter: SectionsPagerAdapter? = null
+    private val apiClient = VimeoClient.getInstance()
 
     val tabsTextArr: Array<String> = arrayOf<String>("臨打", "教練", "球隊", "更多")
     val tabsIconArr: Array<String> = arrayOf<String>("tempplay", "coach", "team", "more")
@@ -118,6 +121,15 @@ class MainActivity : BaseActivity() {
         })
 
         _loginout()
+
+
+        val configBuilder = Configuration.Builder("85a4cfd6e6ff82ea0493e269d19086c0c856936b", "w//PE1Vewrvaicmc9LtXyKjJB2DoFmxPenQxoZJ3vD3PkBraHahyFKpm4zmZnIIJy2EUO8NvSWuWiHkbK8mLoBvUxve1Rxm54nl4OH8FHpKHmvGtG3zm30gOa/X36oL5", "public")
+                .setCacheDirectory(this.cacheDir)
+        VimeoClient.initialize(configBuilder.build())
+        val accessToken = apiClient.vimeoAccount.accessToken
+        println(accessToken)
+
+
         //println("$URL_LIST".format("team"))
         //member.print()
 
@@ -280,52 +292,52 @@ class MainActivity : BaseActivity() {
      * A [FragmentPagerAdapter] that returns a fragment corresponding to
      * one of the sections/tabs/pages.
      */
-    inner class SectionsPagerAdapter(fm: FragmentManager) : FragmentPagerAdapter(fm) {
-
-        override fun getItem(position: Int): Fragment {
-            // getItem is called to instantiate the fragment for the given page.
-            // Return a PlaceholderFragment (defined as a static inner class below).
-            return PlaceholderFragment.newInstance(position + 1)
-        }
-
-        override fun getCount(): Int {
-            // Show 3 total pages.
-            return tabsTextArr.size
-        }
-    }
+//    inner class SectionsPagerAdapter(fm: FragmentManager) : FragmentPagerAdapter(fm) {
+//
+//        override fun getItem(position: Int): Fragment {
+//            // getItem is called to instantiate the fragment for the given page.
+//            // Return a PlaceholderFragment (defined as a static inner class below).
+//            return PlaceholderFragment.newInstance(position + 1)
+//        }
+//
+//        override fun getCount(): Int {
+//            // Show 3 total pages.
+//            return tabsTextArr.size
+//        }
+//    }
 
     /**
      * A placeholder fragment containing a simple view.
      */
-    class PlaceholderFragment : Fragment() {
-
-        override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                                  savedInstanceState: Bundle?): View? {
-            val rootView = inflater.inflate(R.layout.tab, container, false)
-            //rootView.section_label.text = getString(R.string.section_format, arguments!!.getInt(ARG_SECTION_NUMBER))
-            return rootView
-        }
-
-        companion object {
-            /**
-             * The fragment argument representing the section number for this
-             * fragment.
-             */
-            private val ARG_SECTION_NUMBER = "section_number"
-
-            /**
-             * Returns a new instance of this fragment for the given section
-             * number.
-             */
-            fun newInstance(sectionNumber: Int): PlaceholderFragment {
-                val fragment = PlaceholderFragment()
-                val args = Bundle()
-                args.putInt(ARG_SECTION_NUMBER, sectionNumber)
-                fragment.arguments = args
-                return fragment
-            }
-        }
-    }
+//    class PlaceholderFragment : Fragment() {
+//
+//        override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
+//                                  savedInstanceState: Bundle?): View? {
+//            val rootView = inflater.inflate(R.layout.tab, container, false)
+//            //rootView.section_label.text = getString(R.string.section_format, arguments!!.getInt(ARG_SECTION_NUMBER))
+//            return rootView
+//        }
+//
+//        companion object {
+//            /**
+//             * The fragment argument representing the section number for this
+//             * fragment.
+//             */
+//            private val ARG_SECTION_NUMBER = "section_number"
+//
+//            /**
+//             * Returns a new instance of this fragment for the given section
+//             * number.
+//             */
+//            fun newInstance(sectionNumber: Int): PlaceholderFragment {
+//                val fragment = PlaceholderFragment()
+//                val args = Bundle()
+//                args.putInt(ARG_SECTION_NUMBER, sectionNumber)
+//                fragment.arguments = args
+//                return fragment
+//            }
+//        }
+//    }
 }
 
 
