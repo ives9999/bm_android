@@ -25,6 +25,7 @@ import com.facebook.appevents.AppEventsLogger
 import com.facebook.login.LoginManager
 import com.sportpassword.bm.Adapters.MenuTeamListAdapter
 import com.sportpassword.bm.Adapters.TabAdapter
+import com.sportpassword.bm.Fragments.CoachFragment
 import com.sportpassword.bm.Models.Team
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.DataService

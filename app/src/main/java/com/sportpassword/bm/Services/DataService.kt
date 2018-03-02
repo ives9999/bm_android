@@ -7,9 +7,7 @@ import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
 import com.sportpassword.bm.Models.Coach
 import com.sportpassword.bm.Models.Data
-import com.sportpassword.bm.Utilities.BASE_URL
-import com.sportpassword.bm.Utilities.HEADER
-import com.sportpassword.bm.Utilities.URL_LIST
+import com.sportpassword.bm.Utilities.*
 import org.json.JSONException
 import org.json.JSONObject
 
@@ -56,14 +54,23 @@ open class DataService: BaseService() {
                     val obj = rows.getJSONObject(i)
                     val title = obj.getString(titleField)
                     val token = obj.getString("token")
-                    val vimeo = if (obj.has("vimeo")) obj.get("vimeo").toString() else ""
-                    val youtube = if (obj.has("youbute")) obj.get("youbute").toString() else ""
+                    var vimeo = if (obj.has("vimeo")) obj.get("vimeo").toString() else ""
+                    var youtube = if (obj.has("youbute")) obj.get("youbute").toString() else ""
                     val id = obj.getInt("id")
                     var featured_path = if (obj.has("featured_path")) obj.get("featured_path").toString() else ""
-                    featured_path = BASE_URL + featured_path
+                    //println(featured_path)
+                    if (featured_path.isNotEmpty()) {
+                        featured_path = BASE_URL + featured_path
+                    }
+                    if (vimeo.isNotEmpty()) {
+                        vimeo = VIMEO_PREFIX + vimeo
+                    }
+                    if (youtube.isNotEmpty()) {
+                        youtube = YOUTUBE_PREFIX + youtube
+                    }
 
                     //val dataList: Data = Coach(id, title, featured_path)
-                    val data = setData(id, title, featured_path)
+                    val data = setData(id, title, featured_path, vimeo, youtube)
                     dataLists.add(data)
                 }
                 //println(dataLists.size)
@@ -114,8 +121,8 @@ open class DataService: BaseService() {
 
     }
 
-    open fun setData(id: Int, title: String, featured_path: String): Data {
-        val data = Data(id, title, featured_path)
+    open fun setData(id: Int, title: String, featured_path: String, vimeo: String, youtube: String): Data {
+        val data = Data(id, title, featured_path, vimeo, youtube)
 
         return data
     }

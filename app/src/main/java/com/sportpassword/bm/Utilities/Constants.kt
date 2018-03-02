@@ -120,3 +120,7 @@ var HEADER = "application/json; charset=utf-8"
 
 val PERPAGE: Int = 5
 
+// Prefix
+val VIMEO_PREFIX: String = "https://player.vimeo.com/video/"
+val YOUTUBE_PREFIX: String = "https://youtu.be/"
+

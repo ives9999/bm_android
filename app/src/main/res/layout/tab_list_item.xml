@@ -22,6 +22,7 @@
             android:orientation="vertical">
 
             <LinearLayout
+                android:id="@+id/title_container"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical">
@@ -44,6 +45,7 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/featured_container"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical">
@@ -59,8 +61,23 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/listTitleTxt"
-                    app:srcCompat="@drawable/com_facebook_profile_picture_blank_square" />
+                    app:srcCompat="@drawable/loading_square"
+                     />
+
             </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/video_container"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <WebView
+                    android:id="@+id/listVideo"
+                    android:layout_width="300dp"
+                    android:layout_height="300dp" />
+            </LinearLayout>
+
         </LinearLayout>
 
     </android.support.v7.widget.CardView>

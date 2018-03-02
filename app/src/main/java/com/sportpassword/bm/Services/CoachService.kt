@@ -7,8 +7,8 @@ import com.sportpassword.bm.Models.Coach
  */
 object CoachService: DataService() {
 
-    override fun setData(id: Int, title: String, featured_path: String): Coach {
-        val data = Coach(id, title, featured_path)
+    override fun setData(id: Int, title: String, featured_path: String, vimeo: String, youtube: String): Coach {
+        val data = Coach(id, title, featured_path, vimeo, youtube)
         return data
     }
 }

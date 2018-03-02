@@ -7,6 +7,7 @@ import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.sportpassword.bm.Controllers.MainActivity
 
 import com.sportpassword.bm.R
 
@@ -35,12 +36,14 @@ class MoreFragment : Fragment() {
         val view = inflater.inflate(R.layout.tab_more, container, false)
         val row = view.findViewById<ConstraintLayout>(R.id.more_course_row)
         row.setOnClickListener() { view ->
-            val fm = activity!!.fragmentManager
+            //val mainActivity = activity as MainActivity
+            //mainActivity.test()
+            val fm = activity!!.supportFragmentManager
             //val fragment = fm.findFragmentById(R.id.tab_container)
             //println(fragment)
-            val courseFragment = CoachFragment.newInstance("coach", "blah")
+            val courseFragment = CourseFragment.newInstance("course", "blah")
             fm.beginTransaction()
-                    .replace(R.id.tab_container, courseFragment)
+                    .replace(R.id.more_container, courseFragment)
                     .addToBackStack(null)
                     .commit()
         }
