@@ -25,7 +25,7 @@ class ListAdapter(val context: Context, val itemClick: (Data) -> Unit): Recycler
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder?.bind(lists[position])
+        holder.bind(lists[position])
     }
 
     var lists: ArrayList<Data> = arrayListOf()
@@ -92,9 +92,9 @@ class ListAdapter(val context: Context, val itemClick: (Data) -> Unit): Recycler
                 videoView.loadData(yourData, "text/html; charset=utf-8", "UTF-8")
 
             }
-            println("${data.title}: featured => ${data.featured_path}")
-            println("${data.title}: vimeo => ${data.vimeo}")
-            println("${data.title}: youbute => ${data.youtube}")
+//            println("${data.title}: featured => ${data.featured_path}")
+//            println("${data.title}: vimeo => ${data.vimeo}")
+//            println("${data.title}: youbute => ${data.youtube}")
             itemView.setOnClickListener{itemClick(data)}
         }
     }

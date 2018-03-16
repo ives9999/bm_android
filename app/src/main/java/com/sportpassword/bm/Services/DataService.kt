@@ -16,12 +16,13 @@ import org.json.JSONObject
  */
 open class DataService: BaseService() {
     
-    var msg: String = ""
     var success: Boolean = false
     var totalCount: Int = 0
     var page: Int = 0
     var perPage: Int = 0
     var dataLists: ArrayList<Data> = arrayListOf()
+    open val model: Data = Data(-1, "", "", "")
+    lateinit var data: Map<String, Map<String, Any>>
 
     fun getList(context: Context, type:String, titleField:String, page:Int, perPage:Int, filter:Array<Array<Any>>?, complete:(Boolean)->Unit) {
         val url = "$URL_LIST".format(type)
@@ -70,7 +71,7 @@ open class DataService: BaseService() {
                     }
 
                     //val dataList: Data = Coach(id, title, featured_path)
-                    val data = setData(id, title, featured_path, vimeo, youtube)
+                    val data = setData(id, title, token, featured_path, vimeo, youtube)
                     dataLists.add(data)
                 }
                 //println(dataLists.size)
@@ -121,9 +122,65 @@ open class DataService: BaseService() {
 
     }
 
-    open fun setData(id: Int, title: String, featured_path: String, vimeo: String, youtube: String): Data {
-        val data = Data(id, title, featured_path, vimeo, youtube)
+    fun getOne(context: Context, type:String, titleField:String, token:String, complete:(Boolean)->Unit) {
+        val url = "$URL_ONE".format(type)
+        println(url)
+
+        val body = JSONObject()
+        body.put("source", "app")
+        body.put("token", token)
+        body.put("strip_html", true)
+        val requestBody = body.toString()
+        println(requestBody)
+
+        val request = object : JsonObjectRequest(Request.Method.POST, url, null, Response.Listener { json ->
+            //println(json)
+            try {
+                success = true
+                //println(json)
+                model.dataReset()
+                data = mapOf()
+                dealOne(json)
+                data = model.data
+            } catch (e: JSONException) {
+                println(e.localizedMessage)
+                success = false
+                msg = "無法getList，沒有傳回成功值 " + e.localizedMessage
+            }
+            if (this.success) {
+                //jsonToMember(json)
+            } else {
+                //DataService.makeErrorMsg(json)
+            }
+            complete(true)
+        }, Response.ErrorListener { error ->
+            //Log.d("ERROR", "Could not register user: $error")
+            println(error.localizedMessage)
+            this.msg = "取得失敗，網站或網路錯誤"
+            complete(false)
+        }) {
+            override fun getBodyContentType(): String {
+                return HEADER
+            }
+
+            override fun getBody(): ByteArray {
+                return requestBody.toByteArray()
+            }
+        }
+        Volley.newRequestQueue(context).add(request)
+    }
+
+    fun update(context: Context, params: Map<String, Any>, complete: CompletionHandler) {
+
+    }
+
+    open fun setData(id: Int, title: String, token: String, featured_path: String, vimeo: String, youtube: String): Data {
+        val data = Data(id, title, token, featured_path, vimeo, youtube)
 
         return data
     }
+
+    open fun dealOne(json: JSONObject) {}
+
+    open fun _jsonToData(tmp: JSONObject, key: String, item: Map<String, Any>){}
 }

@@ -1,11 +1,13 @@
 package com.sportpassword.bm.Services
 
+import org.json.JSONException
 import org.json.JSONObject
 
 /**
  * Created by ives on 2018/2/15.
  */
 open class BaseService {
+    var msg: String = ""
 
     fun toJsonString(json: JSONObject, filter: Array<Array<Any>>) : String {
         var str = "{"
@@ -40,5 +42,22 @@ open class BaseService {
         str += "}"
 
         return str
+    }
+
+    protected fun makeErrorMsg(json: JSONObject) {
+        try {
+            val errors = json.getJSONArray("msg")
+            for (i in 0..errors.length() - 1) {
+                val error = errors[i].toString()
+                msg += error
+            }
+        } catch (e: JSONException) {
+
+        }
+        try {
+            msg = json.getString("msg")
+        } catch (e: JSONException) {
+
+        }
     }
 }

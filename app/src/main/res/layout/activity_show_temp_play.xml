@@ -1,10 +1,266 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
+<android.support.v4.widget.SwipeRefreshLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/tempPlayShow_refresh"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context="com.sportpassword.bm.Controllers.ShowTempPlayActivity">
+    android:layout_height="wrap_content"
+    >
 
-</android.support.constraint.ConstraintLayout>
+<ScrollView
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+    android:background="@drawable/background"
+        >
+
+        <RelativeLayout
+            android:id="@+id/RelativeLayout01"
+            android:layout_width="match_parent"
+            android:layout_height="1000dp"
+            android:layout_marginTop="16dp">
+
+
+            <ImageView
+                android:id="@+id/show_featured_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:scaleType="centerInside"
+                app:srcCompat="@drawable/loading_square" />
+
+            <Button
+                android:id="@+id/show_temp_play_city_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="12dp"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp"
+                android:textSize="21dp"
+                android:background="@drawable/button_rc_green"
+                android:layout_below="@+id/show_featured_view"
+                app:layout_constraintBottom_toBottomOf="@+id/show_temp_play_arena_btn"
+                app:layout_constraintStart_toEndOf="@+id/show_temp_play_arena_btn" />
+
+            <Button
+                android:id="@+id/show_temp_play_arena_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:layout_below="@+id/show_featured_view"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="12dp"
+                android:layout_toRightOf="@+id/show_temp_play_city_btn"
+                android:background="@drawable/button_rc_green"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp"
+                android:textSize="21dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/show_featured_view" />
+
+            <TextView
+                android:id="@+id/show_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/show_temp_play_city_btn"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="12dp"
+                android:text="下次臨打日期："
+                android:textColor="@color/WHITE"
+                android:textSize="21dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/show_temp_play_arena_btn" />
+
+            <TextView
+                android:id="@+id/show_interval"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/show_date"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="12dp"
+                android:text="臨打時段："
+                android:textColor="@color/WHITE"
+                android:textSize="21dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/show_date" />
+
+            <TextView
+                android:id="@+id/show_quantity"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/show_interval"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="12dp"
+                android:text="臨打人數缺額："
+                android:textColor="@color/WHITE"
+                android:textSize="21dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/show_interval" />
+
+            <TextView
+                android:id="@+id/show_signup"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/show_quantity"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="12dp"
+                android:text="已報名人數："
+                android:textColor="@color/WHITE"
+                android:textSize="21dp" />
+
+            <TextView
+                android:id="@+id/show_fee_M"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/show_signup"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="12dp"
+                android:text="臨打費用：男："
+                android:textColor="@color/WHITE"
+                android:textSize="21dp" />
+
+            <TextView
+                android:id="@+id/show_fee_Ｆ"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/show_fee_M"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="12dp"
+                android:text="臨打費用：女："
+                android:textColor="@color/WHITE"
+                android:textSize="21dp" />
+
+            <TextView
+                android:id="@+id/show_ball"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/show_fee_Ｆ"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="12dp"
+                android:text="使用球種："
+                android:textColor="@color/WHITE"
+                android:textSize="21dp" />
+
+            <TextView
+                android:id="@+id/show_manager"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/show_ball"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="12dp"
+                android:text="聯絡人："
+                android:textColor="@color/WHITE"
+                android:textSize="21dp" />
+
+            <TextView
+                android:id="@+id/show_mobile"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/show_manager"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="12dp"
+                android:text="電話："
+                android:textColor="@color/WHITE"
+                android:textSize="21dp" />
+
+            <TextView
+                android:id="@+id/show_degree"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/show_mobile"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="12dp"
+                android:text="球隊程度："
+                android:textColor="@color/WHITE"
+                android:textSize="21dp" />
+
+            <android.support.constraint.ConstraintLayout
+                android:id="@+id/show_signups_lbl"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/show_degree"
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="18dp">
+
+                <TextView
+                    android:id="@+id/signups_nickname_lbl"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="32dp"
+                    android:layout_marginTop="8dp"
+                    android:text="臨打球友"
+                    android:textColor="@color/WHITE"
+                    android:textSize="21dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/signups_date_lbl"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="32dp"
+                    android:singleLine="false"
+                    android:text="加入日期"
+                    android:textColor="@color/WHITE"
+                    android:textSize="21dp"
+                    app:layout_constraintBottom_toBottomOf="@+id/signups_nickname_lbl"
+                    app:layout_constraintEnd_toEndOf="parent" />
+
+            </android.support.constraint.ConstraintLayout>
+            <include
+                android:id="@+id/divider_51"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                layout="@layout/divider"
+                android:layout_below="@id/show_signups_lbl"/>
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/show_signups_container"
+                android:layout_below="@+id/divider_51"
+                android:layout_marginLeft="8dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+
+                android:scrollbars="vertical">
+
+            </android.support.v7.widget.RecyclerView>
+
+            <LinearLayout
+                android:id="@+id/show_btn_container"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/show_signups_container"
+                android:layout_centerInParent="true"
+                android:layout_marginTop="18dp"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/show_add_btn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="30dp"
+                    android:layout_marginRight="12dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/button_rc"
+                    android:onClick="plusOne"
+                    android:paddingLeft="16dp"
+                    android:paddingRight="16dp"
+                    android:text="我要臨打"
+                    android:textSize="21dp" />
+
+                <Button
+                    android:id="@+id/show_cancel_btn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="30dp"
+                    android:layout_marginLeft="12dp"
+                    android:layout_toRightOf="@+id/show_add_btn"
+                    android:background="@drawable/button_rc_green"
+                    android:onClick="cancelPlusOne"
+                    android:paddingLeft="16dp"
+                    android:paddingRight="16dp"
+                    android:text="取消臨打"
+                    android:textSize="21dp" />
+            </LinearLayout>
+        </RelativeLayout>
+</ScrollView>
+</android.support.v4.widget.SwipeRefreshLayout>
+
+

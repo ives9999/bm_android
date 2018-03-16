@@ -13,6 +13,8 @@ import android.widget.RadioGroup
 import com.sportpassword.bm.Models.MEMBER_SEX
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.MemberService
+import com.sportpassword.bm.Utilities.Alert
+import com.sportpassword.bm.Utilities.Loading
 import com.sportpassword.bm.Utilities.NOTIF_MEMBER_DID_CHANGE
 import com.sportpassword.bm.member
 import kotlinx.android.synthetic.main.activity_account_update1.*

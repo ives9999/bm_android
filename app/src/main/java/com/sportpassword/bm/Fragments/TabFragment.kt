@@ -1,6 +1,7 @@
 package com.sportpassword.bm.Fragments
 
 
+import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v4.widget.SwipeRefreshLayout
@@ -10,10 +11,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.sportpassword.bm.Adapters.ListAdapter
+import com.sportpassword.bm.Controllers.ShowActivity
 import com.sportpassword.bm.Models.Data
 
 import com.sportpassword.bm.R
+import com.sportpassword.bm.Services.CoachService
 import com.sportpassword.bm.Services.DataService
+import com.sportpassword.bm.Services.TeamService
 import com.sportpassword.bm.Utilities.PERPAGE
 import kotlinx.android.synthetic.main.tab.*
 
@@ -27,8 +31,7 @@ import kotlinx.android.synthetic.main.tab.*
 open class TabFragment : Fragment() {
 
     // TODO: Rename and change types of parameters
-    private var mParam1: String? = null
-    private var mParam2: String? = null
+    protected var mParam1: String? = null
 
     protected var theFirstTime: Boolean = true
     protected var page: Int = 1
@@ -40,18 +43,17 @@ open class TabFragment : Fragment() {
 
     protected lateinit var recyclerView: RecyclerView
     protected lateinit var refreshLayout: SwipeRefreshLayout
-    protected lateinit var scrollerListenr: RecyclerView.OnScrollListener
     protected lateinit var listAdapter: ListAdapter
     protected lateinit var dataService: DataService
     protected lateinit var that: TabFragment
 
     protected lateinit var refreshListener: SwipeRefreshLayout.OnRefreshListener
+    protected lateinit var scrollerListenr: RecyclerView.OnScrollListener
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         if (arguments != null) {
             mParam1 = arguments!!.getString(ARG_PARAM1)
-            mParam2 = arguments!!.getString(ARG_PARAM2)
         }
         that = this
         //println("TabFragment onCreate")
@@ -59,14 +61,11 @@ open class TabFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.tab, container, false)
-        listAdapter = ListAdapter(context!!) { data ->
-
-        }
         recyclerView = view.findViewById<RecyclerView>(R.id.list_container)
-        recyclerView.adapter = listAdapter
+        initAdapter()
 
         val layoutManager = GridLayoutManager(context, 1)
-        //lastVisibleItemPosition = layoutManager.findLastVisibleItemPosition()
+
         recyclerView.layoutManager = layoutManager
 
         recyclerView.setHasFixedSize(true)
@@ -80,15 +79,20 @@ open class TabFragment : Fragment() {
 
         return view
     }
+    open protected fun initAdapter() {
+        listAdapter = ListAdapter(context!!) { data ->
+            val intent = Intent(activity, ShowActivity::class.java)
+            intent.putExtra("type", mParam1)
+            intent.putExtra("token", data.token)
+            startActivity(intent)
+        }
+        recyclerView.adapter = listAdapter
 
+    }
     open protected fun getDataStart(_page: Int, _perPage: Int) {}
 
     open protected fun getDataEnd(success: Boolean) {
         if (success) {
-            if (page == 1) {
-                dataLists = arrayListOf()
-            }
-            dataLists.addAll(dataService.dataLists)
             if (theFirstTime) {
                 page = dataService.page
                 perPage = dataService.perPage
@@ -98,8 +102,7 @@ open class TabFragment : Fragment() {
                 theFirstTime = false
             }
 
-            listAdapter.lists = dataLists
-            listAdapter.notifyDataSetChanged()
+            notifyDataSetChanged()
             page++
         }
 //        println("page:$page")
@@ -107,8 +110,16 @@ open class TabFragment : Fragment() {
 //        println("totalCount:$totalCount")
 //        println("totalPage:$totalPage")
     }
+    open protected fun notifyDataSetChanged() {
+        if (page == 1) {
+            dataLists = arrayListOf()
+        }
+        dataLists.addAll(dataService.dataLists)
+        listAdapter.lists = dataLists
+        listAdapter.notifyDataSetChanged()
+    }
 
-    protected fun setRecyclerViewScrollListener() {
+    open protected fun setRecyclerViewScrollListener() {
 
         var pos: Int = 0
 
@@ -131,7 +142,7 @@ open class TabFragment : Fragment() {
         recyclerView.addOnScrollListener(scrollerListenr)
     }
 
-    protected fun setRecyclerViewRefreshListener() {
+    open protected fun setRecyclerViewRefreshListener() {
         refreshListener = SwipeRefreshLayout.OnRefreshListener {
             that.page = 1
             this.getDataStart(this.page, this.perPage)
@@ -146,7 +157,6 @@ open class TabFragment : Fragment() {
         // TODO: Rename parameter arguments, choose names that match
         // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
         private val ARG_PARAM1 = "param1"
-        private val ARG_PARAM2 = "param2"
 
         /**
          * Use this factory method to create a new instance of
@@ -161,7 +171,6 @@ open class TabFragment : Fragment() {
             val fragment = TabFragment()
             val args = Bundle()
             args.putString(ARG_PARAM1, param1)
-            args.putString(ARG_PARAM2, param2)
             fragment.arguments = args
             return fragment
         }

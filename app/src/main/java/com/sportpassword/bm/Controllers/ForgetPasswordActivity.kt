@@ -7,6 +7,8 @@ import android.support.v4.content.LocalBroadcastManager
 import android.view.View
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.MemberService
+import com.sportpassword.bm.Utilities.Alert
+import com.sportpassword.bm.Utilities.Loading
 import com.sportpassword.bm.Utilities.NOTIF_MEMBER_DID_CHANGE
 import kotlinx.android.synthetic.main.activity_forget_password.*
 import kotlinx.android.synthetic.main.activity_login.*

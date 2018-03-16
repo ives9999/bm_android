@@ -3,6 +3,10 @@
     package="com.sportpassword.bm">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-feature android:name="android.hardware.camera2" />
 
     <application
         android:name=".App"
@@ -47,7 +51,10 @@
         <activity android:name=".Controllers.ForgetPasswordActivity" />
         <activity android:name=".Controllers.UpdatePasswordActivity" />
         <activity android:name=".Controllers.AccountActivity" />
-        <activity android:name=".Controllers.AccountUpdate1Activity"></activity>
+        <activity android:name=".Controllers.AccountUpdate1Activity" />
+        <activity android:name=".Controllers.ShowActivity" />
+        <activity android:name=".Controllers.ShowTempPlayActivity" />
+        <activity android:name=".Controllers.EditTeamActivity"></activity>
     </application>
 
 </manifest>

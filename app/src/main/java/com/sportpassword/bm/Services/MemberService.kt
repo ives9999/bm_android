@@ -24,7 +24,6 @@ import com.facebook.GraphResponse
  */
 object MemberService: BaseService() {
 
-    var msg: String = ""
     var success: Boolean = false
 
     fun register(context: Context, email: String, password: String, repassword: String, complete: (Boolean) -> Unit) {
@@ -378,22 +377,5 @@ object MemberService: BaseService() {
     private fun jsonToMember(json: JSONObject) {
         json.put(ISLOGGEDIN_KEY, true)
         member.setMemberData(json)
-    }
-
-    private fun makeErrorMsg(json: JSONObject) {
-        try {
-            val errors = json.getJSONArray("msg")
-            for (i in 0..errors.length() - 1) {
-                val error = errors[i].toString()
-                msg += error
-            }
-        } catch (e: JSONException) {
-
-        }
-        try {
-            msg = json.getString("msg")
-        } catch (e: JSONException) {
-
-        }
     }
 }

@@ -1,14 +1,29 @@
 package com.sportpassword.bm.Fragments
 
 
+import android.content.Intent
 import android.support.v4.app.Fragment
 import android.os.Bundle
+import android.support.v4.widget.SwipeRefreshLayout
+import android.support.v7.widget.GridLayoutManager
+import android.support.v7.widget.LinearLayoutManager
+import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
 import android.widget.TextView
+import com.sportpassword.bm.Adapters.ListAdapter
+import com.sportpassword.bm.Adapters.TempPlayListAdapter
+import com.sportpassword.bm.Controllers.ShowTempPlayActivity
+import com.sportpassword.bm.Models.Data
 
 import com.sportpassword.bm.R
+import com.sportpassword.bm.Services.DataService
+import com.sportpassword.bm.Services.TeamService
+import com.sportpassword.bm.Utilities.PERPAGE
+import com.sportpassword.bm.Utilities.TEAM_TOKEN_KEY
+import kotlinx.android.synthetic.main.tab.*
 import kotlinx.android.synthetic.main.tab.view.*
 
 
@@ -17,28 +32,84 @@ import kotlinx.android.synthetic.main.tab.view.*
  * Use the [TempPlayFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
-class TempPlayFragment : Fragment() {
+class TempPlayFragment : TabFragment() {
 
-    // TODO: Rename and change types of parameters
-    private var mParam1: String? = null
-    private var mParam2: String? = null
+    protected lateinit var tempPlayListAdapter: TempPlayListAdapter
+    protected var dataLists1: ArrayList<Map<String, Map<String, Any>>> = arrayListOf()
+    protected lateinit var that1: TempPlayFragment
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        if (arguments != null) {
-            mParam1 = arguments!!.getString(ARG_PARAM1)
-            mParam2 = arguments!!.getString(ARG_PARAM2)
-            //println("onCreate: $mParam1")
-        }
+        this.dataService = TeamService
+        that1 = this
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-        val view = inflater.inflate(R.layout.tab, container, false)
-        //view.section_label.setText(mParam1)
-
+        val view = super.onCreateView(inflater, container, savedInstanceState)
         return view
     }
+    override fun initAdapter() {
+        tempPlayListAdapter = TempPlayListAdapter(context!!) { data ->
+            //println(data)
+            val position = data["position"]!!["value"] as Int
+            val token = data[TEAM_TOKEN_KEY]!!["value"] as String
+            val intent = Intent(activity, ShowTempPlayActivity::class.java)
+            intent.putExtra("position", position)
+            intent.putExtra(TEAM_TOKEN_KEY, token)
+            startActivity(intent)
+
+        }
+        recyclerView.adapter = tempPlayListAdapter
+    }
+    override fun getDataStart(_page: Int, _perPage: Int) {
+        TeamService.tempPlay_list(context!!, _page, _perPage) { success ->
+            getDataEnd(success)
+        }
+    }
+    override fun notifyDataSetChanged() {
+        if (page == 1) {
+            dataLists1 = arrayListOf()
+        }
+        dataLists1.addAll(TeamService.tempPlayLists)
+        tempPlayListAdapter.lists = dataLists1
+        tempPlayListAdapter.notifyDataSetChanged()
+    }
+
+    override fun setRecyclerViewScrollListener() {
+
+        var pos: Int = 0
+
+        scrollerListenr = object: RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView?, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+                val layoutManager = recyclerView!!.layoutManager as GridLayoutManager
+                if (that1.dataLists1.size < that1.totalCount) {
+                    pos = layoutManager.findLastVisibleItemPosition()
+                }
+            }
+            override fun onScrollStateChanged(recyclerView: RecyclerView?, newState: Int) {
+                super.onScrollStateChanged(recyclerView, newState)
+
+                if (that1.dataLists.size == pos + 1 && newState == RecyclerView.SCROLL_STATE_IDLE && that1.dataLists.size < that1.totalCount) {
+                    that1.getDataStart(that1.page, that1.perPage)
+                }
+            }
+        }
+        recyclerView.addOnScrollListener(scrollerListenr)
+    }
+
+    override fun setRecyclerViewRefreshListener() {
+        refreshListener = SwipeRefreshLayout.OnRefreshListener {
+            that1.page = 1
+            this.getDataStart(this.page, this.perPage)
+            this.tempPlayListAdapter.notifyDataSetChanged()
+
+            tab_refresh.isRefreshing = false
+        }
+        refreshLayout.setOnRefreshListener(refreshListener)
+    }
+
 
     companion object {
         // TODO: Rename parameter arguments, choose names that match

@@ -4,6 +4,8 @@ package com.sportpassword.bm.Utilities
  * Created by ivessun on 2018/2/2.
  */
 
+typealias CompletionHandler = (Success: Boolean) -> Unit
+
 const val CHANNEL = "bm"
 var gSimulate: Boolean = false
 
@@ -28,6 +30,7 @@ var URL_TEAM = ""
 var URL_TEAM_TEMP_PLAY = ""
 var URL_TEAM_TEMP_PLAY_LIST = ""
 var URL_TEAM_PLUSONE = ""
+var URL_TEAM_CANCELPLUSONE = ""
 
 // spinner
 val LOADING: String = "努力加載中..."
@@ -123,4 +126,14 @@ val PERPAGE: Int = 5
 // Prefix
 val VIMEO_PREFIX: String = "https://player.vimeo.com/video/"
 val YOUTUBE_PREFIX: String = "https://youtu.be/"
+
+val DAYS: Array<Map<String, Any>> = arrayOf(
+        mapOf("value" to 1, "text" to "星期一", "checked" to false),
+        mapOf("value" to 2, "text" to "星期二", "checked" to false),
+        mapOf("value" to 3, "text" to "星期三", "checked" to false),
+        mapOf("value" to 4, "text" to "星期四", "checked" to false),
+        mapOf("value" to 5, "text" to "星期五", "checked" to false),
+        mapOf("value" to 6, "text" to "星期六", "checked" to false),
+        mapOf("value" to 7, "text" to "星期日", "checked" to false)
+)
 

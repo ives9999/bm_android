@@ -37,12 +37,13 @@ import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
 import kotlinx.android.synthetic.main.tab.view.*
 import com.sportpassword.bm.member
-import com.vimeo.networking.Configuration
-import com.vimeo.networking.VimeoClient
+//import com.vimeo.networking.Configuration
+//import com.vimeo.networking.VimeoClient
 import kotlinx.android.synthetic.main.login_out.*
 import kotlinx.android.synthetic.main.menu_member_function.*
 import kotlinx.android.synthetic.main.menu_team_list.*
 import kotlinx.android.synthetic.main.nav_header_main.*
+import org.jetbrains.anko.sdk25.coroutines.onClick
 
 
 class MainActivity : BaseActivity() {
@@ -57,7 +58,7 @@ class MainActivity : BaseActivity() {
      */
 
     //private var mSectionPagerAdapter: SectionsPagerAdapter? = null
-    private val apiClient = VimeoClient.getInstance()
+    //private val apiClient = VimeoClient.getInstance()
 
     val tabsTextArr: Array<String> = arrayOf<String>("臨打", "教練", "球隊", "更多")
     val tabsIconArr: Array<String> = arrayOf<String>("tempplay", "coach", "team", "more")
@@ -123,11 +124,11 @@ class MainActivity : BaseActivity() {
         _loginout()
 
 
-        val configBuilder = Configuration.Builder("85a4cfd6e6ff82ea0493e269d19086c0c856936b", "w//PE1Vewrvaicmc9LtXyKjJB2DoFmxPenQxoZJ3vD3PkBraHahyFKpm4zmZnIIJy2EUO8NvSWuWiHkbK8mLoBvUxve1Rxm54nl4OH8FHpKHmvGtG3zm30gOa/X36oL5", "public")
-                .setCacheDirectory(this.cacheDir)
-        VimeoClient.initialize(configBuilder.build())
-        val accessToken = apiClient.vimeoAccount.accessToken
-        println(accessToken)
+//        val configBuilder = Configuration.Builder("85a4cfd6e6ff82ea0493e269d19086c0c856936b", "w//PE1Vewrvaicmc9LtXyKjJB2DoFmxPenQxoZJ3vD3PkBraHahyFKpm4zmZnIIJy2EUO8NvSWuWiHkbK8mLoBvUxve1Rxm54nl4OH8FHpKHmvGtG3zm30gOa/X36oL5", "public")
+//                .setCacheDirectory(this.cacheDir)
+//        VimeoClient.initialize(configBuilder.build())
+//        val accessToken = apiClient.vimeoAccount.accessToken
+//        println(accessToken)
 
 
         //println("$URL_LIST".format("team"))
@@ -204,13 +205,17 @@ class MainActivity : BaseActivity() {
 //                    println("id: ${TeamService.dataLists[i].id}, title: ${TeamService.dataLists[i].title}")
 //                }
                 this.menuTeamListAdapter = MenuTeamListAdapter(this, TeamService.dataLists) { team ->
-                    println("click")
+                    //println(team.id)
+                    goEditTeam(team.token)
                 }
                 menu_team_list.adapter = this.menuTeamListAdapter
 
                 val layoutManager = LinearLayoutManager(this)
                 menu_team_list.layoutManager = layoutManager
             }
+        }
+        menu_team_add.onClick {
+            goEditTeam()
         }
 
         //menu_team_list.layoutManager = linearLayoutManager

@@ -5,6 +5,8 @@ import android.os.Bundle
 import android.view.View
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.MemberService
+import com.sportpassword.bm.Utilities.Alert
+import com.sportpassword.bm.Utilities.Loading
 import kotlinx.android.synthetic.main.activity_update_password.*
 
 class UpdatePasswordActivity : AppCompatActivity() {

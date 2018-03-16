@@ -3,10 +3,7 @@ package com.sportpassword.bm.Adapters
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentPagerAdapter
-import com.sportpassword.bm.Fragments.CoachFragment
-import com.sportpassword.bm.Fragments.MoreFragment
-import com.sportpassword.bm.Fragments.TeamFragment
-import com.sportpassword.bm.Fragments.TempPlayFragment
+import com.sportpassword.bm.Fragments.*
 
 /**
  * Created by ivessun on 2018/2/23.

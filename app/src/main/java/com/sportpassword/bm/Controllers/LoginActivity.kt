@@ -12,6 +12,8 @@ import com.facebook.login.LoginManager
 import com.facebook.login.LoginResult
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.MemberService
+import com.sportpassword.bm.Utilities.Alert
+import com.sportpassword.bm.Utilities.Loading
 import com.sportpassword.bm.Utilities.NOTIF_MEMBER_DID_CHANGE
 import kotlinx.android.synthetic.main.activity_login.*
 import org.json.JSONObject
