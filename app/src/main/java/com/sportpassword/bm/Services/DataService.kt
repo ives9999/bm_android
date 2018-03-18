@@ -1,12 +1,15 @@
 package com.sportpassword.bm.Services
 
 import android.content.Context
+import com.android.volley.NetworkResponse
 import com.android.volley.Request
 import com.android.volley.Response
 import com.android.volley.toolbox.JsonObjectRequest
+import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import com.sportpassword.bm.Models.Coach
 import com.sportpassword.bm.Models.Data
+import com.sportpassword.bm.Models.Team
 import com.sportpassword.bm.Utilities.*
 import org.json.JSONException
 import org.json.JSONObject
@@ -22,9 +25,9 @@ open class DataService: BaseService() {
     var perPage: Int = 0
     var dataLists: ArrayList<Data> = arrayListOf()
     open val model: Data = Data(-1, "", "", "")
-    lateinit var data: Map<String, Map<String, Any>>
+    lateinit var data: MutableMap<String, MutableMap<String, Any>>
 
-    fun getList(context: Context, type:String, titleField:String, page:Int, perPage:Int, filter:Array<Array<Any>>?, complete:(Boolean)->Unit) {
+    fun getList(context: Context, type:String, titleField:String, page:Int, perPage:Int, filter:Array<Array<Any>>?, complete:CompletionHandler) {
         val url = "$URL_LIST".format(type)
         //println(url)
 
@@ -122,16 +125,16 @@ open class DataService: BaseService() {
 
     }
 
-    fun getOne(context: Context, type:String, titleField:String, token:String, complete:(Boolean)->Unit) {
+    fun getOne(context: Context, type:String, titleField:String, token:String, complete: CompletionHandler) {
         val url = "$URL_ONE".format(type)
-        println(url)
+        //println(url)
 
         val body = JSONObject()
         body.put("source", "app")
         body.put("token", token)
         body.put("strip_html", true)
         val requestBody = body.toString()
-        println(requestBody)
+        //println(requestBody)
 
         val request = object : JsonObjectRequest(Request.Method.POST, url, null, Response.Listener { json ->
             //println(json)
@@ -139,7 +142,7 @@ open class DataService: BaseService() {
                 success = true
                 //println(json)
                 model.dataReset()
-                data = mapOf()
+                data = mutableMapOf()
                 dealOne(json)
                 data = model.data
             } catch (e: JSONException) {
@@ -170,8 +173,37 @@ open class DataService: BaseService() {
         Volley.newRequestQueue(context).add(request)
     }
 
-    fun update(context: Context, params: Map<String, Any>, complete: CompletionHandler) {
+    fun update(context: Context, type: String, params: HashMap<String, Any>, complete: CompletionHandler) {
+        val url = "$URL_UPDATE".format(type)
 
+        val request = object: StringRequest(Request.Method.POST, url,
+                Response.Listener<String> { response ->
+
+                },
+                Response.ErrorListener { error ->
+
+                }) {
+            override fun getBodyContentType(): String {
+                return super.getBodyContentType()
+            }
+
+            override fun getBody(): ByteArray {
+                val postParams = HashMap<String, String>()
+                for ((key, value) in params) {
+                    for ((key1, value1) in model.data) {
+                        if (key == key1) {
+
+                        }
+                    }
+                }
+                return postParams.toString().toByteArray()
+            }
+
+            override fun getHeaders(): MutableMap<String, String> {
+                return super.getHeaders()
+            }
+        }
+        Volley.newRequestQueue(context).add(request)
     }
 
     open fun setData(id: Int, title: String, token: String, featured_path: String, vimeo: String, youtube: String): Data {
@@ -184,3 +216,23 @@ open class DataService: BaseService() {
 
     open fun _jsonToData(tmp: JSONObject, key: String, item: Map<String, Any>){}
 }
+
+
+class VolleyMultipartRequest(method: Int, url: String?, listener: Response.ErrorListener?) : Request<NetworkResponse>(method, url, listener) {
+
+    override fun parseNetworkResponse(response: NetworkResponse?): Response<NetworkResponse> {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun deliverResponse(response: NetworkResponse?) {
+
+    }
+
+}
+
+
+
+
+
+
+

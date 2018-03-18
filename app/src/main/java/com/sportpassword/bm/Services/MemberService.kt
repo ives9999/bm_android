@@ -26,7 +26,7 @@ object MemberService: BaseService() {
 
     var success: Boolean = false
 
-    fun register(context: Context, email: String, password: String, repassword: String, complete: (Boolean) -> Unit) {
+    fun register(context: Context, email: String, password: String, repassword: String, complete: CompletionHandler) {
         val url = URL_REGISTER
         //println(url)
 
@@ -70,7 +70,7 @@ object MemberService: BaseService() {
         Volley.newRequestQueue(context).add(request)
     }
 
-    fun login(context: Context, email: String, password: String, complete: (Boolean) -> Unit) {
+    fun login(context: Context, email: String, password: String, complete: CompletionHandler) {
         val lowerCaseEmail = email.toLowerCase()
         val url = URL_LOGIN
         //println(url)
@@ -130,7 +130,7 @@ object MemberService: BaseService() {
         Volley.newRequestQueue(context).add(request)
     }
 
-    fun forgetPassword(context: Context, email: String, complete: (Boolean) -> Unit) {
+    fun forgetPassword(context: Context, email: String, complete: CompletionHandler) {
         val lowerCaseEmail = email.toLowerCase()
         val url = URL_FORGETPASSWORD
         //println(url)
@@ -171,7 +171,7 @@ object MemberService: BaseService() {
         Volley.newRequestQueue(context).add(request)
     }
 
-    fun changePassword(context: Context, oldPassword: String, newPassword: String, rePassword: String, complete: (Boolean) -> Unit) {
+    fun changePassword(context: Context, oldPassword: String, newPassword: String, rePassword: String, complete: CompletionHandler) {
         val url = URL_CHANGE_PASSWORD
         //println(url)
 
@@ -214,7 +214,7 @@ object MemberService: BaseService() {
         Volley.newRequestQueue(context).add(request)
     }
 
-    fun update(context: Context, id: Int, field: String, _value: String, complete: (Boolean) -> Unit) {
+    fun update(context: Context, id: Int, field: String, _value: String, complete: CompletionHandler) {
         var value = _value
         if (field == EMAIL_KEY) {
             value = value.toLowerCase()
@@ -327,7 +327,7 @@ object MemberService: BaseService() {
         request.executeAsync()
     }
 
-    fun _FBLogin(context: Context, body: JSONObject, complete: (Boolean) -> Unit) {
+    fun _FBLogin(context: Context, body: JSONObject, complete: CompletionHandler) {
         val url = URL_FB_LOGIN
         //println(url)
 

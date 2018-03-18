@@ -72,6 +72,7 @@ open class BaseActivity : AppCompatActivity() {
         URL_CITYS = URL_HOME + "citys"
         URL_ARENA_BY_CITY_ID = URL_HOME + "arena_by_city"
         URL_TEAM_UPDATE = URL_HOME + "team/update"
+        URL_UPDATE = URL_HOME + "%s/update"
         URL_ONE = "${URL_HOME}%s/one"
         URL_TEAM = URL_HOME + "team/"
         URL_TEAM_TEMP_PLAY = URL_TEAM + "tempPlay/onoff"

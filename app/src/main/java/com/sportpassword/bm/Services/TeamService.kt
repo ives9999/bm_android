@@ -28,7 +28,7 @@ object TeamService: DataService() {
         return data
     }
 
-    fun tempPlay_list(context: Context, page:Int, perPage:Int, complete: (Boolean)->Unit) {
+    fun tempPlay_list(context: Context, page:Int, perPage:Int, complete: CompletionHandler) {
         val url = URL_TEAM_TEMP_PLAY_LIST
         //println(url)
 
@@ -141,7 +141,7 @@ object TeamService: DataService() {
 //
         Volley.newRequestQueue(context).add(request)
     }
-    fun plusOne(context: Context, title: String, near_date: String, token: String, complete: (Boolean)->Unit) {
+    fun plusOne(context: Context, title: String, near_date: String, token: String, complete: CompletionHandler) {
         val _title = URLEncoder.encode(title, "UTF-8")
         var url = URL_TEAM_PLUSONE + _title + "?source=app&date=" + near_date + "&token=" + token
         //println(url)
@@ -167,7 +167,7 @@ object TeamService: DataService() {
         }){}
         Volley.newRequestQueue(context).add(request)
     }
-    fun cancelPlusOne(context: Context, title: String, near_date: String, token: String, complete: (Boolean)->Unit) {
+    fun cancelPlusOne(context: Context, title: String, near_date: String, token: String, complete: CompletionHandler) {
         val _title = URLEncoder.encode(title, "UTF-8")
         var url = URL_TEAM_CANCELPLUSONE + _title + "?source=app&date=" + near_date + "&token=" + token
         //println(url)

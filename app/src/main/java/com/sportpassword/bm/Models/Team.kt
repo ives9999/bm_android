@@ -4,6 +4,7 @@ import android.text.InputType
 import com.sportpassword.bm.Services.DataService
 import com.sportpassword.bm.Services.TeamService
 import com.sportpassword.bm.Utilities.*
+import com.sportpassword.bm.member
 
 /**
  * Created by ives on 2018/2/14.
@@ -64,6 +65,9 @@ class Team(id: Int, name: String, token: String, featured_path: String, vimeo: S
                 TEAM_FEATURED_KEY to mutableMapOf("ch" to "代表圖","vtype" to "String","value" to "","path" to "","submit" to false,"show" to "")
         )
         data = _data
+        for ((key, value) in data) {
+            data[key]!!["change"] = false
+        }
     }
 
     fun updateCity(city: City) {
@@ -255,6 +259,51 @@ class Team(id: Int, name: String, token: String, featured_path: String, vimeo: S
         res["text"] = text
         res["type"] = TEXT_INPUT_TYPE.team
         data[TEAM_CONTENT_KEY]!!["sender"] = res
+    }
+
+    fun makeSubmitArr(): MutableMap<String, Any> {
+        var isAnyOneChange: Boolean = false
+        var res: MutableMap<String, Any> = mutableMapOf()
+
+        for ((key, row) in data) {
+            val isSubmit: Boolean = row["submit"] as Boolean
+            var isChange: Boolean = false
+            if (row.containsKey("change")) {
+                isChange = row["change"] as Boolean
+            }
+
+            if (isSubmit && isChange) {
+                res[key] = row["value"]!!
+                if (!isAnyOneChange) {
+                    isAnyOneChange = true
+                }
+            }
+            if (!isAnyOneChange) {
+                return res
+            }
+
+            res[TEAM_SLUG_KEY] = data[TEAM_NAME_KEY]!!["value"]!!
+            res[TEAM_CREATED_ID_KEY] = member.id
+            var id: Int = -1
+            if (data[TEAM_ID_KEY]!!["value"] as Int > 0) {
+                id = data[TEAM_ID_KEY]!!["value"] as Int
+            }
+            if (id < 0) {
+                res[TEAM_MANAGER_ID_KEY] = member.id
+                res[TEAM_CHANNEL_KEY] = "bm"
+                res["type"] = "team"
+                val cat_id: ArrayList<Int> = arrayListOf(21)
+                res[TEAM_CAT_KEY] = cat_id
+            } else {
+                res[TEAM_ID_KEY] = id
+            }
+            for ((key, value) in transferPair) {
+                res[value] = res[key]
+                res.removeValue(forKey: key)
+            }
+        }
+
+        return res
     }
 }
 

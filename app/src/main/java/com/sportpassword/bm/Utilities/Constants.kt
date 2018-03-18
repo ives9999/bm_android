@@ -25,6 +25,7 @@ var URL_MEMBER_UPDATE = ""
 var URL_CITYS = ""
 var URL_ARENA_BY_CITY_ID = ""
 var URL_TEAM_UPDATE = ""
+var URL_UPDATE = ""
 var URL_ONE = ""
 var URL_TEAM = ""
 var URL_TEAM_TEMP_PLAY = ""
@@ -120,6 +121,7 @@ val NOTIF_MEMBER_UPDATE = "notifMemberUpdate"
 
 // Header
 var HEADER = "application/json; charset=utf-8"
+var MULTIPART = "multipart/form-data"
 
 val PERPAGE: Int = 5
 

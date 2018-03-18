@@ -16,45 +16,47 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
+
             <LinearLayout
+                android:id="@+id/teamedit_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-            <LinearLayout
-                android:id="@+id/teamedit_featured_container"
-                android:layout_width="140dp"
-                android:layout_height="140dp"
-                android:layout_alignParentBottom="true"
-                android:layout_alignParentStart="true"
-                android:layout_marginLeft="8dp"
-                android:layout_marginTop="8dp"
-                android:background="@drawable/border_dotted"
-                android:orientation="vertical">
-
-                <ImageView
-                    android:id="@+id/teamedit_featured"
-                    android:layout_width="60sp"
-                    android:layout_height="60sp"
+                <LinearLayout
+                    android:id="@+id/teamedit_featured_container"
+                    android:layout_width="140dp"
+                    android:layout_height="140dp"
+                    android:layout_alignParentBottom="true"
                     android:layout_alignParentStart="true"
-                    android:layout_alignParentTop="true"
-                    android:layout_gravity="center"
-                    android:layout_marginBottom="8dp"
-                    android:layout_marginTop="32dp"
-                    android:paddingLeft="18dp"
-                    android:paddingRight="18dp"
-                    android:scaleType="centerCrop"
-                    app:srcCompat="@drawable/nophoto" />
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginTop="8dp"
+                    android:background="@drawable/border_dotted"
+                    android:orientation="vertical">
 
-                <TextView
-                    android:id="@+id/teamedit_text"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="請選擇代表圖"
-                    android:textAlignment="center"
-                    android:textColor="@color/WHITE" />
+                    <ImageView
+                        android:id="@+id/teamedit_featured"
+                        android:layout_width="60sp"
+                        android:layout_height="60sp"
+                        android:layout_alignParentStart="true"
+                        android:layout_alignParentTop="true"
+                        android:layout_gravity="center"
+                        android:layout_marginBottom="8dp"
+                        android:layout_marginTop="32dp"
+                        android:paddingLeft="18dp"
+                        android:paddingRight="18dp"
+                        android:scaleType="centerCrop"
+                        app:srcCompat="@drawable/nophoto" />
 
-            </LinearLayout>
+                    <TextView
+                        android:id="@+id/teamedit_text"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="請選擇代表圖"
+                        android:textAlignment="center"
+                        android:textColor="@color/WHITE" />
+
+                </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -79,29 +81,36 @@
                         android:ems="10"
                         android:hint="球隊名稱"
                         android:inputType="textPersonName"
+                        android:tag="name"
                         android:textColor="@color/WHITE" />
                 </LinearLayout>
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:orientation="horizontal">
 
                     <TextView
-                        android:id="@+id/textView5"
+                        android:id="@+id/teamedit_leader"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="名稱"
+                        android:layout_marginLeft="8dp"
+                        android:text="聯絡人"
                         android:textColor="@color/WHITE"
                         android:textSize="18sp" />
 
                     <EditText
-                        android:id="@+id/editText"
+                        android:id="@+id/teamedit_leader"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginLeft="32dp"
                         android:ems="10"
+                        android:hint="聯絡人姓名"
                         android:inputType="textPersonName"
-                        android:text="Name" />
+                        android:tag="leader"
+                        android:textColor="@color/WHITE" />
                 </LinearLayout>
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
