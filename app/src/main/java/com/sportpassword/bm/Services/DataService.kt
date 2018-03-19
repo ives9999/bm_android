@@ -189,11 +189,18 @@ open class DataService: BaseService() {
             }
 
             override fun getBody(): ByteArray {
-                val postParams = HashMap<String, String>()
+                val postParams: HashMap<String, String> = hashMapOf()
                 for ((key, value) in params) {
                     for ((key1, value1) in model.data) {
                         if (key == key1) {
-
+                            val vtype: String = value1["vtype"]!! as String
+                            if (vtype == "String") {
+                                postParams.put(key, value as String)
+                            } else if (vtype == "Int") {
+                                postParams.put(key, (value as Int).toString())
+                            } else if (vtype == "Bool") {
+                                postParams.put(key, (value as Boolean).toString())
+                            }
                         }
                     }
                 }
@@ -201,7 +208,10 @@ open class DataService: BaseService() {
             }
 
             override fun getHeaders(): MutableMap<String, String> {
-                return super.getHeaders()
+                val headers = HashMap<String, String>()
+                headers.put("Content-Type", "multipart/form-data")
+
+                return headers
             }
         }
         Volley.newRequestQueue(context).add(request)
