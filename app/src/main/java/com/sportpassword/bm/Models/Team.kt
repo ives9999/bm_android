@@ -26,6 +26,8 @@ class Team(id: Int, name: String, token: String, featured_path: String, vimeo: S
     override var data: MutableMap<String, MutableMap<String, Any>> = mutableMapOf()
     var lists: ArrayList<Map<String, Map<String, Any>>> = arrayListOf()
 
+    val transferPair: Map<String, String> = mapOf(TEAM_CITY_KEY to "city_id",TEAM_ARENA_KEY to "arena_id")
+
 
     override fun dataReset() {
         val _data = mutableMapOf<String, MutableMap<String, Any>>(
@@ -266,40 +268,42 @@ class Team(id: Int, name: String, token: String, featured_path: String, vimeo: S
         var res: MutableMap<String, Any> = mutableMapOf()
 
         for ((key, row) in data) {
-            val isSubmit: Boolean = row["submit"] as Boolean
-            var isChange: Boolean = false
-            if (row.containsKey("change")) {
-                isChange = row["change"] as Boolean
-            }
-
-            if (isSubmit && isChange) {
-                res[key] = row["value"]!!
-                if (!isAnyOneChange) {
-                    isAnyOneChange = true
+            if (row.containsKey("submit")) {
+                val isSubmit: Boolean = row["submit"] as Boolean
+                var isChange: Boolean = false
+                if (row.containsKey("change")) {
+                    isChange = row["change"] as Boolean
+                }
+                if (isSubmit && isChange) {
+                    res[key] = row["value"]!!
+                    if (!isAnyOneChange) {
+                        isAnyOneChange = true
+                    }
                 }
             }
-            if (!isAnyOneChange) {
-                return res
-            }
-
-            res[TEAM_SLUG_KEY] = data[TEAM_NAME_KEY]!!["value"]!!
-            res[TEAM_CREATED_ID_KEY] = member.id
-            var id: Int = -1
-            if (data[TEAM_ID_KEY]!!["value"] as Int > 0) {
-                id = data[TEAM_ID_KEY]!!["value"] as Int
-            }
-            if (id < 0) {
-                res[TEAM_MANAGER_ID_KEY] = member.id
-                res[TEAM_CHANNEL_KEY] = "bm"
-                res["type"] = "team"
-                val cat_id: ArrayList<Int> = arrayListOf(21)
-                res[TEAM_CAT_KEY] = cat_id
-            } else {
-                res[TEAM_ID_KEY] = id
-            }
-            for ((key, value) in transferPair) {
-                res[value] = res[key]
-                res.removeValue(forKey: key)
+        }
+        if (!isAnyOneChange) {
+            return res
+        }
+        res[TEAM_SLUG_KEY] = data[TEAM_NAME_KEY]!!["value"]!!
+        res[TEAM_CREATED_ID_KEY] = member.id
+        var id: Int = -1
+        if (data[TEAM_ID_KEY]!!["value"] as Int > 0) {
+            id = data[TEAM_ID_KEY]!!["value"] as Int
+        }
+        if (id < 0) {
+            res[TEAM_MANAGER_ID_KEY] = member.id
+            res[TEAM_CHANNEL_KEY] = "bm"
+            res["type"] = "team"
+            val cat_id: ArrayList<Int> = arrayListOf(21)
+            res[TEAM_CAT_KEY] = cat_id
+        } else {
+            res[TEAM_ID_KEY] = id
+        }
+        for ((key, value) in transferPair) {
+            if (res.containsKey(key)) {
+                res[value] = res[key]!!
+                res.remove(key)
             }
         }
 

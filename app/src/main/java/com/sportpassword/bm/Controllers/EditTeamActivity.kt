@@ -14,10 +14,9 @@ import android.widget.EditText
 import android.widget.ImageView
 import android.widget.LinearLayout
 import com.sportpassword.bm.Models.Team
-import com.sportpassword.bm.Utilities.Alert
-import com.sportpassword.bm.Utilities.TEAM_MOBILE_KEY
-import com.sportpassword.bm.Utilities.TEAM_NAME_KEY
+import com.sportpassword.bm.Utilities.*
 import com.sportpassword.bm.Views.ImagePicker
+import com.sportpassword.bm.member
 import java.io.File
 
 class EditTeamActivity : BaseActivity(), ImagePicker, View.OnFocusChangeListener {
@@ -41,6 +40,7 @@ class EditTeamActivity : BaseActivity(), ImagePicker, View.OnFocusChangeListener
     private var originMarginBottom = 0
     private lateinit var originScaleType: ImageView.ScaleType
     private lateinit var inputV: List<View>
+    private var isFeaturedChange: Boolean = false
 
     val model: Team = Team(0, "", "", "")
 
@@ -63,7 +63,7 @@ class EditTeamActivity : BaseActivity(), ImagePicker, View.OnFocusChangeListener
                 model.data = TeamService.data
                 //println(data)
                 //setTeamData()
-                println(model.data)
+                //println(model.data)
                 dataToField(inputV)
             }
         }
@@ -118,12 +118,13 @@ class EditTeamActivity : BaseActivity(), ImagePicker, View.OnFocusChangeListener
     }
 
     fun submit(view: View) {
+        var params: MutableMap<String, Any> = mutableMapOf()
         var isPass: Boolean = true
         fieldToData(inputV)
         val name: String = model.data[TEAM_NAME_KEY]!!["value"] as String
         if (name.length == 0) {
             isPass = false
-            Alert.show(context, "警告", "請填寫隊名")
+            Alert.show(context, "提示", "請填寫隊名")
         }
 //        val mobile: String = model.data[TEAM_MOBILE_KEY]!!["value"] as String
 //        if (mobile.length == 0) {
@@ -132,7 +133,35 @@ class EditTeamActivity : BaseActivity(), ImagePicker, View.OnFocusChangeListener
 //        }
 
         if (isPass) {
-
+            params = model.makeSubmitArr()
+            println(params)
+            if (params.count() == 0 && !isFeaturedChange) {
+                Alert.show(context, "提示", "沒有修改任何資料或圖片")
+            } else {
+                if (params.count() == 0) {
+                    params[TEAM_CREATED_ID_KEY] = member.id
+                    if (model.data[TEAM_ID_KEY]!!["value"] as Int > 0) {
+                        val id: Int = model.data[TEAM_ID_KEY]!!["value"] as Int
+                        params[TEAM_ID_KEY] = id
+                    }
+                }
+                /*
+                TeamService.update(context, "team", params) { success ->
+                    if (success) {
+                        if (TeamService.success) {
+                            val id: Int = TeamService.id
+                            model.data[TEAM_ID_KEY]!!["value"] = id
+                            model.data[TEAM_ID_KEY]!!["show"] = id
+                            Alert.show(context, "成功", "新增 / 修改球隊成功")
+                        } else {
+                            Alert.show(context, "錯誤", TeamService.msg)
+                        }
+                    } else {
+                        Alert.show(context, "錯誤", "新增 / 修改球隊失敗，伺服器無法新增成功，請稍後再試")
+                    }
+                }
+                */
+            }
         }
     }
 
@@ -190,15 +219,10 @@ class EditTeamActivity : BaseActivity(), ImagePicker, View.OnFocusChangeListener
             if (v is EditText) {
                 for ((key, value) in model.data) {
                     if (tag == key) {
-                        val tmp = v.text.toString()
+                        val newValue: String = v.text.toString()
+                        val oldValue:Any = value["value"] as Any
                         val vtype = value["vtype"] as String
-                        if (vtype == "String") {
-                            model.data[key]!!["value"] = tmp
-                        } else if (vtype == "Int") {
-                            model.data[key]!!["value"] = tmp.toInt()
-                        } else if (vtype == "Bool") {
-                            model.data[key]!!["value"] = tmp.toBoolean()
-                        }
+                        _fieldToData(oldValue, newValue, vtype, key)
                     }
                 }
             }
@@ -216,7 +240,7 @@ class EditTeamActivity : BaseActivity(), ImagePicker, View.OnFocusChangeListener
     }
     private fun setTextField(field: EditText) {
         val tag = field.tag
-        val text = field.text.toString()
+        val newValue = field.text.toString()
         //println(tag)
         //println(field.text)
 
@@ -224,27 +248,36 @@ class EditTeamActivity : BaseActivity(), ImagePicker, View.OnFocusChangeListener
             if (key == tag) {
                 val oldValue: Any = value["value"] as Any
                 val vtype: String = value["vtype"] as String
-                if (vtype == "String") {
-                    if (oldValue as String != text) {
-                        model.data[key]!!["value"] = text
-                        model.data[key]!!["change"] = true
-                    }
-                } else if (vtype == "Int") {
-                    val newValue = text.toInt()
-                    if (oldValue as Int != newValue) {
-                        model.data[key]!!["value"] = newValue
-                        model.data[key]!!["change"] = true
-                    }
-                } else if (vtype == "Bool") {
-                    val newValue = text.toBoolean()
-                    if (oldValue as Boolean != newValue) {
-                        model.data[key]!!["value"] = newValue
-                        model.data[key]!!["change"] = true
-                    }
-                }
+                _fieldToData(oldValue, newValue, vtype, key)
             }
         }
     }
+    private fun _fieldToData(_oldValue: Any, _newValue: String, vtype: String, key: String) {
+        var oldValue: Any = _oldValue
+        if (vtype == "String") {
+            oldValue = oldValue as String
+            val newValue = _newValue
+            if (oldValue != newValue) {
+                model.data[key]!!["value"] = newValue
+                model.data[key]!!["change"] = true
+            }
+        } else if (vtype == "Int") {
+            oldValue = oldValue as Int
+            val newValue: Int = _newValue.toInt()
+            if (oldValue != newValue) {
+                model.data[key]!!["value"] = newValue
+                model.data[key]!!["change"] = true
+            }
+        } else if (vtype == "Bool") {
+            oldValue = oldValue as Boolean
+            val newValue: Boolean = _newValue.toBoolean()
+            if (oldValue != newValue) {
+                model.data[key]!!["value"] = newValue
+                model.data[key]!!["change"] = true
+            }
+        }
+    }
+
     override fun onFocusChange(v: View?, hasFocus: Boolean) {
         if (!hasFocus) {
             setTextField(v!! as EditText)

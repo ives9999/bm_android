@@ -20,6 +20,7 @@ import org.json.JSONObject
 open class DataService: BaseService() {
     
     var success: Boolean = false
+    var id: Int = 0
     var totalCount: Int = 0
     var page: Int = 0
     var perPage: Int = 0
@@ -173,7 +174,7 @@ open class DataService: BaseService() {
         Volley.newRequestQueue(context).add(request)
     }
 
-    fun update(context: Context, type: String, params: HashMap<String, Any>, complete: CompletionHandler) {
+    fun update(context: Context, type: String, params: MutableMap<String, Any>, complete: CompletionHandler) {
         val url = "$URL_UPDATE".format(type)
 
         val request = object: StringRequest(Request.Method.POST, url,
