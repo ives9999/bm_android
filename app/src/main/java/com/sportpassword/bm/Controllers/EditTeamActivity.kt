@@ -86,6 +86,7 @@ class EditTeamActivity : BaseActivity(), ImagePicker, View.OnFocusChangeListener
                 //setTeamData()
                 //println(model.data)
                 dataToField(inputV)
+                closeRefresh()
             }
         }
     }

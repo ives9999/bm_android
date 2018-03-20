@@ -14,7 +14,7 @@
 
         <TextView
             android:id="@+id/menu_team_list_name"
-            android:layout_width="90dp"
+            android:layout_width="230dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="48dp"
             android:textColor="@color/WHITE"

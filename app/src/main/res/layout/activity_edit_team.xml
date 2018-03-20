@@ -83,8 +83,9 @@
                     <EditText
                         android:id="@+id/teamedit_name"
                         android:layout_width="match_parent"
-                        android:layout_height="40dp"
+                        android:layout_height="50dp"
                         android:layout_marginBottom="2dp"
+                        android:layout_marginRight="12dp"
                         android:layout_marginTop="2dp"
                         android:background="@drawable/edittext_border"
                         android:ems="10"
@@ -94,12 +95,14 @@
                         android:paddingRight="8dp"
                         android:tag="name"
                         android:textAlignment="inherit"
-                        android:textColor="@color/WHITE" />
+                        android:textColor="@color/WHITE"
+                        android:textSize="18sp" />
                 </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:layout_marginTop="12dp"
                     android:orientation="horizontal">
 
                     <TextView
@@ -133,23 +136,28 @@
                     <EditText
                         android:id="@+id/teamedit_leader"
                         android:layout_width="match_parent"
-                        android:layout_height="40dp"
+                        android:layout_height="50dp"
+                        android:layout_marginRight="12dp"
                         android:background="@drawable/edittext_border"
                         android:gravity="right|center_vertical"
                         android:hint="聯絡人姓名"
                         android:inputType="textPersonName"
                         android:paddingRight="8dp"
                         android:tag="leader"
-                        android:textColor="@color/WHITE" />
+                        android:textColor="@color/WHITE"
+                        android:textSize="18sp" />
                 </LinearLayout>
+
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp">
+
                     <include
                         android:id="@+id/divider_1"
+                        layout="@layout/divider"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        layout="@layout/divider" />
+                        android:layout_height="wrap_content" />
                 </LinearLayout>
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -168,13 +176,16 @@
                     <EditText
                         android:id="@+id/teamedit_mobile"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="right"
+                        android:layout_height="50dp"
+                        android:layout_marginRight="12dp"
+                        android:background="@drawable/edittext_border"
+                        android:gravity="right|center_vertical"
                         android:hint="聯絡人電話"
                         android:inputType="textPersonName"
                         android:paddingRight="8dp"
                         android:tag="mobile"
-                        android:textColor="@color/WHITE" />
+                        android:textColor="@color/WHITE"
+                        android:textSize="18sp" />
                 </LinearLayout>
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -182,6 +193,7 @@
                     <include
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
                         layout="@layout/divider" />
                 </LinearLayout>
                 <LinearLayout
@@ -201,21 +213,67 @@
                     <EditText
                         android:id="@+id/teamedit_email"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="right"
+                        android:layout_height="50dp"
+                        android:layout_marginRight="12dp"
+                        android:background="@drawable/edittext_border"
+                        android:gravity="right|center_vertical"
                         android:hint="聯絡人EMail"
                         android:inputType="textPersonName"
                         android:paddingRight="8dp"
                         android:tag="email"
-                        android:textColor="@color/WHITE" />
+                        android:textColor="@color/WHITE"
+                        android:textSize="18sp" />
                 </LinearLayout>
+
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-                    <include
-                        android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="12dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        layout="@layout/divider" />
+                        android:layout_marginLeft="8dp"
+                        android:text="所在地"
+                        android:textColor="@color/WHITE"
+                        android:textSize="20sp"
+                        android:textStyle="bold" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="8dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="100dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="8dp"
+                        android:text="區域"
+                        android:textColor="@color/WHITE"
+                        android:textSize="18sp" />
+
+                    <TextView
+                        android:id="@+id/teamedit_city"
+                        android:layout_width="100dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="8dp"
+                        android:textAlignment="textEnd"
+                        android:textColor="@color/WHITE"
+                        android:textSize="18sp"
+                        tools:text="台南" />
+
+                    <ImageView
+                        android:id="@+id/imageView7"
+                        android:layout_width="16dp"
+                        android:layout_height="16dp"
+                        app:srcCompat="@drawable/greater1" />
+
+
                 </LinearLayout>
 
                 <LinearLayout
