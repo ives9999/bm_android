@@ -6,6 +6,11 @@
     android:layout_height="match_parent"
     android:background="@drawable/background"
     tools:context="com.sportpassword.bm.Controllers.EditTeamActivity">
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/teamedit_refresh"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        >
     <ScrollView
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
@@ -60,28 +65,35 @@
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
+                    android:gravity="center_vertical"
                     android:orientation="horizontal">
 
                     <TextView
                         android:id="@+id/textView55"
-                        android:layout_width="wrap_content"
+                        android:layout_width="100dp"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="8dp"
+                        android:gravity="center_vertical"
                         android:text="名稱"
                         android:textColor="@color/WHITE"
                         android:textSize="18sp" />
 
                     <EditText
                         android:id="@+id/teamedit_name"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="32dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:layout_marginBottom="2dp"
+                        android:layout_marginTop="2dp"
+                        android:background="@drawable/edittext_border"
                         android:ems="10"
+                        android:gravity="right|center_vertical"
                         android:hint="球隊名稱"
                         android:inputType="textPersonName"
+                        android:paddingRight="8dp"
                         android:tag="name"
+                        android:textAlignment="inherit"
                         android:textColor="@color/WHITE" />
                 </LinearLayout>
 
@@ -91,8 +103,27 @@
                     android:orientation="horizontal">
 
                     <TextView
-                        android:id="@+id/teamedit_leader"
+                        android:id="@+id/textView56"
                         android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="8dp"
+                        android:text="聯絡資訊"
+                        android:textColor="@color/WHITE"
+                        android:textSize="20sp"
+                        android:textStyle="bold" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="8dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/textView57"
+                        android:layout_width="100dp"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="8dp"
                         android:text="聯絡人"
@@ -101,19 +132,96 @@
 
                     <EditText
                         android:id="@+id/teamedit_leader"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="32dp"
-                        android:ems="10"
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:background="@drawable/edittext_border"
+                        android:gravity="right|center_vertical"
                         android:hint="聯絡人姓名"
                         android:inputType="textPersonName"
+                        android:paddingRight="8dp"
                         android:tag="leader"
                         android:textColor="@color/WHITE" />
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <include
+                        android:id="@+id/divider_1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        layout="@layout/divider" />
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="8dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="100dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="8dp"
+                        android:text="電話"
+                        android:textColor="@color/WHITE"
+                        android:textSize="18sp" />
+
+                    <EditText
+                        android:id="@+id/teamedit_mobile"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="right"
+                        android:hint="聯絡人電話"
+                        android:inputType="textPersonName"
+                        android:paddingRight="8dp"
+                        android:tag="mobile"
+                        android:textColor="@color/WHITE" />
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <include
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        layout="@layout/divider" />
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="8dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="100dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="8dp"
+                        android:text="EMail"
+                        android:textColor="@color/WHITE"
+                        android:textSize="18sp" />
+
+                    <EditText
+                        android:id="@+id/teamedit_email"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="right"
+                        android:hint="聯絡人EMail"
+                        android:inputType="textPersonName"
+                        android:paddingRight="8dp"
+                        android:tag="email"
+                        android:textColor="@color/WHITE" />
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <include
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        layout="@layout/divider" />
                 </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:gravity="center_horizontal"
                     android:orientation="horizontal">
 
                     <Button
@@ -133,6 +241,7 @@
 
 
     </ScrollView>
+    </android.support.v4.widget.SwipeRefreshLayout>
 
 </android.support.constraint.ConstraintLayout>
 

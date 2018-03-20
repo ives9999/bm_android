@@ -38,6 +38,7 @@ interface ImagePicker {
     var imagePickerLayer: AlertDialog
     var alertView: View
     var currentPhotoPath: String
+    var filePath: String
     var file: File?
     var imageView: ImageView
 
@@ -137,7 +138,8 @@ interface ImagePicker {
                 return null
             }
         }
-        val mediaFile = File(dir.path + File.separator + "temp.jpg")
+        filePath = dir.path + File.separator + "temp.jpg"
+        val mediaFile = File(filePath)
         return mediaFile
     }
 
@@ -158,9 +160,9 @@ interface ImagePicker {
     fun cameraToFile() {
         val cursor = activity.contentResolver.query(Uri.parse(currentPhotoPath), Array(1) { android.provider.MediaStore.Images.ImageColumns.DATA}, null, null, null)
         cursor.moveToFirst()
-        val photoPath = cursor.getString(0)
+        filePath = cursor.getString(0)
         cursor.close()
-        file = File(photoPath)
+        file = File(filePath)
     }
 
     fun activityResult(requestCode: Int, resultCode: Int, data: Intent?) {

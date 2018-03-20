@@ -3,6 +3,7 @@ package com.sportpassword.bm.Controllers
 import android.content.Intent
 import android.os.Bundle
 import android.support.design.widget.TextInputEditText
+import android.support.v4.widget.SwipeRefreshLayout
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.TeamService
 import kotlinx.android.synthetic.main.activity_edit_team.*
@@ -17,6 +18,7 @@ import com.sportpassword.bm.Models.Team
 import com.sportpassword.bm.Utilities.*
 import com.sportpassword.bm.Views.ImagePicker
 import com.sportpassword.bm.member
+import org.jetbrains.anko.contentView
 import java.io.File
 
 class EditTeamActivity : BaseActivity(), ImagePicker, View.OnFocusChangeListener {
@@ -28,6 +30,7 @@ class EditTeamActivity : BaseActivity(), ImagePicker, View.OnFocusChangeListener
     lateinit override var imagePickerLayer: AlertDialog
     lateinit override var alertView: View
     override var currentPhotoPath = ""
+    lateinit override var filePath: String
     override var file: File? = null
     lateinit override var imageView: ImageView
 
@@ -58,15 +61,6 @@ class EditTeamActivity : BaseActivity(), ImagePicker, View.OnFocusChangeListener
 
         teamToken = intent.getStringExtra("token")
         //println(teamToken)
-        if (teamToken.length > 0) {
-            TeamService.getOne(this, "team", "name", teamToken) { success ->
-                model.data = TeamService.data
-                //println(data)
-                //setTeamData()
-                //println(model.data)
-                dataToField(inputV)
-            }
-        }
 
         initImagePicker(R.layout.image_picker_layer)
         teamedit_featured_container.onClick {
@@ -77,6 +71,23 @@ class EditTeamActivity : BaseActivity(), ImagePicker, View.OnFocusChangeListener
         inputV = filterInputField(allV)
 
         textFieldDidEndEditing(inputV)
+
+        refreshLayout = contentView!!.findViewById<SwipeRefreshLayout>(R.id.teamedit_refresh)
+        //println(refreshLayout)
+        setRefreshListener()
+        refresh()
+    }
+    override fun refresh() {
+        super.refresh()
+        if (teamToken.length > 0) {
+            TeamService.getOne(this, "team", "name", teamToken) { success ->
+                model.data = TeamService.data
+                //println(data)
+                //setTeamData()
+                //println(model.data)
+                dataToField(inputV)
+            }
+        }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -146,7 +157,7 @@ class EditTeamActivity : BaseActivity(), ImagePicker, View.OnFocusChangeListener
                     }
                 }
 
-                TeamService.update(context, "team", params) { success ->
+                TeamService.update(context, "team", params, filePath) { success ->
                     /*
                     if (success) {
                         if (TeamService.success) {

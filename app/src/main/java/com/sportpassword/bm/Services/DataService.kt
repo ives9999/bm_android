@@ -176,15 +176,32 @@ open class DataService: BaseService() {
         Volley.newRequestQueue(context).add(request)
     }
 
-    fun update(context: Context, type: String, params: MutableMap<String, Any>, complete: CompletionHandler) {
+    fun update(context: Context, type: String, params: MutableMap<String, Any>, image: String, complete: CompletionHandler) {
         //val url = "$URL_UPDATE".format(type)
 
         Http.init(context)
         Http.upload {
             url = "$URL_UPDATE".format(type)
+            files {
+                "file" - image
+            }
             params {
                 for ((key, row) in params) {
                     if (key == TEAM_DEGREE_KEY) {
+                        val tmp: List<String> = row as ArrayList<String>
+                        for (d in tmp) {
+                            "degree[]" - d
+                        }
+                    } else if (key == TEAM_DAYS_KEY) {
+                        val tmp: List<Int> = row as ArrayList<Int>
+                        for (d in tmp) {
+                            "days[]" - d.toString()
+                        }
+                    } else if (key == TEAM_CAT_KEY) {
+                        val tmp: List<Int> = row as ArrayList<Int>
+                        for (d in tmp) {
+                            "cat_id[]" - d.toString()
+                        }
 
                     } else {
                         val vtype: String = model.data[key]!!["vtype"] as String
@@ -203,6 +220,9 @@ open class DataService: BaseService() {
             }
             onSuccess { bytes ->
                 println("on success ${bytes.toString(Charset.defaultCharset())}")
+            }
+            onFail { error ->
+                println("on fail ${error.toString()}")
             }
         }
 
