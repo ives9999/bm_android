@@ -145,8 +145,9 @@ class EditTeamActivity : BaseActivity(), ImagePicker, View.OnFocusChangeListener
                         params[TEAM_ID_KEY] = id
                     }
                 }
-                /*
+
                 TeamService.update(context, "team", params) { success ->
+                    /*
                     if (success) {
                         if (TeamService.success) {
                             val id: Int = TeamService.id
@@ -159,8 +160,9 @@ class EditTeamActivity : BaseActivity(), ImagePicker, View.OnFocusChangeListener
                     } else {
                         Alert.show(context, "錯誤", "新增 / 修改球隊失敗，伺服器無法新增成功，請稍後再試")
                     }
+                    */
                 }
-                */
+
             }
         }
     }

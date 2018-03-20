@@ -55,5 +55,7 @@ dependencies {
     compile "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
     compile "org.jetbrains.anko:anko:$anko_version"
     compile 'com.squareup.picasso:picasso:2.5.2'
+    compile 'com.github.franmontiel:PersistentCookieJar:v1.0.1'
+    compile 'com.ohmerhe.kolley:kolley:0.3.1'
     //compile project(':vimeo-networking')
 }

@@ -7,12 +7,14 @@ import com.android.volley.Response
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
+import com.ohmerhe.kolley.request.Http
 import com.sportpassword.bm.Models.Coach
 import com.sportpassword.bm.Models.Data
 import com.sportpassword.bm.Models.Team
 import com.sportpassword.bm.Utilities.*
 import org.json.JSONException
 import org.json.JSONObject
+import java.nio.charset.Charset
 
 /**
  * Created by ives on 2018/2/14.
@@ -175,8 +177,36 @@ open class DataService: BaseService() {
     }
 
     fun update(context: Context, type: String, params: MutableMap<String, Any>, complete: CompletionHandler) {
-        val url = "$URL_UPDATE".format(type)
+        //val url = "$URL_UPDATE".format(type)
 
+        Http.init(context)
+        Http.upload {
+            url = "$URL_UPDATE".format(type)
+            params {
+                for ((key, row) in params) {
+                    if (key == TEAM_DEGREE_KEY) {
+
+                    } else {
+                        val vtype: String = model.data[key]!!["vtype"] as String
+                        if (vtype == "String") {
+                            val value: String = row as String
+                            key - value
+                        } else if (vtype == "Int") {
+                            val value: Int = row as Int
+                            key - value.toString()
+                        } else if (vtype == "Bool") {
+                            val value: Boolean = row as Boolean
+                            key - value.toString()
+                        }
+                    }
+                }
+            }
+            onSuccess { bytes ->
+                println("on success ${bytes.toString(Charset.defaultCharset())}")
+            }
+        }
+
+        /*
         val request = object: StringRequest(Request.Method.POST, url,
                 Response.Listener<String> { response ->
 
@@ -215,6 +245,7 @@ open class DataService: BaseService() {
             }
         }
         Volley.newRequestQueue(context).add(request)
+        */
     }
 
     open fun setData(id: Int, title: String, token: String, featured_path: String, vimeo: String, youtube: String): Data {
