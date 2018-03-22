@@ -21,12 +21,14 @@ import com.sportpassword.bm.Utilities.*
 import com.sportpassword.bm.Views.ImagePicker
 import com.sportpassword.bm.member
 import org.jetbrains.anko.contentView
+import org.jetbrains.anko.toast
 import java.io.File
 
 class EditTeamActivity : BaseActivity(), ImagePicker, View.OnFocusChangeListener {
 
     override val ACTION_CAMERA_REQUEST_CODE = 100
     override val ACTION_PHOTO_REQUEST_CODE = 200
+    val DAYS_SELECT_REQUEST_CODE = 1
     override val activity = this
     override val context = this
     lateinit override var imagePickerLayer: AlertDialog
@@ -96,7 +98,21 @@ class EditTeamActivity : BaseActivity(), ImagePicker, View.OnFocusChangeListener
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         //println(requestCode)
-        activityResult(requestCode, resultCode, data)
+        when (requestCode) {
+            ACTION_PHOTO_REQUEST_CODE -> {
+                dealPhoto(requestCode, resultCode, data)
+            }
+            ACTION_CAMERA_REQUEST_CODE -> {
+                dealCamera(requestCode, resultCode, data)
+            }
+            DAYS_SELECT_REQUEST_CODE -> {
+                val days = data!!.getIntArrayExtra("days")
+                println(days)
+            }
+            else -> {
+                activity.toast("請重新選擇")
+            }
+        }
     }
 
     override fun setImage(newFile: File?, url: String?) {
@@ -276,9 +292,7 @@ class EditTeamActivity : BaseActivity(), ImagePicker, View.OnFocusChangeListener
                 if (l != null) {
                     l.onClick {
                         val key: String = l.tag.toString()
-                        val intent = Intent(this@EditTeamActivity, EditTeamItemActivity::class.java)
-                        intent.putExtra("key", key)
-                        startActivity(intent)
+                        prepare(key)
                     }
                 }
             }
@@ -322,6 +336,12 @@ class EditTeamActivity : BaseActivity(), ImagePicker, View.OnFocusChangeListener
                 model.data[key]!!["change"] = true
             }
         }
+    }
+
+    private fun prepare(key: String) {
+        val intent = Intent(this@EditTeamActivity, EditTeamItemActivity::class.java)
+        intent.putExtra("key", key)
+        startActivityForResult(intent, DAYS_SELECT_REQUEST_CODE)
     }
 
     override fun onFocusChange(v: View?, hasFocus: Boolean) {

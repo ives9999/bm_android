@@ -173,36 +173,31 @@ interface ImagePicker {
         file = File(filePath)
     }
 
-    fun activityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        when (requestCode) {
-            ACTION_PHOTO_REQUEST_CODE -> {
-                if (resultCode == Activity.RESULT_OK && data != null) {
-                    //println(resultCode)
-                    //println(data)
+    fun dealPhoto(requestCode: Int, resultCode: Int, data: Intent?) {
+        if (resultCode == Activity.RESULT_OK && data != null) {
+            //println(resultCode)
+            //println(data)
 
-                    file = getPhotoFile()
-                    if (file != null) {
-                        storageToFile(data!!)
-                        //println(file)
-                    }
-                    setImage(file, null)
-                    closeImagePickerLayer()
-                } else {
-                    println(requestCode)
-                }
+            file = getPhotoFile()
+            if (file != null) {
+                storageToFile(data!!)
+                //println(file)
             }
-            ACTION_CAMERA_REQUEST_CODE -> {
-                if (resultCode == Activity.RESULT_OK) {
-
-                    cameraToFile()
-                    //println(file)
-                    setImage(file, null)
-                    closeImagePickerLayer()
-                }
-            }
-            else -> {
-                activity.toast("請重新選擇")
-            }
+            setImage(file, null)
+            closeImagePickerLayer()
+        } else {
+            println(requestCode)
         }
     }
+
+    fun dealCamera(requestCode: Int, resultCode: Int, data: Intent?) {
+        if (resultCode == Activity.RESULT_OK) {
+
+            cameraToFile()
+            //println(file)
+            setImage(file, null)
+            closeImagePickerLayer()
+        }
+    }
+
 }

@@ -3,6 +3,7 @@ package com.sportpassword.bm.Controllers
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
+import android.view.View
 import com.sportpassword.bm.Adapters.EditTeamItemAdapter
 import com.sportpassword.bm.R
 import kotlinx.android.synthetic.main.activity_edit_team_item.*
@@ -51,5 +52,10 @@ class EditTeamItemActivity : AppCompatActivity() {
         teamedititem_container.adapter = editTeamItemAdapter
         val layoutManager = LinearLayoutManager(this)
         teamedititem_container.layoutManager = layoutManager
+    }
+
+    fun submit(view: View) {
+        println("submit")
+        finish()
     }
 }
