@@ -2,6 +2,7 @@ package com.sportpassword.bm.Controllers
 
 import android.content.Intent
 import android.os.Bundle
+import android.support.constraint.ConstraintLayout
 import android.support.design.widget.TextInputEditText
 import android.support.v4.widget.SwipeRefreshLayout
 import com.sportpassword.bm.R
@@ -14,6 +15,7 @@ import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.LinearLayout
+import android.widget.TextView
 import com.sportpassword.bm.Models.Team
 import com.sportpassword.bm.Utilities.*
 import com.sportpassword.bm.Views.ImagePicker
@@ -97,14 +99,14 @@ class EditTeamActivity : BaseActivity(), ImagePicker, View.OnFocusChangeListener
         activityResult(requestCode, resultCode, data)
     }
 
-    override fun setImage() {
+    override fun setImage(newFile: File?, url: String?) {
         teamedit_text.visibility = View.INVISIBLE
         val layoutParams = teamedit_featured.layoutParams as LinearLayout.LayoutParams
         layoutParams.width = LinearLayout.LayoutParams.MATCH_PARENT
         layoutParams.height = LinearLayout.LayoutParams.MATCH_PARENT
         layoutParams.setMargins(0, 0, 0, 0)
         imageView.layoutParams = layoutParams
-        super.setImage()
+        super.setImage(newFile, url)
     }
 
     override fun removeImage() {
@@ -199,8 +201,11 @@ class EditTeamActivity : BaseActivity(), ImagePicker, View.OnFocusChangeListener
         var res: ArrayList<View> = arrayListOf()
         for (i in 0..allV.size-1) {
             val v = allV.get(i)
-            if (v is EditText) {
-                res.add(v)
+            val tag = v.tag
+            for ((key, value) in model.data) {
+                if (key == tag) {
+                    res.add(v)
+                }
             }
         }
         return res
@@ -223,7 +228,18 @@ class EditTeamActivity : BaseActivity(), ImagePicker, View.OnFocusChangeListener
                         }
                     }
                 }
+            } else if (v is TextView) {
+                for ((key, value) in model.data) {
+                    if (tag == key) {
+                        val tmp: String = value["show"] as String
+                        v.text = tmp
+                    }
+                }
             }
+        }
+        val featured: String = model.data[TEAM_FEATURED_KEY]!!["value"] as String
+        if (featured.length > 0) {
+            setImage(null, featured)
         }
     }
     private fun fieldToData(inputV: List<View>) {
@@ -249,6 +265,22 @@ class EditTeamActivity : BaseActivity(), ImagePicker, View.OnFocusChangeListener
             val v = inputV.get(i)
             if (v is EditText) {
                 v.setOnFocusChangeListener(this)
+            } else if (v is TextView) {
+                val tmp = v.parent
+                var l: ViewGroup? = null
+                if (tmp is LinearLayout) {
+                    l = tmp as LinearLayout
+                } else if (tmp is ConstraintLayout) {
+                    l = tmp as ConstraintLayout
+                }
+                if (l != null) {
+                    l.onClick {
+                        val key: String = l.tag.toString()
+                        val intent = Intent(this@EditTeamActivity, EditTeamItemActivity::class.java)
+                        intent.putExtra("key", key)
+                        startActivity(intent)
+                    }
+                }
             }
         }
     }

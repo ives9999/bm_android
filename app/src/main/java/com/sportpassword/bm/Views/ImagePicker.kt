@@ -119,10 +119,18 @@ interface ImagePicker {
         imagePickerLayer!!.dismiss()
     }
 
-    fun setImage(){
-        Picasso.with(context)
-                .load(file)
-                .into(imageView)
+    fun setImage(newFile: File?, url: String?){
+        if (newFile != null) {
+            Picasso.with(context)
+                    .load(newFile)
+                    .into(imageView)
+        } else {
+            if (url != null) {
+                Picasso.with(context)
+                        .load(url)
+                        .into(imageView)
+            }
+        }
     }
 
     fun removeImage() {
@@ -177,7 +185,7 @@ interface ImagePicker {
                         storageToFile(data!!)
                         //println(file)
                     }
-                    setImage()
+                    setImage(file, null)
                     closeImagePickerLayer()
                 } else {
                     println(requestCode)
@@ -188,7 +196,7 @@ interface ImagePicker {
 
                     cameraToFile()
                     //println(file)
-                    setImage()
+                    setImage(file, null)
                     closeImagePickerLayer()
                 }
             }

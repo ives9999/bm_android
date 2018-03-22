@@ -83,7 +83,7 @@
                     <EditText
                         android:id="@+id/teamedit_name"
                         android:layout_width="match_parent"
-                        android:layout_height="50dp"
+                        android:layout_height="40dp"
                         android:layout_marginBottom="2dp"
                         android:layout_marginRight="12dp"
                         android:layout_marginTop="2dp"
@@ -136,7 +136,7 @@
                     <EditText
                         android:id="@+id/teamedit_leader"
                         android:layout_width="match_parent"
-                        android:layout_height="50dp"
+                        android:layout_height="40dp"
                         android:layout_marginRight="12dp"
                         android:background="@drawable/edittext_border"
                         android:gravity="right|center_vertical"
@@ -162,7 +162,6 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_marginTop="8dp"
                     android:orientation="horizontal">
 
                     <TextView
@@ -176,7 +175,7 @@
                     <EditText
                         android:id="@+id/teamedit_mobile"
                         android:layout_width="match_parent"
-                        android:layout_height="50dp"
+                        android:layout_height="40dp"
                         android:layout_marginRight="12dp"
                         android:background="@drawable/edittext_border"
                         android:gravity="right|center_vertical"
@@ -199,7 +198,6 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_marginTop="8dp"
                     android:orientation="horizontal">
 
                     <TextView
@@ -213,7 +211,7 @@
                     <EditText
                         android:id="@+id/teamedit_email"
                         android:layout_width="match_parent"
-                        android:layout_height="50dp"
+                        android:layout_height="40dp"
                         android:layout_marginRight="12dp"
                         android:background="@drawable/edittext_border"
                         android:gravity="right|center_vertical"
@@ -242,39 +240,663 @@
 
                 </LinearLayout>
 
-                <LinearLayout
+                <android.support.constraint.ConstraintLayout
+                    android:id="@+id/linearLayout6"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginTop="8dp"
                     android:gravity="center_vertical"
-                    android:orientation="horizontal">
+                    android:tag="city">
 
                     <TextView
+                        android:id="@+id/textView5"
                         android:layout_width="100dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="8dp"
+                        android:layout_marginEnd="8dp"
+                        android:layout_marginStart="8dp"
                         android:text="區域"
                         android:textColor="@color/WHITE"
-                        android:textSize="18sp" />
+                        android:textSize="18sp"
+                        app:layout_constraintBaseline_toBaselineOf="@+id/teamedit_city"
+                        app:layout_constraintEnd_toStartOf="@+id/teamedit_city"
+                        app:layout_constraintStart_toStartOf="parent" />
 
                     <TextView
                         android:id="@+id/teamedit_city"
-                        android:layout_width="100dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="8dp"
-                        android:textAlignment="textEnd"
+                        android:layout_width="0dp"
+                        android:layout_height="30dp"
+                        android:layout_marginEnd="16dp"
+                        android:gravity="center_vertical|right"
+                        android:tag="city"
                         android:textColor="@color/WHITE"
                         android:textSize="18sp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toStartOf="@+id/imageView7"
+                        app:layout_constraintStart_toEndOf="@+id/textView5"
                         tools:text="台南" />
 
                     <ImageView
                         android:id="@+id/imageView7"
                         android:layout_width="16dp"
                         android:layout_height="16dp"
+                        android:layout_marginBottom="4dp"
+                        android:layout_marginEnd="16dp"
+                        android:layout_marginTop="4dp"
+                        app:layout_constraintBottom_toBottomOf="@+id/teamedit_city"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/teamedit_city"
+                        app:layout_constraintTop_toTopOf="@+id/teamedit_city"
+                        app:srcCompat="@drawable/greater1" />
+                </android.support.constraint.ConstraintLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <include
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        layout="@layout/divider" />
+                </LinearLayout>
+
+                <android.support.constraint.ConstraintLayout
+                    android:id="@+id/linearLayout7"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="8dp"
+                    android:gravity="center_vertical"
+                    android:tag="arean">
+
+                    <TextView
+                        android:id="@+id/textView6"
+                        android:layout_width="100dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="8dp"
+                        android:layout_marginStart="8dp"
+                        android:text="球館"
+                        android:textColor="@color/WHITE"
+                        android:textSize="18sp"
+                        app:layout_constraintBaseline_toBaselineOf="@+id/teamedit_arean"
+                        app:layout_constraintEnd_toStartOf="@+id/teamedit_arean"
+                        app:layout_constraintStart_toStartOf="parent" />
+
+                    <TextView
+                        android:id="@+id/teamedit_arean"
+                        android:layout_width="0dp"
+                        android:layout_height="30dp"
+                        android:layout_marginEnd="16dp"
+                        android:gravity="center_vertical|right"
+                        android:tag="arena"
+                        android:textColor="@color/WHITE"
+                        android:textSize="18sp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toStartOf="@+id/imageView8"
+                        app:layout_constraintStart_toEndOf="@+id/textView6"
+                        tools:text="市立羽球館" />
+
+                    <ImageView
+                        android:id="@+id/imageView8"
+                        android:layout_width="16dp"
+                        android:layout_height="16dp"
+                        android:layout_marginBottom="4dp"
+                        android:layout_marginEnd="16dp"
+                        android:layout_marginTop="4dp"
+                        app:layout_constraintBottom_toBottomOf="@+id/teamedit_arean"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/teamedit_arean"
+                        app:layout_constraintTop_toTopOf="@+id/teamedit_arean"
+                        app:srcCompat="@drawable/greater1" />
+                </android.support.constraint.ConstraintLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="12dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="8dp"
+                        android:text="打球時間"
+                        android:textColor="@color/WHITE"
+                        android:textSize="20sp"
+                        android:textStyle="bold" />
+
+                </LinearLayout>
+
+                <android.support.constraint.ConstraintLayout
+                    android:id="@+id/linearLayout8"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="8dp"
+                    android:gravity="center_vertical"
+                    android:tag="days">
+
+                    <TextView
+                        android:id="@+id/textView7"
+                        android:layout_width="100dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="8dp"
+                        android:layout_marginStart="8dp"
+                        android:text="星期幾"
+                        android:textColor="@color/WHITE"
+                        android:textSize="18sp"
+                        app:layout_constraintBaseline_toBaselineOf="@+id/teamedit_days"
+                        app:layout_constraintEnd_toStartOf="@+id/teamedit_days"
+                        app:layout_constraintStart_toStartOf="parent" />
+
+                    <TextView
+                        android:id="@+id/teamedit_days"
+                        android:layout_width="0dp"
+                        android:layout_height="30dp"
+                        android:layout_marginEnd="16dp"
+                        android:gravity="center_vertical|right"
+                        android:tag="days"
+                        android:textColor="@color/WHITE"
+                        android:textSize="18sp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toStartOf="@+id/imageView9"
+                        app:layout_constraintStart_toEndOf="@+id/textView7"
+                        tools:text="星期一,星期四" />
+
+                    <ImageView
+                        android:id="@+id/imageView9"
+                        android:layout_width="16dp"
+                        android:layout_height="16dp"
+                        android:layout_marginBottom="4dp"
+                        android:layout_marginEnd="16dp"
+                        android:layout_marginTop="4dp"
+                        app:layout_constraintBottom_toBottomOf="@+id/teamedit_days"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/teamedit_days"
+                        app:layout_constraintTop_toTopOf="@+id/teamedit_days"
+                        app:srcCompat="@drawable/greater1" />
+                </android.support.constraint.ConstraintLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <include
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        layout="@layout/divider" />
+                </LinearLayout>
+
+                <android.support.constraint.ConstraintLayout
+                    android:id="@+id/linearLayout9"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="8dp"
+                    android:gravity="center_vertical"
+                    android:tag="play_start">
+
+                    <TextView
+                        android:id="@+id/textView8"
+                        android:layout_width="100dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="8dp"
+                        android:layout_marginStart="8dp"
+                        android:text="開始時間"
+                        android:textColor="@color/WHITE"
+                        android:textSize="18sp"
+                        app:layout_constraintBaseline_toBaselineOf="@+id/teamedit_start_time"
+                        app:layout_constraintEnd_toStartOf="@+id/teamedit_start_time"
+                        app:layout_constraintStart_toStartOf="parent" />
+
+                    <TextView
+                        android:id="@+id/teamedit_start_time"
+                        android:layout_width="0dp"
+                        android:layout_height="30dp"
+                        android:layout_marginEnd="16dp"
+                        android:gravity="center_vertical|right"
+                        android:tag="play_start"
+                        android:textColor="@color/WHITE"
+                        android:textSize="18sp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toStartOf="@+id/imageView10"
+                        app:layout_constraintStart_toEndOf="@+id/textView8"
+                        tools:text="19:00" />
+
+                    <ImageView
+                        android:id="@+id/imageView10"
+                        android:layout_width="16dp"
+                        android:layout_height="16dp"
+                        android:layout_marginBottom="4dp"
+                        android:layout_marginEnd="16dp"
+                        android:layout_marginTop="4dp"
+                        app:layout_constraintBottom_toBottomOf="@+id/teamedit_start_time"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/teamedit_start_time"
+                        app:layout_constraintTop_toTopOf="@+id/teamedit_start_time"
                         app:srcCompat="@drawable/greater1" />
 
 
+                </android.support.constraint.ConstraintLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:tag="play_end">
+
+                    <include
+                        layout="@layout/divider"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp" />
                 </LinearLayout>
+
+                <android.support.constraint.ConstraintLayout
+                    android:id="@+id/linearLayout10"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="8dp"
+                    android:gravity="center_vertical"
+                    android:tag="play_end">
+
+                    <TextView
+                        android:id="@+id/textView9"
+                        android:layout_width="100dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="8dp"
+                        android:layout_marginStart="8dp"
+                        android:text="結束時間"
+                        android:textColor="@color/WHITE"
+                        android:textSize="18sp"
+                        app:layout_constraintBaseline_toBaselineOf="@+id/teamedit_end_time"
+                        app:layout_constraintEnd_toStartOf="@+id/teamedit_end_time"
+                        app:layout_constraintStart_toStartOf="parent" />
+
+                    <TextView
+                        android:id="@+id/teamedit_end_time"
+                        android:layout_width="0dp"
+                        android:layout_height="30dp"
+                        android:layout_marginEnd="16dp"
+                        android:gravity="center_vertical|right"
+                        android:tag="play_end"
+                        android:textColor="@color/WHITE"
+                        android:textSize="18sp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toStartOf="@+id/imageView11"
+                        app:layout_constraintStart_toEndOf="@+id/textView9"
+                        tools:text="21:00" />
+
+                    <ImageView
+                        android:id="@+id/imageView11"
+                        android:layout_width="16dp"
+                        android:layout_height="16dp"
+                        android:layout_marginBottom="4dp"
+                        android:layout_marginEnd="16dp"
+                        android:layout_marginTop="4dp"
+                        app:layout_constraintBottom_toBottomOf="@+id/teamedit_end_time"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/teamedit_end_time"
+                        app:layout_constraintTop_toTopOf="@+id/teamedit_end_time"
+                        app:srcCompat="@drawable/greater1" />
+                </android.support.constraint.ConstraintLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="12dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="8dp"
+                        android:text="臨打說明"
+                        android:textColor="@color/WHITE"
+                        android:textSize="20sp"
+                        android:textStyle="bold" />
+
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="8dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="120dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="8dp"
+                        android:text="臨打費用：男"
+                        android:textColor="@color/WHITE"
+                        android:textSize="18sp" />
+
+                    <EditText
+                        android:id="@+id/teamedit_fee_M"
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:layout_marginRight="12dp"
+                        android:background="@drawable/edittext_border"
+                        android:gravity="right|center_vertical"
+                        android:hint="150"
+                        android:inputType="textPersonName"
+                        android:paddingRight="8dp"
+                        android:tag="temp_fee_M"
+                        android:textColor="@color/WHITE"
+                        android:textSize="18sp" />
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <include
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        layout="@layout/divider" />
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="120dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="8dp"
+                        android:text="臨打費用：女"
+                        android:textColor="@color/WHITE"
+                        android:textSize="18sp" />
+
+                    <EditText
+                        android:id="@+id/teamedit_fee_F"
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:layout_marginRight="12dp"
+                        android:background="@drawable/edittext_border"
+                        android:gravity="right|center_vertical"
+                        android:hint="120"
+                        android:inputType="textPersonName"
+                        android:paddingRight="8dp"
+                        android:tag="temp_fee_F"
+                        android:textColor="@color/WHITE"
+                        android:textSize="18sp" />
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <include
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        layout="@layout/divider" />
+                </LinearLayout>
+
+                <android.support.constraint.ConstraintLayout
+                    android:id="@+id/linearLayout11"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="8dp"
+                    android:gravity="center_vertical"
+                    android:tag="temp_content">
+
+                    <TextView
+                        android:id="@+id/textView10"
+                        android:layout_width="100dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="8dp"
+                        android:layout_marginStart="8dp"
+                        android:text="臨打說明"
+                        android:textColor="@color/WHITE"
+                        android:textSize="18sp"
+                        app:layout_constraintBaseline_toBaselineOf="@+id/teamedit_temp_content"
+                        app:layout_constraintEnd_toStartOf="@+id/teamedit_temp_content"
+                        app:layout_constraintStart_toStartOf="parent" />
+
+                    <TextView
+                        android:id="@+id/teamedit_temp_content"
+                        android:layout_width="0dp"
+                        android:layout_height="30dp"
+                        android:layout_marginEnd="16dp"
+                        android:gravity="center_vertical|right"
+                        android:tag="temp_content"
+                        android:textColor="@color/WHITE"
+                        android:textSize="18sp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toStartOf="@+id/imageView12"
+                        app:layout_constraintStart_toEndOf="@+id/textView10"
+                        tools:text="約定後，請務必到達" />
+
+                    <ImageView
+                        android:id="@+id/imageView12"
+                        android:layout_width="16dp"
+                        android:layout_height="16dp"
+                        android:layout_marginBottom="4dp"
+                        android:layout_marginEnd="16dp"
+                        android:layout_marginTop="4dp"
+                        app:layout_constraintBottom_toBottomOf="@+id/teamedit_temp_content"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/teamedit_temp_content"
+                        app:layout_constraintTop_toTopOf="@+id/teamedit_temp_content"
+                        app:srcCompat="@drawable/greater1" />
+
+
+                </android.support.constraint.ConstraintLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="12dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="8dp"
+                        android:text="其他說明"
+                        android:textColor="@color/WHITE"
+                        android:textSize="20sp"
+                        android:textStyle="bold" />
+
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="8dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="100dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="8dp"
+                        android:text="使用球種"
+                        android:textColor="@color/WHITE"
+                        android:textSize="18sp" />
+
+                    <EditText
+                        android:id="@+id/teamedit_ball"
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:layout_marginRight="12dp"
+                        android:background="@drawable/edittext_border"
+                        android:gravity="right|center_vertical"
+                        android:hint="YY AS-50"
+                        android:inputType="textPersonName"
+                        android:paddingRight="8dp"
+                        android:tag="ball"
+                        android:textColor="@color/WHITE"
+                        android:textSize="18sp" />
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <include
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        layout="@layout/divider" />
+                </LinearLayout>
+
+                <android.support.constraint.ConstraintLayout
+                    android:id="@+id/linearLayout13"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="8dp"
+                    android:gravity="center_vertical"
+                    android:tag="degree">
+
+                    <TextView
+                        android:id="@+id/textView12"
+                        android:layout_width="100dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="8dp"
+                        android:layout_marginStart="8dp"
+                        android:text="球隊程度"
+                        android:textColor="@color/WHITE"
+                        android:textSize="18sp"
+                        app:layout_constraintBaseline_toBaselineOf="@+id/teamedit_degree"
+                        app:layout_constraintEnd_toStartOf="@+id/teamedit_degree"
+                        app:layout_constraintStart_toStartOf="parent" />
+
+                    <TextView
+                        android:id="@+id/teamedit_degree"
+                        android:layout_width="0dp"
+                        android:layout_height="30dp"
+                        android:layout_marginEnd="16dp"
+                        android:gravity="center_vertical|right"
+                        android:tag="degree"
+                        android:textColor="@color/WHITE"
+                        android:textSize="18sp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toStartOf="@+id/imageView13"
+                        app:layout_constraintStart_toEndOf="@+id/textView12"
+                        tools:text="普通,高手" />
+
+                    <ImageView
+                        android:id="@+id/imageView13"
+                        android:layout_width="16dp"
+                        android:layout_height="16dp"
+                        android:layout_marginBottom="4dp"
+                        android:layout_marginEnd="16dp"
+                        android:layout_marginTop="4dp"
+                        app:layout_constraintBottom_toBottomOf="@+id/teamedit_degree"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/teamedit_degree"
+                        app:layout_constraintTop_toTopOf="@+id/teamedit_degree"
+                        app:srcCompat="@drawable/greater1" />
+                </android.support.constraint.ConstraintLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <include
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        layout="@layout/divider" />
+                </LinearLayout>
+
+                <android.support.constraint.ConstraintLayout
+                    android:id="@+id/linearLayout14"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="8dp"
+                    android:gravity="center_vertical"
+                    android:tag="charge">
+
+                    <TextView
+                        android:id="@+id/textView13"
+                        android:layout_width="100dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="8dp"
+                        android:layout_marginStart="8dp"
+                        android:text="收費說明"
+                        android:textColor="@color/WHITE"
+                        android:textSize="18sp"
+                        app:layout_constraintBaseline_toBaselineOf="@+id/teamedit_charge"
+                        app:layout_constraintEnd_toStartOf="@+id/teamedit_charge"
+                        app:layout_constraintStart_toStartOf="parent" />
+
+                    <TextView
+                        android:id="@+id/teamedit_charge"
+                        android:layout_width="0dp"
+                        android:layout_height="30dp"
+                        android:layout_marginEnd="16dp"
+                        android:gravity="center_vertical|right"
+                        android:tag="charge"
+                        android:textColor="@color/WHITE"
+                        android:textSize="18sp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toStartOf="@+id/imageView15"
+                        app:layout_constraintStart_toEndOf="@+id/textView13"
+                        tools:text="付球館入會費即可" />
+
+                    <ImageView
+                        android:id="@+id/imageView15"
+                        android:layout_width="16dp"
+                        android:layout_height="16dp"
+                        android:layout_marginBottom="4dp"
+                        android:layout_marginEnd="16dp"
+                        android:layout_marginTop="4dp"
+                        app:layout_constraintBottom_toBottomOf="@+id/teamedit_charge"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/teamedit_charge"
+                        app:layout_constraintTop_toTopOf="@+id/teamedit_charge"
+                        app:srcCompat="@drawable/greater1" />
+                </android.support.constraint.ConstraintLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <include
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        layout="@layout/divider" />
+                </LinearLayout>
+
+                <android.support.constraint.ConstraintLayout
+                    android:id="@+id/linearLayout15"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="8dp"
+                    android:gravity="center_vertical"
+                    android:tag="content">
+
+                    <TextView
+                        android:id="@+id/textView14"
+                        android:layout_width="100dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="8dp"
+                        android:layout_marginStart="8dp"
+                        android:text="球隊說明"
+                        android:textColor="@color/WHITE"
+                        android:textSize="18sp"
+                        app:layout_constraintBaseline_toBaselineOf="@+id/teamedit_content"
+                        app:layout_constraintEnd_toStartOf="@+id/teamedit_content"
+                        app:layout_constraintStart_toStartOf="parent" />
+
+                    <TextView
+                        android:id="@+id/teamedit_content"
+                        android:layout_width="0dp"
+                        android:layout_height="30dp"
+                        android:layout_marginEnd="16dp"
+                        android:gravity="center_vertical|right"
+                        android:tag="content"
+                        android:textColor="@color/WHITE"
+                        android:textSize="18sp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toStartOf="@+id/imageView16"
+                        app:layout_constraintStart_toEndOf="@+id/textView14"
+                        tools:text="艾傑打球" />
+
+                    <ImageView
+                        android:id="@+id/imageView16"
+                        android:layout_width="16dp"
+                        android:layout_height="16dp"
+                        android:layout_marginBottom="4dp"
+                        android:layout_marginEnd="16dp"
+                        android:layout_marginTop="4dp"
+                        app:layout_constraintBottom_toBottomOf="@+id/teamedit_content"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/teamedit_content"
+                        app:layout_constraintTop_toTopOf="@+id/teamedit_content"
+                        app:srcCompat="@drawable/greater1" />
+
+
+                </android.support.constraint.ConstraintLayout>
+
+
+
+
 
                 <LinearLayout
                     android:layout_width="match_parent"

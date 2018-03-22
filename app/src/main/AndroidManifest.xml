@@ -7,6 +7,7 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+
     <uses-feature android:name="android.hardware.camera2" />
 
     <application
@@ -55,7 +56,8 @@
         <activity android:name=".Controllers.AccountUpdate1Activity" />
         <activity android:name=".Controllers.ShowActivity" />
         <activity android:name=".Controllers.ShowTempPlayActivity" />
-        <activity android:name=".Controllers.EditTeamActivity"></activity>
+        <activity android:name=".Controllers.EditTeamActivity" />
+        <activity android:name=".Controllers.EditTeamItemActivity"></activity>
     </application>
 
 </manifest>

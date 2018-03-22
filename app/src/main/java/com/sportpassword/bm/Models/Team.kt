@@ -185,17 +185,17 @@ class Team(id: Int, name: String, token: String, featured_path: String, vimeo: S
         }
         data[TEAM_DEGREE_KEY]!!["show"] = res.joinToString(", ")
     }
-    fun tempContentShow(length: Int=15) {
+    fun tempContentShow(length: Int=12) {
         var text: String = data[TEAM_TEMP_CONTENT_KEY]!!["value"] as String
         text = text.truncate(length)
         data[TEAM_TEMP_CONTENT_KEY]!!["show"] = text
     }
-    fun chargeShow(length: Int=15) {
+    fun chargeShow(length: Int=12) {
         var text: String = data[TEAM_CHARGE_KEY]!!["value"] as String
         text = text.truncate(length)
         data[TEAM_CHARGE_KEY]!!["show"] = text
     }
-    fun contentShow(length: Int=15) {
+    fun contentShow(length: Int=12) {
         var text: String = data[TEAM_CONTENT_KEY]!!["value"] as String
         text = text.truncate(length)
         data[TEAM_CONTENT_KEY]!!["show"] = text
