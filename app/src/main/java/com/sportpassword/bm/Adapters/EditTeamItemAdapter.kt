@@ -50,6 +50,7 @@ class EditTeamItemAdapter(val context: Context, val lists: List<Map<String, Stri
             item1View.text = row["text"]!!
             var checked: Boolean = row["checked"]!!.toBoolean()
             item1View.setTextColor(if(checked) checkedColor else uncheckedColor)
+            mark1View.setColorFilter(if(checked) checkedColor else uncheckedColor)
 
             if (position == lists.size-1) {
                 line1View.visibility = View.INVISIBLE
@@ -59,6 +60,7 @@ class EditTeamItemAdapter(val context: Context, val lists: List<Map<String, Stri
                 //println(view)
                 checked = !checked
                 item1View.setTextColor(if(checked) checkedColor else uncheckedColor)
+                mark1View.setColorFilter(if(checked) checkedColor else uncheckedColor)
                 itemClick(position)
             }
         }
