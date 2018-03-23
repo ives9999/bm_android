@@ -1,17 +1,29 @@
 package com.sportpassword.bm.Controllers
 
+import android.app.Activity
+import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Parcel
+import android.os.Parcelable
 import android.support.v7.widget.LinearLayoutManager
 import android.view.View
 import com.sportpassword.bm.Adapters.EditTeamItemAdapter
 import com.sportpassword.bm.R
+import com.sportpassword.bm.Utilities.DAYS
+import com.sportpassword.bm.Utilities.TEAM_DAYS_KEY
+import kotlinx.android.parcel.Parceler
+import kotlinx.android.parcel.Parcelize
 import kotlinx.android.synthetic.main.activity_edit_team_item.*
 
-class EditTeamItemActivity : AppCompatActivity() {
+class EditTeamItemActivity() : AppCompatActivity() {
 
     lateinit var key: String
     lateinit var editTeamItemAdapter: EditTeamItemAdapter
+
+    lateinit var daysLists: ArrayList<MutableMap<String, String>>
+    val resDays: ArrayList<Day> = arrayListOf()
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -19,43 +31,103 @@ class EditTeamItemActivity : AppCompatActivity() {
 
         key = intent.getStringExtra("key")
         //println(key)
+        if (key == TEAM_DAYS_KEY) {
 
-        val daysLists: ArrayList<MutableMap<String, String>> = arrayListOf(
-                mutableMapOf(
-                        "value" to "1", "show" to "星期一", "checked" to "false"
-                ),
-                mutableMapOf(
-                        "value" to "2", "show" to "星期二", "checked" to "false"
-                ),
-                mutableMapOf(
-                        "value" to "3", "show" to "星期三", "checked" to "false"
-                ),
-                mutableMapOf(
-                        "value" to "4", "show" to "星期四", "checked" to "false"
-                ),
-                mutableMapOf(
-                        "value" to "5", "show" to "星期五", "checked" to "false"
-                ),
-                mutableMapOf(
-                        "value" to "6", "show" to "星期六", "checked" to "false"
-                ),
-                mutableMapOf(
-                        "value" to "7", "show" to "星期日", "checked" to "false"
-                )
-        )
-        editTeamItemAdapter = EditTeamItemAdapter(this, daysLists) { position, view ->
+            val days = intent.getIntArrayExtra("days")
+            daysLists = arrayListOf()
+            for (i in 1..7) {
+                val tmp: Map<String, Any> = DAYS[i-1]
+                var checked: Boolean = false
+                for (j in 0..days.size-1) {
+                    if (i == days.get(j)) {
+                        checked = true
+                        break
+                    }
+                }
+                val m: MutableMap<String, String> = mutableMapOf("value" to i.toString(), "text" to tmp["text"]!! as String, "checked" to checked.toString())
+                daysLists.add(m)
+            }
+        }
+        editTeamItemAdapter = EditTeamItemAdapter(this, daysLists) { position ->
             //println(position)
             val checked: Boolean = !(daysLists[position]["checked"]!!.toBoolean())
             daysLists[position]["checked"] = checked.toString()
-            println(daysLists)
+            //println(daysLists)
+            setDay(position)
         }
         teamedititem_container.adapter = editTeamItemAdapter
         val layoutManager = LinearLayoutManager(this)
         teamedititem_container.layoutManager = layoutManager
     }
 
+    fun setDay(idx: Int) {
+        val checked: Boolean = daysLists[idx]["checked"]!!.toBoolean()
+        val day: Int = daysLists[idx]["value"]!!.toInt()
+        if (checked) {
+            val text: String = daysLists[idx]["text"]!!
+            val d: Day = Day(text, day)
+            resDays.add(d)
+        } else {
+            val idx: Int = -1
+            for (i in 0..resDays.size-1) {
+                if (day == resDays[i].day) {
+                    idx == i
+                    break
+                }
+            }
+            if (idx > 0) {
+                resDays.removeAt(idx)
+            }
+        }
+    }
+
     fun submit(view: View) {
-        println("submit")
+        val intent = Intent()
+        intent.putExtra("key", key)
+        if (key == TEAM_DAYS_KEY) {
+            intent.putParcelableArrayListExtra("days", resDays)
+        }
+        setResult(Activity.RESULT_OK, intent)
         finish()
     }
 }
+
+@Parcelize
+data class Day(val text: String, val day: Int) : Parcelable {
+
+    companion object : Parceler<Day> {
+        override fun Day.write(dest: Parcel, flags: Int) = with(dest) {
+            writeString(text)
+            writeInt(day)
+        }
+
+        override fun create(source: Parcel): Day = Day(source)
+    }
+
+    constructor(source: Parcel): this(
+    source.readString(),
+    source.readInt()
+    )
+
+    override fun describeContents() = 0
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -19,7 +19,7 @@ import org.jetbrains.anko.textColor
 /**
  * Created by ives on 2018/3/21.
  */
-class EditTeamItemAdapter(val context: Context, val lists: List<Map<String, String>>, val itemClick: (Int, View) -> Unit): RecyclerView.Adapter<EditTeamItemAdapter.ViewHolder>() {
+class EditTeamItemAdapter(val context: Context, val lists: List<Map<String, String>>, val itemClick: (Int) -> Unit): RecyclerView.Adapter<EditTeamItemAdapter.ViewHolder>() {
 
     val checkedColor = ContextCompat.getColor(context, R.color.MY_GREEN)
     val uncheckedColor = ContextCompat.getColor(context, R.color.WHITE)
@@ -38,7 +38,7 @@ class EditTeamItemAdapter(val context: Context, val lists: List<Map<String, Stri
     }
 
 
-    inner class ViewHolder(itemView: View, val itemClick: (Int, View) -> Unit): RecyclerView.ViewHolder(itemView) {
+    inner class ViewHolder(itemView: View, val itemClick: (Int) -> Unit): RecyclerView.ViewHolder(itemView) {
 
         val item1View = itemView.findViewById<TextView>(R.id.item1)
         val mark1View = itemView.findViewById<ImageView>(R.id.mark1)
@@ -47,7 +47,7 @@ class EditTeamItemAdapter(val context: Context, val lists: List<Map<String, Stri
         fun bind(position: Int) {
 
             val row = lists[position]
-            item1View.text = row["show"]!!
+            item1View.text = row["text"]!!
             var checked: Boolean = row["checked"]!!.toBoolean()
             item1View.setTextColor(if(checked) checkedColor else uncheckedColor)
 
@@ -59,7 +59,7 @@ class EditTeamItemAdapter(val context: Context, val lists: List<Map<String, Stri
                 //println(view)
                 checked = !checked
                 item1View.setTextColor(if(checked) checkedColor else uncheckedColor)
-                itemClick(position, view!!)
+                itemClick(position)
             }
         }
     }

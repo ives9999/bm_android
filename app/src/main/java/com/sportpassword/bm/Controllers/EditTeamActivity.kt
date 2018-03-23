@@ -1,5 +1,6 @@
 package com.sportpassword.bm.Controllers
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.support.constraint.ConstraintLayout
@@ -28,7 +29,7 @@ class EditTeamActivity : BaseActivity(), ImagePicker, View.OnFocusChangeListener
 
     override val ACTION_CAMERA_REQUEST_CODE = 100
     override val ACTION_PHOTO_REQUEST_CODE = 200
-    val DAYS_SELECT_REQUEST_CODE = 1
+    val SELECT_REQUEST_CODE = 1
     override val activity = this
     override val context = this
     lateinit override var imagePickerLayer: AlertDialog
@@ -105,9 +106,20 @@ class EditTeamActivity : BaseActivity(), ImagePicker, View.OnFocusChangeListener
             ACTION_CAMERA_REQUEST_CODE -> {
                 dealCamera(requestCode, resultCode, data)
             }
-            DAYS_SELECT_REQUEST_CODE -> {
-                val days = data!!.getIntArrayExtra("days")
-                println(days)
+            SELECT_REQUEST_CODE -> {
+                if (resultCode == Activity.RESULT_OK) {
+                    val key = data!!.getStringExtra("key")
+                    if (key == TEAM_DAYS_KEY) {
+                        val days1: ArrayList<Day> = data!!.getParcelableArrayListExtra("days")
+                        val days: ArrayList<Int> = arrayListOf()
+                        for (i in 0..days1.size - 1) {
+                            val d: Day = days1[i]
+                            days.add(d.day)
+                        }
+                        model.updateDays(days)
+                        dataToField(inputV)
+                    }
+                }
             }
             else -> {
                 activity.toast("請重新選擇")
@@ -341,7 +353,17 @@ class EditTeamActivity : BaseActivity(), ImagePicker, View.OnFocusChangeListener
     private fun prepare(key: String) {
         val intent = Intent(this@EditTeamActivity, EditTeamItemActivity::class.java)
         intent.putExtra("key", key)
-        startActivityForResult(intent, DAYS_SELECT_REQUEST_CODE)
+        if (key == TEAM_DAYS_KEY) {
+            val value: MutableList<Int> = model.data[key]!!["value"] as MutableList<Int>
+            if (value.size > 0) {
+                val days: IntArray = IntArray(value.size)
+                for (i in 0..days.size-1) {
+                    days.set(i, value.get(i))
+                }
+                intent.putExtra("days", days)
+            }
+        }
+        startActivityForResult(intent, SELECT_REQUEST_CODE)
     }
 
     override fun onFocusChange(v: View?, hasFocus: Boolean) {
