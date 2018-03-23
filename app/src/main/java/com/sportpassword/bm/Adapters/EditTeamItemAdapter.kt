@@ -12,6 +12,8 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import com.sportpassword.bm.R
+import com.sportpassword.bm.Utilities.TEAM_PLAY_END_KEY
+import com.sportpassword.bm.Utilities.TEAM_PLAY_START_KEY
 import org.jetbrains.anko.backgroundColor
 import org.jetbrains.anko.sdk25.coroutines.onClick
 import org.jetbrains.anko.textColor
@@ -19,7 +21,7 @@ import org.jetbrains.anko.textColor
 /**
  * Created by ives on 2018/3/21.
  */
-class EditTeamItemAdapter(val context: Context, val lists: List<Map<String, String>>, val itemClick: (Int) -> Unit): RecyclerView.Adapter<EditTeamItemAdapter.ViewHolder>() {
+class EditTeamItemAdapter(val context: Context, val key: String, val lists: List<Map<String, String>>, val itemClick: (Int) -> Unit): RecyclerView.Adapter<EditTeamItemAdapter.ViewHolder>() {
 
     val checkedColor = ContextCompat.getColor(context, R.color.MY_GREEN)
     val uncheckedColor = ContextCompat.getColor(context, R.color.WHITE)
@@ -51,6 +53,10 @@ class EditTeamItemAdapter(val context: Context, val lists: List<Map<String, Stri
             var checked: Boolean = row["checked"]!!.toBoolean()
             item1View.setTextColor(if(checked) checkedColor else uncheckedColor)
             mark1View.setColorFilter(if(checked) checkedColor else uncheckedColor)
+
+            if (key == TEAM_PLAY_START_KEY || key == TEAM_PLAY_END_KEY) {
+                mark1View.visibility = View.INVISIBLE
+            }
 
             if (position == lists.size-1) {
                 line1View.visibility = View.INVISIBLE

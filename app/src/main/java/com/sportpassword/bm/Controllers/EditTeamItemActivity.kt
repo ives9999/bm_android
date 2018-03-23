@@ -12,6 +12,8 @@ import com.sportpassword.bm.Adapters.EditTeamItemAdapter
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Utilities.DAYS
 import com.sportpassword.bm.Utilities.TEAM_DAYS_KEY
+import com.sportpassword.bm.Utilities.TEAM_PLAY_END_KEY
+import com.sportpassword.bm.Utilities.TEAM_PLAY_START_KEY
 import kotlinx.android.parcel.Parceler
 import kotlinx.android.parcel.Parcelize
 import kotlinx.android.synthetic.main.activity_edit_team_item.*
@@ -21,7 +23,7 @@ class EditTeamItemActivity() : AppCompatActivity() {
     lateinit var key: String
     lateinit var editTeamItemAdapter: EditTeamItemAdapter
 
-    lateinit var daysLists: ArrayList<MutableMap<String, String>>
+    var daysLists: ArrayList<MutableMap<String, String>> = arrayListOf()
     val resDays: ArrayList<Day> = arrayListOf()
 
 
@@ -33,8 +35,7 @@ class EditTeamItemActivity() : AppCompatActivity() {
         //println(key)
         if (key == TEAM_DAYS_KEY) {
 
-            val days = intent.getIntArrayExtra("days")
-            daysLists = arrayListOf()
+            val days = intent.getIntArrayExtra("value")
             for (i in 1..7) {
                 val tmp: Map<String, Any> = DAYS[i-1]
                 var checked: Boolean = false
@@ -47,8 +48,19 @@ class EditTeamItemActivity() : AppCompatActivity() {
                 val m: MutableMap<String, String> = mutableMapOf("value" to i.toString(), "text" to tmp["text"]!! as String, "checked" to checked.toString())
                 daysLists.add(m)
             }
+        } else if (key == TEAM_PLAY_START_KEY || key == TEAM_PLAY_END_KEY) {
+            val value: String = intent.getStringExtra("value")
+            println(value)
+            val times: ArrayList<String> = arrayListOf("07:00","07:30","08:00","08:30","09:00","09:30","10:00","10:30","11:00","11:30","12:00",
+                "12:30","13:00","13:30","14:00","14:30","15:00","15:30","16:00","16:30","17:00","17:30",
+                "18:00","18:30","19:00","19:30","20:00","20:30","21:00","21:30","22:00","22:30","23:00")
+            for (i in 0..times.size-1) {
+                var checked: Boolean = if (times[i] == value) true else false
+                val m: MutableMap<String, String> = mutableMapOf("value" to times[i], "text" to times[i], "checked" to checked.toString())
+                daysLists.add(m)
+            }
         }
-        editTeamItemAdapter = EditTeamItemAdapter(this, daysLists) { position ->
+        editTeamItemAdapter = EditTeamItemAdapter(this, key, daysLists) { position ->
             //println(position)
             val checked: Boolean = !(daysLists[position]["checked"]!!.toBoolean())
             daysLists[position]["checked"] = checked.toString()

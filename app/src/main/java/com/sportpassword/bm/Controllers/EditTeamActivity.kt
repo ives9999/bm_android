@@ -360,8 +360,12 @@ class EditTeamActivity : BaseActivity(), ImagePicker, View.OnFocusChangeListener
                 for (i in 0..days.size-1) {
                     days.set(i, value.get(i))
                 }
-                intent.putExtra("days", days)
+                intent.putExtra("value", days)
             }
+        } else if (key == TEAM_PLAY_START_KEY || key == TEAM_PLAY_END_KEY) {
+            val row: MutableMap<String, Any> = model.data[key]!!["sender"] as MutableMap<String, Any>
+            val value: String = row["time"] as String
+            intent.putExtra("value", value)
         }
         startActivityForResult(intent, SELECT_REQUEST_CODE)
     }
