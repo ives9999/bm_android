@@ -117,8 +117,21 @@ class EditTeamActivity : BaseActivity(), ImagePicker, View.OnFocusChangeListener
                             days.add(d.day)
                         }
                         model.updateDays(days)
-                        dataToField(inputV)
+                    } else if (key == TEAM_PLAY_START_KEY || key == TEAM_PLAY_END_KEY) {
+                        val time: String = data!!.getStringExtra("time") + ":00"
+                        if (key == TEAM_PLAY_START_KEY) {
+                            model.updatePlayStartTime(time)
+                        } else {
+                            model.updatePlayEndTime(time)
+                        }
+                    } else if (key == TEAM_DEGREE_KEY) {
+                        val degrees: Array<String> = data!!.getStringArrayExtra("degree")
+                        for (i in 0..degrees.size-1) {
+                            println(degrees.get(i))
+                        }
+                        model.updateDegree(degrees)
                     }
+                    dataToField(inputV)
                 }
             }
             else -> {
@@ -365,6 +378,9 @@ class EditTeamActivity : BaseActivity(), ImagePicker, View.OnFocusChangeListener
         } else if (key == TEAM_PLAY_START_KEY || key == TEAM_PLAY_END_KEY) {
             val row: MutableMap<String, Any> = model.data[key]!!["sender"] as MutableMap<String, Any>
             val value: String = row["time"] as String
+            intent.putExtra("value", value)
+        } else if (key == TEAM_DEGREE_KEY) {
+            val value: Array<String> = model.data[key]!!["sender"] as Array<String>
             intent.putExtra("value", value)
         }
         startActivityForResult(intent, SELECT_REQUEST_CODE)

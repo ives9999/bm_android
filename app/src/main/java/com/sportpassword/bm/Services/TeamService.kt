@@ -303,7 +303,7 @@ object TeamService: DataService() {
                     //println("tmp1: $tmp1")
                     val degrees = tmp1.split(",")
                     //println("degrees: $degrees")
-                    model.updateDegree(ArrayList(degrees))
+                    model.updateDegree(degrees.toTypedArray())
                 } catch (e: JSONException) {
 
                 }

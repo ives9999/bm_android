@@ -91,7 +91,7 @@ class Team(id: Int, name: String, token: String, featured_path: String, vimeo: S
         setDaysSender()
     }
 
-    fun updateDegree(degrees: ArrayList<String>) {
+    fun updateDegree(degrees: Array<String>) {
         data[TEAM_DEGREE_KEY]!!["value"] = degrees
         degreeShow()
         setDegreeSender()
@@ -175,13 +175,13 @@ class Team(id: Int, name: String, token: String, featured_path: String, vimeo: S
     }
 
     fun degreeShow() {
-        val degrees: ArrayList<String> = data[TEAM_DEGREE_KEY]!!["value"] as ArrayList<String>
-        var res: ArrayList<String> = arrayListOf<String>()
+        val degrees: Array<String> = data[TEAM_DEGREE_KEY]!!["value"] as Array<String>
+        var res: Array<String> = Array(degrees.size, {""})
         for (i in 0..degrees.size-1) {
             val degree = degrees[i]
             val type: DEGREE = DEGREE.valueOf(degree)
             val text: String = type.value
-            res.add(text)
+            res.set(i, text)
         }
         data[TEAM_DEGREE_KEY]!!["show"] = res.joinToString(", ")
     }
@@ -315,6 +315,9 @@ enum class DEGREE(val value: String) {
     new("新手"), soso("普通"), high("高手");
     companion object {
         fun from(findValue: String): DEGREE = DEGREE.values().first { it.value == findValue }
+        fun all(): Map<String, String> {
+            return mapOf("new" to "新手", "soso" to "普通", "high" to "高手")
+        }
     }
 }
 
