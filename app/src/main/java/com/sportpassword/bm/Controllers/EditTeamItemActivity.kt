@@ -9,8 +9,11 @@ import android.os.Parcelable
 import android.support.v7.widget.LinearLayoutManager
 import android.view.View
 import com.sportpassword.bm.Adapters.EditTeamItemAdapter
+import com.sportpassword.bm.Models.Arena
+import com.sportpassword.bm.Models.City
 import com.sportpassword.bm.Models.DEGREE
 import com.sportpassword.bm.R
+import com.sportpassword.bm.Services.TeamService
 import com.sportpassword.bm.Utilities.*
 import kotlinx.android.parcel.Parceler
 import kotlinx.android.parcel.Parcelize
@@ -25,6 +28,14 @@ class EditTeamItemActivity() : AppCompatActivity() {
     val resDays: ArrayList<Day> = arrayListOf()
     var time: String = ""
     var resDegrees: ArrayList<String> = arrayListOf()
+    var oldCity: Int = 0
+    var resCity_id: Int = 0
+    var resCity_name: String = ""
+    var oldArena: Int = 0
+    var resArena_id: Int = 0
+    var resArena_name: String = ""
+    lateinit var citys: ArrayList<City>
+    lateinit var arenas: ArrayList<Arena>
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -33,6 +44,9 @@ class EditTeamItemActivity() : AppCompatActivity() {
 
         key = intent.getStringExtra("key")
         //println(key)
+        if (key == TEAM_DAYS_KEY || key == TEAM_PLAY_START_KEY || key == TEAM_PLAY_END_KEY || key == TEAM_DEGREE_KEY || key == TEAM_CITY_KEY || key == TEAM_ARENA_KEY) {
+            content_container.visibility = View.INVISIBLE
+        }
         if (key == TEAM_DAYS_KEY) {
 
             val days = intent.getIntArrayExtra("value")
@@ -74,6 +88,14 @@ class EditTeamItemActivity() : AppCompatActivity() {
                 val m: MutableMap<String, String> = mutableMapOf("value" to k, "text" to v, "checked" to checked.toString())
                 daysLists.add(m)
             }
+        } else if (key == TEAM_CITY_KEY) {
+            oldCity = intent.getIntExtra("value", 0)
+        } else if (key == TEAM_ARENA_KEY) {
+            oldCity = intent.getIntExtra("city_id", 0)
+            oldArena = intent.getIntExtra("arena_id", 0)
+        } else {
+            val value: String = intent.getStringExtra("value")
+            content.setText(value)
         }
         editTeamItemAdapter = EditTeamItemAdapter(this, key, daysLists) { position ->
             //println(position)
@@ -88,11 +110,42 @@ class EditTeamItemActivity() : AppCompatActivity() {
             } else if (key == TEAM_DEGREE_KEY) {
                 daysLists[position]["checked"] = checked.toString()
                 setDegree(position)
+            } else if (key == TEAM_CITY_KEY) {
+                resCity_id = daysLists[position]["value"]!!.toInt()
+                resCity_name = daysLists[position]["text"]!!
+                submit(View(this))
+            } else if (key == TEAM_ARENA_KEY) {
+                resArena_id = daysLists[position]["value"]!!.toInt()
+                resArena_name = daysLists[position]["text"]!!
+                submit(View(this))
             }
         }
         teamedititem_container.adapter = editTeamItemAdapter
         val layoutManager = LinearLayoutManager(this)
         teamedititem_container.layoutManager = layoutManager
+        if (key == TEAM_CITY_KEY) {
+            TeamService.getAllCitys(this) { success ->
+                citys = TeamService.citys
+                for (i in 0..citys.size-1) {
+                    val city = citys[i]
+                    val checked: Boolean = if (oldCity == city.id) true else false
+                    val m: MutableMap<String, String> = mutableMapOf("value" to city.id.toString(), "text" to city.name, "checked" to checked.toString())
+                    daysLists.add(m)
+                }
+                editTeamItemAdapter.notifyDataSetChanged()
+            }
+        } else if (key == TEAM_ARENA_KEY) {
+            TeamService.getArenaByCityID(this, oldCity) { success ->
+                arenas = TeamService.arenas
+                for (i in 0..arenas.size-1) {
+                    val arena = arenas[i]
+                    val checked: Boolean = if (oldArena == arena.id) true else false
+                    val m: MutableMap<String, String> = mutableMapOf("value" to arena.id.toString(), "text" to arena.name, "checked" to checked.toString())
+                    daysLists.add(m)
+                }
+                editTeamItemAdapter.notifyDataSetChanged()
+            }
+        }
     }
 
     fun setDay(idx: Int) {
@@ -135,6 +188,15 @@ class EditTeamItemActivity() : AppCompatActivity() {
         } else if (key == TEAM_DEGREE_KEY) {
             val res: Array<String> = resDegrees.toTypedArray()
             intent.putExtra("degree", res)
+        } else if (key == TEAM_CITY_KEY) {
+            intent.putExtra("id", resCity_id)
+            intent.putExtra("name", resCity_name)
+        } else if (key == TEAM_ARENA_KEY) {
+            intent.putExtra("id", resArena_id)
+            intent.putExtra("name", resArena_name)
+        } else {
+            val res: String = content.text.toString()
+            intent.putExtra("content", res)
         }
         setResult(Activity.RESULT_OK, intent)
         finish()

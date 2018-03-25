@@ -61,5 +61,6 @@ dependencies {
     compile 'com.squareup.picasso:picasso:2.5.2'
     compile 'com.github.franmontiel:PersistentCookieJar:v1.0.1'
     compile 'com.ohmerhe.kolley:kolley:0.3.1'
+    //compile 'com.vimeo.networking:vimeo-networking:1.1.0'
     //compile project(':vimeo-networking')
 }

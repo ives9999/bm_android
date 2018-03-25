@@ -304,7 +304,7 @@
                     android:layout_height="match_parent"
                     android:layout_marginTop="8dp"
                     android:gravity="center_vertical"
-                    android:tag="arean">
+                    android:tag="arena">
 
                     <TextView
                         android:id="@+id/textView6"
@@ -315,12 +315,12 @@
                         android:text="球館"
                         android:textColor="@color/WHITE"
                         android:textSize="18sp"
-                        app:layout_constraintBaseline_toBaselineOf="@+id/teamedit_arean"
-                        app:layout_constraintEnd_toStartOf="@+id/teamedit_arean"
+                        app:layout_constraintBaseline_toBaselineOf="@+id/teamedit_arena"
+                        app:layout_constraintEnd_toStartOf="@+id/teamedit_arena"
                         app:layout_constraintStart_toStartOf="parent" />
 
                     <TextView
-                        android:id="@+id/teamedit_arean"
+                        android:id="@+id/teamedit_arena"
                         android:layout_width="0dp"
                         android:layout_height="30dp"
                         android:layout_marginEnd="16dp"
@@ -340,10 +340,10 @@
                         android:layout_marginBottom="4dp"
                         android:layout_marginEnd="16dp"
                         android:layout_marginTop="4dp"
-                        app:layout_constraintBottom_toBottomOf="@+id/teamedit_arean"
+                        app:layout_constraintBottom_toBottomOf="@+id/teamedit_arena"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toEndOf="@+id/teamedit_arean"
-                        app:layout_constraintTop_toTopOf="@+id/teamedit_arean"
+                        app:layout_constraintStart_toEndOf="@+id/teamedit_arena"
+                        app:layout_constraintTop_toTopOf="@+id/teamedit_arena"
                         app:srcCompat="@drawable/greater1" />
                 </android.support.constraint.ConstraintLayout>
                 <LinearLayout

@@ -17,6 +17,8 @@ import android.widget.EditText
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
+import com.sportpassword.bm.Models.Arena
+import com.sportpassword.bm.Models.City
 import com.sportpassword.bm.Models.Team
 import com.sportpassword.bm.Utilities.*
 import com.sportpassword.bm.Views.ImagePicker
@@ -126,10 +128,26 @@ class EditTeamActivity : BaseActivity(), ImagePicker, View.OnFocusChangeListener
                         }
                     } else if (key == TEAM_DEGREE_KEY) {
                         val degrees: Array<String> = data!!.getStringArrayExtra("degree")
-                        for (i in 0..degrees.size-1) {
-                            println(degrees.get(i))
-                        }
                         model.updateDegree(degrees)
+                    } else if (key == TEAM_CITY_KEY) {
+                        val id: Int = data!!.getIntExtra("id", model.data[TEAM_CITY_KEY]!!["value"] as Int)
+                        val name: String = data!!.getStringExtra("name")
+                        val city = City(id, name)
+                        model.updateCity(city)
+                    } else if (key == TEAM_ARENA_KEY) {
+                        val id: Int = data!!.getIntExtra("id", model.data[TEAM_ARENA_KEY]!!["value"] as Int)
+                        val name: String = data!!.getStringExtra("name")
+                        val arena = Arena(id, name)
+                        model.updateArena(arena)
+                    } else {
+                        val content: String = data!!.getStringExtra("res")
+                        if (key == TEAM_TEMP_CONTENT_KEY) {
+                            model.updateTempContent(content)
+                        } else if (key == TEAM_CHARGE_KEY) {
+                            model.updateCharge(content)
+                        } else if (key == TEAM_CONTENT_KEY) {
+                            model.updateContent(content)
+                        }
                     }
                     dataToField(inputV)
                 }
@@ -381,6 +399,23 @@ class EditTeamActivity : BaseActivity(), ImagePicker, View.OnFocusChangeListener
             intent.putExtra("value", value)
         } else if (key == TEAM_DEGREE_KEY) {
             val value: Array<String> = model.data[key]!!["sender"] as Array<String>
+            intent.putExtra("value", value)
+        } else if (key == TEAM_CITY_KEY) {
+            val value: Int = model.data[key]!!["sender"] as Int
+            intent.putExtra("value", value)
+        } else if (key == TEAM_ARENA_KEY) {
+            val city_id: Int = model.data[TEAM_CITY_KEY]!!["value"] as Int
+            if (city_id == 0) {
+                Alert.show(this, "警告", "請先選擇區域")
+            } else {
+                val tmp: MutableMap<String, Int> = model.data[key]!!["sender"] as MutableMap<String, Int>
+                val city_id: Int = tmp["city_id"]!!
+                val arena_id: Int = tmp["arena_id"]!!
+                intent.putExtra("city_id", city_id)
+                intent.putExtra("arena_id", arena_id)
+            }
+        } else {
+            val value: String = model.data[key]!!["value"] as String
             intent.putExtra("value", value)
         }
         startActivityForResult(intent, SELECT_REQUEST_CODE)

@@ -4,14 +4,14 @@ import android.content.Context
 import com.android.volley.NetworkResponse
 import com.android.volley.Request
 import com.android.volley.Response
+import com.android.volley.toolbox.JsonArrayRequest
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import com.ohmerhe.kolley.request.Http
-import com.sportpassword.bm.Models.Coach
-import com.sportpassword.bm.Models.Data
-import com.sportpassword.bm.Models.Team
+import com.sportpassword.bm.Models.*
 import com.sportpassword.bm.Utilities.*
+import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject
 import java.nio.charset.Charset
@@ -29,6 +29,8 @@ open class DataService: BaseService() {
     var dataLists: ArrayList<Data> = arrayListOf()
     open val model: Data = Data(-1, "", "", "")
     lateinit var data: MutableMap<String, MutableMap<String, Any>>
+    val citys: ArrayList<City> = arrayListOf()
+    val arenas: ArrayList<Arena> = arrayListOf()
 
     fun getList(context: Context, type:String, titleField:String, page:Int, perPage:Int, filter:Array<Array<Any>>?, complete:CompletionHandler) {
         val url = "$URL_LIST".format(type)
@@ -266,6 +268,101 @@ open class DataService: BaseService() {
         }
         Volley.newRequestQueue(context).add(request)
         */
+    }
+
+    fun getAllCitys(context: Context, complete: CompletionHandler) {
+        val url = URL_CITYS
+        //println(url)
+
+        val body = JSONObject()
+        body.put("source", "app")
+        val requestBody = body.toString()
+
+        val request = object : JsonArrayRequest(Request.Method.POST, url, null, Response.Listener { json ->
+            //println(json)
+            try {
+                success = true
+                //println(json)
+                for (i in 0..json.length()-1) {
+                    val obj = json.getJSONObject(i)
+                    val id: Int = obj.getInt("id")
+                    val name: String = obj.getString("name")
+                    citys.add(City(id, name))
+                }
+            } catch (e: JSONException) {
+                println(e.localizedMessage)
+                success = false
+                msg = "無法get Citys，沒有傳回成功值 " + e.localizedMessage
+            }
+            if (this.success) {
+                //jsonToMember(json)
+            } else {
+                //DataService.makeErrorMsg(json)
+            }
+            complete(true)
+        }, Response.ErrorListener { error ->
+            //Log.d("ERROR", "Could not register user: $error")
+            println(error.localizedMessage)
+            this.msg = "取得失敗，網站或網路錯誤"
+            complete(false)
+        }) {
+            override fun getBodyContentType(): String {
+                return HEADER
+            }
+
+            override fun getBody(): ByteArray {
+                return requestBody.toByteArray()
+            }
+        }
+        Volley.newRequestQueue(context).add(request)
+    }
+
+    fun getArenaByCityID(context: Context, city_id: Int, complete: CompletionHandler) {
+        val url = URL_ARENA_BY_CITY_ID
+        //println(url)
+
+        val body = JSONObject()
+        body.put("source", "app")
+        body.put("city", city_id)
+        val requestBody = body.toString()
+
+        val request = object : JsonArrayRequest(Request.Method.POST, url, null, Response.Listener { json ->
+            //println(json)
+            try {
+                success = true
+                //println(json)
+                for (i in 0..json.length()-1) {
+                    val obj = json.getJSONObject(i)
+                    val id: Int = obj.getInt("id")
+                    val name: String = obj.getString("name")
+                    arenas.add(Arena(id, name))
+                }
+            } catch (e: JSONException) {
+                println(e.localizedMessage)
+                success = false
+                msg = "無法get Arenas，沒有傳回成功值 " + e.localizedMessage
+            }
+            if (this.success) {
+                //jsonToMember(json)
+            } else {
+                //DataService.makeErrorMsg(json)
+            }
+            complete(true)
+        }, Response.ErrorListener { error ->
+            //Log.d("ERROR", "Could not register user: $error")
+            println(error.localizedMessage)
+            this.msg = "取得失敗，網站或網路錯誤"
+            complete(false)
+        }) {
+            override fun getBodyContentType(): String {
+                return HEADER
+            }
+
+            override fun getBody(): ByteArray {
+                return requestBody.toByteArray()
+            }
+        }
+        Volley.newRequestQueue(context).add(request)
     }
 
     open fun setData(id: Int, title: String, token: String, featured_path: String, vimeo: String, youtube: String): Data {
