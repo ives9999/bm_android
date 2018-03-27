@@ -37,7 +37,7 @@ class EditTeamActivity : BaseActivity(), ImagePicker, View.OnFocusChangeListener
     lateinit override var imagePickerLayer: AlertDialog
     lateinit override var alertView: View
     override var currentPhotoPath = ""
-    lateinit override var filePath: String
+    override var filePath: String = ""
     override var file: File? = null
     lateinit override var imageView: ImageView
 
@@ -89,7 +89,7 @@ class EditTeamActivity : BaseActivity(), ImagePicker, View.OnFocusChangeListener
         if (teamToken.length > 0) {
             TeamService.getOne(this, "team", "name", teamToken) { success ->
                 model.data = TeamService.data
-                //println(data)
+                println(model.data)
                 //setTeamData()
                 //println(model.data)
                 dataToField(inputV)
@@ -149,6 +149,7 @@ class EditTeamActivity : BaseActivity(), ImagePicker, View.OnFocusChangeListener
                             model.updateContent(content)
                         }
                     }
+                    model.data[key]!!["change"] = true
                     dataToField(inputV)
                 }
             }
@@ -199,11 +200,11 @@ class EditTeamActivity : BaseActivity(), ImagePicker, View.OnFocusChangeListener
             isPass = false
             Alert.show(context, "提示", "請填寫隊名")
         }
-//        val mobile: String = model.data[TEAM_MOBILE_KEY]!!["value"] as String
-//        if (mobile.length == 0) {
-//            isPass = false
-//            Alert.show(context, "警告", "請填寫電話")
-//        }
+        val mobile: String = model.data[TEAM_MOBILE_KEY]!!["value"] as String
+        if (mobile.length == 0) {
+            isPass = false
+            Alert.show(context, "警告", "請填寫電話")
+        }
 
         if (isPass) {
             params = model.makeSubmitArr()
@@ -220,7 +221,7 @@ class EditTeamActivity : BaseActivity(), ImagePicker, View.OnFocusChangeListener
                 }
 
                 TeamService.update(context, "team", params, filePath) { success ->
-                    /*
+
                     if (success) {
                         if (TeamService.success) {
                             val id: Int = TeamService.id
@@ -233,7 +234,7 @@ class EditTeamActivity : BaseActivity(), ImagePicker, View.OnFocusChangeListener
                     } else {
                         Alert.show(context, "錯誤", "新增 / 修改球隊失敗，伺服器無法新增成功，請稍後再試")
                     }
-                    */
+
                 }
 
             }

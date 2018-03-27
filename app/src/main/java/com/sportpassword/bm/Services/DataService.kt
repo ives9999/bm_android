@@ -184,11 +184,22 @@ open class DataService: BaseService() {
         Http.init(context)
         Http.upload {
             url = "$URL_UPDATE".format(type)
-            files {
-                "file" - image
+            if (image.length > 0) {
+                files {
+                    "file" - image
+                }
             }
             params {
-                for ((key, row) in params) {
+               // "id" - "1"
+                //"arena_id" - "10"
+
+                for ((_key, row) in params) {
+                    var key = _key
+                    if (key == "arena_id") {
+                        key = TEAM_ARENA_KEY
+                    }
+                    println(key)
+
                     if (key == TEAM_DEGREE_KEY) {
                         val tmp: List<String> = row as ArrayList<String>
                         for (d in tmp) {
@@ -204,7 +215,9 @@ open class DataService: BaseService() {
                         for (d in tmp) {
                             "cat_id[]" - d.toString()
                         }
-
+                    } else if (key == TEAM_ARENA_KEY) {
+                        val value: Int = row as Int
+                        _key - value.toString()
                     } else {
                         val vtype: String = model.data[key]!!["vtype"] as String
                         if (vtype == "String") {
@@ -219,6 +232,7 @@ open class DataService: BaseService() {
                         }
                     }
                 }
+
             }
             onSuccess { bytes ->
                 println("on success ${bytes.toString(Charset.defaultCharset())}")

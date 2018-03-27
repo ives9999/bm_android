@@ -212,6 +212,7 @@ class MainActivity : BaseActivity() {
 
                 val layoutManager = LinearLayoutManager(this)
                 menu_team_list.layoutManager = layoutManager
+                closeRefresh()
             }
         }
         menu_team_add.onClick {
@@ -235,8 +236,9 @@ class MainActivity : BaseActivity() {
         forgetPasswordBtn.visibility = View.INVISIBLE
         menu_member_container.visibility = View.VISIBLE
         menu_team_container.visibility = View.VISIBLE
+        refreshLayout = menu_refresh
         initMemberFunction()
-        initTeamList()
+        refresh()
     }
     private fun _logoutBlock() {
         nicknameLbl.text = "未登入"
@@ -246,6 +248,13 @@ class MainActivity : BaseActivity() {
         menu_member_container.visibility = View.INVISIBLE
         menu_team_container.visibility = View.INVISIBLE
     }
+
+    override fun refresh() {
+        super.refresh()
+        initTeamList()
+        setRefreshListener()
+    }
+
 
     fun loginBtnPressed(view: View) {
         if (member.isLoggedIn) {

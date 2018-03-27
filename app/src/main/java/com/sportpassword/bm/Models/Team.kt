@@ -83,6 +83,7 @@ class Team(id: Int, name: String, token: String, featured_path: String, vimeo: S
         data[TEAM_ARENA_KEY]!!["value"] = arena.id
         data[TEAM_ARENA_KEY]!!["show"] = arena.name
         setArenaSender()
+        println(data[TEAM_ARENA_KEY])
     }
 
     fun updateDays(days: ArrayList<Int>) {
@@ -266,6 +267,7 @@ class Team(id: Int, name: String, token: String, featured_path: String, vimeo: S
     fun makeSubmitArr(): MutableMap<String, Any> {
         var isAnyOneChange: Boolean = false
         var res: MutableMap<String, Any> = mutableMapOf()
+        //println(data)
 
         for ((key, row) in data) {
             if (row.containsKey("submit")) {
@@ -285,8 +287,6 @@ class Team(id: Int, name: String, token: String, featured_path: String, vimeo: S
         if (!isAnyOneChange) {
             return res
         }
-        res[TEAM_SLUG_KEY] = data[TEAM_NAME_KEY]!!["value"]!!
-        res[TEAM_CREATED_ID_KEY] = member.id
         var id: Int = -1
         if (data[TEAM_ID_KEY]!!["value"] as Int > 0) {
             id = data[TEAM_ID_KEY]!!["value"] as Int
@@ -297,6 +297,8 @@ class Team(id: Int, name: String, token: String, featured_path: String, vimeo: S
             res["type"] = "team"
             val cat_id: ArrayList<Int> = arrayListOf(21)
             res[TEAM_CAT_KEY] = cat_id
+            res[TEAM_SLUG_KEY] = data[TEAM_NAME_KEY]!!["value"]!!
+            res[TEAM_CREATED_ID_KEY] = member.id
         } else {
             res[TEAM_ID_KEY] = id
         }
