@@ -60,6 +60,8 @@ class EditTeamItemAdapter(val context: Context, val key: String, val lists: List
 
             if (position == lists.size-1) {
                 line1View.visibility = View.INVISIBLE
+            } else {
+                line1View.visibility = View.VISIBLE
             }
 
             itemView.onClick {view ->

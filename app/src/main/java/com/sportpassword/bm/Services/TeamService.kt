@@ -279,7 +279,6 @@ object TeamService: DataService() {
                     val obj1 = tmp.getJSONObject(key)
                     val id = obj1.getInt("id")
                     val name = obj1.getString("name")
-                    println("arena_id:${id}")
                     val arena = Arena(id, name)
                     model.updateArena(arena)
                 } catch (e: JSONException) {

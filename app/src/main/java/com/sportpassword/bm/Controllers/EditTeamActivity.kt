@@ -13,6 +13,7 @@ import org.jetbrains.anko.sdk25.coroutines.onClick
 import android.support.v7.app.AlertDialog
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.LinearLayout
@@ -24,6 +25,7 @@ import com.sportpassword.bm.Utilities.*
 import com.sportpassword.bm.Views.ImagePicker
 import com.sportpassword.bm.member
 import org.jetbrains.anko.contentView
+import org.jetbrains.anko.inputMethodManager
 import org.jetbrains.anko.toast
 import java.io.File
 
@@ -89,11 +91,12 @@ class EditTeamActivity : BaseActivity(), ImagePicker, View.OnFocusChangeListener
         if (teamToken.length > 0) {
             TeamService.getOne(this, "team", "name", teamToken) { success ->
                 model.data = TeamService.data
-                println(model.data)
+                //println(model.data)
                 //setTeamData()
                 //println(model.data)
                 dataToField(inputV)
                 closeRefresh()
+                teamedit_name.setSelection(teamedit_name.length())
             }
         }
     }
@@ -208,7 +211,7 @@ class EditTeamActivity : BaseActivity(), ImagePicker, View.OnFocusChangeListener
 
         if (isPass) {
             params = model.makeSubmitArr()
-            println(params)
+            //println(params)
             if (params.count() == 0 && !isFeaturedChange) {
                 Alert.show(context, "提示", "沒有修改任何資料或圖片")
             } else {
@@ -423,10 +426,15 @@ class EditTeamActivity : BaseActivity(), ImagePicker, View.OnFocusChangeListener
     }
 
     override fun onFocusChange(v: View?, hasFocus: Boolean) {
+        val editText = v!! as EditText
         if (!hasFocus) {
-            setTextField(v!! as EditText)
+            setTextField(editText)
+            hideKeyboard(v)
+        } else {
+            editText.setSelection(editText.length())
         }
     }
+
 }
 
 

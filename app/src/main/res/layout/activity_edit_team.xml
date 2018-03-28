@@ -20,6 +20,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:clickable="true"
+            android:focusableInTouchMode="true"
             android:orientation="vertical">
 
             <LinearLayout
@@ -159,6 +161,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content" />
                 </LinearLayout>
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
@@ -186,15 +189,18 @@
                         android:textColor="@color/WHITE"
                         android:textSize="18sp" />
                 </LinearLayout>
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
+
                     <include
+                        layout="@layout/divider"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        layout="@layout/divider" />
+                        android:layout_marginTop="8dp" />
                 </LinearLayout>
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
@@ -288,14 +294,16 @@
                         app:layout_constraintTop_toTopOf="@+id/teamedit_city"
                         app:srcCompat="@drawable/greater1" />
                 </android.support.constraint.ConstraintLayout>
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
+
                     <include
+                        layout="@layout/divider"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        layout="@layout/divider" />
+                        android:layout_marginTop="8dp" />
                 </LinearLayout>
 
                 <android.support.constraint.ConstraintLayout
@@ -346,6 +354,7 @@
                         app:layout_constraintTop_toTopOf="@+id/teamedit_arena"
                         app:srcCompat="@drawable/greater1" />
                 </android.support.constraint.ConstraintLayout>
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
@@ -411,14 +420,16 @@
                         app:layout_constraintTop_toTopOf="@+id/teamedit_days"
                         app:srcCompat="@drawable/greater1" />
                 </android.support.constraint.ConstraintLayout>
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
+
                     <include
+                        layout="@layout/divider"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        layout="@layout/divider" />
+                        android:layout_marginTop="8dp" />
                 </LinearLayout>
 
                 <android.support.constraint.ConstraintLayout
@@ -532,6 +543,7 @@
                         app:layout_constraintTop_toTopOf="@+id/teamedit_end_time"
                         app:srcCompat="@drawable/greater1" />
                 </android.support.constraint.ConstraintLayout>
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
@@ -548,6 +560,7 @@
                         android:textStyle="bold" />
 
                 </LinearLayout>
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
@@ -576,15 +589,18 @@
                         android:textColor="@color/WHITE"
                         android:textSize="18sp" />
                 </LinearLayout>
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
+
                     <include
+                        layout="@layout/divider"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        layout="@layout/divider" />
+                        android:layout_marginTop="8dp" />
                 </LinearLayout>
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
@@ -612,14 +628,16 @@
                         android:textColor="@color/WHITE"
                         android:textSize="18sp" />
                 </LinearLayout>
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
+
                     <include
+                        layout="@layout/divider"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        layout="@layout/divider" />
+                        android:layout_marginTop="8dp" />
                 </LinearLayout>
 
                 <android.support.constraint.ConstraintLayout
@@ -672,6 +690,7 @@
 
 
                 </android.support.constraint.ConstraintLayout>
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
@@ -688,6 +707,7 @@
                         android:textStyle="bold" />
 
                 </LinearLayout>
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
@@ -716,14 +736,16 @@
                         android:textColor="@color/WHITE"
                         android:textSize="18sp" />
                 </LinearLayout>
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
+
                     <include
+                        layout="@layout/divider"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        layout="@layout/divider" />
+                        android:layout_marginTop="8dp" />
                 </LinearLayout>
 
                 <android.support.constraint.ConstraintLayout
@@ -774,14 +796,16 @@
                         app:layout_constraintTop_toTopOf="@+id/teamedit_degree"
                         app:srcCompat="@drawable/greater1" />
                 </android.support.constraint.ConstraintLayout>
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
+
                     <include
+                        layout="@layout/divider"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        layout="@layout/divider" />
+                        android:layout_marginTop="8dp" />
                 </LinearLayout>
 
                 <android.support.constraint.ConstraintLayout
@@ -836,11 +860,12 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
+
                     <include
+                        layout="@layout/divider"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        layout="@layout/divider" />
+                        android:layout_marginTop="8dp" />
                 </LinearLayout>
 
                 <android.support.constraint.ConstraintLayout
@@ -893,9 +918,6 @@
 
 
                 </android.support.constraint.ConstraintLayout>
-
-
-
 
 
                 <LinearLayout

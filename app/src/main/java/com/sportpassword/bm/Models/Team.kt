@@ -83,7 +83,6 @@ class Team(id: Int, name: String, token: String, featured_path: String, vimeo: S
         data[TEAM_ARENA_KEY]!!["value"] = arena.id
         data[TEAM_ARENA_KEY]!!["show"] = arena.name
         setArenaSender()
-        println(data[TEAM_ARENA_KEY])
     }
 
     fun updateDays(days: ArrayList<Int>) {

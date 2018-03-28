@@ -29,8 +29,8 @@ open class DataService: BaseService() {
     var dataLists: ArrayList<Data> = arrayListOf()
     open val model: Data = Data(-1, "", "", "")
     lateinit var data: MutableMap<String, MutableMap<String, Any>>
-    val citys: ArrayList<City> = arrayListOf()
-    val arenas: ArrayList<Arena> = arrayListOf()
+    var citys: ArrayList<City> = arrayListOf()
+    var arenas: ArrayList<Arena> = arrayListOf()
 
     fun getList(context: Context, type:String, titleField:String, page:Int, perPage:Int, filter:Array<Array<Any>>?, complete:CompletionHandler) {
         val url = "$URL_LIST".format(type)
@@ -291,6 +291,7 @@ open class DataService: BaseService() {
         val body = JSONObject()
         body.put("source", "app")
         val requestBody = body.toString()
+        citys = arrayListOf()
 
         val request = object : JsonArrayRequest(Request.Method.POST, url, null, Response.Listener { json ->
             //println(json)
@@ -339,6 +340,7 @@ open class DataService: BaseService() {
         body.put("source", "app")
         body.put("city", city_id)
         val requestBody = body.toString()
+        arenas = arrayListOf()
 
         val request = object : JsonArrayRequest(Request.Method.POST, url, null, Response.Listener { json ->
             //println(json)

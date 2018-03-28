@@ -6,8 +6,11 @@ import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Parcel
 import android.os.Parcelable
+import android.support.constraint.ConstraintLayout
+import android.support.constraint.ConstraintSet
 import android.support.v7.widget.LinearLayoutManager
 import android.view.View
+import android.widget.LinearLayout
 import com.sportpassword.bm.Adapters.EditTeamItemAdapter
 import com.sportpassword.bm.Models.Arena
 import com.sportpassword.bm.Models.City
@@ -17,7 +20,9 @@ import com.sportpassword.bm.Services.TeamService
 import com.sportpassword.bm.Utilities.*
 import kotlinx.android.parcel.Parceler
 import kotlinx.android.parcel.Parcelize
+import kotlinx.android.synthetic.main.activity_edit_team.*
 import kotlinx.android.synthetic.main.activity_edit_team_item.*
+import kotlinx.android.synthetic.main.tab.*
 
 class EditTeamItemActivity() : AppCompatActivity() {
 
@@ -46,6 +51,12 @@ class EditTeamItemActivity() : AppCompatActivity() {
         //println(key)
         if (key == TEAM_DAYS_KEY || key == TEAM_PLAY_START_KEY || key == TEAM_PLAY_END_KEY || key == TEAM_DEGREE_KEY || key == TEAM_CITY_KEY || key == TEAM_ARENA_KEY) {
             content_container.visibility = View.INVISIBLE
+            val layout = findViewById(R.id.teamedititem_constraint) as ConstraintLayout
+            val constraintSet = ConstraintSet()
+            constraintSet.clone(layout)
+            constraintSet.connect(R.id.submit_container, ConstraintSet.TOP, R.id.teamedititem_container, ConstraintSet.BOTTOM, 32)
+            constraintSet.applyTo(layout)
+
         }
         if (key == TEAM_DAYS_KEY) {
 

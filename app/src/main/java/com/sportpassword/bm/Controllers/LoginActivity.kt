@@ -45,7 +45,7 @@ class LoginActivity : BaseActivity() {
     }
 
     fun loginSubmit(view: View) {
-        hideKeyboard()
+        hideKeyboard(view)
         val loading = Loading.show(this)
         val email = loginEmailTxt.text.toString()
         if (email.isEmpty()) {

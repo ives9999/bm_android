@@ -97,7 +97,7 @@ class AccountUpdate1Activity : BaseActivity() {
     }
 
     fun accountSubmit(view: View) {
-        hideKeyboard()
+        hideKeyboard(view)
         val loading = Loading.show(this)
         if (accountTxt.visibility == View.VISIBLE) {
             value = accountTxt.text.toString()
