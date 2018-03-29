@@ -140,7 +140,7 @@
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintTop_toTopOf="parent"
-                            app:srcCompat="@android:drawable/ic_media_play" />
+                            app:srcCompat="@drawable/greater1" />
                     </android.support.constraint.ConstraintLayout>
                     <include
                         android:id="@+id/divider_4"
@@ -192,7 +192,7 @@
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintTop_toTopOf="parent"
-                            app:srcCompat="@android:drawable/ic_media_play" />
+                            app:srcCompat="@drawable/greater1" />
                     </android.support.constraint.ConstraintLayout>
                     <include
                         android:id="@+id/divider_5"
@@ -244,7 +244,7 @@
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintTop_toTopOf="parent"
-                            app:srcCompat="@android:drawable/ic_media_play" />
+                            app:srcCompat="@drawable/greater1" />
                     </android.support.constraint.ConstraintLayout>
 
                 </RelativeLayout>
@@ -326,7 +326,7 @@
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintTop_toTopOf="parent"
-                            app:srcCompat="@android:drawable/ic_media_play" />
+                            app:srcCompat="@drawable/greater1" />
                     </android.support.constraint.ConstraintLayout>
                     <include
                         android:id="@+id/divider_6"
@@ -378,7 +378,7 @@
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintTop_toTopOf="parent"
-                            app:srcCompat="@android:drawable/ic_media_play" />
+                            app:srcCompat="@drawable/greater1" />
                     </android.support.constraint.ConstraintLayout>
 
 
@@ -461,7 +461,7 @@
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintTop_toTopOf="parent"
-                            app:srcCompat="@android:drawable/ic_media_play" />
+                            app:srcCompat="@drawable/greater1" />
                     </android.support.constraint.ConstraintLayout>
                     <include
                         android:id="@+id/divider_7"
@@ -513,7 +513,7 @@
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintTop_toTopOf="parent"
-                            app:srcCompat="@android:drawable/ic_media_play" />
+                            app:srcCompat="@drawable/greater1" />
                     </android.support.constraint.ConstraintLayout>
 
 

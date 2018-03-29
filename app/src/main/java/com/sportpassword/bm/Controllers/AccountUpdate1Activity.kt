@@ -8,6 +8,7 @@ import android.support.constraint.ConstraintSet
 import android.support.v4.content.LocalBroadcastManager
 import android.view.View
 import android.widget.DatePicker
+import android.widget.EditText
 import android.widget.RadioButton
 import android.widget.RadioGroup
 import com.sportpassword.bm.Models.MEMBER_SEX
@@ -21,7 +22,7 @@ import kotlinx.android.synthetic.main.activity_account_update1.*
 import kotlinx.android.synthetic.main.tab.*
 import java.util.*
 
-class AccountUpdate1Activity : BaseActivity() {
+class AccountUpdate1Activity : BaseActivity(), View.OnFocusChangeListener {
 
     var field = ""
     var value = ""
@@ -48,6 +49,12 @@ class AccountUpdate1Activity : BaseActivity() {
             val sex = MEMBER_SEX.from(radio.text.toString()).toString()
             value = sex
         })
+
+        val allV = getAllChildrenBFS(testa)
+        for (i in 0..allV.size-1) {
+            val v = allV.get(i)
+            v.setOnFocusChangeListener(this)
+        }
     }
 
     fun radioForm() {
@@ -123,4 +130,17 @@ class AccountUpdate1Activity : BaseActivity() {
     fun clear(view: View) {
         accountTxt.setText("")
     }
+
+    override fun onFocusChange(v: View?, hasFocus: Boolean) {
+        if (v is EditText) {
+            val editText = v!! as EditText
+            if (!hasFocus) {
+                println(v)
+                hideKeyboard(v)
+            } else {
+                editText.setSelection(editText.length())
+            }
+        }
+    }
+
 }

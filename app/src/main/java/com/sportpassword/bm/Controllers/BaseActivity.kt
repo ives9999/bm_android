@@ -107,6 +107,23 @@ open class BaseActivity : AppCompatActivity() {
         startActivity(intent)
     }
 
+    protected fun getAllChildrenBFS(v: View): List<View> {
+        var visited: ArrayList<View> = arrayListOf()
+        var unvisited: ArrayList<View> = arrayListOf()
+        unvisited.add(v)
+
+        while (!unvisited.isEmpty()) {
+            val child = unvisited.removeAt(0)
+            visited.add(child)
+            if (child !is ViewGroup) continue
+            val group = child as ViewGroup
+            val childCount = group.childCount
+            for (i in 0..childCount-1) unvisited.add(group.getChildAt(i))
+        }
+
+        return visited
+    }
+
     protected fun hideKeyboard(view: View) {
         val inputManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
 

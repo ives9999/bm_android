@@ -244,22 +244,6 @@ class EditTeamActivity : BaseActivity(), ImagePicker, View.OnFocusChangeListener
         }
     }
 
-    private fun getAllChildrenBFS(v: View): List<View> {
-        var visited: ArrayList<View> = arrayListOf()
-        var unvisited: ArrayList<View> = arrayListOf()
-        unvisited.add(v)
-
-        while (!unvisited.isEmpty()) {
-            val child = unvisited.removeAt(0)
-            visited.add(child)
-            if (child !is ViewGroup) continue
-            val group = child as ViewGroup
-            val childCount = group.childCount
-            for (i in 0..childCount-1) unvisited.add(group.getChildAt(i))
-        }
-
-        return visited
-    }
     private fun filterInputField(allV: List<View>): List<View> {
         var res: ArrayList<View> = arrayListOf()
         for (i in 0..allV.size-1) {
