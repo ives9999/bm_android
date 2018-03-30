@@ -13,13 +13,13 @@ class RegisterActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_register)
-        registerEmailTxt.setText("ives@housetube.tw")
-        registerPasswordTxt.setText("1234")
-        registerRePasswordTxt.setText("1234")
+        hidekyboard(register_layout)
+//        registerEmailTxt.setText("ives@housetube.tw")
+//        registerPasswordTxt.setText("1234")
+//        registerRePasswordTxt.setText("1234")
     }
 
     fun registerSubmit(view: View) {
-        hideKeyboard(view)
         val loading = Loading.show(this)
         val email: String = registerEmailTxt.text.toString()
         if (email.isEmpty()) {

@@ -17,10 +17,7 @@ import android.view.ViewGroup
 import android.view.Window
 import android.view.inputmethod.InputMethod
 import android.view.inputmethod.InputMethodManager
-import android.widget.ImageView
-import android.widget.ProgressBar
-import android.widget.RelativeLayout
-import android.widget.TextView
+import android.widget.*
 import com.sportpassword.bm.Adapters.SignupsAdapter
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Utilities.*
@@ -31,7 +28,7 @@ import kotlinx.android.synthetic.main.tab.*
 import org.jetbrains.anko.*
 
 
-open class BaseActivity : AppCompatActivity() {
+open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener {
 
     protected lateinit var refreshLayout: SwipeRefreshLayout
     protected lateinit var refreshListener: SwipeRefreshLayout.OnRefreshListener
@@ -124,12 +121,24 @@ open class BaseActivity : AppCompatActivity() {
         return visited
     }
 
-    protected fun hideKeyboard(view: View) {
+    protected fun hidekyboard(parent: View) {
+        val allV = getAllChildrenBFS(parent)
+        for (i in 0..allV.size-1) {
+            val v = allV.get(i)
+            v.setOnFocusChangeListener(this)
+        }
+    }
+
+    protected fun _hideKeyboard(view: View) {
         val inputManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
 
         if (inputManager.isAcceptingText) {
             inputManager.hideSoftInputFromWindow(view.windowToken, 0)
         }
+    }
+    protected fun _showKeyboard(view: View) {
+        val inputManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        inputManager.toggleSoftInput(InputMethodManager.SHOW_FORCED,InputMethodManager.HIDE_IMPLICIT_ONLY);
     }
 
     fun isEmulator(): Boolean {
@@ -145,6 +154,18 @@ open class BaseActivity : AppCompatActivity() {
 
     fun TextView.setMyText(value: String, default: String="") {
         if (value.isEmpty()) text = default else text = value
+    }
+
+    override fun onFocusChange(v: View?, hasFocus: Boolean) {
+        if (v is EditText) {
+            val editText = v!! as EditText
+            if (!hasFocus) {
+                _hideKeyboard(v)
+            } else {
+                editText.setSelection(editText.length())
+                _showKeyboard(v)
+            }
+        }
     }
 
     open protected fun setRefreshListener() {

@@ -22,7 +22,7 @@ import kotlinx.android.synthetic.main.activity_account_update1.*
 import kotlinx.android.synthetic.main.tab.*
 import java.util.*
 
-class AccountUpdate1Activity : BaseActivity(), View.OnFocusChangeListener {
+class AccountUpdate1Activity : BaseActivity() {
 
     var field = ""
     var value = ""
@@ -30,6 +30,8 @@ class AccountUpdate1Activity : BaseActivity(), View.OnFocusChangeListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_account_update1)
+
+        hidekyboard(testa)
 
         field = intent.getStringExtra("field")
         value = member.fetch(field)
@@ -49,12 +51,6 @@ class AccountUpdate1Activity : BaseActivity(), View.OnFocusChangeListener {
             val sex = MEMBER_SEX.from(radio.text.toString()).toString()
             value = sex
         })
-
-        val allV = getAllChildrenBFS(testa)
-        for (i in 0..allV.size-1) {
-            val v = allV.get(i)
-            v.setOnFocusChangeListener(this)
-        }
     }
 
     fun radioForm() {
@@ -100,11 +96,11 @@ class AccountUpdate1Activity : BaseActivity(), View.OnFocusChangeListener {
         accountDate.visibility = View.INVISIBLE
         accountTxt.visibility = View.VISIBLE
         accountTxt.setText(value)
+        accountTxt.requestFocus()
         accountTxt.setSelection(value.length)
     }
 
     fun accountSubmit(view: View) {
-        hideKeyboard(view)
         val loading = Loading.show(this)
         if (accountTxt.visibility == View.VISIBLE) {
             value = accountTxt.text.toString()
@@ -130,17 +126,4 @@ class AccountUpdate1Activity : BaseActivity(), View.OnFocusChangeListener {
     fun clear(view: View) {
         accountTxt.setText("")
     }
-
-    override fun onFocusChange(v: View?, hasFocus: Boolean) {
-        if (v is EditText) {
-            val editText = v!! as EditText
-            if (!hasFocus) {
-                println(v)
-                hideKeyboard(v)
-            } else {
-                editText.setSelection(editText.length())
-            }
-        }
-    }
-
 }

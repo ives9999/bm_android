@@ -29,7 +29,7 @@ import org.jetbrains.anko.inputMethodManager
 import org.jetbrains.anko.toast
 import java.io.File
 
-class EditTeamActivity : BaseActivity(), ImagePicker, View.OnFocusChangeListener {
+class EditTeamActivity : BaseActivity(), ImagePicker {
 
     override val ACTION_CAMERA_REQUEST_CODE = 100
     override val ACTION_PHOTO_REQUEST_CODE = 200
@@ -408,17 +408,6 @@ class EditTeamActivity : BaseActivity(), ImagePicker, View.OnFocusChangeListener
         }
         startActivityForResult(intent, SELECT_REQUEST_CODE)
     }
-
-    override fun onFocusChange(v: View?, hasFocus: Boolean) {
-        val editText = v!! as EditText
-        if (!hasFocus) {
-            setTextField(editText)
-            hideKeyboard(v)
-        } else {
-            editText.setSelection(editText.length())
-        }
-    }
-
 }
 
 

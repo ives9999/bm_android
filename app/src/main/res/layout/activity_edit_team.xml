@@ -84,10 +84,10 @@
 
                     <EditText
                         android:id="@+id/teamedit_name"
-                        android:layout_width="match_parent"
+                        android:layout_width="150dp"
                         android:layout_height="40dp"
                         android:layout_marginBottom="2dp"
-                        android:layout_marginRight="12dp"
+                        android:layout_marginRight="52dp"
                         android:layout_marginTop="2dp"
                         android:background="@drawable/edittext_border"
                         android:ems="10"
@@ -99,6 +99,13 @@
                         android:textAlignment="inherit"
                         android:textColor="@color/WHITE"
                         android:textSize="18sp" />
+
+                    <ImageButton
+                        android:id="@+id/imageButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="0dp"
+                        app:srcCompat="@drawable/com_facebook_close" />
                 </LinearLayout>
 
                 <LinearLayout

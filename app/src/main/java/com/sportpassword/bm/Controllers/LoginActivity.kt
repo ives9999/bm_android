@@ -26,8 +26,9 @@ class LoginActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
-        loginEmailTxt.setText("ives@housetube.tw")
-        loginPasswordTxt.setText("K5SD23r6")
+        hidekyboard(login_layout)
+        //loginEmailTxt.setText("ives@housetube.tw")
+        //loginPasswordTxt.setText("K5SD23r6")
         //setSupportActionBar(toolbar)
         //supportActionBar!!.setTitle(resources.getText(R.string.login))
 
@@ -45,7 +46,6 @@ class LoginActivity : BaseActivity() {
     }
 
     fun loginSubmit(view: View) {
-        hideKeyboard(view)
         val loading = Loading.show(this)
         val email = loginEmailTxt.text.toString()
         if (email.isEmpty()) {
