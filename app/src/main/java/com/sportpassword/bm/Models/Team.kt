@@ -179,9 +179,13 @@ class Team(id: Int, name: String, token: String, featured_path: String, vimeo: S
         var res: Array<String> = Array(degrees.size, {""})
         for (i in 0..degrees.size-1) {
             val degree = degrees[i]
-            val type: DEGREE = DEGREE.valueOf(degree)
-            val text: String = type.value
-            res.set(i, text)
+            try {
+                val type: DEGREE = DEGREE.valueOf(degree)
+                val text: String = type.value
+                res.set(i, text)
+            } catch (e: Exception) {
+
+            }
         }
         data[TEAM_DEGREE_KEY]!!["show"] = res.joinToString(", ")
     }

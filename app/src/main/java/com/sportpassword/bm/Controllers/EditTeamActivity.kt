@@ -14,10 +14,7 @@ import android.support.v7.app.AlertDialog
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
-import android.widget.EditText
-import android.widget.ImageView
-import android.widget.LinearLayout
-import android.widget.TextView
+import android.widget.*
 import com.sportpassword.bm.Models.Arena
 import com.sportpassword.bm.Models.City
 import com.sportpassword.bm.Models.Team
@@ -311,6 +308,19 @@ class EditTeamActivity : BaseActivity(), ImagePicker {
         for (i in 0..inputV.size-1) {
             val v = inputV.get(i)
             if (v is EditText) {
+                val id = v.resources.getResourceName(v.id)
+                //println(id)
+                val feature = _idRegex(id)
+                if (feature != null) {
+                    val clear_id = "clearbutton_${feature}"
+                    val resId = resources.getIdentifier(clear_id, "id", packageName)
+                    if (resId != 0) {
+                        val clear_button = findViewById<ImageButton>(resId)
+                        clear_button.setOnClickListener() { view ->
+                            v.setText("")
+                        }
+                    }
+                }
                 v.setOnFocusChangeListener(this)
             } else if (v is TextView) {
                 val tmp = v.parent
@@ -328,6 +338,16 @@ class EditTeamActivity : BaseActivity(), ImagePicker {
                 }
             }
         }
+    }
+    private fun _idRegex(id: String): String? {
+        var res: String? = null
+        val regex = "([^_]*)_(.*)".toRegex()
+        val matches = regex.find(id)
+        if (matches != null && matches.groupValues.size > 2) {
+            val groups = matches.groupValues
+            res = groups[2]
+        }
+        return res
     }
     private fun setTextField(field: EditText) {
         val tag = field.tag
