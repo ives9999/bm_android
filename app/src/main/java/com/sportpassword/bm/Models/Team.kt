@@ -287,6 +287,7 @@ class Team(id: Int, name: String, token: String, featured_path: String, vimeo: S
                 }
             }
         }
+
         if (!isAnyOneChange) {
             return res
         }
@@ -296,8 +297,6 @@ class Team(id: Int, name: String, token: String, featured_path: String, vimeo: S
         }
         if (id < 0) {
             res[TEAM_MANAGER_ID_KEY] = member.id
-            res[TEAM_CHANNEL_KEY] = "bm"
-            res["type"] = "team"
             val cat_id: ArrayList<Int> = arrayListOf(21)
             res[TEAM_CAT_KEY] = cat_id
             res[TEAM_SLUG_KEY] = data[TEAM_NAME_KEY]!!["value"]!!

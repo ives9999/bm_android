@@ -166,6 +166,7 @@ class EditTeamActivity : BaseActivity(), ImagePicker {
         layoutParams.height = LinearLayout.LayoutParams.MATCH_PARENT
         layoutParams.setMargins(0, 0, 0, 0)
         imageView.layoutParams = layoutParams
+        isFeaturedChange = true
         super.setImage(newFile, url)
     }
 
@@ -177,6 +178,7 @@ class EditTeamActivity : BaseActivity(), ImagePicker {
         layoutParams.setMargins(0, originMarginTop, 0, originMarginBottom)
         imageView.layoutParams = layoutParams
         imageView.scaleType = originScaleType
+        isFeaturedChange = true
         super.removeImage()
         closeImagePickerLayer()
     }
@@ -213,11 +215,16 @@ class EditTeamActivity : BaseActivity(), ImagePicker {
                 Alert.show(context, "提示", "沒有修改任何資料或圖片")
             } else {
                 if (params.count() == 0) {
-                    params[TEAM_CREATED_ID_KEY] = member.id
                     if (model.data[TEAM_ID_KEY]!!["value"] as Int > 0) {
                         val id: Int = model.data[TEAM_ID_KEY]!!["value"] as Int
                         params[TEAM_ID_KEY] = id
+                    } else {
+                        params[TEAM_CREATED_ID_KEY] = member.id
                     }
+                }
+                val created_id = model.data[TEAM_CREATED_ID_KEY]!!["value"] as Int
+                if (created_id < 0) {
+                    params[TEAM_CREATED_ID_KEY] = member.id
                 }
 
                 TeamService.update(context, "team", params, filePath) { success ->
@@ -266,7 +273,9 @@ class EditTeamActivity : BaseActivity(), ImagePicker {
                         if (vtype == "String") {
                             v.setText(tmp.toString())
                         } else if (vtype == "Int") {
-                            v.setText(tmp.toString())
+                            var tmp1: Int = tmp as Int
+                            val tmp2: String = if (tmp1 < 0) "" else tmp1.toString()
+                            v.setText(tmp2)
                         } else if (vtype == "Bool") {
                             v.setText(tmp.toString())
                         }

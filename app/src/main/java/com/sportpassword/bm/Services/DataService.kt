@@ -181,6 +181,9 @@ open class DataService: BaseService() {
     fun update(context: Context, type: String, params: MutableMap<String, Any>, image: String, complete: CompletionHandler) {
         //val url = "$URL_UPDATE".format(type)
 
+        println(image)
+        println(params)
+
         Http.init(context)
         Http.upload {
             url = "$URL_UPDATE".format(type)
@@ -192,13 +195,15 @@ open class DataService: BaseService() {
             params {
                // "id" - "1"
                 //"arena_id" - "10"
+                "source" - "app"
+                "channel" - "bm"
+                "type" - type
 
                 for ((_key, row) in params) {
                     var key = _key
                     if (key == "arena_id") {
                         key = TEAM_ARENA_KEY
                     }
-                    println(key)
 
                     if (key == TEAM_DEGREE_KEY) {
                         val tmp: List<String> = row as ArrayList<String>
