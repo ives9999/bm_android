@@ -17,6 +17,10 @@ import com.sportpassword.bm.Models.Data
 class MenuTeamListAdapter(val context: Context, val lists: ArrayList<Data>, val itemClick: (Data) -> Unit): RecyclerView.Adapter<MenuTeamListAdapter.ViewHolder>() {
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder?.bind(lists[position])
+//        holder?.swipeLayout.showMode = SwipeLayout.ShowMode.LayDown
+//        holder?.swipeLayout.addOnLayoutListener {v: SwipeLayout? ->
+//            println(v)
+//        }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -30,6 +34,7 @@ class MenuTeamListAdapter(val context: Context, val lists: ArrayList<Data>, val 
 
 
     inner class ViewHolder(itemView: View, val itemClick: (Data) -> Unit): RecyclerView.ViewHolder(itemView) {
+        //val swipeLayout = itemView.findViewById<SwipeLayout>(R.id.menu_team_list_swipe)
         val nameView = itemView.findViewById<TextView>(R.id.menu_team_list_name)
 
         fun bind(team: Data) {
