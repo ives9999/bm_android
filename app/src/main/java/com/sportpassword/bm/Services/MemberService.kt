@@ -70,7 +70,7 @@ object MemberService: BaseService() {
         Volley.newRequestQueue(context).add(request)
     }
 
-    fun login(context: Context, email: String, password: String, complete: CompletionHandler) {
+    fun login(context: Context, email: String, password: String, playerID: String, complete: CompletionHandler) {
         val lowerCaseEmail = email.toLowerCase()
         val url = URL_LOGIN
         //println(url)
@@ -78,6 +78,7 @@ object MemberService: BaseService() {
         val body = JSONObject()
         body.put("email", email)
         body.put("password", password)
+        body.put("player_id", playerID)
         body.put("source", "app")
         val requestBody = body.toString()
         //println(requestBody)
@@ -259,7 +260,7 @@ object MemberService: BaseService() {
         Volley.newRequestQueue(context).add(request)
     }
 
-    fun FBLogin(context: Context, complete: (Boolean) -> Unit) {
+    fun FBLogin(context: Context, playerID: String, complete: (Boolean) -> Unit) {
         val accessToken = AccessToken.getCurrentAccessToken()
         val request = GraphRequest.newMeRequest(accessToken) { json: JSONObject, response: GraphResponse? ->
             var uid = ""
@@ -297,7 +298,7 @@ object MemberService: BaseService() {
 //                println("last_name: $last_name")
 //                println("email: $email")
 //                println("sex: $sex")
-                println("avatar: $avatar")
+                //println("avatar: $avatar")
                 val body = JSONObject()
                 if (uid.isNotEmpty()) {
                     body.put("uid", uid)
@@ -313,6 +314,9 @@ object MemberService: BaseService() {
                 }
                 if (avatar.isNotEmpty()) {
                     body.put("avatar", avatar)
+                }
+                if (playerID.isNotEmpty()) {
+                    body.put("player_id", playerID)
                 }
                 _FBLogin(context, body) {success ->
                     complete(success)

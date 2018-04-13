@@ -1,6 +1,7 @@
 package com.sportpassword.bm
 
 import android.app.Application
+import com.onesignal.OneSignal
 import com.sportpassword.bm.Models.Member
 import com.sportpassword.bm.Models.Team
 
@@ -21,5 +22,11 @@ class App: Application() {
     override fun onCreate() {
         member = Member(applicationContext)
         super.onCreate()
+
+        // OneSignal Initialization
+        OneSignal.startInit(this)
+                .inFocusDisplaying(OneSignal.OSInFocusDisplayOption.Notification)
+                .unsubscribeWhenNotificationsAreDisabled(true)
+                .init()
     }
 }

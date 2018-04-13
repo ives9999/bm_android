@@ -1,3 +1,16 @@
+buildscript {
+    repositories {
+        maven { url 'https://plugins.gradle.org/m2/'}
+    }
+    dependencies {
+        classpath 'gradle.plugin.com.onesignal:onesignal-gradle-plugin:0.8.1'
+    }
+}
+apply plugin: 'com.onesignal.androidsdk.onesignal-gradle-plugin'
+
+repositories {
+    maven { url 'https://maven.google.com' }
+}
 apply plugin: 'com.android.application'
 
 apply plugin: 'kotlin-android'
@@ -23,6 +36,11 @@ android {
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
+        manifestPlaceholders = [
+                onesignal_app_id: '856c8fdb-79fb-418d-a397-d58b9c6b880b',
+                // Project number pulled from dashboard, local value is ignored.
+                onesignal_google_project_number: 'REMOTE'
+        ]
     }
 
     buildTypes {
@@ -48,19 +66,22 @@ dependencies {
     implementation 'com.android.support:multidex:1.0.3'
     implementation 'com.facebook.android:facebook-android-sdk:4.31.0'
     implementation 'com.github.babedev.dexter.dsl:dsl:0.1.2'
+    implementation "com.android.support:appcompat-v7:$design_version"
+    implementation "com.android.support:design:$design_version"
+    implementation "com.android.support:recyclerview-v7:$design_version"
+    implementation "com.android.support:cardview-v7:$design_version"
+    implementation "com.android.support:customtabs:$design_version"
+    implementation 'com.android.volley:volley:1.1.0'
+    implementation "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
+    implementation "org.jetbrains.anko:anko:$anko_version"
+    implementation 'com.squareup.picasso:picasso:2.5.2'
+    implementation 'com.github.franmontiel:PersistentCookieJar:v1.0.1'
+    implementation 'com.ohmerhe.kolley:kolley:0.3.1'
+    implementation 'com.onesignal:OneSignal:[3.8.4]'
+    implementation "com.chauthai.swipereveallayout:swipe-reveal-layout:1.4.1"
+    //compile 'com.vimeo.networking:vimeo-networking:1.1.0'
+    //compile project(':vimeo-networking')
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.1'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
-    compile "com.android.support:appcompat-v7:$design_version"
-    compile "com.android.support:design:$design_version"
-    compile "com.android.support:recyclerview-v7:$design_version"
-    compile "com.android.support:cardview-v7:$design_version"
-    compile 'com.android.volley:volley:1.1.0'
-    compile "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
-    compile "org.jetbrains.anko:anko:$anko_version"
-    compile 'com.squareup.picasso:picasso:2.5.2'
-    compile 'com.github.franmontiel:PersistentCookieJar:v1.0.1'
-    compile 'com.ohmerhe.kolley:kolley:0.3.1'
-    //compile 'com.vimeo.networking:vimeo-networking:1.1.0'
-    //compile project(':vimeo-networking')
 }

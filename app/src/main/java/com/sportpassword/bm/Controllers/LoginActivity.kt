@@ -21,8 +21,6 @@ import java.util.*
 
 class LoginActivity : BaseActivity() {
 
-    private var callbackManager: CallbackManager? = null
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
@@ -56,7 +54,10 @@ class LoginActivity : BaseActivity() {
             Alert.show(this, "警告", "密碼沒填")
         }
 
-        MemberService.login(this, email, password) { success ->
+        val playerID = _getPlayerID();
+        //println(playerID)
+
+        MemberService.login(this, email, password, playerID) { success ->
             loading.dismiss()
             //println(success)
             if (success) {
@@ -74,32 +75,7 @@ class LoginActivity : BaseActivity() {
     }
 
     fun loginFBSubmit(view: View) {
-        val context = this
-        FacebookSdk.sdkInitialize(getApplicationContext());
-        AppEventsLogger.activateApp(this);
-        callbackManager = CallbackManager.Factory.create()
-        //LoginManager.getInstance().logOut()
-        LoginManager.getInstance().logInWithReadPermissions(this, Arrays.asList("email,public_profile,user_birthday"))
-        LoginManager.getInstance().registerCallback(callbackManager,
-             object: FacebookCallback<LoginResult> {
-                 override fun onSuccess(result: LoginResult?) {
-                     MemberService.FBLogin(context) {success ->
-                         val memberDidChange = Intent(NOTIF_MEMBER_DID_CHANGE)
-                         LocalBroadcastManager.getInstance(context).sendBroadcast(memberDidChange)
-                         finish()
-                     }
-                 }
-
-                 override fun onCancel() {
-                    println("cancel")
-                 }
-
-                 override fun onError(error: FacebookException?) {
-                     println(error)
-
-                 }
-             }
-        )
+        _loginFB()
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

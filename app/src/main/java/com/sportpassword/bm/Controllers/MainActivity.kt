@@ -69,6 +69,9 @@ class MainActivity : BaseActivity() {
     @RequiresApi(Build.VERSION_CODES.M)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+
+
         //println("detect:" + gSimulate)
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)

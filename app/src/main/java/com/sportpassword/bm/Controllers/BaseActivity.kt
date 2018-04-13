@@ -11,6 +11,7 @@ import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.os.IInterface
 import android.support.v4.content.ContextCompat
+import android.support.v4.content.LocalBroadcastManager
 import android.support.v4.widget.SwipeRefreshLayout
 import android.view.View
 import android.view.ViewGroup
@@ -18,14 +19,24 @@ import android.view.Window
 import android.view.inputmethod.InputMethod
 import android.view.inputmethod.InputMethodManager
 import android.widget.*
+import com.facebook.CallbackManager
+import com.facebook.FacebookCallback
+import com.facebook.FacebookException
+import com.facebook.FacebookSdk
+import com.facebook.appevents.AppEventsLogger
+import com.facebook.login.LoginManager
+import com.facebook.login.LoginResult
+import com.onesignal.OneSignal
 import com.sportpassword.bm.Adapters.SignupsAdapter
 import com.sportpassword.bm.R
+import com.sportpassword.bm.Services.MemberService
 import com.sportpassword.bm.Utilities.*
 import com.sportpassword.bm.member
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_show_temp_play.*
 import kotlinx.android.synthetic.main.tab.*
 import org.jetbrains.anko.*
+import java.util.*
 
 
 open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener {
@@ -38,6 +49,8 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener {
     lateinit var name: String
     lateinit var memberToken: String
     lateinit var nearDate: String
+
+    protected var callbackManager: CallbackManager? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -139,6 +152,44 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener {
     protected fun _showKeyboard(view: View) {
         val inputManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         inputManager.toggleSoftInput(InputMethodManager.SHOW_FORCED,InputMethodManager.HIDE_IMPLICIT_ONLY);
+    }
+
+    protected fun _loginFB() {
+        val playerID = _getPlayerID()
+        val context = this
+        FacebookSdk.sdkInitialize(getApplicationContext());
+        AppEventsLogger.activateApp(this);
+        callbackManager = CallbackManager.Factory.create()
+        //LoginManager.getInstance().logOut()
+        LoginManager.getInstance().logInWithReadPermissions(this, Arrays.asList("email,public_profile,user_birthday"))
+        LoginManager.getInstance().registerCallback(callbackManager,
+                object: FacebookCallback<LoginResult> {
+                    override fun onSuccess(result: LoginResult?) {
+                        MemberService.FBLogin(context, playerID) { success ->
+                            val memberDidChange = Intent(NOTIF_MEMBER_DID_CHANGE)
+                            LocalBroadcastManager.getInstance(context).sendBroadcast(memberDidChange)
+                            finish()
+                        }
+                    }
+
+                    override fun onCancel() {
+                        println("cancel")
+                    }
+
+                    override fun onError(error: FacebookException?) {
+                        println(error)
+
+                    }
+                }
+        )
+    }
+
+    protected fun _getPlayerID(): String {
+        var playerID = ""
+        OneSignal.idsAvailable { userId, registrationId ->
+            playerID = userId
+        }
+        return playerID
     }
 
     fun isEmulator(): Boolean {
