@@ -4,29 +4,82 @@
     <com.chauthai.swipereveallayout.SwipeRevealLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/menu_team_list_swipe"
+        android:id="@+id/swipe_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:mode="same_level"
-        app:dragEdge="right">
+        app:dragEdge="left">
 
         <!-- Your secondary layout here -->
         <FrameLayout
-            android:id="@+id/menu_team_list_delete"
+            android:id="@+id/option_layout"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:background="#ffcc00"
             >
-            <TextView
+
+            <LinearLayout
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:textColor="@color/BLACK"
-                android:text="Delete"
-                />
+                android:layout_height="match_parent"
+                android:layout_gravity="center_horizontal"
+                android:background="@color/WHITE"
+                android:gravity="center_horizontal"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:id="@+id/menu_team_list_edit"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:background="@color/MY_GREEN"
+                    android:orientation="vertical"
+                    android:paddingLeft="24dp"
+                    android:paddingRight="24dp">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginBottom="12dp"
+                        app:srcCompat="@drawable/edit" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:text="編輯"
+                        android:textColor="@color/BLACK"
+                        android:textSize="18sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/menu_team_list_delete"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:background="@color/MY_RED"
+                    android:orientation="vertical"
+                    android:paddingLeft="24dp"
+                    android:paddingRight="24dp">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginBottom="12dp"
+                        app:srcCompat="@drawable/close" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:text="刪除"
+                        android:textColor="@color/WHITE"
+                        android:textSize="18sp" />
+                </LinearLayout>
+
+
+            </LinearLayout>
         </FrameLayout>
         <!-- Your main layout here -->
         <FrameLayout
+            android:id="@+id/front_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" >
 

@@ -5,9 +5,11 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.FrameLayout
+import android.widget.LinearLayout
 import android.widget.TextView
+import com.chauthai.swipereveallayout.SwipeRevealLayout
 import com.sportpassword.bm.R
-import com.sportpassword.bm.Models.Team
 import com.sportpassword.bm.Models.Data
 
 /**
@@ -17,10 +19,6 @@ import com.sportpassword.bm.Models.Data
 class MenuTeamListAdapter(val context: Context, val lists: ArrayList<Data>, val itemClick: (Data) -> Unit): RecyclerView.Adapter<MenuTeamListAdapter.ViewHolder>() {
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder?.bind(lists[position])
-//        holder?.swipeLayout.showMode = SwipeLayout.ShowMode.LayDown
-//        holder?.swipeLayout.addOnLayoutListener {v: SwipeLayout? ->
-//            println(v)
-//        }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -34,12 +32,16 @@ class MenuTeamListAdapter(val context: Context, val lists: ArrayList<Data>, val 
 
 
     inner class ViewHolder(itemView: View, val itemClick: (Data) -> Unit): RecyclerView.ViewHolder(itemView) {
-        //val swipeLayout = itemView.findViewById<SwipeLayout>(R.id.menu_team_list_swipe)
+        val frontLayout = itemView.findViewById<FrameLayout>(R.id.front_layout)
+        val editView = itemView.findViewById<LinearLayout>(R.id.menu_team_list_edit)
+        val deleteView = itemView.findViewById<LinearLayout>(R.id.menu_team_list_delete)
         val nameView = itemView.findViewById<TextView>(R.id.menu_team_list_name)
 
         fun bind(team: Data) {
             nameView.text = team.title
-            itemView.setOnClickListener{itemClick(team)}
+            frontLayout.setOnClickListener{println("front")}
+            editView.setOnClickListener { itemClick(team) }
+            deleteView.setOnClickListener { println("delete") }
         }
     }
 }
