@@ -181,8 +181,8 @@ open class DataService: BaseService() {
     fun update(context: Context, type: String, params: MutableMap<String, Any>, image: String, complete: CompletionHandler) {
         //val url = "$URL_UPDATE".format(type)
 
-        println(image)
-        println(params)
+        //println(image)
+        //println(params)
 
         Http.init(context)
         Http.upload {
@@ -204,6 +204,9 @@ open class DataService: BaseService() {
                     if (key == "arena_id") {
                         key = TEAM_ARENA_KEY
                     }
+                    if (key == "city_id") {
+                        key = TEAM_CITY_KEY
+                    }
 
                     if (key == TEAM_DEGREE_KEY) {
                         val tmp: List<String> = row as ArrayList<String>
@@ -223,6 +226,9 @@ open class DataService: BaseService() {
                     } else if (key == TEAM_ARENA_KEY) {
                         val value: Int = row as Int
                         _key - value.toString()
+                    } else if (key == TEAM_CITY_KEY) {
+                        val value: Int = row as Int
+                        _key - value.toString()
                     } else {
                         val vtype: String = model.data[key]!!["vtype"] as String
                         if (vtype == "String") {
@@ -240,10 +246,16 @@ open class DataService: BaseService() {
 
             }
             onSuccess { bytes ->
-                println("on success ${bytes.toString(Charset.defaultCharset())}")
+                val res = bytes.toString(Charset.defaultCharset())
+                val json = JSONObject(res)
+                //println(json)
+                success = json.getBoolean("success")
+                complete(success)
             }
             onFail { error ->
-                println("on fail ${error.toString()}")
+                //println("on fail ${error.toString()}")
+                msg = "新增/修改 球隊失敗，網站或網路錯誤" + error.localizedMessage
+                complete(false)
             }
         }
 
@@ -287,6 +299,45 @@ open class DataService: BaseService() {
         }
         Volley.newRequestQueue(context).add(request)
         */
+    }
+
+    open fun delete(context: Context, type: String, token: String, complete: CompletionHandler) {
+        val url = "$URL_DELETE".format(type)
+        val body = JSONObject()
+        body.put("source", "app")
+        body.put("channel", "bm")
+        body.put("token", token)
+        val requestBody = body.toString()
+        //println(requestBody)
+
+        val request = object : JsonObjectRequest(Request.Method.POST, url, null, Response.Listener { json ->
+            //println(json)
+            try {
+                success = json.getBoolean("success")
+            } catch (e: JSONException) {
+                println(e.localizedMessage)
+                success = false
+                msg = "無法刪除球隊，請稍後再試 " + e.localizedMessage
+            }
+            if (!success) {
+                makeErrorMsg(json)
+            }
+            complete(success)
+        }, Response.ErrorListener { error ->
+            //Log.d("ERROR", "Could not register user: $error")
+            println(error.localizedMessage)
+            this.msg = "取得失敗，網站或網路錯誤"
+            complete(false)
+        }) {
+            override fun getBodyContentType(): String {
+                return HEADER
+            }
+
+            override fun getBody(): ByteArray {
+                return requestBody.toByteArray()
+            }
+        }
+        Volley.newRequestQueue(context).add(request)
     }
 
     fun getAllCitys(context: Context, complete: CompletionHandler) {

@@ -26,6 +26,7 @@ var URL_CITYS = ""
 var URL_ARENA_BY_CITY_ID = ""
 var URL_TEAM_UPDATE = ""
 var URL_UPDATE = ""
+var URL_DELETE = ""
 var URL_ONE = ""
 var URL_TEAM = ""
 var URL_TEAM_TEMP_PLAY = ""
@@ -118,6 +119,7 @@ var TEAM_NEAR_DATE_KEY: String = "near_date"
 // Notification Constants
 val NOTIF_MEMBER_DID_CHANGE = "notifMemberChanged"
 val NOTIF_MEMBER_UPDATE = "notifMemberUpdate"
+val NOTIF_TEAM_UPDATE = "notifTeamUpdate"
 
 // Header
 var HEADER = "application/json; charset=utf-8"
@@ -138,4 +140,5 @@ val DAYS: Array<Map<String, Any>> = arrayOf(
         mapOf("value" to 6, "text" to "星期六", "checked" to false),
         mapOf("value" to 7, "text" to "星期日", "checked" to false)
 )
+
 

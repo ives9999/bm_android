@@ -33,6 +33,7 @@ import com.sportpassword.bm.Services.MemberService
 import com.sportpassword.bm.Services.TeamService
 import com.sportpassword.bm.Utilities.CHANNEL
 import com.sportpassword.bm.Utilities.NOTIF_MEMBER_DID_CHANGE
+import com.sportpassword.bm.Utilities.NOTIF_TEAM_UPDATE
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
 import kotlinx.android.synthetic.main.tab.view.*
@@ -166,6 +167,7 @@ class MainActivity : BaseActivity() {
     override fun onResume() {
         super.onResume()
         LocalBroadcastManager.getInstance(this).registerReceiver(memberDidChange, IntentFilter(NOTIF_MEMBER_DID_CHANGE))
+        LocalBroadcastManager.getInstance(this).registerReceiver(teamUpdate, IntentFilter(NOTIF_TEAM_UPDATE))
     }
 
     override fun onDestroy() {
@@ -182,6 +184,11 @@ class MainActivity : BaseActivity() {
     private val memberDidChange = object : BroadcastReceiver() {
         override fun onReceive(context: Context?, intent: Intent?) {
             _loginout()
+        }
+    }
+    private val teamUpdate = object: BroadcastReceiver() {
+        override fun onReceive(context: Context?, intent: Intent?) {
+            refresh()
         }
     }
 
@@ -207,10 +214,11 @@ class MainActivity : BaseActivity() {
 //                for (i in 0 until TeamService.dataLists.size) {
 //                    println("id: ${TeamService.dataLists[i].id}, title: ${TeamService.dataLists[i].title}")
 //                }
-                this.menuTeamListAdapter = MenuTeamListAdapter(this, TeamService.dataLists) { team ->
-                    //println(team.id)
-                    goEditTeam(team.token)
-                }
+                this.menuTeamListAdapter = MenuTeamListAdapter(this, TeamService.dataLists,
+                        { team -> goEditTeam(team.token) },
+                        { team -> deleteTeam(team.token) },
+                        { team -> goTeamTempPlayEdit(team.token) }
+                )
                 menu_team_list.adapter = this.menuTeamListAdapter
 
                 val layoutManager = LinearLayoutManager(this)

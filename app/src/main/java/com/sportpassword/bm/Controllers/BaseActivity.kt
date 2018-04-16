@@ -30,6 +30,7 @@ import com.onesignal.OneSignal
 import com.sportpassword.bm.Adapters.SignupsAdapter
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.MemberService
+import com.sportpassword.bm.Services.TeamService
 import com.sportpassword.bm.Utilities.*
 import com.sportpassword.bm.member
 import com.squareup.picasso.Picasso
@@ -83,6 +84,7 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener {
         URL_ARENA_BY_CITY_ID = URL_HOME + "arena_by_city"
         URL_TEAM_UPDATE = URL_HOME + "team/update"
         URL_UPDATE = URL_HOME + "%s/update"
+        URL_DELETE = URL_HOME + "%s/delete"
         URL_ONE = "${URL_HOME}%s/one"
         URL_TEAM = URL_HOME + "team/"
         URL_TEAM_TEMP_PLAY = URL_TEAM + "tempPlay/onoff"
@@ -115,6 +117,23 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener {
         val intent = Intent(this, EditTeamActivity::class.java)
         intent.putExtra("token", token)
         startActivity(intent)
+    }
+
+    protected fun goTeamTempPlayEdit(token: String) {
+        val intent = Intent(this, TeamTempPlayEditActivity::class.java)
+        intent.putExtra("token", token)
+        startActivity(intent)
+    }
+
+    protected fun deleteTeam(token: String="") {
+        Alert.delete(this, {
+            val m = Loading.show(this)
+            TeamService.delete(this, "team", token) { success ->
+                m.dismiss()
+                val teamUpdate = Intent(NOTIF_TEAM_UPDATE)
+                LocalBroadcastManager.getInstance(this).sendBroadcast(teamUpdate)
+            }
+        })
     }
 
     protected fun getAllChildrenBFS(v: View): List<View> {

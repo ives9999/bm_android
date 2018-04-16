@@ -55,7 +55,7 @@ class Team(id: Int, name: String, token: String, featured_path: String, vimeo: S
                 TEAM_PLAY_START_KEY to mutableMapOf("ch" to "開始時間","vtype" to "String","value" to "","submit" to true,"atype" to more,"segue" to TO_SELECT_TIME,"sender" to mutableMapOf<String, Any>(),"show" to ""),
                 TEAM_PLAY_END_KEY to mutableMapOf("ch" to "結束時間","vtype" to "String","value" to "","submit" to true,"atype" to more,"segue" to TO_SELECT_TIME,"sender" to mutableMapOf<String, Any>(),"show" to ""),
                 TEAM_BALL_KEY to mutableMapOf("ch" to "使用球種","vtype" to "String","value" to "","submit" to true,"atype" to none,"show" to "","keyboardType" to defaultPad),
-                TEAM_DEGREE_KEY to mutableMapOf("ch" to "球隊程度","vtype" to "array","value" to mutableListOf<String>(),"submit" to true,"atype" to more,"segue" to TO_SELECT_DEGREE,"sender" to arrayOf<String>(),"show" to ""),
+                TEAM_DEGREE_KEY to mutableMapOf("ch" to "球隊程度","vtype" to "array","value" to mutableListOf<String>(),"submit" to true,"atype" to more,"segue" to TO_SELECT_DEGREE,"sender" to arrayListOf<String>(),"show" to ""),
                 TEAM_CHARGE_KEY to mutableMapOf("ch" to "收費說明","vtype" to "String","value" to "","submit" to true,"atype" to more,"segue" to TO_TEXT_INPUT,"sender" to mutableMapOf<String, Any>(),"show" to ""),
                 TEAM_CONTENT_KEY to mutableMapOf("ch" to "球隊說明","vtype" to "String","value" to "","submit" to true,"atype" to more,"segue" to TO_TEXT_INPUT,"sender" to mutableMapOf<String, Any>(),"show" to ""),
                 TEAM_TEMP_FEE_M_KEY to mutableMapOf("ch" to "臨打費用：男","vtype" to "Int","value" to -1,"submit" to true,"atype" to none,"show" to "","keyboardType" to numberPad),
@@ -69,6 +69,54 @@ class Team(id: Int, name: String, token: String, featured_path: String, vimeo: S
         data = _data
         for ((key, value) in data) {
             data[key]!!["change"] = false
+        }
+    }
+
+    fun runTestData() {
+        val testData = mapOf<String, Any>(
+            TEAM_NAME_KEY to "快樂羽球隊",
+        TEAM_LEADER_KEY to "孫志煌",
+        TEAM_MOBILE_KEY to "0911299994",
+        TEAM_EMAIL_KEY to "ives@housetube.tw",
+        TEAM_TEMP_FEE_M_KEY to 150,
+        TEAM_TEMP_FEE_F_KEY to 100,
+        TEAM_BALL_KEY to "RSL 4",
+        TEAM_CONTENT_KEY to "請勿報名沒有來，列入黑名單",
+        TEAM_CHARGE_KEY to "一季3600含球",
+        TEAM_TEMP_CONTENT_KEY to "歡迎加入",
+        TEAM_PLAY_START_KEY to "16:00",
+        TEAM_PLAY_END_KEY to "18:00",
+        TEAM_DEGREE_KEY to arrayListOf("high", "soso"),
+        TEAM_DAYS_KEY to arrayListOf(2, 4),
+        TEAM_CITY_KEY to City(218, "台南"),
+        TEAM_ARENA_KEY to Arena(10, "全穎羽球館"),
+        TEAM_CREATED_ID_KEY to 1
+        )
+        if (testData.size > 0) {
+            for ((key1, value) in testData) {
+                if (key1 == TEAM_CITY_KEY) {
+                    val city: City = value as City
+                    data[key1]!!["value"] = city.id
+                    data[key1]!!["show"] = city.name
+                } else if (key1 == TEAM_ARENA_KEY) {
+                    val arena: Arena = value as Arena
+                    data[key1]!!["value"] = arena.id
+                    data[key1]!!["show"] = arena.name
+                } else {
+                    for ((key2, row) in data) {
+                        if (key1 == key2) {
+                            data[key2]!!["value"] = value
+                            val vtype: String = row["vtype"] as String
+                            if (vtype != "array") {
+                                data[key2]!!["show"] = value
+                            }
+                        }
+                    }
+                }
+                data[key1]!!["change"] = true
+            }
+            updateDays(testData[TEAM_DAYS_KEY] as ArrayList<Int>)
+            updateDegree(testData[TEAM_DEGREE_KEY] as ArrayList<String>)
         }
     }
 
@@ -91,7 +139,7 @@ class Team(id: Int, name: String, token: String, featured_path: String, vimeo: S
         setDaysSender()
     }
 
-    fun updateDegree(degrees: Array<String>) {
+    fun updateDegree(degrees: ArrayList<String>) {
         data[TEAM_DEGREE_KEY]!!["value"] = degrees
         degreeShow()
         setDegreeSender()
@@ -144,10 +192,14 @@ class Team(id: Int, name: String, token: String, featured_path: String, vimeo: S
             nn1 = (data[TEAM_NEAR_DATE_KEY]!!["value"] as String)
         }
         if (n2 != null) {
-            data[TEAM_NEAR_DATE_KEY]!!["value1"] = n2
-            nn2 = n2!!
+            if (data[TEAM_NEAR_DATE_KEY]!!.containsKey("value1")) {
+                data[TEAM_NEAR_DATE_KEY]!!["value1"] = n2
+                nn2 = n2!!
+            }
         } else {
-            nn2 = (data[TEAM_NEAR_DATE_KEY]!!["value1"] as String)
+            if (data[TEAM_NEAR_DATE_KEY]!!.containsKey("value1")) {
+                nn2 = (data[TEAM_NEAR_DATE_KEY]!!["value1"] as String)
+            }
         }
         val n: String = nn1 + "(" + nn2 + ")"
         data[TEAM_NEAR_DATE_KEY]!!["show"] = n
@@ -175,16 +227,16 @@ class Team(id: Int, name: String, token: String, featured_path: String, vimeo: S
     }
 
     fun degreeShow() {
-        val degrees: Array<String> = data[TEAM_DEGREE_KEY]!!["value"] as Array<String>
-        var res: Array<String> = Array(degrees.size, {""})
+        val degrees: ArrayList<String> = data[TEAM_DEGREE_KEY]!!["value"] as ArrayList<String>
+        var res: ArrayList<String> = arrayListOf()
         for (i in 0..degrees.size-1) {
             val degree = degrees[i]
             try {
                 val type: DEGREE = DEGREE.valueOf(degree)
                 val text: String = type.value
-                res.set(i, text)
+                res.add(text)
             } catch (e: Exception) {
-
+                println("parse degree exception: " + e.localizedMessage)
             }
         }
         data[TEAM_DEGREE_KEY]!!["show"] = res.joinToString(", ")

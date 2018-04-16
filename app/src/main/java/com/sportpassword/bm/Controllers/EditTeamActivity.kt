@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.support.constraint.ConstraintLayout
 import android.support.design.widget.TextInputEditText
+import android.support.v4.content.LocalBroadcastManager
 import android.support.v4.widget.SwipeRefreshLayout
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.TeamService
@@ -52,11 +53,11 @@ class EditTeamActivity : BaseActivity(), ImagePicker {
     private var isFeaturedChange: Boolean = false
 
     val model: Team = Team(0, "", "", "")
+    var action: String = "INSERT"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_edit_team)
-        //println("oncreate")
 
         that = this
         imageView = teamedit_featured
@@ -86,16 +87,20 @@ class EditTeamActivity : BaseActivity(), ImagePicker {
     override fun refresh() {
         super.refresh()
         if (teamToken.length > 0) {
+            action = "UPDATE"
             TeamService.getOne(this, "team", "name", teamToken) { success ->
                 model.data = TeamService.data
                 //println(model.data)
                 //setTeamData()
                 //println(model.data)
                 dataToField(inputV)
-                closeRefresh()
                 teamedit_name.setSelection(teamedit_name.length())
+                closeRefresh()
             }
         }
+        model.runTestData()
+        dataToField(inputV)
+        teamedit_name.setSelection(teamedit_name.length())
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -127,7 +132,7 @@ class EditTeamActivity : BaseActivity(), ImagePicker {
                             model.updatePlayEndTime(time)
                         }
                     } else if (key == TEAM_DEGREE_KEY) {
-                        val degrees: Array<String> = data!!.getStringArrayExtra("degree")
+                        val degrees: ArrayList<String> = data!!.getStringArrayExtra("degree").toCollection(ArrayList<String>())
                         model.updateDegree(degrees)
                     } else if (key == TEAM_CITY_KEY) {
                         val id: Int = data!!.getIntExtra("id", model.data[TEAM_CITY_KEY]!!["value"] as Int)
@@ -234,12 +239,16 @@ class EditTeamActivity : BaseActivity(), ImagePicker {
                             val id: Int = TeamService.id
                             model.data[TEAM_ID_KEY]!!["value"] = id
                             model.data[TEAM_ID_KEY]!!["show"] = id
-                            Alert.show(context, "成功", "新增 / 修改球隊成功")
+                            Alert.update(this, this.action, {
+                                val teamUpdate = Intent(NOTIF_TEAM_UPDATE)
+                                LocalBroadcastManager.getInstance(this).sendBroadcast(teamUpdate)
+                                finish()
+                            })
                         } else {
                             Alert.show(context, "錯誤", TeamService.msg)
                         }
                     } else {
-                        Alert.show(context, "錯誤", "新增 / 修改球隊失敗，伺服器無法新增成功，請稍後再試")
+                        Alert.show(context, "錯誤", TeamService.msg)
                     }
 
                 }

@@ -224,6 +224,7 @@ object TeamService: DataService() {
             model.data["signups"]!!["vtype"] = "array"
             //print(model.data)
         }
+        //println(model.data)
 
         model.updatePlayStartTime()
         model.updatePlayEndTime()
@@ -303,7 +304,7 @@ object TeamService: DataService() {
                     //println("tmp1: $tmp1")
                     val degrees = tmp1.split(",")
                     //println("degrees: $degrees")
-                    model.updateDegree(degrees.toTypedArray())
+                    model.updateDegree(degrees.toTypedArray().toCollection(ArrayList()))
                 } catch (e: JSONException) {
 
                 }

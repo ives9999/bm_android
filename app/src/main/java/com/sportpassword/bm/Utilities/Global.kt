@@ -34,6 +34,7 @@ fun String.noSec(): String {
 }
 
 object Loading {
+    var mask: Dialog? = null
     fun show(context: Context): Dialog {
         val dialog = Dialog(context)
         dialog.window.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT));
@@ -70,7 +71,13 @@ object Loading {
                 ViewGroup.LayoutParams.WRAP_CONTENT)
         dialog.addContentView(rl, p)
         dialog.show()
+        mask = dialog
         return dialog
+    }
+    fun hide() {
+        if (mask != null) {
+            //mask.dismiss()
+        }
     }
 }
 
@@ -87,6 +94,37 @@ object Alert {
         val alert = _show(context, title, msg)
         alert.setButton(AlertDialog.BUTTON_NEGATIVE, "確定", { Interface, j ->
             ok()
+        })
+        alert.show()
+        return alert
+    }
+    fun update(context: Context, action: String, back: ()->Unit): AlertDialog {
+        val alert = _show(context, "成功", "新增 / 修改 成功")
+        if (action == "INSERT") {
+            alert.setButton(AlertDialog.BUTTON_POSITIVE, "確定", { Interface, j ->
+                Interface.cancel()
+                back()
+            })
+        } else {
+            alert.setButton(AlertDialog.BUTTON_POSITIVE, "回上一頁", { Interface, j ->
+                Interface.cancel()
+                back()
+            })
+            alert.setButton(AlertDialog.BUTTON_NEGATIVE, "繼續修改", { Interface, j ->
+                Interface.cancel()
+            })
+        }
+        alert.show()
+        return alert
+    }
+    fun delete(context: Context, del: ()->Unit): AlertDialog {
+        val alert = _show(context, "警告", "是否真的要刪除？")
+        alert.setButton(AlertDialog.BUTTON_NEGATIVE, "確定", { Interface, j ->
+            Interface.cancel()
+            del()
+        })
+        alert.setButton(AlertDialog.BUTTON_POSITIVE, "取消", { Interface, j ->
+            Interface.cancel()
         })
         alert.show()
         return alert

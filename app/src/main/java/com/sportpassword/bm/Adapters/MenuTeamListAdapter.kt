@@ -16,14 +16,14 @@ import com.sportpassword.bm.Models.Data
  * Created by ives on 2018/2/14.
  */
 
-class MenuTeamListAdapter(val context: Context, val lists: ArrayList<Data>, val itemClick: (Data) -> Unit): RecyclerView.Adapter<MenuTeamListAdapter.ViewHolder>() {
+class MenuTeamListAdapter(val context: Context, val lists: ArrayList<Data>, val edit: (Data) -> Unit, val delete: (Data) -> Unit, val onoff: (Data) -> Unit): RecyclerView.Adapter<MenuTeamListAdapter.ViewHolder>() {
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder?.bind(lists[position])
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view: View = LayoutInflater.from(context).inflate(R.layout.menu_team_list_item, parent, false)
-        return ViewHolder(view, itemClick)
+        return ViewHolder(view, edit, delete, onoff)
     }
 
     override fun getItemCount(): Int {
@@ -31,7 +31,7 @@ class MenuTeamListAdapter(val context: Context, val lists: ArrayList<Data>, val 
     }
 
 
-    inner class ViewHolder(itemView: View, val itemClick: (Data) -> Unit): RecyclerView.ViewHolder(itemView) {
+    inner class ViewHolder(itemView: View, val edit: (Data) -> Unit, val delete: (Data) -> Unit, val onoff: (Data) -> Unit): RecyclerView.ViewHolder(itemView) {
         val frontLayout = itemView.findViewById<FrameLayout>(R.id.front_layout)
         val editView = itemView.findViewById<LinearLayout>(R.id.menu_team_list_edit)
         val deleteView = itemView.findViewById<LinearLayout>(R.id.menu_team_list_delete)
@@ -39,9 +39,9 @@ class MenuTeamListAdapter(val context: Context, val lists: ArrayList<Data>, val 
 
         fun bind(team: Data) {
             nameView.text = team.title
-            frontLayout.setOnClickListener{println("front")}
-            editView.setOnClickListener { itemClick(team) }
-            deleteView.setOnClickListener { println("delete") }
+            frontLayout.setOnClickListener{ onoff(team) }
+            editView.setOnClickListener { edit(team) }
+            deleteView.setOnClickListener { delete(team) }
         }
     }
 }
