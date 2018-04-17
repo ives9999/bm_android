@@ -64,7 +64,7 @@
 
 
     <android.support.constraint.ConstraintLayout
-        android:id="@+id/linearLayout2"
+        android:id="@+id/quantity_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center_vertical"

@@ -22,6 +22,7 @@ object TeamService: DataService() {
 
     var tempPlayLists: ArrayList<Map<String, Map<String, Any>>> = arrayListOf()
     override val model: Team = Team(-1, "", "", "")
+    lateinit var temp_play_data: MutableMap<String, MutableMap<String, Any>>
 
     override fun setData(id: Int, title: String, token: String, featured_path: String, vimeo: String, youtube: String): Team {
         val data = Team(id, title, token, featured_path, vimeo, youtube)
@@ -139,6 +140,65 @@ object TeamService: DataService() {
 //            }
 //        }
 //
+        Volley.newRequestQueue(context).add(request)
+    }
+    fun tempPlay_onoff(context: Context, token: String, complete: CompletionHandler) {
+        val url = URL_TEAM_TEMP_PLAY
+        //println(url)
+
+        val body = JSONObject()
+        body.put("source", "app")
+        body.put("channel", "bm")
+        body.put("token", token)
+        body.put("strip_html", true)
+
+        val requestBody = body.toString()
+        val request = object : JsonObjectRequest(Request.Method.POST, url, null, Response.Listener { json ->
+            //println(json)
+            try {
+                for ((key, item) in model.temp_play_data) {
+                    if (json.has(key)) {
+                        //println(key)
+                        var value = json.get(key)
+                        val vtype: String = item["vtype"]!! as String
+                        if (vtype == "Int") {
+                            try {
+                                value = value as Int
+                            } catch (e: Exception) {
+                                value = 0
+                            }
+                            model.temp_play_data[key]!!["value"] = value
+                            model.temp_play_data[key]!!["show"] = value
+                        } else if (vtype == "String") {
+                            model.temp_play_data[key]!!["value"] = value
+                            model.temp_play_data[key]!!["show"] = value
+                        } else if (vtype == "array") {
+
+                        }
+                    }
+                }
+                temp_play_data = model.temp_play_data
+                complete(true)
+            } catch (e: JSONException) {
+                println(e.localizedMessage)
+                success = false
+                msg = "無法取得臨打資訊，請稍後再試 " + e.localizedMessage
+                complete(false)
+            }
+        }, Response.ErrorListener { error ->
+            //Log.d("ERROR", "Could not register user: $error")
+            println(error.localizedMessage)
+            this.msg = "取得失敗，網站或網路錯誤"
+            complete(false)
+        }) {
+            override fun getBodyContentType(): String {
+                return HEADER
+            }
+
+            override fun getBody(): ByteArray {
+                return requestBody.toByteArray()
+            }
+        }
         Volley.newRequestQueue(context).add(request)
     }
     fun plusOne(context: Context, title: String, near_date: String, token: String, complete: CompletionHandler) {

@@ -257,6 +257,7 @@ class EditTeamActivity : BaseActivity(), ImagePicker {
         }
     }
 
+    // filter the not text input field
     private fun filterInputField(allV: List<View>): List<View> {
         var res: ArrayList<View> = arrayListOf()
         for (i in 0..allV.size-1) {

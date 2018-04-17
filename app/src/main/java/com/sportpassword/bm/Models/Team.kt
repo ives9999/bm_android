@@ -25,8 +25,14 @@ class Team(id: Int, name: String, token: String, featured_path: String, vimeo: S
     var TO_SELECT_DEGREE: String = "toSelectDegree"
     override var data: MutableMap<String, MutableMap<String, Any>> = mutableMapOf()
     var lists: ArrayList<Map<String, Map<String, Any>>> = arrayListOf()
+    var temp_play_data: MutableMap<String, MutableMap<String, Any>> = mutableMapOf()
 
     val transferPair: Map<String, String> = mapOf(TEAM_CITY_KEY to "city_id",TEAM_ARENA_KEY to "arena_id")
+
+    init {
+        dataReset()
+        tempPlayDataReset()
+    }
 
 
     override fun dataReset() {
@@ -70,6 +76,14 @@ class Team(id: Int, name: String, token: String, featured_path: String, vimeo: S
         for ((key, value) in data) {
             data[key]!!["change"] = false
         }
+    }
+    fun tempPlayDataReset() {
+        temp_play_data = mutableMapOf(
+            TEAM_ID_KEY to mutableMapOf("ch" to "編號","vtype" to "Int","value" to -1,"show" to "","submit" to false,"key" to TEAM_ID_KEY),
+            TEAM_NAME_KEY to mutableMapOf("ch" to "名稱","vtype" to "String","value" to "","submit" to false,"show" to "","key" to TEAM_NAME_KEY),
+            TEAM_TEMP_STATUS_KEY to mutableMapOf("ch" to "臨打狀態","vtype" to "String","value" to "off","show" to "off","submit" to true,"change" to false,"key" to TEAM_TEMP_STATUS_KEY),
+            TEAM_TEMP_QUANTITY_KEY to mutableMapOf("ch" to "臨打人數","vtype" to "Int","value" to -1,"show" to "","hidden" to true,"submit" to true,"change" to false,"key" to TEAM_TEMP_QUANTITY_KEY)
+        )
     }
 
     fun runTestData() {
@@ -363,6 +377,26 @@ class Team(id: Int, name: String, token: String, featured_path: String, vimeo: S
             }
         }
 
+        return res
+    }
+    fun makeTempPlaySubmitArr(): MutableMap<String, Any> {
+        var isAnyOneChage: Boolean = false
+        var res: MutableMap<String, Any> = mutableMapOf()
+        for ((key, row) in temp_play_data) {
+            val isSubmit: Boolean = row["submit"]!! as Boolean
+            var isChange: Boolean = false
+            if (row.containsKey("change")) {
+                isChange = row["change"]!! as Boolean
+            }
+            if (isSubmit && isChange) {
+                res[key] = row["value"]!!
+                if (!isAnyOneChage) isAnyOneChage = true
+            }
+        }
+        if (!isAnyOneChage) {
+            return res
+        }
+        res[TEAM_ID_KEY] = temp_play_data[TEAM_ID_KEY]!!["value"]!!
         return res
     }
 }
