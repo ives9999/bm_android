@@ -3,7 +3,12 @@ package com.sportpassword.bm.Controllers
 import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.support.v7.app.ActionBar
+import android.view.Gravity
+import android.view.LayoutInflater
 import android.view.View
+import android.view.Window
+import android.widget.TextView
 import com.sportpassword.bm.Models.MEMBER_SEX
 import com.sportpassword.bm.R
 import com.sportpassword.bm.member
@@ -17,7 +22,12 @@ class AccountActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_account)
+        setMyTitle("帳戶")
+
+
         //setData()
+
+        //val title: TextView =
 
         accountNicknameRow.setOnClickListener { view ->
 //            val accountUpdateIntent = Intent(this, AccountUpdate1Activity::class.java)
@@ -44,7 +54,7 @@ class AccountActivity : BaseActivity() {
             goIntent("tel")
         }
 
-
+        //setTitle("test")
     }
 
     override fun onResume() {

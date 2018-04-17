@@ -13,9 +13,8 @@ import android.os.IInterface
 import android.support.v4.content.ContextCompat
 import android.support.v4.content.LocalBroadcastManager
 import android.support.v4.widget.SwipeRefreshLayout
-import android.view.View
-import android.view.ViewGroup
-import android.view.Window
+import android.support.v7.app.ActionBar
+import android.view.*
 import android.view.inputmethod.InputMethod
 import android.view.inputmethod.InputMethodManager
 import android.widget.*
@@ -91,6 +90,17 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener {
         URL_TEAM_TEMP_PLAY_LIST = URL_TEAM + "tempPlay/list"
         URL_TEAM_PLUSONE = BASE_URL + "/team/tempPlay/plusOne/"
         URL_TEAM_CANCELPLUSONE = BASE_URL + "/team/tempPlay/cancelPlusOne/"
+    }
+
+    protected fun setMyTitle(title: String) {
+        val titleView: TextView = LayoutInflater.from(this).inflate(R.layout.title_bar, null) as TextView
+        titleView.setText(title)
+        //println(titleView)
+        val params: ActionBar.LayoutParams = ActionBar.LayoutParams(ActionBar.LayoutParams.MATCH_PARENT, ActionBar.LayoutParams.MATCH_PARENT, Gravity.CENTER)
+        val actionBar: ActionBar = supportActionBar!!
+        actionBar.setCustomView(titleView, params)
+        actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM, ActionBar.DISPLAY_SHOW_CUSTOM)
+        actionBar.setDisplayHomeAsUpEnabled(false)
     }
 
     protected fun goLogin() {
