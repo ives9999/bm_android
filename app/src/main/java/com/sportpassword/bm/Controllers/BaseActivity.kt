@@ -100,7 +100,13 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener {
         val actionBar: ActionBar = supportActionBar!!
         actionBar.setCustomView(titleView, params)
         actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM, ActionBar.DISPLAY_SHOW_CUSTOM)
-        actionBar.setDisplayHomeAsUpEnabled(false)
+        actionBar.setDisplayHomeAsUpEnabled(true)
+        actionBar.setHomeAsUpIndicator(R.drawable.prev)
+    }
+
+    override fun onSupportNavigateUp(): Boolean {
+        finish()
+        return true
     }
 
     protected fun goLogin() {
