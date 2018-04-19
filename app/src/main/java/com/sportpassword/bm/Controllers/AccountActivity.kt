@@ -57,14 +57,17 @@ class AccountActivity : BaseActivity() {
         return true
     }
 
-    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
-        val id: Int = item!!.itemId
-        if (id == R.id.menu_button) {
+    override fun onOptionsItemSelected(item: MenuItem?) = when (item!!.itemId) {
+        R.id.menu_button -> {
             println("button")
-            return true
+            true
         }
-
-        return super.onOptionsItemSelected(item)
+        else -> {
+            super.onOptionsItemSelected(item)
+        }
+    }
+    fun submit(view: View) {
+        println("submit")
     }
 
     override fun onResume() {

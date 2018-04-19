@@ -8,11 +8,20 @@
         <item name="colorAccent">@color/colorAccent</item>
         <item name="drawerArrowStyle">@style/DrawerArrowStyle</item>
         <item name="android:textColorHint">@color/WHITE</item>
+        <item name="android:actionButtonStyle">@style/MyActionBarButtonStyle</item>
+        <item name="actionButtonStyle">@style/MyActionBarButtonStyle</item>
+    </style>
+    <style name="MyActionBarButtonStyle" parent="Widget.AppCompat.ActionButton">
+        <item name="android:minWidth">30dip</item>
+        <item name="android:maxWidth">80dip</item>
+        <item name="android:width">60dip</item>
     </style>
 
     <style name="AppTheme.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
+        <item name="android:actionButtonStyle">@style/MyActionBarButtonStyle</item>
+        <item name="actionButtonStyle">@style/MyActionBarButtonStyle</item>
     </style>
 
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar">

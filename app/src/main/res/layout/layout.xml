@@ -18,20 +18,10 @@
             android:layout_width="247dp"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
-            android:text="Button"
+            android:text="Button123"
             tools:layout_editor_absoluteX="67dp"
             tools:layout_editor_absoluteY="38dp" />
 
-        <Button
-            android:id="@+id/button6"
-            android:layout_width="247dp"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/image_picker_photo_btn"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="16dp"
-            android:text="Button"
-            tools:layout_editor_absoluteX="161dp"
-            tools:layout_editor_absoluteY="156dp" />
     </RelativeLayout>
 
 
