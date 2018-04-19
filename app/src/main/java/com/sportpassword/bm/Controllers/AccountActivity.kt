@@ -4,10 +4,7 @@ import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.v7.app.ActionBar
-import android.view.Gravity
-import android.view.LayoutInflater
-import android.view.View
-import android.view.Window
+import android.view.*
 import android.widget.TextView
 import com.sportpassword.bm.Models.MEMBER_SEX
 import com.sportpassword.bm.R
@@ -53,8 +50,21 @@ class AccountActivity : BaseActivity() {
         accountTelRow.setOnClickListener { view ->
             goIntent("tel")
         }
+    }
 
-        //setTitle("test")
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.button, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        val id: Int = item!!.itemId
+        if (id == R.id.menu_button) {
+            println("button")
+            return true
+        }
+
+        return super.onOptionsItemSelected(item)
     }
 
     override fun onResume() {
