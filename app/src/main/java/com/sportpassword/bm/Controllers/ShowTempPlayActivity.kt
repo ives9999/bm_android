@@ -5,8 +5,12 @@ import android.os.Bundle
 import android.support.v4.widget.SwipeRefreshLayout
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.view.LayoutInflater
+import android.view.Menu
 import android.view.View
+import android.widget.Button
 import android.widget.ImageView
+import android.widget.LinearLayout
 import com.sportpassword.bm.Adapters.SignupsAdapter
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.TeamService
@@ -39,6 +43,11 @@ class ShowTempPlayActivity : BaseActivity() {
         refresh()
     }
 
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.temp_play, menu)
+        return true
+    }
+
     override fun refresh() {
         super.refresh()
         TeamService.getOne(this, "team", "name", teamToken) { success ->
@@ -47,6 +56,8 @@ class ShowTempPlayActivity : BaseActivity() {
                 //println(data)
                 setTeamData(show_featured_view)
                 closeRefresh()
+                val title: String = data[TEAM_NAME_KEY]!!["value"] as String
+                setMyTitle(title)
             }
         }
     }

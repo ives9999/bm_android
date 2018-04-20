@@ -52,24 +52,6 @@ class AccountActivity : BaseActivity() {
         }
     }
 
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.button, menu)
-        return true
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem?) = when (item!!.itemId) {
-        R.id.menu_button -> {
-            println("button")
-            true
-        }
-        else -> {
-            super.onOptionsItemSelected(item)
-        }
-    }
-    fun submit(view: View) {
-        println("submit")
-    }
-
     override fun onResume() {
         super.onResume()
         //println("aaccount")
