@@ -41,9 +41,18 @@ class AccountUpdate1Activity : BaseActivity() {
         accountDate.visibility = View.INVISIBLE
 
         when (field) {
-            "sex" -> radioForm()
-            "dob" -> dobForm()
-            else ->textForm()
+            "sex" -> {
+                radioForm()
+                setMyTitle("修改性別")
+            }
+            "dob" -> {
+                dobForm()
+                setMyTitle("修改生日")
+            }
+            else -> {
+                textForm()
+                setMyTitle("修改")
+            }
         }
         //println(value)
         accountRadioGroup.setOnCheckedChangeListener(RadioGroup.OnCheckedChangeListener{ group, checkedId ->

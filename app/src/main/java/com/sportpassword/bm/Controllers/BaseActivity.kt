@@ -2,9 +2,13 @@ package com.sportpassword.bm.Controllers
 
 import android.app.AlertDialog
 import android.app.Dialog
+import android.bluetooth.BluetoothClass
 import android.content.Context
 import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.graphics.Color
+import android.graphics.Point
 import android.graphics.drawable.ColorDrawable
 import android.os.Build
 import android.support.v7.app.AppCompatActivity
@@ -93,15 +97,43 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener {
     }
 
     protected fun setMyTitle(title: String) {
-        val titleView: TextView = LayoutInflater.from(this).inflate(R.layout.title_bar, null) as TextView
+        val actionBar: ActionBar = supportActionBar!!
+        actionBar.setDisplayHomeAsUpEnabled(true)
+        actionBar.setDisplayShowTitleEnabled(false)
+        actionBar.setHomeAsUpIndicator(R.drawable.prev)
+
+        val l: LinearLayout = LayoutInflater.from(this).inflate(R.layout.title_bar, null) as LinearLayout
+        val titleView: TextView = l.findViewById<TextView>(R.id.myTitle)
         titleView.setText(title)
         //println(titleView)
-        val params: ActionBar.LayoutParams = ActionBar.LayoutParams(ActionBar.LayoutParams.MATCH_PARENT, ActionBar.LayoutParams.MATCH_PARENT, Gravity.CENTER)
-        val actionBar: ActionBar = supportActionBar!!
-        actionBar.setCustomView(titleView, params)
+        val display: Display = windowManager.defaultDisplay
+        val size: Point = Point()
+        display.getSize(size)
+        val actionBarWidth: Int = size.x
+        //println(actionBarWidth)
+
+        titleView.measure(0, 0)
+        val titleViewWidth = titleView.measuredWidth
+        //println(titleViewWidth)
+
+
+//        val dimensions: BitmapFactory.Options = BitmapFactory.Options()
+//        dimensions.inJustDecodeBounds = true
+//        val prev: Bitmap = BitmapFactory.decodeResource(resources, R.drawable.prev, dimensions)
+//        val prevWidth: Int = dimensions.outWidth
+//        println(prevWidth)
+
+
+        val params: ActionBar.LayoutParams = ActionBar.LayoutParams(ActionBar.LayoutParams.WRAP_CONTENT, ActionBar.LayoutParams.WRAP_CONTENT)
+        params.leftMargin = (actionBarWidth/2) - (titleViewWidth/2) - prevWidth
+
+        actionBar.setCustomView(l, params)
+        //println(l.layoutParams)
+        //val params: LinearLayout.LayoutParams = l.layoutParams as LinearLayout.LayoutParams
+        //params.leftMargin = 50
+
+
         actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM, ActionBar.DISPLAY_SHOW_CUSTOM)
-        actionBar.setDisplayHomeAsUpEnabled(true)
-        actionBar.setHomeAsUpIndicator(R.drawable.prev)
     }
 
     override fun onSupportNavigateUp(): Boolean {
