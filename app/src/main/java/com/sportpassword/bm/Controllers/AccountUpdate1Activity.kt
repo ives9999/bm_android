@@ -43,11 +43,32 @@ class AccountUpdate1Activity : BaseActivity() {
         when (field) {
             "sex" -> {
                 radioForm()
-                setMyTitle("修改性別")
+                setMyTitle("性別")
             }
             "dob" -> {
                 dobForm()
-                setMyTitle("修改生日")
+                setMyTitle("生日")
+            }
+            "nickname" -> {
+                textForm()
+                setMyTitle("暱稱")
+            }
+            "name" -> {
+                textForm()
+                setMyTitle("姓名" +
+                        "")
+            }
+            "email" -> {
+                textForm()
+                setMyTitle("email")
+            }
+            "mobile" -> {
+                textForm()
+                setMyTitle("行動電話")
+            }
+            "tel" -> {
+                textForm()
+                setMyTitle("市內電話")
             }
             else -> {
                 textForm()

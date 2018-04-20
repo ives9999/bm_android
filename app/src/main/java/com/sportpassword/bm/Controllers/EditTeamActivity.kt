@@ -12,6 +12,7 @@ import com.sportpassword.bm.Services.TeamService
 import kotlinx.android.synthetic.main.activity_edit_team.*
 import org.jetbrains.anko.sdk25.coroutines.onClick
 import android.support.v7.app.AlertDialog
+import android.view.Menu
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
@@ -84,6 +85,10 @@ class EditTeamActivity : BaseActivity(), ImagePicker {
         setRefreshListener()
         refresh()
     }
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.button, menu)
+        return true
+    }
     override fun refresh() {
         super.refresh()
         if (teamToken.length > 0) {
@@ -96,7 +101,11 @@ class EditTeamActivity : BaseActivity(), ImagePicker {
                 dataToField(inputV)
                 teamedit_name.setSelection(teamedit_name.length())
                 closeRefresh()
+                val title: String = if (action == "UPDATE") "更新球隊" else "新增球隊"
+                setMyTitle(title)
             }
+        } else {
+            setMyTitle("新增球隊")
         }
         model.runTestData()
         dataToField(inputV)

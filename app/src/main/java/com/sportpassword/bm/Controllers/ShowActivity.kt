@@ -7,16 +7,17 @@ import com.sportpassword.bm.R
 import com.sportpassword.bm.Utilities.URL_SHOW
 import kotlinx.android.synthetic.main.activity_show.*
 
-class ShowActivity : AppCompatActivity() {
+class ShowActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_show)
+        setMyTitle("展示")
 
         val type = intent.getStringExtra("type")
         val token = intent.getStringExtra("token")
         val url = "$URL_SHOW".format(type, token)
-        println(url)
+        //println(url)
 
         val webViewClient = WebViewClient()
         showWebView.webViewClient = webViewClient

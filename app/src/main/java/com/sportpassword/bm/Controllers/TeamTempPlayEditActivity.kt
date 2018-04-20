@@ -4,6 +4,7 @@ import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.v4.content.LocalBroadcastManager
+import android.view.Menu
 import android.view.View
 import android.widget.EditText
 import com.sportpassword.bm.Models.Team
@@ -30,6 +31,11 @@ class TeamTempPlayEditActivity : BaseActivity() {
         refresh()
     }
 
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.button, menu)
+        return true
+    }
+
     override fun refresh() {
         if (teamToken.length > 0) {
             val l = Loading.show(this)
@@ -41,6 +47,8 @@ class TeamTempPlayEditActivity : BaseActivity() {
                     temp_play_quantity.setSelection(temp_play_quantity.length())
                     l.dismiss()
                     setEventListener()
+                    val title: String = model.temp_play_data[TEAM_NAME_KEY]!!["value"] as String + "臨打"
+                    setMyTitle(title)
                 }
             }
         }

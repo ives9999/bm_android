@@ -13,7 +13,9 @@ class RegisterActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_register)
-        hidekyboard(register_layout)
+        setMyTitle("註冊")
+        //hidekyboard(register_layout)
+
 //        registerEmailTxt.setText("ives@housetube.tw")
 //        registerPasswordTxt.setText("1234")
 //        registerRePasswordTxt.setText("1234")

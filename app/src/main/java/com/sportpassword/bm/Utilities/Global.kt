@@ -1,5 +1,6 @@
 package com.sportpassword.bm.Utilities
 
+import android.app.Activity
 import android.app.AlertDialog
 import android.app.Dialog
 import android.content.Context
@@ -8,6 +9,7 @@ import android.graphics.drawable.ColorDrawable
 import android.support.v4.content.ContextCompat
 import android.view.ViewGroup
 import android.view.Window
+import android.view.inputmethod.InputMethodManager
 import android.widget.ProgressBar
 import android.widget.RelativeLayout
 import android.widget.TextView
@@ -31,6 +33,12 @@ fun String.noSec(): String {
         res = "${arr[0]}:${arr[1]}"
     }
     return res
+}
+fun Activity.hideKeyboard() {
+    val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+    if (imm != null && currentFocus != null) {
+        imm.hideSoftInputFromWindow(currentFocus.windowToken, 0);
+    }
 }
 
 object Loading {

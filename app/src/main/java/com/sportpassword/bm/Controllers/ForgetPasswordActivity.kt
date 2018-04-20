@@ -18,7 +18,8 @@ class ForgetPasswordActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_forget_password)
-        forgetPasswordEmailTxt.setText("ives@housetube.tw")
+        setMyTitle("忘記密碼")
+        //forgetPasswordEmailTxt.setText("ives@housetube.tw")
     }
 
     fun forgetPasswordSubmit(view: View) {

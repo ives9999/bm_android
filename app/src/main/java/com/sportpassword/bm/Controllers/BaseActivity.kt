@@ -125,18 +125,14 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener {
 
 
         val params: ActionBar.LayoutParams = ActionBar.LayoutParams(ActionBar.LayoutParams.WRAP_CONTENT, ActionBar.LayoutParams.WRAP_CONTENT)
-        params.leftMargin = (actionBarWidth/2) - (titleViewWidth/2) - prevWidth
+        params.leftMargin = (actionBarWidth/2) - (titleViewWidth/2) - 170
 
         actionBar.setCustomView(l, params)
-        //println(l.layoutParams)
-        //val params: LinearLayout.LayoutParams = l.layoutParams as LinearLayout.LayoutParams
-        //params.leftMargin = 50
-
-
         actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM, ActionBar.DISPLAY_SHOW_CUSTOM)
     }
 
     override fun onSupportNavigateUp(): Boolean {
+        hideKeyboard()
         finish()
         return true
     }

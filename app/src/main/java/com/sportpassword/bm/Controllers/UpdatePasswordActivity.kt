@@ -9,11 +9,12 @@ import com.sportpassword.bm.Utilities.Alert
 import com.sportpassword.bm.Utilities.Loading
 import kotlinx.android.synthetic.main.activity_update_password.*
 
-class UpdatePasswordActivity : AppCompatActivity() {
+class UpdatePasswordActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_update_password)
+        setMyTitle("更改密碼")
     }
 
     fun updatePasswordSubmit(view: View) {
