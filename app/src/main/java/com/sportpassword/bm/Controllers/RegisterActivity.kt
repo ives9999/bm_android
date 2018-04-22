@@ -1,5 +1,6 @@
 package com.sportpassword.bm.Controllers
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import com.sportpassword.bm.R
@@ -59,7 +60,12 @@ class RegisterActivity : BaseActivity() {
     }
 
     fun registerFBSubmit(view: View) {
-        home(this)
+        _loginFB()
+    }
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        callbackManager?.onActivityResult(requestCode, resultCode, data)
     }
 
     fun registerForgetPassword(view: View) {
