@@ -10,6 +10,8 @@ import android.widget.TextView
 
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.CourseService
+import com.vimeo.networking.Vimeo
+import com.vimeo.networking.VimeoClient
 
 
 /**
@@ -18,6 +20,7 @@ import com.sportpassword.bm.Services.CourseService
  * create an instance of this fragment.
  */
 class CourseFragment : TabFragment() {
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

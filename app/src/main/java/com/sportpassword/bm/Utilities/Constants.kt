@@ -141,4 +141,8 @@ val DAYS: Array<Map<String, Any>> = arrayOf(
         mapOf("value" to 7, "text" to "星期日", "checked" to false)
 )
 
+// vimeo
+val VIMEO_ID = "85a4cfd6e6ff82ea0493e269d19086c0c856936b"
+val VIMEO_SECRET = "w//PE1Vewrvaicmc9LtXyKjJB2DoFmxPenQxoZJ3vD3PkBraHahyFKpm4zmZnIIJy2EUO8NvSWuWiHkbK8mLoBvUxve1Rxm54nl4OH8FHpKHmvGtG3zm30gOa/X36oL5"
+
 
