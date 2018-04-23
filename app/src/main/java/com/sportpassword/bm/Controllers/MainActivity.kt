@@ -33,10 +33,8 @@ import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.DataService
 import com.sportpassword.bm.Services.MemberService
 import com.sportpassword.bm.Services.TeamService
-import com.sportpassword.bm.Utilities.CHANNEL
-import com.sportpassword.bm.Utilities.CompletionHandler
-import com.sportpassword.bm.Utilities.NOTIF_MEMBER_DID_CHANGE
-import com.sportpassword.bm.Utilities.NOTIF_TEAM_UPDATE
+import com.sportpassword.bm.TestAccountStore
+import com.sportpassword.bm.Utilities.*
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
 import kotlinx.android.synthetic.main.tab.view.*
@@ -45,12 +43,15 @@ import com.vimeo.networking.Configuration
 import com.vimeo.networking.VimeoClient
 import com.vimeo.networking.callbacks.AuthCallback
 import com.vimeo.networking.callbacks.ModelCallback
+import com.vimeo.networking.callbacks.VimeoCallback
 import com.vimeo.networking.model.Video
+import com.vimeo.networking.model.VideoList
 import com.vimeo.networking.model.error.VimeoError
 import kotlinx.android.synthetic.main.login_out.*
 import kotlinx.android.synthetic.main.menu_member_function.*
 import kotlinx.android.synthetic.main.menu_team_list.*
 import kotlinx.android.synthetic.main.nav_header_main.*
+import okhttp3.CacheControl
 import org.jetbrains.anko.sdk25.coroutines.onClick
 import java.security.MessageDigest
 
@@ -75,36 +76,55 @@ class MainActivity : BaseActivity() {
 
     lateinit var menuTeamListAdapter: MenuTeamListAdapter
 
-    private val vimeoClient = VimeoClient.getInstance()
-    private var vimeoToken: String? = null
+//    private val vimeoClient = VimeoClient.getInstance()
+//    private var vimeoToken: String? = null
 
 
     @RequiresApi(Build.VERSION_CODES.M)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val token = vimeoClient.vimeoAccount.accessToken
-        //println(token)
-        if (token == null) {
-            authenticateWithClientCredentials() { success ->
-                println(vimeoToken)
-                if (success) {
-                    val uri = "/videos/265966500"
-                    println(uri)
-                    vimeoClient.fetchNetworkContent(uri, object: ModelCallback<Video>(Video::class.java) {
-                        override fun success(t: Video?) {
-                            println("aaa")
-                            //val embed = t!!.embed.html
-                            //println(embed)
-                        }
 
-                        override fun failure(error: VimeoError?) {
-                            println(error!!.localizedMessage)
-                        }
-                    })
-                }
-            }
-        }
+//        val testAccount = TestAccountStore(this.applicationContext)
+//        val configBuilder = Configuration.Builder(VIMEO_ID, VIMEO_SECRET, "private public create edit delete interact", testAccount).setCacheDirectory(this.cacheDir)
+//        VimeoClient.initialize(configBuilder.build())
+//        val token = VimeoClient.getInstance().vimeoAccount.accessToken
+//        println(token)
+
+
+//        val token = vimeoClient.vimeoAccount.accessToken
+//        //println(token)
+//        if (token == null) {
+//            authenticateWithClientCredentials() { success ->
+//                println(vimeoToken)
+//                if (success) {
+//                    //val uri = "/videos/265966500"
+//                    val uri = "/me/videos"
+//                    println(uri)
+////                    vimeoClient.fetchContent(uri, CacheControl.FORCE_NETWORK, object: ModelCallback<VideoList>(VideoList::class.java) {
+////                        override fun success(t: VideoList?) {
+////                            println(t)
+////                        }
+////
+////                        override fun failure(error: VimeoError?) {
+////                            println(error!!.localizedMessage)
+////                        }
+////                    })
+//                    vimeoClient.fetchNetworkContent(uri, object: ModelCallback<VideoList>(VideoList::class.java) {
+//                        override fun success(t: VideoList?) {
+//                            println("aaa")
+//                            println(t)
+//                            //val embed = t!!.embed.html
+//                            //println(embed)
+//                        }
+//
+//                        override fun failure(error: VimeoError?) {
+//                            println(error!!.localizedMessage)
+//                        }
+//                    })
+//                }
+//            }
+//        }
 
         //println("detect:" + gSimulate)
         setContentView(R.layout.activity_main)
@@ -321,21 +341,21 @@ class MainActivity : BaseActivity() {
         startActivity(forgetPasswordIntent)
     }
 
-    private fun authenticateWithClientCredentials(complete: CompletionHandler) {
-        vimeoClient.authorizeWithClientCredentialsGrant(object: AuthCallback {
-            override fun success() {
-                val accessToken = vimeoClient.vimeoAccount.accessToken
-                //println(accessToken)
-                vimeoToken = accessToken
-                complete(true)
-            }
-
-            override fun failure(error: VimeoError?) {
-                //println("failure")
-                complete(false)
-            }
-        })
-    }
+//    private fun authenticateWithClientCredentials(complete: CompletionHandler) {
+//        vimeoClient.authorizeWithClientCredentialsGrant(object: AuthCallback {
+//            override fun success() {
+//                val accessToken = vimeoClient.vimeoAccount.accessToken
+//                //println(accessToken)
+//                vimeoToken = accessToken
+//                complete(true)
+//            }
+//
+//            override fun failure(error: VimeoError?) {
+//                //println("failure")
+//                complete(false)
+//            }
+//        })
+//    }
 
 
     override fun onBackPressed() {

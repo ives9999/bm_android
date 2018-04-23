@@ -10,8 +10,13 @@ import android.widget.TextView
 
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.CourseService
+import com.sportpassword.bm.Utilities.VIMEO_TOKEN
+import com.vimeo.networking.Configuration
 import com.vimeo.networking.Vimeo
 import com.vimeo.networking.VimeoClient
+import com.vimeo.networking.callbacks.ModelCallback
+import com.vimeo.networking.model.Video
+import com.vimeo.networking.model.error.VimeoError
 
 
 /**
@@ -21,10 +26,32 @@ import com.vimeo.networking.VimeoClient
  */
 class CourseFragment : TabFragment() {
 
+    lateinit var vimeoClient: VimeoClient
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         this.dataService = CourseService
+
+        val configBuilder = Configuration.Builder(VIMEO_TOKEN)
+        VimeoClient.initialize(configBuilder.build())
+        vimeoClient = VimeoClient.getInstance()
+//        val token = VimeoClient.getInstance().vimeoAccount.accessToken
+//        println(token)
+        //val uri = "/me/videos"
+        val uri = "/videos/265966500"
+        vimeoClient.fetchNetworkContent(uri, object: ModelCallback<Video>(Video::class.java) {
+            override fun success(t: Video?) {
+                println("aaa")
+                //println(t)
+                val embed = t!!.embed.html
+                println(embed)
+            }
+
+            override fun failure(error: VimeoError?) {
+                println(error!!.localizedMessage)
+            }
+        })
+
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,

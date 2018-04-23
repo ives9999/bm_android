@@ -70,23 +70,23 @@ class App: Application() {
                 .unsubscribeWhenNotificationsAreDisabled(true)
                 .init()
 
-        AccountPreferenceManager.initializeInstance(this)
-        val configBuilder: Configuration.Builder
-
-        if (ACCESS_TOKEN_PROVIDED) {
-            configBuilder = accessTokenBuilder
-        } else {
-            configBuilder = clientIDAndClientSecretBuilder
-        }
-        if (IS_DEBUG_BUILD) {
-            configBuilder.enableCertPinning(false)
-            configBuilder.setLogLevel(Vimeo.LogLevel.VERBOSE)
-        }
-        configBuilder
-                .setCacheDirectory(this.cacheDir)
-                .setUserAgentString(getUserAgentString(this))
-                .setDebugLogger(NetworkingLogger())
-        VimeoClient.initialize(configBuilder.build())
+//        AccountPreferenceManager.initializeInstance(this)
+//        val configBuilder: Configuration.Builder
+//
+//        if (ACCESS_TOKEN_PROVIDED) {
+//            configBuilder = accessTokenBuilder
+//        } else {
+//            configBuilder = clientIDAndClientSecretBuilder
+//        }
+//        if (IS_DEBUG_BUILD) {
+//            configBuilder.enableCertPinning(false)
+//            configBuilder.setLogLevel(Vimeo.LogLevel.VERBOSE)
+//        }
+//        configBuilder
+//                .setCacheDirectory(this.cacheDir)
+//                .setUserAgentString(getUserAgentString(this))
+//                .setDebugLogger(NetworkingLogger())
+//        VimeoClient.initialize(configBuilder.build())
     }
 
     val accessTokenBuilder: Configuration.Builder
