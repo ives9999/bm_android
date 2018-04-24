@@ -26,8 +26,6 @@ import com.vimeo.networking.model.error.VimeoError
  */
 class CourseFragment : TabFragment() {
 
-    lateinit var vimeoClient: VimeoClient
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         this.dataService = CourseService
@@ -38,19 +36,8 @@ class CourseFragment : TabFragment() {
 //        val token = VimeoClient.getInstance().vimeoAccount.accessToken
 //        println(token)
         //val uri = "/me/videos"
-        val uri = "/videos/265966500"
-        vimeoClient.fetchNetworkContent(uri, object: ModelCallback<Video>(Video::class.java) {
-            override fun success(t: Video?) {
-                println("aaa")
-                //println(t)
-                val embed = t!!.embed.html
-                println(embed)
-            }
+        //val uri = "/videos/265966500"
 
-            override fun failure(error: VimeoError?) {
-                println(error!!.localizedMessage)
-            }
-        })
 
     }
 

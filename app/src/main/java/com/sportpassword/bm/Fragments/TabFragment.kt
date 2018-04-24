@@ -19,6 +19,7 @@ import com.sportpassword.bm.Services.CoachService
 import com.sportpassword.bm.Services.DataService
 import com.sportpassword.bm.Services.TeamService
 import com.sportpassword.bm.Utilities.PERPAGE
+import com.vimeo.networking.VimeoClient
 import kotlinx.android.synthetic.main.tab.*
 
 
@@ -49,6 +50,7 @@ open class TabFragment : Fragment() {
 
     protected lateinit var refreshListener: SwipeRefreshLayout.OnRefreshListener
     protected lateinit var scrollerListenr: RecyclerView.OnScrollListener
+    var vimeoClient: VimeoClient? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -80,7 +82,7 @@ open class TabFragment : Fragment() {
         return view
     }
     open protected fun initAdapter() {
-        listAdapter = ListAdapter(context!!) { data ->
+        listAdapter = ListAdapter(context!!, vimeoClient) { data ->
             val intent = Intent(activity, ShowActivity::class.java)
             intent.putExtra("type", mParam1)
             intent.putExtra("token", data.token)

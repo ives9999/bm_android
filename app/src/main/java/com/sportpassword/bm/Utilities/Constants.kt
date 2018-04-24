@@ -128,7 +128,7 @@ var MULTIPART = "multipart/form-data"
 val PERPAGE: Int = 5
 
 // Prefix
-val VIMEO_PREFIX: String = "https://player.vimeo.com/video/"
+val VIMEO_PREFIX: String = "/videos/"
 val YOUTUBE_PREFIX: String = "https://youtu.be/"
 
 val DAYS: Array<Map<String, Any>> = arrayOf(
