@@ -79,7 +79,7 @@ dependencies {
     implementation 'com.ohmerhe.kolley:kolley:0.3.1'
     implementation 'com.onesignal:OneSignal:[3.8.4]'
     implementation "com.chauthai.swipereveallayout:swipe-reveal-layout:1.4.1"
-    implementation ('com.vimeo.networking:vimeo-networking:1.1.0') {
+    implementation('com.vimeo.networking:vimeo-networking:1.1.0') {
         exclude group: 'com.intellij', module: 'annotations'
     }
 //    implementation project(':vimeo-networking')

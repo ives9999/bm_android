@@ -16,6 +16,7 @@ import android.widget.TextView
 import com.sportpassword.bm.Adapters.ListAdapter
 import com.sportpassword.bm.Adapters.TempPlayListAdapter
 import com.sportpassword.bm.Controllers.ShowTempPlayActivity
+import com.sportpassword.bm.Controllers.TestActivity
 import com.sportpassword.bm.Models.Data
 
 import com.sportpassword.bm.R
@@ -54,7 +55,8 @@ class TempPlayFragment : TabFragment() {
             //println(data)
             val position = data["position"]!!["value"] as Int
             val token = data[TEAM_TOKEN_KEY]!!["value"] as String
-            val intent = Intent(activity, ShowTempPlayActivity::class.java)
+            val intent = Intent(activity, TestActivity::class.java)
+            //val intent = Intent(activity, ShowTempPlayActivity::class.java)
             intent.putExtra("position", position)
             intent.putExtra(TEAM_TOKEN_KEY, token)
             startActivity(intent)
