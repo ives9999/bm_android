@@ -54,11 +54,15 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener {
     lateinit var memberToken: String
     lateinit var nearDate: String
 
+    var screenWidth: Int = 0
+
     protected var callbackManager: CallbackManager? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         _setURLConstants()
+
+        getScreenWidth()
 
         //member.reset()
         //member.print()
@@ -129,6 +133,14 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener {
 
         actionBar.setCustomView(l, params)
         actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM, ActionBar.DISPLAY_SHOW_CUSTOM)
+    }
+
+    protected fun getScreenWidth() {
+        val displayMetrics = resources.displayMetrics
+        val density = displayMetrics.density
+        //println("density: " + density)
+        val width: Float = displayMetrics.widthPixels / density
+        screenWidth = width.toInt()
     }
 
     override fun onSupportNavigateUp(): Boolean {
