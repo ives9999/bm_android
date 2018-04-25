@@ -71,7 +71,7 @@ class TestActivity : AppCompatActivity() {
         //webView.settings.pluginState = WebSettings.PluginState.ON
         webView.settings.javaScriptEnabled = true
         webView.webChromeClient = WebChromeClient()
-        webView.loadData(html, "text/html5; charset=utf-8", "UTF-8")
+        webView.loadData(html, "text/html; charset=utf-8", "UTF-8")
     }
 
     private fun getEmbed(uri: String, complete: CompletionHandler) {
