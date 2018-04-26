@@ -32,7 +32,8 @@ import kotlinx.android.synthetic.main.tab.*
 open class TabFragment : Fragment() {
 
     // TODO: Rename and change types of parameters
-    protected var mParam1: String? = null
+    protected var type: String? = null
+    protected var screenWidth: Int = 0
 
     protected var theFirstTime: Boolean = true
     protected var page: Int = 1
@@ -50,12 +51,13 @@ open class TabFragment : Fragment() {
 
     protected lateinit var refreshListener: SwipeRefreshLayout.OnRefreshListener
     protected lateinit var scrollerListenr: RecyclerView.OnScrollListener
-    var vimeoClient: VimeoClient? = null
+//    var vimeoClient: VimeoClient? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         if (arguments != null) {
-            mParam1 = arguments!!.getString(ARG_PARAM1)
+            type = arguments!!.getString(ARG_PARAM1)
+            screenWidth = arguments!!.getInt(ARG_PARAM2)
         }
         that = this
         //println("TabFragment onCreate")
@@ -82,9 +84,9 @@ open class TabFragment : Fragment() {
         return view
     }
     open protected fun initAdapter() {
-        listAdapter = ListAdapter(context!!, vimeoClient) { data ->
+        listAdapter = ListAdapter(context!!, screenWidth) { data ->
             val intent = Intent(activity, ShowActivity::class.java)
-            intent.putExtra("type", mParam1)
+            intent.putExtra("type", type)
             intent.putExtra("token", data.token)
             startActivity(intent)
         }
@@ -160,7 +162,8 @@ open class TabFragment : Fragment() {
     companion object {
         // TODO: Rename parameter arguments, choose names that match
         // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-        private val ARG_PARAM1 = "param1"
+        private val ARG_PARAM1 = "TYPE"
+        private val ARG_PARAM2 = "SCREEN_WIDTH"
 
         /**
          * Use this factory method to create a new instance of
@@ -171,10 +174,11 @@ open class TabFragment : Fragment() {
          * @return A new instance of fragment TabFragment.
          */
         // TODO: Rename and change types and number of parameters
-        fun newInstance(param1: String, param2: String): TabFragment {
+        fun newInstance(param1: String, param2: Int): TabFragment {
             val fragment = TabFragment()
             val args = Bundle()
             args.putString(ARG_PARAM1, param1)
+            args.putInt(ARG_PARAM2, param2)
             fragment.arguments = args
             return fragment
         }

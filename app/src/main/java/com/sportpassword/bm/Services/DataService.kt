@@ -63,8 +63,8 @@ open class DataService: BaseService() {
                     val obj = rows.getJSONObject(i)
                     val title = obj.getString(titleField)
                     val token = obj.getString("token")
-                    var vimeo = if (obj.has("vimeo")) obj.get("vimeo").toString() else ""
-                    var youtube = if (obj.has("youbute")) obj.get("youbute").toString() else ""
+                    var vimeo = if (obj.has("vimeo")) obj.getString("vimeo") else ""
+                    var youtube = if (obj.has("youtube")) obj.getString("youtube").toString() else ""
                     val id = obj.getInt("id")
                     var featured_path = if (obj.has("featured_path")) obj.get("featured_path").toString() else ""
                     //println(featured_path)
@@ -74,9 +74,9 @@ open class DataService: BaseService() {
                     if (vimeo.isNotEmpty()) {
                         vimeo = VIMEO_PREFIX + vimeo
                     }
-                    if (youtube.isNotEmpty()) {
-                        youtube = YOUTUBE_PREFIX + youtube
-                    }
+//                    if (youtube.isNotEmpty()) {
+//                        youtube = YOUTUBE_PREFIX + youtube
+//                    }
 
                     //val dataList: Data = Coach(id, title, featured_path)
                     val data = setData(id, title, token, featured_path, vimeo, youtube)

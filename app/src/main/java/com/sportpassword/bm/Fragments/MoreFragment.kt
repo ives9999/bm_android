@@ -17,7 +17,7 @@ import com.sportpassword.bm.R
  * Use the [MoreFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
-class MoreFragment : Fragment() {
+class MoreFragment : TabFragment() {
 
     // TODO: Rename and change types of parameters
     private var mParam1: String? = null
@@ -41,7 +41,7 @@ class MoreFragment : Fragment() {
             val fm = activity!!.supportFragmentManager
             //val fragment = fm.findFragmentById(R.id.tab_container)
             //println(fragment)
-            val courseFragment = CourseFragment.newInstance("course", "blah")
+            val courseFragment = CourseFragment.newInstance("course", screenWidth)
             fm.beginTransaction()
                     .replace(R.id.more_container, courseFragment)
                     .addToBackStack(null)
@@ -54,8 +54,8 @@ class MoreFragment : Fragment() {
     companion object {
         // TODO: Rename parameter arguments, choose names that match
         // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-        private val ARG_PARAM1 = "param1"
-        private val ARG_PARAM2 = "param2"
+        private val ARG_PARAM1 = "TYPE"
+        private val ARG_PARAM2 = "SCREEN_WIDTH"
 
         /**
          * Use this factory method to create a new instance of
@@ -63,14 +63,14 @@ class MoreFragment : Fragment() {
          *
          * @param param1 Parameter 1.
          * @param param2 Parameter 2.
-         * @return A new instance of fragment MoreFragment.
+         * @return A new instance of fragment TabFragment.
          */
         // TODO: Rename and change types and number of parameters
-        fun newInstance(param1: String, param2: String): MoreFragment {
+        fun newInstance(param1: String, param2: Int): TabFragment {
             val fragment = MoreFragment()
             val args = Bundle()
             args.putString(ARG_PARAM1, param1)
-            args.putString(ARG_PARAM2, param2)
+            args.putInt(ARG_PARAM2, param2)
             fragment.arguments = args
             return fragment
         }

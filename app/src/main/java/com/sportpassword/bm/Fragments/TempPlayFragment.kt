@@ -55,8 +55,8 @@ class TempPlayFragment : TabFragment() {
             //println(data)
             val position = data["position"]!!["value"] as Int
             val token = data[TEAM_TOKEN_KEY]!!["value"] as String
-            val intent = Intent(activity, TestActivity::class.java)
-            //val intent = Intent(activity, ShowTempPlayActivity::class.java)
+            //val intent = Intent(activity, TestActivity::class.java)
+            val intent = Intent(activity, ShowTempPlayActivity::class.java)
             intent.putExtra("position", position)
             intent.putExtra(TEAM_TOKEN_KEY, token)
             startActivity(intent)
@@ -116,8 +116,8 @@ class TempPlayFragment : TabFragment() {
     companion object {
         // TODO: Rename parameter arguments, choose names that match
         // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-        private val ARG_PARAM1 = "param1"
-        private val ARG_PARAM2 = "param2"
+        private val ARG_PARAM1 = "TYPE"
+        private val ARG_PARAM2 = "SCREEN_WIDTH"
 
         /**
          * Use this factory method to create a new instance of
@@ -125,15 +125,14 @@ class TempPlayFragment : TabFragment() {
          *
          * @param param1 Parameter 1.
          * @param param2 Parameter 2.
-         * @return A new instance of fragment TempPlayFragment.
+         * @return A new instance of fragment TabFragment.
          */
         // TODO: Rename and change types and number of parameters
-        fun newInstance(param1: String, param2: String): TempPlayFragment {
+        fun newInstance(param1: String, param2: Int): TabFragment {
             val fragment = TempPlayFragment()
             val args = Bundle()
-            //println("new instance: $param1")
             args.putString(ARG_PARAM1, param1)
-            args.putString(ARG_PARAM2, param2)
+            args.putInt(ARG_PARAM2, param2)
             fragment.arguments = args
             return fragment
         }

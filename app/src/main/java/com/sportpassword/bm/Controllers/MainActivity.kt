@@ -154,7 +154,7 @@ class MainActivity : BaseActivity() {
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
 
-        val adapter = TabAdapter(supportFragmentManager, tabsTextArr)
+        val adapter = TabAdapter(supportFragmentManager, tabsTextArr, screenWidth)
         tab_container.adapter = adapter
 
         //mSectionPagerAdapter = SectionsPagerAdapter(supportFragmentManager)
