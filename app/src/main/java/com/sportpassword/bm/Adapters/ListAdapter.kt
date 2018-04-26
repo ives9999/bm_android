@@ -55,54 +55,48 @@ class ListAdapter(val context: Context, val screenWidth: Int=0, val itemClick: (
         val featuredView = itemView.findViewById<ImageView>(R.id.listFeatured)
         val videoView = itemView.findViewById<WebView>(R.id.listVideo)
 
-        val webViewClient = WebViewClient()
-        var embed: String = ""
-
         fun bind(data: Data) {
-//            println(data.title)
-//            println(data.featured_path)
-//            println(data.vimeo)
-//            println(data.youtube)
-            nameView.text = data.title
-            if (data.vimeo.isEmpty() && data.youtube.isEmpty() && data.featured_path.isNotEmpty()) {
+            if (data.vimeo.isEmpty() && data.youtube.isEmpty()) {
                 nameView.visibility = View.VISIBLE
                 featuredView.visibility = View.VISIBLE
                 videoView.visibility = View.INVISIBLE
-                Picasso.with(context)
-                        .load(data.featured_path)
-                        .placeholder(R.drawable.loading_square)
-                        .error(R.drawable.load_failed_square)
-                        .into(featuredView)
+                nameView.text = data.title
+                if (data.featured_path.isNotEmpty()) {
+                    Picasso.with(context)
+                            .load(data.featured_path)
+                            .placeholder(R.drawable.loading_square)
+                            .error(R.drawable.load_failed_square)
+                            .into(featuredView)
+                } else {
+                    featuredView.setImageResource(R.drawable.loading_square)
+                }
             } else if (data.featured_path.isEmpty() && data.youtube.isNotEmpty()) {
                 nameView.visibility = View.INVISIBLE
+//                nameView.setPadding(0, 0, 0, 0)
+//                val p = nameView.layoutParams as ConstraintLayout.LayoutParams
+//                p.height = 0
+//                p.setMargins(0, 0, 0, 0)
+//                nameView.layoutParams = p
+                //zeroView(nameView)
+
                 featuredView.visibility = View.INVISIBLE
+//                featuredView.setPadding(0, 0, 0, 0)
+//                val p1 = featuredView.layoutParams as ConstraintLayout.LayoutParams
+//                p1.height = 0
+//                p1.setMargins(0, 0, 0, 0)
+//                featuredView.layoutParams = p1
+                //zeroView(featuredView)
+
                 videoView.visibility = View.VISIBLE
-
-                val p = nameView.layoutParams as ConstraintLayout.LayoutParams
-                p.height = 0
-                p.setMargins(0, 0, 0, 0)
-                nameView.layoutParams = p
-
-                val p1 = featuredView.layoutParams as ConstraintLayout.LayoutParams
-                p1.height = 0
-                p1.setMargins(0, 0, 0, 0)
-                nameView.layoutParams = p1
-
                 videoView.settings.javaScriptEnabled = true
                 videoView.webChromeClient = WebChromeClient()
                 if (data.youtube.isNotEmpty()) {
                     var width: Int = if (screenWidth == 0) 320 else screenWidth
                     var height: Int = height(width)
-                    //width -= 20
-
-                    val p2 = videoView.layoutParams as ConstraintLayout.LayoutParams
-                    p2.height = height
-                    p2.width = width
-                    p2.setMargins(0, 0, 0, 0)
-                    videoView.layoutParams = p2
+                    width += 1
 
                     val html =
-                            "<html><body><iframe type=\"text/html5\" width=\"" +
+                            "<html><body style=\"margin:0;padding:0;\"><iframe type=\"text/html5\" width=\"" +
                                     width +
                                     "\" height=\"" +
                                     height +
@@ -125,6 +119,15 @@ class ListAdapter(val context: Context, val screenWidth: Int=0, val itemClick: (
             val _height: Float = _width*3.0f/5.0f
             var height: Int = _height.toInt()
             return height
+        }
+
+        private fun zeroView(view: View) {
+            val p = view.layoutParams as ConstraintLayout.LayoutParams
+            p.height = 0
+            p.setMargins(0, 0, 0, 0)
+            view.layoutParams = p
+            view.setPadding(0, 0, 0, 0)
+            view.visibility = View.INVISIBLE
         }
 
 //        private fun getEmbed(uri: String, complete: CompletionHandler) {
