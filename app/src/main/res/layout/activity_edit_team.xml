@@ -116,15 +116,17 @@
 
                         <ImageButton
                             android:id="@+id/clearbutton_name"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
                             android:layout_marginBottom="8dp"
                             android:layout_marginEnd="8dp"
                             android:layout_marginTop="8dp"
+                            android:background="@android:color/transparent"
+                            android:scaleType="fitCenter"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintTop_toTopOf="parent"
-                            app:srcCompat="@android:drawable/ic_delete" />
+                            app:srcCompat="@drawable/clear" />
                     </android.support.constraint.ConstraintLayout>
 
                     <LinearLayout
@@ -190,15 +192,17 @@
 
                         <ImageButton
                             android:id="@+id/clearbutton_leader"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
                             android:layout_marginBottom="8dp"
                             android:layout_marginEnd="8dp"
                             android:layout_marginTop="8dp"
+                            android:background="@android:color/transparent"
+                            android:scaleType="fitCenter"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintTop_toTopOf="parent"
-                            app:srcCompat="@android:drawable/ic_delete" />
+                            app:srcCompat="@drawable/clear" />
                     </android.support.constraint.ConstraintLayout>
 
                     <LinearLayout
@@ -256,15 +260,17 @@
 
                         <ImageButton
                             android:id="@+id/clearbutton_mobile"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
                             android:layout_marginBottom="8dp"
                             android:layout_marginEnd="8dp"
                             android:layout_marginTop="8dp"
+                            android:background="@android:color/transparent"
+                            android:scaleType="fitCenter"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintTop_toTopOf="parent"
-                            app:srcCompat="@android:drawable/ic_delete" />
+                            app:srcCompat="@drawable/clear" />
                     </android.support.constraint.ConstraintLayout>
 
                     <LinearLayout
@@ -321,15 +327,17 @@
 
                         <ImageButton
                             android:id="@+id/clearbutton_email"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
                             android:layout_marginBottom="8dp"
                             android:layout_marginEnd="8dp"
                             android:layout_marginTop="8dp"
+                            android:background="@android:color/transparent"
+                            android:scaleType="fitCenter"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintTop_toTopOf="parent"
-                            app:srcCompat="@android:drawable/ic_delete" />
+                            app:srcCompat="@drawable/clear" />
                     </android.support.constraint.ConstraintLayout>
 
                     <LinearLayout
@@ -709,15 +717,17 @@
 
                         <ImageButton
                             android:id="@+id/clearbutton_fee_M"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
                             android:layout_marginBottom="8dp"
                             android:layout_marginEnd="8dp"
                             android:layout_marginTop="8dp"
+                            android:background="@android:color/transparent"
+                            android:scaleType="fitCenter"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintTop_toTopOf="parent"
-                            app:srcCompat="@android:drawable/ic_delete" />
+                            app:srcCompat="@drawable/clear" />
                     </android.support.constraint.ConstraintLayout>
 
                     <LinearLayout
@@ -774,15 +784,17 @@
 
                         <ImageButton
                             android:id="@+id/clearbutton_fee_F"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
                             android:layout_marginBottom="8dp"
                             android:layout_marginEnd="8dp"
                             android:layout_marginTop="8dp"
+                            android:background="@android:color/transparent"
+                            android:scaleType="fitCenter"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintTop_toTopOf="parent"
-                            app:srcCompat="@android:drawable/ic_delete" />
+                            app:srcCompat="@drawable/clear" />
                     </android.support.constraint.ConstraintLayout>
 
                     <LinearLayout
@@ -908,15 +920,17 @@
 
                         <ImageButton
                             android:id="@+id/clearbutton_ball"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
                             android:layout_marginBottom="8dp"
                             android:layout_marginEnd="8dp"
                             android:layout_marginTop="8dp"
+                            android:background="@android:color/transparent"
+                            android:scaleType="fitCenter"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintTop_toTopOf="parent"
-                            app:srcCompat="@android:drawable/ic_delete" />
+                            app:srcCompat="@drawable/clear" />
                     </android.support.constraint.ConstraintLayout>
 
                     <LinearLayout

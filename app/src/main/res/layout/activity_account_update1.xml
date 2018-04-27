@@ -10,43 +10,42 @@
     android:focusableInTouchMode="true"
     tools:context="com.sportpassword.bm.Controllers.AccountUpdate1Activity">
 
-    <FrameLayout
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/frameLayout"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="9dp"
-        android:background="@android:color/transparent"
-        android:padding="5dp">
+        android:background="@android:color/transparent">
 
         <EditText
             android:id="@+id/accountTxt"
-            android:layout_width="fill_parent"
-            android:layout_height="50dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginStart="16dp"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
             android:layout_marginTop="32dp"
             android:background="@drawable/edittext_border"
             android:ems="10"
             android:inputType="textPersonName"
-            android:paddingBottom="0dp"
-            android:paddingLeft="0dp"
-            android:paddingRight="36dp"
+            android:paddingRight="8dp"
             android:textAlignment="viewEnd"
             android:textColor="@color/WHITE"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/clearbutton_account"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="ives" />
 
-        <Button
-            android:id="@+id/calc_clear_txt_Prise"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
-            android:layout_gravity="right|center_vertical"
-            android:layout_marginRight="16dp"
-            android:layout_marginTop="16dp"
-            android:background="@android:drawable/ic_delete"
-            android:onClick="clear" />
-    </FrameLayout>
+        <ImageView
+            android:id="@+id/clearbutton_account"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginTop="32dp"
+            android:onClick="clear"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/clear" />
+
+    </android.support.constraint.ConstraintLayout>
 
     <RadioGroup
         android:id="@+id/accountRadioGroup"
