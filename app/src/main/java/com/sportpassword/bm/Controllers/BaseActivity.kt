@@ -55,6 +55,7 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener {
     lateinit var nearDate: String
 
     var screenWidth: Int = 0
+    var density: Float = 0f
 
     protected var callbackManager: CallbackManager? = null
 
@@ -137,10 +138,10 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener {
 
     protected fun getScreenWidth() {
         val displayMetrics = resources.displayMetrics
-        val density = displayMetrics.density
+        density = displayMetrics.density
         //println("density: " + density)
-        val width: Float = displayMetrics.widthPixels / density
-        screenWidth = width.toInt()
+        //val width: Float = displayMetrics.widthPixels / density
+        screenWidth = displayMetrics.widthPixels
     }
 
     override fun onSupportNavigateUp(): Boolean {

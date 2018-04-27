@@ -142,6 +142,7 @@ class MainActivity : BaseActivity() {
                 this, drawer_layout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close)
         drawer_layout.addDrawerListener(toggle)
         toggle.syncState()
+        setMenuWidth()
 
         for (i in tabsTextArr.indices) {
             val text: String = tabsTextArr[i]
@@ -154,7 +155,8 @@ class MainActivity : BaseActivity() {
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
 
-        val adapter = TabAdapter(supportFragmentManager, tabsTextArr, screenWidth)
+        val w = (screenWidth.toFloat() / density).toInt()
+        val adapter = TabAdapter(supportFragmentManager, tabsTextArr, w)
         tab_container.adapter = adapter
 
         //mSectionPagerAdapter = SectionsPagerAdapter(supportFragmentManager)
@@ -308,6 +310,13 @@ class MainActivity : BaseActivity() {
         forgetPasswordBtn.visibility = View.VISIBLE
         menu_member_container.visibility = View.INVISIBLE
         menu_team_container.visibility = View.INVISIBLE
+    }
+
+    private fun setMenuWidth() {
+        val l = drawer.layoutParams
+        val w = screenWidth * 0.85
+        l.width = w.toInt()
+        drawer.layoutParams = l
     }
 
     override fun refresh() {

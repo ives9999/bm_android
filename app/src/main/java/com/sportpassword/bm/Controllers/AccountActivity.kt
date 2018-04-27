@@ -21,7 +21,6 @@ class AccountActivity : BaseActivity() {
         setContentView(R.layout.activity_account)
         setMyTitle("帳戶")
 
-
         //setData()
 
         //val title: TextView =

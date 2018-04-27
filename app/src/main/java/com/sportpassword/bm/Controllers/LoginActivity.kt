@@ -25,7 +25,7 @@ class LoginActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
         setMyTitle("登入")
-        //hidekyboard(login_layout)
+        hidekyboard(login_layout)
 
         //loginEmailTxt.setText("ives@housetube.tw")
         //loginPasswordTxt.setText("K5SD23r6")

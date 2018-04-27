@@ -87,6 +87,7 @@ class AccountUpdate1Activity : BaseActivity() {
         accountRadioGroup.visibility = View.VISIBLE
         accountDate.visibility = View.INVISIBLE
         accountTxt.visibility = View.INVISIBLE
+        calc_clear_txt_Prise.visibility = View.INVISIBLE
         accountRadioYes.text = "先生"
         accountRadioNo.text = "小姐"
         if (value == MEMBER_SEX.M.toString()) accountRadioYes.isChecked=true else accountRadioNo.isChecked=true
@@ -125,6 +126,7 @@ class AccountUpdate1Activity : BaseActivity() {
         accountRadioGroup.visibility = View.INVISIBLE
         accountDate.visibility = View.INVISIBLE
         accountTxt.visibility = View.VISIBLE
+        calc_clear_txt_Prise.visibility = View.VISIBLE
         accountTxt.setText(value)
         accountTxt.requestFocus()
         accountTxt.setSelection(value.length)
