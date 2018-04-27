@@ -83,6 +83,7 @@ class MainActivity : BaseActivity() {
     @RequiresApi(Build.VERSION_CODES.M)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        hideKeyboard()
 
 
 //        val testAccount = TestAccountStore(this.applicationContext)

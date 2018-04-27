@@ -7,6 +7,7 @@ import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.MemberService
 import com.sportpassword.bm.Utilities.Alert
 import com.sportpassword.bm.Utilities.Loading
+import com.sportpassword.bm.Utilities.hideKeyboard
 import kotlinx.android.synthetic.main.activity_register.*
 
 class RegisterActivity : BaseActivity() {
@@ -16,6 +17,7 @@ class RegisterActivity : BaseActivity() {
         setContentView(R.layout.activity_register)
         setMyTitle("註冊")
         hidekyboard(register_layout)
+        registerEmailTxt.requestFocus()
 
 //        registerEmailTxt.setText("ives@housetube.tw")
 //        registerPasswordTxt.setText("1234")

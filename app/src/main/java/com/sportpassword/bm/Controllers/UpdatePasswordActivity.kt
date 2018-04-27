@@ -15,6 +15,9 @@ class UpdatePasswordActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_update_password)
         setMyTitle("更改密碼")
+        hidekyboard(updatePassword_layout)
+        updatePasswordOldPasswordTxt.requestFocus()
+
     }
 
     fun updatePasswordSubmit(view: View) {
@@ -36,7 +39,9 @@ class UpdatePasswordActivity : BaseActivity() {
             //println(success)
             if (success) {
                 if (MemberService.success) {
-                    Alert.show(this, "訊息", MemberService.msg)
+                    Alert.show(this, "訊息", MemberService.msg) {
+                        home(this)
+                    }
                 } else {
                     Alert.show(this, "警告", MemberService.msg)
                 }
