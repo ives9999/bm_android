@@ -24,13 +24,13 @@ import kotlinx.android.synthetic.main.activity_edit_team.*
 import kotlinx.android.synthetic.main.activity_edit_team_item.*
 import kotlinx.android.synthetic.main.tab.*
 
-class EditTeamItemActivity() : AppCompatActivity() {
+class EditTeamItemActivity() : BaseActivity() {
 
     lateinit var key: String
     lateinit var editTeamItemAdapter: EditTeamItemAdapter
 
     var daysLists: ArrayList<MutableMap<String, String>> = arrayListOf()
-    val resDays: ArrayList<Day> = arrayListOf()
+    var resDays: ArrayList<Day> = arrayListOf()
     var time: String = ""
     var resDegrees: ArrayList<String> = arrayListOf()
     var oldCity: Int = 0
@@ -59,7 +59,7 @@ class EditTeamItemActivity() : AppCompatActivity() {
 
         }
         if (key == TEAM_DAYS_KEY) {
-
+            setMyTitle("星期幾")
             val days = intent.getIntArrayExtra("value")
             for (i in 1..7) {
                 val tmp: Map<String, Any> = DAYS[i-1]
@@ -74,6 +74,11 @@ class EditTeamItemActivity() : AppCompatActivity() {
                 daysLists.add(m)
             }
         } else if (key == TEAM_PLAY_START_KEY || key == TEAM_PLAY_END_KEY) {
+            if (key == TEAM_PLAY_START_KEY) {
+                setMyTitle("開始時間")
+            } else {
+                setMyTitle("結束時間")
+            }
             time = intent.getStringExtra("value")
             //println(value)
             val times: ArrayList<String> = arrayListOf("07:00","07:30","08:00","08:30","09:00","09:30","10:00","10:30","11:00","11:30","12:00",
@@ -85,7 +90,8 @@ class EditTeamItemActivity() : AppCompatActivity() {
                 daysLists.add(m)
             }
         } else if (key == TEAM_DEGREE_KEY) {
-            val value: Array<String> = intent.getStringArrayExtra("value")
+            setMyTitle("球隊程度")
+            val value: ArrayList<String> = intent.getStringArrayListExtra("value")
             val allDegree: Map<String, String> = DEGREE.all()
             for ((k, v) in allDegree) {
                 var checked: Boolean = false
@@ -100,27 +106,29 @@ class EditTeamItemActivity() : AppCompatActivity() {
                 daysLists.add(m)
             }
         } else if (key == TEAM_CITY_KEY) {
+            setMyTitle("區域")
             oldCity = intent.getIntExtra("value", 0)
         } else if (key == TEAM_ARENA_KEY) {
+            setMyTitle("球館")
             oldCity = intent.getIntExtra("city_id", 0)
             oldArena = intent.getIntExtra("arena_id", 0)
         } else {
             val value: String = intent.getStringExtra("value")
             content.setText(value)
         }
-        editTeamItemAdapter = EditTeamItemAdapter(this, key, daysLists) { position ->
+        editTeamItemAdapter = EditTeamItemAdapter(this, key, daysLists) { position, checked ->
             //println(position)
-            val checked: Boolean = !(daysLists[position]["checked"]!!.toBoolean())
+            //val checked: Boolean = !(daysLists[position]["checked"]!!.toBoolean())
             //println(daysLists)
             if (key == TEAM_DAYS_KEY) {
                 daysLists[position]["checked"] = checked.toString()
-                setDay(position)
+                setDay()
             } else if (key == TEAM_PLAY_START_KEY || key == TEAM_PLAY_END_KEY) {
                 time = daysLists[position]["value"]!!
                 submit(View(this))
             } else if (key == TEAM_DEGREE_KEY) {
                 daysLists[position]["checked"] = checked.toString()
-                setDegree(position)
+                setDegree()
             } else if (key == TEAM_CITY_KEY) {
                 resCity_id = daysLists[position]["value"]!!.toInt()
                 resCity_name = daysLists[position]["text"]!!
@@ -159,33 +167,39 @@ class EditTeamItemActivity() : AppCompatActivity() {
         }
     }
 
-    fun setDay(idx: Int) {
-        val checked: Boolean = daysLists[idx]["checked"]!!.toBoolean()
-        val day: Int = daysLists[idx]["value"]!!.toInt()
-        if (checked) {
-            val text: String = daysLists[idx]["text"]!!
-            val d: Day = Day(text, day)
-            resDays.add(d)
-        } else {
-            val idx: Int = -1
-            for (i in 0..resDays.size-1) {
-                if (day == resDays[i].day) {
-                    idx == i
-                    break
+    fun setDay() {
+        resDays = arrayListOf()
+        for (i in 0..daysLists.size-1) {
+            val checked: Boolean = daysLists[i]["checked"]!!.toBoolean()
+            val day: Int = daysLists[i]["value"]!!.toInt()
+            if (checked) {
+                val text: String = daysLists[i]["text"]!!
+                val d: Day = Day(text, day)
+                resDays.add(d)
+            } else {
+                val idx: Int = -1
+                for (i in 0..resDays.size - 1) {
+                    if (day == resDays[i].day) {
+                        idx == i
+                        break
+                    }
                 }
-            }
-            if (idx > 0) {
-                resDays.removeAt(idx)
+                if (idx > 0) {
+                    resDays.removeAt(idx)
+                }
             }
         }
     }
-    fun setDegree(idx: Int) {
-        val checked: Boolean = daysLists[idx]["checked"]!!.toBoolean()
-        val degree: String = daysLists[idx]["value"]!!
-        if (checked) {
-            resDegrees.add(degree)
-        } else {
-            resDegrees.remove(degree)
+    fun setDegree() {
+        resDegrees = arrayListOf()
+        for (i in 0..daysLists.size-1) {
+            val checked: Boolean = daysLists[i]["checked"]!!.toBoolean()
+            val degree: String = daysLists[i]["value"]!!
+            if (checked) {
+                resDegrees.add(degree)
+            } else {
+                resDegrees.remove(degree)
+            }
         }
     }
 

@@ -21,7 +21,7 @@ import org.jetbrains.anko.textColor
 /**
  * Created by ives on 2018/3/21.
  */
-class EditTeamItemAdapter(val context: Context, val key: String, val lists: List<Map<String, String>>, val itemClick: (Int) -> Unit): RecyclerView.Adapter<EditTeamItemAdapter.ViewHolder>() {
+class EditTeamItemAdapter(val context: Context, val key: String, val lists: List<Map<String, String>>, val itemClick: (Int, Boolean) -> Unit): RecyclerView.Adapter<EditTeamItemAdapter.ViewHolder>() {
 
     val checkedColor = ContextCompat.getColor(context, R.color.MY_GREEN)
     val uncheckedColor = ContextCompat.getColor(context, R.color.WHITE)
@@ -40,7 +40,7 @@ class EditTeamItemAdapter(val context: Context, val key: String, val lists: List
     }
 
 
-    inner class ViewHolder(itemView: View, val itemClick: (Int) -> Unit): RecyclerView.ViewHolder(itemView) {
+    inner class ViewHolder(itemView: View, val itemClick: (Int, Boolean) -> Unit): RecyclerView.ViewHolder(itemView) {
 
         val item1View = itemView.findViewById<TextView>(R.id.item1)
         val mark1View = itemView.findViewById<ImageView>(R.id.mark1)
@@ -51,8 +51,7 @@ class EditTeamItemAdapter(val context: Context, val key: String, val lists: List
             val row = lists[position]
             item1View.text = row["text"]!!
             var checked: Boolean = row["checked"]!!.toBoolean()
-            item1View.setTextColor(if(checked) checkedColor else uncheckedColor)
-            mark1View.setColorFilter(if(checked) checkedColor else uncheckedColor)
+            toggleClick(checked)
 
             if (key == TEAM_PLAY_START_KEY || key == TEAM_PLAY_END_KEY) {
                 mark1View.visibility = View.INVISIBLE
@@ -67,9 +66,19 @@ class EditTeamItemAdapter(val context: Context, val key: String, val lists: List
             itemView.onClick {view ->
                 //println(view)
                 checked = !checked
-                item1View.setTextColor(if(checked) checkedColor else uncheckedColor)
-                mark1View.setColorFilter(if(checked) checkedColor else uncheckedColor)
-                itemClick(position)
+                toggleClick(checked)
+                itemClick(position, checked)
+            }
+        }
+
+        fun toggleClick(checked: Boolean) {
+            if (checked) {
+                item1View.setTextColor(checkedColor)
+                mark1View.visibility = View.VISIBLE
+                mark1View.setColorFilter(checkedColor)
+            } else {
+                item1View.setTextColor(uncheckedColor)
+                mark1View.visibility = View.INVISIBLE
             }
         }
     }

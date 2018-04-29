@@ -434,7 +434,7 @@ class EditTeamActivity : BaseActivity(), ImagePicker {
             val value: String = row["time"] as String
             intent.putExtra("value", value)
         } else if (key == TEAM_DEGREE_KEY) {
-            val value: Array<String> = model.data[key]!!["sender"] as Array<String>
+            val value: ArrayList<String> = model.data[key]!!["sender"] as ArrayList<String>
             intent.putExtra("value", value)
         } else if (key == TEAM_CITY_KEY) {
             val value: Int = model.data[key]!!["sender"] as Int
