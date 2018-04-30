@@ -93,23 +93,28 @@ class EditTeamActivity : BaseActivity(), ImagePicker {
         super.refresh()
         if (teamToken.length > 0) {
             action = "UPDATE"
+            val l = Loading.show(this)
             TeamService.getOne(this, "team", "name", teamToken) { success ->
-                model.data = TeamService.data
-                //println(model.data)
-                //setTeamData()
-                //println(model.data)
-                dataToField(inputV)
-                teamedit_name.setSelection(teamedit_name.length())
-                closeRefresh()
-                val title: String = if (action == "UPDATE") "更新球隊" else "新增球隊"
-                setMyTitle(title)
+                if (success) {
+                    l.dismiss()
+                    model.data = TeamService.data
+                    //println(model.data)
+                    //setTeamData()
+                    //println(model.data)
+                    dataToField(inputV)
+
+                    teamedit_name.setSelection(teamedit_name.length())
+                    closeRefresh()
+                    val title: String = if (action == "UPDATE") "更新球隊" else "新增球隊"
+                    setMyTitle(title)
+                }
             }
         } else {
             setMyTitle("新增球隊")
+            model.runTestData()
+            dataToField(inputV)
+            teamedit_name.setSelection(teamedit_name.length())
         }
-        model.runTestData()
-        dataToField(inputV)
-        teamedit_name.setSelection(teamedit_name.length())
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -224,10 +229,10 @@ class EditTeamActivity : BaseActivity(), ImagePicker {
 
         if (isPass) {
             params = model.makeSubmitArr()
-            //println(params)
             if (params.count() == 0 && !isFeaturedChange) {
                 Alert.show(context, "提示", "沒有修改任何資料或圖片")
             } else {
+                val l = Loading.show(this)
                 if (params.count() == 0) {
                     if (model.data[TEAM_ID_KEY]!!["value"] as Int > 0) {
                         val id: Int = model.data[TEAM_ID_KEY]!!["value"] as Int
@@ -244,6 +249,7 @@ class EditTeamActivity : BaseActivity(), ImagePicker {
                 TeamService.update(context, "team", params, filePath) { success ->
 
                     if (success) {
+                        l.dismiss()
                         if (TeamService.success) {
                             val id: Int = TeamService.id
                             model.data[TEAM_ID_KEY]!!["value"] = id
@@ -257,6 +263,7 @@ class EditTeamActivity : BaseActivity(), ImagePicker {
                             Alert.show(context, "錯誤", TeamService.msg)
                         }
                     } else {
+                        l.dismiss()
                         Alert.show(context, "錯誤", TeamService.msg)
                     }
 
@@ -281,6 +288,7 @@ class EditTeamActivity : BaseActivity(), ImagePicker {
         return res
     }
     private fun dataToField(inputV: List<View>) {
+        //println(model.data)
         for (i in 0..inputV.size-1) {
             val v = inputV.get(i)
             val tag = v.tag

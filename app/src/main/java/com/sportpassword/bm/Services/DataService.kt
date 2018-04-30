@@ -11,9 +11,14 @@ import com.android.volley.toolbox.Volley
 import com.ohmerhe.kolley.request.Http
 import com.sportpassword.bm.Models.*
 import com.sportpassword.bm.Utilities.*
+import org.apache.http.util.CharsetUtils
 import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject
+import java.io.ByteArrayOutputStream
+import java.io.File
+import java.io.IOException
+import java.io.UnsupportedEncodingException
 import java.nio.charset.Charset
 
 /**
@@ -142,7 +147,7 @@ open class DataService: BaseService() {
         //println(requestBody)
 
         val request = object : JsonObjectRequest(Request.Method.POST, url, null, Response.Listener { json ->
-            //println(json)
+            //println("json: " + json)
             try {
                 success = true
                 //println(json)
@@ -151,7 +156,7 @@ open class DataService: BaseService() {
                 dealOne(json)
                 data = model.data
             } catch (e: JSONException) {
-                println(e.localizedMessage)
+                println("parse data error: " + e.localizedMessage)
                 success = false
                 msg = "無法getList，沒有傳回成功值 " + e.localizedMessage
             }
@@ -179,10 +184,9 @@ open class DataService: BaseService() {
     }
 
     fun update(context: Context, type: String, params: MutableMap<String, Any>, image: String, complete: CompletionHandler) {
-        //val url = "$URL_UPDATE".format(type)
 
-        //println(image)
-        //println(params)
+        println(image)
+        println(params)
 
         Http.init(context)
         Http.upload {
@@ -247,28 +251,38 @@ open class DataService: BaseService() {
             }
             onSuccess { bytes ->
                 val res = bytes.toString(Charset.defaultCharset())
-                val json = JSONObject(res)
-                //println(json)
-                success = json.getBoolean("success")
-                complete(success)
+                println(res)
+                complete(true)
+//                val json = JSONObject(res)
+//                success = json.getBoolean("success")
+//                val errors = json.getJSONArray("error")
+//                msg = ""
+//                for (i in 0..errors.length()-1) {
+//                    msg += errors.getString(i) + "\n"
+//                }
+//                complete(success)
             }
             onFail { error ->
-                //println("on fail ${error.toString()}")
-                msg = "新增/修改 球隊失敗，網站或網路錯誤" + error.localizedMessage
+                error.printStackTrace()
+                println("on fail ${error}")
+                msg = "新增/修改 球隊失敗，網站或網路錯誤 " + error.localizedMessage
                 complete(false)
             }
         }
 
+
         /*
+        val url = "$URL_UPDATE".format(type)
+        println(url)
         val request = object: StringRequest(Request.Method.POST, url,
                 Response.Listener<String> { response ->
-
+                    println(response)
                 },
                 Response.ErrorListener { error ->
-
+                    println("error: " + error)
                 }) {
             override fun getBodyContentType(): String {
-                return super.getBodyContentType()
+                return HEADER
             }
 
             override fun getBody(): ByteArray {
@@ -287,6 +301,7 @@ open class DataService: BaseService() {
                         }
                     }
                 }
+                println(postParams.toString())
                 return postParams.toString().toByteArray()
             }
 
@@ -298,7 +313,7 @@ open class DataService: BaseService() {
             }
         }
         Volley.newRequestQueue(context).add(request)
-        */
+*/
     }
 
     open fun delete(context: Context, type: String, token: String, complete: CompletionHandler) {
@@ -448,22 +463,73 @@ open class DataService: BaseService() {
     open fun _jsonToData(tmp: JSONObject, key: String, item: Map<String, Any>){}
 }
 
-
-class VolleyMultipartRequest(method: Int, url: String?, listener: Response.ErrorListener?) : Request<NetworkResponse>(method, url, listener) {
-
-    override fun parseNetworkResponse(response: NetworkResponse?): Response<NetworkResponse> {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
-    override fun deliverResponse(response: NetworkResponse?) {
-
-    }
-
-}
-
-
-
-
-
-
-
+//class VolleyMultipartRequest(url: String?, errorListener: Response.ErrorListener?,
+//                             val mListener: Response.Listener<String>,
+//                             val mFilePart: HashMap<String, File>,
+//                             val mStringPart: Map<String, String>,
+//                             val header: Map<String, String>) :
+//        Request<String>(Method.POST, url, errorListener) {
+//    var entity: MultipartEntityBuilder = MultipartEntityBuilder.create()
+//    lateinit var httpentity: HttpEntity
+//
+//    init {
+//        entity.setMode(HttpMultipartMode.BROWSER_COMPATIBLE)
+//        try {
+//            entity.setCharset(CharsetUtils.get("UTF-8"))
+//        } catch (e: UnsupportedEncodingException) {
+//            println(e.localizedMessage)
+//        }
+//        httpentity = entity.build()
+//    }
+//
+//    private fun bulidMultipartEntity() {
+//        if (mFilePart != null) {
+//            for (entry: Map.Entry<String, File> in mFilePart.entries) {
+//                entity.addPart(entry.key, FileBody(entry.value, ContentType.create("image/*"), entry.value.name))
+//            }
+//        }
+//        if (mStringPart != null) {
+//            for (entry: Map.Entry<String, String> in mStringPart.entries) {
+//                entity.addTextBody(entry.key, entry.value)
+//            }
+//        }
+//    }
+//
+//    override fun getBodyContentType(): String {
+//        return httpentity.contentType.value
+//    }
+//
+//    override fun getBody(): ByteArray {
+//        val bos: ByteArrayOutputStream = ByteArrayOutputStream()
+//        try {
+//            httpentity.writeTo(bos)
+//        } catch (e: IOException) {
+//            println(e.localizedMessage)
+//        }
+//        return bos.toByteArray()
+//    }
+//
+//    override fun getHeaders(): MutableMap<String, String> {
+//        if (header == null) {
+//            return super.getHeaders()
+//        } else {
+//            return headers
+//        }
+//    }
+//
+//    override fun parseNetworkResponse(response: NetworkResponse?): Response<String> {
+//        try {
+//            println("Network Response " + String(response!!.data, CharsetUtils.get("UTF-8")))
+//            return Response.success(String(response!!.data, CharsetUtils.get("UTF-8")), cacheEntry)
+//        } catch (e: UnsupportedEncodingException) {
+//            println(e.localizedMessage)
+//            return Response.success(String(response!!.data, CharsetUtils.get("UTF-8")), cacheEntry)
+//        }
+//    }
+//
+//    override fun deliverResponse(response: String?) {
+//        mListener.onResponse(response)
+//    }
+//
+//
+//}

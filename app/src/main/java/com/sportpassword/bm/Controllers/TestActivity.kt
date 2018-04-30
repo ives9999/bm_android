@@ -11,16 +11,11 @@ import android.webkit.WebSettings
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Utilities.CompletionHandler
 import com.sportpassword.bm.Utilities.VIMEO_TOKEN
-import com.vimeo.networking.Configuration
-import com.vimeo.networking.VimeoClient
-import com.vimeo.networking.callbacks.ModelCallback
-import com.vimeo.networking.model.Video
-import com.vimeo.networking.model.error.VimeoError
 import kotlinx.android.synthetic.main.activity_test.*
 
 class TestActivity : AppCompatActivity() {
 
-    lateinit var vimeoClient: VimeoClient
+//    lateinit var vimeoClient: VimeoClient
     var embed = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -74,21 +69,21 @@ class TestActivity : AppCompatActivity() {
         webView.loadData(html, "text/html; charset=utf-8", "UTF-8")
     }
 
-    private fun getEmbed(uri: String, complete: CompletionHandler) {
-        if (vimeoClient != null) {
-            vimeoClient!!.fetchNetworkContent(uri, object : ModelCallback<Video>(Video::class.java) {
-                override fun success(t: Video?) {
-                    //println(t)
-                    embed = t!!.embed.html
-                    //println(embed)
-                    complete(true)
-                }
-
-                override fun failure(error: VimeoError?) {
-                    //println(error!!.localizedMessage)
-                    complete(false)
-                }
-            })
-        }
-    }
+//    private fun getEmbed(uri: String, complete: CompletionHandler) {
+//        if (vimeoClient != null) {
+//            vimeoClient!!.fetchNetworkContent(uri, object : ModelCallback<Video>(Video::class.java) {
+//                override fun success(t: Video?) {
+//                    //println(t)
+//                    embed = t!!.embed.html
+//                    //println(embed)
+//                    complete(true)
+//                }
+//
+//                override fun failure(error: VimeoError?) {
+//                    //println(error!!.localizedMessage)
+//                    complete(false)
+//                }
+//            })
+//        }
+//    }
 }

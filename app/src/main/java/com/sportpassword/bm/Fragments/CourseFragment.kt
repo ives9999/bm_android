@@ -11,12 +11,6 @@ import android.widget.TextView
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.CourseService
 import com.sportpassword.bm.Utilities.VIMEO_TOKEN
-import com.vimeo.networking.Configuration
-import com.vimeo.networking.Vimeo
-import com.vimeo.networking.VimeoClient
-import com.vimeo.networking.callbacks.ModelCallback
-import com.vimeo.networking.model.Video
-import com.vimeo.networking.model.error.VimeoError
 
 
 /**

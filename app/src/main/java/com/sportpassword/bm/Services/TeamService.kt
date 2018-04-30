@@ -319,8 +319,9 @@ object TeamService: DataService() {
                 if (value.isNotEmpty()) {
                     value = BASE_URL + value
                 }
+            } else {
+                if (value.isEmpty() || value == "null") value = "未提供"
             }
-            if (value.isEmpty() || value == "null") value = "未提供"
             //println("$key => $value")
             model.data[key]!!["value"] = value
             model.data[key]!!["show"] = value

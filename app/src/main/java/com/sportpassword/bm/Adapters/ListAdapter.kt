@@ -18,12 +18,6 @@ import com.sportpassword.bm.R
 import com.sportpassword.bm.Utilities.CompletionHandler
 import com.sportpassword.bm.Utilities.VIMEO_TOKEN
 import com.squareup.picasso.Picasso
-import com.vimeo.networking.Configuration
-import com.vimeo.networking.Vimeo
-import com.vimeo.networking.VimeoClient
-import com.vimeo.networking.callbacks.ModelCallback
-import com.vimeo.networking.model.Video
-import com.vimeo.networking.model.error.VimeoError
 import kotlinx.android.synthetic.main.activity_test.*
 import org.jetbrains.anko.margin
 

@@ -212,7 +212,6 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener {
 
     protected fun hidekyboard(parent: View) {
         val allV = getAllChildrenBFS(parent)
-        println(allV.size)
         for (i in 0..allV.size-1) {
             val v = allV.get(i)
             v.setOnFocusChangeListener(this)

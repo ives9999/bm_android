@@ -154,9 +154,11 @@ class Team(id: Int, name: String, token: String, featured_path: String, vimeo: S
     }
 
     fun updateDegree(degrees: ArrayList<String>) {
-        data[TEAM_DEGREE_KEY]!!["value"] = degrees
-        degreeShow()
-        setDegreeSender()
+        if (degrees.size > 0) {
+            data[TEAM_DEGREE_KEY]!!["value"] = degrees
+            degreeShow()
+            setDegreeSender()
+        }
     }
 
     fun updatePlayStartTime(time: String? = null) {

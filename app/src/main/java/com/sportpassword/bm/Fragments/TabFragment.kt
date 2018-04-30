@@ -19,7 +19,6 @@ import com.sportpassword.bm.Services.CoachService
 import com.sportpassword.bm.Services.DataService
 import com.sportpassword.bm.Services.TeamService
 import com.sportpassword.bm.Utilities.PERPAGE
-import com.vimeo.networking.VimeoClient
 import kotlinx.android.synthetic.main.tab.*
 
 
