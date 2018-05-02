@@ -15,7 +15,7 @@ class UpdatePasswordActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_update_password)
         setMyTitle("更改密碼")
-        hidekyboard(updatePassword_layout)
+        hidekeyboard(updatePassword_layout)
         updatePasswordOldPasswordTxt.requestFocus()
 
     }

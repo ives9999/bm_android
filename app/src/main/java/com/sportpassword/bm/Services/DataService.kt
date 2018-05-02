@@ -6,20 +6,13 @@ import com.android.volley.Request
 import com.android.volley.Response
 import com.android.volley.toolbox.JsonArrayRequest
 import com.android.volley.toolbox.JsonObjectRequest
-import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
-import com.ohmerhe.kolley.request.Http
+//import com.ohmerhe.kolley.request.Http
 import com.sportpassword.bm.Models.*
 import com.sportpassword.bm.Utilities.*
-import org.apache.http.util.CharsetUtils
-import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject
-import java.io.ByteArrayOutputStream
 import java.io.File
-import java.io.IOException
-import java.io.UnsupportedEncodingException
-import java.nio.charset.Charset
 
 /**
  * Created by ives on 2018/2/14.
@@ -183,9 +176,109 @@ open class DataService: BaseService() {
         Volley.newRequestQueue(context).add(request)
     }
 
-    fun update(context: Context, type: String, params: MutableMap<String, Any>, image: String, complete: CompletionHandler) {
+    fun update(context: Context, type: String, _params: MutableMap<String, Any>, image: String, complete: CompletionHandler) {
 
-        println(image)
+        //println(_params)
+        val url = "$URL_UPDATE".format(type)
+        val params: HashMap<String, String> = hashMapOf()
+        for ((_key, row) in _params) {
+            var key = _key
+            if (key == "arena_id") {
+                key = TEAM_ARENA_KEY
+            }
+            if (key == "city_id") {
+                key = TEAM_CITY_KEY
+            }
+
+            if (key == TEAM_DEGREE_KEY) {
+                val tmp: List<String> = row as ArrayList<String>
+                //hashmap don't permit duplicate key
+                var i = 1
+                for (d in tmp) {
+                    params.put("degree="+i, d)
+                    i++
+                }
+            } else if (key == TEAM_DAYS_KEY) {
+                val tmp: List<Int> = row as ArrayList<Int>
+                var i = 1
+                for (d in tmp) {
+                    params.put("days="+i, d.toString())
+                    i++
+                }
+            } else if (key == TEAM_CAT_KEY) {
+                val tmp: List<Int> = row as ArrayList<Int>
+                var i = 1
+                for (d in tmp) {
+                    params.put("cat_id="+i, d.toString())
+                }
+                i++
+            } else if (key == TEAM_ARENA_KEY) {
+                val value: Int = row as Int
+                params.put(_key, value.toString())
+            } else if (key == TEAM_CITY_KEY) {
+                val value: Int = row as Int
+                params.put(_key, value.toString())
+            } else {
+                val vtype: String = model.data[key]!!["vtype"] as String
+                if (vtype == "String") {
+                    params.put(key, row.toString())
+                } else if (vtype == "Int") {
+                    val value: Int = row as Int
+                    params.put(key, value.toString())
+                } else if (vtype == "Bool") {
+                    val value: Boolean = row as Boolean
+                    params.put(key, value.toString())
+                }
+            }
+        }
+        params.put("type", type)
+        params.putAll(PARAMS)
+        //println(params)
+
+        val images: HashMap<String, File> = hashMapOf()
+        if (image.length > 0) {
+            val f = File(image)
+            images.put("file", f)
+        }
+        val header: HashMap<String, String> = hashMapOf()
+
+        val multipartRequest = MultipartRequest(url, images, params, header, Response.Listener { response ->
+//            println(response)
+//            complete(true)
+            val json = JSONObject(response)
+             success = json.getBoolean("success")
+            msg = ""
+            if (json.has("error")) {
+                val errors = json.getJSONArray("error")
+                for (i in 0..errors.length() - 1) {
+                    msg += errors.getString(i) + "\n"
+                }
+            }
+            complete(success)
+
+        }, Response.ErrorListener { error ->
+            println(error)
+            println("on fail ${error}")
+            msg = "新增/修改 球隊失敗，網站或網路錯誤 " + error.localizedMessage
+            complete(false)
+
+        })
+
+        Volley.newRequestQueue(context).add(multipartRequest)
+
+
+//        val smr = object: SimpleMultiPartRequest(Request.Method.POST, url, Response.Listener { response ->
+//            println(response)
+//        }, Response.ErrorListener { error ->
+//            println(error.localizedMessage)
+//        })
+
+
+
+
+
+
+        /*println(image)
         println(params)
 
         Http.init(context)
@@ -269,6 +362,7 @@ open class DataService: BaseService() {
                 complete(false)
             }
         }
+        */
 
 
         /*
@@ -463,73 +557,4 @@ open class DataService: BaseService() {
     open fun _jsonToData(tmp: JSONObject, key: String, item: Map<String, Any>){}
 }
 
-//class VolleyMultipartRequest(url: String?, errorListener: Response.ErrorListener?,
-//                             val mListener: Response.Listener<String>,
-//                             val mFilePart: HashMap<String, File>,
-//                             val mStringPart: Map<String, String>,
-//                             val header: Map<String, String>) :
-//        Request<String>(Method.POST, url, errorListener) {
-//    var entity: MultipartEntityBuilder = MultipartEntityBuilder.create()
-//    lateinit var httpentity: HttpEntity
-//
-//    init {
-//        entity.setMode(HttpMultipartMode.BROWSER_COMPATIBLE)
-//        try {
-//            entity.setCharset(CharsetUtils.get("UTF-8"))
-//        } catch (e: UnsupportedEncodingException) {
-//            println(e.localizedMessage)
-//        }
-//        httpentity = entity.build()
-//    }
-//
-//    private fun bulidMultipartEntity() {
-//        if (mFilePart != null) {
-//            for (entry: Map.Entry<String, File> in mFilePart.entries) {
-//                entity.addPart(entry.key, FileBody(entry.value, ContentType.create("image/*"), entry.value.name))
-//            }
-//        }
-//        if (mStringPart != null) {
-//            for (entry: Map.Entry<String, String> in mStringPart.entries) {
-//                entity.addTextBody(entry.key, entry.value)
-//            }
-//        }
-//    }
-//
-//    override fun getBodyContentType(): String {
-//        return httpentity.contentType.value
-//    }
-//
-//    override fun getBody(): ByteArray {
-//        val bos: ByteArrayOutputStream = ByteArrayOutputStream()
-//        try {
-//            httpentity.writeTo(bos)
-//        } catch (e: IOException) {
-//            println(e.localizedMessage)
-//        }
-//        return bos.toByteArray()
-//    }
-//
-//    override fun getHeaders(): MutableMap<String, String> {
-//        if (header == null) {
-//            return super.getHeaders()
-//        } else {
-//            return headers
-//        }
-//    }
-//
-//    override fun parseNetworkResponse(response: NetworkResponse?): Response<String> {
-//        try {
-//            println("Network Response " + String(response!!.data, CharsetUtils.get("UTF-8")))
-//            return Response.success(String(response!!.data, CharsetUtils.get("UTF-8")), cacheEntry)
-//        } catch (e: UnsupportedEncodingException) {
-//            println(e.localizedMessage)
-//            return Response.success(String(response!!.data, CharsetUtils.get("UTF-8")), cacheEntry)
-//        }
-//    }
-//
-//    override fun deliverResponse(response: String?) {
-//        mListener.onResponse(response)
-//    }
-//
-//
-//}
+

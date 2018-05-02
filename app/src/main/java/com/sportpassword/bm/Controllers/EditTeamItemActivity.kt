@@ -47,6 +47,8 @@ class EditTeamItemActivity() : BaseActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_edit_team_item)
 
+        hidekeyboard(teamedititem_constraint)
+
         key = intent.getStringExtra("key")
         //println(key)
         if (key == TEAM_DAYS_KEY || key == TEAM_PLAY_START_KEY || key == TEAM_PLAY_END_KEY || key == TEAM_DEGREE_KEY || key == TEAM_CITY_KEY || key == TEAM_ARENA_KEY) {
@@ -64,10 +66,12 @@ class EditTeamItemActivity() : BaseActivity() {
             for (i in 1..7) {
                 val tmp: Map<String, Any> = DAYS[i-1]
                 var checked: Boolean = false
-                for (j in 0..days.size-1) {
-                    if (i == days.get(j)) {
-                        checked = true
-                        break
+                if (days != null) {
+                    for (j in 0..days.size - 1) {
+                        if (i == days.get(j)) {
+                            checked = true
+                            break
+                        }
                     }
                 }
                 val m: MutableMap<String, String> = mutableMapOf("value" to i.toString(), "text" to tmp["text"]!! as String, "checked" to checked.toString())
@@ -79,13 +83,13 @@ class EditTeamItemActivity() : BaseActivity() {
             } else {
                 setMyTitle("結束時間")
             }
-            time = intent.getStringExtra("value")
             //println(value)
+            time = intent.getStringExtra("value")
             val times: ArrayList<String> = arrayListOf("07:00","07:30","08:00","08:30","09:00","09:30","10:00","10:30","11:00","11:30","12:00",
                 "12:30","13:00","13:30","14:00","14:30","15:00","15:30","16:00","16:30","17:00","17:30",
                 "18:00","18:30","19:00","19:30","20:00","20:30","21:00","21:30","22:00","22:30","23:00")
             for (i in 0..times.size-1) {
-                var checked: Boolean = if (times[i] == time) true else false
+                val checked = if (times[i] == time) true else false
                 val m: MutableMap<String, String> = mutableMapOf("value" to times[i], "text" to times[i], "checked" to checked.toString())
                 daysLists.add(m)
             }
@@ -95,11 +99,13 @@ class EditTeamItemActivity() : BaseActivity() {
             val allDegree: Map<String, String> = DEGREE.all()
             for ((k, v) in allDegree) {
                 var checked: Boolean = false
-                for (i in 0..value.size-1) {
-                    if (k == value.get(i)) {
-                        checked = true
-                        resDegrees.add(k)
-                        break
+                if (value != null) {
+                    for (i in 0..value.size - 1) {
+                        if (k == value.get(i)) {
+                            checked = true
+                            resDegrees.add(k)
+                            break
+                        }
                     }
                 }
                 val m: MutableMap<String, String> = mutableMapOf("value" to k, "text" to v, "checked" to checked.toString())
@@ -113,8 +119,17 @@ class EditTeamItemActivity() : BaseActivity() {
             oldCity = intent.getIntExtra("city_id", 0)
             oldArena = intent.getIntExtra("arena_id", 0)
         } else {
+            if (key == TEAM_TEMP_CONTENT_KEY) {
+                setMyTitle("臨打說明")
+            } else if (key == TEAM_CHARGE_KEY) {
+                setMyTitle("收費說明")
+            } else if (key == TEAM_CONTENT_KEY) {
+                setMyTitle("球隊說明")
+            }
             val value: String = intent.getStringExtra("value")
             content.setText(value)
+            content.requestFocus()
+            content.setSelection(content.text.length)
         }
         editTeamItemAdapter = EditTeamItemAdapter(this, key, daysLists) { position, checked ->
             //println(position)
@@ -204,6 +219,7 @@ class EditTeamItemActivity() : BaseActivity() {
     }
 
     fun submit(view: View) {
+        hideKeyboard()
         val intent = Intent()
         intent.putExtra("key", key)
         if (key == TEAM_DAYS_KEY) {
@@ -221,7 +237,7 @@ class EditTeamItemActivity() : BaseActivity() {
             intent.putExtra("name", resArena_name)
         } else {
             val res: String = content.text.toString()
-            intent.putExtra("content", res)
+            intent.putExtra("res", res)
         }
         setResult(Activity.RESULT_OK, intent)
         finish()

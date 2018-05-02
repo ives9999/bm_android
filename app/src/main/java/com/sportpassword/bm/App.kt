@@ -9,10 +9,6 @@ import android.preference.PreferenceManager
 import android.util.Log
 import com.onesignal.OneSignal
 import com.sportpassword.bm.Models.Member
-import com.sportpassword.bm.Models.Team
-import com.sportpassword.bm.Utilities.VIMEO_ID
-import com.sportpassword.bm.Utilities.VIMEO_SECRET
-
 
 /**
  * Created by ives on 2018/2/6.

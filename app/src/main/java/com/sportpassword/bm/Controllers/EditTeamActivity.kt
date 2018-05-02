@@ -3,6 +3,7 @@ package com.sportpassword.bm.Controllers
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.os.PersistableBundle
 import android.support.constraint.ConstraintLayout
 import android.support.design.widget.TextInputEditText
 import android.support.v4.content.LocalBroadcastManager
@@ -85,6 +86,7 @@ class EditTeamActivity : BaseActivity(), ImagePicker {
         setRefreshListener()
         refresh()
     }
+
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.button, menu)
         return true
@@ -111,7 +113,7 @@ class EditTeamActivity : BaseActivity(), ImagePicker {
             }
         } else {
             setMyTitle("新增球隊")
-            model.runTestData()
+            //model.runTestData()
             dataToField(inputV)
             teamedit_name.setSelection(teamedit_name.length())
         }
@@ -119,7 +121,7 @@ class EditTeamActivity : BaseActivity(), ImagePicker {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        //println(requestCode)
+        //println(data)
         when (requestCode) {
             ACTION_PHOTO_REQUEST_CODE -> {
                 dealPhoto(requestCode, resultCode, data)
@@ -213,6 +215,7 @@ class EditTeamActivity : BaseActivity(), ImagePicker {
     }
 
     fun submit(view: View) {
+        hideKeyboard()
         var params: MutableMap<String, Any> = mutableMapOf()
         var isPass: Boolean = true
         fieldToData(inputV)
@@ -330,9 +333,11 @@ class EditTeamActivity : BaseActivity(), ImagePicker {
                 for ((key, value) in model.data) {
                     if (tag == key) {
                         val newValue: String = v.text.toString()
-                        val oldValue:Any = value["value"] as Any
-                        val vtype = value["vtype"] as String
-                        _fieldToData(oldValue, newValue, vtype, key)
+                        if (newValue.length > 0) {
+                            val oldValue: Any = value["value"] as Any
+                            val vtype = value["vtype"] as String
+                            _fieldToData(oldValue, newValue, vtype, key)
+                        }
                     }
                 }
             }
@@ -426,6 +431,8 @@ class EditTeamActivity : BaseActivity(), ImagePicker {
     }
 
     private fun prepare(key: String) {
+        hideKeyboard()
+        fieldToData(inputV)
         val intent = Intent(this@EditTeamActivity, EditTeamItemActivity::class.java)
         intent.putExtra("key", key)
         if (key == TEAM_DAYS_KEY) {
@@ -439,7 +446,10 @@ class EditTeamActivity : BaseActivity(), ImagePicker {
             }
         } else if (key == TEAM_PLAY_START_KEY || key == TEAM_PLAY_END_KEY) {
             val row: MutableMap<String, Any> = model.data[key]!!["sender"] as MutableMap<String, Any>
-            val value: String = row["time"] as String
+            var value = ""
+            if (row.isNotEmpty()) {
+                value = row["time"] as String
+            }
             intent.putExtra("value", value)
         } else if (key == TEAM_DEGREE_KEY) {
             val value: ArrayList<String> = model.data[key]!!["sender"] as ArrayList<String>

@@ -10,7 +10,6 @@ import android.widget.TextView
 
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.CourseService
-import com.sportpassword.bm.Utilities.VIMEO_TOKEN
 
 
 /**

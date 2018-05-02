@@ -86,7 +86,9 @@ class TeamTempPlayEditActivity : BaseActivity() {
         }
         val quantity = model.temp_play_data[TEAM_TEMP_QUANTITY_KEY]!!["value"] as Int
         oldQuantity = quantity
-        temp_play_quantity.setText(quantity.toString())
+        if (quantity > 0) {
+            temp_play_quantity.setText(quantity.toString())
+        }
         if (status == "off") {
             quantity_container.visibility = View.INVISIBLE
         }
@@ -98,34 +100,54 @@ class TeamTempPlayEditActivity : BaseActivity() {
     }
 
     fun submit(view: View) {
-        if (isKeyboardShow && keyboardView != null) {
-            _hideKeyboard(keyboardView!!)
+        var isPass = true
+        if (onoff.isChecked) {
+            val q = temp_play_quantity.text.toString()
+            if (q.length == 0) {
+                isPass = false
+            } else {
+                val q1 = q.toIntOrNull()
+                if (q1 == null) {
+                    isPass = false
+                } else {
+                    if (q1 <= 0) {
+                        isPass = false
+                    }
+                }
+            }
         }
-        fieldToData()
-        //println(model.temp_play_data)
-        val params: MutableMap<String, Any> = model.makeTempPlaySubmitArr()
-        if (params.size == 0) {
-            Alert.show(this, "提示", "沒有修改任何資料")
+        if (!isPass) {
+            Alert.show(this, "警告", "必須填寫臨打人數或臨打人數須大於0")
         } else {
-            TeamService.update(this, "team", params, "") { success ->
+            if (isKeyboardShow && keyboardView != null) {
+                _hideKeyboard(keyboardView!!)
+            }
+            fieldToData()
+            //println(model.temp_play_data)
+            val params: MutableMap<String, Any> = model.makeTempPlaySubmitArr()
+            if (params.size == 0) {
+                Alert.show(this, "提示", "沒有修改任何資料")
+            } else {
+                TeamService.update(this, "team", params, "") { success ->
 
-                if (success) {
-                    if (TeamService.success) {
-                        val id: Int = TeamService.id
-                        model.data[TEAM_ID_KEY]!!["value"] = id
-                        model.data[TEAM_ID_KEY]!!["show"] = id
-                        Alert.update(this, "UPDATE", {
-                            val teamUpdate = Intent(NOTIF_TEAM_UPDATE)
-                            LocalBroadcastManager.getInstance(this).sendBroadcast(teamUpdate)
-                            finish()
-                        })
+                    if (success) {
+                        if (TeamService.success) {
+                            val id: Int = TeamService.id
+                            model.data[TEAM_ID_KEY]!!["value"] = id
+                            model.data[TEAM_ID_KEY]!!["show"] = id
+                            Alert.update(this, "UPDATE", {
+                                val teamUpdate = Intent(NOTIF_TEAM_UPDATE)
+                                LocalBroadcastManager.getInstance(this).sendBroadcast(teamUpdate)
+                                finish()
+                            })
+                        } else {
+                            Alert.show(this, "錯誤", TeamService.msg)
+                        }
                     } else {
                         Alert.show(this, "錯誤", TeamService.msg)
                     }
-                } else {
-                    Alert.show(this, "錯誤", TeamService.msg)
-                }
 
+                }
             }
         }
     }

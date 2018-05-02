@@ -10,7 +10,6 @@ import android.webkit.WebChromeClient
 import android.webkit.WebSettings
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Utilities.CompletionHandler
-import com.sportpassword.bm.Utilities.VIMEO_TOKEN
 import kotlinx.android.synthetic.main.activity_test.*
 
 class TestActivity : AppCompatActivity() {

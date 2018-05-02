@@ -13,5 +13,9 @@
     <color name="LAYER">#f0e4e4</color>
     <color name="TEXTBORDER">#4B4B4B</color>
     <color name="LISTTITLE">#265B03</color>
+    <!-- Photo Viewer Colors -->
+    <color name="solid_black">#ff000000</color>
+    <color name="photo_crop_dim_color">#cc000000</color>
+    <color name="photo_crop_highlight_color">#fff</color>
 </resources>
 

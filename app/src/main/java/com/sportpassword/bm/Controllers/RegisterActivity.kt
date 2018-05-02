@@ -16,7 +16,7 @@ class RegisterActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_register)
         setMyTitle("註冊")
-        hidekyboard(register_layout)
+        hidekeyboard(register_layout)
         registerEmailTxt.requestFocus()
 
 //        registerEmailTxt.setText("ives@housetube.tw")

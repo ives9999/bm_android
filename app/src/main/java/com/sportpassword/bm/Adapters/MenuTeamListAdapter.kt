@@ -18,7 +18,7 @@ import com.sportpassword.bm.Models.Data
 
 class MenuTeamListAdapter(val context: Context, val lists: ArrayList<Data>, val edit: (Data) -> Unit, val delete: (Data) -> Unit, val onoff: (Data) -> Unit): RecyclerView.Adapter<MenuTeamListAdapter.ViewHolder>() {
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder?.bind(lists[position])
+        holder?.bind(position)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -36,8 +36,13 @@ class MenuTeamListAdapter(val context: Context, val lists: ArrayList<Data>, val 
         val editView = itemView.findViewById<LinearLayout>(R.id.menu_team_list_edit)
         val deleteView = itemView.findViewById<LinearLayout>(R.id.menu_team_list_delete)
         val nameView = itemView.findViewById<TextView>(R.id.menu_team_list_name)
+        val line2View = itemView.findViewById<LinearLayout>(R.id.line2)
 
-        fun bind(team: Data) {
+        fun bind(position: Int) {
+            if (position == lists.size-1) {
+                line2View.visibility = View.INVISIBLE
+            }
+            val team = lists[position]
             nameView.text = team.title
             frontLayout.setOnClickListener{ onoff(team) }
             editView.setOnClickListener { edit(team) }

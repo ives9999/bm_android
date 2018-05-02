@@ -31,7 +31,7 @@ class AccountUpdate1Activity : BaseActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_account_update1)
 
-        hidekyboard(testa)
+        hidekeyboard(testa)
 
         field = intent.getStringExtra("field")
         value = member.fetch(field)

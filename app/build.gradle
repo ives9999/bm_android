@@ -18,15 +18,15 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 
 android {
-//    useLibrary 'org.apache.http.legacy'
-//    packagingOptions {
-//        exclude 'META-INF/DEPENDENCIES'
-//        exclude 'META-INF/NOTICE'
-//        exclude 'META-INF/LICENSE'
-//        exclude 'META-INF/LICENSE.txt'
-//        exclude 'META-INF/NOTICE.txt'
-//        exclude 'META-INF/ASL2.0'
-//    }
+    useLibrary 'org.apache.http.legacy'
+    packagingOptions {
+        exclude 'META-INF/DEPENDENCIES'
+        exclude 'META-INF/NOTICE'
+        exclude 'META-INF/LICENSE'
+        exclude 'META-INF/LICENSE.txt'
+        exclude 'META-INF/NOTICE.txt'
+        exclude 'META-INF/ASL2.0'
+    }
     signingConfigs {
         config {
             keyAlias 'bm'
@@ -85,18 +85,18 @@ dependencies {
     implementation "org.jetbrains.anko:anko:$anko_version"
     implementation 'com.squareup.picasso:picasso:2.5.2'
     implementation 'com.github.franmontiel:PersistentCookieJar:v1.0.1'
-    implementation 'com.ohmerhe.kolley:kolley:0.3.1'
+    //implementation 'com.ohmerhe.kolley:kolley:0.3.1'
     implementation 'com.onesignal:OneSignal:3.8.4'
     implementation "com.chauthai.swipereveallayout:swipe-reveal-layout:1.4.1"
-    implementation 'dev.dworks.libs:volleyplus:+'
+//    implementation ('org.apache.httpcomponents:httpclient-android:4.3.5') {
+//        exclude group: 'org.apache.http.impl.cookie', module: 'IgnoreSpecFactory'
+//    }
+    implementation 'org.apache.httpcomponents:httpmime:4.3.6'
+    //implementation 'dev.dworks.libs:volleyplus:+'
 //    implementation('com.vimeo.networking:vimeo-networking:1.1.0') {
 //        exclude group: 'com.intellij', module: 'annotations'
 //    }
 //    implementation project(':vimeo-networking')
-//    implementation('org.apache.httpcomponents:httpmime:4.3.6') {
-//        exclude group: 'org.apache.http.MessageConstraintException', module: 'httpclient'
-//    }
-//    implementation 'org.apache.httpcomponents:httpclient-android:4.3.5'
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'

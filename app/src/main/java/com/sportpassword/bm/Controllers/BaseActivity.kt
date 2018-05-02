@@ -210,7 +210,7 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener {
         return visited
     }
 
-    protected fun hidekyboard(parent: View) {
+    protected fun hidekeyboard(parent: View) {
         val allV = getAllChildrenBFS(parent)
         for (i in 0..allV.size-1) {
             val v = allV.get(i)

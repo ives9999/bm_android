@@ -60,12 +60,13 @@
                 app:layout_constraintStart_toEndOf="@+id/imageView2"
                 app:layout_constraintTop_toTopOf="parent" />
         </android.support.constraint.ConstraintLayout>
+
         <include
             android:id="@+id/divider_2"
+            layout="@layout/divider"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            layout="@layout/divider"
-            android:layout_below="@id/menu_team_desc"/>
+            android:layout_below="@id/menu_team_desc" />
 
         <android.support.constraint.ConstraintLayout
             android:id="@+id/menu_team_add"
@@ -79,35 +80,41 @@
                 android:id="@+id/textView3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
                 android:layout_marginStart="48dp"
                 android:text="新增球隊"
                 android:textColor="@color/WHITE"
                 android:textSize="18sp"
-                app:layout_constraintStart_toEndOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <ImageView
                 android:id="@+id/imageView4"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
                 android:layout_marginEnd="24dp"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:srcCompat="@drawable/greater1" />
         </android.support.constraint.ConstraintLayout>
+
         <include
             android:id="@+id/divider_3"
+            layout="@layout/divider"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            layout="@layout/divider"
-            android:layout_below="@id/menu_team_add"/>
+            android:layout_below="@id/menu_team_add" />
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/menu_team_list"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:scrollbars="vertical"
-            android:layout_below="@id/menu_team_add">
+            android:layout_below="@id/menu_team_add"
+            android:layout_marginTop="8dp"
+            android:scrollbars="vertical">
 
         </android.support.v7.widget.RecyclerView>
     </RelativeLayout>

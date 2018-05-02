@@ -16,7 +16,6 @@ import android.widget.VideoView
 import com.sportpassword.bm.Models.Data
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Utilities.CompletionHandler
-import com.sportpassword.bm.Utilities.VIMEO_TOKEN
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_test.*
 import org.jetbrains.anko.margin

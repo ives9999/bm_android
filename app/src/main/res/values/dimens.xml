@@ -6,4 +6,7 @@
     <dimen name="nav_header_height">130dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
     <dimen name="loadingTextMarginTop">12dp</dimen>
+    <dimen name="photo_crop_width">280dip</dimen>
+    <dimen name="photo_crop_stroke_width">1dip</dimen>
+    <dimen name="photo_preview_size">200dip</dimen>
 </resources>

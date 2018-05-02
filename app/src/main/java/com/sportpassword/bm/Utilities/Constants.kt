@@ -6,6 +6,7 @@ package com.sportpassword.bm.Utilities
 
 typealias CompletionHandler = (Success: Boolean) -> Unit
 
+const val SOURCE = "app"
 const val CHANNEL = "bm"
 var gSimulate: Boolean = false
 
@@ -142,7 +143,9 @@ val DAYS: Array<Map<String, Any>> = arrayOf(
 )
 
 // vimeo
-val VIMEO_ID = "85a4cfd6e6ff82ea0493e269d19086c0c856936b"
-val VIMEO_SECRET = "w//PE1Vewrvaicmc9LtXyKjJB2DoFmxPenQxoZJ3vD3PkBraHahyFKpm4zmZnIIJy2EUO8NvSWuWiHkbK8mLoBvUxve1Rxm54nl4OH8FHpKHmvGtG3zm30gOa/X36oL5"
-val VIMEO_TOKEN = "6796bb60593399d57223bcdcafded37e"
+//val VIMEO_ID = "85a4cfd6e6ff82ea0493e269d19086c0c856936b"
+//val VIMEO_SECRET = "w//PE1Vewrvaicmc9LtXyKjJB2DoFmxPenQxoZJ3vD3PkBraHahyFKpm4zmZnIIJy2EUO8NvSWuWiHkbK8mLoBvUxve1Rxm54nl4OH8FHpKHmvGtG3zm30gOa/X36oL5"
+//val VIMEO_TOKEN = "6796bb60593399d57223bcdcafded37e"
+
+val PARAMS: HashMap<String, String> = hashMapOf("source" to SOURCE, "channel" to CHANNEL)
 

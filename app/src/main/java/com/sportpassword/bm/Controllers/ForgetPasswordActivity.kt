@@ -19,7 +19,7 @@ class ForgetPasswordActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_forget_password)
         setMyTitle("忘記密碼")
-        hidekyboard(forgetPassword_layout)
+        hidekeyboard(forgetPassword_layout)
         //forgetPasswordEmailTxt.setText("ives@housetube.tw")
         forgetPasswordEmailTxt.requestFocus()
     }
