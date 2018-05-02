@@ -24,8 +24,8 @@
             <ImageView
                 android:id="@+id/show_featured_view"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:scaleType="centerInside"
+                android:layout_height="200dp"
+                android:scaleType="fitCenter"
                 app:srcCompat="@drawable/loading_square" />
 
             <Button
