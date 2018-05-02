@@ -22,6 +22,7 @@ import org.jetbrains.anko.sdk25.coroutines.onClick
 import org.jetbrains.anko.toast
 import com.github.babedev.dexter.dsl.runtimePermission
 import com.sportpassword.bm.Controllers.BaseActivity
+import com.squareup.picasso.MemoryPolicy
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_edit_team.*
 import java.io.File
@@ -123,11 +124,13 @@ interface ImagePicker {
         if (newFile != null) {
             Picasso.with(context)
                     .load(newFile)
+                    .memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE)
                     .into(imageView)
         } else {
             if (url != null) {
                 Picasso.with(context)
                         .load(url)
+                        .memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE)
                         .into(imageView)
             }
         }
@@ -139,7 +142,7 @@ interface ImagePicker {
                 .into(imageView)
     }
 
-    fun getPhotoFile(): File? {
+    fun makeTempEmptyFile(): File? {
         val dir = File("" + Environment.getExternalStorageDirectory() + "/Android/data" + activity.applicationContext.packageName + "Files")
         if (!dir.exists()) {
             if (!dir.mkdir()) {
@@ -151,7 +154,7 @@ interface ImagePicker {
         return mediaFile
     }
 
-    fun storageToFile(data: Intent) {
+    fun selectToFile(data: Intent) {
         val inputStream = activity.contentResolver.openInputStream(data.data)
         val fileOutputStream = FileOutputStream(file)
         val buffer = ByteArray(1024)
@@ -176,13 +179,13 @@ interface ImagePicker {
     fun dealPhoto(requestCode: Int, resultCode: Int, data: Intent?) {
         if (resultCode == Activity.RESULT_OK && data != null) {
             //println(resultCode)
-            //println(data)
+            //println(data.data)
 
-            file = getPhotoFile()
-            if (file != null) {
-                storageToFile(data!!)
+            file = makeTempEmptyFile()
+            //if (file != null) {
+            selectToFile(data!!)
                 //println(file)
-            }
+            //}
             setImage(file, null)
             closeImagePickerLayer()
         } else {

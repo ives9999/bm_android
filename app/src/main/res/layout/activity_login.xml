@@ -75,19 +75,19 @@
         android:drawableLeft="@drawable/email"
         android:drawablePadding="12dp"
         android:ems="10"
-        android:hint="EMail"
+        android:hint="jacky@gmail.com"
         android:inputType="textEmailAddress"
         android:paddingBottom="6dp"
         android:paddingLeft="8dp"
         android:paddingTop="6dp"
         android:singleLine="false"
         android:textColor="@color/WHITE"
+        android:textColorHint="@color/grey"
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView"
-        tools:text="Email" />
+        app:layout_constraintTop_toBottomOf="@+id/imageView" />
 
     <EditText
         android:id="@+id/loginPasswordTxt"
@@ -108,6 +108,7 @@
         android:paddingTop="6dp"
         android:singleLine="false"
         android:textColor="@color/WHITE"
+        android:textColorHint="@color/grey"
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.093"

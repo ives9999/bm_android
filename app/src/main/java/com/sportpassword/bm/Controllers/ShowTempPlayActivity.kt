@@ -162,7 +162,7 @@ class ShowTempPlayActivity : BaseActivity() {
 
         if (data.containsKey("signups") && data["signups"]!!.containsKey("value")) {
             val signups = data["signups"]!!["value"] as ArrayList<Map<String, String>>
-            println(signups)
+            //println(signups)
             if (signups.size > 0) {
                 signupsAdapter.lists = signups
                 signupsAdapter.notifyDataSetChanged()

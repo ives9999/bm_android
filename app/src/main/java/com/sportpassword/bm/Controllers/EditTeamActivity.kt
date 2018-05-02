@@ -124,6 +124,7 @@ class EditTeamActivity : BaseActivity(), ImagePicker {
         //println(data)
         when (requestCode) {
             ACTION_PHOTO_REQUEST_CODE -> {
+                println(data!!.data)
                 dealPhoto(requestCode, resultCode, data)
             }
             ACTION_CAMERA_REQUEST_CODE -> {
@@ -258,6 +259,9 @@ class EditTeamActivity : BaseActivity(), ImagePicker {
                             model.data[TEAM_ID_KEY]!!["value"] = id
                             model.data[TEAM_ID_KEY]!!["show"] = id
                             Alert.update(this, this.action, {
+                                if (file != null) {
+                                    file!!.delete()
+                                }
                                 val teamUpdate = Intent(NOTIF_TEAM_UPDATE)
                                 LocalBroadcastManager.getInstance(this).sendBroadcast(teamUpdate)
                                 finish()
@@ -382,7 +386,7 @@ class EditTeamActivity : BaseActivity(), ImagePicker {
     }
     private fun _idRegex(id: String): String? {
         var res: String? = null
-        val regex = "([^_]*)_(.*)".toRegex()
+        val  regex = "([^_]*)_(.*)".toRegex()
         val matches = regex.find(id)
         if (matches != null && matches.groupValues.size > 2) {
             val groups = matches.groupValues
