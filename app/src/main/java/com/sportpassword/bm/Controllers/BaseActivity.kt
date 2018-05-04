@@ -103,8 +103,8 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener {
 
     protected fun setMyTitle(title: String) {
         val actionBar: ActionBar = supportActionBar!!
-        actionBar.setDisplayHomeAsUpEnabled(true)
         actionBar.setDisplayShowTitleEnabled(false)
+        actionBar.setDisplayHomeAsUpEnabled(true)
         actionBar.setHomeAsUpIndicator(R.drawable.prev)
 
         val l: LinearLayout = LayoutInflater.from(this).inflate(R.layout.title_bar, null) as LinearLayout
@@ -230,7 +230,7 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener {
         inputManager.toggleSoftInput(InputMethodManager.SHOW_FORCED,InputMethodManager.HIDE_IMPLICIT_ONLY);
     }
 
-    protected fun _loginFB() {
+    protected fun loginFB() {
         val playerID = _getPlayerID()
         //val context = this
         FacebookSdk.sdkInitialize(getApplicationContext());

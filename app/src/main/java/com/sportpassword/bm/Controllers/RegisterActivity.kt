@@ -62,7 +62,7 @@ class RegisterActivity : BaseActivity() {
     }
 
     fun registerFBSubmit(view: View) {
-        _loginFB()
+        loginFB()
     }
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)

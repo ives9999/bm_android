@@ -63,7 +63,6 @@ class MainActivity : BaseActivity() {
 
     val tabsTextArr: Array<String> = arrayOf<String>("臨打", "教練", "球隊", "更多")
     val tabsIconArr: Array<String> = arrayOf<String>("tempplay", "coach", "team", "more")
-    var mainActivity: MainActivity? = null
 
     lateinit var menuTeamListAdapter: MenuTeamListAdapter
 
@@ -122,13 +121,13 @@ class MainActivity : BaseActivity() {
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
         supportActionBar!!.setDisplayShowTitleEnabled(false)
-        val menuID = resources.getIdentifier("menu", "drawable", packageName)
-        //println(menuID)
-        supportActionBar!!.setHomeAsUpIndicator(menuID)
-        //toolbar.setNavigationIcon(menuID)
-        //toolbar.setNavigationOnClickListener(this)
 
-        mainActivity = this
+        // action bar 右邊的「提交」按鈕
+        //val menuID = resources.getIdentifier("menu", "drawable", packageName)
+        //println(menuID)
+        //supportActionBar!!.setHomeAsUpIndicator(menuID)
+        supportActionBar!!.setDisplayHomeAsUpEnabled(true)
+        supportActionBar!!.setHomeAsUpIndicator(R.drawable.menu)
 
         val toggle = ActionBarDrawerToggle(
                 this, drawer_layout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close)
@@ -160,11 +159,11 @@ class MainActivity : BaseActivity() {
         tabs.addOnTabSelectedListener(TabLayout.ViewPagerOnTabSelectedListener(tab_container))
         tabs.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab?) {
-                mainActivity!!.setTabIconSelected(tab!!)
+                this@MainActivity.setTabIconSelected(tab!!)
             }
 
             override fun onTabUnselected(tab: TabLayout.Tab?) {
-                mainActivity!!.setTabIconUnSelected(tab!!)
+                this@MainActivity.setTabIconUnSelected(tab!!)
             }
 
             override fun onTabReselected(tab: TabLayout.Tab?) {

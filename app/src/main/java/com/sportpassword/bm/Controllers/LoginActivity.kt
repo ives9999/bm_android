@@ -64,7 +64,7 @@ class LoginActivity : BaseActivity() {
     }
 
     fun loginFBSubmit(view: View) {
-        _loginFB()
+        loginFB()
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
