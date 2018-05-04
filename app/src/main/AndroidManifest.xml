@@ -13,12 +13,11 @@
     <application
         android:name=".App"
         android:allowBackup="true"
+        android:hardwareAccelerated="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme"
-        android:hardwareAccelerated="true"
-        >
+        android:theme="@style/AppTheme">
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
             android:value="@string/facebook_app_id" />
@@ -42,10 +41,9 @@
         <activity
             android:name=".Controllers.MainActivity"
             android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:theme="@style/SplashTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -61,7 +59,14 @@
         <activity android:name=".Controllers.EditTeamActivity" />
         <activity android:name=".Controllers.EditTeamItemActivity" />
         <activity android:name=".Controllers.TeamTempPlayEditActivity" />
-        <activity android:name=".Controllers.TestActivity"></activity>
+        <activity android:name=".Controllers.TestActivity" />
+        <activity android:name=".Controllers.SplashActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>
