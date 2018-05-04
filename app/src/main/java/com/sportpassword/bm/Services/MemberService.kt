@@ -17,6 +17,8 @@ import com.android.volley.VolleyError
 import com.facebook.AccessToken
 import com.facebook.GraphRequest
 import com.facebook.GraphResponse
+import com.facebook.Profile
+import com.facebook.login.LoginManager
 
 
 /**
@@ -263,6 +265,7 @@ object MemberService: BaseService() {
     fun FBLogin(context: Context, playerID: String, complete: (Boolean) -> Unit) {
         val accessToken = AccessToken.getCurrentAccessToken()
         val request = GraphRequest.newMeRequest(accessToken) { json: JSONObject, response: GraphResponse? ->
+            //println(json)
             var uid = ""
             var name = ""
             var email = ""
@@ -310,6 +313,7 @@ object MemberService: BaseService() {
                     body.put("email", email)
                 }
                 if (sex.isNotEmpty()) {
+                    sex = if (sex == "male") "M" else "F"
                     body.put("sex", sex)
                 }
                 if (avatar.isNotEmpty()) {
@@ -326,7 +330,7 @@ object MemberService: BaseService() {
             }
         }
         val parameters = Bundle()
-        parameters.putString("field", "id,name,link,email,picture.width(300),gender,birthday")
+        parameters.putString("fields", "id,name,link,email,picture.width(300),gender,birthday")
         request.parameters = parameters
         request.executeAsync()
     }
@@ -342,23 +346,29 @@ object MemberService: BaseService() {
         //println(requestBody)
 
         val request = object : JsonObjectRequest(Request.Method.POST, url, null, Response.Listener { json ->
+            //println(json)
             try {
                 success = json.getBoolean("success")
                 //println(success)
             } catch (e: JSONException) {
+                FBLogout()
                 success = false
                 msg = "無法登入，沒有傳回成功值 " + e.localizedMessage
             }
             if (success) {
                 //println(json)
                 jsonToMember(json)
+                complete(true)
             } else {
+                FBLogout()
                 makeErrorMsg(json)
+                complete(false)
+                msg = json.getString("msg")
             }
-            complete(true)
         }, Response.ErrorListener { error ->
             println(error.localizedMessage)
             msg = "登入失敗，網站或網路錯誤"
+            FBLogout()
             complete(false)
         }) {
             override fun getBodyContentType(): String {
@@ -374,7 +384,11 @@ object MemberService: BaseService() {
     }
 
     fun logout() {
+        FBLogout()
         member.reset()
+    }
+    fun FBLogout() {
+        LoginManager.getInstance().logOut()
     }
 
 

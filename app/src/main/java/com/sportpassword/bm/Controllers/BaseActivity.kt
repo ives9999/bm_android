@@ -232,19 +232,24 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener {
 
     protected fun _loginFB() {
         val playerID = _getPlayerID()
-        val context = this
+        //val context = this
         FacebookSdk.sdkInitialize(getApplicationContext());
         AppEventsLogger.activateApp(this);
         callbackManager = CallbackManager.Factory.create()
-        //LoginManager.getInstance().logOut()
+        LoginManager.getInstance().logOut()
         LoginManager.getInstance().logInWithReadPermissions(this, Arrays.asList("email,public_profile,user_birthday"))
         LoginManager.getInstance().registerCallback(callbackManager,
                 object: FacebookCallback<LoginResult> {
                     override fun onSuccess(result: LoginResult?) {
-                        MemberService.FBLogin(context, playerID) { success ->
-                            val memberDidChange = Intent(NOTIF_MEMBER_DID_CHANGE)
-                            LocalBroadcastManager.getInstance(context).sendBroadcast(memberDidChange)
-                            finish()
+                        MemberService.FBLogin(this@BaseActivity, playerID) { success ->
+                            if (success) {
+                                val memberDidChange = Intent(NOTIF_MEMBER_DID_CHANGE)
+                                LocalBroadcastManager.getInstance(this@BaseActivity).sendBroadcast(memberDidChange)
+                                finish()
+                            } else {
+                                val msg = MemberService.msg
+                                Alert.show(this@BaseActivity,"錯誤", msg)
+                            }
                         }
                     }
 

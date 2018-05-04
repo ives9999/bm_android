@@ -5,6 +5,7 @@ import android.content.SharedPreferences
 import android.preference.PreferenceManager
 import com.sportpassword.bm.Utilities.*
 import com.sportpassword.bm.member
+import kotlinx.coroutines.experimental.android.UI
 import org.json.JSONObject
 import java.lang.reflect.Field
 import kotlin.reflect.full.memberProperties
@@ -76,27 +77,94 @@ class Member(context: Context) {
         set(value) = session.edit().putBoolean(ISLOGGEDIN_KEY, value).apply()
 
 
-    public fun setMemberData(json: JSONObject) {
+    fun setMemberData(json: JSONObject) {
         id = json.getInt(ID_KEY)
-        validate = json.getInt(VALIDATE_KEY)
-        type = json.getInt(MEMBER_TYPE_KEY)
-        nickname = json.getString(NICKNAME_KEY)
-        email = json.getString(EMAIL_KEY)
-        token = json.getString(TOKEN_KEY)
-        uid = json.getString(UID_KEY)
-        name = json.getString(NAME_KEY)
-        channel = json.getString(CHANNEL_KEY)
-        tel = json.getString(TEL_KEY)
-        mobile = json.getString(MOBILE_KEY)
-        pid = json.getString(PID_KEY)
-        avatar = json.getString(AVATAR_KEY)
-        dob = json.getString(DOB_KEY)
-        sex = json.getString(SEX_KEY)
-        social = json.getString(SOCIAL_KEY)
-        val roleString: String = json.getString(MEMBER_ROLE_KEY)
+        if (json.has(VALIDATE_KEY)) {
+            validate = json.getInt(VALIDATE_KEY)
+        } else {
+            validate = 0
+        }
+        if (json.has(MEMBER_TYPE_KEY)) {
+            type = json.getInt(MEMBER_TYPE_KEY)
+        } else {
+            type = 0
+        }
+        if (json.has(NICKNAME_KEY)) {
+            nickname = json.getString(NICKNAME_KEY)
+        } else {
+            nickname = ""
+        }
+        if (json.has(EMAIL_KEY)) {
+            email = json.getString(EMAIL_KEY)
+        } else {
+            email = ""
+        }
+        if (json.has(TOKEN_KEY)) {
+            token = json.getString(TOKEN_KEY)
+        } else {
+            token = ""
+        }
+        if (json.has(UID_KEY)) {
+            uid = json.getString(UID_KEY)
+        } else {
+            uid = ""
+        }
+        if (json.has(NAME_KEY)) {
+            name = json.getString(NAME_KEY)
+        } else {
+            name = ""
+        }
+        if (json.has(CHANNEL_KEY)) {
+            channel = json.getString(CHANNEL_KEY)
+        } else {
+            channel = CHANNEL
+        }
+        if (json.has(TEL_KEY)) {
+            tel = json.getString(TEL_KEY)
+        } else {
+            tel = ""
+        }
+        if (json.has(MOBILE_KEY)) {
+            mobile = json.getString(MOBILE_KEY)
+        } else {
+            mobile = ""
+        }
+        if (json.has(PID_KEY)) {
+            pid = json.getString(PID_KEY)
+        } else {
+            pid = ""
+        }
+        if (json.has(AVATAR_KEY)) {
+            avatar = json.getString(AVATAR_KEY)
+        } else {
+            avatar = ""
+        }
+        if (json.has(DOB_KEY)) {
+            dob = json.getString(DOB_KEY)
+        } else {
+            dob = ""
+        }
+        if (json.has(SEX_KEY)) {
+            sex = json.getString(SEX_KEY)
+        } else {
+            sex = "M"
+        }
+        if (json.has(SOCIAL_KEY)) {
+            social = json.getString(SOCIAL_KEY)
+        } else {
+            social = ""
+        }
+        var roleString = "member"
+        if (json.has(MEMBER_ROLE_KEY)) {
+            roleString = json.getString(MEMBER_ROLE_KEY)
+        }
         role = MEMBER_ROLE.valueOf(roleString)
 
-        isLoggedIn = json.getBoolean(ISLOGGEDIN_KEY)
+        if (json.has(ISLOGGEDIN_KEY)) {
+            isLoggedIn = json.getBoolean(ISLOGGEDIN_KEY)
+        } else {
+            isLoggedIn = false
+        }
     }
 
     public fun fetch(key: String): String {
@@ -110,7 +178,7 @@ class Member(context: Context) {
         return res
     }
 
-    public fun print() {
+    public fun memberPrint() {
         this::class.memberProperties.forEach {
             val name = it.name
             val type = it.returnType
