@@ -173,14 +173,6 @@ class MainActivity : BaseActivity() {
 
         _loginout()
 
-
-//        val configBuilder = Configuration.Builder("85a4cfd6e6ff82ea0493e269d19086c0c856936b", "w//PE1Vewrvaicmc9LtXyKjJB2DoFmxPenQxoZJ3vD3PkBraHahyFKpm4zmZnIIJy2EUO8NvSWuWiHkbK8mLoBvUxve1Rxm54nl4OH8FHpKHmvGtG3zm30gOa/X36oL5", "public")
-//                .setCacheDirectory(this.cacheDir)
-//        VimeoClient.initialize(configBuilder.build())
-//        val accessToken = apiClient.vimeoAccount.accessToken
-//        println(accessToken)
-
-
         //println("$URL_LIST".format("team"))
         //member.print()
 
@@ -193,18 +185,17 @@ class MainActivity : BaseActivity() {
 //        Alert.show(this, "警告", "姓名沒填") {
 //            println("test")
 //        }
+
 //        try {
-//        val info = getPackageManager().getPackageInfo("com.sportpassword.bm",PackageManager.GET_SIGNATURES)
+//            val info = getPackageManager().getPackageInfo("com.sportpassword.bm",PackageManager.GET_SIGNATURES)
 //            for (signature in info.signatures) {
-//            var md = MessageDigest.getInstance("SHA")
-//            md.update(signature.toByteArray())
-//            println("KeyHash: ${Base64.encodeToString(md.digest(), Base64.DEFAULT)}")
+//                var md = MessageDigest.getInstance("SHA")
+//                md.update(signature.toByteArray())
+//                println("KeyHash: ${Base64.encodeToString(md.digest(), Base64.DEFAULT)}")
+//            }
+//        } catch (e: Exception) {
+//            println(e.localizedMessage)
 //        }
-//    } catch (e: Exception) {
-//        println(e.localizedMessage)
-//    }
-
-
     }
 
     override fun onResume() {

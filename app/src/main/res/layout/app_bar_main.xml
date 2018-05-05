@@ -18,6 +18,7 @@
             android:layout_height="64dp"
             android:background="@color/MY_GREEN"
             android:textAlignment="center"
+            android:theme="@style/Theme.AppCompat.DayNight.DarkActionBar"
             app:popupTheme="@style/AppTheme.PopupOverlay">
 
             <TextView

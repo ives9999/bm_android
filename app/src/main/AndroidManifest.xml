@@ -8,7 +8,7 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
-    <uses-feature android:name="android.hardware.camera2" />
+    <uses-feature android:name="android.hardware.camera" android:required="false" />
 
     <application
         android:name=".App"
@@ -60,13 +60,7 @@
         <activity android:name=".Controllers.EditTeamItemActivity" />
         <activity android:name=".Controllers.TeamTempPlayEditActivity" />
         <activity android:name=".Controllers.TestActivity" />
-        <activity android:name=".Controllers.SplashActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+        <activity android:name=".Controllers.SplashActivity" />
     </application>
 
 </manifest>
