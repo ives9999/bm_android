@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.content.pm.PackageManager
+import android.graphics.Color
 import android.graphics.PorterDuff
 import android.os.Build
 import android.os.Bundle
@@ -13,6 +14,7 @@ import android.support.design.widget.TabLayout
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentPagerAdapter
+import android.support.v4.content.ContextCompat
 import android.support.v4.content.LocalBroadcastManager
 import android.support.v4.view.GravityCompat
 import android.support.v7.app.ActionBarDrawerToggle
@@ -72,6 +74,7 @@ class MainActivity : BaseActivity() {
 
     @RequiresApi(Build.VERSION_CODES.M)
     override fun onCreate(savedInstanceState: Bundle?) {
+        println("aaa")
         super.onCreate(savedInstanceState)
         hideKeyboard()
 
@@ -363,14 +366,16 @@ class MainActivity : BaseActivity() {
 
     @RequiresApi(Build.VERSION_CODES.M)
     fun setTabIconSelected(tab: TabLayout.Tab) {
-        tab.icon!!.setColorFilter(getColor(R.color.MY_GREEN), PorterDuff.Mode.SRC_IN)
+        val color = ContextCompat.getColor(this, R.color.MY_GREEN)
+        tab.icon!!.setColorFilter(color, PorterDuff.Mode.SRC_IN)
         val title = tab.text!!.toString()
         setTitle(title)
     }
 
     @RequiresApi(Build.VERSION_CODES.M)
     fun setTabIconUnSelected(tab: TabLayout.Tab) {
-        tab.icon!!.setColorFilter(getColor(R.color.WHITE), PorterDuff.Mode.SRC_IN)
+        val color = ContextCompat.getColor(this, R.color.WHITE)
+        tab.icon!!.setColorFilter(color, PorterDuff.Mode.SRC_IN)
     }
 
 
