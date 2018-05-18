@@ -74,7 +74,6 @@ class MainActivity : BaseActivity() {
 
     @RequiresApi(Build.VERSION_CODES.M)
     override fun onCreate(savedInstanceState: Bundle?) {
-        println("aaa")
         super.onCreate(savedInstanceState)
         hideKeyboard()
 

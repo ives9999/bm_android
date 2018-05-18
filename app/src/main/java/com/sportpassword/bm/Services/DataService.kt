@@ -151,7 +151,7 @@ open class DataService: BaseService() {
             } catch (e: JSONException) {
                 println("parse data error: " + e.localizedMessage)
                 success = false
-                msg = "無法getList，沒有傳回成功值 " + e.localizedMessage
+                msg = "無法getOne，沒有傳回成功值 " + e.localizedMessage
             }
             if (this.success) {
                 //jsonToMember(json)

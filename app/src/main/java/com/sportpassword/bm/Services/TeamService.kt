@@ -362,10 +362,12 @@ object TeamService: DataService() {
             } else if (key == TEAM_DEGREE_KEY) {
                 try {
                     val tmp1: String = tmp.getString(key)
-                    //println("tmp1: $tmp1")
-                    val degrees = tmp1.split(",")
-                    //println("degrees: $degrees")
-                    model.updateDegree(degrees.toTypedArray().toCollection(ArrayList()))
+                    if (tmp1.count() > 0 && tmp1 != "null") {
+                        //println("tmp1: $tmp1")
+                        val degrees = tmp1.split(",")
+                        //println("degrees: $degrees")
+                        model.updateDegree(degrees.toTypedArray().toCollection(ArrayList()))
+                    }
                 } catch (e: JSONException) {
 
                 }
