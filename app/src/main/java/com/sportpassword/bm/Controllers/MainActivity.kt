@@ -246,13 +246,9 @@ class MainActivity : BaseActivity() {
 
         TeamService.getList(this, "team", "name", 1, 100, filter) { success ->
             if (success) {
-                //val teamLists: ArrayList<Team> = TeamService.dataLists
-//                for (i in 0 until TeamService.dataLists.size) {
-//                    println("id: ${TeamService.dataLists[i].id}, title: ${TeamService.dataLists[i].title}")
-//                }
                 this.menuTeamListAdapter = MenuTeamListAdapter(this, TeamService.dataLists,
                         { team -> goEditTeam(team.token) },
-                        { team -> deleteTeam(team.token) },
+                        { team -> goDeleteTeam(team.token) },
                         { team -> goTeamTempPlayEdit(team.token) }
                 )
                 menu_team_list.adapter = this.menuTeamListAdapter
@@ -286,7 +282,7 @@ class MainActivity : BaseActivity() {
         registerBtn.visibility = View.INVISIBLE
         forgetPasswordBtn.visibility = View.INVISIBLE
         menu_member_container.visibility = View.VISIBLE
-        menu_team_container.visibility = View.VISIBLE
+        //menu_team_container.visibility = View.VISIBLE
         refreshLayout = menu_refresh
         initMemberFunction()
         refresh()
@@ -297,7 +293,7 @@ class MainActivity : BaseActivity() {
         registerBtn.visibility = View.VISIBLE
         forgetPasswordBtn.visibility = View.VISIBLE
         menu_member_container.visibility = View.INVISIBLE
-        menu_team_container.visibility = View.INVISIBLE
+        //menu_team_container.visibility = View.INVISIBLE
     }
 
     private fun setMenuWidth() {
@@ -309,8 +305,9 @@ class MainActivity : BaseActivity() {
 
     override fun refresh() {
         super.refresh()
-        initTeamList()
+        //initTeamList()
         setRefreshListener()
+        closeRefresh()
     }
 
 
@@ -337,6 +334,15 @@ class MainActivity : BaseActivity() {
         val forgetPasswordIntent = Intent(this, ForgetPasswordActivity::class.java)
         startActivity(forgetPasswordIntent)
     }
+
+    fun search_team(view: View) {
+        goSearch("team")
+    }
+
+    fun manager_team(view: View) {
+        goTeamManager()
+    }
+
 
 //    private fun authenticateWithClientCredentials(complete: CompletionHandler) {
 //        vimeoClient.authorizeWithClientCredentialsGrant(object: AuthCallback {

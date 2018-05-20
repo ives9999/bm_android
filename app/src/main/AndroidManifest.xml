@@ -8,7 +8,9 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
-    <uses-feature android:name="android.hardware.camera" android:required="false" />
+    <uses-feature
+        android:name="android.hardware.camera"
+        android:required="false" />
 
     <application
         android:name=".App"
@@ -41,10 +43,10 @@
         <activity
             android:name=".Controllers.MainActivity"
             android:label="@string/app_name"
-            android:theme="@style/SplashTheme"
-            >
+            android:theme="@style/SplashTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -62,6 +64,8 @@
         <activity android:name=".Controllers.TeamTempPlayEditActivity" />
         <activity android:name=".Controllers.TestActivity" />
         <activity android:name=".Controllers.SplashActivity" />
+        <activity android:name=".Controllers.TeamManagerActivity" />
+        <activity android:name=".Controllers.TeamManagerFunctionActivity"></activity>
     </application>
 
 </manifest>

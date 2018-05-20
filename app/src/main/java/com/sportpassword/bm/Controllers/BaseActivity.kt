@@ -182,7 +182,26 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener {
         startActivity(intent)
     }
 
-    protected fun deleteTeam(token: String="") {
+    protected fun goTeamManager() {
+        if (!member.isLoggedIn) {
+            Alert.show(this, "警告", "請先登入會員")
+            return
+        }
+        val intent = Intent(this, TeamManagerActivity::class.java)
+        startActivity(intent)
+    }
+    protected fun goTeamManagerFunction(title: String, token: String) {
+        val intent = Intent(this, TeamManagerFunctionActivity::class.java)
+        intent.putExtra("title", title)
+        intent.putExtra("token", token)
+        startActivity(intent)
+    }
+
+    protected fun goSearch(type: String) {
+        //val intent = Intent(this)
+    }
+
+    protected fun goDeleteTeam(token: String="") {
         Alert.delete(this, {
             val m = Loading.show(this)
             TeamService.delete(this, "team", token) { success ->

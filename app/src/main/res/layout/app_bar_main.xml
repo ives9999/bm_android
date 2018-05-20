@@ -55,8 +55,6 @@
         android:theme="@style/Theme.AppCompat.NoActionBar"
         >
 
-
-
     </android.support.design.widget.TabLayout>
 
 

@@ -46,15 +46,6 @@
                 android:orientation="vertical">
                 <include layout="@layout/menu_member_function" />
             </LinearLayout>
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/menu_team_container"
-                android:layout_below="@id/menu_member_container">
-                <include
-                    layout="@layout/menu_team_list" />
-
-            </LinearLayout>
         </RelativeLayout>
         </android.support.v4.widget.SwipeRefreshLayout>
 

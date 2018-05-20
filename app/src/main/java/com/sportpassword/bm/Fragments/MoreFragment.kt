@@ -1,6 +1,7 @@
 package com.sportpassword.bm.Fragments
 
 
+import android.app.AlertDialog
 import android.os.Bundle
 import android.support.constraint.ConstraintLayout
 import android.support.v4.app.Fragment
@@ -10,6 +11,7 @@ import android.view.ViewGroup
 import com.sportpassword.bm.Controllers.MainActivity
 
 import com.sportpassword.bm.R
+import java.util.*
 
 
 /**
@@ -26,8 +28,8 @@ class MoreFragment : TabFragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.tab_more, container, false)
-        val row = view.findViewById<ConstraintLayout>(R.id.more_course_row)
-        row.setOnClickListener() { view ->
+        val row1 = view.findViewById<ConstraintLayout>(R.id.more_course_row)
+        row1.setOnClickListener() { view ->
             //val mainActivity = activity as MainActivity
             //mainActivity.test()
             val fm = activity!!.supportFragmentManager
@@ -39,6 +41,17 @@ class MoreFragment : TabFragment() {
                     .addToBackStack(null)
                     .commit()
         }
+        val row2 = view.findViewById<ConstraintLayout>(R.id.more_version_row)
+        row2.setOnClickListener { view ->
+            val p = context!!.applicationContext.packageManager.getPackageInfo(context!!.packageName, 0)
+            val v = p.versionCode
+            val n = p.versionName
+            val builder = AlertDialog.Builder(context!!)
+            builder.setMessage(n + "#" + v)
+            val dialog = builder.create()
+            dialog.show()
+        }
+
         return view
     }
 
