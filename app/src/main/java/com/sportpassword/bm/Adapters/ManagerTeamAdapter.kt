@@ -16,7 +16,7 @@ import com.sportpassword.bm.Models.Data
  * Created by ives on 2018/2/14.
  */
 
-class ManagerTeamListAdapter(val context: Context, val lists: ArrayList<Data>, val itemClick: (String, String) -> Unit): RecyclerView.Adapter<ManagerTeamListAdapter.ViewHolder>() {
+class ManagerTeamAdapter(val context: Context, val lists: ArrayList<Data>, val itemClick: (String, String) -> Unit): RecyclerView.Adapter<ManagerTeamAdapter.ViewHolder>() {
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder?.bind(position)
     }

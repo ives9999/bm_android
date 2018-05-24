@@ -256,7 +256,7 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener {
         AppEventsLogger.activateApp(this);
         callbackManager = CallbackManager.Factory.create()
         LoginManager.getInstance().logOut()
-        LoginManager.getInstance().logInWithReadPermissions(this, Arrays.asList("email,public_profile,user_birthday"))
+        LoginManager.getInstance().logInWithReadPermissions(this, Arrays.asList("email,public_profile"))
         LoginManager.getInstance().registerCallback(callbackManager,
                 object: FacebookCallback<LoginResult> {
                     override fun onSuccess(result: LoginResult?) {

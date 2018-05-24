@@ -6,7 +6,7 @@ import android.support.v4.widget.SwipeRefreshLayout
 import android.support.v7.widget.LinearLayoutManager
 import android.view.Menu
 import android.view.View
-import com.sportpassword.bm.Adapters.ManagerTeamListAdapter
+import com.sportpassword.bm.Adapters.ManagerTeamAdapter
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.TeamService
 import com.sportpassword.bm.Utilities.Alert
@@ -19,7 +19,7 @@ import org.jetbrains.anko.sdk25.coroutines.onClick
 
 class TeamManagerActivity : BaseActivity() {
 
-    lateinit var managerTeamListAdapter: ManagerTeamListAdapter
+    lateinit var managerTeamAdapter: ManagerTeamAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -48,12 +48,12 @@ class TeamManagerActivity : BaseActivity() {
 
         TeamService.getList(this, "team", "name", 1, 100, filter) { success ->
             if (success) {
-                this.managerTeamListAdapter = ManagerTeamListAdapter(this, TeamService.dataLists,
+                this.managerTeamAdapter = ManagerTeamAdapter(this, TeamService.dataLists,
                         { title, token ->
                             goTeamManagerFunction(title, token)
                         }
                 )
-                manager_team_list.adapter = this.managerTeamListAdapter
+                manager_team_list.adapter = this.managerTeamAdapter
 
                 val layoutManager = LinearLayoutManager(this)
                 manager_team_list.layoutManager = layoutManager
