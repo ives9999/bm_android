@@ -42,7 +42,6 @@ import kotlinx.android.synthetic.main.tab.view.*
 import com.sportpassword.bm.member
 import kotlinx.android.synthetic.main.login_out.*
 import kotlinx.android.synthetic.main.menu_member_function.*
-import kotlinx.android.synthetic.main.menu_team_list.*
 import kotlinx.android.synthetic.main.nav_header_main.*
 import okhttp3.CacheControl
 import org.jetbrains.anko.sdk25.coroutines.onClick
@@ -239,35 +238,34 @@ class MainActivity : BaseActivity() {
         }
     }
 
-    private fun initTeamList() {
-        val filter1: Array<Any> = arrayOf("channel", "=", CHANNEL)
-        val filter2: Array<Any> = arrayOf("manager_id", "=", member.id)
-        val filter: Array<Array<Any>> = arrayOf(filter1, filter2)
-
-        TeamService.getList(this, "team", "name", 1, 100, filter) { success ->
-            if (success) {
-                this.menuTeamListAdapter = MenuTeamListAdapter(this, TeamService.dataLists,
-                        { team -> goEditTeam(team.token) },
-                        { team -> goDeleteTeam(team.token) },
-                        { team -> goTeamTempPlayEdit(team.token) }
-                )
-                menu_team_list.adapter = this.menuTeamListAdapter
-
-                val layoutManager = LinearLayoutManager(this)
-                menu_team_list.layoutManager = layoutManager
-                closeRefresh()
-            }
-        }
-        menu_team_add.onClick {
-            if (member.validate < 1) {
-                Alert.show(this@MainActivity, "錯誤", "未通過EMail認證，無法新增球隊，認證完後，請先登出再登入")
-            } else {
-                goEditTeam()
-            }
-        }
-
-        //menu_team_list.layoutManager = linearLayoutManager
-    }
+//    private fun initTeamList() {
+//        val filter1: Array<Any> = arrayOf("channel", "=", CHANNEL)
+//        val filter2: Array<Any> = arrayOf("manager_id", "=", member.id)
+//        val filter: Array<Array<Any>> = arrayOf(filter1, filter2)
+//
+//        TeamService.getList(this, "team", "name", 1, 100, filter) { success ->
+//            if (success) {
+//                this.menuTeamListAdapter = MenuTeamListAdapter(this, TeamService.dataLists,
+//                        { team -> goEditTeam(team.token) },
+//                        { team -> goDeleteTeam(team.token) },
+//                        { team -> goTeamTempPlayEdit(team.token) }
+//                )
+//                menu_team_list.adapter = this.menuTeamListAdapter
+//
+//                val layoutManager = LinearLayoutManager(this)
+//                menu_team_list.layoutManager = layoutManager
+//                closeRefresh()
+//            }
+//        }
+//        menu_team_add.onClick {
+//            if (member.validate < 1) {
+//                Alert.show(this@MainActivity, "錯誤", "未通過EMail認證，無法新增球隊，認證完後，請先登出再登入")
+//            } else {
+//                goEditTeam()
+//            }
+//        }
+//
+//    }
 
     private fun _loginout() {
         if (member.isLoggedIn) {
@@ -282,6 +280,21 @@ class MainActivity : BaseActivity() {
         registerBtn.visibility = View.INVISIBLE
         forgetPasswordBtn.visibility = View.INVISIBLE
         menu_member_container.visibility = View.VISIBLE
+        val validate: Int = member.validate
+        if (validate and EMAIL_VALIDATE <= 0) {
+            divider_2.visibility = View.VISIBLE
+            menu_emailValidate_container.visibility = View.VISIBLE
+        } else {
+            divider_2.visibility = View.INVISIBLE
+            menu_emailValidate_container.visibility = View.INVISIBLE
+        }
+        if (validate and MOBILE_VALIDATE <= 0) {
+            divider_3.visibility = View.VISIBLE
+            menu_mobileValidate_container.visibility = View.VISIBLE
+        } else {
+            divider_3.visibility = View.VISIBLE
+            menu_mobileValidate_container.visibility = View.VISIBLE
+        }
         //menu_team_container.visibility = View.VISIBLE
         refreshLayout = menu_refresh
         initMemberFunction()

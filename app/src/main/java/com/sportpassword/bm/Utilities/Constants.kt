@@ -57,6 +57,8 @@ val MEMBER_TYPE_KEY: String = "type"
 val SOCIAL_KEY: String = "social"
 val MEMBER_ROLE_KEY: String = "role"
 val VALIDATE_KEY: String = "validate"
+val EMAIL_VALIDATE: Int = 1
+val MOBILE_VALIDATE: Int = 2
 
 // member
 val MEMBERS: Map<String, Map<String, String>> = mapOf(

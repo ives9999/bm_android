@@ -20,7 +20,7 @@
             android:paddingTop="12dp">
 
             <TextView
-                android:id="@+id/textView4"
+                android:id="@+id/textView1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
@@ -42,7 +42,7 @@
             android:paddingTop="12dp">
 
             <ImageView
-                android:id="@+id/imageView2"
+                android:id="@+id/imageView1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
@@ -58,11 +58,11 @@
                 android:text="帳戶資料"
                 android:textColor="@color/WHITE"
                 android:textSize="18sp"
-                app:layout_constraintStart_toEndOf="@+id/imageView2"
+                app:layout_constraintStart_toEndOf="@+id/imageView1"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <ImageView
-                android:id="@+id/imageView4"
+                android:id="@+id/imageView2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="24dp"
@@ -83,7 +83,7 @@
             android:id="@+id/menu_updatepassword_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/menu_account_container"
+            android:layout_below="@id/divider_1"
             android:paddingBottom="12dp"
             android:paddingTop="12dp">
 
@@ -92,6 +92,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
+                android:layout_marginTop="4dp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:srcCompat="@drawable/password" />
@@ -108,7 +109,95 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <ImageView
+                android:id="@+id/imageView4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="24dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/greater1" />
+        </android.support.constraint.ConstraintLayout>
+        <include
+            android:id="@+id/divider_2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            layout="@layout/divider"
+            android:layout_below="@id/menu_updatepassword_container"/>
+        <android.support.constraint.ConstraintLayout
+            android:id="@+id/menu_emailValidate_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/divider_2"
+            android:paddingBottom="12dp"
+            android:paddingTop="12dp">
+
+            <ImageView
                 android:id="@+id/imageView5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="4dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/email" />
+
+            <TextView
+                android:id="@+id/textView4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:text="email認證"
+                android:textColor="@color/WHITE"
+                android:textSize="18sp"
+                app:layout_constraintStart_toEndOf="@+id/imageView5"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:id="@+id/imageView6"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="24dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/greater1" />
+        </android.support.constraint.ConstraintLayout>
+        <include
+            android:id="@+id/divider_3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            layout="@layout/divider"
+            android:layout_below="@id/menu_emailValidate_container"/>
+        <android.support.constraint.ConstraintLayout
+            android:id="@+id/menu_mobileValidate_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/divider_3"
+            android:paddingBottom="12dp"
+            android:paddingTop="12dp">
+
+            <ImageView
+                android:id="@+id/imageView7"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="4dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/mobile_validate" />
+
+            <TextView
+                android:id="@+id/textView5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:text="手機認證"
+                android:textColor="@color/WHITE"
+                android:textSize="18sp"
+                app:layout_constraintStart_toEndOf="@+id/imageView7"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:id="@+id/imageView8"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="24dp"
