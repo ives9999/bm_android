@@ -212,6 +212,23 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener {
         })
     }
 
+    protected fun goEditMember() {
+        val accountIntent = Intent(this, AccountActivity::class.java)
+        startActivity(accountIntent)
+    }
+
+    protected fun goUpdatePassword() {
+        val updatePasswordIntent = Intent(this, UpdatePasswordActivity::class.java)
+        startActivity(updatePasswordIntent)
+
+    }
+
+    protected fun goValidate(type: String) {
+        val intent = Intent(this, ValidateActivity::class.java)
+        intent.putExtra("type", type)
+        startActivity(intent)
+    }
+
     protected fun getAllChildrenBFS(v: View): List<View> {
         var visited: ArrayList<View> = arrayListOf()
         var unvisited: ArrayList<View> = arrayListOf()

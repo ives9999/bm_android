@@ -86,6 +86,7 @@ object MemberService: BaseService() {
         //println(requestBody)
 
         val request = object : JsonObjectRequest(Request.Method.POST, url, null, Response.Listener { json ->
+            //println(json)
             try {
                 success = json.getBoolean("success")
                 //println(success)
@@ -95,10 +96,17 @@ object MemberService: BaseService() {
             }
             if (success) {
                 jsonToMember(json)
+                if (json.has("msg")) {
+                    Alert.show(context, "警告", json.getString("msg"), {
+                        complete(true)
+                    })
+                } else {
+                    complete(true)
+                }
             } else {
                 makeErrorMsg(json)
+                complete(true)
             }
-            complete(true)
         }, Response.ErrorListener { error ->
             println(error.localizedMessage)
             msg = "登入失敗，網站或網路錯誤"

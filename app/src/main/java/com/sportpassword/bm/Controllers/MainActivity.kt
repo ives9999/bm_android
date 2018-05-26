@@ -27,6 +27,7 @@ import android.widget.ArrayAdapter
 import com.facebook.FacebookSdk
 import com.facebook.appevents.AppEventsLogger
 import com.facebook.login.LoginManager
+import com.sportpassword.bm.Adapters.MemberFunctionsAdapter
 import com.sportpassword.bm.Adapters.MenuTeamListAdapter
 import com.sportpassword.bm.Adapters.TabAdapter
 import com.sportpassword.bm.Fragments.CoachFragment
@@ -65,7 +66,14 @@ class MainActivity : BaseActivity() {
     val tabsTextArr: Array<String> = arrayOf<String>("臨打", "教練", "球隊", "更多")
     val tabsIconArr: Array<String> = arrayOf<String>("tempplay", "coach", "team", "more")
 
-    lateinit var menuTeamListAdapter: MenuTeamListAdapter
+    val _member_functions: ArrayList<Map<String, String>> = arrayListOf(
+            mapOf("text" to "帳戶資料", "icon" to "account", "type" to "account"),
+            mapOf("text" to "更改密碼", "icon" to "password", "type" to "password")
+    )
+    var member_functions: ArrayList<Map<String, String>> = arrayListOf()
+
+    lateinit var memberFunctionsAdapter: MemberFunctionsAdapter
+//    lateinit var menuTeamListAdapter: MenuTeamListAdapter
 
 //    private val vimeoClient = VimeoClient.getInstance()
 //    private var vimeoToken: String? = null
@@ -227,16 +235,16 @@ class MainActivity : BaseActivity() {
         }
     }
 
-    private fun initMemberFunction() {
-        menu_account_container.setOnClickListener {view ->
-            val accountIntent = Intent(this, AccountActivity::class.java)
-            startActivity(accountIntent)
-        }
-        menu_updatepassword_container.setOnClickListener { view ->
-            val updatePasswordIntent = Intent(this, UpdatePasswordActivity::class.java)
-            startActivity(updatePasswordIntent)
-        }
-    }
+//    private fun initMemberFunction() {
+//        menu_account_container.setOnClickListener {view ->
+//            val accountIntent = Intent(this, AccountActivity::class.java)
+//            startActivity(accountIntent)
+//        }
+//        menu_updatepassword_container.setOnClickListener { view ->
+//            val updatePasswordIntent = Intent(this, UpdatePasswordActivity::class.java)
+//            startActivity(updatePasswordIntent)
+//        }
+//    }
 
 //    private fun initTeamList() {
 //        val filter1: Array<Any> = arrayOf("channel", "=", CHANNEL)
@@ -281,23 +289,28 @@ class MainActivity : BaseActivity() {
         forgetPasswordBtn.visibility = View.INVISIBLE
         menu_member_container.visibility = View.VISIBLE
         val validate: Int = member.validate
+        //println(validate)
+        member_functions.clear()
+        for (row in _member_functions) {
+            member_functions.add(row)
+        }
         if (validate and EMAIL_VALIDATE <= 0) {
-            divider_2.visibility = View.VISIBLE
-            menu_emailValidate_container.visibility = View.VISIBLE
-        } else {
-            divider_2.visibility = View.INVISIBLE
-            menu_emailValidate_container.visibility = View.INVISIBLE
+            val function: Map<String, String> = mapOf("text" to "email認證", "icon" to "email", "type" to "email")
+            member_functions.add(function)
         }
         if (validate and MOBILE_VALIDATE <= 0) {
-            divider_3.visibility = View.VISIBLE
-            menu_mobileValidate_container.visibility = View.VISIBLE
-        } else {
-            divider_3.visibility = View.VISIBLE
-            menu_mobileValidate_container.visibility = View.VISIBLE
+            val function: Map<String, String> = mapOf("text" to "手機認證", "icon" to "mobile_validate", "type" to "mobile")
+            member_functions.add(function)
         }
+         memberFunctionsAdapter = MemberFunctionsAdapter(this, member_functions, {
+            type -> _goMember(type)
+        })
+        container.adapter = memberFunctionsAdapter
+        val layoutManager = LinearLayoutManager(this)
+        container.layoutManager = layoutManager
         //menu_team_container.visibility = View.VISIBLE
         refreshLayout = menu_refresh
-        initMemberFunction()
+//        initMemberFunction()
         refresh()
     }
     private fun _logoutBlock() {
@@ -307,6 +320,14 @@ class MainActivity : BaseActivity() {
         forgetPasswordBtn.visibility = View.VISIBLE
         menu_member_container.visibility = View.INVISIBLE
         //menu_team_container.visibility = View.INVISIBLE
+    }
+    private fun _goMember(type: String) {
+        when(type) {
+            "account" -> goEditMember()
+            "password" -> goUpdatePassword()
+            "email" -> goValidate("email")
+            "mobile" -> goValidate("mobile")
+        }
     }
 
     private fun setMenuWidth() {
