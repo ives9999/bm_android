@@ -17,6 +17,7 @@ import android.support.v4.app.FragmentPagerAdapter
 import android.support.v4.content.ContextCompat
 import android.support.v4.content.LocalBroadcastManager
 import android.support.v4.view.GravityCompat
+import android.support.v4.widget.DrawerLayout
 import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.widget.LinearLayoutManager
 import android.util.Base64
@@ -41,6 +42,7 @@ import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
 import kotlinx.android.synthetic.main.tab.view.*
 import com.sportpassword.bm.member
+import kotlinx.android.synthetic.main.activity_test.*
 import kotlinx.android.synthetic.main.login_out.*
 import kotlinx.android.synthetic.main.menu_member_function.*
 import kotlinx.android.synthetic.main.nav_header_main.*
@@ -66,11 +68,11 @@ class MainActivity : BaseActivity() {
     val tabsTextArr: Array<String> = arrayOf<String>("臨打", "教練", "球隊", "更多")
     val tabsIconArr: Array<String> = arrayOf<String>("tempplay", "coach", "team", "more")
 
-    val _member_functions: ArrayList<Map<String, String>> = arrayListOf(
+    val fixedRows: ArrayList<Map<String, String>> = arrayListOf(
             mapOf("text" to "帳戶資料", "icon" to "account", "type" to "account"),
             mapOf("text" to "更改密碼", "icon" to "password", "type" to "password")
     )
-    var member_functions: ArrayList<Map<String, String>> = arrayListOf()
+    var _rows: ArrayList<Map<String, String>> = arrayListOf()
 
     lateinit var memberFunctionsAdapter: MemberFunctionsAdapter
 //    lateinit var menuTeamListAdapter: MenuTeamListAdapter
@@ -138,12 +140,32 @@ class MainActivity : BaseActivity() {
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
         supportActionBar!!.setHomeAsUpIndicator(R.drawable.menu)
 
+        //會員側邊欄
         val toggle = ActionBarDrawerToggle(
                 this, drawer_layout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close)
         drawer_layout.addDrawerListener(toggle)
         toggle.syncState()
         setMenuWidth()
 
+        drawer_layout.addDrawerListener(
+                object : DrawerLayout.DrawerListener {
+                    override fun onDrawerStateChanged(newState: Int) {
+
+                    }
+
+                    override fun onDrawerSlide(drawerView: View, slideOffset: Float) {
+                    }
+
+                    override fun onDrawerClosed(drawerView: View) {
+                    }
+
+                    override fun onDrawerOpened(drawerView: View) {
+                        refreshMember()
+                    }
+                }
+        )
+
+        //下方tab bar
         for (i in tabsTextArr.indices) {
             val text: String = tabsTextArr[i]
             val icon: Int = resources.getIdentifier(tabsIconArr[i], "drawable", packageName)
@@ -210,12 +232,59 @@ class MainActivity : BaseActivity() {
     override fun onResume() {
         super.onResume()
         LocalBroadcastManager.getInstance(this).registerReceiver(memberDidChange, IntentFilter(NOTIF_MEMBER_DID_CHANGE))
-        LocalBroadcastManager.getInstance(this).registerReceiver(teamUpdate, IntentFilter(NOTIF_TEAM_UPDATE))
+//        LocalBroadcastManager.getInstance(this).registerReceiver(teamUpdate, IntentFilter(NOTIF_TEAM_UPDATE))
     }
 
     override fun onDestroy() {
         LocalBroadcastManager.getInstance(this).unregisterReceiver(memberDidChange)
         super.onDestroy()
+    }
+
+    override fun refresh() {
+        super.refresh()
+        //initTeamList()
+        setRefreshListener()
+        closeRefresh()
+    }
+
+    private fun refreshMember() {
+        if (member.isLoggedIn) {
+            val loading = Loading.show(this)
+            MemberService.getOne(this, member.token) { success ->
+                loading.dismiss()
+                if (success) {
+                    setValidateRow()
+                    memberFunctionsAdapter.notifyDataSetChanged()
+                    _loginout()
+                } else {
+                    Alert.show(this, "錯誤", MemberService.msg)
+                }
+            }
+        }
+    }
+
+    private fun setValidateRow() {
+        _rows.clear()
+        for (row in fixedRows) {
+            _rows.add(row)
+        }
+        if (member.isLoggedIn) {
+            val validate: Int = member.validate
+            if (validate and EMAIL_VALIDATE <= 0) {
+                val function: Map<String, String> = mapOf("text" to "email認證", "icon" to "email", "type" to "email")
+                _rows.add(function)
+            }
+            if (validate and MOBILE_VALIDATE <= 0) {
+                val function: Map<String, String> = mapOf("text" to "手機認證", "icon" to "mobile_validate", "type" to "mobile")
+                _rows.add(function)
+            }
+            memberFunctionsAdapter = MemberFunctionsAdapter(this, _rows, {
+                type -> _goMemberFunctions(type)
+            })
+            container.adapter = memberFunctionsAdapter
+            val layoutManager = LinearLayoutManager(this)
+            container.layoutManager = layoutManager
+        }
     }
 
     private fun setTitle(title: String) {
@@ -229,11 +298,11 @@ class MainActivity : BaseActivity() {
             _loginout()
         }
     }
-    private val teamUpdate = object: BroadcastReceiver() {
-        override fun onReceive(context: Context?, intent: Intent?) {
-            refresh()
-        }
-    }
+//    private val teamUpdate = object: BroadcastReceiver() {
+//        override fun onReceive(context: Context?, intent: Intent?) {
+//            refresh()
+//        }
+//    }
 
 //    private fun initMemberFunction() {
 //        menu_account_container.setOnClickListener {view ->
@@ -288,26 +357,6 @@ class MainActivity : BaseActivity() {
         registerBtn.visibility = View.INVISIBLE
         forgetPasswordBtn.visibility = View.INVISIBLE
         menu_member_container.visibility = View.VISIBLE
-        val validate: Int = member.validate
-        //println(validate)
-        member_functions.clear()
-        for (row in _member_functions) {
-            member_functions.add(row)
-        }
-        if (validate and EMAIL_VALIDATE <= 0) {
-            val function: Map<String, String> = mapOf("text" to "email認證", "icon" to "email", "type" to "email")
-            member_functions.add(function)
-        }
-        if (validate and MOBILE_VALIDATE <= 0) {
-            val function: Map<String, String> = mapOf("text" to "手機認證", "icon" to "mobile_validate", "type" to "mobile")
-            member_functions.add(function)
-        }
-         memberFunctionsAdapter = MemberFunctionsAdapter(this, member_functions, {
-            type -> _goMember(type)
-        })
-        container.adapter = memberFunctionsAdapter
-        val layoutManager = LinearLayoutManager(this)
-        container.layoutManager = layoutManager
         //menu_team_container.visibility = View.VISIBLE
         refreshLayout = menu_refresh
 //        initMemberFunction()
@@ -321,7 +370,7 @@ class MainActivity : BaseActivity() {
         menu_member_container.visibility = View.INVISIBLE
         //menu_team_container.visibility = View.INVISIBLE
     }
-    private fun _goMember(type: String) {
+    private fun _goMemberFunctions(type: String) {
         when(type) {
             "account" -> goEditMember()
             "password" -> goUpdatePassword()
@@ -336,14 +385,6 @@ class MainActivity : BaseActivity() {
         l.width = w.toInt()
         drawer.layoutParams = l
     }
-
-    override fun refresh() {
-        super.refresh()
-        //initTeamList()
-        setRefreshListener()
-        closeRefresh()
-    }
-
 
     fun loginBtnPressed(view: View) {
         if (member.isLoggedIn) {

@@ -270,6 +270,45 @@ object MemberService: BaseService() {
         Volley.newRequestQueue(context).add(request)
     }
 
+    fun getOne(context: Context, token: String, complete: CompletionHandler) {
+        val body = JSONObject()
+        body.put(TOKEN_KEY, token)
+        body.put("source", "app")
+        val requestBody = body.toString()
+
+        val request = object : JsonObjectRequest(Request.Method.POST, URL_MEMBER_GETONE, null, Response.Listener { json ->
+            //println(json)
+            try {
+                success = json.getBoolean("success")
+            } catch (e: JSONException) {
+                success = false
+                msg = "無法執行，沒有傳回成功值 " + e.localizedMessage
+            }
+            if (success) {
+                jsonToMember(json)
+                complete(true)
+            } else {
+                if (json.has("msg")) {
+                    msg = json.getString("msg")
+                }
+                complete(false)
+            }
+        }, Response.ErrorListener { error ->
+            println(error.localizedMessage)
+            msg = "失敗，網站或網路錯誤"
+            complete(false)
+        }) {
+            override fun getBodyContentType(): String {
+                return HEADER
+            }
+
+            override fun getBody(): ByteArray {
+                return requestBody.toByteArray()
+            }
+        }
+        Volley.newRequestQueue(context).add(request)
+    }
+
     fun FBLogin(context: Context, playerID: String, complete: (Boolean) -> Unit) {
         val accessToken = AccessToken.getCurrentAccessToken()
         val request = GraphRequest.newMeRequest(accessToken) { json: JSONObject, response: GraphResponse? ->
