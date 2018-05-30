@@ -13,7 +13,9 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="0dp">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -142,12 +144,13 @@
                             app:layout_constraintTop_toTopOf="parent"
                             app:srcCompat="@drawable/greater1" />
                     </android.support.constraint.ConstraintLayout>
+
                     <include
                         android:id="@+id/divider_4"
+                        layout="@layout/divider"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        layout="@layout/divider"
-                        android:layout_below="@id/accountNicknameRow"/>
+                        android:layout_below="@id/accountNicknameRow" />
 
 
                     <android.support.constraint.ConstraintLayout
@@ -194,12 +197,13 @@
                             app:layout_constraintTop_toTopOf="parent"
                             app:srcCompat="@drawable/greater1" />
                     </android.support.constraint.ConstraintLayout>
+
                     <include
                         android:id="@+id/divider_5"
+                        layout="@layout/divider"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        layout="@layout/divider"
-                        android:layout_below="@id/accountNameRow"/>
+                        android:layout_below="@id/accountNameRow" />
 
 
                     <android.support.constraint.ConstraintLayout
@@ -328,12 +332,13 @@
                             app:layout_constraintTop_toTopOf="parent"
                             app:srcCompat="@drawable/greater1" />
                     </android.support.constraint.ConstraintLayout>
+
                     <include
                         android:id="@+id/divider_6"
+                        layout="@layout/divider"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        layout="@layout/divider"
-                        android:layout_below="@id/accountSexRow"/>
+                        android:layout_below="@id/accountSexRow" />
 
 
                     <android.support.constraint.ConstraintLayout
@@ -463,12 +468,13 @@
                             app:layout_constraintTop_toTopOf="parent"
                             app:srcCompat="@drawable/greater1" />
                     </android.support.constraint.ConstraintLayout>
+
                     <include
                         android:id="@+id/divider_7"
+                        layout="@layout/divider"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        layout="@layout/divider"
-                        android:layout_below="@id/accountMobileRow"/>
+                        android:layout_below="@id/accountMobileRow" />
 
 
                     <android.support.constraint.ConstraintLayout
@@ -580,22 +586,22 @@
                             android:id="@+id/accountValidate"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginEnd="24dp"
+                            android:layout_marginEnd="16dp"
                             android:textColor="@color/WHITE"
                             android:textSize="18sp"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            tools:layout_editor_absoluteY="8dp"
                             tools:text="ives" />
 
 
                     </android.support.constraint.ConstraintLayout>
+
                     <include
                         android:id="@+id/divider_8"
+                        layout="@layout/divider"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        layout="@layout/divider"
-                        android:layout_below="@id/accountValidateRow"/>
+                        android:layout_below="@id/accountValidateRow" />
 
 
                     <android.support.constraint.ConstraintLayout
@@ -624,12 +630,11 @@
                             android:id="@+id/accountType"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginEnd="24dp"
+                            android:layout_marginEnd="16dp"
                             android:textColor="@color/WHITE"
                             android:textSize="18sp"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            tools:layout_editor_absoluteY="8dp"
                             tools:text="ives" />
 
                     </android.support.constraint.ConstraintLayout>

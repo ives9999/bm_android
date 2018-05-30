@@ -241,8 +241,13 @@ class MainActivity : BaseActivity() {
     }
 
     override fun refresh() {
+        if (member.isLoggedIn) {
+            //initTeamList()
+            refreshMember()
+        } else {
+            _logoutBlock()
+        }
         super.refresh()
-        //initTeamList()
         setRefreshListener()
         closeRefresh()
     }
@@ -281,9 +286,9 @@ class MainActivity : BaseActivity() {
             memberFunctionsAdapter = MemberFunctionsAdapter(this, _rows, {
                 type -> _goMemberFunctions(type)
             })
-            container.adapter = memberFunctionsAdapter
+            member_functions_container.adapter = memberFunctionsAdapter
             val layoutManager = LinearLayoutManager(this)
-            container.layoutManager = layoutManager
+            member_functions_container.layoutManager = layoutManager
         }
     }
 
@@ -295,54 +300,9 @@ class MainActivity : BaseActivity() {
 
     private val memberDidChange = object : BroadcastReceiver() {
         override fun onReceive(context: Context?, intent: Intent?) {
-            _loginout()
+            refreshMember()
         }
     }
-//    private val teamUpdate = object: BroadcastReceiver() {
-//        override fun onReceive(context: Context?, intent: Intent?) {
-//            refresh()
-//        }
-//    }
-
-//    private fun initMemberFunction() {
-//        menu_account_container.setOnClickListener {view ->
-//            val accountIntent = Intent(this, AccountActivity::class.java)
-//            startActivity(accountIntent)
-//        }
-//        menu_updatepassword_container.setOnClickListener { view ->
-//            val updatePasswordIntent = Intent(this, UpdatePasswordActivity::class.java)
-//            startActivity(updatePasswordIntent)
-//        }
-//    }
-
-//    private fun initTeamList() {
-//        val filter1: Array<Any> = arrayOf("channel", "=", CHANNEL)
-//        val filter2: Array<Any> = arrayOf("manager_id", "=", member.id)
-//        val filter: Array<Array<Any>> = arrayOf(filter1, filter2)
-//
-//        TeamService.getList(this, "team", "name", 1, 100, filter) { success ->
-//            if (success) {
-//                this.menuTeamListAdapter = MenuTeamListAdapter(this, TeamService.dataLists,
-//                        { team -> goEditTeam(team.token) },
-//                        { team -> goDeleteTeam(team.token) },
-//                        { team -> goTeamTempPlayEdit(team.token) }
-//                )
-//                menu_team_list.adapter = this.menuTeamListAdapter
-//
-//                val layoutManager = LinearLayoutManager(this)
-//                menu_team_list.layoutManager = layoutManager
-//                closeRefresh()
-//            }
-//        }
-//        menu_team_add.onClick {
-//            if (member.validate < 1) {
-//                Alert.show(this@MainActivity, "錯誤", "未通過EMail認證，無法新增球隊，認證完後，請先登出再登入")
-//            } else {
-//                goEditTeam()
-//            }
-//        }
-//
-//    }
 
     private fun _loginout() {
         if (member.isLoggedIn) {
@@ -360,7 +320,6 @@ class MainActivity : BaseActivity() {
         //menu_team_container.visibility = View.VISIBLE
         refreshLayout = menu_refresh
 //        initMemberFunction()
-        refresh()
     }
     private fun _logoutBlock() {
         nicknameLbl.text = "未登入"
@@ -379,13 +338,6 @@ class MainActivity : BaseActivity() {
         }
     }
 
-    private fun setMenuWidth() {
-        val l = drawer.layoutParams
-        val w = screenWidth * 0.85
-        l.width = w.toInt()
-        drawer.layoutParams = l
-    }
-
     fun loginBtnPressed(view: View) {
         if (member.isLoggedIn) {
             if (member.uid.length > 0 && member.social == "fb") {
@@ -394,8 +346,9 @@ class MainActivity : BaseActivity() {
                 LoginManager.getInstance().logOut()
             }
             MemberService.logout()
-            val memberDidChange = Intent(NOTIF_MEMBER_DID_CHANGE)
-            LocalBroadcastManager.getInstance(this).sendBroadcast(memberDidChange)
+            refresh()
+//            val memberDidChange = Intent(NOTIF_MEMBER_DID_CHANGE)
+//            LocalBroadcastManager.getInstance(this).sendBroadcast(memberDidChange)
         } else {
             goLogin()
         }
@@ -418,23 +371,12 @@ class MainActivity : BaseActivity() {
         goTeamManager()
     }
 
-
-//    private fun authenticateWithClientCredentials(complete: CompletionHandler) {
-//        vimeoClient.authorizeWithClientCredentialsGrant(object: AuthCallback {
-//            override fun success() {
-//                val accessToken = vimeoClient.vimeoAccount.accessToken
-//                //println(accessToken)
-//                vimeoToken = accessToken
-//                complete(true)
-//            }
-//
-//            override fun failure(error: VimeoError?) {
-//                //println("failure")
-//                complete(false)
-//            }
-//        })
-//    }
-
+    private fun setMenuWidth() {
+        val l = drawer.layoutParams
+        val w = screenWidth * 0.85
+        l.width = w.toInt()
+        drawer.layoutParams = l
+    }
 
     override fun onBackPressed() {
         if (drawer_layout.isDrawerOpen(GravityCompat.START)) {
@@ -508,5 +450,67 @@ class MainActivity : BaseActivity() {
 //                return fragment
 //            }
 //        }
+//    }
+
+    //    private val teamUpdate = object: BroadcastReceiver() {
+//        override fun onReceive(context: Context?, intent: Intent?) {
+//            refresh()
+//        }
+//    }
+
+//    private fun initMemberFunction() {
+//        menu_account_container.setOnClickListener {view ->
+//            val accountIntent = Intent(this, AccountActivity::class.java)
+//            startActivity(accountIntent)
+//        }
+//        menu_updatepassword_container.setOnClickListener { view ->
+//            val updatePasswordIntent = Intent(this, UpdatePasswordActivity::class.java)
+//            startActivity(updatePasswordIntent)
+//        }
+//    }
+
+//    private fun initTeamList() {
+//        val filter1: Array<Any> = arrayOf("channel", "=", CHANNEL)
+//        val filter2: Array<Any> = arrayOf("manager_id", "=", member.id)
+//        val filter: Array<Array<Any>> = arrayOf(filter1, filter2)
+//
+//        TeamService.getList(this, "team", "name", 1, 100, filter) { success ->
+//            if (success) {
+//                this.menuTeamListAdapter = MenuTeamListAdapter(this, TeamService.dataLists,
+//                        { team -> goEditTeam(team.token) },
+//                        { team -> goDeleteTeam(team.token) },
+//                        { team -> goTeamTempPlayEdit(team.token) }
+//                )
+//                menu_team_list.adapter = this.menuTeamListAdapter
+//
+//                val layoutManager = LinearLayoutManager(this)
+//                menu_team_list.layoutManager = layoutManager
+//                closeRefresh()
+//            }
+//        }
+//        menu_team_add.onClick {
+//            if (member.validate < 1) {
+//                Alert.show(this@MainActivity, "錯誤", "未通過EMail認證，無法新增球隊，認證完後，請先登出再登入")
+//            } else {
+//                goEditTeam()
+//            }
+//        }
+//
+//    }
+
+    //    private fun authenticateWithClientCredentials(complete: CompletionHandler) {
+//        vimeoClient.authorizeWithClientCredentialsGrant(object: AuthCallback {
+//            override fun success() {
+//                val accessToken = vimeoClient.vimeoAccount.accessToken
+//                //println(accessToken)
+//                vimeoToken = accessToken
+//                complete(true)
+//            }
+//
+//            override fun failure(error: VimeoError?) {
+//                //println("failure")
+//                complete(false)
+//            }
+//        })
 //    }
 }

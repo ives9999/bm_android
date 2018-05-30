@@ -4,6 +4,7 @@ import android.content.Context
 import com.android.volley.Request
 import com.android.volley.Response
 import com.android.volley.toolbox.JsonObjectRequest
+import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import com.sportpassword.bm.Models.Arena
 import com.sportpassword.bm.Models.City
@@ -124,7 +125,7 @@ object TeamService: DataService() {
             }
         }
 
-//        val request = object: StringRequest(Request.Method.POST, url,
+//        val request = object: StringRequest(Request.Method.GET, url,
 //                Response.Listener { response ->
 //                    println(response)
 //                }, Response.ErrorListener { error ->
@@ -139,7 +140,7 @@ object TeamService: DataService() {
 //                return requestBody.toByteArray()
 //            }
 //        }
-//
+
         Volley.newRequestQueue(context).add(request)
     }
     fun tempPlay_onoff(context: Context, token: String, complete: CompletionHandler) {

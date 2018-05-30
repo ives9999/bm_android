@@ -51,8 +51,7 @@ class LoginActivity : BaseActivity() {
             //println(success)
             if (success) {
                 if (MemberService.success) {
-                    val memberDidChange = Intent(NOTIF_MEMBER_DID_CHANGE)
-                    LocalBroadcastManager.getInstance(this).sendBroadcast(memberDidChange)
+                    memberDidChange()
                     finish()
                 } else {
                     Alert.show(this, "警告", MemberService.msg)

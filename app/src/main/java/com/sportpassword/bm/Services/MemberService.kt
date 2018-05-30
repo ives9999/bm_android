@@ -270,6 +270,96 @@ object MemberService: BaseService() {
         Volley.newRequestQueue(context).add(request)
     }
 
+    fun sendVaildateCode(context: Context, type: String, value: String, token: String, complete: CompletionHandler) {
+        var url: String = ""
+        if (type == "email") {
+            url = URL_SEND_EMAIL_VALIDATE
+        } else if (type == "mobile") {
+            url = URL_SEND_MOBILE_VALIDATE
+        }
+        val body = JSONObject()
+        body.put(TOKEN_KEY, token)
+        body.put("value", value)
+        body.put("source", "app")
+        val requestBody = body.toString()
+
+        val request = object : JsonObjectRequest(Request.Method.POST, url, null, Response.Listener { json ->
+            //println(json)
+            try {
+                success = json.getBoolean("success")
+            } catch (e: JSONException) {
+                success = false
+                msg = "無法執行，沒有傳回成功值 " + e.localizedMessage
+            }
+            if (success) {
+                complete(true)
+            } else {
+                if (json.has("msg")) {
+                    msg = json.getString("msg")
+                }
+                complete(false)
+            }
+        }, Response.ErrorListener { error ->
+            println(error.localizedMessage)
+            msg = "失敗，網站或網路錯誤"
+            complete(false)
+        }) {
+            override fun getBodyContentType(): String {
+                return HEADER
+            }
+
+            override fun getBody(): ByteArray {
+                return requestBody.toByteArray()
+            }
+        }
+        Volley.newRequestQueue(context).add(request)
+    }
+
+    fun validate(context: Context, type: String, code: String, token: String, complete: CompletionHandler) {
+        var url: String = ""
+        if (type == "email") {
+            url = URL_EMAIL_VALIDATE
+        } else if (type == "mobile") {
+            url = URL_MOBILE_VALIDATE
+        }
+        val body = JSONObject()
+        body.put(TOKEN_KEY, token)
+        body.put("code", code)
+        body.put("source", "app")
+        val requestBody = body.toString()
+
+        val request = object : JsonObjectRequest(Request.Method.POST, url, null, Response.Listener { json ->
+            //println(json)
+            try {
+                success = json.getBoolean("success")
+            } catch (e: JSONException) {
+                success = false
+                msg = "無法執行，沒有傳回成功值 " + e.localizedMessage
+            }
+            if (success) {
+                complete(true)
+            } else {
+                if (json.has("msg")) {
+                    msg = json.getString("msg")
+                }
+                complete(false)
+            }
+        }, Response.ErrorListener { error ->
+            println(error.localizedMessage)
+            msg = "失敗，網站或網路錯誤"
+            complete(false)
+        }) {
+            override fun getBodyContentType(): String {
+                return HEADER
+            }
+
+            override fun getBody(): ByteArray {
+                return requestBody.toByteArray()
+            }
+        }
+        Volley.newRequestQueue(context).add(request)
+    }
+
     fun getOne(context: Context, token: String, complete: CompletionHandler) {
         val body = JSONObject()
         body.put(TOKEN_KEY, token)

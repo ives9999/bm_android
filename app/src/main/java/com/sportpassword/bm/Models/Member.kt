@@ -167,7 +167,7 @@ class Member(context: Context) {
         }
     }
 
-    public fun fetch(key: String): String {
+    fun fetch(key: String): String {
         var res = ""
         this::class.memberProperties.forEach{
             val name = it.name
@@ -178,7 +178,7 @@ class Member(context: Context) {
         return res
     }
 
-    public fun memberPrint() {
+    fun memberPrint() {
         this::class.memberProperties.forEach {
             val name = it.name
             val type = it.returnType
@@ -191,7 +191,7 @@ class Member(context: Context) {
 //            //println("${a.name} = ${value}")
 //        }
     }
-    public fun reset() {
+    fun reset() {
         var json: JSONObject = JSONObject()
         for ((k1, v1) in MEMBERS) {
             //println("${k1} default is ${v1["default"]}")
@@ -209,16 +209,19 @@ class Member(context: Context) {
         setMemberData(json)
     }
 
-    fun validateShow(rawValue: Int): String {
-        var res = "未通過任何認證"
+    fun validateShow(rawValue: Int): ArrayList<String> {
+        var res = arrayListOf<String>()
         if (rawValue and 1 > 0) {
-            res = "已通過email認證"
+            res.add("email認證")
         }
         if (rawValue and 2 > 0) {
-            res = "已通過手機認證"
+            res.add("手機認證")
         }
         if (rawValue and 4 > 0) {
-            res = "已通過身分證認證"
+            res.add("身分證認證")
+        }
+        if (res.size == 0) {
+            res.add("未通過任何認證")
         }
         return res
     }

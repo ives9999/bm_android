@@ -75,7 +75,8 @@ class AccountActivity : BaseActivity() {
         accountDob.setMyText(member.dob, default)
         accountMobile.setMyText(member.mobile, default)
         accountTel.setMyText(member.tel, default)
-        accountValidate.text = member.validateShow(member.validate)
+        val res = member.validateShow(member.validate)
+        accountValidate.text = res.joinToString(",")
         accountType.text = member.typeShow(member.type)
     }
 
