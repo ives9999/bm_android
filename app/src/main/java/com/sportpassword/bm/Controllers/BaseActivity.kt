@@ -76,7 +76,7 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener {
 //    }
 
     private fun _setURLConstants() {
-        //gSimulate = isEmulator()
+        gSimulate = isEmulator()
         BASE_URL = if (gSimulate) LOCALHOST_BASE_URL else REMOTE_BASE_URL
         //println("os: " + BASE_URL)
         URL_HOME = BASE_URL + "/app/"
@@ -88,6 +88,10 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener {
         URL_FORGETPASSWORD = "$BASE_URL/member/forget_password"
         URL_CHANGE_PASSWORD = "$BASE_URL/member/change_password"
         URL_MEMBER_UPDATE = URL_HOME + "member/update"
+        URL_EMAIL_VALIDATE = URL_HOME + "member/email_validate"
+        URL_MOBILE_VALIDATE = URL_HOME + "member/mobile_validate"
+        URL_SEND_EMAIL_VALIDATE = URL_HOME + "member/sendEmailValidate"
+        URL_SEND_MOBILE_VALIDATE = URL_HOME + "member/sendMobileValidate"
         URL_MEMBER_GETONE = URL_HOME + "member/getOne"
         URL_CITYS = URL_HOME + "citys"
         URL_ARENA_BY_CITY_ID = URL_HOME + "arena_by_city"
@@ -308,6 +312,11 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener {
             playerID = userId
         }
         return playerID
+    }
+
+    protected fun memberDidChange() {
+        val memberDidChange = Intent(NOTIF_MEMBER_DID_CHANGE)
+        LocalBroadcastManager.getInstance(this).sendBroadcast(memberDidChange)
     }
 
     fun isEmulator(): Boolean {
