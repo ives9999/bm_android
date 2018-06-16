@@ -31,6 +31,7 @@ import com.facebook.login.LoginManager
 import com.facebook.login.LoginResult
 import com.onesignal.OneSignal
 import com.sportpassword.bm.Adapters.SignupsAdapter
+import com.sportpassword.bm.Models.Data
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.MemberService
 import com.sportpassword.bm.Services.TeamService
@@ -48,14 +49,11 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener {
     protected lateinit var refreshLayout: SwipeRefreshLayout
     protected lateinit var refreshListener: SwipeRefreshLayout.OnRefreshListener
 
-    lateinit var data: Map<String, Map<String, Any>>
-    lateinit var signupsAdapter: SignupsAdapter
-    lateinit var name: String
-    lateinit var memberToken: String
-    lateinit var nearDate: String
-
     var screenWidth: Int = 0
     var density: Float = 0f
+
+    var msg: String = ""
+    var dataLists: ArrayList<Data> = arrayListOf()
 
     protected var callbackManager: CallbackManager? = null
 
@@ -234,6 +232,15 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener {
         startActivity(intent)
     }
 
+    protected fun goTempPlaySignupOne(id: Int, token: String, title: String, near_date: String) {
+        val i = Intent(this, TempPlaySignupOneVC::class.java)
+        i.putExtra("token", token)
+        i.putExtra("id", id)
+        i.putExtra("title", title)
+        i.putExtra("near_date", near_date)
+        startActivity(i)
+    }
+
     protected fun getAllChildrenBFS(v: View): List<View> {
         var visited: ArrayList<View> = arrayListOf()
         var unvisited: ArrayList<View> = arrayListOf()
@@ -314,6 +321,27 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener {
         return playerID
     }
 
+    protected fun _getMemberOne(token: String, completion: CompletionHandler) {
+        MemberService.getOne(this, token, completion)
+    }
+
+    protected fun _getTeamManagerList(completion: CompletionHandler) {
+        val loading = Loading.show(this)
+        val filter1: Array<Any> = arrayOf("channel", "=", CHANNEL)
+        val filter2: Array<Any> = arrayOf("manager_id", "=", member.id)
+        val filter: Array<Array<Any>> = arrayOf(filter1, filter2)
+        TeamService.getList(this, "team", "name", 1, 100, filter) { success ->
+            loading.dismiss()
+            if (success) {
+                dataLists = TeamService.dataLists
+                completion(true)
+            } else {
+                msg = TeamService.msg
+                completion(false)
+            }
+        }
+    }
+
     protected fun memberDidChange() {
         val memberDidChange = Intent(NOTIF_MEMBER_DID_CHANGE)
         LocalBroadcastManager.getInstance(this).sendBroadcast(memberDidChange)
@@ -344,6 +372,19 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener {
                 _showKeyboard(v)
             }
         }
+    }
+
+    protected fun warning(msg: String) {
+        Alert.show(this, "警告", msg)
+    }
+    protected fun warning(msg: String, showCloseButton: Boolean=false, buttonTitle: String, buttonAction: ()->Unit) {
+        Alert.show(this, "警告", msg, showCloseButton, buttonTitle, buttonAction)
+    }
+    protected fun warning(msg: String, closeButtonTitle: String, buttonTitle: String, buttonAction: ()->Unit) {
+        Alert.show(this, "警告", msg, closeButtonTitle, buttonTitle, buttonAction)
+    }
+    protected fun info(msg: String, closeButtonTitle: String, buttonTitle: String, buttonAction: ()->Unit) {
+        Alert.show(this, "訊息", msg, closeButtonTitle, buttonTitle, buttonAction)
     }
 
     open protected fun setRefreshListener() {

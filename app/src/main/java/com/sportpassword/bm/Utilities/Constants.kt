@@ -12,7 +12,9 @@ var gSimulate: Boolean = false
 
 // URL Constants
 const val REMOTE_BASE_URL = "http://bm.sportpassword.com"
+//const val LOCALHOST_BASE_URL = "http://bm.sportpassword.com"
 const val LOCALHOST_BASE_URL = "http://192.168.100.100"
+//const val LOCALHOST_BASE_URL = "http://192.168.2.200"
 var BASE_URL = ""
 var URL_HOME = ""
 var URL_LIST = ""
@@ -66,25 +68,25 @@ val EMAIL_VALIDATE: Int = 1
 val MOBILE_VALIDATE: Int = 2
 
 // member
-val MEMBERS: Map<String, Map<String, String>> = mapOf(
-        ID_KEY to hashMapOf("type" to "Int", "default" to "0"),
+val MEMBER_ARRAY: Map<String, Map<String, String>> = mapOf(
+        ID_KEY to hashMapOf("type" to "Int","default" to "0"),
         TOKEN_KEY to hashMapOf("type" to "String", "default" to ""),
-        EMAIL_KEY to hashMapOf("type" to "String", "default" to ""),
-        NICKNAME_KEY to hashMapOf("type" to "String", "default" to ""),
+        EMAIL_KEY to hashMapOf("text" to "email","type" to "String", "default" to "","icon" to "email1"),
+        NICKNAME_KEY to hashMapOf("text" to "暱稱","type" to "String", "default" to ""),
         ISLOGGEDIN_KEY to hashMapOf("type" to "Boolean", "default" to "false"),
         UID_KEY to hashMapOf("type" to "String", "default" to ""),
-        NAME_KEY to hashMapOf("type" to "String", "default" to ""),
+        NAME_KEY to hashMapOf("text" to "姓名","type" to "String", "default" to "","icon" to "name"),
         CHANNEL_KEY to hashMapOf("type" to "String", "default" to "bm"),
-        DOB_KEY to hashMapOf("type" to "String", "default" to ""),
-        SEX_KEY to hashMapOf("type" to "String", "default" to "M"),
-        TEL_KEY to hashMapOf("type" to "String", "default" to ""),
-        MOBILE_KEY to hashMapOf("type" to "String", "default" to ""),
-        PID_KEY to hashMapOf("type" to "String", "default" to ""),
+        DOB_KEY to hashMapOf("text" to "生日","type" to "String", "default" to ""),
+        SEX_KEY to hashMapOf("text" to "性別","type" to "String", "default" to "M"),
+        TEL_KEY to hashMapOf("text" to "電話","type" to "String", "default" to ""),
+        MOBILE_KEY to hashMapOf("text" to "手機","type" to "String", "default" to "","icon" to "mobile"),
+        PID_KEY to hashMapOf("text" to "身分證字號","type" to "String", "default" to ""),
         AVATAR_KEY to hashMapOf("type" to "String", "default" to ""),
-        MEMBER_TYPE_KEY to hashMapOf("type" to "Int", "default" to "0"),
+        MEMBER_TYPE_KEY to hashMapOf("text" to "會員類型","type" to "Int", "default" to "0"),
         SOCIAL_KEY to hashMapOf("type" to "String", "default" to ""),
-        MEMBER_ROLE_KEY to mapOf("type" to "String", "default" to "member"),
-        VALIDATE_KEY to mapOf("type" to "Int", "default" to "0")
+        MEMBER_ROLE_KEY to mapOf("text" to "會員身份","type" to "String", "default" to "member"),
+        VALIDATE_KEY to mapOf("text" to "驗證","type" to "Int", "default" to "0")
 )
 
 // Team key

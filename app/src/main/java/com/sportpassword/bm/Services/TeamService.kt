@@ -40,7 +40,7 @@ object TeamService: DataService() {
         body.put("perPage", perPage.toString())
 
         val requestBody = body.toString()
-        //println(requestBody)
+        // println(requestBody)
         //println("coach getList refresh: $refresh")
         tempPlayLists = arrayListOf()
 
@@ -205,7 +205,7 @@ object TeamService: DataService() {
     fun plusOne(context: Context, title: String, near_date: String, token: String, complete: CompletionHandler) {
         val _title = URLEncoder.encode(title, "UTF-8")
         var url = URL_TEAM_PLUSONE + _title + "?source=app&date=" + near_date + "&token=" + token
-        //println(url)
+        println(url)
 
         val request = object : JsonObjectRequest(Request.Method.GET, url, null, Response.Listener { json ->
             //println(json)
