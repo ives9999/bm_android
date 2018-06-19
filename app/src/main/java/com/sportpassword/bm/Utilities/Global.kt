@@ -10,6 +10,7 @@ import android.support.v4.content.ContextCompat
 import android.view.ViewGroup
 import android.view.Window
 import android.view.inputmethod.InputMethodManager
+import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.RelativeLayout
 import android.widget.TextView
@@ -39,6 +40,10 @@ fun Activity.hideKeyboard() {
     if (imm != null && currentFocus != null) {
         imm.hideSoftInputFromWindow(currentFocus.windowToken, 0);
     }
+}
+fun ImageView.setImage(name: String) {
+    val id = context.resources.getIdentifier(name, "drawable", context.packageName)
+    this.setImageResource(id)
 }
 
 object Loading {
@@ -94,6 +99,30 @@ object Alert {
         val alert = _show(context, title, msg)
         alert.setButton(AlertDialog.BUTTON_NEGATIVE, "確定", { Interface, j ->
 
+        })
+        alert.show()
+        return alert
+    }
+    fun show(context: Context, title: String, msg: String, showCloseButton:Boolean=false,buttonTitle:String, buttonAction: ()->Unit): AlertDialog {
+        val alert = _show(context, title, msg)
+        if (showCloseButton) {
+            alert.setButton(AlertDialog.BUTTON_NEGATIVE, "關閉", { Interface, j ->
+                Interface.cancel()
+            })
+        }
+        alert.setButton(AlertDialog.BUTTON_POSITIVE, buttonTitle, { Interface, j ->
+            buttonAction()
+        })
+        alert.show()
+        return alert
+    }
+    fun show(context: Context, title: String, msg: String, closeButtonTitle:String,buttonTitle:String, buttonAction: ()->Unit): AlertDialog {
+        val alert = _show(context, title, msg)
+        alert.setButton(AlertDialog.BUTTON_NEGATIVE, closeButtonTitle, { Interface, j ->
+            Interface.cancel()
+        })
+        alert.setButton(AlertDialog.BUTTON_POSITIVE, buttonTitle, { Interface, j ->
+            buttonAction()
         })
         alert.show()
         return alert

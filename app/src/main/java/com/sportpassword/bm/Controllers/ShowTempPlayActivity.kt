@@ -23,7 +23,12 @@ import org.jetbrains.anko.contentView
 class ShowTempPlayActivity : BaseActivity() {
 
     lateinit var teamToken: String
+    lateinit var signupsAdapter: SignupsAdapter
+    lateinit var name: String
+    lateinit var memberToken: String
+    lateinit var nearDate: String
 
+    lateinit var data: Map<String, Map<String, Any>>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,11 +36,6 @@ class ShowTempPlayActivity : BaseActivity() {
 
         teamToken = intent.getStringExtra(TEAM_TOKEN_KEY)
         //println(token)
-
-        signupsAdapter = SignupsAdapter(this)
-        val layoutManager = LinearLayoutManager(this)
-        show_signups_container.adapter = signupsAdapter
-        show_signups_container.layoutManager = layoutManager
 
         refreshLayout = contentView!!.findViewById< SwipeRefreshLayout>(R.id.tempPlayShow_refresh)
         //println(refreshLayout)
@@ -54,9 +54,24 @@ class ShowTempPlayActivity : BaseActivity() {
             if (success) {
                 data = TeamService.data
                 //println(data)
-                setTeamData(show_featured_view)
-                closeRefresh()
                 val title: String = data[TEAM_NAME_KEY]!!["value"] as String
+                val id: Int = data[TEAM_ID_KEY]!!["value"] as Int
+                setTeamData(show_featured_view)
+                signupsAdapter = SignupsAdapter(this, {token, near_date ->
+                    goTempPlaySignupOne(id, token, title, near_date)
+                })
+                val layoutManager = LinearLayoutManager(this)
+                show_signups_container.adapter = signupsAdapter
+                show_signups_container.layoutManager = layoutManager
+                if (data.containsKey("signups") && data["signups"]!!.containsKey("value")) {
+                    val signups = data["signups"]!!["value"] as ArrayList<Map<String, String>>
+                    //println(signups)
+                    if (signups.size > 0) {
+                        signupsAdapter.lists = signups
+                        signupsAdapter.notifyDataSetChanged()
+                    }
+                }
+                closeRefresh()
                 setMyTitle(title)
             }
         }
@@ -64,11 +79,30 @@ class ShowTempPlayActivity : BaseActivity() {
 
     fun plusOne(view: View) {
         if (!member.isLoggedIn) {
-            Alert.show(this, "警告", "請先登入會員")
+            warning("請先登入會員")
             return
         }
+        if ((member.validate and MOBILE_VALIDATE) == 0) {
+            warning("要使用臨打功能，須先通過手機認證", true, "手機認證", {
+                goValidate("mobile")
+            })
+            return
+        }
+        if (member.name.length == 0) {
+            warning("要使用臨打功能，請先輸入真實姓名", true, "輸入姓名", {
+                goEditMember()
+            })
+            return
+        }
+        warning("報名臨打後，將會公開您的姓名與手機號碼給球隊管理員，方便球隊管理員跟您連絡\n是否真的要參加此球隊的臨打？", "取消報名", "確定臨打", {
+            _plusOne()
+        })
+    }
 
+    private fun _plusOne() {
+        val loadding = Loading.show(this)
         TeamService.plusOne(this, name, nearDate, memberToken) { success ->
+            loadding.dismiss()
             var msg: String = "報名臨打成功"
             if (success) {
                 Alert.show(this, "成功", msg)
@@ -159,15 +193,6 @@ class ShowTempPlayActivity : BaseActivity() {
         lbl = data[key]!!["ch"] as String
         text = data[key]!!["show"] as String
         show_degree.text = lbl + ": " + text
-
-        if (data.containsKey("signups") && data["signups"]!!.containsKey("value")) {
-            val signups = data["signups"]!!["value"] as ArrayList<Map<String, String>>
-            //println(signups)
-            if (signups.size > 0) {
-                signupsAdapter.lists = signups
-                signupsAdapter.notifyDataSetChanged()
-            }
-        }
 
         name = data[TEAM_NAME_KEY]!!["value"] as String
         memberToken = member.token

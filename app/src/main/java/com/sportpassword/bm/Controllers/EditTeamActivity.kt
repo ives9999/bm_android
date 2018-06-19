@@ -124,7 +124,7 @@ class EditTeamActivity : BaseActivity(), ImagePicker {
         //println(data)
         when (requestCode) {
             ACTION_PHOTO_REQUEST_CODE -> {
-                println(data!!.data)
+                //println(data!!.data)
                 dealPhoto(requestCode, resultCode, data)
             }
             ACTION_CAMERA_REQUEST_CODE -> {

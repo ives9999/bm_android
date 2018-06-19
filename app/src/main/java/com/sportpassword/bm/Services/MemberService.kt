@@ -27,6 +27,7 @@ import com.facebook.login.LoginManager
 object MemberService: BaseService() {
 
     var success: Boolean = false
+    var one: JSONObject? = null
 
     fun register(context: Context, email: String, password: String, repassword: String, complete: CompletionHandler) {
         val url = URL_REGISTER
@@ -369,6 +370,7 @@ object MemberService: BaseService() {
         val request = object : JsonObjectRequest(Request.Method.POST, URL_MEMBER_GETONE, null, Response.Listener { json ->
             //println(json)
             try {
+                one = json
                 success = json.getBoolean("success")
             } catch (e: JSONException) {
                 success = false

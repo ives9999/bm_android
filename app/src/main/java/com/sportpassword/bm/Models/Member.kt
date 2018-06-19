@@ -193,7 +193,7 @@ class Member(context: Context) {
     }
     fun reset() {
         var json: JSONObject = JSONObject()
-        for ((k1, v1) in MEMBERS) {
+        for ((k1, v1) in MEMBER_ARRAY) {
             //println("${k1} default is ${v1["default"]}")
             val type: String = v1["type"].toString()
             val tmp = v1["default"].toString()

@@ -7,6 +7,7 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.CALL_PHONE" />
 
     <uses-feature
         android:name="android.hardware.camera"
@@ -66,7 +67,18 @@
         <activity android:name=".Controllers.SplashActivity" />
         <activity android:name=".Controllers.TeamManagerActivity" />
         <activity android:name=".Controllers.TeamManagerFunctionActivity" />
-        <activity android:name=".Controllers.ValidateActivity"></activity>
+        <activity android:name=".Controllers.ValidateActivity" />
+        <activity android:name=".Controllers.TempPlaySignupOneVC" android:exported="true"></activity>
     </application>
 
 </manifest>
+
+
+
+
+
+
+
+
+
+
