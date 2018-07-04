@@ -38,7 +38,7 @@ class MemberFunctionsAdapter(val context: Context, val lists: ArrayList<Map<Stri
             val iconID = context.resources.getIdentifier(row["icon"], "drawable", context.packageName)
             iconView.setImageResource(iconID)
             textView.text = row["text"]
-            itemView.setOnClickListener{itemClick(row["type"]!!)}
+            itemView.setOnClickListener{itemClick(row["segue"]!!)}
         }
     }
 }

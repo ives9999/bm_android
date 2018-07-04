@@ -13,6 +13,7 @@ var gSimulate: Boolean = false
 // URL Constants
 const val REMOTE_BASE_URL = "http://bm.sportpassword.com"
 //const val LOCALHOST_BASE_URL = "http://bm.sportpassword.com"
+//const val LOCALHOST_BASE_URL = "http://192.168.1.119"
 const val LOCALHOST_BASE_URL = "http://192.168.100.100"
 //const val LOCALHOST_BASE_URL = "http://192.168.2.200"
 var BASE_URL = ""
@@ -30,6 +31,7 @@ var URL_MOBILE_VALIDATE = ""
 var URL_SEND_EMAIL_VALIDATE = ""
 var URL_SEND_MOBILE_VALIDATE = ""
 var URL_MEMBER_GETONE = ""
+var URL_MEMBER_BLACKLIST = ""
 var URL_CITYS = ""
 var URL_ARENA_BY_CITY_ID = ""
 var URL_TEAM_UPDATE = ""
@@ -41,6 +43,8 @@ var URL_TEAM_TEMP_PLAY = ""
 var URL_TEAM_TEMP_PLAY_LIST = ""
 var URL_TEAM_PLUSONE = ""
 var URL_TEAM_CANCELPLUSONE = ""
+var URL_TEAM_TEMP_PLAY_DATE = ""
+var URL_TEAM_TEMP_PLAY_DATE_PLAYER = ""
 
 // spinner
 val LOADING: String = "努力加載中..."
@@ -66,6 +70,11 @@ val MEMBER_ROLE_KEY: String = "role"
 val VALIDATE_KEY: String = "validate"
 val EMAIL_VALIDATE: Int = 1
 val MOBILE_VALIDATE: Int = 2
+val PID_VALIDATE = 4
+val GENERAL_TYPE = 1
+val TEAM_TYPE = 2
+val ARENA_TYPE = 4
+val ISTEAMMANAGER_KEY = "isTeamManager"
 
 // member
 val MEMBER_ARRAY: Map<String, Map<String, String>> = mapOf(

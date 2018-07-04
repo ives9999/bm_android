@@ -91,6 +91,7 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener {
         URL_SEND_EMAIL_VALIDATE = URL_HOME + "member/sendEmailValidate"
         URL_SEND_MOBILE_VALIDATE = URL_HOME + "member/sendMobileValidate"
         URL_MEMBER_GETONE = URL_HOME + "member/getOne"
+        URL_MEMBER_BLACKLIST = URL_HOME + "member/blacklist"
         URL_CITYS = URL_HOME + "citys"
         URL_ARENA_BY_CITY_ID = URL_HOME + "arena_by_city"
         URL_TEAM_UPDATE = URL_HOME + "team/update"
@@ -102,6 +103,8 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener {
         URL_TEAM_TEMP_PLAY_LIST = URL_TEAM + "tempPlay/list"
         URL_TEAM_PLUSONE = BASE_URL + "/team/tempPlay/plusOne/"
         URL_TEAM_CANCELPLUSONE = BASE_URL + "/team/tempPlay/cancelPlusOne/"
+        URL_TEAM_TEMP_PLAY_DATE = URL_TEAM + "tempPlay/date"
+        URL_TEAM_TEMP_PLAY_DATE_PLAYER = URL_TEAM + "tempPlay/datePlayer"
     }
 
     protected fun setMyTitle(title: String) {
@@ -199,6 +202,19 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener {
         intent.putExtra("token", token)
         startActivity(intent)
     }
+    protected fun goTempPlayDate(name: String, token: String) {
+        val intent = Intent(this, TempPlayDateVC::class.java)
+        intent.putExtra("name", name)
+        intent.putExtra("token", token)
+        startActivity(intent)
+    }
+    protected fun goTempPlayDatePlayer(date: String, name: String, token: String) {
+        val intent = Intent(this, TempPlayDatePlayerVC::class.java)
+        intent.putExtra("date", date)
+        intent.putExtra("teamName", name)
+        intent.putExtra("teamToken", token)
+        startActivity(intent)
+    }
 
     protected fun goSearch(type: String) {
         //val intent = Intent(this)
@@ -240,6 +256,12 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener {
         i.putExtra("near_date", near_date)
         startActivity(i)
     }
+
+    protected fun goBlackList() {
+        val intent = Intent(this, BlackListVC::class.java)
+        startActivity(intent)
+    }
+
 
     protected fun getAllChildrenBFS(v: View): List<View> {
         var visited: ArrayList<View> = arrayListOf()
@@ -345,6 +367,10 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener {
     protected fun memberDidChange() {
         val memberDidChange = Intent(NOTIF_MEMBER_DID_CHANGE)
         LocalBroadcastManager.getInstance(this).sendBroadcast(memberDidChange)
+    }
+
+    protected fun addBlackList(memberName: String, memberToken: String, teamToken: String) {
+
     }
 
     fun isEmulator(): Boolean {

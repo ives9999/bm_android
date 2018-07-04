@@ -14,11 +14,13 @@ import com.sportpassword.bm.Models.Member
 import com.sportpassword.bm.Utilities.*
 import com.sportpassword.bm.member
 import com.android.volley.VolleyError
+import com.beust.klaxon.Klaxon
 import com.facebook.AccessToken
 import com.facebook.GraphRequest
 import com.facebook.GraphResponse
 import com.facebook.Profile
 import com.facebook.login.LoginManager
+import com.sportpassword.bm.Models.BlackList
 
 
 /**
@@ -28,6 +30,7 @@ object MemberService: BaseService() {
 
     var success: Boolean = false
     var one: JSONObject? = null
+    lateinit var blackList: BlackList
 
     fun register(context: Context, email: String, password: String, repassword: String, complete: CompletionHandler) {
         val url = URL_REGISTER
@@ -528,6 +531,54 @@ object MemberService: BaseService() {
     }
     fun FBLogout() {
         LoginManager.getInstance().logOut()
+    }
+
+    fun blacklist(context: Context, token: String, complete: CompletionHandler) {
+        val url = URL_MEMBER_BLACKLIST
+        val body = JSONObject()
+        body.put("source", "app")
+        body.put("channel", CHANNEL)
+        body.put("token", token)
+        val requestBody = body.toString()
+
+        val request = object : JsonObjectRequest(Request.Method.POST, url, null, Response.Listener { json ->
+            //println(json)
+            val s = json.toString()
+            //println(s)
+            try {
+                blackList = JSONParse.parse<BlackList>(json)!!
+                println(blackList.success)
+                blackList.rows.forEach {
+                    println(it.id)
+                    println(it.team)
+                }
+//                println(blackList.rows)
+//                if (blackList.success) {
+//                } else {
+//                    msg = json.getString("msg")
+//                }
+                complete(true)
+            } catch (e: JSONException) {
+                println(e.localizedMessage)
+                success = false
+                msg = "無法取得臨打資訊，請稍後再試 " + e.localizedMessage
+                complete(false)
+            }
+        }, Response.ErrorListener { error ->
+            //Log.d("ERROR", "Could not register user: $error")
+            println(error.localizedMessage)
+            this.msg = "取得失敗，網站或網路錯誤"
+            complete(false)
+        }) {
+            override fun getBodyContentType(): String {
+                return HEADER
+            }
+
+            override fun getBody(): ByteArray {
+                return requestBody.toByteArray()
+            }
+        }
+        Volley.newRequestQueue(context).add(request)
     }
 
 

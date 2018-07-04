@@ -65,7 +65,7 @@
             </android.support.constraint.ConstraintLayout>
 
             <View
-                android:id="@+id/divider"
+                android:id="@+id/divider1"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:background="@color/grey"
@@ -98,7 +98,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
-                    android:text="臨打"
+                    android:text="臨打編輯"
                     android:textColor="@color/WHITE"
                     android:textSize="18sp"
                     android:textStyle="bold"
@@ -119,7 +119,7 @@
 
             </android.support.constraint.ConstraintLayout>
             <View
-                android:id="@+id/divider"
+                android:id="@+id/divider2"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:background="@color/grey"
@@ -128,11 +128,11 @@
                 tools:layout_editor_absoluteY="9dp" />
 
             <android.support.constraint.ConstraintLayout
-                android:id="@+id/team_delete_row"
+                android:id="@+id/tempPlayList_row"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="fill_horizontal"
-                android:onClick="delete"
+                android:onClick="tempPlayDate"
                 android:padding="12dp">
 
                 <ImageView
@@ -145,14 +145,14 @@
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:srcCompat="@drawable/clear" />
+                    app:srcCompat="@drawable/tempplay" />
 
                 <TextView
                     android:id="@+id/textView31"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
-                    android:text="刪除"
+                    android:text="每次臨打名單"
                     android:textColor="@color/WHITE"
                     android:textSize="18sp"
                     android:textStyle="bold"
@@ -162,6 +162,61 @@
 
                 <ImageView
                     android:id="@+id/imageView32"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="16dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@drawable/greater1" />
+
+
+            </android.support.constraint.ConstraintLayout>
+            <View
+                android:id="@+id/divider3"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/grey"
+                android:visibility="visible"
+                tools:layout_editor_absoluteX="8dp"
+                tools:layout_editor_absoluteY="9dp" />
+
+
+            <android.support.constraint.ConstraintLayout
+                android:id="@+id/team_delete_row"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="fill_horizontal"
+                android:onClick="delete"
+                android:padding="12dp">
+
+                <ImageView
+                    android:id="@+id/imageView41"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:layout_marginBottom="4dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="4dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@drawable/clear" />
+
+                <TextView
+                    android:id="@+id/textView41"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:text="刪除"
+                    android:textColor="@color/WHITE"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/imageView41"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <ImageView
+                    android:id="@+id/imageView42"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="16dp"

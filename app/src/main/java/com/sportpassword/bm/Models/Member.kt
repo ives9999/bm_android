@@ -75,9 +75,12 @@ class Member(context: Context) {
     var isLoggedIn: Boolean
         get() = session.getBoolean(ISLOGGEDIN_KEY, false)
         set(value) = session.edit().putBoolean(ISLOGGEDIN_KEY, value).apply()
+    var isTeamManager: Boolean
+        get() = session.getBoolean(ISTEAMMANAGER_KEY, false)
+        set(value) = session.edit().putBoolean(ISTEAMMANAGER_KEY, value).apply()
 
 
-    fun setMemberData(json: JSONObject) {
+    fun  setMemberData(json: JSONObject) {
         id = json.getInt(ID_KEY)
         if (json.has(VALIDATE_KEY)) {
             validate = json.getInt(VALIDATE_KEY)
@@ -165,6 +168,8 @@ class Member(context: Context) {
         } else {
             isLoggedIn = false
         }
+        val value: Int = type and TEAM_TYPE
+        if (value > 0) isTeamManager = true else isTeamManager= false
     }
 
     fun fetch(key: String): String {

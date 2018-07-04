@@ -69,8 +69,8 @@ class MainActivity : BaseActivity() {
     val tabsIconArr: Array<String> = arrayOf<String>("tempplay", "coach", "team", "more")
 
     val fixedRows: ArrayList<Map<String, String>> = arrayListOf(
-            mapOf("text" to "帳戶資料", "icon" to "account", "type" to "account"),
-            mapOf("text" to "更改密碼", "icon" to "password", "type" to "password")
+            mapOf("text" to "帳戶資料", "icon" to "account", "segue" to "account"),
+            mapOf("text" to "更改密碼", "icon" to "password", "segue" to "password")
     )
     var _rows: ArrayList<Map<String, String>> = arrayListOf()
 
@@ -259,6 +259,13 @@ class MainActivity : BaseActivity() {
                 loading.dismiss()
                 if (success) {
                     setValidateRow()
+                    setBlackListRow()
+                    memberFunctionsAdapter = MemberFunctionsAdapter(this, _rows, {
+                        type -> _goMemberFunctions(type)
+                    })
+                    member_functions_container.adapter = memberFunctionsAdapter
+                    val layoutManager = LinearLayoutManager(this)
+                    member_functions_container.layoutManager = layoutManager
                     memberFunctionsAdapter.notifyDataSetChanged()
                     _loginout()
                 } else {
@@ -276,19 +283,19 @@ class MainActivity : BaseActivity() {
         if (member.isLoggedIn) {
             val validate: Int = member.validate
             if (validate and EMAIL_VALIDATE <= 0) {
-                val function: Map<String, String> = mapOf("text" to "email認證", "icon" to "email", "type" to "email")
+                val function: Map<String, String> = mapOf("text" to "email認證", "icon" to "email", "segue" to "email")
                 _rows.add(function)
             }
             if (validate and MOBILE_VALIDATE <= 0) {
-                val function: Map<String, String> = mapOf("text" to "手機認證", "icon" to "mobile_validate", "type" to "mobile")
+                val function: Map<String, String> = mapOf("text" to "手機認證", "icon" to "mobile_validate", "segue" to "mobile")
                 _rows.add(function)
             }
-            memberFunctionsAdapter = MemberFunctionsAdapter(this, _rows, {
-                type -> _goMemberFunctions(type)
-            })
-            member_functions_container.adapter = memberFunctionsAdapter
-            val layoutManager = LinearLayoutManager(this)
-            member_functions_container.layoutManager = layoutManager
+        }
+    }
+    private fun setBlackListRow() {
+        if (member.isTeamManager) {
+            val row: Map<String, String> = mapOf("text" to "黑名單", "icon" to "blacklist", "segue" to "blacklist")
+            _rows.add(row)
         }
     }
 
@@ -329,12 +336,13 @@ class MainActivity : BaseActivity() {
         menu_member_container.visibility = View.INVISIBLE
         //menu_team_container.visibility = View.INVISIBLE
     }
-    private fun _goMemberFunctions(type: String) {
-        when(type) {
+    private fun _goMemberFunctions(segue: String) {
+        when(segue) {
             "account" -> goEditMember()
             "password" -> goUpdatePassword()
             "email" -> goValidate("email")
             "mobile" -> goValidate("mobile")
+            "blacklist" -> goBlackList()
         }
     }
 

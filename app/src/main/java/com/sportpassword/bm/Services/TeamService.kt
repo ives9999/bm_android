@@ -6,10 +6,8 @@ import com.android.volley.Response
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
-import com.sportpassword.bm.Models.Arena
-import com.sportpassword.bm.Models.City
-import com.sportpassword.bm.Models.Data
-import com.sportpassword.bm.Models.Team
+import com.beust.klaxon.Klaxon
+import com.sportpassword.bm.Models.*
 import com.sportpassword.bm.Utilities.*
 import org.json.JSONArray
 import org.json.JSONException
@@ -24,6 +22,8 @@ object TeamService: DataService() {
     var tempPlayLists: ArrayList<Map<String, Map<String, Any>>> = arrayListOf()
     override val model: Team = Team(-1, "", "", "")
     lateinit var temp_play_data: MutableMap<String, MutableMap<String, Any>>
+    lateinit var tempPlayDate: TempPlayDate
+    lateinit var tempPlayDatePlayer: TempPlayDatePlayer
 
     override fun setData(id: Int, title: String, token: String, featured_path: String, vimeo: String, youtube: String): Team {
         val data = Team(id, title, token, featured_path, vimeo, youtube)
@@ -205,7 +205,7 @@ object TeamService: DataService() {
     fun plusOne(context: Context, title: String, near_date: String, token: String, complete: CompletionHandler) {
         val _title = URLEncoder.encode(title, "UTF-8")
         var url = URL_TEAM_PLUSONE + _title + "?source=app&date=" + near_date + "&token=" + token
-        println(url)
+        //println(url)
 
         val request = object : JsonObjectRequest(Request.Method.GET, url, null, Response.Listener { json ->
             //println(json)
@@ -254,6 +254,97 @@ object TeamService: DataService() {
         }){}
         Volley.newRequestQueue(context).add(request)
     }
+
+    fun tempPlay_date(context: Context, token: String, complete: CompletionHandler) {
+        val url = URL_TEAM_TEMP_PLAY_DATE
+        val body = JSONObject()
+        body.put("source", "app")
+        body.put("channel", CHANNEL)
+        body.put("token", token)
+        val requestBody = body.toString()
+
+        val request = object : JsonObjectRequest(Request.Method.POST, url, null, Response.Listener { json ->
+            //println(json)
+            val s = json.toString()
+            //println(s)
+            try {
+                tempPlayDate = Klaxon().parse<TempPlayDate>(s)!!
+//                tempPlayDate = TempPlayDate(json)
+//                println(tempPlayDate.success)
+//                println(tempPlayDate.rows)
+                if (tempPlayDate.success) {
+                } else {
+                    msg = json.getString("msg")
+                }
+                complete(tempPlayDate.success)
+            } catch (e: JSONException) {
+                println(e.localizedMessage)
+                success = false
+                msg = "無法取得臨打資訊，請稍後再試 " + e.localizedMessage
+                complete(false)
+            }
+        }, Response.ErrorListener { error ->
+            //Log.d("ERROR", "Could not register user: $error")
+            println(error.localizedMessage)
+            this.msg = "取得失敗，網站或網路錯誤"
+            complete(false)
+        }) {
+            override fun getBodyContentType(): String {
+                return HEADER
+            }
+
+            override fun getBody(): ByteArray {
+                return requestBody.toByteArray()
+            }
+        }
+        Volley.newRequestQueue(context).add(request)
+    }
+    fun tempPlay_datePlayer(context: Context, date: String, token: String, complete: CompletionHandler) {
+        val url = URL_TEAM_TEMP_PLAY_DATE_PLAYER
+        val body = JSONObject()
+        body.put("source", "app")
+        body.put("channel", CHANNEL)
+        body.put("date", date)
+        body.put("token", token)
+        val requestBody = body.toString()
+
+        val request = object : JsonObjectRequest(Request.Method.POST, url, null, Response.Listener { json ->
+            //println(json)
+            val s = json.toString()
+            //println(s)
+            try {
+                tempPlayDatePlayer = Klaxon().parse<TempPlayDatePlayer>(s)!!
+//                tempPlayDate = TempPlayDate(json)
+//                println(tempPlayDatePlayer.success)
+//                println(tempPlayDatePlayer.rows)
+                if (tempPlayDate.success) {
+                } else {
+                    msg = json.getString("msg")
+                }
+                complete(tempPlayDate.success)
+            } catch (e: JSONException) {
+                println(e.localizedMessage)
+                success = false
+                msg = "無法取得臨打資訊，請稍後再試 " + e.localizedMessage
+                complete(false)
+            }
+        }, Response.ErrorListener { error ->
+            //Log.d("ERROR", "Could not register user: $error")
+            println(error.localizedMessage)
+            this.msg = "取得失敗，網站或網路錯誤"
+            complete(false)
+        }) {
+            override fun getBodyContentType(): String {
+                return HEADER
+            }
+
+            override fun getBody(): ByteArray {
+                return requestBody.toByteArray()
+            }
+        }
+        Volley.newRequestQueue(context).add(request)
+    }
+
     override fun dealOne(json: JSONObject) {
         super.dealOne(json)
         for ((key, value) in model.data) {

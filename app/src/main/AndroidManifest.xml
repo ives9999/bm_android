@@ -68,17 +68,12 @@
         <activity android:name=".Controllers.TeamManagerActivity" />
         <activity android:name=".Controllers.TeamManagerFunctionActivity" />
         <activity android:name=".Controllers.ValidateActivity" />
-        <activity android:name=".Controllers.TempPlaySignupOneVC" android:exported="true"></activity>
+        <activity
+            android:name=".Controllers.TempPlaySignupOneVC"
+            android:exported="true" />
+        <activity android:name=".Controllers.TempPlayDateVC" />
+        <activity android:name=".Controllers.TempPlayDatePlayerVC" />
+        <activity android:name=".Controllers.BlackListVC"></activity>
     </application>
 
 </manifest>
-
-
-
-
-
-
-
-
-
-

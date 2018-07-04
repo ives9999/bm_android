@@ -29,4 +29,7 @@ class TeamManagerFunctionActivity : BaseActivity() {
     fun tempPlay(view: View) {
         goTeamTempPlayEdit(token)
     }
+    fun tempPlayDate(view: View) {
+        goTempPlayDate(title, token)
+    }
 }
