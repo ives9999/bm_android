@@ -547,16 +547,11 @@ object MemberService: BaseService() {
             //println(s)
             try {
                 blackList = JSONParse.parse<BlackList>(json)!!
-                println(blackList.success)
-                blackList.rows.forEach {
-                    println(it.id)
-                    println(it.team)
+//                blackList.print()
+                if (blackList.success) {
+                } else {
+                    msg = json.getString("msg")
                 }
-//                println(blackList.rows)
-//                if (blackList.success) {
-//                } else {
-//                    msg = json.getString("msg")
-//                }
                 complete(true)
             } catch (e: JSONException) {
                 println(e.localizedMessage)

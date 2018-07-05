@@ -101,6 +101,7 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener {
         URL_TEAM = URL_HOME + "team/"
         URL_TEAM_TEMP_PLAY = URL_TEAM + "tempPlay/onoff"
         URL_TEAM_TEMP_PLAY_LIST = URL_TEAM + "tempPlay/list"
+        URL_TEAM_TEMP_PLAY_BLACKLIST = URL_TEAM + "tempPlay/blacklist"
         URL_TEAM_PLUSONE = BASE_URL + "/team/tempPlay/plusOne/"
         URL_TEAM_CANCELPLUSONE = BASE_URL + "/team/tempPlay/cancelPlusOne/"
         URL_TEAM_TEMP_PLAY_DATE = URL_TEAM + "tempPlay/date"
@@ -408,6 +409,9 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener {
     }
     protected fun warning(msg: String, closeButtonTitle: String, buttonTitle: String, buttonAction: ()->Unit) {
         Alert.show(this, "警告", msg, closeButtonTitle, buttonTitle, buttonAction)
+    }
+    protected fun info(msg: String) {
+        Alert.show(this, "訊息", msg)
     }
     protected fun info(msg: String, closeButtonTitle: String, buttonTitle: String, buttonAction: ()->Unit) {
         Alert.show(this, "訊息", msg, closeButtonTitle, buttonTitle, buttonAction)

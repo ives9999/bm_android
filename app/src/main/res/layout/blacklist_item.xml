@@ -18,10 +18,10 @@
             android:id="@+id/memberName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
             android:textColor="@color/WHITE"
             android:textSize="24sp"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="MemberName" />
@@ -30,25 +30,22 @@
             android:id="@+id/mobile"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="200dp"
-            android:layout_marginTop="16dp"
+            android:layout_marginStart="150dp"
+            android:layout_marginTop="8dp"
             android:textColor="@color/WHITE"
             android:textSize="24sp"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/date"
-            app:layout_constraintVertical_bias="0.987"
-            tools:text="Date" />
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Mobile" />
 
         <TextView
             android:id="@+id/teamName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
             android:textColor="@color/WHITE"
             android:textSize="24sp"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/memberName"
             tools:text="TeamName" />
@@ -57,23 +54,35 @@
             android:id="@+id/date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="200dp"
+            android:layout_marginStart="150dp"
+            android:layout_marginTop="8dp"
             android:textColor="@color/WHITE"
             android:textSize="24sp"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:text="Mobile" />
+            app:layout_constraintTop_toBottomOf="@+id/mobile"
+            tools:text="Date" />
 
         <ImageView
             android:id="@+id/greater"
             android:layout_width="18dp"
             android:layout_height="18dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginTop="70dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginTop="50dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/greater1" />
+
+        <Button
+            android:id="@+id/cancel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/button_rc"
+            android:text="取消"
+            android:textSize="24sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/teamName" />
 
     </android.support.constraint.ConstraintLayout>
 

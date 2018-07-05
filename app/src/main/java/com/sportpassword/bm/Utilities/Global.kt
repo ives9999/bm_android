@@ -35,6 +35,28 @@ fun String.noSec(): String {
     }
     return res
 }
+fun String.isPrimitive(): Boolean {
+    val type = this.toLowerCase()
+    var b: Boolean = false
+    when (type) {
+        "boolean", "int", "float", "double", "string" -> b = true
+        else -> b = false
+    }
+    return b
+}
+
+fun <T1, T2> Map<T1, T2>.print() {
+    for ((key, value) in this) {
+        println("${key} => ${value}")
+    }
+}
+
+fun <T> List<T>.print() {
+    for (value in this) {
+        println("${value}")
+    }
+}
+
 fun Activity.hideKeyboard() {
     val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
     if (imm != null && currentFocus != null) {

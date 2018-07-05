@@ -87,6 +87,7 @@ class MainActivity : BaseActivity() {
         hideKeyboard()
 
 
+
 //        val testAccount = TestAccountStore(this.applicationContext)
 //        val configBuilder = Configuration.Builder(VIMEO_ID, VIMEO_SECRET, "private public create edit delete interact", testAccount).setCacheDirectory(this.cacheDir)
 //        VimeoClient.initialize(configBuilder.build())

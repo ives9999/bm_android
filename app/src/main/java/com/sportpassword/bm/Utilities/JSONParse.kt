@@ -38,14 +38,18 @@ class JSONParse {
                         _setter(it, res, value)
                     is JSONArray -> {
                         val type = it.returnType.toString()
-                        val subType = getSubType(type)
+                        val tmps = getSubType(type)
+                        val subType = tmps.get("type")!!
                         when (subType) {
                             "Boolean", "Int", "Float", "Double", "String" -> {
 
                             }
                             else -> {
-                                val rows = setRows(kc, it, res, value, subType)
-                                _setter(it, res, rows)
+                                if (tmps.containsKey("value_type")) {
+                                    val valueType = tmps.get("value_type")!!
+                                    val rows = setRows(kc, it, res, value, valueType)
+                                    _setter(it, res, rows)
+                                }
                             }
                         }
                     }
@@ -110,22 +114,79 @@ class JSONParse {
             }
             return d
         }
-        private fun getSubType(type: String): String {
-            var subType = ""
-            val pattern = "<.*\\.([^>]*)>".toRegex()
-            val b = pattern.containsMatchIn(type)
-            //println(b)
+        fun getSubType(type: String): MutableMap<String, String> {
+            var subType = type
+            var res: MutableMap<String, String> = mutableMapOf()
+            val pattern = "^kotlin\\.([^\\.]+)[\\.]?([^\\.^<]*)[<]?([^>]*)[>]?".toRegex()
+            val b = pattern.containsMatchIn(subType)
             if (b) {
-                val matchResult = pattern.find(type)
-                val list = matchResult!!.destructured.toList()
-                if (list.size > 0) {
-                    subType = list.get(0)
+                val matchRes = pattern.find(subType)
+                if (matchRes != null) {
+                    val arr = matchRes.groupValues
+//                    for (s in arr) {
+//                        println(s)
+//                    }
+                    if (arr[2].length == 0) {
+                        subType = arr[1]
+                    } else {
+                        subType = arr[2]
+                        var e = arr[3]
+                        if (subType.contains("Map")) {
+                            subType = "Map"
+                            e = e.replace("kotlin.", "")
+                            e = e.replace(" ", "")
+                            //println(e)
+                            val tmps = e.split(",")
+                            if (tmps.size > 1) {
+                                res.set("key_type", tmps[0])
+                                res.set("value_type", tmps[1])
+                            }
+                        } else if (subType.contains("Array")) {
+                            subType = "Array"
+                            val pattern1 = "^.*\\.([^\\.]*)$".toRegex()
+                            val b1 = pattern1.containsMatchIn(e)
+                            if (b1) {
+                                val matchRes1 = pattern1.find(e)
+                                if (matchRes1 != null) {
+                                    val arr1 = matchRes1.groupValues
+                                    //arr1.print()
+                                    if (arr1.size > 1) {
+                                        res.set("value_type", arr1[1])
+                                    }
+                                }
+                            }
+                        }
+                     }
                 }
             }
-            return subType
+            res.set("type", subType)
+
+
+            /*
+            if (type.contains("Map")) {
+                subType = "Map"
+            } else {
+                var pattern = "<.*\\.([^>]*)>".toRegex()
+                var b = pattern.containsMatchIn(type)
+                //println(b)
+                if (!b) {
+                    pattern = ".*\\.([^>]*)".toRegex()
+                    b = pattern.containsMatchIn(type)
+                }
+                if (b) {
+                    val matchResult = pattern.find(type)
+                    val list = matchResult!!.destructured.toList()
+                    if (list.size > 0) {
+                        subType = list.get(0)
+                    }
+                }
+            }
+            */
+
+            return res
         }
 
-        private fun getInnerClass(parent: KClass<*>, name: String): KClass<*>? {
+        fun getInnerClass(parent: KClass<*>, name: String): KClass<*>? {
             var kc: KClass<*>? = null
             parent.nestedClasses.forEach {
                 if (it.simpleName == name) {

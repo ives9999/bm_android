@@ -387,6 +387,59 @@ object TeamService: DataService() {
         model.feeShow()
     }
 
+    fun addBlackList(context: Context,teamToken:String,playerToken:String,managerToken:String,reason:String,completion: CompletionHandler) {
+        val body = JSONObject()
+        body.put("teamToken", teamToken)
+        body.put("playerToken", playerToken)
+        body.put("managerToken", managerToken)
+        body.put("memo", reason)
+        body.put("do", "add")
+        _blacklist(context, body, completion)
+    }
+    fun removeBlackList(context: Context,teamToken:String,playerToken: String,managerToken: String,completion: CompletionHandler) {
+        val body = JSONObject()
+        body.put("teamToken", teamToken)
+        body.put("playerToken", playerToken)
+        body.put("managerToken", managerToken)
+        body.put("do", "remove")
+        _blacklist(context, body, completion)
+    }
+    private fun _blacklist(context: Context,body:JSONObject,completion: CompletionHandler) {
+        body.put("source", "app")
+        body.put("channel", CHANNEL)
+        val requestBody = body.toString()
+        val url: String = URL_TEAM_TEMP_PLAY_BLACKLIST
+        val request = object : JsonObjectRequest(Request.Method.POST, url, null, Response.Listener { json ->
+            //println(json)
+            try {
+                success = json.getBoolean("success")
+                if (!success) {
+                    msg = json.getString("msg")
+                }
+                completion(success)
+            } catch (e: JSONException) {
+                println(e.localizedMessage)
+                success = false
+                msg = "無法取得臨打資訊，請稍後再試 " + e.localizedMessage
+                completion(false)
+            }
+        }, Response.ErrorListener { error ->
+            //Log.d("ERROR", "Could not register user: $error")
+            println(error.localizedMessage)
+            this.msg = "取得失敗，網站或網路錯誤"
+            completion(false)
+        }) {
+            override fun getBodyContentType(): String {
+                return HEADER
+            }
+
+            override fun getBody(): ByteArray {
+                return requestBody.toByteArray()
+            }
+        }
+        Volley.newRequestQueue(context).add(request)
+    }
+
     override fun _jsonToData(tmp: JSONObject, key: String, item: Map<String, Any>) {
         //println(key)
         val type = item["vtype"] as String

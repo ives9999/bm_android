@@ -17,6 +17,10 @@ class BlackList(data: JSONObject): SuperModel(data) {
 
     inner class Row(data: JSONObject): SuperModel(data) {
         var id: Int = -1
+        var name: String = ""
+        var mobile: String = ""
+        var created_at: String = ""
+        var token: String = ""
         var team: MutableMap<String, Any> = mutableMapOf()
     }
 }
