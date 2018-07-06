@@ -63,7 +63,7 @@ class BlackListVC : BaseActivity() {
         val teamToken = row.team.get("token") as String
 
         val loading = Loading.show(this)
-        TeamService.cancelPlusOne(this, teamToken, memberToken, member.token) { success ->
+        TeamService.removeBlackList(this, teamToken, memberToken, member.token) { success ->
             loading.dismiss()
             if (success) {
                 info("移除黑名單成功")

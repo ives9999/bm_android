@@ -1,14 +1,17 @@
 package com.sportpassword.bm.Controllers
 
+import android.content.DialogInterface
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.v4.widget.SwipeRefreshLayout
+import android.support.v7.app.AlertDialog
 import android.support.v7.widget.LinearLayoutManager
 import com.sportpassword.bm.Adapters.TempPlayDatePlayerAdapter
 import com.sportpassword.bm.Models.TempPlayDatePlayer
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.TeamService
 import com.sportpassword.bm.Utilities.Loading
+import kotlinx.android.synthetic.main.activity_login.view.*
 import kotlinx.android.synthetic.main.activity_temp_play_date_player.*
 import org.jetbrains.anko.*
 
@@ -19,6 +22,7 @@ class TempPlayDatePlayerVC : BaseActivity() {
     var teamToken: String = ""
     lateinit var tempPlayDatePlayer: TempPlayDatePlayer
     lateinit var tempPlayDatePlayerAdapter: TempPlayDatePlayerAdapter
+    lateinit var dialog: DialogInterface
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,20 +49,23 @@ class TempPlayDatePlayerVC : BaseActivity() {
                 tempPlayDatePlayerAdapter = TempPlayDatePlayerAdapter(this, tempPlayDatePlayer.rows, { position ->
                     val row = tempPlayDatePlayer.rows[position]
                     //println(row.id)
-                    alert("動作") {
+                    dialog = alert("動作") {
                         title = "訊息"
                         negativeButton("關閉"){}
                         customView {
                             verticalLayout {
                                 button("黑名單"){
-                                    addBlackList(row.name, row.token, teamToken)
+                                    this.setOnClickListener {
+                                        dialog.dismiss()
+                                        addBlackList(row.name, row.token, teamToken)
+                                    }
                                 }
                                 //button("test"){}
                             }
                         }
                     }.show()
                 }, { mobile ->
-                    println(mobile)
+                    //println(mobile)
                     makeCall(mobile)
                 })
                 temp_play_date_player_list.adapter = tempPlayDatePlayerAdapter

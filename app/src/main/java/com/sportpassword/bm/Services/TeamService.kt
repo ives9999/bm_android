@@ -409,6 +409,8 @@ object TeamService: DataService() {
         body.put("channel", CHANNEL)
         val requestBody = body.toString()
         val url: String = URL_TEAM_TEMP_PLAY_BLACKLIST
+        //println(url)
+        //println(body)
         val request = object : JsonObjectRequest(Request.Method.POST, url, null, Response.Listener { json ->
             //println(json)
             try {

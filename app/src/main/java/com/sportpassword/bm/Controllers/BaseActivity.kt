@@ -371,7 +371,35 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener {
     }
 
     protected fun addBlackList(memberName: String, memberToken: String, teamToken: String) {
+        warning("是否真的要將球友"+memberName+"設為黑名單\n之後可以解除", "取消", "加入", {
+            reasonBox(memberToken, teamToken)
+        })
 
+    }
+    protected fun reasonBox(memberToken: String, teamToken: String) {
+        var reasonTxt: EditText? = null
+        alert("請輸入理由") {
+            title = "訊息"
+            positiveButton("加入"){
+                val reason: String = reasonTxt!!.text.toString()
+                _addBlackList(reason, memberToken, teamToken)
+            }
+            negativeButton("取消"){}
+            customView {
+                reasonTxt = editText()
+            }
+        }.show()
+    }
+    protected fun _addBlackList(reason: String, memberToken: String, teamToken: String) {
+        val loading = Loading.show(this)
+        TeamService.addBlackList(this, teamToken, memberToken, member.token, reason) { success ->
+            loading.dismiss()
+            if (success) {
+                info("加入黑名單成功")
+            } else {
+                warning(TeamService.msg)
+            }
+        }
     }
 
     fun isEmulator(): Boolean {
