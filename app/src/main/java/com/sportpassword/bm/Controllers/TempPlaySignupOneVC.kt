@@ -7,6 +7,7 @@ import android.net.Uri
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.v4.content.ContextCompat
+import android.support.v4.widget.SwipeRefreshLayout
 import android.support.v7.widget.LinearLayoutManager
 import com.github.babedev.dexter.dsl.runtimePermission
 import com.sportpassword.bm.Adapters.TempPlaySignupOneAdapter
@@ -14,22 +15,22 @@ import com.sportpassword.bm.Manifest
 import com.sportpassword.bm.R
 import com.sportpassword.bm.R.id.data_list
 import com.sportpassword.bm.Services.MemberService
-import com.sportpassword.bm.Utilities.Loading
-import com.sportpassword.bm.Utilities.MEMBER_ARRAY
-import com.sportpassword.bm.Utilities.MOBILE_KEY
-import com.sportpassword.bm.Utilities.NAME_KEY
+import com.sportpassword.bm.Utilities.*
 import kotlinx.android.synthetic.main.activity_temp_play_signup_one_vc.*
+import org.jetbrains.anko.contentView
 import org.jetbrains.anko.makeCall
 import org.jetbrains.anko.toast
 
-class TempPlaySignupOneVC : BaseActivity() {
+class  TempPlaySignupOneVC : BaseActivity() {
 
-    var memberToken: String = ""
     var team_name: String = ""
+    var teamToken: String = ""
     var team_id: Int = -1
     var near_date: String = ""
 
     var isTeamManager: Boolean = false
+    var memberName: String = ""
+    var memberToken: String = ""
     var memberMobile: String = ""
     var memberOne: ArrayList<HashMap<String, HashMap<String, Any>>> = arrayListOf()
     var keys: ArrayList<String> = arrayListOf("team", NAME_KEY, MOBILE_KEY, "black_list")
@@ -42,38 +43,69 @@ class TempPlaySignupOneVC : BaseActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_temp_play_signup_one_vc)
 
-        memberToken = intent.getStringExtra("token")
-        team_name = intent.getStringExtra("title")
+        memberToken = intent.getStringExtra("memberToken")
+        teamToken = intent.getStringExtra("teamToken")
+        team_name = intent.getStringExtra("name")
         team_id = intent.getIntExtra("id", -1)
         near_date = intent.getStringExtra("near_date")
 //        println(memberToken)
 //        println(team_name)
 //        println(team_id)
 //        println(near_date)
+        tempPlaySignupOneAdapter = TempPlaySignupOneAdapter(this, { itemKey, mobile ->
+            //println(itemKey)
+            if (itemKey == MOBILE_KEY) {
+                //println(isTeamManager)
+                if (!isTeamManager) {
+                    warning("您不是此球隊管理員，所以無法檢視並撥打球友的電話")
+                } else {
+                    memberMobile = mobile
+                    info("球友電話是："+mobile,"取消","撥打電話", {
+                        grantCallPhonePermission()
+                    })
+                }
+            } else if (itemKey == "black_list") {
+//                val row = getRow(itemKey)
+//                println(row)
+                addBlackList(memberName, memberToken, teamToken)
+            }
+        })
+        tempPlaySignupOneAdapter.lists = memberOne
+        tempPlaySignupOneAdapter.keys = keys
+        data_list.adapter = tempPlaySignupOneAdapter
+        val layoutManager = LinearLayoutManager(this)
+        data_list.layoutManager = layoutManager
+
+        refreshLayout = contentView!!.findViewById<SwipeRefreshLayout>(R.id.tempPlaySignupOne_refresh)
+        setRefreshListener()
 
         refresh()
     }
 
     override fun refresh() {
         super.refresh()
+        initMemberOne()
         val loading = Loading.show(this)
-        _getTeamManagerList { success ->
-            for (i in 0..dataLists.size-1) {
-                val list = dataLists[i]
-                if (list.id == team_id) {
-                    isTeamManager = true
-                    break
+        initGetMemberValue { success ->
+            if (success) {
+                initIsTeamManager { success ->
+                    loading.dismiss()
+                    tempPlaySignupOneAdapter.notifyDataSetChanged()
+                    closeRefresh()
                 }
+            } else {
+                loading.dismiss()
             }
         }
+    }
+
+    fun initGetMemberValue(completion: CompletionHandler) {
         _getMemberOne(memberToken) { success ->
-            loading.dismiss()
             if (success) {
                 val one = MemberService.one
                 if (one == null) {
                     warning("無法取得該會員資訊，請稍後再試")
                 } else {
-                    initMemberOne()
                     for ((idx, key) in keys.withIndex()) {
                         val keys1: Iterator<String> = one.keys()
                         while (keys1.hasNext()) {
@@ -85,30 +117,26 @@ class TempPlaySignupOneVC : BaseActivity() {
                         }
                     }
                     //println(memberOne)
-                    setMyTitle(one[NAME_KEY].toString())
-                    tempPlaySignupOneAdapter = TempPlaySignupOneAdapter(this, { itemKey, mobile ->
-                        //println(itemKey)
-                        if (itemKey == MOBILE_KEY) {
-                            //println(isTeamManager)
-                            if (!isTeamManager) {
-                                warning("您不是此球隊管理員，所以無法檢視並撥打球友的電話")
-                            } else {
-                                memberMobile = mobile
-                                info("球友電話是："+mobile,"取消","撥打電話", {
-                                    grantCallPhonePermission()
-                                })
-                            }
-                        }
-                    })
-                    tempPlaySignupOneAdapter.lists = memberOne
-                    tempPlaySignupOneAdapter.keys = keys
-                    data_list.adapter = tempPlaySignupOneAdapter
-                    val layoutManager = LinearLayoutManager(this)
-                    data_list.layoutManager = layoutManager
+                    memberName = one[NAME_KEY].toString()
+                    setMyTitle(memberName)
                 }
             } else {
                 warning(MemberService.msg)
             }
+            completion(success)
+        }
+    }
+    fun initIsTeamManager(completion: CompletionHandler) {
+        _getTeamManagerList { success ->
+            for (i in 0..dataLists.size-1) {
+                val list = dataLists[i]
+                if (list.id == team_id) {
+                    isTeamManager = true
+                    memberOne.add(hashMapOf("black_list" to hashMapOf("title" to "加入黑名單", "more" to true, "value" to "", "icon" to "blacklist")))
+                    break
+                }
+            }
+            completion(success)
         }
     }
 
@@ -146,7 +174,18 @@ class TempPlaySignupOneVC : BaseActivity() {
                 memberOne.add(tmp)
             }
         }
-        //memberOne.add(hashMapOf("black_list" to hashMapOf("title" to "加入黑名單", "more" to true)))
+        tempPlaySignupOneAdapter.notifyDataSetChanged()
+    }
+
+    private fun getRow(rowKey: String): HashMap<String, Any> {
+        var res: HashMap<String, Any> = hashMapOf()
+        for ((idx, key) in keys.withIndex()) {
+            if (key == rowKey) {
+                res = memberOne[idx][key]!!
+                break
+            }
+        }
+        return res
     }
 }
 

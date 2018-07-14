@@ -249,12 +249,13 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener {
         startActivity(intent)
     }
 
-    protected fun goTempPlaySignupOne(id: Int, token: String, title: String, near_date: String) {
+    protected fun goTempPlaySignupOne(teamId: Int, teamToken: String, teamName: String, near_date: String, memberToken: String) {
         val i = Intent(this, TempPlaySignupOneVC::class.java)
-        i.putExtra("token", token)
-        i.putExtra("id", id)
-        i.putExtra("title", title)
+        i.putExtra("id", teamId)
+        i.putExtra("name", teamName)
+        i.putExtra("teamToken", teamToken)
         i.putExtra("near_date", near_date)
+        i.putExtra("memberToken", memberToken)
         startActivity(i)
     }
 

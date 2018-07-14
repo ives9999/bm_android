@@ -54,11 +54,11 @@ class ShowTempPlayActivity : BaseActivity() {
             if (success) {
                 data = TeamService.data
                 //println(data)
-                val title: String = data[TEAM_NAME_KEY]!!["value"] as String
+                val name: String = data[TEAM_NAME_KEY]!!["value"] as String
                 val id: Int = data[TEAM_ID_KEY]!!["value"] as Int
                 setTeamData(show_featured_view)
                 signupsAdapter = SignupsAdapter(this, {token, near_date ->
-                    goTempPlaySignupOne(id, token, title, near_date)
+                    goTempPlaySignupOne(id, teamToken, name, near_date, token)
                 })
                 val layoutManager = LinearLayoutManager(this)
                 show_signups_container.adapter = signupsAdapter
@@ -72,7 +72,7 @@ class ShowTempPlayActivity : BaseActivity() {
                     }
                 }
                 closeRefresh()
-                setMyTitle(title)
+                setMyTitle(name)
             }
         }
     }
