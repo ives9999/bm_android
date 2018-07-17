@@ -1,6 +1,8 @@
 package com.sportpassword.bm.Adapters
 
 import android.content.Context
+import android.support.constraint.ConstraintLayout
+import android.support.constraint.ConstraintSet
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
@@ -70,6 +72,18 @@ class TempPlaySignupOneAdapter(val context: Context, val itemClick:(String, Stri
             }
             if (position == lists.size-1) {
                 line.visibility = View.INVISIBLE
+            }
+
+            if (position == 0) {
+                val iconL = icon.layoutParams as ConstraintLayout.LayoutParams
+                val l = textView.layoutParams as ConstraintLayout.LayoutParams
+                l.startToStart = iconL.startToStart
+                textView.layoutParams = l
+//                val layout = itemView.findViewById<ConstraintLayout>(R.id.linearLayout3)
+//                val set = ConstraintSet()
+//                set.clone(layout)
+//                set.connect(textView.id, ConstraintSet.START, R.id.linearLayout3, ConstraintSet.START, 16)
+//                set.applyTo(layout)
             }
         }
     }

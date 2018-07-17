@@ -74,6 +74,6 @@ class BlackListVC : BaseActivity() {
         }
     }
     private fun call(mobile: String) {
-        makeCall(mobile)
+        myMakeCall(mobile)
     }
 }

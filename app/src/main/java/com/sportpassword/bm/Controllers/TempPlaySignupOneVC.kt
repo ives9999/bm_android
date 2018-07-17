@@ -6,6 +6,7 @@ import android.content.pm.PackageManager
 import android.net.Uri
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.support.v4.app.ActivityCompat
 import android.support.v4.content.ContextCompat
 import android.support.v4.widget.SwipeRefreshLayout
 import android.support.v7.widget.LinearLayoutManager
@@ -37,7 +38,6 @@ class  TempPlaySignupOneVC : BaseActivity() {
 
     lateinit var tempPlaySignupOneAdapter: TempPlaySignupOneAdapter
 
-    val REQUEST_PHONE_CALL = 100
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -61,7 +61,7 @@ class  TempPlaySignupOneVC : BaseActivity() {
                 } else {
                     memberMobile = mobile
                     info("球友電話是："+mobile,"取消","撥打電話", {
-                        grantCallPhonePermission()
+                        myMakeCall(memberMobile)
                     })
                 }
             } else if (itemKey == "black_list") {
@@ -137,15 +137,6 @@ class  TempPlaySignupOneVC : BaseActivity() {
                 }
             }
             completion(success)
-        }
-    }
-
-    fun grantCallPhonePermission() {
-        val p = ContextCompat.checkSelfPermission(this, android.Manifest.permission.CALL_PHONE)
-        if (p != PackageManager.PERMISSION_GRANTED) {
-            warning("沒有同意app撥打電話的權限，因此無法使用此功能")
-        } else {
-            makeCall(memberMobile)
         }
     }
 

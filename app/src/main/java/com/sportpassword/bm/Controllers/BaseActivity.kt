@@ -5,6 +5,7 @@ import android.app.Dialog
 import android.bluetooth.BluetoothClass
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Color
@@ -14,6 +15,7 @@ import android.os.Build
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.os.IInterface
+import android.support.v4.app.ActivityCompat
 import android.support.v4.content.ContextCompat
 import android.support.v4.content.LocalBroadcastManager
 import android.support.v4.widget.SwipeRefreshLayout
@@ -56,6 +58,9 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener {
     var dataLists: ArrayList<Data> = arrayListOf()
 
     protected var callbackManager: CallbackManager? = null
+
+    val REQUEST_PHONE_CALL = 100
+    var mobile: String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -143,6 +148,20 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener {
         actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM, ActionBar.DISPLAY_SHOW_CUSTOM)
     }
 
+    protected fun myMakeCall(_mobile: String) {
+        mobile = _mobile
+        val p = ContextCompat.checkSelfPermission(this, android.Manifest.permission.CALL_PHONE)
+        if (p != PackageManager.PERMISSION_GRANTED) {
+            makeCallRequest()
+        } else {
+            makeCall(mobile)
+        }
+    }
+
+    private fun makeCallRequest() {
+        ActivityCompat.requestPermissions(this, arrayOf(android.Manifest.permission.CALL_PHONE), REQUEST_PHONE_CALL)
+    }
+
     protected fun getScreenWidth() {
         val displayMetrics = resources.displayMetrics
         density = displayMetrics.density
@@ -155,6 +174,19 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener {
         hideKeyboard()
         finish()
         return true
+    }
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        when(requestCode) {
+            REQUEST_PHONE_CALL -> {
+                if (grantResults.isEmpty() || grantResults[0] != PackageManager.PERMISSION_GRANTED) {
+                    warning("沒有同意app撥打電話的權限，因此無法使用此功能")
+                } else {
+                    makeCall(mobile)
+                }
+                return
+            }
+        }
     }
 
     protected fun goLogin() {

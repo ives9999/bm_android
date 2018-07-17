@@ -66,7 +66,7 @@ class TempPlayDatePlayerVC : BaseActivity() {
                     }.show()
                 }, { mobile ->
                     //println(mobile)
-                    makeCall(mobile)
+                    myMakeCall(mobile)
                 })
                 temp_play_date_player_list.adapter = tempPlayDatePlayerAdapter
                 val layoutManager = LinearLayoutManager(this)
