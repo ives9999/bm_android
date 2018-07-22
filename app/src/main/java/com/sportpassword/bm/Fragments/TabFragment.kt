@@ -118,6 +118,10 @@ open class TabFragment : Fragment() {
             dataLists = arrayListOf()
         }
         dataLists.addAll(dataService.dataLists)
+//        for (data in dataLists) {
+//            data.print()
+//            println("===================")
+//        }
         listAdapter.lists = dataLists
         listAdapter.notifyDataSetChanged()
     }

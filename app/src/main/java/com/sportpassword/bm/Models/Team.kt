@@ -60,6 +60,7 @@ class Team(id: Int, name: String, token: String, featured_path: String, vimeo: S
                 TEAM_EMAIL_KEY to mutableMapOf("ch" to "EMail","vtype" to "String","value" to "","submit" to true,"atype" to none,"show" to "","keyboardType" to emailPad),
                 TEAM_PLAY_START_KEY to mutableMapOf("ch" to "開始時間","vtype" to "String","value" to "","submit" to true,"atype" to more,"segue" to TO_SELECT_TIME,"sender" to mutableMapOf<String, Any>(),"show" to ""),
                 TEAM_PLAY_END_KEY to mutableMapOf("ch" to "結束時間","vtype" to "String","value" to "","submit" to true,"atype" to more,"segue" to TO_SELECT_TIME,"sender" to mutableMapOf<String, Any>(),"show" to ""),
+                TEAM_INTERVAL_KEY to mutableMapOf("ch" to "打球時段","vtype" to "String","value" to "","submit" to false,"atype" to none,"segue" to TO_SELECT_TIME,"sender" to mutableMapOf<String, Any>(),"show" to ""),
                 TEAM_BALL_KEY to mutableMapOf("ch" to "使用球種","vtype" to "String","value" to "","submit" to true,"atype" to none,"show" to "","keyboardType" to defaultPad),
                 TEAM_DEGREE_KEY to mutableMapOf("ch" to "球隊程度","vtype" to "array","value" to mutableListOf<String>(),"submit" to true,"atype" to more,"segue" to TO_SELECT_DEGREE,"sender" to arrayListOf<String>(),"show" to "未提供"),
                 TEAM_CHARGE_KEY to mutableMapOf("ch" to "收費說明","vtype" to "String","value" to "","submit" to true,"atype" to more,"segue" to TO_TEXT_INPUT,"sender" to mutableMapOf<String, Any>(),"show" to ""),
@@ -176,6 +177,18 @@ class Team(id: Int, name: String, token: String, featured_path: String, vimeo: S
         val tmp: String = data[TEAM_PLAY_END_KEY]!!["value"] as String
         data[TEAM_PLAY_END_KEY]!!["show"] = tmp.noSec()
         setPlayEndTimeSender()
+    }
+    fun updateInterval(_startTime: String? = null, _endTime: String? = null) {
+        var startTime = _startTime
+        if (_startTime == null) {
+            startTime = data[TEAM_PLAY_START_KEY]!!["show"] as String
+        }
+        var endTime = _endTime
+        if (_endTime == null) {
+            endTime = data[TEAM_PLAY_END_KEY]!!["show"] as String
+        }
+        val tmp: String = startTime + " ~ " + endTime
+        data[TEAM_INTERVAL_KEY]!!["show"] = tmp
     }
     fun updateTempContent(content: String? = null) {
         if (content != null) {

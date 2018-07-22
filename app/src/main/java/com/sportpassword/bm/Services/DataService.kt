@@ -10,6 +10,7 @@ import com.android.volley.toolbox.Volley
 //import com.ohmerhe.kolley.request.Http
 import com.sportpassword.bm.Models.*
 import com.sportpassword.bm.Utilities.*
+import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject
 import java.io.File
@@ -78,6 +79,8 @@ open class DataService: BaseService() {
 
                     //val dataList: Data = Coach(id, title, featured_path)
                     val data = setData(id, title, token, featured_path, vimeo, youtube)
+                    val map = setData1(obj)
+                    data.data = map
                     dataLists.add(data)
                 }
                 //println(dataLists.size)
@@ -549,6 +552,11 @@ open class DataService: BaseService() {
     open fun setData(id: Int, title: String, token: String, featured_path: String, vimeo: String, youtube: String): Data {
         val data = Data(id, title, token, featured_path, vimeo, youtube)
 
+        return data
+    }
+
+    open fun setData1(row: JSONObject): MutableMap<String, MutableMap<String, Any>> {
+        val data: MutableMap<String, MutableMap<String, Any>> = mutableMapOf()
         return data
     }
 

@@ -30,6 +30,22 @@ object TeamService: DataService() {
         return data
     }
 
+    override fun setData1(obj: JSONObject): MutableMap<String, MutableMap<String, Any>> {
+        super.setData1(obj)
+        model.dataReset()
+        for ((key, value) in model.data) {
+            if (obj.has(key)) {
+                _jsonToData(obj, key, value)
+            }
+        }
+        model.updateInterval()
+//        println(model.data)
+//        val citys = row.getJSONObject("city")
+//        val city_name = citys.getString("name")
+//        val city_id = citys.getInt("id")
+        return model.data
+    }
+
     fun tempPlay_list(context: Context, page:Int, perPage:Int, complete: CompletionHandler) {
         val url = URL_TEAM_TEMP_PLAY_LIST
         //println(url)
@@ -380,6 +396,7 @@ object TeamService: DataService() {
 
         model.updatePlayStartTime()
         model.updatePlayEndTime()
+        model.updateInterval()
         model.updateTempContent()
         model.updateCharge()
         model.updateContent()
@@ -472,6 +489,11 @@ object TeamService: DataService() {
             //println("$key => $value")
             model.data[key]!!["value"] = value
             model.data[key]!!["show"] = value
+            if (key == TEAM_PLAY_START_KEY) {
+                model.updatePlayStartTime(value)
+            } else if (key == TEAM_PLAY_END_KEY) {
+                model.updatePlayEndTime(value)
+            }
         } else if (type == "array") {
             if (key == TEAM_CITY_KEY) {
                 try {

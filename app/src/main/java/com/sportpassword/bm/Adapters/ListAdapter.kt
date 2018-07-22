@@ -44,15 +44,39 @@ class ListAdapter(val context: Context, val screenWidth: Int=0, val itemClick: (
     }
 
     inner class ViewHolder(itemView: View, val screenWidth: Int=0, val itemClick: (Data) -> Unit): RecyclerView.ViewHolder(itemView) {
-        val nameView = itemView.findViewById<TextView>(R.id.listTitleTxt)
         val featuredView = itemView.findViewById<ImageView>(R.id.listFeatured)
-        val videoView = itemView.findViewById<WebView>(R.id.listVideo)
+        val nameView = itemView.findViewById<TextView>(R.id.listTitleTxt)
+        val cityView = itemView.findViewById<TextView>(R.id.listCityTxt)
+        val arenaView = itemView.findViewById<TextView>(R.id.listArenaTxt)
+        val ballView = itemView.findViewById<TextView>(R.id.listBallTxt)
+        val dayView = itemView.findViewById<TextView>(R.id.listDayTxt)
+        val intervalView = itemView.findViewById<TextView>(R.id.listIntervalTxt)
+        //val videoView = itemView.findViewById<WebView>(R.id.listVideo)
 
         fun bind(data: Data) {
+            if (data.data.containsKey("city")) {
+                //println(data.data["city"]!!["show"])
+                cityView.text = data.data["city"]!!["show"] as String
+            }
+            if (data.data.containsKey("arena")) {
+                //println(data.data["arena"]!!["show"])
+                arenaView.text = data.data["arena"]!!["show"] as String
+            }
+            if (data.data.containsKey("ball")) {
+                ballView.text = data.data["ball"]!!["show"] as String
+            }
+            if (data.data.containsKey("days")) {
+                //println(data.data["arena"]!!["show"])
+                dayView.text = data.data["days"]!!["show"] as String
+            }
+            if (data.data.containsKey("interval")) {
+                //println(data.data["arena"]!!["show"])
+                intervalView.text = data.data["interval"]!!["show"] as String
+            }
             if (data.vimeo.isEmpty() && data.youtube.isEmpty()) {
                 nameView.visibility = View.VISIBLE
                 featuredView.visibility = View.VISIBLE
-                videoView.visibility = View.INVISIBLE
+                //videoView.visibility = View.INVISIBLE
                 nameView.text = data.title
                 if (data.featured_path.isNotEmpty()) {
                     Picasso.with(context)
@@ -80,9 +104,9 @@ class ListAdapter(val context: Context, val screenWidth: Int=0, val itemClick: (
 //                featuredView.layoutParams = p1
                 //zeroView(featuredView)
 
-                videoView.visibility = View.VISIBLE
-                videoView.settings.javaScriptEnabled = true
-                videoView.webChromeClient = WebChromeClient()
+//                videoView.visibility = View.VISIBLE
+//                videoView.settings.javaScriptEnabled = true
+//                videoView.webChromeClient = WebChromeClient()
                 if (data.youtube.isNotEmpty()) {
                     var width: Int = if (screenWidth == 0) 320 else screenWidth
                     var height: Int = height(width)
@@ -97,7 +121,7 @@ class ListAdapter(val context: Context, val screenWidth: Int=0, val itemClick: (
                                     data.youtube +
                                     "\" frameborder=\"0\" allow=\"autoplay; encrypted-media\" allowfullscreen></iframe></body></html>"
                     //println(html)
-                    videoView.loadData(html, "text/html; charset=utf-8", "UTF-8")
+//                    videoView.loadData(html, "text/html; charset=utf-8", "UTF-8")
                 }
 
             }
