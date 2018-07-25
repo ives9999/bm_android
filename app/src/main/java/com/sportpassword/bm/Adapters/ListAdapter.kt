@@ -54,24 +54,26 @@ class ListAdapter(val context: Context, val iden: String="team", val screenWidth
         //val videoView = itemView.findViewById<WebView>(R.id.listVideo)
 
         fun bind(data: Data) {
-            if (data.data.containsKey("city")) {
-                //println(data.data["city"]!!["show"])
-                cityView.text = data.data["city"]!!["show"] as String
-            }
-            if (data.data.containsKey("arena")) {
-                //println(data.data["arena"]!!["show"])
-                arenaView.text = data.data["arena"]!!["show"] as String
-            }
-            if (data.data.containsKey("ball")) {
-                ballView.text = data.data["ball"]!!["show"] as String
-            }
-            if (data.data.containsKey("days")) {
-                //println(data.data["arena"]!!["show"])
-                dayView.text = data.data["days"]!!["show"] as String
-            }
-            if (data.data.containsKey("interval")) {
-                //println(data.data["arena"]!!["show"])
-                intervalView.text = data.data["interval"]!!["show"] as String
+            if (iden == "team") {
+                if (data.data.containsKey("city")) {
+                    //println(data.data["city"]!!["show"])
+                    cityView.text = data.data["city"]!!["show"] as String
+                }
+                if (data.data.containsKey("arena")) {
+                    //println(data.data["arena"]!!["show"])
+                    arenaView.text = data.data["arena"]!!["show"] as String
+                }
+                if (data.data.containsKey("ball")) {
+                    ballView.text = data.data["ball"]!!["show"] as String
+                }
+                if (data.data.containsKey("days")) {
+                    //println(data.data["arena"]!!["show"])
+                    dayView.text = data.data["days"]!!["show"] as String
+                }
+                if (data.data.containsKey("interval")) {
+                    //println(data.data["arena"]!!["show"])
+                    intervalView.text = data.data["interval"]!!["show"] as String
+                }
             }
             if (data.vimeo.isEmpty() && data.youtube.isEmpty()) {
                 nameView.visibility = View.VISIBLE
