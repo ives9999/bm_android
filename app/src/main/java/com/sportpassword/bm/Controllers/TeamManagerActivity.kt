@@ -1,6 +1,5 @@
 package com.sportpassword.bm.Controllers
 
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.v4.widget.SwipeRefreshLayout
 import android.support.v7.widget.LinearLayoutManager
@@ -13,9 +12,7 @@ import com.sportpassword.bm.Utilities.Alert
 import com.sportpassword.bm.Utilities.CHANNEL
 import com.sportpassword.bm.member
 import kotlinx.android.synthetic.main.activity_team_manager.*
-import kotlinx.android.synthetic.main.menu_team_list.*
 import org.jetbrains.anko.contentView
-import org.jetbrains.anko.sdk25.coroutines.onClick
 
 class TeamManagerActivity : BaseActivity() {
 
@@ -48,7 +45,7 @@ class TeamManagerActivity : BaseActivity() {
 
         TeamService.getList(this, "team", "name", 1, 100, filter) { success ->
             if (success) {
-                this.managerTeamAdapter = ManagerTeamAdapter(this, TeamService.dataLists,
+                this.managerTeamAdapter = ManagerTeamAdapter(this, TeamService.superDataLists,
                         { title, token ->
                             goTeamManagerFunction(title, token)
                         }

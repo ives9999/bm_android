@@ -7,7 +7,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
-import com.sportpassword.bm.Models.Data
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Utilities.*
 

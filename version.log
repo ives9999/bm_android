@@ -38,7 +38,7 @@
 	(2) 開啟球隊臨打開關後，登錄臨打缺額
 	(3) 當球友使用臨打功能來加入或取消球隊臨打時，球隊管理者可以同時收到手機推播、簡訊與email三種通知
 1.0.3
-	1.Mark test data for add team.
+	1.Mark test superData for add team.
 	2.Change login and register placeholder color.
 	3.Add check temp play quantity not fill or 0 or string.
 	4.Fix can't edit team bug, add value1 value for team avoid "Team updateNearDate" crash.

@@ -1,27 +1,18 @@
 package com.sportpassword.bm.Controllers
 
-import android.app.AlertDialog
-import android.app.Dialog
-import android.bluetooth.BluetoothClass
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
-import android.graphics.Color
 import android.graphics.Point
-import android.graphics.drawable.ColorDrawable
 import android.os.Build
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
-import android.os.IInterface
 import android.support.v4.app.ActivityCompat
 import android.support.v4.content.ContextCompat
 import android.support.v4.content.LocalBroadcastManager
 import android.support.v4.widget.SwipeRefreshLayout
 import android.support.v7.app.ActionBar
 import android.view.*
-import android.view.inputmethod.InputMethod
 import android.view.inputmethod.InputMethodManager
 import android.widget.*
 import com.facebook.CallbackManager
@@ -32,16 +23,12 @@ import com.facebook.appevents.AppEventsLogger
 import com.facebook.login.LoginManager
 import com.facebook.login.LoginResult
 import com.onesignal.OneSignal
-import com.sportpassword.bm.Adapters.SignupsAdapter
-import com.sportpassword.bm.Models.Data
+import com.sportpassword.bm.Models.SuperData
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.MemberService
 import com.sportpassword.bm.Services.TeamService
 import com.sportpassword.bm.Utilities.*
 import com.sportpassword.bm.member
-import com.squareup.picasso.Picasso
-import kotlinx.android.synthetic.main.activity_show_temp_play.*
-import kotlinx.android.synthetic.main.tab.*
 import org.jetbrains.anko.*
 import java.util.*
 
@@ -55,7 +42,7 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener {
     var density: Float = 0f
 
     var msg: String = ""
-    var dataLists: ArrayList<Data> = arrayListOf()
+    var superDataLists: ArrayList<SuperData> = arrayListOf()
 
     protected var callbackManager: CallbackManager? = null
 
@@ -389,7 +376,7 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener {
         TeamService.getList(this, "team", "name", 1, 100, filter) { success ->
             loading.dismiss()
             if (success) {
-                dataLists = TeamService.dataLists
+                superDataLists = TeamService.superDataLists
                 completion(true)
             } else {
                 msg = TeamService.msg

@@ -6,26 +6,16 @@ import android.support.v4.app.Fragment
 import android.os.Bundle
 import android.support.v4.widget.SwipeRefreshLayout
 import android.support.v7.widget.GridLayoutManager
-import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.LinearLayout
-import android.widget.TextView
-import com.sportpassword.bm.Adapters.ListAdapter
 import com.sportpassword.bm.Adapters.TempPlayListAdapter
 import com.sportpassword.bm.Controllers.ShowTempPlayActivity
-import com.sportpassword.bm.Controllers.TestActivity
-import com.sportpassword.bm.Models.Data
 
-import com.sportpassword.bm.R
-import com.sportpassword.bm.Services.DataService
 import com.sportpassword.bm.Services.TeamService
-import com.sportpassword.bm.Utilities.PERPAGE
 import com.sportpassword.bm.Utilities.TEAM_TOKEN_KEY
 import kotlinx.android.synthetic.main.tab.*
-import kotlinx.android.synthetic.main.tab.view.*
 
 
 /**
@@ -93,7 +83,7 @@ class TempPlayFragment : TabFragment() {
             override fun onScrollStateChanged(recyclerView: RecyclerView?, newState: Int) {
                 super.onScrollStateChanged(recyclerView, newState)
 
-                if (that1.dataLists.size == pos + 1 && newState == RecyclerView.SCROLL_STATE_IDLE && that1.dataLists.size < that1.totalCount) {
+                if (that1.superDataLists.size == pos + 1 && newState == RecyclerView.SCROLL_STATE_IDLE && that1.superDataLists.size < that1.totalCount) {
                     that1.getDataStart(that1.page, that1.perPage)
                 }
             }

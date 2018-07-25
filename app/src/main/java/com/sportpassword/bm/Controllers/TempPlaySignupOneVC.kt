@@ -1,26 +1,14 @@
 package com.sportpassword.bm.Controllers
 
-import android.app.Activity
-import android.content.Intent
-import android.content.pm.PackageManager
-import android.net.Uri
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
-import android.support.v4.app.ActivityCompat
-import android.support.v4.content.ContextCompat
 import android.support.v4.widget.SwipeRefreshLayout
 import android.support.v7.widget.LinearLayoutManager
-import com.github.babedev.dexter.dsl.runtimePermission
 import com.sportpassword.bm.Adapters.TempPlaySignupOneAdapter
-import com.sportpassword.bm.Manifest
 import com.sportpassword.bm.R
-import com.sportpassword.bm.R.id.data_list
 import com.sportpassword.bm.Services.MemberService
 import com.sportpassword.bm.Utilities.*
 import kotlinx.android.synthetic.main.activity_temp_play_signup_one_vc.*
 import org.jetbrains.anko.contentView
-import org.jetbrains.anko.makeCall
-import org.jetbrains.anko.toast
 
 class  TempPlaySignupOneVC : BaseActivity() {
 
@@ -128,8 +116,8 @@ class  TempPlaySignupOneVC : BaseActivity() {
     }
     fun initIsTeamManager(completion: CompletionHandler) {
         _getTeamManagerList { success ->
-            for (i in 0..dataLists.size-1) {
-                val list = dataLists[i]
+            for (i in 0..superDataLists.size-1) {
+                val list = superDataLists[i]
                 if (list.id == team_id) {
                     isTeamManager = true
                     memberOne.add(hashMapOf("black_list" to hashMapOf("title" to "加入黑名單", "more" to true, "value" to "", "icon" to "blacklist")))

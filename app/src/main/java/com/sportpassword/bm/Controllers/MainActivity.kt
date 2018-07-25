@@ -485,7 +485,7 @@ class MainActivity : BaseActivity() {
 //
 //        TeamService.getList(this, "team", "name", 1, 100, filter) { success ->
 //            if (success) {
-//                this.menuTeamListAdapter = MenuTeamListAdapter(this, TeamService.dataLists,
+//                this.menuTeamListAdapter = MenuTeamListAdapter(this, TeamService.superDataLists,
 //                        { team -> goEditTeam(team.token) },
 //                        { team -> goDeleteTeam(team.token) },
 //                        { team -> goTeamTempPlayEdit(team.token) }

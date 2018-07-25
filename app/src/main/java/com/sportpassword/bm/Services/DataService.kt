@@ -1,7 +1,6 @@
 package com.sportpassword.bm.Services
 
 import android.content.Context
-import com.android.volley.NetworkResponse
 import com.android.volley.Request
 import com.android.volley.Response
 import com.android.volley.toolbox.JsonArrayRequest
@@ -10,7 +9,6 @@ import com.android.volley.toolbox.Volley
 //import com.ohmerhe.kolley.request.Http
 import com.sportpassword.bm.Models.*
 import com.sportpassword.bm.Utilities.*
-import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject
 import java.io.File
@@ -25,8 +23,8 @@ open class DataService: BaseService() {
     var totalCount: Int = 0
     var page: Int = 0
     var perPage: Int = 0
-    var dataLists: ArrayList<Data> = arrayListOf()
-    open val model: Data = Data(-1, "", "", "")
+    var superDataLists: ArrayList<SuperData> = arrayListOf()
+    open val model: SuperData = SuperData(-1, "", "", "")
     lateinit var data: MutableMap<String, MutableMap<String, Any>>
     var citys: ArrayList<City> = arrayListOf()
     var arenas: ArrayList<Arena> = arrayListOf()
@@ -48,7 +46,7 @@ open class DataService: BaseService() {
         }
         //println(requestBody)
         //println("coach getList refresh: $refresh")
-        dataLists = arrayListOf()
+        superDataLists = arrayListOf()
 
         val request = object : JsonObjectRequest(Request.Method.POST, url, null, Response.Listener { json ->
             //println(json)
@@ -77,13 +75,13 @@ open class DataService: BaseService() {
 //                        youtube = YOUTUBE_PREFIX + youtube
 //                    }
 
-                    //val dataList: Data = Coach(id, title, featured_path)
+                    //val dataList: SuperData = Coach(id, title, featured_path)
                     val data = setData(id, title, token, featured_path, vimeo, youtube)
                     val map = setData1(obj)
                     data.data = map
-                    dataLists.add(data)
+                    superDataLists.add(data)
                 }
-                //println(dataLists.size)
+                //println(superDataLists.size)
                 //println(lists)
             } catch (e: JSONException) {
                 println(e.localizedMessage)
@@ -549,8 +547,8 @@ open class DataService: BaseService() {
         Volley.newRequestQueue(context).add(request)
     }
 
-    open fun setData(id: Int, title: String, token: String, featured_path: String, vimeo: String, youtube: String): Data {
-        val data = Data(id, title, token, featured_path, vimeo, youtube)
+    open fun setData(id: Int, title: String, token: String, featured_path: String, vimeo: String, youtube: String): SuperData {
+        val data = SuperData(id, title, token, featured_path, vimeo, youtube)
 
         return data
     }

@@ -5,18 +5,16 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.FrameLayout
 import android.widget.LinearLayout
 import android.widget.TextView
-import com.chauthai.swipereveallayout.SwipeRevealLayout
 import com.sportpassword.bm.R
-import com.sportpassword.bm.Models.Data
+import com.sportpassword.bm.Models.SuperData
 
 /**
  * Created by ives on 2018/2/14.
  */
 
-class ManagerTeamAdapter(val context: Context, val lists: ArrayList<Data>, val itemClick: (String, String) -> Unit): RecyclerView.Adapter<ManagerTeamAdapter.ViewHolder>() {
+class ManagerTeamAdapter(val context: Context, val lists: ArrayList<SuperData>, val itemClick: (String, String) -> Unit): RecyclerView.Adapter<ManagerTeamAdapter.ViewHolder>() {
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder?.bind(position)
     }

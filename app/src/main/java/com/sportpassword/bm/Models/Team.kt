@@ -1,15 +1,13 @@
 package com.sportpassword.bm.Models
 
 import android.text.InputType
-import com.sportpassword.bm.Services.DataService
-import com.sportpassword.bm.Services.TeamService
 import com.sportpassword.bm.Utilities.*
 import com.sportpassword.bm.member
 
 /**
  * Created by ives on 2018/2/14.
  */
-class Team(id: Int, name: String, token: String, featured_path: String, vimeo: String="", youtube: String=""): Data(id, name, token, featured_path, vimeo, youtube) {
+class Team(id: Int, name: String, token: String, featured_path: String, vimeo: String="", youtube: String=""): SuperData(id, name, token, featured_path, vimeo, youtube) {
 
     val more = "more"
     val none = "none"

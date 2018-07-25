@@ -6,24 +6,16 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.webkit.WebChromeClient
-import android.webkit.WebView
-import android.webkit.WebViewClient
 import android.widget.ImageView
-import android.widget.LinearLayout
 import android.widget.TextView
-import android.widget.VideoView
-import com.sportpassword.bm.Models.Data
+import com.sportpassword.bm.Models.SuperData
 import com.sportpassword.bm.R
-import com.sportpassword.bm.Utilities.CompletionHandler
 import com.squareup.picasso.Picasso
-import kotlinx.android.synthetic.main.activity_test.*
-import org.jetbrains.anko.margin
 
 /**
  * Created by ives on 2018/2/23.
  */
-class ListAdapter(val context: Context, val iden: String="team", val screenWidth: Int=0, val itemClick: (Data) -> Unit): RecyclerView.Adapter<ListAdapter.ViewHolder>(){
+class ListAdapter(val context: Context, val iden: String="team", val screenWidth: Int=0, val itemClick: (SuperData) -> Unit): RecyclerView.Adapter<ListAdapter.ViewHolder>(){
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view: View = LayoutInflater.from(context).inflate(R.layout.tab_list_item, parent, false)
         return ViewHolder(view, iden, screenWidth, itemClick)
@@ -33,7 +25,7 @@ class ListAdapter(val context: Context, val iden: String="team", val screenWidth
         holder.bind(lists[position])
     }
 
-    var lists: ArrayList<Data> = arrayListOf()
+    var lists: ArrayList<SuperData> = arrayListOf()
         get() = field
         set(value) {
             field = value
@@ -43,7 +35,7 @@ class ListAdapter(val context: Context, val iden: String="team", val screenWidth
         return lists.size
     }
 
-    inner class ViewHolder(itemView: View, val iden: String="team", val screenWidth: Int=0, val itemClick: (Data) -> Unit): RecyclerView.ViewHolder(itemView) {
+    inner class ViewHolder(itemView: View, val iden: String="team", val screenWidth: Int=0, val itemClick: (SuperData) -> Unit): RecyclerView.ViewHolder(itemView) {
         val featuredView = itemView.findViewById<ImageView>(R.id.listFeatured)
         val nameView = itemView.findViewById<TextView>(R.id.listTitleTxt)
         val cityView = itemView.findViewById<TextView>(R.id.listCityTxt)
@@ -53,43 +45,43 @@ class ListAdapter(val context: Context, val iden: String="team", val screenWidth
         val intervalView = itemView.findViewById<TextView>(R.id.listIntervalTxt)
         //val videoView = itemView.findViewById<WebView>(R.id.listVideo)
 
-        fun bind(data: Data) {
+        fun bind(superData: SuperData) {
             if (iden == "team") {
-                if (data.data.containsKey("city")) {
-                    //println(data.data["city"]!!["show"])
-                    cityView.text = data.data["city"]!!["show"] as String
+                if (superData.data.containsKey("city")) {
+                    //println(superData.superData["city"]!!["show"])
+                    cityView.text = superData.data["city"]!!["show"] as String
                 }
-                if (data.data.containsKey("arena")) {
-                    //println(data.data["arena"]!!["show"])
-                    arenaView.text = data.data["arena"]!!["show"] as String
+                if (superData.data.containsKey("arena")) {
+                    //println(superData.superData["arena"]!!["show"])
+                    arenaView.text = superData.data["arena"]!!["show"] as String
                 }
-                if (data.data.containsKey("ball")) {
-                    ballView.text = data.data["ball"]!!["show"] as String
+                if (superData.data.containsKey("ball")) {
+                    ballView.text = superData.data["ball"]!!["show"] as String
                 }
-                if (data.data.containsKey("days")) {
-                    //println(data.data["arena"]!!["show"])
-                    dayView.text = data.data["days"]!!["show"] as String
+                if (superData.data.containsKey("days")) {
+                    //println(superData.superData["arena"]!!["show"])
+                    dayView.text = superData.data["days"]!!["show"] as String
                 }
-                if (data.data.containsKey("interval")) {
-                    //println(data.data["arena"]!!["show"])
-                    intervalView.text = data.data["interval"]!!["show"] as String
+                if (superData.data.containsKey("interval")) {
+                    //println(superData.superData["arena"]!!["show"])
+                    intervalView.text = superData.data["interval"]!!["show"] as String
                 }
             }
-            if (data.vimeo.isEmpty() && data.youtube.isEmpty()) {
+            if (superData.vimeo.isEmpty() && superData.youtube.isEmpty()) {
                 nameView.visibility = View.VISIBLE
                 featuredView.visibility = View.VISIBLE
                 //videoView.visibility = View.INVISIBLE
-                nameView.text = data.title
-                if (data.featured_path.isNotEmpty()) {
+                nameView.text = superData.title
+                if (superData.featured_path.isNotEmpty()) {
                     Picasso.with(context)
-                            .load(data.featured_path)
+                            .load(superData.featured_path)
                             .placeholder(R.drawable.loading_square)
                             .error(R.drawable.load_failed_square)
                             .into(featuredView)
                 } else {
                     featuredView.setImageResource(R.drawable.loading_square)
                 }
-            } else if (data.featured_path.isEmpty() && data.youtube.isNotEmpty()) {
+            } else if (superData.featured_path.isEmpty() && superData.youtube.isNotEmpty()) {
                 nameView.visibility = View.INVISIBLE
 //                nameView.setPadding(0, 0, 0, 0)
 //                val p = nameView.layoutParams as ConstraintLayout.LayoutParams
@@ -109,7 +101,7 @@ class ListAdapter(val context: Context, val iden: String="team", val screenWidth
 //                videoView.visibility = View.VISIBLE
 //                videoView.settings.javaScriptEnabled = true
 //                videoView.webChromeClient = WebChromeClient()
-                if (data.youtube.isNotEmpty()) {
+                if (superData.youtube.isNotEmpty()) {
                     var width: Int = if (screenWidth == 0) 320 else screenWidth
                     var height: Int = height(width)
                     width += 1
@@ -120,17 +112,17 @@ class ListAdapter(val context: Context, val iden: String="team", val screenWidth
                                     "\" height=\"" +
                                     height +
                                     "\" src=\"https://www.youtube.com/embed/" +
-                                    data.youtube +
+                                    superData.youtube +
                                     "\" frameborder=\"0\" allow=\"autoplay; encrypted-media\" allowfullscreen></iframe></body></html>"
                     //println(html)
 //                    videoView.loadData(html, "text/html; charset=utf-8", "UTF-8")
                 }
 
             }
-//            println("${data.title}: featured => ${data.featured_path}")
-//            println("${data.title}: vimeo => ${data.vimeo}")
-//            println("${data.title}: youbute => ${data.youtube}")
-            itemView.setOnClickListener{itemClick(data)}
+//            println("${superData.title}: featured => ${superData.featured_path}")
+//            println("${superData.title}: vimeo => ${superData.vimeo}")
+//            println("${superData.title}: youbute => ${superData.youtube}")
+            itemView.setOnClickListener{itemClick(superData)}
         }
 
         private fun height(width: Int): Int {

@@ -12,12 +12,10 @@ import android.view.View
 import android.view.ViewGroup
 import com.sportpassword.bm.Adapters.ListAdapter
 import com.sportpassword.bm.Controllers.ShowActivity
-import com.sportpassword.bm.Models.Data
+import com.sportpassword.bm.Models.SuperData
 
 import com.sportpassword.bm.R
-import com.sportpassword.bm.Services.CoachService
 import com.sportpassword.bm.Services.DataService
-import com.sportpassword.bm.Services.TeamService
 import com.sportpassword.bm.Utilities.PERPAGE
 import kotlinx.android.synthetic.main.tab.*
 
@@ -40,7 +38,7 @@ open class TabFragment : Fragment() {
     protected var totalCount: Int = 0
     protected var totalPage: Int = 0
 
-    protected var dataLists: ArrayList<Data> = arrayListOf()
+    protected var superDataLists: ArrayList<SuperData> = arrayListOf()
 
     protected lateinit var recyclerView: RecyclerView
     protected lateinit var refreshLayout: SwipeRefreshLayout
@@ -115,14 +113,14 @@ open class TabFragment : Fragment() {
     }
     open protected fun notifyDataSetChanged() {
         if (page == 1) {
-            dataLists = arrayListOf()
+            superDataLists = arrayListOf()
         }
-        dataLists.addAll(dataService.dataLists)
-//        for (data in dataLists) {
+        superDataLists.addAll(dataService.superDataLists)
+//        for (data in superDataLists) {
 //            data.print()
 //            println("===================")
 //        }
-        listAdapter.lists = dataLists
+        listAdapter.lists = superDataLists
         listAdapter.notifyDataSetChanged()
     }
 
@@ -134,14 +132,14 @@ open class TabFragment : Fragment() {
             override fun onScrolled(recyclerView: RecyclerView?, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
                 val layoutManager = recyclerView!!.layoutManager as GridLayoutManager
-                if (that.dataLists.size < that.totalCount) {
+                if (that.superDataLists.size < that.totalCount) {
                     pos = layoutManager.findLastVisibleItemPosition()
                 }
             }
             override fun onScrollStateChanged(recyclerView: RecyclerView?, newState: Int) {
                 super.onScrollStateChanged(recyclerView, newState)
 
-                if (that.dataLists.size == pos + 1 && newState == RecyclerView.SCROLL_STATE_IDLE && that.dataLists.size < that.totalCount) {
+                if (that.superDataLists.size == pos + 1 && newState == RecyclerView.SCROLL_STATE_IDLE && that.superDataLists.size < that.totalCount) {
                     that.getDataStart(that.page, that.perPage)
                 }
             }
