@@ -23,10 +23,10 @@ import org.jetbrains.anko.margin
 /**
  * Created by ives on 2018/2/23.
  */
-class ListAdapter(val context: Context, val screenWidth: Int=0, val itemClick: (Data) -> Unit): RecyclerView.Adapter<ListAdapter.ViewHolder>(){
+class ListAdapter(val context: Context, val iden: String="team", val screenWidth: Int=0, val itemClick: (Data) -> Unit): RecyclerView.Adapter<ListAdapter.ViewHolder>(){
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view: View = LayoutInflater.from(context).inflate(R.layout.tab_list_item, parent, false)
-        return ViewHolder(view, screenWidth, itemClick)
+        return ViewHolder(view, iden, screenWidth, itemClick)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
@@ -43,7 +43,7 @@ class ListAdapter(val context: Context, val screenWidth: Int=0, val itemClick: (
         return lists.size
     }
 
-    inner class ViewHolder(itemView: View, val screenWidth: Int=0, val itemClick: (Data) -> Unit): RecyclerView.ViewHolder(itemView) {
+    inner class ViewHolder(itemView: View, val iden: String="team", val screenWidth: Int=0, val itemClick: (Data) -> Unit): RecyclerView.ViewHolder(itemView) {
         val featuredView = itemView.findViewById<ImageView>(R.id.listFeatured)
         val nameView = itemView.findViewById<TextView>(R.id.listTitleTxt)
         val cityView = itemView.findViewById<TextView>(R.id.listCityTxt)

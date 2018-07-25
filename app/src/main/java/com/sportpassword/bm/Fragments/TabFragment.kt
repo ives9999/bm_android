@@ -83,7 +83,7 @@ open class TabFragment : Fragment() {
         return view
     }
     open protected fun initAdapter() {
-        listAdapter = ListAdapter(context!!, screenWidth) { data ->
+        listAdapter = ListAdapter(context!!, type!!, screenWidth) { data ->
             val intent = Intent(activity, ShowActivity::class.java)
             intent.putExtra("type", type)
             intent.putExtra("token", data.token)
