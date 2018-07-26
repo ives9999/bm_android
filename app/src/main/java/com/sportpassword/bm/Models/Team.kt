@@ -21,7 +21,6 @@ class Team(id: Int, name: String, token: String, featured_path: String, vimeo: S
     var TO_SELECT_TIME: String = "toSelectTime"
     var TO_TEXT_INPUT: String = "toTextInput"
     var TO_SELECT_DEGREE: String = "toSelectDegree"
-    override var data: MutableMap<String, MutableMap<String, Any>> = mutableMapOf()
     var lists: ArrayList<Map<String, Map<String, Any>>> = arrayListOf()
     var temp_play_data: MutableMap<String, MutableMap<String, Any>> = mutableMapOf()
 
@@ -133,7 +132,7 @@ class Team(id: Int, name: String, token: String, featured_path: String, vimeo: S
         }
     }
 
-    fun updateCity(city: City) {
+    override fun updateCity(city: City) {
         data[TEAM_CITY_KEY]!!["value"] = city.id
         data[TEAM_CITY_KEY]!!["show"] = city.name
         data[TEAM_CITY_KEY]!!["sender"] = city.id

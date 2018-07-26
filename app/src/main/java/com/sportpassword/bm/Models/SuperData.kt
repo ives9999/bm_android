@@ -1,6 +1,7 @@
 package com.sportpassword.bm.Models
 
 import com.sportpassword.bm.Utilities.JSONParse
+import com.sportpassword.bm.Utilities.TEAM_CITY_KEY
 import com.sportpassword.bm.Utilities.isPrimitive
 import kotlin.reflect.KProperty1
 import kotlin.reflect.full.memberProperties
@@ -12,6 +13,12 @@ open class SuperData(val id: Int, val title: String, val token: String, val feat
     open var data: MutableMap<String, MutableMap<String, Any>> = mutableMapOf()
 
     open fun dataReset(){}
+
+    open fun updateCity(city: City) {
+        data[TEAM_CITY_KEY]!!["value"] = city.id
+        data[TEAM_CITY_KEY]!!["show"] = city.name
+        data[TEAM_CITY_KEY]!!["sender"] = city.id
+    }
 
     fun print() {
         this::class.memberProperties.forEach {
