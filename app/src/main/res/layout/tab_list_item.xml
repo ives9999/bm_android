@@ -11,13 +11,13 @@
         android:id="@+id/card_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center">
+        android:layout_gravity="center"
+        app:cardBackgroundColor="@android:color/transparent">
 
         <android.support.constraint.ConstraintLayout
             android:id="@+id/linearLayout22"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/BLACK">
+            android:layout_height="wrap_content">
 
             <ImageView
                 android:id="@+id/listFeatured"
@@ -35,7 +35,7 @@
                 android:id="@+id/listTitleTxt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="12dp"
+                android:layout_marginStart="4dp"
                 android:layout_marginTop="2dp"
                 android:textColor="@color/WHITE"
                 android:textSize="20sp"
@@ -66,6 +66,7 @@
                 card_view:layout_constraintStart_toStartOf="@+id/listTitleTxt"
                 card_view:layout_constraintTop_toBottomOf="@+id/listTitleTxt"
                 tools:text="球館" />
+
             <TextView
                 android:id="@+id/listBallTxt"
                 android:layout_width="wrap_content"

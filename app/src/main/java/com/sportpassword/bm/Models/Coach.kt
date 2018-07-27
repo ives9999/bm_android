@@ -10,6 +10,7 @@ class Coach(id: Int, name: String, token: String, featured_path: String="", vime
     fun  initData() {
         data = mutableMapOf<String, MutableMap<String, Any>>(
                 ID_KEY to mutableMapOf("ch" to "編號","vtype" to "Int","value" to -1,"show" to ""),
+                NAME_KEY to mutableMapOf("ch" to "姓名","vtype" to "String","value" to "","show" to "","submit" to false),
                 CHANNEL_KEY to mutableMapOf("ch" to "頻道","vtype" to "String","value" to "","show" to "","submit" to false),
                 WEBSITE_KEY to mutableMapOf("ch" to "網站","vtype" to "String","value" to "","show" to "","submit" to false),
                 FB_KEY to mutableMapOf("ch" to "FB","vtype" to "String","value" to "","show" to "","submit" to false),
@@ -24,7 +25,7 @@ class Coach(id: Int, name: String, token: String, featured_path: String="", vime
                 COACH_FEAT_KEY to mutableMapOf("ch" to "比賽成績","vtype" to "String","value" to "","show" to "","submit" to false),
                 COACH_LICENSE_KEY to mutableMapOf("ch" to "證照","vtype" to "String","value" to "","show" to "","submit" to false),
                 COACH_CHARGE_KEY to mutableMapOf("ch" to "收費標準","vtype" to "String","value" to "","show" to "","submit" to false),
-                COACH_CONTENT_KEY to mutableMapOf("ch" to "內容","vtype" to "String","value" to "","show" to "","submit" to false),
+                CONTENT_KEY to mutableMapOf("ch" to "內容","vtype" to "String","value" to "","show" to "","submit" to false),
                 MANAGER_ID_KEY to mutableMapOf("ch" to "","vtype" to "Int","value" to 0,"show" to "","submit" to false),
                 SORT_ORDER_KEY to mutableMapOf("ch" to "","vtype" to "Int","value" to 0,"show" to ""),
                 PV_KEY to mutableMapOf("ch" to "瀏覽數","vtype" to "Int","value" to 0,"show" to ""),
@@ -36,7 +37,7 @@ class Coach(id: Int, name: String, token: String, featured_path: String="", vime
                 UPDATED_AT_KEY to mutableMapOf("ch" to "最後一次修改時間","vtype" to "String","value" to "","show" to "","submit" to false)
         )
         for ((key, item) in data) {
-            data[key]!!["show"] = "未處理"
+            data[key]!!["show"] = "未提供"
         }
     }
 

@@ -174,7 +174,7 @@ class EditTeamItemActivity() : BaseActivity() {
                 for (i in 0..arenas.size-1) {
                     val arena = arenas[i]
                     val checked: Boolean = if (oldArena == arena.id) true else false
-                    val m: MutableMap<String, String> = mutableMapOf("value" to arena.id.toString(), "text" to arena.name, "checked" to checked.toString())
+                    val m: MutableMap<String, String> = mutableMapOf("value" to arena.id.toString(), "text" to arena.title, "checked" to checked.toString())
                     daysLists.add(m)
                 }
                 editTeamItemAdapter.notifyDataSetChanged()

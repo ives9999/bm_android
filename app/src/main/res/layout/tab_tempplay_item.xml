@@ -4,8 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/linearLayout5"
     android:layout_width="match_parent"
-    android:layout_height="120dp"
-    android:background="@drawable/background">
+    android:layout_height="120dp">
 
     <TextView
         android:id="@+id/temp_play_date"
@@ -13,9 +12,9 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="64dp"
         android:textColor="@color/WHITE"
+        android:textSize="16dp"
         app:layout_constraintBottom_toBottomOf="@+id/textView10"
         app:layout_constraintEnd_toEndOf="parent"
-        android:textSize="16dp"
         tools:text="2018-03-08(四)" />
 
     <TextView

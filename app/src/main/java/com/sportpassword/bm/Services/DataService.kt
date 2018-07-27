@@ -82,9 +82,9 @@ open class DataService: BaseService() {
                     superDataLists.add(data)
                 }
                 //println(superDataLists.size)
-                for (data in superDataLists) {
-                    println(data.data)
-                }
+//                for (data in superDataLists) {
+//                    println(data.data)
+//                }
             } catch (e: JSONException) {
                 println(e.localizedMessage)
                 success = false

@@ -113,7 +113,7 @@ class Team(id: Int, name: String, token: String, featured_path: String, vimeo: S
                 } else if (key1 == TEAM_ARENA_KEY) {
                     val arena: Arena = value as Arena
                     data[key1]!!["value"] = arena.id
-                    data[key1]!!["show"] = arena.name
+                    data[key1]!!["show"] = arena.title
                 } else {
                     for ((key2, row) in data) {
                         if (key1 == key2) {
@@ -141,7 +141,7 @@ class Team(id: Int, name: String, token: String, featured_path: String, vimeo: S
 
     fun updateArena(arena: Arena) {
         data[TEAM_ARENA_KEY]!!["value"] = arena.id
-        data[TEAM_ARENA_KEY]!!["show"] = arena.name
+        data[TEAM_ARENA_KEY]!!["show"] = arena.title
         setArenaSender()
     }
 

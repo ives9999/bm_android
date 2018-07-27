@@ -1,23 +1,18 @@
 package com.sportpassword.bm.Services
 
+import com.sportpassword.bm.Models.Arena
 import com.sportpassword.bm.Models.City
-import com.sportpassword.bm.Models.Coach
-import com.sportpassword.bm.Utilities.CITY_KEY
-import com.sportpassword.bm.Utilities.COACH_SENIORITY_KEY
-import com.sportpassword.bm.Utilities.MOBILE_KEY
+import com.sportpassword.bm.Models.SuperData
 import org.json.JSONException
 import org.json.JSONObject
+import com.sportpassword.bm.Utilities.*
 
-/**
- * Created by ives on 2018/2/23.
- */
-object CoachService: DataService() {
+class ArenaService: DataService() {
 
-    override val model: Coach = Coach(-1, "", "", "")
+    override val model: Arena = Arena(-1, "", "", "")
 
-
-    override fun setData(id: Int, title: String, token: String, featured_path: String, vimeo: String, youtube: String): Coach {
-        val data = Coach(id, title, token, featured_path, vimeo, youtube)
+    override fun setData(id: Int, title: String, token: String, featured_path: String, vimeo: String, youtube: String): Arena {
+        val data = Arena(id, title, token, featured_path)
         return data
     }
 

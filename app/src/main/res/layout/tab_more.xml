@@ -17,6 +17,57 @@
         android:showDividers="end">
 
         <android.support.constraint.ConstraintLayout
+            android:id="@+id/more_arena_row"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="fill_horizontal"
+            android:onClick="showCourse"
+            android:padding="12dp">
+
+            <ImageView
+                android:id="@+id/imageView7"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/course" />
+
+            <TextView
+                android:id="@+id/textView7"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:text="球館"
+                android:textColor="@color/WHITE"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/imageView7"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:id="@+id/imageView6"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="16dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/greater1" />
+
+        </android.support.constraint.ConstraintLayout>
+
+        <View
+            android:id="@+id/divider0"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/grey"
+            android:visibility="visible"
+            tools:layout_editor_absoluteX="8dp"
+            tools:layout_editor_absoluteY="9dp" />
+
+        <android.support.constraint.ConstraintLayout
             android:id="@+id/more_course_row"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -66,6 +117,7 @@
             android:visibility="visible"
             tools:layout_editor_absoluteX="8dp"
             tools:layout_editor_absoluteY="9dp" />
+
         <android.support.constraint.ConstraintLayout
             android:id="@+id/more_version_row"
             android:layout_width="match_parent"

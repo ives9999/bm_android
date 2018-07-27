@@ -1,8 +1,7 @@
 package com.sportpassword.bm.Models
 
-import com.sportpassword.bm.Utilities.JSONParse
-import com.sportpassword.bm.Utilities.TEAM_CITY_KEY
-import com.sportpassword.bm.Utilities.isPrimitive
+import com.sportpassword.bm.Utilities.*
+import org.jetbrains.anko.db.NULL
 import kotlin.reflect.KProperty1
 import kotlin.reflect.full.memberProperties
 
@@ -15,9 +14,23 @@ open class SuperData(val id: Int, val title: String, val token: String, val feat
     open fun dataReset(){}
 
     open fun updateCity(city: City) {
-        data[TEAM_CITY_KEY]!!["value"] = city.id
-        data[TEAM_CITY_KEY]!!["show"] = city.name
-        data[TEAM_CITY_KEY]!!["sender"] = city.id
+        data[CITY_KEY]!!["value"] = city.id
+        data[CITY_KEY]!!["show"] = city.name
+        data[CITY_KEY]!!["sender"] = city.id
+    }
+    open fun updateArea(area: Area) {
+        data[CITY_KEY]!!["value"] = area.id
+        data[CITY_KEY]!!["show"] = area.name
+        data[CITY_KEY]!!["sender"] = area.id
+    }
+
+    fun mobileShow(_mobile: String? = null) {
+        var mobile = _mobile
+        if (_mobile == null) {
+            mobile = data[MOBILE_KEY]!!["value"] as String
+        }
+        mobile = mobile!!.mobileShow()
+        data[MOBILE_KEY]!!["show"] = mobile
     }
 
     fun print() {

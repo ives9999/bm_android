@@ -44,6 +44,32 @@ fun String.isPrimitive(): Boolean {
     }
     return b
 }
+fun String.reMatches(pattern: String): Array<String> {
+    var matches: Array<String> = arrayOf()
+    val re = pattern.toRegex()
+    val b = re.containsMatchIn(this)
+    if (b) {
+        val matchRes = re.find(this)
+        if (matchRes != null) {
+            val arr = matchRes.groupValues
+            matches = arr.toTypedArray()
+        }
+        //println(res)
+    }
+
+
+    return matches
+}
+fun String.mobileShow(): String {
+    var res = this
+    val pattern = "^(09\\d\\d)\\-?(\\d\\d\\d)\\-?(\\d\\d\\d)\$"
+    val matches = reMatches(pattern)
+    if (matches.size > 3) {
+        res = matches[1] + "-" + matches[2] + "-" + matches[3]
+    }
+
+    return res
+}
 
 fun <T1, T2> Map<T1, T2>.print() {
     for ((key, value) in this) {
