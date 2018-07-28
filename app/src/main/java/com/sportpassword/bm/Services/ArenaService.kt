@@ -2,12 +2,11 @@ package com.sportpassword.bm.Services
 
 import com.sportpassword.bm.Models.Arena
 import com.sportpassword.bm.Models.City
-import com.sportpassword.bm.Models.SuperData
 import org.json.JSONException
 import org.json.JSONObject
 import com.sportpassword.bm.Utilities.*
 
-class ArenaService: DataService() {
+object ArenaService: DataService() {
 
     override val model: Arena = Arena(-1, "", "", "")
 
@@ -23,6 +22,7 @@ class ArenaService: DataService() {
                 _jsonToData(obj, key, value)
             }
         }
+        model.updateInterval()
         return model.data
     }
 
@@ -30,18 +30,22 @@ class ArenaService: DataService() {
         //println(key)
         val type = item["vtype"] as String
         //println("type: $type")
-        if (type == "Int") {
+        if (type == "Boolean") {
             try {
-                if (key == COACH_SENIORITY_KEY) {
-                    var show = "未提供"
-                    if (tmp != JSONObject.NULL) {
-                        show = tmp.getInt(key).toString() + "年"
-                    }
-                    model.data[key]!!["show"] = show
-                } else {
-                    model.data[key]!!["show"] = tmp.getInt(key).toString()
-                }
+                val value = tmp.getBoolean(key)
+                model.data[key]!!["value"] = value
+                val show = if (value) "有" else "無"
+                model.data[key]!!["show"] = show
+            } catch (e: JSONException) {
+                //println(e.localizedMessage)
+                model.data[key]!!["value"] = -1
+                model.data[key]!!["show"] = "未提供"
+            }
+
+        } else if (type == "Int") {
+            try {
                 model.data[key]!!["value"] = tmp.getInt(key)
+                model.data[key]!!["show"] = tmp.getInt(key).toString()
             } catch (e: JSONException) {
                 //println(e.localizedMessage)
                 model.data[key]!!["value"] = -1
@@ -54,23 +58,21 @@ class ArenaService: DataService() {
             } catch (e: JSONException) {
 
             }
+            if (value.length == 0 || value == "null") {
+                value = "未提供"
+            }
             model.data[key]!!["value"] = value
             model.data[key]!!["show"] = value
-            if (key == MOBILE_KEY) {
-                model.mobileShow()
+            if (key == TEL_KEY) {
+                model.telOrMobileShow()
+            }
+            if (key == ARENA_OPEN_TIME_KEY) {
+                model.updateOpenTime(value)
+            } else if (key == ARENA_CLOSE_TIME_KEY) {
+                model.updateCloseTime(value)
             }
         } else if (type == "array") {
-            if (key == CITY_KEY) {
-                try {
-                    val obj1 = tmp.getJSONObject(key)
-                    val id = obj1.getInt("id")
-                    val name = obj1.getString("name")
-                    val city = City(id, name)
-                    model.updateCity(city)
-                } catch (e: JSONException) {
-                    println(e.localizedMessage)
-                }
-            }
+
         }
     }
 }

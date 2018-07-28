@@ -21,7 +21,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="fill_horizontal"
-            android:onClick="showCourse"
             android:padding="12dp">
 
             <ImageView
@@ -31,7 +30,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/course" />
+                app:srcCompat="@drawable/arena" />
 
             <TextView
                 android:id="@+id/textView7"
@@ -72,7 +71,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="fill_horizontal"
-            android:onClick="showCourse"
             android:padding="12dp">
 
             <ImageView
@@ -123,7 +121,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="fill_horizontal"
-            android:onClick="showVersion"
             android:padding="12dp">
 
             <ImageView

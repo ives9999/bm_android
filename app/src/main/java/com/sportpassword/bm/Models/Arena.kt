@@ -18,9 +18,11 @@ class Arena(id: Int, name: String, token: String="", featured_path: String=""): 
                 EMAIL_KEY to mutableMapOf("ch" to "email","vtype" to "String","value" to "","show" to "","submit" to false),
                 ARENA_OPEN_TIME_KEY to mutableMapOf("ch" to "營業開始時間","vtype" to "String","value" to "","show" to "","submit" to false),
                 ARENA_CLOSE_TIME_KEY to mutableMapOf("ch" to "營業結束時間","vtype" to "String","value" to "","show" to "","submit" to false),
+                ARENA_CLOSE_TIME_KEY to mutableMapOf("ch" to "營業結束時間","vtype" to "String","value" to "","show" to "","submit" to false),
+                ARENA_INTERVAL_KEY to mutableMapOf("ch" to "營業時間","vtype" to "String","value" to "","show" to "","submit" to false),
                 ARENA_BLOCK_KEY to mutableMapOf("ch" to "場地","vtype" to "Int","value" to 0,"show" to "","submit" to false),
-                CITY_KEY to mutableMapOf("ch" to "縣市","vtype" to "array","value" to 0,"show" to ""),
-                AREA_KEY to mutableMapOf("ch" to "區域","vtype" to "array","value" to 0,"show" to ""),
+                CITY_KEY to mutableMapOf("ch" to "縣市","vtype" to "String","value" to "","show" to "","submit" to false),
+                AREA_KEY to mutableMapOf("ch" to "區域","vtype" to "String","value" to "","show" to "","submit" to false),
                 ROAD_KEY to mutableMapOf("ch" to "路名","vtype" to "String","value" to "","show" to "","submit" to false),
                 ZIP_KEY to mutableMapOf("ch" to "郵遞區號","vtype" to "String","value" to "","show" to "","submit" to false),
                 ARENA_AIR_CONDITION_KEY to mutableMapOf("ch" to "冷氣","vtype" to "Boolean","value" to false,"show" to "","submit" to false),
@@ -45,6 +47,33 @@ class Arena(id: Int, name: String, token: String="", featured_path: String=""): 
     }
     override fun dataReset() {
         initData()
+    }
+
+    fun updateOpenTime(time: String? = null) {
+        if (time != null) {
+            data[ARENA_OPEN_TIME_KEY]!!["value"] = time
+        }
+        val tmp: String = data[ARENA_OPEN_TIME_KEY]!!["value"] as String
+        data[ARENA_OPEN_TIME_KEY]!!["show"] = tmp.noSec()
+    }
+    fun updateCloseTime(time: String? = null) {
+        if (time != null) {
+            data[ARENA_CLOSE_TIME_KEY]!!["value"] = time
+        }
+        val tmp: String = data[ARENA_CLOSE_TIME_KEY]!!["value"] as String
+        data[ARENA_CLOSE_TIME_KEY]!!["show"] = tmp.noSec()
+    }
+    fun updateInterval(_openTime: String? = null, _closeTime: String? = null) {
+        var openTime = _openTime
+        if (_openTime == null) {
+            openTime = data[ARENA_OPEN_TIME_KEY]!!["show"] as String
+        }
+        var closeTime = _closeTime
+        if (_closeTime == null) {
+            closeTime = data[ARENA_CLOSE_TIME_KEY]!!["show"] as String
+        }
+        val tmp: String = openTime + " ~ " + closeTime
+        data[ARENA_INTERVAL_KEY]!!["show"] = tmp
     }
 
 }

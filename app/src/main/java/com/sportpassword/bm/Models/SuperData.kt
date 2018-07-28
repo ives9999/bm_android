@@ -32,6 +32,14 @@ open class SuperData(val id: Int, val title: String, val token: String, val feat
         mobile = mobile!!.mobileShow()
         data[MOBILE_KEY]!!["show"] = mobile
     }
+    fun telOrMobileShow(_tel: String? = null) {
+        var tel = _tel
+        if (_tel == null) {
+            tel = data[TEL_KEY]!!["value"] as String
+        }
+        tel = tel!!.telOrMobileShow()
+        data[TEL_KEY]!!["show"] = tel
+    }
 
     fun print() {
         this::class.memberProperties.forEach {

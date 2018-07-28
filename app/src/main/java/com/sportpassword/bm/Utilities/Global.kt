@@ -44,12 +44,16 @@ fun String.isPrimitive(): Boolean {
     }
     return b
 }
-fun String.reMatches(pattern: String): Array<String> {
+fun String.reMatches(pattern: String, _str: String?=null): Array<String> {
+    var str = _str
+    if (str == null) {
+        str = this
+    }
     var matches: Array<String> = arrayOf()
     val re = pattern.toRegex()
-    val b = re.containsMatchIn(this)
+    val b = re.containsMatchIn(str)
     if (b) {
-        val matchRes = re.find(this)
+        val matchRes = re.find(str)
         if (matchRes != null) {
             val arr = matchRes.groupValues
             matches = arr.toTypedArray()
@@ -62,13 +66,36 @@ fun String.reMatches(pattern: String): Array<String> {
 }
 fun String.mobileShow(): String {
     var res = this
+    res = res.replace(" ", "")
+    res = res.replace("-", "")
     val pattern = "^(09\\d\\d)\\-?(\\d\\d\\d)\\-?(\\d\\d\\d)\$"
-    val matches = reMatches(pattern)
+    val matches = reMatches(pattern, res)
     if (matches.size > 3) {
         res = matches[1] + "-" + matches[2] + "-" + matches[3]
     }
 
     return res
+}
+fun String.telShow(): String {
+    var res = this
+    res = res.replace(" ", "")
+    res = res.replace("-", "")
+    val pattern = "^(0\\d)\\-?(\\d\\d\\d\\d)\\-?(\\d\\d\\d\\d?)$"
+    val matches = reMatches(pattern, res)
+    if (matches.size > 3) {
+        res = matches[1] + "-" + matches[2] + "-" + matches[3]
+    }
+
+    return res
+}
+fun String.telOrMobileShow(): String {
+    if (this.startsWith("09")) {
+        return this.mobileShow()
+    }
+    if (this.startsWith("0")) {
+        return this.telShow()
+    }
+    return this
 }
 
 fun <T1, T2> Map<T1, T2>.print() {

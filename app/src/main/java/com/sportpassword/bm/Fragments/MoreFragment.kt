@@ -28,8 +28,19 @@ class MoreFragment : TabFragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.tab_more, container, false)
-        val row1 = view.findViewById<ConstraintLayout>(R.id.more_course_row)
-        row1.setOnClickListener() { view ->
+
+        val row1 = view.findViewById<ConstraintLayout>(R.id.more_arena_row)
+        row1.setOnClickListener { view ->
+            val fm = activity!!.supportFragmentManager
+            val arenaFragment = ArenaFragment.newInstance("arena", screenWidth)
+            fm.beginTransaction()
+                    .replace(R.id.more_container, arenaFragment)
+                    .addToBackStack(null)
+                    .commit()
+        }
+
+        val row2 = view.findViewById<ConstraintLayout>(R.id.more_course_row)
+        row2.setOnClickListener() { view ->
             //val mainActivity = activity as MainActivity
             //mainActivity.test()
             val fm = activity!!.supportFragmentManager
@@ -41,8 +52,8 @@ class MoreFragment : TabFragment() {
                     .addToBackStack(null)
                     .commit()
         }
-        val row2 = view.findViewById<ConstraintLayout>(R.id.more_version_row)
-        row2.setOnClickListener { view ->
+        val row3 = view.findViewById<ConstraintLayout>(R.id.more_version_row)
+        row3.setOnClickListener { view ->
             val p = context!!.applicationContext.packageManager.getPackageInfo(context!!.packageName, 0)
             val v = p.versionCode
             val n = p.versionName

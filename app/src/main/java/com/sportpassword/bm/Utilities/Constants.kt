@@ -14,8 +14,8 @@ var gSimulate: Boolean = false
 const val REMOTE_BASE_URL = "http://bm.sportpassword.com"
 //const val LOCALHOST_BASE_URL = "http://bm.sportpassword.com"
 //const val LOCALHOST_BASE_URL = "http://192.168.1.119"
-//const val LOCALHOST_BASE_URL = "http://192.168.100.100"
-const val LOCALHOST_BASE_URL = "http://192.168.2.200"
+const val LOCALHOST_BASE_URL = "http://192.168.100.100"
+//const val LOCALHOST_BASE_URL = "http://192.168.2.200"
 var BASE_URL = ""
 var URL_HOME = ""
 var URL_LIST = ""
@@ -152,6 +152,7 @@ val ARENA_AIR_CONDITION_KEY: String = "air_condition"
 val ARENA_PARKING_KEY: String = "parking"
 val ARENA_BATHROOM_KEY: String = "bathroom"
 val ARENA_CHARGE_KEY: String = "charge"
+val ARENA_INTERVAL_KEY: String = "interval"
 
 // General key
 val TITLE_KEY: String = "title"
