@@ -18,7 +18,6 @@ class Arena(id: Int, name: String, token: String="", featured_path: String=""): 
                 EMAIL_KEY to mutableMapOf("ch" to "email","vtype" to "String","value" to "","show" to "","submit" to false),
                 ARENA_OPEN_TIME_KEY to mutableMapOf("ch" to "營業開始時間","vtype" to "String","value" to "","show" to "","submit" to false),
                 ARENA_CLOSE_TIME_KEY to mutableMapOf("ch" to "營業結束時間","vtype" to "String","value" to "","show" to "","submit" to false),
-                ARENA_CLOSE_TIME_KEY to mutableMapOf("ch" to "營業結束時間","vtype" to "String","value" to "","show" to "","submit" to false),
                 ARENA_INTERVAL_KEY to mutableMapOf("ch" to "營業時間","vtype" to "String","value" to "","show" to "","submit" to false),
                 ARENA_BLOCK_KEY to mutableMapOf("ch" to "場地","vtype" to "Int","value" to 0,"show" to "","submit" to false),
                 CITY_KEY to mutableMapOf("ch" to "縣市","vtype" to "String","value" to "","show" to "","submit" to false),

@@ -50,55 +50,6 @@ var URL_TEAM_TEMP_PLAY_DATE_PLAYER = ""
 // spinner
 val LOADING: String = "努力加載中..."
 
-// User Defaults
-val ID_KEY: String = "id"
-val TOKEN_KEY: String = "token"
-val EMAIL_KEY: String = "email"
-val NICKNAME_KEY: String = "nickname"
-val ISLOGGEDIN_KEY: String = "isLoggedIn"
-val UID_KEY: String = "uid"
-val NAME_KEY: String = "name"
-val CHANNEL_KEY: String = "channel"
-val DOB_KEY: String = "dob"
-val SEX_KEY: String = "sex"
-val TEL_KEY: String = "tel"
-val MOBILE_KEY: String = "mobile"
-val PID_KEY: String = "pid"
-val AVATAR_KEY: String = "avatar"
-val MEMBER_TYPE_KEY: String = "type"
-val SOCIAL_KEY: String = "social"
-val MEMBER_ROLE_KEY: String = "role"
-val VALIDATE_KEY: String = "validate"
-val EMAIL_VALIDATE: Int = 1
-val MOBILE_VALIDATE: Int = 2
-val PID_VALIDATE = 4
-val GENERAL_TYPE = 1
-val TEAM_TYPE = 2
-val ARENA_TYPE = 4
-val ISTEAMMANAGER_KEY = "isTeamManager"
-
-// member
-val MEMBER_ARRAY: Map<String, Map<String, String>> = mapOf(
-        ID_KEY to hashMapOf("type" to "Int","default" to "0"),
-        TOKEN_KEY to hashMapOf("type" to "String", "default" to ""),
-        EMAIL_KEY to hashMapOf("text" to "email","type" to "String", "default" to "","icon" to "email1"),
-        NICKNAME_KEY to hashMapOf("text" to "暱稱","type" to "String", "default" to ""),
-        ISLOGGEDIN_KEY to hashMapOf("type" to "Boolean", "default" to "false"),
-        UID_KEY to hashMapOf("type" to "String", "default" to ""),
-        NAME_KEY to hashMapOf("text" to "姓名","type" to "String", "default" to "","icon" to "name"),
-        CHANNEL_KEY to hashMapOf("type" to "String", "default" to "bm"),
-        DOB_KEY to hashMapOf("text" to "生日","type" to "String", "default" to ""),
-        SEX_KEY to hashMapOf("text" to "性別","type" to "String", "default" to "M"),
-        TEL_KEY to hashMapOf("text" to "電話","type" to "String", "default" to ""),
-        MOBILE_KEY to hashMapOf("text" to "手機","type" to "String", "default" to "","icon" to "mobile"),
-        PID_KEY to hashMapOf("text" to "身分證字號","type" to "String", "default" to ""),
-        AVATAR_KEY to hashMapOf("type" to "String", "default" to ""),
-        MEMBER_TYPE_KEY to hashMapOf("text" to "會員類型","type" to "Int", "default" to "0"),
-        SOCIAL_KEY to hashMapOf("type" to "String", "default" to ""),
-        MEMBER_ROLE_KEY to mapOf("text" to "會員身份","type" to "String", "default" to "member"),
-        VALIDATE_KEY to mapOf("text" to "驗證","type" to "Int", "default" to "0")
-)
-
 // Team key
 val TEAM_ID_KEY: String = "id"
 val TEAM_CHANNEL_KEY: String = "channel"
@@ -155,6 +106,11 @@ val ARENA_CHARGE_KEY: String = "charge"
 val ARENA_INTERVAL_KEY: String = "interval"
 
 // General key
+val ID_KEY: String = "id"
+val TOKEN_KEY: String = "token"
+val EMAIL_KEY: String = "email"
+val MOBILE_KEY: String = "mobile"
+val TEL_KEY: String = "tel"
 val TITLE_KEY: String = "title"
 val SLUG_KEY: String = "slug"
 val WEBSITE_KEY: String = "website"
@@ -175,6 +131,50 @@ val COLOR_KEY: String = "color"
 val CREATED_ID_KEY: String = "created_id"
 val CREATED_AT_KEY: String = "created_at"
 val UPDATED_AT_KEY: String = "updated_at"
+
+// User Defaults
+val NICKNAME_KEY: String = "nickname"
+val ISLOGGEDIN_KEY: String = "isLoggedIn"
+val UID_KEY: String = "uid"
+val NAME_KEY: String = "name"
+val CHANNEL_KEY: String = "channel"
+val DOB_KEY: String = "dob"
+val SEX_KEY: String = "sex"
+val PID_KEY: String = "pid"
+val AVATAR_KEY: String = "avatar"
+val MEMBER_TYPE_KEY: String = "type"
+val SOCIAL_KEY: String = "social"
+val MEMBER_ROLE_KEY: String = "role"
+val VALIDATE_KEY: String = "validate"
+val EMAIL_VALIDATE: Int = 1
+val MOBILE_VALIDATE: Int = 2
+val PID_VALIDATE = 4
+val GENERAL_TYPE = 1
+val TEAM_TYPE = 2
+val ARENA_TYPE = 4
+val ISTEAMMANAGER_KEY = "isTeamManager"
+
+// member
+val MEMBER_ARRAY: Map<String, Map<String, String>> = mapOf(
+        ID_KEY to hashMapOf("type" to "Int","default" to "0"),
+        TOKEN_KEY to hashMapOf("type" to "String", "default" to ""),
+        EMAIL_KEY to hashMapOf("text" to "email","type" to "String", "default" to "","icon" to "email1"),
+        NICKNAME_KEY to hashMapOf("text" to "暱稱","type" to "String", "default" to ""),
+        ISLOGGEDIN_KEY to hashMapOf("type" to "Boolean", "default" to "false"),
+        UID_KEY to hashMapOf("type" to "String", "default" to ""),
+        NAME_KEY to hashMapOf("text" to "姓名","type" to "String", "default" to "","icon" to "name"),
+        CHANNEL_KEY to hashMapOf("type" to "String", "default" to "bm"),
+        DOB_KEY to hashMapOf("text" to "生日","type" to "String", "default" to ""),
+        SEX_KEY to hashMapOf("text" to "性別","type" to "String", "default" to "M"),
+        TEL_KEY to hashMapOf("text" to "電話","type" to "String", "default" to ""),
+        MOBILE_KEY to hashMapOf("text" to "手機","type" to "String", "default" to "","icon" to "mobile"),
+        PID_KEY to hashMapOf("text" to "身分證字號","type" to "String", "default" to ""),
+        AVATAR_KEY to hashMapOf("type" to "String", "default" to ""),
+        MEMBER_TYPE_KEY to hashMapOf("text" to "會員類型","type" to "Int", "default" to "0"),
+        SOCIAL_KEY to hashMapOf("type" to "String", "default" to ""),
+        MEMBER_ROLE_KEY to mapOf("text" to "會員身份","type" to "String", "default" to "member"),
+        VALIDATE_KEY to mapOf("text" to "驗證","type" to "Int", "default" to "0")
+)
 
 // Notification Constants
 val NOTIF_MEMBER_DID_CHANGE = "notifMemberChanged"
