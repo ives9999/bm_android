@@ -176,39 +176,39 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener {
         }
     }
 
-    protected fun goLogin() {
+    public fun goLogin() {
         val loginIntent: Intent = Intent(this, LoginActivity::class.java)
         startActivity(loginIntent)
     }
 
-    protected fun goRegister() {
+    public fun goRegister() {
         val registerIntent: Intent = Intent(this, RegisterActivity::class.java)
         startActivity(registerIntent)
     }
 
-    protected fun goForgetPassword() {
+    public fun goForgetPassword() {
         val forgetPasswordIntent: Intent = Intent(this, ForgetPasswordActivity::class.java)
         startActivity(forgetPasswordIntent)
     }
 
-    protected fun home(context: Context) {
+    public fun home(context: Context) {
         val intent : Intent = Intent(context, MainActivity::class.java)
         startActivity(intent)
     }
 
-    protected fun goEditTeam(token: String="") {
+    public fun goEditTeam(token: String="") {
         val intent = Intent(this, EditTeamActivity::class.java)
         intent.putExtra("token", token)
         startActivity(intent)
     }
 
-    protected fun goTeamTempPlayEdit(token: String) {
+    public fun goTeamTempPlayEdit(token: String) {
         val intent = Intent(this, TeamTempPlayEditActivity::class.java)
         intent.putExtra("token", token)
         startActivity(intent)
     }
 
-    protected fun goTeamManager() {
+    public fun goTeamManager() {
         if (!member.isLoggedIn) {
             Alert.show(this, "警告", "請先登入會員")
             return
@@ -216,19 +216,19 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener {
         val intent = Intent(this, TeamManagerActivity::class.java)
         startActivity(intent)
     }
-    protected fun goTeamManagerFunction(title: String, token: String) {
+    public fun goTeamManagerFunction(title: String, token: String) {
         val intent = Intent(this, TeamManagerFunctionActivity::class.java)
         intent.putExtra("title", title)
         intent.putExtra("token", token)
         startActivity(intent)
     }
-    protected fun goTempPlayDate(name: String, token: String) {
+    public fun goTempPlayDate(name: String, token: String) {
         val intent = Intent(this, TempPlayDateVC::class.java)
         intent.putExtra("name", name)
         intent.putExtra("token", token)
         startActivity(intent)
     }
-    protected fun goTempPlayDatePlayer(date: String, name: String, token: String) {
+    public fun goTempPlayDatePlayer(date: String, name: String, token: String) {
         val intent = Intent(this, TempPlayDatePlayerVC::class.java)
         intent.putExtra("date", date)
         intent.putExtra("teamName", name)
@@ -236,11 +236,11 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener {
         startActivity(intent)
     }
 
-    protected fun goSearch(type: String) {
+    public fun goSearch(type: String) {
         //val intent = Intent(this)
     }
 
-    protected fun goDeleteTeam(token: String="") {
+    public fun goDeleteTeam(token: String="") {
         Alert.delete(this, {
             val m = Loading.show(this)
             TeamService.delete(this, "team", token) { success ->
@@ -251,24 +251,24 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener {
         })
     }
 
-    protected fun goEditMember() {
+    public fun goEditMember() {
         val accountIntent = Intent(this, AccountActivity::class.java)
         startActivity(accountIntent)
     }
 
-    protected fun goUpdatePassword() {
+    public fun goUpdatePassword() {
         val updatePasswordIntent = Intent(this, UpdatePasswordActivity::class.java)
         startActivity(updatePasswordIntent)
 
     }
 
-    protected fun goValidate(type: String) {
+    public fun goValidate(type: String) {
         val intent = Intent(this, ValidateActivity::class.java)
         intent.putExtra("type", type)
         startActivity(intent)
     }
 
-    protected fun goTempPlaySignupOne(teamId: Int, teamToken: String, teamName: String, near_date: String, memberToken: String) {
+    public fun goTempPlaySignupOne(teamId: Int, teamToken: String, teamName: String, near_date: String, memberToken: String) {
         val i = Intent(this, TempPlaySignupOneVC::class.java)
         i.putExtra("id", teamId)
         i.putExtra("name", teamName)
@@ -278,9 +278,25 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener {
         startActivity(i)
     }
 
-    protected fun goBlackList() {
+    public fun goBlackList() {
         val intent = Intent(this, BlackListVC::class.java)
         startActivity(intent)
+    }
+
+    public fun goArena() {
+        val i = Intent(this, ArenaVC::class.java)
+        i.putExtra("type", "arena")
+        i.putExtra("titleField", "name")
+        startActivity(i)
+
+    }
+
+    public fun goCourse() {
+        val i = Intent(this, CourseVC::class.java)
+        i.putExtra("type", "course")
+        i.putExtra("titleField", "title")
+        startActivity(i)
+
     }
 
 

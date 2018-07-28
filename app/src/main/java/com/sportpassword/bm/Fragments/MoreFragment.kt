@@ -2,12 +2,14 @@ package com.sportpassword.bm.Fragments
 
 
 import android.app.AlertDialog
+import android.content.Intent
 import android.os.Bundle
 import android.support.constraint.ConstraintLayout
 import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.sportpassword.bm.Controllers.ArenaVC
 import com.sportpassword.bm.Controllers.MainActivity
 
 import com.sportpassword.bm.R
@@ -31,26 +33,28 @@ class MoreFragment : TabFragment() {
 
         val row1 = view.findViewById<ConstraintLayout>(R.id.more_arena_row)
         row1.setOnClickListener { view ->
-            val fm = activity!!.supportFragmentManager
-            val arenaFragment = ArenaFragment.newInstance("arena", screenWidth)
-            fm.beginTransaction()
-                    .replace(R.id.more_container, arenaFragment)
-                    .addToBackStack(null)
-                    .commit()
+            (activity!! as MainActivity).goArena()
+//            val fm = activity!!.supportFragmentManager
+//            val arenaFragment = ArenaFragment.newInstance("arena", screenWidth)
+//            fm.beginTransaction()
+//                    .replace(R.id.more_container, arenaFragment)
+//                    .addToBackStack(null)
+//                    .commit()
         }
 
         val row2 = view.findViewById<ConstraintLayout>(R.id.more_course_row)
         row2.setOnClickListener() { view ->
+            (activity!! as MainActivity).goCourse()
+
             //val mainActivity = activity as MainActivity
             //mainActivity.test()
-            val fm = activity!!.supportFragmentManager
-            //val fragment = fm.findFragmentById(R.id.tab_container)
-            //println(fragment)
-            val courseFragment = CourseFragment.newInstance("course", screenWidth)
-            fm.beginTransaction()
-                    .replace(R.id.more_container, courseFragment)
-                    .addToBackStack(null)
-                    .commit()
+
+//            val fm = activity!!.supportFragmentManager
+//            val courseFragment = CourseFragment.newInstance("course", screenWidth)
+//            fm.beginTransaction()
+//                    .replace(R.id.more_container, courseFragment)
+//                    .addToBackStack(null)
+//                    .commit()
         }
         val row3 = view.findViewById<ConstraintLayout>(R.id.more_version_row)
         row3.setOnClickListener { view ->

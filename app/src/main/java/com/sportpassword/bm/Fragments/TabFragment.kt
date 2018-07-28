@@ -66,9 +66,7 @@ open class TabFragment : Fragment() {
         initAdapter()
 
         val layoutManager = GridLayoutManager(context, 1)
-
         recyclerView.layoutManager = layoutManager
-
         recyclerView.setHasFixedSize(true)
 
         refreshLayout = view.findViewById<SwipeRefreshLayout>(R.id.tab_refresh)
@@ -153,7 +151,7 @@ open class TabFragment : Fragment() {
             this.getDataStart(this.page, this.perPage)
             this.listAdapter.notifyDataSetChanged()
 
-            tab_refresh.isRefreshing = false
+            refreshLayout.isRefreshing = false
         }
         refreshLayout.setOnRefreshListener(refreshListener)
     }

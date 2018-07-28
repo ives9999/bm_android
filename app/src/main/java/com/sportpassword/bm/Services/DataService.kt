@@ -49,7 +49,7 @@ open class DataService: BaseService() {
         superDataLists = arrayListOf()
 
         val request = object : JsonObjectRequest(Request.Method.POST, url, null, Response.Listener { json ->
-            //println(json)
+            println(json)
             try {
                 success = true
                 this.totalCount = json.getInt("totalCount")
@@ -82,9 +82,9 @@ open class DataService: BaseService() {
                     superDataLists.add(data)
                 }
                 //println(superDataLists.size)
-//                for (data in superDataLists) {
-//                    println(data.data)
-//                }
+                for (data in superDataLists) {
+                    println(data.data)
+                }
             } catch (e: JSONException) {
                 println(e.localizedMessage)
                 success = false

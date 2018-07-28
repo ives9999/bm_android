@@ -73,7 +73,10 @@
             android:exported="true" />
         <activity android:name=".Controllers.TempPlayDateVC" />
         <activity android:name=".Controllers.TempPlayDatePlayerVC" />
-        <activity android:name=".Controllers.BlackListVC"></activity>
+        <activity android:name=".Controllers.BlackListVC" />
+        <activity android:name=".Controllers.ArenaVC" />
+        <activity android:name=".Controllers.CourseVC" />
+        <activity android:name=".Controllers.MoreVC"></activity>
     </application>
 
 </manifest>
