@@ -22,7 +22,7 @@ open class MoreVC : BaseActivity() {
     protected var totalPage: Int = 0
 
     protected lateinit var recyclerView: RecyclerView
-    protected lateinit var listAdapter: ListAdapter
+    open protected lateinit var listAdapter: ListAdapter
     protected lateinit var dataService: DataService
 
     protected lateinit var scrollerListenr: RecyclerView.OnScrollListener

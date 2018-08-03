@@ -41,7 +41,7 @@ android {
         applicationId "com.sportpassword.bm"
         minSdkVersion 19
         targetSdkVersion 27
-        versionCode 16
+        versionCode 17
         versionName "1.2.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         multiDexEnabled true

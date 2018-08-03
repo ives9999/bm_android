@@ -15,6 +15,10 @@ import android.widget.ProgressBar
 import android.widget.RelativeLayout
 import android.widget.TextView
 import com.sportpassword.bm.R
+import java.text.SimpleDateFormat
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
+import java.util.*
 
 /**
  * Created by ives on 2018/3/8.
@@ -96,6 +100,18 @@ fun String.telOrMobileShow(): String {
         return this.telShow()
     }
     return this
+}
+fun String.toDate(pattern: String = "yyyy-MM-dd HH:mm:ss"): Date {
+    //val formatter = DateTimeFormatter.ofPattern(pattern, Locale.TAIWAN)
+    val formatter = SimpleDateFormat(pattern)
+    val date = formatter.parse(this)
+
+    return date
+}
+
+fun Date.toMyString(pattern: String = "yyyy-MM-dd HH:mm:ss"): String {
+    val formatter = SimpleDateFormat(pattern)
+    return formatter.format(this)
 }
 
 fun <T1, T2> Map<T1, T2>.print() {

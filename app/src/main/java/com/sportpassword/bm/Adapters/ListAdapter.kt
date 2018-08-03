@@ -17,6 +17,13 @@ import com.squareup.picasso.Picasso
  * Created by ives on 2018/2/23.
  */
 class ListAdapter(val context: Context, val iden: String="team", val screenWidth: Int=0, val itemClick: (SuperData) -> Unit): RecyclerView.Adapter<ListAdapter.ViewHolder>(){
+
+    var lists: ArrayList<SuperData> = arrayListOf()
+        get() = field
+        set(value) {
+            field = value
+        }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view: View = LayoutInflater.from(context).inflate(R.layout.tab_list_item, parent, false)
         return ViewHolder(view, iden, screenWidth, itemClick)
@@ -25,12 +32,6 @@ class ListAdapter(val context: Context, val iden: String="team", val screenWidth
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bind(lists[position])
     }
-
-    var lists: ArrayList<SuperData> = arrayListOf()
-        get() = field
-        set(value) {
-            field = value
-        }
 
     override fun getItemCount(): Int {
         return lists.size

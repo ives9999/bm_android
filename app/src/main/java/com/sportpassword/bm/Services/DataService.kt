@@ -49,7 +49,7 @@ open class DataService: BaseService() {
         superDataLists = arrayListOf()
 
         val request = object : JsonObjectRequest(Request.Method.POST, url, null, Response.Listener { json ->
-            println(json)
+            //println(json)
             try {
                 success = true
                 this.totalCount = json.getInt("totalCount")
@@ -66,11 +66,13 @@ open class DataService: BaseService() {
                     var featured_path = if (obj.has("featured_path")) obj.get("featured_path").toString() else ""
                     //println(featured_path)
                     if (featured_path.isNotEmpty()) {
-                        featured_path = BASE_URL + featured_path
+                        if (!featured_path.startsWith("http://") && !featured_path.startsWith("https://")) {
+                            featured_path = BASE_URL + featured_path
+                        }
                     }
-                    if (vimeo.isNotEmpty()) {
-                        vimeo = VIMEO_PREFIX + vimeo
-                    }
+//                    if (vimeo.isNotEmpty()) {
+//                        vimeo = VIMEO_PREFIX + vimeo
+//                    }
 //                    if (youtube.isNotEmpty()) {
 //                        youtube = YOUTUBE_PREFIX + youtube
 //                    }
@@ -82,9 +84,9 @@ open class DataService: BaseService() {
                     superDataLists.add(data)
                 }
                 //println(superDataLists.size)
-                for (data in superDataLists) {
-                    println(data.data)
-                }
+//                for (data in superDataLists) {
+//                    println(data.data)
+//                }
             } catch (e: JSONException) {
                 println(e.localizedMessage)
                 success = false
