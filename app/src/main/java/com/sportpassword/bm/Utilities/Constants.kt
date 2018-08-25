@@ -1,5 +1,7 @@
 package com.sportpassword.bm.Utilities
 
+import android.content.Intent
+
 /**
  * Created by ivessun on 2018/2/2.
  */
@@ -144,6 +146,7 @@ val CHANNEL_KEY: String = "channel"
 val DOB_KEY: String = "dob"
 val SEX_KEY: String = "sex"
 val PID_KEY: String = "pid"
+val PLAYERID_KEY = "player_id"
 val AVATAR_KEY: String = "avatar"
 val MEMBER_TYPE_KEY: String = "type"
 val SOCIAL_KEY: String = "social"
@@ -183,6 +186,8 @@ val MEMBER_ARRAY: Map<String, Map<String, String>> = mapOf(
 val NOTIF_MEMBER_DID_CHANGE = "notifMemberChanged"
 val NOTIF_MEMBER_UPDATE = "notifMemberUpdate"
 val NOTIF_TEAM_UPDATE = "notifTeamUpdate"
+val memberDidChangeIntent = Intent(NOTIF_MEMBER_DID_CHANGE)
+
 
 // Header
 var HEADER = "application/json; charset=utf-8"

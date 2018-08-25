@@ -17,6 +17,7 @@ import com.sportpassword.bm.Services.MemberService
 import com.sportpassword.bm.Utilities.Alert
 import com.sportpassword.bm.Utilities.Loading
 import com.sportpassword.bm.Utilities.NOTIF_MEMBER_DID_CHANGE
+import com.sportpassword.bm.Utilities.memberDidChangeIntent
 import com.sportpassword.bm.member
 import kotlinx.android.synthetic.main.activity_account_update1.*
 import kotlinx.android.synthetic.main.tab.*
@@ -98,6 +99,9 @@ class AccountUpdate1Activity : BaseActivity() {
         accountDate.visibility = View.VISIBLE
         accountTxt.visibility = View.INVISIBLE
         clearbutton_account.visibility = View.INVISIBLE
+        if (value.length == 0) {
+            value = "2000-01-01"
+        }
 
         val dobs = value.split("-").map{it.toInt()}
         //println(dobs)
@@ -144,8 +148,7 @@ class AccountUpdate1Activity : BaseActivity() {
             //println(success)
             if (success) {
                 if (MemberService.success) {
-                    val memberDidChange = Intent(NOTIF_MEMBER_DID_CHANGE)
-                    LocalBroadcastManager.getInstance(this).sendBroadcast(memberDidChange)
+                    LocalBroadcastManager.getInstance(this).sendBroadcast(memberDidChangeIntent)
                     finish()
                 } else {
                     Alert.show(this, "警告", MemberService.msg)

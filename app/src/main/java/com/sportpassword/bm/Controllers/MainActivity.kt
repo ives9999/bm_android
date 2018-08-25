@@ -80,7 +80,6 @@ class MainActivity : BaseActivity() {
 //    private val vimeoClient = VimeoClient.getInstance()
 //    private var vimeoToken: String? = null
 
-
     @RequiresApi(Build.VERSION_CODES.M)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -161,7 +160,9 @@ class MainActivity : BaseActivity() {
                     }
 
                     override fun onDrawerOpened(drawerView: View) {
-                        refreshMember()
+                        //refreshMember()
+                        _loginout()
+                        setRefreshListener()
                     }
                 }
         )
@@ -205,6 +206,12 @@ class MainActivity : BaseActivity() {
 
         _loginout()
 
+        if (!member.justGetMemberOne && member.isLoggedIn) {
+            _updatePlayerIDWhenIsNull()
+        }
+
+        refreshLayout = menu_refresh
+
         //println("$URL_LIST".format("team"))
         //member.print()
 
@@ -244,35 +251,14 @@ class MainActivity : BaseActivity() {
     override fun refresh() {
         if (member.isLoggedIn) {
             //initTeamList()
-            refreshMember()
-        } else {
-            _logoutBlock()
-        }
-        super.refresh()
-        setRefreshListener()
-        closeRefresh()
-    }
-
-    private fun refreshMember() {
-        if (member.isLoggedIn) {
-            val loading = Loading.show(this)
-            MemberService.getOne(this, member.token) { success ->
-                loading.dismiss()
+            refreshMember() { success ->
+                closeRefresh()
                 if (success) {
-                    setValidateRow()
-                    setBlackListRow()
-                    memberFunctionsAdapter = MemberFunctionsAdapter(this, _rows, {
-                        type -> _goMemberFunctions(type)
-                    })
-                    member_functions_container.adapter = memberFunctionsAdapter
-                    val layoutManager = LinearLayoutManager(this)
-                    member_functions_container.layoutManager = layoutManager
-                    memberFunctionsAdapter.notifyDataSetChanged()
                     _loginout()
-                } else {
-                    Alert.show(this, "錯誤", MemberService.msg)
                 }
             }
+        } else {
+            _logoutBlock()
         }
     }
 
@@ -306,20 +292,15 @@ class MainActivity : BaseActivity() {
         toolbar_title.text = title
     }
 
-    private val memberDidChange = object : BroadcastReceiver() {
-        override fun onReceive(context: Context?, intent: Intent?) {
-            refreshMember()
-        }
-    }
-
-    private fun _loginout() {
+    protected fun _loginout() {
         if (member.isLoggedIn) {
             _loginBlock()
         } else {
             _logoutBlock()
         }
     }
-    private fun _loginBlock() {
+    protected fun _loginBlock() {
+        _loginAdapter()
         nicknameLbl.text = member.nickname
         loginBtn.text = "登出"
         registerBtn.visibility = View.INVISIBLE
@@ -329,7 +310,7 @@ class MainActivity : BaseActivity() {
         refreshLayout = menu_refresh
 //        initMemberFunction()
     }
-    private fun _logoutBlock() {
+    protected fun _logoutBlock() {
         nicknameLbl.text = "未登入"
         loginBtn.text = "登入"
         registerBtn.visibility = View.VISIBLE
@@ -337,13 +318,33 @@ class MainActivity : BaseActivity() {
         menu_member_container.visibility = View.INVISIBLE
         //menu_team_container.visibility = View.INVISIBLE
     }
-    private fun _goMemberFunctions(segue: String) {
+    protected fun _goMemberFunctions(segue: String) {
         when(segue) {
             "account" -> goEditMember()
             "password" -> goUpdatePassword()
             "email" -> goValidate("email")
             "mobile" -> goValidate("mobile")
             "blacklist" -> goBlackList()
+            "refresh" -> goRefresh()
+        }
+    }
+    protected fun _loginAdapter() {
+        setValidateRow()
+        setBlackListRow()
+        val row: Map<String, String> = mapOf("text" to "重新整理", "icon" to "refresh", "segue" to "refresh")
+        _rows.add(row)
+        memberFunctionsAdapter = MemberFunctionsAdapter(this, _rows, {
+            type -> _goMemberFunctions(type)
+        })
+        member_functions_container.adapter = memberFunctionsAdapter
+        val layoutManager = LinearLayoutManager(this)
+        member_functions_container.layoutManager = layoutManager
+        memberFunctionsAdapter.notifyDataSetChanged()
+    }
+
+    protected fun goRefresh() {
+        _getMemberOne(member.token) {
+            _loginout()
         }
     }
 
@@ -359,12 +360,34 @@ class MainActivity : BaseActivity() {
 //            val memberDidChange = Intent(NOTIF_MEMBER_DID_CHANGE)
 //            LocalBroadcastManager.getInstance(this).sendBroadcast(memberDidChange)
         } else {
-            goLogin()
+            //goLogin()
+            val loginIntent: Intent = Intent(this, LoginActivity::class.java)
+            //startActivity(loginIntent)
+            startActivityForResult(loginIntent, LOGIN_REQUEST_CODE)
+
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        when (requestCode) {
+            LOGIN_REQUEST_CODE -> {
+                _loginout()
+            }
+            REGISTER_REQUEST_CODE -> {
+                _loginout()
+            }
+            VALIDATE_REQUEST_CODE -> {
+                hideKeyboard()
+                goRefresh()
+            }
         }
     }
 
     fun registerBtnPressed(view: View){
-        goRegister()
+        //goRegister()
+        val registerIntent: Intent = Intent(this, RegisterActivity::class.java)
+        startActivityForResult(registerIntent, REGISTER_REQUEST_CODE)
     }
 
     fun forgetpasswordBtnPressed(view: View) {

@@ -11,6 +11,12 @@
     tools:context="com.sportpassword.bm.Controllers.AccountActivity"
     tools:layout_editor_absoluteY="81dp">
 
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/account_refresh"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        >
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -646,5 +652,6 @@
 
         </RelativeLayout>
     </ScrollView>
+    </android.support.v4.widget.SwipeRefreshLayout>
 
 </android.support.constraint.ConstraintLayout>
