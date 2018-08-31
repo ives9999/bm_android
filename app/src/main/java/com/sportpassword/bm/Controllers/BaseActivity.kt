@@ -1,17 +1,23 @@
 package com.sportpassword.bm.Controllers
 
+import android.app.Activity
+import android.app.Application
+import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Point
+import android.os.AsyncTask
 import android.os.Build
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Handler
 import android.support.v4.app.ActivityCompat
 import android.support.v4.content.ContextCompat
 import android.support.v4.content.LocalBroadcastManager
 import android.support.v4.widget.SwipeRefreshLayout
 import android.support.v7.app.ActionBar
+import android.support.v7.widget.LinearLayoutManager
 import android.view.*
 import android.view.inputmethod.InputMethodManager
 import android.widget.*
@@ -23,14 +29,21 @@ import com.facebook.appevents.AppEventsLogger
 import com.facebook.login.LoginManager
 import com.facebook.login.LoginResult
 import com.onesignal.OneSignal
+import com.sportpassword.bm.Adapters.MemberFunctionsAdapter
 import com.sportpassword.bm.Models.SuperData
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.MemberService
 import com.sportpassword.bm.Services.TeamService
 import com.sportpassword.bm.Utilities.*
 import com.sportpassword.bm.member
+import kotlinx.android.synthetic.main.menu_member_function.*
 import org.jetbrains.anko.*
+import java.io.IOException
+import java.net.HttpURLConnection
+import java.net.URL
 import java.util.*
+import javax.net.ssl.HttpsURLConnection
+import kotlin.system.exitProcess
 
 
 open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener {
@@ -49,8 +62,16 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener {
     val REQUEST_PHONE_CALL = 100
     var mobile: String = ""
 
+    val LOGIN_REQUEST_CODE = 1
+    val REGISTER_REQUEST_CODE = 2
+    val VALIDATE_REQUEST_CODE = 3
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        ConnectTask(this).execute()
+
         _setURLConstants()
 
         getScreenWidth()
@@ -265,7 +286,7 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener {
     public fun goValidate(type: String) {
         val intent = Intent(this, ValidateActivity::class.java)
         intent.putExtra("type", type)
-        startActivity(intent)
+        startActivityForResult(intent, VALIDATE_REQUEST_CODE)
     }
 
     public fun goTempPlaySignupOne(teamId: Int, teamToken: String, teamName: String, near_date: String, memberToken: String) {
@@ -350,8 +371,7 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener {
                     override fun onSuccess(result: LoginResult?) {
                         MemberService.FBLogin(this@BaseActivity, playerID) { success ->
                             if (success) {
-                                val memberDidChange = Intent(NOTIF_MEMBER_DID_CHANGE)
-                                LocalBroadcastManager.getInstance(this@BaseActivity).sendBroadcast(memberDidChange)
+                                LocalBroadcastManager.getInstance(this@BaseActivity).sendBroadcast(memberDidChangeIntent)
                                 finish()
                             } else {
                                 val msg = MemberService.msg
@@ -381,7 +401,57 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener {
     }
 
     protected fun _getMemberOne(token: String, completion: CompletionHandler) {
-        MemberService.getOne(this, token, completion)
+        if (member.isLoggedIn) {
+            val loading = Loading.show(this)
+            MemberService.getOne(this, token) { success ->
+                loading.dismiss()
+                if (success) {
+                    completion(true)
+                } else {
+                    Alert.show(this, "錯誤", MemberService.msg)
+                    completion(false)
+                }
+            }
+        } else {
+            warning("沒有登入")
+        }
+    }
+
+//    protected fun memberDidChange() {
+//        val memberDidChange = Intent(NOTIF_MEMBER_DID_CHANGE)
+//        LocalBroadcastManager.getInstance(this).sendBroadcast(memberDidChange)
+//    }
+
+    protected val memberDidChange = object : BroadcastReceiver() {
+        override fun onReceive(context: Context?, intent: Intent?) {
+            refreshMember() { success ->
+
+            }
+        }
+    }
+
+    protected fun refreshMember(completion: CompletionHandler) {
+        _getMemberOne(member.token, completion)
+    }
+
+    protected fun _updatePlayerIDWhenIsNull() {
+        _getMemberOne(member.token) { success ->
+            if (success) {
+                member.justGetMemberOne = true
+                if (member.player_id.length == 0) {
+                    _updatePlayerID()
+                }
+            }
+        }
+    }
+
+    protected fun _updatePlayerID() {
+        val player_id = _getPlayerID()
+        MemberService.update(this, member.id, PLAYERID_KEY, player_id) { success ->
+            if (success) {
+                member.player_id = player_id
+            }
+        }
     }
 
     protected fun _getTeamManagerList(completion: CompletionHandler) {
@@ -399,11 +469,6 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener {
                 completion(false)
             }
         }
-    }
-
-    protected fun memberDidChange() {
-        val memberDidChange = Intent(NOTIF_MEMBER_DID_CHANGE)
-        LocalBroadcastManager.getInstance(this).sendBroadcast(memberDidChange)
     }
 
     protected fun addBlackList(memberName: String, memberToken: String, teamToken: String) {
@@ -494,4 +559,46 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener {
 
     open protected fun setTeamData(imageView: ImageView?=null) {
     }
+
+    class ConnectTask(val context: Context) : AsyncTask<Unit, Unit, String>() {
+
+        override fun doInBackground(vararg params: Unit?): String? {
+            val url = URL("https://google.com")
+            val httpClient = url.openConnection() as HttpURLConnection
+            httpClient.connectTimeout = 1000
+            httpClient.readTimeout = 1000
+            try {
+                if (httpClient.responseCode == HttpURLConnection.HTTP_OK) {
+                    //println("connection")
+                } else {
+                }
+            } catch (e: Exception) {
+                val handler = Handler(context.mainLooper)
+                handler.post {
+                    Alert.show(context, "警告", "沒有連接網路，所以無法使用此app") {
+                        exitProcess(-1)
+                    }
+                }
+            } finally {
+                httpClient.disconnect()
+            }
+            return null
+        }
+
+    }
+
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+

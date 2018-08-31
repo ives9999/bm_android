@@ -15,6 +15,8 @@ import com.sportpassword.bm.Services.MemberService
 import com.sportpassword.bm.Utilities.Alert
 import com.sportpassword.bm.Utilities.Loading
 import com.sportpassword.bm.Utilities.NOTIF_MEMBER_DID_CHANGE
+import com.sportpassword.bm.Utilities.memberDidChangeIntent
+import com.sportpassword.bm.member
 import kotlinx.android.synthetic.main.activity_login.*
 import org.json.JSONObject
 import java.util.*
@@ -51,8 +53,11 @@ class LoginActivity : BaseActivity() {
             //println(success)
             if (success) {
                 if (MemberService.success) {
-                    memberDidChange()
-                    finish()
+                    //LocalBroadcastManager.getInstance(this).sendBroadcast(memberDidChangeIntent)
+                    //finish()
+                    _getMemberOne(member.token) {
+                        finish()
+                    }
                 } else {
                     Alert.show(this, "警告", MemberService.msg)
                 }

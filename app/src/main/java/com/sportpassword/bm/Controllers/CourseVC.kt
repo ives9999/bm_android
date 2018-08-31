@@ -58,4 +58,15 @@ class CourseVC : MoreVC() {
         collectionAdapter.notifyDataSetChanged()
     }
 
+    override protected fun setRecyclerViewRefreshListener() {
+        refreshListener = SwipeRefreshLayout.OnRefreshListener {
+            this@CourseVC.page = 1
+            this.getDataStart(this.page, this.perPage)
+            this.collectionAdapter.notifyDataSetChanged()
+
+            refreshLayout.isRefreshing = false
+        }
+        refreshLayout.setOnRefreshListener(refreshListener)
+    }
+
 }

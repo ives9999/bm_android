@@ -55,6 +55,9 @@ class Member(context: Context) {
     var avatar: String
         get() = session.getString(AVATAR_KEY, "")
         set(value) = session.edit().putString(AVATAR_KEY, value).apply()
+    var player_id: String
+        get() = session.getString(PLAYERID_KEY, "")
+        set(value) = session.edit().putString(PLAYERID_KEY, value).apply()
     var type: Int
         get() = session.getInt(MEMBER_TYPE_KEY, 0)
         set(value) = session.edit().putInt(MEMBER_TYPE_KEY, value).apply()
@@ -78,17 +81,31 @@ class Member(context: Context) {
     var isTeamManager: Boolean
         get() = session.getBoolean(ISTEAMMANAGER_KEY, false)
         set(value) = session.edit().putBoolean(ISTEAMMANAGER_KEY, value).apply()
+    var justGetMemberOne: Boolean
+        get() = session.getBoolean("justGetMemberOne", false)
+        set(value) = session.edit().putBoolean("justGetMemberOne", value).apply()
 
+    init {
+        justGetMemberOne = false
+    }
 
     fun  setMemberData(json: JSONObject) {
         id = json.getInt(ID_KEY)
         if (json.has(VALIDATE_KEY)) {
-            validate = json.getInt(VALIDATE_KEY)
+            try {
+                validate = json.getInt(VALIDATE_KEY)
+            } catch (e: Exception) {
+                validate = 0
+            }
         } else {
             validate = 0
         }
         if (json.has(MEMBER_TYPE_KEY)) {
-            type = json.getInt(MEMBER_TYPE_KEY)
+            try {
+                type = json.getInt(MEMBER_TYPE_KEY)
+            } catch (e: Exception) {
+                type = 0
+            }
         } else {
             type = 0
         }
@@ -111,6 +128,11 @@ class Member(context: Context) {
             uid = json.getString(UID_KEY)
         } else {
             uid = ""
+        }
+        if (json.has(PLAYERID_KEY)) {
+            player_id = json.getString(PLAYERID_KEY)
+        } else {
+            player_id = ""
         }
         if (json.has(NAME_KEY)) {
             name = json.getString(NAME_KEY)
@@ -164,7 +186,11 @@ class Member(context: Context) {
         role = MEMBER_ROLE.valueOf(roleString)
 
         if (json.has(ISLOGGEDIN_KEY)) {
-            isLoggedIn = json.getBoolean(ISLOGGEDIN_KEY)
+            try {
+                isLoggedIn = json.getBoolean(ISLOGGEDIN_KEY)
+            } catch (e: Exception) {
+                isLoggedIn = false
+            }
         } else {
             isLoggedIn = false
         }
@@ -212,6 +238,7 @@ class Member(context: Context) {
             }
         }
         setMemberData(json)
+        justGetMemberOne = false
     }
 
     fun validateShow(rawValue: Int): ArrayList<String> {
@@ -233,13 +260,13 @@ class Member(context: Context) {
 
     fun typeShow(rawValue: Int) : String {
         var res: ArrayList<String> = arrayListOf()
-        if (rawValue and 1 > 0) {
+        if (rawValue and GENERAL_TYPE >= 0) {
             res.add("一般會員")
         }
-        if (rawValue and 2 > 0) {
+        if (rawValue and TEAM_TYPE > 0) {
             res.add("球隊隊長")
         }
-        if (rawValue and 4 > 0) {
+        if (rawValue and ARENA_TYPE > 0) {
             res.add("球場管理員")
         }
         return res.joinToString(",")
