@@ -1,5 +1,6 @@
 package com.sportpassword.bm.Controllers
 
+import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.v4.widget.SwipeRefreshLayout
@@ -126,6 +127,17 @@ class ShowTempPlayActivity : BaseActivity() {
                 refresh()
             } else {
                 Alert.show(this, "警告", TeamService.msg)
+            }
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        when (requestCode) {
+            VALIDATE_REQUEST_CODE -> {
+                _getMemberOne(member.token) {
+
+                }
             }
         }
     }

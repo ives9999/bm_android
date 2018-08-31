@@ -2,12 +2,14 @@ package com.sportpassword.bm.Controllers
 
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.support.v4.content.LocalBroadcastManager
 import android.text.InputType
 import android.view.View
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.MemberService
 import com.sportpassword.bm.Utilities.Alert
 import com.sportpassword.bm.Utilities.Loading
+import com.sportpassword.bm.Utilities.memberDidChangeIntent
 import com.sportpassword.bm.member
 import kotlinx.android.synthetic.main.activity_validate.*
 
@@ -37,6 +39,7 @@ class ValidateActivity : BaseActivity() {
     }
 
     fun submit(view: View) {
+        _hideKeyboard(validate_layout)
         val code = codeTxt.text.toString()
         if (code.length == 0) {
             Alert.show(this, "警告", "請填寫認證碼")
@@ -46,7 +49,7 @@ class ValidateActivity : BaseActivity() {
                 loading.dismiss()
                 if (success) {
                     Alert.show(this, "訊息", "認證成功", {
-                        memberDidChange()
+                        //LocalBroadcastManager.getInstance(this).sendBroadcast(memberDidChangeIntent)
                         finish()
                     })
                 } else {

@@ -15,6 +15,7 @@ import kotlinx.android.synthetic.main.activity_account_update1.*
 class AccountActivity : BaseActivity() {
 
     val default = "未提供"
+    val ACCOUNT_REQUEST_CODE = 1
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -49,6 +50,16 @@ class AccountActivity : BaseActivity() {
         accountTelRow.setOnClickListener { view ->
             goIntent("tel")
         }
+
+        refreshLayout = account_refresh
+        setRefreshListener()
+    }
+
+    override fun refresh() {
+        _getMemberOne(member.token) {
+            setData()
+            closeRefresh()
+        }
     }
 
     override fun onResume() {
@@ -61,7 +72,18 @@ class AccountActivity : BaseActivity() {
     private fun goIntent(field: String) {
         val intent = Intent(this, AccountUpdate1Activity::class.java)
         intent.putExtra("field", field)
-        startActivity(intent)
+        startActivityForResult(intent, ACCOUNT_REQUEST_CODE)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        when (requestCode) {
+            ACCOUNT_REQUEST_CODE -> {
+                _getMemberOne(member.token) {
+                    setData()
+                }
+            }
+        }
     }
 
     private fun setData() {
@@ -74,6 +96,7 @@ class AccountActivity : BaseActivity() {
         accountEmail.setMyText(member.email, default)
         accountDob.setMyText(member.dob, default)
         accountMobile.setMyText(member.mobile, default)
+        println("tel:" + member.tel)
         accountTel.setMyText(member.tel, default)
         val res = member.validateShow(member.validate)
         accountValidate.text = res.joinToString(",")
