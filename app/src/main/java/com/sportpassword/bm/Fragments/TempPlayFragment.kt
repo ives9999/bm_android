@@ -27,12 +27,12 @@ class TempPlayFragment : TabFragment() {
 
     protected lateinit var tempPlayListAdapter: TempPlayListAdapter
     protected var dataLists1: ArrayList<Map<String, Map<String, Any>>> = arrayListOf()
-    protected lateinit var that1: TempPlayFragment
+//    protected lateinit var that1: TempPlayFragment
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         this.dataService = TeamService
-        that1 = this
+//        that1 = this
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -42,7 +42,6 @@ class TempPlayFragment : TabFragment() {
     }
     override fun initAdapter() {
         tempPlayListAdapter = TempPlayListAdapter(context!!) { data ->
-            //println(data)
             val position = data["position"]!!["value"] as Int
             val token = data[TEAM_TOKEN_KEY]!!["value"] as String
             //val intent = Intent(activity, TestActivity::class.java)
@@ -50,7 +49,6 @@ class TempPlayFragment : TabFragment() {
             intent.putExtra("position", position)
             intent.putExtra(TEAM_TOKEN_KEY, token)
             startActivity(intent)
-
         }
         recyclerView.adapter = tempPlayListAdapter
     }
@@ -73,18 +71,18 @@ class TempPlayFragment : TabFragment() {
         var pos: Int = 0
 
         scrollerListenr = object: RecyclerView.OnScrollListener() {
-            override fun onScrolled(recyclerView: RecyclerView?, dx: Int, dy: Int) {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
                 val layoutManager = recyclerView!!.layoutManager as GridLayoutManager
-                if (that1.dataLists1.size < that1.totalCount) {
+                if (this@TempPlayFragment.dataLists1.size < this@TempPlayFragment.totalCount) {
                     pos = layoutManager.findLastVisibleItemPosition()
                 }
             }
-            override fun onScrollStateChanged(recyclerView: RecyclerView?, newState: Int) {
+            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
                 super.onScrollStateChanged(recyclerView, newState)
 
-                if (that1.superDataLists.size == pos + 1 && newState == RecyclerView.SCROLL_STATE_IDLE && that1.superDataLists.size < that1.totalCount) {
-                    that1.getDataStart(that1.page, that1.perPage)
+                if (this@TempPlayFragment.dataLists1.size == pos + 1 && newState == RecyclerView.SCROLL_STATE_IDLE && this@TempPlayFragment.dataLists1.size < this@TempPlayFragment.totalCount) {
+                    this@TempPlayFragment.getDataStart(this@TempPlayFragment.page, this@TempPlayFragment.perPage)
                 }
             }
         }
@@ -93,7 +91,7 @@ class TempPlayFragment : TabFragment() {
 
     override fun setRecyclerViewRefreshListener() {
         refreshListener = SwipeRefreshLayout.OnRefreshListener {
-            that1.page = 1
+            this.page = 1
             this.getDataStart(this.page, this.perPage)
             this.tempPlayListAdapter.notifyDataSetChanged()
 

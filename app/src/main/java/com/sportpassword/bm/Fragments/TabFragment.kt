@@ -127,14 +127,18 @@ open class TabFragment : Fragment() {
         var pos: Int = 0
 
         scrollerListenr = object: RecyclerView.OnScrollListener() {
-            override fun onScrolled(recyclerView: RecyclerView?, dx: Int, dy: Int) {
+
+        }
+
+        scrollerListenr = object: RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
                 val layoutManager = recyclerView!!.layoutManager as GridLayoutManager
                 if (that.superDataLists.size < that.totalCount) {
                     pos = layoutManager.findLastVisibleItemPosition()
                 }
             }
-            override fun onScrollStateChanged(recyclerView: RecyclerView?, newState: Int) {
+            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
                 super.onScrollStateChanged(recyclerView, newState)
 
                 if (that.superDataLists.size == pos + 1 && newState == RecyclerView.SCROLL_STATE_IDLE && that.superDataLists.size < that.totalCount) {

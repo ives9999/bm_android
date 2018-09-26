@@ -97,14 +97,14 @@ open class MoreVC : BaseActivity() {
         var pos: Int = 0
 
         scrollerListenr = object: RecyclerView.OnScrollListener() {
-            override fun onScrolled(recyclerView: RecyclerView?, dx: Int, dy: Int) {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
                 val layoutManager = recyclerView!!.layoutManager as GridLayoutManager
                 if (this@MoreVC.superDataLists.size < this@MoreVC.totalCount) {
                     pos = layoutManager.findLastVisibleItemPosition()
                 }
             }
-            override fun onScrollStateChanged(recyclerView: RecyclerView?, newState: Int) {
+            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
                 super.onScrollStateChanged(recyclerView, newState)
 
                 if (this@MoreVC.superDataLists.size == pos + 1 && newState == RecyclerView.SCROLL_STATE_IDLE && this@MoreVC.superDataLists.size < this@MoreVC.totalCount) {

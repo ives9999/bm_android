@@ -56,7 +56,7 @@ object TeamService: DataService() {
         body.put("perPage", perPage.toString())
 
         val requestBody = body.toString()
-        // println(requestBody)
+        //println(requestBody)
         //println("coach getList refresh: $refresh")
         tempPlayLists = arrayListOf()
 
@@ -93,19 +93,37 @@ object TeamService: DataService() {
 
                     var city: MutableMap<String, Any> = mutableMapOf()
                     city = data[TEAM_CITY_KEY]!!
-                    city["value"] = obj.getInt("city_id")
+                    city["value"] = 0
+                    try {
+                        city["value"] = obj.getInt("city_id")
+                    } catch (e: Exception) {
+
+                    }
                     city["show"] = obj.getString("city_name")
                     data[TEAM_CITY_KEY] = city
 
                     var arena: MutableMap<String, Any> = mutableMapOf()
                     arena = data[TEAM_ARENA_KEY]!!
-                    arena["value"] = obj.getInt("arena_id")
+                    arena["value"] = 0
+                    try {
+                        arena["value"] = obj.getInt("arena_id")
+                    } catch (e: Exception) {
+
+                    }
                     arena["show"] = obj.getString("arena_name")
                     data[TEAM_ARENA_KEY] = arena
 
                     var count: MutableMap<String, Any> = mutableMapOf()
-                    count["quantity"] = obj.getInt(TEAM_TEMP_QUANTITY_KEY)
-                    count["signup"] = obj.getInt("temp_signup_count")
+                    count["quantity"] = 0
+                    try {
+                        count["quantity"] = obj.getInt(TEAM_TEMP_QUANTITY_KEY)
+                    } catch (e: Exception) {
+                    }
+                    count["signup"] = 0
+                    try {
+                        count["signup"] = obj.getInt("temp_signup_count")
+                    } catch (e: Exception) {
+                    }
                     data["count"] = count
                     //println(data)
 
