@@ -18,6 +18,7 @@ import android.support.v4.content.LocalBroadcastManager
 import android.support.v4.widget.SwipeRefreshLayout
 import android.support.v7.app.ActionBar
 import android.support.v7.widget.LinearLayoutManager
+import android.util.AttributeSet
 import android.view.*
 import android.view.inputmethod.InputMethodManager
 import android.widget.*
@@ -44,7 +45,7 @@ import java.net.URL
 import java.util.*
 import javax.net.ssl.HttpsURLConnection
 import kotlin.system.exitProcess
-
+import kotlinx.android.synthetic.main.mask.*
 
 open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener {
 
@@ -263,9 +264,9 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener {
 
     public fun goDeleteTeam(token: String="") {
         Alert.delete(this, {
-            val m = Loading.show(this)
+            Loading.show(mask)
             TeamService.delete(this, "team", token) { success ->
-                m.dismiss()
+                Loading.hide(mask)
                 val teamUpdate = Intent(NOTIF_TEAM_UPDATE)
                 LocalBroadcastManager.getInstance(this).sendBroadcast(teamUpdate)
             }
@@ -402,9 +403,9 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener {
 
     protected fun _getMemberOne(token: String, completion: CompletionHandler) {
         if (member.isLoggedIn) {
-            val loading = Loading.show(this)
+            Loading.show(mask)
             MemberService.getOne(this, token) { success ->
-                loading.dismiss()
+                Loading.hide(mask)
                 if (success) {
                     completion(true)
                 } else {
@@ -455,12 +456,12 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener {
     }
 
     protected fun _getTeamManagerList(completion: CompletionHandler) {
-        val loading = Loading.show(this)
+        Loading.show(mask)
         val filter1: Array<Any> = arrayOf("channel", "=", CHANNEL)
         val filter2: Array<Any> = arrayOf("manager_id", "=", member.id)
         val filter: Array<Array<Any>> = arrayOf(filter1, filter2)
         TeamService.getList(this, "team", "name", 1, 100, filter) { success ->
-            loading.dismiss()
+            Loading.hide(mask)
             if (success) {
                 superDataLists = TeamService.superDataLists
                 completion(true)
@@ -492,9 +493,9 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener {
         }.show()
     }
     protected fun _addBlackList(reason: String, memberToken: String, teamToken: String) {
-        val loading = Loading.show(this)
+        Loading.show(mask)
         TeamService.addBlackList(this, teamToken, memberToken, member.token, reason) { success ->
-            loading.dismiss()
+            Loading.hide(mask)
             if (success) {
                 info("加入黑名單成功")
             } else {

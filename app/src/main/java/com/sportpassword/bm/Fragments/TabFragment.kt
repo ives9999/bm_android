@@ -1,6 +1,7 @@
 package com.sportpassword.bm.Fragments
 
 
+import android.app.Dialog
 import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.Fragment
@@ -16,6 +17,7 @@ import com.sportpassword.bm.Models.SuperData
 
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.DataService
+import com.sportpassword.bm.Utilities.Loading
 import com.sportpassword.bm.Utilities.PERPAGE
 import kotlinx.android.synthetic.main.tab.*
 
@@ -37,6 +39,9 @@ open class TabFragment : Fragment() {
     protected var perPage: Int = PERPAGE
     protected var totalCount: Int = 0
     protected var totalPage: Int = 0
+
+    protected var loading: Boolean = false
+    protected lateinit var mask: View
 
     protected var superDataLists: ArrayList<SuperData> = arrayListOf()
 
@@ -71,6 +76,8 @@ open class TabFragment : Fragment() {
 
         refreshLayout = view.findViewById<SwipeRefreshLayout>(R.id.tab_refresh)
 
+        mask = view.findViewById(R.id.mask)
+
         getDataStart(page, perPage)
 
         setRecyclerViewScrollListener()
@@ -88,7 +95,10 @@ open class TabFragment : Fragment() {
         recyclerView.adapter = listAdapter
 
     }
-    open protected fun getDataStart(_page: Int, _perPage: Int) {}
+    open protected fun getDataStart(_page: Int, _perPage: Int) {
+        Loading.show(mask)
+        loading = true
+    }
 
     open protected fun getDataEnd(success: Boolean) {
         if (success) {
@@ -104,6 +114,9 @@ open class TabFragment : Fragment() {
             notifyDataSetChanged()
             page++
         }
+//        mask?.let { mask?.dismiss() }
+        Loading.hide(mask)
+        loading = false
 //        println("page:$page")
 //        println("perPage:$perPage")
 //        println("totalCount:$totalCount")
@@ -141,7 +154,7 @@ open class TabFragment : Fragment() {
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
                 super.onScrollStateChanged(recyclerView, newState)
 
-                if (that.superDataLists.size == pos + 1 && newState == RecyclerView.SCROLL_STATE_IDLE && that.superDataLists.size < that.totalCount) {
+                if (that.superDataLists.size == pos + 1 && newState == RecyclerView.SCROLL_STATE_IDLE && that.superDataLists.size < that.totalCount && !that.loading) {
                     that.getDataStart(that.page, that.perPage)
                 }
             }

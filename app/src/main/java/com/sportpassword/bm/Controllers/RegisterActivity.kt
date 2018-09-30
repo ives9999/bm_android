@@ -9,6 +9,7 @@ import com.sportpassword.bm.Utilities.Alert
 import com.sportpassword.bm.Utilities.Loading
 import com.sportpassword.bm.Utilities.hideKeyboard
 import kotlinx.android.synthetic.main.activity_register.*
+import kotlinx.android.synthetic.main.mask.*
 
 class RegisterActivity : BaseActivity() {
 
@@ -25,7 +26,6 @@ class RegisterActivity : BaseActivity() {
     }
 
     fun registerSubmit(view: View) {
-        val loading = Loading.show(this)
         val email: String = registerEmailTxt.text.toString()
         if (email.isEmpty()) {
             Alert.show(this, "警告", "EMail沒填")
@@ -43,9 +43,9 @@ class RegisterActivity : BaseActivity() {
         }
 
         //println("submit: " + URL_REGISTER)
-
+        Loading.show(mask)
         MemberService.register(this, email, password, repassword) { success ->
-            loading.dismiss()
+            Loading.hide(mask)
             if (success) {
                 //println("register ok")
                 if (MemberService.success) {

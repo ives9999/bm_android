@@ -30,6 +30,7 @@ class TeamFragment: TabFragment() {
     }
 
     override fun getDataStart(_page: Int, _perPage: Int) {
+        super.getDataStart(_page, _perPage)
         //println("page: $_page")
         TeamService.getList(context!!, "team", "name", _page, _perPage, null) { success ->
             getDataEnd(success)

@@ -28,6 +28,7 @@ import org.jetbrains.anko.contentView
 import org.jetbrains.anko.inputMethodManager
 import org.jetbrains.anko.toast
 import java.io.File
+import kotlinx.android.synthetic.main.mask.*
 
 class EditTeamActivity : BaseActivity(), ImagePicker {
 
@@ -94,11 +95,10 @@ class EditTeamActivity : BaseActivity(), ImagePicker {
     override fun refresh() {
         super.refresh()
         if (teamToken.length > 0) {
+            Loading.show(mask)
             action = "UPDATE"
-            val l = Loading.show(this)
             TeamService.getOne(this, "team", "name", teamToken) { success ->
                 if (success) {
-                    l.dismiss()
                     model.data = TeamService.data
                     //println(model.data)
                     //setTeamData()
@@ -110,6 +110,7 @@ class EditTeamActivity : BaseActivity(), ImagePicker {
                     val title: String = if (action == "UPDATE") "更新球隊" else "新增球隊"
                     setMyTitle(title)
                 }
+                Loading.hide(mask)
             }
         } else {
             setMyTitle("新增球隊")
@@ -236,7 +237,7 @@ class EditTeamActivity : BaseActivity(), ImagePicker {
             if (params.count() == 0 && !isFeaturedChange) {
                 Alert.show(context, "提示", "沒有修改任何資料或圖片")
             } else {
-                val l = Loading.show(this)
+                Loading.show(mask)
                 if (params.count() == 0) {
                     if (model.data[TEAM_ID_KEY]!!["value"] as Int > 0) {
                         val id: Int = model.data[TEAM_ID_KEY]!!["value"] as Int
@@ -251,9 +252,8 @@ class EditTeamActivity : BaseActivity(), ImagePicker {
                 }
 
                 TeamService.update(context, "team", params, filePath) { success ->
-
+                    Loading.hide(mask)
                     if (success) {
-                        l.dismiss()
                         if (TeamService.success) {
                             val id: Int = TeamService.id
                             model.data[TEAM_ID_KEY]!!["value"] = id
@@ -270,7 +270,6 @@ class EditTeamActivity : BaseActivity(), ImagePicker {
                             Alert.show(context, "錯誤", TeamService.msg)
                         }
                     } else {
-                        l.dismiss()
                         Alert.show(context, "錯誤", TeamService.msg)
                     }
 

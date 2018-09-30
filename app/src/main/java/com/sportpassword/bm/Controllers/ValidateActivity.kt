@@ -12,6 +12,7 @@ import com.sportpassword.bm.Utilities.Loading
 import com.sportpassword.bm.Utilities.memberDidChangeIntent
 import com.sportpassword.bm.member
 import kotlinx.android.synthetic.main.activity_validate.*
+import kotlinx.android.synthetic.main.mask.*
 
 class ValidateActivity : BaseActivity() {
 
@@ -44,9 +45,9 @@ class ValidateActivity : BaseActivity() {
         if (code.length == 0) {
             Alert.show(this, "警告", "請填寫認證碼")
         } else {
-            val loading = Loading.show(this)
+            Loading.show(mask)
             MemberService.validate(this, type, code, member.token) { success ->
-                loading.dismiss()
+                Loading.hide(mask)
                 if (success) {
                     Alert.show(this, "訊息", "認證成功", {
                         //LocalBroadcastManager.getInstance(this).sendBroadcast(memberDidChangeIntent)
@@ -70,9 +71,9 @@ class ValidateActivity : BaseActivity() {
             }
             Alert.show(this, "警告", msg)
         } else {
-            val loading = Loading.show(this)
+            Loading.show(mask)
             MemberService.sendVaildateCode(this, type, value, member.token) { success ->
-                loading.dismiss()
+                Loading.hide(mask)
                 if (success) {
                     var msg = ""
                     if (type == "email") {

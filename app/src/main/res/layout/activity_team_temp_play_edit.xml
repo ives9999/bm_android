@@ -141,5 +141,6 @@
             </Button>
         </LinearLayout>
     </LinearLayout>
+    <include layout="@layout/mask" />
 
 </android.support.constraint.ConstraintLayout>

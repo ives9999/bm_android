@@ -13,6 +13,7 @@ import com.sportpassword.bm.Services.TeamService
 import com.sportpassword.bm.Utilities.*
 import kotlinx.android.synthetic.main.activity_team_temp_play_edit.*
 import org.jetbrains.anko.sdk25.coroutines.onCheckedChange
+import kotlinx.android.synthetic.main.mask.*
 
 class TeamTempPlayEditActivity : BaseActivity() {
 
@@ -38,18 +39,18 @@ class TeamTempPlayEditActivity : BaseActivity() {
 
     override fun refresh() {
         if (teamToken.length > 0) {
-            val l = Loading.show(this)
+            Loading.show(mask)
             TeamService.tempPlay_onoff(this, teamToken) { success ->
                 if (success) {
                     model.temp_play_data = TeamService.temp_play_data
                     //println(model.temp_play_data)
                     dataToField()
                     temp_play_quantity.setSelection(temp_play_quantity.length())
-                    l.dismiss()
                     setEventListener()
                     val title: String = model.temp_play_data[TEAM_NAME_KEY]!!["value"] as String + "臨打"
                     setMyTitle(title)
                 }
+                Loading.hide(mask)
             }
         }
     }

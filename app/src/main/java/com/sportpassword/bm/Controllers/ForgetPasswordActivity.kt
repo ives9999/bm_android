@@ -12,6 +12,7 @@ import com.sportpassword.bm.Utilities.Loading
 import com.sportpassword.bm.Utilities.NOTIF_MEMBER_DID_CHANGE
 import kotlinx.android.synthetic.main.activity_forget_password.*
 import kotlinx.android.synthetic.main.activity_login.*
+import kotlinx.android.synthetic.main.mask.*
 
 class ForgetPasswordActivity : BaseActivity() {
 
@@ -25,15 +26,14 @@ class ForgetPasswordActivity : BaseActivity() {
     }
 
     fun forgetPasswordSubmit(view: View) {
-        val loading = Loading.show(this)
         val email = forgetPasswordEmailTxt.text.toString()
         if (email.isEmpty()) {
             Alert.show(this, "警告", "EMail沒填")
         }
 
+        Loading.show(mask)
         MemberService.forgetPassword(this, email) { success ->
-            loading.dismiss()
-            //println(success)
+            Loading.hide(mask)
             if (success) {
                 if (MemberService.success) {
                     Alert.show(this, "訊息", MemberService.msg)

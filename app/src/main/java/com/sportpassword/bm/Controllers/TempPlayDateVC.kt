@@ -9,6 +9,7 @@ import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.TeamService
 import com.sportpassword.bm.Utilities.Loading
 import kotlinx.android.synthetic.main.activity_temp_play_date.*
+import kotlinx.android.synthetic.main.mask.*
 import org.jetbrains.anko.contentView
 
 class TempPlayDateVC : BaseActivity() {
@@ -33,9 +34,9 @@ class TempPlayDateVC : BaseActivity() {
 
     override fun refresh() {
         super.refresh()
-        val loading = Loading.show(this)
+        Loading.show(mask)
         TeamService.tempPlay_date(this, token) { success ->
-            loading.dismiss()
+            Loading.hide(mask)
             if (success) {
                 rows = TeamService.tempPlayDate.rows
                 //println(rows)

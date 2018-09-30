@@ -33,6 +33,7 @@ class CoachFragment : TabFragment() {
     }
 
     override fun getDataStart(_page: Int, _perPage: Int) {
+        super.getDataStart(_page, _perPage)
         //println("page: $_page")
         CoachService.getList(context!!, "coach", "name", _page, _perPage, null) { success ->
             getDataEnd(success)

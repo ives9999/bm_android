@@ -1,6 +1,7 @@
 package com.sportpassword.bm.Services
 
 import android.content.Context
+import com.android.volley.DefaultRetryPolicy
 import com.android.volley.Request
 import com.android.volley.Response
 import com.android.volley.toolbox.JsonObjectRequest
@@ -52,6 +53,7 @@ object TeamService: DataService() {
 
         val body = JSONObject()
         body.put("source", "app")
+        body.put("channel", "bm")
         body.put("page", page.toString())
         body.put("perPage", perPage.toString())
 
@@ -260,6 +262,7 @@ object TeamService: DataService() {
             this.msg = "取得失敗，網站或網路錯誤"
             complete(false)
         }){}
+        request.setRetryPolicy(DefaultRetryPolicy(50000, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT))
         Volley.newRequestQueue(context).add(request)
     }
     fun cancelPlusOne(context: Context, title: String, near_date: String, token: String, complete: CompletionHandler) {

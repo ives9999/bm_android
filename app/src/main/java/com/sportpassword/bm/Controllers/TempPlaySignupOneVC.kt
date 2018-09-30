@@ -8,6 +8,7 @@ import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.MemberService
 import com.sportpassword.bm.Utilities.*
 import kotlinx.android.synthetic.main.activity_temp_play_signup_one_vc.*
+import kotlinx.android.synthetic.main.mask.*
 import org.jetbrains.anko.contentView
 
 class  TempPlaySignupOneVC : BaseActivity() {
@@ -73,16 +74,16 @@ class  TempPlaySignupOneVC : BaseActivity() {
     override fun refresh() {
         super.refresh()
         initMemberOne()
-        val loading = Loading.show(this)
+        Loading.show(mask)
         initGetMemberValue { success ->
             if (success) {
                 initIsTeamManager { success ->
-                    loading.dismiss()
+                    Loading.hide(mask)
                     tempPlaySignupOneAdapter.notifyDataSetChanged()
                     closeRefresh()
                 }
             } else {
-                loading.dismiss()
+//                loading.dismiss()
             }
         }
     }

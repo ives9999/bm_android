@@ -14,6 +14,7 @@ import com.sportpassword.bm.member
 import kotlinx.android.synthetic.main.activity_black_list_vc.*
 import org.jetbrains.anko.contentView
 import org.jetbrains.anko.makeCall
+import kotlinx.android.synthetic.main.mask.*
 
 class BlackListVC : BaseActivity() {
 
@@ -34,9 +35,9 @@ class BlackListVC : BaseActivity() {
 
     override fun refresh() {
         super.refresh()
-        val loading = Loading.show(this)
+        Loading.show(mask)
         MemberService.blacklist(this, memberToken) { success ->
-            loading.dismiss()
+            Loading.hide(mask)
             if (success) {
                 blackList = MemberService.blackList
                 //println(rows)
@@ -62,9 +63,9 @@ class BlackListVC : BaseActivity() {
         val memberToken = row.token
         val teamToken = row.team.get("token") as String
 
-        val loading = Loading.show(this)
+        Loading.show(mask)
         TeamService.removeBlackList(this, teamToken, memberToken, member.token) { success ->
-            loading.dismiss()
+            Loading.hide(mask)
             if (success) {
                 info("移除黑名單成功")
                 refresh()

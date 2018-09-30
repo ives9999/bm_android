@@ -8,6 +8,7 @@ import com.sportpassword.bm.Services.MemberService
 import com.sportpassword.bm.Utilities.Alert
 import com.sportpassword.bm.Utilities.Loading
 import kotlinx.android.synthetic.main.activity_update_password.*
+import kotlinx.android.synthetic.main.mask.*
 
 class UpdatePasswordActivity : BaseActivity() {
 
@@ -33,10 +34,9 @@ class UpdatePasswordActivity : BaseActivity() {
         if (newPwd != rePwd) {
             Alert.show(this, "警告", "新密碼不符合")
         }
-        val loading = Loading.show(this)
+        Loading.show(mask)
         MemberService.changePassword(this, oldPwd, newPwd, rePwd) { success ->
-            loading.dismiss()
-            //println(success)
+            Loading.hide(mask)
             if (success) {
                 if (MemberService.success) {
                     Alert.show(this, "訊息", MemberService.msg) {

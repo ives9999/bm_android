@@ -20,6 +20,7 @@ import com.sportpassword.bm.member
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_show_temp_play.*
 import org.jetbrains.anko.contentView
+import kotlinx.android.synthetic.main.mask.*
 
 class ShowTempPlayActivity : BaseActivity() {
 
@@ -51,6 +52,7 @@ class ShowTempPlayActivity : BaseActivity() {
 
     override fun refresh() {
         super.refresh()
+        Loading.show(mask)
         TeamService.getOne(this, "team", "name", teamToken) { success ->
             if (success) {
                 data = TeamService.data
@@ -76,6 +78,7 @@ class ShowTempPlayActivity : BaseActivity() {
                 setMyTitle(name)
             }
         }
+        Loading.hide(mask)
     }
 
     fun plusOne(view: View) {
@@ -101,9 +104,9 @@ class ShowTempPlayActivity : BaseActivity() {
     }
 
     private fun _plusOne() {
-        val loadding = Loading.show(this)
+        Loading.show(mask)
         TeamService.plusOne(this, name, nearDate, memberToken) { success ->
-            loadding.dismiss()
+            Loading.hide(mask)
             var msg: String = "報名臨打成功"
             if (success) {
                 Alert.show(this, "成功", msg)
@@ -120,7 +123,9 @@ class ShowTempPlayActivity : BaseActivity() {
             return
         }
 
+        Loading.show(mask)
         TeamService.cancelPlusOne(this, name, nearDate, memberToken) { success ->
+            Loading.hide(mask)
             var msg: String = "取消報名臨打成功"
             if (success) {
                 Alert.show(this, "成功", msg)

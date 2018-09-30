@@ -193,7 +193,7 @@ val memberDidChangeIntent = Intent(NOTIF_MEMBER_DID_CHANGE)
 var HEADER = "application/json; charset=utf-8"
 var MULTIPART = "multipart/form-data"
 
-val PERPAGE: Int = 5
+val PERPAGE: Int = 8
 
 // Prefix
 val VIMEO_PREFIX: String = "/videos/"

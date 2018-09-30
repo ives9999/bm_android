@@ -18,6 +18,7 @@ import com.sportpassword.bm.Utilities.NOTIF_MEMBER_DID_CHANGE
 import com.sportpassword.bm.Utilities.memberDidChangeIntent
 import com.sportpassword.bm.member
 import kotlinx.android.synthetic.main.activity_login.*
+import kotlinx.android.synthetic.main.mask.*
 import org.json.JSONObject
 import java.util.*
 
@@ -32,10 +33,11 @@ class LoginActivity : BaseActivity() {
 
         //loginEmailTxt.setText("ives@housetube.tw")
         //loginPasswordTxt.setText("K5SD23r6")
+
     }
 
     fun loginSubmit(view: View) {
-        val loading = Loading.show(this)
+        Loading.show(mask)
         val email = loginEmailTxt.text.toString()
         if (email.isEmpty()) {
             Alert.show(this, "警告", "EMail沒填")
@@ -49,7 +51,7 @@ class LoginActivity : BaseActivity() {
         //println(playerID)
 
         MemberService.login(this, email, password, playerID) { success ->
-            loading.dismiss()
+            Loading.hide(mask)
             //println(success)
             if (success) {
                 if (MemberService.success) {

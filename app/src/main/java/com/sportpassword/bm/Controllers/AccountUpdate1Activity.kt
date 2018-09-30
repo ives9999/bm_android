@@ -22,6 +22,7 @@ import com.sportpassword.bm.member
 import kotlinx.android.synthetic.main.activity_account_update1.*
 import kotlinx.android.synthetic.main.tab.*
 import java.util.*
+import kotlinx.android.synthetic.main.mask.*
 
 class AccountUpdate1Activity : BaseActivity() {
 
@@ -138,13 +139,12 @@ class AccountUpdate1Activity : BaseActivity() {
     }
 
     fun accountSubmit(view: View) {
-        val loading = Loading.show(this)
+//        Loading.show(mask)
         if (accountTxt.visibility == View.VISIBLE) {
             value = accountTxt.text.toString()
             //println(value)
         }
         MemberService.update(this, member.id, field, value) { success ->
-            loading.dismiss()
             //println(success)
             if (success) {
                 if (MemberService.success) {

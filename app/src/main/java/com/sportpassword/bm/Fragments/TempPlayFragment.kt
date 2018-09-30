@@ -14,8 +14,10 @@ import com.sportpassword.bm.Adapters.TempPlayListAdapter
 import com.sportpassword.bm.Controllers.ShowTempPlayActivity
 
 import com.sportpassword.bm.Services.TeamService
+import com.sportpassword.bm.Utilities.Loading
 import com.sportpassword.bm.Utilities.TEAM_TOKEN_KEY
 import kotlinx.android.synthetic.main.tab.*
+import org.jetbrains.anko.Android
 
 
 /**
@@ -53,6 +55,9 @@ class TempPlayFragment : TabFragment() {
         recyclerView.adapter = tempPlayListAdapter
     }
     override fun getDataStart(_page: Int, _perPage: Int) {
+//        mask = Loading.show(context!!)
+        Loading.show(mask)
+        loading = true
         TeamService.tempPlay_list(context!!, _page, _perPage) { success ->
             getDataEnd(success)
         }
@@ -62,6 +67,13 @@ class TempPlayFragment : TabFragment() {
             dataLists1 = arrayListOf()
         }
         dataLists1.addAll(TeamService.tempPlayLists)
+//        var arr: ArrayList<String> = arrayListOf()
+//        for (i in 0..dataLists1.size-1) {
+//            val row = dataLists1[i]
+//            val id = row.get("id")!!["show"] as String
+//            arr.add(id)
+//        }
+//        println(arr)
         tempPlayListAdapter.lists = dataLists1
         tempPlayListAdapter.notifyDataSetChanged()
     }
@@ -81,7 +93,7 @@ class TempPlayFragment : TabFragment() {
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
                 super.onScrollStateChanged(recyclerView, newState)
 
-                if (this@TempPlayFragment.dataLists1.size == pos + 1 && newState == RecyclerView.SCROLL_STATE_IDLE && this@TempPlayFragment.dataLists1.size < this@TempPlayFragment.totalCount) {
+                if (this@TempPlayFragment.dataLists1.size == pos + 1 && newState == RecyclerView.SCROLL_STATE_IDLE && this@TempPlayFragment.dataLists1.size < this@TempPlayFragment.totalCount && !this@TempPlayFragment.loading) {
                     this@TempPlayFragment.getDataStart(this@TempPlayFragment.page, this@TempPlayFragment.perPage)
                 }
             }

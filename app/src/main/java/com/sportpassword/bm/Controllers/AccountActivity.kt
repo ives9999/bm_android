@@ -11,6 +11,7 @@ import com.sportpassword.bm.R
 import com.sportpassword.bm.member
 import kotlinx.android.synthetic.main.activity_account.*
 import kotlinx.android.synthetic.main.activity_account_update1.*
+import kotlinx.android.synthetic.main.mask.*
 
 class AccountActivity : BaseActivity() {
 

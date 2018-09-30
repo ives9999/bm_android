@@ -1,5 +1,6 @@
 package com.sportpassword.bm.Utilities
 
+import android.animation.Animator
 import android.app.Activity
 import android.app.AlertDialog
 import android.app.Dialog
@@ -7,6 +8,7 @@ import android.content.Context
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.support.v4.content.ContextCompat
+import android.view.View
 import android.view.ViewGroup
 import android.view.Window
 import android.view.inputmethod.InputMethodManager
@@ -138,50 +140,30 @@ fun ImageView.setImage(name: String) {
 }
 
 object Loading {
-    var mask: Dialog? = null
-    fun show(context: Context): Dialog {
-        val dialog = Dialog(context)
-        dialog.window.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT));
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
-
-        val rl = RelativeLayout(context)
-        val rl_lp = RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT,
-                RelativeLayout.LayoutParams.WRAP_CONTENT)
-        rl.layoutParams = rl_lp
-
-
-        val loadingImg = ProgressBar(context)
-        loadingImg.id = R.id.loadingImgID
-        val color = ContextCompat.getColor(context, R.color.MY_GREEN)
-        loadingImg.indeterminateDrawable.setColorFilter(color, android.graphics.PorterDuff.Mode.MULTIPLY)
-
-        val loadingText: TextView = TextView(context)
-        loadingText.id = R.id.loadingTextID
-        loadingText.text = LOADING
-
-        val p1 = RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT,
-                RelativeLayout.LayoutParams.WRAP_CONTENT)
-        val p2 = RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT,
-                RelativeLayout.LayoutParams.WRAP_CONTENT)
-        //p1.addRule(RelativeLayout.ABOVE, loadingImg.id)
-        p2.addRule(RelativeLayout.BELOW, loadingImg.id)
-        val _20: Int = (context.resources.getDimension(R.dimen.loadingTextMarginTop)).toInt()
-        p2.setMargins(0, _20, 0, 0)
-
-        rl.addView(loadingImg, p1)
-        rl.addView(loadingText, p2)
-
-        val p = ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT)
-        dialog.addContentView(rl, p)
-        dialog.show()
-        mask = dialog
-        return dialog
+    val alpha = 0.8f
+    val duration: Long = 100
+    fun show(mask: View) {
+        mask.alpha = 0f
+        mask.visibility = View.VISIBLE
+        mask.animate().setDuration(duration).alpha(alpha).setListener(object: Animator.AnimatorListener {
+            override fun onAnimationEnd(p0: Animator?) {
+                mask.visibility = View.VISIBLE
+            }
+            override fun onAnimationRepeat(p0: Animator?) {}
+            override fun onAnimationCancel(p0: Animator?) {}
+            override fun onAnimationStart(p0: Animator?) {}
+        })
     }
-    fun hide() {
-        if (mask != null) {
-            //mask.dismiss()
-        }
+    fun hide(mask: View) {
+        mask.visibility = View.VISIBLE
+        mask.animate().setDuration(duration).alpha(0f).setListener(object: Animator.AnimatorListener {
+            override fun onAnimationEnd(p0: Animator?) {
+                mask.visibility = View.INVISIBLE
+            }
+            override fun onAnimationRepeat(p0: Animator?) {}
+            override fun onAnimationCancel(p0: Animator?) {}
+            override fun onAnimationStart(p0: Animator?) {}
+        })
     }
 }
 
