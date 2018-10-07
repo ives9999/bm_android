@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.support.v4.widget.SwipeRefreshLayout
 import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.view.View
 import com.sportpassword.bm.Adapters.ListAdapter
 import com.sportpassword.bm.Services.DataService
 import com.sportpassword.bm.Utilities.PERPAGE
@@ -20,6 +21,9 @@ open class MoreVC : BaseActivity() {
     protected var perPage: Int = PERPAGE
     protected var totalCount: Int = 0
     protected var totalPage: Int = 0
+
+    protected var loading: Boolean = false
+    protected lateinit var mask: View
 
     protected lateinit var recyclerView: RecyclerView
     open protected lateinit var listAdapter: ListAdapter
@@ -82,6 +86,7 @@ open class MoreVC : BaseActivity() {
             val intent = Intent(this, ShowActivity::class.java)
             intent.putExtra("type", type)
             intent.putExtra("token", data.token)
+            intent.putExtra("title", data.title)
             startActivity(intent)
         }
         recyclerView.adapter = listAdapter

@@ -11,6 +11,7 @@
         <item name="android:actionButtonStyle">@style/MyActionBarButtonStyle</item>
         <item name="actionButtonStyle">@style/MyActionBarButtonStyle</item>
     </style>
+
     <style name="MyActionBarButtonStyle" parent="Widget.AppCompat.ActionButton">
         <item name="android:minWidth">30dip</item>
         <item name="android:maxWidth">80dip</item>
@@ -29,29 +30,35 @@
     </style>
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
     <style name="tab" parent="TextAppearance.Design.Tab">
         <item name="android:textSize">16sp</item>
         <item name="android:textColor">@color/BLACK</item>
     </style>
+
     <style name="DrawerArrowStyle" parent="@style/Widget.AppCompat.DrawerArrowToggle">
         <item name="spinBars">true</item>
         <item name="color">@android:color/black</item>
         <item name="android:textColor">@color/BLACK</item>
     </style>
+
     <style name="DialogTheme">
         <item name="android:windowEnterAnimation">@anim/slide_left</item>
         <item name="android:windowExitAnimation">@anim/slide_right</item>
     </style>
+
     <style name="DialogAnimation_2">
         <item name="android:windowEnterAnimation">@anim/slide_up</item>
         <item name="android:windowExitAnimation">@anim/slide_bottom</item>
     </style>
+
     <style name="DialogSlideAnim" parent="@android:style/Theme.Dialog">
         <item name="android:windowAnimationStyle">@style/DialogAnimation_2</item>
         <item name="android:windowBackground">@color/MY_GREEN</item>
         <item name="android:windowFrame">@null</item>
         <item name="android:windowNoTitle">true</item>
     </style>
+
     <style name="MySwitch" parent="Theme.AppCompat.Light">
         <!-- active thumb & track color (30% transparency) -->
         <item name="colorControlActivated">@color/MY_GREEN</item>

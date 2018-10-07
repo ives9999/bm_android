@@ -77,7 +77,7 @@ class CollectionAdapter(val context: Context, val iden: String="course", val scr
                 set.setDimensionRatio(featuredView.id, ratio)
                 set.applyTo(constraintLayout)
             } catch (e: Exception) {
-                println(e.localizedMessage)
+                //println(e.localizedMessage)
             }
 
             pvLbl.text = "瀏覽數：" + superData.data[PV_KEY]!!["show"] as String

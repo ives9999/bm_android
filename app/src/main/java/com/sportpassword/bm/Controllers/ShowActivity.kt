@@ -14,12 +14,13 @@ class ShowActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_show)
-        setMyTitle("展示")
 
         val type = intent.getStringExtra("type")
         val token = intent.getStringExtra("token")
+        val title = intent.getStringExtra("title")
         val url = "$URL_SHOW".format(type, token)
         //println(url)
+        setMyTitle(title)
 
         val webViewClient = WebViewClient()
         showWebView.webViewClient = webViewClient

@@ -77,7 +77,11 @@
         <activity android:name=".Controllers.BlackListVC" />
         <activity android:name=".Controllers.ArenaVC" />
         <activity android:name=".Controllers.CourseVC" />
-        <activity android:name=".Controllers.MoreVC"></activity>
+        <activity android:name=".Controllers.MoreVC" />
+        <activity
+            android:name=".Controllers.TempPlayVC"
+            android:label="@string/title_activity_temp_play_vc"
+            android:theme="@style/AppTheme.NoActionBar" />
     </application>
 
 </manifest>

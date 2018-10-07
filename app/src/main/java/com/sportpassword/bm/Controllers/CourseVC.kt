@@ -34,6 +34,7 @@ class CourseVC : MoreVC() {
             val intent = Intent(this, ShowActivity::class.java)
             intent.putExtra("type", type)
             intent.putExtra("token", data.token)
+            intent.putExtra("title", data.title)
             startActivity(intent)
         }
         recyclerView.adapter = collectionAdapter

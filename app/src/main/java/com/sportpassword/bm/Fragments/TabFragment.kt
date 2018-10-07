@@ -90,6 +90,7 @@ open class TabFragment : Fragment() {
             val intent = Intent(activity, ShowActivity::class.java)
             intent.putExtra("type", type)
             intent.putExtra("token", data.token)
+            intent.putExtra("title", data.title)
             startActivity(intent)
         }
         recyclerView.adapter = listAdapter
