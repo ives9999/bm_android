@@ -120,68 +120,6 @@ class EditTeamActivity : BaseActivity(), ImagePicker {
         }
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        //println(data)
-        when (requestCode) {
-            ACTION_PHOTO_REQUEST_CODE -> {
-                //println(data!!.data)
-                dealPhoto(requestCode, resultCode, data)
-            }
-            ACTION_CAMERA_REQUEST_CODE -> {
-                dealCamera(requestCode, resultCode, data)
-            }
-            SELECT_REQUEST_CODE -> {
-                if (resultCode == Activity.RESULT_OK) {
-                    val key = data!!.getStringExtra("key")
-                    if (key == TEAM_DAYS_KEY) {
-                        val days1: ArrayList<Day> = data!!.getParcelableArrayListExtra("days")
-                        val days: ArrayList<Int> = arrayListOf()
-                        for (i in 0..days1.size - 1) {
-                            val d: Day = days1[i]
-                            days.add(d.day)
-                        }
-                        model.updateDays(days)
-                    } else if (key == TEAM_PLAY_START_KEY || key == TEAM_PLAY_END_KEY) {
-                        val time: String = data!!.getStringExtra("time") + ":00"
-                        if (key == TEAM_PLAY_START_KEY) {
-                            model.updatePlayStartTime(time)
-                        } else {
-                            model.updatePlayEndTime(time)
-                        }
-                    } else if (key == TEAM_DEGREE_KEY) {
-                        val degrees: ArrayList<String> = data!!.getStringArrayExtra("degree").toCollection(ArrayList<String>())
-                        model.updateDegree(degrees)
-                    } else if (key == TEAM_CITY_KEY) {
-                        val id: Int = data!!.getIntExtra("id", model.data[TEAM_CITY_KEY]!!["value"] as Int)
-                        val name: String = data!!.getStringExtra("name")
-                        val city = City(id, name)
-                        model.updateCity(city)
-                    } else if (key == TEAM_ARENA_KEY) {
-                        val id: Int = data!!.getIntExtra("id", model.data[TEAM_ARENA_KEY]!!["value"] as Int)
-                        val name: String = data!!.getStringExtra("name")
-                        val arena = Arena(id, name)
-                        model.updateArena(arena)
-                    } else {
-                        val content: String = data!!.getStringExtra("res")
-                        if (key == TEAM_TEMP_CONTENT_KEY) {
-                            model.updateTempContent(content)
-                        } else if (key == TEAM_CHARGE_KEY) {
-                            model.updateCharge(content)
-                        } else if (key == TEAM_CONTENT_KEY) {
-                            model.updateContent(content)
-                        }
-                    }
-                    model.data[key]!!["change"] = true
-                    dataToField(inputV)
-                }
-            }
-            else -> {
-                activity.toast("請重新選擇")
-            }
-        }
-    }
-
     override fun setImage(newFile: File?, url: String?) {
         teamedit_text.visibility = View.INVISIBLE
         val layoutParams = teamedit_featured.layoutParams as LinearLayout.LayoutParams
@@ -459,7 +397,9 @@ class EditTeamActivity : BaseActivity(), ImagePicker {
             intent.putExtra("value", value)
         } else if (key == TEAM_CITY_KEY) {
             val value: Int = model.data[key]!!["sender"] as Int
-            intent.putExtra("value", value)
+            val city = City(value, "")
+            val citys: ArrayList<City> = arrayListOf(city)
+            intent.putParcelableArrayListExtra("citys", citys)
         } else if (key == TEAM_ARENA_KEY) {
             val city_id: Int = model.data[TEAM_CITY_KEY]!!["value"] as Int
             if (city_id == 0) {
@@ -476,6 +416,71 @@ class EditTeamActivity : BaseActivity(), ImagePicker {
             intent.putExtra("value", value)
         }
         startActivityForResult(intent, SELECT_REQUEST_CODE)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        //println(data)
+        when (requestCode) {
+            ACTION_PHOTO_REQUEST_CODE -> {
+                //println(data!!.data)
+                dealPhoto(requestCode, resultCode, data)
+            }
+            ACTION_CAMERA_REQUEST_CODE -> {
+                dealCamera(requestCode, resultCode, data)
+            }
+            SELECT_REQUEST_CODE -> {
+                if (resultCode == Activity.RESULT_OK) {
+                    val key = data!!.getStringExtra("key")
+                    if (key == TEAM_DAYS_KEY) {
+                        val days1: ArrayList<Day> = data!!.getParcelableArrayListExtra("days")
+                        val days: ArrayList<Int> = arrayListOf()
+                        for (i in 0..days1.size - 1) {
+                            val d: Day = days1[i]
+                            days.add(d.day)
+                        }
+                        model.updateDays(days)
+                    } else if (key == TEAM_PLAY_START_KEY || key == TEAM_PLAY_END_KEY) {
+                        val time: String = data!!.getStringExtra("time") + ":00"
+                        if (key == TEAM_PLAY_START_KEY) {
+                            model.updatePlayStartTime(time)
+                        } else {
+                            model.updatePlayEndTime(time)
+                        }
+                    } else if (key == TEAM_DEGREE_KEY) {
+                        val degrees: ArrayList<String> = data!!.getStringArrayExtra("degree").toCollection(ArrayList<String>())
+                        model.updateDegree(degrees)
+                    } else if (key == TEAM_CITY_KEY) {
+                        val citys: ArrayList<City> = data!!.getParcelableArrayListExtra("citys")
+//                        val id: Int = data!!.getIntExtra("id", model.data[TEAM_CITY_KEY]!!["value"] as Int)
+//                        val name: String = data!!.getStringExtra("name")
+                        if (citys.size > 0) {
+                            val city = citys[0]
+                            model.updateCity(city)
+                        }
+                    } else if (key == TEAM_ARENA_KEY) {
+                        val id: Int = data!!.getIntExtra("id", model.data[TEAM_ARENA_KEY]!!["value"] as Int)
+                        val name: String = data!!.getStringExtra("name")
+                        val arena = Arena(id, name)
+                        model.updateArena(arena)
+                    } else {
+                        val content: String = data!!.getStringExtra("res")
+                        if (key == TEAM_TEMP_CONTENT_KEY) {
+                            model.updateTempContent(content)
+                        } else if (key == TEAM_CHARGE_KEY) {
+                            model.updateCharge(content)
+                        } else if (key == TEAM_CONTENT_KEY) {
+                            model.updateContent(content)
+                        }
+                    }
+                    model.data[key]!!["change"] = true
+                    dataToField(inputV)
+                }
+            }
+            else -> {
+                activity.toast("請重新選擇")
+            }
+        }
     }
 }
 

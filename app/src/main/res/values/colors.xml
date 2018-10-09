@@ -11,7 +11,8 @@
     <color name="TAB_BACKGROUND">#3d3f41</color>
     <color name="grey">#808080</color>
     <color name="LAYER">#f0e4e4</color>
-    <color name="TEXTBORDER">#4B4B4B</color>
+    <color name="TEXTBORDER">#a6d903</color>
+    <color name="TEXTBACKGROUND">#3d3f41</color>
     <color name="LISTTITLE">#265B03</color>
     <!-- Photo Viewer Colors -->
     <color name="solid_black">#ff000000</color>

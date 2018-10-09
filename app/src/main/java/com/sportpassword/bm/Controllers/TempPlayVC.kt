@@ -1,17 +1,21 @@
 package com.sportpassword.bm.Controllers
 
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.support.v4.widget.SwipeRefreshLayout
 import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.util.AttributeSet
+import android.view.View
 import com.sportpassword.bm.Adapters.TempPlayListAdapter
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.TeamService
 import com.sportpassword.bm.Utilities.Loading
 import com.sportpassword.bm.Utilities.TEAM_TOKEN_KEY
 import kotlinx.android.synthetic.main.tab.*
+import kotlinx.android.synthetic.main.mask.*
 
 class TempPlayVC : MoreVC() {
 
@@ -22,7 +26,9 @@ class TempPlayVC : MoreVC() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_temp_play_vc)
 
-        setMyTitle("教學")
+
+
+//        setMyTitle("教學")
         recyclerView = list_container
         dataService = TeamService
         refreshLayout = tab_refresh
@@ -53,8 +59,8 @@ class TempPlayVC : MoreVC() {
 
     override fun getDataStart(_page: Int, _perPage: Int) {
 //        mask = Loading.show(context!!)
-        Loading.show(mask)
-        loading = true
+//        Loading.show(mask)
+//        loading = true
         TeamService.tempPlay_list(this, _page, _perPage) { success ->
             getDataEnd(success)
         }

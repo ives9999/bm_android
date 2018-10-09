@@ -9,12 +9,12 @@ import android.os.Parcelable
 import android.support.constraint.ConstraintLayout
 import android.support.constraint.ConstraintSet
 import android.support.v7.widget.LinearLayoutManager
+import android.view.Menu
 import android.view.View
 import android.widget.LinearLayout
 import com.sportpassword.bm.Adapters.EditTeamItemAdapter
 import com.sportpassword.bm.Models.Arena
 import com.sportpassword.bm.Models.City
-import com.sportpassword.bm.Models.DEGREE
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.TeamService
 import com.sportpassword.bm.Utilities.*
@@ -34,13 +34,20 @@ class EditTeamItemActivity() : BaseActivity() {
     var time: String = ""
     var resDegrees: ArrayList<String> = arrayListOf()
     var oldCity: Int = 0
-    var resCity_id: Int = 0
-    var resCity_name: String = ""
     var oldArena: Int = 0
     var resArena_id: Int = 0
     var resArena_name: String = ""
-    lateinit var citys: ArrayList<City>
+    lateinit var allCitys: ArrayList<City>
     lateinit var arenas: ArrayList<Arena>
+
+    //來源的程式：目前有team的setup跟search
+    var source: String = "setup"
+    //縣市的類型：all所有的縣市，simple比較簡單的縣市
+    var type: String = "all"
+    //選擇的類型：just one單選，multi複選
+    var select: String = "just one"
+
+    var citys: ArrayList<City> = arrayListOf()
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -51,6 +58,15 @@ class EditTeamItemActivity() : BaseActivity() {
 
         key = intent.getStringExtra("key")
         //println(key)
+        if (intent.hasExtra("source")) {
+            source = intent.getStringExtra("source")
+        }
+        if (intent.hasExtra("type")) {
+            type = intent.getStringExtra("type")
+        }
+        if (intent.hasExtra("select")) {
+            select = intent.getStringExtra("select")
+        }
         if (key == TEAM_DAYS_KEY || key == TEAM_PLAY_START_KEY || key == TEAM_PLAY_END_KEY || key == TEAM_DEGREE_KEY || key == TEAM_CITY_KEY || key == TEAM_ARENA_KEY) {
             content_container.visibility = View.INVISIBLE
             val layout = findViewById(R.id.teamedititem_constraint) as ConstraintLayout
@@ -112,8 +128,9 @@ class EditTeamItemActivity() : BaseActivity() {
                 daysLists.add(m)
             }
         } else if (key == TEAM_CITY_KEY) {
-            setMyTitle("區域")
+            setMyTitle("縣市")
             oldCity = intent.getIntExtra("value", 0)
+            citys = intent.getParcelableArrayListExtra("citys")
         } else if (key == TEAM_ARENA_KEY) {
             setMyTitle("球館")
             oldCity = intent.getIntExtra("city_id", 0)
@@ -145,9 +162,12 @@ class EditTeamItemActivity() : BaseActivity() {
                 daysLists[position]["checked"] = checked.toString()
                 setDegree()
             } else if (key == TEAM_CITY_KEY) {
-                resCity_id = daysLists[position]["value"]!!.toInt()
-                resCity_name = daysLists[position]["text"]!!
-                submit(View(this))
+//                resCity_id = daysLists[position]["value"]!!.toInt()
+//                resCity_name = daysLists[position]["text"]!!
+                setCity(position)
+                if (select == "just one") {
+                    submit(View(this))
+                }
             } else if (key == TEAM_ARENA_KEY) {
                 resArena_id = daysLists[position]["value"]!!.toInt()
                 resArena_name = daysLists[position]["text"]!!
@@ -158,11 +178,17 @@ class EditTeamItemActivity() : BaseActivity() {
         val layoutManager = LinearLayoutManager(this)
         teamedititem_container.layoutManager = layoutManager
         if (key == TEAM_CITY_KEY) {
-            TeamService.getAllCitys(this) { success ->
-                citys = TeamService.citys
-                for (i in 0..citys.size-1) {
-                    val city = citys[i]
-                    val checked: Boolean = if (oldCity == city.id) true else false
+            TeamService.getCitys(this, type) { success ->
+                allCitys = TeamService.citys
+                for (i in 0..allCitys.size-1) {
+                    val city = allCitys[i]
+                    var checked: Boolean = false
+                    for (j in 0..citys.size-1) {
+                        if (city.id == citys[j].id) {
+                            checked = true
+                            break
+                        }
+                    }
                     val m: MutableMap<String, String> = mutableMapOf("value" to city.id.toString(), "text" to city.name, "checked" to checked.toString())
                     daysLists.add(m)
                 }
@@ -179,6 +205,32 @@ class EditTeamItemActivity() : BaseActivity() {
                 }
                 editTeamItemAdapter.notifyDataSetChanged()
             }
+        }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.button, menu)
+        return true
+    }
+
+    fun setCity(idx: Int) {
+        val city = allCitys[idx]
+        var exist: Boolean = false
+        var i: Int = 0
+        for ((idx, _city) in citys.withIndex()) {
+            if (city.id == _city.id) {
+                exist = true
+                i = idx
+                break
+            }
+        }
+        if (exist) {
+            citys.removeAt(i)
+        } else {
+            if (select == "just one") {
+                citys.clear()
+            }
+            citys.add(city)
         }
     }
 
@@ -230,8 +282,10 @@ class EditTeamItemActivity() : BaseActivity() {
             val res: Array<String> = resDegrees.toTypedArray()
             intent.putExtra("degree", res)
         } else if (key == TEAM_CITY_KEY) {
-            intent.putExtra("id", resCity_id)
-            intent.putExtra("name", resCity_name)
+            if (select == "just one" && citys.size == 0) {
+                return
+            }
+            intent.putParcelableArrayListExtra("citys", citys)
         } else if (key == TEAM_ARENA_KEY) {
             intent.putExtra("id", resArena_id)
             intent.putExtra("name", resArena_name)
@@ -264,6 +318,9 @@ data class Day(val text: String, val day: Int) : Parcelable {
     override fun describeContents() = 0
 
 }
+
+@Parcelize
+data class Arena(val id: Int, val name: String): Parcelable
 
 
 

@@ -413,16 +413,6 @@ class Team(id: Int, name: String, token: String, featured_path: String, vimeo: S
     }
 }
 
-enum class DEGREE(val value: String) {
-    new("新手"), soso("普通"), high("高手");
-    companion object {
-        fun from(findValue: String): DEGREE = DEGREE.values().first { it.value == findValue }
-        fun all(): Map<String, String> {
-            return mapOf("new" to "新手", "soso" to "普通", "high" to "高手")
-        }
-    }
-}
-
 enum class SELECT_TIME_TYPE(val value: Int) {
     play_start(0), play_end(1);
 }

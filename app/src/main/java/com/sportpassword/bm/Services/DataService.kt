@@ -454,6 +454,52 @@ open class DataService: BaseService() {
         Volley.newRequestQueue(context).add(request)
     }
 
+    fun getCitys(context: Context, type: String="all", zone: Boolean=false, complete: CompletionHandler) {
+        val url = URL_CITYS
+        //println(url)
+
+        val body = JSONObject()
+        body.put("source", "app")
+        body.put("channel", "bm")
+        body.put("type", type)
+        body.put("zone", zone)
+        val requestBody = body.toString()
+        citys = arrayListOf()
+
+        val request = object : JsonArrayRequest(Request.Method.POST, url, null, Response.Listener { json ->
+            //println(json)
+            try {
+                success = true
+                //println(json)
+                for (i in 0..json.length()-1) {
+                    val obj = json.getJSONObject(i)
+                    val id: Int = obj.getInt("id")
+                    val name: String = obj.getString("name")
+                    citys.add(City(id, name))
+                }
+            } catch (e: JSONException) {
+                println(e.localizedMessage)
+                success = false
+                msg = "無法get Citys，沒有傳回成功值 " + e.localizedMessage
+            }
+            complete(true)
+        }, Response.ErrorListener { error ->
+            //Log.d("ERROR", "Could not register user: $error")
+            println(error.localizedMessage)
+            this.msg = "取得失敗，網站或網路錯誤"
+            complete(false)
+        }) {
+            override fun getBodyContentType(): String {
+                return HEADER
+            }
+
+            override fun getBody(): ByteArray {
+                return requestBody.toByteArray()
+            }
+        }
+        Volley.newRequestQueue(context).add(request)
+    }
+
     fun getAllCitys(context: Context, complete: CompletionHandler) {
         val url = URL_CITYS
         //println(url)

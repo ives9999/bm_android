@@ -5,12 +5,13 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
 import android.widget.TextView
 import com.sportpassword.bm.R
 
-class SearchRowAdatper(val itemClick: (Int) -> Unit): RecyclerView.Adapter<SearchRowAdatper.ViewHolder>() {
+class SearchRowAdatper(val section: Int, val itemClick: (Int) -> Unit): RecyclerView.Adapter<SearchRowAdatper.ViewHolder>() {
 
-    var rows: ArrayList<String> = arrayListOf()
+    var rows: ArrayList<HashMap<String, String>> = arrayListOf()
 
     override fun onCreateViewHolder(parent: ViewGroup, p1: Int): ViewHolder {
         val view: View = LayoutInflater.from(parent.context).inflate(R.layout.search_row_item, parent, false)
@@ -32,9 +33,19 @@ class SearchRowAdatper(val itemClick: (Int) -> Unit): RecyclerView.Adapter<Searc
 
     inner class ViewHolder(itemView: View, val itemClick: (Int)->Unit): RecyclerView.ViewHolder(itemView) {
         val titleView = itemView.findViewById<TextView>(R.id.row_title)
+        val keywordView = itemView.findViewById<EditText>(R.id.keyword)
+        val detailView = itemView.findViewById<TextView>(R.id.row_detail)
 
         fun bind(position: Int) {
-            titleView.text = rows[position]
+            titleView.text = rows[position].get("title")
+            detailView.text = rows[position].get("detail")
+            if (section == 0 && position == 0) {
+                keywordView.visibility = View.VISIBLE
+//                keywordView.setFocusableInTouchMode(false);
+//                keywordView.setFocusable(false);
+//                keywordView.setFocusableInTouchMode(true);
+//                keywordView.setFocusable(true);
+            }
 
             itemView.setOnClickListener{itemClick(position)}
         }

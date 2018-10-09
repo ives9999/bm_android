@@ -22,6 +22,16 @@ import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.util.*
 
+enum class DEGREE(val value: String) {
+    new("新手"), soso("普通"), high("高手");
+    companion object {
+        fun from(findValue: String): DEGREE = DEGREE.values().first { it.value == findValue }
+        fun all(): Map<String, String> {
+            return mapOf("new" to "新手", "soso" to "普通", "high" to "高手")
+        }
+    }
+}
+
 /**
  * Created by ives on 2018/3/8.
  */
