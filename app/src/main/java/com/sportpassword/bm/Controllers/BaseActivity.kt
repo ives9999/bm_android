@@ -108,6 +108,7 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener {
         URL_MEMBER_BLACKLIST = URL_HOME + "member/blacklist"
         URL_CITYS = URL_HOME + "citys"
         URL_ARENA_BY_CITY_ID = URL_HOME + "arena_by_city"
+        URL_ARENA_BY_CITY_IDS = URL_HOME + "arena_by_citys"
         URL_TEAM_UPDATE = URL_HOME + "team/update"
         URL_UPDATE = URL_HOME + "%s/update"
         URL_DELETE = URL_HOME + "%s/delete"

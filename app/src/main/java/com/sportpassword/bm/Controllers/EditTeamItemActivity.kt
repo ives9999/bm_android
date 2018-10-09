@@ -37,8 +37,8 @@ class EditTeamItemActivity() : BaseActivity() {
     var oldArena: Int = 0
     var resArena_id: Int = 0
     var resArena_name: String = ""
-    lateinit var allCitys: ArrayList<City>
-    lateinit var arenas: ArrayList<Arena>
+    var allCitys: ArrayList<City> = arrayListOf()
+    var citysandarenas: HashMap<Int, HashMap<String, Any>> = hashMapOf()
 
     //來源的程式：目前有team的setup跟search
     var source: String = "setup"
@@ -48,6 +48,9 @@ class EditTeamItemActivity() : BaseActivity() {
     var select: String = "just one"
 
     var citys: ArrayList<City> = arrayListOf()
+
+    var citysForArena: ArrayList<Int> = arrayListOf()
+//    var arenas: ArrayList<com.sportpassword.bm.Controllers.Arena> = arrayListOf()
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -74,7 +77,6 @@ class EditTeamItemActivity() : BaseActivity() {
             constraintSet.clone(layout)
             constraintSet.connect(R.id.submit_container, ConstraintSet.TOP, R.id.teamedititem_container, ConstraintSet.BOTTOM, 32)
             constraintSet.applyTo(layout)
-
         }
         if (key == TEAM_DAYS_KEY) {
             setMyTitle("星期幾")
@@ -129,12 +131,13 @@ class EditTeamItemActivity() : BaseActivity() {
             }
         } else if (key == TEAM_CITY_KEY) {
             setMyTitle("縣市")
-            oldCity = intent.getIntExtra("value", 0)
+//            oldCity = intent.getIntExtra("value", 0)
             citys = intent.getParcelableArrayListExtra("citys")
         } else if (key == TEAM_ARENA_KEY) {
             setMyTitle("球館")
-            oldCity = intent.getIntExtra("city_id", 0)
-            oldArena = intent.getIntExtra("arena_id", 0)
+//            oldCity = intent.getIntExtra("city_id", 0)
+//            oldArena = intent.getIntExtra("arena_id", 0)
+            citysForArena = intent.getIntegerArrayListExtra("citys_for_arena")
         } else {
             if (key == TEAM_TEMP_CONTENT_KEY) {
                 setMyTitle("臨打說明")
@@ -195,15 +198,15 @@ class EditTeamItemActivity() : BaseActivity() {
                 editTeamItemAdapter.notifyDataSetChanged()
             }
         } else if (key == TEAM_ARENA_KEY) {
-            TeamService.getArenaByCityID(this, oldCity) { success ->
-                arenas = TeamService.arenas
-                for (i in 0..arenas.size-1) {
-                    val arena = arenas[i]
-                    val checked: Boolean = if (oldArena == arena.id) true else false
-                    val m: MutableMap<String, String> = mutableMapOf("value" to arena.id.toString(), "text" to arena.title, "checked" to checked.toString())
-                    daysLists.add(m)
-                }
-                editTeamItemAdapter.notifyDataSetChanged()
+            TeamService.getArenaByCityIDs(this, citysForArena, "all") { success ->
+//                arenas = TeamService.arenas
+//                for (i in 0..arenas.size-1) {
+//                    val arena = arenas[i]
+//                    val checked: Boolean = if (oldArena == arena.id) true else false
+//                    val m: MutableMap<String, String> = mutableMapOf("value" to arena.id.toString(), "text" to arena.title, "checked" to checked.toString())
+//                    daysLists.add(m)
+//                }
+//                editTeamItemAdapter.notifyDataSetChanged()
             }
         }
     }

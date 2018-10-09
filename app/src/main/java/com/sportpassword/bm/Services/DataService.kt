@@ -9,6 +9,7 @@ import com.android.volley.toolbox.Volley
 //import com.ohmerhe.kolley.request.Http
 import com.sportpassword.bm.Models.*
 import com.sportpassword.bm.Utilities.*
+import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject
 import java.io.File
@@ -28,6 +29,7 @@ open class DataService: BaseService() {
     lateinit var data: MutableMap<String, MutableMap<String, Any>>
     var citys: ArrayList<City> = arrayListOf()
     var arenas: ArrayList<Arena> = arrayListOf()
+    var citysandarenas: HashMap<Int, HashMap<String, Any>> = hashMapOf()
 
     fun getList(context: Context, type:String, titleField:String, page:Int, perPage:Int, filter:Array<Array<Any>>?, complete:CompletionHandler) {
         val url = "$URL_LIST".format(type)
@@ -568,6 +570,63 @@ open class DataService: BaseService() {
                     val id: Int = obj.getInt("id")
                     val name: String = obj.getString("name")
                     arenas.add(Arena(id, name))
+                }
+            } catch (e: JSONException) {
+                println(e.localizedMessage)
+                success = false
+                msg = "無法get Arenas，沒有傳回成功值 " + e.localizedMessage
+            }
+            if (this.success) {
+                //jsonToMember(json)
+            } else {
+                //DataService.makeErrorMsg(json)
+            }
+            complete(true)
+        }, Response.ErrorListener { error ->
+            //Log.d("ERROR", "Could not register user: $error")
+            println(error.localizedMessage)
+            this.msg = "取得失敗，網站或網路錯誤"
+            complete(false)
+        }) {
+            override fun getBodyContentType(): String {
+                return HEADER
+            }
+
+            override fun getBody(): ByteArray {
+                return requestBody.toByteArray()
+            }
+        }
+        Volley.newRequestQueue(context).add(request)
+    }
+
+    fun getArenaByCityIDs(context: Context, city_ids: ArrayList<Int>, city_type:String, complete: CompletionHandler) {
+        val url = URL_ARENA_BY_CITY_IDS
+        println(url)
+
+        val body = JSONObject()
+        var arr: JSONArray = JSONArray()
+        for (city_id in city_ids) {
+            arr.put(city_id)
+        }
+        body.put("source", "app")
+        body.put("channel", "bm")
+        body.put("citys", arr)
+        body.put("city_type", city_type)
+        body.put("version", "1.2.5")
+        val requestBody = body.toString()
+        println(requestBody)
+
+        val request = object : JsonArrayRequest(Request.Method.POST, url, null, Response.Listener { json ->
+            println(json)
+            try {
+                success = true
+                //println(json)
+                for (i in 0..json.length()-1) {
+                    val obj = json.getJSONObject(i)
+                    println(obj)
+//                    val id: Int = obj.getInt("id")
+//                    val name: String = obj.getString("name")
+//                    arenas.add(Arena(id, name))
                 }
             } catch (e: JSONException) {
                 println(e.localizedMessage)

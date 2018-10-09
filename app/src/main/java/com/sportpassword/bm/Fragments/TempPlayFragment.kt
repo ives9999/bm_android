@@ -20,6 +20,7 @@ import com.sportpassword.bm.Controllers.TempPlayVC
 import com.sportpassword.bm.Models.City
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Utilities.DEGREE
+import com.sportpassword.bm.Utilities.TEAM_ARENA_KEY
 import com.sportpassword.bm.Utilities.TEAM_CITY_KEY
 import kotlinx.android.synthetic.main.tab_tempplay_search.*
 
@@ -89,17 +90,34 @@ class TempPlayFragment : TabFragment(), inter {
     override fun setP(section: Int, row: Int) {
 //        println(section)
 //        println(row)
-        var intent: Intent? = null
+        var intent = Intent(activity, EditTeamItemActivity::class.java)
         when (section) {
             0 -> {
                 when (row) {
                     1 -> {
-                        intent = Intent(activity, EditTeamItemActivity::class.java)
                         intent.putExtra("key", TEAM_CITY_KEY)
-                        intent.putExtra("value", 218)
                         intent.putExtra("source", "search")
                         intent.putExtra("type", "simple")
                         intent.putExtra("select", "multi")
+                        intent.putParcelableArrayListExtra("citys", citys)
+                    }
+                }
+            }
+            1 -> {
+                when (row) {
+                    0 -> {
+                        intent.putExtra("key", TEAM_ARENA_KEY)
+                        intent.putExtra("source", "search")
+                        intent.putExtra("type", "simple")
+                        intent.putExtra("select", "multi")
+
+                        var citysForArena: ArrayList<Int> = arrayListOf()
+                        for (city in citys) {
+                            citysForArena.add(city.id)
+                        }
+                        citysForArena.add(218)
+                        intent.putIntegerArrayListExtra("citys_for_arena", citysForArena)
+
                         intent.putParcelableArrayListExtra("citys", citys)
                     }
                 }
