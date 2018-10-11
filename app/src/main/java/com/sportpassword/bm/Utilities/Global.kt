@@ -218,6 +218,9 @@ object Alert {
         alert.show()
         return alert
     }
+    fun warning(context: Context, msg: String) {
+        this.show(context, "警告", msg)
+    }
     fun update(context: Context, action: String, back: ()->Unit): AlertDialog {
         val alert = _show(context, "成功", "新增 / 修改 成功")
         if (action == "INSERT") {

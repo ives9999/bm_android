@@ -26,8 +26,6 @@ class TempPlayVC : MoreVC() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_temp_play_vc)
 
-
-
 //        setMyTitle("教學")
         recyclerView = list_container
         dataService = TeamService

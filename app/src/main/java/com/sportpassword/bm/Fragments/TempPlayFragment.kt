@@ -19,6 +19,7 @@ import com.sportpassword.bm.Controllers.EditTeamItemActivity
 import com.sportpassword.bm.Controllers.TempPlayVC
 import com.sportpassword.bm.Models.City
 import com.sportpassword.bm.R
+import com.sportpassword.bm.Utilities.Alert
 import com.sportpassword.bm.Utilities.DEGREE
 import com.sportpassword.bm.Utilities.TEAM_ARENA_KEY
 import com.sportpassword.bm.Utilities.TEAM_CITY_KEY
@@ -94,7 +95,7 @@ class TempPlayFragment : TabFragment(), inter {
         when (section) {
             0 -> {
                 when (row) {
-                    1 -> {
+                    1 -> {// city
                         intent.putExtra("key", TEAM_CITY_KEY)
                         intent.putExtra("source", "search")
                         intent.putExtra("type", "simple")
@@ -105,7 +106,11 @@ class TempPlayFragment : TabFragment(), inter {
             }
             1 -> {
                 when (row) {
-                    0 -> {
+                    0 -> {// arena
+                        if (citys.size == 0) {
+                            Alert.warning(this@TempPlayFragment.context!!, "請先選擇縣市")
+                            return
+                        }
                         intent.putExtra("key", TEAM_ARENA_KEY)
                         intent.putExtra("source", "search")
                         intent.putExtra("type", "simple")
@@ -115,23 +120,14 @@ class TempPlayFragment : TabFragment(), inter {
                         for (city in citys) {
                             citysForArena.add(city.id)
                         }
-                        citysForArena.add(218)
                         intent.putIntegerArrayListExtra("citys_for_arena", citysForArena)
 
-                        intent.putParcelableArrayListExtra("citys", citys)
+                        intent.putParcelableArrayListExtra("arenas", arenas)
                     }
                 }
             }
         }
         startActivityForResult(intent!!, SELECT_REQUEST_CODE)
-    }
-
-
-    fun submit(view: View) {
-        val intent = Intent(activity, TempPlayVC::class.java)
-        intent.putExtra("type", "type")
-        intent.putExtra("titleField", "name")
-        startActivity(intent)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -146,7 +142,7 @@ class TempPlayFragment : TabFragment(), inter {
                 if (resultCode == Activity.RESULT_OK) {
                     val key = data!!.getStringExtra("key")
 
-                    if (key == TEAM_CITY_KEY) {
+                    if (key == TEAM_CITY_KEY) { // city
                         section = 0
                         row = 1
                         citys = data!!.getParcelableArrayListExtra("citys")
@@ -157,6 +153,21 @@ class TempPlayFragment : TabFragment(), inter {
                                 arr.add(city.name)
                             }
                             value = arr.joinToString()
+                        } else {
+                            value = "全部"
+                        }
+                    } else if (key == TEAM_ARENA_KEY) { // arena
+                        section = 1
+                        row = 0
+                        arenas = data!!.getParcelableArrayListExtra("arenas")
+                        if (arenas.size > 0) {
+                            var arr: ArrayList<String> = arrayListOf()
+                            for (arena in arenas) {
+                                arr.add(arena.name)
+                            }
+                            value = arr.joinToString()
+                        } else {
+                            value = "全部"
                         }
                     }
                 }
@@ -174,6 +185,13 @@ class TempPlayFragment : TabFragment(), inter {
             val row = rows[idx]
             data.add(hashMapOf(section to row))
         }
+    }
+
+    fun submit(view: View) {
+        val intent = Intent(activity, TempPlayVC::class.java)
+        intent.putExtra("type", "type")
+        intent.putExtra("titleField", "name")
+        startActivity(intent)
     }
 
     companion object {

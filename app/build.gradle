@@ -101,13 +101,15 @@ dependencies {
     //    implementation ('org.apache.httpcomponents:httpclient-android:4.3.5') {
     //        exclude group: 'org.apache.http.impl.cookie', module: 'IgnoreSpecFactory'
     //    }
-    implementation 'org.apache.httpcomponents:httpmime:4.3.6'
+    implementation 'org.apache.httpcomponents:httpmime:4.5.2'
     //implementation 'dev.dworks.libs:volleyplus:+'
     //    implementation('com.vimeo.networking:vimeo-networking:1.1.0') {
     //        exclude group: 'com.intellij', module: 'annotations'
     //    }
     //    implementation project(':vimeo-networking')
     implementation 'com.beust:klaxon:3.0.1'
+    implementation 'com.xwray:groupie:2.1.0'
+    implementation 'com.xwray:groupie-kotlin-android-extensions:2.1.0'
 //    implementation 'com.android.support:support-v4:27.1.1'
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'

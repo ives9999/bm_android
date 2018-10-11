@@ -601,7 +601,7 @@ open class DataService: BaseService() {
 
     fun getArenaByCityIDs(context: Context, city_ids: ArrayList<Int>, city_type:String, complete: CompletionHandler) {
         val url = URL_ARENA_BY_CITY_IDS
-        println(url)
+//        println(url)
 
         val body = JSONObject()
         var arr: JSONArray = JSONArray()
@@ -614,31 +614,32 @@ open class DataService: BaseService() {
         body.put("city_type", city_type)
         body.put("version", "1.2.5")
         val requestBody = body.toString()
-        println(requestBody)
+//        println(requestBody)
 
-        val request = object : JsonArrayRequest(Request.Method.POST, url, null, Response.Listener { json ->
-            println(json)
+        val request = object : JsonObjectRequest(Request.Method.POST, url, null, Response.Listener { json ->
+//            println(json)
             try {
-                success = true
-                //println(json)
-                for (i in 0..json.length()-1) {
-                    val obj = json.getJSONObject(i)
-                    println(obj)
-//                    val id: Int = obj.getInt("id")
-//                    val name: String = obj.getString("name")
-//                    arenas.add(Arena(id, name))
+                val keys = json.keys()
+                for ((i, key) in keys.withIndex()) {
+                    val obj = json.getJSONObject(key)
+                    val city_id: Int = obj.getInt("id")
+                    val city_name: String = obj.getString("name")
+                    val _rows = obj.getJSONArray("rows")
+                    var rows: ArrayList<HashMap<String, Any>> = arrayListOf()
+                    for (j in 0.._rows.length()-1) {
+                        val row = _rows.getJSONObject(j)
+                        val arena_id = row.getInt("id")
+                        val arena_name = row.getString("name")
+                        rows.add(hashMapOf("id" to arena_id, "name" to arena_name))
+                    }
+                    this.citysandarenas.put(city_id, hashMapOf<String, Any>("id" to city_id, "name" to city_name, "rows" to rows))
+                    complete(true)
                 }
             } catch (e: JSONException) {
-                println(e.localizedMessage)
-                success = false
+                println("exception: " + e.localizedMessage)
                 msg = "無法get Arenas，沒有傳回成功值 " + e.localizedMessage
+                complete(false)
             }
-            if (this.success) {
-                //jsonToMember(json)
-            } else {
-                //DataService.makeErrorMsg(json)
-            }
-            complete(true)
         }, Response.ErrorListener { error ->
             //Log.d("ERROR", "Could not register user: $error")
             println(error.localizedMessage)
