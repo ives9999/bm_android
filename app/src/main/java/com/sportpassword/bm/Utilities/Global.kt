@@ -21,6 +21,7 @@ import java.text.SimpleDateFormat
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.util.*
+import kotlin.collections.HashMap
 
 enum class DEGREE(val value: String) {
     new("新手"), soso("普通"), high("高手");
@@ -147,6 +148,18 @@ fun Activity.hideKeyboard() {
 fun ImageView.setImage(name: String) {
     val id = context.resources.getIdentifier(name, "drawable", context.packageName)
     this.setImageResource(id)
+}
+
+object Global {
+    val days: ArrayList<HashMap<String, Any>> = arrayListOf(
+            hashMapOf("value" to 1,"text" to "星期一","simple_text" to "一","checked" to false),
+            hashMapOf("value" to 2,"text" to "星期二","simple_text" to "二","checked" to false),
+            hashMapOf("value" to 3,"text" to "星期三","simple_text" to "三","checked" to false),
+            hashMapOf("value" to 4,"text" to "星期四","simple_text" to "四","checked" to false),
+            hashMapOf("value" to 5,"text" to "星期五","simple_text" to "五","checked" to false),
+            hashMapOf("value" to 6,"text" to "星期六","simple_text" to "六","checked" to false),
+            hashMapOf("value" to 7,"text" to "星期日","simple_text" to "日","checked" to false)
+    )
 }
 
 object Loading {

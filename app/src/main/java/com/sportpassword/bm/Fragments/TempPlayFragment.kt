@@ -14,15 +14,12 @@ import android.widget.Button
 import com.sportpassword.bm.Adapters.SearchAdapter
 import com.sportpassword.bm.Adapters.inter
 import com.sportpassword.bm.Controllers.Arena
-import com.sportpassword.bm.Controllers.Day
 import com.sportpassword.bm.Controllers.EditTeamItemActivity
 import com.sportpassword.bm.Controllers.TempPlayVC
 import com.sportpassword.bm.Models.City
+import com.sportpassword.bm.Models.SELECT_TIME_TYPE
 import com.sportpassword.bm.R
-import com.sportpassword.bm.Utilities.Alert
-import com.sportpassword.bm.Utilities.DEGREE
-import com.sportpassword.bm.Utilities.TEAM_ARENA_KEY
-import com.sportpassword.bm.Utilities.TEAM_CITY_KEY
+import com.sportpassword.bm.Utilities.*
 import kotlinx.android.synthetic.main.tab_tempplay_search.*
 
 /**
@@ -52,7 +49,7 @@ class TempPlayFragment : TabFragment(), inter {
     val SELECT_REQUEST_CODE = 1
 
     var citys: ArrayList<City> = arrayListOf()
-    var days: ArrayList<Day> = arrayListOf()
+    var days: ArrayList<Int> = arrayListOf()
     var times: HashMap<String, Any> = hashMapOf()
     var arenas: ArrayList<Arena> = arrayListOf()
     var degrees: ArrayList<DEGREE> = arrayListOf()
@@ -102,6 +99,18 @@ class TempPlayFragment : TabFragment(), inter {
                         intent.putExtra("select", "multi")
                         intent.putParcelableArrayListExtra("citys", citys)
                     }
+                    2 -> {// days
+                        intent.putExtra("key", TEAM_DAYS_KEY)
+                        intent.putExtra("source", "search")
+                        intent.putIntegerArrayListExtra("days", days)
+                    }
+                    3 -> {// times
+                        intent.putExtra("key", TEAM_PLAY_START_KEY)
+                        intent.putExtra("source", "search")
+//                        times["time"] = "09:00"
+                        times["type"] = SELECT_TIME_TYPE.play_start
+                        intent.putExtra("times", times)
+                    }
                 }
             }
             1 -> {
@@ -146,7 +155,6 @@ class TempPlayFragment : TabFragment(), inter {
                         section = 0
                         row = 1
                         citys = data!!.getParcelableArrayListExtra("citys")
-//                        println(citys)
                         if (citys.size > 0) {
                             var arr: ArrayList<String> = arrayListOf()
                             for (city in citys) {
@@ -166,6 +174,36 @@ class TempPlayFragment : TabFragment(), inter {
                                 arr.add(arena.name)
                             }
                             value = arr.joinToString()
+                        } else {
+                            value = "全部"
+                        }
+                    } else if (key == TEAM_DAYS_KEY) {
+                        section = 0
+                        row = 2
+                        days = data!!.getIntegerArrayListExtra("days")
+//                        println(days)
+
+                        if (days.size > 0) {
+                            var arr: ArrayList<String> = arrayListOf()
+                            val gDays = Global.days
+                            for (day in days) {
+                                for (gDay in gDays) {
+                                    if (day == gDay.get("value")!! as Int) {
+                                        arr.add(gDay.get("simple_text")!! as String)
+                                        break
+                                    }
+                                }
+                            }
+                            value = arr.joinToString()
+                        } else {
+                            value = "全部"
+                        }
+                    } else if (key == TEAM_PLAY_START_KEY) {
+                        section = 0
+                        row = 3
+                        times = data!!.getSerializableExtra("times") as HashMap<String, Any>
+                        if (times.containsKey("time")) {
+                            value = times["time"]!! as String
                         } else {
                             value = "全部"
                         }

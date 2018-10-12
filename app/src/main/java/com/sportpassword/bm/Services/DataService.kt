@@ -619,6 +619,7 @@ open class DataService: BaseService() {
         val request = object : JsonObjectRequest(Request.Method.POST, url, null, Response.Listener { json ->
 //            println(json)
             try {
+                citysandarenas.clear()
                 val keys = json.keys()
                 for ((i, key) in keys.withIndex()) {
                     val obj = json.getJSONObject(key)
@@ -632,9 +633,9 @@ open class DataService: BaseService() {
                         val arena_name = row.getString("name")
                         rows.add(hashMapOf("id" to arena_id, "name" to arena_name))
                     }
-                    this.citysandarenas.put(city_id, hashMapOf<String, Any>("id" to city_id, "name" to city_name, "rows" to rows))
-                    complete(true)
+                    citysandarenas.put(city_id, hashMapOf<String, Any>("id" to city_id, "name" to city_name, "rows" to rows))
                 }
+                complete(true)
             } catch (e: JSONException) {
                 println("exception: " + e.localizedMessage)
                 msg = "無法get Arenas，沒有傳回成功值 " + e.localizedMessage

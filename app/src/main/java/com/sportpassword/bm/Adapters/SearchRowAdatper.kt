@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
+import android.widget.ImageView
 import android.widget.TextView
 import com.sportpassword.bm.R
 
@@ -35,16 +36,15 @@ class SearchRowAdatper(val section: Int, val itemClick: (Int) -> Unit): Recycler
         val titleView = itemView.findViewById<TextView>(R.id.row_title)
         val keywordView = itemView.findViewById<EditText>(R.id.keyword)
         val detailView = itemView.findViewById<TextView>(R.id.row_detail)
+        val greaterView = itemView.findViewById<ImageView>(R.id.greater)
 
         fun bind(position: Int) {
             titleView.text = rows[position].get("title")
             detailView.text = rows[position].get("detail")
             if (section == 0 && position == 0) {
                 keywordView.visibility = View.VISIBLE
-//                keywordView.setFocusableInTouchMode(false);
-//                keywordView.setFocusable(false);
-//                keywordView.setFocusableInTouchMode(true);
-//                keywordView.setFocusable(true);
+                detailView.visibility = View.INVISIBLE
+                greaterView.visibility = View.INVISIBLE
             }
 
             itemView.setOnClickListener{itemClick(position)}

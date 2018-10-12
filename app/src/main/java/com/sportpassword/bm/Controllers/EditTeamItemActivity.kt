@@ -11,8 +11,6 @@ import android.support.constraint.ConstraintSet
 import android.support.v4.content.ContextCompat
 import android.view.Menu
 import android.view.View
-import android.widget.ImageView
-import android.widget.TextView
 import com.sportpassword.bm.Adapters.EditTeamItemAdapter
 import com.sportpassword.bm.Models.City
 import com.sportpassword.bm.R
@@ -24,15 +22,12 @@ import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.Section
 import kotlinx.android.parcel.Parceler
 import kotlinx.android.parcel.Parcelize
-import kotlinx.android.synthetic.main.activity_edit_team.*
 import kotlinx.android.synthetic.main.activity_edit_team_item.*
 import kotlinx.android.synthetic.main.activity_edit_team_item_adapter.view.*
-import kotlinx.android.synthetic.main.search_section_item.view.*
 import com.xwray.groupie.kotlinandroidextensions.Item
 import com.xwray.groupie.kotlinandroidextensions.ViewHolder
 import kotlinx.android.synthetic.main.activity_edit_team_item_adapter.*
 import kotlinx.android.synthetic.main.search_section_item.*
-import org.jetbrains.anko.sdk25.coroutines.onClick
 import kotlinx.android.synthetic.main.mask.*
 
 class EditTeamItemActivity() : BaseActivity() {
@@ -41,16 +36,14 @@ class EditTeamItemActivity() : BaseActivity() {
     lateinit var editTeamItemAdapter: EditTeamItemAdapter
     lateinit var arenaAdapter: GroupAdapter<ViewHolder>
 
-    var daysLists: ArrayList<MutableMap<String, String>> = arrayListOf()
-    var resDays: ArrayList<Day> = arrayListOf()
-    var time: String = ""
     var resDegrees: ArrayList<String> = arrayListOf()
-    var oldCity: Int = 0
-    var oldArena: Int = 0
     var resArena_id: Int = 0
     var resArena_name: String = ""
     var allCitys: ArrayList<City> = arrayListOf()
     var citysandarenas: HashMap<Int, HashMap<String, Any>> = hashMapOf()
+    var allDays = Global.days
+
+    var dataList: ArrayList<MutableMap<String, String>> = arrayListOf()
 
     //來源的程式：目前有team的setup跟search
     var source: String = "setup"
@@ -60,11 +53,12 @@ class EditTeamItemActivity() : BaseActivity() {
     var select: String = "just one"
 
     var citys: ArrayList<City> = arrayListOf()
-    var arenas: ArrayList<Arena> = arrayListOf()
-
     var citysForArena: ArrayList<Int> = arrayListOf()
-//    var arenas: ArrayList<com.sportpassword.bm.Controllers.Arena> = arrayListOf()
+    var arenas: ArrayList<Arena> = arrayListOf()
+    var selectedDays: ArrayList<Int> = arrayListOf()
 
+    //type: .play_start or .play_end, time: "09:00:00"
+    var times: HashMap<String, Any> = hashMapOf()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -94,20 +88,20 @@ class EditTeamItemActivity() : BaseActivity() {
         }
         if (key == TEAM_DAYS_KEY) {
             setMyTitle("星期幾")
-            val days = intent.getIntArrayExtra("value")
-            for (i in 1..7) {
-                val tmp: Map<String, Any> = DAYS[i-1]
-                var checked: Boolean = false
-                if (days != null) {
-                    for (j in 0..days.size - 1) {
-                        if (i == days.get(j)) {
-                            checked = true
-                            break
-                        }
+            selectedDays = intent.getIntegerArrayListExtra("days")
+            for (i in 0..allDays.size-1) {
+                val day = allDays[i]
+                var checked = false
+                for (j in 0..selectedDays.size-1) {
+                    if (day.get("value")!! as Int == selectedDays[j]) {
+                        allDays[i]["checked"] = true
+                        checked = true
+                        break
                     }
                 }
-                val m: MutableMap<String, String> = mutableMapOf("value" to i.toString(), "text" to tmp["text"]!! as String, "checked" to checked.toString())
-                daysLists.add(m)
+                val value = day.get("value")!! as Int
+                val m: MutableMap<String, String> = mutableMapOf("value" to value.toString(), "text" to day.get("text")!! as String, "checked" to checked.toString())
+                dataList.add(m)
             }
         } else if (key == TEAM_PLAY_START_KEY || key == TEAM_PLAY_END_KEY) {
             if (key == TEAM_PLAY_START_KEY) {
@@ -116,14 +110,18 @@ class EditTeamItemActivity() : BaseActivity() {
                 setMyTitle("結束時間")
             }
             //println(value)
-            time = intent.getStringExtra("value")
-            val times: ArrayList<String> = arrayListOf("07:00","07:30","08:00","08:30","09:00","09:30","10:00","10:30","11:00","11:30","12:00",
+            times = intent.getSerializableExtra("times") as HashMap<String, Any>
+            val allTimes: ArrayList<String> = arrayListOf("07:00","07:30","08:00","08:30","09:00","09:30","10:00","10:30","11:00","11:30","12:00",
                 "12:30","13:00","13:30","14:00","14:30","15:00","15:30","16:00","16:30","17:00","17:30",
                 "18:00","18:30","19:00","19:30","20:00","20:30","21:00","21:30","22:00","22:30","23:00")
-            for (i in 0..times.size-1) {
-                val checked = if (times[i] == time) true else false
-                val m: MutableMap<String, String> = mutableMapOf("value" to times[i], "text" to times[i], "checked" to checked.toString())
-                daysLists.add(m)
+            for (i in 0..allTimes.size-1) {
+                var time = ""
+                if (times.containsKey("time")) {
+                    time = times["time"] as String
+                }
+                val checked = if (allTimes[i] == time) true else false
+                val m: MutableMap<String, String> = mutableMapOf("value" to allTimes[i], "text" to allTimes[i], "checked" to checked.toString())
+                dataList.add(m)
             }
         } else if (key == TEAM_DEGREE_KEY) {
             setMyTitle("球隊程度")
@@ -141,7 +139,7 @@ class EditTeamItemActivity() : BaseActivity() {
                     }
                 }
                 val m: MutableMap<String, String> = mutableMapOf("value" to k, "text" to v, "checked" to checked.toString())
-                daysLists.add(m)
+//                daysLists.add(m)
             }
         } else if (key == TEAM_CITY_KEY) {
             setMyTitle("縣市")
@@ -169,35 +167,53 @@ class EditTeamItemActivity() : BaseActivity() {
 
         if (key == TEAM_ARENA_KEY) {
             arenaAdapter = GroupAdapter()
+            arenaAdapter.setOnItemClickListener { item, view ->
+                val arenaItem = item as ArenaItem
+                val arena = arenaItem.arena
+
+                var checked = false
+                if (view.mark1.visibility == View.INVISIBLE) {
+                    checked = true
+                }
+                arenaItem.toggleClick(view, checked)
+
+                if (select == "just one") {
+                    arenas.clear()
+                }
+                setArena(arena)
+                if (select == "just one") {
+                    submit(View(this))
+                }
+
+
+            }
             teamedititem_container.adapter = arenaAdapter
         } else {
-            editTeamItemAdapter = EditTeamItemAdapter(this, key, daysLists) { position, checked ->
+            editTeamItemAdapter = EditTeamItemAdapter(this, key, dataList) { position, checked ->
                 //println(position)
                 //val checked: Boolean = !(daysLists[position]["checked"]!!.toBoolean())
                 //println(daysLists)
                 if (key == TEAM_DAYS_KEY) {
-                    daysLists[position]["checked"] = checked.toString()
-                    setDay()
+                    setDay(position)
                 } else if (key == TEAM_PLAY_START_KEY || key == TEAM_PLAY_END_KEY) {
-                    time = daysLists[position]["value"]!!
-                    submit(View(this))
+                    val time = dataList[position]["value"]!!
+                    setTime(time)
+                    if (source == "setup" && !times.containsKey("time")) {
+                    } else {
+                        submit(View(this))
+                    }
                 } else if (key == TEAM_DEGREE_KEY) {
-                    daysLists[position]["checked"] = checked.toString()
+                    dataList[position]["checked"] = checked.toString()
                     setDegree()
                 } else if (key == TEAM_CITY_KEY) {
-//                resCity_id = daysLists[position]["value"]!!.toInt()
-//                resCity_name = daysLists[position]["text"]!!
                     setCity(position)
                     if (select == "just one") {
                         submit(View(this))
                     }
-                } else if (key == TEAM_ARENA_KEY) {
-                    resArena_id = daysLists[position]["value"]!!.toInt()
-                    resArena_name = daysLists[position]["text"]!!
-                    submit(View(this))
                 }
             }
             teamedititem_container.adapter = editTeamItemAdapter
+            Loading.hide(mask)
         }
 
         if (key == TEAM_CITY_KEY) {
@@ -213,13 +229,13 @@ class EditTeamItemActivity() : BaseActivity() {
                         }
                     }
                     val m: MutableMap<String, String> = mutableMapOf("value" to city.id.toString(), "text" to city.name, "checked" to checked.toString())
-                    daysLists.add(m)
+                    dataList.add(m)
                 }
                 editTeamItemAdapter.notifyDataSetChanged()
                 Loading.hide(mask)
             }
         } else if (key == TEAM_ARENA_KEY) {
-            TeamService.getArenaByCityIDs(this, citysForArena, "all") { success ->
+            TeamService.getArenaByCityIDs(this, citysForArena, type) { success ->
                 if (success) {
                     citysandarenas = TeamService.citysandarenas
 //                    println(citysandarenas)
@@ -231,31 +247,22 @@ class EditTeamItemActivity() : BaseActivity() {
                         var _rows: ArrayList<ArenaItem> = arrayListOf()
                         for (i in 0..rows.size-1) {
                             val arena = getArena(it, i)
-                            _rows.add(ArenaItem(this, arena) { position ->
-                                //click arena action
-                                //println(position)
-                                val arena = getArena(it, position-1)
-                                setArena(arena)
-                            })
+                            var checked = false
+                            for (j in 0..arenas.size-1) {
+                                if (arena.id == arenas[j].id) {
+                                    checked = true
+                                    break
+                                }
+                            }
+                            val arenaItem = ArenaItem(this, arena, checked)
+                            _rows.add(arenaItem)
                         }
                         expandableGroup.add(Section(_rows))
                         arenaAdapter.add(expandableGroup)
                     }
 
-//                    val adapter = GroupAdapter<ViewHolder>()
-//                    res.forEach {
-//                        arenaAdapter.add(ArenaItem(it))
-//                    }
-                    arenaAdapter.notifyDataSetChanged()
-//                    teamedititem_container.adapter = adapter
-
-//                for (i in 0..arenas.size-1) {
-//                    val arena = arenas[i]
-//                    val checked: Boolean = if (oldArena == arena.id) true else false
-//                    val m: MutableMap<String, String> = mutableMapOf("value" to arena.id.toString(), "text" to arena.title, "checked" to checked.toString())
-//                    daysLists.add(m)
-//                }
-//                    editTeamItemAdapter.notifyDataSetChanged()
+//                    arenaAdapter.notifyDataSetChanged()
+                    Loading.hide(mask)
                 } else {
                     println(TeamService.msg)
                 }
@@ -292,15 +299,8 @@ class EditTeamItemActivity() : BaseActivity() {
     fun getArena(city_id: Int, idx: Int): Arena {
         val rows = citysandarenas.get(city_id)!!.get("rows") as ArrayList<HashMap<String, Any>>
         val row = rows[idx]
-        var checked: Boolean = false
-        for (i in 0..arenas.size-1) {
-            if (row.get("id")!! as Int == arenas[i].id) {
-                checked = true
-                break
-            }
-        }
 
-        return Arena(row.get("id")!! as Int, row.get("name")!! as String, checked)
+        return Arena(row.get("id")!! as Int, row.get("name")!! as String)
     }
     fun setArena(arena: Arena) {
         var isExist = false
@@ -318,39 +318,47 @@ class EditTeamItemActivity() : BaseActivity() {
                 arenas.removeAt(idx)
             }
         } else {
-            arena.checked = true
             arenas.add(arena)
         }
     }
 
-    fun setDay() {
-        resDays = arrayListOf()
-        for (i in 0..daysLists.size-1) {
-            val checked: Boolean = daysLists[i]["checked"]!!.toBoolean()
-            val day: Int = daysLists[i]["value"]!!.toInt()
-            if (checked) {
-                val text: String = daysLists[i]["text"]!!
-                val d: Day = Day(text, day)
-                resDays.add(d)
-            } else {
-                val idx: Int = -1
-                for (i in 0..resDays.size - 1) {
-                    if (day == resDays[i].day) {
-                        idx == i
-                        break
-                    }
-                }
-                if (idx > 0) {
-                    resDays.removeAt(idx)
-                }
+    fun setDay(position: Int) {
+        if (allDays[position].containsKey("checked")) {
+            allDays[position]["checked"] = !(allDays[position]["checked"] as Boolean)
+        } else {
+            allDays[position]["checked"] = true
+        }
+
+        var day = allDays[position]
+        var isExist = false
+        var idx = -1
+        for (i in 0..selectedDays.size-1) {
+            if (day.get("value")!! as Int == selectedDays[i]) {
+                isExist = true
+                idx = i
+                break
             }
         }
+        if (isExist) {
+            selectedDays.removeAt(idx)
+        } else {
+            selectedDays.add(day.get("value")!! as Int)
+        }
     }
+
+    fun setTime(time: String) {
+        if (times.containsKey("time") && (time == times["time"]!! as String)) {
+            times.remove("time")
+        } else {
+            times["time"] = time
+        }
+    }
+
     fun setDegree() {
         resDegrees = arrayListOf()
-        for (i in 0..daysLists.size-1) {
-            val checked: Boolean = daysLists[i]["checked"]!!.toBoolean()
-            val degree: String = daysLists[i]["value"]!!
+        for (i in 0..dataList.size-1) {
+            val checked: Boolean = dataList[i]["checked"]!!.toBoolean()
+            val degree: String = dataList[i]["value"]!!
             if (checked) {
                 resDegrees.add(degree)
             } else {
@@ -364,9 +372,13 @@ class EditTeamItemActivity() : BaseActivity() {
         val intent = Intent()
         intent.putExtra("key", key)
         if (key == TEAM_DAYS_KEY) {
-            intent.putParcelableArrayListExtra("days", resDays)
+            intent.putIntegerArrayListExtra("days", selectedDays)
         } else if (key == TEAM_PLAY_START_KEY || key == TEAM_PLAY_END_KEY) {
-            intent.putExtra("time", time)
+            if (source == "setup" && !times.containsKey("time")) {
+                warning("請選擇時段")
+                return
+            }
+            intent.putExtra("times", times)
         } else if (key == TEAM_DEGREE_KEY) {
             val res: Array<String> = resDegrees.toTypedArray()
             intent.putExtra("degree", res)
@@ -389,7 +401,7 @@ class EditTeamItemActivity() : BaseActivity() {
     }
 }
 
-class ArenaItem(val context: Context, val arena: com.sportpassword.bm.Controllers.Arena, val itemClick: (Int)->Unit): Item() {
+class ArenaItem(val context: Context, val arena: com.sportpassword.bm.Controllers.Arena, val checked: Boolean=false): Item() {
 
     val checkedColor = ContextCompat.getColor(context, R.color.MY_GREEN)
     val uncheckedColor = ContextCompat.getColor(context, R.color.WHITE)
@@ -399,39 +411,38 @@ class ArenaItem(val context: Context, val arena: com.sportpassword.bm.Controller
     override fun bind(viewHolder: ViewHolder, position: Int) {
 
         viewHolder.item1.text = arena.name
-        var checked: Boolean = arena.checked
-        toggleClick(viewHolder, checked)
+        toggleClick(viewHolder.itemView, checked)
 
-        viewHolder.itemView.onClick {
-
-            checked = !checked
-            toggleClick(viewHolder, checked)
-            itemClick(position)
-        }
+//        viewHolder.itemView.onClick {
+//
+//            checked = !checked
+//            toggleClick(viewHolder, checked)
+//        }
     }
 
-    private fun toggleClick(viewHolder: ViewHolder, checked: Boolean) {
+    fun toggleClick(itemView: View, checked: Boolean) {
         if (checked) {
-            setSelectedStyle(viewHolder)
+            setSelectedStyle(itemView)
         } else {
-            unSetSelectedStyle(viewHolder)
+            unSetSelectedStyle(itemView)
         }
     }
 
-    private fun setSelectedStyle(viewHolder: ViewHolder) {
-        val item1View = viewHolder.item1
-        val mark1View = viewHolder.mark1
+    fun setSelectedStyle(itemView: View) {
+        val item1View = itemView.item1
+        val mark1View = itemView.mark1
         item1View.setTextColor(checkedColor)
         mark1View.visibility = View.VISIBLE
         mark1View.setColorFilter(checkedColor)
     }
-    private fun unSetSelectedStyle(viewHolder: ViewHolder) {
-        val item1View = viewHolder.item1
-        val mark1View = viewHolder.mark1
+    fun unSetSelectedStyle(itemView: View) {
+        val item1View = itemView.item1
+        val mark1View = itemView.mark1
         item1View.setTextColor(uncheckedColor)
         mark1View.visibility = View.INVISIBLE
     }
 }
+
 
 class ArenaSection(val title: String): Item(), ExpandableItem {
 
@@ -447,6 +458,7 @@ class ArenaSection(val title: String): Item(), ExpandableItem {
             expandableGroup.onToggleExpanded()
             viewHolder.collapse.setImageResource(getExpandIcon())
         }
+//        println(position)
     }
 
     override fun setExpandableGroup(onToggleListener: ExpandableGroup) {
@@ -461,29 +473,29 @@ class ArenaSection(val title: String): Item(), ExpandableItem {
 
 }
 
+//@Parcelize
+//data class Day(val text: String, val day: Int) : Parcelable {
+//
+//    companion object : Parceler<Day> {
+//        override fun Day.write(dest: Parcel, flags: Int) = with(dest) {
+//            writeString(text)
+//            writeInt(day)
+//        }
+//
+//        override fun create(source: Parcel): Day = Day(source)
+//    }
+//
+//    constructor(source: Parcel): this(
+//    source.readString(),
+//    source.readInt()
+//    )
+//
+//    override fun describeContents() = 0
+//
+//}
+
 @Parcelize
-data class Day(val text: String, val day: Int) : Parcelable {
-
-    companion object : Parceler<Day> {
-        override fun Day.write(dest: Parcel, flags: Int) = with(dest) {
-            writeString(text)
-            writeInt(day)
-        }
-
-        override fun create(source: Parcel): Day = Day(source)
-    }
-
-    constructor(source: Parcel): this(
-    source.readString(),
-    source.readInt()
-    )
-
-    override fun describeContents() = 0
-
-}
-
-@Parcelize
-data class Arena(val id: Int, val name: String, var checked: Boolean=false): Parcelable
+data class Arena(val id: Int, val name: String): Parcelable
 
 
 

@@ -20,6 +20,7 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.*
 import com.sportpassword.bm.Models.Arena
 import com.sportpassword.bm.Models.City
+import com.sportpassword.bm.Models.SELECT_TIME_TYPE
 import com.sportpassword.bm.Models.Team
 import com.sportpassword.bm.Utilities.*
 import com.sportpassword.bm.Views.ImagePicker
@@ -45,7 +46,6 @@ class EditTeamActivity : BaseActivity(), ImagePicker {
     lateinit override var imageView: ImageView
 
     var teamToken: String = ""
-    lateinit var that: EditTeamActivity
 
     private var originW: Int = 0
     private var originH: Int = 0
@@ -62,7 +62,6 @@ class EditTeamActivity : BaseActivity(), ImagePicker {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_edit_team)
 
-        that = this
         imageView = teamedit_featured
         model.dataReset()
         //println(model.data)
@@ -379,19 +378,22 @@ class EditTeamActivity : BaseActivity(), ImagePicker {
         if (key == TEAM_DAYS_KEY) {
             val value: MutableList<Int> = model.data[key]!!["value"] as MutableList<Int>
             if (value.size > 0) {
-                val days: IntArray = IntArray(value.size)
-                for (i in 0..days.size-1) {
-                    days.set(i, value.get(i))
+                val days: ArrayList<Int> = arrayListOf()
+                value.forEach {
+                    days.add(it)
                 }
-                intent.putExtra("value", days)
+                intent.putIntegerArrayListExtra("days", days)
             }
         } else if (key == TEAM_PLAY_START_KEY || key == TEAM_PLAY_END_KEY) {
             val row: MutableMap<String, Any> = model.data[key]!!["sender"] as MutableMap<String, Any>
+            var times: HashMap<String, Any> = hashMapOf()
+            times["type"] = if (key == TEAM_PLAY_START_KEY) SELECT_TIME_TYPE.play_start else SELECT_TIME_TYPE.play_end
             var value = ""
             if (row.isNotEmpty()) {
                 value = row["time"] as String
+                times["time"] = value
             }
-            intent.putExtra("value", value)
+            intent.putExtra("times", times)
         } else if (key == TEAM_DEGREE_KEY) {
             val value: ArrayList<String> = model.data[key]!!["sender"] as ArrayList<String>
             intent.putExtra("value", value)
@@ -406,10 +408,18 @@ class EditTeamActivity : BaseActivity(), ImagePicker {
                 Alert.show(this, "警告", "請先選擇區域")
             } else {
                 val tmp: MutableMap<String, Int> = model.data[key]!!["sender"] as MutableMap<String, Int>
-                val city_id: Int = tmp["city_id"]!!
-                val arena_id: Int = tmp["arena_id"]!!
-                intent.putExtra("city_id", city_id)
-                intent.putExtra("arena_id", arena_id)
+                if (tmp.containsKey("city_id")) {
+                    val city_id: Int = tmp["city_id"]!!
+                    val citysForArena: ArrayList<Int> = arrayListOf(city_id)
+                    intent.putIntegerArrayListExtra("citys_for_arena", citysForArena)
+                }
+                if (tmp.containsKey("arena_id")) {
+                    val arena_id: Int = tmp["arena_id"]!!
+                    val arenas: ArrayList<com.sportpassword.bm.Controllers.Arena> = arrayListOf(com.sportpassword.bm.Controllers.Arena(arena_id, ""))
+                    intent.putParcelableArrayListExtra("arenas", arenas)
+                }
+//                intent.putExtra("city_id", city_id)
+//                intent.putExtra("arena_id", arena_id)
             }
         } else {
             val value: String = model.data[key]!!["value"] as String
@@ -433,15 +443,14 @@ class EditTeamActivity : BaseActivity(), ImagePicker {
                 if (resultCode == Activity.RESULT_OK) {
                     val key = data!!.getStringExtra("key")
                     if (key == TEAM_DAYS_KEY) {
-                        val days1: ArrayList<Day> = data!!.getParcelableArrayListExtra("days")
-                        val days: ArrayList<Int> = arrayListOf()
-                        for (i in 0..days1.size - 1) {
-                            val d: Day = days1[i]
-                            days.add(d.day)
-                        }
+                        val days: ArrayList<Int> = data!!.getIntegerArrayListExtra("days")
                         model.updateDays(days)
                     } else if (key == TEAM_PLAY_START_KEY || key == TEAM_PLAY_END_KEY) {
-                        val time: String = data!!.getStringExtra("time") + ":00"
+                        val times: HashMap<String, Any> = data!!.getSerializableExtra("times") as HashMap<String, Any>
+                        var time: String = ""
+                        if (times.containsKey("time")) {
+                            time = times.get("time") as String + ":00"
+                        }
                         if (key == TEAM_PLAY_START_KEY) {
                             model.updatePlayStartTime(time)
                         } else {
@@ -459,10 +468,16 @@ class EditTeamActivity : BaseActivity(), ImagePicker {
                             model.updateCity(city)
                         }
                     } else if (key == TEAM_ARENA_KEY) {
-                        val id: Int = data!!.getIntExtra("id", model.data[TEAM_ARENA_KEY]!!["value"] as Int)
-                        val name: String = data!!.getStringExtra("name")
-                        val arena = Arena(id, name)
-                        model.updateArena(arena)
+                        val arenas:ArrayList<com.sportpassword.bm.Controllers.Arena> = data!!.getParcelableArrayListExtra("arenas")
+//                        val id: Int = data!!.getIntExtra("id", model.data[TEAM_ARENA_KEY]!!["value"] as Int)
+//                        val name: String = data!!.getStringExtra("name")
+                        if (arenas.size > 0) {
+                            println(arenas)
+                            val id = arenas[0].id
+                            val name = arenas[0].name
+                            val arena = Arena(id, name)
+                            model.updateArena(arena)
+                        }
                     } else {
                         val content: String = data!!.getStringExtra("res")
                         if (key == TEAM_TEMP_CONTENT_KEY) {
