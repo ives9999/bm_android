@@ -59,7 +59,7 @@ class Team(id: Int, name: String, token: String, featured_path: String, vimeo: S
                 TEAM_PLAY_END_KEY to mutableMapOf("ch" to "結束時間","vtype" to "String","value" to "","submit" to true,"atype" to more,"segue" to TO_SELECT_TIME,"sender" to mutableMapOf<String, Any>(),"show" to ""),
                 TEAM_INTERVAL_KEY to mutableMapOf("ch" to "打球時段","vtype" to "String","value" to "","submit" to false,"atype" to none,"segue" to TO_SELECT_TIME,"sender" to mutableMapOf<String, Any>(),"show" to ""),
                 TEAM_BALL_KEY to mutableMapOf("ch" to "使用球種","vtype" to "String","value" to "","submit" to true,"atype" to none,"show" to "","keyboardType" to defaultPad),
-                TEAM_DEGREE_KEY to mutableMapOf("ch" to "球隊程度","vtype" to "array","value" to mutableListOf<String>(),"submit" to true,"atype" to more,"segue" to TO_SELECT_DEGREE,"sender" to arrayListOf<String>(),"show" to "未提供"),
+                TEAM_DEGREE_KEY to mutableMapOf("ch" to "球隊程度","vtype" to "array","value" to mutableListOf<String>(),"submit" to true,"atype" to more,"segue" to TO_SELECT_DEGREE,"sender" to arrayListOf<DEGREE>(),"show" to "未提供"),
                 TEAM_CHARGE_KEY to mutableMapOf("ch" to "收費說明","vtype" to "String","value" to "","submit" to true,"atype" to more,"segue" to TO_TEXT_INPUT,"sender" to mutableMapOf<String, Any>(),"show" to ""),
                 TEAM_CONTENT_KEY to mutableMapOf("ch" to "球隊說明","vtype" to "String","value" to "","submit" to true,"atype" to more,"segue" to TO_TEXT_INPUT,"sender" to mutableMapOf<String, Any>(),"show" to ""),
                 TEAM_TEMP_FEE_M_KEY to mutableMapOf("ch" to "臨打費用：男","vtype" to "Int","value" to -1,"submit" to true,"atype" to none,"show" to "","keyboardType" to numberPad),
@@ -98,7 +98,7 @@ class Team(id: Int, name: String, token: String, featured_path: String, vimeo: S
         TEAM_TEMP_CONTENT_KEY to "歡迎加入",
         TEAM_PLAY_START_KEY to "16:00",
         TEAM_PLAY_END_KEY to "18:00",
-        TEAM_DEGREE_KEY to arrayListOf("high", "soso"),
+        TEAM_DEGREE_KEY to arrayListOf(DEGREE.high, DEGREE.soso),
         TEAM_DAYS_KEY to arrayListOf(2, 4),
         TEAM_CITY_KEY to City(218, "台南"),
         TEAM_ARENA_KEY to Arena(10, "全穎羽球館"),
@@ -128,7 +128,7 @@ class Team(id: Int, name: String, token: String, featured_path: String, vimeo: S
                 data[key1]!!["change"] = true
             }
             updateDays(testData[TEAM_DAYS_KEY] as ArrayList<Int>)
-            updateDegree(testData[TEAM_DEGREE_KEY] as ArrayList<String>)
+            updateDegree(testData[TEAM_DEGREE_KEY] as ArrayList<DEGREE>)
         }
     }
 
@@ -151,9 +151,13 @@ class Team(id: Int, name: String, token: String, featured_path: String, vimeo: S
         setDaysSender()
     }
 
-    fun updateDegree(degrees: ArrayList<String>) {
+    fun updateDegree(degrees: ArrayList<DEGREE>) {
         if (degrees.size > 0) {
-            data[TEAM_DEGREE_KEY]!!["value"] = degrees
+            var res: MutableList<String> = mutableListOf()
+            degrees.forEach {
+                res.add(it.toString())
+            }
+            data[TEAM_DEGREE_KEY]!!["value"] = res
             degreeShow()
             setDegreeSender()
         }
@@ -304,7 +308,12 @@ class Team(id: Int, name: String, token: String, featured_path: String, vimeo: S
     }
 
     fun setDegreeSender() {
-        data[TEAM_DEGREE_KEY]!!["sender"] = data[TEAM_DEGREE_KEY]!!["value"]!!
+        val degrees: ArrayList<String> = data[TEAM_DEGREE_KEY]!!["value"]!! as ArrayList<String>
+        var res: ArrayList<DEGREE> = arrayListOf()
+        degrees.forEach {
+            res.add(DEGREE.fromEnglish(it))
+        }
+        data[TEAM_DEGREE_KEY]!!["sender"] = res
     }
 
     fun setPlayStartTimeSender() {

@@ -554,9 +554,13 @@ object TeamService: DataService() {
                     val tmp1: String = tmp.getString(key)
                     if (tmp1.count() > 0 && tmp1 != "null") {
                         //println("tmp1: $tmp1")
-                        val degrees = tmp1.split(",")
+                        var degrees: ArrayList<DEGREE> = arrayListOf()
+                        val _degrees = tmp1.split(",")
                         //println("degrees: $degrees")
-                        model.updateDegree(degrees.toTypedArray().toCollection(ArrayList()))
+                        _degrees.forEach {
+                            degrees.add(DEGREE.fromEnglish(it))
+                        }
+                        model.updateDegree(degrees)
                     }
                 } catch (e: JSONException) {
 

@@ -56,6 +56,7 @@ class EditTeamItemActivity() : BaseActivity() {
     var citysForArena: ArrayList<Int> = arrayListOf()
     var arenas: ArrayList<Arena> = arrayListOf()
     var selectedDays: ArrayList<Int> = arrayListOf()
+    var degrees: ArrayList<DEGREE> = arrayListOf()
 
     //type: .play_start or .play_end, time: "09:00:00"
     var times: HashMap<String, Any> = hashMapOf()
@@ -125,21 +126,18 @@ class EditTeamItemActivity() : BaseActivity() {
             }
         } else if (key == TEAM_DEGREE_KEY) {
             setMyTitle("球隊程度")
-            val value: ArrayList<String> = intent.getStringArrayListExtra("value")
+            degrees = intent.getSerializableExtra("degrees") as ArrayList<DEGREE>
             val allDegree: Map<String, String> = DEGREE.all()
             for ((k, v) in allDegree) {
                 var checked: Boolean = false
-                if (value != null) {
-                    for (i in 0..value.size - 1) {
-                        if (k == value.get(i)) {
-                            checked = true
-                            resDegrees.add(k)
-                            break
-                        }
+                for (i in 0..degrees.size-1) {
+                    if (k == DEGREE.toString(degrees[i])) {
+                        checked = true
+                        break
                     }
                 }
                 val m: MutableMap<String, String> = mutableMapOf("value" to k, "text" to v, "checked" to checked.toString())
-//                daysLists.add(m)
+                dataList.add(m)
             }
         } else if (key == TEAM_CITY_KEY) {
             setMyTitle("縣市")
@@ -203,8 +201,8 @@ class EditTeamItemActivity() : BaseActivity() {
                         submit(View(this))
                     }
                 } else if (key == TEAM_DEGREE_KEY) {
-                    dataList[position]["checked"] = checked.toString()
-                    setDegree()
+                    val degree = dataList[position]["value"]!!
+                    setDegree(degree)
                 } else if (key == TEAM_CITY_KEY) {
                     setCity(position)
                     if (select == "just one") {
@@ -354,16 +352,20 @@ class EditTeamItemActivity() : BaseActivity() {
         }
     }
 
-    fun setDegree() {
-        resDegrees = arrayListOf()
-        for (i in 0..dataList.size-1) {
-            val checked: Boolean = dataList[i]["checked"]!!.toBoolean()
-            val degree: String = dataList[i]["value"]!!
-            if (checked) {
-                resDegrees.add(degree)
-            } else {
-                resDegrees.remove(degree)
+    fun setDegree(_degree: String) {
+        val degree = DEGREE.fromEnglish(_degree)
+        var isExist: Boolean = false
+        var idx: Int = -1
+        for (i in 0..degrees.size-1) {
+            if (degree == degrees[i]) {
+                isExist = true
+                idx = i
             }
+        }
+        if (isExist) {
+            degrees.removeAt(idx)
+        } else {
+            degrees.add(degree)
         }
     }
 
@@ -380,8 +382,11 @@ class EditTeamItemActivity() : BaseActivity() {
             }
             intent.putExtra("times", times)
         } else if (key == TEAM_DEGREE_KEY) {
-            val res: Array<String> = resDegrees.toTypedArray()
-            intent.putExtra("degree", res)
+            if (source == "setup" && degrees.size == 0) {
+                warning("請選擇程度")
+                return
+            }
+            intent.putExtra("degrees", degrees)
         } else if (key == TEAM_CITY_KEY) {
             if (select == "just one" && citys.size == 0) {
                 return

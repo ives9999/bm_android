@@ -26,7 +26,23 @@ import kotlin.collections.HashMap
 enum class DEGREE(val value: String) {
     new("新手"), soso("普通"), high("高手");
     companion object {
-        fun from(findValue: String): DEGREE = DEGREE.values().first { it.value == findValue }
+        fun toString(value: DEGREE): String {
+            when (value) {
+                DEGREE.new -> return "new"
+                DEGREE.soso -> return "soso"
+                DEGREE.high -> return "high"
+            }
+        }
+        fun fromChinese(findValue: String): DEGREE = DEGREE.values().first { it.value == findValue }
+
+        fun fromEnglish(findValue: String): DEGREE {
+            when (findValue) {
+                "new" ->return new
+                "soso" ->return soso
+                "high" ->return high
+            }
+            return new
+        }
         fun all(): Map<String, String> {
             return mapOf("new" to "新手", "soso" to "普通", "high" to "高手")
         }

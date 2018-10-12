@@ -395,8 +395,8 @@ class EditTeamActivity : BaseActivity(), ImagePicker {
             }
             intent.putExtra("times", times)
         } else if (key == TEAM_DEGREE_KEY) {
-            val value: ArrayList<String> = model.data[key]!!["sender"] as ArrayList<String>
-            intent.putExtra("value", value)
+            val degrees: ArrayList<DEGREE> = model.data[key]!!["sender"] as ArrayList<DEGREE>
+            intent.putExtra("degrees", degrees)
         } else if (key == TEAM_CITY_KEY) {
             val value: Int = model.data[key]!!["sender"] as Int
             val city = City(value, "")
@@ -457,7 +457,7 @@ class EditTeamActivity : BaseActivity(), ImagePicker {
                             model.updatePlayEndTime(time)
                         }
                     } else if (key == TEAM_DEGREE_KEY) {
-                        val degrees: ArrayList<String> = data!!.getStringArrayExtra("degree").toCollection(ArrayList<String>())
+                        val degrees: ArrayList<DEGREE> = data!!.getSerializableExtra("degrees") as ArrayList<DEGREE>
                         model.updateDegree(degrees)
                     } else if (key == TEAM_CITY_KEY) {
                         val citys: ArrayList<City> = data!!.getParcelableArrayListExtra("citys")

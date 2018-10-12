@@ -133,6 +133,11 @@ class TempPlayFragment : TabFragment(), inter {
 
                         intent.putParcelableArrayListExtra("arenas", arenas)
                     }
+                    1 -> {// degree
+                        intent.putExtra("key", TEAM_DEGREE_KEY)
+                        intent.putExtra("source", "search")
+                        intent.putExtra("degrees", degrees)
+                    }
                 }
             }
         }
@@ -204,6 +209,19 @@ class TempPlayFragment : TabFragment(), inter {
                         times = data!!.getSerializableExtra("times") as HashMap<String, Any>
                         if (times.containsKey("time")) {
                             value = times["time"]!! as String
+                        } else {
+                            value = "全部"
+                        }
+                    } else if (key == TEAM_DEGREE_KEY) {
+                        section = 1
+                        row = 1
+                        degrees = data!!.getSerializableExtra("degrees") as ArrayList<DEGREE>
+                        if (degrees.size > 0) {
+                            var arr: ArrayList<String> = arrayListOf()
+                            degrees.forEach {
+                                arr.add(it.value)
+                            }
+                            value = arr.joinToString()
                         } else {
                             value = "全部"
                         }
