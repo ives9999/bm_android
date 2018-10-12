@@ -136,7 +136,9 @@
                 android:layout_marginTop="32dp"
                 android:background="@drawable/button_rc"
                 android:onClick="submit"
-                android:text="提交">
+                android:text="提交"
+                android:textColor="@color/WHITE"
+                android:textSize="18sp">
 
             </Button>
         </LinearLayout>

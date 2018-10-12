@@ -79,7 +79,8 @@
             android:layout_marginTop="8dp"
             android:background="@drawable/button_rc"
             android:text="取消"
-            android:textSize="24sp"
+            android:textColor="@color/WHITE"
+            android:textSize="18sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/teamName" />
 

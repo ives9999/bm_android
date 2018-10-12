@@ -13,7 +13,8 @@
         android:background="@drawable/button_rc"
         android:onClick="manager_team"
         android:text="管理"
-        android:textColor="@color/BLACK" />
+        android:textColor="@color/WHITE"
+        android:textSize="18sp" />
 
     <ImageButton
         android:id="@+id/menu_search_team_btn"

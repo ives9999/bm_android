@@ -15,643 +15,644 @@
         android:id="@+id/account_refresh"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        >
-
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteX="1dp"
         tools:layout_editor_absoluteY="0dp">
 
-        <RelativeLayout
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             tools:layout_editor_absoluteX="0dp"
             tools:layout_editor_absoluteY="0dp">
 
-            <android.support.constraint.ConstraintLayout
-                android:id="@+id/accountAvatarContainer"
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingBottom="32dp">
+                tools:layout_editor_absoluteX="0dp"
+                tools:layout_editor_absoluteY="0dp">
 
-                <TextView
-                    android:id="@+id/accountSexLbl"
-                    android:layout_width="wrap_content"
+                <android.support.constraint.ConstraintLayout
+                    android:id="@+id/accountAvatarContainer"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:text="TextView"
-                    android:textColor="@color/WHITE"
-                    app:layout_constraintBottom_toBottomOf="@+id/accountNicknameLbl"
-                    app:layout_constraintStart_toEndOf="@+id/accountNicknameLbl"
-                    tools:text="先生" />
+                    android:paddingBottom="32dp">
 
-                <ImageView
-                    android:id="@+id/avatarView"
-                    android:layout_width="68dp"
+                    <TextView
+                        android:id="@+id/accountSexLbl"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:text="TextView"
+                        android:textColor="@color/WHITE"
+                        app:layout_constraintBottom_toBottomOf="@+id/accountNicknameLbl"
+                        app:layout_constraintStart_toEndOf="@+id/accountNicknameLbl"
+                        tools:text="先生" />
+
+                    <ImageView
+                        android:id="@+id/avatarView"
+                        android:layout_width="68dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginTop="16dp"
+                        android:paddingTop="@dimen/nav_header_vertical_spacing"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:srcCompat="@drawable/menuprofileicon" />
+
+                    <TextView
+                        android:id="@+id/accountNicknameLbl"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginTop="36dp"
+                        android:fontFamily="sans-serif"
+                        android:textColor="@color/WHITE"
+                        android:textSize="24sp"
+                        android:textStyle="bold"
+                        app:layout_constraintStart_toEndOf="@+id/avatarView"
+                        app:layout_constraintTop_toTopOf="parent"
+                        tools:text="ives" />
+
+                </android.support.constraint.ConstraintLayout>
+
+                <android.support.constraint.ConstraintLayout
+                    android:id="@+id/accountLoginContainer"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginTop="16dp"
-                    android:paddingTop="@dimen/nav_header_vertical_spacing"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:srcCompat="@drawable/menuprofileicon" />
+                    android:layout_below="@id/accountAvatarContainer"
+                    android:layout_marginBottom="32dp">
 
-                <TextView
-                    android:id="@+id/accountNicknameLbl"
-                    android:layout_width="wrap_content"
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <android.support.constraint.ConstraintLayout
+                            android:id="@+id/accountLoginRow"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:paddingTop="8dp"
+                            android:paddingBottom="8dp">
+
+                            <TextView
+                                android:id="@+id/accountLoginLbl"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="16dp"
+                                android:text="登入資料"
+                                android:textColor="@color/WHITE"
+                                android:textSize="18sp"
+                                android:textStyle="bold"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+                        </android.support.constraint.ConstraintLayout>
+
+                        <android.support.constraint.ConstraintLayout
+                            android:id="@+id/accountNicknameRow"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/accountLoginRow"
+                            android:paddingTop="8dp"
+                            android:paddingBottom="8dp"
+                            tools:layout_editor_absoluteY="8dp">
+
+
+                            <TextView
+                                android:id="@+id/textView11"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="16dp"
+                                android:text="暱稱"
+                                android:textColor="@color/WHITE"
+                                android:textSize="18sp"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+                            <TextView
+                                android:id="@+id/accountNickname"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginEnd="8dp"
+                                android:textColor="@color/WHITE"
+                                android:textSize="18sp"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toStartOf="@+id/imageView4"
+                                app:layout_constraintTop_toTopOf="parent"
+                                tools:text="ives" />
+
+                            <ImageView
+                                android:id="@+id/imageView4"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginEnd="24dp"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintTop_toTopOf="parent"
+                                app:srcCompat="@drawable/greater1" />
+                        </android.support.constraint.ConstraintLayout>
+
+                        <include
+                            android:id="@+id/divider_4"
+                            layout="@layout/divider"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/accountNicknameRow" />
+
+
+                        <android.support.constraint.ConstraintLayout
+                            android:id="@+id/accountNameRow"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/accountNicknameRow"
+                            android:paddingTop="8dp"
+                            android:paddingBottom="8dp"
+                            tools:layout_editor_absoluteY="8dp">
+
+
+                            <TextView
+                                android:id="@+id/textView12"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="16dp"
+                                android:text="姓名"
+                                android:textColor="@color/WHITE"
+                                android:textSize="18sp"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+                            <TextView
+                                android:id="@+id/accountName"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginEnd="8dp"
+                                android:textColor="@color/WHITE"
+                                android:textSize="18sp"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toStartOf="@+id/imageView5"
+                                app:layout_constraintTop_toTopOf="parent"
+                                tools:text="ives" />
+
+                            <ImageView
+                                android:id="@+id/imageView5"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginEnd="24dp"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintTop_toTopOf="parent"
+                                app:srcCompat="@drawable/greater1" />
+                        </android.support.constraint.ConstraintLayout>
+
+                        <include
+                            android:id="@+id/divider_5"
+                            layout="@layout/divider"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/accountNameRow" />
+
+
+                        <android.support.constraint.ConstraintLayout
+                            android:id="@+id/accountEmailRow"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/accountNameRow"
+                            android:paddingTop="8dp"
+                            android:paddingBottom="8dp"
+                            tools:layout_editor_absoluteY="8dp">
+
+
+                            <TextView
+                                android:id="@+id/textView13"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="16dp"
+                                android:text="email"
+                                android:textColor="@color/WHITE"
+                                android:textSize="18sp"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+                            <TextView
+                                android:id="@+id/accountEmail"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginEnd="8dp"
+                                android:textColor="@color/WHITE"
+                                android:textSize="18sp"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toStartOf="@+id/imageView6"
+                                app:layout_constraintTop_toTopOf="parent"
+                                tools:text="ives" />
+
+                            <ImageView
+                                android:id="@+id/imageView6"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginEnd="24dp"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintTop_toTopOf="parent"
+                                app:srcCompat="@drawable/greater1" />
+                        </android.support.constraint.ConstraintLayout>
+
+                    </RelativeLayout>
+
+                </android.support.constraint.ConstraintLayout>
+
+                <android.support.constraint.ConstraintLayout
+                    android:id="@+id/accountDataContainer"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginTop="36dp"
-                    android:fontFamily="sans-serif"
-                    android:textColor="@color/WHITE"
-                    android:textSize="24sp"
-                    android:textStyle="bold"
-                    app:layout_constraintStart_toEndOf="@+id/avatarView"
-                    app:layout_constraintTop_toTopOf="parent"
-                    tools:text="ives" />
+                    android:layout_below="@id/accountLoginContainer"
+                    android:layout_marginBottom="32dp">
 
-            </android.support.constraint.ConstraintLayout>
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
 
-            <android.support.constraint.ConstraintLayout
-                android:id="@+id/accountLoginContainer"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/accountAvatarContainer"
-                android:layout_marginBottom="32dp">
+                        <android.support.constraint.ConstraintLayout
+                            android:id="@+id/accountDataRow"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:paddingTop="8dp"
+                            android:paddingBottom="8dp">
 
-                <RelativeLayout
+                            <TextView
+                                android:id="@+id/accountDataLbl"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="16dp"
+                                android:text="個人資料"
+                                android:textColor="@color/WHITE"
+                                android:textSize="18sp"
+                                android:textStyle="bold"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+                        </android.support.constraint.ConstraintLayout>
+
+                        <android.support.constraint.ConstraintLayout
+                            android:id="@+id/accountSexRow"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/accountDataRow"
+                            android:paddingTop="8dp"
+                            android:paddingBottom="8dp"
+                            tools:layout_editor_absoluteY="8dp">
+
+
+                            <TextView
+                                android:id="@+id/textView21"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="16dp"
+                                android:text="性別"
+                                android:textColor="@color/WHITE"
+                                android:textSize="18sp"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+                            <TextView
+                                android:id="@+id/accountSex"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginEnd="8dp"
+                                android:textColor="@color/WHITE"
+                                android:textSize="18sp"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toStartOf="@+id/imageView21"
+                                app:layout_constraintTop_toTopOf="parent"
+                                tools:text="ives" />
+
+                            <ImageView
+                                android:id="@+id/imageView21"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginEnd="24dp"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintTop_toTopOf="parent"
+                                app:srcCompat="@drawable/greater1" />
+                        </android.support.constraint.ConstraintLayout>
+
+                        <include
+                            android:id="@+id/divider_6"
+                            layout="@layout/divider"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/accountSexRow" />
+
+
+                        <android.support.constraint.ConstraintLayout
+                            android:id="@+id/accountDobRow"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/accountSexRow"
+                            android:paddingTop="8dp"
+                            android:paddingBottom="8dp"
+                            tools:layout_editor_absoluteY="8dp">
+
+
+                            <TextView
+                                android:id="@+id/textView22"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="16dp"
+                                android:text="生日"
+                                android:textColor="@color/WHITE"
+                                android:textSize="18sp"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+                            <TextView
+                                android:id="@+id/accountDob"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginEnd="8dp"
+                                android:textColor="@color/WHITE"
+                                android:textSize="18sp"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toStartOf="@+id/imageView22"
+                                app:layout_constraintTop_toTopOf="parent"
+                                tools:text="ives" />
+
+                            <ImageView
+                                android:id="@+id/imageView22"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginEnd="24dp"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintTop_toTopOf="parent"
+                                app:srcCompat="@drawable/greater1" />
+                        </android.support.constraint.ConstraintLayout>
+
+
+                    </RelativeLayout>
+
+                </android.support.constraint.ConstraintLayout>
+
+                <android.support.constraint.ConstraintLayout
+                    android:id="@+id/accountContactContainer"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/accountDataContainer"
+                    android:layout_marginBottom="32dp">
 
-                    <android.support.constraint.ConstraintLayout
-                        android:id="@+id/accountLoginRow"
+                    <RelativeLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:paddingBottom="8dp"
-                        android:paddingTop="8dp">
+                        android:layout_height="wrap_content">
 
-                        <TextView
-                            android:id="@+id/accountLoginLbl"
-                            android:layout_width="wrap_content"
+                        <android.support.constraint.ConstraintLayout
+                            android:id="@+id/accountContactRow"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="16dp"
-                            android:text="登入資料"
-                            android:textColor="@color/WHITE"
-                            android:textSize="18sp"
-                            android:textStyle="bold"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
+                            android:paddingTop="8dp"
+                            android:paddingBottom="8dp">
 
-                    </android.support.constraint.ConstraintLayout>
+                            <TextView
+                                android:id="@+id/accountContactLbl"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="16dp"
+                                android:text="通訊資料"
+                                android:textColor="@color/WHITE"
+                                android:textSize="18sp"
+                                android:textStyle="bold"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
 
-                    <android.support.constraint.ConstraintLayout
-                        android:id="@+id/accountNicknameRow"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@id/accountLoginRow"
-                        android:paddingBottom="8dp"
-                        android:paddingTop="8dp"
-                        tools:layout_editor_absoluteY="8dp">
+                        </android.support.constraint.ConstraintLayout>
 
-
-                        <TextView
-                            android:id="@+id/textView11"
-                            android:layout_width="wrap_content"
+                        <android.support.constraint.ConstraintLayout
+                            android:id="@+id/accountMobileRow"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="16dp"
-                            android:text="暱稱"
-                            android:textColor="@color/WHITE"
-                            android:textSize="18sp"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
+                            android:layout_below="@id/accountContactRow"
+                            android:paddingTop="8dp"
+                            android:paddingBottom="8dp"
+                            tools:layout_editor_absoluteY="8dp">
 
-                        <TextView
-                            android:id="@+id/accountNickname"
-                            android:layout_width="wrap_content"
+
+                            <TextView
+                                android:id="@+id/textView31"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="16dp"
+                                android:text="行動電話"
+                                android:textColor="@color/WHITE"
+                                android:textSize="18sp"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+                            <TextView
+                                android:id="@+id/accountMobile"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginEnd="8dp"
+                                android:textColor="@color/WHITE"
+                                android:textSize="18sp"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toStartOf="@+id/imageView31"
+                                app:layout_constraintTop_toTopOf="parent"
+                                tools:text="ives" />
+
+                            <ImageView
+                                android:id="@+id/imageView31"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginEnd="24dp"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintTop_toTopOf="parent"
+                                app:srcCompat="@drawable/greater1" />
+                        </android.support.constraint.ConstraintLayout>
+
+                        <include
+                            android:id="@+id/divider_7"
+                            layout="@layout/divider"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginEnd="8dp"
-                            android:textColor="@color/WHITE"
-                            android:textSize="18sp"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toStartOf="@+id/imageView4"
-                            app:layout_constraintTop_toTopOf="parent"
-                            tools:text="ives" />
+                            android:layout_below="@id/accountMobileRow" />
 
-                        <ImageView
-                            android:id="@+id/imageView4"
-                            android:layout_width="wrap_content"
+
+                        <android.support.constraint.ConstraintLayout
+                            android:id="@+id/accountTelRow"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginEnd="24dp"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintTop_toTopOf="parent"
-                            app:srcCompat="@drawable/greater1" />
-                    </android.support.constraint.ConstraintLayout>
-
-                    <include
-                        android:id="@+id/divider_4"
-                        layout="@layout/divider"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@id/accountNicknameRow" />
+                            android:layout_below="@id/accountMobileRow"
+                            android:paddingTop="8dp"
+                            android:paddingBottom="8dp"
+                            tools:layout_editor_absoluteY="8dp">
 
 
-                    <android.support.constraint.ConstraintLayout
-                        android:id="@+id/accountNameRow"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@id/accountNicknameRow"
-                        android:paddingBottom="8dp"
-                        android:paddingTop="8dp"
-                        tools:layout_editor_absoluteY="8dp">
+                            <TextView
+                                android:id="@+id/textView32"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="16dp"
+                                android:text="市內電話"
+                                android:textColor="@color/WHITE"
+                                android:textSize="18sp"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+                            <TextView
+                                android:id="@+id/accountTel"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginEnd="8dp"
+                                android:textColor="@color/WHITE"
+                                android:textSize="18sp"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toStartOf="@+id/imageView32"
+                                app:layout_constraintTop_toTopOf="parent"
+                                tools:text="ives" />
+
+                            <ImageView
+                                android:id="@+id/imageView32"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginEnd="24dp"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintTop_toTopOf="parent"
+                                app:srcCompat="@drawable/greater1" />
+                        </android.support.constraint.ConstraintLayout>
 
 
-                        <TextView
-                            android:id="@+id/textView12"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="16dp"
-                            android:text="姓名"
-                            android:textColor="@color/WHITE"
-                            android:textSize="18sp"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
+                    </RelativeLayout>
 
-                        <TextView
-                            android:id="@+id/accountName"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginEnd="8dp"
-                            android:textColor="@color/WHITE"
-                            android:textSize="18sp"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toStartOf="@+id/imageView5"
-                            app:layout_constraintTop_toTopOf="parent"
-                            tools:text="ives" />
+                </android.support.constraint.ConstraintLayout>
 
-                        <ImageView
-                            android:id="@+id/imageView5"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginEnd="24dp"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintTop_toTopOf="parent"
-                            app:srcCompat="@drawable/greater1" />
-                    </android.support.constraint.ConstraintLayout>
-
-                    <include
-                        android:id="@+id/divider_5"
-                        layout="@layout/divider"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@id/accountNameRow" />
-
-
-                    <android.support.constraint.ConstraintLayout
-                        android:id="@+id/accountEmailRow"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@id/accountNameRow"
-                        android:paddingBottom="8dp"
-                        android:paddingTop="8dp"
-                        tools:layout_editor_absoluteY="8dp">
-
-
-                        <TextView
-                            android:id="@+id/textView13"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="16dp"
-                            android:text="email"
-                            android:textColor="@color/WHITE"
-                            android:textSize="18sp"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
-
-                        <TextView
-                            android:id="@+id/accountEmail"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginEnd="8dp"
-                            android:textColor="@color/WHITE"
-                            android:textSize="18sp"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toStartOf="@+id/imageView6"
-                            app:layout_constraintTop_toTopOf="parent"
-                            tools:text="ives" />
-
-                        <ImageView
-                            android:id="@+id/imageView6"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginEnd="24dp"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintTop_toTopOf="parent"
-                            app:srcCompat="@drawable/greater1" />
-                    </android.support.constraint.ConstraintLayout>
-
-                </RelativeLayout>
-
-            </android.support.constraint.ConstraintLayout>
-
-            <android.support.constraint.ConstraintLayout
-                android:id="@+id/accountDataContainer"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/accountLoginContainer"
-                android:layout_marginBottom="32dp">
-
-                <RelativeLayout
+                <android.support.constraint.ConstraintLayout
+                    android:id="@+id/accountSetupContainer"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/accountContactContainer"
+                    android:layout_marginBottom="32dp">
 
-                    <android.support.constraint.ConstraintLayout
-                        android:id="@+id/accountDataRow"
+                    <RelativeLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:paddingBottom="8dp"
-                        android:paddingTop="8dp">
+                        android:layout_height="wrap_content">
 
-                        <TextView
-                            android:id="@+id/accountDataLbl"
-                            android:layout_width="wrap_content"
+                        <android.support.constraint.ConstraintLayout
+                            android:id="@+id/accountSetupRow"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="16dp"
-                            android:text="個人資料"
-                            android:textColor="@color/WHITE"
-                            android:textSize="18sp"
-                            android:textStyle="bold"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
+                            android:paddingTop="8dp"
+                            android:paddingBottom="8dp">
 
-                    </android.support.constraint.ConstraintLayout>
+                            <TextView
+                                android:id="@+id/accountSetupLbl"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="16dp"
+                                android:text="設定資料"
+                                android:textColor="@color/WHITE"
+                                android:textSize="18sp"
+                                android:textStyle="bold"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
 
-                    <android.support.constraint.ConstraintLayout
-                        android:id="@+id/accountSexRow"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@id/accountDataRow"
-                        android:paddingBottom="8dp"
-                        android:paddingTop="8dp"
-                        tools:layout_editor_absoluteY="8dp">
+                        </android.support.constraint.ConstraintLayout>
 
-
-                        <TextView
-                            android:id="@+id/textView21"
-                            android:layout_width="wrap_content"
+                        <android.support.constraint.ConstraintLayout
+                            android:id="@+id/accountValidateRow"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="16dp"
-                            android:text="性別"
-                            android:textColor="@color/WHITE"
-                            android:textSize="18sp"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
+                            android:layout_below="@id/accountSetupRow"
+                            android:paddingTop="8dp"
+                            android:paddingBottom="8dp"
+                            tools:layout_editor_absoluteY="8dp">
 
-                        <TextView
-                            android:id="@+id/accountSex"
-                            android:layout_width="wrap_content"
+
+                            <TextView
+                                android:id="@+id/textView41"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="16dp"
+                                android:text="認證階段"
+                                android:textColor="@color/WHITE"
+                                android:textSize="18sp"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+                            <TextView
+                                android:id="@+id/accountValidate"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginEnd="16dp"
+                                android:textColor="@color/WHITE"
+                                android:textSize="18sp"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                tools:layout_editor_absoluteY="8dp"
+                                tools:text="ives" />
+
+
+                        </android.support.constraint.ConstraintLayout>
+
+                        <include
+                            android:id="@+id/divider_8"
+                            layout="@layout/divider"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginEnd="8dp"
-                            android:textColor="@color/WHITE"
-                            android:textSize="18sp"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toStartOf="@+id/imageView21"
-                            app:layout_constraintTop_toTopOf="parent"
-                            tools:text="ives" />
+                            android:layout_below="@id/accountValidateRow" />
 
-                        <ImageView
-                            android:id="@+id/imageView21"
-                            android:layout_width="wrap_content"
+
+                        <android.support.constraint.ConstraintLayout
+                            android:id="@+id/accountTypeRow"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginEnd="24dp"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintTop_toTopOf="parent"
-                            app:srcCompat="@drawable/greater1" />
-                    </android.support.constraint.ConstraintLayout>
-
-                    <include
-                        android:id="@+id/divider_6"
-                        layout="@layout/divider"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@id/accountSexRow" />
+                            android:layout_below="@id/accountValidateRow"
+                            android:paddingTop="8dp"
+                            android:paddingBottom="8dp"
+                            tools:layout_editor_absoluteY="8dp">
 
 
-                    <android.support.constraint.ConstraintLayout
-                        android:id="@+id/accountDobRow"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@id/accountSexRow"
-                        android:paddingBottom="8dp"
-                        android:paddingTop="8dp"
-                        tools:layout_editor_absoluteY="8dp">
+                            <TextView
+                                android:id="@+id/textView42"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="16dp"
+                                android:text="會員類型"
+                                android:textColor="@color/WHITE"
+                                android:textSize="18sp"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+                            <TextView
+                                android:id="@+id/accountType"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginEnd="16dp"
+                                android:textColor="@color/WHITE"
+                                android:textSize="18sp"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                tools:layout_editor_absoluteY="8dp"
+                                tools:text="ives" />
+
+                        </android.support.constraint.ConstraintLayout>
 
 
-                        <TextView
-                            android:id="@+id/textView22"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="16dp"
-                            android:text="生日"
-                            android:textColor="@color/WHITE"
-                            android:textSize="18sp"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
+                    </RelativeLayout>
 
-                        <TextView
-                            android:id="@+id/accountDob"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginEnd="8dp"
-                            android:textColor="@color/WHITE"
-                            android:textSize="18sp"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toStartOf="@+id/imageView22"
-                            app:layout_constraintTop_toTopOf="parent"
-                            tools:text="ives" />
+                </android.support.constraint.ConstraintLayout>
 
-                        <ImageView
-                            android:id="@+id/imageView22"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginEnd="24dp"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintTop_toTopOf="parent"
-                            app:srcCompat="@drawable/greater1" />
-                    </android.support.constraint.ConstraintLayout>
-
-
-                </RelativeLayout>
-
-            </android.support.constraint.ConstraintLayout>
-
-            <android.support.constraint.ConstraintLayout
-                android:id="@+id/accountContactContainer"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/accountDataContainer"
-                android:layout_marginBottom="32dp">
-
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <android.support.constraint.ConstraintLayout
-                        android:id="@+id/accountContactRow"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:paddingBottom="8dp"
-                        android:paddingTop="8dp">
-
-                        <TextView
-                            android:id="@+id/accountContactLbl"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="16dp"
-                            android:text="通訊資料"
-                            android:textColor="@color/WHITE"
-                            android:textSize="18sp"
-                            android:textStyle="bold"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
-
-                    </android.support.constraint.ConstraintLayout>
-
-                    <android.support.constraint.ConstraintLayout
-                        android:id="@+id/accountMobileRow"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@id/accountContactRow"
-                        android:paddingBottom="8dp"
-                        android:paddingTop="8dp"
-                        tools:layout_editor_absoluteY="8dp">
-
-
-                        <TextView
-                            android:id="@+id/textView31"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="16dp"
-                            android:text="行動電話"
-                            android:textColor="@color/WHITE"
-                            android:textSize="18sp"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
-
-                        <TextView
-                            android:id="@+id/accountMobile"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginEnd="8dp"
-                            android:textColor="@color/WHITE"
-                            android:textSize="18sp"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toStartOf="@+id/imageView31"
-                            app:layout_constraintTop_toTopOf="parent"
-                            tools:text="ives" />
-
-                        <ImageView
-                            android:id="@+id/imageView31"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginEnd="24dp"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintTop_toTopOf="parent"
-                            app:srcCompat="@drawable/greater1" />
-                    </android.support.constraint.ConstraintLayout>
-
-                    <include
-                        android:id="@+id/divider_7"
-                        layout="@layout/divider"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@id/accountMobileRow" />
-
-
-                    <android.support.constraint.ConstraintLayout
-                        android:id="@+id/accountTelRow"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@id/accountMobileRow"
-                        android:paddingBottom="8dp"
-                        android:paddingTop="8dp"
-                        tools:layout_editor_absoluteY="8dp">
-
-
-                        <TextView
-                            android:id="@+id/textView32"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="16dp"
-                            android:text="市內電話"
-                            android:textColor="@color/WHITE"
-                            android:textSize="18sp"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
-
-                        <TextView
-                            android:id="@+id/accountTel"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginEnd="8dp"
-                            android:textColor="@color/WHITE"
-                            android:textSize="18sp"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toStartOf="@+id/imageView32"
-                            app:layout_constraintTop_toTopOf="parent"
-                            tools:text="ives" />
-
-                        <ImageView
-                            android:id="@+id/imageView32"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginEnd="24dp"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintTop_toTopOf="parent"
-                            app:srcCompat="@drawable/greater1" />
-                    </android.support.constraint.ConstraintLayout>
-
-
-                </RelativeLayout>
-
-            </android.support.constraint.ConstraintLayout>
-
-            <android.support.constraint.ConstraintLayout
-                android:id="@+id/accountSetupContainer"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/accountContactContainer"
-                android:layout_marginBottom="32dp">
-
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <android.support.constraint.ConstraintLayout
-                        android:id="@+id/accountSetupRow"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:paddingBottom="8dp"
-                        android:paddingTop="8dp">
-
-                        <TextView
-                            android:id="@+id/accountSetupLbl"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="16dp"
-                            android:text="設定資料"
-                            android:textColor="@color/WHITE"
-                            android:textSize="18sp"
-                            android:textStyle="bold"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
-
-                    </android.support.constraint.ConstraintLayout>
-
-                    <android.support.constraint.ConstraintLayout
-                        android:id="@+id/accountValidateRow"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@id/accountSetupRow"
-                        android:paddingBottom="8dp"
-                        android:paddingTop="8dp"
-                        tools:layout_editor_absoluteY="8dp">
-
-
-                        <TextView
-                            android:id="@+id/textView41"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="16dp"
-                            android:text="認證階段"
-                            android:textColor="@color/WHITE"
-                            android:textSize="18sp"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
-
-                        <TextView
-                            android:id="@+id/accountValidate"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginEnd="16dp"
-                            android:textColor="@color/WHITE"
-                            android:textSize="18sp"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            tools:layout_editor_absoluteY="8dp"
-                            tools:text="ives" />
-
-
-                    </android.support.constraint.ConstraintLayout>
-
-                    <include
-                        android:id="@+id/divider_8"
-                        layout="@layout/divider"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@id/accountValidateRow" />
-
-
-                    <android.support.constraint.ConstraintLayout
-                        android:id="@+id/accountTypeRow"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@id/accountValidateRow"
-                        android:paddingBottom="8dp"
-                        android:paddingTop="8dp"
-                        tools:layout_editor_absoluteY="8dp">
-
-
-                        <TextView
-                            android:id="@+id/textView42"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="16dp"
-                            android:text="會員類型"
-                            android:textColor="@color/WHITE"
-                            android:textSize="18sp"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
-
-                        <TextView
-                            android:id="@+id/accountType"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginEnd="16dp"
-                            android:textColor="@color/WHITE"
-                            android:textSize="18sp"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            tools:layout_editor_absoluteY="8dp"
-                            tools:text="ives" />
-
-                    </android.support.constraint.ConstraintLayout>
-
-
-                </RelativeLayout>
-
-            </android.support.constraint.ConstraintLayout>
-
-        </RelativeLayout>
-    </ScrollView>
+            </RelativeLayout>
+        </ScrollView>
     </android.support.v4.widget.SwipeRefreshLayout>
     <include layout="@layout/mask" />
 
