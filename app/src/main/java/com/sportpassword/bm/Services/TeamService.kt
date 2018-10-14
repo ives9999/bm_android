@@ -47,9 +47,9 @@ object TeamService: DataService() {
         return model.data
     }
 
-    fun tempPlay_list(context: Context, page:Int, perPage:Int, complete: CompletionHandler) {
+    fun tempPlay_list(context: Context, params: HashMap<String,Any>, page:Int, perPage:Int, complete: CompletionHandler) {
         val url = URL_TEAM_TEMP_PLAY_LIST
-        //println(url)
+//        println(url)
 
         val body = JSONObject()
         body.put("source", "app")
@@ -57,8 +57,42 @@ object TeamService: DataService() {
         body.put("page", page.toString())
         body.put("perPage", perPage.toString())
 
+//        println(params)
+        for ((key, value) in params) {
+            when (key) {
+                "city_id" -> {
+                    var arr: JSONArray = JSONArray(value as ArrayList<Int>)
+                    body.put(key, arr)
+                }
+                "city_type" -> {
+                    body.put(key, value)
+                }
+                "play_days" -> {
+                    var arr: JSONArray = JSONArray(value as ArrayList<Int>)
+                    body.put(key, arr)
+                }
+                "play_time" -> {
+                    body.put(key, value)
+                }
+                "use_date_range" -> {
+                    body.put(key, value)
+                }
+                "arena_id" -> {
+                    var arr: JSONArray = JSONArray(value as ArrayList<Int>)
+                    body.put(key, arr)
+                }
+                "degree" -> {
+                    var arr: JSONArray = JSONArray(value as ArrayList<String>)
+                    body.put(key, arr)
+                }
+                "k" -> {
+                    body.put(key, value)
+                }
+            }
+        }
+
         val requestBody = body.toString()
-        //println(requestBody)
+        println(requestBody)
         //println("coach getList refresh: $refresh")
         tempPlayLists = arrayListOf()
 

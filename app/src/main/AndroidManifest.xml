@@ -78,10 +78,7 @@
         <activity android:name=".Controllers.ArenaVC" />
         <activity android:name=".Controllers.CourseVC" />
         <activity android:name=".Controllers.MoreVC" />
-        <activity
-            android:name=".Controllers.TempPlayVC"
-            android:label="@string/title_activity_temp_play_vc"
-            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".Controllers.TempPlayVC" />
     </application>
 
 </manifest>

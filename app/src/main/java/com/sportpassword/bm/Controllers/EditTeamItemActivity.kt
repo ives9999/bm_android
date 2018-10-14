@@ -16,6 +16,7 @@ import com.sportpassword.bm.Models.City
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.TeamService
 import com.sportpassword.bm.Utilities.*
+import com.sportpassword.bm.Views.GroupSection
 import com.xwray.groupie.ExpandableGroup
 import com.xwray.groupie.ExpandableItem
 import com.xwray.groupie.GroupAdapter
@@ -240,7 +241,7 @@ class EditTeamItemActivity() : BaseActivity() {
                     val keys = citysandarenas.keys
                     keys.forEach {
                         val city_name = citysandarenas.get(it)!!.get("name") as String
-                        val expandableGroup = ExpandableGroup(ArenaSection(city_name), true)
+                        val expandableGroup = ExpandableGroup(GroupSection(city_name), true)
                         val rows = citysandarenas.get(it)!!.get("rows") as ArrayList<HashMap<String, Any>>
                         var _rows: ArrayList<ArenaItem> = arrayListOf()
                         for (i in 0..rows.size-1) {
@@ -418,11 +419,6 @@ class ArenaItem(val context: Context, val arena: com.sportpassword.bm.Controller
         viewHolder.item1.text = arena.name
         toggleClick(viewHolder.itemView, checked)
 
-//        viewHolder.itemView.onClick {
-//
-//            checked = !checked
-//            toggleClick(viewHolder, checked)
-//        }
     }
 
     fun toggleClick(itemView: View, checked: Boolean) {
@@ -446,36 +442,6 @@ class ArenaItem(val context: Context, val arena: com.sportpassword.bm.Controller
         item1View.setTextColor(uncheckedColor)
         mark1View.visibility = View.INVISIBLE
     }
-}
-
-
-class ArenaSection(val title: String): Item(), ExpandableItem {
-
-    private lateinit var expandableGroup: ExpandableGroup
-
-    override fun getLayout() = R.layout.search_section_item
-
-    override fun bind(viewHolder: ViewHolder, position: Int) {
-        viewHolder.section_title.text = title
-        viewHolder.collapse.setImageResource(getExpandIcon())
-
-        viewHolder.section_container.setOnClickListener {
-            expandableGroup.onToggleExpanded()
-            viewHolder.collapse.setImageResource(getExpandIcon())
-        }
-//        println(position)
-    }
-
-    override fun setExpandableGroup(onToggleListener: ExpandableGroup) {
-        expandableGroup = onToggleListener
-    }
-
-    private fun getExpandIcon() =
-            if (expandableGroup.isExpanded)
-                R.drawable.to_down
-            else
-                R.drawable.to_right
-
 }
 
 //@Parcelize

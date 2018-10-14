@@ -10,10 +10,14 @@ import android.support.v7.widget.RecyclerView
 import android.util.AttributeSet
 import android.view.View
 import com.sportpassword.bm.Adapters.TempPlayListAdapter
+import com.sportpassword.bm.Models.City
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.TeamService
+import com.sportpassword.bm.Utilities.DEGREE
 import com.sportpassword.bm.Utilities.Loading
+import com.sportpassword.bm.Utilities.TEAM_PLAY_START_KEY
 import com.sportpassword.bm.Utilities.TEAM_TOKEN_KEY
+import kotlinx.android.synthetic.main.activity_temp_play_vc.*
 import kotlinx.android.synthetic.main.tab.*
 import kotlinx.android.synthetic.main.mask.*
 
@@ -22,17 +26,86 @@ class TempPlayVC : MoreVC() {
     protected lateinit var tempPlayListAdapter: TempPlayListAdapter
     protected var dataLists: ArrayList<Map<String, Map<String, Any>>> = arrayListOf()
 
+    var citys: ArrayList<City> = arrayListOf()
+    var days: ArrayList<Int> = arrayListOf()
+    var times: HashMap<String, Any> = hashMapOf()
+    var arenas: ArrayList<Arena> = arrayListOf()
+    var degrees: ArrayList<DEGREE> = arrayListOf()
+    var keyword: String = ""
+
+    var params: HashMap<String, Any> = hashMapOf()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_temp_play_vc)
 
-//        setMyTitle("教學")
-        recyclerView = list_container
+        setMyTitle("臨打")
+
+        citys = intent.getSerializableExtra("citys") as ArrayList<City>
+        arenas = intent.getSerializableExtra("arenas") as ArrayList<Arena>
+        degrees = intent.getSerializableExtra("degrees") as ArrayList<DEGREE>
+        days = intent.getIntegerArrayListExtra("days")
+        times = intent.getSerializableExtra("times") as HashMap<String, Any>
+        keyword = intent.getStringExtra("keyword")
+
+        prepareParams()
+
+        recyclerView = tempplay_list
         dataService = TeamService
-        refreshLayout = tab_refresh
+        refreshLayout = tempplay_refresh
         initAdapter()
 
         refresh()
+    }
+
+    fun prepareParams() {
+        var city_ids: ArrayList<Int> = arrayListOf()
+        if (citys.size > 0) {
+            citys.forEach {
+                city_ids.add(it.id)
+            }
+        }
+        if (city_ids.size > 0) {
+            params["city_id"] = city_ids
+            params["city_type"] = "simple"
+        }
+
+        if (days.size > 0) {
+            params["play_days"] = days
+        }
+
+        if (times.size > 0) {
+            if (times.containsKey("time")) {
+                params["use_date_range"] = 1
+                val play_start = times["time"]!! as String
+                val time = play_start + ":00 - 24:00:00"
+                params["play_time"] = time
+            }
+        }
+
+        var arena_ids: ArrayList<Int> = arrayListOf()
+        if (arenas.size > 0) {
+            arenas.forEach {
+                arena_ids.add(it.id)
+            }
+        }
+        if (arena_ids.size > 0) {
+            params["arena_id"] = arena_ids
+        }
+
+        var _degrees: ArrayList<String> = arrayListOf()
+        if (degrees.size > 0) {
+            degrees.forEach {
+                _degrees.add(it.toString())
+            }
+        }
+        if (_degrees.size > 0) {
+            params["degree"] = _degrees
+        }
+
+        if (keyword.length > 0) {
+            params["k"] = keyword
+        }
     }
 
     override fun initAdapter() {
@@ -59,7 +132,7 @@ class TempPlayVC : MoreVC() {
 //        mask = Loading.show(context!!)
 //        Loading.show(mask)
 //        loading = true
-        TeamService.tempPlay_list(this, _page, _perPage) { success ->
+        TeamService.tempPlay_list(this, params, _page, _perPage) { success ->
             getDataEnd(success)
         }
     }

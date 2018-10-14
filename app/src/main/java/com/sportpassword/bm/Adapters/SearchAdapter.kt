@@ -15,7 +15,7 @@ import com.sportpassword.bm.R
 import com.sportpassword.bm.Utilities.setImage
 
 interface inter {
-    fun setP(section: Int, row: Int)
+    fun prepare(section: Int, row: Int)
 }
 
 class SearchAdapter(): RecyclerView.Adapter<SearchAdapter.ViewHolder>() {
@@ -41,13 +41,14 @@ class SearchAdapter(): RecyclerView.Adapter<SearchAdapter.ViewHolder>() {
 
         holder.rv.layoutManager = LinearLayoutManager(holder.rv.context, LinearLayout.VERTICAL, false)
         rowAdatper = SearchRowAdatper(position) { row ->
-            delegate!!.setP(position, row)
+            delegate!!.prepare(position, row)
         }
         if (position == 0) {
             rowAdatper.rows = section.values.elementAt(0)
             holder.sectionView.visibility = View.GONE
         } else {
-            rowAdatper.rows = arrayListOf()
+            //rowAdatper.rows = arrayListOf()
+            rowAdatper.rows = section.values.elementAt(0)
         }
         holder.rv.adapter = rowAdatper
 

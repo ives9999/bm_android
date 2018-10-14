@@ -2,15 +2,17 @@ package com.sportpassword.bm.Fragments
 
 
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.support.v4.app.Fragment
 import android.os.Bundle
-import android.support.v7.widget.GridLayoutManager
+import android.support.v4.content.ContextCompat
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.EditText
 import com.sportpassword.bm.Adapters.SearchAdapter
 import com.sportpassword.bm.Adapters.inter
 import com.sportpassword.bm.Controllers.Arena
@@ -20,6 +22,14 @@ import com.sportpassword.bm.Models.City
 import com.sportpassword.bm.Models.SELECT_TIME_TYPE
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Utilities.*
+import com.sportpassword.bm.Views.GroupSection
+import com.xwray.groupie.ExpandableGroup
+import com.xwray.groupie.GroupAdapter
+import com.xwray.groupie.Section
+import com.xwray.groupie.ViewHolder
+import com.xwray.groupie.kotlinandroidextensions.Item
+import kotlinx.android.synthetic.main.search_row_item.*
+import kotlinx.android.synthetic.main.search_section_item.*
 import kotlinx.android.synthetic.main.tab_tempplay_search.*
 
 /**
@@ -29,7 +39,8 @@ import kotlinx.android.synthetic.main.tab_tempplay_search.*
  */
 class TempPlayFragment : TabFragment(), inter {
 
-    protected lateinit var searchAdapter: SearchAdapter
+//    protected lateinit var searchAdapter: SearchAdapter
+    protected lateinit var adapter: GroupAdapter<ViewHolder>
 
     protected val sections: ArrayList<String> = arrayListOf("一般", "更多")
     protected val rows: ArrayList<ArrayList<HashMap<String, String>>> = arrayListOf(
@@ -44,7 +55,7 @@ class TempPlayFragment : TabFragment(), inter {
                     hashMapOf("title" to "程度","detail" to "全部")
             )
     )
-    protected val data: ArrayList<HashMap<String, ArrayList<HashMap<String, String>>>> = arrayListOf()
+//    protected val data: ArrayList<HashMap<String, ArrayList<HashMap<String, String>>>> = arrayListOf()
 
     val SELECT_REQUEST_CODE = 1
 
@@ -53,6 +64,12 @@ class TempPlayFragment : TabFragment(), inter {
     var times: HashMap<String, Any> = hashMapOf()
     var arenas: ArrayList<Arena> = arrayListOf()
     var degrees: ArrayList<DEGREE> = arrayListOf()
+    var keyword: String = ""
+
+    var startTyping: Boolean = false
+    var typeComplete: Boolean = false
+
+    val searchSections: ArrayList<Section> = arrayListOf(Section(), Section())
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -64,10 +81,6 @@ class TempPlayFragment : TabFragment(), inter {
         recyclerView = view.findViewById<RecyclerView>(R.id.search_container)
         initAdapter()
 
-        val layoutManager = GridLayoutManager(context, 1)
-        recyclerView.layoutManager = layoutManager
-        recyclerView.setHasFixedSize(true)
-
         val btn = view.findViewById<Button>(R.id.submit_btn)
         btn.setOnClickListener { submit(view) }
 
@@ -75,17 +88,64 @@ class TempPlayFragment : TabFragment(), inter {
     }
 
     override fun initAdapter() {
+
+        adapter = GroupAdapter()
         setData()
 
-//        println(data)
-
-        searchAdapter = SearchAdapter()
-        searchAdapter.data = data
-        searchAdapter.delegate = this
-        recyclerView.adapter = searchAdapter
+        adapter.setOnItemClickListener { item, view ->
+            val searchItem = item as SearchItem
+            val section = searchItem.section
+            val row = searchItem.row
+            prepare(section, row)
+        }
+        recyclerView.adapter = adapter
     }
 
-    override fun setP(section: Int, row: Int) {
+    private fun setData() {
+        var isExpanded = true
+        var isShow = true
+        for ((idx, section) in sections.withIndex()) {
+            if (idx == 1) isExpanded = false else isExpanded = true
+            if (idx == 0) isShow = false else isShow = true
+
+            val expandableGroup = ExpandableGroup(GroupSection(section, isShow), isExpanded)
+            val items = generateItems(idx)
+            searchSections[idx].addAll(items)
+            expandableGroup.add(searchSections[idx])
+            adapter.add(expandableGroup)
+        }
+    }
+
+    private fun generateItems(section: Int): ArrayList<SearchItem> {
+        val _rows: ArrayList<SearchItem> = arrayListOf()
+        val row = rows[section]
+        for (i in 0..row.size-1) {
+            val title = row[i].get("title")!!
+            val detail = row[i].get("detail")!!
+            _rows.add(SearchItem(title, detail, section, i) { view, b ->
+                getKeyword(view, b)
+            })
+        }
+        return _rows
+    }
+
+    private fun getKeyword(view: View, b: Boolean) {
+        if (b && !startTyping) {
+            startTyping = true
+            typeComplete = false
+        }
+        if (!typeComplete && !b) {
+            typeComplete = true
+            startTyping = false
+        }
+        if (typeComplete) {
+            val editText = view as EditText
+            keyword = editText.text.toString()
+//            println(keyword)
+        }
+    }
+
+    override fun prepare(section: Int, row: Int) {
 //        println(section)
 //        println(row)
         var intent = Intent(activity, EditTeamItemActivity::class.java)
@@ -116,6 +176,9 @@ class TempPlayFragment : TabFragment(), inter {
             1 -> {
                 when (row) {
                     0 -> {// arena
+//                        citys.add(City(10, ""))
+//                        citys.add(City(11, ""))
+
                         if (citys.size == 0) {
                             Alert.warning(this@TempPlayFragment.context!!, "請先選擇縣市")
                             return
@@ -226,27 +289,30 @@ class TempPlayFragment : TabFragment(), inter {
                             value = "全部"
                         }
                     }
+                    rows[section][row]["detail"] = value
+                    val items = generateItems(section)
+                    searchSections[section].update(items)
+//                    adapter.notifyDataSetChanged()
                 }
             }
         }
         rows[section][row]["detail"] = value
-        setData()
-        searchAdapter.data = this.data
-        searchAdapter.notifyDataSetChanged()
-    }
-
-    private fun setData() {
-        data.clear()
-        for ((idx, section) in sections.withIndex()) {
-            val row = rows[idx]
-            data.add(hashMapOf(section to row))
-        }
+//        setData()
+//        searchAdapter.data = this.data
+        adapter.notifyDataSetChanged()
     }
 
     fun submit(view: View) {
         val intent = Intent(activity, TempPlayVC::class.java)
         intent.putExtra("type", "type")
         intent.putExtra("titleField", "name")
+        intent.putExtra("citys", citys)
+        intent.putExtra("arenas", arenas)
+        intent.putExtra("degrees", degrees)
+        intent.putExtra("times", times)
+        intent.putIntegerArrayListExtra("days", days)
+        intent.putExtra("keyword", keyword)
+
         startActivity(intent)
     }
 
@@ -276,3 +342,29 @@ class TempPlayFragment : TabFragment(), inter {
     }
 
 }// Required empty public constructor
+
+class SearchItem(val title: String, val detail: String, val section: Int, val row: Int, val inputK:(view: View, b: Boolean)->Unit): Item() {
+
+    override fun getLayout() = R.layout.search_row_item
+
+    override fun bind(viewHolder: com.xwray.groupie.kotlinandroidextensions.ViewHolder, position: Int) {
+
+        viewHolder.row_title.text = title
+        viewHolder.row_detail.text = detail
+
+        if (section == 0 && position == 1) {
+            val keywordView = viewHolder.keyword
+            viewHolder.row_detail.visibility = View.INVISIBLE
+            viewHolder.greater.visibility = View.INVISIBLE
+            keywordView.visibility = View.VISIBLE
+            keywordView.setOnFocusChangeListener { view, b ->
+                inputK(view, b)
+            }
+        } else {
+            viewHolder.row_detail.visibility = View.VISIBLE
+            viewHolder.greater.visibility = View.VISIBLE
+            viewHolder.keyword.visibility = View.INVISIBLE
+        }
+    }
+
+}
