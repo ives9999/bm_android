@@ -16,10 +16,4 @@
         android:textColor="@color/WHITE"
         android:textSize="18sp" />
 
-    <ImageButton
-        android:id="@+id/menu_search_team_btn"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        android:onClick="search_team"
-        app:srcCompat="@android:drawable/ic_search_category_default" />
 </LinearLayout>

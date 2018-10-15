@@ -92,7 +92,7 @@ object TeamService: DataService() {
         }
 
         val requestBody = body.toString()
-        println(requestBody)
+//        println(requestBody)
         //println("coach getList refresh: $refresh")
         tempPlayLists = arrayListOf()
 

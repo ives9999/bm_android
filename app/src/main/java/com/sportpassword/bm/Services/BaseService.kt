@@ -84,6 +84,8 @@ class MultipartRequest(url: String?,
                        errorListener: Response.ErrorListener?
                              ) :
         Request<String>(Method.POST, url, errorListener) {
+
+
     var entity: MultipartEntityBuilder = MultipartEntityBuilder.create()
     var httpentity: HttpEntity
 
@@ -91,10 +93,10 @@ class MultipartRequest(url: String?,
         entity.setMode(HttpMultipartMode.BROWSER_COMPATIBLE)
         try {
             entity.setCharset(CharsetUtils.get("UTF-8"))
+            bulidMultipartEntity()
         } catch (e: UnsupportedEncodingException) {
             println(e.localizedMessage)
         }
-        bulidMultipartEntity()
         httpentity = entity.build()
     }
 

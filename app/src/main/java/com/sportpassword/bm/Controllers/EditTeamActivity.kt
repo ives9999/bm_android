@@ -273,11 +273,11 @@ class EditTeamActivity : BaseActivity(), ImagePicker {
                 for ((key, value) in model.data) {
                     if (tag == key) {
                         val newValue: String = v.text.toString()
-                        if (newValue.length > 0) {
+                        //if (newValue.length > 0) {
                             val oldValue: Any = value["value"] as Any
                             val vtype = value["vtype"] as String
                             _fieldToData(oldValue, newValue, vtype, key)
-                        }
+                        //}
                     }
                 }
             }
@@ -355,14 +355,20 @@ class EditTeamActivity : BaseActivity(), ImagePicker {
             }
         } else if (vtype == "Int") {
             oldValue = oldValue as Int
-            val newValue: Int = _newValue.toInt()
+            var newValue: Int = -1
+            if (_newValue.length > 0) {
+                newValue = _newValue.toInt()
+            }
             if (oldValue != newValue) {
                 model.data[key]!!["value"] = newValue
                 model.data[key]!!["change"] = true
             }
         } else if (vtype == "Bool") {
             oldValue = oldValue as Boolean
-            val newValue: Boolean = _newValue.toBoolean()
+            var newValue: Boolean = true
+            if (_newValue.length > 0) {
+                newValue = _newValue.toBoolean()
+            }
             if (oldValue != newValue) {
                 model.data[key]!!["value"] = newValue
                 model.data[key]!!["change"] = true
@@ -377,13 +383,13 @@ class EditTeamActivity : BaseActivity(), ImagePicker {
         intent.putExtra("key", key)
         if (key == TEAM_DAYS_KEY) {
             val value: MutableList<Int> = model.data[key]!!["value"] as MutableList<Int>
+            val days: ArrayList<Int> = arrayListOf()
             if (value.size > 0) {
-                val days: ArrayList<Int> = arrayListOf()
                 value.forEach {
                     days.add(it)
                 }
-                intent.putIntegerArrayListExtra("days", days)
             }
+            intent.putIntegerArrayListExtra("days", days)
         } else if (key == TEAM_PLAY_START_KEY || key == TEAM_PLAY_END_KEY) {
             val row: MutableMap<String, Any> = model.data[key]!!["sender"] as MutableMap<String, Any>
             var times: HashMap<String, Any> = hashMapOf()
@@ -472,7 +478,7 @@ class EditTeamActivity : BaseActivity(), ImagePicker {
 //                        val id: Int = data!!.getIntExtra("id", model.data[TEAM_ARENA_KEY]!!["value"] as Int)
 //                        val name: String = data!!.getStringExtra("name")
                         if (arenas.size > 0) {
-                            println(arenas)
+//                            println(arenas)
                             val id = arenas[0].id
                             val name = arenas[0].name
                             val arena = Arena(id, name)

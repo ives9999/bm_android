@@ -69,7 +69,7 @@ class TempPlayFragment : TabFragment(), inter {
     var startTyping: Boolean = false
     var typeComplete: Boolean = false
 
-    val searchSections: ArrayList<Section> = arrayListOf(Section(), Section())
+    var searchSections: ArrayList<Section> = arrayListOf(Section(), Section())
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -78,18 +78,21 @@ class TempPlayFragment : TabFragment(), inter {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.tab_tempplay_search, container, false)
+
         recyclerView = view.findViewById<RecyclerView>(R.id.search_container)
         initAdapter()
 
         val btn = view.findViewById<Button>(R.id.submit_btn)
         btn.setOnClickListener { submit(view) }
-
         return view
     }
 
     override fun initAdapter() {
 
         adapter = GroupAdapter()
+        adapter.clear()
+        searchSections = arrayListOf(Section(), Section())
+
         setData()
 
         adapter.setOnItemClickListener { item, view ->
