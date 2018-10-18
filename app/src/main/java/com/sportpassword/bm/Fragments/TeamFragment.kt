@@ -5,6 +5,7 @@ import android.support.v4.app.Fragment
 import android.view.*
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.TeamService
+import com.sportpassword.bm.Utilities.Loading
 import com.sportpassword.bm.Utilities.PERPAGE
 
 /**
@@ -31,6 +32,7 @@ class TeamFragment: TabFragment() {
 
     override fun getDataStart(_page: Int, _perPage: Int) {
         super.getDataStart(_page, _perPage)
+        Loading.show(mask)
         //println("page: $_page")
         TeamService.getList(context!!, "team", "name", _page, _perPage, null) { success ->
             getDataEnd(success)

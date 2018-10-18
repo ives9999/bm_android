@@ -13,7 +13,7 @@ import com.sportpassword.bm.Utilities.*
 /**
  * Created by ives on 2018/3/3.
  */
-class TempPlayListAdapter(val context: Context, val itemClick: (Map<String, Map<String, Any>>) -> Unit): RecyclerView.Adapter<TempPlayListAdapter.ViewHolder>() {
+class TempPlayListAdapter(val context: Context, val itemClick: (Map<String, Map<String, Any>>)-> Unit, val cityClick:(city_id:Int)->Unit, val arenaClick:(arena_id:Int)->Unit): RecyclerView.Adapter<TempPlayListAdapter.ViewHolder>() {
 
     var lists: ArrayList<Map<String, Map<String, Any>>> = arrayListOf()
         get() = field
@@ -23,7 +23,7 @@ class TempPlayListAdapter(val context: Context, val itemClick: (Map<String, Map<
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view: View = LayoutInflater.from(context).inflate(R.layout.tab_tempplay_item, parent, false)
-        return ViewHolder(view, itemClick)
+        return ViewHolder(view, itemClick, cityClick, arenaClick)
     }
 
     override fun getItemCount(): Int {
@@ -35,7 +35,7 @@ class TempPlayListAdapter(val context: Context, val itemClick: (Map<String, Map<
     }
 
 
-    inner class ViewHolder(itemView: View, itemClick: (Map<String, Map<String, Any>>) -> Unit): RecyclerView.ViewHolder(itemView) {
+    inner class ViewHolder(itemView: View, itemClick: (Map<String, Map<String, Any>>) -> Unit, val cityClick:(city_id:Int)->Unit, val arenaClick:(arena_id:Int)->Unit): RecyclerView.ViewHolder(itemView) {
         val nameView = itemView.findViewById<TextView>(R.id.temp_play_name)
         val arenaBtn = itemView.findViewById<Button>(R.id.temp_play_arena_btn)
         val cityBtn = itemView.findViewById<Button>(R.id.temp_play_city_btn)
@@ -60,12 +60,16 @@ class TempPlayListAdapter(val context: Context, val itemClick: (Map<String, Map<
             intervalView.text = interval
             val city = data[TEAM_CITY_KEY]!!["show"] as String
             cityBtn.text = city
+            val city_id = data[TEAM_CITY_KEY]!!["value"] as Int
             val arena = data[TEAM_ARENA_KEY]!!["show"] as String
+            val arena_id = data[TEAM_ARENA_KEY]!!["value"] as Int
             arenaBtn.text = arena
 //            println("${data.title}: featured => ${data.featured_path}")
 //            println("${data.title}: vimeo => ${data.vimeo}")
 //            println("${data.title}: youbute => ${data.youtube}")
             itemView.setOnClickListener{itemClick(data)}
+            cityBtn.setOnClickListener { cityClick(city_id) }
+            arenaBtn.setOnClickListener { arenaClick(arena_id) }
         }
     }
 

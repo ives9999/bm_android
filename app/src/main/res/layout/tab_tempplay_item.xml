@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/linearLayout5"
     android:layout_width="match_parent"
-    android:layout_height="120dp">
+    android:layout_height="155dp"
+    android:background="@android:color/transparent">
 
     <TextView
         android:id="@+id/temp_play_date"
@@ -33,15 +34,15 @@
         android:id="@+id/temp_play_arena_btn"
         android:layout_width="wrap_content"
         android:layout_height="30dp"
-        android:layout_marginStart="24dp"
+        android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:background="@drawable/button_rc_green"
         android:paddingLeft="16dp"
         android:paddingRight="16dp"
         android:textColor="@color/BLACK"
         android:textSize="16dp"
-        app:layout_constraintStart_toEndOf="@+id/temp_play_name"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/temp_play_name"
         tools:text="台南市立羽球館" />
 
     <TextView
@@ -86,7 +87,6 @@
         android:textColor="@color/WHITE"
         android:textSize="18sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="@+id/temp_play_arena_btn"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:text="羽球密碼" />
@@ -96,13 +96,13 @@
         android:layout_width="wrap_content"
         android:layout_height="30dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="16dp"
         android:background="@drawable/button_rc_green"
         android:paddingLeft="16dp"
         android:paddingRight="16dp"
         android:textColor="@color/BLACK"
-        app:layout_constraintStart_toEndOf="@+id/temp_play_arena_btn"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="@+id/temp_play_name"
+        app:layout_constraintStart_toEndOf="@+id/temp_play_name"
+        app:layout_constraintTop_toTopOf="@+id/temp_play_name"
         tools:text="台南市" />
 
     <TextView
@@ -110,11 +110,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="8dp"
         android:text="接受臨打人數："
         android:textColor="@color/MY_GREEN"
         android:textSize="16dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/temp_play_name" />
+        app:layout_constraintTop_toBottomOf="@+id/temp_play_arena_btn" />
 
 </android.support.constraint.ConstraintLayout>

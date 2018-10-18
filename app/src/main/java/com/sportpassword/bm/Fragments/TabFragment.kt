@@ -70,8 +70,6 @@ open class TabFragment : Fragment() {
         recyclerView = view.findViewById<RecyclerView>(R.id.list_container)
         initAdapter()
 
-        val layoutManager = GridLayoutManager(context, 1)
-        recyclerView.layoutManager = layoutManager
         recyclerView.setHasFixedSize(true)
 
         refreshLayout = view.findViewById<SwipeRefreshLayout>(R.id.tab_refresh)

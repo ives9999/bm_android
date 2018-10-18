@@ -97,7 +97,7 @@ object TeamService: DataService() {
         tempPlayLists = arrayListOf()
 
         val request = object : JsonObjectRequest(Request.Method.POST, url, null, Response.Listener { json ->
-            //println(json)
+//            println(json)
             try {
                 success = true
                 this.totalCount = json.getInt("totalCount")

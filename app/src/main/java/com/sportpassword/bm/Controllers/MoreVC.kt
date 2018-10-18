@@ -9,7 +9,9 @@ import android.support.v7.widget.RecyclerView
 import android.view.View
 import com.sportpassword.bm.Adapters.ListAdapter
 import com.sportpassword.bm.Services.DataService
+import com.sportpassword.bm.Utilities.Loading
 import com.sportpassword.bm.Utilities.PERPAGE
+import kotlinx.android.synthetic.main.mask.*
 
 open class MoreVC : BaseActivity() {
 
@@ -23,7 +25,6 @@ open class MoreVC : BaseActivity() {
     protected var totalPage: Int = 0
 
     protected var loading: Boolean = false
-    protected lateinit var mask: View
 
     protected lateinit var recyclerView: RecyclerView
     open protected lateinit var listAdapter: ListAdapter
@@ -39,11 +40,13 @@ open class MoreVC : BaseActivity() {
 
     override fun refresh() {
         super.refresh()
+        page = 1
         getDataStart(page, perPage)
     }
 
     open protected fun getDataStart(_page: Int, _perPage: Int) {
         //println("page: $_page")
+        Loading.show(mask)
         dataService.getList(this, type!!, titleField, _page, _perPage, null) { success ->
             getDataEnd(success)
         }
@@ -64,6 +67,7 @@ open class MoreVC : BaseActivity() {
             notifyDataSetChanged()
             page++
         }
+        Loading.hide(mask)
 //        println("page:$page")
 //        println("perPage:$perPage")
 //        println("totalCount:$totalCount")

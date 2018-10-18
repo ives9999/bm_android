@@ -10,6 +10,7 @@ import com.sportpassword.bm.Models.Coach
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.CoachService
 import com.sportpassword.bm.Services.DataService
+import com.sportpassword.bm.Utilities.Loading
 import com.sportpassword.bm.Utilities.PERPAGE
 import kotlinx.android.synthetic.main.tab.*
 
@@ -34,6 +35,7 @@ class CoachFragment : TabFragment() {
 
     override fun getDataStart(_page: Int, _perPage: Int) {
         super.getDataStart(_page, _perPage)
+        Loading.show(mask)
         //println("page: $_page")
         CoachService.getList(context!!, "coach", "name", _page, _perPage, null) { success ->
             getDataEnd(success)

@@ -58,7 +58,7 @@ class TempPlayVC : MoreVC() {
         refresh()
     }
 
-    fun prepareParams() {
+    fun prepareParams(city_type: String="simple") {
         var city_ids: ArrayList<Int> = arrayListOf()
         if (citys.size > 0) {
             citys.forEach {
@@ -67,7 +67,7 @@ class TempPlayVC : MoreVC() {
         }
         if (city_ids.size > 0) {
             params["city_id"] = city_ids
-            params["city_type"] = "simple"
+            params["city_type"] = city_type
         }
 
         if (days.size > 0) {
@@ -108,30 +108,58 @@ class TempPlayVC : MoreVC() {
         }
     }
 
+    fun resetParams() {
+        citys.clear()
+        arenas.clear()
+        days.clear()
+        degrees.clear()
+        times.clear()
+        keyword = ""
+    }
+
     override fun initAdapter() {
-        tempPlayListAdapter = TempPlayListAdapter(this) { data ->
-            val position = data["position"]!!["value"] as Int
-            val token = data[TEAM_TOKEN_KEY]!!["value"] as String
-            //val intent = Intent(activity, TestActivity::class.java)
-            val intent = Intent(this, ShowTempPlayActivity::class.java)
-            intent.putExtra("position", position)
-            intent.putExtra(TEAM_TOKEN_KEY, token)
-            startActivity(intent)
-        }
+        tempPlayListAdapter = TempPlayListAdapter(this, { data ->
+            show(data)
+        }, { city_id ->
+            cityBtnPressed(city_id)
+        }, { arena_id ->
+            arenaBtnPressed(arena_id)
+        })
         recyclerView.adapter = tempPlayListAdapter
 
-        val layoutManager = GridLayoutManager(this, 1)
-        recyclerView.layoutManager = layoutManager
         recyclerView.setHasFixedSize(true)
 
         setRecyclerViewScrollListener()
         setRecyclerViewRefreshListener()
     }
 
+    private fun show(data: Map<String, Map<String, Any>>) {
+        val position = data["position"]!!["value"] as Int
+        val token = data[TEAM_TOKEN_KEY]!!["value"] as String
+        //val intent = Intent(activity, TestActivity::class.java)
+        val intent = Intent(this, ShowTempPlayActivity::class.java)
+        intent.putExtra("position", position)
+        intent.putExtra(TEAM_TOKEN_KEY, token)
+        startActivity(intent)
+    }
+
+    private fun cityBtnPressed(city_id: Int) {
+        resetParams()
+        citys.add(City(city_id, ""))
+        prepareParams("all")
+        println(city_id)
+        refresh()
+    }
+
+    private fun arenaBtnPressed(arena_id: Int) {
+        resetParams()
+        arenas.add(Arena(arena_id, ""))
+        prepareParams()
+        refresh()
+    }
+
     override fun getDataStart(_page: Int, _perPage: Int) {
-//        mask = Loading.show(context!!)
-//        Loading.show(mask)
-//        loading = true
+        Loading.show(mask)
         TeamService.tempPlay_list(this, params, _page, _perPage) { success ->
             getDataEnd(success)
         }
@@ -143,8 +171,8 @@ class TempPlayVC : MoreVC() {
         }
         dataLists.addAll(TeamService.tempPlayLists)
 //        var arr: ArrayList<String> = arrayListOf()
-//        for (i in 0..dataLists1.size-1) {
-//            val row = dataLists1[i]
+//        for (i in 0..dataLists.size-1) {
+//            val row = dataLists[i]
 //            val id = row.get("id")!!["show"] as String
 //            arr.add(id)
 //        }
@@ -182,7 +210,7 @@ class TempPlayVC : MoreVC() {
             this.getDataStart(this.page, this.perPage)
             this.tempPlayListAdapter.notifyDataSetChanged()
 
-            tab_refresh.isRefreshing = false
+            tempplay_refresh.isRefreshing = false
         }
         refreshLayout.setOnRefreshListener(refreshListener)
     }
