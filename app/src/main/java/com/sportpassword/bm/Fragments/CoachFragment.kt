@@ -3,9 +3,7 @@ package com.sportpassword.bm.Fragments
 
 import android.os.Bundle
 import android.support.v4.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import com.sportpassword.bm.Models.Coach
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.CoachService
@@ -25,12 +23,18 @@ class CoachFragment : TabFragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         this.dataService = CoachService
+        setHasOptionsMenu(true)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         val view = super.onCreateView(inflater, container, savedInstanceState)
         return view
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
+        inflater!!.inflate(R.menu.search, menu)
+        super.onCreateOptionsMenu(menu, inflater)
     }
 
     override fun getDataStart(_page: Int, _perPage: Int) {

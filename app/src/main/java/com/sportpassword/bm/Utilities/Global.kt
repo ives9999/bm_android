@@ -206,6 +206,34 @@ object Loading {
     }
 }
 
+object Mask {
+    val alpha = 0.8f
+    val duration: Long = 100
+    fun show(mask: View) {
+        mask.alpha = 0f
+        mask.visibility = View.VISIBLE
+        mask.animate().setDuration(duration).alpha(alpha).setListener(object: Animator.AnimatorListener {
+            override fun onAnimationEnd(p0: Animator?) {
+                mask.visibility = View.VISIBLE
+            }
+            override fun onAnimationRepeat(p0: Animator?) {}
+            override fun onAnimationCancel(p0: Animator?) {}
+            override fun onAnimationStart(p0: Animator?) {}
+        })
+    }
+    fun hide(mask: View) {
+        mask.visibility = View.VISIBLE
+        mask.animate().setDuration(duration).alpha(0f).setListener(object: Animator.AnimatorListener {
+            override fun onAnimationEnd(p0: Animator?) {
+                mask.visibility = View.INVISIBLE
+            }
+            override fun onAnimationRepeat(p0: Animator?) {}
+            override fun onAnimationCancel(p0: Animator?) {}
+            override fun onAnimationStart(p0: Animator?) {}
+        })
+    }
+}
+
 object Alert {
     fun show(context: Context, title: String, msg: String): AlertDialog {
         val alert = _show(context, title, msg)

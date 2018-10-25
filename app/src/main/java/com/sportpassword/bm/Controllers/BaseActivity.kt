@@ -46,6 +46,7 @@ import java.util.*
 import javax.net.ssl.HttpsURLConnection
 import kotlin.system.exitProcess
 import kotlinx.android.synthetic.main.mask.*
+import kotlinx.android.synthetic.main.pure_mask.*
 
 open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener {
 
@@ -530,6 +531,10 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener {
                 _showKeyboard(v)
             }
         }
+    }
+
+    fun showSearchPanel(view: View) {
+        Mask.show(pure_mask)
     }
 
     protected fun warning(msg: String) {

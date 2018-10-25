@@ -28,5 +28,6 @@
 
     </android.support.v4.widget.SwipeRefreshLayout>
     <include layout="@layout/mask" />
+    <include layout="@layout/pure_mask" />
 
 </android.support.constraint.ConstraintLayout>

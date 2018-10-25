@@ -6,8 +6,10 @@ import android.os.Bundle
 import android.support.v4.widget.SwipeRefreshLayout
 import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.view.Menu
 import android.view.View
 import com.sportpassword.bm.Adapters.ListAdapter
+import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.DataService
 import com.sportpassword.bm.Utilities.Loading
 import com.sportpassword.bm.Utilities.PERPAGE
@@ -36,6 +38,11 @@ open class MoreVC : BaseActivity() {
         super.onCreate(savedInstanceState)
         type = intent.getStringExtra("type")
         titleField = intent.getStringExtra("titleField")
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.search, menu)
+        return true
     }
 
     override fun refresh() {
