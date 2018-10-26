@@ -6,17 +6,20 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.Color
 import android.graphics.Point
 import android.os.AsyncTask
 import android.os.Build
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
+import android.support.constraint.ConstraintLayout
 import android.support.v4.app.ActivityCompat
 import android.support.v4.content.ContextCompat
 import android.support.v4.content.LocalBroadcastManager
 import android.support.v4.widget.SwipeRefreshLayout
 import android.support.v7.app.ActionBar
+import android.support.v7.widget.ContentFrameLayout
 import android.support.v7.widget.LinearLayoutManager
 import android.util.AttributeSet
 import android.view.*
@@ -47,6 +50,7 @@ import javax.net.ssl.HttpsURLConnection
 import kotlin.system.exitProcess
 import kotlinx.android.synthetic.main.mask.*
 import kotlinx.android.synthetic.main.pure_mask.*
+import kotlinx.android.synthetic.main.tab.*
 
 open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener {
 
@@ -534,7 +538,24 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener {
     }
 
     fun showSearchPanel(view: View) {
-        Mask.show(pure_mask)
+        val rootView = window.decorView.rootView
+
+        //val rootView = findViewById<ContentFrameLayout>(android.R.id.content)
+        val parent = rootView.findViewById<ConstraintLayout>(R.id.constraintLayout)
+
+        val view = LinearLayout(this)
+        view.id = R.id.MyMask
+        view.layoutParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT)
+        view.backgroundColor = Color.parseColor("#ffffff")
+        view.alpha = 0.8f
+        view.setOnClickListener {
+            println(it)
+        }
+        parent.addView(view)
+//        Mask.show(pure_mask)
+    }
+    fun mask_click(view: View) {
+        println("aaa")
     }
 
     protected fun warning(msg: String) {

@@ -3,4 +3,5 @@
     <item name="loadingContainer" type="id" />
     <item name="loadingImgID" type="id" />
     <item name="loadingTextID" type="id" />
+    <item name="MyMask" type="id" />
 </resources>
