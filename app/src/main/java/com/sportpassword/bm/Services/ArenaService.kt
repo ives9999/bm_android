@@ -41,6 +41,18 @@ object ArenaService: DataService() {
                 model.data[key]!!["value"] = -1
                 model.data[key]!!["show"] = "未提供"
             }
+            try {
+                val value = tmp.getInt(key)
+                var b: Boolean = false
+                if (value > 0) { b = true}
+                model.data[key]!!["value"] = b
+                val show = if (b) "有" else "無"
+                model.data[key]!!["show"] = show
+            } catch (e: JSONException) {
+                //println(e.localizedMessage)
+                model.data[key]!!["value"] = -1
+                model.data[key]!!["show"] = "未提供"
+            }
 
         } else if (type == "Int") {
             try {

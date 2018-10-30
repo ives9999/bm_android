@@ -26,15 +26,6 @@ class TempPlayVC : MoreVC() {
     protected lateinit var tempPlayListAdapter: TempPlayListAdapter
     protected var dataLists: ArrayList<Map<String, Map<String, Any>>> = arrayListOf()
 
-    var citys: ArrayList<City> = arrayListOf()
-    var days: ArrayList<Int> = arrayListOf()
-    var times: HashMap<String, Any> = hashMapOf()
-    var arenas: ArrayList<Arena> = arrayListOf()
-    var degrees: ArrayList<DEGREE> = arrayListOf()
-    var keyword: String = ""
-
-    var params: HashMap<String, Any> = hashMapOf()
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_temp_play_vc)
@@ -56,65 +47,6 @@ class TempPlayVC : MoreVC() {
         initAdapter()
 
         refresh()
-    }
-
-    fun prepareParams(city_type: String="simple") {
-        var city_ids: ArrayList<Int> = arrayListOf()
-        if (citys.size > 0) {
-            citys.forEach {
-                city_ids.add(it.id)
-            }
-        }
-        if (city_ids.size > 0) {
-            params["city_id"] = city_ids
-            params["city_type"] = city_type
-        }
-
-        if (days.size > 0) {
-            params["play_days"] = days
-        }
-
-        if (times.size > 0) {
-            if (times.containsKey("time")) {
-                params["use_date_range"] = 1
-                val play_start = times["time"]!! as String
-                val time = play_start + ":00 - 24:00:00"
-                params["play_time"] = time
-            }
-        }
-
-        var arena_ids: ArrayList<Int> = arrayListOf()
-        if (arenas.size > 0) {
-            arenas.forEach {
-                arena_ids.add(it.id)
-            }
-        }
-        if (arena_ids.size > 0) {
-            params["arena_id"] = arena_ids
-        }
-
-        var _degrees: ArrayList<String> = arrayListOf()
-        if (degrees.size > 0) {
-            degrees.forEach {
-                _degrees.add(it.toString())
-            }
-        }
-        if (_degrees.size > 0) {
-            params["degree"] = _degrees
-        }
-
-        if (keyword.length > 0) {
-            params["k"] = keyword
-        }
-    }
-
-    fun resetParams() {
-        citys.clear()
-        arenas.clear()
-        days.clear()
-        degrees.clear()
-        times.clear()
-        keyword = ""
     }
 
     override fun initAdapter() {

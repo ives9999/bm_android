@@ -1,4 +1,4 @@
-package com.sportpassword.bm.Views
+package com.sportpassword.bm.Adapters
 
 import android.view.View
 import com.sportpassword.bm.R

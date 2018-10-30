@@ -50,7 +50,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:text="city"
-                android:textColor="@color/MY_GREEN"
+                android:textColor="@color/WHITE"
                 android:textSize="18dp"
                 card_view:layout_constraintBottom_toBottomOf="@+id/listTitleTxt"
                 card_view:layout_constraintStart_toEndOf="@+id/listTitleTxt"

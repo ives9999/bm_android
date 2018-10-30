@@ -1,13 +1,14 @@
 package com.sportpassword.bm.Controllers
 
+import android.animation.Animator
 import android.app.Activity
-import android.app.Application
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Color
 import android.graphics.Point
+import android.graphics.drawable.GradientDrawable
 import android.os.AsyncTask
 import android.os.Build
 import android.support.v7.app.AppCompatActivity
@@ -17,11 +18,12 @@ import android.support.constraint.ConstraintLayout
 import android.support.v4.app.ActivityCompat
 import android.support.v4.content.ContextCompat
 import android.support.v4.content.LocalBroadcastManager
+import android.support.v4.view.ViewPager
 import android.support.v4.widget.SwipeRefreshLayout
 import android.support.v7.app.ActionBar
-import android.support.v7.widget.ContentFrameLayout
 import android.support.v7.widget.LinearLayoutManager
-import android.util.AttributeSet
+import android.support.v7.widget.RecyclerView
+import android.util.TypedValue
 import android.view.*
 import android.view.inputmethod.InputMethodManager
 import android.widget.*
@@ -33,24 +35,29 @@ import com.facebook.appevents.AppEventsLogger
 import com.facebook.login.LoginManager
 import com.facebook.login.LoginResult
 import com.onesignal.OneSignal
-import com.sportpassword.bm.Adapters.MemberFunctionsAdapter
+import com.sportpassword.bm.Adapters.SearchItem
+import com.sportpassword.bm.Fragments.CoachFragment
+import com.sportpassword.bm.Fragments.TabFragment
+import com.sportpassword.bm.Fragments.TeamFragment
+import com.sportpassword.bm.Models.Area
+import com.sportpassword.bm.Models.City
+import com.sportpassword.bm.Models.SELECT_TIME_TYPE
 import com.sportpassword.bm.Models.SuperData
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.MemberService
 import com.sportpassword.bm.Services.TeamService
 import com.sportpassword.bm.Utilities.*
 import com.sportpassword.bm.member
-import kotlinx.android.synthetic.main.menu_member_function.*
+import com.xwray.groupie.GroupAdapter
+import com.xwray.groupie.ViewHolder
 import org.jetbrains.anko.*
-import java.io.IOException
 import java.net.HttpURLConnection
 import java.net.URL
 import java.util.*
-import javax.net.ssl.HttpsURLConnection
 import kotlin.system.exitProcess
 import kotlinx.android.synthetic.main.mask.*
-import kotlinx.android.synthetic.main.pure_mask.*
-import kotlinx.android.synthetic.main.tab.*
+import kotlin.collections.ArrayList
+import kotlin.collections.HashMap
 
 open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener {
 
@@ -68,9 +75,31 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener {
     val REQUEST_PHONE_CALL = 100
     var mobile: String = ""
 
+    //for search
+    var searchRows: ArrayList<HashMap<String, String>> = arrayListOf()
+    var containerID: String = "constraintLayout"
+    var citys: ArrayList<City> = arrayListOf()
+    var citys_coach: ArrayList<City> = arrayListOf()
+    var citys_team: ArrayList<City> = arrayListOf()
+    var areas: ArrayList<Area> = arrayListOf()
+    var air_condition: Boolean = false
+    var bathroom: Boolean = false
+    var parking: Boolean = false
+    var days: ArrayList<Int> = arrayListOf()
+    var times: HashMap<String, Any> = hashMapOf()
+    var arenas: ArrayList<Arena> = arrayListOf()
+    var degrees: ArrayList<DEGREE> = arrayListOf()
+    var keyword: String = ""
+    var startTyping: Boolean = false
+    var typeComplete: Boolean = false
+    protected lateinit var searchAdapter: GroupAdapter<ViewHolder>
+    var params: HashMap<String, Any> = hashMapOf()
+
+
     val LOGIN_REQUEST_CODE = 1
     val REGISTER_REQUEST_CODE = 2
     val VALIDATE_REQUEST_CODE = 3
+    val SEARCH_REQUEST_CODE = 4
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -114,6 +143,7 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener {
         URL_CITYS = URL_HOME + "citys"
         URL_ARENA_BY_CITY_ID = URL_HOME + "arena_by_city"
         URL_ARENA_BY_CITY_IDS = URL_HOME + "arena_by_citys"
+        URL_AREA_BY_CITY_IDS = URL_HOME + "area_by_citys"
         URL_TEAM_UPDATE = URL_HOME + "team/update"
         URL_UPDATE = URL_HOME + "%s/update"
         URL_DELETE = URL_HOME + "%s/delete"
@@ -466,7 +496,7 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener {
         val filter1: Array<Any> = arrayOf("channel", "=", CHANNEL)
         val filter2: Array<Any> = arrayOf("manager_id", "=", member.id)
         val filter: Array<Array<Any>> = arrayOf(filter1, filter2)
-        TeamService.getList(this, "team", "name", 1, 100, filter) { success ->
+        TeamService.getList(this, "team", "name", hashMapOf(), 1, 100, filter) { success ->
             Loading.hide(mask)
             if (success) {
                 superDataLists = TeamService.superDataLists
@@ -538,24 +568,485 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener {
     }
 
     fun showSearchPanel(view: View) {
-        val rootView = window.decorView.rootView
-
-        //val rootView = findViewById<ContentFrameLayout>(android.R.id.content)
-        val parent = rootView.findViewById<ConstraintLayout>(R.id.constraintLayout)
-
-        val view = LinearLayout(this)
-        view.id = R.id.MyMask
-        view.layoutParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT)
-        view.backgroundColor = Color.parseColor("#ffffff")
-        view.alpha = 0.8f
-        view.setOnClickListener {
-            println(it)
+        val tag = view.tag as String
+        when (tag) {
+            "coach" -> {
+                containerID = "coach_container"
+                val frag = getFragment(tag) as CoachFragment
+                searchRows = frag._searchRows
+            }
+            "team" -> {
+                containerID = "team_container"
+                val frag = getFragment(tag) as TeamFragment
+                searchRows = frag._searchRows
+            }
+            "arena" -> {
+                containerID = "constraintLayout"
+            }
+            "course" -> {
+                containerID = "constraintLayout"
+            }
         }
-        parent.addView(view)
-//        Mask.show(pure_mask)
+        mask()
+        addLayer(tag)
     }
-    fun mask_click(view: View) {
-        println("aaa")
+
+    protected fun mask() {
+        val alpha = 0.8f
+        val duration: Long = 200
+
+        val rootView = window.decorView.rootView
+        val parentID = resources.getIdentifier(containerID, "id", packageName)
+        val parent = rootView.findViewById<ConstraintLayout>(parentID)
+        var mask = parent.findViewById<LinearLayout>(R.id.MyMask)
+        if (mask == null) {
+            mask = LinearLayout(this)
+            mask.id = R.id.MyMask
+            mask.layoutParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT)
+            mask.backgroundColor = Color.parseColor("#ffffff")
+            mask.alpha = 0f
+            mask.setOnClickListener {
+                unmask()
+            }
+            parent.addView(mask)
+        }
+        mask.animate().setDuration(duration).alpha(alpha).setListener(object: Animator.AnimatorListener {
+            override fun onAnimationEnd(p0: Animator?) {
+                mask.visibility = View.VISIBLE
+            }
+            override fun onAnimationRepeat(p0: Animator?) {}
+            override fun onAnimationCancel(p0: Animator?) {}
+            override fun onAnimationStart(p0: Animator?) {}
+        })
+    }
+
+    protected fun unmask() {
+        val duration: Long = 200
+        var mask = getMask()
+        if (mask != null) {
+            mask.visibility = View.GONE
+            mask.visibility = View.VISIBLE
+            mask.animate().setDuration(duration).alpha(0f).setListener(object: Animator.AnimatorListener {
+                override fun onAnimationEnd(p0: Animator?) {
+                    mask.visibility = View.INVISIBLE
+                }
+                override fun onAnimationRepeat(p0: Animator?) {}
+                override fun onAnimationCancel(p0: Animator?) {}
+                override fun onAnimationStart(p0: Animator?) {}
+            })
+        }
+    }
+
+    protected fun addLayer(page: String) {
+
+        val duration: Long = 500
+        val rootView = window.decorView.rootView
+        val parentID = resources.getIdentifier(containerID, "id", packageName)
+        val parent = rootView.findViewById<ConstraintLayout>(parentID)
+        val p = parent.layoutParams as ViewPager.LayoutParams
+        val w = parent.measuredWidth
+        val h = parent.measuredHeight
+
+        val containerView = LinearLayout(this)
+        containerView.orientation = LinearLayout.VERTICAL
+        val padding = 160
+        val headerHeight = 100
+        val lp = LinearLayout.LayoutParams(w-(2*padding), h-headerHeight)
+        //lp.setMargins(padding, headerHeight, padding, 0)
+        lp.setMargins(padding, h, padding, 0)
+        containerView.layoutParams = lp
+        containerView.backgroundColor = Color.BLACK
+        //containerView.alpha = 1f
+
+        val searchTableView = RecyclerView(this)
+        searchTableView.id = R.id.SearchRecycleItem
+        val lp1 = RecyclerView.LayoutParams(w-(2*padding), 1400)
+        lp1.setMargins(0, 30, 0, 0)
+        searchTableView.layoutParams = lp1
+        searchTableView.layoutManager = LinearLayoutManager(this)
+        searchAdapter = GroupAdapter<ViewHolder>()
+        searchAdapter.setOnItemClickListener { item, view ->
+            val searchItem = item as SearchItem
+            val row = searchItem.row
+            prepareSearch(row, page)
+        }
+        val rows = generateItems()
+        searchAdapter.addAll(rows)
+
+        searchTableView.adapter = searchAdapter
+        containerView.addView(searchTableView)
+
+        val submitBtn = Button(this)
+        val submitBtnWidth = 360
+        val lp2 = LinearLayout.LayoutParams(submitBtnWidth, LinearLayout.LayoutParams.WRAP_CONTENT)
+        lp2.setMargins((w-(2*padding)-submitBtnWidth)/2, 100, 0, 0)
+        submitBtn.layoutParams = lp2
+        submitBtn.text = "提交"
+        submitBtn.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 20f)
+        submitBtn.setOnClickListener {
+            searchSubmit(page)
+        }
+        val myRed = ContextCompat.getColor(this, R.color.MY_RED)
+        val shape = GradientDrawable()
+        shape.shape = GradientDrawable.RECTANGLE
+        shape.setColor(myRed)
+        shape.cornerRadius = 82f
+
+        submitBtn.backgroundDrawable = shape
+        submitBtn.setTextColor(Color.WHITE)
+
+        containerView.addView(submitBtn)
+
+
+        val mask = getMask()
+        mask.addView(containerView)
+
+
+        val h1 = containerView.layoutParams.height
+        containerView.animate().setDuration(duration).translationY((0-h1).toFloat()).setListener(object: Animator.AnimatorListener {
+            override fun onAnimationEnd(p0: Animator?) {
+                //containerView.layoutParams.height = containerView.height
+                //containerView.visibility = View.VISIBLE
+            }
+            override fun onAnimationRepeat(p0: Animator?) {}
+            override fun onAnimationCancel(p0: Animator?) {}
+            override fun onAnimationStart(p0: Animator?) {}
+        })
+    }
+
+    protected fun prepareSearch(idx: Int, page: String) {
+        var intent = Intent(this, EditTeamItemActivity::class.java)
+        val row = searchRows.get(idx)
+        var key = ""
+        if (row.containsKey("key")) {
+            key = row["key"]!!
+        }
+        when (key) {
+            CITY_KEY -> {
+                intent.putExtra("key", TEAM_CITY_KEY)
+                intent.putExtra("source", "search")
+                intent.putExtra("page", page)
+                intent.putExtra("type", "simple")
+                intent.putExtra("select", "multi")
+                if (page == "coach") {
+                    citys = citys_coach
+                } else if (page == "team") {
+                    citys = citys_team
+                }
+                intent.putParcelableArrayListExtra("citys", citys)
+            }
+            TEAM_ARENA_KEY -> {
+                if (citys.size == 0) {
+                    Alert.warning(this, "請先選擇縣市")
+                    return
+                }
+                intent.putExtra("key", TEAM_ARENA_KEY)
+                intent.putExtra("source", "search")
+                intent.putExtra("type", "simple")
+                intent.putExtra("select", "multi")
+
+                var citysForArena: ArrayList<Int> = arrayListOf()
+                for (city in citys) {
+                    citysForArena.add(city.id)
+                }
+                intent.putIntegerArrayListExtra("citys_for_arena", citysForArena)
+                intent.putParcelableArrayListExtra("arenas", arenas)
+            }
+            TEAM_DAYS_KEY -> {
+                intent.putExtra("key", TEAM_DAYS_KEY)
+                intent.putExtra("source", "search")
+                intent.putIntegerArrayListExtra("days", days)
+            }
+            TEAM_PLAY_START_KEY -> {
+                intent.putExtra("key", TEAM_PLAY_START_KEY)
+                intent.putExtra("source", "search")
+//                        times["time"] = "09:00"
+                times["type"] = SELECT_TIME_TYPE.play_start
+                intent.putExtra("times", times)
+            }
+            TEAM_DEGREE_KEY -> {
+                intent.putExtra("key", TEAM_DEGREE_KEY)
+                intent.putExtra("source", "search")
+                intent.putExtra("degrees", degrees)
+            }
+            AREA_KEY -> {
+                if (citys.size == 0) {
+                    Alert.warning(this, "請先選擇縣市")
+                    return
+                }
+                intent.putExtra("key", AREA_KEY)
+                intent.putExtra("source", "search")
+                intent.putExtra("type", "simple")
+                intent.putExtra("select", "multi")
+
+                var citysForArea: ArrayList<Int> = arrayListOf()
+                for (city in citys) {
+                    citysForArea.add(city.id)
+                }
+                intent.putIntegerArrayListExtra("citys_for_area", citysForArea)
+                intent.putParcelableArrayListExtra("areas", areas)
+            }
+        }
+        startActivityForResult(intent!!, SEARCH_REQUEST_CODE)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        var value = "全部"
+        var idx = 0
+        when (requestCode) {
+            SEARCH_REQUEST_CODE -> {
+                if (resultCode == Activity.RESULT_OK) {
+                    val key = data!!.getStringExtra("key")
+                    val page = data!!.getStringExtra("page")
+                    when (key) {
+                        CITY_KEY -> {
+                            idx = 1
+                            citys = data!!.getParcelableArrayListExtra("citys")
+                            if (citys.size > 0) {
+                                var arr: ArrayList<String> = arrayListOf()
+                                for (city in citys) {
+                                    arr.add(city.name)
+                                }
+                                value = arr.joinToString()
+                            } else {
+                                value = "全部"
+                            }
+                            if (page == "coach") {
+                                citys_coach = citys
+                            } else if (page == "team") {
+                                citys_team = citys
+                            }
+                        }
+                        TEAM_ARENA_KEY -> {
+                            idx = 2
+                            arenas = data!!.getParcelableArrayListExtra("arenas")
+                            if (arenas.size > 0) {
+                                var arr: ArrayList<String> = arrayListOf()
+                                for (arena in arenas) {
+                                    arr.add(arena.name)
+                                }
+                                value = arr.joinToString()
+                            } else {
+                                value = "全部"
+                            }
+                        }
+                        TEAM_DAYS_KEY -> {
+                            idx = 3
+                            days = data!!.getIntegerArrayListExtra("days")
+                            if (days.size > 0) {
+                                var arr: ArrayList<String> = arrayListOf()
+                                val gDays = Global.days
+                                for (day in days) {
+                                    for (gDay in gDays) {
+                                        if (day == gDay.get("value")!! as Int) {
+                                            arr.add(gDay.get("simple_text")!! as String)
+                                            break
+                                        }
+                                    }
+                                }
+                                value = arr.joinToString()
+                            } else {
+                                value = "全部"
+                            }
+                        }
+                        TEAM_PLAY_START_KEY -> {
+                            idx = 4
+                            times = data!!.getSerializableExtra("times") as HashMap<String, Any>
+                            if (times.containsKey("time")) {
+                                value = times["time"]!! as String
+                            } else {
+                                value = "全部"
+                            }
+                        }
+                        TEAM_DEGREE_KEY -> {
+                            idx = 5
+                            degrees = data!!.getSerializableExtra("degrees") as ArrayList<DEGREE>
+                            if (degrees.size > 0) {
+                                var arr: ArrayList<String> = arrayListOf()
+                                degrees.forEach {
+                                    arr.add(it.value)
+                                }
+                                value = arr.joinToString()
+                            } else {
+                                value = "全部"
+                            }
+                        }
+                        AREA_KEY -> {
+                            idx = 2
+                            areas = data!!.getParcelableArrayListExtra("areas")
+                            if (areas.size > 0) {
+                                var arr: ArrayList<String> = arrayListOf()
+                                for (area in areas) {
+                                    arr.add(area.name)
+                                }
+                                value = arr.joinToString()
+                            } else {
+                                value = "全部"
+                            }
+                        }
+                    }
+                    searchRows[idx]["detail"] = value
+                    val rows = generateItems()
+                    searchAdapter.update(rows)
+                }
+            }
+        }
+    }
+
+    fun generateItems(): ArrayList<SearchItem> {
+        val rows: ArrayList<SearchItem> = arrayListOf()
+        for (i in 0..searchRows.size-1) {
+            val row = searchRows[i] as HashMap<String, String>
+            val title = row.get("title")!!
+            val detail = row.get("detail")!!
+            var bSwitch = false
+            if (row.containsKey("switch")) {
+                bSwitch = row.get("switch")!!.toBoolean()
+            }
+            rows.add(SearchItem(title, detail, bSwitch, -1, i, { view, b ->
+                getKeyword(view, b)
+            }, { idx, b ->
+                when (idx){
+                    3 -> air_condition = b
+                    4 -> bathroom = b
+                    5 -> parking = b
+                }
+            })
+            )
+        }
+
+        return rows
+    }
+
+    fun getMask(): LinearLayout {
+        val rootView = window.decorView.rootView
+        val parentID = resources.getIdentifier(containerID, "id", packageName)
+        val parent = rootView.findViewById<ConstraintLayout>(parentID)
+        return parent.findViewById<LinearLayout>(R.id.MyMask)
+    }
+
+    fun getKeyword(view: View, b: Boolean) {
+        if (b && !startTyping) {
+            startTyping = true
+            typeComplete = false
+        }
+        if (!typeComplete && !b) {
+            typeComplete = true
+            startTyping = false
+        }
+        if (typeComplete) {
+            val editText = view as EditText
+            keyword = editText.text.toString()
+//            println(keyword)
+        }
+    }
+
+    protected fun getFragment(page: String): TabFragment? {
+        val frags = supportFragmentManager.fragments
+        var _frag: TabFragment? = null
+        for (frag in frags) {
+            if (page == "coach" && frag::class == CoachFragment::class) {
+                _frag = frag as CoachFragment
+                break
+            }
+            if (page == "team" && frag::class == TeamFragment::class) {
+                _frag = frag as TeamFragment
+                break
+            }
+        }
+
+        return _frag
+    }
+
+    fun prepareParams(city_type: String="simple") {
+        val city_ids: ArrayList<Int> = arrayListOf()
+        if (citys.size > 0) {
+            citys.forEach {
+                city_ids.add(it.id)
+            }
+        }
+        if (city_ids.size > 0) {
+            params["city_id"] = city_ids
+            params["city_type"] = city_type
+        }
+
+        val area_ids: ArrayList<Int> = arrayListOf()
+        if (areas.size > 0) {
+            areas.forEach  {
+                area_ids.add(it.id)
+            }
+        }
+        if (area_ids.size > 0) {
+            params["area_id"] = area_ids
+        }
+
+        if (air_condition) { params["air_condition"] = 1 } else { params["air_condition"] = 0 }
+        if (bathroom) { params["bathroom"] = 1 } else { params["bathroom"] = 0 }
+        if (parking) { params["parking"] = 1 } else { params["parking"] = 0 }
+
+        if (days.size > 0) {
+            params["play_days"] = days
+        }
+
+        if (times.size > 0) {
+            if (times.containsKey("time")) {
+                params["use_date_range"] = 1
+                val play_start = times["time"]!! as String
+                val time = play_start + ":00 - 24:00:00"
+                params["play_time"] = time
+            }
+        }
+
+        var arena_ids: ArrayList<Int> = arrayListOf()
+        if (arenas.size > 0) {
+            arenas.forEach {
+                arena_ids.add(it.id)
+            }
+        }
+        if (arena_ids.size > 0) {
+            params["arena_id"] = arena_ids
+        }
+
+        var _degrees: ArrayList<String> = arrayListOf()
+        if (degrees.size > 0) {
+            degrees.forEach {
+                _degrees.add(it.toString())
+            }
+        }
+        if (_degrees.size > 0) {
+            params["degree"] = _degrees
+        }
+
+        if (keyword.length > 0) {
+            params["k"] = keyword
+        }
+    }
+
+    fun resetParams() {
+        citys.clear()
+        areas.clear()
+        arenas.clear()
+        days.clear()
+        degrees.clear()
+        times.clear()
+        keyword = ""
+    }
+
+
+    protected fun searchSubmit(page: String) {
+        unmask()
+        prepareParams()
+        if (page == "coach") {
+            val frag = getFragment(page) as CoachFragment
+            frag.refresh()
+        } else if (page == "team") {
+            val frag = getFragment(page) as TeamFragment
+            frag.refresh()
+        } else {
+            refresh()
+        }
     }
 
     protected fun warning(msg: String) {

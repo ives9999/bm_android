@@ -1,17 +1,29 @@
 package com.sportpassword.bm.Fragments
 
 import android.os.Bundle
-import android.support.v4.app.Fragment
 import android.view.*
+import android.widget.ImageButton
+import com.sportpassword.bm.Controllers.MainActivity
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.TeamService
 import com.sportpassword.bm.Utilities.Loading
-import com.sportpassword.bm.Utilities.PERPAGE
+import kotlinx.android.synthetic.main.mask.*
+import kotlinx.android.synthetic.main.tab_coach.*
+import com.sportpassword.bm.Utilities.*
 
 /**
  * Created by ives on 2018/2/25.
  */
 class TeamFragment: TabFragment() {
+
+    val _searchRows: ArrayList<HashMap<String, String>> = arrayListOf(
+        hashMapOf("title" to "關鍵字","detail" to "全部","key" to KEYWORD_KEY),
+        hashMapOf("title" to "縣市","detail" to "全部","key" to CITY_KEY),
+        hashMapOf("title" to "球館","detail" to "全部","key" to TEAM_ARENA_KEY),
+        hashMapOf("title" to "日期","detail" to "全部","key" to TEAM_DAYS_KEY),
+        hashMapOf("title" to "時段","detail" to "全部","key" to TEAM_PLAY_START_KEY),
+        hashMapOf("title" to "程度","detail" to "全部","key" to TEAM_DEGREE_KEY)
+    )
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -22,19 +34,30 @@ class TeamFragment: TabFragment() {
     override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
         inflater!!.inflate(R.menu.search_manager, menu)
         super.onCreateOptionsMenu(menu, inflater)
+        val memuView = menu!!.findItem(R.id.menu_search_manager).actionView
+        val searchBtn = memuView.findViewById<ImageButton>(R.id.search)
+        searchBtn.tag = type
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-        val view = super.onCreateView(inflater, container, savedInstanceState)
-        return view
+        val rootView = inflater.inflate(R.layout.tab_team, container, false)
+
+        return rootView
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        recyclerView = list_container
+        refreshLayout = tab_refresh
+        maskView = mask
+        init()
     }
 
     override fun getDataStart(_page: Int, _perPage: Int) {
         super.getDataStart(_page, _perPage)
-        Loading.show(mask)
+        Loading.show(maskView)
         //println("page: $_page")
-        TeamService.getList(context!!, "team", "name", _page, _perPage, null) { success ->
+        TeamService.getList(context!!, "team", "name", mainActivity.params, _page, _perPage, null) { success ->
             getDataEnd(success)
         }
     }

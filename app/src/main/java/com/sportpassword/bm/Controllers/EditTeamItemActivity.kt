@@ -4,7 +4,6 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.os.Parcel
 import android.os.Parcelable
 import android.support.constraint.ConstraintLayout
 import android.support.constraint.ConstraintSet
@@ -16,19 +15,17 @@ import com.sportpassword.bm.Models.City
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.TeamService
 import com.sportpassword.bm.Utilities.*
-import com.sportpassword.bm.Views.GroupSection
+import com.sportpassword.bm.Adapters.GroupSection
+import com.sportpassword.bm.Models.Area
 import com.xwray.groupie.ExpandableGroup
-import com.xwray.groupie.ExpandableItem
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.Section
-import kotlinx.android.parcel.Parceler
 import kotlinx.android.parcel.Parcelize
 import kotlinx.android.synthetic.main.activity_edit_team_item.*
 import kotlinx.android.synthetic.main.activity_edit_team_item_adapter.view.*
 import com.xwray.groupie.kotlinandroidextensions.Item
 import com.xwray.groupie.kotlinandroidextensions.ViewHolder
 import kotlinx.android.synthetic.main.activity_edit_team_item_adapter.*
-import kotlinx.android.synthetic.main.search_section_item.*
 import kotlinx.android.synthetic.main.mask.*
 
 class EditTeamItemActivity() : BaseActivity() {
@@ -36,12 +33,11 @@ class EditTeamItemActivity() : BaseActivity() {
     lateinit var key: String
     lateinit var editTeamItemAdapter: EditTeamItemAdapter
     lateinit var arenaAdapter: GroupAdapter<ViewHolder>
+    lateinit var areaAdapter: GroupAdapter<ViewHolder>
 
-    var resDegrees: ArrayList<String> = arrayListOf()
-    var resArena_id: Int = 0
-    var resArena_name: String = ""
     var allCitys: ArrayList<City> = arrayListOf()
     var citysandarenas: HashMap<Int, HashMap<String, Any>> = hashMapOf()
+    var citysandareas: HashMap<Int, HashMap<String, Any>> = hashMapOf()
     var allDays = Global.days
 
     var dataList: ArrayList<MutableMap<String, String>> = arrayListOf()
@@ -52,15 +48,14 @@ class EditTeamItemActivity() : BaseActivity() {
     var type: String = "all"
     //選擇的類型：just one單選，multi複選
     var select: String = "just one"
+    //來源的頁面，有coach, team, arena, course 4種
+    var page: String = ""
 
-    var citys: ArrayList<City> = arrayListOf()
     var citysForArena: ArrayList<Int> = arrayListOf()
-    var arenas: ArrayList<Arena> = arrayListOf()
+    var citysForArea: ArrayList<Int> = arrayListOf()
     var selectedDays: ArrayList<Int> = arrayListOf()
-    var degrees: ArrayList<DEGREE> = arrayListOf()
 
     //type: .play_start or .play_end, time: "09:00:00"
-    var times: HashMap<String, Any> = hashMapOf()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -69,10 +64,14 @@ class EditTeamItemActivity() : BaseActivity() {
         hidekeyboard(teamedititem_constraint)
         Loading.show(mask)
 
+        //get intent
         key = intent.getStringExtra("key")
         //println(key)
         if (intent.hasExtra("source")) {
             source = intent.getStringExtra("source")
+        }
+        if (intent.hasExtra("page")) {
+            page = intent.getStringExtra("page")
         }
         if (intent.hasExtra("type")) {
             type = intent.getStringExtra("type")
@@ -146,10 +145,12 @@ class EditTeamItemActivity() : BaseActivity() {
             citys = intent.getParcelableArrayListExtra("citys")
         } else if (key == TEAM_ARENA_KEY) {
             setMyTitle("球館")
-//            oldCity = intent.getIntExtra("city_id", 0)
-//            oldArena = intent.getIntExtra("arena_id", 0)
             citysForArena = intent.getIntegerArrayListExtra("citys_for_arena")
             arenas = intent.getParcelableArrayListExtra("arenas")
+        } else if (key == AREA_KEY) {
+            setMyTitle("區域")
+            citysForArea = intent.getIntegerArrayListExtra("citys_for_area")
+            areas = intent.getParcelableArrayListExtra("areas")
         } else {
             if (key == TEAM_TEMP_CONTENT_KEY) {
                 setMyTitle("臨打說明")
@@ -164,6 +165,7 @@ class EditTeamItemActivity() : BaseActivity() {
             content.setSelection(content.text.length)
         }
 
+        //init adapter
         if (key == TEAM_ARENA_KEY) {
             arenaAdapter = GroupAdapter()
             arenaAdapter.setOnItemClickListener { item, view ->
@@ -183,10 +185,29 @@ class EditTeamItemActivity() : BaseActivity() {
                 if (select == "just one") {
                     submit(View(this))
                 }
-
-
             }
             teamedititem_container.adapter = arenaAdapter
+        } else if (key == AREA_KEY) {
+            areaAdapter = GroupAdapter()
+            areaAdapter.setOnItemClickListener { item, view ->
+                val areaItem = item as AreaItem
+                val area = areaItem.area
+
+                var checked = false
+                if (view.mark1.visibility == View.INVISIBLE) {
+                    checked = true
+                }
+                areaItem.toggleClick(view, checked)
+
+                if (select == "just one") {
+                    areas.clear()
+                }
+                setArea(area)
+                if (select == "just one") {
+                    submit(View(this))
+                }
+            }
+            teamedititem_container.adapter = areaAdapter
         } else {
             editTeamItemAdapter = EditTeamItemAdapter(this, key, dataList) { position, checked ->
                 //println(position)
@@ -215,6 +236,7 @@ class EditTeamItemActivity() : BaseActivity() {
             Loading.hide(mask)
         }
 
+        //get remote date
         if (key == TEAM_CITY_KEY) {
             TeamService.getCitys(this, type) { success ->
                 allCitys = TeamService.citys
@@ -258,6 +280,39 @@ class EditTeamItemActivity() : BaseActivity() {
                         }
                         expandableGroup.add(Section(_rows))
                         arenaAdapter.add(expandableGroup)
+                    }
+
+//                    arenaAdapter.notifyDataSetChanged()
+                    Loading.hide(mask)
+                } else {
+                    println(TeamService.msg)
+                }
+            }
+        } else if (key == AREA_KEY) {
+            TeamService.getAreaByCityIDs(this, citysForArea, type) { success ->
+                if (success) {
+                    citysandareas = TeamService.citysandareas
+//                    println(citysandarenas)
+                    val keys = citysandareas.keys
+                    keys.forEach {
+                        val city_name = citysandareas.get(it)!!.get("name") as String
+                        val expandableGroup = ExpandableGroup(GroupSection(city_name), true)
+                        val rows = citysandareas.get(it)!!.get("rows") as ArrayList<HashMap<String, Any>>
+                        var _rows: ArrayList<AreaItem> = arrayListOf()
+                        for (i in 0..rows.size-1) {
+                            val area = getArea(it, i)
+                            var checked = false
+                            for (j in 0..areas.size-1) {
+                                if (area.id == areas[j].id) {
+                                    checked = true
+                                    break
+                                }
+                            }
+                            val areaItem = AreaItem(this, area, checked)
+                            _rows.add(areaItem)
+                        }
+                        expandableGroup.add(Section(_rows))
+                        areaAdapter.add(expandableGroup)
                     }
 
 //                    arenaAdapter.notifyDataSetChanged()
@@ -321,6 +376,32 @@ class EditTeamItemActivity() : BaseActivity() {
         }
     }
 
+    fun getArea(city_id: Int, idx: Int): Area {
+        val rows = citysandareas.get(city_id)!!.get("rows") as ArrayList<HashMap<String, Any>>
+        val row = rows[idx]
+
+        return Area(row.get("id")!! as Int, row.get("name")!! as String)
+    }
+    fun setArea(area: Area) {
+        var isExist = false
+        var idx = -1
+        for (i in 0..areas.size-1) {
+            if (areas[i].id == area.id) {
+                isExist = true
+                idx = i
+                break
+            }
+        }
+
+        if (isExist) {
+            if (idx >= 0) {
+                arenas.removeAt(idx)
+            }
+        } else {
+            areas.add(area)
+        }
+    }
+
     fun setDay(position: Int) {
         if (allDays[position].containsKey("checked")) {
             allDays[position]["checked"] = !(allDays[position]["checked"] as Boolean)
@@ -374,6 +455,7 @@ class EditTeamItemActivity() : BaseActivity() {
         hideKeyboard()
         val intent = Intent()
         intent.putExtra("key", key)
+        intent.putExtra("page", page)
         if (key == TEAM_DAYS_KEY) {
             intent.putIntegerArrayListExtra("days", selectedDays)
         } else if (key == TEAM_PLAY_START_KEY || key == TEAM_PLAY_END_KEY) {
@@ -398,6 +480,11 @@ class EditTeamItemActivity() : BaseActivity() {
                 return
             }
             intent.putParcelableArrayListExtra("arenas", arenas)
+        } else if (key == AREA_KEY) {
+            if (select == "just one" && areas.size == 0) {
+                return
+            }
+            intent.putParcelableArrayListExtra("areas", areas)
         } else {
             val res: String = content.text.toString()
             intent.putExtra("res", res)
@@ -418,7 +505,42 @@ class ArenaItem(val context: Context, val arena: com.sportpassword.bm.Controller
 
         viewHolder.item1.text = arena.name
         toggleClick(viewHolder.itemView, checked)
+    }
 
+    fun toggleClick(itemView: View, checked: Boolean) {
+        if (checked) {
+            setSelectedStyle(itemView)
+        } else {
+            unSetSelectedStyle(itemView)
+        }
+    }
+
+    fun setSelectedStyle(itemView: View) {
+        val item1View = itemView.item1
+        val mark1View = itemView.mark1
+        item1View.setTextColor(checkedColor)
+        mark1View.visibility = View.VISIBLE
+        mark1View.setColorFilter(checkedColor)
+    }
+    fun unSetSelectedStyle(itemView: View) {
+        val item1View = itemView.item1
+        val mark1View = itemView.mark1
+        item1View.setTextColor(uncheckedColor)
+        mark1View.visibility = View.INVISIBLE
+    }
+}
+
+class AreaItem(val context: Context, val area: Area, val checked: Boolean=false): Item() {
+
+    val checkedColor = ContextCompat.getColor(context, R.color.MY_GREEN)
+    val uncheckedColor = ContextCompat.getColor(context, R.color.WHITE)
+
+    override fun getLayout() = R.layout.activity_edit_team_item_adapter
+
+    override fun bind(viewHolder: ViewHolder, position: Int) {
+
+        viewHolder.item1.text = area.name
+        toggleClick(viewHolder.itemView, checked)
     }
 
     fun toggleClick(itemView: View, checked: Boolean) {

@@ -43,7 +43,7 @@ class TeamManagerActivity : BaseActivity() {
         val filter2: Array<Any> = arrayOf("manager_id", "=", member.id)
         val filter: Array<Array<Any>> = arrayOf(filter1, filter2)
 
-        TeamService.getList(this, "team", "name", 1, 100, filter) { success ->
+        TeamService.getList(this, "team", "name", hashMapOf<String, Any>(), 1, 100, filter) { success ->
             if (success) {
                 this.managerTeamAdapter = ManagerTeamAdapter(this, TeamService.superDataLists,
                         { title, token ->

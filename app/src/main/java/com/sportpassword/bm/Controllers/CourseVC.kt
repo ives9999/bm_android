@@ -11,16 +11,22 @@ import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.CourseService
 import kotlinx.android.synthetic.main.activity_course_vc.*
 import org.jetbrains.anko.contentView
+import com.sportpassword.bm.Utilities.*
 
 class CourseVC : MoreVC() {
 
     lateinit var collectionAdapter: CollectionAdapter
+    val _searchRows: ArrayList<HashMap<String, String>> = arrayListOf(
+        hashMapOf("title" to "關鍵字","detail" to "全部","key" to KEYWORD_KEY)
+    )
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_course_vc)
 
         setMyTitle("教學")
+
+        searchRows = _searchRows
         recyclerView = course_list
         dataService = CourseService
         refreshLayout = course_refresh
@@ -69,5 +75,4 @@ class CourseVC : MoreVC() {
         }
         refreshLayout.setOnRefreshListener(refreshListener)
     }
-
 }

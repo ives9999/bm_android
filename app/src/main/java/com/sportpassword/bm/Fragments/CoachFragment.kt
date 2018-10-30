@@ -4,13 +4,15 @@ package com.sportpassword.bm.Fragments
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.view.*
-import com.sportpassword.bm.Models.Coach
+import android.widget.ImageButton
+import com.sportpassword.bm.Adapters.SearchItem
+import com.sportpassword.bm.Controllers.MainActivity
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.CoachService
-import com.sportpassword.bm.Services.DataService
+import com.sportpassword.bm.Utilities.*
 import com.sportpassword.bm.Utilities.Loading
-import com.sportpassword.bm.Utilities.PERPAGE
-import kotlinx.android.synthetic.main.tab.*
+import kotlinx.android.synthetic.main.mask.*
+import kotlinx.android.synthetic.main.tab_coach.*
 
 
 /**
@@ -20,6 +22,11 @@ import kotlinx.android.synthetic.main.tab.*
  */
 class CoachFragment : TabFragment() {
 
+    val _searchRows: ArrayList<HashMap<String, String>> = arrayListOf(
+        hashMapOf("title" to "關鍵字","detail" to "全部","key" to KEYWORD_KEY),
+        hashMapOf("title" to "縣市","detail" to "全部","key" to CITY_KEY)
+    )
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         this.dataService = CoachService
@@ -28,23 +35,35 @@ class CoachFragment : TabFragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-        val view = super.onCreateView(inflater, container, savedInstanceState)
-        return view
+        val rootView = inflater.inflate(R.layout.tab_coach, container, false)
+
+        return rootView
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        recyclerView = list_container
+        refreshLayout = tab_refresh
+        maskView = mask
+        init()
     }
 
     override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
         inflater!!.inflate(R.menu.search, menu)
         super.onCreateOptionsMenu(menu, inflater)
+        val memuView = menu!!.findItem(R.id.menu_search).actionView
+        val searchBtn = memuView.findViewById<ImageButton>(R.id.search)
+        searchBtn.tag = type
     }
 
     override fun getDataStart(_page: Int, _perPage: Int) {
         super.getDataStart(_page, _perPage)
-        Loading.show(mask)
+        Loading.show(maskView)
         //println("page: $_page")
-        CoachService.getList(context!!, "coach", "name", _page, _perPage, null) { success ->
+        CoachService.getList(context!!, "coach", "name", mainActivity.params, _page, _perPage, null) { success ->
             getDataEnd(success)
         }
     }
+
 
     companion object {
         // TODO: Rename parameter arguments, choose names that match

@@ -8,6 +8,7 @@ import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.Menu
 import android.view.View
+import android.widget.ImageButton
 import com.sportpassword.bm.Adapters.ListAdapter
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.DataService
@@ -42,6 +43,9 @@ open class MoreVC : BaseActivity() {
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.search, menu)
+        val memuView = menu!!.findItem(R.id.menu_search).actionView
+        val searchBtn = memuView.findViewById<ImageButton>(R.id.search)
+        searchBtn.tag = type
         return true
     }
 
@@ -49,12 +53,13 @@ open class MoreVC : BaseActivity() {
         super.refresh()
         page = 1
         getDataStart(page, perPage)
+        listAdapter.notifyDataSetChanged()
     }
 
     open protected fun getDataStart(_page: Int, _perPage: Int) {
         //println("page: $_page")
         Loading.show(mask)
-        dataService.getList(this, type!!, titleField, _page, _perPage, null) { success ->
+        dataService.getList(this, type!!, titleField, params, _page, _perPage, null) { success ->
             getDataEnd(success)
         }
     }
@@ -133,10 +138,7 @@ open class MoreVC : BaseActivity() {
 
     open protected fun setRecyclerViewRefreshListener() {
         refreshListener = SwipeRefreshLayout.OnRefreshListener {
-            this@MoreVC.page = 1
-            this.getDataStart(this.page, this.perPage)
-            this.listAdapter.notifyDataSetChanged()
-
+            refresh()
             refreshLayout.isRefreshing = false
         }
         refreshLayout.setOnRefreshListener(refreshListener)

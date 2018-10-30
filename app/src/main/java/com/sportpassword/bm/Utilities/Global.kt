@@ -12,10 +12,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.Window
 import android.view.inputmethod.InputMethodManager
-import android.widget.ImageView
-import android.widget.ProgressBar
-import android.widget.RelativeLayout
-import android.widget.TextView
+import android.widget.*
 import com.sportpassword.bm.R
 import java.text.SimpleDateFormat
 import java.time.LocalDate
@@ -209,12 +206,12 @@ object Loading {
 object Mask {
     val alpha = 0.8f
     val duration: Long = 100
-    fun show(mask: View) {
-        mask.alpha = 0f
-        mask.visibility = View.VISIBLE
-        mask.animate().setDuration(duration).alpha(alpha).setListener(object: Animator.AnimatorListener {
+    fun show(view: View) {
+        view.alpha = 0f
+        view.visibility = View.VISIBLE
+        view.animate().setDuration(duration).alpha(alpha).setListener(object: Animator.AnimatorListener {
             override fun onAnimationEnd(p0: Animator?) {
-                mask.visibility = View.VISIBLE
+                view.visibility = View.VISIBLE
             }
             override fun onAnimationRepeat(p0: Animator?) {}
             override fun onAnimationCancel(p0: Animator?) {}

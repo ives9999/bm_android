@@ -12,11 +12,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.sportpassword.bm.Adapters.ListAdapter
+import com.sportpassword.bm.Controllers.Arena
+import com.sportpassword.bm.Controllers.MainActivity
 import com.sportpassword.bm.Controllers.ShowActivity
+import com.sportpassword.bm.Models.City
 import com.sportpassword.bm.Models.SuperData
 
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.DataService
+import com.sportpassword.bm.Utilities.DEGREE
 import com.sportpassword.bm.Utilities.Loading
 import com.sportpassword.bm.Utilities.PERPAGE
 import kotlinx.android.synthetic.main.tab.*
@@ -41,7 +45,7 @@ open class TabFragment : Fragment() {
     protected var totalPage: Int = 0
 
     protected var loading: Boolean = false
-    protected lateinit var mask: View
+    protected lateinit var maskView: View
 
     protected var superDataLists: ArrayList<SuperData> = arrayListOf()
 
@@ -54,6 +58,7 @@ open class TabFragment : Fragment() {
     protected lateinit var refreshListener: SwipeRefreshLayout.OnRefreshListener
     protected lateinit var scrollerListenr: RecyclerView.OnScrollListener
 //    var vimeoClient: VimeoClient? = null
+    protected lateinit var mainActivity: MainActivity
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -62,26 +67,23 @@ open class TabFragment : Fragment() {
             screenWidth = arguments!!.getInt(ARG_PARAM2)
         }
         that = this
-        //println("TabFragment onCreate")
+        mainActivity = activity as MainActivity
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.tab, container, false)
-        recyclerView = view.findViewById<RecyclerView>(R.id.list_container)
+
+        return view
+    }
+
+    fun init() {
         initAdapter()
 
         recyclerView.setHasFixedSize(true)
-
-        refreshLayout = view.findViewById<SwipeRefreshLayout>(R.id.tab_refresh)
-
-        mask = view.findViewById(R.id.mask)
-
-        getDataStart(page, perPage)
-
         setRecyclerViewScrollListener()
         setRecyclerViewRefreshListener()
+        refresh()
 
-        return view
     }
     open protected fun initAdapter() {
         listAdapter = ListAdapter(context!!, type!!, screenWidth) { data ->
@@ -94,8 +96,15 @@ open class TabFragment : Fragment() {
         recyclerView.adapter = listAdapter
 
     }
+
+    fun refresh() {
+        page = 1
+        getDataStart(page, perPage)
+        listAdapter.notifyDataSetChanged()
+    }
+
     open protected fun getDataStart(_page: Int, _perPage: Int) {
-        Loading.show(mask)
+        Loading.show(maskView)
         loading = true
     }
 
@@ -114,13 +123,14 @@ open class TabFragment : Fragment() {
             page++
         }
 //        mask?.let { mask?.dismiss() }
-        Loading.hide(mask)
+        Loading.hide(maskView)
         loading = false
 //        println("page:$page")
 //        println("perPage:$perPage")
 //        println("totalCount:$totalCount")
 //        println("totalPage:$totalPage")
     }
+
     open protected fun notifyDataSetChanged() {
         if (page == 1) {
             superDataLists = arrayListOf()
@@ -163,9 +173,7 @@ open class TabFragment : Fragment() {
 
     open protected fun setRecyclerViewRefreshListener() {
         refreshListener = SwipeRefreshLayout.OnRefreshListener {
-            that.page = 1
-            this.getDataStart(this.page, this.perPage)
-            this.listAdapter.notifyDataSetChanged()
+            refresh()
 
             refreshLayout.isRefreshing = false
         }

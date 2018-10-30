@@ -2,18 +2,15 @@ package com.sportpassword.bm.Fragments
 
 
 import android.app.Activity
-import android.content.Context
 import android.content.Intent
 import android.support.v4.app.Fragment
 import android.os.Bundle
-import android.support.v4.content.ContextCompat
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
-import com.sportpassword.bm.Adapters.SearchAdapter
 import com.sportpassword.bm.Adapters.inter
 import com.sportpassword.bm.Controllers.Arena
 import com.sportpassword.bm.Controllers.EditTeamItemActivity
@@ -22,15 +19,14 @@ import com.sportpassword.bm.Models.City
 import com.sportpassword.bm.Models.SELECT_TIME_TYPE
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Utilities.*
-import com.sportpassword.bm.Views.GroupSection
+import com.sportpassword.bm.Adapters.GroupSection
 import com.xwray.groupie.ExpandableGroup
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.Section
 import com.xwray.groupie.ViewHolder
 import com.xwray.groupie.kotlinandroidextensions.Item
 import kotlinx.android.synthetic.main.search_row_item.*
-import kotlinx.android.synthetic.main.search_section_item.*
-import kotlinx.android.synthetic.main.tab_tempplay_search.*
+import com.sportpassword.bm.Adapters.SearchItem
 
 /**
  * A simple [Fragment] subclass.
@@ -125,9 +121,16 @@ class TempPlayFragment : TabFragment(), inter {
         for (i in 0..row.size-1) {
             val title = row[i].get("title")!!
             val detail = row[i].get("detail")!!
-            _rows.add(SearchItem(title, detail, section, i) { view, b ->
+            var bSwitch = false
+            if (row[i].containsKey("switch")) {
+                bSwitch = row[i].get("switch")!!.toBoolean()
+            }
+            _rows.add(SearchItem(title, detail, bSwitch, -1, i, { view, b ->
                 getKeyword(view, b)
+            }, { idx, b ->
+
             })
+            )
         }
         return _rows
     }
@@ -345,29 +348,3 @@ class TempPlayFragment : TabFragment(), inter {
     }
 
 }// Required empty public constructor
-
-class SearchItem(val title: String, val detail: String, val section: Int, val row: Int, val inputK:(view: View, b: Boolean)->Unit): Item() {
-
-    override fun getLayout() = R.layout.search_row_item
-
-    override fun bind(viewHolder: com.xwray.groupie.kotlinandroidextensions.ViewHolder, position: Int) {
-
-        viewHolder.row_title.text = title
-        viewHolder.row_detail.text = detail
-
-        if (section == 0 && position == 1) {
-            val keywordView = viewHolder.keyword
-            viewHolder.row_detail.visibility = View.INVISIBLE
-            viewHolder.greater.visibility = View.INVISIBLE
-            keywordView.visibility = View.VISIBLE
-            keywordView.setOnFocusChangeListener { view, b ->
-                inputK(view, b)
-            }
-        } else {
-            viewHolder.row_detail.visibility = View.VISIBLE
-            viewHolder.greater.visibility = View.VISIBLE
-            viewHolder.keyword.visibility = View.INVISIBLE
-        }
-    }
-
-}

@@ -69,7 +69,7 @@ class ArenaFragment : TabFragment() {
     override fun getDataStart(_page: Int, _perPage: Int) {
         super.getDataStart(_page, _perPage)
         //println("page: $_page")
-        ArenaService.getList(context!!, "arena", "name", _page, _perPage, null) { success ->
+        ArenaService.getList(context!!, "arena", "name", mainActivity.params, _page, _perPage, null) { success ->
             getDataEnd(success)
         }
     }

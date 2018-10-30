@@ -4,4 +4,5 @@
     <item name="loadingImgID" type="id" />
     <item name="loadingTextID" type="id" />
     <item name="MyMask" type="id" />
+    <item name="SearchRecycleItem" type="id" />
 </resources>

@@ -30,8 +30,9 @@ open class DataService: BaseService() {
     var citys: ArrayList<City> = arrayListOf()
     var arenas: ArrayList<Arena> = arrayListOf()
     var citysandarenas: HashMap<Int, HashMap<String, Any>> = hashMapOf()
+    var citysandareas: HashMap<Int, HashMap<String, Any>> = hashMapOf()
 
-    fun getList(context: Context, type:String, titleField:String, page:Int, perPage:Int, filter:Array<Array<Any>>?, complete:CompletionHandler) {
+    fun getList(context: Context, type:String, titleField:String, params: HashMap<String,Any>, page:Int, perPage:Int, filter:Array<Array<Any>>?, complete:CompletionHandler) {
         val url = "$URL_LIST".format(type)
         //println(url)
 
@@ -39,6 +40,52 @@ open class DataService: BaseService() {
         body.put("source", "app")
         body.put("page", page.toString())
         body.put("perPage", perPage.toString())
+
+        for ((key, value) in params) {
+            when (key) {
+                "city_id" -> {
+                    var arr: JSONArray = JSONArray(value as ArrayList<Int>)
+                    body.put(key, arr)
+                }
+                "city_type" -> {
+                    body.put(key, value)
+                }
+                "area_id" -> {
+                    var arr: JSONArray = JSONArray(value as ArrayList<Int>)
+                    body.put(key, arr)
+                }
+                "play_days" -> {
+                    var arr: JSONArray = JSONArray(value as ArrayList<Int>)
+                    body.put(key, arr)
+                }
+                "play_time" -> {
+                    body.put(key, value)
+                }
+                "use_date_range" -> {
+                    body.put(key, value)
+                }
+                "arena_id" -> {
+                    var arr: JSONArray = JSONArray(value as ArrayList<Int>)
+                    body.put(key, arr)
+                }
+                "degree" -> {
+                    var arr: JSONArray = JSONArray(value as ArrayList<String>)
+                    body.put(key, arr)
+                }
+                "k" -> {
+                    body.put(key, value)
+                }
+                ARENA_AIR_CONDITION_KEY -> {
+                    body.put(key, value)
+                }
+                ARENA_BATHROOM_KEY -> {
+                    body.put(key, value)
+                }
+                ARENA_PARKING_KEY -> {
+                    body.put(key, value)
+                }
+            }
+        }
 
         var requestBody: String = ""
         if (filter != null) {
@@ -634,6 +681,65 @@ open class DataService: BaseService() {
                         rows.add(hashMapOf("id" to arena_id, "name" to arena_name))
                     }
                     citysandarenas.put(city_id, hashMapOf<String, Any>("id" to city_id, "name" to city_name, "rows" to rows))
+                }
+                complete(true)
+            } catch (e: JSONException) {
+                println("exception: " + e.localizedMessage)
+                msg = "無法get Arenas，沒有傳回成功值 " + e.localizedMessage
+                complete(false)
+            }
+        }, Response.ErrorListener { error ->
+            //Log.d("ERROR", "Could not register user: $error")
+            println(error.localizedMessage)
+            this.msg = "取得失敗，網站或網路錯誤"
+            complete(false)
+        }) {
+            override fun getBodyContentType(): String {
+                return HEADER
+            }
+
+            override fun getBody(): ByteArray {
+                return requestBody.toByteArray()
+            }
+        }
+        Volley.newRequestQueue(context).add(request)
+    }
+
+    fun getAreaByCityIDs(context: Context, city_ids: ArrayList<Int>, city_type:String, complete: CompletionHandler) {
+        val url = URL_AREA_BY_CITY_IDS
+//        println(url)
+
+        val body = JSONObject()
+        var arr: JSONArray = JSONArray()
+        for (city_id in city_ids) {
+            arr.put(city_id)
+        }
+        body.put("source", "app")
+        body.put("channel", "bm")
+        body.put("citys", arr)
+        body.put("city_type", city_type)
+        body.put("version", "1.2.5")
+        val requestBody = body.toString()
+//        println(requestBody)
+
+        val request = object : JsonObjectRequest(Request.Method.POST, url, null, Response.Listener { json ->
+            //            println(json)
+            try {
+                citysandareas.clear()
+                val keys = json.keys()
+                for ((i, key) in keys.withIndex()) {
+                    val obj = json.getJSONObject(key)
+                    val city_id: Int = obj.getInt("id")
+                    val city_name: String = obj.getString("name")
+                    val _rows = obj.getJSONArray("rows")
+                    var rows: ArrayList<HashMap<String, Any>> = arrayListOf()
+                    for (j in 0.._rows.length()-1) {
+                        val row = _rows.getJSONObject(j)
+                        val area_id = row.getInt("id")
+                        val area_name = row.getString("name")
+                        rows.add(hashMapOf("id" to area_id, "name" to area_name))
+                    }
+                    citysandareas.put(city_id, hashMapOf<String, Any>("id" to city_id, "name" to city_name, "rows" to rows))
                 }
                 complete(true)
             } catch (e: JSONException) {
