@@ -86,13 +86,17 @@ open class TabFragment : Fragment() {
 
     }
     open protected fun initAdapter() {
-        listAdapter = ListAdapter(context!!, type!!, screenWidth) { data ->
+        listAdapter = ListAdapter(context!!, type!!, screenWidth, { data ->
             val intent = Intent(activity, ShowActivity::class.java)
             intent.putExtra("type", type)
             intent.putExtra("token", data.token)
             intent.putExtra("title", data.title)
             startActivity(intent)
-        }
+        }, {data ->
+
+        }, { data, address ->
+
+        })
         recyclerView.adapter = listAdapter
 
     }

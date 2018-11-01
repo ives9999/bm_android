@@ -5,6 +5,7 @@ import com.sportpassword.bm.Models.City
 import org.json.JSONException
 import org.json.JSONObject
 import com.sportpassword.bm.Utilities.*
+import java.lang.Exception
 
 object ArenaService: DataService() {
 
@@ -20,6 +21,24 @@ object ArenaService: DataService() {
         for ((key, value) in model.data) {
             if (obj.has(key)) {
                 _jsonToData(obj, key, value)
+            }
+            if (key == CITY_KEY) {
+                if (obj.has("city_id")) {
+                    try {
+                        model.data[CITY_KEY]!!["value"] = obj.getInt("city_id")
+                    } catch (e: Exception) {
+                        model.data[CITY_KEY]!!["value"] = ""
+                    }
+                }
+            }
+            if (key == AREA_KEY) {
+                if (obj.has("area_id")) {
+                    try {
+                        model.data[AREA_KEY]!!["value"] = obj.getInt("area_id")
+                    } catch (e: Exception) {
+                        model.data[AREA_KEY]!!["value"] = ""
+                    }
+                }
             }
         }
         model.updateInterval()

@@ -62,9 +62,6 @@ class TempPlayFragment : TabFragment(), inter {
     var degrees: ArrayList<DEGREE> = arrayListOf()
     var keyword: String = ""
 
-    var startTyping: Boolean = false
-    var typeComplete: Boolean = false
-
     var searchSections: ArrayList<Section> = arrayListOf(Section(), Section())
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -95,7 +92,10 @@ class TempPlayFragment : TabFragment(), inter {
             val searchItem = item as SearchItem
             val section = searchItem.section
             val row = searchItem.row
-            prepare(section, row)
+            if (section == 0 && row == 0) {
+            } else {
+                prepare(section, row)
+            }
         }
         recyclerView.adapter = adapter
     }
@@ -125,30 +125,14 @@ class TempPlayFragment : TabFragment(), inter {
             if (row[i].containsKey("switch")) {
                 bSwitch = row[i].get("switch")!!.toBoolean()
             }
-            _rows.add(SearchItem(title, detail, bSwitch, -1, i, { view, b ->
-                getKeyword(view, b)
+            _rows.add(SearchItem(title, detail, bSwitch, section, i, { k ->
+                keyword = k
             }, { idx, b ->
 
             })
             )
         }
         return _rows
-    }
-
-    private fun getKeyword(view: View, b: Boolean) {
-        if (b && !startTyping) {
-            startTyping = true
-            typeComplete = false
-        }
-        if (!typeComplete && !b) {
-            typeComplete = true
-            startTyping = false
-        }
-        if (typeComplete) {
-            val editText = view as EditText
-            keyword = editText.text.toString()
-//            println(keyword)
-        }
     }
 
     override fun prepare(section: Int, row: Int) {

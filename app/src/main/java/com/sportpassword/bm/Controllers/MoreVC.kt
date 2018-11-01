@@ -10,11 +10,14 @@ import android.view.Menu
 import android.view.View
 import android.widget.ImageButton
 import com.sportpassword.bm.Adapters.ListAdapter
+import com.sportpassword.bm.Models.City
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.DataService
+import com.sportpassword.bm.Utilities.CITY_KEY
 import com.sportpassword.bm.Utilities.Loading
 import com.sportpassword.bm.Utilities.PERPAGE
 import kotlinx.android.synthetic.main.mask.*
+import java.lang.Exception
 
 open class MoreVC : BaseActivity() {
 
@@ -98,13 +101,28 @@ open class MoreVC : BaseActivity() {
         listAdapter.notifyDataSetChanged()
     }
     open protected fun initAdapter() {
-        listAdapter = ListAdapter(this, type!!, screenWidth) { data ->
+        listAdapter = ListAdapter(this, type!!, screenWidth, { data ->
             val intent = Intent(this, ShowActivity::class.java)
             intent.putExtra("type", type)
             intent.putExtra("token", data.token)
             intent.putExtra("title", data.title)
             startActivity(intent)
-        }
+        }, {data ->
+            try {
+                val city_id = data.data[CITY_KEY]!!["value"] as Int
+                citys.clear()
+                citys.add(City(city_id, ""))
+                prepareParams("all")
+                refresh()
+            } catch (e: Exception) {
+                warning("沒有縣市值，無法搜尋")
+            }
+        }, { data, address ->
+            val intent = Intent(this, MyMapVC::class.java)
+            intent.putExtra("title", data.title)
+            intent.putExtra("address", address)
+            startActivity(intent)
+        })
         recyclerView.adapter = listAdapter
         val layoutManager = GridLayoutManager(this, 1)
         recyclerView.layoutManager = layoutManager

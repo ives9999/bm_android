@@ -129,6 +129,18 @@
                     card_view:layout_constraintStart_toStartOf="parent" />
             </android.support.constraint.ConstraintLayout>
 
+            <ImageButton
+                android:id="@+id/marker"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_marginStart="16dp"
+                android:background="@android:color/transparent"
+                android:scaleType="fitCenter"
+                app:srcCompat="@drawable/marker"
+                card_view:layout_constraintBottom_toBottomOf="@+id/listBallTxt"
+                card_view:layout_constraintStart_toEndOf="@+id/listBallTxt"
+                card_view:layout_constraintTop_toTopOf="@+id/listBallTxt" />
+
         </android.support.constraint.ConstraintLayout>
 
 

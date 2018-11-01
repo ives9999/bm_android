@@ -1,12 +1,15 @@
 package com.sportpassword.bm.Adapters
 
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.View
 import com.sportpassword.bm.R
 import com.xwray.groupie.kotlinandroidextensions.Item
 import kotlinx.android.synthetic.main.search_row_item.*
 import org.jetbrains.anko.sdk25.coroutines.onCheckedChange
+import org.jetbrains.anko.sdk25.coroutines.textChangedListener
 
-class SearchItem(val title: String, val detail: String, val switch: Boolean, val section: Int, val row: Int, val inputK:(view: View, b: Boolean)->Unit, val switched:(idx: Int, b: Boolean)->Unit): Item() {
+class SearchItem(val title: String, val detail: String, val switch: Boolean, val section: Int, val row: Int, val inputK:(k: String)->Unit, val switched:(idx: Int, b: Boolean)->Unit): Item() {
 
     override fun getLayout() = R.layout.search_row_item
 
@@ -20,9 +23,21 @@ class SearchItem(val title: String, val detail: String, val switch: Boolean, val
             viewHolder.row_detail.visibility = View.INVISIBLE
             viewHolder.greater.visibility = View.INVISIBLE
             keywordView.visibility = View.VISIBLE
-            keywordView.setOnFocusChangeListener { view, b ->
-                inputK(view, b)
-            }
+//            keywordView.textChangedListener {
+//                inputK(this, true)
+//            }
+            keywordView.addTextChangedListener(object: TextWatcher {
+                override fun afterTextChanged(p0: Editable?) {
+                }
+
+                override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                }
+
+                override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                    inputK(p0.toString())
+                }
+
+            })
         } else {
             viewHolder.row_detail.visibility = View.VISIBLE
             viewHolder.greater.visibility = View.VISIBLE

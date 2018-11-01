@@ -90,8 +90,6 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener {
     var arenas: ArrayList<Arena> = arrayListOf()
     var degrees: ArrayList<DEGREE> = arrayListOf()
     var keyword: String = ""
-    var startTyping: Boolean = false
-    var typeComplete: Boolean = false
     protected lateinit var searchAdapter: GroupAdapter<ViewHolder>
     var params: HashMap<String, Any> = hashMapOf()
 
@@ -649,7 +647,7 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener {
 
         val containerView = LinearLayout(this)
         containerView.orientation = LinearLayout.VERTICAL
-        val padding = 160
+        val padding = 80
         val headerHeight = 100
         val lp = LinearLayout.LayoutParams(w-(2*padding), h-headerHeight)
         //lp.setMargins(padding, headerHeight, padding, 0)
@@ -660,7 +658,7 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener {
 
         val searchTableView = RecyclerView(this)
         searchTableView.id = R.id.SearchRecycleItem
-        val lp1 = RecyclerView.LayoutParams(w-(2*padding), 1400)
+        val lp1 = RecyclerView.LayoutParams(w-(2*padding), 1000)
         lp1.setMargins(0, 30, 0, 0)
         searchTableView.layoutParams = lp1
         searchTableView.layoutManager = LinearLayoutManager(this)
@@ -668,7 +666,9 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener {
         searchAdapter.setOnItemClickListener { item, view ->
             val searchItem = item as SearchItem
             val row = searchItem.row
-            prepareSearch(row, page)
+            if (searchItem.switch == false) {
+                prepareSearch(row, page)
+            }
         }
         val rows = generateItems()
         searchAdapter.addAll(rows)
@@ -905,8 +905,8 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener {
             if (row.containsKey("switch")) {
                 bSwitch = row.get("switch")!!.toBoolean()
             }
-            rows.add(SearchItem(title, detail, bSwitch, -1, i, { view, b ->
-                getKeyword(view, b)
+            rows.add(SearchItem(title, detail, bSwitch, -1, i, { k ->
+                keyword = k
             }, { idx, b ->
                 when (idx){
                     3 -> air_condition = b
@@ -925,22 +925,6 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener {
         val parentID = resources.getIdentifier(containerID, "id", packageName)
         val parent = rootView.findViewById<ConstraintLayout>(parentID)
         return parent.findViewById<LinearLayout>(R.id.MyMask)
-    }
-
-    fun getKeyword(view: View, b: Boolean) {
-        if (b && !startTyping) {
-            startTyping = true
-            typeComplete = false
-        }
-        if (!typeComplete && !b) {
-            typeComplete = true
-            startTyping = false
-        }
-        if (typeComplete) {
-            val editText = view as EditText
-            keyword = editText.text.toString()
-//            println(keyword)
-        }
     }
 
     protected fun getFragment(page: String): TabFragment? {
@@ -1019,9 +1003,7 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener {
             params["degree"] = _degrees
         }
 
-        if (keyword.length > 0) {
-            params["k"] = keyword
-        }
+        params["k"] = keyword
     }
 
     fun resetParams() {

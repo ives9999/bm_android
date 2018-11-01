@@ -65,6 +65,12 @@ class TempPlayVC : MoreVC() {
         setRecyclerViewRefreshListener()
     }
 
+    override fun refresh() {
+        page = 1
+        getDataStart(page, perPage)
+        tempPlayListAdapter.notifyDataSetChanged()
+    }
+
     private fun show(data: Map<String, Map<String, Any>>) {
         val position = data["position"]!!["value"] as Int
         val token = data[TEAM_TOKEN_KEY]!!["value"] as String

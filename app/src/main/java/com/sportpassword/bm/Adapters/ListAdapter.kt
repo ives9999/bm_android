@@ -6,6 +6,7 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
 import com.sportpassword.bm.Models.SuperData
@@ -16,7 +17,7 @@ import com.squareup.picasso.Picasso
 /**
  * Created by ives on 2018/2/23.
  */
-class ListAdapter(val context: Context, val iden: String="team", val screenWidth: Int=0, val itemClick: (SuperData) -> Unit): RecyclerView.Adapter<ListAdapter.ViewHolder>(){
+class ListAdapter(val context: Context, val iden: String="team", val screenWidth: Int=0, val itemClick: (SuperData)->Unit, val searchCity:(SuperData)->Unit, val showMap:(SuperData, address: String)->Unit): RecyclerView.Adapter<ListAdapter.ViewHolder>(){
 
     var lists: ArrayList<SuperData> = arrayListOf()
         get() = field
@@ -26,7 +27,7 @@ class ListAdapter(val context: Context, val iden: String="team", val screenWidth
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view: View = LayoutInflater.from(context).inflate(R.layout.tab_list_item, parent, false)
-        return ViewHolder(view, iden, screenWidth, itemClick)
+        return ViewHolder(view, iden, screenWidth)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
@@ -37,7 +38,7 @@ class ListAdapter(val context: Context, val iden: String="team", val screenWidth
         return lists.size
     }
 
-    inner class ViewHolder(itemView: View, val iden: String="team", val screenWidth: Int=0, val itemClick: (SuperData) -> Unit): RecyclerView.ViewHolder(itemView) {
+    inner class ViewHolder(itemView: View, val iden: String="team", val screenWidth: Int=0): RecyclerView.ViewHolder(itemView) {
         val featuredView = itemView.findViewById<ImageView>(R.id.listFeatured)
         val nameView = itemView.findViewById<TextView>(R.id.listTitleTxt)
         val cityView = itemView.findViewById<TextView>(R.id.listCityTxt)
@@ -46,8 +47,10 @@ class ListAdapter(val context: Context, val iden: String="team", val screenWidth
         val dayView = itemView.findViewById<TextView>(R.id.listDayTxt)
         val intervalView = itemView.findViewById<TextView>(R.id.listIntervalTxt)
         //val videoView = itemView.findViewById<WebView>(R.id.listVideo)
+        val markerView = itemView.findViewById<ImageButton>(R.id.marker)
 
         fun bind(superData: SuperData) {
+            markerView.visibility = View.INVISIBLE
             if (iden == "team") {
                 bindTeam(superData)
             } else if (iden == "coach") {
@@ -157,6 +160,9 @@ class ListAdapter(val context: Context, val iden: String="team", val screenWidth
             if (superData.data.containsKey(CITY_KEY)) {
                 //println(superData.superData["city"]!!["show"])
                 cityView.text = superData.data[CITY_KEY]!!["show"] as String
+                cityView.setOnClickListener {
+                    searchCity(superData)
+                }
             }
             if (superData.data.containsKey(TEL_KEY)) {
                 arenaView.text = superData.data[TEL_KEY]!!["show"] as String
@@ -170,6 +176,13 @@ class ListAdapter(val context: Context, val iden: String="team", val screenWidth
             }
             if (superData.data.containsKey(ARENA_AIR_CONDITION_KEY)) {
                 intervalView.text = "空調: " + superData.data[ARENA_AIR_CONDITION_KEY]!!["show"] as String
+            }
+            if (superData.data.containsKey(ADDRESS_KEY)) {
+                val address = superData.data[ADDRESS_KEY]!!["show"] as String
+                markerView.visibility = View.VISIBLE
+                markerView.setOnClickListener {
+                    showMap(superData, address)
+                }
             }
         }
 
