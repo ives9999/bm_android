@@ -401,8 +401,8 @@ class MainActivity : BaseActivity() {
         goSearch("team")
     }
 
-    fun manager_team(view: View) {
-        goTeamManager()
+    fun manager(view: View) {
+        goManager(view.tag as String)
     }
 
     private fun setMenuWidth() {

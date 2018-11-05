@@ -35,6 +35,12 @@ class CourseVC : MoreVC() {
         refresh()
     }
 
+    override fun refresh() {
+        page = 1
+        getDataStart(page, perPage)
+        collectionAdapter.notifyDataSetChanged()
+    }
+
     override fun initAdapter() {
         collectionAdapter = CollectionAdapter(this, type!!, screenWidth) { data ->
             val intent = Intent(this, ShowActivity::class.java)

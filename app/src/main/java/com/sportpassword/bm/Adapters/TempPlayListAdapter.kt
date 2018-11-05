@@ -48,7 +48,7 @@ class TempPlayListAdapter(val context: Context, val itemClick: (Map<String, Map<
             val _data: Map<String, Map<String, Any>> = lists[position]
             var data: MutableMap<String, Map<String, Any>> = _data.toMutableMap()
             data.put("position", mapOf("value" to position))
-            val name = data[TEAM_NAME_KEY]!!["show"] as String
+            val name = data[NAME_KEY]!!["show"] as String
             nameView.text = name
             val count = data["count"]!!["quantity"] as Int
             countView.text = if (count>=0) count.toString() else "未提供"
@@ -58,11 +58,11 @@ class TempPlayListAdapter(val context: Context, val itemClick: (Map<String, Map<
             dateView.text = date
             val interval = "${data[TEAM_PLAY_START_KEY]!!["show"] as String}-${data[TEAM_PLAY_END_KEY]!!["show"] as String}"
             intervalView.text = interval
-            val city = data[TEAM_CITY_KEY]!!["show"] as String
+            val city = data[CITY_KEY]!!["show"] as String
             cityBtn.text = city
-            val city_id = data[TEAM_CITY_KEY]!!["value"] as Int
-            val arena = data[TEAM_ARENA_KEY]!!["show"] as String
-            val arena_id = data[TEAM_ARENA_KEY]!!["value"] as Int
+            val city_id = data[CITY_KEY]!!["value"] as Int
+            val arena = data[ARENA_KEY]!!["show"] as String
+            val arena_id = data[ARENA_KEY]!!["value"] as Int
             arenaBtn.text = arena
 //            println("${data.title}: featured => ${data.featured_path}")
 //            println("${data.title}: vimeo => ${data.vimeo}")

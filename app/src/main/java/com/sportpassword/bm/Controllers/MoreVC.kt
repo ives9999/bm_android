@@ -34,7 +34,6 @@ open class MoreVC : BaseActivity() {
 
     protected lateinit var recyclerView: RecyclerView
     open protected lateinit var listAdapter: ListAdapter
-    protected lateinit var dataService: DataService
 
     protected lateinit var scrollerListenr: RecyclerView.OnScrollListener
 
@@ -53,7 +52,6 @@ open class MoreVC : BaseActivity() {
     }
 
     override fun refresh() {
-        super.refresh()
         page = 1
         getDataStart(page, perPage)
         listAdapter.notifyDataSetChanged()

@@ -143,7 +143,7 @@ class TempPlayFragment : TabFragment(), inter {
             0 -> {
                 when (row) {
                     1 -> {// city
-                        intent.putExtra("key", TEAM_CITY_KEY)
+                        intent.putExtra("key", CITY_KEY)
                         intent.putExtra("source", "search")
                         intent.putExtra("type", "simple")
                         intent.putExtra("select", "multi")
@@ -173,7 +173,7 @@ class TempPlayFragment : TabFragment(), inter {
                             Alert.warning(this@TempPlayFragment.context!!, "請先選擇縣市")
                             return
                         }
-                        intent.putExtra("key", TEAM_ARENA_KEY)
+                        intent.putExtra("key", ARENA_KEY)
                         intent.putExtra("source", "search")
                         intent.putExtra("type", "simple")
                         intent.putExtra("select", "multi")
@@ -209,7 +209,7 @@ class TempPlayFragment : TabFragment(), inter {
                 if (resultCode == Activity.RESULT_OK) {
                     val key = data!!.getStringExtra("key")
 
-                    if (key == TEAM_CITY_KEY) { // city
+                    if (key == CITY_KEY) { // city
                         section = 0
                         row = 1
                         citys = data!!.getParcelableArrayListExtra("citys")
@@ -222,7 +222,7 @@ class TempPlayFragment : TabFragment(), inter {
                         } else {
                             value = "全部"
                         }
-                    } else if (key == TEAM_ARENA_KEY) { // arena
+                    } else if (key == ARENA_KEY) { // arena
                         section = 1
                         row = 0
                         arenas = data!!.getParcelableArrayListExtra("arenas")

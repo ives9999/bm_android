@@ -121,9 +121,9 @@ class ListAdapter(val context: Context, val iden: String="team", val screenWidth
                 //println(superData.superData["city"]!!["show"])
                 cityView.text = superData.data[CITY_KEY]!!["show"] as String
             }
-            if (superData.data.containsKey(TEAM_ARENA_KEY)) {
+            if (superData.data.containsKey(ARENA_KEY)) {
                 //println(superData.superData["arena"]!!["show"])
-                arenaView.text = superData.data[TEAM_ARENA_KEY]!!["show"] as String
+                arenaView.text = superData.data[ARENA_KEY]!!["show"] as String
             }
             if (superData.data.containsKey(TEAM_BALL_KEY)) {
                 ballView.text = superData.data[TEAM_BALL_KEY]!!["show"] as String

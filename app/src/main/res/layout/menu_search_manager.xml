@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="12dp"
         android:background="@android:color/transparent"
-        android:onClick="manager_team"
+        android:onClick="manager"
         app:layout_constraintEnd_toStartOf="@+id/search"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/gear" />

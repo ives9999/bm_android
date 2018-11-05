@@ -158,12 +158,12 @@ class EditTeamActivity : BaseActivity(), ImagePicker {
         var params: MutableMap<String, Any> = mutableMapOf()
         var isPass: Boolean = true
         fieldToData(inputV)
-        val name: String = model.data[TEAM_NAME_KEY]!!["value"] as String
+        val name: String = model.data[NAME_KEY]!!["value"] as String
         if (name.length == 0) {
             isPass = false
             Alert.show(context, "提示", "請填寫隊名")
         }
-        val mobile: String = model.data[TEAM_MOBILE_KEY]!!["value"] as String
+        val mobile: String = model.data[MOBILE_KEY]!!["value"] as String
         if (mobile.length == 0) {
             isPass = false
             Alert.show(context, "警告", "請填寫電話")
@@ -176,16 +176,16 @@ class EditTeamActivity : BaseActivity(), ImagePicker {
             } else {
                 Loading.show(mask)
                 if (params.count() == 0) {
-                    if (model.data[TEAM_ID_KEY]!!["value"] as Int > 0) {
-                        val id: Int = model.data[TEAM_ID_KEY]!!["value"] as Int
-                        params[TEAM_ID_KEY] = id
+                    if (model.data[ID_KEY]!!["value"] as Int > 0) {
+                        val id: Int = model.data[ID_KEY]!!["value"] as Int
+                        params[ID_KEY] = id
                     } else {
-                        params[TEAM_CREATED_ID_KEY] = member.id
+                        params[CREATED_ID_KEY] = member.id
                     }
                 }
-                val created_id = model.data[TEAM_CREATED_ID_KEY]!!["value"] as Int
+                val created_id = model.data[CREATED_ID_KEY]!!["value"] as Int
                 if (created_id < 0) {
-                    params[TEAM_CREATED_ID_KEY] = member.id
+                    params[CREATED_ID_KEY] = member.id
                 }
 
                 TeamService.update(context, "team", params, filePath) { success ->
@@ -193,8 +193,8 @@ class EditTeamActivity : BaseActivity(), ImagePicker {
                     if (success) {
                         if (TeamService.success) {
                             val id: Int = TeamService.id
-                            model.data[TEAM_ID_KEY]!!["value"] = id
-                            model.data[TEAM_ID_KEY]!!["show"] = id
+                            model.data[ID_KEY]!!["value"] = id
+                            model.data[ID_KEY]!!["show"] = id
                             Alert.update(this, this.action, {
                                 if (file != null) {
                                     file!!.delete()
@@ -260,7 +260,7 @@ class EditTeamActivity : BaseActivity(), ImagePicker {
                 }
             }
         }
-        val featured: String = model.data[TEAM_FEATURED_KEY]!!["value"] as String
+        val featured: String = model.data[FEATURED_KEY]!!["value"] as String
         if (featured.length > 0) {
             setImage(null, featured)
         }
@@ -403,13 +403,13 @@ class EditTeamActivity : BaseActivity(), ImagePicker {
         } else if (key == TEAM_DEGREE_KEY) {
             val degrees: ArrayList<DEGREE> = model.data[key]!!["sender"] as ArrayList<DEGREE>
             intent.putExtra("degrees", degrees)
-        } else if (key == TEAM_CITY_KEY) {
+        } else if (key == CITY_KEY) {
             val value: Int = model.data[key]!!["sender"] as Int
             val city = City(value, "")
             val citys: ArrayList<City> = arrayListOf(city)
             intent.putParcelableArrayListExtra("citys", citys)
-        } else if (key == TEAM_ARENA_KEY) {
-            val city_id: Int = model.data[TEAM_CITY_KEY]!!["value"] as Int
+        } else if (key == ARENA_KEY) {
+            val city_id: Int = model.data[CITY_KEY]!!["value"] as Int
             if (city_id == 0) {
                 Alert.show(this, "警告", "請先選擇區域")
             } else {
@@ -465,7 +465,7 @@ class EditTeamActivity : BaseActivity(), ImagePicker {
                     } else if (key == TEAM_DEGREE_KEY) {
                         val degrees: ArrayList<DEGREE> = data!!.getSerializableExtra("degrees") as ArrayList<DEGREE>
                         model.updateDegree(degrees)
-                    } else if (key == TEAM_CITY_KEY) {
+                    } else if (key == CITY_KEY) {
                         val citys: ArrayList<City> = data!!.getParcelableArrayListExtra("citys")
 //                        val id: Int = data!!.getIntExtra("id", model.data[TEAM_CITY_KEY]!!["value"] as Int)
 //                        val name: String = data!!.getStringExtra("name")
@@ -473,7 +473,7 @@ class EditTeamActivity : BaseActivity(), ImagePicker {
                             val city = citys[0]
                             model.updateCity(city)
                         }
-                    } else if (key == TEAM_ARENA_KEY) {
+                    } else if (key == ARENA_KEY) {
                         val arenas:ArrayList<com.sportpassword.bm.Controllers.Arena> = data!!.getParcelableArrayListExtra("arenas")
 //                        val id: Int = data!!.getIntExtra("id", model.data[TEAM_ARENA_KEY]!!["value"] as Int)
 //                        val name: String = data!!.getStringExtra("name")
@@ -488,9 +488,9 @@ class EditTeamActivity : BaseActivity(), ImagePicker {
                         val content: String = data!!.getStringExtra("res")
                         if (key == TEAM_TEMP_CONTENT_KEY) {
                             model.updateTempContent(content)
-                        } else if (key == TEAM_CHARGE_KEY) {
+                        } else if (key == CHARGE_KEY) {
                             model.updateCharge(content)
-                        } else if (key == TEAM_CONTENT_KEY) {
+                        } else if (key == CONTENT_KEY) {
                             model.updateContent(content)
                         }
                     }

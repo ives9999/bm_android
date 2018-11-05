@@ -79,8 +79,8 @@
         <activity android:name=".Controllers.TeamTempPlayEditActivity" />
         <activity android:name=".Controllers.TestActivity" />
         <activity android:name=".Controllers.SplashActivity" />
-        <activity android:name=".Controllers.TeamManagerActivity" />
-        <activity android:name=".Controllers.TeamManagerFunctionActivity" />
+        <activity android:name=".Controllers.ManagerVC" />
+        <activity android:name=".Controllers.ManagerFunctionVC" />
         <activity android:name=".Controllers.ValidateActivity" />
         <activity
             android:name=".Controllers.TempPlaySignupOneVC"

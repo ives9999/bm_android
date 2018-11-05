@@ -16,7 +16,7 @@ import com.sportpassword.bm.Services.TeamService
 import com.sportpassword.bm.Utilities.DEGREE
 import com.sportpassword.bm.Utilities.Loading
 import com.sportpassword.bm.Utilities.TEAM_PLAY_START_KEY
-import com.sportpassword.bm.Utilities.TEAM_TOKEN_KEY
+import com.sportpassword.bm.Utilities.TOKEN_KEY
 import kotlinx.android.synthetic.main.activity_temp_play_vc.*
 import kotlinx.android.synthetic.main.tab.*
 import kotlinx.android.synthetic.main.mask.*
@@ -73,11 +73,11 @@ class TempPlayVC : MoreVC() {
 
     private fun show(data: Map<String, Map<String, Any>>) {
         val position = data["position"]!!["value"] as Int
-        val token = data[TEAM_TOKEN_KEY]!!["value"] as String
+        val token = data[TOKEN_KEY]!!["value"] as String
         //val intent = Intent(activity, TestActivity::class.java)
         val intent = Intent(this, ShowTempPlayActivity::class.java)
         intent.putExtra("position", position)
-        intent.putExtra(TEAM_TOKEN_KEY, token)
+        intent.putExtra(TOKEN_KEY, token)
         startActivity(intent)
     }
 

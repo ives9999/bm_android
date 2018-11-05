@@ -5,7 +5,7 @@ import android.content.SharedPreferences
 import android.preference.PreferenceManager
 import com.sportpassword.bm.Utilities.*
 import com.sportpassword.bm.member
-import kotlinx.coroutines.experimental.android.UI
+//import kotlinx.coroutines.android.UI
 import org.json.JSONObject
 import java.lang.reflect.Field
 import kotlin.reflect.full.memberProperties

@@ -36,7 +36,7 @@ class ShowTempPlayActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_show_temp_play)
 
-        teamToken = intent.getStringExtra(TEAM_TOKEN_KEY)
+        teamToken = intent.getStringExtra(TOKEN_KEY)
         //println(token)
 
         refreshLayout = contentView!!.findViewById< SwipeRefreshLayout>(R.id.tempPlayShow_refresh)
@@ -57,8 +57,8 @@ class ShowTempPlayActivity : BaseActivity() {
             if (success) {
                 data = TeamService.data
                 //println(data)
-                val name: String = data[TEAM_NAME_KEY]!!["value"] as String
-                val id: Int = data[TEAM_ID_KEY]!!["value"] as Int
+                val name: String = data[NAME_KEY]!!["value"] as String
+                val id: Int = data[ID_KEY]!!["value"] as Int
                 setTeamData(show_featured_view)
                 signupsAdapter = SignupsAdapter(this, {token, near_date ->
                     goTempPlaySignupOne(id, teamToken, name, near_date, token)
@@ -150,13 +150,13 @@ class ShowTempPlayActivity : BaseActivity() {
     override fun setTeamData(imageView: ImageView?) {
         if (imageView != null) {
             Picasso.with(this)
-                    .load(data[TEAM_FEATURED_KEY]!!["value"] as String)
+                    .load(data[FEATURED_KEY]!!["value"] as String)
                     .placeholder(R.drawable.loading_square)
                     .error(R.drawable.load_failed_square)
                     .into(imageView)
         }
-        show_temp_play_city_btn.text = data[TEAM_CITY_KEY]!!["show"] as String
-        show_temp_play_arena_btn.text = data[TEAM_ARENA_KEY]!!["show"] as String
+        show_temp_play_city_btn.text = data[CITY_KEY]!!["show"] as String
+        show_temp_play_arena_btn.text = data[ARENA_KEY]!!["show"] as String
 
         var key = ""
         var lbl = ""
@@ -201,7 +201,7 @@ class ShowTempPlayActivity : BaseActivity() {
         text = data[key]!!["show"] as String
         show_manager.text = lbl + ": " + text
 
-        key = TEAM_MOBILE_KEY
+        key = MOBILE_KEY
         lbl = data[key]!!["ch"] as String
         text = data[key]!!["show"] as String
         show_mobile.text = lbl + ": " + text
@@ -211,7 +211,7 @@ class ShowTempPlayActivity : BaseActivity() {
         text = data[key]!!["show"] as String
         show_degree.text = lbl + ": " + text
 
-        name = data[TEAM_NAME_KEY]!!["value"] as String
+        name = data[NAME_KEY]!!["value"] as String
         memberToken = member.token
     }
 }

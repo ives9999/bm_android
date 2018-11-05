@@ -79,7 +79,7 @@ class EditTeamItemActivity() : BaseActivity() {
         if (intent.hasExtra("select")) {
             select = intent.getStringExtra("select")
         }
-        if (key == TEAM_DAYS_KEY || key == TEAM_PLAY_START_KEY || key == TEAM_PLAY_END_KEY || key == TEAM_DEGREE_KEY || key == TEAM_CITY_KEY || key == TEAM_ARENA_KEY) {
+        if (key == TEAM_DAYS_KEY || key == TEAM_PLAY_START_KEY || key == TEAM_PLAY_END_KEY || key == TEAM_DEGREE_KEY || key == CITY_KEY || key == ARENA_KEY) {
             content_container.visibility = View.INVISIBLE
             val layout = findViewById(R.id.teamedititem_constraint) as ConstraintLayout
             val constraintSet = ConstraintSet()
@@ -139,11 +139,11 @@ class EditTeamItemActivity() : BaseActivity() {
                 val m: MutableMap<String, String> = mutableMapOf("value" to k, "text" to v, "checked" to checked.toString())
                 dataList.add(m)
             }
-        } else if (key == TEAM_CITY_KEY) {
+        } else if (key == CITY_KEY) {
             setMyTitle("縣市")
 //            oldCity = intent.getIntExtra("value", 0)
             citys = intent.getParcelableArrayListExtra("citys")
-        } else if (key == TEAM_ARENA_KEY) {
+        } else if (key == ARENA_KEY) {
             setMyTitle("球館")
             citysForArena = intent.getIntegerArrayListExtra("citys_for_arena")
             arenas = intent.getParcelableArrayListExtra("arenas")
@@ -154,9 +154,9 @@ class EditTeamItemActivity() : BaseActivity() {
         } else {
             if (key == TEAM_TEMP_CONTENT_KEY) {
                 setMyTitle("臨打說明")
-            } else if (key == TEAM_CHARGE_KEY) {
+            } else if (key == CHARGE_KEY) {
                 setMyTitle("收費說明")
-            } else if (key == TEAM_CONTENT_KEY) {
+            } else if (key == CONTENT_KEY) {
                 setMyTitle("球隊說明")
             }
             val value: String = intent.getStringExtra("value")
@@ -166,7 +166,7 @@ class EditTeamItemActivity() : BaseActivity() {
         }
 
         //init adapter
-        if (key == TEAM_ARENA_KEY) {
+        if (key == ARENA_KEY) {
             arenaAdapter = GroupAdapter()
             arenaAdapter.setOnItemClickListener { item, view ->
                 val arenaItem = item as ArenaItem
@@ -225,7 +225,7 @@ class EditTeamItemActivity() : BaseActivity() {
                 } else if (key == TEAM_DEGREE_KEY) {
                     val degree = dataList[position]["value"]!!
                     setDegree(degree)
-                } else if (key == TEAM_CITY_KEY) {
+                } else if (key == CITY_KEY) {
                     setCity(position)
                     if (select == "just one") {
                         submit(View(this))
@@ -237,7 +237,7 @@ class EditTeamItemActivity() : BaseActivity() {
         }
 
         //get remote date
-        if (key == TEAM_CITY_KEY) {
+        if (key == CITY_KEY) {
             TeamService.getCitys(this, type) { success ->
                 allCitys = TeamService.citys
                 for (i in 0..allCitys.size-1) {
@@ -255,7 +255,7 @@ class EditTeamItemActivity() : BaseActivity() {
                 editTeamItemAdapter.notifyDataSetChanged()
                 Loading.hide(mask)
             }
-        } else if (key == TEAM_ARENA_KEY) {
+        } else if (key == ARENA_KEY) {
             TeamService.getArenaByCityIDs(this, citysForArena, type) { success ->
                 if (success) {
                     citysandarenas = TeamService.citysandarenas
@@ -470,12 +470,12 @@ class EditTeamItemActivity() : BaseActivity() {
                 return
             }
             intent.putExtra("degrees", degrees)
-        } else if (key == TEAM_CITY_KEY) {
+        } else if (key == CITY_KEY) {
             if (select == "just one" && citys.size == 0) {
                 return
             }
             intent.putParcelableArrayListExtra("citys", citys)
-        } else if (key == TEAM_ARENA_KEY) {
+        } else if (key == ARENA_KEY) {
             if (select == "just one" && arenas.size == 0) {
                 return
             }

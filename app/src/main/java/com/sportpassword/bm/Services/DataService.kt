@@ -238,10 +238,10 @@ open class DataService: BaseService() {
         for ((_key, row) in _params) {
             var key = _key
             if (key == "arena_id") {
-                key = TEAM_ARENA_KEY
+                key = ARENA_KEY
             }
             if (key == "city_id") {
-                key = TEAM_CITY_KEY
+                key = CITY_KEY
             }
 
             if (key == TEAM_DEGREE_KEY) {
@@ -259,17 +259,17 @@ open class DataService: BaseService() {
                     params.put("days="+i, d.toString())
                     i++
                 }
-            } else if (key == TEAM_CAT_KEY) {
+            } else if (key == CAT_KEY) {
                 val tmp: List<Int> = row as ArrayList<Int>
                 var i = 1
                 for (d in tmp) {
                     params.put("cat_id="+i, d.toString())
                 }
                 i++
-            } else if (key == TEAM_ARENA_KEY) {
+            } else if (key == ARENA_KEY) {
                 val value: Int = row as Int
                 params.put(_key, value.toString())
-            } else if (key == TEAM_CITY_KEY) {
+            } else if (key == CITY_KEY) {
                 val value: Int = row as Int
                 params.put(_key, value.toString())
             } else {

@@ -128,7 +128,7 @@ object TeamService: DataService() {
                     data[TEAM_NEAR_DATE_KEY] = near_date
 
                     var city: MutableMap<String, Any> = mutableMapOf()
-                    city = data[TEAM_CITY_KEY]!!
+                    city = data[CITY_KEY]!!
                     city["value"] = 0
                     try {
                         city["value"] = obj.getInt("city_id")
@@ -136,10 +136,10 @@ object TeamService: DataService() {
 
                     }
                     city["show"] = obj.getString("city_name")
-                    data[TEAM_CITY_KEY] = city
+                    data[CITY_KEY] = city
 
                     var arena: MutableMap<String, Any> = mutableMapOf()
-                    arena = data[TEAM_ARENA_KEY]!!
+                    arena = data[ARENA_KEY]!!
                     arena["value"] = 0
                     try {
                         arena["value"] = obj.getInt("arena_id")
@@ -147,7 +147,7 @@ object TeamService: DataService() {
 
                     }
                     arena["show"] = obj.getString("arena_name")
-                    data[TEAM_ARENA_KEY] = arena
+                    data[ARENA_KEY] = arena
 
                     var count: MutableMap<String, Any> = mutableMapOf()
                     count["quantity"] = 0
@@ -534,7 +534,7 @@ object TeamService: DataService() {
             } catch (e: JSONException) {
 
             }
-            if (key == TEAM_FEATURED_KEY) {
+            if (key == FEATURED_KEY) {
                 if (value.isNotEmpty()) {
                     value = BASE_URL + value
                 }
@@ -550,7 +550,7 @@ object TeamService: DataService() {
                 model.updatePlayEndTime(value)
             }
         } else if (type == "array") {
-            if (key == TEAM_CITY_KEY) {
+            if (key == CITY_KEY) {
                 try {
                     val obj1 = tmp.getJSONObject(key)
                     val id = obj1.getInt("id")
@@ -560,7 +560,7 @@ object TeamService: DataService() {
                 } catch (e: JSONException) {
                     println(e.localizedMessage)
                 }
-            } else if (key == TEAM_ARENA_KEY) {
+            } else if (key == ARENA_KEY) {
                 try {
                     val obj1 = tmp.getJSONObject(key)
                     val id = obj1.getInt("id")

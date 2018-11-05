@@ -18,7 +18,6 @@ import android.support.constraint.ConstraintLayout
 import android.support.v4.app.ActivityCompat
 import android.support.v4.content.ContextCompat
 import android.support.v4.content.LocalBroadcastManager
-import android.support.v4.view.ViewPager
 import android.support.v4.widget.SwipeRefreshLayout
 import android.support.v7.app.ActionBar
 import android.support.v7.widget.LinearLayoutManager
@@ -44,6 +43,7 @@ import com.sportpassword.bm.Models.City
 import com.sportpassword.bm.Models.SELECT_TIME_TYPE
 import com.sportpassword.bm.Models.SuperData
 import com.sportpassword.bm.R
+import com.sportpassword.bm.Services.DataService
 import com.sportpassword.bm.Services.MemberService
 import com.sportpassword.bm.Services.TeamService
 import com.sportpassword.bm.Utilities.*
@@ -99,6 +99,7 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener {
     val VALIDATE_REQUEST_CODE = 3
     val SEARCH_REQUEST_CODE = 4
 
+    var dataService: DataService = DataService()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -252,7 +253,7 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener {
         startActivity(intent)
     }
 
-    public fun goEditTeam(token: String="") {
+    public fun goEdit(token: String="") {
         val intent = Intent(this, EditTeamActivity::class.java)
         intent.putExtra("token", token)
         startActivity(intent)
@@ -264,16 +265,17 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener {
         startActivity(intent)
     }
 
-    public fun goTeamManager() {
+    public fun goManager(page: String) {
         if (!member.isLoggedIn) {
             Alert.show(this, "警告", "請先登入會員")
             return
         }
-        val intent = Intent(this, TeamManagerActivity::class.java)
+        val intent = Intent(this, ManagerVC::class.java)
+        intent.putExtra("source", page)
         startActivity(intent)
     }
-    public fun goTeamManagerFunction(title: String, token: String) {
-        val intent = Intent(this, TeamManagerFunctionActivity::class.java)
+    public fun goManagerFunction(title: String, token: String) {
+        val intent = Intent(this, ManagerFunctionVC::class.java)
         intent.putExtra("title", title)
         intent.putExtra("token", token)
         startActivity(intent)
@@ -641,7 +643,7 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener {
         val rootView = window.decorView.rootView
         val parentID = resources.getIdentifier(containerID, "id", packageName)
         val parent = rootView.findViewById<ConstraintLayout>(parentID)
-        val p = parent.layoutParams as ViewPager.LayoutParams
+        //val p = parent.layoutParams as ViewPager.LayoutParams
         val w = parent.measuredWidth
         val h = parent.measuredHeight
 
@@ -654,8 +656,26 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener {
         lp.setMargins(padding, h, padding, 0)
         containerView.layoutParams = lp
         containerView.backgroundColor = Color.BLACK
-        //containerView.alpha = 1f
 
+        addSearchTableView(page, containerView, w, padding)
+        addSubmitBtn(page, containerView, w, padding)
+
+        val mask = getMask()
+        mask.addView(containerView)
+
+        val h1 = containerView.layoutParams.height
+        containerView.animate().setDuration(duration).translationY((0-h1).toFloat()).setListener(object: Animator.AnimatorListener {
+            override fun onAnimationEnd(p0: Animator?) {
+                //containerView.layoutParams.height = containerView.height
+                //containerView.visibility = View.VISIBLE
+            }
+            override fun onAnimationRepeat(p0: Animator?) {}
+            override fun onAnimationCancel(p0: Animator?) {}
+            override fun onAnimationStart(p0: Animator?) {}
+        })
+    }
+
+    protected fun addSearchTableView(page: String, containerView: LinearLayout, w: Int, padding: Int) {
         val searchTableView = RecyclerView(this)
         searchTableView.id = R.id.SearchRecycleItem
         val lp1 = RecyclerView.LayoutParams(w-(2*padding), 1000)
@@ -675,7 +695,9 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener {
 
         searchTableView.adapter = searchAdapter
         containerView.addView(searchTableView)
+    }
 
+    protected fun addSubmitBtn(page: String, containerView: LinearLayout, w:Int, padding: Int) {
         val submitBtn = Button(this)
         val submitBtnWidth = 360
         val lp2 = LinearLayout.LayoutParams(submitBtnWidth, LinearLayout.LayoutParams.WRAP_CONTENT)
@@ -696,22 +718,6 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener {
         submitBtn.setTextColor(Color.WHITE)
 
         containerView.addView(submitBtn)
-
-
-        val mask = getMask()
-        mask.addView(containerView)
-
-
-        val h1 = containerView.layoutParams.height
-        containerView.animate().setDuration(duration).translationY((0-h1).toFloat()).setListener(object: Animator.AnimatorListener {
-            override fun onAnimationEnd(p0: Animator?) {
-                //containerView.layoutParams.height = containerView.height
-                //containerView.visibility = View.VISIBLE
-            }
-            override fun onAnimationRepeat(p0: Animator?) {}
-            override fun onAnimationCancel(p0: Animator?) {}
-            override fun onAnimationStart(p0: Animator?) {}
-        })
     }
 
     protected fun prepareSearch(idx: Int, page: String) {
@@ -723,7 +729,7 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener {
         }
         when (key) {
             CITY_KEY -> {
-                intent.putExtra("key", TEAM_CITY_KEY)
+                intent.putExtra("key", CITY_KEY)
                 intent.putExtra("source", "search")
                 intent.putExtra("page", page)
                 intent.putExtra("type", "simple")
@@ -735,12 +741,12 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener {
                 }
                 intent.putParcelableArrayListExtra("citys", citys)
             }
-            TEAM_ARENA_KEY -> {
+            ARENA_KEY -> {
                 if (citys.size == 0) {
                     Alert.warning(this, "請先選擇縣市")
                     return
                 }
-                intent.putExtra("key", TEAM_ARENA_KEY)
+                intent.putExtra("key", ARENA_KEY)
                 intent.putExtra("source", "search")
                 intent.putExtra("type", "simple")
                 intent.putExtra("select", "multi")
@@ -819,7 +825,7 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener {
                                 citys_team = citys
                             }
                         }
-                        TEAM_ARENA_KEY -> {
+                        ARENA_KEY -> {
                             idx = 2
                             arenas = data!!.getParcelableArrayListExtra("arenas")
                             if (arenas.size > 0) {

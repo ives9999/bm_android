@@ -19,7 +19,7 @@ class TeamFragment: TabFragment() {
     val _searchRows: ArrayList<HashMap<String, String>> = arrayListOf(
         hashMapOf("title" to "關鍵字","detail" to "全部","key" to KEYWORD_KEY),
         hashMapOf("title" to "縣市","detail" to "全部","key" to CITY_KEY),
-        hashMapOf("title" to "球館","detail" to "全部","key" to TEAM_ARENA_KEY),
+        hashMapOf("title" to "球館","detail" to "全部","key" to ARENA_KEY),
         hashMapOf("title" to "日期","detail" to "全部","key" to TEAM_DAYS_KEY),
         hashMapOf("title" to "時段","detail" to "全部","key" to TEAM_PLAY_START_KEY),
         hashMapOf("title" to "程度","detail" to "全部","key" to TEAM_DEGREE_KEY)
@@ -36,7 +36,10 @@ class TeamFragment: TabFragment() {
         super.onCreateOptionsMenu(menu, inflater)
         val memuView = menu!!.findItem(R.id.menu_search_manager).actionView
         val searchBtn = memuView.findViewById<ImageButton>(R.id.search)
+        val ManagerBtn = memuView.findViewById<ImageButton>(R.id.manager)
+
         searchBtn.tag = type
+        ManagerBtn.tag = type
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,

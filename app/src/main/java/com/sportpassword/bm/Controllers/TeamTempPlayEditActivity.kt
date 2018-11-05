@@ -47,7 +47,7 @@ class TeamTempPlayEditActivity : BaseActivity() {
                     dataToField()
                     temp_play_quantity.setSelection(temp_play_quantity.length())
                     setEventListener()
-                    val title: String = model.temp_play_data[TEAM_NAME_KEY]!!["value"] as String + "臨打"
+                    val title: String = model.temp_play_data[NAME_KEY]!!["value"] as String + "臨打"
                     setMyTitle(title)
                 }
                 Loading.hide(mask)
@@ -134,8 +134,8 @@ class TeamTempPlayEditActivity : BaseActivity() {
                     if (success) {
                         if (TeamService.success) {
                             val id: Int = TeamService.id
-                            model.data[TEAM_ID_KEY]!!["value"] = id
-                            model.data[TEAM_ID_KEY]!!["show"] = id
+                            model.data[ID_KEY]!!["value"] = id
+                            model.data[ID_KEY]!!["show"] = id
                             Alert.update(this, "UPDATE", {
                                 val teamUpdate = Intent(NOTIF_TEAM_UPDATE)
                                 LocalBroadcastManager.getInstance(this).sendBroadcast(teamUpdate)
