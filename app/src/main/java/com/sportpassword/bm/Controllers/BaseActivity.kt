@@ -274,10 +274,11 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener {
         intent.putExtra("source", page)
         startActivity(intent)
     }
-    public fun goManagerFunction(title: String, token: String) {
+    public fun goManagerFunction(title: String, token: String, source: String) {
         val intent = Intent(this, ManagerFunctionVC::class.java)
         intent.putExtra("title", title)
         intent.putExtra("token", token)
+        intent.putExtra("source", source)
         startActivity(intent)
     }
     public fun goTempPlayDate(name: String, token: String) {
@@ -690,7 +691,7 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener {
                 prepareSearch(row, page)
             }
         }
-        val rows = generateItems()
+        val rows = generateSearchItems()
         searchAdapter.addAll(rows)
 
         searchTableView.adapter = searchAdapter
@@ -894,14 +895,14 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener {
                         }
                     }
                     searchRows[idx]["detail"] = value
-                    val rows = generateItems()
+                    val rows = generateSearchItems()
                     searchAdapter.update(rows)
                 }
             }
         }
     }
 
-    fun generateItems(): ArrayList<SearchItem> {
+    fun generateSearchItems(): ArrayList<SearchItem> {
         val rows: ArrayList<SearchItem> = arrayListOf()
         for (i in 0..searchRows.size-1) {
             val row = searchRows[i] as HashMap<String, String>

@@ -59,7 +59,7 @@ class ManagerVC : BaseActivity() {
             if (success) {
                 managerAdapter = ManagerAdapter(this, dataService.superDataLists,
                         { title, token ->
-                            goManagerFunction(title, token)
+                            goManagerFunction(title, token, source)
                         }
                 )
                 manager_list.adapter = managerAdapter
