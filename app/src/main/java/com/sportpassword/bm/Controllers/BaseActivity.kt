@@ -253,9 +253,11 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener {
         startActivity(intent)
     }
 
-    public fun goEdit(token: String="") {
-        val intent = Intent(this, EditTeamActivity::class.java)
+    public fun goEdit(source: String, title: String="", token: String="") {
+        val intent = Intent(this, EditVC::class.java)
         intent.putExtra("token", token)
+        intent.putExtra("source", source)
+        intent.putExtra("title", title)
         startActivity(intent)
     }
 
@@ -291,7 +293,7 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener {
         val intent = Intent(this, TempPlayDatePlayerVC::class.java)
         intent.putExtra("date", date)
         intent.putExtra("teamName", name)
-        intent.putExtra("teamToken", token)
+        intent.putExtra("token", token)
         startActivity(intent)
     }
 
@@ -331,7 +333,7 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener {
         val i = Intent(this, TempPlaySignupOneVC::class.java)
         i.putExtra("id", teamId)
         i.putExtra("name", teamName)
-        i.putExtra("teamToken", teamToken)
+        i.putExtra("token", teamToken)
         i.putExtra("near_date", near_date)
         i.putExtra("memberToken", memberToken)
         startActivity(i)

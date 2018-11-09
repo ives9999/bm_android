@@ -24,7 +24,7 @@ import com.github.babedev.dexter.dsl.runtimePermission
 import com.sportpassword.bm.Controllers.BaseActivity
 import com.squareup.picasso.MemoryPolicy
 import com.squareup.picasso.Picasso
-import kotlinx.android.synthetic.main.activity_edit_team.*
+import kotlinx.android.synthetic.main.edit_vc.*
 import java.io.File
 import java.io.FileOutputStream
 

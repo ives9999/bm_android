@@ -1,5 +1,6 @@
 package com.sportpassword.bm.Models
 
+import android.text.InputType
 import com.sportpassword.bm.Utilities.*
 import org.jetbrains.anko.db.NULL
 import kotlin.reflect.KProperty1
@@ -9,20 +10,53 @@ import kotlin.reflect.full.memberProperties
  * Created by ives on 2018/2/17.
  */
 open class SuperData(val id: Int, val title: String, val token: String, val featured_path: String="", val vimeo: String="", val youtube: String="") {
+
+    val more = "more"
+    val none = "none"
+    val defaultPad = InputType.TYPE_CLASS_TEXT
+    val numberPad = InputType.TYPE_CLASS_NUMBER
+    val phonePad = InputType.TYPE_CLASS_PHONE
+    val emailPad = InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS
+
     open var data: MutableMap<String, MutableMap<String, Any>> = mutableMapOf()
+    open var sections: ArrayList<String> = arrayListOf()
+    open var rows: ArrayList<ArrayList<String>> = arrayListOf()
 
     open fun dataReset(){}
 
-    open fun updateCity(city: City) {
-        data[CITY_KEY]!!["value"] = city.id
-        data[CITY_KEY]!!["show"] = city.name
-        data[CITY_KEY]!!["sender"] = city.id
+    open fun getDataRowWithKey(key: String): HashMap<String, Any> {
+        var res = mutableMapOf<String, Any>()
+        for ((key1, row) in data) {
+            if (key == key1) {
+                res = row
+            }
+        }
+
+        return res.toMap() as HashMap<String, Any>
+    }
+
+    open fun updateCity(city: City? = null) {
+        if (city != null) {
+            data[CITY_KEY]!!["value"] = city.id
+            data[CITY_KEY]!!["show"] = city.name
+            data[CITY_KEY]!!["sender"] = city.id
+        }
     }
     open fun updateArea(area: Area) {
         data[CITY_KEY]!!["value"] = area.id
         data[CITY_KEY]!!["show"] = area.name
         data[CITY_KEY]!!["sender"] = area.id
     }
+
+    open fun updateArena(arena: Arena? = null) {}
+    open fun updateDegree(degrees: ArrayList<DEGREE>?=null) {}
+    open fun updateDays(days: ArrayList<Int>? = null) {}
+    open fun updatePlayStartTime(time: String? = null) {}
+    open fun updatePlayEndTime(time: String? = null) {}
+    open fun updateTempContent(content: String? = null) {}
+    open fun updateCharge(content: String? = null) {}
+    open fun updateContent(content: String? = null) {}
+    open fun makeSubmitArr(): MutableMap<String, Any> {return mutableMapOf()}
 
     fun mobileShow(_mobile: String? = null) {
         var mobile = _mobile

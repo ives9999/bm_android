@@ -74,7 +74,7 @@
         <activity android:name=".Controllers.AccountUpdate1Activity" />
         <activity android:name=".Controllers.ShowActivity" />
         <activity android:name=".Controllers.ShowTempPlayActivity" />
-        <activity android:name=".Controllers.EditTeamActivity" />
+        <activity android:name=".Controllers.EditVC" />
         <activity android:name=".Controllers.EditTeamItemActivity" />
         <activity android:name=".Controllers.TeamTempPlayEditActivity" />
         <activity android:name=".Controllers.TestActivity" />

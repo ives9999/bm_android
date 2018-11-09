@@ -33,7 +33,7 @@ class  TempPlaySignupOneVC : BaseActivity() {
         setContentView(R.layout.activity_temp_play_signup_one_vc)
 
         memberToken = intent.getStringExtra("memberToken")
-        teamToken = intent.getStringExtra("teamToken")
+        teamToken = intent.getStringExtra("token")
         team_name = intent.getStringExtra("name")
         team_id = intent.getIntExtra("id", -1)
         near_date = intent.getStringExtra("near_date")

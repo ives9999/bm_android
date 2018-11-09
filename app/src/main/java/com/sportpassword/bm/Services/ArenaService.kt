@@ -45,6 +45,13 @@ object ArenaService: DataService() {
         return model.data
     }
 
+    override fun dealOne(json: JSONObject) {
+        super.dealOne(json)
+        for ((key, value) in model.data) {
+            _jsonToData(json, key, value)
+        }
+    }
+
     override fun _jsonToData(tmp: JSONObject, key: String, item: Map<String, Any>) {
         //println(key)
         val type = item["vtype"] as String

@@ -7,6 +7,15 @@ import com.sportpassword.bm.Utilities.*
 
 class Arena(id: Int, name: String, token: String="", featured_path: String=""): SuperData(id, name, token, featured_path) {
 
+    override var sections: ArrayList<String> = arrayListOf("", "聯絡資訊", "展示資訊", "地區與收費", "其他說明")
+    override var rows: ArrayList<ArrayList<String>> = arrayListOf(
+            arrayListOf(NAME_KEY),
+            arrayListOf(MOBILE_KEY,EMAIL_KEY, FB_KEY, LINE_KEY),
+            arrayListOf(WEBSITE_KEY, YOUTUBE_KEY),
+            arrayListOf(COACH_SENIORITY_KEY, CITY_KEY),
+            arrayListOf(CHARGE_KEY,COACH_LICENSE_KEY, COACH_EXP_KEY,COACH_FEAT_KEY,CONTENT_KEY)
+    )
+
     fun initData() {
         data = mutableMapOf<String, MutableMap<String, Any>>(
                 ID_KEY to mutableMapOf("ch" to "編號","vtype" to "Int","value" to -1,"show" to ""),
@@ -42,7 +51,9 @@ class Arena(id: Int, name: String, token: String="", featured_path: String=""): 
                 UPDATED_AT_KEY to mutableMapOf("ch" to "最後一次修改時間","vtype" to "String","value" to "","show" to "","submit" to false)
         )
         for ((key, item) in data) {
-            data[key]!!["show"] = "未提供"
+            //data[key]!!["show"] = "未提供"
+            data[key]!!["change"] = false
+            data[key]!!["key"] = key
         }
     }
     override fun dataReset() {

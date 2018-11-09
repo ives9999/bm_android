@@ -202,6 +202,7 @@ open class DataService: BaseService() {
                 data = mutableMapOf()
                 dealOne(json)
                 data = model.data
+//                println(data)
             } catch (e: JSONException) {
                 println("parse data error: " + e.localizedMessage)
                 success = false
@@ -234,6 +235,7 @@ open class DataService: BaseService() {
 
         //println(_params)
         val url = "$URL_UPDATE".format(type)
+        //println(url)
         val params: HashMap<String, String> = hashMapOf()
         for ((_key, row) in _params) {
             var key = _key

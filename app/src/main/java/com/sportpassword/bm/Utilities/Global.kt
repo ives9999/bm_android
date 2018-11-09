@@ -175,6 +175,8 @@ object Global {
     )
 }
 
+class IndexPath(val section: Int, val row: Int){}
+
 object Loading {
     val alpha = 0.8f
     val duration: Long = 100

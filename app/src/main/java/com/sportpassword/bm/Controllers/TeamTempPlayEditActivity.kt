@@ -78,6 +78,7 @@ class TeamTempPlayEditActivity : BaseActivity() {
 
     private fun dataToField() {
         val status = model.temp_play_data[TEAM_TEMP_STATUS_KEY]!!["value"] as String
+//        println(status)
         if (status == "on") {
             onoff.isChecked = true
             oldStatus = true

@@ -69,7 +69,7 @@ val TEAM_TEMP_FEE_F_KEY: String = "temp_fee_F"
 val TEAM_TEMP_QUANTITY_KEY: String = "temp_quantity"
 val TEAM_TEMP_SIGNUP_KEY: String = "temp_signup_count"
 val TEAM_TEMP_CONTENT_KEY = "temp_content"
-val TEAM_TEMP_STATUS_KEY: String = "temp_status_count"
+val TEAM_TEMP_STATUS_KEY: String = "temp_status"
 
 // Coach key
 val COACH_SENIORITY_KEY: String = "seniority"

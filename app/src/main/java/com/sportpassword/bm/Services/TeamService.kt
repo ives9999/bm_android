@@ -449,19 +449,19 @@ object TeamService: DataService() {
         }
         //println(model.data)
 
-        model.updatePlayStartTime()
-        model.updatePlayEndTime()
-        model.updateInterval()
-        model.updateTempContent()
-        model.updateCharge()
-        model.updateContent()
-        model.updateNearDate()
-        model.feeShow()
+//        model.updatePlayStartTime()
+//        model.updatePlayEndTime()
+//        model.updateInterval()
+//        model.updateTempContent()
+//        model.updateCharge()
+//        model.updateContent()
+//        model.updateNearDate()
+//        model.feeShow()
     }
 
     fun addBlackList(context: Context,teamToken:String,playerToken:String,managerToken:String,reason:String,completion: CompletionHandler) {
         val body = JSONObject()
-        body.put("teamToken", teamToken)
+        body.put("token", teamToken)
         body.put("playerToken", playerToken)
         body.put("managerToken", managerToken)
         body.put("memo", reason)
@@ -470,7 +470,7 @@ object TeamService: DataService() {
     }
     fun removeBlackList(context: Context,teamToken:String,playerToken: String,managerToken: String,completion: CompletionHandler) {
         val body = JSONObject()
-        body.put("teamToken", teamToken)
+        body.put("token", teamToken)
         body.put("playerToken", playerToken)
         body.put("managerToken", managerToken)
         body.put("do", "remove")
@@ -541,7 +541,7 @@ object TeamService: DataService() {
             } else {
                 if (value.isEmpty() || value == "null") value = "未提供"
             }
-            //println("$key => $value")
+//            println("$key => $value")
             model.data[key]!!["value"] = value
             model.data[key]!!["show"] = value
             if (key == TEAM_PLAY_START_KEY) {

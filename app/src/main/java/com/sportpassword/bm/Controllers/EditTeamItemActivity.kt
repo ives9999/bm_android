@@ -325,7 +325,9 @@ class EditTeamItemActivity() : BaseActivity() {
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.button, menu)
+        if (select == "multi") {
+            menuInflater.inflate(R.menu.button, menu)
+        }
         return true
     }
 

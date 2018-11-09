@@ -73,7 +73,7 @@ class ManagerVC : BaseActivity() {
         if (member.validate < 1) {
             Alert.show(this@ManagerVC, "錯誤", "未通過EMail認證，無法新增球隊，認證完後，請先登出再登入")
         } else {
-            goEdit()
+            goEdit(source)
         }
     }
 }
