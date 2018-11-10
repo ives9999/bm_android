@@ -104,7 +104,7 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        ConnectTask(this).execute()
+        //ConnectTask(this).execute()
 
         _setURLConstants()
 

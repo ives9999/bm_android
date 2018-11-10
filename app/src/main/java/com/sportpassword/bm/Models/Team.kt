@@ -18,8 +18,6 @@ class Team(id: Int, name: String, token: String, featured_path: String, vimeo: S
     var lists: ArrayList<Map<String, Map<String, Any>>> = arrayListOf()
     var temp_play_data: MutableMap<String, MutableMap<String, Any>> = mutableMapOf()
 
-    val transferPair: Map<String, String> = mapOf(CITY_KEY to "city_id",ARENA_KEY to "arena_id")
-
     override var sections: ArrayList<String> = arrayListOf("", "聯絡資訊", "所在地", "打球時間", "臨打說明", "其他說明")
     override var rows: ArrayList<ArrayList<String>> = arrayListOf(
             arrayListOf(NAME_KEY),
@@ -396,52 +394,6 @@ class Team(id: Int, name: String, token: String, featured_path: String, vimeo: S
         data[CONTENT_KEY]!!["sender"] = res
     }
 
-    override fun makeSubmitArr(): MutableMap<String, Any> {
-        var isAnyOneChange: Boolean = false
-        var res: MutableMap<String, Any> = mutableMapOf()
-        //println(data)
-
-        for ((key, row) in data) {
-            if (row.containsKey("submit")) {
-                val isSubmit: Boolean = row["submit"] as Boolean
-                var isChange: Boolean = false
-                if (row.containsKey("change")) {
-                    isChange = row["change"] as Boolean
-                }
-                if (isSubmit && isChange) {
-                    res[key] = row["value"]!!
-                    if (!isAnyOneChange) {
-                        isAnyOneChange = true
-                    }
-                }
-            }
-        }
-
-        if (!isAnyOneChange) {
-            return res
-        }
-        var id: Int = -1
-        if (data[ID_KEY]!!["value"] as Int > 0) {
-            id = data[ID_KEY]!!["value"] as Int
-        }
-        if (id < 0) {
-            res[MANAGER_ID_KEY] = member.id
-            val cat_id: ArrayList<Int> = arrayListOf(21)
-            res[CAT_KEY] = cat_id
-            res[SLUG_KEY] = data[NAME_KEY]!!["value"]!!
-            res[CREATED_ID_KEY] = member.id
-        } else {
-            res[ID_KEY] = id
-        }
-        for ((key, value) in transferPair) {
-            if (res.containsKey(key)) {
-                res[value] = res[key]!!
-                res.remove(key)
-            }
-        }
-
-        return res
-    }
     fun makeTempPlaySubmitArr(): MutableMap<String, Any> {
         var isAnyOneChage: Boolean = false
         var res: MutableMap<String, Any> = mutableMapOf()

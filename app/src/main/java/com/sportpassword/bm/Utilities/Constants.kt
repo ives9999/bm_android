@@ -1,6 +1,7 @@
 package com.sportpassword.bm.Utilities
 
 import android.content.Intent
+import android.text.InputType
 
 /**
  * Created by ivessun on 2018/2/2.
@@ -11,6 +12,14 @@ typealias CompletionHandler = (Success: Boolean) -> Unit
 const val SOURCE = "app"
 const val CHANNEL = "bm"
 var gSimulate: Boolean = false
+
+const val more = "more"
+const val none = "none"
+const val defaultPad = InputType.TYPE_CLASS_TEXT
+const val numberPad = InputType.TYPE_CLASS_NUMBER
+const val phonePad = InputType.TYPE_CLASS_PHONE
+const val emailPad = InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS
+
 
 // URL Constants
 const val REMOTE_BASE_URL = "http://bm.sportpassword.com"

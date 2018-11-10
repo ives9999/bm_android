@@ -2,6 +2,7 @@ package com.sportpassword.bm.Models
 
 import android.text.InputType
 import com.sportpassword.bm.Utilities.*
+import com.sportpassword.bm.member
 import org.jetbrains.anko.db.NULL
 import kotlin.reflect.KProperty1
 import kotlin.reflect.full.memberProperties
@@ -11,16 +12,11 @@ import kotlin.reflect.full.memberProperties
  */
 open class SuperData(val id: Int, val title: String, val token: String, val featured_path: String="", val vimeo: String="", val youtube: String="") {
 
-    val more = "more"
-    val none = "none"
-    val defaultPad = InputType.TYPE_CLASS_TEXT
-    val numberPad = InputType.TYPE_CLASS_NUMBER
-    val phonePad = InputType.TYPE_CLASS_PHONE
-    val emailPad = InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS
-
     open var data: MutableMap<String, MutableMap<String, Any>> = mutableMapOf()
     open var sections: ArrayList<String> = arrayListOf()
     open var rows: ArrayList<ArrayList<String>> = arrayListOf()
+
+    val transferPair: Map<String, String> = mapOf(CITY_KEY to "city_id",ARENA_KEY to "arena_id")
 
     open fun dataReset(){}
 
@@ -56,8 +52,53 @@ open class SuperData(val id: Int, val title: String, val token: String, val feat
     open fun updateTempContent(content: String? = null) {}
     open fun updateCharge(content: String? = null) {}
     open fun updateContent(content: String? = null) {}
-    open fun makeSubmitArr(): MutableMap<String, Any> {return mutableMapOf()}
 
+    open fun makeSubmitArr(): MutableMap<String, Any> {
+        var isAnyOneChange: Boolean = false
+        var res: MutableMap<String, Any> = mutableMapOf()
+        //println(data)
+
+        for ((key, row) in data) {
+            if (row.containsKey("submit")) {
+                val isSubmit: Boolean = row["submit"] as Boolean
+                var isChange: Boolean = false
+                if (row.containsKey("change")) {
+                    isChange = row["change"] as Boolean
+                }
+                if (isSubmit && isChange) {
+                    res[key] = row["value"]!!
+                    if (!isAnyOneChange) {
+                        isAnyOneChange = true
+                    }
+                }
+            }
+        }
+
+        if (!isAnyOneChange) {
+            return res
+        }
+        var id: Int = -1
+        if (data[ID_KEY]!!["value"] as Int > 0) {
+            id = data[ID_KEY]!!["value"] as Int
+        }
+        if (id < 0) {
+            res[MANAGER_ID_KEY] = member.id
+            val cat_id: ArrayList<Int> = arrayListOf(18)
+            res[CAT_KEY] = cat_id
+            res[SLUG_KEY] = data[NAME_KEY]!!["value"]!!
+            res[CREATED_ID_KEY] = member.id
+        } else {
+            res[ID_KEY] = id
+        }
+        for ((key, value) in transferPair) {
+            if (res.containsKey(key)) {
+                res[value] = res[key]!!
+                res.remove(key)
+            }
+        }
+
+        return res
+    }
     fun mobileShow(_mobile: String? = null) {
         var mobile = _mobile
         if (_mobile == null) {

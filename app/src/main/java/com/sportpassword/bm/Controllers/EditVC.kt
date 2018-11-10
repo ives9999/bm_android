@@ -11,6 +11,7 @@ import com.sportpassword.bm.Services.TeamService
 import kotlinx.android.synthetic.main.edit_vc.*
 import org.jetbrains.anko.sdk25.coroutines.onClick
 import android.support.v7.app.AlertDialog
+import android.text.InputType
 import android.view.Menu
 import android.view.View
 import android.view.ViewGroup
@@ -68,9 +69,6 @@ class EditVC : MyTableVC(), ImagePicker {
         source = intent.getStringExtra("source")
         token = intent.getStringExtra("token")
         val tmp = intent.getStringExtra("title")
-        if (tmp.length > 0) {
-            title = tmp
-        }
 
         if (source == "coach") {
             title = "新增教練"
@@ -86,6 +84,9 @@ class EditVC : MyTableVC(), ImagePicker {
             model = Arena(0, "")
         }
 
+        if (tmp.length > 0) {
+            title = tmp
+        }
         setMyTitle(title)
         model.dataReset()
         //println(model.data)
@@ -174,7 +175,7 @@ class EditVC : MyTableVC(), ImagePicker {
                 if (success) {
                     model.data = dataService.data
                     //setTeamData()
-                    println(model.data)
+//                    println(model.data)
                     //dataToField(inputV)
                     notifyChanged(true)
 
@@ -226,7 +227,6 @@ class EditVC : MyTableVC(), ImagePicker {
         var params: MutableMap<String, Any> = mutableMapOf()
         var isPass: Boolean = true
         fieldToData()
-
 
         val name: String = model.data[NAME_KEY]!!["value"] as String
         if (name.length == 0) {
@@ -307,9 +307,9 @@ class EditVC : MyTableVC(), ImagePicker {
         if (vtype == "String") {
             oldValue = oldValue as String
             val newValue = _newValue
-//            println("oldValue: $oldValue")
-//            println("newValue: $newValue")
             if (oldValue != newValue) {
+//                println("oldValue: $oldValue")
+//                println("newValue: $newValue")
                 model.data[key]!!["value"] = newValue
                 model.data[key]!!["change"] = true
             }
@@ -662,9 +662,14 @@ class EditItem(val source: String, val indexPath: IndexPath, val row: HashMap<St
             val text_field = row.get("text_field")!! as Boolean
             if (text_field) {
                 viewHolder.edit_text.visibility = View.VISIBLE
-                if (row.containsKey("show")) {
-                    val show = row.get("show")!! as String
-                    viewHolder.edit_text.setText(show)
+                var inputType = defaultPad
+                if (row.containsKey("keyboardType")) {
+                    inputType = row["keyboardType"]!! as Int
+                    viewHolder.edit_text.inputType = inputType
+                }
+                if (row.containsKey("value")) {
+                    val value = row.get("value").toString()
+                    viewHolder.edit_text.setText(value)
                 }
 //                println("$key => $position")
                 addEditText(key, position)
