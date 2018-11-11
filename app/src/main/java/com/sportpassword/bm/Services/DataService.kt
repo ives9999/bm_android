@@ -235,7 +235,7 @@ open class DataService: BaseService() {
 
         //println(_params)
         val url = "$URL_UPDATE".format(type)
-        println(url)
+        //println(url)
         val params: HashMap<String, String> = hashMapOf()
         for ((_key, row) in _params) {
             var key = _key
@@ -289,7 +289,7 @@ open class DataService: BaseService() {
         }
         params.put("type", type)
         params.putAll(PARAMS)
-        println(params)
+        //println(params)
 
         val images: HashMap<String, File> = hashMapOf()
         if (image.length > 0) {

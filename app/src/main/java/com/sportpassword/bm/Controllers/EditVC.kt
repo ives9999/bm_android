@@ -454,7 +454,7 @@ class EditVC : MyTableVC(), ImagePicker {
 
     private fun prepare(key: String) {
 
-        println(key)
+//        println(key)
         hideKeyboard()
         val intent = Intent(this@EditVC, EditTeamItemActivity::class.java)
         intent.putExtra("key", key)
