@@ -449,13 +449,13 @@ object TeamService: DataService() {
         }
         //println(model.data)
 
-//        model.updatePlayStartTime()
-//        model.updatePlayEndTime()
+        model.playStartTimeShow()
+        model.playEndTimeShow()
 //        model.updateInterval()
 //        model.updateTempContent()
 //        model.updateCharge()
 //        model.updateContent()
-//        model.updateNearDate()
+        model.updateNearDate()
 //        model.feeShow()
     }
 

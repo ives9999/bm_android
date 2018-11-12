@@ -36,6 +36,10 @@ open class SuperData(val id: Int, val title: String, val token: String, val feat
             data[CITY_KEY]!!["value"] = city.id
             data[CITY_KEY]!!["show"] = city.name
             data[CITY_KEY]!!["sender"] = city.id
+        } else {
+            data[CITY_KEY]!!["value"] = 0
+            data[CITY_KEY]!!["show"] = ""
+            data[CITY_KEY]!!["sender"] = 0
         }
     }
     open fun updateArea(area: Area) {
@@ -50,8 +54,55 @@ open class SuperData(val id: Int, val title: String, val token: String, val feat
     open fun updatePlayStartTime(time: String? = null) {}
     open fun updatePlayEndTime(time: String? = null) {}
     open fun updateTempContent(content: String? = null) {}
-    open fun updateCharge(content: String? = null) {}
-    open fun updateContent(content: String? = null) {}
+    open fun playStartTimeShow() {}
+    open fun playEndTimeShow() {}
+
+    open fun updateCharge(content: String?=null) {
+        var _content = ""
+        if (content != null) {
+            _content = content
+        }
+        data[CHARGE_KEY]!!["value"] = _content
+        chargeShow()
+        setChargeSender()
+    }
+    open fun updateContent(content: String?=null) {
+        var _content = ""
+        if (content != null) {
+            _content = content
+        }
+        data[CONTENT_KEY]!!["value"] = _content
+        contentShow()
+        setContentSender()
+    }
+    open fun chargeShow(length: Int=12) {
+        var text: String = data[CHARGE_KEY]!!["value"] as String
+        if (text.length > 0) {
+            text = text.truncate(length)
+        }
+        data[CHARGE_KEY]!!["show"] = text
+    }
+    open fun contentShow(length: Int=12) {
+        var text: String = data[CONTENT_KEY]!!["value"] as String
+        if (text.length > 0) {
+            text = text.truncate(length)
+        }
+        data[CONTENT_KEY]!!["show"] = text
+    }
+    open fun setChargeSender() {
+        var res: MutableMap<String, Any> = mutableMapOf()
+        val text: String = data[CHARGE_KEY]!!["value"] as String
+        res["text"] = text
+        res["type"] = TEXT_INPUT_TYPE.charge
+        data[CHARGE_KEY]!!["sender"] = res
+    }
+    open fun setContentSender() {
+        var res: MutableMap<String, Any> = mutableMapOf()
+        val text: String = data[CONTENT_KEY]!!["value"] as String
+        res["text"] = text
+        res["type"] = TEXT_INPUT_TYPE.team
+        data[CONTENT_KEY]!!["sender"] = res
+    }
 
     open fun makeSubmitArr(): MutableMap<String, Any> {
         var isAnyOneChange: Boolean = false

@@ -148,6 +148,8 @@ class EditVC : MyTableVC(), ImagePicker {
     fun clear(key: String) {
         if (key == CITY_KEY) {
             updateCity()
+            updateArena()
+            notifyChanged(true)
         } else if (key == ARENA_KEY) {
             updateArena()
         } else if (key == TEAM_DAYS_KEY) {

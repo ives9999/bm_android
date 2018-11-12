@@ -137,16 +137,11 @@ class Team(id: Int, name: String, token: String, featured_path: String, vimeo: S
     }
 
     override fun updateCity(city: City?) {
-        if (city != null) {
-            data[CITY_KEY]!!["value"] = city.id
-            data[CITY_KEY]!!["show"] = city.name
-            data[CITY_KEY]!!["sender"] = city.id
-            setArenaSender()
-        } else {
-            data[CITY_KEY]!!["value"] = 0
-            data[CITY_KEY]!!["show"] = ""
-            data[CITY_KEY]!!["sender"] = 0
+        super.updateCity(city)
+        if (city == null) {
+            data[ARENA_KEY]!!["value"] = 0
         }
+        setArenaSender()
     }
 
     override fun updateArena(arena: Arena?) {
@@ -188,21 +183,19 @@ class Team(id: Int, name: String, token: String, featured_path: String, vimeo: S
     override fun updatePlayStartTime(time: String?) {
         if (time != null) {
             data[TEAM_PLAY_START_KEY]!!["value"] = time
-            data[TEAM_PLAY_START_KEY]!!["show"] = time.noSec()
         } else {
             data[TEAM_PLAY_START_KEY]!!["value"] = ""
-            data[TEAM_PLAY_START_KEY]!!["show"] = ""
         }
+        playStartTimeShow()
         setPlayStartTimeSender()
     }
     override fun updatePlayEndTime(time: String?) {
         if (time != null) {
             data[TEAM_PLAY_END_KEY]!!["value"] = time
-            data[TEAM_PLAY_END_KEY]!!["show"] = time.noSec()
         } else {
             data[TEAM_PLAY_END_KEY]!!["value"] = ""
-            data[TEAM_PLAY_END_KEY]!!["show"] = ""
         }
+        playEndTimeShow()
         setPlayEndTimeSender()
     }
     fun updateInterval(_startTime: String? = null, _endTime: String? = null) {
@@ -229,24 +222,7 @@ class Team(id: Int, name: String, token: String, featured_path: String, vimeo: S
         tempContentShow()
         setTempContentSender()
     }
-    override fun updateCharge(content: String?) {
-        var _content = ""
-        if (content != null) {
-            _content = content
-        }
-        data[CHARGE_KEY]!!["value"] = _content
-        chargeShow()
-        setChargeSender()
-    }
-    override fun updateContent(content: String?) {
-        var _content = ""
-        if (content != null) {
-            _content = content
-        }
-        data[CONTENT_KEY]!!["value"] = _content
-        contentShow()
-        setContentSender()
-    }
+
     fun updateNearDate(n1: String? = null, n2: String? = null) {
         var nn1: String = ""
         var nn2: String = ""
@@ -313,19 +289,27 @@ class Team(id: Int, name: String, token: String, featured_path: String, vimeo: S
     }
     fun tempContentShow(length: Int=12) {
         var text: String = data[TEAM_TEMP_CONTENT_KEY]!!["value"] as String
-        text = text.truncate(length)
+        if (text.length > 0) {
+            text = text.truncate(length)
+        }
         data[TEAM_TEMP_CONTENT_KEY]!!["show"] = text
     }
-    fun chargeShow(length: Int=12) {
-        var text: String = data[CHARGE_KEY]!!["value"] as String
-        text = text.truncate(length)
-        data[CHARGE_KEY]!!["show"] = text
+
+    override fun playStartTimeShow() {
+        var time = data[TEAM_PLAY_START_KEY]!!["value"] as String
+        if (time.length > 0) {
+            time = time.noSec()
+        }
+        data[TEAM_PLAY_START_KEY]!!["show"] = time
     }
-    fun contentShow(length: Int=12) {
-        var text: String = data[CONTENT_KEY]!!["value"] as String
-        text = text.truncate(length)
-        data[CONTENT_KEY]!!["show"] = text
+    override fun playEndTimeShow() {
+        var time = data[TEAM_PLAY_END_KEY]!!["value"] as String
+        if (time.length > 0) {
+            time = time.noSec()
+        }
+        data[TEAM_PLAY_END_KEY]!!["show"] = time
     }
+
     fun feeShow() {
         var text: String = ""
         text = data[TEAM_TEMP_FEE_M_KEY]!!["show"] as String + "元"
@@ -359,17 +343,21 @@ class Team(id: Int, name: String, token: String, featured_path: String, vimeo: S
     fun setPlayStartTimeSender() {
         var res: MutableMap<String, Any> = mutableMapOf()
         var time: String = data[TEAM_PLAY_START_KEY]!!["value"] as String
-        time = time.noSec()
-        res["type"] = SELECT_TIME_TYPE.play_start
-        res["time"] = time
+        if (time.length > 0) {
+            time = time.noSec()
+            res["type"] = SELECT_TIME_TYPE.play_start
+            res["time"] = time
+        }
         data[TEAM_PLAY_START_KEY]!!["sender"] = res
     }
     fun setPlayEndTimeSender() {
         var res: MutableMap<String, Any> = mutableMapOf()
         var time: String = data[TEAM_PLAY_END_KEY]!!["value"] as String
-        time = time.noSec()
-        res["type"] = SELECT_TIME_TYPE.play_end
-        res["time"] = time
+        if (time.length > 0) {
+            time = time.noSec()
+            res["type"] = SELECT_TIME_TYPE.play_end
+            res["time"] = time
+        }
         data[TEAM_PLAY_END_KEY]!!["sender"] = res
     }
     fun setTempContentSender() {
@@ -379,20 +367,7 @@ class Team(id: Int, name: String, token: String, featured_path: String, vimeo: S
         res["type"] = TEXT_INPUT_TYPE.temp_play
         data[TEAM_TEMP_CONTENT_KEY]!!["sender"] = res
     }
-    fun setChargeSender() {
-        var res: MutableMap<String, Any> = mutableMapOf()
-        val text: String = data[CHARGE_KEY]!!["value"] as String
-        res["text"] = text
-        res["type"] = TEXT_INPUT_TYPE.charge
-        data[CHARGE_KEY]!!["sender"] = res
-    }
-    fun setContentSender() {
-        var res: MutableMap<String, Any> = mutableMapOf()
-        val text: String = data[CONTENT_KEY]!!["value"] as String
-        res["text"] = text
-        res["type"] = TEXT_INPUT_TYPE.team
-        data[CONTENT_KEY]!!["sender"] = res
-    }
+
 
     fun makeTempPlaySubmitArr(): MutableMap<String, Any> {
         var isAnyOneChage: Boolean = false
