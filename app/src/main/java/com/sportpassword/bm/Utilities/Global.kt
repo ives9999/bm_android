@@ -46,6 +46,14 @@ enum class DEGREE(val value: String) {
     }
 }
 
+enum class SELECT_TIME_TYPE(val value: Int) {
+    play_start(0), play_end(1);
+}
+
+enum class TEXT_INPUT_TYPE(val value: String) {
+    temp_play("臨打"), charge("收費標準"), content("詳細內容"), exp("經歷"), feat("比賽成績"), license("證照")
+}
+
 /**
  * Created by ives on 2018/3/8.
  */

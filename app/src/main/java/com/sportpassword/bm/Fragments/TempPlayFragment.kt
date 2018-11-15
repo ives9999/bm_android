@@ -10,13 +10,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
-import android.widget.EditText
 import com.sportpassword.bm.Adapters.inter
 import com.sportpassword.bm.Controllers.Arena
-import com.sportpassword.bm.Controllers.EditTeamItemActivity
+import com.sportpassword.bm.Controllers.EditItemActivity
 import com.sportpassword.bm.Controllers.TempPlayVC
 import com.sportpassword.bm.Models.City
-import com.sportpassword.bm.Models.SELECT_TIME_TYPE
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Utilities.*
 import com.sportpassword.bm.Adapters.GroupSection
@@ -24,8 +22,6 @@ import com.xwray.groupie.ExpandableGroup
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.Section
 import com.xwray.groupie.ViewHolder
-import com.xwray.groupie.kotlinandroidextensions.Item
-import kotlinx.android.synthetic.main.search_row_item.*
 import com.sportpassword.bm.Adapters.SearchItem
 
 /**
@@ -138,7 +134,7 @@ class TempPlayFragment : TabFragment(), inter {
     override fun prepare(section: Int, row: Int) {
 //        println(section)
 //        println(row)
-        var intent = Intent(activity, EditTeamItemActivity::class.java)
+        var intent = Intent(activity, EditItemActivity::class.java)
         when (section) {
             0 -> {
                 when (row) {

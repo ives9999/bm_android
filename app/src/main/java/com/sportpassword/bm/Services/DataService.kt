@@ -266,8 +266,8 @@ open class DataService: BaseService() {
                 var i = 1
                 for (d in tmp) {
                     params.put("cat_id="+i, d.toString())
+                    i++
                 }
-                i++
             } else if (key == ARENA_KEY) {
                 val value: Int = row as Int
                 params.put(_key, value.toString())
@@ -297,9 +297,11 @@ open class DataService: BaseService() {
             images.put("file", f)
         }
         val header: HashMap<String, String> = hashMapOf()
+        header.put("Accept","application/json");
+        header.put("Content-Type","application/json");
 
         val multipartRequest = MultipartRequest(url, images, params, header, Response.Listener { response ->
-//            println(response)
+            //println(response)
 //            complete(true)
             val json = JSONObject(response)
             success = json.getBoolean("success")
@@ -307,6 +309,7 @@ open class DataService: BaseService() {
             if (json.has("error")) {
                 val errors = json.getJSONArray("error")
                 for (i in 0..errors.length() - 1) {
+                    println(errors.getString(i))
                     msg += errors.getString(i) + "\n"
                 }
             }
@@ -468,6 +471,7 @@ open class DataService: BaseService() {
 
     open fun delete(context: Context, type: String, token: String, complete: CompletionHandler) {
         val url = "$URL_DELETE".format(type)
+        //println(url)
         val body = JSONObject()
         body.put("source", "app")
         body.put("channel", "bm")

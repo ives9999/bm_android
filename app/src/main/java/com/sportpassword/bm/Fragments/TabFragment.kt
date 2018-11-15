@@ -60,6 +60,9 @@ open class TabFragment : Fragment() {
 //    var vimeoClient: VimeoClient? = null
     protected lateinit var mainActivity: MainActivity
 
+    protected var isCoachShow: Boolean = false
+    protected var isTeamShow: Boolean = false
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         if (arguments != null) {
@@ -108,7 +111,9 @@ open class TabFragment : Fragment() {
     }
 
     open protected fun getDataStart(_page: Int, _perPage: Int) {
-        Loading.show(maskView)
+        if (isCoachShow || isTeamShow) {
+            Loading.show(maskView)
+        }
         loading = true
     }
 

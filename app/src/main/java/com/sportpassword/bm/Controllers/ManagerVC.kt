@@ -37,6 +37,11 @@ class ManagerVC : BaseActivity() {
 
         refreshLayout = contentView!!.findViewById<SwipeRefreshLayout>(R.id.tempManager_refresh)
         setRefreshListener()
+//        refresh()
+    }
+
+    override fun onResume() {
+        super.onResume()
         refresh()
     }
 

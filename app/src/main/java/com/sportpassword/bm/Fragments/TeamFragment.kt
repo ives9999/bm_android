@@ -56,6 +56,11 @@ class TeamFragment: TabFragment() {
         init()
     }
 
+    override fun setUserVisibleHint(isVisibleToUser: Boolean) {
+        super.setUserVisibleHint(isVisibleToUser)
+        isTeamShow = isVisibleToUser
+    }
+
     override fun getDataStart(_page: Int, _perPage: Int) {
         super.getDataStart(_page, _perPage)
         Loading.show(maskView)

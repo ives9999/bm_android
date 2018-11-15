@@ -14,7 +14,7 @@
         android:background="@drawable/background"
         >
 
-        <ScrollView
+        <android.support.v4.widget.NestedScrollView
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:background="@drawable/background">
@@ -67,30 +67,22 @@
 
                     </LinearLayout>
 
-                    <android.support.constraint.ConstraintLayout
-                        android:id="@+id/linearLayout12"
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/edit_list"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
-                        android:gravity="center_vertical"
-                        android:orientation="horizontal">
+                        app:layoutManager="android.support.v7.widget.LinearLayoutManager"
+                        android:scrollbars="vertical">
 
-                        <android.support.v7.widget.RecyclerView
-                            android:id="@+id/edit_list"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="8dp"
-                            app:layoutManager="android.support.v7.widget.LinearLayoutManager"
-                            android:scrollbars="vertical">
-
-                        </android.support.v7.widget.RecyclerView>
-                    </android.support.constraint.ConstraintLayout>
+                    </android.support.v7.widget.RecyclerView>
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:gravity="center_horizontal"
-                        android:orientation="horizontal">
+                        android:orientation="horizontal"
+                        android:paddingBottom="36dp">
 
                         <Button
                             android:layout_width="wrap_content"
@@ -110,7 +102,7 @@
             </LinearLayout>
 
 
-        </ScrollView>
+        </android.support.v4.widget.NestedScrollView>
     </android.support.v4.widget.SwipeRefreshLayout>
     <include layout="@layout/mask" />
 

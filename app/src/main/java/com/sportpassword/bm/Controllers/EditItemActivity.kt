@@ -17,6 +17,8 @@ import com.sportpassword.bm.Services.TeamService
 import com.sportpassword.bm.Utilities.*
 import com.sportpassword.bm.Adapters.GroupSection
 import com.sportpassword.bm.Models.Area
+import com.sportpassword.bm.Models.SuperData
+import com.sportpassword.bm.Models.Team
 import com.xwray.groupie.ExpandableGroup
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.Section
@@ -28,7 +30,7 @@ import com.xwray.groupie.kotlinandroidextensions.ViewHolder
 import kotlinx.android.synthetic.main.activity_edit_team_item_adapter.*
 import kotlinx.android.synthetic.main.mask.*
 
-class EditTeamItemActivity() : BaseActivity() {
+class EditItemActivity() : BaseActivity() {
 
     lateinit var key: String
     lateinit var editTeamItemAdapter: EditTeamItemAdapter
@@ -54,6 +56,8 @@ class EditTeamItemActivity() : BaseActivity() {
     var citysForArena: ArrayList<Int> = arrayListOf()
     var citysForArea: ArrayList<Int> = arrayListOf()
     var selectedDays: ArrayList<Int> = arrayListOf()
+
+    var model: SuperData = Team(0, "", "", "")
 
     //type: .play_start or .play_end, time: "09:00:00"
 
@@ -151,14 +155,9 @@ class EditTeamItemActivity() : BaseActivity() {
             setMyTitle("區域")
             citysForArea = intent.getIntegerArrayListExtra("citys_for_area")
             areas = intent.getParcelableArrayListExtra("areas")
-        } else {
-            if (key == TEAM_TEMP_CONTENT_KEY) {
-                setMyTitle("臨打說明")
-            } else if (key == CHARGE_KEY) {
-                setMyTitle("收費說明")
-            } else if (key == CONTENT_KEY) {
-                setMyTitle("球隊說明")
-            }
+        } else if (key==TEAM_TEMP_CONTENT_KEY || key==CHARGE_KEY || key==CONTENT_KEY || key==COACH_EXP_KEY || key==COACH_FEAT_KEY || key==COACH_LICENSE_KEY) {
+            val type = model.contentKey2Type(key)
+            setMyTitle(type.value)
             val value: String = intent.getStringExtra("value")
             content.setText(value)
             content.requestFocus()

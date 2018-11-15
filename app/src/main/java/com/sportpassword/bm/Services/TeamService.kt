@@ -113,8 +113,7 @@ object TeamService: DataService() {
                         }
                     }
                     //println(model.data)
-                    model.updatePlayStartTime()
-                    model.updatePlayEndTime()
+                    model.initTimeData()
 
                     var data = model.data
 
@@ -449,8 +448,7 @@ object TeamService: DataService() {
         }
         //println(model.data)
 
-        model.playStartTimeShow()
-        model.playEndTimeShow()
+        model.initTimeShow()
 //        model.updateInterval()
 //        model.updateTempContent()
 //        model.updateCharge()
@@ -544,10 +542,8 @@ object TeamService: DataService() {
 //            println("$key => $value")
             model.data[key]!!["value"] = value
             model.data[key]!!["show"] = value
-            if (key == TEAM_PLAY_START_KEY) {
-                model.updatePlayStartTime(value)
-            } else if (key == TEAM_PLAY_END_KEY) {
-                model.updatePlayEndTime(value)
+            if (key == TEAM_PLAY_START_KEY || key == TEAM_PLAY_END_KEY) {
+                model.updateTime(key, value)
             }
         } else if (type == "array") {
             if (key == CITY_KEY) {

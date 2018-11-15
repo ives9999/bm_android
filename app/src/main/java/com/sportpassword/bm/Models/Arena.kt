@@ -15,6 +15,7 @@ class Arena(id: Int, name: String, token: String="", featured_path: String=""): 
             arrayListOf(COACH_SENIORITY_KEY, CITY_KEY),
             arrayListOf(CHARGE_KEY,COACH_LICENSE_KEY, COACH_EXP_KEY,COACH_FEAT_KEY,CONTENT_KEY)
     )
+    override var cat_id: Int = 17
 
     fun initData() {
         data = mutableMapOf<String, MutableMap<String, Any>>(

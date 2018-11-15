@@ -1,9 +1,9 @@
 package com.sportpassword.bm.Controllers
 
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.support.constraint.ConstraintLayout
 import android.support.v4.content.LocalBroadcastManager
 import android.support.v4.widget.SwipeRefreshLayout
 import com.sportpassword.bm.R
@@ -11,12 +11,10 @@ import com.sportpassword.bm.Services.TeamService
 import kotlinx.android.synthetic.main.edit_vc.*
 import org.jetbrains.anko.sdk25.coroutines.onClick
 import android.support.v7.app.AlertDialog
-import android.text.InputType
+import android.util.AttributeSet
 import android.view.Menu
 import android.view.View
-import android.view.ViewGroup
 import android.widget.*
-import com.sportpassword.bm.Adapters.GroupSection
 import com.sportpassword.bm.Models.*
 import com.sportpassword.bm.Models.Arena
 import com.sportpassword.bm.Services.ArenaService
@@ -158,8 +156,9 @@ class EditVC : MyTableVC(), ImagePicker {
             updateTime(key)
         } else if (key == TEAM_DEGREE_KEY) {
             updateDegree()
-        } else if (key == TEAM_TEMP_CONTENT_KEY || key == CHARGE_KEY || key == CONTENT_KEY) {
-            updateContent(key)
+        } else if (key == TEAM_TEMP_CONTENT_KEY || key == CHARGE_KEY || key == CONTENT_KEY || key == COACH_EXP_KEY || key == COACH_FEAT_KEY || key == COACH_LICENSE_KEY) {
+            val type = model.contentKey2Type(key)
+            updateText(key)
         }
         model.data[key]!!["change"] = true
         notifyChanged(true)
@@ -177,8 +176,13 @@ class EditVC : MyTableVC(), ImagePicker {
                 if (success) {
                     model.data = dataService.data
                     //setTeamData()
-//                    println(model.data)
                     //dataToField(inputV)
+                    if (model.data.containsKey(FEATURED_KEY)) {
+                        val featured: String = model.data[FEATURED_KEY]!!["value"] as String
+                        if (featured.length > 0) {
+                            setImage(null, featured)
+                        }
+                    }
                     notifyChanged(true)
 
                     //teamedit_name.setSelection(teamedit_name.length())
@@ -458,7 +462,7 @@ class EditVC : MyTableVC(), ImagePicker {
 
 //        println(key)
         hideKeyboard()
-        val intent = Intent(this@EditVC, EditTeamItemActivity::class.java)
+        val intent = Intent(this@EditVC, EditItemActivity::class.java)
         intent.putExtra("key", key)
         if (key == TEAM_DAYS_KEY) {
             val value: MutableList<Int> = model.data[key]!!["value"] as MutableList<Int>
@@ -510,6 +514,7 @@ class EditVC : MyTableVC(), ImagePicker {
             val value: String = model.data[key]!!["value"] as String
             intent.putExtra("value", value)
         }
+        fieldToData()
         startActivityForResult(intent, SELECT_REQUEST_CODE)
     }
 
@@ -550,7 +555,8 @@ class EditVC : MyTableVC(), ImagePicker {
                         updateArena(arenas)
                     } else {
                         val content: String = data!!.getStringExtra("res")
-                        updateContent(key, content)
+                        val type = model.contentKey2Type(key)
+                        updateText(key, content)
                     }
                     model.data[key]!!["change"] = true
                     notifyChanged(true)
@@ -591,18 +597,8 @@ class EditVC : MyTableVC(), ImagePicker {
         }
     }
 
-    fun updateTime(type: String, time: String?=null) {
-        if (time != null) {
-            when (type) {
-                TEAM_PLAY_START_KEY -> model.updatePlayStartTime(time)
-                TEAM_PLAY_END_KEY -> model.updatePlayEndTime(time)
-            }
-        } else {
-            when (type) {
-                TEAM_PLAY_START_KEY -> model.updatePlayStartTime()
-                TEAM_PLAY_END_KEY -> model.updatePlayEndTime()
-            }
-        }
+    fun updateTime(key: String, time: String?=null) {
+        model.updateTime(key, time)
     }
 
     fun updateDegree(degrees: ArrayList<DEGREE>?=null) {
@@ -613,29 +609,20 @@ class EditVC : MyTableVC(), ImagePicker {
         }
     }
 
-    fun updateContent(type: String, content: String?=null) {
-        if (content != null) {
-            if (type == TEAM_TEMP_CONTENT_KEY) {
-                model.updateTempContent(content)
-            } else if (type == CHARGE_KEY) {
-                model.updateCharge(content)
-            } else if (type == CONTENT_KEY) {
-                model.updateContent(content)
-            }
-        } else {
-            if (type == TEAM_TEMP_CONTENT_KEY) {
-                model.updateTempContent()
-            } else if (type == CHARGE_KEY) {
-                model.updateCharge()
-            } else if (type == CONTENT_KEY) {
-                model.updateContent()
-            }
-        }
+    fun updateText(key: String, content: String?=null) {
+        model.updateText(key, content)
     }
 }
 
 class EditItem(val source: String, val indexPath: IndexPath, val row: HashMap<String, Any>, val addEditText:(String, Int)->Unit, val clearClick:(key:String)->Unit): Item() {
     override fun bind(viewHolder: com.xwray.groupie.kotlinandroidextensions.ViewHolder, position: Int) {
+
+        val editText = viewHolder.edit_text
+        val detailView = viewHolder.detail
+        val moreView = viewHolder.more
+        val onoff = viewHolder.onoff
+        val titleView = viewHolder.title
+        val clearView = viewHolder.clear
 
         var key = ""
         if (row.containsKey("key")) {
@@ -644,33 +631,43 @@ class EditItem(val source: String, val indexPath: IndexPath, val row: HashMap<St
         var title = ""
         if (row.containsKey("ch")) {
             title = row.get("ch")!! as String
-            viewHolder.title.text = title
+            titleView.text = title
         }
         var aType = "none"
         if (row.containsKey("atype")) {
             aType = row.get("atype")!! as String
             if (aType == "more") {
-                viewHolder.more.visibility = View.VISIBLE
-                viewHolder.detail.visibility = View.VISIBLE
+                moreView.visibility = View.VISIBLE
+                detailView.visibility = View.VISIBLE
+                editText.visibility = View.INVISIBLE
+                onoff.visibility = View.INVISIBLE
                 if (row.containsKey("show")) {
                     viewHolder.detail.text = row["show"]!! as String
                 }
             } else {
-                viewHolder.more.visibility = View.INVISIBLE
-                viewHolder.detail.visibility = View.INVISIBLE
+                moreView.visibility = View.INVISIBLE
+                detailView.visibility = View.INVISIBLE
+                onoff.visibility = View.INVISIBLE
+                editText.visibility = View.VISIBLE
             }
         }
         if (row.containsKey("text_field")) {
             val text_field = row.get("text_field")!! as Boolean
             if (text_field) {
-                viewHolder.edit_text.visibility = View.VISIBLE
+                editText.visibility = View.VISIBLE
+                moreView.visibility = View.INVISIBLE
+                detailView.visibility = View.INVISIBLE
+                onoff.visibility = View.INVISIBLE
                 var inputType = defaultPad
                 if (row.containsKey("keyboardType")) {
                     inputType = row["keyboardType"]!! as Int
                     viewHolder.edit_text.inputType = inputType
                 }
                 if (row.containsKey("value")) {
-                    val value = row.get("value").toString()
+                    var value = row.get("value").toString()
+                    if (value == "-1") {
+                        value = ""
+                    }
                     viewHolder.edit_text.setText(value)
                 }
 //                println("$key => $position")
@@ -678,8 +675,8 @@ class EditItem(val source: String, val indexPath: IndexPath, val row: HashMap<St
             }
         }
 
-        viewHolder.clear.setOnClickListener {
-            viewHolder.edit_text.setText("")
+        clearView.setOnClickListener {
+            editText.setText("")
             if (aType == "more") {
                 clearClick(key)
             }

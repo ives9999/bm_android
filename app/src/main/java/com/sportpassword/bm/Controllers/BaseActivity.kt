@@ -40,7 +40,6 @@ import com.sportpassword.bm.Fragments.TabFragment
 import com.sportpassword.bm.Fragments.TeamFragment
 import com.sportpassword.bm.Models.Area
 import com.sportpassword.bm.Models.City
-import com.sportpassword.bm.Models.SELECT_TIME_TYPE
 import com.sportpassword.bm.Models.SuperData
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.DataService
@@ -92,7 +91,6 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener {
     var keyword: String = ""
     protected lateinit var searchAdapter: GroupAdapter<ViewHolder>
     var params: HashMap<String, Any> = hashMapOf()
-
 
     val LOGIN_REQUEST_CODE = 1
     val REGISTER_REQUEST_CODE = 2
@@ -301,13 +299,14 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener {
         //val intent = Intent(this)
     }
 
-    public fun goDeleteTeam(token: String="") {
+    public fun goDelete(page: String, token: String="") {
         Alert.delete(this, {
             Loading.show(mask)
-            TeamService.delete(this, "team", token) { success ->
+            dataService.delete(this, page, token) { success ->
                 Loading.hide(mask)
-                val teamUpdate = Intent(NOTIF_TEAM_UPDATE)
-                LocalBroadcastManager.getInstance(this).sendBroadcast(teamUpdate)
+//                val teamUpdate = Intent(NOTIF_TEAM_UPDATE)
+//                LocalBroadcastManager.getInstance(this).sendBroadcast(teamUpdate)
+                goManager(page)
             }
         })
     }
@@ -724,7 +723,7 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener {
     }
 
     protected fun prepareSearch(idx: Int, page: String) {
-        var intent = Intent(this, EditTeamItemActivity::class.java)
+        var intent = Intent(this, EditItemActivity::class.java)
         val row = searchRows.get(idx)
         var key = ""
         if (row.containsKey("key")) {

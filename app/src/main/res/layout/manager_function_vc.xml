@@ -14,5 +14,6 @@
         app:layoutManager="android.support.v7.widget.LinearLayoutManager"
         android:layout_marginTop="8dp"
         />
+    <include layout="@layout/mask" />
 
 </android.support.constraint.ConstraintLayout>

@@ -15,6 +15,9 @@ open class SuperData(val id: Int, val title: String, val token: String, val feat
     open var data: MutableMap<String, MutableMap<String, Any>> = mutableMapOf()
     open var sections: ArrayList<String> = arrayListOf()
     open var rows: ArrayList<ArrayList<String>> = arrayListOf()
+    open var textKeys: ArrayList<String> = arrayListOf()
+    open var timeKeys: ArrayList<String> = arrayListOf()
+    open var cat_id: Int = 21
 
     val transferPair: Map<String, String> = mapOf(CITY_KEY to "city_id",ARENA_KEY to "arena_id")
 
@@ -51,57 +54,88 @@ open class SuperData(val id: Int, val title: String, val token: String, val feat
     open fun updateArena(arena: Arena? = null) {}
     open fun updateDegree(degrees: ArrayList<DEGREE>?=null) {}
     open fun updateDays(days: ArrayList<Int>? = null) {}
-    open fun updatePlayStartTime(time: String? = null) {}
-    open fun updatePlayEndTime(time: String? = null) {}
-    open fun updateTempContent(content: String? = null) {}
-    open fun playStartTimeShow() {}
-    open fun playEndTimeShow() {}
 
-    open fun updateCharge(content: String?=null) {
-        var _content = ""
-        if (content != null) {
-            _content = content
+    // android not use
+    open fun initTextData() {
+        for (key in textKeys) {
+            updateText(key)
         }
-        data[CHARGE_KEY]!!["value"] = _content
-        chargeShow()
-        setChargeSender()
     }
-    open fun updateContent(content: String?=null) {
-        var _content = ""
-        if (content != null) {
-            _content = content
+
+    open fun initTimeData() {
+        for (key in timeKeys) {
+            updateTime(key)
         }
-        data[CONTENT_KEY]!!["value"] = _content
-        contentShow()
-        setContentSender()
     }
-    open fun chargeShow(length: Int=12) {
-        var text: String = data[CHARGE_KEY]!!["value"] as String
+
+    open fun updateText(key: String, text: String?=null) {
+        var _content = ""
+        if (text != null) {
+            _content = text
+        }
+        data[key]!!["value"] = _content
+        textShow(key)
+        setTextSender(key)
+    }
+
+    open fun textShow(key: String, length: Int=12) {
+        var text: String = data[key]!!["value"] as String
         if (text.length > 0) {
             text = text.truncate(length)
         }
-        data[CHARGE_KEY]!!["show"] = text
+        data[key]!!["show"] = text
     }
-    open fun contentShow(length: Int=12) {
-        var text: String = data[CONTENT_KEY]!!["value"] as String
-        if (text.length > 0) {
-            text = text.truncate(length)
+
+    open fun setTextSender(key: String) {
+        var res: MutableMap<String, Any> = mutableMapOf()
+        val text: String = data[key]!!["value"] as String
+        res["text"] = text
+        val type = contentKey2Type(key)
+        res["type"] = type
+        data[key]!!["sender"] = res
+    }
+
+    // android not use
+    open fun setAllTextSender() {
+        for (key in textKeys) {
+            setTextSender(key)
         }
-        data[CONTENT_KEY]!!["show"] = text
     }
-    open fun setChargeSender() {
-        var res: MutableMap<String, Any> = mutableMapOf()
-        val text: String = data[CHARGE_KEY]!!["value"] as String
-        res["text"] = text
-        res["type"] = TEXT_INPUT_TYPE.charge
-        data[CHARGE_KEY]!!["sender"] = res
+
+    open fun updateTime(key: String, time: String? = null) {
+        if (time != null) {
+            data[key]!!["value"] = time
+        } else {
+            data[key]!!["value"] = ""
+        }
+        timeShow(key)
+        setTimeSender(key)
     }
-    open fun setContentSender() {
-        var res: MutableMap<String, Any> = mutableMapOf()
-        val text: String = data[CONTENT_KEY]!!["value"] as String
-        res["text"] = text
-        res["type"] = TEXT_INPUT_TYPE.team
-        data[CONTENT_KEY]!!["sender"] = res
+
+    open fun timeShow(key: String) {
+        var time = data[key]!!["value"] as String
+        if (time.length > 0) {
+            time = time.noSec()
+        }
+        data[key]!!["show"] = time
+    }
+
+    open fun setTimeSender(key: String) {
+        var res: HashMap<String, Any> = hashMapOf()
+        var time: String = data[key]!!["value"] as String
+        if (time.length > 0) {
+            time = time.noSec()
+            val type = timeKey2Type(key)
+            res["type"] = type
+            res["time"] = time
+        }
+        data[key]!!["sender"] = res
+    }
+
+    open fun initTimeShow() {
+        for (key in timeKeys) {
+            timeShow(key)
+        }
     }
 
     open fun makeSubmitArr(): MutableMap<String, Any> {
@@ -134,7 +168,7 @@ open class SuperData(val id: Int, val title: String, val token: String, val feat
         }
         if (id < 0) {
             res[MANAGER_ID_KEY] = member.id
-            val cat_id: ArrayList<Int> = arrayListOf(18)
+            val cat_id: ArrayList<Int> = arrayListOf(cat_id)
             res[CAT_KEY] = cat_id
             res[SLUG_KEY] = data[NAME_KEY]!!["value"]!!
             res[CREATED_ID_KEY] = member.id
@@ -148,6 +182,7 @@ open class SuperData(val id: Int, val title: String, val token: String, val feat
             }
         }
 
+//        println(res)
         return res
     }
     fun mobileShow(_mobile: String? = null) {
@@ -165,6 +200,29 @@ open class SuperData(val id: Int, val title: String, val token: String, val feat
         }
         tel = tel!!.telOrMobileShow()
         data[TEL_KEY]!!["show"] = tel
+    }
+
+    fun contentKey2Type(key: String): TEXT_INPUT_TYPE {
+        var type = TEXT_INPUT_TYPE.content
+        when (key) {
+            TEAM_TEMP_CONTENT_KEY -> type = TEXT_INPUT_TYPE.temp_play
+            CHARGE_KEY -> type = TEXT_INPUT_TYPE.charge
+            CONTENT_KEY -> type = TEXT_INPUT_TYPE.content
+            COACH_EXP_KEY -> type = TEXT_INPUT_TYPE.exp
+            COACH_FEAT_KEY -> type = TEXT_INPUT_TYPE.feat
+            COACH_LICENSE_KEY -> type = TEXT_INPUT_TYPE.license
+        }
+        return type
+    }
+
+    fun timeKey2Type(key: String): SELECT_TIME_TYPE {
+        var type = SELECT_TIME_TYPE.play_start
+        when (key) {
+            TEAM_PLAY_START_KEY-> type = SELECT_TIME_TYPE.play_start
+            TEAM_PLAY_END_KEY-> type = SELECT_TIME_TYPE.play_end
+
+        }
+        return type
     }
 
     fun print() {

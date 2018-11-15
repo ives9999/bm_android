@@ -85,7 +85,6 @@ val COACH_SENIORITY_KEY: String = "seniority"
 val COACH_EXP_KEY: String = "exp"
 val COACH_FEAT_KEY: String = "feat"
 val COACH_LICENSE_KEY: String = "license"
-val COACH_CHARGE_KEY: String = "charge"
 
 // Arena key
 val ARENA_OPEN_TIME_KEY: String = "open_time"

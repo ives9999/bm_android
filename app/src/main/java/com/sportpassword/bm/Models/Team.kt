@@ -27,22 +27,36 @@ class Team(id: Int, name: String, token: String, featured_path: String, vimeo: S
             arrayListOf(TEAM_TEMP_FEE_M_KEY,TEAM_TEMP_FEE_F_KEY, TEAM_TEMP_CONTENT_KEY),
             arrayListOf(TEAM_BALL_KEY,TEAM_DEGREE_KEY,CHARGE_KEY,CONTENT_KEY)
     )
-    
-    init {
-        dataReset()
-        tempPlayDataReset()
-    }
-
+    override var textKeys: ArrayList<String> = arrayListOf(TEAM_TEMP_CONTENT_KEY, CHARGE_KEY, CONTENT_KEY)
+    override var timeKeys: ArrayList<String> = arrayListOf(TEAM_PLAY_START_KEY, TEAM_PLAY_END_KEY)
+    override var cat_id: Int = 21
 
     //atype: more or none
-    override fun dataReset() {
+    fun initData() {
         val _data = mutableMapOf<String, MutableMap<String, Any>>(
+                SLUG_KEY to mutableMapOf("ch" to "插槽","vtype" to "String","value" to "","submit" to true,"show" to ""),
+                NAME_KEY to mutableMapOf("ch" to "名稱","vtype" to "String","value" to "","submit" to true,"atype" to none,"show" to "","text_field" to true,"keyboardType" to defaultPad),
+                TEAM_LEADER_KEY to mutableMapOf("ch" to "聯絡人","vtype" to "String","value" to "","submit" to true,"atype" to none,"show" to "","text_field" to true,"keyboardType" to defaultPad),
+                MOBILE_KEY to mutableMapOf("ch" to "電話","vtype" to "String","value" to "","submit" to true,"atype" to none,"show" to "","text_field" to true,"keyboardType" to phonePad),
+                EMAIL_KEY to mutableMapOf("ch" to "EMail","vtype" to "String","value" to "","submit" to true,"atype" to none,"show" to "","text_field" to true,"keyboardType" to emailPad),
+                TEAM_PLAY_START_KEY to mutableMapOf("ch" to "開始時間","vtype" to "String","value" to "","submit" to true,"atype" to more,"segue" to TO_SELECT_TIME,"sender" to mutableMapOf<String, Any>(),"show" to ""),
+                TEAM_PLAY_END_KEY to mutableMapOf("ch" to "結束時間","vtype" to "String","value" to "","submit" to true,"atype" to more,"segue" to TO_SELECT_TIME,"sender" to mutableMapOf<String, Any>(),"show" to ""),
+                TEAM_BALL_KEY to mutableMapOf("ch" to "使用球種","vtype" to "String","value" to "","submit" to true,"atype" to none,"show" to "","text_field" to true,"keyboardType" to defaultPad),
+                TEAM_DEGREE_KEY to mutableMapOf("ch" to "球隊程度","vtype" to "array","value" to mutableListOf<String>(),"submit" to true,"atype" to more,"segue" to TO_SELECT_DEGREE,"sender" to arrayListOf<DEGREE>(),"show" to ""),
+                CHARGE_KEY to mutableMapOf("ch" to "收費說明","vtype" to "String","value" to "","submit" to true,"atype" to more,"segue" to TO_TEXT_INPUT,"sender" to mutableMapOf<String, Any>(),"show" to ""),
+                CONTENT_KEY to mutableMapOf("ch" to "球隊說明","vtype" to "String","value" to "","submit" to true,"atype" to more,"segue" to TO_TEXT_INPUT,"sender" to mutableMapOf<String, Any>(),"show" to ""),
+                TEAM_TEMP_FEE_M_KEY to mutableMapOf("ch" to "臨打費用：男","vtype" to "Int","value" to -1,"submit" to true,"atype" to none,"show" to "","text_field" to true,"keyboardType" to numberPad),
+                TEAM_TEMP_FEE_F_KEY to mutableMapOf("ch" to "臨打費用：女","vtype" to "Int","value" to -1,"submit" to true,"atype" to none,"show" to "","text_field" to true,"keyboardType" to numberPad),
+                TEAM_TEMP_CONTENT_KEY to mutableMapOf("ch" to "臨打說明","vtype" to "String","value" to "","submit" to true,"atype" to more,"segue" to TO_TEXT_INPUT,"sender" to mutableMapOf<String, Any>(),"show" to ""),
+                CITY_KEY to mutableMapOf("ch" to "區域","vtype" to "array","value" to 0,"submit" to true,"atype" to more,"segue" to TO_CITY,"sender" to 0,"show" to ""),
+                ARENA_KEY to mutableMapOf("ch" to "球館","vtype" to "array","value" to 0,"submit" to true,"atype" to more,"segue" to TO_ARENA,"sender" to mutableMapOf<String, Int>(),"show" to ""),
+                TEAM_DAYS_KEY to mutableMapOf("ch" to "星期幾","vtype" to "array","value" to mutableListOf<Int>(),"submit" to true,"atype" to more,"segue" to TO_DAY,"sender" to mutableListOf<Int>(),"show" to ""),
+
                 ID_KEY to mutableMapOf("ch" to "編號","vtype" to "Int","value" to -1),
                 CHANNEL_KEY to mutableMapOf("ch" to "頻道","vtype" to "String","value" to "","submit" to false,"show" to ""),
                 WEBSITE_KEY to mutableMapOf("ch" to "網站","vtype" to "String","value" to "","submit" to false,"show" to ""),
                 FB_KEY to mutableMapOf("ch" to "FB","vtype" to "String","value" to "","submit" to false,"show" to ""),
                 YOUTUBE_KEY to mutableMapOf("ch" to "youtube","vtype" to "String","value" to "","submit" to false,"show" to ""),
-                SLUG_KEY to mutableMapOf("ch" to "插槽","vtype" to "String","value" to "","submit" to true,"show" to ""),
                 MANAGER_ID_KEY to mutableMapOf("ch" to "管理者編號","vtype" to "Int","value" to -1,"submit" to false,"show" to ""),
                 TEAM_TEMP_QUANTITY_KEY to mutableMapOf("ch" to "臨打人數缺額","vtype" to "Int","value" to -1,"submit" to false,"show" to ""),
                 TEAM_TEMP_STATUS_KEY to mutableMapOf("ch" to "臨打狀態","vtype" to "String","value" to "","submit" to false,"show" to ""),
@@ -54,23 +68,7 @@ class Team(id: Int, name: String, token: String, featured_path: String, vimeo: S
                 THUMB_KEY to mutableMapOf("ch" to "代表圖","vtype" to "String","value" to "","submit" to false,"show" to ""),
                 TEAM_NEAR_DATE_KEY to mutableMapOf("ch" to "下次臨打日期","vtype" to "String","value" to "","submit" to false,"show" to ""),
                 TEAM_TEMP_SIGNUP_KEY to mutableMapOf("ch" to "已報名人數","vtype" to "String","value" to "","submit" to false,"show" to ""),
-                NAME_KEY to mutableMapOf("ch" to "名稱","vtype" to "String","value" to "","submit" to true,"atype" to none,"show" to "","text_field" to true,"keyboardType" to defaultPad),
-                TEAM_LEADER_KEY to mutableMapOf("ch" to "聯絡人","vtype" to "String","value" to "","submit" to true,"atype" to none,"show" to "","text_field" to true,"keyboardType" to defaultPad),
-                MOBILE_KEY to mutableMapOf("ch" to "電話","vtype" to "String","value" to "","submit" to true,"atype" to none,"show" to "","text_field" to true,"keyboardType" to phonePad),
-                EMAIL_KEY to mutableMapOf("ch" to "EMail","vtype" to "String","value" to "","submit" to true,"atype" to none,"show" to "","text_field" to true,"keyboardType" to emailPad),
-                TEAM_PLAY_START_KEY to mutableMapOf("ch" to "開始時間","vtype" to "String","value" to "","submit" to true,"atype" to more,"segue" to TO_SELECT_TIME,"sender" to mutableMapOf<String, Any>(),"show" to ""),
-                TEAM_PLAY_END_KEY to mutableMapOf("ch" to "結束時間","vtype" to "String","value" to "","submit" to true,"atype" to more,"segue" to TO_SELECT_TIME,"sender" to mutableMapOf<String, Any>(),"show" to ""),
                 TEAM_INTERVAL_KEY to mutableMapOf("ch" to "打球時段","vtype" to "String","value" to "","submit" to false,"atype" to none,"segue" to TO_SELECT_TIME,"sender" to mutableMapOf<String, Any>(),"show" to ""),
-                TEAM_BALL_KEY to mutableMapOf("ch" to "使用球種","vtype" to "String","value" to "","submit" to true,"atype" to none,"show" to "","text_field" to true,"keyboardType" to defaultPad),
-                TEAM_DEGREE_KEY to mutableMapOf("ch" to "球隊程度","vtype" to "array","value" to mutableListOf<String>(),"submit" to true,"atype" to more,"segue" to TO_SELECT_DEGREE,"sender" to arrayListOf<DEGREE>(),"show" to ""),
-                CHARGE_KEY to mutableMapOf("ch" to "收費說明","vtype" to "String","value" to "","submit" to true,"atype" to more,"segue" to TO_TEXT_INPUT,"sender" to mutableMapOf<String, Any>(),"show" to ""),
-                CONTENT_KEY to mutableMapOf("ch" to "球隊說明","vtype" to "String","value" to "","submit" to true,"atype" to more,"segue" to TO_TEXT_INPUT,"sender" to mutableMapOf<String, Any>(),"show" to ""),
-                TEAM_TEMP_FEE_M_KEY to mutableMapOf("ch" to "臨打費用：男","vtype" to "Int","value" to -1,"submit" to true,"atype" to none,"show" to "","text_field" to true,"keyboardType" to numberPad),
-                TEAM_TEMP_FEE_F_KEY to mutableMapOf("ch" to "臨打費用：女","vtype" to "Int","value" to -1,"submit" to true,"atype" to none,"show" to "","text_field" to true,"keyboardType" to numberPad),
-                TEAM_TEMP_CONTENT_KEY to mutableMapOf("ch" to "臨打說明","vtype" to "String","value" to "","submit" to true,"atype" to more,"segue" to TO_TEXT_INPUT,"sender" to mutableMapOf<String, Any>(),"show" to ""),
-                CITY_KEY to mutableMapOf("ch" to "區域","vtype" to "array","value" to 0,"submit" to true,"atype" to more,"segue" to TO_CITY,"sender" to 0,"show" to ""),
-                ARENA_KEY to mutableMapOf("ch" to "球館","vtype" to "array","value" to 0,"submit" to true,"atype" to more,"segue" to TO_ARENA,"sender" to mutableMapOf<String, Int>(),"show" to ""),
-                TEAM_DAYS_KEY to mutableMapOf("ch" to "星期幾","vtype" to "array","value" to mutableListOf<Int>(),"submit" to true,"atype" to more,"segue" to TO_DAY,"sender" to mutableListOf<Int>(),"show" to ""),
                 FEATURED_KEY to mutableMapOf("ch" to "代表圖","vtype" to "String","value" to "","path" to "","submit" to false,"show" to "")
         )
         data = _data
@@ -78,6 +76,7 @@ class Team(id: Int, name: String, token: String, featured_path: String, vimeo: S
             data[key]!!["change"] = false
             data[key]!!["key"] = key
         }
+        //runTestData()
     }
     fun tempPlayDataReset() {
         temp_play_data = mutableMapOf(
@@ -86,6 +85,11 @@ class Team(id: Int, name: String, token: String, featured_path: String, vimeo: S
                 TEAM_TEMP_STATUS_KEY to mutableMapOf("ch" to "臨打狀態","vtype" to "String","value" to "off","show" to "off","submit" to true,"change" to false,"key" to TEAM_TEMP_STATUS_KEY),
                 TEAM_TEMP_QUANTITY_KEY to mutableMapOf("ch" to "臨打人數","vtype" to "Int","value" to -1,"show" to "","hidden" to true,"submit" to true,"change" to false,"key" to TEAM_TEMP_QUANTITY_KEY)
         )
+    }
+
+    override fun dataReset() {
+        initData()
+        tempPlayDataReset()
     }
 
     fun runTestData() {
@@ -180,24 +184,6 @@ class Team(id: Int, name: String, token: String, featured_path: String, vimeo: S
         setDegreeSender()
     }
 
-    override fun updatePlayStartTime(time: String?) {
-        if (time != null) {
-            data[TEAM_PLAY_START_KEY]!!["value"] = time
-        } else {
-            data[TEAM_PLAY_START_KEY]!!["value"] = ""
-        }
-        playStartTimeShow()
-        setPlayStartTimeSender()
-    }
-    override fun updatePlayEndTime(time: String?) {
-        if (time != null) {
-            data[TEAM_PLAY_END_KEY]!!["value"] = time
-        } else {
-            data[TEAM_PLAY_END_KEY]!!["value"] = ""
-        }
-        playEndTimeShow()
-        setPlayEndTimeSender()
-    }
     fun updateInterval(_startTime: String? = null, _endTime: String? = null) {
         var startTime = _startTime
         if (_startTime == null) {
@@ -212,15 +198,6 @@ class Team(id: Int, name: String, token: String, featured_path: String, vimeo: S
             tmp = startTime + " ~ " + endTime
         }
         data[TEAM_INTERVAL_KEY]!!["show"] = tmp
-    }
-    override fun updateTempContent(content: String?) {
-        var _content = ""
-        if (content != null) {
-            _content = content
-        }
-        data[TEAM_TEMP_CONTENT_KEY]!!["value"] = _content
-        tempContentShow()
-        setTempContentSender()
     }
 
     fun updateNearDate(n1: String? = null, n2: String? = null) {
@@ -287,28 +264,6 @@ class Team(id: Int, name: String, token: String, featured_path: String, vimeo: S
             data[TEAM_DEGREE_KEY]!!["show"] = ""
         }
     }
-    fun tempContentShow(length: Int=12) {
-        var text: String = data[TEAM_TEMP_CONTENT_KEY]!!["value"] as String
-        if (text.length > 0) {
-            text = text.truncate(length)
-        }
-        data[TEAM_TEMP_CONTENT_KEY]!!["show"] = text
-    }
-
-    override fun playStartTimeShow() {
-        var time = data[TEAM_PLAY_START_KEY]!!["value"] as String
-        if (time.length > 0) {
-            time = time.noSec()
-        }
-        data[TEAM_PLAY_START_KEY]!!["show"] = time
-    }
-    override fun playEndTimeShow() {
-        var time = data[TEAM_PLAY_END_KEY]!!["value"] as String
-        if (time.length > 0) {
-            time = time.noSec()
-        }
-        data[TEAM_PLAY_END_KEY]!!["show"] = time
-    }
 
     fun feeShow() {
         var text: String = ""
@@ -340,35 +295,6 @@ class Team(id: Int, name: String, token: String, featured_path: String, vimeo: S
         data[TEAM_DEGREE_KEY]!!["sender"] = res
     }
 
-    fun setPlayStartTimeSender() {
-        var res: MutableMap<String, Any> = mutableMapOf()
-        var time: String = data[TEAM_PLAY_START_KEY]!!["value"] as String
-        if (time.length > 0) {
-            time = time.noSec()
-            res["type"] = SELECT_TIME_TYPE.play_start
-            res["time"] = time
-        }
-        data[TEAM_PLAY_START_KEY]!!["sender"] = res
-    }
-    fun setPlayEndTimeSender() {
-        var res: MutableMap<String, Any> = mutableMapOf()
-        var time: String = data[TEAM_PLAY_END_KEY]!!["value"] as String
-        if (time.length > 0) {
-            time = time.noSec()
-            res["type"] = SELECT_TIME_TYPE.play_end
-            res["time"] = time
-        }
-        data[TEAM_PLAY_END_KEY]!!["sender"] = res
-    }
-    fun setTempContentSender() {
-        var res: MutableMap<String, Any> = mutableMapOf()
-        val text: String = data[TEAM_TEMP_CONTENT_KEY]!!["value"] as String
-        res["text"] = text
-        res["type"] = TEXT_INPUT_TYPE.temp_play
-        data[TEAM_TEMP_CONTENT_KEY]!!["sender"] = res
-    }
-
-
     fun makeTempPlaySubmitArr(): MutableMap<String, Any> {
         var isAnyOneChage: Boolean = false
         var res: MutableMap<String, Any> = mutableMapOf()
@@ -389,12 +315,4 @@ class Team(id: Int, name: String, token: String, featured_path: String, vimeo: S
         res[ID_KEY] = temp_play_data[ID_KEY]!!["value"]!!
         return res
     }
-}
-
-enum class SELECT_TIME_TYPE(val value: Int) {
-    play_start(0), play_end(1);
-}
-
-enum class TEXT_INPUT_TYPE(val value: Int) {
-    temp_play(0), charge(1), team(2)
 }

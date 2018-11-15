@@ -30,24 +30,24 @@ class ManagerFunctionVC : MyTableVC() {
 
         if (source == "coach") {
             rows = arrayListOf(
-                    hashMapOf("text" to "編輯", "icon" to "edit1", "key" to "edit"),
-                    hashMapOf("text" to "教球時段編輯", "icon" to "tempplayedit"),
-                    hashMapOf("text" to "報名學員名單", "icon" to "tempplaylist"),
-                    hashMapOf("text" to "刪除", "icon" to "clear")
+                    hashMapOf("text" to "編輯","icon" to "edit1","key" to "edit"),
+                    hashMapOf("text" to "教球時段編輯","icon" to "calendar","key" to "calendar"),
+                    hashMapOf("text" to "報名學員名單","icon" to "list","key" to "signup_list"),
+                    hashMapOf("text" to "刪除","icon" to "clear","key" to "delete")
             )
         } else if (source == "team") {
             rows = arrayListOf(
-                    hashMapOf("text" to "編輯", "icon" to "edit1"),
-                    hashMapOf("text" to "臨打編輯", "icon" to "tempplayedit", "key" to "edit_tempplay"),
-                    hashMapOf("text" to "每次臨打名單", "icon" to "tempplaylist"),
-                    hashMapOf("text" to "刪除", "icon" to "clear")
+                    hashMapOf("text" to "編輯","icon" to "edit1"),
+                    hashMapOf("text" to "臨打編輯","icon" to "tempplayedit", "key" to "edit_tempplay"),
+                    hashMapOf("text" to "每次臨打名單","icon" to "tempplaylist","key" to "tempplay_list"),
+                    hashMapOf("text" to "刪除","icon" to "clear","key" to "delete")
             )
         } else if (source == "arena") {
             rows = arrayListOf(
-                    hashMapOf("text" to "編輯", "icon" to "edit1"),
-                    hashMapOf("text" to "時段編輯", "icon" to "tempplayedit"),
-                    hashMapOf("text" to "報名球隊名單", "icon" to "tempplaylist"),
-                    hashMapOf("text" to "刪除", "icon" to "clear")
+                    hashMapOf("text" to "編輯","icon" to "edit1","key" to "edit"),
+                    hashMapOf("text" to "時段編輯","icon" to "tempplayedit","key" to "calendar"),
+                    hashMapOf("text" to "預訂名單","icon" to "list","key" to "signup_list"),
+                    hashMapOf("text" to "刪除","icon" to "clear","key" to "delete")
             )
         }
 
@@ -84,40 +84,30 @@ class ManagerFunctionVC : MyTableVC() {
         when (source) {
             "coach" -> {
                 when (key) {
-                    "edit" -> {
-                        goEdit(source, title, token)
-                    }
+                    "edit" -> goEdit(source, title, token)
+                    "calendar" -> goEdit(source, title, token)
+                    "signup_list" -> goTempPlayDate(title, token)
+                    "delete" -> goDelete(source, token)
 
                 }
             }
             "team" -> {
                 when (key) {
-                    "edit" -> {
-                        goEdit(source, title, token)
-                    }
-                    "edit_tempplay" -> {
-                        goTeamTempPlayEdit(token)
-                    }
+                    "edit" -> goEdit(source, title, token)
+                    "edit_tempplay" -> goTeamTempPlayEdit(token)
+                    "tempplay_list" -> goTempPlayDate(title, token)
+                    "delete" -> goDelete(source, token)
                 }
             }
             "arena" -> {
                 when (key) {
-                    "edit" -> {
-                        goEdit(source, title, token)
-                    }
+                    "edit" -> goEdit(source, title, token)
+                    "calendar" -> goEdit(source, title, token)
+                    "signup_list" -> goTempPlayDate(title, token)
+                    "delete" -> goDelete(source, token)
                 }
             }
         }
-    }
-
-    fun delete(view: View) {
-        goDeleteTeam(token)
-    }
-    fun tempPlay(view: View) {
-        goTeamTempPlayEdit(token)
-    }
-    fun tempPlayDate(view: View) {
-        goTempPlayDate(title, token)
     }
 }
 

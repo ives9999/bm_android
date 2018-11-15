@@ -8,7 +8,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/background"
-    tools:context="com.sportpassword.bm.Controllers.EditTeamItemActivity">
+    tools:context="com.sportpassword.bm.Controllers.EditItemActivity">
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/teamedititem_container"

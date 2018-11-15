@@ -58,6 +58,11 @@ class CoachFragment : TabFragment() {
         ManagerBtn.tag = type
     }
 
+    override fun setUserVisibleHint(isVisibleToUser: Boolean) {
+        super.setUserVisibleHint(isVisibleToUser)
+        isCoachShow = isVisibleToUser
+    }
+
     override fun getDataStart(_page: Int, _perPage: Int) {
         super.getDataStart(_page, _perPage)
         Loading.show(maskView)

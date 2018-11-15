@@ -2,9 +2,7 @@ package com.sportpassword.bm.Services
 
 import com.sportpassword.bm.Models.City
 import com.sportpassword.bm.Models.Coach
-import com.sportpassword.bm.Utilities.CITY_KEY
-import com.sportpassword.bm.Utilities.COACH_SENIORITY_KEY
-import com.sportpassword.bm.Utilities.MOBILE_KEY
+import com.sportpassword.bm.Utilities.*
 import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject
@@ -66,6 +64,13 @@ object CoachService: DataService() {
                 value = tmp.getString(key)
             } catch (e: JSONException) {
 
+            }
+            if (key == FEATURED_KEY) {
+                if (value.isNotEmpty()) {
+                    value = BASE_URL + value
+                }
+            } else {
+                if (value.isEmpty() || value == "null") value = ""
             }
             model.data[key]!!["value"] = value
             model.data[key]!!["show"] = value
