@@ -47,7 +47,7 @@ class TimeTableVC : BaseActivity() {
 
 //        val items = generateItems()
 //        adapter.addAll(items)
-        adapter = TimeTableAdapter(this, rows)
+        adapter = TimeTableAdapter(this, rows, startNum, endNum, columnNum)
         TimeTableView.adapter = adapter
 //        TimeTableView.onItemClickListener = object: AdapterView.OnItemClickListener{
 //            override fun onItemClick(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {

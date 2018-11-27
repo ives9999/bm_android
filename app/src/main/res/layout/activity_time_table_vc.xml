@@ -157,7 +157,6 @@
         android:id="@+id/TimeTableView"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:background="@color/MY_RED"
         android:gravity="center"
         android:numColumns="8"
         android:stretchMode="columnWidth"
