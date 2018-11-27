@@ -22,7 +22,7 @@ const val emailPad = InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS
 
 
 // URL Constants
-const val REMOTE_BASE_URL = "http://bm.sportpassword.com"
+const val REMOTE_BASE_URL = "https://bm.sportpassword.com"
 //const val LOCALHOST_BASE_URL = "http://bm.sportpassword.com"
 //const val LOCALHOST_BASE_URL = "http://192.168.1.119"
 const val LOCALHOST_BASE_URL = "http://192.168.100.100"

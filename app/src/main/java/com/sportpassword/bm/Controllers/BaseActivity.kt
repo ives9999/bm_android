@@ -359,6 +359,12 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener {
 
     }
 
+    public fun goTimeTable(source: String) {
+        val i = Intent(this, TimeTableVC::class.java)
+        i.putExtra("source", source)
+        startActivity(i)
+    }
+
 
     protected fun getAllChildrenBFS(v: View): List<View> {
         var visited: ArrayList<View> = arrayListOf()
