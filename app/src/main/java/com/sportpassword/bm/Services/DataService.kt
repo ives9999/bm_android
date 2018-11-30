@@ -770,6 +770,53 @@ open class DataService: BaseService() {
         Volley.newRequestQueue(context).add(request)
     }
 
+    fun getTT(context: Context, token: String, type:String, complete: CompletionHandler) {
+        val url = "$URL_TT".format(type)
+        //println(url)
+
+        val body = JSONObject()
+        body.put("source", "app")
+        body.put("channel", "bm")
+        body.put("token", token)
+        val requestBody = body.toString()
+        val request = object : JsonObjectRequest(Request.Method.POST, url, null, Response.Listener { json ->
+            //println("json: " + json)
+            try {
+                success = true
+                //println(json)
+                model.dataReset()
+                data = mutableMapOf()
+                dealOne(json)
+                data = model.data
+//                println(data)
+            } catch (e: JSONException) {
+                println("parse data error: " + e.localizedMessage)
+                success = false
+                msg = "無法getOne，沒有傳回成功值 " + e.localizedMessage
+            }
+            if (this.success) {
+                //jsonToMember(json)
+            } else {
+                //DataService.makeErrorMsg(json)
+            }
+            complete(true)
+        }, Response.ErrorListener { error ->
+            //Log.d("ERROR", "Could not register user: $error")
+            println(error.localizedMessage)
+            this.msg = "取得失敗，網站或網路錯誤"
+            complete(false)
+        }) {
+            override fun getBodyContentType(): String {
+                return HEADER
+            }
+
+            override fun getBody(): ByteArray {
+                return requestBody.toByteArray()
+            }
+        }
+        Volley.newRequestQueue(context).add(request)
+    }
+
     open fun setData(id: Int, title: String, token: String, featured_path: String, vimeo: String, youtube: String): SuperData {
         val data = SuperData(id, title, token, featured_path, vimeo, youtube)
 

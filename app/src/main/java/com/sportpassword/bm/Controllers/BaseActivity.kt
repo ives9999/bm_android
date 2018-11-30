@@ -144,6 +144,7 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener {
         URL_TEAM_UPDATE = URL_HOME + "team/update"
         URL_UPDATE = URL_HOME + "%s/update"
         URL_DELETE = URL_HOME + "%s/delete"
+        URL_TT = URL_HOME + "%s/tt"
         URL_ONE = "${URL_HOME}%s/one"
         URL_TEAM = URL_HOME + "team/"
         URL_TEAM_TEMP_PLAY = URL_TEAM + "tempPlay/onoff"

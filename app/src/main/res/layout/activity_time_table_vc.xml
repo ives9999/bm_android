@@ -2,6 +2,7 @@
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/root"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/background"
@@ -36,7 +37,7 @@
             android:layout_marginStart="16dp"
             android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp"
-            android:text="aaa"
+            android:text="prev"
             android:textColor="@color/WHITE"
             android:textSize="18sp"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -50,7 +51,7 @@
             android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
             android:layout_marginBottom="8dp"
-            android:text="bbb"
+            android:text="next"
             android:textColor="@color/WHITE"
             android:textSize="18sp"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -153,20 +154,24 @@
             android:textSize="18sp" />
     </LinearLayout>
 
-    <GridView
-        android:id="@+id/TimeTableView"
+    <ScrollView
+        android:id="@+id/scroll"
         android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:gravity="center"
-        android:numColumns="8"
-        android:stretchMode="columnWidth"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/WeekdaysView">
 
+        <android.support.constraint.ConstraintLayout
+            android:id="@+id/container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="160dp">
 
-    </GridView>
+        </android.support.constraint.ConstraintLayout>
+
+
+    </ScrollView>
 
 </android.support.constraint.ConstraintLayout>
 
