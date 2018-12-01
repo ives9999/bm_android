@@ -85,7 +85,7 @@ class ManagerFunctionVC : MyTableVC() {
             "coach" -> {
                 when (key) {
                     "edit" -> goEdit(source, title, token)
-                    "calendar" -> goTimeTable(source)
+                    "calendar" -> goTimeTable(source, token)
                     "signup_list" -> goTempPlayDate(title, token)
                     "delete" -> goDelete(source, token)
 

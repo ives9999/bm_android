@@ -543,13 +543,12 @@ object MemberService: BaseService() {
 
         val request = object : JsonObjectRequest(Request.Method.POST, url, null, Response.Listener { json ->
             //println(json)
-            val s = json.toString()
+//            val s = json.toString()
             //println(s)
             try {
                 blackList = JSONParse.parse<BlackList>(json)!!
 //                blackList.print()
-                if (blackList.success) {
-                } else {
+                if (!blackList.success) {
                     msg = json.getString("msg")
                 }
                 complete(true)

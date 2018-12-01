@@ -20,6 +20,49 @@ import java.time.format.DateTimeFormatter
 import java.util.*
 import kotlin.collections.HashMap
 
+enum class MYCOLOR(val value: Int) {
+//    danger("danger"), success("success"), primary("primary"), warning("warning"),
+//    info("info"), gray("gray")
+    danger(0xc12e2a),
+    success(0x36c6d3),
+    primary(0x337ab7),
+    warning(0xF1C40F),
+    info(0x659be0),
+    gray(0xe1e1e1);
+
+//    fun toString(): String {
+//        when (this) {
+//            danger -> return "danger"
+//            success -> return "success"
+//            primary -> return "primary"
+//            warning -> return "warning"
+//            info -> return "info"
+//            gray -> return "gray"
+//        }
+//        return "success"
+//    }
+
+    fun toColor(): Int {
+        val hexColor = String.format("#%06X", 0xFFFFFF and this.value)
+        return Color.parseColor(hexColor)
+    }
+
+    companion object {
+        fun from(value: String): MYCOLOR {
+            when (value) {
+                "danger" -> return danger
+                "success" -> return success
+                "primary" -> return primary
+                "warning" -> return warning
+                "info" -> return info
+                "gray" -> return gray
+            }
+            return success
+        }
+    }
+
+}
+
 enum class DEGREE(val value: String) {
     new("新手"), soso("普通"), high("高手");
     companion object {
@@ -146,6 +189,16 @@ fun String.toDate(pattern: String = "yyyy-MM-dd HH:mm:ss"): Date {
 fun Date.toMyString(pattern: String = "yyyy-MM-dd HH:mm:ss"): String {
     val formatter = SimpleDateFormat(pattern)
     return formatter.format(this)
+}
+fun Date.getH(): Int {
+    val formatter = SimpleDateFormat("HH")
+    val res = formatter.format(this).toInt()
+    return res
+}
+fun Date.getm(): Int {
+    val formatter = SimpleDateFormat("mm")
+    val res = formatter.format(this).toInt()
+    return res
 }
 
 fun <T1, T2> Map<T1, T2>.print() {

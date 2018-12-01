@@ -112,6 +112,8 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener {
         //member.print()
     }
 
+
+
 //    protected fun printMember() {
 //        for (a in Member::class.memberProperties) {
 //            println("${a.name} = ${a.get(member)}")
@@ -360,9 +362,10 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener {
 
     }
 
-    public fun goTimeTable(source: String) {
+    public fun goTimeTable(source: String, token: String) {
         val i = Intent(this, TimeTableVC::class.java)
         i.putExtra("source", source)
+        i.putExtra("token", token)
         startActivity(i)
     }
 

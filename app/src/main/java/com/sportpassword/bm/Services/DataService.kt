@@ -31,6 +31,7 @@ open class DataService: BaseService() {
     var arenas: ArrayList<Arena> = arrayListOf()
     var citysandarenas: HashMap<Int, HashMap<String, Any>> = hashMapOf()
     var citysandareas: HashMap<Int, HashMap<String, Any>> = hashMapOf()
+    lateinit var timeTable: TimeTable
 
     fun getList(context: Context, type:String, titleField:String, params: HashMap<String,Any>, page:Int, perPage:Int, filter:Array<Array<Any>>?, complete:CompletionHandler) {
         val url = "$URL_LIST".format(type)
@@ -772,23 +773,26 @@ open class DataService: BaseService() {
 
     fun getTT(context: Context, token: String, type:String, complete: CompletionHandler) {
         val url = "$URL_TT".format(type)
-        //println(url)
+//        println(url)
 
         val body = JSONObject()
         body.put("source", "app")
         body.put("channel", "bm")
         body.put("token", token)
         val requestBody = body.toString()
+//        println(requestBody)
         val request = object : JsonObjectRequest(Request.Method.POST, url, null, Response.Listener { json ->
-            //println("json: " + json)
+//            println("json: " + json)
             try {
-                success = true
-                //println(json)
-                model.dataReset()
-                data = mutableMapOf()
-                dealOne(json)
-                data = model.data
-//                println(data)
+                timeTable = JSONParse.parse<TimeTable>(json)!!
+                for (row in timeTable.rows) {
+                    row.filterRow()
+                }
+//                timeTable.print()
+                if (!timeTable.success) {
+                    msg = json.getString("msg")
+                }
+                complete(timeTable.success)
             } catch (e: JSONException) {
                 println("parse data error: " + e.localizedMessage)
                 success = false
