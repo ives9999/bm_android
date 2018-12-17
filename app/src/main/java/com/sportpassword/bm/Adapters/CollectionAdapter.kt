@@ -14,7 +14,7 @@ import com.sportpassword.bm.Models.SuperData
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Utilities.CREATED_AT_KEY
 import com.sportpassword.bm.Utilities.PV_KEY
-import com.sportpassword.bm.Utilities.toDate
+import com.sportpassword.bm.Utilities.toDateTime
 import com.sportpassword.bm.Utilities.toMyString
 import com.squareup.picasso.Picasso
 import java.net.URL
@@ -83,7 +83,7 @@ class CollectionAdapter(val context: Context, val iden: String="course", val scr
             pvLbl.text = "瀏覽數：" + superData.data[PV_KEY]!!["show"] as String
 
             var createdAt: String = superData.data[CREATED_AT_KEY]!!["show"] as String
-            dateLbl.text = createdAt.toDate().toMyString("yyyy-MM-dd")
+            dateLbl.text = createdAt.toDateTime().toMyString("yyyy-MM-dd")
             itemView.setOnClickListener{itemClick(superData)}
         }
     }

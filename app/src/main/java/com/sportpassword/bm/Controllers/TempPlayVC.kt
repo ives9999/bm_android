@@ -35,7 +35,7 @@ class TempPlayVC : MoreVC() {
         citys = intent.getSerializableExtra("citys") as ArrayList<City>
         arenas = intent.getSerializableExtra("arenas") as ArrayList<Arena>
         degrees = intent.getSerializableExtra("degrees") as ArrayList<DEGREE>
-        days = intent.getIntegerArrayListExtra("days")
+        days = intent.getIntegerArrayListExtra("weekdays")
         times = intent.getSerializableExtra("times") as HashMap<String, Any>
         keyword = intent.getStringExtra("keyword")
 

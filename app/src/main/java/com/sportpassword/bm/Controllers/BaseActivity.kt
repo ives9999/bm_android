@@ -98,6 +98,14 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener {
     val SEARCH_REQUEST_CODE = 4
 
     var dataService: DataService = DataService()
+    
+    //for layer
+//    val maskView = UIView()
+    lateinit var containerView: LinearLayout
+//    val layerSubmitBtn: SubmitButton = SubmitButton()
+//    val layerCancelBtn: SubmitButton = SubmitButton()
+//    val layerDeleteBtn: SubmitButton = SubmitButton()
+    var layerBtnCount: Int = 2
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -147,6 +155,8 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener {
         URL_UPDATE = URL_HOME + "%s/update"
         URL_DELETE = URL_HOME + "%s/delete"
         URL_TT = URL_HOME + "%s/tt"
+        URL_TT_UPDATE = URL_HOME + "%s/tt/update"
+        URL_TT_DELETE = URL_HOME + "%s/tt/delete"
         URL_ONE = "${URL_HOME}%s/one"
         URL_TEAM = URL_HOME + "team/"
         URL_TEAM_TEMP_PLAY = URL_TEAM + "tempPlay/onoff"
@@ -607,9 +617,7 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener {
         val alpha = 0.8f
         val duration: Long = 200
 
-        val rootView = window.decorView.rootView
-        val parentID = resources.getIdentifier(containerID, "id", packageName)
-        val parent = rootView.findViewById<ConstraintLayout>(parentID)
+        val parent = getMyParent()
         var mask = parent.findViewById<LinearLayout>(R.id.MyMask)
         if (mask == null) {
             mask = LinearLayout(this)
@@ -652,16 +660,13 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener {
     protected fun addLayer(page: String) {
 
         val duration: Long = 500
-        val rootView = window.decorView.rootView
-        val parentID = resources.getIdentifier(containerID, "id", packageName)
-        val parent = rootView.findViewById<ConstraintLayout>(parentID)
-        //val p = parent.layoutParams as ViewPager.LayoutParams
+        val parent = getMyParent()
         val w = parent.measuredWidth
         val h = parent.measuredHeight
 
-        val containerView = LinearLayout(this)
+        containerView = LinearLayout(this)
         containerView.orientation = LinearLayout.VERTICAL
-        val padding = 80
+        val padding = 0
         val headerHeight = 100
         val lp = LinearLayout.LayoutParams(w-(2*padding), h-headerHeight)
         //lp.setMargins(padding, headerHeight, padding, 0)
@@ -669,8 +674,7 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener {
         containerView.layoutParams = lp
         containerView.backgroundColor = Color.BLACK
 
-        addSearchTableView(page, containerView, w, padding)
-        addSubmitBtn(page, containerView, w, padding)
+        _addLayer(page)
 
         val mask = getMask()
         mask.addView(containerView)
@@ -687,7 +691,14 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener {
         })
     }
 
-    protected fun addSearchTableView(page: String, containerView: LinearLayout, w: Int, padding: Int) {
+    open fun _addLayer(page: String) {
+        val parent = getMyParent()
+        val w = parent.measuredWidth
+        addSearchTableView(page, w, 80)
+        layerAddSubmitBtn(page, w, 0)
+    }
+
+    protected fun addSearchTableView(page: String, w: Int, padding: Int) {
         val searchTableView = RecyclerView(this)
         searchTableView.id = R.id.SearchRecycleItem
         val lp1 = RecyclerView.LayoutParams(w-(2*padding), 1000)
@@ -709,16 +720,34 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener {
         containerView.addView(searchTableView)
     }
 
-    protected fun addSubmitBtn(page: String, containerView: LinearLayout, w:Int, padding: Int) {
+    fun getMask(): LinearLayout {
+        val parent = getMyParent()
+        return parent.findViewById<LinearLayout>(R.id.MyMask)
+    }
+
+    fun getMyParent(): ConstraintLayout {
+        val rootView = window.decorView.rootView
+        val parentID = resources.getIdentifier(containerID, "id", packageName)
+        val parent = rootView.findViewById<ConstraintLayout>(parentID)
+        return parent
+    }
+
+    protected fun layerAddSubmitBtn(page: String, w:Int, padding: Int) {
         val submitBtn = Button(this)
-        val submitBtnWidth = 360
+        val submitBtnWidth = 260
         val lp2 = LinearLayout.LayoutParams(submitBtnWidth, LinearLayout.LayoutParams.WRAP_CONTENT)
-        lp2.setMargins((w-(2*padding)-submitBtnWidth)/2, 100, 0, 0)
+        val center = (w-(2*padding)-submitBtnWidth)/2
+        var x = center
+        when (layerBtnCount) {
+            2 -> x = center - 190
+            3 -> x = center -120
+        }
+        lp2.setMargins(x, 100, 0, 0)
         submitBtn.layoutParams = lp2
         submitBtn.text = "提交"
         submitBtn.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 20f)
         submitBtn.setOnClickListener {
-            searchSubmit(page)
+            layerSubmit(page)
         }
         val myRed = ContextCompat.getColor(this, R.color.MY_RED)
         val shape = GradientDrawable()
@@ -730,6 +759,57 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener {
         submitBtn.setTextColor(Color.WHITE)
 
         containerView.addView(submitBtn)
+    }
+
+    protected fun layerAddCancelBtn(page: String, w:Int, padding: Int) {
+        val cancelBtn = Button(this)
+        val cancelBtnWidth = 260
+        val lp2 = LinearLayout.LayoutParams(cancelBtnWidth, LinearLayout.LayoutParams.WRAP_CONTENT)
+        val center = (w-(2*padding)-cancelBtnWidth)/2
+        var x = center
+        when (layerBtnCount) {
+            2 -> x = center + 190
+        }
+        lp2.setMargins(x, 0, 0, 0)
+        cancelBtn.layoutParams = lp2
+        cancelBtn.text = "取消"
+        cancelBtn.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 20f)
+        cancelBtn.setOnClickListener {
+            layerCancel()
+        }
+        val myRed = ContextCompat.getColor(this, R.color.MY_RED)
+        val shape = GradientDrawable()
+        shape.shape = GradientDrawable.RECTANGLE
+        shape.setColor(myRed)
+        shape.cornerRadius = 82f
+
+        cancelBtn.backgroundDrawable = shape
+        cancelBtn.setTextColor(Color.WHITE)
+
+        containerView.addView(cancelBtn)
+    }
+
+    protected fun layerAddDeleteBtn(page: String, w:Int, padding: Int) {
+        val deleteBtn = Button(this)
+        val deleteBtnWidth = 360
+        val lp2 = LinearLayout.LayoutParams(deleteBtnWidth, LinearLayout.LayoutParams.WRAP_CONTENT)
+        lp2.setMargins((w-(2*padding)-deleteBtnWidth)/2, 100, 0, 0)
+        deleteBtn.layoutParams = lp2
+        deleteBtn.text = "刪除"
+        deleteBtn.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 20f)
+        deleteBtn.setOnClickListener {
+            layerDelete()
+        }
+        val myRed = ContextCompat.getColor(this, R.color.MY_RED)
+        val shape = GradientDrawable()
+        shape.shape = GradientDrawable.RECTANGLE
+        shape.setColor(myRed)
+        shape.cornerRadius = 82f
+
+        deleteBtn.backgroundDrawable = shape
+        deleteBtn.setTextColor(Color.WHITE)
+
+        containerView.addView(deleteBtn)
     }
 
     protected fun prepareSearch(idx: Int, page: String) {
@@ -773,7 +853,7 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener {
             TEAM_DAYS_KEY -> {
                 intent.putExtra("key", TEAM_DAYS_KEY)
                 intent.putExtra("source", "search")
-                intent.putIntegerArrayListExtra("days", days)
+                intent.putIntegerArrayListExtra("weekdays", days)
             }
             TEAM_PLAY_START_KEY -> {
                 intent.putExtra("key", TEAM_PLAY_START_KEY)
@@ -852,10 +932,10 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener {
                         }
                         TEAM_DAYS_KEY -> {
                             idx = 3
-                            days = data!!.getIntegerArrayListExtra("days")
+                            days = data!!.getIntegerArrayListExtra("weekdays")
                             if (days.size > 0) {
                                 var arr: ArrayList<String> = arrayListOf()
-                                val gDays = Global.days
+                                val gDays = Global.weekdays
                                 for (day in days) {
                                     for (gDay in gDays) {
                                         if (day == gDay.get("value")!! as Int) {
@@ -936,13 +1016,6 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener {
         }
 
         return rows
-    }
-
-    fun getMask(): LinearLayout {
-        val rootView = window.decorView.rootView
-        val parentID = resources.getIdentifier(containerID, "id", packageName)
-        val parent = rootView.findViewById<ConstraintLayout>(parentID)
-        return parent.findViewById<LinearLayout>(R.id.MyMask)
     }
 
     protected fun getFragment(page: String): TabFragment? {
@@ -1035,7 +1108,7 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener {
     }
 
 
-    protected fun searchSubmit(page: String) {
+    open protected fun layerSubmit(page: String) {
         unmask()
         prepareParams()
         if (page == "coach") {
@@ -1048,6 +1121,12 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener {
             refresh()
         }
     }
+
+    protected fun layerCancel() {
+        unmask()
+    }
+
+    open protected fun layerDelete() {}
 
     protected fun warning(msg: String) {
         Alert.show(this, "警告", msg)

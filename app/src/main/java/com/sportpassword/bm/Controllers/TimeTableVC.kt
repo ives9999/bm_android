@@ -4,20 +4,28 @@ import android.graphics.Color
 import android.os.Bundle
 import android.support.constraint.ConstraintLayout
 import android.support.constraint.ConstraintSet
-import android.support.design.widget.AppBarLayout
+import android.support.v7.widget.LinearLayoutManager
+import android.support.v7.widget.RecyclerView
 import android.view.Gravity
+import android.view.Menu
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import com.sportpassword.bm.Adapters.Form.FormItemAdapter
+import com.sportpassword.bm.Form.FormItem.FormItem
+import com.sportpassword.bm.Form.TimeTableForm
 import com.sportpassword.bm.Models.TimeTable
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.CoachService
-import com.sportpassword.bm.Utilities.Loading
+import com.xwray.groupie.GroupAdapter
+import com.xwray.groupie.ViewHolder
 import kotlinx.android.synthetic.main.activity_time_table_vc.*
 import kotlinx.android.synthetic.main.mask.*
 import org.jetbrains.anko.backgroundColor
 import org.jetbrains.anko.sdk25.coroutines.onScrollChange
 import org.jetbrains.anko.textColor
+import com.sportpassword.bm.Utilities.*
+import kotlin.reflect.full.declaredMemberProperties
 
 class TimeTableVC : BaseActivity() {
 
@@ -37,8 +45,23 @@ class TimeTableVC : BaseActivity() {
 
     val gridViews: ArrayList<ViewGroup> = arrayListOf()
     val eventViews: ArrayList<ViewGroup> = arrayListOf()
+    var eventTag: Int = 0
 
+    //model
     lateinit var timeTable: TimeTable
+
+    //Form
+    var form: TimeTableForm = TimeTableForm()
+    val test: HashMap<String, String> = hashMapOf(
+            TT_TITLE to "練球",
+            TT_WEEKDAY to "5",
+            TT_START to "14:00",
+            TT_END to "17:00",
+            TT_LIMIT to "6",
+            TT_COLOR to "warning",
+            TT_STATUS to "offline",
+            TT_CONTENT to "大家來練球")
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -72,6 +95,10 @@ class TimeTableVC : BaseActivity() {
         //TimeTableView.adapter = adapter
     }
 
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.add, menu)
+        return true
+    }
 
     override fun refresh() {
         super.refresh()
@@ -138,7 +165,9 @@ class TimeTableVC : BaseActivity() {
         for (i in 0..timeTable.rows.size-1) {
             val row = timeTable.rows[i]
             val hours = row._end - row._start
-            val eventView = generateView(cellWidth.toInt()-2*cellBorderWidth, cellHeight*hours-2*cellBorderWidth, 100+i , row._color.toColor())
+            val eventViewWidth = cellWidth.toInt()-2*cellBorderWidth
+            val eventViewHeight = cellHeight*hours-2*cellBorderWidth
+            val eventView = generateView(eventViewWidth, eventViewHeight, 100+i , row._color.toColor())
             parent.addView(eventView)
             eventViews.add(eventView)
             val c1 = ConstraintSet()
@@ -149,6 +178,29 @@ class TimeTableVC : BaseActivity() {
             c1.connect(eventView.id, ConstraintSet.TOP, gridViews[idx].id, ConstraintSet.TOP, cellBorderWidth)
             c1.connect(eventView.id, ConstraintSet.LEFT, gridViews[idx].id, ConstraintSet.LEFT, cellBorderWidth)
             c1.applyTo(container)
+
+            val titleLbl = TextView(this)
+            var lp = LinearLayout.LayoutParams(eventViewWidth, 50)
+            lp.setMargins(3, 10, 0, 0)
+            titleLbl.layoutParams = lp
+            titleLbl.gravity = Gravity.CENTER
+            titleLbl.text = row.title
+            titleLbl.textSize = 12f
+            titleLbl.textColor = Color.BLACK
+            eventView.addView(titleLbl)
+
+            val line = DrawLine(this, 3f, 55f, eventViewWidth-6f, 55f)
+            eventView.addView(line)
+
+            val contentLbl = TextView(this)
+            lp = LinearLayout.LayoutParams(eventViewWidth, eventViewHeight-55)
+            lp.setMargins(3, 10, 0, 0)
+            contentLbl.layoutParams = lp
+            contentLbl.gravity = Gravity.CENTER
+            contentLbl.text = row.content
+            contentLbl.textSize = 12f
+            contentLbl.textColor = Color.BLACK
+            eventView.addView(contentLbl)
         }
     }
 
@@ -171,29 +223,101 @@ class TimeTableVC : BaseActivity() {
     }
 
     protected fun clickEvent(view: View) {
-        println(view.tag)
+        val tag = view.tag as Int
+//        println(tag)
+        //event
+        if (tag >= 100) {
+            val idx = tag - 100
+            val event = timeTable.rows[idx]
+            var values: HashMap<String, String> = hashMapOf()
+            for (formItem in form.formItems) {
+                if (formItem.name != null) {
+                    val name: String = formItem.name!!
+                    var value: String? = null
+                    event.javaClass.kotlin.declaredMemberProperties.forEach {
+                        if (it.name == name) {
+                            value = it.get(event).toString()
+                        }
+                    }
+                    //print(value)
+                    if (value != null) {
+                        if (name == TT_START || name == TT_END) {
+                            value = value!!.noSec()
+                        }
+                        values[name] = value!!
+                    }
+                }
+            }
+            //print(values)
+            form = TimeTableForm(event.id, values)
+            showEditEvent(3)
+        } else {
+            val startTime: Int = tag / columnNum + startNum
+            val weekday: Int = tag % columnNum
+            val values: HashMap<String, String> = hashMapOf(TT_START to startTime.toString() + ":00", TT_WEEKDAY to weekday.toString())
+            eventTag = tag
+            //print(eventTag)
+            form = TimeTableForm(null, values)
+            showEditEvent(2)
+        }
     }
 
-//    fun generateItems(): ArrayList<Item> {
-//        var items: ArrayList<Item> = arrayListOf()
-//        for (i in 1..totalGridCount) {
-//            rows.add(i.toString())
-//            val row: Int = i / columnNum
-//            val column: Int = i % columnNum
-//            items.add(TimeTableItem(row, column, i.toString()))
-//        }
-//
-//        return items
-//    }
-}
+    fun add(view: View) {
+        form = TimeTableForm(null, test)
+        showEditEvent()
+    }
 
-//class TimeTableItem(val row:Int,val column:Int,val text:String): Item() {
-//    override fun bind(viewHolder: com.xwray.groupie.kotlinandroidextensions.ViewHolder, position: Int) {
-//        viewHolder.text.text = text
-//    }
-//
-//    override fun getLayout() = R.layout.timetable_item
-//}
+    fun showEditEvent(buttonCount: Int = 2) {
+        mask()
+        layerBtnCount = buttonCount
+        addLayer("")
+    }
+
+    override fun _addLayer(page: String) {
+        val parent = getMyParent()
+        val w = parent.measuredWidth
+        addEditTableView(page, w, 0)
+        layerAddSubmitBtn(page, w, 0)
+        layerAddCancelBtn(page, w, 0)
+        if (layerBtnCount > 2) {
+            layerAddDeleteBtn(page, w, 0)
+        }
+    }
+
+    protected fun addEditTableView(page: String, w: Int, padding: Int) {
+        val editTableView = RecyclerView(this)
+        editTableView.id = R.id.SearchRecycleItem
+        editTableView.backgroundColor = Color.BLACK
+        val lp1 = RecyclerView.LayoutParams(w-(2*padding), 1000)
+        lp1.setMargins(0, 10, 0, 0)
+        editTableView.layoutParams = lp1
+        editTableView.layoutManager = LinearLayoutManager(this)
+        searchAdapter = GroupAdapter<ViewHolder>()
+        searchAdapter.setOnItemClickListener { item, view ->
+            val formItem = item as FormItem
+
+        }
+        val rows = generateFormItems()
+        searchAdapter.addAll(rows)
+
+        editTableView.adapter = searchAdapter
+        containerView.addView(editTableView)
+    }
+
+    fun generateFormItems(): ArrayList<FormItemAdapter> {
+        val rows: ArrayList<FormItemAdapter> = arrayListOf()
+        val section: Int = 0
+        var indexPath: HashMap<String, Int> = hashMapOf()
+        indexPath["section"] = section
+        for ((idx, formItem) in form.formItems.withIndex()) {
+            indexPath["row"] = idx
+            rows.add(FormItemAdapter(form, indexPath))
+        }
+
+        return rows
+    }
+
+}
 
 
 

@@ -2,7 +2,7 @@ package com.sportpassword.bm.Models
 
 import com.sportpassword.bm.Utilities.MYCOLOR
 import com.sportpassword.bm.Utilities.getH
-import com.sportpassword.bm.Utilities.toDate
+import com.sportpassword.bm.Utilities.toDateTime
 import org.json.JSONObject
 
 class TimeTable(data: JSONObject): SuperModel(data) {
@@ -28,8 +28,8 @@ class TimeTable(data: JSONObject): SuperModel(data) {
         var _color: MYCOLOR = MYCOLOR.success
 
         fun filterRow() {
-            _start = start.toDate("HH:mm:ss").getH()
-            _end = end.toDate("HH:mm:ss").getH()
+            _start = start.toDateTime("HH:mm:ss").getH()
+            _end = end.toDateTime("HH:mm:ss").getH()
             _color = MYCOLOR.from(color)
         }
     }

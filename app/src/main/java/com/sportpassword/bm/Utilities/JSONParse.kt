@@ -32,7 +32,7 @@ class JSONParse {
             //println(d)
             kc.memberProperties.forEach{
                 val key = it.name
-                val value = d[it.name]
+                val value = d[key]
                 when (value) {
                     is Boolean, is Int, is Float, is Double, is String ->
                         _setter(it, res, value)

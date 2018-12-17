@@ -40,7 +40,7 @@ class EditItemActivity() : BaseActivity() {
     var allCitys: ArrayList<City> = arrayListOf()
     var citysandarenas: HashMap<Int, HashMap<String, Any>> = hashMapOf()
     var citysandareas: HashMap<Int, HashMap<String, Any>> = hashMapOf()
-    var allDays = Global.days
+    var allDays = Global.weekdays
 
     var dataList: ArrayList<MutableMap<String, String>> = arrayListOf()
 
@@ -93,7 +93,7 @@ class EditItemActivity() : BaseActivity() {
         }
         if (key == TEAM_DAYS_KEY) {
             setMyTitle("星期幾")
-            selectedDays = intent.getIntegerArrayListExtra("days")
+            selectedDays = intent.getIntegerArrayListExtra("weekdays")
             for (i in 0..allDays.size-1) {
                 val day = allDays[i]
                 var checked = false
@@ -460,7 +460,7 @@ class EditItemActivity() : BaseActivity() {
         intent.putExtra("key", key)
         intent.putExtra("page", page)
         if (key == TEAM_DAYS_KEY) {
-            intent.putIntegerArrayListExtra("days", selectedDays)
+            intent.putIntegerArrayListExtra("weekdays", selectedDays)
         } else if (key == TEAM_PLAY_START_KEY || key == TEAM_PLAY_END_KEY) {
             if (source == "setup" && !times.containsKey("time")) {
                 warning("請選擇時段")

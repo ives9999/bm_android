@@ -52,6 +52,8 @@ var URL_UPDATE = ""
 var URL_DELETE = ""
 var URL_ONE = ""
 var URL_TT = ""
+var URL_TT_UPDATE = ""
+var URL_TT_DELETE = ""
 var URL_TEAM = ""
 var URL_TEAM_TEMP_PLAY = ""
 var URL_TEAM_TEMP_PLAY_LIST = ""
@@ -71,7 +73,7 @@ val TEAM_PLAY_END_KEY: String = "play_end"
 val TEAM_INTERVAL_KEY: String = "interval"
 val TEAM_BALL_KEY: String = "ball"
 val TEAM_DEGREE_KEY: String = "degree"
-val TEAM_DAYS_KEY: String = "days"
+val TEAM_DAYS_KEY: String = "weekdays"
 val TEAM_NEAR_DATE_KEY: String = "near_date"
 
 val TEAM_TEMP_FEE_M_KEY: String = "temp_fee_M"
@@ -156,6 +158,16 @@ val GENERAL_TYPE = 1
 val TEAM_TYPE = 2
 val ARENA_TYPE = 4
 val ISTEAMMANAGER_KEY = "isTeamManager"
+
+// Timetalbe key
+val TT_TITLE: String = "title"
+val TT_WEEKDAY: String = "day"
+val TT_START: String = "start"
+val TT_END: String = "end"
+val TT_LIMIT: String = "limit"
+val TT_COLOR: String = "color"
+val TT_STATUS: String = "status"
+val TT_CONTENT: String = "content"
 
 // member
 val MEMBER_ARRAY: Map<String, Map<String, String>> = mapOf(

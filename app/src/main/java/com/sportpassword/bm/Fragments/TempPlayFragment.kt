@@ -145,10 +145,10 @@ class TempPlayFragment : TabFragment(), inter {
                         intent.putExtra("select", "multi")
                         intent.putParcelableArrayListExtra("citys", citys)
                     }
-                    2 -> {// days
+                    2 -> {// weekdays
                         intent.putExtra("key", TEAM_DAYS_KEY)
                         intent.putExtra("source", "search")
-                        intent.putIntegerArrayListExtra("days", days)
+                        intent.putIntegerArrayListExtra("weekdays", days)
                     }
                     3 -> {// times
                         intent.putExtra("key", TEAM_PLAY_START_KEY)
@@ -234,12 +234,12 @@ class TempPlayFragment : TabFragment(), inter {
                     } else if (key == TEAM_DAYS_KEY) {
                         section = 0
                         row = 2
-                        days = data!!.getIntegerArrayListExtra("days")
-//                        println(days)
+                        days = data!!.getIntegerArrayListExtra("weekdays")
+//                        println(weekdays)
 
                         if (days.size > 0) {
                             var arr: ArrayList<String> = arrayListOf()
-                            val gDays = Global.days
+                            val gDays = Global.weekdays
                             for (day in days) {
                                 for (gDay in gDays) {
                                     if (day == gDay.get("value")!! as Int) {
@@ -296,7 +296,7 @@ class TempPlayFragment : TabFragment(), inter {
         intent.putExtra("arenas", arenas)
         intent.putExtra("degrees", degrees)
         intent.putExtra("times", times)
-        intent.putIntegerArrayListExtra("days", days)
+        intent.putIntegerArrayListExtra("weekdays", days)
         intent.putExtra("keyword", keyword)
 
         startActivity(intent)

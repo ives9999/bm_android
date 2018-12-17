@@ -7,7 +7,6 @@ import com.sportpassword.bm.R
 import com.xwray.groupie.kotlinandroidextensions.Item
 import kotlinx.android.synthetic.main.search_row_item.*
 import org.jetbrains.anko.sdk25.coroutines.onCheckedChange
-import org.jetbrains.anko.sdk25.coroutines.textChangedListener
 
 class SearchItem(val title: String, val detail: String, val switch: Boolean, val section: Int, val row: Int, val inputK:(k: String)->Unit, val switched:(idx: Int, b: Boolean)->Unit): Item() {
 

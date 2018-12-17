@@ -472,7 +472,7 @@ class EditVC : MyTableVC(), ImagePicker {
                     days.add(it)
                 }
             }
-            intent.putIntegerArrayListExtra("days", days)
+            intent.putIntegerArrayListExtra("weekdays", days)
         } else if (key == TEAM_PLAY_START_KEY || key == TEAM_PLAY_END_KEY) {
             val row: MutableMap<String, Any> = model.data[key]!!["sender"] as MutableMap<String, Any>
             var times: HashMap<String, Any> = hashMapOf()
@@ -533,7 +533,7 @@ class EditVC : MyTableVC(), ImagePicker {
                 if (resultCode == Activity.RESULT_OK) {
                     val key = data!!.getStringExtra("key")
                     if (key == TEAM_DAYS_KEY) {
-                        val days: ArrayList<Int> = data!!.getIntegerArrayListExtra("days")
+                        val days: ArrayList<Int> = data!!.getIntegerArrayListExtra("weekdays")
                         updateDays(days)
                     } else if (key == TEAM_PLAY_START_KEY || key == TEAM_PLAY_END_KEY) {
                         val times: HashMap<String, Any> = data!!.getSerializableExtra("times") as HashMap<String, Any>

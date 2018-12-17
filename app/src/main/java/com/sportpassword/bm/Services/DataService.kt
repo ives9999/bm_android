@@ -259,7 +259,7 @@ open class DataService: BaseService() {
                 val tmp: List<Int> = row as ArrayList<Int>
                 var i = 1
                 for (d in tmp) {
-                    params.put("days="+i, d.toString())
+                    params.put("weekdays="+i, d.toString())
                     i++
                 }
             } else if (key == CAT_KEY) {
@@ -373,7 +373,7 @@ open class DataService: BaseService() {
                     } else if (key == TEAM_DAYS_KEY) {
                         val tmp: List<Int> = row as ArrayList<Int>
                         for (d in tmp) {
-                            "days[]" - d.toString()
+                            "weekdays[]" - d.toString()
                         }
                     } else if (key == TEAM_CAT_KEY) {
                         val tmp: List<Int> = row as ArrayList<Int>

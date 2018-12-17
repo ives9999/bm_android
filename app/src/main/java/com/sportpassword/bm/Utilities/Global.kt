@@ -5,7 +5,9 @@ import android.app.Activity
 import android.app.AlertDialog
 import android.app.Dialog
 import android.content.Context
+import android.graphics.Canvas
 import android.graphics.Color
+import android.graphics.Paint
 import android.graphics.drawable.ColorDrawable
 import android.support.v4.content.ContextCompat
 import android.view.View
@@ -178,7 +180,7 @@ fun String.telOrMobileShow(): String {
     }
     return this
 }
-fun String.toDate(pattern: String = "yyyy-MM-dd HH:mm:ss"): Date {
+fun String.toDateTime(pattern: String = "yyyy-MM-dd HH:mm:ss"): Date {
     //val formatter = DateTimeFormatter.ofPattern(pattern, Locale.TAIWAN)
     val formatter = SimpleDateFormat(pattern)
     val date = formatter.parse(this)
@@ -225,7 +227,7 @@ fun ImageView.setImage(name: String) {
 }
 
 object Global {
-    val days: ArrayList<HashMap<String, Any>> = arrayListOf(
+    val weekdays: ArrayList<HashMap<String, Any>> = arrayListOf(
             hashMapOf("value" to 1,"text" to "星期一","simple_text" to "一","checked" to false),
             hashMapOf("value" to 2,"text" to "星期二","simple_text" to "二","checked" to false),
             hashMapOf("value" to 3,"text" to "星期三","simple_text" to "三","checked" to false),
@@ -375,5 +377,19 @@ object Alert {
         alert.setMessage(msg)
 
         return alert
+    }
+}
+
+class DrawLine(context: Context, val startX: Float, val startY: Float, val stopX: Float, val stopY: Float, val color: Int = Color.BLACK, val stroke: Float = 3f) : View(context) {
+    val paint: Paint = Paint()
+
+    init {
+        paint.color = color
+        paint.strokeWidth = stroke
+    }
+
+    override fun onDraw(canvas: Canvas) {
+        super.onDraw(canvas)
+        canvas.drawLine(startX, startY, stopX, stopY, paint)
     }
 }
