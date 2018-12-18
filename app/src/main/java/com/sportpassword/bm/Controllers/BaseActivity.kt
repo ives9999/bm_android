@@ -105,6 +105,7 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener {
 //    val layerSubmitBtn: SubmitButton = SubmitButton()
 //    val layerCancelBtn: SubmitButton = SubmitButton()
 //    val layerDeleteBtn: SubmitButton = SubmitButton()
+    lateinit var layerButtonLayout: LinearLayout
     var layerBtnCount: Int = 2
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -659,27 +660,31 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener {
 
     protected fun addLayer(page: String) {
 
-        val duration: Long = 500
-        val parent = getMyParent()
-        val w = parent.measuredWidth
-        val h = parent.measuredHeight
+        if (containerView == null) {
+            val parent = getMyParent()
+            val w = parent.measuredWidth
+            val h = parent.measuredHeight
 
-        containerView = LinearLayout(this)
-        containerView.orientation = LinearLayout.VERTICAL
-        val padding = 0
-        val headerHeight = 100
-        val lp = LinearLayout.LayoutParams(w-(2*padding), h-headerHeight)
-        //lp.setMargins(padding, headerHeight, padding, 0)
-        lp.setMargins(padding, h, padding, 0)
-        containerView.layoutParams = lp
-        containerView.backgroundColor = Color.BLACK
-
-        _addLayer(page)
-
-        val mask = getMask()
-        mask.addView(containerView)
+            containerView = LinearLayout(this)
+            containerView.orientation = LinearLayout.VERTICAL
+            val padding = 0
+            val headerHeight = 100
+            val lp = LinearLayout.LayoutParams(w - (2 * padding), h - headerHeight)
+            //lp.setMargins(padding, headerHeight, padding, 0)
+            lp.setMargins(padding, h, padding, 0)
+            containerView.layoutParams = lp
+            containerView.backgroundColor = Color.BLACK
+            val mask = getMask()
+            mask.addView(containerView)
+            _addLayer(page)
+            val l = LinearLayout(this)
+            l.orientation = LinearLayout.VERTICAL
+            l.addView(layerButtonLayout)
+            containerView.addView(l)
+        }
 
         val h1 = containerView.layoutParams.height
+        val duration: Long = 500
         containerView.animate().setDuration(duration).translationY((0-h1).toFloat()).setListener(object: Animator.AnimatorListener {
             override fun onAnimationEnd(p0: Animator?) {
                 //containerView.layoutParams.height = containerView.height
@@ -692,15 +697,17 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener {
     }
 
     open fun _addLayer(page: String) {
-        val parent = getMyParent()
-        val w = parent.measuredWidth
-        addSearchTableView(page, w, 80)
-        layerAddSubmitBtn(page, w, 0)
+        addSearchTableView(page)
+        layerAddButtonLayout()
+        layerAddSubmitBtn(page)
     }
 
-    protected fun addSearchTableView(page: String, w: Int, padding: Int) {
+    protected fun addSearchTableView(page: String) {
+        val parent = getMyParent()
+        val w = parent.measuredWidth
         val searchTableView = RecyclerView(this)
         searchTableView.id = R.id.SearchRecycleItem
+        val padding: Int = 80
         val lp1 = RecyclerView.LayoutParams(w-(2*padding), 1000)
         lp1.setMargins(0, 30, 0, 0)
         searchTableView.layoutParams = lp1
@@ -732,17 +739,25 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener {
         return parent
     }
 
-    protected fun layerAddSubmitBtn(page: String, w:Int, padding: Int) {
+    protected fun layerAddButtonLayout() {
+        layerButtonLayout = LinearLayout(this)
+        layerButtonLayout.layoutParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT)
+        layerButtonLayout.gravity = Gravity.CENTER
+        //layerButtonLayout.orientation = LinearLayout.HORIZONTAL
+        //containerView.addView(layerButtonLayout)
+    }
+
+    protected fun layerAddSubmitBtn(page: String) {
         val submitBtn = Button(this)
         val submitBtnWidth = 260
         val lp2 = LinearLayout.LayoutParams(submitBtnWidth, LinearLayout.LayoutParams.WRAP_CONTENT)
-        val center = (w-(2*padding)-submitBtnWidth)/2
-        var x = center
-        when (layerBtnCount) {
-            2 -> x = center - 190
-            3 -> x = center -120
-        }
-        lp2.setMargins(x, 100, 0, 0)
+//        val center = (w-(2*padding)-submitBtnWidth)/2
+//        var x = center
+//        when (layerBtnCount) {
+//            2 -> x = center - 60 - (submitBtnWidth/2)
+//            3 -> x = center -120
+//        }
+        lp2.setMargins(0, 0, 16, 0)
         submitBtn.layoutParams = lp2
         submitBtn.text = "提交"
         submitBtn.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 20f)
@@ -758,19 +773,21 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener {
         submitBtn.backgroundDrawable = shape
         submitBtn.setTextColor(Color.WHITE)
 
-        containerView.addView(submitBtn)
+        layerButtonLayout.addView(submitBtn)
     }
 
-    protected fun layerAddCancelBtn(page: String, w:Int, padding: Int) {
+    protected fun layerAddCancelBtn() {
         val cancelBtn = Button(this)
         val cancelBtnWidth = 260
         val lp2 = LinearLayout.LayoutParams(cancelBtnWidth, LinearLayout.LayoutParams.WRAP_CONTENT)
-        val center = (w-(2*padding)-cancelBtnWidth)/2
-        var x = center
-        when (layerBtnCount) {
-            2 -> x = center + 190
-        }
-        lp2.setMargins(x, 0, 0, 0)
+//        val center = (w-(2*padding)-cancelBtnWidth)/2
+//        var x = center
+//        when (layerBtnCount) {
+//            2 -> x = center + 60
+//        }
+//        println(center)
+//        println(x)
+        lp2.setMargins(16, 0, 16, 0)
         cancelBtn.layoutParams = lp2
         cancelBtn.text = "取消"
         cancelBtn.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 20f)
@@ -786,14 +803,14 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener {
         cancelBtn.backgroundDrawable = shape
         cancelBtn.setTextColor(Color.WHITE)
 
-        containerView.addView(cancelBtn)
+        layerButtonLayout.addView(cancelBtn)
     }
 
-    protected fun layerAddDeleteBtn(page: String, w:Int, padding: Int) {
+    protected fun layerAddDeleteBtn() {
         val deleteBtn = Button(this)
-        val deleteBtnWidth = 360
+        val deleteBtnWidth = 260
         val lp2 = LinearLayout.LayoutParams(deleteBtnWidth, LinearLayout.LayoutParams.WRAP_CONTENT)
-        lp2.setMargins((w-(2*padding)-deleteBtnWidth)/2, 100, 0, 0)
+        lp2.setMargins(16, 0, 0, 0)
         deleteBtn.layoutParams = lp2
         deleteBtn.text = "刪除"
         deleteBtn.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 20f)
@@ -809,7 +826,7 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener {
         deleteBtn.backgroundDrawable = shape
         deleteBtn.setTextColor(Color.WHITE)
 
-        containerView.addView(deleteBtn)
+        layerButtonLayout.addView(deleteBtn)
     }
 
     protected fun prepareSearch(idx: Int, page: String) {

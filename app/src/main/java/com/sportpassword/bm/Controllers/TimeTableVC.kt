@@ -237,6 +237,7 @@ class TimeTableVC : BaseActivity() {
                     event.javaClass.kotlin.declaredMemberProperties.forEach {
                         if (it.name == name) {
                             value = it.get(event).toString()
+                            //val type = it.returnType
                         }
                     }
                     //print(value)
@@ -277,10 +278,11 @@ class TimeTableVC : BaseActivity() {
         val parent = getMyParent()
         val w = parent.measuredWidth
         addEditTableView(page, w, 0)
-        layerAddSubmitBtn(page, w, 0)
-        layerAddCancelBtn(page, w, 0)
+        layerAddButtonLayout()
+        layerAddSubmitBtn(page)
+        layerAddCancelBtn()
         if (layerBtnCount > 2) {
-            layerAddDeleteBtn(page, w, 0)
+            layerAddDeleteBtn()
         }
     }
 
