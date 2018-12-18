@@ -40,7 +40,7 @@ class EditItemActivity() : BaseActivity() {
     var allCitys: ArrayList<City> = arrayListOf()
     var citysandarenas: HashMap<Int, HashMap<String, Any>> = hashMapOf()
     var citysandareas: HashMap<Int, HashMap<String, Any>> = hashMapOf()
-    var allDays = Global.weekdays
+    var allWeekdays = Global.weekdays
 
     var dataList: ArrayList<MutableMap<String, String>> = arrayListOf()
 
@@ -55,7 +55,7 @@ class EditItemActivity() : BaseActivity() {
 
     var citysForArena: ArrayList<Int> = arrayListOf()
     var citysForArea: ArrayList<Int> = arrayListOf()
-    var selectedDays: ArrayList<Int> = arrayListOf()
+    var selectedWeekdays: ArrayList<Int> = arrayListOf()
 
     var model: SuperData = Team(0, "", "", "")
 
@@ -93,19 +93,19 @@ class EditItemActivity() : BaseActivity() {
         }
         if (key == TEAM_DAYS_KEY) {
             setMyTitle("星期幾")
-            selectedDays = intent.getIntegerArrayListExtra("weekdays")
-            for (i in 0..allDays.size-1) {
-                val day = allDays[i]
+            selectedWeekdays = intent.getIntegerArrayListExtra("weekdays")
+            for (i in 0..allWeekdays.size-1) {
+                val weekday = allWeekdays[i]
                 var checked = false
-                for (j in 0..selectedDays.size-1) {
-                    if (day.get("value")!! as Int == selectedDays[j]) {
-                        allDays[i]["checked"] = true
+                for (j in 0..selectedWeekdays.size-1) {
+                    if (weekday.get("value")!! as Int == selectedWeekdays[j]) {
+                        allWeekdays[i]["checked"] = true
                         checked = true
                         break
                     }
                 }
-                val value = day.get("value")!! as Int
-                val m: MutableMap<String, String> = mutableMapOf("value" to value.toString(), "text" to day.get("text")!! as String, "checked" to checked.toString())
+                val value = weekday.get("value")!! as Int
+                val m: MutableMap<String, String> = mutableMapOf("value" to value.toString(), "text" to weekday.get("text")!! as String, "checked" to checked.toString())
                 dataList.add(m)
             }
         } else if (key == TEAM_PLAY_START_KEY || key == TEAM_PLAY_END_KEY) {
@@ -215,7 +215,10 @@ class EditItemActivity() : BaseActivity() {
                 //val checked: Boolean = !(daysLists[position]["checked"]!!.toBoolean())
                 //println(daysLists)
                 if (key == TEAM_DAYS_KEY) {
-                    setDay(position)
+                    setWeekday(position)
+                    if (select == "just one") {
+                        submit(View(this))
+                    }
                 } else if (key == TEAM_PLAY_START_KEY || key == TEAM_PLAY_END_KEY) {
                     val time = dataList[position]["value"]!!
                     setTime(time)
@@ -405,27 +408,30 @@ class EditItemActivity() : BaseActivity() {
         }
     }
 
-    fun setDay(position: Int) {
-        if (allDays[position].containsKey("checked")) {
-            allDays[position]["checked"] = !(allDays[position]["checked"] as Boolean)
+    fun setWeekday(position: Int) {
+        if (allWeekdays[position].containsKey("checked")) {
+            allWeekdays[position]["checked"] = !(allWeekdays[position]["checked"] as Boolean)
         } else {
-            allDays[position]["checked"] = true
+            allWeekdays[position]["checked"] = true
         }
 
-        var day = allDays[position]
+        var weekday = allWeekdays[position]
         var isExist = false
         var idx = -1
-        for (i in 0..selectedDays.size-1) {
-            if (day.get("value")!! as Int == selectedDays[i]) {
+        for (i in 0..selectedWeekdays.size-1) {
+            if (weekday.get("value")!! as Int == selectedWeekdays[i]) {
                 isExist = true
                 idx = i
                 break
             }
         }
         if (isExist) {
-            selectedDays.removeAt(idx)
+            selectedWeekdays.removeAt(idx)
         } else {
-            selectedDays.add(day.get("value")!! as Int)
+            if (select == "just one") {
+                selectedWeekdays.clear()
+            }
+            selectedWeekdays.add(weekday.get("value")!! as Int)
         }
     }
 
@@ -460,7 +466,7 @@ class EditItemActivity() : BaseActivity() {
         intent.putExtra("key", key)
         intent.putExtra("page", page)
         if (key == TEAM_DAYS_KEY) {
-            intent.putIntegerArrayListExtra("weekdays", selectedDays)
+            intent.putIntegerArrayListExtra("weekdays", selectedWeekdays)
         } else if (key == TEAM_PLAY_START_KEY || key == TEAM_PLAY_END_KEY) {
             if (source == "setup" && !times.containsKey("time")) {
                 warning("請選擇時段")

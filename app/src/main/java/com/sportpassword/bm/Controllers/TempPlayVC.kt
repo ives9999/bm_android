@@ -1,24 +1,18 @@
 package com.sportpassword.bm.Controllers
 
-import android.app.Activity
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.support.v4.widget.SwipeRefreshLayout
 import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.RecyclerView
-import android.util.AttributeSet
-import android.view.View
 import com.sportpassword.bm.Adapters.TempPlayListAdapter
 import com.sportpassword.bm.Models.City
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.TeamService
 import com.sportpassword.bm.Utilities.DEGREE
 import com.sportpassword.bm.Utilities.Loading
-import com.sportpassword.bm.Utilities.TEAM_PLAY_START_KEY
 import com.sportpassword.bm.Utilities.TOKEN_KEY
 import kotlinx.android.synthetic.main.activity_temp_play_vc.*
-import kotlinx.android.synthetic.main.tab.*
 import kotlinx.android.synthetic.main.mask.*
 
 class TempPlayVC : MoreVC() {
@@ -35,7 +29,7 @@ class TempPlayVC : MoreVC() {
         citys = intent.getSerializableExtra("citys") as ArrayList<City>
         arenas = intent.getSerializableExtra("arenas") as ArrayList<Arena>
         degrees = intent.getSerializableExtra("degrees") as ArrayList<DEGREE>
-        days = intent.getIntegerArrayListExtra("weekdays")
+        weekdays = intent.getIntegerArrayListExtra("weekdays")
         times = intent.getSerializableExtra("times") as HashMap<String, Any>
         keyword = intent.getStringExtra("keyword")
 

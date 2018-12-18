@@ -16,19 +16,8 @@ import kotlinx.android.synthetic.main.formitem_textfield.title as textfield_titl
 import kotlinx.android.synthetic.main.formitem.clear as clear
 import kotlinx.android.synthetic.main.formitem_textfield.clear as textfield_clear
 
-open class FormItemAdapter(val form: BaseForm, val indexPath: HashMap<String, Int>): Item() {
+open class FormItemAdapter(val form: BaseForm, val row: Int, val section: Int = 0): Item() {
 
-    var section: Int = 0
-    var row: Int = 0
-
-    init {
-        if (indexPath.containsKey("section")) {
-            this.section = indexPath["section"]!!
-        }
-        if (indexPath.containsKey("row")) {
-            this.row = indexPath["row"]!!
-        }
-    }
 
     override fun getLayout(): Int {
         val formItem = form.formItems[row]

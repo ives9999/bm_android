@@ -1,5 +1,7 @@
 package com.sportpassword.bm.Controllers
 
+import android.app.Activity
+import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.support.constraint.ConstraintLayout
@@ -12,7 +14,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import com.sportpassword.bm.Adapters.Form.FormItemAdapter
-import com.sportpassword.bm.Form.FormItem.FormItem
+import com.sportpassword.bm.Form.FormItem.WeekdayFormItem
 import com.sportpassword.bm.Form.TimeTableForm
 import com.sportpassword.bm.Models.TimeTable
 import com.sportpassword.bm.R
@@ -296,24 +298,59 @@ class TimeTableVC : BaseActivity() {
         editTableView.layoutManager = LinearLayoutManager(this)
         searchAdapter = GroupAdapter<ViewHolder>()
         searchAdapter.setOnItemClickListener { item, view ->
-            val formItem = item as FormItem
-
+            var intent = Intent(this, EditItemActivity::class.java)
+            val itemAdapter = item as FormItemAdapter
+            val idx = itemAdapter.row
+            val formItem = form.formItems[idx]
+            when (idx) {
+                1 -> {
+                    intent.putExtra("key", TEAM_DAYS_KEY)
+                    intent.putExtra("source", "search")
+                    intent.putIntegerArrayListExtra("weekdays", formItem.sender as java.util.ArrayList<Int>)
+                }
+            }
+            startActivityForResult(intent!!, SEARCH_REQUEST_CODE)
         }
         val rows = generateFormItems()
         searchAdapter.addAll(rows)
 
         editTableView.adapter = searchAdapter
-        containerView.addView(editTableView)
+        containerView!!.addView(editTableView)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+//        super.onActivityResult(requestCode, resultCode, data)
+
+        var value = "全部"
+        var idx = 0
+        when (requestCode) {
+            SEARCH_REQUEST_CODE -> {
+                if (resultCode == Activity.RESULT_OK) {
+                    val key = data!!.getStringExtra("key")
+                    when (key) {
+                        TEAM_DAYS_KEY -> {
+                            idx = 1
+                            weekdays = data!!.getIntegerArrayListExtra("weekdays")
+                            val item = form.formItems[idx] as WeekdayFormItem
+                            item.weekdays = weekdays
+                            item.make()
+                        }
+                    }
+                    val rows = generateFormItems()
+                    searchAdapter.update(rows)
+                }
+            }
+        }
     }
 
     fun generateFormItems(): ArrayList<FormItemAdapter> {
         val rows: ArrayList<FormItemAdapter> = arrayListOf()
         val section: Int = 0
-        var indexPath: HashMap<String, Int> = hashMapOf()
-        indexPath["section"] = section
+//        var indexPath: HashMap<String, Int> = hashMapOf()
+//        indexPath["section"] = section
         for ((idx, formItem) in form.formItems.withIndex()) {
-            indexPath["row"] = idx
-            rows.add(FormItemAdapter(form, indexPath))
+//            indexPath["row"] = idx
+            rows.add(FormItemAdapter(form, idx))
         }
 
         return rows

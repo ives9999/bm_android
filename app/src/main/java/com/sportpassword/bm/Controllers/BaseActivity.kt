@@ -84,7 +84,7 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener {
     var air_condition: Boolean = false
     var bathroom: Boolean = false
     var parking: Boolean = false
-    var days: ArrayList<Int> = arrayListOf()
+    var weekdays: ArrayList<Int> = arrayListOf()
     var times: HashMap<String, Any> = hashMapOf()
     var arenas: ArrayList<Arena> = arrayListOf()
     var degrees: ArrayList<DEGREE> = arrayListOf()
@@ -100,11 +100,7 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener {
     var dataService: DataService = DataService()
     
     //for layer
-//    val maskView = UIView()
-    lateinit var containerView: LinearLayout
-//    val layerSubmitBtn: SubmitButton = SubmitButton()
-//    val layerCancelBtn: SubmitButton = SubmitButton()
-//    val layerDeleteBtn: SubmitButton = SubmitButton()
+    var containerView: LinearLayout? = null
     lateinit var layerButtonLayout: LinearLayout
     var layerBtnCount: Int = 2
 
@@ -645,6 +641,8 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener {
         val duration: Long = 200
         var mask = getMask()
         if (mask != null) {
+            mask.removeAllViews()
+            containerView = null
             mask.visibility = View.GONE
             mask.visibility = View.VISIBLE
             mask.animate().setDuration(duration).alpha(0f).setListener(object: Animator.AnimatorListener {
@@ -666,26 +664,26 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener {
             val h = parent.measuredHeight
 
             containerView = LinearLayout(this)
-            containerView.orientation = LinearLayout.VERTICAL
+            containerView!!.orientation = LinearLayout.VERTICAL
             val padding = 0
             val headerHeight = 100
             val lp = LinearLayout.LayoutParams(w - (2 * padding), h - headerHeight)
             //lp.setMargins(padding, headerHeight, padding, 0)
             lp.setMargins(padding, h, padding, 0)
-            containerView.layoutParams = lp
-            containerView.backgroundColor = Color.BLACK
+            containerView!!.layoutParams = lp
+            containerView!!.backgroundColor = Color.BLACK
             val mask = getMask()
             mask.addView(containerView)
             _addLayer(page)
             val l = LinearLayout(this)
             l.orientation = LinearLayout.VERTICAL
             l.addView(layerButtonLayout)
-            containerView.addView(l)
+            containerView!!.addView(l)
         }
 
-        val h1 = containerView.layoutParams.height
+        val h1 = containerView!!.layoutParams.height
         val duration: Long = 500
-        containerView.animate().setDuration(duration).translationY((0-h1).toFloat()).setListener(object: Animator.AnimatorListener {
+        containerView!!.animate().setDuration(duration).translationY((0-h1).toFloat()).setListener(object: Animator.AnimatorListener {
             override fun onAnimationEnd(p0: Animator?) {
                 //containerView.layoutParams.height = containerView.height
                 //containerView.visibility = View.VISIBLE
@@ -699,7 +697,9 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener {
     open fun _addLayer(page: String) {
         addSearchTableView(page)
         layerAddButtonLayout()
+        layerBtnCount = 2
         layerAddSubmitBtn(page)
+        layerAddCancelBtn()
     }
 
     protected fun addSearchTableView(page: String) {
@@ -724,7 +724,7 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener {
         searchAdapter.addAll(rows)
 
         searchTableView.adapter = searchAdapter
-        containerView.addView(searchTableView)
+        containerView!!.addView(searchTableView)
     }
 
     fun getMask(): LinearLayout {
@@ -870,7 +870,7 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener {
             TEAM_DAYS_KEY -> {
                 intent.putExtra("key", TEAM_DAYS_KEY)
                 intent.putExtra("source", "search")
-                intent.putIntegerArrayListExtra("weekdays", days)
+                intent.putIntegerArrayListExtra("weekdays", weekdays)
             }
             TEAM_PLAY_START_KEY -> {
                 intent.putExtra("key", TEAM_PLAY_START_KEY)
@@ -949,11 +949,11 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener {
                         }
                         TEAM_DAYS_KEY -> {
                             idx = 3
-                            days = data!!.getIntegerArrayListExtra("weekdays")
-                            if (days.size > 0) {
+                            weekdays = data!!.getIntegerArrayListExtra("weekdays")
+                            if (weekdays.size > 0) {
                                 var arr: ArrayList<String> = arrayListOf()
                                 val gDays = Global.weekdays
-                                for (day in days) {
+                                for (day in weekdays) {
                                     for (gDay in gDays) {
                                         if (day == gDay.get("value")!! as Int) {
                                             arr.add(gDay.get("simple_text")!! as String)
@@ -1078,8 +1078,8 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener {
         if (bathroom) { params["bathroom"] = 1 } else { params["bathroom"] = 0 }
         if (parking) { params["parking"] = 1 } else { params["parking"] = 0 }
 
-        if (days.size > 0) {
-            params["play_days"] = days
+        if (weekdays.size > 0) {
+            params["play_days"] = weekdays
         }
 
         if (times.size > 0) {
@@ -1118,7 +1118,7 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener {
         citys.clear()
         areas.clear()
         arenas.clear()
-        days.clear()
+        weekdays.clear()
         degrees.clear()
         times.clear()
         keyword = ""
