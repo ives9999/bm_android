@@ -32,6 +32,7 @@ enum class MYCOLOR(val value: Int) {
     info(0x659be0),
     gray(0xe1e1e1);
 
+
 //    fun toString(): String {
 //        when (this) {
 //            danger -> return "danger"
@@ -62,7 +63,27 @@ enum class MYCOLOR(val value: Int) {
             return success
         }
     }
+}
 
+enum class STATUS(val value: String) {
+    online("上線"),
+    offline("下線"),
+    padding("草稿"),
+    trash("垃圾桶"),
+    delete("刪除");
+
+    companion object {
+        fun from(value: String): STATUS {
+            when (value) {
+                "online" -> return online
+                "offline" -> return offline
+                "padding" -> return padding
+                "trash" -> return trash
+                "delete" -> return delete
+            }
+            return online
+        }
+    }
 }
 
 enum class DEGREE(val value: String) {
@@ -96,7 +117,13 @@ enum class SELECT_TIME_TYPE(val value: Int) {
 }
 
 enum class TEXT_INPUT_TYPE(val value: String) {
-    temp_play("臨打"), charge("收費標準"), content("詳細內容"), exp("經歷"), feat("比賽成績"), license("證照")
+    temp_play("臨打"),
+    charge("收費標準"),
+    content("詳細內容"),
+    exp("經歷"),
+    feat("比賽成績"),
+    license("證照"),
+    timetable_coach("課程說明")
 }
 
 /**

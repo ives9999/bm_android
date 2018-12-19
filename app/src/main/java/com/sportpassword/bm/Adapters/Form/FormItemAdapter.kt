@@ -2,9 +2,11 @@ package com.sportpassword.bm.Adapters.Form
 
 import android.view.View
 import com.sportpassword.bm.Form.BaseForm
+import com.sportpassword.bm.Form.FormItem.ColorFormItem
 import com.sportpassword.bm.Form.FormItem.FormItem
 import com.sportpassword.bm.Form.FormItemCellType
 import com.sportpassword.bm.R
+import com.sportpassword.bm.Utilities.MYCOLOR
 import com.sportpassword.bm.Utilities.TT_TITLE
 import com.sportpassword.bm.Utilities.TT_WEEKDAY
 import com.xwray.groupie.kotlinandroidextensions.Item
@@ -16,7 +18,7 @@ import kotlinx.android.synthetic.main.formitem_textfield.title as textfield_titl
 import kotlinx.android.synthetic.main.formitem.clear as clear
 import kotlinx.android.synthetic.main.formitem_textfield.clear as textfield_clear
 
-open class FormItemAdapter(val form: BaseForm, val row: Int, val section: Int = 0): Item() {
+open class FormItemAdapter(val form: BaseForm, val row: Int, val section: Int = 0, val clearClick:(idx: Int)->Unit): Item() {
 
 
     override fun getLayout(): Int {
@@ -32,6 +34,9 @@ open class FormItemAdapter(val form: BaseForm, val row: Int, val section: Int = 
         }
         if (formItem.value != null) {
             viewHolder.clear.visibility = View.VISIBLE
+            viewHolder.clear.setOnClickListener {
+                clearClick(row)
+            }
         } else {
             viewHolder.clear.visibility = View.INVISIBLE
         }
@@ -44,6 +49,31 @@ open class FormItemAdapter(val form: BaseForm, val row: Int, val section: Int = 
             }
         }
         if (formItem.uiProperties.cellType == FormItemCellType.weekday) {
+            if (formItem.show != null) {
+                viewHolder.detail.text = formItem.show
+            }
+        }
+        if (formItem.uiProperties.cellType == FormItemCellType.time) {
+            if (formItem.show != null) {
+                viewHolder.detail.text = formItem.show
+            }
+        }
+
+        if (formItem.uiProperties.cellType == FormItemCellType.color) {
+            val _formItem = formItem as ColorFormItem
+            if (_formItem.color != null) {
+                viewHolder.detail.setBackgroundColor(_formItem.color!!.toColor())
+                viewHolder.detail.text = "          "
+            }
+        }
+
+        if (formItem.uiProperties.cellType == FormItemCellType.status) {
+            if (formItem.show != null) {
+                viewHolder.detail.text = formItem.show
+            }
+        }
+
+        if (formItem.uiProperties.cellType == FormItemCellType.more) {
             if (formItem.show != null) {
                 viewHolder.detail.text = formItem.show
             }

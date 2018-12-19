@@ -292,7 +292,7 @@ class TimeTableVC : BaseActivity() {
         val editTableView = RecyclerView(this)
         editTableView.id = R.id.SearchRecycleItem
         editTableView.backgroundColor = Color.BLACK
-        val lp1 = RecyclerView.LayoutParams(w-(2*padding), 1000)
+        val lp1 = RecyclerView.LayoutParams(w-(2*padding), 1500)
         lp1.setMargins(0, 10, 0, 0)
         editTableView.layoutParams = lp1
         editTableView.layoutManager = LinearLayoutManager(this)
@@ -350,7 +350,13 @@ class TimeTableVC : BaseActivity() {
 //        indexPath["section"] = section
         for ((idx, formItem) in form.formItems.withIndex()) {
 //            indexPath["row"] = idx
-            rows.add(FormItemAdapter(form, idx))
+            rows.add(FormItemAdapter(form, idx, 0, { i ->
+                val forItem = form.formItems[i]
+                forItem.reset()
+                val rows = generateFormItems()
+                searchAdapter.update(rows)
+            })
+            )
         }
 
         return rows
