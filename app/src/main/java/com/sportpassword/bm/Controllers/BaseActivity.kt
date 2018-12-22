@@ -24,6 +24,8 @@ import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.util.TypedValue
 import android.view.*
+import android.view.animation.Animation
+import android.view.animation.TranslateAnimation
 import android.view.inputmethod.InputMethodManager
 import android.widget.*
 import com.facebook.CallbackManager
@@ -100,7 +102,14 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener {
     var dataService: DataService = DataService()
     
     //for layer
-    var containerView: LinearLayout? = null
+    var layerMask: LinearLayout? = null
+    var layerScrollView: ScrollView? = null
+    var layerContainerView: LinearLayout? = null
+    var layerSubmitBtn: Button? = null
+    var layerCancelBtn: Button? = null
+    var layerDeleteBtn: Button? = null
+    var layerRightLeftPadding: Int = 80
+    var layerTopPadding: Int = 100
     lateinit var layerButtonLayout: LinearLayout
     var layerBtnCount: Int = 2
 
@@ -611,87 +620,123 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener {
     }
 
     protected fun mask() {
-        val alpha = 0.8f
-        val duration: Long = 200
+//        val alpha = 0.8f
+//        val duration: Long = 200
 
-        val parent = getMyParent()
-        var mask = parent.findViewById<LinearLayout>(R.id.MyMask)
-        if (mask == null) {
-            mask = LinearLayout(this)
-            mask.id = R.id.MyMask
-            mask.layoutParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT)
-            mask.backgroundColor = Color.parseColor("#ffffff")
-            mask.alpha = 0f
-            mask.setOnClickListener {
+//        var mask = parent.findViewById<LinearLayout>(R.id.MyMask)
+        if (layerMask == null) {
+            layerMask = LinearLayout(this)
+            layerMask!!.id = R.id.MyMask
+            layerMask!!.layoutParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
+            //mask.layoutParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT)
+            layerMask!!.backgroundColor = Color.parseColor("#ffffff")
+            //0是完全透明
+            layerMask!!.alpha = 0.9f
+            layerMask!!.setOnClickListener {
                 unmask()
             }
-            parent.addView(mask)
+            val parent = getMyParent()
+            parent.addView(layerMask)
+        } else {
+            layerMask!!.visibility = View.VISIBLE
         }
-        mask.animate().setDuration(duration).alpha(alpha).setListener(object: Animator.AnimatorListener {
-            override fun onAnimationEnd(p0: Animator?) {
-                mask.visibility = View.VISIBLE
-            }
-            override fun onAnimationRepeat(p0: Animator?) {}
-            override fun onAnimationCancel(p0: Animator?) {}
-            override fun onAnimationStart(p0: Animator?) {}
-        })
+//        mask.animate().setDuration(duration).alpha(alpha).setListener(object: Animator.AnimatorListener {
+//            override fun onAnimationEnd(p0: Animator?) {
+//                mask.visibility = View.VISIBLE
+//            }
+//            override fun onAnimationRepeat(p0: Animator?) {}
+//            override fun onAnimationCancel(p0: Animator?) {}
+//            override fun onAnimationStart(p0: Animator?) {}
+//        })
     }
 
-    protected fun unmask() {
-        val duration: Long = 200
-        var mask = getMask()
-        if (mask != null) {
-            mask.removeAllViews()
-            containerView = null
-            mask.visibility = View.GONE
-            mask.visibility = View.VISIBLE
-            mask.animate().setDuration(duration).alpha(0f).setListener(object: Animator.AnimatorListener {
-                override fun onAnimationEnd(p0: Animator?) {
-                    mask.visibility = View.INVISIBLE
+    public fun unmask() {
+        val duration: Long = 500
+//        var mask = getMask()
+        if (layerScrollView != null) {
+            val parent = getMyParent()
+            val h = parent.measuredHeight
+
+            val animate = TranslateAnimation(0f, 0f, layerTopPadding.toFloat(), h.toFloat())
+            animate.setAnimationListener(object : Animation.AnimationListener {
+                override fun onAnimationRepeat(p0: Animation?) {}
+                override fun onAnimationEnd(p0: Animation?) {
+                    layerMask!!.visibility = View.GONE
+                    layerMask!!.removeAllViews()
+                    layerScrollView = null
+                    parent.removeView(layerMask)
+                    layerMask = null
                 }
-                override fun onAnimationRepeat(p0: Animator?) {}
-                override fun onAnimationCancel(p0: Animator?) {}
-                override fun onAnimationStart(p0: Animator?) {}
+                override fun onAnimationStart(p0: Animation?) {}
             })
+            animate.duration = 500
+            animate.fillAfter = true
+            layerScrollView!!.startAnimation(animate)
+
+//            layerScrollView!!.animate().setDuration(duration).alpha(0f).setListener(object: Animator.AnimatorListener {
+//                override fun onAnimationEnd(p0: Animator?) {
+//                    mask.visibility = View.GONE
+//                    mask.removeAllViews()
+//                    layerScrollView = null
+//                }
+//                override fun onAnimationRepeat(p0: Animator?) {}
+//                override fun onAnimationCancel(p0: Animator?) {}
+//                override fun onAnimationStart(p0: Animator?) {}
+//            })
         }
     }
 
     protected fun addLayer(page: String) {
 
-        if (containerView == null) {
-            val parent = getMyParent()
-            val w = parent.measuredWidth
-            val h = parent.measuredHeight
+        val parent = getMyParent()
+        val w = parent.measuredWidth
+        val h = parent.measuredHeight
+        if (layerScrollView == null) {
 
-            containerView = LinearLayout(this)
-            containerView!!.orientation = LinearLayout.VERTICAL
-            val padding = 0
-            val headerHeight = 100
-            val lp = LinearLayout.LayoutParams(w - (2 * padding), h - headerHeight)
-            //lp.setMargins(padding, headerHeight, padding, 0)
-            lp.setMargins(padding, h, padding, 0)
-            containerView!!.layoutParams = lp
-            containerView!!.backgroundColor = Color.BLACK
-            val mask = getMask()
-            mask.addView(containerView)
+            val lp = LinearLayout.LayoutParams(w - (2 * layerRightLeftPadding), ViewGroup.LayoutParams.MATCH_PARENT)
+            lp.setMargins(layerRightLeftPadding, layerTopPadding, layerRightLeftPadding, 0)
+            layerScrollView = ScrollView(this)
+            layerScrollView!!.layoutParams = lp
+            layerScrollView!!.backgroundColor = Color.BLACK
+
+//            val mask = getMask()
+            layerMask!!.addView(layerScrollView)
+
+            val lp1 = LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
+            lp1.setMargins(0, 0, 0, 0)
+            layerContainerView = LinearLayout(this)
+            layerContainerView!!.orientation = LinearLayout.VERTICAL
+            layerContainerView!!.layoutParams = lp1
+//            layerContainerView!!.backgroundColor = Color.RED
+            layerScrollView!!.addView(layerContainerView)
+
             _addLayer(page)
             val l = LinearLayout(this)
             l.orientation = LinearLayout.VERTICAL
             l.addView(layerButtonLayout)
-            containerView!!.addView(l)
+            layerContainerView!!.addView(l)
+
+            //append bottom space
+            val bottomLayout = LinearLayout(this)
+            val lpx = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 200)
+            bottomLayout.layoutParams = lpx
+            layerContainerView!!.addView(bottomLayout)
+
         }
 
-        val h1 = containerView!!.layoutParams.height
-        val duration: Long = 500
-        containerView!!.animate().setDuration(duration).translationY((0-h1).toFloat()).setListener(object: Animator.AnimatorListener {
-            override fun onAnimationEnd(p0: Animator?) {
-                //containerView.layoutParams.height = containerView.height
-                //containerView.visibility = View.VISIBLE
+
+        val animate = TranslateAnimation(layerRightLeftPadding.toFloat(), layerRightLeftPadding.toFloat(), h.toFloat(), layerTopPadding.toFloat())
+        animate.setAnimationListener(object : Animation.AnimationListener {
+            override fun onAnimationRepeat(p0: Animation?) {}
+            override fun onAnimationEnd(p0: Animation?) {
             }
-            override fun onAnimationRepeat(p0: Animator?) {}
-            override fun onAnimationCancel(p0: Animator?) {}
-            override fun onAnimationStart(p0: Animator?) {}
+            override fun onAnimationStart(p0: Animation?) {
+            }
         })
+        animate.duration = 500
+        animate.fillAfter = true
+        //layerScrollView!!.startAnimation(animate)
+
     }
 
     open fun _addLayer(page: String) {
@@ -724,19 +769,7 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener {
         searchAdapter.addAll(rows)
 
         searchTableView.adapter = searchAdapter
-        containerView!!.addView(searchTableView)
-    }
-
-    fun getMask(): LinearLayout {
-        val parent = getMyParent()
-        return parent.findViewById<LinearLayout>(R.id.MyMask)
-    }
-
-    fun getMyParent(): ConstraintLayout {
-        val rootView = window.decorView.rootView
-        val parentID = resources.getIdentifier(containerID, "id", packageName)
-        val parent = rootView.findViewById<ConstraintLayout>(parentID)
-        return parent
+        layerContainerView!!.addView(searchTableView)
     }
 
     protected fun layerAddButtonLayout() {
@@ -748,36 +781,30 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener {
     }
 
     protected fun layerAddSubmitBtn(page: String) {
-        val submitBtn = Button(this)
+        layerSubmitBtn = Button(this)
         val submitBtnWidth = 260
         val lp2 = LinearLayout.LayoutParams(submitBtnWidth, LinearLayout.LayoutParams.WRAP_CONTENT)
-//        val center = (w-(2*padding)-submitBtnWidth)/2
-//        var x = center
-//        when (layerBtnCount) {
-//            2 -> x = center - 60 - (submitBtnWidth/2)
-//            3 -> x = center -120
-//        }
         lp2.setMargins(0, 0, 16, 0)
-        submitBtn.layoutParams = lp2
-        submitBtn.text = "提交"
-        submitBtn.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 20f)
-        submitBtn.setOnClickListener {
-            layerSubmit(page)
-        }
+        layerSubmitBtn!!.layoutParams = lp2
+        layerSubmitBtn!!.text = "提交"
+        layerSubmitBtn!!.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 20f)
         val myRed = ContextCompat.getColor(this, R.color.MY_RED)
         val shape = GradientDrawable()
         shape.shape = GradientDrawable.RECTANGLE
         shape.setColor(myRed)
         shape.cornerRadius = 82f
+        layerSubmitBtn!!.setOnClickListener {
+            layerSubmit(page)
+        }
 
-        submitBtn.backgroundDrawable = shape
-        submitBtn.setTextColor(Color.WHITE)
+        layerSubmitBtn!!.backgroundDrawable = shape
+        layerSubmitBtn!!.setTextColor(Color.WHITE)
 
-        layerButtonLayout.addView(submitBtn)
+        layerButtonLayout.addView(layerSubmitBtn)
     }
 
     protected fun layerAddCancelBtn() {
-        val cancelBtn = Button(this)
+        layerCancelBtn = Button(this)
         val cancelBtnWidth = 260
         val lp2 = LinearLayout.LayoutParams(cancelBtnWidth, LinearLayout.LayoutParams.WRAP_CONTENT)
 //        val center = (w-(2*padding)-cancelBtnWidth)/2
@@ -788,45 +815,54 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener {
 //        println(center)
 //        println(x)
         lp2.setMargins(16, 0, 16, 0)
-        cancelBtn.layoutParams = lp2
-        cancelBtn.text = "取消"
-        cancelBtn.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 20f)
-        cancelBtn.setOnClickListener {
-            layerCancel()
-        }
+        layerCancelBtn!!.layoutParams = lp2
+        layerCancelBtn!!.text = "取消"
+        layerCancelBtn!!.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 20f)
         val myRed = ContextCompat.getColor(this, R.color.MY_RED)
         val shape = GradientDrawable()
         shape.shape = GradientDrawable.RECTANGLE
         shape.setColor(myRed)
         shape.cornerRadius = 82f
+        layerCancelBtn!!.setOnClickListener {
+            layerCancel()
+        }
 
-        cancelBtn.backgroundDrawable = shape
-        cancelBtn.setTextColor(Color.WHITE)
+        layerCancelBtn!!.backgroundDrawable = shape
+        layerCancelBtn!!.setTextColor(Color.WHITE)
 
-        layerButtonLayout.addView(cancelBtn)
+        layerButtonLayout.addView(layerCancelBtn)
     }
 
     protected fun layerAddDeleteBtn() {
-        val deleteBtn = Button(this)
+        layerDeleteBtn = Button(this)
         val deleteBtnWidth = 260
         val lp2 = LinearLayout.LayoutParams(deleteBtnWidth, LinearLayout.LayoutParams.WRAP_CONTENT)
         lp2.setMargins(16, 0, 0, 0)
-        deleteBtn.layoutParams = lp2
-        deleteBtn.text = "刪除"
-        deleteBtn.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 20f)
-        deleteBtn.setOnClickListener {
-            layerDelete()
-        }
+        layerDeleteBtn!!.layoutParams = lp2
+        layerDeleteBtn!!.text = "刪除"
+        layerDeleteBtn!!.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 20f)
         val myRed = ContextCompat.getColor(this, R.color.MY_RED)
         val shape = GradientDrawable()
         shape.shape = GradientDrawable.RECTANGLE
         shape.setColor(myRed)
         shape.cornerRadius = 82f
 
-        deleteBtn.backgroundDrawable = shape
-        deleteBtn.setTextColor(Color.WHITE)
+        layerDeleteBtn!!.backgroundDrawable = shape
+        layerDeleteBtn!!.setTextColor(Color.WHITE)
 
-        layerButtonLayout.addView(deleteBtn)
+        layerButtonLayout.addView(layerDeleteBtn)
+    }
+
+//    fun getMask(): LinearLayout {
+//        val parent = getMyParent()
+//        return parent.findViewById<LinearLayout>(R.id.MyMask)
+//    }
+
+    fun getMyParent(): ConstraintLayout {
+        val rootView = window.decorView.rootView
+        val parentID = resources.getIdentifier(containerID, "id", packageName)
+        val parent = rootView.findViewById<ConstraintLayout>(parentID)
+        return parent
     }
 
     protected fun prepareSearch(idx: Int, page: String) {
@@ -1139,7 +1175,7 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener {
         }
     }
 
-    protected fun layerCancel() {
+    open protected fun layerCancel() {
         unmask()
     }
 

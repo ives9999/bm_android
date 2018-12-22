@@ -92,6 +92,7 @@
         <activity android:name=".Controllers.CourseVC" />
         <activity android:name=".Controllers.MoreVC" />
         <activity android:name=".Controllers.TempPlayVC" />
+        <activity android:name=".Controllers.ColorSelectVC" />
         <activity
             android:name=".Controllers.MyMapVC"
             android:label="@string/title_activity_my_map_vc" />

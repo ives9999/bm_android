@@ -67,7 +67,7 @@ class CoachFragment : TabFragment() {
         super.getDataStart(_page, _perPage)
         Loading.show(maskView)
         //println("page: $_page")
-        CoachService.getList(context!!, "coach", "name", mainActivity.params, _page, _perPage, null) { success ->
+        CoachService.getList(context!!, "coach", "name", mainActivity!!.params, _page, _perPage, null) { success ->
             getDataEnd(success)
         }
     }

@@ -65,7 +65,7 @@ class TeamFragment: TabFragment() {
         super.getDataStart(_page, _perPage)
         Loading.show(maskView)
         //println("page: $_page")
-        TeamService.getList(context!!, "team", "name", mainActivity.params, _page, _perPage, null) { success ->
+        TeamService.getList(context!!, "team", "name", mainActivity!!.params, _page, _perPage, null) { success ->
             getDataEnd(success)
         }
     }

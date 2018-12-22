@@ -29,6 +29,7 @@ import com.xwray.groupie.kotlinandroidextensions.Item
 import com.xwray.groupie.kotlinandroidextensions.ViewHolder
 import kotlinx.android.synthetic.main.activity_edit_team_item_adapter.*
 import kotlinx.android.synthetic.main.mask.*
+import java.util.*
 
 class EditItemActivity() : BaseActivity() {
 
@@ -52,6 +53,12 @@ class EditItemActivity() : BaseActivity() {
     var select: String = "just one"
     //來源的頁面，有coach, team, arena, course 4種
     var page: String = ""
+
+    var start: String = "07:00"
+    var end: String = "23:00"
+    //minute
+    var interval: Int = 60
+    var allTimes: ArrayList<String> = arrayListOf()
 
     var citysForArena: ArrayList<Int> = arrayListOf()
     var citysForArea: ArrayList<Int> = arrayListOf()
@@ -116,11 +123,27 @@ class EditItemActivity() : BaseActivity() {
             }
             //println(value)
             times = intent.getSerializableExtra("times") as HashMap<String, Any>
-            val allTimes: ArrayList<String> = arrayListOf(
-                "07:00","08:00","09:00","10:00","11:00","12:00",
-                "13:00","14:00","15:00","16:00","17:00",
-                "18:00","19:00","20:00","21:00","22:00","23:00"
-            )
+            if (intent.hasExtra("start")) {
+                start = intent.getStringExtra("start")
+            }
+            if (intent.hasExtra("end")) {
+                start = intent.getStringExtra("end")
+            }
+            if (intent.hasExtra("interval")) {
+                interval = intent.getIntExtra("interval", 60)
+            }
+            var s = start.toDateTime("HH:mm")
+            val e = end.toDateTime("HH:mm")
+            allTimes.add(start)
+            while (s.compareTo(e) < 0) {
+                val cal = Calendar.getInstance()
+                cal.time = s
+                cal.add(Calendar.MINUTE, interval)
+                s = cal.time
+                allTimes.add(s.toMyString("HH:mm"))
+            }
+//            println(allTimes)
+
             for (i in 0..allTimes.size-1) {
                 var time = ""
                 if (times.containsKey("time")) {

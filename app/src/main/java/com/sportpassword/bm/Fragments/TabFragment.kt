@@ -58,7 +58,7 @@ open class TabFragment : Fragment() {
     protected lateinit var refreshListener: SwipeRefreshLayout.OnRefreshListener
     protected lateinit var scrollerListenr: RecyclerView.OnScrollListener
 //    var vimeoClient: VimeoClient? = null
-    protected lateinit var mainActivity: MainActivity
+    var mainActivity: MainActivity? = null
 
     protected var isCoachShow: Boolean = false
     protected var isTeamShow: Boolean = false
@@ -187,6 +187,17 @@ open class TabFragment : Fragment() {
             refreshLayout.isRefreshing = false
         }
         refreshLayout.setOnRefreshListener(refreshListener)
+    }
+
+    override fun setUserVisibleHint(isVisibleToUser: Boolean) {
+        super.setUserVisibleHint(isVisibleToUser)
+        if (mainActivity != null) {
+            if (mainActivity!!.layerMask != null) {
+                if (mainActivity!!.layerMask!!.visibility == View.VISIBLE) {
+                    mainActivity!!.unmask()
+                }
+            }
+        }
     }
 
     companion object {

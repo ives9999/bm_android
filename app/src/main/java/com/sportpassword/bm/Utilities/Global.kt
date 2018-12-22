@@ -20,6 +20,7 @@ import java.text.SimpleDateFormat
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.util.*
+import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
 
 enum class MYCOLOR(val value: Int) {
@@ -51,6 +52,9 @@ enum class MYCOLOR(val value: Int) {
     }
 
     companion object {
+
+        val allValues: ArrayList<MYCOLOR> = arrayListOf(danger, success, primary, warning, info, gray)
+
         fun from(value: String): MYCOLOR {
             when (value) {
                 "danger" -> return danger
@@ -61,6 +65,14 @@ enum class MYCOLOR(val value: Int) {
                 "gray" -> return gray
             }
             return success
+        }
+
+        fun all(): ArrayList<HashMap<String, Any>> {
+            val res: ArrayList<HashMap<String, Any>> = arrayListOf()
+            for (item in allValues) {
+                res.add(hashMapOf("key" to item.toString(), "value" to item, "color" to item.toColor()))
+            }
+            return res
         }
     }
 }

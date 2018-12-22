@@ -14,6 +14,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import com.sportpassword.bm.Adapters.Form.FormItemAdapter
+import com.sportpassword.bm.Form.FormItem.TimeFormItem
 import com.sportpassword.bm.Form.FormItem.WeekdayFormItem
 import com.sportpassword.bm.Form.TimeTableForm
 import com.sportpassword.bm.Models.TimeTable
@@ -292,30 +293,53 @@ class TimeTableVC : BaseActivity() {
         val editTableView = RecyclerView(this)
         editTableView.id = R.id.SearchRecycleItem
         editTableView.backgroundColor = Color.BLACK
-        val lp1 = RecyclerView.LayoutParams(w-(2*padding), 1500)
+        val lp1 = RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
         lp1.setMargins(0, 10, 0, 0)
         editTableView.layoutParams = lp1
         editTableView.layoutManager = LinearLayoutManager(this)
+        //editTableView.
         searchAdapter = GroupAdapter<ViewHolder>()
         searchAdapter.setOnItemClickListener { item, view ->
-            var intent = Intent(this, EditItemActivity::class.java)
             val itemAdapter = item as FormItemAdapter
             val idx = itemAdapter.row
             val formItem = form.formItems[idx]
-            when (idx) {
-                1 -> {
-                    intent.putExtra("key", TEAM_DAYS_KEY)
-                    intent.putExtra("source", "search")
-                    intent.putIntegerArrayListExtra("weekdays", formItem.sender as java.util.ArrayList<Int>)
+            if (formItem.name != TT_TITLE && formItem.name != TT_LIMIT) {
+                val intent = Intent(this, EditItemActivity::class.java)
+                when (idx) {
+                    1 -> {
+                        intent.putExtra("key", TEAM_DAYS_KEY)
+                        intent.putExtra("source", "search")
+                        intent.putIntegerArrayListExtra("weekdays", formItem.sender as java.util.ArrayList<Int>)
+                        startActivityForResult(intent, SEARCH_REQUEST_CODE)
+                    }
+                    2-> {
+                        intent.putExtra("key", TEAM_PLAY_START_KEY)
+                        intent.putExtra("source", "search")
+                        intent.putExtra("start", "06:00")
+                        times["type"] = SELECT_TIME_TYPE.play_start
+                        intent.putExtra("times", formItem.sender as HashMap<String, Any>)
+                        startActivityForResult(intent, SEARCH_REQUEST_CODE)
+                    }
+                    3-> {
+                        intent.putExtra("key", TEAM_PLAY_END_KEY)
+                        intent.putExtra("source", "search")
+                        intent.putExtra("start", "06:00")
+                        times["type"] = SELECT_TIME_TYPE.play_start
+                        intent.putExtra("times", formItem.sender as HashMap<String, Any>)
+                        startActivityForResult(intent, SEARCH_REQUEST_CODE)
+                    }
+                    5-> {
+                        val intent1 = Intent(this, ColorSelectVC::class.java)
+                        startActivityForResult(intent1, SEARCH_REQUEST_CODE)
+                    }
                 }
             }
-            startActivityForResult(intent!!, SEARCH_REQUEST_CODE)
         }
         val rows = generateFormItems()
         searchAdapter.addAll(rows)
 
         editTableView.adapter = searchAdapter
-        containerView!!.addView(editTableView)
+        layerContainerView!!.addView(editTableView)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -334,6 +358,24 @@ class TimeTableVC : BaseActivity() {
                             val item = form.formItems[idx] as WeekdayFormItem
                             item.weekdays = weekdays
                             item.make()
+                        }
+                        TEAM_PLAY_START_KEY -> {
+                            idx = 2
+                            times = data!!.getSerializableExtra("times") as HashMap<String, Any>
+                            if (times.containsKey("time")) {
+                                val item = form.formItems[idx] as TimeFormItem
+                                item.value = times["time"] as String
+                                item.make()
+                            }
+                        }
+                        TEAM_PLAY_END_KEY -> {
+                            idx = 3
+                            times = data!!.getSerializableExtra("times") as HashMap<String, Any>
+                            if (times.containsKey("time")) {
+                                val item = form.formItems[idx] as TimeFormItem
+                                item.value = times["time"] as String
+                                item.make()
+                            }
                         }
                     }
                     val rows = generateFormItems()

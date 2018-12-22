@@ -43,7 +43,7 @@ class CourseFragment : TabFragment() {
     override fun getDataStart(_page: Int, _perPage: Int) {
         super.getDataStart(_page, _perPage)
         //println("page: $_page")
-        CourseService.getList(context!!, "course", "title", mainActivity.params, _page, _perPage, null) { success ->
+        CourseService.getList(context!!, "course", "title", mainActivity!!.params, _page, _perPage, null) { success ->
             getDataEnd(success)
         }
     }

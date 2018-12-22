@@ -59,14 +59,6 @@ open class FormItemAdapter(val form: BaseForm, val row: Int, val section: Int = 
             }
         }
 
-        if (formItem.uiProperties.cellType == FormItemCellType.color) {
-            val _formItem = formItem as ColorFormItem
-            if (_formItem.color != null) {
-                viewHolder.detail.setBackgroundColor(_formItem.color!!.toColor())
-                viewHolder.detail.text = "          "
-            }
-        }
-
         if (formItem.uiProperties.cellType == FormItemCellType.status) {
             if (formItem.show != null) {
                 viewHolder.detail.text = formItem.show
@@ -78,5 +70,14 @@ open class FormItemAdapter(val form: BaseForm, val row: Int, val section: Int = 
                 viewHolder.detail.text = formItem.show
             }
         }
+
+        if (formItem.uiProperties.cellType == FormItemCellType.color) {
+            val _formItem = formItem as ColorFormItem
+            if (_formItem.color != null) {
+                viewHolder.detail.setBackgroundColor(_formItem.color!!.toColor())
+                viewHolder.detail.text = "          "
+            }
+        }
+
     }
 }
