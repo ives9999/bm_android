@@ -108,7 +108,8 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
 
-        <activity android:name=".Controllers.TimeTableVC"></activity>
+        <activity android:name=".Controllers.TimeTableVC" />
+        <activity android:name=".Controllers.StatusSelectVC"></activity>
     </application>
 
 </manifest>

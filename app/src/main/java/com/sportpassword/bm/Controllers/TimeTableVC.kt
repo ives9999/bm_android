@@ -14,6 +14,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import com.sportpassword.bm.Adapters.Form.FormItemAdapter
+import com.sportpassword.bm.Form.FormItem.ColorFormItem
+import com.sportpassword.bm.Form.FormItem.StatusFormItem
 import com.sportpassword.bm.Form.FormItem.TimeFormItem
 import com.sportpassword.bm.Form.FormItem.WeekdayFormItem
 import com.sportpassword.bm.Form.TimeTableForm
@@ -330,6 +332,14 @@ class TimeTableVC : BaseActivity() {
                     }
                     5-> {
                         val intent1 = Intent(this, ColorSelectVC::class.java)
+                        intent1.putExtra("key", COLOR_SELECT_KEY)
+                        intent1.putExtra("selecteds", formItem.sender as ArrayList<MYCOLOR>)
+                        startActivityForResult(intent1, SEARCH_REQUEST_CODE)
+                    }
+                    6-> {
+                        val intent1 = Intent(this, StatusSelectVC::class.java)
+                        intent1.putExtra("key", STATUS_SELECT_KEY)
+                        intent1.putExtra("selected", formItem.sender as STATUS)
                         startActivityForResult(intent1, SEARCH_REQUEST_CODE)
                     }
                 }
@@ -376,6 +386,21 @@ class TimeTableVC : BaseActivity() {
                                 item.value = times["time"] as String
                                 item.make()
                             }
+                        }
+                        COLOR_SELECT_KEY -> {
+                            idx = 5
+                            val colors = data!!.getSerializableExtra("selecteds") as ArrayList<MYCOLOR>
+                            val item = form.formItems[idx] as ColorFormItem
+                            item.value = colors[0].toString()
+//                            println(item.value)
+                            item.make()
+                        }
+                        STATUS_SELECT_KEY -> {
+                            idx = 6
+                            val status = data!!.getSerializableExtra("selected") as STATUS
+                            val item = form.formItems[idx] as StatusFormItem
+                            item.value = status.toString()
+                            item.make()
                         }
                     }
                     val rows = generateFormItems()

@@ -85,6 +85,9 @@ enum class STATUS(val value: String) {
     delete("刪除");
 
     companion object {
+
+        val allValues: ArrayList<STATUS> = arrayListOf(online, offline, padding, trash, delete)
+
         fun from(value: String): STATUS {
             when (value) {
                 "online" -> return online
@@ -94,6 +97,14 @@ enum class STATUS(val value: String) {
                 "delete" -> return delete
             }
             return online
+        }
+
+        fun all(): ArrayList<HashMap<String, Any>> {
+            val res: ArrayList<HashMap<String, Any>> = arrayListOf()
+            for (item in allValues) {
+                res.add(hashMapOf("key" to item.toString(), "value" to item, "ch" to item.value))
+            }
+            return res
         }
     }
 }

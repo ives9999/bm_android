@@ -27,6 +27,7 @@ class StatusFormItem: FormItem {
     }
 
     override fun make() {
+        valueToAnother()
         if (status != null) {
             show = status!!.value
             value = status!!.toString()

@@ -169,6 +169,10 @@ val TT_COLOR: String = "color"
 val TT_STATUS: String = "status"
 val TT_CONTENT: String = "content"
 
+// Select key
+val COLOR_SELECT_KEY: String = "color_select"
+val STATUS_SELECT_KEY: String = "select_select"
+
 // member
 val MEMBER_ARRAY: Map<String, Map<String, String>> = mapOf(
         ID_KEY to hashMapOf("type" to "Int","default" to "0"),

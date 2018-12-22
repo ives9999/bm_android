@@ -27,6 +27,7 @@ class ColorFormItem: FormItem {
     }
 
     override fun make() {
+        valueToAnother()
         if (color != null) {
             value = color?.toString()
             val tmp: ArrayList<MYCOLOR> = arrayListOf(color!!)
