@@ -9,6 +9,7 @@ open class BaseForm {
     var title: String? = null
     var values: HashMap<String, String>? = null
     var id: Int? = null
+    var isChange: Boolean = false
 
     constructor(id: Int? = null, values: HashMap<String, String>? = null, title: String = "") {
         this.id = id
@@ -28,6 +29,13 @@ open class BaseForm {
                 msg = item.msg
                 break
             }
+            if (!isChange) {
+                isChange = item.updateCheckChange()
+            }
+        }
+        if (isValid && !isChange) {
+            isValid = false
+            msg = "沒有更改任何值，所以不用送出更新"
         }
         return Pair(isValid, msg)
     }

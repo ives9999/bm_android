@@ -25,7 +25,9 @@ class ColorSelectVC: MyTableVC() {
         setContentView(R.layout.mytablevc)
         setMyTitle("顏色")
 
-        selecteds = intent.getSerializableExtra("selecteds") as ArrayList<MYCOLOR>
+        if (intent.hasExtra("selecteds")) {
+            selecteds = intent.getSerializableExtra("selecteds") as ArrayList<MYCOLOR>
+        }
         key = intent.getStringExtra("key")
 
         all = MYCOLOR.all()

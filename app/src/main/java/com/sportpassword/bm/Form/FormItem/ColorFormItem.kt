@@ -22,6 +22,7 @@ class ColorFormItem: FormItem {
 
     override fun reset() {
         super.reset()
+        value = null
         color = null
         make()
     }

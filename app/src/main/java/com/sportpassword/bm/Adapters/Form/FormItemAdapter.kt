@@ -1,5 +1,6 @@
 package com.sportpassword.bm.Adapters.Form
 
+import android.graphics.Color
 import android.view.View
 import com.sportpassword.bm.Form.BaseForm
 import com.sportpassword.bm.Form.FormItem.ColorFormItem
@@ -13,6 +14,7 @@ import com.xwray.groupie.kotlinandroidextensions.Item
 import com.xwray.groupie.kotlinandroidextensions.ViewHolder
 import kotlinx.android.synthetic.main.edit_item.*
 import kotlinx.android.synthetic.main.formitem_textfield.*
+import org.jetbrains.anko.backgroundColor
 import kotlinx.android.synthetic.main.formitem.title as title
 import kotlinx.android.synthetic.main.formitem_textfield.title as textfield_title
 import kotlinx.android.synthetic.main.formitem.clear as clear
@@ -48,27 +50,13 @@ open class FormItemAdapter(val form: BaseForm, val row: Int, val section: Int = 
                 viewHolder.textField.setText(formItem.value)
             }
         }
-        if (formItem.uiProperties.cellType == FormItemCellType.weekday) {
+        if (formItem.uiProperties.cellType == FormItemCellType.weekday || formItem.uiProperties.cellType == FormItemCellType.time || formItem.uiProperties.cellType == FormItemCellType.status || formItem.uiProperties.cellType == FormItemCellType.more) {
             if (formItem.show != null) {
                 viewHolder.detail.text = formItem.show
+            } else {
+                viewHolder.detail.text = ""
             }
-        }
-        if (formItem.uiProperties.cellType == FormItemCellType.time) {
-            if (formItem.show != null) {
-                viewHolder.detail.text = formItem.show
-            }
-        }
-
-        if (formItem.uiProperties.cellType == FormItemCellType.status) {
-            if (formItem.show != null) {
-                viewHolder.detail.text = formItem.show
-            }
-        }
-
-        if (formItem.uiProperties.cellType == FormItemCellType.more) {
-            if (formItem.show != null) {
-                viewHolder.detail.text = formItem.show
-            }
+            viewHolder.detail.backgroundColor = Color.TRANSPARENT
         }
 
         if (formItem.uiProperties.cellType == FormItemCellType.color) {
@@ -76,6 +64,9 @@ open class FormItemAdapter(val form: BaseForm, val row: Int, val section: Int = 
             if (_formItem.color != null) {
                 viewHolder.detail.setBackgroundColor(_formItem.color!!.toColor())
                 viewHolder.detail.text = "          "
+            } else {
+                viewHolder.detail.text = ""
+                viewHolder.detail.backgroundColor = Color.TRANSPARENT
             }
         }
 

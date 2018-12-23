@@ -50,18 +50,22 @@ open class FormItem {
                 return
             }
             if (value != null && (value?.isEmpty()!!)) {
-            isValid = false
-            msg = "${title} 欄位值不能為空白"
-            return
-        }
-//            if (value != null && oldValue != null) && (value == oldValue) {
-//                isValid = false
-//                msg = "\(title) 沒有更改欄位值"
-//                return
-//            }
+                isValid = false
+                msg = "${title} 欄位值不能為空白"
+                return
+            }
             isValid = true
         } else {
             this.isValid = true
         }
+    }
+
+    open fun updateCheckChange(): Boolean {
+        if ((value != null && oldValue != null) && (value == oldValue)) {
+            isValid = false
+            msg = "${title} 沒有更改欄位值"
+            return false
+        }
+        return true
     }
 }

@@ -173,7 +173,7 @@ class TimeTableVC : BaseActivity() {
         for (i in 0..parent.childCount-1) {
             val subView = parent.getChildAt(i)
             if (subView != null) {
-                if (subView.tag != null && subView.tag as Int >= 100) {
+                if (subView.tag != null && subView.tag as Int >= 1000) {
                     parent.removeViewAt(i)
                 }
             }
@@ -183,7 +183,7 @@ class TimeTableVC : BaseActivity() {
             val hours = row._end - row._start
             val eventViewWidth = cellWidth.toInt()-2*cellBorderWidth
             val eventViewHeight = cellHeight*hours-2*cellBorderWidth
-            val eventView = generateView(eventViewWidth, eventViewHeight, 100+i , row._color.toColor())
+            val eventView = generateView(eventViewWidth, eventViewHeight, 1000+i , row._color.toColor())
             parent.addView(eventView)
             eventViews.add(eventView)
             val c1 = ConstraintSet()
@@ -242,8 +242,8 @@ class TimeTableVC : BaseActivity() {
         val tag = view.tag as Int
 //        println(tag)
         //event
-        if (tag >= 100) {
-            val idx = tag - 100
+        if (tag >= 1000) {
+            val idx = tag - 1000
             val event = timeTable.rows[idx]
             var values: HashMap<String, String> = hashMapOf()
             for (formItem in form.formItems) {
@@ -280,7 +280,8 @@ class TimeTableVC : BaseActivity() {
     }
 
     fun add(view: View) {
-        form = TimeTableForm(null, test)
+        form = TimeTableForm()
+        //form = TimeTableForm(null, test)
         showEditEvent()
     }
 
@@ -344,7 +345,9 @@ class TimeTableVC : BaseActivity() {
                     5-> {
                         val intent1 = Intent(this, ColorSelectVC::class.java)
                         intent1.putExtra("key", COLOR_SELECT_KEY)
-                        intent1.putExtra("selecteds", formItem.sender as ArrayList<MYCOLOR>)
+                        if (formItem.sender != null) {
+                            intent1.putExtra("selecteds", formItem.sender as ArrayList<MYCOLOR>)
+                        }
                         startActivityForResult(intent1, SEARCH_REQUEST_CODE)
                     }
                     6-> {
@@ -481,7 +484,7 @@ class TimeTableVC : BaseActivity() {
         val (isValid, msg) = form.isValid()
         if (!isValid) {
             var _msg = "欄位驗證錯誤"
-            if (msg == null) {
+            if (msg != null) {
                 _msg = msg!!
             }
             warning(_msg)
