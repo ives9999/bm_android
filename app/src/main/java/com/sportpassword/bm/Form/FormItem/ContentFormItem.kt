@@ -30,9 +30,9 @@ class ContentFormItem: FormItem {
     override fun make() {
         if (value != null) {
             show = value!!
-            if (show.length > 5) {
-                show = show.truncate(5)
-            }
+//            if (show.length > 5) {
+//                show = show.truncate(5)
+//            }
             sender = value
 //            sender = hashMapOf("type" to contentType!!, "text" to value!!)
         } else {
