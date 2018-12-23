@@ -29,9 +29,10 @@ class ContentFormItem: FormItem {
     override fun make() {
         if (value != null) {
             show = value!!
-            sender = hashMapOf("type" to contentType!!, "text" to value!!)
+            sender = value
+//            sender = hashMapOf("type" to contentType!!, "text" to value!!)
         } else {
-            sender = hashMapOf("type" to contentType!!, "text" to "")
+            sender = ""
         }
     }
 }

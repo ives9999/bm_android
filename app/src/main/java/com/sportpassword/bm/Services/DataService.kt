@@ -821,6 +821,106 @@ open class DataService: BaseService() {
         Volley.newRequestQueue(context).add(request)
     }
 
+    fun updateTT(context: Context, type: String, params:HashMap<String, Any>, completion: CompletionHandler) {
+        val body = JSONObject()
+        body.put("source", "app")
+        body.put("channel", CHANNEL)
+        for ((key, value) in params) {
+            body.put(key, value)
+        }
+        val requestBody = body.toString()
+        //print(body)
+        val url = "$URL_TT_UPDATE".format(type)
+        //print(url)
+        val request = object : JsonObjectRequest(Request.Method.POST, url, null, Response.Listener { json ->
+            //println("json: " + json)
+            try {
+
+                success = json.getBoolean("success")
+                if (!success) {
+                    msg = json.getString("msg")
+                } else {
+                    timeTable = JSONParse.parse<TimeTable>(json)!!
+                    for (row in timeTable.rows) {
+                        row.filterRow()
+                    }
+                }
+                //println(json)
+//                println(data)
+            } catch (e: JSONException) {
+                println("parse data error: " + e.localizedMessage)
+                success = false
+                msg = "無法getOne，沒有傳回成功值 " + e.localizedMessage
+            }
+            completion(success)
+
+        }, Response.ErrorListener { error ->
+            //Log.d("ERROR", "Could not register user: $error")
+            println(error.localizedMessage)
+            this.msg = "取得失敗，網站或網路錯誤"
+            completion(false)
+        }) {
+            override fun getBodyContentType(): String {
+                return HEADER
+            }
+
+            override fun getBody(): ByteArray {
+                return requestBody.toByteArray()
+            }
+        }
+        Volley.newRequestQueue(context).add(request)
+    }
+
+    fun deleteTT(context: Context, type: String, params:HashMap<String, Any>, completion: CompletionHandler) {
+        val body = JSONObject()
+        body.put("source", "app")
+        body.put("channel", CHANNEL)
+        for ((key, value) in params) {
+            body.put(key, value)
+        }
+        val requestBody = body.toString()
+        //print(body)
+        val url = "$URL_TT_DELETE".format(type)
+        //print(url)
+        val request = object : JsonObjectRequest(Request.Method.POST, url, null, Response.Listener { json ->
+            //println("json: " + json)
+            try {
+
+                success = json.getBoolean("success")
+                if (!success) {
+                    msg = json.getString("msg")
+                } else {
+                    timeTable = JSONParse.parse<TimeTable>(json)!!
+                    for (row in timeTable.rows) {
+                        row.filterRow()
+                    }
+                }
+                //println(json)
+//                println(data)
+            } catch (e: JSONException) {
+                println("parse data error: " + e.localizedMessage)
+                success = false
+                msg = "無法getOne，沒有傳回成功值 " + e.localizedMessage
+            }
+            completion(success)
+
+        }, Response.ErrorListener { error ->
+            //Log.d("ERROR", "Could not register user: $error")
+            println(error.localizedMessage)
+            this.msg = "取得失敗，網站或網路錯誤"
+            completion(false)
+        }) {
+            override fun getBodyContentType(): String {
+                return HEADER
+            }
+
+            override fun getBody(): ByteArray {
+                return requestBody.toByteArray()
+            }
+        }
+        Volley.newRequestQueue(context).add(request)
+    }
+
     open fun setData(id: Int, title: String, token: String, featured_path: String, vimeo: String, youtube: String): SuperData {
         val data = SuperData(id, title, token, featured_path, vimeo, youtube)
 

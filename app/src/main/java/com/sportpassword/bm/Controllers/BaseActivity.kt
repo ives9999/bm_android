@@ -846,6 +846,9 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener {
         shape.shape = GradientDrawable.RECTANGLE
         shape.setColor(myRed)
         shape.cornerRadius = 82f
+        layerDeleteBtn!!.setOnClickListener {
+            layerDelete()
+        }
 
         layerDeleteBtn!!.backgroundDrawable = shape
         layerDeleteBtn!!.setTextColor(Color.WHITE)

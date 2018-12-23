@@ -14,10 +14,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import com.sportpassword.bm.Adapters.Form.FormItemAdapter
-import com.sportpassword.bm.Form.FormItem.ColorFormItem
-import com.sportpassword.bm.Form.FormItem.StatusFormItem
-import com.sportpassword.bm.Form.FormItem.TimeFormItem
-import com.sportpassword.bm.Form.FormItem.WeekdayFormItem
+import com.sportpassword.bm.Form.FormItem.*
 import com.sportpassword.bm.Form.TimeTableForm
 import com.sportpassword.bm.Models.TimeTable
 import com.sportpassword.bm.R
@@ -30,6 +27,7 @@ import org.jetbrains.anko.backgroundColor
 import org.jetbrains.anko.sdk25.coroutines.onScrollChange
 import org.jetbrains.anko.textColor
 import com.sportpassword.bm.Utilities.*
+import com.sportpassword.bm.member
 import kotlin.reflect.full.declaredMemberProperties
 
 class TimeTableVC : BaseActivity() {
@@ -110,14 +108,18 @@ class TimeTableVC : BaseActivity() {
         Loading.show(mask)
         dataService.getTT(this, token, source) { success ->
             if (success) {
-                timeTable = dataService.timeTable
-                markEvent(container)
+                refreshEvent(container)
             } else {
                 warning(dataService.msg)
             }
             closeRefresh()
             Loading.hide(mask)
         }
+    }
+
+    fun refreshEvent(parent: ViewGroup) {
+        timeTable = dataService.timeTable
+        markEvent(parent)
     }
 
     fun addGrid() {
@@ -167,6 +169,15 @@ class TimeTableVC : BaseActivity() {
     }
 
     fun markEvent(parent: ViewGroup) {
+        eventViews.clear()
+        for (i in 0..parent.childCount-1) {
+            val subView = parent.getChildAt(i)
+            if (subView != null) {
+                if (subView.tag != null && subView.tag as Int >= 100) {
+                    parent.removeViewAt(i)
+                }
+            }
+        }
         for (i in 0..timeTable.rows.size-1) {
             val row = timeTable.rows[i]
             val hours = row._end - row._start
@@ -342,6 +353,11 @@ class TimeTableVC : BaseActivity() {
                         intent1.putExtra("selected", formItem.sender as STATUS)
                         startActivityForResult(intent1, SEARCH_REQUEST_CODE)
                     }
+                    7-> {
+                        intent.putExtra("key", CONTENT_KEY)
+                        intent.putExtra("value", formItem.sender as String)
+                        startActivityForResult(intent, SEARCH_REQUEST_CODE)
+                    }
                 }
             }
         }
@@ -402,6 +418,13 @@ class TimeTableVC : BaseActivity() {
                             item.value = status.toString()
                             item.make()
                         }
+                        CONTENT_KEY -> {
+                            idx = 7
+                            val value = data!!.getStringExtra("res")
+                            val item = form.formItems[idx] as ContentFormItem
+                            item.value = value
+                            item.make()
+                        }
                     }
                     val rows = generateFormItems()
                     searchAdapter.update(rows)
@@ -427,6 +450,68 @@ class TimeTableVC : BaseActivity() {
         }
 
         return rows
+    }
+
+    fun prepareParams() {
+        params.clear()
+        params["model_token"] = token
+        params["created_token"] = member.token
+        for (formItem in form.formItems) {
+            if (formItem.name != null && formItem.value != null) {
+                params[formItem.name!!] = formItem.value!!
+            }
+        }
+        if (form.id != null) {
+            params["id"] = form.id!!.toString()
+        }
+        //print(params)
+        unmask()
+        Loading.show(mask)
+        dataService.updateTT(this, "coach", params) { success ->
+                Loading.hide(mask)
+            if (success) {
+                refreshEvent(container)
+            } else {
+                warning(dataService.msg)
+            }
+        }
+    }
+
+    override fun layerSubmit(page: String) {
+        val (isValid, msg) = form.isValid()
+        if (!isValid) {
+            var _msg = "欄位驗證錯誤"
+            if (msg == null) {
+                _msg = msg!!
+            }
+            warning(_msg)
+            return
+        }
+
+        prepareParams()
+    }
+
+    override fun layerDelete() {
+        warning("是否真的要刪除此事件？", "取消", "確定", {_layerDelete()})
+    }
+
+    fun _layerDelete() {
+        params.clear()
+        params["model_token"] = token
+        if (form.id != null) {
+            params["id"] = form.id!!.toString()
+        }
+        //print(params)
+        unmask()
+        Loading.show(mask)
+        dataService.deleteTT(this, "coach", params) { success ->
+            Loading.hide(mask)
+            if (success) {
+                refreshEvent(container)
+            } else {
+                warning(dataService.msg)
+            }
+        }
     }
 
 }
