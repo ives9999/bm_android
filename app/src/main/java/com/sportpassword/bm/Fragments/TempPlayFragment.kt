@@ -146,7 +146,7 @@ class TempPlayFragment : TabFragment(), inter {
                         intent.putParcelableArrayListExtra("citys", citys)
                     }
                     2 -> {// weekdays
-                        intent.putExtra("key", TEAM_DAYS_KEY)
+                        intent.putExtra("key", TEAM_WEEKDAYS_KEY)
                         intent.putExtra("source", "search")
                         intent.putIntegerArrayListExtra("weekdays", days)
                     }
@@ -231,7 +231,7 @@ class TempPlayFragment : TabFragment(), inter {
                         } else {
                             value = "全部"
                         }
-                    } else if (key == TEAM_DAYS_KEY) {
+                    } else if (key == TEAM_WEEKDAYS_KEY) {
                         section = 0
                         row = 2
                         days = data!!.getIntegerArrayListExtra("weekdays")

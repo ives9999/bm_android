@@ -3,7 +3,6 @@ package com.sportpassword.bm.Fragments
 import android.os.Bundle
 import android.view.*
 import android.widget.ImageButton
-import com.sportpassword.bm.Controllers.MainActivity
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.TeamService
 import com.sportpassword.bm.Utilities.Loading
@@ -20,7 +19,7 @@ class TeamFragment: TabFragment() {
         hashMapOf("title" to "關鍵字","detail" to "全部","key" to KEYWORD_KEY),
         hashMapOf("title" to "縣市","detail" to "全部","key" to CITY_KEY),
         hashMapOf("title" to "球館","detail" to "全部","key" to ARENA_KEY),
-        hashMapOf("title" to "日期","detail" to "全部","key" to TEAM_DAYS_KEY),
+        hashMapOf("title" to "日期","detail" to "全部","key" to TEAM_WEEKDAYS_KEY),
         hashMapOf("title" to "時段","detail" to "全部","key" to TEAM_PLAY_START_KEY),
         hashMapOf("title" to "程度","detail" to "全部","key" to TEAM_DEGREE_KEY)
     )

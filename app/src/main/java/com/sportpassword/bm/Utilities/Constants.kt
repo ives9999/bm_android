@@ -73,7 +73,7 @@ val TEAM_PLAY_END_KEY: String = "play_end"
 val TEAM_INTERVAL_KEY: String = "interval"
 val TEAM_BALL_KEY: String = "ball"
 val TEAM_DEGREE_KEY: String = "degree"
-val TEAM_DAYS_KEY: String = "weekdays"
+val TEAM_WEEKDAYS_KEY: String = "weekdays"
 val TEAM_NEAR_DATE_KEY: String = "near_date"
 
 val TEAM_TEMP_FEE_M_KEY: String = "temp_fee_M"

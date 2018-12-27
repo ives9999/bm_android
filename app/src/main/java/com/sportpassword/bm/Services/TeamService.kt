@@ -5,7 +5,6 @@ import com.android.volley.DefaultRetryPolicy
 import com.android.volley.Request
 import com.android.volley.Response
 import com.android.volley.toolbox.JsonObjectRequest
-import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import com.beust.klaxon.Klaxon
 import com.sportpassword.bm.Models.*
@@ -25,27 +24,6 @@ object TeamService: DataService() {
     lateinit var temp_play_data: MutableMap<String, MutableMap<String, Any>>
     lateinit var tempPlayDate: TempPlayDate
     lateinit var tempPlayDatePlayer: TempPlayDatePlayer
-
-    override fun setData(id: Int, title: String, token: String, featured_path: String, vimeo: String, youtube: String): Team {
-        val data = Team(id, title, token, featured_path, vimeo, youtube)
-        return data
-    }
-
-    override fun setData1(obj: JSONObject): MutableMap<String, MutableMap<String, Any>> {
-        super.setData1(obj)
-        model.dataReset()
-        for ((key, value) in model.data) {
-            if (obj.has(key)) {
-                _jsonToData(obj, key, value)
-            }
-        }
-        model.updateInterval()
-//        println(model.data)
-//        val citys = row.getJSONObject("city")
-//        val city_name = citys.getString("name")
-//        val city_id = citys.getInt("id")
-        return model.data
-    }
 
     fun tempPlay_list(context: Context, params: HashMap<String,Any>, page:Int, perPage:Int, complete: CompletionHandler) {
         val url = URL_TEAM_TEMP_PLAY_LIST
@@ -512,6 +490,27 @@ object TeamService: DataService() {
         Volley.newRequestQueue(context).add(request)
     }
 
+    override fun setData(id: Int, title: String, token: String, featured_path: String, vimeo: String, youtube: String): Team {
+        val data = Team(id, title, token, featured_path, vimeo, youtube)
+        return data
+    }
+
+    override fun setData1(obj: JSONObject): MutableMap<String, MutableMap<String, Any>> {
+        super.setData1(obj)
+        model.dataReset()
+        for ((key, value) in model.data) {
+            if (obj.has(key)) {
+                _jsonToData(obj, key, value)
+            }
+        }
+        model.updateInterval()
+//        println(model.data)
+//        val citys = row.getJSONObject("city")
+//        val city_name = citys.getString("name")
+//        val city_id = citys.getInt("id")
+        return model.data
+    }
+
     override fun _jsonToData(tmp: JSONObject, key: String, item: Map<String, Any>) {
         //println(key)
         val type = item["vtype"] as String
@@ -566,16 +565,16 @@ object TeamService: DataService() {
                 } catch (e: JSONException) {
 
                 }
-            } else if (key == TEAM_DAYS_KEY) {
+            } else if (key == TEAM_WEEKDAYS_KEY) {
                 try {
                     val tmp1: JSONArray = tmp.getJSONArray(key)
                     var days: ArrayList<Int> = arrayListOf<Int>()
                     for (i in 0..tmp1.length() - 1) {
                         val obj: JSONObject = tmp1.getJSONObject(i)
-                        val day = obj.getInt("day")
+                        val day = obj.getInt("weekday")
                         days.add(day)
                     }
-                    model.updateDays(days)
+                    model.updateWeekdays(days)
                 } catch (e: JSONException) {
 
                 }

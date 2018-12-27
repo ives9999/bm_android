@@ -60,20 +60,20 @@ class TimeTableForm: BaseForm {
             }
         }
 
-        var isValid1 = false
-        for (forItem in formItems) {
-            if (forItem.oldValue != null) {
-                if (forItem.isRequired && forItem.value != null) {
-                    if (forItem.value != forItem.oldValue) {
-                        isValid1 = true
-                        break
-                    }
-                }
-            }
-        }
-        if (!isValid1) {
-            //return (isValid1, "沒有修改任何值，不用提交")
-        }
+//        var isValid1 = false
+//        for (forItem in formItems) {
+//            if (forItem.oldValue != null) {
+//                if (forItem.isRequired && forItem.value != null) {
+//                    if (forItem.value != forItem.oldValue) {
+//                        isValid1 = true
+//                        break
+//                    }
+//                }
+//            }
+//        }
+//        if (!isValid1) {
+//            return (isValid1, "沒有修改任何值，不用提交")
+//        }
 
         return Pair(true, null)
     }

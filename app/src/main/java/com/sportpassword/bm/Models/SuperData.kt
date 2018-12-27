@@ -53,7 +53,7 @@ open class SuperData(val id: Int, val title: String, val token: String, val feat
 
     open fun updateArena(arena: Arena? = null) {}
     open fun updateDegree(degrees: ArrayList<DEGREE>?=null) {}
-    open fun updateDays(days: ArrayList<Int>? = null) {}
+    open fun updateWeekdays(days: ArrayList<Int>? = null) {}
 
     // android not use
     open fun initTextData() {

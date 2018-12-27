@@ -1,7 +1,6 @@
 package com.sportpassword.bm.Controllers
 
 import android.app.Activity
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.support.v4.content.LocalBroadcastManager
@@ -11,7 +10,6 @@ import com.sportpassword.bm.Services.TeamService
 import kotlinx.android.synthetic.main.edit_vc.*
 import org.jetbrains.anko.sdk25.coroutines.onClick
 import android.support.v7.app.AlertDialog
-import android.util.AttributeSet
 import android.view.Menu
 import android.view.View
 import android.widget.*
@@ -150,7 +148,7 @@ class EditVC : MyTableVC(), ImagePicker {
             notifyChanged(true)
         } else if (key == ARENA_KEY) {
             updateArena()
-        } else if (key == TEAM_DAYS_KEY) {
+        } else if (key == TEAM_WEEKDAYS_KEY) {
             updateDays()
         } else if (key == TEAM_PLAY_START_KEY || key == TEAM_PLAY_END_KEY) {
             updateTime(key)
@@ -464,7 +462,7 @@ class EditVC : MyTableVC(), ImagePicker {
         hideKeyboard()
         val intent = Intent(this@EditVC, EditItemActivity::class.java)
         intent.putExtra("key", key)
-        if (key == TEAM_DAYS_KEY) {
+        if (key == TEAM_WEEKDAYS_KEY) {
             val value: MutableList<Int> = model.data[key]!!["value"] as MutableList<Int>
             val days: ArrayList<Int> = arrayListOf()
             if (value.size > 0) {
@@ -532,7 +530,7 @@ class EditVC : MyTableVC(), ImagePicker {
             SELECT_REQUEST_CODE -> {
                 if (resultCode == Activity.RESULT_OK) {
                     val key = data!!.getStringExtra("key")
-                    if (key == TEAM_DAYS_KEY) {
+                    if (key == TEAM_WEEKDAYS_KEY) {
                         val days: ArrayList<Int> = data!!.getIntegerArrayListExtra("weekdays")
                         updateDays(days)
                     } else if (key == TEAM_PLAY_START_KEY || key == TEAM_PLAY_END_KEY) {
@@ -591,9 +589,9 @@ class EditVC : MyTableVC(), ImagePicker {
 
     fun updateDays(days: ArrayList<Int>? = null) {
         if (days != null && days.size > 0) {
-            model.updateDays(days)
+            model.updateWeekdays(days)
         } else {
-            model.updateDays()
+            model.updateWeekdays()
         }
     }
 

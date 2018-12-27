@@ -255,7 +255,7 @@ open class DataService: BaseService() {
                     params.put("degree="+i, d)
                     i++
                 }
-            } else if (key == TEAM_DAYS_KEY) {
+            } else if (key == TEAM_WEEKDAYS_KEY) {
                 val tmp: List<Int> = row as ArrayList<Int>
                 var i = 1
                 for (d in tmp) {
@@ -370,7 +370,7 @@ open class DataService: BaseService() {
                         for (d in tmp) {
                             "degree[]" - d
                         }
-                    } else if (key == TEAM_DAYS_KEY) {
+                    } else if (key == TEAM_WEEKDAYS_KEY) {
                         val tmp: List<Int> = row as ArrayList<Int>
                         for (d in tmp) {
                             "weekdays[]" - d.toString()

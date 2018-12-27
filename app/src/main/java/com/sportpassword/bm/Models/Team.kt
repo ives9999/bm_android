@@ -1,8 +1,6 @@
 package com.sportpassword.bm.Models
 
-import android.text.InputType
 import com.sportpassword.bm.Utilities.*
-import com.sportpassword.bm.member
 
 /**
  * Created by ives on 2018/2/14.
@@ -23,7 +21,7 @@ class Team(id: Int, name: String, token: String, featured_path: String, vimeo: S
             arrayListOf(NAME_KEY),
             arrayListOf(TEAM_LEADER_KEY,MOBILE_KEY,EMAIL_KEY),
             arrayListOf(CITY_KEY, ARENA_KEY),
-            arrayListOf(TEAM_DAYS_KEY,TEAM_PLAY_START_KEY,TEAM_PLAY_END_KEY),
+            arrayListOf(TEAM_WEEKDAYS_KEY,TEAM_PLAY_START_KEY,TEAM_PLAY_END_KEY),
             arrayListOf(TEAM_TEMP_FEE_M_KEY,TEAM_TEMP_FEE_F_KEY, TEAM_TEMP_CONTENT_KEY),
             arrayListOf(TEAM_BALL_KEY,TEAM_DEGREE_KEY,CHARGE_KEY,CONTENT_KEY)
     )
@@ -50,7 +48,7 @@ class Team(id: Int, name: String, token: String, featured_path: String, vimeo: S
                 TEAM_TEMP_CONTENT_KEY to mutableMapOf("ch" to "臨打說明","vtype" to "String","value" to "","submit" to true,"atype" to more,"segue" to TO_TEXT_INPUT,"sender" to mutableMapOf<String, Any>(),"show" to ""),
                 CITY_KEY to mutableMapOf("ch" to "區域","vtype" to "array","value" to 0,"submit" to true,"atype" to more,"segue" to TO_CITY,"sender" to 0,"show" to ""),
                 ARENA_KEY to mutableMapOf("ch" to "球館","vtype" to "array","value" to 0,"submit" to true,"atype" to more,"segue" to TO_ARENA,"sender" to mutableMapOf<String, Int>(),"show" to ""),
-                TEAM_DAYS_KEY to mutableMapOf("ch" to "星期幾","vtype" to "array","value" to mutableListOf<Int>(),"submit" to true,"atype" to more,"segue" to TO_DAY,"sender" to mutableListOf<Int>(),"show" to ""),
+                TEAM_WEEKDAYS_KEY to mutableMapOf("ch" to "星期幾","vtype" to "array","value" to mutableListOf<Int>(),"submit" to true,"atype" to more,"segue" to TO_DAY,"sender" to mutableListOf<Int>(),"show" to ""),
 
                 ID_KEY to mutableMapOf("ch" to "編號","vtype" to "Int","value" to -1),
                 CHANNEL_KEY to mutableMapOf("ch" to "頻道","vtype" to "String","value" to "","submit" to false,"show" to ""),
@@ -107,7 +105,7 @@ class Team(id: Int, name: String, token: String, featured_path: String, vimeo: S
                 TEAM_PLAY_START_KEY to "16:00",
                 TEAM_PLAY_END_KEY to "18:00",
                 TEAM_DEGREE_KEY to arrayListOf(DEGREE.high, DEGREE.soso),
-                TEAM_DAYS_KEY to arrayListOf(2, 4),
+                TEAM_WEEKDAYS_KEY to arrayListOf(2, 4),
                 CITY_KEY to City(218, "台南"),
                 ARENA_KEY to Arena(10, "全穎羽球館"),
                 CREATED_ID_KEY to 1
@@ -135,7 +133,7 @@ class Team(id: Int, name: String, token: String, featured_path: String, vimeo: S
                 }
                 data[key1]!!["change"] = true
             }
-            updateDays(testData[TEAM_DAYS_KEY] as ArrayList<Int>)
+            updateWeekdays(testData[TEAM_WEEKDAYS_KEY] as ArrayList<Int>)
             updateDegree(testData[TEAM_DEGREE_KEY] as ArrayList<DEGREE>)
         }
     }
@@ -149,25 +147,25 @@ class Team(id: Int, name: String, token: String, featured_path: String, vimeo: S
     }
 
     override fun updateArena(arena: Arena?) {
-        if (arena != null) {
+        if (arena != null && arena.title.length > 0) {
             data[ARENA_KEY]!!["value"] = arena.id
             data[ARENA_KEY]!!["show"] = arena.title
             setArenaSender()
         } else {
             data[ARENA_KEY]!!["value"] = 0
-            data[ARENA_KEY]!!["show"] = ""
+            data[ARENA_KEY]!!["show"] = "未提供"
         }
     }
 
-    override fun updateDays(days: ArrayList<Int>?) {
-        if (days != null) {
-            data[TEAM_DAYS_KEY]!!["value"] = days
+    override fun updateWeekdays(weekdays: ArrayList<Int>?) {
+        if (weekdays != null) {
+            data[TEAM_WEEKDAYS_KEY]!!["value"] = weekdays
         } else {
-            data[TEAM_DAYS_KEY]!!["value"] = mutableListOf<Int>()
+            data[TEAM_WEEKDAYS_KEY]!!["value"] = mutableListOf<Int>()
 
         }
-        daysShow()
-        setDaysSender()
+        weekdaysShow()
+        setWeekdaysSender()
     }
 
     override fun updateDegree(degrees: ArrayList<DEGREE>?) {
@@ -223,26 +221,28 @@ class Team(id: Int, name: String, token: String, featured_path: String, vimeo: S
         data[TEAM_NEAR_DATE_KEY]!!["show"] = n
     }
 
-    fun daysShow() {
-        val row: Map<String, Any> = data[TEAM_DAYS_KEY]!!
-        val days = row["value"] as ArrayList<Int>
+    fun weekdaysShow() {
+        val row: Map<String, Any> = data[TEAM_WEEKDAYS_KEY]!!
+        val weekdays = row["value"] as ArrayList<Int>
         var show = ""
-        if (days.size > 0) {
+        if (weekdays.size > 0) {
             var res: ArrayList<String> = arrayListOf<String>()
-            for (i in 0..days.size-1) {
-                val day = days[i]
+            for (i in 0..weekdays.size-1) {
+                val weekday = weekdays[i]
                 for (j in 0..DAYS.size-1) {
                     val item = DAYS[j]
                     val idx: Int = item["value"] as Int
                     val text: String = item["text"] as String
-                    if (idx == day) {
+                    if (idx == weekday) {
                         res.add(text)
                     }
                 }
             }
             show = res.joinToString(", ")
+        } else {
+            show = "未提供"
         }
-        data[TEAM_DAYS_KEY]!!["show"] = show
+        data[TEAM_WEEKDAYS_KEY]!!["show"] = show
     }
 
     fun degreeShow() {
@@ -282,8 +282,8 @@ class Team(id: Int, name: String, token: String, featured_path: String, vimeo: S
         data[ARENA_KEY]!!["sender"] = arena_sender
     }
 
-    fun setDaysSender() {
-        data[TEAM_DAYS_KEY]!!["sender"] = data[TEAM_DAYS_KEY]!!["value"]!!
+    fun setWeekdaysSender() {
+        data[TEAM_WEEKDAYS_KEY]!!["sender"] = data[TEAM_WEEKDAYS_KEY]!!["value"]!!
     }
 
     fun setDegreeSender() {

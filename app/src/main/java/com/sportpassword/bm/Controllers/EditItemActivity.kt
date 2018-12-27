@@ -90,7 +90,7 @@ class EditItemActivity() : BaseActivity() {
         if (intent.hasExtra("select")) {
             select = intent.getStringExtra("select")
         }
-        if (key == TEAM_DAYS_KEY || key == TEAM_PLAY_START_KEY || key == TEAM_PLAY_END_KEY || key == TEAM_DEGREE_KEY || key == CITY_KEY || key == ARENA_KEY) {
+        if (key == TEAM_WEEKDAYS_KEY || key == TEAM_PLAY_START_KEY || key == TEAM_PLAY_END_KEY || key == TEAM_DEGREE_KEY || key == CITY_KEY || key == ARENA_KEY) {
             content_container.visibility = View.INVISIBLE
             val layout = findViewById(R.id.teamedititem_constraint) as ConstraintLayout
             val constraintSet = ConstraintSet()
@@ -98,7 +98,7 @@ class EditItemActivity() : BaseActivity() {
             constraintSet.connect(R.id.submit_container, ConstraintSet.TOP, R.id.teamedititem_container, ConstraintSet.BOTTOM, 32)
             constraintSet.applyTo(layout)
         }
-        if (key == TEAM_DAYS_KEY) {
+        if (key == TEAM_WEEKDAYS_KEY) {
             setMyTitle("星期幾")
             selectedWeekdays = intent.getIntegerArrayListExtra("weekdays")
             for (i in 0..allWeekdays.size-1) {
@@ -237,7 +237,7 @@ class EditItemActivity() : BaseActivity() {
                 //println(position)
                 //val checked: Boolean = !(daysLists[position]["checked"]!!.toBoolean())
                 //println(daysLists)
-                if (key == TEAM_DAYS_KEY) {
+                if (key == TEAM_WEEKDAYS_KEY) {
                     setWeekday(position)
                     if (select == "just one") {
                         submit(View(this))
@@ -488,7 +488,7 @@ class EditItemActivity() : BaseActivity() {
         val intent = Intent()
         intent.putExtra("key", key)
         intent.putExtra("page", page)
-        if (key == TEAM_DAYS_KEY) {
+        if (key == TEAM_WEEKDAYS_KEY) {
             intent.putIntegerArrayListExtra("weekdays", selectedWeekdays)
         } else if (key == TEAM_PLAY_START_KEY || key == TEAM_PLAY_END_KEY) {
             if (source == "setup" && !times.containsKey("time")) {

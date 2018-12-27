@@ -321,7 +321,7 @@ class TimeTableVC : BaseActivity() {
                 val intent = Intent(this, EditItemActivity::class.java)
                 when (idx) {
                     1 -> {
-                        intent.putExtra("key", TEAM_DAYS_KEY)
+                        intent.putExtra("key", TEAM_WEEKDAYS_KEY)
                         intent.putExtra("source", "search")
                         intent.putIntegerArrayListExtra("weekdays", formItem.sender as java.util.ArrayList<Int>)
                         startActivityForResult(intent, SEARCH_REQUEST_CODE)
@@ -381,7 +381,7 @@ class TimeTableVC : BaseActivity() {
                 if (resultCode == Activity.RESULT_OK) {
                     val key = data!!.getStringExtra("key")
                     when (key) {
-                        TEAM_DAYS_KEY -> {
+                        TEAM_WEEKDAYS_KEY -> {
                             idx = 1
                             weekdays = data!!.getIntegerArrayListExtra("weekdays")
                             val item = form.formItems[idx] as WeekdayFormItem

@@ -1,6 +1,5 @@
 package com.sportpassword.bm.Controllers
 
-import android.animation.Animator
 import android.app.Activity
 import android.content.BroadcastReceiver
 import android.content.Context
@@ -906,8 +905,8 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener {
                 intent.putIntegerArrayListExtra("citys_for_arena", citysForArena)
                 intent.putParcelableArrayListExtra("arenas", arenas)
             }
-            TEAM_DAYS_KEY -> {
-                intent.putExtra("key", TEAM_DAYS_KEY)
+            TEAM_WEEKDAYS_KEY -> {
+                intent.putExtra("key", TEAM_WEEKDAYS_KEY)
                 intent.putExtra("source", "search")
                 intent.putIntegerArrayListExtra("weekdays", weekdays)
             }
@@ -986,7 +985,7 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener {
                                 value = "全部"
                             }
                         }
-                        TEAM_DAYS_KEY -> {
+                        TEAM_WEEKDAYS_KEY -> {
                             idx = 3
                             weekdays = data!!.getIntegerArrayListExtra("weekdays")
                             if (weekdays.size > 0) {
