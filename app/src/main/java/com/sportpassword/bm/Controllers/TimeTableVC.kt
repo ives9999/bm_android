@@ -180,7 +180,7 @@ class TimeTableVC : BaseActivity() {
         }
         for (i in 0..timeTable.rows.size-1) {
             val row = timeTable.rows[i]
-            val hours = row._end - row._start
+            val hours = row._end_time - row._start_time
             val eventViewWidth = cellWidth.toInt()-2*cellBorderWidth
             val eventViewHeight = cellHeight*hours-2*cellBorderWidth
             val eventView = generateView(eventViewWidth, eventViewHeight, 1000+i , row._color.toColor())
@@ -188,9 +188,9 @@ class TimeTableVC : BaseActivity() {
             eventViews.add(eventView)
             val c1 = ConstraintSet()
             c1.clone(container)
-            val day = row.day
-            val _start = row._start
-            val idx = columnNum*(_start-startNum) + day
+            val weekday = row.weekday
+            val _start_time = row._start_time
+            val idx = columnNum*(_start_time-startNum) + weekday
             c1.connect(eventView.id, ConstraintSet.TOP, gridViews[idx].id, ConstraintSet.TOP, cellBorderWidth)
             c1.connect(eventView.id, ConstraintSet.LEFT, gridViews[idx].id, ConstraintSet.LEFT, cellBorderWidth)
             c1.applyTo(container)

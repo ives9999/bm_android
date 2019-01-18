@@ -12,9 +12,12 @@ class TimeTable(data: JSONObject): SuperModel(data) {
     inner class Row(data: JSONObject): SuperModel(data) {
         var id: Int = -1
         var title: String = ""
-        var day: Int = -1
-        var start: String = ""
-        var end: String = ""
+        var weekday: Int = -1
+        var start_date: String = ""
+        var end_date: String = ""
+        var start_time: String = ""
+        var end_time: String = ""
+        var charge: Int = -1
         var limit: Int = -1
         var count: Int = 0
         var content: String = ""
@@ -23,13 +26,13 @@ class TimeTable(data: JSONObject): SuperModel(data) {
         var created_id: Int = 0
         var created_at: String = ""
         var updated_at: String = ""
-        var _start: Int = 0
-        var _end: Int = 0
+        var _start_time: Int = 0
+        var _end_time: Int = 0
         var _color: MYCOLOR = MYCOLOR.success
 
         fun filterRow() {
-            _start = start.toDateTime("HH:mm:ss").getH()
-            _end = end.toDateTime("HH:mm:ss").getH()
+            _start_time = start_time.toDateTime("HH:mm:ss").getH()
+            _end_time = end_time.toDateTime("HH:mm:ss").getH()
             _color = MYCOLOR.from(color)
         }
     }
