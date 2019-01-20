@@ -19,6 +19,20 @@ open class BaseForm {
         this.fillValue()
     }
 
+    open fun isChanged(): Pair<Boolean, String?> {
+        var msg: String? = null
+        for (item in formItems) {
+            if (!isChange) {
+                isChange = item.updateCheckChange()
+            }
+        }
+        if (!isChange) {
+            msg = "沒有更改任何值，所以不用送出更新"
+        }
+
+        return Pair(isChange, msg)
+    }
+
     open fun isValid(): Pair<Boolean, String?> {
         var isValid = true
         var msg: String? = null
@@ -29,14 +43,8 @@ open class BaseForm {
                 msg = item.msg
                 break
             }
-            if (!isChange) {
-                isChange = item.updateCheckChange()
-            }
         }
-        if (isValid && !isChange) {
-            isValid = false
-            msg = "沒有更改任何值，所以不用送出更新"
-        }
+
         return Pair(isValid, msg)
     }
 

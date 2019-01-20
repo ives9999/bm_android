@@ -161,17 +161,21 @@ val ISTEAMMANAGER_KEY = "isTeamManager"
 
 // Timetalbe key
 val TT_TITLE: String = "title"
-val TT_WEEKDAY: String = "day"
-val TT_START: String = "start"
-val TT_END: String = "end"
+val TT_WEEKDAY: String = "weekday"
+val TT_START_DATE: String = "start_date"
+val TT_END_DATE: String = "end_date"
+val TT_START_TIME: String = "start_time"
+val TT_END_TIME: String = "end_time"
+val TT_CHARGE: String = "charge"
 val TT_LIMIT: String = "limit"
 val TT_COLOR: String = "color"
 val TT_STATUS: String = "status"
 val TT_CONTENT: String = "content"
 
 // Select key
+val DATE_SELECT_KEY: String = "date_select"
 val COLOR_SELECT_KEY: String = "color_select"
-val STATUS_SELECT_KEY: String = "select_select"
+val STATUS_SELECT_KEY: String = "status_select"
 
 // member
 val MEMBER_ARRAY: Map<String, Map<String, String>> = mapOf(

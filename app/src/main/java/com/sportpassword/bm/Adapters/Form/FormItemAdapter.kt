@@ -50,7 +50,7 @@ open class FormItemAdapter(val form: BaseForm, val row: Int, val section: Int = 
                 viewHolder.textField.setText(formItem.value)
             }
         }
-        if (formItem.uiProperties.cellType == FormItemCellType.weekday || formItem.uiProperties.cellType == FormItemCellType.time || formItem.uiProperties.cellType == FormItemCellType.status || formItem.uiProperties.cellType == FormItemCellType.more) {
+        if (formItem.uiProperties.cellType == FormItemCellType.weekday || formItem.uiProperties.cellType == FormItemCellType.time || formItem.uiProperties.cellType == FormItemCellType.status || formItem.uiProperties.cellType == FormItemCellType.more || formItem.uiProperties.cellType == FormItemCellType.date) {
             if (formItem.show != null) {
                 viewHolder.detail.text = formItem.show
             } else {

@@ -8,10 +8,7 @@ import android.support.constraint.ConstraintLayout
 import android.support.constraint.ConstraintSet
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
-import android.view.Gravity
-import android.view.Menu
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.*
 import com.sportpassword.bm.Adapters.Form.FormItemAdapter
 import com.sportpassword.bm.Form.FormItem.*
@@ -57,13 +54,17 @@ class TimeTableVC : BaseActivity() {
     var form: TimeTableForm = TimeTableForm()
     val test: HashMap<String, String> = hashMapOf(
             TT_TITLE to "練球",
-            TT_WEEKDAY to "5",
-            TT_START to "14:00",
-            TT_END to "17:00",
+            TT_WEEKDAY to "2",
+            TT_START_DATE to "2019-01-01",
+            TT_END_DATE to "2019-12-31",
+            TT_START_TIME to "08:00",
+            TT_END_TIME to "10:00",
+            TT_CHARGE to "800",
             TT_LIMIT to "6",
             TT_COLOR to "warning",
-            TT_STATUS to "offline",
+            TT_STATUS to "online",
             TT_CONTENT to "大家來練球")
+    var action: String = "INSERT"
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -86,14 +87,27 @@ class TimeTableVC : BaseActivity() {
         refresh.isEnabled = false
         refresh()
 
-        scroll.onScrollChange { v, scrollX, scrollY, oldScrollX, oldScrollY ->
-            if (scrollY <= 0) {
-                refresh.isEnabled = true
-            } else {
-                refresh.isEnabled = false
-            }
-        }
 
+//        scroll.onScrollChange { v, scrollX, scrollY, oldScrollX, oldScrollY ->
+//            if (scrollY <= 0) {
+//                refresh.isEnabled = true
+//            } else {
+//                refresh.isEnabled = false
+//            }
+//        }
+        scroll.viewTreeObserver.addOnScrollChangedListener(object: ViewTreeObserver.OnScrollChangedListener {
+            override fun onScrollChanged() {
+                val scrollY = scroll.scrollY
+                //println(scrollY)
+                // refresh is enable untill scroll is reach top
+                if (scrollY <= 0) {
+                    refresh.isEnabled = true
+                } else {
+                    refresh.isEnabled = false
+                }
+            }
+
+        })
         //adapter = TimeTableAdapter(this, rows, startNum, endNum, columnNum)
         //TimeTableView.adapter = adapter
     }
@@ -258,7 +272,7 @@ class TimeTableVC : BaseActivity() {
                     }
                     //print(value)
                     if (value != null) {
-                        if (name == TT_START || name == TT_END) {
+                        if (name == TT_START_TIME || name == TT_END_TIME) {
                             value = value!!.noSec()
                         }
                         values[name] = value!!
@@ -267,11 +281,12 @@ class TimeTableVC : BaseActivity() {
             }
             //print(values)
             form = TimeTableForm(event.id, values)
+            action = "UPDATE"
             showEditEvent(3)
         } else {
             val startTime: Int = tag / columnNum + startNum
             val weekday: Int = tag % columnNum
-            val values: HashMap<String, String> = hashMapOf(TT_START to startTime.toString() + ":00", TT_WEEKDAY to weekday.toString())
+            val values: HashMap<String, String> = hashMapOf(TT_START_TIME to startTime.toString() + ":00", TT_WEEKDAY to weekday.toString())
             eventTag = tag
             //print(eventTag)
             form = TimeTableForm(null, values)
@@ -280,8 +295,9 @@ class TimeTableVC : BaseActivity() {
     }
 
     fun add(view: View) {
-        form = TimeTableForm()
-        //form = TimeTableForm(null, test)
+        //form = TimeTableForm()
+        form = TimeTableForm(null, test)
+        action = "INSERT"
         showEditEvent()
     }
 
@@ -320,13 +336,38 @@ class TimeTableVC : BaseActivity() {
             if (formItem.name != TT_TITLE && formItem.name != TT_LIMIT) {
                 val intent = Intent(this, EditItemActivity::class.java)
                 when (idx) {
+                    //0 is title
+                    //weekday
                     1 -> {
                         intent.putExtra("key", TEAM_WEEKDAYS_KEY)
                         intent.putExtra("source", "search")
                         intent.putIntegerArrayListExtra("weekdays", formItem.sender as java.util.ArrayList<Int>)
                         startActivityForResult(intent, SEARCH_REQUEST_CODE)
                     }
+                    //start_date
                     2-> {
+                        val intent1 = Intent(this, DateSelectVC::class.java)
+                        val sender: HashMap<String, Any> = formItem.sender as HashMap<String, Any>
+                        val type: SELECT_DATE_TYPE = sender["type"] as SELECT_DATE_TYPE
+                        val value: String = sender["date"] as String
+                        intent1.putExtra("key", DATE_SELECT_KEY)
+                        intent1.putExtra("type", type)
+                        intent1.putExtra("selected", value)
+                        startActivityForResult(intent1, SEARCH_REQUEST_CODE)
+                    }
+                    //end_date
+                    3-> {
+                        val intent1 = Intent(this, DateSelectVC::class.java)
+                        val sender: HashMap<String, Any> = formItem.sender as HashMap<String, Any>
+                        val type: SELECT_DATE_TYPE = sender["type"] as SELECT_DATE_TYPE
+                        val value: String = sender["date"] as String
+                        intent1.putExtra("key", DATE_SELECT_KEY)
+                        intent1.putExtra("type", type)
+                        intent1.putExtra("selected", value)
+                        startActivityForResult(intent1, SEARCH_REQUEST_CODE)
+                    }
+                    //start_time
+                    4-> {
                         intent.putExtra("key", TEAM_PLAY_START_KEY)
                         intent.putExtra("source", "search")
                         intent.putExtra("start", "06:00")
@@ -334,7 +375,8 @@ class TimeTableVC : BaseActivity() {
                         intent.putExtra("times", formItem.sender as HashMap<String, Any>)
                         startActivityForResult(intent, SEARCH_REQUEST_CODE)
                     }
-                    3-> {
+                    //end_time
+                    5-> {
                         intent.putExtra("key", TEAM_PLAY_END_KEY)
                         intent.putExtra("source", "search")
                         intent.putExtra("start", "06:00")
@@ -342,7 +384,10 @@ class TimeTableVC : BaseActivity() {
                         intent.putExtra("times", formItem.sender as HashMap<String, Any>)
                         startActivityForResult(intent, SEARCH_REQUEST_CODE)
                     }
-                    5-> {
+                    //6 is charge
+                    //7 is limit
+                    //color
+                    8-> {
                         val intent1 = Intent(this, ColorSelectVC::class.java)
                         intent1.putExtra("key", COLOR_SELECT_KEY)
                         if (formItem.sender != null) {
@@ -350,13 +395,15 @@ class TimeTableVC : BaseActivity() {
                         }
                         startActivityForResult(intent1, SEARCH_REQUEST_CODE)
                     }
-                    6-> {
+                    //status
+                    9-> {
                         val intent1 = Intent(this, StatusSelectVC::class.java)
                         intent1.putExtra("key", STATUS_SELECT_KEY)
                         intent1.putExtra("selected", formItem.sender as STATUS)
                         startActivityForResult(intent1, SEARCH_REQUEST_CODE)
                     }
-                    7-> {
+                    //content
+                    10-> {
                         intent.putExtra("key", CONTENT_KEY)
                         intent.putExtra("value", formItem.sender as String)
                         startActivityForResult(intent, SEARCH_REQUEST_CODE)
@@ -388,8 +435,20 @@ class TimeTableVC : BaseActivity() {
                             item.weekdays = weekdays
                             item.make()
                         }
+                        DATE_SELECT_KEY -> {
+                            val type = data!!.getSerializableExtra("type") as SELECT_DATE_TYPE
+                            if (type == SELECT_DATE_TYPE.start) {
+                                idx = 2
+                            } else {
+                                idx = 3
+                            }
+                            val selected = data!!.getStringExtra("selected")
+                            val item = form.formItems[idx] as DateFormItem
+                            item.value = selected
+                            item.make()
+                        }
                         TEAM_PLAY_START_KEY -> {
-                            idx = 2
+                            idx = 4
                             times = data!!.getSerializableExtra("times") as HashMap<String, Any>
                             if (times.containsKey("time")) {
                                 val item = form.formItems[idx] as TimeFormItem
@@ -398,7 +457,7 @@ class TimeTableVC : BaseActivity() {
                             }
                         }
                         TEAM_PLAY_END_KEY -> {
-                            idx = 3
+                            idx = 5
                             times = data!!.getSerializableExtra("times") as HashMap<String, Any>
                             if (times.containsKey("time")) {
                                 val item = form.formItems[idx] as TimeFormItem
@@ -407,7 +466,7 @@ class TimeTableVC : BaseActivity() {
                             }
                         }
                         COLOR_SELECT_KEY -> {
-                            idx = 5
+                            idx = 8
                             val colors = data!!.getSerializableExtra("selecteds") as ArrayList<MYCOLOR>
                             val item = form.formItems[idx] as ColorFormItem
                             item.value = colors[0].toString()
@@ -415,14 +474,14 @@ class TimeTableVC : BaseActivity() {
                             item.make()
                         }
                         STATUS_SELECT_KEY -> {
-                            idx = 6
+                            idx = 9
                             val status = data!!.getSerializableExtra("selected") as STATUS
                             val item = form.formItems[idx] as StatusFormItem
                             item.value = status.toString()
                             item.make()
                         }
                         CONTENT_KEY -> {
-                            idx = 7
+                            idx = 10
                             val value = data!!.getStringExtra("res")
                             val item = form.formItems[idx] as ContentFormItem
                             item.value = value
@@ -481,6 +540,14 @@ class TimeTableVC : BaseActivity() {
     }
 
     override fun layerSubmit(page: String) {
+        if (action == "UPDATE") {
+            val (isChange, msg) = form.isChanged()
+            if (!isChange) {
+                val _msg = if (msg != null) {"沒有更改任何值，所以不用送出更新"}else{msg}
+                warning(_msg!!)
+                return
+            }
+        }
         val (isValid, msg) = form.isValid()
         if (!isValid) {
             var _msg = "欄位驗證錯誤"

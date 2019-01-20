@@ -15,7 +15,6 @@
     <uses-feature
         android:name="android.hardware.camera"
         android:required="false" />
-
     <!--
          The ACCESS_COARSE/FINE_LOCATION permissions are not required to use
          Google Maps Android API v2, but you must specify either coarse or fine
@@ -31,10 +30,11 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".Controllers.DateSelectVC"></activity>
+
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
-            android:value="@string/facebook_app_id" />
-        <!-- Google Map API key -->
+            android:value="@string/facebook_app_id" /> <!-- Google Map API key -->
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
@@ -109,7 +109,7 @@
             android:value="@string/google_maps_key" />
 
         <activity android:name=".Controllers.TimeTableVC" />
-        <activity android:name=".Controllers.StatusSelectVC"></activity>
+        <activity android:name=".Controllers.StatusSelectVC" />
     </application>
 
 </manifest>

@@ -16,10 +16,13 @@ class TimeTableForm: BaseForm {
 
         val eventWeekdayItem = WeekdayFormItem("星期幾", TT_WEEKDAY)
 
-        val eventStartTimeItem = TimeFormItem(TT_START, "開始時間", SELECT_TIME_TYPE.play_start)
+        val eventStartDateItem = DateFormItem(TT_START_DATE, "開始日期", SELECT_DATE_TYPE.start)
+        val eventEndDateItem = DateFormItem(TT_END_DATE, "結束日期", SELECT_DATE_TYPE.end)
 
-        val eventEndTimeItem = TimeFormItem(TT_END, "結束時間", SELECT_TIME_TYPE.play_end)
+        val eventStartTimeItem = TimeFormItem(TT_START_TIME, "開始時間", SELECT_TIME_TYPE.play_start)
+        val eventEndTimeItem = TimeFormItem(TT_END_TIME, "結束時間", SELECT_TIME_TYPE.play_end)
 
+        val eventChargeItem = TextFieldFormItem(TT_CHARGE, "費用", "", null, InputType.TYPE_CLASS_NUMBER)
         val eventLimitItem = TextFieldFormItem(TT_LIMIT, "限制人數", "無限制請填-1", null, InputType.TYPE_CLASS_NUMBER)
 
         val eventColorItem = ColorFormItem()
@@ -28,7 +31,7 @@ class TimeTableForm: BaseForm {
 
         val eventContentItem = ContentFormItem(TT_CONTENT, "詳細內容", TEXT_INPUT_TYPE.timetable_coach)
 
-        formItems = arrayListOf(eventTitleItem, eventWeekdayItem, eventStartTimeItem, eventEndTimeItem, eventLimitItem, eventColorItem, eventStatusItem, eventContentItem)
+        formItems = arrayListOf(eventTitleItem, eventWeekdayItem, eventStartDateItem, eventEndDateItem, eventStartTimeItem, eventEndTimeItem, eventChargeItem, eventLimitItem, eventColorItem, eventStatusItem, eventContentItem)
     }
 
     override fun fillValue() {
@@ -44,18 +47,18 @@ class TimeTableForm: BaseForm {
         }
 
         //check end early to start
-        var start: Date? = null
-        var end: Date? = null
+        var start_time: Date? = null
+        var end_time: Date? = null
         for (formItem in formItems) {
             if (formItem.title == "開始時間") {
-                start = formItem.value?.toDateTime("HH:mm")
+                start_time = formItem.value?.toDateTime("HH:mm")
             }
             if (formItem.title == "結束時間") {
-                end = formItem.value?.toDateTime("HH:mm")
+                end_time = formItem.value?.toDateTime("HH:mm")
             }
         }
-        if (start != null && end != null) {
-            if (start!! > end!!) {
+        if (start_time != null && end_time != null) {
+            if (start_time!! > end_time!!) {
                 return Pair(isValid, "結束時間不能早於開始時間")
             }
         }

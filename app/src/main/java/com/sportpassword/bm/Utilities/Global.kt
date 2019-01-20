@@ -16,8 +16,10 @@ import android.view.Window
 import android.view.inputmethod.InputMethodManager
 import android.widget.*
 import com.sportpassword.bm.R
+import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.time.LocalDate
+import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.util.*
 import kotlin.collections.ArrayList
@@ -139,6 +141,10 @@ enum class SELECT_TIME_TYPE(val value: Int) {
     play_start(0), play_end(1);
 }
 
+enum class SELECT_DATE_TYPE(val value: Int) {
+    start(0), end(1);
+}
+
 enum class TEXT_INPUT_TYPE(val value: String) {
     temp_play("臨打"),
     charge("收費標準"),
@@ -238,9 +244,35 @@ fun String.toDateTime(pattern: String = "yyyy-MM-dd HH:mm:ss"): Date {
     return date
 }
 
+fun String.isDate(format: String="yyy-MM-dd"): Boolean {
+    try {
+        val df = SimpleDateFormat(format)
+        df.isLenient = false
+        df.parse(this)
+        return true
+    } catch (e: ParseException) {
+        return false
+    }
+}
+
 fun Date.toMyString(pattern: String = "yyyy-MM-dd HH:mm:ss"): String {
     val formatter = SimpleDateFormat(pattern)
     return formatter.format(this)
+}
+fun Date.gety(): Int {
+    val formatter = SimpleDateFormat("yyyy")
+    val res = formatter.format(this).toInt()
+    return res
+}
+fun Date.getM(): Int {
+    val formatter = SimpleDateFormat("MM")
+    val res = formatter.format(this).toInt()-1
+    return res
+}
+fun Date.getd(): Int {
+    val formatter = SimpleDateFormat("dd")
+    val res = formatter.format(this).toInt()
+    return res
 }
 fun Date.getH(): Int {
     val formatter = SimpleDateFormat("HH")
@@ -249,6 +281,11 @@ fun Date.getH(): Int {
 }
 fun Date.getm(): Int {
     val formatter = SimpleDateFormat("mm")
+    val res = formatter.format(this).toInt()
+    return res
+}
+fun Date.gets(): Int {
+    val formatter = SimpleDateFormat("ss")
     val res = formatter.format(this).toInt()
     return res
 }
@@ -286,6 +323,15 @@ object Global {
             hashMapOf("value" to 6,"text" to "星期六","simple_text" to "六","checked" to false),
             hashMapOf("value" to 7,"text" to "星期日","simple_text" to "日","checked" to false)
     )
+
+    fun today(): String {
+        val sdf = SimpleDateFormat("yyyy-MM-dd", Locale.TAIWAN)
+        return sdf.format(Date())
+    }
+    fun nowTime(): String {
+        val sdf = SimpleDateFormat("hh:mm:ss", Locale.TAIWAN)
+        return sdf.format(Date())
+    }
 }
 
 class IndexPath(val section: Int, val row: Int){}
