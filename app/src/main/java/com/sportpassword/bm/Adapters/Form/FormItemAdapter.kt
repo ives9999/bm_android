@@ -42,6 +42,11 @@ open class FormItemAdapter(val form: BaseForm, val row: Int, val section: Int = 
         } else {
             viewHolder.clear.visibility = View.INVISIBLE
         }
+        if (formItem.tooltip != null) {
+            viewHolder.promptBtn.visibility = View.VISIBLE
+        } else {
+            viewHolder.promptBtn.visibility = View.INVISIBLE
+        }
         if (formItem.uiProperties.cellType == FormItemCellType.textField) {
             if (formItem.placeholder != null) {
                 viewHolder.textField.hint = formItem.placeholder

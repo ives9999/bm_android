@@ -16,7 +16,7 @@ class ColorFormItem: FormItem {
     constructor(name: String, title: String, placeholder: String? = null, value: String? = null): super(name, title, placeholder, value) {
     }
 
-    constructor(name: String = TT_COLOR, title: String = "顏色"): super(name, title) {
+    constructor(name: String = TT_COLOR, title: String = "顏色", tooltip: String? = null): super(name, title, "", null, "使用色塊來區分不同的課程") {
         reset()
     }
 

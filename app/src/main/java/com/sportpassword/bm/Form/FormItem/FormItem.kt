@@ -12,6 +12,7 @@ open class FormItem {
     var oldValue: String? = null
     var value: String? = null
     var placeholder = ""
+    var tooltip: String? = null
     var position: HashMap<String, Int> = hashMapOf()
     //var valueCompletion: ((String?) -> Void)?
     var uiProperties = FormItemUIProperties()
@@ -24,11 +25,14 @@ open class FormItem {
     //content is ["type":TEXT_INPUT_TYPE,"text":"課程說明"]
     var sender: Any? = null
 
-    constructor(name: String, title: String, placeholder: String? = null, value: String? = null) {
+    constructor(name: String, title: String, placeholder: String? = null, value: String? = null, tooltip: String? = null) {
         this.title = title
         this.name = name
         if (placeholder != null) {
             this.placeholder = placeholder!!
+        }
+        if (tooltip != null) {
+            this.tooltip = tooltip
         }
         this.value = value
     }

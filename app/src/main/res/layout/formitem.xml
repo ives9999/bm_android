@@ -36,12 +36,12 @@
             android:layout_marginStart="16dp"
             android:layout_marginTop="4dp"
             android:layout_marginEnd="15dp"
+            android:gravity="center_vertical|right"
             android:textColor="@color/WHITE"
             android:textSize="18sp"
-            android:gravity="center_vertical|right"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/greater"
-            app:layout_constraintStart_toEndOf="@+id/title"
+            app:layout_constraintStart_toEndOf="@+id/promptBtn"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="detail" />
 
@@ -68,6 +68,18 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/clear" />
+
+        <ImageView
+            android:id="@+id/promptBtn"
+            android:layout_width="28dp"
+            android:layout_height="28dp"
+            android:layout_marginStart="6dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/title"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/question" />
 
     </android.support.constraint.ConstraintLayout>
 

@@ -12,7 +12,7 @@ class TextFieldFormItem: FormItem {
     constructor(name: String, title: String, placeholder: String? = null, value: String? = null): super(name, title, placeholder, value) {
     }
 
-    constructor(name: String, title: String, placeholder: String? = null, value: String? = null, keyboardType: Int = InputType.TYPE_CLASS_TEXT, isRequired: Boolean = true): super(name, title, placeholder, value) {
+    constructor(name: String, title: String, placeholder: String? = null, value: String? = null, keyboardType: Int = InputType.TYPE_CLASS_TEXT, isRequired: Boolean = true, tooltip: String? = null): super(name, title, placeholder, value, tooltip) {
         this.isRequired = isRequired
         uiProperties.keyboardType = keyboardType
         reset()
