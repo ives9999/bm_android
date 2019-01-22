@@ -25,7 +25,7 @@ class TimeTableForm: BaseForm {
         val eventChargeItem = TextFieldFormItem(TT_CHARGE, "費用", "", null, InputType.TYPE_CLASS_NUMBER, false, "限填數字，如要加以說明，請在內容處填寫")
         val eventLimitItem = TextFieldFormItem(TT_LIMIT, "限制人數", "無限制請填-1", null, InputType.TYPE_CLASS_NUMBER, false, "無限制填-1，若不想提供報名，請填0")
 
-        val eventColorItem = ColorFormItem()
+        val eventColorItem = ColorFormItem(TT_COLOR, "顏色", "使用色塊來區分不同的課程")
 
         val eventStatusItem = StatusFormItem()
 

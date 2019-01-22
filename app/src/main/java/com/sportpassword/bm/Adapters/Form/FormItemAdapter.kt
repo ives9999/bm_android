@@ -20,7 +20,7 @@ import kotlinx.android.synthetic.main.formitem_textfield.title as textfield_titl
 import kotlinx.android.synthetic.main.formitem.clear as clear
 import kotlinx.android.synthetic.main.formitem_textfield.clear as textfield_clear
 
-open class FormItemAdapter(val form: BaseForm, val row: Int, val section: Int = 0, val clearClick:(idx: Int)->Unit): Item() {
+open class FormItemAdapter(val form: BaseForm, val row: Int, val section: Int = 0, val clearClick:(idx: Int)->Unit, val promptClick:(idx: Int)->Unit): Item() {
 
 
     override fun getLayout(): Int {
@@ -44,6 +44,9 @@ open class FormItemAdapter(val form: BaseForm, val row: Int, val section: Int = 
         }
         if (formItem.tooltip != null) {
             viewHolder.promptBtn.visibility = View.VISIBLE
+            viewHolder.promptBtn.setOnClickListener {
+                promptClick(row)
+            }
         } else {
             viewHolder.promptBtn.visibility = View.INVISIBLE
         }

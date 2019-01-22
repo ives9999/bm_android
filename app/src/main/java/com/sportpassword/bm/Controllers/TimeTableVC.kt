@@ -507,6 +507,11 @@ class TimeTableVC : BaseActivity() {
                 forItem.reset()
                 val rows = generateFormItems()
                 searchAdapter.update(rows)
+            }, { i ->
+                val forItem = form.formItems[i]
+                if (forItem.tooltip != null) {
+                    Alert.show(this, "提示", forItem.tooltip!!)
+                }
             })
             )
         }
