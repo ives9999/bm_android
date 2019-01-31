@@ -1,6 +1,7 @@
 package com.sportpassword.bm.Controllers
 
 import android.app.Activity
+import android.content.DialogInterface
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
@@ -13,18 +14,17 @@ import android.widget.*
 import com.sportpassword.bm.Adapters.Form.FormItemAdapter
 import com.sportpassword.bm.Form.FormItem.*
 import com.sportpassword.bm.Form.TimeTableForm
-import com.sportpassword.bm.Models.TimeTable
+import com.sportpassword.bm.Models.Timetables
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.CoachService
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.ViewHolder
 import kotlinx.android.synthetic.main.activity_time_table_vc.*
 import kotlinx.android.synthetic.main.mask.*
-import org.jetbrains.anko.backgroundColor
-import org.jetbrains.anko.sdk25.coroutines.onScrollChange
-import org.jetbrains.anko.textColor
 import com.sportpassword.bm.Utilities.*
 import com.sportpassword.bm.member
+import org.jetbrains.anko.*
+import org.jetbrains.anko.sdk25.coroutines.onClick
 import kotlin.reflect.full.declaredMemberProperties
 
 class TimeTableVC : BaseActivity() {
@@ -47,8 +47,10 @@ class TimeTableVC : BaseActivity() {
     val eventViews: ArrayList<ViewGroup> = arrayListOf()
     var eventTag: Int = 0
 
+    lateinit var dialog: DialogInterface
+
     //model
-    lateinit var timeTable: TimeTable
+    lateinit var timetables: Timetables
 
     //Form
     var form: TimeTableForm = TimeTableForm()
@@ -64,7 +66,7 @@ class TimeTableVC : BaseActivity() {
             TT_COLOR to "warning",
             TT_STATUS to "online",
             TT_CONTENT to "大家來練球")
-    var action: String = "INSERT"
+    var TTEditAction: String = "INSERT"
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -76,8 +78,8 @@ class TimeTableVC : BaseActivity() {
         dataService = CoachService
 
         setMyTitle("時刻表")
-        prev.text = "<"
-        next.text = ">"
+//        prev.text = "<"
+//        next.text = ">"
 
         cellWidth = screenWidth.toFloat() / columnNum.toFloat()
         addGrid()
@@ -118,7 +120,7 @@ class TimeTableVC : BaseActivity() {
     }
 
     override fun refresh() {
-        super.refresh()
+        //super.refresh()
         Loading.show(mask)
         dataService.getTT(this, token, source) { success ->
             if (success) {
@@ -132,7 +134,7 @@ class TimeTableVC : BaseActivity() {
     }
 
     fun refreshEvent(parent: ViewGroup) {
-        timeTable = dataService.timeTable
+        timetables = dataService.timetables
         markEvent(parent)
     }
 
@@ -183,17 +185,13 @@ class TimeTableVC : BaseActivity() {
     }
 
     fun markEvent(parent: ViewGroup) {
-        eventViews.clear()
-        for (i in 0..parent.childCount-1) {
-            val subView = parent.getChildAt(i)
-            if (subView != null) {
-                if (subView.tag != null && subView.tag as Int >= 1000) {
-                    parent.removeViewAt(i)
-                }
-            }
+
+        for (i in 0..eventViews.size-1) {
+            parent.removeView(eventViews[i])
         }
-        for (i in 0..timeTable.rows.size-1) {
-            val row = timeTable.rows[i]
+        eventViews.clear()
+        for (i in 0..timetables.rows.size-1) {
+            val row = timetables.rows[i]
             val hours = row._end_time - row._start_time
             val eventViewWidth = cellWidth.toInt()-2*cellBorderWidth
             val eventViewHeight = cellHeight*hours-2*cellBorderWidth
@@ -227,7 +225,7 @@ class TimeTableVC : BaseActivity() {
             lp.setMargins(3, 10, 0, 0)
             contentLbl.layoutParams = lp
             contentLbl.gravity = Gravity.CENTER
-            contentLbl.text = row.content
+            contentLbl.text = "人數：\n" + row.limit_text
             contentLbl.textSize = 12f
             contentLbl.textColor = Color.BLACK
             eventView.addView(contentLbl)
@@ -253,12 +251,13 @@ class TimeTableVC : BaseActivity() {
     }
 
     protected fun clickEvent(view: View) {
+
         val tag = view.tag as Int
 //        println(tag)
         //event
         if (tag >= 1000) {
             val idx = tag - 1000
-            val event = timeTable.rows[idx]
+            val event = timetables.rows[idx]
             var values: HashMap<String, String> = hashMapOf()
             for (formItem in form.formItems) {
                 if (formItem.name != null) {
@@ -281,8 +280,39 @@ class TimeTableVC : BaseActivity() {
             }
             //print(values)
             form = TimeTableForm(event.id, values)
-            action = "UPDATE"
-            showEditEvent(3)
+            dialog = alert {
+                title = "選項"
+                customView {
+                    verticalLayout {
+                        button("檢視") {
+                            onClick {
+                                dialog.dismiss()
+                                val intent = Intent(this@TimeTableVC, ShowTimetableVC::class.java)
+                                intent.putExtra("tt_id", event.id)
+                                intent.putExtra("source", source)
+                                intent.putExtra("token", token)
+                                startActivity(intent)
+                            }
+                        }
+                        button("編輯") {
+                            onClick {
+                                dialog.dismiss()
+                                TTEditAction = "UPDATE"
+                                showEditEvent(3)
+                            }
+                        }
+                        button("刪除") {
+                            onClick {
+                                dialog.dismiss()
+                                layerDelete()
+                            }
+                        }
+                        button("取消") {
+                            onClick {dialog.dismiss()}
+                        }
+                    }
+                }
+            }.show()
         } else {
             val startTime: Int = tag / columnNum + startNum
             val weekday: Int = tag % columnNum
@@ -297,7 +327,7 @@ class TimeTableVC : BaseActivity() {
     fun add(view: View) {
         //form = TimeTableForm()
         form = TimeTableForm(null, test)
-        action = "INSERT"
+        TTEditAction = "INSERT"
         showEditEvent()
     }
 
@@ -328,7 +358,7 @@ class TimeTableVC : BaseActivity() {
         editTableView.layoutParams = lp1
         editTableView.layoutManager = LinearLayoutManager(this)
         //editTableView.
-        searchAdapter = GroupAdapter<ViewHolder>()
+        searchAdapter = GroupAdapter()
         searchAdapter.setOnItemClickListener { item, view ->
             val itemAdapter = item as FormItemAdapter
             val idx = itemAdapter.row
@@ -534,7 +564,7 @@ class TimeTableVC : BaseActivity() {
         //print(params)
         unmask()
         Loading.show(mask)
-        dataService.updateTT(this, "coach", params) { success ->
+        dataService.updateTT(this, source, params) { success ->
                 Loading.hide(mask)
             if (success) {
                 refreshEvent(container)
@@ -545,7 +575,7 @@ class TimeTableVC : BaseActivity() {
     }
 
     override fun layerSubmit(page: String) {
-        if (action == "UPDATE") {
+        if (TTEditAction == "UPDATE") {
             val (isChange, msg) = form.isChanged()
             if (!isChange) {
                 val _msg = if (msg != null) {"沒有更改任何值，所以不用送出更新"}else{msg}

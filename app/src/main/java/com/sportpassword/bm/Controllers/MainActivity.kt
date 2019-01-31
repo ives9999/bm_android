@@ -135,7 +135,7 @@ class MainActivity : BaseActivity() {
         setSupportActionBar(toolbar)
         supportActionBar!!.setDisplayShowTitleEnabled(false)
 
-        // action bar 右邊的「提交」按鈕
+        // TTEditAction bar 右邊的「提交」按鈕
         //val menuID = resources.getIdentifier("menu", "drawable", packageName)
         //println(menuID)
         //supportActionBar!!.setHomeAsUpIndicator(menuID)

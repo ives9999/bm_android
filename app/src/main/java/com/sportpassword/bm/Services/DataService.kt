@@ -31,7 +31,7 @@ open class DataService: BaseService() {
     var arenas: ArrayList<Arena> = arrayListOf()
     var citysandarenas: HashMap<Int, HashMap<String, Any>> = hashMapOf()
     var citysandareas: HashMap<Int, HashMap<String, Any>> = hashMapOf()
-    lateinit var timeTable: TimeTable
+    lateinit var timetables: Timetables
 
     fun getList(context: Context, type:String, titleField:String, params: HashMap<String,Any>, page:Int, perPage:Int, filter:Array<Array<Any>>?, complete:CompletionHandler) {
         val url = "$URL_LIST".format(type)
@@ -231,6 +231,8 @@ open class DataService: BaseService() {
         }
         Volley.newRequestQueue(context).add(request)
     }
+
+    open fun getOne(context: Context, id: Int, source: String, token: String, completion: CompletionHandler) {}
 
     fun update(context: Context, type: String, _params: MutableMap<String, Any>, image: String, complete: CompletionHandler) {
 
@@ -784,15 +786,15 @@ open class DataService: BaseService() {
         val request = object : JsonObjectRequest(Request.Method.POST, url, null, Response.Listener { json ->
 //            println("json: " + json)
             try {
-                timeTable = JSONParse.parse<TimeTable>(json)!!
-                for (row in timeTable.rows) {
+                timetables = JSONParse.parse<Timetables>(json)!!
+                for (row in timetables.rows) {
                     row.filterRow()
                 }
-//                timeTable.print()
-                if (!timeTable.success) {
+//                timetables.print()
+                if (!timetables.success) {
                     msg = json.getString("msg")
                 }
-                complete(timeTable.success)
+                complete(timetables.success)
             } catch (e: JSONException) {
                 println("parse data error: " + e.localizedMessage)
                 success = false
@@ -803,7 +805,7 @@ open class DataService: BaseService() {
             } else {
                 //DataService.makeErrorMsg(json)
             }
-            complete(true)
+            //complete(true)
         }, Response.ErrorListener { error ->
             //Log.d("ERROR", "Could not register user: $error")
             println(error.localizedMessage)
@@ -840,8 +842,8 @@ open class DataService: BaseService() {
                 if (!success) {
                     msg = json.getString("msg")
                 } else {
-                    timeTable = JSONParse.parse<TimeTable>(json)!!
-                    for (row in timeTable.rows) {
+                    timetables = JSONParse.parse<Timetables>(json)!!
+                    for (row in timetables.rows) {
                         row.filterRow()
                     }
                 }
@@ -890,8 +892,8 @@ open class DataService: BaseService() {
                 if (!success) {
                     msg = json.getString("msg")
                 } else {
-                    timeTable = JSONParse.parse<TimeTable>(json)!!
-                    for (row in timeTable.rows) {
+                    timetables = JSONParse.parse<Timetables>(json)!!
+                    for (row in timetables.rows) {
                         row.filterRow()
                     }
                 }

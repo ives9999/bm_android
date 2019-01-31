@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Controllers.ShowTimetableVC">
+
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/refresh"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        android:background="@drawable/background"
+        android:clickable="true"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        tools:context=".Controllers.TimeTableVC">
+
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:id="@+id/timetableTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="12dp"
+                    android:layout_marginTop="12dp"
+                    android:textColor="@color/WHITE"
+                    android:textSize="24sp"
+                    tools:text="Title" />
+
+                <TextView
+                    android:id="@+id/timetableDetailLbl"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/timetableTitle"
+                    android:layout_marginLeft="12dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginBottom="8dp"
+                    android:text="課程資料"
+                    android:textColor="@color/MY_RED"
+                    android:textSize="24sp" />
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/tableView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layoutManager="android.support.v7.widget.LinearLayoutManager"
+                    android:layout_below="@+id/timetableDetailLbl" >
+
+                </android.support.v7.widget.RecyclerView>
+
+                <TextView
+                    android:id="@+id/coachDetailLbl"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/tableView"
+                    android:layout_marginLeft="12dp"
+                    android:layout_marginBottom="8dp"
+                    android:text="教練資料"
+                    android:textColor="@color/MY_RED"
+                    android:textSize="24dp" />
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/coachTableView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layoutManager="android.support.v7.widget.LinearLayoutManager"
+                    android:layout_below="@+id/coachDetailLbl" />
+
+                <TextView
+                    android:id="@+id/contentLbl"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/coachTableView"
+                    android:layout_marginLeft="12dp"
+                    android:layout_marginBottom="8dp"
+                    android:text="詳細介紹"
+                    android:textColor="@color/MY_RED"
+                    android:textSize="24dp" />
+
+                <WebView
+                    android:id="@+id/contentView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/contentLbl"
+                    android:layout_marginBottom="50dp"
+                    android:background="@android:color/transparent"
+                    android:padding="12dp" />
+            </RelativeLayout>
+        </ScrollView>
+
+    </android.support.v4.widget.SwipeRefreshLayout>
+
+</android.support.constraint.ConstraintLayout>

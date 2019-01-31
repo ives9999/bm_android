@@ -28,7 +28,7 @@ class JSONParse {
         }
 
         fun setter(kc: KClass<*>, data: JSONObject, res: Any) {
-            var d = makeMap(data)
+            val d = makeMap(data)
             //println(d)
             kc.memberProperties.forEach{
                 val key = it.name
@@ -76,13 +76,16 @@ class JSONParse {
         }
 
         private fun setRows(kc: KClass<*>, it: KProperty1<out Any, Any?>, obj: Any, value: Any, subType: String): ArrayList<Any> {
-            val child = getInnerClass(kc, subType)
-            var rows: ArrayList<Any> = arrayListOf()
+            val packageName = kc.java.`package`.name
+            val child = Class.forName(packageName+"."+subType).kotlin
+            //val child = getInnerClass(kc, subType)
+            val rows: ArrayList<Any> = arrayListOf()
             if (child != null) {
                 val arr = value as JSONArray
                 for (i in 0..arr.length() - 1) {
                     val j = arr[i] as JSONObject
-                    val row = newInstance(child, j, obj)
+                    val row = newInstance(child, j)
+                    //val row = newInstance(child, j, obj)
                     setter(child, j, row)
                     rows.add(row)
                 }
