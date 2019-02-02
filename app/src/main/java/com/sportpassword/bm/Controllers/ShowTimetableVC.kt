@@ -1,16 +1,18 @@
 package com.sportpassword.bm.Controllers
 
 import android.content.Context
+import android.content.Intent
+import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.Color
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.support.v4.app.ActivityCompat
 import android.support.v4.content.ContextCompat
+import android.support.v7.widget.RecyclerView
 import android.view.View
-import android.webkit.WebChromeClient
-import android.webkit.WebSettings
-import android.webkit.WebView
-import android.webkit.WebViewClient
+import android.webkit.*
 import com.sportpassword.bm.Models.SuperCoach
 import com.sportpassword.bm.Models.Timetable
 import com.sportpassword.bm.R
@@ -21,11 +23,13 @@ import com.xwray.groupie.kotlinandroidextensions.Item
 import com.xwray.groupie.kotlinandroidextensions.ViewHolder
 import kotlinx.android.synthetic.main.activity_show_timetable_vc.*
 import kotlinx.android.synthetic.main.iconcell.*
+import org.jetbrains.anko.makeCall
 import org.jetbrains.anko.textColor
 import org.jetbrains.anko.toast
+import java.util.jar.Manifest
 import kotlin.reflect.full.memberProperties
 
-class ShowTimetableVC : BaseActivity() {
+class ShowTimetableVC : BaseActivity(), IconCellDelegate {
 
     var tt_id: Int? = null
     var source: String?  = null //coach or arena
@@ -84,7 +88,7 @@ class ShowTimetableVC : BaseActivity() {
         settings.javaScriptCanOpenWindowsAutomatically = true
         settings.mediaPlaybackRequiresUserGesture = false
         settings.domStorageEnabled = true
-        settings.setSupportMultipleWindows(true)
+//        settings.setSupportMultipleWindows(true)
         settings.loadWithOverviewMode = true
         settings.allowContentAccess = true
         settings.setGeolocationEnabled(true)
@@ -95,11 +99,24 @@ class ShowTimetableVC : BaseActivity() {
         contentView.setLayerType(View.LAYER_TYPE_HARDWARE, null)
         contentView.webViewClient = object : WebViewClient() {
             override fun onPageStarted(view: WebView?, url: String?, favicon: Bitmap?) {
-                toast("Page loading.")
+                //toast("Page loading.")
             }
 
             override fun onPageFinished(view: WebView?, url: String?) {
-                toast("Page loaded complete")
+                //toast("Page loaded complete")
+            }
+
+            override fun shouldOverrideUrlLoading(view: WebView?, request: WebResourceRequest?): Boolean {
+                val url = request!!.url.toString()
+                //println(url)
+                url.website(this@ShowTimetableVC)
+                return true
+            }
+
+            override fun shouldOverrideUrlLoading(view: WebView?, url: String?): Boolean {
+                //println(url)
+                url!!.website(this@ShowTimetableVC)
+                return true
             }
         }
         contentView.webChromeClient = object : WebChromeClient() {
@@ -178,6 +195,9 @@ class ShowTimetableVC : BaseActivity() {
         tableView.adapter = timetableAdapter
 
         coachAdapter = GroupAdapter()
+        coachAdapter.setOnItemClickListener { item, view ->
+
+        }
         val coachItems = generateCoachItem()
         coachAdapter.addAll(coachItems)
         coachTableView.adapter = coachAdapter
@@ -205,7 +225,9 @@ class ShowTimetableVC : BaseActivity() {
                     isPressed = row["isPressed"]!!.toBoolean()
                 }
                 if (icon.length > 0 && title.length > 0) {
-                    items.add(iconCell(this@ShowTimetableVC, icon, title, content, isPressed))
+                    val iconCell = IconCell(this@ShowTimetableVC, icon, title, content, isPressed)
+                    iconCell.delegate = this
+                    items.add(iconCell)
                 }
             }
         }
@@ -230,26 +252,82 @@ class ShowTimetableVC : BaseActivity() {
                 }
                 if (row.containsKey("content")) {
                     content = row["content"]!!
+                    if (key == MOBILE_KEY) {
+                        content = content.mobileShow()
+                    }
                 }
                 if (row.containsKey("isPressed")) {
                     isPressed = row["isPressed"]!!.toBoolean()
                 }
                 if (icon.length > 0 && title.length > 0) {
-                    items.add(iconCell(this@ShowTimetableVC, icon, title, content, isPressed))
+                    val iconCell = IconCell(this@ShowTimetableVC, icon, title, content, isPressed)
+                    iconCell.delegate = this
+                    items.add(iconCell)
                 }
             }
         }
 
         return items
     }
+
+    override fun didSelectRowAt(view: View, position: Int) {
+//        println("delegate:"+position)
+        val parent = view.parent
+        if (parent is RecyclerView) {
+            val p = parent as RecyclerView
+            //println(p.getIDString())
+            val id = p.getIDString()
+            if (id == coachTableView.getIDString()) {
+                //println(position)
+                val key = coachTableRowKeys[position]
+                if (key == NAME_KEY) {
+                    val intent = Intent(this, ShowActivity::class.java)
+                    intent.putExtra("type", source)
+                    intent.putExtra("token", token)
+                    intent.putExtra("title", superCoach!!.name)
+                    startActivity(intent)
+                } else if (key == MOBILE_KEY) {
+                    val mobile = superCoach!!.mobile
+                    this.mobile = mobile
+                    val permission: String = android.Manifest.permission.CALL_PHONE
+                    if (permissionExist(permission)) {
+                        mobile.makeCall(this)
+                    } else {
+                        val permissions = arrayOf(permission)
+                        requestPermission(permissions, REQUEST_PHONE_CALL)
+                    }
+                } else if (key == LINE_KEY) {
+                    val line = superCoach!!.line
+                    line.line(this)
+                } else if (key == FB_KEY) {
+                    val fb = superCoach!!.fb
+                    fb.fb(this)
+                } else if (key == YOUTUBE_KEY) {
+                    val youtube = superCoach!!.youtube
+                    youtube.youtube(this)
+                } else if (key == WEBSITE_KEY) {
+                    val website = superCoach!!.website
+                    website.website(this)
+                }
+            }
+        }
+    }
 }
 
 
-class iconCell(val context: Context, val icon: String, val title: String, val content: String, val isPressed: Boolean=false): Item() {
+class IconCell(val context: Context, val icon: String, val title: String, val content: String, val isPressed: Boolean=false): Item() {
+
+    var delegate: IconCellDelegate? = null
+
     override fun bind(viewHolder: ViewHolder, position: Int) {
         viewHolder.icon.setImage(icon)
         viewHolder.title.text = title + "："
         viewHolder.content.text = content
+        viewHolder.itemView.setOnClickListener {
+            if (delegate != null) {
+                delegate!!.didSelectRowAt(it, position)
+            }
+        }
 
         if (isPressed) {
             val color = ContextCompat.getColor(context, R.color.MY_GREEN)
@@ -258,6 +336,11 @@ class iconCell(val context: Context, val icon: String, val title: String, val co
     }
 
     override fun getLayout() = R.layout.iconcell
+}
+
+interface IconCellDelegate {
+
+    fun didSelectRowAt(view: View, position: Int)
 }
 
 

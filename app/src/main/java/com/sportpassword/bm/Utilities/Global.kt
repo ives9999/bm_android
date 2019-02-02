@@ -4,11 +4,14 @@ import android.animation.Animator
 import android.app.Activity
 import android.app.AlertDialog
 import android.app.Dialog
+import android.content.ActivityNotFoundException
 import android.content.Context
+import android.content.Intent
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.drawable.ColorDrawable
+import android.net.Uri
 import android.support.v4.content.ContextCompat
 import android.view.View
 import android.view.ViewGroup
@@ -16,6 +19,7 @@ import android.view.Window
 import android.view.inputmethod.InputMethodManager
 import android.widget.*
 import com.sportpassword.bm.R
+import org.jetbrains.anko.makeCall
 import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.time.LocalDate
@@ -255,6 +259,129 @@ fun String.isDate(format: String="yyy-MM-dd"): Boolean {
     }
 }
 
+fun String.makeCall(context: Context) {
+    context.makeCall(this)
+}
+
+fun String.youtube(context: Context) {
+    var id = this.getYoutubeIDFromChannel()
+    var appUrl: String? = null
+    var webUrl: String? = null
+    if (id != null) { //channel
+        appUrl = "vnd.youtube://user/channel/" + id
+        webUrl = "https://youtube.com/channel/" + id
+    } else {
+        id = this.getYoutubeID()
+        if (id != null) {
+            appUrl = "vnd.youtube:" + id
+            webUrl = this
+        }
+    }
+    val appIntent = Intent(Intent.ACTION_VIEW, Uri.parse(appUrl))
+    val webIntent = Intent(Intent.ACTION_VIEW, Uri.parse(webUrl))
+    try {
+        context.startActivity(appIntent)
+    } catch (e: ActivityNotFoundException) {
+        context.startActivity(webIntent)
+    }
+}
+
+fun String.fb(context: Context) {
+    var appUrl: String? = null
+    val packageManager = context.packageManager
+    try {
+        val version = packageManager.getPackageInfo("com.facebook.katana", 0)
+        if (android.os.Build.VERSION.SDK_INT >= 28) {
+            val versionCode = version.longVersionCode
+            if (versionCode >= 3002850) {
+                appUrl = "fb://facewebmodal/f?href=" + this
+            } else {
+                val pageID = this.getFBPageID()
+                appUrl = "fb://page/" + pageID
+            }
+        } else {
+            val versionCode = version.versionCode
+            if (versionCode >= 3002850) {
+                appUrl = "fb://facewebmodal/f?href=" + this
+            } else {
+                val pageID = this.getFBPageID()
+                appUrl = "fb://page/" + pageID
+            }
+        }
+
+    } catch (e: Exception) {
+
+    }
+
+    val appIntent = Intent(Intent.ACTION_VIEW, Uri.parse(appUrl))
+    val webIntent = Intent(Intent.ACTION_VIEW, Uri.parse(this))
+    try {
+        context.startActivity(appIntent)
+    } catch (e: ActivityNotFoundException) {
+        context.startActivity(webIntent)
+    }
+}
+
+fun String.line(context: Context) {
+    val appUrl = "line://ti/p/@"+this
+//    val appUrl = "line://ti/p/@ives9999"
+
+    val appIntent = Intent(Intent.ACTION_VIEW, Uri.parse(appUrl))
+    try {
+        context.startActivity(appIntent)
+    } catch (e: ActivityNotFoundException) {
+    }
+}
+
+fun String.website(context: Context) {
+    val webIntent = Intent(Intent.ACTION_VIEW, Uri.parse(this))
+    try {
+        context.startActivity(webIntent)
+    } catch (e: ActivityNotFoundException) {
+    }
+}
+
+fun String.getYoutubeIDFromChannel(): String? {
+    if (this.toLowerCase().contains("channel")) {
+        val matches = this.reMatches("channel\\/(.*)", this);
+//        for (match in matches) {
+//            println(match)
+//        }
+        if (matches.size > 1) {
+            return matches[1]
+        }
+    }
+    return null
+}
+fun String.getYoutubeID(): String? {
+    if (this.toLowerCase().contains("youtu\\.be")) {
+        val matches = this.reMatches("youtu\\.be\\/(.*)", this);
+//        for (match in matches) {
+//            println(match)
+//        }
+        if (matches.size > 1) {
+            return matches[1]
+        }
+    }
+    if (this.toLowerCase().contains("watch")) {
+        val matches = this.reMatches("watch\\?v=(.*)", this);
+//        for (match in matches) {
+//            println(match)
+//        }
+        if (matches.size > 1) {
+            return matches[1]
+        }
+    }
+    return null
+}
+fun String.getFBPageID(): String? {
+    val matches = this.reMatches("facebook.com\\/(.*)", this);
+    if (matches.size > 1) {
+        return matches[1]
+    }
+    return null
+}
+
 fun Date.toMyString(pattern: String = "yyyy-MM-dd HH:mm:ss"): String {
     val formatter = SimpleDateFormat(pattern)
     return formatter.format(this)
@@ -311,6 +438,10 @@ fun Activity.hideKeyboard() {
 fun ImageView.setImage(name: String) {
     val id = context.resources.getIdentifier(name, "drawable", context.packageName)
     this.setImageResource(id)
+}
+
+fun View.getIDString(): String {
+    return this.resources.getResourceName(this.id)
 }
 
 object Global {

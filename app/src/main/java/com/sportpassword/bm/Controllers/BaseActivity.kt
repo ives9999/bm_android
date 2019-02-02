@@ -235,6 +235,20 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener {
         finish()
         return true
     }
+
+    fun permissionExist(permission: String): Boolean {
+        val permission = ContextCompat.checkSelfPermission(this, permission)
+        if (permission != PackageManager.PERMISSION_GRANTED) {
+            return false
+        } else {
+            return true
+        }
+    }
+
+    fun requestPermission(permissions: Array<out String>, requestCode: Int) {
+        ActivityCompat.requestPermissions(this, permissions, requestCode)
+    }
+
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         when(requestCode) {
@@ -242,7 +256,7 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener {
                 if (grantResults.isEmpty() || grantResults[0] != PackageManager.PERMISSION_GRANTED) {
                     warning("沒有同意app撥打電話的權限，因此無法使用此功能")
                 } else {
-                    makeCall(mobile)
+                    makeCall(this.mobile)
                 }
                 return
             }

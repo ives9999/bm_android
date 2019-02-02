@@ -30,7 +30,7 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Controllers.ShowTimetableVC"></activity>
+        <activity android:name=".Controllers.ShowTimetableVC" android:exported="true"></activity>
         <activity android:name=".Controllers.DateSelectVC" />
 
         <meta-data
