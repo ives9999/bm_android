@@ -15,6 +15,7 @@ import com.sportpassword.bm.Adapters.ListAdapter
 import com.sportpassword.bm.Controllers.Arena
 import com.sportpassword.bm.Controllers.MainActivity
 import com.sportpassword.bm.Controllers.ShowActivity
+import com.sportpassword.bm.Controllers.ShowCoachVC
 import com.sportpassword.bm.Models.City
 import com.sportpassword.bm.Models.SuperData
 
@@ -90,7 +91,12 @@ open class TabFragment : Fragment() {
     }
     open protected fun initAdapter() {
         listAdapter = ListAdapter(context!!, type!!, screenWidth, { data ->
-            val intent = Intent(activity, ShowActivity::class.java)
+            var intent: Intent? = null
+            if (type == "coach") {
+                intent = Intent(activity, ShowCoachVC::class.java)
+            } else {
+                intent = Intent(activity, ShowActivity::class.java)
+            }
             intent.putExtra("type", type)
             intent.putExtra("token", data.token)
             intent.putExtra("title", data.title)

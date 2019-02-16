@@ -1,6 +1,8 @@
 package com.sportpassword.bm.Adapters.Form
 
 import android.graphics.Color
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.View
 import com.sportpassword.bm.Form.BaseForm
 import com.sportpassword.bm.Form.FormItem.ColorFormItem
@@ -20,9 +22,13 @@ import kotlinx.android.synthetic.main.formitem_textfield.title as textfield_titl
 import kotlinx.android.synthetic.main.formitem.clear as clear
 import kotlinx.android.synthetic.main.formitem_textfield.clear as textfield_clear
 
+interface ViewDelegate {
+    fun textFieldTextChanged(row: Int, section: Int, text: String)
+}
+
 open class FormItemAdapter(val form: BaseForm, val row: Int, val section: Int = 0, val clearClick:(idx: Int)->Unit, val promptClick:(idx: Int)->Unit): Item() {
 
-
+    var delegate: ViewDelegate? = null
     override fun getLayout(): Int {
         val formItem = form.formItems[row]
 
@@ -51,12 +57,24 @@ open class FormItemAdapter(val form: BaseForm, val row: Int, val section: Int = 
             viewHolder.promptBtn.visibility = View.INVISIBLE
         }
         if (formItem.uiProperties.cellType == FormItemCellType.textField) {
+            val textField = viewHolder.textField
             if (formItem.placeholder != null) {
-                viewHolder.textField.hint = formItem.placeholder
+                textField.hint = formItem.placeholder
             }
             if (formItem.value != null) {
-                viewHolder.textField.setText(formItem.value)
+                textField.setText(formItem.value)
             }
+            textField.addTextChangedListener(object: TextWatcher {
+                override fun afterTextChanged(p0: Editable?) {
+                }
+
+                override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                }
+
+                override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                    delegate?.textFieldTextChanged(position, section, p0.toString())
+                }
+            })
         }
         if (formItem.uiProperties.cellType == FormItemCellType.weekday || formItem.uiProperties.cellType == FormItemCellType.time || formItem.uiProperties.cellType == FormItemCellType.status || formItem.uiProperties.cellType == FormItemCellType.more || formItem.uiProperties.cellType == FormItemCellType.date) {
             if (formItem.show != null) {

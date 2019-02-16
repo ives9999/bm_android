@@ -1,17 +1,12 @@
 package com.sportpassword.bm.Controllers
 
 import android.content.Intent
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.v4.widget.SwipeRefreshLayout
 import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
-import android.view.LayoutInflater
 import android.view.Menu
 import android.view.View
-import android.widget.Button
 import android.widget.ImageView
-import android.widget.LinearLayout
 import com.sportpassword.bm.Adapters.SignupsAdapter
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.TeamService
@@ -59,7 +54,7 @@ class ShowTempPlayActivity : BaseActivity() {
                 //println(data)
                 val name: String = data[NAME_KEY]!!["value"] as String
                 val id: Int = data[ID_KEY]!!["value"] as Int
-                setTeamData(show_featured_view)
+                setTeamData(featuredView)
                 signupsAdapter = SignupsAdapter(this, {token, near_date ->
                     goTempPlaySignupOne(id, teamToken, name, near_date, token)
                 })

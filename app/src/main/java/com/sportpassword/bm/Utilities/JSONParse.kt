@@ -2,6 +2,7 @@ package com.sportpassword.bm.Utilities
 
 import com.beust.klaxon.internal.firstNotNullResult
 import com.sportpassword.bm.Models.BlackList
+import com.sportpassword.bm.Models.SuperCity
 import com.sportpassword.bm.Models.SuperModel
 import org.json.JSONArray
 import org.json.JSONObject
@@ -54,8 +55,12 @@ class JSONParse {
                         }
                     }
                     is JSONObject -> {
-                        val d = makeMap(value)
-                        _setter(it, res, d)
+                        if (key == "city") {
+                            val city = JSONParse.parse<SuperCity>(value)!!
+                            _setter(it, res, city)
+                        }
+                        //val d = makeMap(value)
+                        //_setter(it, res, d)
                     }
                 }
             }

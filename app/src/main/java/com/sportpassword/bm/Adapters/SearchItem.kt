@@ -8,7 +8,7 @@ import com.xwray.groupie.kotlinandroidextensions.Item
 import kotlinx.android.synthetic.main.search_row_item.*
 import org.jetbrains.anko.sdk25.coroutines.onCheckedChange
 
-class SearchItem(val title: String, val detail: String, val switch: Boolean, val section: Int, val row: Int, val inputK:(k: String)->Unit, val switched:(idx: Int, b: Boolean)->Unit): Item() {
+class SearchItem(val title: String, val detail: String, val keyword: String, val switch: Boolean, val section: Int, val row: Int, val inputK:(k: String)->Unit, val switched:(idx: Int, b: Boolean)->Unit): Item() {
 
     override fun getLayout() = R.layout.search_row_item
 
@@ -22,6 +22,9 @@ class SearchItem(val title: String, val detail: String, val switch: Boolean, val
             viewHolder.row_detail.visibility = View.INVISIBLE
             viewHolder.greater.visibility = View.INVISIBLE
             keywordView.visibility = View.VISIBLE
+            if (keyword.length > 0) {
+                keywordView.setText(keyword)
+            }
 //            keywordView.textChangedListener {
 //                inputK(this, true)
 //            }

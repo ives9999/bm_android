@@ -30,7 +30,11 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Controllers.ShowTimetableVC" android:exported="true"></activity>
+        <activity android:name=".Controllers.ShowCoachVC"></activity>
+        <activity
+            android:name=".Controllers.ShowTimetableVC"
+            android:exported="true"
+            />
         <activity android:name=".Controllers.DateSelectVC" />
 
         <meta-data
@@ -109,7 +113,8 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
 
-        <activity android:name=".Controllers.TimeTableVC" />
+        <activity android:name=".Controllers.TimeTableVC"
+            />
         <activity android:name=".Controllers.StatusSelectVC" />
     </application>
 

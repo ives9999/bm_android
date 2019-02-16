@@ -1,7 +1,13 @@
 package com.sportpassword.bm.Services
 
+import android.content.Context
+import com.android.volley.Request
+import com.android.volley.Response
+import com.android.volley.toolbox.JsonObjectRequest
+import com.android.volley.toolbox.Volley
 import com.sportpassword.bm.Models.City
 import com.sportpassword.bm.Models.Coach
+import com.sportpassword.bm.Models.SuperCoach
 import com.sportpassword.bm.Utilities.*
 import org.json.JSONArray
 import org.json.JSONException
@@ -13,7 +19,52 @@ import org.json.JSONObject
 object CoachService: DataService() {
 
     override val model: Coach = Coach(-1, "", "", "")
+    lateinit var superCoach: SuperCoach
 
+    override fun getOne(context: Context, type: String, titleField: String, token: String, complete: CompletionHandler) {
+        val url = "$URL_ONE".format(type)
+        //println(url)
+
+        val body = JSONObject()
+        body.put("source", "app")
+        body.put("token", token)
+        body.put("strip_html", false)
+        val requestBody = body.toString()
+
+        val request = object : JsonObjectRequest(Request.Method.POST, url, null, Response.Listener { json ->
+            //println("json: " + json)
+            try {
+                success = true
+                if (type == "coach") {
+                    this.superCoach = JSONParse.parse<SuperCoach>(json)!!
+                    //this.superCoach.city.print()
+                }
+                model.dataReset()
+                data = mutableMapOf()
+                dealOne(json)
+                data = model.data
+            } catch (e: JSONException) {
+                println("parse data error: " + e.localizedMessage)
+                success = false
+                msg = "無法getOne，沒有傳回成功值 " + e.localizedMessage
+            }
+            complete(success)
+        }, Response.ErrorListener { error ->
+            //Log.d("ERROR", "Could not register user: $error")
+            println(error.localizedMessage)
+            this.msg = "取得失敗，網站或網路錯誤"
+            complete(false)
+        }) {
+            override fun getBodyContentType(): String {
+                return HEADER
+            }
+
+            override fun getBody(): ByteArray {
+                return requestBody.toByteArray()
+            }
+        }
+        Volley.newRequestQueue(context).add(request)
+    }
 
     override fun setData(id: Int, title: String, token: String, featured_path: String, vimeo: String, youtube: String): Coach {
         val data = Coach(id, title, token, featured_path, vimeo, youtube)

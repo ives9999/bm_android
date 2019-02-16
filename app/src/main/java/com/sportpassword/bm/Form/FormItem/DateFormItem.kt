@@ -14,7 +14,8 @@ class DateFormItem: FormItem {
     constructor(name: String, title: String, placeholder: String? = null, value: String? = null): super(name, title, placeholder, value) {
     }
 
-    constructor(name: String = TT_START_TIME, title: String = "時間", dateType: SELECT_DATE_TYPE, tooltip: String? = null): super(name, title, "", null, tooltip) {
+    constructor(name: String = TT_START_TIME, title: String = "時間", dateType: SELECT_DATE_TYPE, tooltip: String? = null, isRequired: Boolean = true): super(name, title, "", null, tooltip) {
+        this.isRequired = isRequired
         this.dateType = dateType
         reset()
     }

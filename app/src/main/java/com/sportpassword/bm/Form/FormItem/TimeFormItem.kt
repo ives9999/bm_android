@@ -15,7 +15,8 @@ class TimeFormItem: FormItem {
     constructor(name: String, title: String, placeholder: String? = null, value: String? = null): super(name, title, placeholder, value) {
     }
 
-    constructor(name: String = TT_START_TIME, title: String = "時間", timeType: SELECT_TIME_TYPE): super(name, title) {
+    constructor(name: String = TT_START_TIME, title: String = "時間", timeType: SELECT_TIME_TYPE, isRequired: Boolean = true): super(name, title) {
+        this.isRequired = isRequired
         this.timeType = timeType
         reset()
     }

@@ -1,6 +1,7 @@
 package com.sportpassword.bm.Controllers
 
 import android.app.Activity
+import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
 import android.graphics.Color
@@ -10,15 +11,17 @@ import android.support.constraint.ConstraintSet
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.*
+import android.view.inputmethod.InputMethodManager
 import android.widget.*
 import com.sportpassword.bm.Adapters.Form.FormItemAdapter
+import com.sportpassword.bm.Adapters.Form.ViewDelegate
+//import com.sportpassword.bm.Adapters.Form.ViewDelegate
 import com.sportpassword.bm.Form.FormItem.*
 import com.sportpassword.bm.Form.TimeTableForm
 import com.sportpassword.bm.Models.Timetables
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.CoachService
 import com.xwray.groupie.GroupAdapter
-import com.xwray.groupie.ViewHolder
 import kotlinx.android.synthetic.main.activity_time_table_vc.*
 import kotlinx.android.synthetic.main.mask.*
 import com.sportpassword.bm.Utilities.*
@@ -27,7 +30,7 @@ import org.jetbrains.anko.*
 import org.jetbrains.anko.sdk25.coroutines.onClick
 import kotlin.reflect.full.declaredMemberProperties
 
-class TimeTableVC : BaseActivity() {
+class TimeTableVC : BaseActivity(), ViewDelegate {
 
     var source: String = "coach"
     var token: String = "token"
@@ -40,7 +43,7 @@ class TimeTableVC : BaseActivity() {
     val totalGridCount = (endNum-startNum)*columnNum
 
     var cellWidth: Float = 150f
-    var cellHeight: Int = 150
+    var cellHeight: Float = 150f
     var cellBorderWidth: Int = 1
 
     val gridViews: ArrayList<ViewGroup> = arrayListOf()
@@ -51,6 +54,7 @@ class TimeTableVC : BaseActivity() {
 
     //model
     lateinit var timetables: Timetables
+    lateinit var editTableView: RecyclerView
 
     //Form
     var form: TimeTableForm = TimeTableForm()
@@ -80,6 +84,7 @@ class TimeTableVC : BaseActivity() {
         setMyTitle("時刻表")
 //        prev.text = "<"
 //        next.text = ">"
+
 
         cellWidth = screenWidth.toFloat() / columnNum.toFloat()
         addGrid()
@@ -143,7 +148,7 @@ class TimeTableVC : BaseActivity() {
             val startTime: Int = i / columnNum + startNum
             val weekday: Int = i % columnNum
 
-            val grid = generateView(cellWidth.toInt(), cellHeight, i)
+            val grid = generateView(cellWidth, cellHeight, i)
             grid.setBackgroundResource(R.drawable.timetable_item_border)
 
             if (weekday == 0) {
@@ -191,32 +196,43 @@ class TimeTableVC : BaseActivity() {
         }
         eventViews.clear()
         for (i in 0..timetables.rows.size-1) {
-            val row = timetables.rows[i]
-            val hours = row._end_time - row._start_time
-            val eventViewWidth = cellWidth.toInt()-2*cellBorderWidth
-            val eventViewHeight = cellHeight*hours-2*cellBorderWidth
+            val row = timetables!!.rows[i]
+            val hours = (row.end_time.toDateTime("HH:mm:ss").timeIntervalSince(row.start_time.toDateTime("HH:mm:ss"))).toFloat()/(60*60)
+            //println(hours)
+
+            val eventViewWidth = cellWidth-8*cellBorderWidth
+            val eventViewHeight = cellHeight*hours-8*cellBorderWidth
             val eventView = generateView(eventViewWidth, eventViewHeight, 1000+i , row._color.toColor())
             parent.addView(eventView)
             eventViews.add(eventView)
             val c1 = ConstraintSet()
             c1.clone(container)
             val weekday = row.weekday
-            val _start_time = row._start_time
-            val idx = columnNum*(_start_time-startNum) + weekday
-            c1.connect(eventView.id, ConstraintSet.TOP, gridViews[idx].id, ConstraintSet.TOP, cellBorderWidth)
-            c1.connect(eventView.id, ConstraintSet.LEFT, gridViews[idx].id, ConstraintSet.LEFT, cellBorderWidth)
+            val _start_hour = row._start_hour
+            val _start_minute = row._start_minute
+            var y: Float = cellBorderWidth*2.toFloat()
+            if (_start_minute > 0) {
+                val a = _start_minute.toFloat()/60
+                val b = (cellHeight-2*cellBorderWidth).toFloat()
+                y = a * b
+            }
+            val idx = columnNum*(_start_hour-startNum) + weekday
+            c1.connect(eventView.id, ConstraintSet.TOP, gridViews[idx].id, ConstraintSet.TOP, y.toInt())
+            c1.connect(eventView.id, ConstraintSet.LEFT, gridViews[idx].id, ConstraintSet.LEFT, cellBorderWidth*4)
             c1.applyTo(container)
 
             val titleLbl = TextView(this)
-            var lp = LinearLayout.LayoutParams(eventViewWidth, 50)
-            lp.setMargins(3, 10, 0, 0)
+            var lp = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT)
+            lp.setMargins(3, 3, 3, 3)
             titleLbl.layoutParams = lp
             titleLbl.gravity = Gravity.CENTER
             titleLbl.text = row.title
             titleLbl.textSize = 12f
             titleLbl.textColor = Color.BLACK
+            //titleLbl.setBackgroundColor(Color.WHITE)
             eventView.addView(titleLbl)
 
+            /*
             val line = DrawLine(this, 3f, 55f, eventViewWidth-6f, 55f)
             eventView.addView(line)
 
@@ -229,24 +245,25 @@ class TimeTableVC : BaseActivity() {
             contentLbl.textSize = 12f
             contentLbl.textColor = Color.BLACK
             eventView.addView(contentLbl)
+            */
         }
     }
 
-    protected fun generateView(width: Int, height: Int, tag: Any?=null, bColor: Int?=null): ViewGroup {
+    protected fun generateView(width: Float, height: Float, tag: Any?=null, bColor: Int?=null): ViewGroup {
         val view = ConstraintLayout(this)
         if (tag != null) {
             view.tag = tag
         }
         view.id = View.generateViewId()
-        val lp = LinearLayout.LayoutParams(width, height)
+        val lp = LinearLayout.LayoutParams(width.toInt(), height.toInt())
         view.layoutParams = lp
         if (bColor != null) {
             view.backgroundColor = bColor
         }
+
         view.setOnClickListener {
             clickEvent(it)
         }
-
         return view
     }
 
@@ -258,6 +275,7 @@ class TimeTableVC : BaseActivity() {
         if (tag >= 1000) {
             val idx = tag - 1000
             val event = timetables.rows[idx]
+            //event.print()
             var values: HashMap<String, String> = hashMapOf()
             for (formItem in form.formItems) {
                 if (formItem.name != null) {
@@ -274,11 +292,16 @@ class TimeTableVC : BaseActivity() {
                         if (name == TT_START_TIME || name == TT_END_TIME) {
                             value = value!!.noSec()
                         }
+                        if (name == TT_CHARGE) {
+                            if (value == "-1") {
+                                value = ""
+                            }
+                        }
                         values[name] = value!!
                     }
                 }
             }
-            //print(values)
+            //println(values)
             form = TimeTableForm(event.id, values)
             dialog = alert {
                 title = "選項"
@@ -325,8 +348,8 @@ class TimeTableVC : BaseActivity() {
     }
 
     fun add(view: View) {
-        //form = TimeTableForm()
-        form = TimeTableForm(null, test)
+        form = TimeTableForm()
+        //form = TimeTableForm(null, test)
         TTEditAction = "INSERT"
         showEditEvent()
     }
@@ -350,14 +373,40 @@ class TimeTableVC : BaseActivity() {
     }
 
     protected fun addEditTableView(page: String, w: Int, padding: Int) {
-        val editTableView = RecyclerView(this)
+
+        //editTableView.
+        editTableView = RecyclerView(this)
+        /*
+        editTableView.setRecyclerListener(object: RecyclerView.RecyclerListener {
+            override fun onViewRecycled(p0: RecyclerView.ViewHolder) {
+                val view = p0.itemView
+                if (view.hasFocus()) {
+                    view.clearFocus()
+                    if (p0.itemView is EditText) {
+                        val imm = view.context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                        imm.hideSoftInputFromWindow(view.windowToken, 0)
+                    }
+                }
+
+            }
+        })
+        editTableView.addOnScrollListener(object: RecyclerView.OnScrollListener() {
+            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                val imm = this@TimeTableVC.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                if (currentFocus != null) {
+                    imm.hideSoftInputFromWindow(currentFocus.windowToken, 0)
+                    currentFocus.clearFocus()
+                }
+            }
+        })
+*/
         editTableView.id = R.id.SearchRecycleItem
         editTableView.backgroundColor = Color.BLACK
         val lp1 = RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
         lp1.setMargins(0, 10, 0, 0)
         editTableView.layoutParams = lp1
         editTableView.layoutManager = LinearLayoutManager(this)
-        //editTableView.
+
         searchAdapter = GroupAdapter()
         searchAdapter.setOnItemClickListener { item, view ->
             val itemAdapter = item as FormItemAdapter
@@ -369,6 +418,8 @@ class TimeTableVC : BaseActivity() {
                     //0 is title
                     //weekday
                     1 -> {
+                        layerCancel()
+                        removeLayerChildViews()
                         intent.putExtra("key", TEAM_WEEKDAYS_KEY)
                         intent.putExtra("source", "search")
                         intent.putIntegerArrayListExtra("weekdays", formItem.sender as java.util.ArrayList<Int>)
@@ -376,6 +427,8 @@ class TimeTableVC : BaseActivity() {
                     }
                     //start_date
                     2-> {
+                        layerCancel()
+                        removeLayerChildViews()
                         val intent1 = Intent(this, DateSelectVC::class.java)
                         val sender: HashMap<String, Any> = formItem.sender as HashMap<String, Any>
                         val type: SELECT_DATE_TYPE = sender["type"] as SELECT_DATE_TYPE
@@ -387,6 +440,8 @@ class TimeTableVC : BaseActivity() {
                     }
                     //end_date
                     3-> {
+                        layerCancel()
+                        removeLayerChildViews()
                         val intent1 = Intent(this, DateSelectVC::class.java)
                         val sender: HashMap<String, Any> = formItem.sender as HashMap<String, Any>
                         val type: SELECT_DATE_TYPE = sender["type"] as SELECT_DATE_TYPE
@@ -398,15 +453,19 @@ class TimeTableVC : BaseActivity() {
                     }
                     //start_time
                     4-> {
+                        layerCancel()
+                        removeLayerChildViews()
                         intent.putExtra("key", TEAM_PLAY_START_KEY)
                         intent.putExtra("source", "search")
-                        intent.putExtra("start", "06:00")
+                        intent.putExtra("start", "07:00")
                         times["type"] = SELECT_TIME_TYPE.play_start
                         intent.putExtra("times", formItem.sender as HashMap<String, Any>)
                         startActivityForResult(intent, SEARCH_REQUEST_CODE)
                     }
                     //end_time
                     5-> {
+                        layerCancel()
+                        removeLayerChildViews()
                         intent.putExtra("key", TEAM_PLAY_END_KEY)
                         intent.putExtra("source", "search")
                         intent.putExtra("start", "06:00")
@@ -418,6 +477,8 @@ class TimeTableVC : BaseActivity() {
                     //7 is limit
                     //color
                     8-> {
+                        layerCancel()
+                        removeLayerChildViews()
                         val intent1 = Intent(this, ColorSelectVC::class.java)
                         intent1.putExtra("key", COLOR_SELECT_KEY)
                         if (formItem.sender != null) {
@@ -427,6 +488,8 @@ class TimeTableVC : BaseActivity() {
                     }
                     //status
                     9-> {
+                        layerCancel()
+                        removeLayerChildViews()
                         val intent1 = Intent(this, StatusSelectVC::class.java)
                         intent1.putExtra("key", STATUS_SELECT_KEY)
                         intent1.putExtra("selected", formItem.sender as STATUS)
@@ -434,6 +497,8 @@ class TimeTableVC : BaseActivity() {
                     }
                     //content
                     10-> {
+                        layerCancel()
+                        removeLayerChildViews()
                         intent.putExtra("key", CONTENT_KEY)
                         intent.putExtra("value", formItem.sender as String)
                         startActivityForResult(intent, SEARCH_REQUEST_CODE)
@@ -518,8 +583,10 @@ class TimeTableVC : BaseActivity() {
                             item.make()
                         }
                     }
-                    val rows = generateFormItems()
-                    searchAdapter.update(rows)
+//                    TTEditAction = "INSERT"
+                    showEditEvent()
+                    //val rows = generateFormItems()
+                    //searchAdapter.addAll(rows)
                 }
             }
         }
@@ -532,7 +599,7 @@ class TimeTableVC : BaseActivity() {
 //        indexPath["section"] = section
         for ((idx, formItem) in form.formItems.withIndex()) {
 //            indexPath["row"] = idx
-            rows.add(FormItemAdapter(form, idx, 0, { i ->
+            val formItemAdapter = FormItemAdapter(form, idx, 0, { i ->
                 val forItem = form.formItems[i]
                 forItem.reset()
                 val rows = generateFormItems()
@@ -543,7 +610,19 @@ class TimeTableVC : BaseActivity() {
                     Alert.show(this, "提示", forItem.tooltip!!)
                 }
             })
-            )
+            formItemAdapter.delegate = this
+            rows.add(formItemAdapter)
+//            rows.add(FormItemAdapter(form, idx, 0, { i ->
+//                val forItem = form.formItems[i]
+//                forItem.reset()
+//                val rows = generateFormItems()
+//                searchAdapter.update(rows)
+//            }, { i ->
+//                val forItem = form.formItems[i]
+//                if (forItem.tooltip != null) {
+//                    Alert.show(this, "提示", forItem.tooltip!!)
+//                }
+//            }))
         }
 
         return rows
@@ -555,6 +634,7 @@ class TimeTableVC : BaseActivity() {
         params["created_token"] = member.token
         for (formItem in form.formItems) {
             if (formItem.name != null && formItem.value != null) {
+                val value = formItem.value!!
                 params[formItem.name!!] = formItem.value!!
             }
         }
@@ -562,11 +642,11 @@ class TimeTableVC : BaseActivity() {
             params["id"] = form.id!!.toString()
         }
         //print(params)
-        unmask()
         Loading.show(mask)
         dataService.updateTT(this, source, params) { success ->
                 Loading.hide(mask)
             if (success) {
+                unmask()
                 refreshEvent(container)
             } else {
                 warning(dataService.msg)
@@ -617,6 +697,14 @@ class TimeTableVC : BaseActivity() {
                 warning(dataService.msg)
             }
         }
+    }
+
+    override fun textFieldTextChanged(row: Int, section: Int, text: String) {
+        //println(row)
+        //println(text)
+        val item = form.formItems[row]
+        item.value = text
+        item.make()
     }
 
 }

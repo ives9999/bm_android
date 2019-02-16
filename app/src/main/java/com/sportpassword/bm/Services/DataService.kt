@@ -1,6 +1,8 @@
 package com.sportpassword.bm.Services
 
 import android.content.Context
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import com.android.volley.Request
 import com.android.volley.Response
 import com.android.volley.toolbox.JsonArrayRequest
@@ -13,6 +15,9 @@ import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject
 import java.io.File
+import java.io.InputStream
+import java.lang.Exception
+import java.net.URL
 
 /**
  * Created by ives on 2018/2/14.
@@ -32,6 +37,8 @@ open class DataService: BaseService() {
     var citysandarenas: HashMap<Int, HashMap<String, Any>> = hashMapOf()
     var citysandareas: HashMap<Int, HashMap<String, Any>> = hashMapOf()
     lateinit var timetables: Timetables
+
+    var image: Bitmap? = null
 
     fun getList(context: Context, type:String, titleField:String, params: HashMap<String,Any>, page:Int, perPage:Int, filter:Array<Array<Any>>?, complete:CompletionHandler) {
         val url = "$URL_LIST".format(type)
@@ -183,7 +190,7 @@ open class DataService: BaseService() {
 
     }
 
-    fun getOne(context: Context, type:String, titleField:String, token:String, complete: CompletionHandler) {
+    open fun getOne(context: Context, type:String, titleField:String, token:String, complete: CompletionHandler) {
         val url = "$URL_ONE".format(type)
         //println(url)
 
@@ -470,6 +477,16 @@ open class DataService: BaseService() {
         }
         Volley.newRequestQueue(context).add(request)
 */
+    }
+
+    fun getImage(url: String, completion: CompletionHandler) {
+        try {
+            val inStream: InputStream = URL(url).openStream()
+            image = BitmapFactory.decodeStream(inStream)
+            completion(true)
+        } catch (e: Exception) {
+            completion(false)
+        }
     }
 
     open fun delete(context: Context, type: String, token: String, complete: CompletionHandler) {
@@ -831,11 +848,11 @@ open class DataService: BaseService() {
             body.put(key, value)
         }
         val requestBody = body.toString()
-        //print(body)
+        //println(body)
         val url = "$URL_TT_UPDATE".format(type)
-        //print(url)
+        //println(url)
         val request = object : JsonObjectRequest(Request.Method.POST, url, null, Response.Listener { json ->
-            //println("json: " + json)
+            println("json: " + json)
             try {
 
                 success = json.getBoolean("success")

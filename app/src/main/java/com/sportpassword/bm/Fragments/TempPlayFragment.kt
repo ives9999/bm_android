@@ -121,7 +121,7 @@ class TempPlayFragment : TabFragment(), inter {
             if (row[i].containsKey("switch")) {
                 bSwitch = row[i].get("switch")!!.toBoolean()
             }
-            _rows.add(SearchItem(title, detail, bSwitch, section, i, { k ->
+            _rows.add(SearchItem(title, detail, keyword, bSwitch, section, i, { k ->
                 keyword = k
             }, { idx, b ->
 

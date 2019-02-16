@@ -5,6 +5,7 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.Bitmap
 import android.graphics.Color
 import android.graphics.Point
 import android.graphics.drawable.GradientDrawable
@@ -17,6 +18,7 @@ import android.support.constraint.ConstraintLayout
 import android.support.v4.app.ActivityCompat
 import android.support.v4.content.ContextCompat
 import android.support.v4.content.LocalBroadcastManager
+import android.support.v4.widget.NestedScrollView
 import android.support.v4.widget.SwipeRefreshLayout
 import android.support.v7.app.ActionBar
 import android.support.v7.widget.LinearLayoutManager
@@ -26,6 +28,7 @@ import android.view.*
 import android.view.animation.Animation
 import android.view.animation.TranslateAnimation
 import android.view.inputmethod.InputMethodManager
+import android.webkit.*
 import android.widget.*
 import com.facebook.CallbackManager
 import com.facebook.FacebookCallback
@@ -50,6 +53,7 @@ import com.sportpassword.bm.Utilities.*
 import com.sportpassword.bm.member
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.ViewHolder
+import kotlinx.android.synthetic.main.activity_show_timetable_vc.*
 import org.jetbrains.anko.*
 import java.net.HttpURLConnection
 import java.net.URL
@@ -102,7 +106,8 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener {
     
     //for layer
     var layerMask: LinearLayout? = null
-    var layerScrollView: ScrollView? = null
+    var layerScrollView: NestedScrollView? = null
+    //var layerScrollView: ScrollView? = null
     var layerContainerView: LinearLayout? = null
     var layerSubmitBtn: Button? = null
     var layerCancelBtn: Button? = null
@@ -111,6 +116,8 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener {
     var layerTopPadding: Int = 100
     lateinit var layerButtonLayout: LinearLayout
     var layerBtnCount: Int = 2
+
+    val body_css = "<style>body{background-color:#000;padding-left:8px;padding-right:8px;margin-top:0;padding-top:0;color:#888888;font-size:18px;}a{color:#a6d903;}</style>"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -674,11 +681,7 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener {
             animate.setAnimationListener(object : Animation.AnimationListener {
                 override fun onAnimationRepeat(p0: Animation?) {}
                 override fun onAnimationEnd(p0: Animation?) {
-                    layerMask!!.visibility = View.GONE
-                    layerMask!!.removeAllViews()
-                    layerScrollView = null
-                    parent.removeView(layerMask)
-                    layerMask = null
+                    removeLayerChildViews()
                 }
                 override fun onAnimationStart(p0: Animation?) {}
             })
@@ -699,6 +702,18 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener {
         }
     }
 
+    protected fun removeLayerChildViews() {
+        val parent = getMyParent()
+        layerContainerView!!.removeAllViews()
+        layerScrollView!!.removeAllViews()
+        layerContainerView = null
+        layerMask!!.visibility = View.GONE
+        layerMask!!.removeAllViews()
+        layerScrollView = null
+        parent.removeView(layerMask)
+        layerMask = null
+    }
+
     protected fun addLayer(page: String) {
 
         val parent = getMyParent()
@@ -708,7 +723,15 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener {
 
             val lp = LinearLayout.LayoutParams(w - (2 * layerRightLeftPadding), ViewGroup.LayoutParams.MATCH_PARENT)
             lp.setMargins(layerRightLeftPadding, layerTopPadding, layerRightLeftPadding, 0)
-            layerScrollView = ScrollView(this)
+            layerScrollView = NestedScrollView(this)
+            layerScrollView!!.setOnScrollChangeListener(object: NestedScrollView.OnScrollChangeListener {
+                override fun onScrollChange(p0: NestedScrollView?, p1: Int, p2: Int, p3: Int, p4: Int) {
+                    if (currentFocus != null) {
+                        currentFocus.clearFocus()
+                    }
+                }
+
+            })
             layerScrollView!!.layoutParams = lp
             layerScrollView!!.backgroundColor = Color.BLACK
 
@@ -1072,7 +1095,7 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener {
             if (row.containsKey("switch")) {
                 bSwitch = row.get("switch")!!.toBoolean()
             }
-            rows.add(SearchItem(title, detail, bSwitch, -1, i, { k ->
+            rows.add(SearchItem(title, detail, keyword, bSwitch, -1, i, { k ->
                 keyword = k
             }, { idx, b ->
                 when (idx){
@@ -1110,10 +1133,15 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener {
             citys.forEach {
                 city_ids.add(it.id)
             }
+        } else {
+            city_ids.clear()
         }
         if (city_ids.size > 0) {
             params["city_id"] = city_ids
             params["city_type"] = city_type
+        } else {
+            params.remove("city_id")
+            params.remove("city_type")
         }
 
         val area_ids: ArrayList<Int> = arrayListOf()
@@ -1121,9 +1149,13 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener {
             areas.forEach  {
                 area_ids.add(it.id)
             }
+        } else {
+            area_ids.clear()
         }
         if (area_ids.size > 0) {
             params["area_id"] = area_ids
+        } else {
+            params.remove("area_id")
         }
 
         if (air_condition) { params["air_condition"] = 1 } else { params["air_condition"] = 0 }
@@ -1132,6 +1164,8 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener {
 
         if (weekdays.size > 0) {
             params["play_days"] = weekdays
+        } else {
+            params.remove("play_days")
         }
 
         if (times.size > 0) {
@@ -1141,6 +1175,8 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener {
                 val time = play_start + ":00 - 24:00:00"
                 params["play_time"] = time
             }
+        } else {
+            params.remove("play_time")
         }
 
         var arena_ids: ArrayList<Int> = arrayListOf()
@@ -1148,9 +1184,13 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener {
             arenas.forEach {
                 arena_ids.add(it.id)
             }
+        } else {
+            arena_ids.clear()
         }
         if (arena_ids.size > 0) {
             params["arena_id"] = arena_ids
+        } else {
+            params.remove("arena_id")
         }
 
         var _degrees: ArrayList<String> = arrayListOf()
@@ -1158,9 +1198,13 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener {
             degrees.forEach {
                 _degrees.add(it.toString())
             }
+        } else {
+            _degrees.clear()
         }
         if (_degrees.size > 0) {
             params["degree"] = _degrees
+        } else {
+            params.remove("degree")
         }
 
         params["k"] = keyword
@@ -1189,6 +1233,65 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener {
         } else {
             refresh()
         }
+    }
+
+    fun webViewSettings(context: Context, webView: WebView) {
+        val settings = webView.settings
+        settings.javaScriptEnabled = true
+        settings.setAppCacheEnabled(true)
+        settings.cacheMode = WebSettings.LOAD_DEFAULT
+        settings.setAppCachePath(cacheDir.path)
+        settings.setSupportZoom(true)
+        settings.builtInZoomControls = true
+        settings.displayZoomControls = true
+        settings.textZoom = 125
+        settings.blockNetworkImage = false
+        settings.loadsImagesAutomatically = true
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            settings.safeBrowsingEnabled = true
+        }
+        settings.useWideViewPort = true
+        settings.loadWithOverviewMode = true
+        settings.javaScriptCanOpenWindowsAutomatically = true
+        settings.mediaPlaybackRequiresUserGesture = false
+        settings.domStorageEnabled = true
+//        settings.setSupportMultipleWindows(true)
+        settings.loadWithOverviewMode = true
+        settings.allowContentAccess = true
+        settings.setGeolocationEnabled(true)
+        settings.allowUniversalAccessFromFileURLs = true
+        settings.allowFileAccess = true
+
+        webView.fitsSystemWindows = true
+        webView.setLayerType(View.LAYER_TYPE_HARDWARE, null)
+        webView.webViewClient = object : WebViewClient() {
+            override fun onPageStarted(view: WebView?, url: String?, favicon: Bitmap?) {
+                //toast("Page loading.")
+            }
+
+            override fun onPageFinished(view: WebView?, url: String?) {
+                //toast("Page loaded complete")
+            }
+
+            override fun shouldOverrideUrlLoading(view: WebView?, request: WebResourceRequest?): Boolean {
+                val url = request!!.url.toString()
+                //println(url)
+                url.website(context)
+                return true
+            }
+
+            override fun shouldOverrideUrlLoading(view: WebView?, url: String?): Boolean {
+                //println(url)
+                url!!.website(context)
+                return true
+            }
+        }
+        webView.webChromeClient = object : WebChromeClient() {
+            override fun onProgressChanged(view: WebView?, newProgress: Int) {
+
+            }
+        }
+        webView.setBackgroundColor(Color.TRANSPARENT)
     }
 
     open protected fun layerCancel() {

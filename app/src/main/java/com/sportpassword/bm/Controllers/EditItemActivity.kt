@@ -57,7 +57,7 @@ class EditItemActivity() : BaseActivity() {
     var start: String = "07:00"
     var end: String = "23:00"
     //minute
-    var interval: Int = 60
+    var interval: Int = 30
     var allTimes: ArrayList<String> = arrayListOf()
 
     var citysForArena: ArrayList<Int> = arrayListOf()

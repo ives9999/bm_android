@@ -16,8 +16,8 @@ class TimeTableForm: BaseForm {
 
         val eventWeekdayItem = WeekdayFormItem("星期幾", TT_WEEKDAY)
 
-        val eventStartDateItem = DateFormItem(TT_START_DATE, "開始日期", SELECT_DATE_TYPE.start, "設定出現在行事曆的日期，若不設定，就會一直出現")
-        val eventEndDateItem = DateFormItem(TT_END_DATE, "結束日期", SELECT_DATE_TYPE.end)
+        val eventStartDateItem = DateFormItem(TT_START_DATE, "開始日期", SELECT_DATE_TYPE.start, "設定出現在行事曆的日期，若不設定，就會一直出現", false)
+        val eventEndDateItem = DateFormItem(TT_END_DATE, "結束日期", SELECT_DATE_TYPE.end, "", false)
 
         val eventStartTimeItem = TimeFormItem(TT_START_TIME, "開始時間", SELECT_TIME_TYPE.play_start)
         val eventEndTimeItem = TimeFormItem(TT_END_TIME, "結束時間", SELECT_TIME_TYPE.play_end)
@@ -32,6 +32,7 @@ class TimeTableForm: BaseForm {
         val eventContentItem = ContentFormItem(TT_CONTENT, "詳細內容", TEXT_INPUT_TYPE.timetable_coach)
 
         formItems = arrayListOf(eventTitleItem, eventWeekdayItem, eventStartDateItem, eventEndDateItem, eventStartTimeItem, eventEndTimeItem, eventChargeItem, eventLimitItem, eventColorItem, eventStatusItem, eventContentItem)
+        //formItems = arrayListOf(eventTitleItem, eventWeekdayItem)
     }
 
     override fun fillValue() {

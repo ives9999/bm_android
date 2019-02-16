@@ -13,6 +13,8 @@ import android.support.v4.content.ContextCompat
 import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.webkit.*
+import com.sportpassword.bm.Adapters.IconCell
+import com.sportpassword.bm.Adapters.IconCellDelegate
 import com.sportpassword.bm.Models.SuperCoach
 import com.sportpassword.bm.Models.Timetable
 import com.sportpassword.bm.R
@@ -43,14 +45,15 @@ class ShowTimetableVC : BaseActivity(), IconCellDelegate {
         "limit_text" to hashMapOf( "icon" to "group","title" to "接受報名人數","content" to ""),
         "signup_count" to hashMapOf( "icon" to "group","title" to "已報名人數","content" to "")
     )
-    val coachTableRowKeys:Array<String> = arrayOf(NAME_KEY,MOBILE_KEY,LINE_KEY,FB_KEY,YOUTUBE_KEY,WEBSITE_KEY)
+    val coachTableRowKeys:Array<String> = arrayOf(NAME_KEY,MOBILE_KEY,LINE_KEY,FB_KEY,YOUTUBE_KEY,WEBSITE_KEY,EMAIL_KEY)
     var coachTableRows: HashMap<String, HashMap<String, String>> = hashMapOf(
         NAME_KEY to hashMapOf("icon" to "coach","title" to "教練","content" to "","isPressed" to "true"),
         MOBILE_KEY to hashMapOf("icon" to "mobile","title" to "行動電話","content" to "","isPressed" to "true"),
-        LINE_KEY to hashMapOf("icon" to "lineicon","title" to "line id","content" to "","isPressed" to "true"),
+        LINE_KEY to hashMapOf("icon" to "lineicon","title" to "line id","content" to "","isPressed" to "false"),
         FB_KEY to hashMapOf("icon" to "fb","title" to "fb","content" to "","isPressed" to "true"),
         YOUTUBE_KEY to hashMapOf("icon" to "youtube","title" to "youtube","content" to "","isPressed" to "true"),
-        WEBSITE_KEY to hashMapOf("icon" to "website","title" to "網站","content" to "","isPressed" to "true")
+        WEBSITE_KEY to hashMapOf("icon" to "website","title" to "網站","content" to "","isPressed" to "true"),
+        EMAIL_KEY to hashMapOf("icon" to "email","title" to "郵件","content" to "","isPressed" to "true")
     )
     var timetable: Timetable? = null
     var superCoach: SuperCoach? = null
@@ -69,62 +72,7 @@ class ShowTimetableVC : BaseActivity(), IconCellDelegate {
         source = intent.getStringExtra("source")
         token = intent.getStringExtra("token")
 
-        val settings = contentView.settings
-        settings.javaScriptEnabled = true
-        settings.setAppCacheEnabled(true)
-        settings.cacheMode = WebSettings.LOAD_DEFAULT
-        settings.setAppCachePath(cacheDir.path)
-        settings.setSupportZoom(true)
-        settings.builtInZoomControls = true
-        settings.displayZoomControls = true
-        settings.textZoom = 125
-        settings.blockNetworkImage = false
-        settings.loadsImagesAutomatically = true
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            settings.safeBrowsingEnabled = true
-        }
-        settings.useWideViewPort = true
-        settings.loadWithOverviewMode = true
-        settings.javaScriptCanOpenWindowsAutomatically = true
-        settings.mediaPlaybackRequiresUserGesture = false
-        settings.domStorageEnabled = true
-//        settings.setSupportMultipleWindows(true)
-        settings.loadWithOverviewMode = true
-        settings.allowContentAccess = true
-        settings.setGeolocationEnabled(true)
-        settings.allowUniversalAccessFromFileURLs = true
-        settings.allowFileAccess = true
-
-        contentView.fitsSystemWindows = true
-        contentView.setLayerType(View.LAYER_TYPE_HARDWARE, null)
-        contentView.webViewClient = object : WebViewClient() {
-            override fun onPageStarted(view: WebView?, url: String?, favicon: Bitmap?) {
-                //toast("Page loading.")
-            }
-
-            override fun onPageFinished(view: WebView?, url: String?) {
-                //toast("Page loaded complete")
-            }
-
-            override fun shouldOverrideUrlLoading(view: WebView?, request: WebResourceRequest?): Boolean {
-                val url = request!!.url.toString()
-                //println(url)
-                url.website(this@ShowTimetableVC)
-                return true
-            }
-
-            override fun shouldOverrideUrlLoading(view: WebView?, url: String?): Boolean {
-                //println(url)
-                url!!.website(this@ShowTimetableVC)
-                return true
-            }
-        }
-        contentView.webChromeClient = object : WebChromeClient() {
-            override fun onProgressChanged(view: WebView?, newProgress: Int) {
-
-            }
-        }
-        contentView.setBackgroundColor(Color.TRANSPARENT)
+        webViewSettings(this@ShowTimetableVC, contentView)
 
         refreshLayout = refresh
         setRefreshListener()
@@ -308,39 +256,13 @@ class ShowTimetableVC : BaseActivity(), IconCellDelegate {
                 } else if (key == WEBSITE_KEY) {
                     val website = superCoach!!.website
                     website.website(this)
+                } else if (key == EMAIL_KEY) {
+                    val email = superCoach!!.email
+                    email.email(this)
                 }
             }
         }
     }
-}
-
-
-class IconCell(val context: Context, val icon: String, val title: String, val content: String, val isPressed: Boolean=false): Item() {
-
-    var delegate: IconCellDelegate? = null
-
-    override fun bind(viewHolder: ViewHolder, position: Int) {
-        viewHolder.icon.setImage(icon)
-        viewHolder.title.text = title + "："
-        viewHolder.content.text = content
-        viewHolder.itemView.setOnClickListener {
-            if (delegate != null) {
-                delegate!!.didSelectRowAt(it, position)
-            }
-        }
-
-        if (isPressed) {
-            val color = ContextCompat.getColor(context, R.color.MY_GREEN)
-            viewHolder.content.textColor = color
-        }
-    }
-
-    override fun getLayout() = R.layout.iconcell
-}
-
-interface IconCellDelegate {
-
-    fun didSelectRowAt(view: View, position: Int)
 }
 
 

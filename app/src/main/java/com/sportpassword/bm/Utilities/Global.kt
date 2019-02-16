@@ -26,18 +26,19 @@ import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.util.*
+import java.util.concurrent.TimeUnit
 import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
 
 enum class MYCOLOR(val value: Int) {
 //    danger("danger"), success("success"), primary("primary"), warning("warning"),
 //    info("info"), gray("gray")
-    danger(0xc12e2a),
-    success(0x36c6d3),
-    primary(0x337ab7),
+    primary(0x245580),
     warning(0xF1C40F),
     info(0x659be0),
-    gray(0xe1e1e1);
+    danger(0xc12e2a),
+    success(0x419641),
+    white(0xe1e1e1);
 
 
 //    fun toString(): String {
@@ -59,7 +60,7 @@ enum class MYCOLOR(val value: Int) {
 
     companion object {
 
-        val allValues: ArrayList<MYCOLOR> = arrayListOf(danger, success, primary, warning, info, gray)
+        val allValues: ArrayList<MYCOLOR> = arrayListOf(primary, warning, info, danger, success, white)
 
         fun from(value: String): MYCOLOR {
             when (value) {
@@ -68,7 +69,7 @@ enum class MYCOLOR(val value: Int) {
                 "primary" -> return primary
                 "warning" -> return warning
                 "info" -> return info
-                "gray" -> return gray
+                "white" -> return white
             }
             return success
         }
@@ -341,6 +342,15 @@ fun String.website(context: Context) {
     }
 }
 
+fun String.email(context: Context) {
+    val webUrl = "mailto:" + this
+    val webIntent = Intent(Intent.ACTION_SENDTO, Uri.parse(webUrl))
+    try {
+        context.startActivity(webIntent)
+    } catch (e: ActivityNotFoundException) {
+    }
+}
+
 fun String.getYoutubeIDFromChannel(): String? {
     if (this.toLowerCase().contains("channel")) {
         val matches = this.reMatches("channel\\/(.*)", this);
@@ -415,6 +425,11 @@ fun Date.gets(): Int {
     val formatter = SimpleDateFormat("ss")
     val res = formatter.format(this).toInt()
     return res
+}
+
+fun Date.timeIntervalSince(stop: Date): Long {
+    val diffInMs = this.time - stop.time
+    return TimeUnit.MILLISECONDS.toSeconds(diffInMs)
 }
 
 fun <T1, T2> Map<T1, T2>.print() {
