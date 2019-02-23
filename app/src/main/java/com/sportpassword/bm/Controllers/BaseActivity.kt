@@ -178,6 +178,9 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener {
         URL_TEAM_CANCELPLUSONE = BASE_URL + "/team/tempPlay/cancelPlusOne/"
         URL_TEAM_TEMP_PLAY_DATE = URL_TEAM + "tempPlay/date"
         URL_TEAM_TEMP_PLAY_DATE_PLAYER = URL_TEAM + "tempPlay/datePlayer"
+        URL_SIGNUP = BASE_URL + "%s/signup/%s"
+        URL_CANCEL_SIGNUP = BASE_URL + "%s/cancelSignup/%d"
+
     }
 
     protected fun setMyTitle(title: String) {

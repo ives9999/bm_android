@@ -15,11 +15,13 @@ import android.view.View
 import android.webkit.*
 import com.sportpassword.bm.Adapters.IconCell
 import com.sportpassword.bm.Adapters.IconCellDelegate
+import com.sportpassword.bm.Models.Signup
 import com.sportpassword.bm.Models.SuperCoach
 import com.sportpassword.bm.Models.Timetable
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.TimetableService
 import com.sportpassword.bm.Utilities.*
+import com.sportpassword.bm.member
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.kotlinandroidextensions.Item
 import com.xwray.groupie.kotlinandroidextensions.ViewHolder
@@ -61,6 +63,9 @@ class ShowTimetableVC : BaseActivity(), IconCellDelegate {
     lateinit var timetableAdapter: GroupAdapter<ViewHolder>
     lateinit var coachAdapter: GroupAdapter<ViewHolder>
 
+    var isSignup: Boolean = false
+    var signup: Signup? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_show_timetable_vc)
@@ -97,6 +102,25 @@ class ShowTimetableVC : BaseActivity(), IconCellDelegate {
                                 tableRows[key]!!["content"] = value
                             }
                         }
+                    }
+
+                    isSignup = false
+                    if (timetable!!.signups.size > 0) {
+                        for (signup in timetable!!.signups) {
+                        //signup.printRow()
+                        if (signup.member_id == member.id) {
+                            this.signup = signup
+                            if (signup.status == "normal") {
+                                isSignup = true
+                            }
+                            break
+                        }
+                    }
+                    }
+                    if (isSignup) {
+                        signupBtn.text = "取消報名"
+                    } else {
+                        signupBtn.text = "報名"
                     }
 
                     timetableTitle.text = timetable!!.title
@@ -260,6 +284,44 @@ class ShowTimetableVC : BaseActivity(), IconCellDelegate {
                     val email = superCoach!!.email
                     email.email(this)
                 }
+            }
+        }
+    }
+
+    fun signupSubmit(view: View) {
+        if (!member.isLoggedIn) {
+            warning("請先登入")
+        } else {
+            if (timetable != null) {
+                val tt_id = timetable!!.id
+                //Global.instance.addSpinner(superView: view)
+                if (!isSignup) {//報名
+                    dataService.signup(this, "timetable", token!!, member.token, tt_id) { success ->
+                            //Global.instance.removeSpinner(superView: self.view)
+                        if (!success) {
+                            warning(dataService.msg)
+                        } else {
+                            info("您已經報名成功")
+                            refresh()
+                        }
+                    }
+                } else {//取消報名
+                    if (signup != null) {
+                        dataService.cancelSignup(this, "timetable", member.token, signup!!.id) { success ->
+                            //Global.instance.removeSpinner(superView: self.view)
+                            if (!success) {
+                                warning(dataService.msg)
+                            } else {
+                                info("取消報名成功")
+                                refresh()
+                            }
+                        }
+                    } else {
+                        warning("沒有取得報名資料，無法取消報名，請洽管理員")
+                    }
+                }
+            } else {
+                warning("沒有取得課程表，請重新進入")
             }
         }
     }

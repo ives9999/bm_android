@@ -940,6 +940,87 @@ open class DataService: BaseService() {
         Volley.newRequestQueue(context).add(request)
     }
 
+    fun signup(context: Context, type: String, token: String, member_token: String, tt_id: Int, complete: CompletionHandler) {
+        val url = "$URL_SIGNUP".format(type, token)
+        println(url)
+        val body = JSONObject()
+        body.put("source", "app")
+        body.put("channel", "bm")
+        body.put("member_token", member_token)
+        body.put("tt_id", tt_id)
+        val requestBody = body.toString()
+        println(requestBody)
+
+        val request = object : JsonObjectRequest(Request.Method.POST, url, null, Response.Listener { json ->
+            //println(json)
+            try {
+                success = json.getBoolean("success")
+            } catch (e: JSONException) {
+                println(e.localizedMessage)
+                success = false
+                msg = "無法刪除球隊，請稍後再試 " + e.localizedMessage
+            }
+            if (!success) {
+                msg = json.getString("msg")
+            }
+            complete(success)
+        }, Response.ErrorListener { error ->
+            //Log.d("ERROR", "Could not register user: $error")
+            println(error.localizedMessage)
+            this.msg = "取得失敗，網站或網路錯誤"
+            complete(false)
+        }) {
+            override fun getBodyContentType(): String {
+                return HEADER
+            }
+
+            override fun getBody(): ByteArray {
+                return requestBody.toByteArray()
+            }
+        }
+        Volley.newRequestQueue(context).add(request)
+    }
+
+    fun cancelSignup(context: Context, type: String, member_token: String, signup_id: Int, complete: CompletionHandler) {
+        val url = "$URL_CANCEL_SIGNUP".format(type, signup_id)
+        println(url)
+        val body = JSONObject()
+        body.put("source", "app")
+        body.put("channel", "bm")
+        body.put("member_token", member_token)
+        val requestBody = body.toString()
+        println(requestBody)
+
+        val request = object : JsonObjectRequest(Request.Method.POST, url, null, Response.Listener { json ->
+            //println(json)
+            try {
+                success = json.getBoolean("success")
+            } catch (e: JSONException) {
+                println(e.localizedMessage)
+                success = false
+                msg = "無法刪除球隊，請稍後再試 " + e.localizedMessage
+            }
+            if (!success) {
+                msg = json.getString("msg")
+            }
+            complete(success)
+        }, Response.ErrorListener { error ->
+            //Log.d("ERROR", "Could not register user: $error")
+            println(error.localizedMessage)
+            this.msg = "取得失敗，網站或網路錯誤"
+            complete(false)
+        }) {
+            override fun getBodyContentType(): String {
+                return HEADER
+            }
+
+            override fun getBody(): ByteArray {
+                return requestBody.toByteArray()
+            }
+        }
+        Volley.newRequestQueue(context).add(request)
+    }
+
     open fun setData(id: Int, title: String, token: String, featured_path: String, vimeo: String, youtube: String): SuperData {
         val data = SuperData(id, title, token, featured_path, vimeo, youtube)
 

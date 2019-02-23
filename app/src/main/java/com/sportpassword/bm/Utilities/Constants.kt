@@ -62,6 +62,8 @@ var URL_TEAM_PLUSONE = ""
 var URL_TEAM_CANCELPLUSONE = ""
 var URL_TEAM_TEMP_PLAY_DATE = ""
 var URL_TEAM_TEMP_PLAY_DATE_PLAYER = ""
+var URL_SIGNUP = ""
+var URL_CANCEL_SIGNUP = ""
 
 // spinner
 val LOADING: String = "努力加載中..."
