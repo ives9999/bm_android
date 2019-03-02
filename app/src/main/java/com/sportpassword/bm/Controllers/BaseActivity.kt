@@ -142,6 +142,7 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener {
 
     private fun _setURLConstants() {
         gSimulate = isEmulator()
+        gSimulate = true
         BASE_URL = if (gSimulate) LOCALHOST_BASE_URL else REMOTE_BASE_URL
         //println("os: " + BASE_URL)
         URL_HOME = BASE_URL + "/app/"
@@ -178,8 +179,8 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener {
         URL_TEAM_CANCELPLUSONE = BASE_URL + "/team/tempPlay/cancelPlusOne/"
         URL_TEAM_TEMP_PLAY_DATE = URL_TEAM + "tempPlay/date"
         URL_TEAM_TEMP_PLAY_DATE_PLAYER = URL_TEAM + "tempPlay/datePlayer"
-        URL_SIGNUP = BASE_URL + "%s/signup/%s"
-        URL_CANCEL_SIGNUP = BASE_URL + "%s/cancelSignup/%d"
+        URL_SIGNUP = URL_HOME + "%s/signup/%s"
+        URL_CANCEL_SIGNUP = URL_HOME + "%s/cancelSignup/%d"
 
     }
 
@@ -1161,9 +1162,12 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener {
             params.remove("area_id")
         }
 
-        if (air_condition) { params["air_condition"] = 1 } else { params["air_condition"] = 0 }
-        if (bathroom) { params["bathroom"] = 1 } else { params["bathroom"] = 0 }
-        if (parking) { params["parking"] = 1 } else { params["parking"] = 0 }
+//        if (air_condition) { params["air_condition"] = 1 } else { params["air_condition"] = 0 }
+//        if (bathroom) { params["bathroom"] = 1 } else { params["bathroom"] = 0 }
+//        if (parking) { params["parking"] = 1 } else { params["parking"] = 0 }
+        if (air_condition) { params["air_condition"] = 1 } else { params.remove("air_condition") }
+        if (bathroom) { params["bathroom"] = 1 } else { params.remove("bathroom") }
+        if (parking) { params["parking"] = 1 } else { params.remove("parking") }
 
         if (weekdays.size > 0) {
             params["play_days"] = weekdays
@@ -1209,8 +1213,11 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener {
         } else {
             params.remove("degree")
         }
-
-        params["k"] = keyword
+        if (keyword.length > 0) {
+            params["k"] = keyword
+        } else {
+            params.remove("k")
+        }
     }
 
     fun resetParams() {

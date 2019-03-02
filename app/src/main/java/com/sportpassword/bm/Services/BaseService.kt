@@ -58,6 +58,52 @@ open class BaseService {
         return str
     }
 
+    fun toJsonString1(json: JSONObject, filter: Array<Array<Any>>?) : String {
+        var str = """
+            {
+            """
+
+        val arr = json.names()
+        for (i in 0..arr.length()-1) {
+            val key = arr[i].toString()
+            str += """
+                "${key}":"${json.get(key)}""""
+            if (i < arr.length()-1) {
+                str += ","
+            }
+        }
+        if (filter != null) {
+            str += ","
+            str += """
+                "where": ["""
+            for (i in filter.indices) {
+                str += """
+                    ["""
+                var j = 0
+                for (item in filter[i]) {
+                    str += """"$item""""
+                    if (j < filter[i].size-1) {
+                        str += ","
+                    }
+                    j++
+                }
+                str += "]"
+                if (i < filter.size-1) {
+                    str += ","
+                }
+            }
+            str += """
+                ]
+                """
+        }
+        str += """
+            }
+            """
+        str = str.trimIndent()
+
+        return str
+    }
+
     protected fun makeErrorMsg(json: JSONObject) {
         try {
             val errors = json.getJSONArray("msg")
@@ -115,7 +161,15 @@ class MultipartRequest(url: String?,
                     val groups = matches.groupValues
                     key = groups[1]+"[]"
                 }
-                entity.addTextBody(key, entry.value, ContentType.create("text/plain", MIME.UTF8_CHARSET))
+                println(key)
+                println(entry.value)
+                try {
+                    //entity.addTextBody(key, entry.value, ContentType.TEXT_PLAIN.withCharset("UTF-8"))
+                    entity.addTextBody("aaa", "bbb", ContentType.create("text/plain", MIME.UTF8_CHARSET))
+                } catch (e:Exception) {
+                    val err = e.localizedMessage
+                    println(err)
+                }
             }
         }
     }

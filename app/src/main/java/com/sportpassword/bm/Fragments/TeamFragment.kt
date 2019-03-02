@@ -34,6 +34,7 @@ class TeamFragment: TabFragment() {
         inflater!!.inflate(R.menu.search_manager, menu)
         super.onCreateOptionsMenu(menu, inflater)
         val memuView = menu!!.findItem(R.id.menu_search_manager).actionView
+
         val searchBtn = memuView.findViewById<ImageButton>(R.id.search)
         val ManagerBtn = memuView.findViewById<ImageButton>(R.id.manager)
 
@@ -64,6 +65,7 @@ class TeamFragment: TabFragment() {
         super.getDataStart(_page, _perPage)
         Loading.show(maskView)
         //println("page: $_page")
+        println(mainActivity!!.params)
         TeamService.getList(context!!, "team", "name", mainActivity!!.params, _page, _perPage, null) { success ->
             getDataEnd(success)
         }

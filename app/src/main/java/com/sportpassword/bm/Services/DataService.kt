@@ -3,6 +3,7 @@ package com.sportpassword.bm.Services
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.util.Log
 import com.android.volley.Request
 import com.android.volley.Response
 import com.android.volley.toolbox.JsonArrayRequest
@@ -14,10 +15,10 @@ import com.sportpassword.bm.Utilities.*
 import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject
-import java.io.File
 import java.io.InputStream
 import java.lang.Exception
 import java.net.URL
+
 
 /**
  * Created by ives on 2018/2/14.
@@ -42,16 +43,42 @@ open class DataService: BaseService() {
 
     fun getList(context: Context, type:String, titleField:String, params: HashMap<String,Any>, page:Int, perPage:Int, filter:Array<Array<Any>>?, complete:CompletionHandler) {
         val url = "$URL_LIST".format(type)
-        //println(url)
+//        println(url)
+//        println(params)
 
+//        params.put("city_type", "simple")
+//        params.put("city_id", arrayListOf(11))
+        val header: MutableList<Pair<String, String>> = mutableListOf()
+        header.add(Pair("Accept","application/json"))
+        header.add(Pair("Content-Type","application/json; charset=utf-8"))
+
+//        val params1: MutableList<Pair<String, String>> = mutableListOf()
         val body = JSONObject()
         body.put("source", "app")
+        body.put("channel", "bm")
         body.put("page", page.toString())
         body.put("perPage", perPage.toString())
+//        params1.add(Pair("source", "app"))
+//        params1.add(Pair("channel", "bm"))
+//        params1.add(Pair("page", page.toString()))
+//        params1.add(Pair("perPage", perPage.toString()))
 
         for ((key, value) in params) {
+            var valueStr: String = ""
             when (key) {
                 "city_id" -> {
+//                    valueStr += """["""
+//                    val valueArr = value as ArrayList<Int>
+//                    var i = 1
+//                    for (id in valueArr) {
+//                        valueStr += """${id}"""
+//                        if (i < valueArr.size) {
+//                            valueStr += ""","""
+//                        }
+//                        i++
+//                    }
+//                    valueStr += """]"""
+//                    params1.add(Pair(key, valueStr))
                     var arr: JSONArray = JSONArray(value as ArrayList<Int>)
                     body.put(key, arr)
                 }
@@ -94,15 +121,82 @@ open class DataService: BaseService() {
                 }
             }
         }
-
-        var requestBody: String = ""
         if (filter != null) {
-            requestBody = toJsonString(body, filter!!)
-        } else {
-            requestBody = body.toString()
+            val whereArr = JSONArray()
+            for (i in filter.indices) {
+                val operateArr = JSONArray()
+                for (item in filter[i]) {
+                    operateArr.put(item)
+                }
+                whereArr.put(operateArr)
+            }
+            body.put("where", whereArr)
         }
+        //println(params1)
+//        println(body.toString())
+//        val requestBody = MyHttpClient.instance.toJsonString(body, filter)
         //println(requestBody)
         //println("coach getList refresh: $refresh")
+
+//        val params1: MutableList<Pair<String, String>> = mutableListOf()
+//        val keys = body.keys()
+//        while (keys.hasNext()) {
+//            val key = keys.next()
+//            val value = body.getString(key)
+//            params1.add(Pair(key, value))
+//        }
+        //println(params1)
+        MyHttpClient.instance.post(context, url, body.toString()) { success ->
+            if (success) {
+                superDataLists.clear()
+                val response = MyHttpClient.instance.response
+                if (response != null) {
+//                    println(response.toString())
+                    try {
+                        val json = JSONObject(response.toString())
+                        this.success = true
+                        this.totalCount = json.getInt("totalCount")
+                        this.page = json.getInt("page")
+                        this.perPage = json.getInt("perPage")
+                        val rows = json.getJSONArray("rows")
+                        for (i in 0..rows.length() - 1) {
+                            val obj = rows.getJSONObject(i)
+                            val title = obj.getString(titleField)
+                            val token = obj.getString("token")
+                            var vimeo = if (obj.has("vimeo")) obj.getString("vimeo") else ""
+                            var youtube = if (obj.has("youtube")) obj.getString("youtube").toString() else ""
+                            val id = obj.getInt("id")
+                            var featured_path = if (obj.has("featured_path")) obj.get("featured_path").toString() else ""
+                            //println(featured_path)
+                            if (featured_path.isNotEmpty()) {
+                                if (!featured_path.startsWith("http://") && !featured_path.startsWith("https://")) {
+                                    featured_path = BASE_URL + featured_path
+                                }
+                            }
+
+                            //val dataList: SuperData = Coach(id, title, featured_path)
+                            val data = setData(id, title, token, featured_path, vimeo, youtube)
+                            val map = setData1(obj)
+                            data.data = map
+                            superDataLists.add(data)
+                        }
+                    } catch (e: Exception) {
+                        this.success = false
+                        msg = "parse json failed，請洽管理員"
+                    }
+                    complete(this.success)
+                } else {
+                    println("response is null")
+                }
+            } else {
+                msg = "網路錯誤，無法跟伺服器更新資料"
+                complete(success)
+            }
+        }
+
+        /*
+
+
         superDataLists = arrayListOf()
 
         val request = object : JsonObjectRequest(Request.Method.POST, url, null, Response.Listener { json ->
@@ -127,12 +221,6 @@ open class DataService: BaseService() {
                             featured_path = BASE_URL + featured_path
                         }
                     }
-//                    if (vimeo.isNotEmpty()) {
-//                        vimeo = VIMEO_PREFIX + vimeo
-//                    }
-//                    if (youtube.isNotEmpty()) {
-//                        youtube = YOUTUBE_PREFIX + youtube
-//                    }
 
                     //val dataList: SuperData = Coach(id, title, featured_path)
                     val data = setData(id, title, token, featured_path, vimeo, youtube)
@@ -140,10 +228,6 @@ open class DataService: BaseService() {
                     data.data = map
                     superDataLists.add(data)
                 }
-                //println(superDataLists.size)
-//                for (data in superDataLists) {
-//                    println(data.data)
-//                }
             } catch (e: JSONException) {
                 println(e.localizedMessage)
                 success = false
@@ -170,30 +254,48 @@ open class DataService: BaseService() {
             }
         }
 
-//        val request = object: StringRequest(Request.Method.POST, url,
-//                Response.Listener { response ->
-//                    println(response)
-//                }, Response.ErrorListener { error ->
-//                    println(error.localizedMessage)
-//        }) {
-//            override fun getBodyContentType(): String {
-//                return HEADER
-//            }
-//
-//            override fun getBody(): ByteArray {
-//                println("parameter")
-//                return requestBody.toByteArray()
-//            }
-//        }
-//
         Volley.newRequestQueue(context).add(request)
+        */
 
     }
 
     open fun getOne(context: Context, type:String, titleField:String, token:String, complete: CompletionHandler) {
         val url = "$URL_ONE".format(type)
         //println(url)
+        val params: MutableList<Pair<String, String>> = mutableListOf()
+        params.add(Pair("source", "app"))
+        params.add(Pair("token", token))
+        params.add(Pair("strip_html", true.toString()))
 
+        MyHttpClient.instance.post(context, url, params, null) { success ->
+            val response = MyHttpClient.instance.response
+            if (response != null) {
+                val responseStr = response.toString()
+                //println(responseStr)
+                val json = JSONObject(responseStr)
+                try {
+                    this.success = true
+                    //println(json)
+                    model.dataReset()
+                    data = mutableMapOf()
+                    dealOne(json)
+                    data = model.data
+//                println(data)
+                } catch (e: JSONException) {
+                    println("parse data error: " + e.localizedMessage)
+                    this.success = false
+                    msg = "無法getOne，沒有傳回成功值 " + e.localizedMessage
+                }
+                if (this.success) {
+                    //jsonToMember(json)
+                } else {
+                    //DataService.makeErrorMsg(json)
+                }
+                complete(true)
+            }
+        }
+
+        /*
         val body = JSONObject()
         body.put("source", "app")
         body.put("token", token)
@@ -237,18 +339,35 @@ open class DataService: BaseService() {
             }
         }
         Volley.newRequestQueue(context).add(request)
+        */
     }
 
     open fun getOne(context: Context, id: Int, source: String, token: String, completion: CompletionHandler) {}
 
-    fun update(context: Context, type: String, _params: MutableMap<String, Any>, image: String, complete: CompletionHandler) {
+    fun update(context: Context, type: String, _params: MutableMap<String, Any>, filePath: String, complete: CompletionHandler) {
 
-        //println(_params)
+//        println(_params)
         val url = "$URL_UPDATE".format(type)
         //println(url)
+//        val params: MutableList<Pair<String, String>> = mutableListOf()
+        var postString: String = """
+{
+"""
+
+        val header: MutableList<Pair<String, String>> = mutableListOf()
+        header.add(Pair("Accept","application/json"))
+        header.add(Pair("Content-Type","application/json"))
+
+        val params1: MutableList<Pair<String, String>> = mutableListOf()
+        for ((key, value) in PARAMS) {
+            params1.add(Pair(key, value))
+        }
+
         val params: HashMap<String, String> = hashMapOf()
+        var j = 1
         for ((_key, row) in _params) {
             var key = _key
+            var valueStr: String = ""
             if (key == "arena_id") {
                 key = ARENA_KEY
             }
@@ -259,53 +378,190 @@ open class DataService: BaseService() {
             if (key == TEAM_DEGREE_KEY) {
                 val tmp: List<String> = row as ArrayList<String>
                 //hashmap don't permit duplicate key
+                valueStr += """["""
                 var i = 1
                 for (d in tmp) {
+                    valueStr += """"${d}""""
+                    if (i < tmp.size) {
+                        valueStr += ""","""
+                    }
                     params.put("degree="+i, d)
                     i++
                 }
+                valueStr += """]"""
+                params1.add(Pair(key, valueStr))
             } else if (key == TEAM_WEEKDAYS_KEY) {
                 val tmp: List<Int> = row as ArrayList<Int>
+                valueStr += """["""
                 var i = 1
                 for (d in tmp) {
+                    valueStr += """${d}"""
+                    if (i < tmp.size) {
+                        valueStr += ""","""
+                    }
                     params.put("weekdays="+i, d.toString())
                     i++
                 }
+                valueStr += """]"""
+                params1.add(Pair(key, valueStr))
             } else if (key == CAT_KEY) {
                 val tmp: List<Int> = row as ArrayList<Int>
+                valueStr += """["""
                 var i = 1
                 for (d in tmp) {
+                    valueStr += """${d}"""
+                    if (i < tmp.size) {
+                        valueStr += ""","""
+                    }
                     params.put("cat_id="+i, d.toString())
                     i++
                 }
+                valueStr += """]"""
+                params1.add(Pair(key, valueStr))
             } else if (key == ARENA_KEY) {
                 val value: Int = row as Int
                 params.put(_key, value.toString())
+                valueStr += """${value}"""
+                params1.add(Pair(_key, valueStr))
             } else if (key == CITY_KEY) {
                 val value: Int = row as Int
                 params.put(_key, value.toString())
+                valueStr += """${value}"""
+                params1.add(Pair(_key, valueStr))
             } else {
                 val vtype: String = model.data[key]!!["vtype"] as String
                 if (vtype == "String") {
                     params.put(key, row.toString())
+                    params1.add(Pair(key, row.toString()))
                 } else if (vtype == "Int") {
                     val value: Int = row as Int
                     params.put(key, value.toString())
+                    params1.add(Pair(key, value.toString()))
                 } else if (vtype == "Bool") {
                     val value: Boolean = row as Boolean
                     params.put(key, value.toString())
+                    params1.add(Pair(key, value.toString()))
                 }
+                valueStr += """"${row}""""
+            }
+            postString += """"${_key}":${valueStr},
+"""
+        }
+        var i = 1
+        for ((key, value) in PARAMS) {
+            postString += """"${key}":"${value}""""
+            postString += """,
+"""
+            i++
+        }
+        postString += """"type":"${type}""""
+        postString += """
+}
+"""
+//        println(postString)
+//        params.put("type", type)
+//        params.putAll(PARAMS)
+//        println(params)
+
+        println(params1)
+
+
+        var filePaths: ArrayList<String>? = null
+        if (filePath.length > 0) {
+            filePaths = arrayListOf()
+            filePaths.add(filePath)
+        }
+
+        MyHttpClient.instance.uploadFile(context, url, null, filePaths, params1, header) { success ->
+            if (success) {
+                val response = MyHttpClient.instance.response
+                if (response != null) {
+                    val responseStr = response.toString()
+//                    println(responseStr)
+                    try {
+                        val json = JSONObject(responseStr)
+                        this.success = json.getBoolean("success")
+                        if (!this.success) {
+                            if (json.has("msg")) {
+                                msg = json.getString("msg")
+                            }
+                            if (json.has("error")) {
+                                msg = ""
+                                val errors = json.getJSONArray("error")
+                                for (i in 0..errors.length()-1) {
+                                    msg += errors.getString(i)
+                                }
+                            }
+                        }
+                    } catch (e: Exception) {
+                        this.success = false
+                        msg = "parse json failed，請洽管理員"
+                    }
+                    complete(this.success)
+                } else {
+                    msg = "伺服器沒有傳回任何值，更新失敗，請洽管理員"
+                    complete(false)
+                }
+
+            } else {
+                msg = "網路錯誤，無法跟伺服器更新資料"
+                complete(success)
             }
         }
-        params.put("type", type)
-        params.putAll(PARAMS)
-        //println(params)
 
-        val images: HashMap<String, File> = hashMapOf()
-        if (image.length > 0) {
-            val f = File(image)
-            images.put("file", f)
-        }
+//        val images: HashMap<String, File> = hashMapOf()
+//        if (image.length > 0) {
+//            val f = File(image)
+//            images.put("file", f)
+//        }
+
+
+        /*
+
+        val multipartRequest1 = VolleyMultipartRequest(Request.Method.POST, url, Response.Listener<NetworkResponse> { response ->
+            val str = String(response.data)
+            println(str)
+        }, Response.ErrorListener { error ->
+            val networkResponse = error.networkResponse
+            var errorMessage = "Unknown error"
+            if (networkResponse == null) {
+                if (error::class.equals(TimeoutError::class.java)) {
+                    errorMessage = "Request timeout"
+                } else if (error::class.equals(NoConnectionError::class.java)) {
+                    errorMessage = "Failed to connect server"
+                }
+            } else {
+                val result = String(networkResponse.data)
+                try {
+                    val response = JSONObject(result)
+                    val status = response.getString("status")
+                    val message = response.getString("message")
+
+                    Log.e("Error Status", status)
+                    Log.e("Error Message", message)
+
+                    if (networkResponse.statusCode == 404) {
+                        errorMessage = "Resource not found"
+                    } else if (networkResponse.statusCode == 401) {
+                        errorMessage = "$message Please login again"
+                    } else if (networkResponse.statusCode == 400) {
+                        errorMessage = "$message Check your inputs"
+                    } else if (networkResponse.statusCode == 500) {
+                        errorMessage = "$message Something is getting wrong"
+                    }
+                } catch (e: JSONException) {
+                    e.printStackTrace()
+                }
+
+            }
+            Log.i("Error", errorMessage)
+            error.printStackTrace()
+        })
+
+
+
+
+
         val header: HashMap<String, String> = hashMapOf()
         header.put("Accept","application/json");
         header.put("Content-Type","application/json");
@@ -335,6 +591,7 @@ open class DataService: BaseService() {
 
         Volley.newRequestQueue(context).add(multipartRequest)
 
+*/
 
 //        val smr = object: SimpleMultiPartRequest(Request.Method.POST, url, Response.Listener { response ->
 //            println(response)
@@ -942,17 +1199,50 @@ open class DataService: BaseService() {
 
     fun signup(context: Context, type: String, token: String, member_token: String, tt_id: Int, complete: CompletionHandler) {
         val url = "$URL_SIGNUP".format(type, token)
-        println(url)
+        //println(url)
         val body = JSONObject()
         body.put("source", "app")
         body.put("channel", "bm")
         body.put("member_token", member_token)
         body.put("tt_id", tt_id)
         val requestBody = body.toString()
-        println(requestBody)
+        //println(requestBody)
 
+        /*
+        val client = OkHttpClient()
+        val body1 = RequestBody.create(MediaType.parse("application/json;charset=utf-8"), requestBody)
+        val request1 = okhttp3.Request.Builder()
+                .url(url)
+                .post(body1)
+                .build()
+        val call = client.newCall(request1)
+        call.enqueue(object : Callback {
+            override fun onResponse(call: Call, response: okhttp3.Response) {
+                val str = response.body()!!.string()
+                println(str)
+                val json = JSONObject(str)
+                try {
+                    success = json.getBoolean("success")
+                } catch (e: JSONException) {
+                    println(e.localizedMessage)
+                    success = false
+                    msg = "無法刪除球隊，請稍後再試 " + e.localizedMessage
+                }
+                if (!success) {
+                    msg = json.getString("msg")
+                }
+                complete(success)
+            }
+
+            override fun onFailure(call: Call, e: IOException) {
+                println(e.localizedMessage)
+            }
+        })
+        */
+
+        /*
         val request = object : JsonObjectRequest(Request.Method.POST, url, null, Response.Listener { json ->
-            //println(json)
+            println(json)
             try {
                 success = json.getBoolean("success")
             } catch (e: JSONException) {
@@ -979,6 +1269,7 @@ open class DataService: BaseService() {
             }
         }
         Volley.newRequestQueue(context).add(request)
+        */
     }
 
     fun cancelSignup(context: Context, type: String, member_token: String, signup_id: Int, complete: CompletionHandler) {
@@ -1036,5 +1327,28 @@ open class DataService: BaseService() {
 
     open fun _jsonToData(tmp: JSONObject, key: String, item: Map<String, Any>){}
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 

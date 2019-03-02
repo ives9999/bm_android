@@ -118,5 +118,6 @@
             android:text="報名"
             android:textColor="@color/WHITE" />
     </LinearLayout>
+    <include layout="@layout/mask" />
 
 </RelativeLayout>

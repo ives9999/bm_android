@@ -1,5 +1,6 @@
 package com.sportpassword.bm.Controllers
 
+import android.app.NotificationManager
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
@@ -28,6 +29,7 @@ import android.widget.ArrayAdapter
 import com.facebook.FacebookSdk
 import com.facebook.appevents.AppEventsLogger
 import com.facebook.login.LoginManager
+import com.onesignal.OneSignal
 import com.sportpassword.bm.Adapters.MemberFunctionsAdapter
 import com.sportpassword.bm.Adapters.MenuTeamListAdapter
 import com.sportpassword.bm.Adapters.TabAdapter
@@ -47,6 +49,7 @@ import kotlinx.android.synthetic.main.login_out.*
 import kotlinx.android.synthetic.main.menu_member_function.*
 import kotlinx.android.synthetic.main.nav_header_main.*
 import kotlinx.android.synthetic.main.pure_mask.*
+//import me.leolin.shortcutbadger.ShortcutBadger
 
 import okhttp3.CacheControl
 import org.jetbrains.anko.sdk25.coroutines.onClick
@@ -87,6 +90,9 @@ class MainActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         hideKeyboard()
 
+//        ShortcutBadger.applyCount(this, 0)
+
+//        OneSignal.clearOneSignalNotifications()
 
 
 //        val testAccount = TestAccountStore(this.applicationContext)

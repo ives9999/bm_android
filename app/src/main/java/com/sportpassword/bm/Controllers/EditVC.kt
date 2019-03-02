@@ -177,6 +177,7 @@ class EditVC : MyTableVC(), ImagePicker {
                     //dataToField(inputV)
                     if (model.data.containsKey(FEATURED_KEY)) {
                         val featured: String = model.data[FEATURED_KEY]!!["value"] as String
+//                        println(featured)
                         if (featured.length > 0) {
                             setImage(null, featured)
                         }
@@ -471,6 +472,7 @@ class EditVC : MyTableVC(), ImagePicker {
                 }
             }
             intent.putIntegerArrayListExtra("weekdays", days)
+            intent.putExtra("select", "multi")
         } else if (key == TEAM_PLAY_START_KEY || key == TEAM_PLAY_END_KEY) {
             val row: MutableMap<String, Any> = model.data[key]!!["sender"] as MutableMap<String, Any>
             var times: HashMap<String, Any> = hashMapOf()

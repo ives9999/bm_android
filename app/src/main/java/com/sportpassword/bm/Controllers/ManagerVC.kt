@@ -55,9 +55,8 @@ class ManagerVC : BaseActivity() {
     }
 
     private fun getManagerList() {
-        val filter1: Array<Any> = arrayOf("channel", "=", CHANNEL)
-        val filter2: Array<Any> = arrayOf("manager_id", "=", member.id)
-        val filter: Array<Array<Any>> = arrayOf(filter1, filter2)
+        val filter1: Array<Any> = arrayOf("manager_id", "=", member.id)
+        val filter: Array<Array<Any>> = arrayOf(filter1)
 
         Loading.show(mask)
         dataService.getList(this, source, "name", hashMapOf<String, Any>(), 1, 100, filter) { success ->

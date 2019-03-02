@@ -7,8 +7,10 @@ import android.content.pm.PackageManager
 import android.os.Build
 import android.preference.PreferenceManager
 import android.util.Log
+import com.onesignal.OSNotificationOpenResult
 import com.onesignal.OneSignal
 import com.sportpassword.bm.Models.Member
+import com.sportpassword.bm.Utilities.MyNotificationOpenedHandler
 
 /**
  * Created by ives on 2018/2/6.
@@ -20,6 +22,7 @@ val member: Member by lazy {
 class App: Application() {
 
     companion object {
+        lateinit var instance: Context private set
         var member: Member? = null
 
         private val SCOPE = "private public create edit delete interact"
@@ -51,11 +54,14 @@ class App: Application() {
     override fun onCreate() {
         member = Member(applicationContext)
         super.onCreate()
+        instance = this
 
         // OneSignal Initialization
         OneSignal.startInit(this)
-                .inFocusDisplaying(OneSignal.OSInFocusDisplayOption.Notification)
-                .unsubscribeWhenNotificationsAreDisabled(true)
+                //.inFocusDisplaying()
+                //.unsubscribeWhenNotificationsAreDisabled(true)
+                .setNotificationOpenedHandler(MyNotificationOpenedHandler())
+                .autoPromptLocation(true)
                 .init()
 
 //        AccountPreferenceManager.initializeInstance(this)

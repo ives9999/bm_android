@@ -27,6 +27,7 @@ import com.xwray.groupie.kotlinandroidextensions.Item
 import com.xwray.groupie.kotlinandroidextensions.ViewHolder
 import kotlinx.android.synthetic.main.activity_show_timetable_vc.*
 import kotlinx.android.synthetic.main.iconcell.*
+import kotlinx.android.synthetic.main.mask.*
 import org.jetbrains.anko.makeCall
 import org.jetbrains.anko.textColor
 import org.jetbrains.anko.toast
@@ -107,15 +108,15 @@ class ShowTimetableVC : BaseActivity(), IconCellDelegate {
                     isSignup = false
                     if (timetable!!.signups.size > 0) {
                         for (signup in timetable!!.signups) {
-                        //signup.printRow()
-                        if (signup.member_id == member.id) {
-                            this.signup = signup
-                            if (signup.status == "normal") {
-                                isSignup = true
+                            //signup.printRow()
+                            if (signup.member_id == member.id) {
+                                this.signup = signup
+                                if (signup.status == "normal") {
+                                    isSignup = true
+                                }
+                                break
                             }
-                            break
                         }
-                    }
                     }
                     if (isSignup) {
                         signupBtn.text = "取消報名"
@@ -294,10 +295,10 @@ class ShowTimetableVC : BaseActivity(), IconCellDelegate {
         } else {
             if (timetable != null) {
                 val tt_id = timetable!!.id
-                //Global.instance.addSpinner(superView: view)
+                Loading.show(mask)
                 if (!isSignup) {//報名
                     dataService.signup(this, "timetable", token!!, member.token, tt_id) { success ->
-                            //Global.instance.removeSpinner(superView: self.view)
+                        Loading.hide(mask)
                         if (!success) {
                             warning(dataService.msg)
                         } else {
@@ -308,7 +309,7 @@ class ShowTimetableVC : BaseActivity(), IconCellDelegate {
                 } else {//取消報名
                     if (signup != null) {
                         dataService.cancelSignup(this, "timetable", member.token, signup!!.id) { success ->
-                            //Global.instance.removeSpinner(superView: self.view)
+                            unmask()
                             if (!success) {
                                 warning(dataService.msg)
                             } else {
