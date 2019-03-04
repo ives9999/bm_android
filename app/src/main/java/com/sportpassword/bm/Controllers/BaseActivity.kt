@@ -142,7 +142,7 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener {
 
     private fun _setURLConstants() {
         gSimulate = isEmulator()
-        gSimulate = true
+//        gSimulate = true
         BASE_URL = if (gSimulate) LOCALHOST_BASE_URL else REMOTE_BASE_URL
         //println("os: " + BASE_URL)
         URL_HOME = BASE_URL + "/app/"
@@ -474,7 +474,7 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener {
                     }
 
                     override fun onError(error: FacebookException?) {
-                        println(error)
+                        //println(error)
 
                     }
                 }

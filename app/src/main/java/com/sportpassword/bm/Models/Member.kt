@@ -1,3 +1,4 @@
+
 package com.sportpassword.bm.Models
 
 import android.content.Context
@@ -16,8 +17,7 @@ import kotlin.reflect.full.valueParameters
  */
 class Member(context: Context) {
 
-    val session_filename: String = "com.sportpassword.bm.session"
-    val session: SharedPreferences = context.getSharedPreferences(session_filename, 0)
+    val session: SharedPreferences = context.getSharedPreferences(SESSION_FILENAME, 0)
 
     var id: Int
         get() = session.getInt(ID_KEY, 0)

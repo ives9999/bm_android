@@ -11,6 +11,7 @@ import com.onesignal.OSNotificationOpenResult
 import com.onesignal.OneSignal
 import com.sportpassword.bm.Models.Member
 import com.sportpassword.bm.Utilities.MyNotificationOpenedHandler
+import com.sportpassword.bm.Utilities.MyNotificationReceivedHandler
 
 /**
  * Created by ives on 2018/2/6.
@@ -60,6 +61,7 @@ class App: Application() {
         OneSignal.startInit(this)
                 //.inFocusDisplaying()
                 //.unsubscribeWhenNotificationsAreDisabled(true)
+                .setNotificationReceivedHandler(MyNotificationReceivedHandler())
                 .setNotificationOpenedHandler(MyNotificationOpenedHandler())
                 .autoPromptLocation(true)
                 .init()

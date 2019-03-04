@@ -9,11 +9,11 @@ import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.sportpassword.bm.Controllers.ArenaVC
+import android.widget.Button
 import com.sportpassword.bm.Controllers.MainActivity
+import com.sportpassword.bm.Controllers.ShowPNVC
 
 import com.sportpassword.bm.R
-import java.util.*
 
 
 /**
@@ -56,8 +56,16 @@ class MoreFragment : TabFragment() {
 //                    .addToBackStack(null)
 //                    .commit()
         }
-        val row3 = view.findViewById<ConstraintLayout>(R.id.more_version_row)
-        row3.setOnClickListener { view ->
+        val row3 = view.findViewById<ConstraintLayout>(R.id.more_pn_row)
+        row3.setOnClickListener() { view ->
+            val intent = Intent(activity, ShowPNVC::class.java)
+//            intent.putExtra("title", "報名臨打")
+//            intent.putExtra("content", "孫志煌報名2019-03-09 17:00的臨打")
+            startActivity(intent)
+
+        }
+        val row4 = view.findViewById<ConstraintLayout>(R.id.more_version_row)
+        row4.setOnClickListener { view ->
             val p = context!!.applicationContext.packageManager.getPackageInfo(context!!.packageName, 0)
             val v = p.versionCode
             val n = p.versionName
@@ -69,7 +77,6 @@ class MoreFragment : TabFragment() {
 
         return view
     }
-
 
     companion object {
         // TODO: Rename parameter arguments, choose names that match

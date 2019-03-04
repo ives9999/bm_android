@@ -235,3 +235,6 @@ val DAYS: Array<Map<String, Any>> = arrayOf(
 
 val PARAMS: HashMap<String, String> = hashMapOf("source" to SOURCE, "channel" to CHANNEL)
 
+val SESSION_FILENAME: String = "com.sportpassword.bm.session"
+
+

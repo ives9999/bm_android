@@ -434,13 +434,13 @@ fun Date.timeIntervalSince(stop: Date): Long {
 
 fun <T1, T2> Map<T1, T2>.print() {
     for ((key, value) in this) {
-        println("${key} => ${value}")
+        //println("${key} => ${value}")
     }
 }
 
 fun <T> List<T>.print() {
     for (value in this) {
-        println("${value}")
+        //println("${value}")
     }
 }
 

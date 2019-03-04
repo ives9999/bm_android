@@ -29,11 +29,13 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:usesCleartextTraffic="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme"
+        android:usesCleartextTraffic="true">
+        <activity android:name=".Controllers.ShowPNVC"></activity>
 
-        <meta-data android:name="com.onesignal.NotificationOpened.DEFAULT" android:value="DISABLE" />
-
+        <meta-data
+            android:name="com.onesignal.NotificationOpened.DEFAULT"
+            android:value="DISABLE" />
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
             android:value="@string/facebook_app_id" /> <!-- Google Map API key -->
@@ -52,13 +54,11 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
 
-        <activity android:name=".Controllers.ShowCoachVC"></activity>
+        <activity android:name=".Controllers.ShowCoachVC" />
         <activity
             android:name=".Controllers.ShowTimetableVC"
-            android:exported="true"
-            />
+            android:exported="true" />
         <activity android:name=".Controllers.DateSelectVC" />
-
         <activity
             android:name="com.facebook.FacebookActivity"
             android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
@@ -116,9 +116,7 @@
         <activity
             android:name=".Controllers.MyMapVC"
             android:label="@string/title_activity_my_map_vc" />
-
-        <activity android:name=".Controllers.TimeTableVC"
-            />
+        <activity android:name=".Controllers.TimeTableVC" />
         <activity android:name=".Controllers.StatusSelectVC" />
     </application>
 

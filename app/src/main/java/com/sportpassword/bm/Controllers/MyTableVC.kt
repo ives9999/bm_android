@@ -23,7 +23,7 @@ open class MyTableVC : BaseActivity() {
         super.onCreate(savedInstanceState)
     }
 
-    fun initAdapter(include_section: Boolean=false) {
+    open fun initAdapter(include_section: Boolean=false) {
         adapter = GroupAdapter()
         adapter.setOnItemClickListener { item, view ->
             rowClick(item, view)

@@ -161,8 +161,8 @@ class MultipartRequest(url: String?,
                     val groups = matches.groupValues
                     key = groups[1]+"[]"
                 }
-                println(key)
-                println(entry.value)
+                //println(key)
+                //println(entry.value)
                 try {
                     //entity.addTextBody(key, entry.value, ContentType.TEXT_PLAIN.withCharset("UTF-8"))
                     entity.addTextBody("aaa", "bbb", ContentType.create("text/plain", MIME.UTF8_CHARSET))
