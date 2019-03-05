@@ -47,7 +47,7 @@ class TempPlayVC : MoreVC() {
         tempPlayListAdapter = TempPlayListAdapter(this, { data ->
             show(data)
         }, { city_id ->
-            cityBtnPressed(city_id)
+            cityBtnPressed(city_id, "temp_play")
         }, { arena_id ->
             arenaBtnPressed(arena_id)
         })
@@ -73,14 +73,6 @@ class TempPlayVC : MoreVC() {
         intent.putExtra("position", position)
         intent.putExtra(TOKEN_KEY, token)
         startActivity(intent)
-    }
-
-    private fun cityBtnPressed(city_id: Int) {
-        resetParams()
-        citys.add(City(city_id, ""))
-        prepareParams("all")
-        println(city_id)
-        refresh()
     }
 
     private fun arenaBtnPressed(arena_id: Int) {

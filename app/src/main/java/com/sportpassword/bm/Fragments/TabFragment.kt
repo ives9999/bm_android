@@ -21,6 +21,7 @@ import com.sportpassword.bm.Models.SuperData
 
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.DataService
+import com.sportpassword.bm.Utilities.CITY_KEY
 import com.sportpassword.bm.Utilities.DEGREE
 import com.sportpassword.bm.Utilities.Loading
 import com.sportpassword.bm.Utilities.PERPAGE
@@ -101,8 +102,14 @@ open class TabFragment : Fragment() {
             intent.putExtra("token", data.token)
             intent.putExtra("title", data.title)
             startActivity(intent)
-        }, {data ->
-            println("city")
+        }, { data ->
+            if (data.data.containsKey(CITY_KEY)) {
+                if (data.data[CITY_KEY]!!.containsKey("value")) {
+                    val city_id = data.data[CITY_KEY]!!["value"] as Int
+                    mainActivity!!.cityBtnPressed(city_id, type!!)
+                }
+            }
+
         }, { data, address ->
 
         })

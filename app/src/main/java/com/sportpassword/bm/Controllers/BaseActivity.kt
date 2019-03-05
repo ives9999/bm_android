@@ -1245,6 +1245,22 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener {
         }
     }
 
+    open fun cityBtnPressed(city_id: Int, page: String) {
+        resetParams()
+        citys.add(City(city_id, ""))
+        prepareParams("all")
+//        println(city_id)
+        if (page == "coach") {
+            val frag = getFragment(page) as CoachFragment
+            frag.refresh()
+        } else if (page == "team") {
+            val frag = getFragment(page) as TeamFragment
+            frag.refresh()
+        } else {
+            refresh()
+        }
+    }
+
     fun webViewSettings(context: Context, webView: WebView) {
         val settings = webView.settings
         settings.javaScriptEnabled = true
