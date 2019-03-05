@@ -86,10 +86,12 @@ class MyOneSignal {
 
         val session: SharedPreferences = App.instance.getSharedPreferences(SESSION_FILENAME, 0)
 
-        fun save(id: String, title: String, content: String) {
+        fun save(id: String, title: String?, content: String) {
             val pnObj = JSONObject()
             pnObj.put("id", id)
-            pnObj.put("title", title)
+            if (title != null) {
+                pnObj.put("title", title!!)
+            }
             pnObj.put("content", content)
             var pnArr: JSONArray? = null
             if (session.contains("pn")) {

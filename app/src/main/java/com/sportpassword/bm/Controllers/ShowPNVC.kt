@@ -74,10 +74,13 @@ class ShowPNVC : MyTableVC() {
         for (i in 0..pnArr!!.length()-1) {
             val obj = pnArr!![i] as JSONObject
             val id = obj.getString("id")
-            val title = obj.getString("title")
+            var title = ""
+            if (obj.has("title")) {
+                title = obj.getString("title")
+            }
             val content = obj.getString("content")
             items.add(PNItem(id, title, content, { id ->
-                println(id)
+//                println(id)
                 warning("是否確定要刪除此訊息？", "關閉", "刪除") {
                     MyOneSignal.remove(id)
                     refresh()
@@ -114,7 +117,12 @@ class PNItem(val id: String, val title: String, val content: String, val removeC
 
     override fun bind(viewHolder: com.xwray.groupie.kotlinandroidextensions.ViewHolder, position: Int) {
         viewHolder.idLbl.setText(id)
-        viewHolder.titleLbl.setText(title)
+        if (title.length > 0) {
+            viewHolder.titleLbl.visibility = View.VISIBLE
+            viewHolder.titleLbl.setText(title)
+        } else {
+            viewHolder.titleLbl.visibility = View.GONE
+        }
         viewHolder.contentLbl.setText(content)
 
         viewHolder.pn_remove.setOnClickListener {

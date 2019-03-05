@@ -31,6 +31,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
+        <uses-library android:name="org.apache.http.legacy" android:required="false"/>
         <activity android:name=".Controllers.ShowPNVC"></activity>
 
         <meta-data
