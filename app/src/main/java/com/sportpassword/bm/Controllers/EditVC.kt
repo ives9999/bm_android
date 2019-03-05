@@ -111,7 +111,7 @@ class EditVC : MyTableVC(), ImagePicker {
 
     override fun generateItems(section: Int): ArrayList<Item> {
 
-        var items: ArrayList<Item> = arrayListOf()
+        val items: ArrayList<Item> = arrayListOf()
         val rows = model.rows[section]
         for ((idx, key) in rows.withIndex()) {
             val indexPath = IndexPath(section, idx)
@@ -279,10 +279,10 @@ class EditVC : MyTableVC(), ImagePicker {
                                 finish()
                             })
                         } else {
-                            Alert.show(context, "錯誤", TeamService.msg)
+                            Alert.show(context, "錯誤", dataService.msg)
                         }
                     } else {
-                        Alert.show(context, "錯誤", TeamService.msg)
+                        Alert.show(context, "錯誤", dataService.msg)
                     }
 
                 }

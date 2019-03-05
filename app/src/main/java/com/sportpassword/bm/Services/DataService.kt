@@ -463,7 +463,7 @@ open class DataService: BaseService() {
 //        params.putAll(PARAMS)
 //        println(params)
 
-        println(params1)
+//        println(params1)
 
 
         var filePaths: ArrayList<String>? = null

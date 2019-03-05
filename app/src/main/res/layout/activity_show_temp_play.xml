@@ -33,13 +33,12 @@
                     <Button
                         android:id="@+id/show_temp_play_city_btn"
                         android:layout_width="wrap_content"
-                        android:layout_height="30dp"
+                        android:layout_height="24dp"
                         android:layout_marginStart="8dp"
                         android:layout_marginTop="12dp"
                         android:paddingLeft="16dp"
                         android:paddingRight="16dp"
-                        android:textSize="21dp"
-                        android:background="@drawable/button_rc_green"
+                        style="@style/city_button"
                         android:layout_below="@+id/featuredView"
                         app:layout_constraintBottom_toBottomOf="@+id/show_temp_play_arena_btn"
                         app:layout_constraintStart_toEndOf="@+id/show_temp_play_arena_btn" />

@@ -102,7 +102,7 @@ open class TabFragment : Fragment() {
             intent.putExtra("title", data.title)
             startActivity(intent)
         }, {data ->
-
+            println("city")
         }, { data, address ->
 
         })

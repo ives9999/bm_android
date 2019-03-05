@@ -21,6 +21,7 @@ import com.facebook.GraphResponse
 import com.facebook.Profile
 import com.facebook.login.LoginManager
 import com.sportpassword.bm.Models.BlackList
+import com.sportpassword.bm.Models.BlackLists
 
 
 /**
@@ -30,7 +31,7 @@ object MemberService: BaseService() {
 
     var success: Boolean = false
     var one: JSONObject? = null
-    lateinit var blackList: BlackList
+    lateinit var blackLists: BlackLists
 
     fun register(context: Context, email: String, password: String, repassword: String, complete: CompletionHandler) {
         val url = URL_REGISTER
@@ -541,6 +542,38 @@ object MemberService: BaseService() {
         body.put("token", token)
         val requestBody = body.toString()
 
+        val params: MutableList<Pair<String, String>> = mutableListOf()
+        val keys = body.keys()
+        while (keys.hasNext()) {
+            val key = keys.next()
+            val value = body.getString(key)
+            params.add(Pair(key, value))
+        }
+        MyHttpClient.instance.post(context, url, params, null) { success ->
+            if (success) {
+                val response = MyHttpClient.instance.response
+                if (response != null) {
+//                    println(response.toString())
+                    val json = JSONObject(response.toString())
+                    this.success = json.getBoolean("success")
+                    if (!this.success) {
+                        this.msg = json.getString("msg")
+                    } else {
+                        this.blackLists = JSONParse.parse<BlackLists>(json)!!
+                    }
+                    complete(this.success)
+                } else {
+                    this.msg = "沒有取得伺服器的回應，請洽管理員"
+                    complete(false)
+                }
+            } else {
+                this.msg = "由伺服器取得黑名單失敗，請洽管理員"
+                complete(success)
+            }
+        }
+
+        /*
+
         val request = object : JsonObjectRequest(Request.Method.POST, url, null, Response.Listener { json ->
             //println(json)
 //            val s = json.toString()
@@ -573,6 +606,7 @@ object MemberService: BaseService() {
             }
         }
         Volley.newRequestQueue(context).add(request)
+        */
     }
 
 

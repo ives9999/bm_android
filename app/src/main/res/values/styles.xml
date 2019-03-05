@@ -80,4 +80,10 @@
         <item name="android:textColor">@color/WHITE</item>
     </style>
 
+    <style name="city_button">
+        <item name="android:background">@drawable/button_city</item>
+        <item name="android:textColor">@color/BLACK</item>
+        <item name="android:textSize">18dp</item>
+    </style>
+
 </resources>

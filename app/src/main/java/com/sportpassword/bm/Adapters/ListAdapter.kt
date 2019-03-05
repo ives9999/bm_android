@@ -41,7 +41,7 @@ class ListAdapter(val context: Context, val iden: String="team", val screenWidth
     inner class ViewHolder(itemView: View, val iden: String="team", val screenWidth: Int=0): RecyclerView.ViewHolder(itemView) {
         val featuredView = itemView.findViewById<ImageView>(R.id.listFeatured)
         val nameView = itemView.findViewById<TextView>(R.id.listTitleTxt)
-        val cityView = itemView.findViewById<TextView>(R.id.listCityTxt)
+        val cityView = itemView.findViewById<TextView>(R.id.listCityBtn)
         val arenaView = itemView.findViewById<TextView>(R.id.listArenaTxt)
         val ballView = itemView.findViewById<TextView>(R.id.listBallTxt)
         val dayView = itemView.findViewById<TextView>(R.id.listDayTxt)
@@ -120,6 +120,9 @@ class ListAdapter(val context: Context, val iden: String="team", val screenWidth
             if (superData.data.containsKey(CITY_KEY)) {
                 //println(superData.superData["city"]!!["show"])
                 cityView.text = superData.data[CITY_KEY]!!["show"] as String
+                cityView.setOnClickListener {
+                    searchCity(superData)
+                }
             }
             if (superData.data.containsKey(ARENA_KEY)) {
                 //println(superData.superData["arena"]!!["show"])
@@ -142,6 +145,9 @@ class ListAdapter(val context: Context, val iden: String="team", val screenWidth
             if (superData.data.containsKey(CITY_KEY)) {
                 //println(superData.superData["city"]!!["show"])
                 cityView.text = superData.data[CITY_KEY]!!["show"] as String
+                cityView.setOnClickListener {
+                    searchCity(superData)
+                }
             }
             if (superData.data.containsKey(MOBILE_KEY)) {
                 //println(superData.superData["arena"]!!["show"])

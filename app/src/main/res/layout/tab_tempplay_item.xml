@@ -96,7 +96,7 @@
         android:layout_width="wrap_content"
         android:layout_height="30dp"
         android:layout_marginStart="8dp"
-        android:background="@drawable/button_rc_green"
+        android:background="@drawable/button_city"
         android:paddingLeft="16dp"
         android:paddingRight="16dp"
         android:textColor="@color/BLACK"

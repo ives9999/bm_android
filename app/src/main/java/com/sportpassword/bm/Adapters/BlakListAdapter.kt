@@ -9,10 +9,11 @@ import android.widget.Button
 import android.widget.LinearLayout
 import android.widget.TextView
 import com.sportpassword.bm.Models.BlackList
+import com.sportpassword.bm.Models.BlackLists
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Utilities.noSec
 
-class BlakListAdapter(val context: Context, val lists: ArrayList<BlackList.Row>, val itemClick:(Int)->Unit, val call: (String)->Unit, val cancel:(Int)->Unit):RecyclerView.Adapter<BlakListAdapter.ViewHolder>() {
+class BlakListAdapter(val context: Context, val lists: ArrayList<BlackList>, val itemClick:(Int)->Unit, val call: (String)->Unit, val cancel:(Int)->Unit):RecyclerView.Adapter<BlakListAdapter.ViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view: View = LayoutInflater.from(context).inflate(R.layout.blacklist_item, parent, false)
         return ViewHolder(view, itemClick, call, cancel)
@@ -35,7 +36,8 @@ class BlakListAdapter(val context: Context, val lists: ArrayList<BlackList.Row>,
         val cancelButton = itemView.findViewById<Button>(R.id.cancel)
 
         fun bind(position: Int) {
-            val row: BlackList.Row = lists[position]
+            val row: BlackList = lists[position]
+            row.print()
             val memberName = row.name
             val mobile = row.mobile
             val date = row.created_at.noSec()
@@ -43,7 +45,9 @@ class BlakListAdapter(val context: Context, val lists: ArrayList<BlackList.Row>,
             memberNameView.text = memberName
             mobileView.text = mobile
             dateView.text = date
-            teamNameView.text = team.get("name") as String
+            if (team.containsKey("name")) {
+                teamNameView.text = team.get("name") as String
+            }
             if (position == lists.size-1) {
                 lineView.visibility = View.INVISIBLE
             }

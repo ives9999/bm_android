@@ -4,8 +4,10 @@ import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.v4.widget.SwipeRefreshLayout
 import android.support.v7.widget.LinearLayoutManager
+import android.view.View
 import com.sportpassword.bm.Adapters.BlakListAdapter
 import com.sportpassword.bm.Models.BlackList
+import com.sportpassword.bm.Models.BlackLists
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.MemberService
 import com.sportpassword.bm.Services.TeamService
@@ -18,7 +20,7 @@ import kotlinx.android.synthetic.main.mask.*
 
 class BlackListVC : BaseActivity() {
 
-    lateinit var blackList: BlackList
+    lateinit var blackLists: BlackLists
     lateinit var blacklistAdapter: BlakListAdapter
     var memberToken: String = ""
 
@@ -39,16 +41,18 @@ class BlackListVC : BaseActivity() {
         MemberService.blacklist(this, memberToken) { success ->
             Loading.hide(mask)
             if (success) {
-                blackList = MemberService.blackList
-                //println(rows)
-                blacklistAdapter = BlakListAdapter(this, blackList.rows,
-                        { position -> },
-                        { mobile ->  call(mobile)},
-                        { position -> cancel(position)})
-                black_list.adapter = blacklistAdapter
-                val layoutManager = LinearLayoutManager(this)
-                black_list.layoutManager = layoutManager
-                closeRefresh()
+                blackLists = MemberService.blackLists
+                if (blackLists.rows.size > 0) {
+                    empty_container.visibility = View.GONE
+                    blacklistAdapter = BlakListAdapter(this, blackLists.rows,
+                            { position -> },
+                            { mobile -> call(mobile) },
+                            { position -> cancel(position) })
+                    black_list.adapter = blacklistAdapter
+                    closeRefresh()
+                } else {
+                    empty_container.visibility = View.VISIBLE
+                }
             } else {
                 warning(MemberService.msg)
             }
@@ -59,7 +63,7 @@ class BlackListVC : BaseActivity() {
         warning("是否真的要將此球友移出黑名單？", "取消", "確定", {_cancel(position)})
     }
     private fun _cancel(position: Int) {
-        val row = blackList.rows[position]
+        val row = blackLists.rows[position]
         val memberToken = row.token
         val teamToken = row.team.get("token") as String
 
