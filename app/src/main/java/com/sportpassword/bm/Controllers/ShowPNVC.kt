@@ -72,7 +72,8 @@ class ShowPNVC : MyTableVC() {
     override fun generateItems(): ArrayList<Item> {
         var items: ArrayList<Item> = arrayListOf()
         for (i in 0..pnArr!!.length()-1) {
-            val obj = pnArr!![i] as JSONObject
+            val j = pnArr!!.length()-1-i
+            val obj = pnArr!![j] as JSONObject
             val id = obj.getString("id")
             var title = ""
             if (obj.has("title")) {

@@ -32,7 +32,7 @@ class ManagerFunctionVC : MyTableVC() {
             rows = arrayListOf(
                     hashMapOf("text" to "編輯","icon" to "edit1","key" to "edit"),
                     hashMapOf("text" to "教球時段編輯","icon" to "calendar","key" to "calendar"),
-                    hashMapOf("text" to "報名學員名單","icon" to "list","key" to "signup_list"),
+//                    hashMapOf("text" to "報名學員名單","icon" to "list","key" to "signup_list"),
                     hashMapOf("text" to "刪除","icon" to "clear","key" to "delete")
             )
         } else if (source == "team") {
