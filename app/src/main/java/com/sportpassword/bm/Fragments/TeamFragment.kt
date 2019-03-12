@@ -30,7 +30,7 @@ class TeamFragment: TabFragment() {
         setHasOptionsMenu(true)
     }
 
-    override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater!!.inflate(R.menu.search_manager, menu)
         super.onCreateOptionsMenu(menu, inflater)
         val memuView = menu!!.findItem(R.id.menu_search_manager).actionView

@@ -3,7 +3,7 @@ buildscript {
         maven { url 'https://plugins.gradle.org/m2/' }
     }
     dependencies {
-        classpath 'gradle.plugin.com.onesignal:onesignal-gradle-plugin:0.8.1'
+        classpath 'gradle.plugin.com.onesignal:onesignal-gradle-plugin:0.12.0'
     }
 }
 apply plugin: 'com.onesignal.androidsdk.onesignal-gradle-plugin'
@@ -43,7 +43,7 @@ android {
         targetSdkVersion 28
         versionCode 27
         versionName "1.3.2"
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
         manifestPlaceholders = [
                 onesignal_app_id               : '856c8fdb-79fb-418d-a397-d58b9c6b880b',
@@ -76,21 +76,21 @@ androidExtensions {
 
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
+    //implementation "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
     implementation "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
     implementation "org.jetbrains.anko:anko:$anko_version"
     implementation "org.jetbrains.anko:anko-commons:$anko_version"
     //implementation "org.jetbrains.anko:anko-design:$anko_version"
-    implementation "com.android.support:appcompat-v7:28.0.0"
-    implementation "com.android.support:design:$design_version"
-    implementation 'com.android.support.constraint:constraint-layout:1.1.3'
-    implementation "com.android.support:support-v4:28.0.0"
-    implementation 'com.android.support:multidex:1.0.3'
+    implementation 'androidx.appcompat:appcompat:1.1.0-alpha02'
+    implementation "com.google.android.material:material:$design_version"
+    implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+    implementation 'androidx.multidex:multidex:2.0.1'
     implementation 'com.facebook.android:facebook-android-sdk:4.31.0'
     implementation 'com.github.babedev.dexter.dsl:dsl:0.1.2'
-    implementation "com.android.support:recyclerview-v7:$design_version"
-    implementation "com.android.support:cardview-v7:$design_version"
-    implementation "com.android.support:customtabs:$design_version"
+    implementation "androidx.recyclerview:recyclerview:$design_version"
+    implementation "androidx.cardview:cardview:$design_version"
+    implementation "androidx.browser:browser:$design_version"
     implementation 'com.android.volley:volley:1.1.0'
     implementation 'com.squareup.picasso:picasso:2.5.2'
     implementation 'com.github.franmontiel:PersistentCookieJar:v1.0.1'
@@ -109,11 +109,11 @@ dependencies {
     implementation 'com.beust:klaxon:3.0.1'
     implementation 'com.xwray:groupie:2.1.0'
     implementation 'com.xwray:groupie-kotlin-android-extensions:2.1.0'
-    implementation 'com.google.android.gms:play-services-maps:12.0.1'
+    implementation 'com.google.android.gms:play-services-maps:16.1.0'
     testImplementation 'junit:junit:4.12'
-    androidTestImplementation 'com.android.support.test:runner:1.0.2'
-    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
-    implementation 'com.android.support:gridlayout-v7:28.0.0'
+    androidTestImplementation 'androidx.test:runner:1.1.2-alpha02'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0-alpha02'
+    implementation 'androidx.gridlayout:gridlayout:1.0.0'
     implementation 'com.squareup.okhttp3:okhttp:3.11.0'
 }
 

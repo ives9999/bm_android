@@ -8,7 +8,7 @@
     android:orientation="vertical"
     tools:context=".Controllers.ShowPNVC">
 
-    <android.support.v4.widget.SwipeRefreshLayout
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/showpnvc_refresh"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -39,15 +39,15 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/pn_empty">
 
-                <android.support.v7.widget.RecyclerView
+                <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/pn_list"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
                     android:scrollbars="vertical"
-                    app:layoutManager="android.support.v7.widget.LinearLayoutManager">
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager">
 
-                </android.support.v7.widget.RecyclerView>
+                </androidx.recyclerview.widget.RecyclerView>
 
                 <Button
                     android:id="@+id/pn_clear"
@@ -63,7 +63,7 @@
             </RelativeLayout>
         </RelativeLayout>
 
-    </android.support.v4.widget.SwipeRefreshLayout>
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
 
 

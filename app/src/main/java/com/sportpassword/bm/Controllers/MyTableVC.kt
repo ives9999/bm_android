@@ -1,7 +1,7 @@
 package com.sportpassword.bm.Controllers
 
 import android.os.Bundle
-import android.support.v7.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView
 import android.view.View
 import com.sportpassword.bm.Adapters.GroupSection
 import com.xwray.groupie.ExpandableGroup

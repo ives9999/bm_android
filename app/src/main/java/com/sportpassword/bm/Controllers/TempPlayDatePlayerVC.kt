@@ -1,11 +1,11 @@
 package com.sportpassword.bm.Controllers
 
 import android.content.DialogInterface
-import android.support.v7.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.support.v4.widget.SwipeRefreshLayout
-import android.support.v7.app.AlertDialog
-import android.support.v7.widget.LinearLayoutManager
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import androidx.appcompat.app.AlertDialog
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.sportpassword.bm.Adapters.TempPlayDatePlayerAdapter
 import com.sportpassword.bm.Models.TempPlayDatePlayer
 import com.sportpassword.bm.R

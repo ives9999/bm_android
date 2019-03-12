@@ -1,9 +1,9 @@
 package com.sportpassword.bm.Controllers
 
 import android.content.Intent
-import android.support.v7.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.support.v4.content.LocalBroadcastManager
+import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import android.view.Menu
 import android.view.View
 import android.widget.EditText
@@ -56,9 +56,12 @@ class TeamTempPlayEditActivity : BaseActivity() {
     }
 
     private fun setEventListener() {
-        onoff.onCheckedChange { buttonView, isChecked ->
+        onoff.setOnCheckedChangeListener { compoundButton, b ->
             setStatus()
         }
+//        onoff.onCheckedChange { buttonView, isChecked ->
+//            setStatus()
+//        }
         temp_play_quantity.setOnFocusChangeListener { _v, hasFocus ->
             val v = _v as EditText
             if (hasFocus && onoff.isChecked) {

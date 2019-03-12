@@ -15,7 +15,7 @@
         android:divider="@drawable/line"
         android:showDividers="end">
 
-        <android.support.constraint.ConstraintLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/more_arena_row"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -54,7 +54,7 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:srcCompat="@drawable/greater1" />
 
-        </android.support.constraint.ConstraintLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <View
             android:id="@+id/divider0"
@@ -65,7 +65,7 @@
             tools:layout_editor_absoluteX="8dp"
             tools:layout_editor_absoluteY="9dp" />
 
-        <android.support.constraint.ConstraintLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/more_course_row"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -104,7 +104,7 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:srcCompat="@drawable/greater1" />
 
-        </android.support.constraint.ConstraintLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
         <View
             android:id="@+id/divider1"
             android:layout_width="match_parent"
@@ -114,7 +114,7 @@
             tools:layout_editor_absoluteX="8dp"
             tools:layout_editor_absoluteY="9dp" />
 
-        <android.support.constraint.ConstraintLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/more_pn_row"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -152,7 +152,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:srcCompat="@drawable/greater1" />
-        </android.support.constraint.ConstraintLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <View
             android:id="@+id/divider"
@@ -163,7 +163,7 @@
             tools:layout_editor_absoluteX="8dp"
             tools:layout_editor_absoluteY="9dp" />
 
-        <android.support.constraint.ConstraintLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/more_version_row"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -203,7 +203,7 @@
                 app:srcCompat="@drawable/greater1" />
 
 
-        </android.support.constraint.ConstraintLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
 
     </TableLayout>

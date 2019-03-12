@@ -2,7 +2,7 @@ package com.sportpassword.bm.Controllers
 
 import android.app.Activity
 import android.content.Intent
-import android.support.v7.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import com.sportpassword.bm.R

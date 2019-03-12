@@ -2,7 +2,7 @@ package com.sportpassword.bm.Fragments
 
 
 import android.os.Bundle
-import android.support.v4.app.Fragment
+import androidx.fragment.app.Fragment
 import android.view.*
 import android.widget.ImageButton
 import com.sportpassword.bm.Adapters.SearchItem
@@ -47,7 +47,7 @@ class CoachFragment : TabFragment() {
         init()
     }
 
-    override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater!!.inflate(R.menu.search_manager, menu)
         super.onCreateOptionsMenu(menu, inflater)
         val memuView = menu!!.findItem(R.id.menu_search_manager).actionView

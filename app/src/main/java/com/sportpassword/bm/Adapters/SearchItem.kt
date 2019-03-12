@@ -52,9 +52,12 @@ class SearchItem(val title: String, val detail: String, val keyword: String, val
             viewHolder.row_detail.visibility = View.INVISIBLE
             viewHolder.greater.visibility = View.INVISIBLE
             viewHolder.keyword.visibility = View.INVISIBLE
-            switchView.onCheckedChange{ view, b ->
+            switchView.setOnCheckedChangeListener { compoundButton, b ->
                 switched(position, b)
             }
+//            switchView.onCheckedChange{ view, b ->
+//                switched(position, b)
+//            }
         } else {
             switchView.visibility = View.INVISIBLE
         }

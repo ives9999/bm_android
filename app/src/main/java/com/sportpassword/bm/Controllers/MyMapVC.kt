@@ -1,7 +1,7 @@
 package com.sportpassword.bm.Controllers
 
 import android.location.Geocoder
-import android.support.v7.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.sportpassword.bm.R
 

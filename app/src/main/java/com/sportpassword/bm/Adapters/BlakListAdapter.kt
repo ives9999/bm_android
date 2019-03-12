@@ -1,7 +1,7 @@
 package com.sportpassword.bm.Adapters
 
 import android.content.Context
-import android.support.v7.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,7 +13,7 @@ import com.sportpassword.bm.Models.BlackLists
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Utilities.noSec
 
-class BlakListAdapter(val context: Context, val lists: ArrayList<BlackList>, val itemClick:(Int)->Unit, val call: (String)->Unit, val cancel:(Int)->Unit):RecyclerView.Adapter<BlakListAdapter.ViewHolder>() {
+class BlakListAdapter(val context: Context, val lists: ArrayList<BlackList>, val itemClick:(Int)->Unit, val call: (String)->Unit, val cancel:(Int)->Unit): RecyclerView.Adapter<BlakListAdapter.ViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view: View = LayoutInflater.from(context).inflate(R.layout.blacklist_item, parent, false)
         return ViewHolder(view, itemClick, call, cancel)

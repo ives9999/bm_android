@@ -1,7 +1,7 @@
 package com.sportpassword.bm.Controllers
 
 import android.os.Bundle
-import android.support.v4.widget.SwipeRefreshLayout
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import android.view.Menu
 import android.view.View
 import com.sportpassword.bm.Adapters.ManagerAdapter

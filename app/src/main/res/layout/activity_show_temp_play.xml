@@ -1,10 +1,10 @@
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     >
-    <android.support.v4.widget.SwipeRefreshLayout
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
     android:id="@+id/tempPlayShow_refresh"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -174,7 +174,7 @@
                         android:textColor="@color/WHITE"
                         android:textSize="21dp" />
 
-                    <android.support.constraint.ConstraintLayout
+                    <androidx.constraintlayout.widget.ConstraintLayout
                         android:id="@+id/show_signups_lbl"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -206,7 +206,7 @@
                             app:layout_constraintBottom_toBottomOf="@+id/signups_nickname_lbl"
                             app:layout_constraintStart_toEndOf="@+id/signups_nickname_lbl" />
 
-                    </android.support.constraint.ConstraintLayout>
+                    </androidx.constraintlayout.widget.ConstraintLayout>
                     <include
                         android:id="@+id/divider_51"
                         android:layout_width="match_parent"
@@ -214,7 +214,7 @@
                         layout="@layout/divider"
                         android:layout_below="@id/show_signups_lbl"/>
 
-                    <android.support.v7.widget.RecyclerView
+                    <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/show_signups_container"
                         android:layout_below="@+id/divider_51"
                         android:layout_marginLeft="8dp"
@@ -223,7 +223,7 @@
 
                         android:scrollbars="vertical">
 
-                    </android.support.v7.widget.RecyclerView>
+                    </androidx.recyclerview.widget.RecyclerView>
 
                     <LinearLayout
                         android:id="@+id/show_btn_container"
@@ -262,8 +262,8 @@
                     </LinearLayout>
                 </RelativeLayout>
         </ScrollView>
-    </android.support.v4.widget.SwipeRefreshLayout>
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
     <include layout="@layout/mask" />
-</android.support.constraint.ConstraintLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
 
 

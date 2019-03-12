@@ -1,7 +1,7 @@
 package com.sportpassword.bm.Adapters
 
 import android.content.Context
-import android.support.v4.content.ContextCompat
+import androidx.core.content.ContextCompat
 import android.view.View
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Utilities.setImage

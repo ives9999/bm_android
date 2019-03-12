@@ -2,9 +2,9 @@ package com.sportpassword.bm.Controllers
 
 import android.content.Intent
 import android.os.Bundle
-import android.support.v4.widget.SwipeRefreshLayout
-import android.support.v7.widget.GridLayoutManager
-import android.support.v7.widget.RecyclerView
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.sportpassword.bm.Adapters.TempPlayListAdapter
 import com.sportpassword.bm.Models.City
 import com.sportpassword.bm.R

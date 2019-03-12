@@ -1,9 +1,9 @@
 package com.sportpassword.bm.Controllers
 
-import android.support.v7.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.support.v4.widget.SwipeRefreshLayout
-import android.support.v7.widget.LinearLayoutManager
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import androidx.recyclerview.widget.LinearLayoutManager
 import android.view.View
 import com.sportpassword.bm.Adapters.BlakListAdapter
 import com.sportpassword.bm.Models.BlackList

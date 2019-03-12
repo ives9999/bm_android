@@ -3,13 +3,13 @@ package com.sportpassword.bm.Controllers
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
-import android.support.v4.content.LocalBroadcastManager
-import android.support.v4.widget.SwipeRefreshLayout
+import androidx.localbroadcastmanager.content.LocalBroadcastManager
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.TeamService
 import kotlinx.android.synthetic.main.edit_vc.*
 import org.jetbrains.anko.sdk25.coroutines.onClick
-import android.support.v7.app.AlertDialog
+import androidx.appcompat.app.AlertDialog
 import android.view.Menu
 import android.view.View
 import android.widget.*

@@ -10,7 +10,7 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.text.Editable
 import android.text.TextWatcher
-import android.support.v4.content.res.TypedArrayUtils.getResourceId
+import androidx.core.content.res.TypedArrayUtils.getResourceId
 //import com.sportpassword.bm.Views.EditTextWithDeleteButton
 import android.content.res.TypedArray
 import android.util.AttributeSet

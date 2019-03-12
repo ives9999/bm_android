@@ -2,8 +2,8 @@ package com.sportpassword.bm.Controllers
 
 import android.content.Intent
 import android.os.Bundle
-import android.support.v4.widget.SwipeRefreshLayout
-import android.support.v7.widget.LinearLayoutManager
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import androidx.recyclerview.widget.LinearLayoutManager
 import android.view.Menu
 import android.view.View
 import android.widget.ImageView
@@ -34,7 +34,7 @@ class ShowTempPlayActivity : BaseActivity() {
         teamToken = intent.getStringExtra(TOKEN_KEY)
         //println(token)
 
-        refreshLayout = contentView!!.findViewById< SwipeRefreshLayout>(R.id.tempPlayShow_refresh)
+        refreshLayout = contentView!!.findViewById<SwipeRefreshLayout>(R.id.tempPlayShow_refresh)
         //println(refreshLayout)
         setRefreshListener()
         refresh()
