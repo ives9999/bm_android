@@ -22,7 +22,7 @@ import kotlinx.android.synthetic.main.tab_coach.*
  */
 class CoachFragment : TabFragment() {
 
-    val _searchRows: ArrayList<HashMap<String, String>> = arrayListOf(
+    override val _searchRows: ArrayList<HashMap<String, String>> = arrayListOf(
         hashMapOf("title" to "關鍵字","detail" to "全部","key" to KEYWORD_KEY),
         hashMapOf("title" to "縣市","detail" to "全部","key" to CITY_KEY)
     )

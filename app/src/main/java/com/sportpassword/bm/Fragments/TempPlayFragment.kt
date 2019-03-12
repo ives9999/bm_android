@@ -37,14 +37,14 @@ class TempPlayFragment : TabFragment(), inter {
     protected val sections: ArrayList<String> = arrayListOf("一般", "更多")
     protected val rows: ArrayList<ArrayList<HashMap<String, String>>> = arrayListOf(
             arrayListOf(
-                    hashMapOf("title" to "關鍵字","detail" to "全部"),
-                    hashMapOf("title" to "縣市","detail" to "全部"),
-                    hashMapOf("title" to "日期","detail" to "全部"),
-                    hashMapOf("title" to "時段","detail" to "全部")
+                    hashMapOf("title" to "關鍵字","detail" to "全部","key" to KEYWORD_KEY),
+                    hashMapOf("title" to "縣市","detail" to "全部","key" to CITY_KEY),
+                    hashMapOf("title" to "日期","detail" to "全部","key" to TEAM_WEEKDAYS_KEY),
+                    hashMapOf("title" to "時段","detail" to "全部","key" to TEAM_PLAY_START_KEY)
             ),
             arrayListOf(
-                    hashMapOf("title" to "球館","detail" to "全部"),
-                    hashMapOf("title" to "程度","detail" to "全部")
+                    hashMapOf("title" to "球館","detail" to "全部","key" to ARENA_KEY),
+                    hashMapOf("title" to "程度","detail" to "全部","key" to TEAM_DEGREE_KEY)
             )
     )
 //    protected val data: ArrayList<HashMap<String, ArrayList<HashMap<String, String>>>> = arrayListOf()
@@ -52,7 +52,7 @@ class TempPlayFragment : TabFragment(), inter {
     val SELECT_REQUEST_CODE = 1
 
     var citys: ArrayList<City> = arrayListOf()
-    var days: ArrayList<Int> = arrayListOf()
+    var weekdays: ArrayList<Int> = arrayListOf()
     var times: HashMap<String, Any> = hashMapOf()
     var arenas: ArrayList<Arena> = arrayListOf()
     var degrees: ArrayList<DEGREE> = arrayListOf()
@@ -121,12 +121,13 @@ class TempPlayFragment : TabFragment(), inter {
             if (row[i].containsKey("switch")) {
                 bSwitch = row[i].get("switch")!!.toBoolean()
             }
-            _rows.add(SearchItem(title, detail, keyword, bSwitch, section, i, { k ->
+            val searchItem = SearchItem(title, detail, keyword, bSwitch, section, i, { k ->
                 keyword = k
             }, { idx, b ->
 
             })
-            )
+            searchItem.delegate = this
+            _rows.add(searchItem)
         }
         return _rows
     }
@@ -148,7 +149,7 @@ class TempPlayFragment : TabFragment(), inter {
                     2 -> {// weekdays
                         intent.putExtra("key", TEAM_WEEKDAYS_KEY)
                         intent.putExtra("source", "search")
-                        intent.putIntegerArrayListExtra("weekdays", days)
+                        intent.putIntegerArrayListExtra("weekdays", weekdays)
                     }
                     3 -> {// times
                         intent.putExtra("key", TEAM_PLAY_START_KEY)
@@ -234,13 +235,13 @@ class TempPlayFragment : TabFragment(), inter {
                     } else if (key == TEAM_WEEKDAYS_KEY) {
                         section = 0
                         row = 2
-                        days = data!!.getIntegerArrayListExtra("weekdays")
+                        weekdays = data!!.getIntegerArrayListExtra("weekdays")
 //                        println(weekdays)
 
-                        if (days.size > 0) {
+                        if (weekdays.size > 0) {
                             var arr: ArrayList<String> = arrayListOf()
                             val gDays = Global.weekdays
-                            for (day in days) {
+                            for (day in weekdays) {
                                 for (gDay in gDays) {
                                     if (day == gDay.get("value")!! as Int) {
                                         arr.add(gDay.get("simple_text")!! as String)
@@ -296,10 +297,26 @@ class TempPlayFragment : TabFragment(), inter {
         intent.putExtra("arenas", arenas)
         intent.putExtra("degrees", degrees)
         intent.putExtra("times", times)
-        intent.putIntegerArrayListExtra("weekdays", days)
+        intent.putIntegerArrayListExtra("weekdays", weekdays)
         intent.putExtra("keyword", keyword)
 
         startActivity(intent)
+    }
+
+    override fun remove(indexPath: IndexPath) {
+        val row = rows[indexPath.section][indexPath.row]
+        val key = row["key"]!!
+        //println(key)
+        when (key) {
+            CITY_KEY -> citys.clear()
+            TEAM_WEEKDAYS_KEY -> weekdays.clear()
+            TEAM_PLAY_START_KEY -> times.clear()
+            ARENA_KEY -> arenas.clear()
+            TEAM_DEGREE_KEY -> degrees.clear()
+        }
+        rows[indexPath.section][indexPath.row]["detail"] = "全部"
+        val items = generateItems(indexPath.section)
+        searchSections[indexPath.section].update(items)
     }
 
     companion object {

@@ -3,6 +3,7 @@ package com.sportpassword.bm.Controllers
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuInflater
+import com.sportpassword.bm.Adapters.SearchItemDelegate
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.ArenaService
 import kotlinx.android.synthetic.main.activity_arena_vc.*
@@ -32,5 +33,17 @@ class ArenaVC : MoreVC() {
         initAdapter()
 
         refresh()
+    }
+
+    override fun remove(indexPath: IndexPath) {
+        val row = _searchRows[indexPath.row]
+        val key = row["key"]!!
+        when (key) {
+            CITY_KEY -> citys.clear()
+            AREA_KEY -> areas.clear()
+        }
+        _searchRows[indexPath.row]["detail"] = "全部"
+        val rows = generateSearchItems(type!!)
+        searchAdapter.update(rows)
     }
 }

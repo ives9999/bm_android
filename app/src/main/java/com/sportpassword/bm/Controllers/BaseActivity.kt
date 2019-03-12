@@ -39,6 +39,7 @@ import com.facebook.login.LoginManager
 import com.facebook.login.LoginResult
 import com.onesignal.OneSignal
 import com.sportpassword.bm.Adapters.SearchItem
+import com.sportpassword.bm.Adapters.SearchItemDelegate
 import com.sportpassword.bm.Fragments.CoachFragment
 import com.sportpassword.bm.Fragments.TabFragment
 import com.sportpassword.bm.Fragments.TeamFragment
@@ -63,7 +64,7 @@ import kotlinx.android.synthetic.main.mask.*
 import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
 
-open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener {
+open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, SearchItemDelegate {
 
     protected lateinit var refreshLayout: SwipeRefreshLayout
     protected lateinit var refreshListener: SwipeRefreshLayout.OnRefreshListener
@@ -94,7 +95,7 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener {
     var arenas: ArrayList<Arena> = arrayListOf()
     var degrees: ArrayList<DEGREE> = arrayListOf()
     var keyword: String = ""
-    protected lateinit var searchAdapter: GroupAdapter<ViewHolder>
+    lateinit var searchAdapter: GroupAdapter<ViewHolder>
     var params: HashMap<String, Any> = hashMapOf()
 
     val LOGIN_REQUEST_CODE = 1
@@ -142,7 +143,7 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener {
 
     private fun _setURLConstants() {
         gSimulate = isEmulator()
-//        gSimulate = true
+        gSimulate = true
         BASE_URL = if (gSimulate) LOCALHOST_BASE_URL else REMOTE_BASE_URL
         //println("os: " + BASE_URL)
         URL_HOME = BASE_URL + "/app/"
@@ -805,7 +806,7 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener {
                 prepareSearch(row, page)
             }
         }
-        val rows = generateSearchItems()
+        val rows = generateSearchItems(page)
         searchAdapter.addAll(rows)
 
         searchTableView.adapter = searchAdapter
@@ -1082,14 +1083,14 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener {
                         }
                     }
                     searchRows[idx]["detail"] = value
-                    val rows = generateSearchItems()
+                    val rows = generateSearchItems(page)
                     searchAdapter.update(rows)
                 }
             }
         }
     }
 
-    fun generateSearchItems(): ArrayList<SearchItem> {
+    fun generateSearchItems(page: String): ArrayList<SearchItem> {
         val rows: ArrayList<SearchItem> = arrayListOf()
         for (i in 0..searchRows.size-1) {
             val row = searchRows[i] as HashMap<String, String>
@@ -1099,7 +1100,7 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener {
             if (row.containsKey("switch")) {
                 bSwitch = row.get("switch")!!.toBoolean()
             }
-            rows.add(SearchItem(title, detail, keyword, bSwitch, -1, i, { k ->
+            val searchItem = SearchItem(title, detail, keyword, bSwitch, -1, i, { k ->
                 keyword = k
             }, { idx, b ->
                 when (idx){
@@ -1108,7 +1109,12 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener {
                     5 -> parking = b
                 }
             })
-            )
+            if (page == "coach" || page == "team") {
+                searchItem.delegate = getFragment(page)
+            } else {
+                searchItem.delegate = this@BaseActivity
+            }
+            rows.add(searchItem)
         }
 
         return rows
@@ -1354,6 +1360,10 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener {
     open protected fun refresh() {}
 
     open protected fun setTeamData(imageView: ImageView?=null) {
+    }
+
+    override fun remove(indexPath: IndexPath) {
+
     }
 
     class ConnectTask(val context: Context) : AsyncTask<Unit, Unit, String>() {

@@ -12,6 +12,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.sportpassword.bm.Adapters.ListAdapter
+import com.sportpassword.bm.Adapters.SearchItemDelegate
 import com.sportpassword.bm.Controllers.Arena
 import com.sportpassword.bm.Controllers.MainActivity
 import com.sportpassword.bm.Controllers.ShowActivity
@@ -21,10 +22,7 @@ import com.sportpassword.bm.Models.SuperData
 
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.DataService
-import com.sportpassword.bm.Utilities.CITY_KEY
-import com.sportpassword.bm.Utilities.DEGREE
-import com.sportpassword.bm.Utilities.Loading
-import com.sportpassword.bm.Utilities.PERPAGE
+import com.sportpassword.bm.Utilities.*
 import kotlinx.android.synthetic.main.tab.*
 
 
@@ -34,7 +32,7 @@ import kotlinx.android.synthetic.main.tab.*
  * create an instance of this fragment.
  */
 
-open class TabFragment : Fragment() {
+open class TabFragment : Fragment(), SearchItemDelegate {
 
     // TODO: Rename and change types of parameters
     protected var type: String? = null
@@ -64,6 +62,8 @@ open class TabFragment : Fragment() {
 
     protected var isCoachShow: Boolean = false
     protected var isTeamShow: Boolean = false
+
+    open val _searchRows: ArrayList<HashMap<String, String>> = arrayListOf()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -211,6 +211,21 @@ open class TabFragment : Fragment() {
                 }
             }
         }
+    }
+
+    override fun remove(indexPath: IndexPath) {
+        val row = _searchRows[indexPath.row]
+        val key = row["key"]!!
+        when (key) {
+            CITY_KEY -> mainActivity!!.citys.clear()
+            ARENA_KEY -> mainActivity!!.arenas.clear()
+            TEAM_WEEKDAYS_KEY -> mainActivity!!.weekdays.clear()
+            TEAM_PLAY_START_KEY -> mainActivity!!.times.clear()
+            TEAM_DEGREE_KEY -> mainActivity!!.degrees.clear()
+        }
+        _searchRows[indexPath.row]["detail"] = "全部"
+        val rows = mainActivity!!.generateSearchItems(type!!)
+        mainActivity!!.searchAdapter.update(rows)
     }
 
     companion object {
