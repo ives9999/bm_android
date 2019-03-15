@@ -129,6 +129,9 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
 
         getScreenWidth()
 
+        //OneSignal.setSubscription(true)
+        //OneSignal.promptLocation() prompt location auth when location auth is close
+
         //member.reset()
         //member.print()
     }

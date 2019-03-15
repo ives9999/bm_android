@@ -3,6 +3,8 @@ package com.sportpassword.bm.Controllers
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.View
+import com.onesignal.OSPermissionObserver
+import com.onesignal.OSPermissionStateChanges
 import com.onesignal.OneSignal
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Utilities.MyOneSignal
@@ -15,16 +17,17 @@ import org.json.JSONArray
 import org.json.JSONObject
 import java.lang.Exception
 
-class ShowPNVC : MyTableVC() {
+class ShowPNVC : MyTableVC(), OSPermissionObserver {
 
     var pnArr: JSONArray? = null
+    var isReceive: Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_show_pnvc)
         setMyTitle("推播訊息")
 
-        OneSignal.clearOneSignalNotifications()
+        //OneSignal.clearOneSignalNotifications()
 
 //        try {
 //            pn_id = intent.getStringExtra("id")
@@ -42,6 +45,17 @@ class ShowPNVC : MyTableVC() {
 //        } catch (e: Exception) {
 //
 //        }
+
+        val status = OneSignal.getPermissionSubscriptionState()
+        isReceive = status.permissionStatus.enabled
+        //println("hasPrompt status is $hasPrompt")
+        setupSwitch.isChecked = isReceive
+
+        setupSwitch.setOnCheckedChangeListener { compoundButton, b ->
+            //println(b)
+            warning("必須透過設定來開啟或關閉是否接收推播功能，無法直接由此處才開啟或關閉接收推播訊息")
+        }
+
         getArr()
         recyclerView = pn_list
         refreshLayout = showpnvc_refresh
@@ -96,6 +110,14 @@ class ShowPNVC : MyTableVC() {
         //println("clear")
         MyOneSignal.clear()
         refresh()
+    }
+
+    override fun onOSPermissionChanged(stateChanges: OSPermissionStateChanges?) {
+        if (stateChanges != null) {
+            isReceive = stateChanges!!.from.enabled
+            //switch change status
+            setupSwitch.isChecked = isReceive
+        }
     }
 
     private fun getArr() {
