@@ -4,6 +4,7 @@ import android.graphics.Color
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
+import androidx.constraintlayout.widget.ConstraintSet
 import com.sportpassword.bm.Form.BaseForm
 import com.sportpassword.bm.Form.FormItem.ColorFormItem
 import com.sportpassword.bm.Form.FormItem.FormItem
@@ -15,12 +16,16 @@ import com.sportpassword.bm.Utilities.TT_WEEKDAY
 import com.xwray.groupie.kotlinandroidextensions.Item
 import com.xwray.groupie.kotlinandroidextensions.ViewHolder
 import kotlinx.android.synthetic.main.edit_item.*
+import kotlinx.android.synthetic.main.formitem_more.*
 import kotlinx.android.synthetic.main.formitem_textfield.*
 import org.jetbrains.anko.backgroundColor
-import kotlinx.android.synthetic.main.formitem.title as title
+import kotlinx.android.synthetic.main.formitem_more.title as title
 import kotlinx.android.synthetic.main.formitem_textfield.title as textfield_title
-import kotlinx.android.synthetic.main.formitem.clear as clear
+import kotlinx.android.synthetic.main.formitem_more.clear as clear
 import kotlinx.android.synthetic.main.formitem_textfield.clear as textfield_clear
+import kotlinx.android.synthetic.main.formitem_more.promptBtn as promptBtn
+import kotlinx.android.synthetic.main.formitem_more.detail as detail
+import kotlinx.android.synthetic.main.formitem_more.container as container
 
 interface ViewDelegate {
     fun textFieldTextChanged(row: Int, section: Int, text: String)
@@ -55,6 +60,11 @@ open class FormItemAdapter(val form: BaseForm, val row: Int, val section: Int = 
             }
         } else {
             viewHolder.promptBtn.visibility = View.INVISIBLE
+            val con =  ConstraintSet()
+            val l = viewHolder.containerView
+            con.clone(viewHolder.container)
+            con.connect(viewHolder.detail.id, ConstraintSet.LEFT, viewHolder.title.id, ConstraintSet.RIGHT, 8)
+            con.applyTo(viewHolder.container)
         }
         if (formItem.uiProperties.cellType == FormItemCellType.textField) {
             val textField = viewHolder.textField

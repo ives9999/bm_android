@@ -10,7 +10,7 @@ class ContentFormItem: FormItem {
     var contentType: TEXT_INPUT_TYPE? = null
 
     init {
-        uiProperties.cellType = FormItemCellType.more
+        uiProperties.cellType = FormItemCellType.content
     }
 
     constructor(name: String, title: String, placeholder: String? = null, value: String? = null): super(name, title, placeholder, value) {
@@ -30,9 +30,9 @@ class ContentFormItem: FormItem {
     override fun make() {
         if (value != null) {
             show = value!!
-//            if (show.length > 5) {
-//                show = show.truncate(5)
-//            }
+            if (show.length > 50) {
+                show = show.truncate(50)
+            }
             sender = value
 //            sender = hashMapOf("type" to contentType!!, "text" to value!!)
         } else {

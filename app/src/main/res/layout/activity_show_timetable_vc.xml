@@ -113,10 +113,10 @@
             android:id="@+id/signupBtn"
             android:layout_width="wrap_content"
             android:layout_height="30dp"
-            android:background="@drawable/button_rc"
+            style="@style/submit_button"
             android:onClick="signupSubmit"
             android:text="報名"
-            android:textColor="@color/WHITE" />
+            />
     </LinearLayout>
     <include layout="@layout/mask" />
 

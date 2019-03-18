@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -11,8 +11,8 @@
         android:id="@+id/edit_refresh"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/background"
-        >
+        android:layout_marginBottom="50dp"
+        android:background="@drawable/background">
 
         <androidx.core.widget.NestedScrollView
             android:layout_width="fill_parent"
@@ -72,8 +72,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
-                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                        android:scrollbars="vertical">
+                        android:scrollbars="vertical"
+                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager">
 
                     </androidx.recyclerview.widget.RecyclerView>
 
@@ -82,20 +82,7 @@
                         android:layout_height="match_parent"
                         android:gravity="center_horizontal"
                         android:orientation="horizontal"
-                        android:paddingBottom="36dp">
-
-                        <Button
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="32dp"
-                            android:background="@drawable/button_rc"
-                            android:onClick="submit"
-                            android:text="提交"
-                            android:textColor="@color/WHITE"
-                            android:textSize="18sp">
-
-                        </Button>
-                    </LinearLayout>
+                        android:paddingBottom="36dp"/>
 
                 </LinearLayout>
 
@@ -104,9 +91,37 @@
 
         </androidx.core.widget.NestedScrollView>
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+    <LinearLayout
+        android:id="@+id/footer"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_alignParentBottom="true"
+        android:background="@color/MY_GREEN"
+        android:gravity="center|center_vertical"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/submitBtn"
+            style="@style/submit_button"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:layout_marginRight="16dp"
+            android:onClick="submit"
+            android:text="送出" />
+        <Button
+            android:id="@+id/cancelBtn"
+            style="@style/cancel_button"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:onClick="cancel"
+            android:text="取消" />
+
+
+
+    </LinearLayout>
     <include layout="@layout/mask" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</RelativeLayout>
 
 
 

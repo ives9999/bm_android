@@ -68,7 +68,6 @@
             style="@style/submit_button"
             android:layout_width="wrap_content"
             android:layout_height="30dp"
-            android:layout_below="@+id/pn_list"
             android:layout_marginLeft="16dp"
             android:onClick="clear"
             android:text="全部清除" />

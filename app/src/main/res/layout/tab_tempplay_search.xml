@@ -22,15 +22,11 @@
     <Button
         android:id="@+id/submit_btn"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="30dp"
+        style="@style/submit_button"
         android:layout_marginStart="8dp"
         android:layout_marginTop="24dp"
-        android:background="@drawable/button_rc"
-        android:paddingLeft="32dp"
-        android:paddingRight="32dp"
-        android:text="提交"
-        android:textColor="@color/WHITE"
-        android:textSize="18sp"
+        android:text="送出"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/search_container" />

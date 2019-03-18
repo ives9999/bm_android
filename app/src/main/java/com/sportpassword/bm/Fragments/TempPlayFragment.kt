@@ -204,7 +204,10 @@ class TempPlayFragment : TabFragment(), inter {
         when (requestCode) {
             SELECT_REQUEST_CODE -> {
                 if (resultCode == Activity.RESULT_OK) {
-                    val key = data!!.getStringExtra("key")
+                    var key = ""
+                    if (data != null && data!!.hasExtra("key")) {
+                        key = data!!.getStringExtra("key")
+                    }
 
                     if (key == CITY_KEY) { // city
                         section = 0

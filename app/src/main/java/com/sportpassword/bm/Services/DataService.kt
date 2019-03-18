@@ -788,7 +788,7 @@ open class DataService: BaseService() {
 
     fun getCitys(context: Context, type: String="all", zone: Boolean=false, complete: CompletionHandler) {
         val url = URL_CITYS
-        //println(url)
+        println(url)
 
         val body = JSONObject()
         body.put("source", "app")

@@ -13,10 +13,10 @@ import androidx.recyclerview.widget.RecyclerView
 import android.view.*
 import android.view.inputmethod.InputMethodManager
 import android.widget.*
-import com.sportpassword.bm.Adapters.Form.FormItemAdapter
-import com.sportpassword.bm.Adapters.Form.ViewDelegate
+import com.sportpassword.bm.Adapters.Form.*
 //import com.sportpassword.bm.Adapters.Form.ViewDelegate
 import com.sportpassword.bm.Form.FormItem.*
+import com.sportpassword.bm.Form.FormItemCellType
 import com.sportpassword.bm.Form.TimeTableForm
 import com.sportpassword.bm.Models.Timetables
 import com.sportpassword.bm.R
@@ -521,7 +521,10 @@ class TimeTableVC : BaseActivity(), ViewDelegate {
         when (requestCode) {
             SEARCH_REQUEST_CODE -> {
                 if (resultCode == Activity.RESULT_OK) {
-                    val key = data!!.getStringExtra("key")
+                    var key = ""
+                    if (data != null && data!!.hasExtra("key")) {
+                        key = data!!.getStringExtra("key")
+                    }
                     when (key) {
                         TEAM_WEEKDAYS_KEY -> {
                             idx = 1
@@ -584,7 +587,7 @@ class TimeTableVC : BaseActivity(), ViewDelegate {
                         }
                     }
 //                    TTEditAction = "INSERT"
-                    showEditEvent()
+                    showEditEvent(3)
                     //val rows = generateFormItems()
                     //searchAdapter.addAll(rows)
                 }
@@ -597,32 +600,36 @@ class TimeTableVC : BaseActivity(), ViewDelegate {
         val section: Int = 0
 //        var indexPath: HashMap<String, Int> = hashMapOf()
 //        indexPath["section"] = section
+
+        val clearClick = { i: Int ->
+            val forItem = form.formItems[i]
+            forItem.reset()
+            val rows = generateFormItems()
+            searchAdapter.update(rows)
+        }
+
+        val promptClick = {i: Int ->
+            val forItem = form.formItems[i]
+            if (forItem.tooltip != null) {
+                Alert.show(this, "提示", forItem.tooltip!!)
+            }
+        }
+
         for ((idx, formItem) in form.formItems.withIndex()) {
 //            indexPath["row"] = idx
-            val formItemAdapter = FormItemAdapter(form, idx, 0, { i ->
-                val forItem = form.formItems[i]
-                forItem.reset()
-                val rows = generateFormItems()
-                searchAdapter.update(rows)
-            }, { i ->
-                val forItem = form.formItems[i]
-                if (forItem.tooltip != null) {
-                    Alert.show(this, "提示", forItem.tooltip!!)
-                }
-            })
-            formItemAdapter.delegate = this
-            rows.add(formItemAdapter)
-//            rows.add(FormItemAdapter(form, idx, 0, { i ->
-//                val forItem = form.formItems[i]
-//                forItem.reset()
-//                val rows = generateFormItems()
-//                searchAdapter.update(rows)
-//            }, { i ->
-//                val forItem = form.formItems[i]
-//                if (forItem.tooltip != null) {
-//                    Alert.show(this, "提示", forItem.tooltip!!)
-//                }
-//            }))
+            var formItemAdapter: FormItemAdapter? = null
+            if (formItem.uiProperties.cellType == FormItemCellType.textField) {
+                formItemAdapter = TextFieldAdapter(form, idx, 0, clearClick, promptClick)
+            } else if (formItem.uiProperties.cellType == FormItemCellType.content) {
+                formItemAdapter = ContentAdapter(form, idx, 0, clearClick, promptClick)
+            } else {
+                formItemAdapter = MoreAdapter(form, idx, 0, clearClick, promptClick)
+            }
+
+            if (formItemAdapter != null) {
+                formItemAdapter!!.delegate = this
+                rows.add(formItemAdapter!!)
+            }
         }
 
         return rows

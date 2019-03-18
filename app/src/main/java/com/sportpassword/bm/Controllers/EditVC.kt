@@ -162,10 +162,10 @@ class EditVC : MyTableVC(), ImagePicker {
         notifyChanged(true)
     }
 
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.button, menu)
-        return true
-    }
+//    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+//        menuInflater.inflate(R.menu.button, menu)
+//        return true
+//    }
     override fun refresh() {
         if (token.length > 0) {
             Loading.show(mask)
@@ -290,6 +290,10 @@ class EditVC : MyTableVC(), ImagePicker {
             }
         }
 
+    }
+
+    fun cancel(view: View) {
+        prev()
     }
 
     private fun fieldToData() {
@@ -531,7 +535,10 @@ class EditVC : MyTableVC(), ImagePicker {
             }
             SELECT_REQUEST_CODE -> {
                 if (resultCode == Activity.RESULT_OK) {
-                    val key = data!!.getStringExtra("key")
+                    var key = ""
+                    if (data != null && data!!.hasExtra("key")) {
+                        key = data!!.getStringExtra("key")
+                    }
                     if (key == TEAM_WEEKDAYS_KEY) {
                         val days: ArrayList<Int> = data!!.getIntegerArrayListExtra("weekdays")
                         updateDays(days)
@@ -554,13 +561,18 @@ class EditVC : MyTableVC(), ImagePicker {
 //                        val name: String = data!!.getStringExtra("name")
                         updateArena(arenas)
                     } else {
-                        val content: String = data!!.getStringExtra("res")
-                        val type = model.contentKey2Type(key)
-                        updateText(key, content)
+                        var content = ""
+                        if (data != null && data!!.hasExtra("res")) {
+                            content = data!!.getStringExtra("res")
+                            val type = model.contentKey2Type(key)
+                            updateText(key, content)
+                        }
                     }
-                    model.data[key]!!["change"] = true
-                    notifyChanged(true)
+                    if (key.length > 0) {
+                        model.data[key]!!["change"] = true
+                        notifyChanged(true)
 //                    dataToField(inputV)
+                    }
                 }
             }
             else -> {

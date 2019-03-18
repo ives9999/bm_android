@@ -10,6 +10,7 @@ import androidx.constraintlayout.widget.ConstraintSet
 import androidx.core.content.ContextCompat
 import android.view.Menu
 import android.view.View
+import android.widget.RelativeLayout
 import com.sportpassword.bm.Adapters.EditTeamItemAdapter
 import com.sportpassword.bm.Models.City
 import com.sportpassword.bm.R
@@ -92,11 +93,11 @@ class EditItemActivity() : BaseActivity() {
         }
         if (key == TEAM_WEEKDAYS_KEY || key == TEAM_PLAY_START_KEY || key == TEAM_PLAY_END_KEY || key == TEAM_DEGREE_KEY || key == CITY_KEY || key == ARENA_KEY) {
             content_container.visibility = View.INVISIBLE
-            val layout = findViewById(R.id.teamedititem_constraint) as ConstraintLayout
-            val constraintSet = ConstraintSet()
-            constraintSet.clone(layout)
-            constraintSet.connect(R.id.submit_container, ConstraintSet.TOP, R.id.teamedititem_container, ConstraintSet.BOTTOM, 32)
-            constraintSet.applyTo(layout)
+//            val layout = findViewById(R.id.teamedititem_constraint) as RelativeLayout
+//            val constraintSet = ConstraintSet()
+//            constraintSet.clone(layout)
+//            constraintSet.connect(R.id.submit_container, ConstraintSet.TOP, R.id.teamedititem_container, ConstraintSet.BOTTOM, 32)
+//            constraintSet.applyTo(layout)
         }
         if (key == TEAM_WEEKDAYS_KEY) {
             setMyTitle("星期幾")
@@ -351,12 +352,12 @@ class EditItemActivity() : BaseActivity() {
         }
     }
 
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        if (select == "multi") {
-            menuInflater.inflate(R.menu.button, menu)
-        }
-        return true
-    }
+//    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+//        if (select == "multi") {
+//            menuInflater.inflate(R.menu.button, menu)
+//        }
+//        return true
+//    }
 
     fun setCity(idx: Int) {
         val city = allCitys[idx]
@@ -523,6 +524,10 @@ class EditItemActivity() : BaseActivity() {
         }
         setResult(Activity.RESULT_OK, intent)
         finish()
+    }
+
+    fun cancel(view: View) {
+        prev()
     }
 }
 

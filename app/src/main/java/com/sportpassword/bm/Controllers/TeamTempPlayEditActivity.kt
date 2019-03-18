@@ -32,10 +32,10 @@ class TeamTempPlayEditActivity : BaseActivity() {
         refresh()
     }
 
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.button, menu)
-        return true
-    }
+//    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+//        menuInflater.inflate(R.menu.button, menu)
+//        return true
+//    }
 
     override fun refresh() {
         if (teamToken.length > 0) {

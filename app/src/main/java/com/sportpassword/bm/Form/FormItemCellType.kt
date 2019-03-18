@@ -9,19 +9,21 @@ enum class FormItemCellType {
     time,
     color,
     status,
+    content,
     more;
 
     fun registerCell(): Int {
         when (this) {
             textField -> return R.layout.formitem_textfield
-            weekday -> return R.layout.formitem
-            date -> return R.layout.formitem
-            time -> return R.layout.formitem
-            color -> return R.layout.formitem
-            status -> return R.layout.formitem
-            more -> return R.layout.formitem
+            weekday -> return R.layout.formitem_more
+            date -> return R.layout.formitem_more
+            time -> return R.layout.formitem_more
+            color -> return R.layout.formitem_more
+            status -> return R.layout.formitem_more
+            more -> return R.layout.formitem_more
+            content -> return R.layout.formitem_content
 
-            else -> return R.layout.formitem
+            else -> return R.layout.formitem_more
         }
     }
 }
