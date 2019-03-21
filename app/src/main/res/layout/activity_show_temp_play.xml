@@ -1,4 +1,4 @@
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -225,45 +225,38 @@
 
                     </androidx.recyclerview.widget.RecyclerView>
 
-                    <LinearLayout
-                        android:id="@+id/show_btn_container"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@+id/show_signups_container"
-                        android:layout_centerInParent="true"
-                        android:layout_marginTop="18dp"
-                        android:orientation="horizontal">
-
-                        <Button
-                            android:id="@+id/show_add_btn"
-                            android:layout_width="wrap_content"
-                            android:layout_height="30dp"
-                            android:layout_marginRight="12dp"
-                            android:layout_weight="1"
-                            android:background="@drawable/button_rc"
-                            android:onClick="plusOne"
-                            android:paddingLeft="16dp"
-                            android:paddingRight="16dp"
-                            android:text="我要臨打"
-                            android:textSize="21dp" />
-
-                        <Button
-                            android:id="@+id/show_cancel_btn"
-                            android:layout_width="wrap_content"
-                            android:layout_height="30dp"
-                            android:layout_marginLeft="12dp"
-                            android:layout_toRightOf="@+id/show_add_btn"
-                            android:background="@drawable/button_rc_green"
-                            android:onClick="cancelPlusOne"
-                            android:paddingLeft="16dp"
-                            android:paddingRight="16dp"
-                            android:text="取消臨打"
-                            android:textSize="21dp" />
-                    </LinearLayout>
                 </RelativeLayout>
         </ScrollView>
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+    <LinearLayout
+        android:id="@+id/footer"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_alignParentBottom="true"
+        android:background="@color/MY_GREEN"
+        android:gravity="center|center_vertical"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/submitBtn"
+            style="@style/submit_button"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:layout_marginRight="16dp"
+            android:onClick="plusOne"
+            android:text="我要臨打" />
+        <Button
+            android:id="@+id/cancelBtn"
+            style="@style/cancel_button"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:onClick="cancelPlusOne"
+            android:text="取消臨打" />
+
+    </LinearLayout>
+
     <include layout="@layout/mask" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+</RelativeLayout>
 
 

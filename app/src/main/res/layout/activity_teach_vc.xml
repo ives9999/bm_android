@@ -8,18 +8,18 @@
     android:clickable="true"
     android:focusable="true"
     android:focusableInTouchMode="true"
-    tools:context=".Controllers.CourseVC"
+    tools:context=".Controllers.TeachVC"
     >
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-        android:id="@+id/course_refresh"
+        android:id="@+id/teach_refresh"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@drawable/background"
         >
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/course_list"
+            android:id="@+id/teach_list"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"

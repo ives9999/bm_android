@@ -1,18 +1,18 @@
 package com.sportpassword.bm.Services
 
-import com.sportpassword.bm.Models.Course
+import com.sportpassword.bm.Models.Teach
 import org.json.JSONException
 import org.json.JSONObject
 
 /**
  * Created by ivessun on 2018/3/1.
  */
-object CourseService: DataService() {
+object TeachService: DataService() {
 
-    override val model: Course = Course(-1, "", "")
+    override val model: Teach = Teach(-1, "", "")
 
-    override fun setData(id: Int, title: String, token: String, featured_path: String, vimeo: String, youtube: String): Course {
-        val data = Course(id, title, token, featured_path, vimeo, youtube)
+    override fun setData(id: Int, title: String, token: String, featured_path: String, vimeo: String, youtube: String): Teach {
+        val data = Teach(id, title, token, featured_path, vimeo, youtube)
         return data
     }
 

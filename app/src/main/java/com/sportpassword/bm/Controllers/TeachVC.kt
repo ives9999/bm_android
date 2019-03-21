@@ -1,19 +1,16 @@
 package com.sportpassword.bm.Controllers
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import androidx.recyclerview.widget.GridLayoutManager
 import com.sportpassword.bm.Adapters.CollectionAdapter
-import com.sportpassword.bm.Adapters.ListAdapter
 import com.sportpassword.bm.R
-import com.sportpassword.bm.Services.CourseService
-import kotlinx.android.synthetic.main.activity_course_vc.*
-import org.jetbrains.anko.contentView
+import com.sportpassword.bm.Services.TeachService
+import kotlinx.android.synthetic.main.activity_teach_vc.*
 import com.sportpassword.bm.Utilities.*
 
-class CourseVC : MoreVC() {
+class TeachVC : MoreVC() {
 
     lateinit var collectionAdapter: CollectionAdapter
     val _searchRows: ArrayList<HashMap<String, String>> = arrayListOf(
@@ -22,14 +19,14 @@ class CourseVC : MoreVC() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_course_vc)
+        setContentView(R.layout.activity_teach_vc)
 
         setMyTitle("教學")
 
         searchRows = _searchRows
-        recyclerView = course_list
-        dataService = CourseService
-        refreshLayout = course_refresh
+        recyclerView = teach_list
+        dataService = TeachService
+        refreshLayout = teach_refresh
         initAdapter()
 
         refresh()
@@ -73,7 +70,7 @@ class CourseVC : MoreVC() {
 
     override protected fun setRecyclerViewRefreshListener() {
         refreshListener = SwipeRefreshLayout.OnRefreshListener {
-            this@CourseVC.page = 1
+            this@TeachVC.page = 1
             this.getDataStart(this.page, this.perPage)
             this.collectionAdapter.notifyDataSetChanged()
 

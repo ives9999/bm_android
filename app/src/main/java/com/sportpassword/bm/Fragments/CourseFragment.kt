@@ -6,10 +6,8 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 
-import com.sportpassword.bm.R
-import com.sportpassword.bm.Services.CourseService
+import com.sportpassword.bm.Services.TeachService
 
 
 /**
@@ -21,7 +19,7 @@ class CourseFragment : TabFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        this.dataService = CourseService
+        this.dataService = TeachService
 
 //        val configBuilder = Configuration.Builder(VIMEO_TOKEN)
 //        VimeoClient.initialize(configBuilder.build())
@@ -43,7 +41,7 @@ class CourseFragment : TabFragment() {
     override fun getDataStart(_page: Int, _perPage: Int) {
         super.getDataStart(_page, _perPage)
         //println("page: $_page")
-        CourseService.getList(context!!, "course", "title", mainActivity!!.params, _page, _perPage, null) { success ->
+        TeachService.getList(context!!, "teach", "title", mainActivity!!.params, _page, _perPage, null) { success ->
             getDataEnd(success)
         }
     }

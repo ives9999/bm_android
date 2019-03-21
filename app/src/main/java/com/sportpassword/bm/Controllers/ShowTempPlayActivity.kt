@@ -40,10 +40,10 @@ class ShowTempPlayActivity : BaseActivity() {
         refresh()
     }
 
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.temp_play, menu)
-        return true
-    }
+//    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+//        menuInflater.inflate(R.menu.temp_play, menu)
+//        return true
+//    }
 
     override fun refresh() {
         super.refresh()

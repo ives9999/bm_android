@@ -110,7 +110,7 @@
         <activity android:name=".Controllers.TempPlayDatePlayerVC" />
         <activity android:name=".Controllers.BlackListVC" />
         <activity android:name=".Controllers.ArenaVC" />
-        <activity android:name=".Controllers.CourseVC" />
+        <activity android:name=".Controllers.TeachVC" />
         <activity android:name=".Controllers.MoreVC" />
         <activity android:name=".Controllers.TempPlayVC" />
         <activity android:name=".Controllers.ColorSelectVC" />

@@ -66,7 +66,7 @@
             tools:layout_editor_absoluteY="9dp" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/more_course_row"
+            android:id="@+id/more_teach_row"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="fill_horizontal"
@@ -79,7 +79,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/course" />
+                app:srcCompat="@drawable/teach" />
 
             <TextView
                 android:id="@+id/textView8"

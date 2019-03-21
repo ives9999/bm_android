@@ -5,7 +5,7 @@ import com.sportpassword.bm.Utilities.*
 /**
  * Created by ivessun on 2018/3/1.
  */
-class Course(id: Int, name: String, token: String, featured_path: String="", vimeo: String="", youtube: String=""): SuperData(id, name, token, featured_path, vimeo, youtube) {
+class Teach(id: Int, name: String, token: String, featured_path: String="", vimeo: String="", youtube: String=""): SuperData(id, name, token, featured_path, vimeo, youtube) {
     fun initData() {
         data = mutableMapOf<String, MutableMap<String, Any>>(
             ID_KEY to mutableMapOf("ch" to "編號","vtype" to "Int","value" to -1,"show" to ""),

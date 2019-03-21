@@ -2,6 +2,8 @@ package com.sportpassword.bm.Controllers
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.Menu
+import android.widget.ImageButton
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -41,6 +43,10 @@ class TempPlayVC : MoreVC() {
         initAdapter()
 
         refresh()
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        return true
     }
 
     override fun initAdapter() {

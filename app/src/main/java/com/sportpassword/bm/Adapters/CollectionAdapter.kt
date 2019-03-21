@@ -19,7 +19,7 @@ import com.sportpassword.bm.Utilities.toMyString
 import com.squareup.picasso.Picasso
 import java.net.URL
 
-class CollectionAdapter(val context: Context, val iden: String="course", val screenWidth: Int=0, val itemClick: (SuperData) -> Unit): RecyclerView.Adapter<CollectionAdapter.ViewHolder>() {
+class CollectionAdapter(val context: Context, val iden: String="teach", val screenWidth: Int=0, val itemClick: (SuperData) -> Unit): RecyclerView.Adapter<CollectionAdapter.ViewHolder>() {
 
     var lists: ArrayList<SuperData> = arrayListOf()
         get() = field

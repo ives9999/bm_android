@@ -42,7 +42,7 @@ class MoreFragment : TabFragment() {
 //                    .commit()
         }
 
-        val row2 = view.findViewById<ConstraintLayout>(R.id.more_course_row)
+        val row2 = view.findViewById<ConstraintLayout>(R.id.more_teach_row)
         row2.setOnClickListener() { view ->
             (activity!! as MainActivity).goCourse()
 
@@ -50,9 +50,9 @@ class MoreFragment : TabFragment() {
             //mainActivity.test()
 
 //            val fm = activity!!.supportFragmentManager
-//            val courseFragment = CourseFragment.newInstance("course", screenWidth)
+//            val teachFragment = CourseFragment.newInstance("teach", screenWidth)
 //            fm.beginTransaction()
-//                    .replace(R.id.more_container, courseFragment)
+//                    .replace(R.id.more_container, teachFragment)
 //                    .addToBackStack(null)
 //                    .commit()
         }

@@ -8,7 +8,6 @@ import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.Color
 import android.graphics.Point
-import android.graphics.drawable.GradientDrawable
 import android.os.AsyncTask
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
@@ -23,7 +22,6 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import androidx.appcompat.app.ActionBar
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import android.util.TypedValue
 import android.view.*
 import android.view.animation.Animation
 import android.view.animation.TranslateAnimation
@@ -404,8 +402,8 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
     }
 
     public fun goCourse() {
-        val i = Intent(this, CourseVC::class.java)
-        i.putExtra("type", "course")
+        val i = Intent(this, TeachVC::class.java)
+        i.putExtra("type", "teach")
         i.putExtra("titleField", "title")
         startActivity(i)
 
@@ -644,7 +642,7 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
             "arena" -> {
                 containerID = "constraintLayout"
             }
-            "course" -> {
+            "teach" -> {
                 containerID = "constraintLayout"
             }
         }

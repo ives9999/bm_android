@@ -52,7 +52,7 @@ class EditItemActivity() : BaseActivity() {
     var type: String = "all"
     //選擇的類型：just one單選，multi複選
     var select: String = "just one"
-    //來源的頁面，有coach, team, arena, course 4種
+    //來源的頁面，有coach, team, arena, teach 4種
     var page: String = ""
 
     var start: String = "07:00"

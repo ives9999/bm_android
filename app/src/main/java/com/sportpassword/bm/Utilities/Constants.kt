@@ -101,7 +101,7 @@ val ARENA_BATHROOM_KEY: String = "bathroom"
 val ARENA_CHARGE_KEY: String = "charge"
 val ARENA_INTERVAL_KEY: String = "interval"
 
-// Course key
+// Teach key
 val COURSE_PROVIDER_KEY: String = "provider_url"
 
 // General key
