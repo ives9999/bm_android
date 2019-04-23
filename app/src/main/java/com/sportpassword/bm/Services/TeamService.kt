@@ -252,7 +252,7 @@ object TeamService: DataService() {
     fun plusOne(context: Context, title: String, near_date: String, token: String, complete: CompletionHandler) {
         val _title = URLEncoder.encode(title, "UTF-8")
         var url = URL_TEAM_PLUSONE + _title + "?source=app&date=" + near_date + "&token=" + token
-        //println(url)
+//        println(url)
 
         val request = object : JsonObjectRequest(Request.Method.GET, url, null, Response.Listener { json ->
             //println(json)
@@ -414,7 +414,9 @@ object TeamService: DataService() {
                 val nickname: String = member.getString("nickname")
                 val token: String = member.getString("token")
                 val created_at: String = item.getString("created_at")
-                signups.add(mapOf("nickname" to nickname, "token" to token,"created_at" to created_at))
+                val status: String = item.getString("status")
+                val off_at: String = item.getString("off_at")
+                signups.add(mapOf("nickname" to nickname, "token" to token,"created_at" to created_at,"status" to status,"off_at" to off_at))
                 //println(signups)
             }
             if (!model.data.containsKey("signups")) {

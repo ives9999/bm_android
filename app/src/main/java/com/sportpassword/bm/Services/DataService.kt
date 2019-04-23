@@ -261,11 +261,12 @@ open class DataService: BaseService() {
 
     open fun getOne(context: Context, type:String, titleField:String, token:String, complete: CompletionHandler) {
         val url = "$URL_ONE".format(type)
-        //println(url)
         val params: MutableList<Pair<String, String>> = mutableListOf()
         params.add(Pair("source", "app"))
         params.add(Pair("token", token))
         params.add(Pair("strip_html", true.toString()))
+//        println(url)
+//        println(params)
 
         MyHttpClient.instance.post(context, url, params, null) { success ->
             val response = MyHttpClient.instance.response
@@ -763,7 +764,7 @@ open class DataService: BaseService() {
             } catch (e: JSONException) {
                 println(e.localizedMessage)
                 success = false
-                msg = "無法刪除球隊，請稍後再試 " + e.localizedMessage
+                msg = "無法刪除，請稍後再試 " + e.localizedMessage
             }
             if (!success) {
                 makeErrorMsg(json)
@@ -788,7 +789,7 @@ open class DataService: BaseService() {
 
     fun getCitys(context: Context, type: String="all", zone: Boolean=false, complete: CompletionHandler) {
         val url = URL_CITYS
-        println(url)
+//        println(url)
 
         val body = JSONObject()
         body.put("source", "app")

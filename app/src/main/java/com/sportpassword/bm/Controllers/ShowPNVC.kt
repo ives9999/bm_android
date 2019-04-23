@@ -89,12 +89,13 @@ class ShowPNVC : MyTableVC(), OSPermissionObserver {
             val j = pnArr!!.length()-1-i
             val obj = pnArr!![j] as JSONObject
             val id = obj.getString("id")
+            val pnid = obj.getString("pnid")
             var title = ""
             if (obj.has("title")) {
                 title = obj.getString("title")
             }
             val content = obj.getString("content")
-            items.add(PNItem(id, title, content, { id ->
+            items.add(PNItem(id, title, content, pnid, { id ->
 //                println(id)
                 warning("是否確定要刪除此訊息？", "關閉", "刪除") {
                     MyOneSignal.remove(id)
@@ -136,10 +137,11 @@ class ShowPNVC : MyTableVC(), OSPermissionObserver {
     }
 }
 
-class PNItem(val id: String, val title: String, val content: String, val removeClick:(String)->Unit): Item() {
+class PNItem(val id: String, val title: String, val content: String, val pnID: String, val removeClick:(String)->Unit): Item() {
 
     override fun bind(viewHolder: com.xwray.groupie.kotlinandroidextensions.ViewHolder, position: Int) {
         viewHolder.idLbl.setText(id)
+        viewHolder.pnidLbl.setText(pnID)
         if (title.length > 0) {
             viewHolder.titleLbl.visibility = View.VISIBLE
             viewHolder.titleLbl.setText(title)

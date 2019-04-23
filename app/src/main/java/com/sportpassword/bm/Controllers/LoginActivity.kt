@@ -12,10 +12,7 @@ import com.facebook.login.LoginManager
 import com.facebook.login.LoginResult
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.MemberService
-import com.sportpassword.bm.Utilities.Alert
-import com.sportpassword.bm.Utilities.Loading
-import com.sportpassword.bm.Utilities.NOTIF_MEMBER_DID_CHANGE
-import com.sportpassword.bm.Utilities.memberDidChangeIntent
+import com.sportpassword.bm.Utilities.*
 import com.sportpassword.bm.member
 import kotlinx.android.synthetic.main.activity_login.*
 import kotlinx.android.synthetic.main.mask.*
@@ -54,6 +51,7 @@ class LoginActivity : BaseActivity() {
             Loading.hide(mask)
             //println(success)
             if (success) {
+                Session.loginReset = true
                 if (MemberService.success) {
                     //LocalBroadcastManager.getInstance(this).sendBroadcast(memberDidChangeIntent)
                     //finish()

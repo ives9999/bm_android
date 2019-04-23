@@ -74,7 +74,7 @@ class TempPlaySignupOneAdapter(val context: Context, val itemClick:(String, Stri
                 line.visibility = View.INVISIBLE
             }
 
-            if (position == 0) {
+            if (position == 0 || position == lists.size-1) {
                 val iconL = icon.layoutParams as ConstraintLayout.LayoutParams
                 val l = textView.layoutParams as ConstraintLayout.LayoutParams
                 l.startToStart = iconL.startToStart

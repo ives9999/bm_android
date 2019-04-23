@@ -12,6 +12,7 @@ typealias CompletionHandler = (Success: Boolean) -> Unit
 const val SOURCE = "app"
 const val CHANNEL = "bm"
 var gSimulate: Boolean = false
+var gReset: Boolean = false
 
 const val more = "more"
 const val none = "none"

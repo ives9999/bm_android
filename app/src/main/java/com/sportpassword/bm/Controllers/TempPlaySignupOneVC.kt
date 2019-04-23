@@ -17,13 +17,15 @@ class  TempPlaySignupOneVC : BaseActivity() {
     var teamToken: String = ""
     var team_id: Int = -1
     var near_date: String = ""
+    var status: String = "on"
+    var off_at: String = ""
 
     var isTeamManager: Boolean = false
     var memberName: String = ""
     var memberToken: String = ""
     var memberMobile: String = ""
     var memberOne: ArrayList<HashMap<String, HashMap<String, Any>>> = arrayListOf()
-    var keys: ArrayList<String> = arrayListOf("team", NAME_KEY, MOBILE_KEY, "black_list")
+    var keys: ArrayList<String> = arrayListOf("team", NAME_KEY, MOBILE_KEY, "black_list", "temp_play_status")
 
     lateinit var tempPlaySignupOneAdapter: TempPlaySignupOneAdapter
 
@@ -37,6 +39,8 @@ class  TempPlaySignupOneVC : BaseActivity() {
         team_name = intent.getStringExtra("name")
         team_id = intent.getIntExtra("id", -1)
         near_date = intent.getStringExtra("near_date")
+        status = intent.getStringExtra("status")
+        off_at = intent.getStringExtra("off_at")
 //        println(memberToken)
 //        println(team_name)
 //        println(team_id)
@@ -62,8 +66,6 @@ class  TempPlaySignupOneVC : BaseActivity() {
         tempPlaySignupOneAdapter.lists = memberOne
         tempPlaySignupOneAdapter.keys = keys
         data_list.adapter = tempPlaySignupOneAdapter
-        val layoutManager = LinearLayoutManager(this)
-        data_list.layoutManager = layoutManager
 
         refreshLayout = contentView!!.findViewById<SwipeRefreshLayout>(R.id.tempPlaySignupOne_refresh)
         setRefreshListener()
@@ -79,6 +81,10 @@ class  TempPlaySignupOneVC : BaseActivity() {
             if (success) {
                 initIsTeamManager { success ->
                     Loading.hide(mask)
+                    if (status == "off") {
+                        memberOne.add(hashMapOf("temp_play_status" to hashMapOf("title" to "取消", "value" to off_at.noSec() as Any)))
+                    }
+//                    println(memberOne)
                     tempPlaySignupOneAdapter.notifyDataSetChanged()
                     closeRefresh()
                 }

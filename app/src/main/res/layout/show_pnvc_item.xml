@@ -34,13 +34,6 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     tools:text="@string/com_facebook_internet_permission_error_title" />
-
-                <TextView
-                    android:id="@+id/idLbl"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@color/FBBLUE"
-                    android:visibility="gone" />
             </LinearLayout>
 
             <LinearLayout
@@ -56,6 +49,30 @@
                     android:textColor="@color/grey"
                     android:textSize="18sp"
                     tools:text="@android:string/fingerprint_icon_content_description" />
+
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp">
+
+                <TextView
+                    android:id="@+id/idLbl"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:text="id"
+                    android:textColor="@color/WHITE"
+                    android:textSize="10sp" />
+
+                <TextView
+                    android:id="@+id/pnidLbl"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="16dp"
+                    android:text="pnid"
+                    android:textColor="@color/WHITE"
+                    android:textSize="10sp" />
 
             </LinearLayout>
         </LinearLayout>

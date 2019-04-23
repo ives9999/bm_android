@@ -378,13 +378,15 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
         startActivityForResult(intent, VALIDATE_REQUEST_CODE)
     }
 
-    public fun goTempPlaySignupOne(teamId: Int, teamToken: String, teamName: String, near_date: String, memberToken: String) {
+    public fun goTempPlaySignupOne(teamId: Int, teamToken: String, teamName: String, near_date: String, memberToken: String, status: String, off_at: String) {
         val i = Intent(this, TempPlaySignupOneVC::class.java)
         i.putExtra("id", teamId)
         i.putExtra("name", teamName)
         i.putExtra("token", teamToken)
         i.putExtra("near_date", near_date)
         i.putExtra("memberToken", memberToken)
+        i.putExtra("status", status)
+        i.putExtra("off_at", off_at)
         startActivity(i)
     }
 
@@ -467,6 +469,7 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
                     override fun onSuccess(result: LoginResult?) {
                         MemberService.FBLogin(this@BaseActivity, playerID) { success ->
                             if (success) {
+                                Session.loginReset = true
                                 LocalBroadcastManager.getInstance(this@BaseActivity).sendBroadcast(memberDidChangeIntent)
                                 finish()
                             } else {
@@ -1363,19 +1366,19 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
 
     open protected fun layerDelete() {}
 
-    protected fun warning(msg: String) {
+    fun warning(msg: String) {
         Alert.show(this, "警告", msg)
     }
-    protected fun warning(msg: String, showCloseButton: Boolean=false, buttonTitle: String, buttonAction: ()->Unit) {
+    fun warning(msg: String, showCloseButton: Boolean=false, buttonTitle: String, buttonAction: ()->Unit) {
         Alert.show(this, "警告", msg, showCloseButton, buttonTitle, buttonAction)
     }
-    protected fun warning(msg: String, closeButtonTitle: String, buttonTitle: String, buttonAction: ()->Unit) {
+    fun warning(msg: String, closeButtonTitle: String, buttonTitle: String, buttonAction: ()->Unit) {
         Alert.show(this, "警告", msg, closeButtonTitle, buttonTitle, buttonAction)
     }
-    protected fun info(msg: String) {
+    fun info(msg: String) {
         Alert.show(this, "訊息", msg)
     }
-    protected fun info(msg: String, closeButtonTitle: String, buttonTitle: String, buttonAction: ()->Unit) {
+    fun info(msg: String, closeButtonTitle: String, buttonTitle: String, buttonAction: ()->Unit) {
         Alert.show(this, "訊息", msg, closeButtonTitle, buttonTitle, buttonAction)
     }
 

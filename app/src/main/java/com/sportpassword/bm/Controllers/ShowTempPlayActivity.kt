@@ -55,8 +55,8 @@ class ShowTempPlayActivity : BaseActivity() {
                 val name: String = data[NAME_KEY]!!["value"] as String
                 val id: Int = data[ID_KEY]!!["value"] as Int
                 setTeamData(featuredView)
-                signupsAdapter = SignupsAdapter(this, {token, near_date ->
-                    goTempPlaySignupOne(id, teamToken, name, near_date, token)
+                signupsAdapter = SignupsAdapter(this, {token, near_date, status, off_at ->
+                    goTempPlaySignupOne(id, teamToken, name, near_date, token, status, off_at)
                 })
                 val layoutManager = LinearLayoutManager(this)
                 show_signups_container.adapter = signupsAdapter

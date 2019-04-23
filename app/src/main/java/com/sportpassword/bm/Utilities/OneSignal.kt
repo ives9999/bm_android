@@ -9,6 +9,7 @@ import com.onesignal.OneSignal
 import com.sportpassword.bm.App
 import com.sportpassword.bm.Controllers.MainActivity
 import com.sportpassword.bm.Controllers.ShowPNVC
+import com.sportpassword.bm.member
 import org.json.JSONArray
 import org.json.JSONObject
 
@@ -26,16 +27,20 @@ class MyNotificationOpenedHandler: OneSignal.NotificationOpenedHandler {
 //        println("OpenedHandler title: $title")
 //        println("OpenedHandler id: $id")
 
-        val customKey = data?.optString("customkey", null)
-        if (customKey != null) {
+//        val customKey = data?.optString("customkey", null)
+//        if (customKey != null) {
 //            println("OpenedHandler customkey set with value: $customKey")
-        }
+//        }
 
         if (actionType == OSNotificationAction.ActionType.ActionTaken) {
 //            println("OpenedHandler Button pressed with id: ${result.action.actionID}")
         }
+        var pnID = "0"
+        if (data != null) {
+            pnID = MyOneSignal.getServerPNID(data)
+        }
 
-        MyOneSignal.save(id, title, content)
+        MyOneSignal.save(id, title, content, pnID)
         val intent = Intent(App.instance, ShowPNVC::class.java)
         intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
@@ -70,13 +75,15 @@ class MyNotificationReceivedHandler: OneSignal.NotificationReceivedHandler {
 
         var customKey: String? = null
 //        println("ReceivedHandler NotificationID received: $id")
+        var pnID = "0"
         if (data != null) {
-            customKey = data.optString("customKey", null)
-            if (customKey != null) {
+            pnID = MyOneSignal.getServerPNID(data)
+//            customKey = data.optString("customKey", null)
+//            if (customKey != null) {
 //                println("ReceivedHandler customKey set with value: $customKey")
-            }
+//            }
         }
-        MyOneSignal.save(id, title, body)
+        MyOneSignal.save(id, title, body, pnID)
     }
 }
 
@@ -86,13 +93,14 @@ class MyOneSignal {
 
         val session: SharedPreferences = App.instance.getSharedPreferences(SESSION_FILENAME, 0)
 
-        fun save(id: String, title: String?, content: String) {
+        fun save(id: String, title: String?, content: String, pnID: String) {
             val pnObj = JSONObject()
             pnObj.put("id", id)
             if (title != null) {
                 pnObj.put("title", title!!)
             }
             pnObj.put("content", content)
+            pnObj.put("pnid", pnID)
             var pnArr: JSONArray? = null
             if (session.contains("pn")) {
                 val pnStr = session.getString("pn", "")!!
@@ -139,6 +147,23 @@ class MyOneSignal {
             }
 
             return b
+        }
+
+        fun getServerPNID(data: JSONObject): String {
+            val member_id = member.id
+            var id = "0"
+            val keys = data.keys()
+            while (keys.hasNext()) {
+                val key = keys.next()
+                val value = data.getString(key).toIntOrNull()
+                if (value != null) {
+                    if (value == member_id) {
+                        id = key
+                    }
+                }
+            }
+
+            return id
         }
     }
 }

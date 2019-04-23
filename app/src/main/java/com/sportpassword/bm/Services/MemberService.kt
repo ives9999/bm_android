@@ -370,6 +370,8 @@ object MemberService: BaseService() {
         body.put(TOKEN_KEY, token)
         body.put("source", "app")
         val requestBody = body.toString()
+//        println(URL_MEMBER_GETONE)
+//        println(body)
 
         val request = object : JsonObjectRequest(Request.Method.POST, URL_MEMBER_GETONE, null, Response.Listener { json ->
             //println(json)
