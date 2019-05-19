@@ -77,7 +77,11 @@ class EditItemActivity() : BaseActivity() {
         Loading.show(mask)
 
         //get intent
-        key = intent.getStringExtra("key")
+        if (intent.hasExtra("key")) {
+            key = intent.getStringExtra("key")
+        } else {
+            key = ""
+        }
         //println(key)
         if (intent.hasExtra("source")) {
             source = intent.getStringExtra("source")

@@ -88,8 +88,14 @@ class ShowPNVC : MyTableVC(), OSPermissionObserver {
         for (i in 0..pnArr!!.length()-1) {
             val j = pnArr!!.length()-1-i
             val obj = pnArr!![j] as JSONObject
-            val id = obj.getString("id")
-            val pnid = obj.getString("pnid")
+            var id = ""
+            if (obj.has("id")) {
+                id = obj.getString("id")
+            }
+            var pnid = ""
+            if (obj.has("pnid")) {
+                pnid = obj.getString("pnid")
+            }
             var title = ""
             if (obj.has("title")) {
                 title = obj.getString("title")
