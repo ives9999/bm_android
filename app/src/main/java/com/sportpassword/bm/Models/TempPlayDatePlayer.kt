@@ -1,6 +1,31 @@
 package com.sportpassword.bm.Models
 
-class TempPlayDatePlayer(val success:Boolean,val rows:ArrayList<Row_TempPlayDatePlayer>) {
+import com.sportpassword.bm.Utilities.toDateTime
+import org.json.JSONObject
 
+class TempPlayDatePlayer(data: JSONObject): SuperModel(data) {
+    var id: Int = -1
+    var member_id: Int = -1
+    var team_id: Int = -1
+    var name: String = ""
+    var mobile: String = ""
+    var play_date: String = ""
+    var status: String = "on"
+    var off_at: String = ""
+    var token: String = ""
+    var created_at: String = ""
+    var updated_at: String = ""
+
+    fun filterRow() {
+//        _start_hour = start_time.toDateTime("HH:mm:ss").getH()
+//        _end_hour = end_time.toDateTime("HH:mm:ss").getH()
+//        _start_minute = start_time.toDateTime("HH:mm:ss").getm()
+//        _end_minute = end_time.toDateTime("HH:mm:ss").getm()
+//        _color = MYCOLOR.from(color)
+    }
 }
-class Row_TempPlayDatePlayer(val updated_at:String,val play_date:String,val token:String,val id:Int,val mobile:String,val name:String,val created_at:String,val team_id:Int,val member_id:Int){}
+
+class TempPlayDatePlayers(data: JSONObject): SuperModel(data) {
+    var success: Boolean = true
+    var rows: ArrayList<TempPlayDatePlayer> = arrayListOf()
+}

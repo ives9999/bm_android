@@ -23,7 +23,7 @@ object TeamService: DataService() {
     override val model: Team = Team(-1, "", "", "")
     lateinit var temp_play_data: MutableMap<String, MutableMap<String, Any>>
     lateinit var tempPlayDate: TempPlayDate
-    lateinit var tempPlayDatePlayer: TempPlayDatePlayer
+    lateinit var tempPlayDatePlayers: TempPlayDatePlayers
 
     fun tempPlay_list(context: Context, params: HashMap<String,Any>, page:Int, perPage:Int, complete: CompletionHandler) {
         val url = URL_TEAM_TEMP_PLAY_LIST
@@ -357,20 +357,31 @@ object TeamService: DataService() {
         val requestBody = body.toString()
 
         val request = object : JsonObjectRequest(Request.Method.POST, url, null, Response.Listener { json ->
-            //println(json)
-            val s = json.toString()
+//            println(json)
+//            val s = json.toString()
             //println(s)
             try {
-                tempPlayDatePlayer = Klaxon().parse<TempPlayDatePlayer>(s)!!
+                tempPlayDatePlayers = JSONParse.parse<TempPlayDatePlayers>(json)!!
+                for (row in tempPlayDatePlayers.rows) {
+                    row.filterRow()
+                }
+//                timetables.print()
+                if (!tempPlayDatePlayers.success) {
+                    msg = json.getString("msg")
+                }
+
+
+
+//                tempPlayDatePlayer = Klaxon().parse<TempPlayDatePlayer>(s)!!
 //                tempPlayDate = TempPlayDate(json)
 //                println(tempPlayDatePlayer.success)
-//                println(tempPlayDatePlayer.rows)
-                if (tempPlayDate.success) {
+//                println(tempPlayDatePlayers.rows)
+                if (tempPlayDatePlayers.success) {
                 } else {
                     msg = json.getString("msg")
                 }
-                complete(tempPlayDate.success)
-            } catch (e: JSONException) {
+                complete(tempPlayDatePlayers.success)
+            } catch (e: Exception) {
                 println(e.localizedMessage)
                 success = false
                 msg = "無法取得臨打資訊，請稍後再試 " + e.localizedMessage

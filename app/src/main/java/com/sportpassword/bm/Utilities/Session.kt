@@ -6,11 +6,11 @@ import com.sportpassword.bm.App
 object Session {
     private val UD: SharedPreferences = App.instance.getSharedPreferences(SESSION_FILENAME, 0)
 
-    val loginResetKey = "login_reset"
+//    val loginResetKey = "login_reset"
 
-    var loginReset: Boolean
-        get() = UD.getBoolean(loginResetKey, false)
-        set(value) = UD.edit().putBoolean(loginResetKey, value).apply()
+//    var loginReset: Boolean
+//        get() = UD.getBoolean(loginResetKey, false)
+//        set(value) = UD.edit().putBoolean(loginResetKey, value).apply()
 
     fun clear(key: String) {
         if (exist(key)) {

@@ -51,7 +51,7 @@ class LoginActivity : BaseActivity() {
             Loading.hide(mask)
             //println(success)
             if (success) {
-                Session.loginReset = true
+                //Session.loginReset = true
                 if (MemberService.success) {
                     //LocalBroadcastManager.getInstance(this).sendBroadcast(memberDidChangeIntent)
                     //finish()

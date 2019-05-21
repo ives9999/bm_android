@@ -8,6 +8,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.sportpassword.bm.Adapters.TempPlayDatePlayerAdapter
 import com.sportpassword.bm.Models.TempPlayDatePlayer
+import com.sportpassword.bm.Models.TempPlayDatePlayers
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.TeamService
 import com.sportpassword.bm.Utilities.Loading
@@ -21,7 +22,7 @@ class TempPlayDatePlayerVC : BaseActivity() {
     var date: String = ""
     var teamName: String = ""
     var teamToken: String = ""
-    lateinit var tempPlayDatePlayer: TempPlayDatePlayer
+    lateinit var tempPlayDatePlayers: TempPlayDatePlayers
     lateinit var tempPlayDatePlayerAdapter: TempPlayDatePlayerAdapter
     lateinit var dialog: DialogInterface
 
@@ -45,10 +46,10 @@ class TempPlayDatePlayerVC : BaseActivity() {
         TeamService.tempPlay_datePlayer(this, date, teamToken) { success ->
             Loading.hide(mask)
             if (success) {
-                tempPlayDatePlayer = TeamService.tempPlayDatePlayer
+                tempPlayDatePlayers = TeamService.tempPlayDatePlayers
                 //println(rows)
-                tempPlayDatePlayerAdapter = TempPlayDatePlayerAdapter(this, tempPlayDatePlayer.rows, { position ->
-                    val row = tempPlayDatePlayer.rows[position]
+                tempPlayDatePlayerAdapter = TempPlayDatePlayerAdapter(this, tempPlayDatePlayers.rows, { position ->
+                    val row = tempPlayDatePlayers.rows[position]
                     //println(row.id)
                     dialog = alert("動作") {
                         title = "訊息"

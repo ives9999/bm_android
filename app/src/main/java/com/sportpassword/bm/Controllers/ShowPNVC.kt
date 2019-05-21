@@ -13,6 +13,7 @@ import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.kotlinandroidextensions.Item
 import kotlinx.android.synthetic.main.activity_show_pnvc.*
 import kotlinx.android.synthetic.main.show_pnvc_item.*
+import me.leolin.shortcutbadger.ShortcutBadger
 import org.json.JSONArray
 import org.json.JSONObject
 import java.lang.Exception
@@ -62,6 +63,7 @@ class ShowPNVC : MyTableVC(), OSPermissionObserver {
         setRefreshListener()
 
         initAdapter()
+        ShortcutBadger.applyCount(this, 0)
     }
 
     override fun initAdapter(include_section: Boolean) {

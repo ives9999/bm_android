@@ -65,9 +65,9 @@ class TempPlayFragment : TabFragment(), inter {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        if (!Session.exist(Session.loginResetKey)) {
-            Session.loginReset = gReset
-        }
+//        if (!Session.exist(Session.loginResetKey)) {
+//            Session.loginReset = gReset
+//        }
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -82,13 +82,13 @@ class TempPlayFragment : TabFragment(), inter {
         return view
     }
 
-    override fun onResume() {
-        gReset = Session.loginReset
-        super.onResume()
-        if (!gReset) {
-            mainActivity!!.info("因為更新APP系統，請重新登出再登入，方能正常使用會員功能")
-        }
-    }
+//    override fun onResume() {
+//        gReset = Session.loginReset
+//        super.onResume()
+//        if (!gReset) {
+//            mainActivity!!.info("因為更新APP系統，請重新登出再登入，方能正常使用會員功能")
+//        }
+//    }
 
     override fun initAdapter() {
 

@@ -469,7 +469,7 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
                     override fun onSuccess(result: LoginResult?) {
                         MemberService.FBLogin(this@BaseActivity, playerID) { success ->
                             if (success) {
-                                Session.loginReset = true
+                                //Session.loginReset = true
                                 LocalBroadcastManager.getInstance(this@BaseActivity).sendBroadcast(memberDidChangeIntent)
                                 finish()
                             } else {
