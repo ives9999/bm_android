@@ -107,7 +107,9 @@ class ShowTempPlayActivity : BaseActivity() {
                 Alert.show(this, "成功", msg)
                 refresh()
             } else {
-                Alert.show(this, "警告", TeamService.msg)
+                if (!isFinishing) {
+                    Alert.show(this@ShowTempPlayActivity, "警告", TeamService.msg)
+                }
             }
         }
     }

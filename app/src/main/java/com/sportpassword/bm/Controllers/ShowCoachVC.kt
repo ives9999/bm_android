@@ -165,16 +165,20 @@ class ShowCoachVC : BaseActivity(), IconCellDelegate {
     }
 
     fun setData() {
-        city_id = superCoach!!.city.id
-        params["city_id"] = arrayListOf(city_id)
-        params["city_type"] = "all"
-        cityBtn.setText(superCoach!!.city.name)
-        setContact()
-        setWeb(chargeWebView, superCoach!!.charge)
-        setWeb(expWebView, superCoach!!.exp)
-        setWeb(licenseWebView, superCoach!!.license)
-        setWeb(featWebView, superCoach!!.feat)
-        setWeb(detailWebView, superCoach!!.content)
+        if (superCoach != null) {
+            if (superCoach!!.city != null) {
+                city_id = superCoach!!.city.id
+                params["city_id"] = arrayListOf(city_id)
+                params["city_type"] = "all"
+                cityBtn.setText(superCoach!!.city.name)
+            }
+            setContact()
+            setWeb(chargeWebView, superCoach!!.charge)
+            setWeb(expWebView, superCoach!!.exp)
+            setWeb(licenseWebView, superCoach!!.license)
+            setWeb(featWebView, superCoach!!.feat)
+            setWeb(detailWebView, superCoach!!.content)
+        }
     }
 
     fun setContact() {

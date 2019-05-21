@@ -314,11 +314,19 @@ fun String.fb(context: Context) {
 
     }
 
-    val appIntent = Intent(Intent.ACTION_VIEW, Uri.parse(appUrl))
+    var appIntent: Intent? = null
+
+    if (appUrl != null) {
+        appIntent = Intent(Intent.ACTION_VIEW, Uri.parse(appUrl))
+    }
     val webIntent = Intent(Intent.ACTION_VIEW, Uri.parse(this))
-    try {
-        context.startActivity(appIntent)
-    } catch (e: ActivityNotFoundException) {
+    if (appIntent != null) {
+        try {
+            context.startActivity(appIntent)
+        } catch (e: ActivityNotFoundException) {
+            context.startActivity(webIntent)
+        }
+    } else {
         context.startActivity(webIntent)
     }
 }

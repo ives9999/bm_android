@@ -44,31 +44,33 @@ class TempPlaySignupOneAdapter(val context: Context, val itemClick:(String, Stri
 
         fun bind(position: Int) {
             val key: String = keys[position]
-            val data: HashMap<String, Any> = lists[position][key]!!
-            if (!data.containsKey("icon")) {
-                icon.visibility = View.INVISIBLE
-            } else {
-                icon.setImage(data["icon"].toString())
-            }
-            if (data.containsKey("title")) {
-                textView.text = data.get("title").toString()
-            }
-            if (data.containsKey("value")) {
-                var value: String = data.get("value").toString()
-                if (key == MOBILE_KEY) {
-                    mobile = value
-                    value = value.truncate(6, "****")
+            if (lists[position] != null) {
+                val data: HashMap<String, Any> = lists[position][key]!!
+                if (!data.containsKey("icon")) {
+                    icon.visibility = View.INVISIBLE
+                } else {
+                    icon.setImage(data["icon"].toString())
                 }
-                valueView.text = value
-            }
-            var isMore: Boolean = false
-            if (data.containsKey("more")) {
-                isMore = data.get("more") as Boolean
-            }
-            if (!isMore) {
-                greater.visibility = View.INVISIBLE
-            } else {
-                itemView.setOnClickListener { itemClick(key, mobile) }
+                if (data.containsKey("title")) {
+                    textView.text = data.get("title").toString()
+                }
+                if (data.containsKey("value")) {
+                    var value: String = data.get("value").toString()
+                    if (key == MOBILE_KEY) {
+                        mobile = value
+                        value = value.truncate(6, "****")
+                    }
+                    valueView.text = value
+                }
+                var isMore: Boolean = false
+                if (data.containsKey("more")) {
+                    isMore = data.get("more") as Boolean
+                }
+                if (!isMore) {
+                    greater.visibility = View.INVISIBLE
+                } else {
+                    itemView.setOnClickListener { itemClick(key, mobile) }
+                }
             }
             if (position == lists.size-1) {
                 line.visibility = View.INVISIBLE
