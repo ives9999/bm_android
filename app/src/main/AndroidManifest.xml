@@ -102,6 +102,7 @@
         <activity android:name=".Controllers.SplashActivity" />
         <activity android:name=".Controllers.ManagerVC" />
         <activity android:name=".Controllers.ManagerFunctionVC" />
+        <activity android:name=".Controllers.ManagerCourseVC" />
         <activity android:name=".Controllers.ValidateActivity" />
         <activity
             android:name=".Controllers.TempPlaySignupOneVC"

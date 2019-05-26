@@ -40,7 +40,7 @@ class ListAdapter(val context: Context, val iden: String="team", val screenWidth
 
     inner class ViewHolder(itemView: View, val iden: String="team", val screenWidth: Int=0): RecyclerView.ViewHolder(itemView) {
         val featuredView = itemView.findViewById<ImageView>(R.id.listFeatured)
-        val nameView = itemView.findViewById<TextView>(R.id.listTitleTxt)
+        val nameView = itemView.findViewById<TextView>(R.id.title)
         val cityView = itemView.findViewById<TextView>(R.id.listCityBtn)
         val arenaView = itemView.findViewById<TextView>(R.id.listArenaTxt)
         val ballView = itemView.findViewById<TextView>(R.id.listBallTxt)
@@ -142,9 +142,9 @@ class ListAdapter(val context: Context, val iden: String="team", val screenWidth
         }
 
         private fun bindCoach(superData: SuperData) {
-            if (superData.data.containsKey(CITY_KEY)) {
+            if (superData.data.containsKey(CITYS_KEY)) {
                 //println(superData.superData["city"]!!["show"])
-                cityView.text = superData.data[CITY_KEY]!!["show"] as String
+                cityView.text = superData.data[CITYS_KEY]!!["show"] as String
                 cityView.setOnClickListener {
                     searchCity(superData)
                 }

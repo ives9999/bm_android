@@ -103,8 +103,12 @@ open class TabFragment : Fragment(), SearchItemDelegate {
             intent.putExtra("title", data.title)
             startActivity(intent)
         }, { data ->
-            if (data.data.containsKey(CITY_KEY)) {
-                if (data.data[CITY_KEY]!!.containsKey("value")) {
+            var key = CITY_KEY
+            if (type == "coach") {
+                key = CITYS_KEY
+            }
+            if (data.data.containsKey(key)) {
+                if (data.data[key]!!.containsKey("value")) {
                     val city_id = data.data[CITY_KEY]!!["value"] as Int
                     mainActivity!!.cityBtnPressed(city_id, type!!)
                 }

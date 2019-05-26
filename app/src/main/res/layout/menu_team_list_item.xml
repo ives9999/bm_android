@@ -14,7 +14,6 @@
         app:mode="same_level">
 
 
-
         <!-- Your secondary layout here -->
         <FrameLayout
             android:id="@+id/option_layout"

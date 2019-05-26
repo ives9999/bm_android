@@ -144,7 +144,7 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
 
     private fun _setURLConstants() {
         gSimulate = isEmulator()
-//        gSimulate = true
+        gSimulate = true
         BASE_URL = if (gSimulate) LOCALHOST_BASE_URL else REMOTE_BASE_URL
         //println("os: " + BASE_URL)
         URL_HOME = BASE_URL + "/app/"
@@ -183,6 +183,8 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
         URL_TEAM_TEMP_PLAY_DATE_PLAYER = URL_TEAM + "tempPlay/datePlayer"
         URL_SIGNUP = URL_HOME + "%s/signup/%s"
         URL_CANCEL_SIGNUP = URL_HOME + "%s/cancelSignup/%d"
+
+        URL_COURSE_LIST = URL_HOME + "course"
 
     }
 
@@ -415,6 +417,13 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
         val i = Intent(this, TimeTableVC::class.java)
         i.putExtra("source", source)
         i.putExtra("token", token)
+        startActivity(i)
+    }
+
+    fun goCourse(name: String, token: String) {
+        val i = Intent(this, ManagerCourseVC::class.java)
+        i.putExtra("token", token)
+        i.putExtra("name", name)
         startActivity(i)
     }
 

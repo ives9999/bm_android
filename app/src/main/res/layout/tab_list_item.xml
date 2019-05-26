@@ -32,7 +32,7 @@
                 card_view:layout_constraintTop_toTopOf="parent" />
 
             <TextView
-                android:id="@+id/listTitleTxt"
+                android:id="@+id/title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="4dp"
@@ -49,9 +49,9 @@
                 android:layout_height="24dp"
                 style="@style/city_button"
                 android:layout_marginStart="16dp"
-                card_view:layout_constraintBottom_toBottomOf="@+id/listTitleTxt"
-                card_view:layout_constraintStart_toEndOf="@+id/listTitleTxt"
-                card_view:layout_constraintTop_toTopOf="@+id/listTitleTxt"
+                card_view:layout_constraintBottom_toBottomOf="@+id/title"
+                card_view:layout_constraintStart_toEndOf="@+id/title"
+                card_view:layout_constraintTop_toTopOf="@+id/title"
                 />
 
 
@@ -62,8 +62,8 @@
                 android:layout_marginTop="4dp"
                 android:textColor="@color/MY_GREEN"
                 android:textSize="18dp"
-                card_view:layout_constraintStart_toStartOf="@+id/listTitleTxt"
-                card_view:layout_constraintTop_toBottomOf="@+id/listTitleTxt"
+                card_view:layout_constraintStart_toStartOf="@+id/title"
+                card_view:layout_constraintTop_toBottomOf="@+id/title"
                 tools:text="球館" />
 
             <TextView

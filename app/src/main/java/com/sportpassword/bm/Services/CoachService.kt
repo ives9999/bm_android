@@ -23,13 +23,14 @@ object CoachService: DataService() {
 
     override fun getOne(context: Context, type: String, titleField: String, token: String, complete: CompletionHandler) {
         val url = "$URL_ONE".format(type)
-        //println(url)
+//        println(url)
 
         val body = JSONObject()
         body.put("source", "app")
         body.put("token", token)
         body.put("strip_html", false)
         val requestBody = body.toString()
+//        println(requestBody)
 
         val request = object : JsonObjectRequest(Request.Method.POST, url, null, Response.Listener { json ->
             //println("json: " + json)
@@ -37,7 +38,7 @@ object CoachService: DataService() {
                 success = true
                 if (type == "coach") {
                     this.superCoach = JSONParse.parse<SuperCoach>(json)!!
-                    //this.superCoach.city.print()
+//                    this.superCoach.citys.print()
                 }
                 model.dataReset()
                 data = mutableMapOf()
@@ -78,6 +79,9 @@ object CoachService: DataService() {
                 _jsonToData(obj, key, value)
             }
         }
+//        if (obj.has("citys")) {
+//            _jsonToData(obj, "citys", model.data["city"]!!)
+//        }
         return model.data
     }
 
@@ -129,13 +133,16 @@ object CoachService: DataService() {
                 model.mobileShow()
             }
         } else if (type == "array") {
-            if (key == CITY_KEY) {
+            if (key == CITYS_KEY) {
                 try {
-                    val obj1 = tmp.getJSONObject(key)
-                    val id = obj1.getInt("id")
-                    val name = obj1.getString("name")
-                    val city = City(id, name)
-                    model.updateCity(city)
+                    var arr = tmp.getJSONArray(key)
+                    for (i in 0..arr.length() - 1) {
+                        val obj1 = arr.getJSONObject(i)
+                        val id = obj1.getInt("id")
+                        val name = obj1.getString("name")
+                        val city = City(id, name)
+                        model.updateCity(city)
+                    }
                 } catch (e: JSONException) {
                     println(e.localizedMessage)
                 }

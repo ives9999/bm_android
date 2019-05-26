@@ -3,7 +3,7 @@ package com.sportpassword.bm.Models
 import org.json.JSONObject
 
 class SuperCoach(data: JSONObject): SuperModel(data) {
-    lateinit var city: SuperCity
+    var citys: ArrayList<SuperCity> = arrayListOf()
     var id: Int = -1
     var name: String = ""
     var channel: String = ""

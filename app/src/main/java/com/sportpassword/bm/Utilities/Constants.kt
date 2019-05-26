@@ -66,6 +66,8 @@ var URL_TEAM_TEMP_PLAY_DATE_PLAYER = ""
 var URL_SIGNUP = ""
 var URL_CANCEL_SIGNUP = ""
 
+var URL_COURSE_LIST = ""
+
 // spinner
 val LOADING: String = "努力加載中..."
 
@@ -122,6 +124,7 @@ val VIMEO_KEY: String = "vimeo"
 val FB_KEY: String = "fb"
 val LINE_KEY: String = "line"
 val CITY_KEY: String = "city"
+val CITYS_KEY: String = "citys"
 val AREA_KEY: String = "area"
 val ARENA_KEY: String = "arena"
 val ROAD_KEY: String = "road"

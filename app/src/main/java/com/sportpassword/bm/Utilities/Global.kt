@@ -160,6 +160,25 @@ enum class TEXT_INPUT_TYPE(val value: String) {
     timetable_coach("課程說明")
 }
 
+enum class PRICE_UNIT(val value: String) {
+    month("月"),
+    week("週")
+}
+
+enum class PRICE_KIND(val value: String) {
+    one("一次性"),
+    cycle("週期性")
+}
+
+enum class PRICE_CYCLE_UNIT(val value: String) {
+    month("每月"),
+    week("每週"),
+    season("每季"),
+    year("每年"),
+    span("每期"),
+    other("其他"),
+}
+
 /**
  * Created by ives on 2018/3/8.
  */

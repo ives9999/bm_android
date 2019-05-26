@@ -33,7 +33,8 @@ class ManagerFunctionVC : MyTableVC() {
                     hashMapOf("text" to "編輯","icon" to "edit1","key" to "edit"),
                     hashMapOf("text" to "教球時段編輯","icon" to "calendar","key" to "calendar"),
 //                    hashMapOf("text" to "報名學員名單","icon" to "list","key" to "signup_list"),
-                    hashMapOf("text" to "刪除","icon" to "clear","key" to "delete")
+                    hashMapOf("text" to "刪除","icon" to "clear","key" to "delete"),
+                    hashMapOf("text" to "課程","icon" to "course","key" to "course")
             )
         } else if (source == "team") {
             rows = arrayListOf(
@@ -88,7 +89,7 @@ class ManagerFunctionVC : MyTableVC() {
                     "calendar" -> goTimeTable(source, token)
                     "signup_list" -> goTempPlayDate(title, token)
                     "delete" -> goDelete(source, token)
-
+                    "course" -> goCourse(title, token)
                 }
             }
             "team" -> {

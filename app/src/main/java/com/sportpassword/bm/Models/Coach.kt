@@ -29,7 +29,7 @@ class Coach(id: Int, name: String, token: String, featured_path: String="", vime
                 WEBSITE_KEY to mutableMapOf("ch" to "網站","vtype" to "String","value" to "","show" to "","submit" to true,"atype" to none,"text_field" to true,"keyboardType" to defaultPad),
                 YOUTUBE_KEY to mutableMapOf("ch" to "youtube","vtype" to "String","value" to "","show" to "","submit" to true,"atype" to none,"text_field" to true,"keyboardType" to defaultPad),
                 COACH_SENIORITY_KEY to mutableMapOf("ch" to "年資","vtype" to "Int","value" to -1,"show" to "","submit" to true,"atype" to none,"text_field" to true,"keyboardType" to numberPad),
-                CITY_KEY to mutableMapOf("ch" to "區域","vtype" to "array","value" to 0,"show" to "","submit" to true,"atype" to more,"sender" to 0),
+                CITYS_KEY to mutableMapOf("ch" to "區域","vtype" to "array","value" to 0,"show" to "","submit" to true,"atype" to more,"sender" to 0),
                 COACH_EXP_KEY to mutableMapOf("ch" to "經歷","vtype" to "String","value" to "","show" to "","submit" to true,"atype" to more,"sender" to ""),
                 COACH_FEAT_KEY to mutableMapOf("ch" to "比賽成績","vtype" to "String","value" to "","show" to "","submit" to true,"atype" to more,"sender" to ""),
                 COACH_LICENSE_KEY to mutableMapOf("ch" to "證照","vtype" to "String","value" to "","show" to "","submit" to true,"atype" to more,"sender" to ""),
@@ -100,6 +100,18 @@ class Coach(id: Int, name: String, token: String, featured_path: String="", vime
                 }
                 data[key1]!!["change"] = true
             }
+        }
+    }
+
+    override fun updateCity(city: City?) {
+        if (city != null) {
+            data[CITYS_KEY]!!["value"] = city.id
+            data[CITYS_KEY]!!["show"] = city.name
+            data[CITYS_KEY]!!["sender"] = city.id
+        } else {
+            data[CITYS_KEY]!!["value"] = 0
+            data[CITYS_KEY]!!["show"] = ""
+            data[CITYS_KEY]!!["sender"] = 0
         }
     }
 }
