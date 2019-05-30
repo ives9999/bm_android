@@ -1,8 +1,8 @@
 package com.sportpassword.bm.Models
 
+import com.sportpassword.bm.Utilities.CYCLE_UNIT
 import com.sportpassword.bm.Utilities.PRICE_CYCLE_UNIT
 import com.sportpassword.bm.Utilities.PRICE_KIND
-import com.sportpassword.bm.Utilities.PRICE_UNIT
 import org.json.JSONObject
 
 class SuperCourse(data: JSONObject): SuperModel(data) {
@@ -12,12 +12,12 @@ class SuperCourse(data: JSONObject): SuperModel(data) {
     var slug: String = ""
     var coach_id: Int = -1
     var price: Int = -1
-    var price_unit: PRICE_UNIT = PRICE_UNIT.month
+    var price_cycle_unit: PRICE_CYCLE_UNIT = PRICE_CYCLE_UNIT.month
     var price_desc: String = ""
     var limit: Int = -1
     var kind: PRICE_KIND = PRICE_KIND.cycle
     var cycle: Int = -1
-    var cycle_unit: PRICE_CYCLE_UNIT = PRICE_CYCLE_UNIT.month
+    var cycle_unit: CYCLE_UNIT = CYCLE_UNIT.month
     var start_date: String = ""
     var end_date: String = ""
     var weekday: Int = -1

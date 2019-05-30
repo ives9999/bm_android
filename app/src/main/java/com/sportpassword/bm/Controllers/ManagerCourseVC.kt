@@ -1,6 +1,8 @@
 package com.sportpassword.bm.Controllers
 
 import android.content.Context
+import android.content.DialogInterface
+import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.View
@@ -20,13 +22,18 @@ import kotlinx.android.synthetic.main.manager_course_item.*
 import kotlinx.android.synthetic.main.manager_course_vc.*
 import kotlinx.android.synthetic.main.manager_vc.*
 import kotlinx.android.synthetic.main.mask.*
-import org.jetbrains.anko.contentView
+import com.xwray.groupie.ViewHolder
+import org.jetbrains.anko.*
+import org.jetbrains.anko.sdk27.coroutines.onClick
+
 
 class ManagerCourseVC: MyTableVC() {
     var token: String? = null
     var name: String? = null
 
     var superCourses: SuperCourses? = null
+
+    lateinit var dialog: DialogInterface
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -92,6 +99,47 @@ class ManagerCourseVC: MyTableVC() {
         }
 
         return items
+    }
+
+    override fun rowClick(item: com.xwray.groupie.Item<ViewHolder>, view: View) {
+        val managerCourseItem = item as ManagerCourseItem
+        val row = managerCourseItem.superCourse
+        dialog = alert {
+            title = "選項"
+            customView {
+                verticalLayout {
+                    button("檢視") {
+                        onClick {
+                            dialog.dismiss()
+                            val intent = Intent(this@ManagerCourseVC, ShowTimetableVC::class.java)
+//                            intent.putExtra("tt_id", event.id)
+//                            intent.putExtra("source", source)
+//                            intent.putExtra("token", token)
+                            startActivity(intent)
+                        }
+                    }
+                    button("編輯") {
+                        onClick {
+                            dialog.dismiss()
+                            val intent = Intent(this@ManagerCourseVC, EditCourseVC::class.java)
+                            intent.putExtra("title", row.title)
+                            intent.putExtra("token", row.token)
+
+                            startActivity(intent)
+                        }
+                    }
+                    button("刪除") {
+                        onClick {
+                            dialog.dismiss()
+                            layerDelete()
+                        }
+                    }
+                    button("取消") {
+                        onClick {dialog.dismiss()}
+                    }
+                }
+            }
+        }.show()
     }
 
     fun add(view: View) {

@@ -8,7 +8,7 @@ import com.xwray.groupie.kotlinandroidextensions.ViewHolder
 import kotlinx.android.synthetic.main.formitem_content.*
 import org.jetbrains.anko.backgroundColor
 
-class ContentAdapter(form: BaseForm, row: Int, section: Int = 0, clearClick:(idx: Int)->Unit, promptClick:(idx: Int)->Unit): FormItemAdapter(form, row, section, clearClick, promptClick) {
+class ContentAdapter(form: BaseForm, idx: Int, section: Int = 0, clearClick:(idx: Int)->Unit, promptClick:(idx: Int)->Unit): FormItemAdapter(form, idx, section, clearClick, promptClick) {
 
     override fun getLayout(): Int {
 
@@ -25,7 +25,7 @@ class ContentAdapter(form: BaseForm, row: Int, section: Int = 0, clearClick:(idx
         if (formItem.value != null) {
             viewHolder.clear.visibility = View.VISIBLE
             viewHolder.clear.setOnClickListener {
-                clearClick(row)
+                clearClick(idx)
             }
         } else {
             viewHolder.clear.visibility = View.INVISIBLE
@@ -33,7 +33,7 @@ class ContentAdapter(form: BaseForm, row: Int, section: Int = 0, clearClick:(idx
         if (formItem.tooltip != null) {
             viewHolder.promptBtn.visibility = View.VISIBLE
             viewHolder.promptBtn.setOnClickListener {
-                promptClick(row)
+                promptClick(idx)
             }
         } else {
             viewHolder.promptBtn.visibility = View.INVISIBLE

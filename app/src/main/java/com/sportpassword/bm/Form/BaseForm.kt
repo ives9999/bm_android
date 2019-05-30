@@ -10,13 +10,15 @@ open class BaseForm {
     var values: HashMap<String, String>? = null
     var id: Int? = null
     var isChange: Boolean = false
+    var isSection: Boolean = false
 
-    constructor(id: Int? = null, values: HashMap<String, String>? = null, title: String = "") {
+    constructor(id: Int? = null, values: HashMap<String, String>? = null, title: String = "", isSection: Boolean=false) {
         this.id = id
         this.values = values
         this.title = title
         this.configureItems()
         this.fillValue()
+        this.isSection = isSection
     }
 
     open fun isChanged(): Pair<Boolean, String?> {

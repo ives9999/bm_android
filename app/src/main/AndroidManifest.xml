@@ -31,8 +31,14 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <uses-library android:name="org.apache.http.legacy" android:required="false"/>
-        <activity android:name=".Controllers.ShowPNVC"></activity>
+        <activity android:name=".Controllers.SingleSelectVC"></activity>
+        <activity android:name=".Controllers.EditCourseVC" />
+
+        <uses-library
+            android:name="org.apache.http.legacy"
+            android:required="false" />
+
+        <activity android:name=".Controllers.ShowPNVC" />
 
         <meta-data
             android:name="com.onesignal.NotificationOpened.DEFAULT"

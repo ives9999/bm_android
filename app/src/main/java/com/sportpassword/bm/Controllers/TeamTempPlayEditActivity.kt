@@ -12,7 +12,7 @@ import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.TeamService
 import com.sportpassword.bm.Utilities.*
 import kotlinx.android.synthetic.main.activity_team_temp_play_edit.*
-import org.jetbrains.anko.sdk25.coroutines.onCheckedChange
+import org.jetbrains.anko.sdk27.coroutines.onCheckedChange
 import kotlinx.android.synthetic.main.mask.*
 
 class TeamTempPlayEditActivity : BaseActivity() {

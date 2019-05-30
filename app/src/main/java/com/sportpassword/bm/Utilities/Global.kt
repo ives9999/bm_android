@@ -160,7 +160,7 @@ enum class TEXT_INPUT_TYPE(val value: String) {
     timetable_coach("課程說明")
 }
 
-enum class PRICE_UNIT(val value: String) {
+enum class CYCLE_UNIT(val value: String) {
     month("月"),
     week("週")
 }
@@ -176,7 +176,40 @@ enum class PRICE_CYCLE_UNIT(val value: String) {
     season("每季"),
     year("每年"),
     span("每期"),
-    other("其他"),
+    other("其他");
+
+    companion object {
+
+        val allValues: ArrayList<PRICE_CYCLE_UNIT> = arrayListOf(month, week, season, year, span, other)
+
+        fun from(value: String): PRICE_CYCLE_UNIT {
+            when (value) {
+                "month" -> return month
+                "week" -> return week
+                "season" -> return season
+                "year" -> return year
+                "span" -> return span
+                "other" -> return other
+            }
+            return month
+        }
+
+        fun all(): ArrayList<HashMap<String, Any>> {
+            val res: ArrayList<HashMap<String, Any>> = arrayListOf()
+            for (item in allValues) {
+                res.add(hashMapOf("key" to item.toString(), "value" to item))
+            }
+            return res
+        }
+
+        fun makeSelect(): ArrayList<HashMap<String, String>> {
+            val res: ArrayList<HashMap<String, String>> = arrayListOf()
+            for (item in allValues) {
+                res.add(hashMapOf("title" to item.value, "value" to item.toString()))
+            }
+            return res
+        }
+    }
 }
 
 /**

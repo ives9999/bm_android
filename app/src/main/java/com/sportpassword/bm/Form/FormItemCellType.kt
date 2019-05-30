@@ -10,7 +10,8 @@ enum class FormItemCellType {
     color,
     status,
     content,
-    more;
+    more,
+    section;
 
     fun registerCell(): Int {
         when (this) {

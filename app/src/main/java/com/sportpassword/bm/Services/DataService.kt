@@ -424,7 +424,7 @@ open class DataService: BaseService() {
                 params.put(_key, value.toString())
                 valueStr += """${value}"""
                 params1.add(Pair(_key, valueStr))
-            } else if (key == CITY_KEY) {
+            } else if (key == CITY_KEY || key == CITYS_KEY) {
                 val value: Int = row as Int
                 params.put(_key, value.toString())
                 valueStr += """${value}"""

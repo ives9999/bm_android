@@ -26,8 +26,8 @@ const val emailPad = InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS
 const val REMOTE_BASE_URL = "https://bm.sportpassword.com"
 //const val LOCALHOST_BASE_URL = "http://bm.sportpassword.com"
 //const val LOCALHOST_BASE_URL = "http://192.168.1.119"
-const val LOCALHOST_BASE_URL = "http://192.168.100.100"
-//const val LOCALHOST_BASE_URL = "http://192.168.2.200"
+//const val LOCALHOST_BASE_URL = "http://192.168.100.100"
+const val LOCALHOST_BASE_URL = "http://192.168.2.200"
 var BASE_URL = ""
 var URL_HOME = ""
 var URL_LIST = ""
@@ -141,6 +141,8 @@ val CREATED_ID_KEY: String = "created_id"
 val CREATED_AT_KEY: String = "created_at"
 val UPDATED_AT_KEY: String = "updated_at"
 val KEYWORD_KEY: String = "keyword"
+val PRICE_KEY: String = "price"
+val PRICE_CYCLE_UNIT_KEY: String = "price_cycle_unit"
 
 // User Defaults
 val NICKNAME_KEY: String = "nickname"
@@ -177,6 +179,9 @@ val TT_LIMIT: String = "limit"
 val TT_COLOR: String = "color"
 val TT_STATUS: String = "status"
 val TT_CONTENT: String = "content"
+
+// Course key
+
 
 // Select key
 val DATE_SELECT_KEY: String = "date_select"

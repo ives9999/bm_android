@@ -19,7 +19,7 @@ open class SuperData(val id: Int, val title: String, val token: String, val feat
     open var timeKeys: ArrayList<String> = arrayListOf()
     open var cat_id: Int = 21
 
-    val transferPair: Map<String, String> = mapOf(CITY_KEY to "city_id",ARENA_KEY to "arena_id")
+    val transferPair: Map<String, String> = mapOf(CITY_KEY to "city_id",ARENA_KEY to "arena_id", CITYS_KEY to "city_id")
 
     open fun dataReset(){}
 

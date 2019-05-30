@@ -12,7 +12,7 @@ import com.xwray.groupie.kotlinandroidextensions.ViewHolder
 import kotlinx.android.synthetic.main.formitem_more.*
 import org.jetbrains.anko.backgroundColor
 
-class MoreAdapter(form: BaseForm, row: Int, section: Int = 0, clearClick:(idx: Int)->Unit, promptClick:(idx: Int)->Unit): FormItemAdapter(form, row, section, clearClick, promptClick) {
+class MoreAdapter(form: BaseForm, idx: Int, section: Int = 0, clearClick:(idx: Int)->Unit, promptClick:(idx: Int)->Unit, val rowClick:(idx: Int)->Unit): FormItemAdapter(form, idx, section, clearClick, promptClick) {
 
     override fun getLayout(): Int {
 
@@ -26,17 +26,20 @@ class MoreAdapter(form: BaseForm, row: Int, section: Int = 0, clearClick:(idx: I
             viewHolder.title.text = formItem.title
         }
         if (formItem.value != null) {
+            viewHolder.detail.visibility = View.VISIBLE
+            viewHolder.detail.text = formItem.show
             viewHolder.clear.visibility = View.VISIBLE
             viewHolder.clear.setOnClickListener {
-                clearClick(row)
+                clearClick(idx)
             }
         } else {
             viewHolder.clear.visibility = View.INVISIBLE
+            viewHolder.detail.visibility = View.INVISIBLE
         }
         if (formItem.tooltip != null) {
             viewHolder.promptBtn.visibility = View.VISIBLE
             viewHolder.promptBtn.setOnClickListener {
-                promptClick(row)
+                promptClick(idx)
             }
         } else {
             viewHolder.promptBtn.visibility = View.INVISIBLE
@@ -66,6 +69,10 @@ class MoreAdapter(form: BaseForm, row: Int, section: Int = 0, clearClick:(idx: I
                 viewHolder.detail.text = ""
                 viewHolder.detail.backgroundColor = Color.TRANSPARENT
             }
+        }
+
+        viewHolder.container.setOnClickListener {
+            rowClick(idx)
         }
     }
 }

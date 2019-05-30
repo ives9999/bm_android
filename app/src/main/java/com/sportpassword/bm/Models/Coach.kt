@@ -13,7 +13,7 @@ class Coach(id: Int, name: String, token: String, featured_path: String="", vime
             arrayListOf(NAME_KEY),
             arrayListOf(MOBILE_KEY,EMAIL_KEY, FB_KEY, LINE_KEY),
             arrayListOf(WEBSITE_KEY, YOUTUBE_KEY),
-            arrayListOf(COACH_SENIORITY_KEY, CITY_KEY),
+            arrayListOf(COACH_SENIORITY_KEY, CITYS_KEY),
             arrayListOf(CHARGE_KEY,COACH_LICENSE_KEY, COACH_EXP_KEY,COACH_FEAT_KEY,CONTENT_KEY)
     )
     override var textKeys: ArrayList<String> = arrayListOf(COACH_EXP_KEY,COACH_FEAT_KEY,COACH_LICENSE_KEY,CHARGE_KEY,CONTENT_KEY)

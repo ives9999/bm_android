@@ -7,7 +7,7 @@ import com.sportpassword.bm.R
 import com.sportpassword.bm.Utilities.IndexPath
 import com.xwray.groupie.kotlinandroidextensions.Item
 import kotlinx.android.synthetic.main.search_row_item.*
-import org.jetbrains.anko.sdk25.coroutines.onCheckedChange
+import org.jetbrains.anko.sdk27.coroutines.onCheckedChange
 
 interface SearchItemDelegate {
     fun remove(indexPath: IndexPath)

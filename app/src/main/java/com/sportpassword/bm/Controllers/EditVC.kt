@@ -8,7 +8,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.TeamService
 import kotlinx.android.synthetic.main.edit_vc.*
-import org.jetbrains.anko.sdk25.coroutines.onClick
+import org.jetbrains.anko.sdk27.coroutines.onClick
 import androidx.appcompat.app.AlertDialog
 import android.view.Menu
 import android.view.View
@@ -246,6 +246,7 @@ class EditVC : MyTableVC(), ImagePicker {
 
         if (isPass) {
             params = model.makeSubmitArr()
+//            println(params);
             if (params.count() == 0 && !isFeaturedChange) {
                 Alert.show(context, "提示", "沒有修改任何資料或圖片")
             } else {
@@ -490,7 +491,7 @@ class EditVC : MyTableVC(), ImagePicker {
         } else if (key == TEAM_DEGREE_KEY) {
             val degrees: ArrayList<DEGREE> = model.data[key]!!["sender"] as ArrayList<DEGREE>
             intent.putExtra("degrees", degrees)
-        } else if (key == CITY_KEY) {
+        } else if (key == CITY_KEY || key == CITYS_KEY) {
             val value: Int = model.data[key]!!["sender"] as Int
             val city = City(value, "")
             val citys: ArrayList<City> = arrayListOf(city)
@@ -552,7 +553,7 @@ class EditVC : MyTableVC(), ImagePicker {
                     } else if (key == TEAM_DEGREE_KEY) {
                         val degrees: ArrayList<DEGREE> = data!!.getSerializableExtra("degrees") as ArrayList<DEGREE>
                         updateDegree(degrees)
-                    } else if (key == CITY_KEY) {
+                    } else if (key == CITY_KEY || key == CITYS_KEY) {
                         val citys: ArrayList<City> = data!!.getParcelableArrayListExtra("citys")
                         updateCity(citys)
                     } else if (key == ARENA_KEY) {

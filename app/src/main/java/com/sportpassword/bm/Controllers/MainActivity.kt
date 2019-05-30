@@ -52,7 +52,7 @@ import kotlinx.android.synthetic.main.pure_mask.*
 //import me.leolin.shortcutbadger.ShortcutBadger
 
 import okhttp3.CacheControl
-import org.jetbrains.anko.sdk25.coroutines.onClick
+import org.jetbrains.anko.sdk27.coroutines.onClick
 import java.security.MessageDigest
 
 

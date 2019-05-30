@@ -18,7 +18,7 @@ import android.widget.LinearLayout
 import com.github.babedev.dexter.dsl.runtimePermission
 import com.sportpassword.bm.R
 import org.jetbrains.anko.layoutInflater
-import org.jetbrains.anko.sdk25.coroutines.onClick
+import org.jetbrains.anko.sdk27.coroutines.onClick
 import org.jetbrains.anko.toast
 import com.github.babedev.dexter.dsl.runtimePermission
 import com.sportpassword.bm.Controllers.BaseActivity
@@ -32,6 +32,7 @@ import java.io.FileOutputStream
  * Created by ives on 2018/3/14.
  */
 interface ImagePicker {
+
     val ACTION_CAMERA_REQUEST_CODE: Int
     val ACTION_PHOTO_REQUEST_CODE: Int
     val activity: BaseActivity
@@ -116,6 +117,7 @@ interface ImagePicker {
         imagePickerLayer!!.setView(alertView)
         imagePickerLayer!!.show()
     }
+
     fun closeImagePickerLayer() {
         imagePickerLayer!!.dismiss()
     }

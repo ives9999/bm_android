@@ -8,7 +8,7 @@ import com.sportpassword.bm.R
 import com.xwray.groupie.kotlinandroidextensions.ViewHolder
 import kotlinx.android.synthetic.main.formitem_textfield.*
 
-class TextFieldAdapter(form: BaseForm, row: Int, section: Int = 0, clearClick:(idx: Int)->Unit, promptClick:(idx: Int)->Unit): FormItemAdapter(form, row, section, clearClick, promptClick) {
+class TextFieldAdapter(form: BaseForm, idx: Int, section: Int = 0, clearClick:(idx: Int)->Unit, promptClick:(idx: Int)->Unit): FormItemAdapter(form, idx, section, clearClick, promptClick) {
 
     override fun getLayout(): Int {
 
@@ -21,18 +21,15 @@ class TextFieldAdapter(form: BaseForm, row: Int, section: Int = 0, clearClick:(i
         if (formItem.title != null) {
             viewHolder.title.text = formItem.title
         }
-        if (formItem.value != null) {
-            viewHolder.clear.visibility = View.VISIBLE
-            viewHolder.clear.setOnClickListener {
-                clearClick(row)
-            }
-        } else {
-            viewHolder.clear.visibility = View.INVISIBLE
+        viewHolder.clear.setOnClickListener {
+            //clearClick(row)
+            viewHolder.textField.setText("")
         }
+
         if (formItem.tooltip != null) {
             viewHolder.promptBtn.visibility = View.VISIBLE
             viewHolder.promptBtn.setOnClickListener {
-                promptClick(row)
+                promptClick(idx)
             }
         } else {
             viewHolder.promptBtn.visibility = View.INVISIBLE

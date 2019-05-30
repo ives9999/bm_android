@@ -15,7 +15,7 @@ import com.sportpassword.bm.R
 import com.sportpassword.bm.Utilities.TEAM_PLAY_END_KEY
 import com.sportpassword.bm.Utilities.TEAM_PLAY_START_KEY
 import org.jetbrains.anko.backgroundColor
-import org.jetbrains.anko.sdk25.coroutines.onClick
+import org.jetbrains.anko.sdk27.coroutines.onClick
 import org.jetbrains.anko.textColor
 
 /**

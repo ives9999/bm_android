@@ -27,7 +27,7 @@ import kotlinx.android.synthetic.main.mask.*
 import com.sportpassword.bm.Utilities.*
 import com.sportpassword.bm.member
 import org.jetbrains.anko.*
-import org.jetbrains.anko.sdk25.coroutines.onClick
+import org.jetbrains.anko.sdk27.coroutines.onClick
 import kotlin.reflect.full.declaredMemberProperties
 
 class TimeTableVC : BaseActivity(), ViewDelegate {
@@ -410,7 +410,7 @@ class TimeTableVC : BaseActivity(), ViewDelegate {
         searchAdapter = GroupAdapter()
         searchAdapter.setOnItemClickListener { item, view ->
             val itemAdapter = item as FormItemAdapter
-            val idx = itemAdapter.row
+            val idx = itemAdapter.idx
             val formItem = form.formItems[idx]
             if (formItem.name != TT_TITLE && formItem.name != TT_LIMIT) {
                 val intent = Intent(this, EditItemActivity::class.java)
@@ -615,6 +615,11 @@ class TimeTableVC : BaseActivity(), ViewDelegate {
             }
         }
 
+        val rowClick = { i: Int ->
+
+        }
+
+
         for ((idx, formItem) in form.formItems.withIndex()) {
 //            indexPath["row"] = idx
             var formItemAdapter: FormItemAdapter? = null
@@ -623,7 +628,7 @@ class TimeTableVC : BaseActivity(), ViewDelegate {
             } else if (formItem.uiProperties.cellType == FormItemCellType.content) {
                 formItemAdapter = ContentAdapter(form, idx, 0, clearClick, promptClick)
             } else {
-                formItemAdapter = MoreAdapter(form, idx, 0, clearClick, promptClick)
+                formItemAdapter = MoreAdapter(form, idx, 0, clearClick, promptClick, rowClick)
             }
 
             if (formItemAdapter != null) {
