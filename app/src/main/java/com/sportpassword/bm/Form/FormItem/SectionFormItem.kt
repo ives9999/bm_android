@@ -1,7 +1,13 @@
 package com.sportpassword.bm.Form.FormItem
 
+import com.sportpassword.bm.Form.FormItemCellType
+
 class SectionFormItem: FormItem {
 
-    constructor(name: String="", title: String="", placeholder: String? = null, value: String? = null): super(name, title, placeholder, value) {
+    init {
+        uiProperties.cellType = FormItemCellType.section
+    }
+
+    constructor(title: String): super("section", title, null, null) {
     }
 }

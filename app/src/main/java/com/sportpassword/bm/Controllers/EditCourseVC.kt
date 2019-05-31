@@ -48,10 +48,11 @@ class EditCourseVC : MyTableVC(), ImagePicker, ViewDelegate {
 
     val SELECT_REQUEST_CODE = 1
 
-    val section_keys: ArrayList<ArrayList<String>> = arrayListOf(
-            arrayListOf(TITLE_KEY, YOUTUBE_KEY),
-            arrayListOf(PRICE_KEY, PRICE_CYCLE_UNIT_KEY)
-    )
+//    val section_keys: ArrayList<ArrayList<String>> = arrayListOf(
+//            arrayListOf(TITLE_KEY, YOUTUBE_KEY),
+//            arrayListOf(PRICE_KEY, PRICE_CYCLE_UNIT_KEY)
+//    )
+    var section_keys: ArrayList<ArrayList<String>> = arrayListOf()
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -70,7 +71,10 @@ class EditCourseVC : MyTableVC(), ImagePicker, ViewDelegate {
             showImagePickerLayer()
         }
 
-        sections = arrayListOf("一般","收費")
+        sections = form.getSections()
+        section_keys = form.getSectionKeys()
+//        println(sections)
+//        println(section_keys)
 
         recyclerView = editTableView
         initAdapter(true)
@@ -81,9 +85,6 @@ class EditCourseVC : MyTableVC(), ImagePicker, ViewDelegate {
     override fun generateItems(section: Int): ArrayList<Item> {
 
         val rows: ArrayList<Item> = arrayListOf()
-        val section: Int = 0
-//        var indexPath: HashMap<String, Int> = hashMapOf()
-//        indexPath["section"] = section
 
         val clearClick = { i: Int ->
             val forItem = form.formItems[i]
@@ -120,17 +121,25 @@ class EditCourseVC : MyTableVC(), ImagePicker, ViewDelegate {
 //            idx += section_keys[i].size
 //        }
 
-        for ((idx,formItem) in arr.withIndex()) {
+        for ((i,formItem) in arr.withIndex()) {
 
-//            indexPath["row"] = idx
+            val indexPath: IndexPath = IndexPath(section, i)
+            var idx: Int = 0
+            for ((j, _forItem) in form.formItems.withIndex()) {
+                if (formItem.name == _forItem.name) {
+                    idx = j
+                    break
+                }
+            }
+
 
             var formItemAdapter: FormItemAdapter? = null
             if (formItem.uiProperties.cellType == FormItemCellType.textField) {
-                formItemAdapter = TextFieldAdapter(form, idx, section, clearClick, promptClick)
+                formItemAdapter = TextFieldAdapter(form, idx, indexPath, clearClick, promptClick)
             } else if (formItem.uiProperties.cellType == FormItemCellType.content) {
-                formItemAdapter = ContentAdapter(form, idx, section, clearClick, promptClick)
+                formItemAdapter = ContentAdapter(form, idx, indexPath, clearClick, promptClick)
             } else if (formItem.uiProperties.cellType == FormItemCellType.more) {
-                formItemAdapter = MoreAdapter(form, idx, section, clearClick, promptClick, rowClick)
+                formItemAdapter = MoreAdapter(form, idx, indexPath, clearClick, promptClick, rowClick)
             } else if (formItem.uiProperties.cellType == FormItemCellType.section) {
                 break
             }
@@ -187,10 +196,10 @@ class EditCourseVC : MyTableVC(), ImagePicker, ViewDelegate {
         closeImagePickerLayer()
     }
 
-    override fun textFieldTextChanged(row: Int, section: Int, text: String) {
+    override fun textFieldTextChanged(indexPath: IndexPath, text: String) {
         //println(row)
         //println(text)
-        val item = form.formItems[row]
+        val item = form.formItems[indexPath.row]
         item.value = text
         item.make()
     }
@@ -219,8 +228,7 @@ class EditCourseVC : MyTableVC(), ImagePicker, ViewDelegate {
                     item.value = selected
                     item.make()
                 }
-                val items = generateItems()
-                adapter.update(items)
+                notifyChanged(true)
             }
         }
     }

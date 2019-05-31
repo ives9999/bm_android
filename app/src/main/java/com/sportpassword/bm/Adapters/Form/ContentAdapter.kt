@@ -4,11 +4,12 @@ import android.graphics.Color
 import android.view.View
 import com.sportpassword.bm.Form.BaseForm
 import com.sportpassword.bm.R
+import com.sportpassword.bm.Utilities.IndexPath
 import com.xwray.groupie.kotlinandroidextensions.ViewHolder
 import kotlinx.android.synthetic.main.formitem_content.*
 import org.jetbrains.anko.backgroundColor
 
-class ContentAdapter(form: BaseForm, idx: Int, section: Int = 0, clearClick:(idx: Int)->Unit, promptClick:(idx: Int)->Unit): FormItemAdapter(form, idx, section, clearClick, promptClick) {
+class ContentAdapter(form: BaseForm, idx: Int, indexPath: IndexPath, clearClick:(idx: Int)->Unit, promptClick:(idx: Int)->Unit): FormItemAdapter(form, idx, indexPath, clearClick, promptClick) {
 
     override fun getLayout(): Int {
 

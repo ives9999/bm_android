@@ -61,4 +61,43 @@ open class BaseForm {
             }
         }
     }
+
+    open fun getSections(): ArrayList<String> {
+
+        val sections = arrayListOf<String>()
+        for (formItem in formItems) {
+            if (formItem.uiProperties.cellType == FormItemCellType.section) {
+                sections.add(formItem.title)
+            }
+        }
+
+        return sections
+    }
+
+    open fun getSectionKeys(): ArrayList<ArrayList<String>> {
+
+        val res: ArrayList<ArrayList<String>> = arrayListOf()
+
+        var rows: ArrayList<String> = arrayListOf()
+        var findSection: Boolean = false
+        for ((idx, formItem) in formItems.withIndex()) {
+
+            if (!findSection && formItem.uiProperties.cellType == FormItemCellType.section) {
+                findSection = true
+                rows = arrayListOf()
+                continue
+            }
+            if ((findSection && formItem.uiProperties.cellType == FormItemCellType.section)) {
+                res.add(rows)
+                rows = arrayListOf()
+                continue
+            }
+            if (findSection) {
+                rows.add(formItem.name!!)
+            }
+        }
+        res.add(rows)
+
+        return res
+    }
 }

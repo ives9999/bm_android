@@ -5,10 +5,11 @@ import android.text.TextWatcher
 import android.view.View
 import com.sportpassword.bm.Form.BaseForm
 import com.sportpassword.bm.R
+import com.sportpassword.bm.Utilities.IndexPath
 import com.xwray.groupie.kotlinandroidextensions.ViewHolder
 import kotlinx.android.synthetic.main.formitem_textfield.*
 
-class TextFieldAdapter(form: BaseForm, idx: Int, section: Int = 0, clearClick:(idx: Int)->Unit, promptClick:(idx: Int)->Unit): FormItemAdapter(form, idx, section, clearClick, promptClick) {
+class TextFieldAdapter(form: BaseForm, idx: Int, indexPath: IndexPath, clearClick:(idx: Int)->Unit, promptClick:(idx: Int)->Unit): FormItemAdapter(form, idx, indexPath, clearClick, promptClick) {
 
     override fun getLayout(): Int {
 
@@ -50,7 +51,8 @@ class TextFieldAdapter(form: BaseForm, idx: Int, section: Int = 0, clearClick:(i
             }
 
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                delegate?.textFieldTextChanged(position, section, p0.toString())
+                val _indexPath: IndexPath = IndexPath(indexPath.section, position)
+                delegate?.textFieldTextChanged(_indexPath, p0.toString())
             }
         })
     }

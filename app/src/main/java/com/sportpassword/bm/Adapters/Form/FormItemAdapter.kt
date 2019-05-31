@@ -10,6 +10,7 @@ import com.sportpassword.bm.Form.FormItem.ColorFormItem
 import com.sportpassword.bm.Form.FormItem.FormItem
 import com.sportpassword.bm.Form.FormItemCellType
 import com.sportpassword.bm.R
+import com.sportpassword.bm.Utilities.IndexPath
 import com.sportpassword.bm.Utilities.MYCOLOR
 import com.sportpassword.bm.Utilities.TT_TITLE
 import com.sportpassword.bm.Utilities.TT_WEEKDAY
@@ -28,10 +29,10 @@ import kotlinx.android.synthetic.main.formitem_more.detail as detail
 import kotlinx.android.synthetic.main.formitem_more.container as container
 
 interface ViewDelegate {
-    fun textFieldTextChanged(row: Int, section: Int, text: String)
+    fun textFieldTextChanged(indexPath: IndexPath, text: String)
 }
 
-open class FormItemAdapter(val form: BaseForm, val idx: Int, val section: Int = 0, val clearClick:(idx: Int)->Unit, val promptClick:(idx: Int)->Unit): Item() {
+open class FormItemAdapter(val form: BaseForm, val idx: Int, val indexPath: IndexPath, val clearClick:(idx: Int)->Unit, val promptClick:(idx: Int)->Unit): Item() {
 
     var delegate: ViewDelegate? = null
     override fun getLayout(): Int {
@@ -82,7 +83,8 @@ open class FormItemAdapter(val form: BaseForm, val idx: Int, val section: Int = 
                 }
 
                 override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                    delegate?.textFieldTextChanged(position, section, p0.toString())
+                    val _indexPath: IndexPath = IndexPath(indexPath.section, position)
+                    delegate?.textFieldTextChanged(_indexPath, p0.toString())
                 }
             })
         }

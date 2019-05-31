@@ -8,11 +8,12 @@ import com.sportpassword.bm.Form.BaseForm
 import com.sportpassword.bm.Form.FormItem.ColorFormItem
 import com.sportpassword.bm.Form.FormItemCellType
 import com.sportpassword.bm.R
+import com.sportpassword.bm.Utilities.IndexPath
 import com.xwray.groupie.kotlinandroidextensions.ViewHolder
 import kotlinx.android.synthetic.main.formitem_more.*
 import org.jetbrains.anko.backgroundColor
 
-class MoreAdapter(form: BaseForm, idx: Int, section: Int = 0, clearClick:(idx: Int)->Unit, promptClick:(idx: Int)->Unit, val rowClick:(idx: Int)->Unit): FormItemAdapter(form, idx, section, clearClick, promptClick) {
+class MoreAdapter(form: BaseForm, idx: Int, indexPath: IndexPath, clearClick:(idx: Int)->Unit, promptClick:(idx: Int)->Unit, val rowClick:(idx: Int)->Unit): FormItemAdapter(form, idx, indexPath, clearClick, promptClick) {
 
     override fun getLayout(): Int {
 

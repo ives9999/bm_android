@@ -622,13 +622,16 @@ class TimeTableVC : BaseActivity(), ViewDelegate {
 
         for ((idx, formItem) in form.formItems.withIndex()) {
 //            indexPath["row"] = idx
+
+            val indexPath: IndexPath = IndexPath(section, idx)
+
             var formItemAdapter: FormItemAdapter? = null
             if (formItem.uiProperties.cellType == FormItemCellType.textField) {
-                formItemAdapter = TextFieldAdapter(form, idx, 0, clearClick, promptClick)
+                formItemAdapter = TextFieldAdapter(form, idx, indexPath, clearClick, promptClick)
             } else if (formItem.uiProperties.cellType == FormItemCellType.content) {
-                formItemAdapter = ContentAdapter(form, idx, 0, clearClick, promptClick)
+                formItemAdapter = ContentAdapter(form, idx, indexPath, clearClick, promptClick)
             } else {
-                formItemAdapter = MoreAdapter(form, idx, 0, clearClick, promptClick, rowClick)
+                formItemAdapter = MoreAdapter(form, idx, indexPath, clearClick, promptClick, rowClick)
             }
 
             if (formItemAdapter != null) {
@@ -711,10 +714,10 @@ class TimeTableVC : BaseActivity(), ViewDelegate {
         }
     }
 
-    override fun textFieldTextChanged(row: Int, section: Int, text: String) {
+    override fun textFieldTextChanged(indexPath: IndexPath, text: String) {
         //println(row)
         //println(text)
-        val item = form.formItems[row]
+        val item = form.formItems[indexPath.row]
         item.value = text
         item.make()
     }
