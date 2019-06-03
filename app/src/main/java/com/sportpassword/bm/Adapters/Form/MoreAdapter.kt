@@ -31,6 +31,8 @@ class MoreAdapter(form: BaseForm, idx: Int, indexPath: IndexPath, clearClick:(id
             viewHolder.detail.text = formItem.show
             viewHolder.clear.visibility = View.VISIBLE
             viewHolder.clear.setOnClickListener {
+                formItem.reset()
+                viewHolder.detail.text = ""
                 clearClick(idx)
             }
         } else {

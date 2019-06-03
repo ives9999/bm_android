@@ -184,7 +184,7 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
         URL_SIGNUP = URL_HOME + "%s/signup/%s"
         URL_CANCEL_SIGNUP = URL_HOME + "%s/cancelSignup/%d"
 
-        URL_COURSE_LIST = URL_HOME + "course"
+        URL_COURSE_LIST = URL_HOME + "course/list"
 
     }
 

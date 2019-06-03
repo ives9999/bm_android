@@ -30,6 +30,25 @@ import java.util.concurrent.TimeUnit
 import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
 
+open class MYENUM<T>() {
+
+//    fun all(allValues: ArrayList<T>): ArrayList<HashMap<String, Any?>> {
+//        val res: ArrayList<HashMap<String, Any?>> = arrayListOf()
+//        for (item in allValues) {
+//            res.add(hashMapOf("key" to item.toString(), "value" to item))
+//        }
+//        return res
+//    }
+//
+//    fun makeSelect(allValues: ArrayList<T>): ArrayList<HashMap<String, String>> {
+//        val res: ArrayList<HashMap<String, String>> = arrayListOf()
+//        for (item in allValues) {
+//            res.add(hashMapOf("title" to item.value, "value" to item.toString()))
+//        }
+//        return res
+//    }
+}
+
 enum class MYCOLOR(val value: Int) {
 //    danger("danger"), success("success"), primary("primary"), warning("warning"),
 //    info("info"), gray("gray")
@@ -162,15 +181,73 @@ enum class TEXT_INPUT_TYPE(val value: String) {
 
 enum class CYCLE_UNIT(val value: String) {
     month("月"),
-    week("週")
+    week("週");
+
+    companion object {
+        val allValues: ArrayList<CYCLE_UNIT> = arrayListOf(month, week)
+
+        fun from(value: String): CYCLE_UNIT {
+            when (value) {
+                "month" -> return month
+                "week" -> return week
+            }
+            return month
+        }
+
+        fun all(): ArrayList<HashMap<String, Any>> {
+            val res: ArrayList<HashMap<String, Any>> = arrayListOf()
+            for (item in allValues) {
+                res.add(hashMapOf("key" to item.toString(), "value" to item))
+            }
+            return res
+        }
+
+        fun makeSelect(): ArrayList<HashMap<String, String>> {
+            val res: ArrayList<HashMap<String, String>> = arrayListOf()
+            for (item in allValues) {
+                res.add(hashMapOf("title" to item.value, "value" to item.toString()))
+            }
+            return res
+        }
+    }
 }
 
-enum class PRICE_KIND(val value: String) {
+enum class COURSE_KIND(val value: String) {
     one("一次性"),
-    cycle("週期性")
+    cycle("週期性");
+
+    companion object {
+
+        val allValues: ArrayList<COURSE_KIND> = arrayListOf(one, cycle)
+
+        fun from(value: String): COURSE_KIND {
+            when (value) {
+                "one" -> return one
+                "cycle" -> return cycle
+            }
+            return cycle
+        }
+
+        fun all(): ArrayList<HashMap<String, Any>> {
+            val res: ArrayList<HashMap<String, Any>> = arrayListOf()
+            for (item in allValues) {
+                res.add(hashMapOf("key" to item.toString(), "value" to item))
+            }
+            return res
+        }
+
+        fun makeSelect(): ArrayList<HashMap<String, String>> {
+            val res: ArrayList<HashMap<String, String>> = arrayListOf()
+            for (item in allValues) {
+                res.add(hashMapOf("title" to item.value, "value" to item.toString()))
+            }
+            return res
+        }
+    }
 }
 
 enum class PRICE_CYCLE_UNIT(val value: String) {
+
     month("每月"),
     week("每週"),
     season("每季"),
@@ -178,7 +255,7 @@ enum class PRICE_CYCLE_UNIT(val value: String) {
     span("每期"),
     other("其他");
 
-    companion object {
+    companion object: MYENUM<PRICE_CYCLE_UNIT>() {
 
         val allValues: ArrayList<PRICE_CYCLE_UNIT> = arrayListOf(month, week, season, year, span, other)
 

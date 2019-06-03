@@ -1,8 +1,8 @@
 package com.sportpassword.bm.Models
 
+import com.sportpassword.bm.Utilities.COURSE_KIND
 import com.sportpassword.bm.Utilities.CYCLE_UNIT
 import com.sportpassword.bm.Utilities.PRICE_CYCLE_UNIT
-import com.sportpassword.bm.Utilities.PRICE_KIND
 import org.json.JSONObject
 
 class SuperCourse(data: JSONObject): SuperModel(data) {
@@ -12,12 +12,15 @@ class SuperCourse(data: JSONObject): SuperModel(data) {
     var slug: String = ""
     var coach_id: Int = -1
     var price: Int = -1
-    var price_cycle_unit: PRICE_CYCLE_UNIT = PRICE_CYCLE_UNIT.month
+    var price_cycle_unit: String = ""
+    var price_cycle_unit1: PRICE_CYCLE_UNIT = PRICE_CYCLE_UNIT.month
     var price_desc: String = ""
     var limit: Int = -1
-    var kind: PRICE_KIND = PRICE_KIND.cycle
+    var kind: String = ""
+    var kind1: COURSE_KIND = COURSE_KIND.cycle
     var cycle: Int = -1
-    var cycle_unit: CYCLE_UNIT = CYCLE_UNIT.month
+    var cycle_unit: String = ""
+    var cycle_unit1: CYCLE_UNIT = CYCLE_UNIT.month
     var start_date: String = ""
     var end_date: String = ""
     var weekday: Int = -1
@@ -36,6 +39,21 @@ class SuperCourse(data: JSONObject): SuperModel(data) {
     var updated_at: String = ""
     var featured_path: String = ""
     var thumb: String = ""
+    var coach: SuperCoach = SuperCoach(JSONObject())
+
+    override fun filter() {
+        super.filter()
+        if (price_cycle_unit.count() > 0) {
+            price_cycle_unit1 = PRICE_CYCLE_UNIT.from(price_cycle_unit)
+        }
+        if (cycle_unit.count() > 0) {
+            cycle_unit1 = CYCLE_UNIT.from(cycle_unit)
+        }
+        if (kind.count() > 0) {
+            kind1 = COURSE_KIND.from(kind)
+        }
+
+    }
 }
 
 class SuperCourses(data: JSONObject): SuperModel(data) {

@@ -9,12 +9,18 @@ import kotlin.reflect.full.memberProperties
 
 open class SuperModel(data: JSONObject) {
 
+
+    open fun filter() {
+
+    }
+
     fun print() {
         this::class.memberProperties.forEach {
             //println(it.name + " => " + it.getter.call(this))
             _print(it, this)
         }
     }
+
     private fun _print(it: KProperty1<out Any, Any?>, obj: Any, prefix: String="") {
         val type = it.returnType.toString()
         val tmps = JSONParse.getSubType(type)
@@ -40,6 +46,8 @@ open class SuperModel(data: JSONObject) {
                     }
                 }
             }
+        } else {
+            println("${prefix}${it.name} => " + it.getter.call(obj))
         }
 
     }

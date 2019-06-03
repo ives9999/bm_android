@@ -11,13 +11,19 @@ import com.sportpassword.bm.Form.CourseForm
 import com.sportpassword.bm.Form.FormItem.FormItem
 import com.sportpassword.bm.Form.FormItem.PriceCycleUnitFormItem
 import com.sportpassword.bm.Form.FormItemCellType
+import com.sportpassword.bm.Models.SuperCourse
 import com.sportpassword.bm.R
+import com.sportpassword.bm.Services.CourseService
 import com.sportpassword.bm.Utilities.*
 import com.sportpassword.bm.Views.ImagePicker
 import com.xwray.groupie.kotlinandroidextensions.Item
 import kotlinx.android.synthetic.main.activity_edit_course_vc.*
+import kotlinx.android.synthetic.main.mask.*
 import org.jetbrains.anko.sdk27.coroutines.onClick
 import java.io.File
+import kotlin.reflect.full.declaredMemberProperties
+import kotlin.reflect.full.memberProperties
+import kotlin.reflect.jvm.isAccessible
 
 class EditCourseVC : MyTableVC(), ImagePicker, ViewDelegate {
 
@@ -32,9 +38,10 @@ class EditCourseVC : MyTableVC(), ImagePicker, ViewDelegate {
     lateinit override var imagePickerLayer: AlertDialog
     lateinit override var alertView: View
     lateinit override var imageView: ImageView
+    lateinit var superCourse: SuperCourse
 
     var title: String = ""
-    var token: String = ""
+    var token: String? = null
 
     //Form
     var form: CourseForm = CourseForm()
@@ -59,8 +66,12 @@ class EditCourseVC : MyTableVC(), ImagePicker, ViewDelegate {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_edit_course_vc)
 
-        title = intent.getStringExtra("title")
-        token = intent.getStringExtra("token")
+        if (intent.hasExtra("title")) {
+            title = intent.getStringExtra("title")
+        }
+        if (intent.hasExtra("token")) {
+            token = intent.getStringExtra("token")
+        }
 
         setMyTitle(title)
 
@@ -79,7 +90,51 @@ class EditCourseVC : MyTableVC(), ImagePicker, ViewDelegate {
         recyclerView = editTableView
         initAdapter(true)
 
-        //val rows = generateFormItems()
+        refreshLayout = refresh
+        setRefreshListener()
+
+        if (token != null) {
+            refresh()
+        }
+    }
+
+    override fun refresh() {
+        Loading.show(mask)
+        CourseService.getOne(this, token) { success ->
+            if (success) {
+                superCourse = CourseService.superCourse
+                val kc = superCourse::class
+                for (formItem in form.formItems) {
+                    val name = formItem.name!!
+                    kc.declaredMemberProperties.forEach {
+                        if (it.name == formItem.name) {
+                            val type = JSONParse.getType(it)
+                            when (type) {
+                                "String" -> {
+                                    val value = JSONParse.getValue<String>(name, superCourse, it)
+                                    if (value != null) {
+                                        formItem.value = value
+                                    }
+                                }
+                                "Int" -> {
+                                    val value = JSONParse.getValue<Int>(name, superCourse, it)
+                                    if (value != null) {
+                                        formItem.value = value.toString()
+                                    }
+
+                                }
+                            }
+                            formItem.make()
+                        }
+                    }
+                }
+                notifyChanged(true)
+
+                //teamedit_name.setSelection(teamedit_name.length())
+                closeRefresh()
+            }
+            Loading.hide(mask)
+        }
     }
 
     override fun generateItems(section: Int): ArrayList<Item> {
@@ -87,10 +142,6 @@ class EditCourseVC : MyTableVC(), ImagePicker, ViewDelegate {
         val rows: ArrayList<Item> = arrayListOf()
 
         val clearClick = { i: Int ->
-            val forItem = form.formItems[i]
-            forItem.reset()
-            val rows = generateItems()
-            adapter.update(rows)
         }
 
         val promptClick = {i: Int ->
@@ -172,6 +223,43 @@ class EditCourseVC : MyTableVC(), ImagePicker, ViewDelegate {
     }
 
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        //println(data)
+        when (requestCode) {
+            ACTION_PHOTO_REQUEST_CODE -> {
+                //println(data!!.data)
+                dealPhoto(requestCode, resultCode, data)
+            }
+            ACTION_CAMERA_REQUEST_CODE -> {
+                dealCamera(requestCode, resultCode, data)
+            }
+            SELECT_REQUEST_CODE -> {
+                if (data != null) {
+                    var key: String? = null
+                    if (data!!.hasExtra("key")) {
+                        key = data!!.getStringExtra("key")
+                    }
+                    var selected: String? = null
+                    if (data!!.hasExtra("selected")) {
+                        selected = data!!.getStringExtra("selected")
+                    }
+//                println(selected)
+
+                    var item: FormItem? = null
+                    if (key == PRICE_CYCLE_UNIT_KEY) {
+                        item = getFormItemFromKey(key) as PriceCycleUnitFormItem
+                    }
+                    if (item != null && selected != null) {
+                        item.value = selected
+                        item.make()
+                    }
+                    notifyChanged(true)
+                }
+            }
+        }
+    }
+
     override fun setImage(newFile: File?, url: String?) {
         featured_text.visibility = View.INVISIBLE
         val layoutParams = edit_featured.layoutParams as LinearLayout.LayoutParams
@@ -202,35 +290,6 @@ class EditCourseVC : MyTableVC(), ImagePicker, ViewDelegate {
         val item = form.formItems[indexPath.row]
         item.value = text
         item.make()
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        //println(data)
-        when (requestCode) {
-            ACTION_PHOTO_REQUEST_CODE -> {
-                //println(data!!.data)
-                dealPhoto(requestCode, resultCode, data)
-            }
-            ACTION_CAMERA_REQUEST_CODE -> {
-                dealCamera(requestCode, resultCode, data)
-            }
-            SELECT_REQUEST_CODE -> {
-                val key = data!!.getStringExtra("key")
-                val selected = data!!.getStringExtra("selected")
-//                println(selected)
-
-                var item: FormItem? = null
-                if (key == PRICE_CYCLE_UNIT_KEY) {
-                    item = getFormItemFromKey(key) as PriceCycleUnitFormItem
-                }
-                if (item != null) {
-                    item.value = selected
-                    item.make()
-                }
-                notifyChanged(true)
-            }
-        }
     }
 
     private fun getFormItemFromKey(key: String): FormItem? {

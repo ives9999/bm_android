@@ -8,6 +8,7 @@ import org.json.JSONArray
 import org.json.JSONObject
 import kotlin.reflect.KClass
 import kotlin.reflect.KMutableProperty
+import kotlin.reflect.KProperty
 import kotlin.reflect.KProperty1
 import kotlin.reflect.full.memberProperties
 import kotlin.reflect.jvm.internal.impl.load.kotlin.JvmType
@@ -202,6 +203,19 @@ class JSONParse {
                 }
             }
             return kc
+        }
+
+        fun getType(it: KProperty1<out SuperModel, Any?>): String {
+            val type = it.returnType.toString()
+            val tmps = getSubType(type)
+            val subType = tmps.get("type")!!
+
+            return subType
+        }
+
+        fun <T> getValue(fieldName: String, superModel: SuperModel, it: KProperty1<out SuperModel, Any?>): T? {
+            val value = it.getter.call(superModel) as T?
+            return value
         }
     }
 

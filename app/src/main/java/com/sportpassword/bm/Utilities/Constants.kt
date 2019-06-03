@@ -142,6 +142,7 @@ val CREATED_AT_KEY: String = "created_at"
 val UPDATED_AT_KEY: String = "updated_at"
 val KEYWORD_KEY: String = "keyword"
 val PRICE_KEY: String = "price"
+val PRICE_DESC_KEY: String = "price_desc"
 val PRICE_CYCLE_UNIT_KEY: String = "price_cycle_unit"
 
 // User Defaults
@@ -181,6 +182,8 @@ val TT_STATUS: String = "status"
 val TT_CONTENT: String = "content"
 
 // Course key
+val CYCLE_UNIT_KEY: String = "cycle_unit"
+val COURSE_KIND_KEY: String = "kind"
 
 
 // Select key

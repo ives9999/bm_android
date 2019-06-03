@@ -344,6 +344,7 @@ open class DataService: BaseService() {
     }
 
     open fun getOne(context: Context, id: Int, source: String, token: String, completion: CompletionHandler) {}
+    open fun getOne(context: Context, token: String?, completion: CompletionHandler) {}
 
     fun update(context: Context, type: String, _params: MutableMap<String, Any>, filePath: String, complete: CompletionHandler) {
 
