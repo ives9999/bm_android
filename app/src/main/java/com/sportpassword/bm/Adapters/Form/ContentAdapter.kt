@@ -9,7 +9,7 @@ import com.xwray.groupie.kotlinandroidextensions.ViewHolder
 import kotlinx.android.synthetic.main.formitem_content.*
 import org.jetbrains.anko.backgroundColor
 
-class ContentAdapter(form: BaseForm, idx: Int, indexPath: IndexPath, clearClick:(idx: Int)->Unit, promptClick:(idx: Int)->Unit): FormItemAdapter(form, idx, indexPath, clearClick, promptClick) {
+class ContentAdapter(form: BaseForm, idx: Int, indexPath: IndexPath, clearClick:(idx: Int)->Unit, promptClick:(idx: Int)->Unit, val rowClick:(idx: Int)->Unit): FormItemAdapter(form, idx, indexPath, clearClick, promptClick) {
 
     override fun getLayout(): Int {
 
@@ -54,5 +54,9 @@ class ContentAdapter(form: BaseForm, idx: Int, indexPath: IndexPath, clearClick:
             viewHolder.detail.text = ""
         }
         viewHolder.detail.backgroundColor = Color.TRANSPARENT
+
+        viewHolder.container.setOnClickListener {
+            rowClick(idx)
+        }
     }
 }

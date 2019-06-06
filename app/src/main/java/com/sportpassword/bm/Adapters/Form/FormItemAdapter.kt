@@ -7,16 +7,10 @@ import android.view.View
 import androidx.constraintlayout.widget.ConstraintSet
 import com.sportpassword.bm.Form.BaseForm
 import com.sportpassword.bm.Form.FormItem.ColorFormItem
-import com.sportpassword.bm.Form.FormItem.FormItem
 import com.sportpassword.bm.Form.FormItemCellType
-import com.sportpassword.bm.R
 import com.sportpassword.bm.Utilities.IndexPath
-import com.sportpassword.bm.Utilities.MYCOLOR
-import com.sportpassword.bm.Utilities.TT_TITLE
-import com.sportpassword.bm.Utilities.TT_WEEKDAY
 import com.xwray.groupie.kotlinandroidextensions.Item
 import com.xwray.groupie.kotlinandroidextensions.ViewHolder
-import kotlinx.android.synthetic.main.edit_item.*
 import kotlinx.android.synthetic.main.formitem_more.*
 import kotlinx.android.synthetic.main.formitem_textfield.*
 import org.jetbrains.anko.backgroundColor

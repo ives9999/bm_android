@@ -8,8 +8,7 @@ import android.widget.LinearLayout
 import androidx.appcompat.app.AlertDialog
 import com.sportpassword.bm.Adapters.Form.*
 import com.sportpassword.bm.Form.CourseForm
-import com.sportpassword.bm.Form.FormItem.FormItem
-import com.sportpassword.bm.Form.FormItem.PriceCycleUnitFormItem
+import com.sportpassword.bm.Form.FormItem.*
 import com.sportpassword.bm.Form.FormItemCellType
 import com.sportpassword.bm.Models.SuperCourse
 import com.sportpassword.bm.R
@@ -22,8 +21,6 @@ import kotlinx.android.synthetic.main.mask.*
 import org.jetbrains.anko.sdk27.coroutines.onClick
 import java.io.File
 import kotlin.reflect.full.declaredMemberProperties
-import kotlin.reflect.full.memberProperties
-import kotlin.reflect.jvm.isAccessible
 
 class EditCourseVC : MyTableVC(), ImagePicker, ViewDelegate {
 
@@ -57,7 +54,7 @@ class EditCourseVC : MyTableVC(), ImagePicker, ViewDelegate {
 
 //    val section_keys: ArrayList<ArrayList<String>> = arrayListOf(
 //            arrayListOf(TITLE_KEY, YOUTUBE_KEY),
-//            arrayListOf(PRICE_KEY, PRICE_CYCLE_UNIT_KEY)
+//            arrayListOf(PRICE_KEY, PRICE_UNIT_KEY)
 //    )
     var section_keys: ArrayList<ArrayList<String>> = arrayListOf()
 
@@ -103,37 +100,48 @@ class EditCourseVC : MyTableVC(), ImagePicker, ViewDelegate {
         CourseService.getOne(this, token) { success ->
             if (success) {
                 superCourse = CourseService.superCourse
-                val kc = superCourse::class
-                for (formItem in form.formItems) {
-                    val name = formItem.name!!
-                    kc.declaredMemberProperties.forEach {
-                        if (it.name == formItem.name) {
-                            val type = JSONParse.getType(it)
-                            when (type) {
-                                "String" -> {
-                                    val value = JSONParse.getValue<String>(name, superCourse, it)
-                                    if (value != null) {
-                                        formItem.value = value
-                                    }
-                                }
-                                "Int" -> {
-                                    val value = JSONParse.getValue<Int>(name, superCourse, it)
-                                    if (value != null) {
-                                        formItem.value = value.toString()
-                                    }
-
-                                }
-                            }
-                            formItem.make()
-                        }
-                    }
-                }
+                putValue()
                 notifyChanged(true)
 
                 //teamedit_name.setSelection(teamedit_name.length())
                 closeRefresh()
             }
             Loading.hide(mask)
+        }
+    }
+
+    private fun putValue() {
+        if (superCourse != null) {
+            val kc = superCourse::class
+            for (formItem in form.formItems) {
+                val name = formItem.name!!
+                kc.declaredMemberProperties.forEach {
+                    if (it.name == formItem.name) {
+                        val type = JSONParse.getType(it)
+                        when (type) {
+                            "String" -> {
+                                val value = JSONParse.getValue<String>(name, superCourse, it)
+                                if (value != null) {
+                                    formItem.value = value
+                                }
+                            }
+                            "Int" -> {
+                                val value = JSONParse.getValue<Int>(name, superCourse, it)
+                                if (value != null) {
+                                    formItem.value = value.toString()
+                                }
+
+                            }
+                        }
+                        formItem.make()
+                    }
+                }
+            }
+            if (superCourse.featured_path.count() > 0) {
+                val featured: String = BASE_URL + superCourse.featured_path
+//                        println(featured)
+                setImage(null, featured)
+            }
         }
     }
 
@@ -188,11 +196,15 @@ class EditCourseVC : MyTableVC(), ImagePicker, ViewDelegate {
             if (formItem.uiProperties.cellType == FormItemCellType.textField) {
                 formItemAdapter = TextFieldAdapter(form, idx, indexPath, clearClick, promptClick)
             } else if (formItem.uiProperties.cellType == FormItemCellType.content) {
-                formItemAdapter = ContentAdapter(form, idx, indexPath, clearClick, promptClick)
+                formItemAdapter = ContentAdapter(form, idx, indexPath, clearClick, promptClick, rowClick)
             } else if (formItem.uiProperties.cellType == FormItemCellType.more) {
                 formItemAdapter = MoreAdapter(form, idx, indexPath, clearClick, promptClick, rowClick)
             } else if (formItem.uiProperties.cellType == FormItemCellType.section) {
                 break
+            } else if (formItem.uiProperties.cellType == FormItemCellType.weekday) {
+                formItemAdapter = MoreAdapter(form, idx, indexPath, clearClick, promptClick, rowClick)
+            } else if (formItem.uiProperties.cellType == FormItemCellType.time) {
+                formItemAdapter = MoreAdapter(form, idx, indexPath, clearClick, promptClick, rowClick)
             }
 
             if (formItemAdapter != null) {
@@ -210,14 +222,63 @@ class EditCourseVC : MyTableVC(), ImagePicker, ViewDelegate {
         val forItem = form.formItems[idx]
         val key = forItem.name
 
-        val singleSelectintent = Intent(this@EditCourseVC, SingleSelectVC::class.java)
-        singleSelectintent.putExtra("title", forItem.title)
-        singleSelectintent.putExtra("key", key)
+        val singleSelectIntent = Intent(this@EditCourseVC, SingleSelectVC::class.java)
+        singleSelectIntent.putExtra("title", forItem.title)
+        singleSelectIntent.putExtra("key", key)
 
-        if (key == PRICE_CYCLE_UNIT_KEY) {
-            val rows = PRICE_CYCLE_UNIT.makeSelect()
-            singleSelectintent.putExtra("rows", rows)
-            startActivityForResult(singleSelectintent, SELECT_REQUEST_CODE)
+        val multiSelectIntent = Intent(this@EditCourseVC, MultiSelectVC::class.java)
+        multiSelectIntent.putExtra("title", forItem.title)
+        multiSelectIntent.putExtra("key", key)
+
+        if (key == PRICE_UNIT_KEY) {
+            val rows = PRICE_UNIT.makeSelect()
+            singleSelectIntent.putExtra("rows", rows)
+            if (forItem.sender != null) {
+                val selected = forItem.sender as String
+                singleSelectIntent.putExtra("selected", selected)
+            }
+            startActivityForResult(singleSelectIntent, SELECT_REQUEST_CODE)
+        } else if (key == COURSE_KIND_KEY) {
+            val rows = COURSE_KIND.makeSelect()
+            singleSelectIntent.putExtra("rows", rows)
+            if (forItem.sender != null) {
+                val selected = forItem.sender as String
+                singleSelectIntent.putExtra("selected", selected)
+            }
+            startActivityForResult(singleSelectIntent, SELECT_REQUEST_CODE)
+        } else if (key == CYCLE_UNIT_KEY) {
+            val rows = CYCLE_UNIT.makeSelect()
+            singleSelectIntent.putExtra("rows", rows)
+            if (forItem.sender != null) {
+                val selected = forItem.sender as String
+                singleSelectIntent.putExtra("selected", selected)
+            }
+            startActivityForResult(singleSelectIntent, SELECT_REQUEST_CODE)
+        } else if (key == WEEKDAY_KEY) {
+            val rows = WEEKDAY.makeSelect()
+//            println(rows)
+            multiSelectIntent.putExtra("rows", rows)
+            if (forItem.sender != null) {
+                val selecteds = forItem.sender as ArrayList<String>
+//                println(selecteds)
+                multiSelectIntent.putExtra("selecteds", selecteds)
+            }
+            startActivityForResult(multiSelectIntent, SELECT_REQUEST_CODE)
+        } else if (key == START_TIME_KEY || key == END_TIME_KEY) {
+            val times = Global.makeTimes()
+            val rows: ArrayList<HashMap<String, String>> = arrayListOf()
+            for (time in times) {
+                rows.add(hashMapOf("title" to time, "value" to time+":00"))
+            }
+//            println(rows)
+            singleSelectIntent.putExtra("rows", rows)
+            if (forItem.sender != null) {
+                val tmp = forItem.sender as HashMap<String, String>
+                val selected = tmp.get("time")!!
+                singleSelectIntent.putExtra("selected", selected)
+            }
+            startActivityForResult(singleSelectIntent, SELECT_REQUEST_CODE)
+
         }
 
     }
@@ -246,14 +307,34 @@ class EditCourseVC : MyTableVC(), ImagePicker, ViewDelegate {
                     }
 //                println(selected)
 
-                    var item: FormItem? = null
-                    if (key == PRICE_CYCLE_UNIT_KEY) {
-                        item = getFormItemFromKey(key) as PriceCycleUnitFormItem
+                    var selecteds: ArrayList<String>? = null
+                    if (data!!.hasExtra("selecteds")) {
+                        selecteds = data!!.getStringArrayListExtra("selecteds")
                     }
+
+                    var item: FormItem? = null
+                    if (key == PRICE_UNIT_KEY) {
+                        item = getFormItemFromKey(key) as PriceUnitFormItem
+                    } else if (key == COURSE_KIND_KEY) {
+                        item = getFormItemFromKey(key) as CourseKindFormItem
+                    } else if (key == CYCLE_UNIT_KEY) {
+                        item = getFormItemFromKey(key) as CycleUnitFormItem
+                    } else if (key == WEEKDAY_KEY) {
+                        item = getFormItemFromKey(key) as WeekdayFormItem
+                    } else if (key == START_TIME_KEY || key == END_TIME_KEY) {
+                        item = getFormItemFromKey(key) as TimeFormItem
+                    }
+
                     if (item != null && selected != null) {
                         item.value = selected
                         item.make()
                     }
+                    if (item != null && selecteds != null) {
+                        val value = selecteds.joinToString(",")
+                        item.value = value
+                        item.make()
+                    }
+
                     notifyChanged(true)
                 }
             }

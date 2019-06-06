@@ -1,7 +1,6 @@
 package com.sportpassword.bm.Controllers
 
 import android.app.Activity
-import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
 import android.graphics.Color
@@ -11,7 +10,6 @@ import androidx.constraintlayout.widget.ConstraintSet
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import android.view.*
-import android.view.inputmethod.InputMethodManager
 import android.widget.*
 import com.sportpassword.bm.Adapters.Form.*
 //import com.sportpassword.bm.Adapters.Form.ViewDelegate
@@ -59,12 +57,12 @@ class TimeTableVC : BaseActivity(), ViewDelegate {
     //Form
     var form: TimeTableForm = TimeTableForm()
     val test: HashMap<String, String> = hashMapOf(
-            TT_TITLE to "練球",
-            TT_WEEKDAY to "2",
+            TITLE_KEY to "練球",
+            WEEKDAY_KEY to "2",
             TT_START_DATE to "2019-01-01",
             TT_END_DATE to "2019-12-31",
-            TT_START_TIME to "08:00",
-            TT_END_TIME to "10:00",
+            START_TIME_KEY to "08:00",
+            END_TIME_KEY to "10:00",
             TT_CHARGE to "800",
             TT_LIMIT to "6",
             TT_COLOR to "warning",
@@ -289,7 +287,7 @@ class TimeTableVC : BaseActivity(), ViewDelegate {
                     }
                     //print(value)
                     if (value != null) {
-                        if (name == TT_START_TIME || name == TT_END_TIME) {
+                        if (name == START_TIME_KEY || name == END_TIME_KEY) {
                             value = value!!.noSec()
                         }
                         if (name == TT_CHARGE) {
@@ -339,7 +337,7 @@ class TimeTableVC : BaseActivity(), ViewDelegate {
         } else {
             val startTime: Int = tag / columnNum + startNum
             val weekday: Int = tag % columnNum
-            val values: HashMap<String, String> = hashMapOf(TT_START_TIME to startTime.toString() + ":00", TT_WEEKDAY to weekday.toString())
+            val values: HashMap<String, String> = hashMapOf(START_TIME_KEY to startTime.toString() + ":00", WEEKDAY_KEY to weekday.toString())
             eventTag = tag
             //print(eventTag)
             form = TimeTableForm(null, values)
@@ -412,7 +410,7 @@ class TimeTableVC : BaseActivity(), ViewDelegate {
             val itemAdapter = item as FormItemAdapter
             val idx = itemAdapter.idx
             val formItem = form.formItems[idx]
-            if (formItem.name != TT_TITLE && formItem.name != TT_LIMIT) {
+            if (formItem.name != TITLE_KEY && formItem.name != TT_LIMIT) {
                 val intent = Intent(this, EditItemActivity::class.java)
                 when (idx) {
                     //0 is title
@@ -629,7 +627,7 @@ class TimeTableVC : BaseActivity(), ViewDelegate {
             if (formItem.uiProperties.cellType == FormItemCellType.textField) {
                 formItemAdapter = TextFieldAdapter(form, idx, indexPath, clearClick, promptClick)
             } else if (formItem.uiProperties.cellType == FormItemCellType.content) {
-                formItemAdapter = ContentAdapter(form, idx, indexPath, clearClick, promptClick)
+                formItemAdapter = ContentAdapter(form, idx, indexPath, clearClick, promptClick, rowClick)
             } else {
                 formItemAdapter = MoreAdapter(form, idx, indexPath, clearClick, promptClick, rowClick)
             }

@@ -1,13 +1,13 @@
 package com.sportpassword.bm.Form.FormItem
 
 import com.sportpassword.bm.Form.FormItemCellType
-import com.sportpassword.bm.Utilities.CYCLE_UNIT
-import com.sportpassword.bm.Utilities.CYCLE_UNIT_KEY
+import com.sportpassword.bm.Utilities.PRICE_UNIT
+import com.sportpassword.bm.Utilities.PRICE_UNIT_KEY
 
-class CycleUnitFormItem: FormItem {
+class PriceUnitFormItem: FormItem {
 
-    var oldCycleUnit: CYCLE_UNIT? = null
-    var cycleUnit: CYCLE_UNIT? = null
+    var oldPriceUnit: PRICE_UNIT? = null
+    var priceUnit: PRICE_UNIT? = null
 
     init {
         uiProperties.cellType = FormItemCellType.more
@@ -16,22 +16,22 @@ class CycleUnitFormItem: FormItem {
     constructor(name: String, title: String, placeholder: String? = null, value: String? = null): super(name, title, placeholder, value) {
     }
 
-    constructor(name: String = CYCLE_UNIT_KEY, title: String = "週期", tooltip: String? = null): super(name, title, "", null, tooltip) {
+    constructor(name: String = PRICE_UNIT_KEY, title: String = "收費週期", tooltip: String? = null): super(name, title, "", null, tooltip) {
         reset()
     }
 
     override fun reset() {
         super.reset()
         value = null
-        cycleUnit = null
+        priceUnit = null
         make()
     }
 
     override fun make() {
         valueToAnother()
-        if (cycleUnit != null) {
-            show = cycleUnit!!.value
-            value = cycleUnit.toString()
+        if (priceUnit != null) {
+            show = priceUnit!!.value
+            value = priceUnit.toString()
             sender = value
         } else {
             value = null
@@ -42,7 +42,7 @@ class CycleUnitFormItem: FormItem {
 
     override fun valueToAnother() {
         if (value != null) {
-            cycleUnit = CYCLE_UNIT.from(value!!)
+            priceUnit = PRICE_UNIT.from(value!!)
         }
     }
 }

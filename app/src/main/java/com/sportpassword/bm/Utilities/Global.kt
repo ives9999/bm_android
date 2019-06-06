@@ -3,28 +3,21 @@ package com.sportpassword.bm.Utilities
 import android.animation.Animator
 import android.app.Activity
 import android.app.AlertDialog
-import android.app.Dialog
 import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
-import android.graphics.drawable.ColorDrawable
 import android.net.Uri
-import androidx.core.content.ContextCompat
 import android.view.View
-import android.view.ViewGroup
-import android.view.Window
 import android.view.inputmethod.InputMethodManager
 import android.widget.*
+import androidx.core.content.ContextCompat
 import com.sportpassword.bm.R
 import org.jetbrains.anko.makeCall
 import java.text.ParseException
 import java.text.SimpleDateFormat
-import java.time.LocalDate
-import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
 import java.util.*
 import java.util.concurrent.TimeUnit
 import kotlin.collections.ArrayList
@@ -246,7 +239,7 @@ enum class COURSE_KIND(val value: String) {
     }
 }
 
-enum class PRICE_CYCLE_UNIT(val value: String) {
+enum class PRICE_UNIT(val value: String) {
 
     month("每月"),
     week("每週"),
@@ -255,11 +248,11 @@ enum class PRICE_CYCLE_UNIT(val value: String) {
     span("每期"),
     other("其他");
 
-    companion object: MYENUM<PRICE_CYCLE_UNIT>() {
+    companion object: MYENUM<PRICE_UNIT>() {
 
-        val allValues: ArrayList<PRICE_CYCLE_UNIT> = arrayListOf(month, week, season, year, span, other)
+        val allValues: ArrayList<PRICE_UNIT> = arrayListOf(month, week, season, year, span, other)
 
-        fun from(value: String): PRICE_CYCLE_UNIT {
+        fun from(value: String): PRICE_UNIT {
             when (value) {
                 "month" -> return month
                 "week" -> return week
@@ -283,6 +276,68 @@ enum class PRICE_CYCLE_UNIT(val value: String) {
             val res: ArrayList<HashMap<String, String>> = arrayListOf()
             for (item in allValues) {
                 res.add(hashMapOf("title" to item.value, "value" to item.toString()))
+            }
+            return res
+        }
+    }
+}
+
+enum class WEEKDAY(val value: Int) {
+    mon(1),
+    tue(2),
+    wed(3),
+    thu(4),
+    fri(5),
+    sat(6),
+    sun(7);
+
+    companion object: MYENUM<PRICE_UNIT>() {
+
+        val allValues: ArrayList<WEEKDAY> = arrayListOf(mon, tue, wed, thu, fri, sat, sun)
+
+        fun from(value: Int): WEEKDAY {
+            when (value) {
+                1 -> return mon
+                2 -> return tue
+                3 -> return wed
+                4 -> return thu
+                5 -> return fri
+                6 -> return sat
+                7 -> return sun
+            }
+            return mon
+        }
+
+        fun intToString(value: Int): String {
+            when (value) {
+                1 -> return "星期一"
+                2 -> return "星期二"
+                3 -> return "星期三"
+                4 -> return "星期四"
+                5 -> return "星期五"
+                6 -> return "星期六"
+                7 -> return "星期日"
+            }
+            return "星期一"
+        }
+
+        fun enumToString(value: WEEKDAY): String {
+
+            return WEEKDAY.intToString(value.value)
+        }
+
+        fun all(): ArrayList<HashMap<String, Any>> {
+            val res: ArrayList<HashMap<String, Any>> = arrayListOf()
+            for (item in allValues) {
+                res.add(hashMapOf("key" to item.toString(), "value" to item))
+            }
+            return res
+        }
+
+        fun makeSelect(): ArrayList<HashMap<String, String>> {
+            val res: ArrayList<HashMap<String, String>> = arrayListOf()
+            for (item in allValues) {
+                res.add(hashMapOf("title" to WEEKDAY.enumToString(item), "value" to item.value.toString()))
             }
             return res
         }
@@ -596,15 +651,25 @@ fun View.getIDString(): String {
     return this.resources.getResourceName(this.id)
 }
 
+fun TextView.selected() {
+    val checkedColor = ContextCompat.getColor(context, R.color.MY_GREEN)
+    this.setTextColor(checkedColor)
+}
+
+fun TextView.unSelected() {
+    val uncheckedColor = ContextCompat.getColor(context, R.color.WHITE)
+    this.setTextColor(uncheckedColor)
+}
+
 object Global {
     val weekdays: ArrayList<HashMap<String, Any>> = arrayListOf(
-            hashMapOf("value" to 1,"text" to "星期一","simple_text" to "一","checked" to false),
-            hashMapOf("value" to 2,"text" to "星期二","simple_text" to "二","checked" to false),
-            hashMapOf("value" to 3,"text" to "星期三","simple_text" to "三","checked" to false),
-            hashMapOf("value" to 4,"text" to "星期四","simple_text" to "四","checked" to false),
-            hashMapOf("value" to 5,"text" to "星期五","simple_text" to "五","checked" to false),
-            hashMapOf("value" to 6,"text" to "星期六","simple_text" to "六","checked" to false),
-            hashMapOf("value" to 7,"text" to "星期日","simple_text" to "日","checked" to false)
+            hashMapOf("value" to 1,"text" to "星期一","simple_text" to "一","checked" to false,"title" to "星期一"),
+            hashMapOf("value" to 2,"text" to "星期二","simple_text" to "二","checked" to false,"title" to "星期二"),
+            hashMapOf("value" to 3,"text" to "星期三","simple_text" to "三","checked" to false,"title" to "星期三"),
+            hashMapOf("value" to 4,"text" to "星期四","simple_text" to "四","checked" to false,"title" to "星期四"),
+            hashMapOf("value" to 5,"text" to "星期五","simple_text" to "五","checked" to false,"title" to "星期五"),
+            hashMapOf("value" to 6,"text" to "星期六","simple_text" to "六","checked" to false,"title" to "星期六"),
+            hashMapOf("value" to 7,"text" to "星期日","simple_text" to "日","checked" to false,"title" to "星期七")
     )
 
     fun today(): String {
@@ -614,6 +679,23 @@ object Global {
     fun nowTime(): String {
         val sdf = SimpleDateFormat("hh:mm:ss", Locale.TAIWAN)
         return sdf.format(Date())
+    }
+
+    fun makeTimes(start_time: String="07:00", end_time: String="23:00", interval: Int=60): ArrayList<String> {
+
+        val allTimes: ArrayList<String> = arrayListOf()
+        var s = start_time.toDateTime("HH:mm")
+        val e = end_time.toDateTime("HH:mm")
+        allTimes.add(start_time)
+        while (s.compareTo(e) < 0) {
+            val cal = Calendar.getInstance()
+            cal.time = s
+            cal.add(Calendar.MINUTE, interval)
+            s = cal.time
+            allTimes.add(s.toMyString("HH:mm"))
+        }
+
+        return allTimes
     }
 }
 

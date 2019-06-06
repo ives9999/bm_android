@@ -2,7 +2,7 @@ package com.sportpassword.bm.Form.FormItem
 
 import com.sportpassword.bm.Form.FormItemCellType
 import com.sportpassword.bm.Utilities.SELECT_DATE_TYPE
-import com.sportpassword.bm.Utilities.TT_START_TIME
+import com.sportpassword.bm.Utilities.START_TIME_KEY
 
 class DateFormItem: FormItem {
     var dateType: SELECT_DATE_TYPE? = null
@@ -14,7 +14,7 @@ class DateFormItem: FormItem {
     constructor(name: String, title: String, placeholder: String? = null, value: String? = null): super(name, title, placeholder, value) {
     }
 
-    constructor(name: String = TT_START_TIME, title: String = "時間", dateType: SELECT_DATE_TYPE, tooltip: String? = null, isRequired: Boolean = true): super(name, title, "", null, tooltip) {
+    constructor(name: String = START_TIME_KEY, title: String = "時間", dateType: SELECT_DATE_TYPE, tooltip: String? = null, isRequired: Boolean = true): super(name, title, "", null, tooltip) {
         this.isRequired = isRequired
         this.dateType = dateType
         reset()

@@ -2,7 +2,7 @@ package com.sportpassword.bm.Models
 
 import com.sportpassword.bm.Utilities.COURSE_KIND
 import com.sportpassword.bm.Utilities.CYCLE_UNIT
-import com.sportpassword.bm.Utilities.PRICE_CYCLE_UNIT
+import com.sportpassword.bm.Utilities.PRICE_UNIT
 import org.json.JSONObject
 
 class SuperCourse(data: JSONObject): SuperModel(data) {
@@ -12,8 +12,8 @@ class SuperCourse(data: JSONObject): SuperModel(data) {
     var slug: String = ""
     var coach_id: Int = -1
     var price: Int = -1
-    var price_cycle_unit: String = ""
-    var price_cycle_unit1: PRICE_CYCLE_UNIT = PRICE_CYCLE_UNIT.month
+    var price_unit: String = ""
+    var price_unit1: PRICE_UNIT = PRICE_UNIT.month
     var price_desc: String = ""
     var limit: Int = -1
     var kind: String = ""
@@ -43,8 +43,8 @@ class SuperCourse(data: JSONObject): SuperModel(data) {
 
     override fun filter() {
         super.filter()
-        if (price_cycle_unit.count() > 0) {
-            price_cycle_unit1 = PRICE_CYCLE_UNIT.from(price_cycle_unit)
+        if (price_unit.count() > 0) {
+            price_unit1 = PRICE_UNIT.from(price_unit)
         }
         if (cycle_unit.count() > 0) {
             cycle_unit1 = CYCLE_UNIT.from(cycle_unit)

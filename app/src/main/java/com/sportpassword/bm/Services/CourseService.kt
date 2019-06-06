@@ -98,7 +98,7 @@ object CourseService: DataService() {
                     try {
                         val json = JSONObject(response.toString())
                         superCourse = JSONParse.parse<SuperCourse>(json)!!
-                        superCourse.print()
+//                        superCourse.print()
                         this.success = true
                     } catch (e: Exception) {
                         this.success = false

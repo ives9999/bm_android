@@ -12,15 +12,15 @@ class TimeTableForm: BaseForm {
 
     override fun configureItems() {
 
-        val eventTitleItem = TextFieldFormItem(TT_TITLE, "標題", "請輸入標題")
+        val eventTitleItem = TextFieldFormItem(TITLE_KEY, "標題", "請輸入標題")
 
-        val eventWeekdayItem = WeekdayFormItem("星期幾", TT_WEEKDAY)
+        val eventWeekdayItem = WeekdayFormItem("星期幾", WEEKDAY_KEY)
 
         val eventStartDateItem = DateFormItem(TT_START_DATE, "開始日期", SELECT_DATE_TYPE.start, "設定出現在行事曆的日期，若不設定，就會一直出現", false)
         val eventEndDateItem = DateFormItem(TT_END_DATE, "結束日期", SELECT_DATE_TYPE.end, "", false)
 
-        val eventStartTimeItem = TimeFormItem(TT_START_TIME, "開始時間", SELECT_TIME_TYPE.play_start)
-        val eventEndTimeItem = TimeFormItem(TT_END_TIME, "結束時間", SELECT_TIME_TYPE.play_end)
+        val eventStartTimeItem = TimeFormItem(START_TIME_KEY, "開始時間", SELECT_TIME_TYPE.play_start)
+        val eventEndTimeItem = TimeFormItem(END_TIME_KEY, "結束時間", SELECT_TIME_TYPE.play_end)
 
         val eventChargeItem = TextFieldFormItem(TT_CHARGE, "費用", "", null, InputType.TYPE_CLASS_NUMBER, false, "限填數字，如要加以說明，請在內容處填寫")
         val eventLimitItem = TextFieldFormItem(TT_LIMIT, "限制人數", "無限制請填-1", null, InputType.TYPE_CLASS_NUMBER, false, "無限制填-1，若不想提供報名，請填0")

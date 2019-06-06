@@ -2,7 +2,8 @@ package com.sportpassword.bm.Form.FormItem
 
 import com.sportpassword.bm.Form.FormItemCellType
 import com.sportpassword.bm.Utilities.Global
-import com.sportpassword.bm.Utilities.TT_WEEKDAY
+import com.sportpassword.bm.Utilities.WEEKDAY
+import com.sportpassword.bm.Utilities.WEEKDAY_KEY
 
 class WeekdayFormItem: FormItem {
 
@@ -16,7 +17,7 @@ class WeekdayFormItem: FormItem {
     constructor(name: String, title: String, placeholder: String? = null, value: String? = null): super(name, title, placeholder, value) {
     }
 
-    constructor(title: String = "星期幾", name: String = TT_WEEKDAY): super(name, title) {
+    constructor(title: String = "星期幾", name: String = WEEKDAY_KEY): super(name, title) {
         reset()
     }
 
@@ -27,24 +28,39 @@ class WeekdayFormItem: FormItem {
     }
 
     override fun make() {
-        var texts: ArrayList<String> = arrayListOf()
-        var values: ArrayList<String> = arrayListOf()
-        if (weekdays.size > 0) {
-            for (weekday in weekdays) {
-                for (gweekday in Global.weekdays) {
-                    if (weekday == gweekday["value"] as Int) {
-                        val text = gweekday["simple_text"] as String
-                        texts.add(text)
-                        break
-                    }
-                }
-                values.add(weekday.toString())
+        //value is "1,2,3"
+        if (value != null) {
+            if (value!!.indexOf(",") >= 0) {
+                valueToAnother()
+//                val tmps = value!!.split(",")
+//                for (tmp in tmps) {
+//                    weekdays.add(tmp.toInt())
+//                }
+            } else {
+                weekdays.add(value!!.toInt())
             }
-            show = texts.joinToString(",")
-            value = values.joinToString(",")
-            sender = weekdays
-        } else {
-            show = ""
+            var texts: ArrayList<String> = arrayListOf()
+            var senders: ArrayList<String> = arrayListOf()
+            if (weekdays.size > 0) {
+                for (weekday in weekdays) {
+//                for (gweekday in Global.weekdays) {
+//                    if (weekday == gweekday["value"] as Int) {
+//                        val text = gweekday["simple_text"] as String
+//                        texts.add(text)
+//                        break
+//                    }
+//                }
+//                values.add(weekday.toString())
+                    val text = WEEKDAY.intToString(weekday)
+                    texts.add(text)
+                    senders.add(weekday.toString())
+                }
+                show = texts.joinToString(",")
+//                value = weekdays.joinToString(",")
+                sender = senders //["1","2"]
+            } else {
+                show = ""
+            }
         }
     }
 

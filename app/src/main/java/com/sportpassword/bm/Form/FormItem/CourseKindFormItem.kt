@@ -32,8 +32,7 @@ class CourseKindFormItem: FormItem {
         if (courseKind != null) {
             show = courseKind!!.value
             value = courseKind.toString()
-            val tmp: ArrayList<COURSE_KIND> = arrayListOf(courseKind!!)
-            sender = tmp
+            sender = value
         } else {
             value = null
             show = ""
