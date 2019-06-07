@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background"
+    tools:context=".Controllers.ContentEditVC">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:id="@+id/edittext_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="100dp"
+                android:gravity="center_horizontal"
+                android:orientation="vertical">
+
+
+                <EditText
+                    android:id="@+id/edittext"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="12dp"
+                    android:layout_marginTop="12dp"
+                    android:layout_marginRight="12dp"
+                    android:layout_marginBottom="12dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/edittext_border"
+                    android:ems="10"
+                    android:gravity="top|left"
+                    android:hint="請輸入內容"
+                    android:inputType="textMultiLine"
+                    android:minHeight="100dp"
+                    android:padding="12dp"
+                    android:textColor="@color/WHITE"
+                    android:textColorHint="@color/grey" />
+
+                <Button
+                    android:id="@+id/clear"
+                    style="@style/submit_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:onClick="clear"
+                    android:text="清除" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+    </ScrollView>
+
+    <LinearLayout
+        android:id="@+id/footer"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_alignParentBottom="true"
+        android:background="@color/MY_GREEN"
+        android:gravity="center|center_vertical"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/submitBtn"
+            style="@style/submit_button"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:layout_marginRight="16dp"
+            android:onClick="submit"
+            android:text="送出" />
+        <Button
+            android:id="@+id/cancelBtn"
+            style="@style/cancel_button"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:onClick="cancel"
+            android:text="取消" />
+
+
+
+    </LinearLayout>
+
+</RelativeLayout>

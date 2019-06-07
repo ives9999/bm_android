@@ -230,6 +230,10 @@ class EditCourseVC : MyTableVC(), ImagePicker, ViewDelegate {
         multiSelectIntent.putExtra("title", forItem.title)
         multiSelectIntent.putExtra("key", key)
 
+        val contentIntent = Intent(this@EditCourseVC, ContentEditVC::class.java)
+        contentIntent.putExtra("title", forItem.title)
+        contentIntent.putExtra("key", key)
+
         if (key == PRICE_UNIT_KEY) {
             val rows = PRICE_UNIT.makeSelect()
             singleSelectIntent.putExtra("rows", rows)
@@ -278,7 +282,13 @@ class EditCourseVC : MyTableVC(), ImagePicker, ViewDelegate {
                 singleSelectIntent.putExtra("selected", selected)
             }
             startActivityForResult(singleSelectIntent, SELECT_REQUEST_CODE)
-
+        } else if (key == CONTENT_KEY) {
+            if (forItem.sender != null) {
+                val content = forItem.sender as String
+//                println(selecteds)
+                contentIntent.putExtra("content", content)
+            }
+            startActivityForResult(contentIntent, SELECT_REQUEST_CODE)
         }
 
     }
@@ -312,6 +322,11 @@ class EditCourseVC : MyTableVC(), ImagePicker, ViewDelegate {
                         selecteds = data!!.getStringArrayListExtra("selecteds")
                     }
 
+                    var content: String? = null
+                    if (data!!.hasExtra("content")) {
+                        content = data!!.getStringExtra("content")
+                    }
+
                     var item: FormItem? = null
                     if (key == PRICE_UNIT_KEY) {
                         item = getFormItemFromKey(key) as PriceUnitFormItem
@@ -323,6 +338,8 @@ class EditCourseVC : MyTableVC(), ImagePicker, ViewDelegate {
                         item = getFormItemFromKey(key) as WeekdayFormItem
                     } else if (key == START_TIME_KEY || key == END_TIME_KEY) {
                         item = getFormItemFromKey(key) as TimeFormItem
+                    } else if (key == CONTENT_KEY) {
+                        item = getFormItemFromKey(key) as ContentFormItem
                     }
 
                     if (item != null && selected != null) {
@@ -332,6 +349,10 @@ class EditCourseVC : MyTableVC(), ImagePicker, ViewDelegate {
                     if (item != null && selecteds != null) {
                         val value = selecteds.joinToString(",")
                         item.value = value
+                        item.make()
+                    }
+                    if (item != null && content != null) {
+                        item.value = content
                         item.make()
                     }
 
