@@ -61,6 +61,9 @@ class ManagerVC : BaseActivity() {
         Loading.show(mask)
         dataService.getList(this, source, "name", hashMapOf<String, Any>(), 1, 100, filter) { success ->
             if (success) {
+                for (row in dataService.superDataLists) {
+                    println(row.featured_path)
+                }
                 managerAdapter = ManagerAdapter(this, dataService.superDataLists,
                         { title, token ->
                             goManagerFunction(title, token, source)

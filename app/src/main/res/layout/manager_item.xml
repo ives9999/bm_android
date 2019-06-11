@@ -11,25 +11,46 @@
                     android:id="@+id/linearLayout3"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="10dp"
-                    android:paddingTop="12dp">
+                    >
+
+                    <ImageView
+                        android:id="@+id/featured"
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginTop="4dp"
+                        android:layout_marginBottom="4dp"
+                        android:layout_weight="1"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:srcCompat="@drawable/nophoto" />
 
                     <TextView
                         android:id="@+id/manager_name"
-                        android:layout_width="230dp"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="48dp"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginTop="4dp"
+                        android:layout_marginEnd="8dp"
+                        android:layout_marginBottom="4dp"
+                        android:textAlignment="textStart"
                         android:textColor="@color/WHITE"
                         android:textSize="18sp"
                         app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        app:layout_constraintEnd_toStartOf="@+id/manager_list_greater"
+                        app:layout_constraintStart_toEndOf="@+id/featured"
+                        app:layout_constraintTop_toTopOf="parent"
+                        tools:text="Title" />
 
                     <ImageView
                         android:id="@+id/manager_list_greater"
                         android:layout_width="18dp"
                         android:layout_height="18dp"
+                        android:layout_marginTop="4dp"
                         android:layout_marginEnd="24dp"
+                        android:layout_marginBottom="4dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
                         app:srcCompat="@drawable/greater1" />
@@ -40,7 +61,6 @@
                     android:id="@+id/line2"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/linearLayout3"
                     android:layout_margin="0dp"
                     android:padding="0dp">
 

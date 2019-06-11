@@ -159,6 +159,7 @@ open class DataService: BaseService() {
                         this.page = json.getInt("page")
                         this.perPage = json.getInt("perPage")
                         val rows = json.getJSONArray("rows")
+//                        println(rows)
                         for (i in 0..rows.length() - 1) {
                             val obj = rows.getJSONObject(i)
                             val title = obj.getString(titleField)
