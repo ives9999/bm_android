@@ -46,7 +46,7 @@
 
                 <Button
                     android:id="@+id/clear"
-                    style="@style/submit_button"
+                    style="@style/clear_button"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"

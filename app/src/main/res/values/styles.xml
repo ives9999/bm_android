@@ -69,12 +69,7 @@
         <!-- inactive track color (30% transparency) -->
         <item name="android:colorForeground">@color/MY_RED</item>
     </style>
-    <!-- Splash Screen theme -->
-    <style name="SplashTheme" parent="Theme.AppCompat">
-        <item name="android:windowBackground">@drawable/splash_background</item>
-        <item name="windowNoTitle">true</item>
-    </style>
-    
+
     <style name="submit_button">
         <item name="android:background">@drawable/button_rc</item>
         <item name="android:textColor">@color/WHITE</item>
@@ -90,10 +85,23 @@
         <item name="android:textColor">@color/WHITE</item>
     </style>
 
+    <style name="clear_button">
+        <item name="android:background">@drawable/button_rc_purple</item>
+        <item name="android:textColor">@color/WHITE</item>
+    </style>
+
     <style name="city_button">
         <item name="android:background">@drawable/button_city</item>
         <item name="android:textColor">@color/BLACK</item>
         <item name="android:textSize">18dp</item>
     </style>
+
+    <!-- Splash Screen theme -->
+    <style name="SplashTheme" parent="Theme.AppCompat.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="android:windowBackground">@drawable/splash</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
 
 </resources>

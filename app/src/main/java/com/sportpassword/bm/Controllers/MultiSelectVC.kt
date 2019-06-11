@@ -117,7 +117,7 @@ class MultiSelectVC : MyTableVC() {
 
         val intent = Intent()
         intent.putExtra("key", key)
-        println(selecteds);
+        //println(selecteds);
         intent.putStringArrayListExtra("selecteds", selecteds)
         setResult(Activity.RESULT_OK, intent)
         finish()
