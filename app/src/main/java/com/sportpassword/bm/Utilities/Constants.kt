@@ -216,6 +216,7 @@ val MEMBER_ARRAY: Map<String, Map<String, String>> = mapOf(
 val NOTIF_MEMBER_DID_CHANGE = "notifMemberChanged"
 val NOTIF_MEMBER_UPDATE = "notifMemberUpdate"
 val NOTIF_TEAM_UPDATE = "notifTeamUpdate"
+val NOTIF_COURSE_UPDATE = "notifCourseUpdate"
 val memberDidChangeIntent = Intent(NOTIF_MEMBER_DID_CHANGE)
 
 

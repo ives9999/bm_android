@@ -1,6 +1,7 @@
 package com.sportpassword.bm.Controllers
 
 import android.app.Activity
+import android.app.AlertDialog
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
@@ -279,7 +280,8 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
 
     fun prev() {
         hideKeyboard()
-        setResult(Activity.RESULT_OK)
+        val intent = Intent()
+        setResult(Activity.RESULT_OK, intent)
         finish()
     }
 
@@ -333,6 +335,16 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
         intent.putExtra("source", source)
         startActivity(intent)
     }
+
+    fun goEditCourse(title: String, course_token: String, coach_token:String) {
+        val intent = Intent(this, EditCourseVC::class.java)
+        intent.putExtra("title", title)
+        intent.putExtra("course_token", course_token)
+        intent.putExtra("coach_token", coach_token)
+
+        startActivityForResult(intent, 200)
+    }
+
     public fun goTempPlayDate(name: String, token: String) {
         val intent = Intent(this, TempPlayDateVC::class.java)
         intent.putExtra("name", name)
@@ -1389,6 +1401,16 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
     }
     fun info(msg: String, closeButtonTitle: String, buttonTitle: String, buttonAction: ()->Unit) {
         Alert.show(this, "訊息", msg, closeButtonTitle, buttonTitle, buttonAction)
+    }
+
+    fun warningWithPrev(msg: String) {
+        val alert = AlertDialog.Builder(this).create()
+        alert.setTitle("警告")
+        alert.setMessage(msg)
+        alert.setButton(AlertDialog.BUTTON_POSITIVE, "回上一頁", { Interface, j ->
+            finish()
+        })
+        alert.show()
     }
 
     open protected fun setRefreshListener() {

@@ -268,7 +268,7 @@ class EditVC : MyTableVC(), ImagePicker {
                     Loading.hide(mask)
                     if (success) {
                         if (dataService.success) {
-                            val id: Int = TeamService.id
+                            val id: Int = dataService.id
                             model.data[ID_KEY]!!["value"] = id
                             model.data[ID_KEY]!!["show"] = id
                             Alert.update(this, this.action, {

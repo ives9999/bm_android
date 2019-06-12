@@ -44,13 +44,13 @@ class SingleSelectVC : MyTableVC() {
             key = intent.getStringExtra("key")
         }
         if (key == null) {
-            alertError()
+            warningWithPrev("由於傳遞參數不正確，無法做選擇，請回上一頁重新進入")
         }
     }
 
     override fun generateItems(): ArrayList<Item> {
 
-        var items: ArrayList<Item> = arrayListOf()
+        val items: ArrayList<Item> = arrayListOf()
 
         val rowClick = { i: Int ->
             submit(i)
@@ -64,7 +64,7 @@ class SingleSelectVC : MyTableVC() {
             if (row.containsKey("value")) {
                 value = row.get("value")!!
             }
-            var isSelected = if(value == selected) true else false
+            val isSelected = if(value == selected) true else false
 
             if (title != null && value != null) {
                 val item = SingleSelectItem(title, value, isSelected, rowClick)
@@ -78,11 +78,11 @@ class SingleSelectVC : MyTableVC() {
     fun submit(idx: Int) {
 
         if (idx >= rows.size) {
-            alertError()
+            warningWithPrev("由於傳遞參數不正確，無法做選擇，請回上一頁重新進入")
         }
         val row = rows[idx]
         if (!row.containsKey("value")) {
-            alertError()
+            warningWithPrev("由於傳遞參數不正確，無法做選擇，請回上一頁重新進入")
         }
         val selected = row.get("value")!!
         val intent = Intent()
@@ -90,16 +90,6 @@ class SingleSelectVC : MyTableVC() {
         intent.putExtra("selected", selected)
         setResult(Activity.RESULT_OK, intent)
         finish()
-    }
-
-    private fun alertError() {
-        val alert = AlertDialog.Builder(this).create()
-        alert.setTitle("警告")
-        alert.setMessage("由於傳遞參數不正確，無法做選擇，請回上一頁重新進入")
-        alert.setButton(AlertDialog.BUTTON_POSITIVE, "回上一頁", { Interface, j ->
-            finish()
-        })
-        alert.show()
     }
 }
 

@@ -9,6 +9,7 @@ import com.android.volley.Response
 import com.android.volley.toolbox.JsonArrayRequest
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
+import com.facebook.internal.Mutable
 //import com.ohmerhe.kolley.request.Http
 import com.sportpassword.bm.Models.*
 import com.sportpassword.bm.Utilities.*
@@ -347,11 +348,12 @@ open class DataService: BaseService() {
     open fun getOne(context: Context, id: Int, source: String, token: String, completion: CompletionHandler) {}
     open fun getOne(context: Context, token: String?, completion: CompletionHandler) {}
 
-    fun update(context: Context, type: String, _params: MutableMap<String, Any>, filePath: String, complete: CompletionHandler) {
+    open fun update(context: Context, params: MutableMap<String, String>, filePath: String, complete: CompletionHandler) {}
+    open fun update(context: Context, type: String, _params: MutableMap<String, Any>, filePath: String, complete: CompletionHandler) {
 
 //        println(_params)
         val url = "$URL_UPDATE".format(type)
-        //println(url)
+//        println(url)
 //        val params: MutableList<Pair<String, String>> = mutableListOf()
         var postString: String = """
 {

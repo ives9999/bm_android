@@ -64,6 +64,12 @@ class ManagerCourseVC: MyTableVC() {
 //        refresh()
 //    }
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+
+        super.onActivityResult(requestCode, resultCode, data)
+        
+    }
+
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.add, menu)
         return true
@@ -121,11 +127,9 @@ class ManagerCourseVC: MyTableVC() {
                     button("編輯") {
                         onClick {
                             dialog.dismiss()
-                            val intent = Intent(this@ManagerCourseVC, EditCourseVC::class.java)
-                            intent.putExtra("title", row.title)
-                            intent.putExtra("token", row.token)
-
-                            startActivity(intent)
+                            if (token != null) {
+                                goEditCourse(row.title, row.token, token!!)
+                            }
                         }
                     }
                     button("刪除") {
@@ -146,7 +150,9 @@ class ManagerCourseVC: MyTableVC() {
         if (member.validate < 1) {
             Alert.show(this@ManagerCourseVC, "錯誤", "未通過EMail認證，無法新增課程，認證完後，請先登出再登入")
         } else {
-            //goEdit(source)
+            if (token != null) {
+                goEditCourse("新增課程", "", token!!)
+            }
         }
     }
 }

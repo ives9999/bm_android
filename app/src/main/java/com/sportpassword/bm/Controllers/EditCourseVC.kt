@@ -6,6 +6,8 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.LinearLayout
 import androidx.appcompat.app.AlertDialog
+import androidx.localbroadcastmanager.content.LocalBroadcastManager
+import com.facebook.internal.Mutable
 import com.sportpassword.bm.Adapters.Form.*
 import com.sportpassword.bm.Form.CourseForm
 import com.sportpassword.bm.Form.FormItem.*
@@ -15,6 +17,7 @@ import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.CourseService
 import com.sportpassword.bm.Utilities.*
 import com.sportpassword.bm.Views.ImagePicker
+import com.sportpassword.bm.member
 import com.xwray.groupie.kotlinandroidextensions.Item
 import kotlinx.android.synthetic.main.activity_edit_course_vc.*
 import kotlinx.android.synthetic.main.mask.*
@@ -31,6 +34,7 @@ class EditCourseVC : MyTableVC(), ImagePicker, ViewDelegate {
     override var currentPhotoPath = ""
     override var filePath: String = ""
     override var file: File? = null
+    var params1: MutableMap<String, String> = mutableMapOf<String, String>()
 
     lateinit override var imagePickerLayer: AlertDialog
     lateinit override var alertView: View
@@ -38,7 +42,8 @@ class EditCourseVC : MyTableVC(), ImagePicker, ViewDelegate {
     lateinit var superCourse: SuperCourse
 
     var title: String = ""
-    var token: String? = null
+    var course_token: String? = null
+    var coach_token: String? = null
 
     //Form
     var form: CourseForm = CourseForm()
@@ -66,8 +71,15 @@ class EditCourseVC : MyTableVC(), ImagePicker, ViewDelegate {
         if (intent.hasExtra("title")) {
             title = intent.getStringExtra("title")
         }
-        if (intent.hasExtra("token")) {
-            token = intent.getStringExtra("token")
+        if (intent.hasExtra("course_token")) {
+            course_token = intent.getStringExtra("course_token")
+        }
+        if (intent.hasExtra("coach_token")) {
+            coach_token = intent.getStringExtra("coach_token")
+        }
+
+        if (coach_token == null) {
+            warningWithPrev("沒有傳送教練代碼，無法編輯課程，請洽管理員")
         }
 
         setMyTitle(title)
@@ -90,14 +102,14 @@ class EditCourseVC : MyTableVC(), ImagePicker, ViewDelegate {
         refreshLayout = refresh
         setRefreshListener()
 
-        if (token != null) {
+        if (course_token != null && course_token!!.length > 0) {
             refresh()
         }
     }
 
     override fun refresh() {
         Loading.show(mask)
-        CourseService.getOne(this, token) { success ->
+        CourseService.getOne(this, course_token) { success ->
             if (success) {
                 superCourse = CourseService.superCourse
                 putValue()
@@ -415,5 +427,62 @@ class EditCourseVC : MyTableVC(), ImagePicker, ViewDelegate {
         //val m = edit_featured.
         originMarginTop = l.topMargin
         originMarginBottom = l.bottomMargin
+    }
+
+    fun submit(view: View) {
+
+        Loading.show(mask)
+        hideKeyboard()
+        params1.clear()
+        for (formItem in form.formItems) {
+            if (formItem.name != null && formItem.value != null) {
+                var value = formItem.value!!
+                if (value.contains("\"")) {
+                    value = value.replace("\"", "\\\"")
+//                    println(value)
+                }
+                params1.set(formItem.name!!, value!!)
+            }
+        }
+        var action = "UPDATE"
+        if (course_token != null && course_token!!.length == 0) {
+            action = "INSERT"
+        }
+        if (action == "INSERT") {
+            params1[CREATED_ID_KEY] = member.id.toString()
+        }
+        if (course_token != null) {
+            params1["course_token"] = course_token!!
+        }
+        if (coach_token != null) {
+            params1["coach_token"] = coach_token!!
+        }
+//        println(params)
+//        println(filePath)
+
+        CourseService.update(this, params1, filePath) { success ->
+            Loading.hide(mask)
+            if (success) {
+                if (CourseService.success) {
+                    Alert.update(this, action, {
+                        if (file != null) {
+                            file!!.delete()
+                        }
+                        val update = Intent(NOTIF_COURSE_UPDATE)
+                        LocalBroadcastManager.getInstance(this).sendBroadcast(update)
+                        finish()
+                    })
+                } else {
+                    Alert.show(context, "錯誤", CourseService.msg)
+                }
+            } else {
+                Alert.show(context, "錯誤", CourseService.msg)
+            }
+        }
+
+    }
+
+    fun cancel(view: View) {
+        prev()
     }
 }
