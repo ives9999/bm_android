@@ -1,5 +1,6 @@
 package com.sportpassword.bm.Controllers
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
@@ -470,6 +471,8 @@ class EditCourseVC : MyTableVC(), ImagePicker, ViewDelegate {
                         }
                         val update = Intent(NOTIF_COURSE_UPDATE)
                         LocalBroadcastManager.getInstance(this).sendBroadcast(update)
+                        val intent = Intent()
+                        setResult(Activity.RESULT_OK, intent)
                         finish()
                     })
                 } else {

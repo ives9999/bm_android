@@ -249,4 +249,7 @@ val PARAMS: HashMap<String, String> = hashMapOf("source" to SOURCE, "channel" to
 
 val SESSION_FILENAME: String = "com.sportpassword.bm.session"
 
+//request code
+val GENERAL_REQUEST_CODE: Int = 100
+
 

@@ -1,5 +1,6 @@
 package com.sportpassword.bm.Controllers
 
+import android.app.Activity
 import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
@@ -14,6 +15,7 @@ import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.CourseService
 import com.sportpassword.bm.Utilities.Alert
 import com.sportpassword.bm.Utilities.BASE_URL
+import com.sportpassword.bm.Utilities.GENERAL_REQUEST_CODE
 import com.sportpassword.bm.Utilities.Loading
 import com.sportpassword.bm.member
 import com.squareup.picasso.Picasso
@@ -67,7 +69,15 @@ class ManagerCourseVC: MyTableVC() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
 
         super.onActivityResult(requestCode, resultCode, data)
-        
+        when (requestCode) {
+            GENERAL_REQUEST_CODE -> {
+
+                if (resultCode == Activity.RESULT_OK) {
+                    refresh()
+                }
+
+            }
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {

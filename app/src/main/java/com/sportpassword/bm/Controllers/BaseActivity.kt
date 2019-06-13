@@ -281,7 +281,7 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
     fun prev() {
         hideKeyboard()
         val intent = Intent()
-        setResult(Activity.RESULT_OK, intent)
+        setResult(Activity.RESULT_CANCELED, intent)
         finish()
     }
 
@@ -342,7 +342,7 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
         intent.putExtra("course_token", course_token)
         intent.putExtra("coach_token", coach_token)
 
-        startActivityForResult(intent, 200)
+        startActivityForResult(intent, GENERAL_REQUEST_CODE)
     }
 
     public fun goTempPlayDate(name: String, token: String) {
