@@ -28,17 +28,10 @@ class WeekdayFormItem: FormItem {
     }
 
     override fun make() {
-        //value is "1,2,3"
+        //value is "18"
         if (value != null) {
-            if (value!!.indexOf(",") >= 0) {
-                valueToAnother()
-//                val tmps = value!!.split(",")
-//                for (tmp in tmps) {
-//                    weekdays.add(tmp.toInt())
-//                }
-            } else {
-                weekdays.add(value!!.toInt())
-            }
+
+            valueToAnother()
             var texts: ArrayList<String> = arrayListOf()
             var senders: ArrayList<String> = arrayListOf()
             if (weekdays.size > 0) {
@@ -66,11 +59,7 @@ class WeekdayFormItem: FormItem {
 
     override fun valueToAnother() {
         if (value != null) {
-            val values: ArrayList<String> = ArrayList(value!!.split(","))
-            weekdays.clear()
-            for (v in values) {
-                weekdays.add(v.toInt())
-            }
+            weekdays = Global.weekdaysParse(value!!.toInt())
         }
     }
 }

@@ -22,6 +22,7 @@ import java.util.*
 import java.util.concurrent.TimeUnit
 import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
+import kotlin.math.pow
 
 open class MYENUM<T>() {
 
@@ -696,6 +697,31 @@ object Global {
         }
 
         return allTimes
+    }
+
+    fun weekdaysParse(value: Int): ArrayList<Int> {
+        val arr: ArrayList<Int> = arrayListOf()
+        if (value > 0 && value < 128) {
+            for (i in 0..6) {
+                val two = 2.toFloat().pow(i).toInt()
+                if ((value and two) > 0) {
+                    arr.add(i + 1)
+                }
+            }
+        }
+
+        return arr
+    }
+
+    fun weekdaysToDBValue(arr: ArrayList<Int>): Int {
+        var res: Int = 0
+        for (value in arr) {
+            if (value >= 0 && value <= 6) {
+                res = res or (2.toFloat().pow(value - 1).toInt())
+            }
+        }
+
+        return res
     }
 }
 

@@ -360,7 +360,11 @@ class EditCourseVC : MyTableVC(), ImagePicker, ViewDelegate {
                         item.make()
                     }
                     if (item != null && selecteds != null) {
-                        val value = selecteds.joinToString(",")
+                        var value: String = "-1"
+                        if (key == WEEKDAY_KEY) {
+                            val tmps: ArrayList<Int> = ArrayList(selecteds.map {it.toInt()})
+                            value = Global.weekdaysToDBValue(tmps).toString()
+                        }
                         item.value = value
                         item.make()
                     }

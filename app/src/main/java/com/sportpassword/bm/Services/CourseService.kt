@@ -98,6 +98,7 @@ object CourseService: DataService() {
                 if (response != null) {
                     try {
                         val json = JSONObject(response.toString())
+//                        println(json)
                         superCourse = JSONParse.parse<SuperCourse>(json)!!
 //                        superCourse.print()
                         this.success = true
