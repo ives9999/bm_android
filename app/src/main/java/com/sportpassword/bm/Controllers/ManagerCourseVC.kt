@@ -145,7 +145,7 @@ class ManagerCourseVC: MyTableVC() {
                     button("刪除") {
                         onClick {
                             dialog.dismiss()
-                            layerDelete()
+                            goDelete1("course", row.token!!)
                         }
                     }
                     button("取消") {

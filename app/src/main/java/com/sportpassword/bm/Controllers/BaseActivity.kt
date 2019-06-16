@@ -375,6 +375,16 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
         })
     }
 
+    fun goDelete1(page: String, token: String="") {
+        Alert.delete(this, {
+            Loading.show(mask)
+            dataService.delete(this, page, token) { success ->
+                Loading.hide(mask)
+                refresh()
+            }
+        })
+    }
+
     public fun goEditMember() {
         val accountIntent = Intent(this, AccountActivity::class.java)
         startActivity(accountIntent)
