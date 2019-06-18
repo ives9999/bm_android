@@ -60,7 +60,7 @@ open class TabFragment : Fragment(), SearchItemDelegate {
 //    var vimeoClient: VimeoClient? = null
     var mainActivity: MainActivity? = null
 
-    protected var isCoachShow: Boolean = false
+    protected var isCourseShow: Boolean = false
     protected var isTeamShow: Boolean = false
 
     open val _searchRows: ArrayList<HashMap<String, String>> = arrayListOf()
@@ -93,7 +93,7 @@ open class TabFragment : Fragment(), SearchItemDelegate {
     open protected fun initAdapter() {
         listAdapter = ListAdapter(context!!, type!!, screenWidth, { data ->
             var intent: Intent? = null
-            if (type == "coach") {
+            if (type == "course") {
                 intent = Intent(activity, ShowCoachVC::class.java)
             } else {
                 intent = Intent(activity, ShowActivity::class.java)
@@ -104,7 +104,7 @@ open class TabFragment : Fragment(), SearchItemDelegate {
             startActivity(intent)
         }, { data ->
             var key = CITY_KEY
-            if (type == "coach") {
+            if (type == "course") {
                 key = CITYS_KEY
             }
             if (data.data.containsKey(key)) {
@@ -121,14 +121,14 @@ open class TabFragment : Fragment(), SearchItemDelegate {
 
     }
 
-    fun refresh() {
+    open fun refresh() {
         page = 1
         getDataStart(page, perPage)
         listAdapter.notifyDataSetChanged()
     }
 
     open protected fun getDataStart(_page: Int, _perPage: Int) {
-        if (isCoachShow || isTeamShow) {
+        if (isCourseShow || isTeamShow) {
             Loading.show(maskView)
         }
         loading = true

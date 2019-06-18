@@ -57,6 +57,8 @@ class ListAdapter(val context: Context, val iden: String="team", val screenWidth
                 bindCoach(superData)
             } else if (iden == "arena") {
                 bindArena(superData)
+            } else if (iden == "course") {
+                bindCourse(superData)
             }
             if (superData.vimeo.isEmpty() && superData.youtube.isEmpty()) {
                 nameView.visibility = View.VISIBLE
@@ -66,11 +68,11 @@ class ListAdapter(val context: Context, val iden: String="team", val screenWidth
                 if (superData.featured_path.isNotEmpty()) {
                     Picasso.with(context)
                             .load(superData.featured_path)
-                            .placeholder(R.drawable.loading_square)
-                            .error(R.drawable.load_failed_square)
+                            .placeholder(R.drawable.loading_square_120)
+                            .error(R.drawable.loading_square_120)
                             .into(featuredView)
                 } else {
-                    featuredView.setImageResource(R.drawable.loading_square)
+                    featuredView.setImageResource(R.drawable.loading_square_120)
                 }
             } else if (superData.featured_path.isEmpty() && superData.youtube.isNotEmpty()) {
                 nameView.visibility = View.INVISIBLE
@@ -142,6 +144,27 @@ class ListAdapter(val context: Context, val iden: String="team", val screenWidth
         }
 
         private fun bindCoach(superData: SuperData) {
+            if (superData.data.containsKey(CITYS_KEY)) {
+                //println(superData.superData["city"]!!["show"])
+                cityView.text = superData.data[CITYS_KEY]!!["show"] as String
+                cityView.setOnClickListener {
+                    searchCity(superData)
+                }
+            }
+            if (superData.data.containsKey(MOBILE_KEY)) {
+                //println(superData.superData["arena"]!!["show"])
+                arenaView.text = superData.data[MOBILE_KEY]!!["show"] as String
+            }
+            if (superData.data.containsKey(COACH_SENIORITY_KEY)) {
+                ballView.text = "年資: " + superData.data[COACH_SENIORITY_KEY]!!["show"] as String
+            }
+            if (superData.data.containsKey(LINE_KEY)) {
+                //println(superData.superData["arena"]!!["show"])
+                dayView.text = "line id: " + superData.data[LINE_KEY]!!["show"] as String
+            }
+        }
+
+        private fun bindCourse(superData: SuperData) {
             if (superData.data.containsKey(CITYS_KEY)) {
                 //println(superData.superData["city"]!!["show"])
                 cityView.text = superData.data[CITYS_KEY]!!["show"] as String

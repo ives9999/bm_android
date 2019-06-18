@@ -15,6 +15,8 @@ class SuperCourse(data: JSONObject): SuperModel(data) {
     var price_unit: String = ""
     var price_unit1: PRICE_UNIT = PRICE_UNIT.month
     var price_desc: String = ""
+    var price_text_long: String = ""
+    var price_text_short: String = ""
     var limit: Int = -1
     var kind: String = ""
     var kind1: COURSE_KIND = COURSE_KIND.cycle
@@ -24,8 +26,11 @@ class SuperCourse(data: JSONObject): SuperModel(data) {
     var start_date: String = ""
     var end_date: String = ""
     var weekday: Int = -1
+    var weekday_text: String = ""
     var start_time: String = ""
     var end_time: String = ""
+    var start_time_text: String = ""
+    var end_time_text: String = ""
     var youtube: String = ""
 
 
@@ -40,6 +45,7 @@ class SuperCourse(data: JSONObject): SuperModel(data) {
     var featured_path: String = ""
     var thumb: String = ""
     var coach: SuperCoach = SuperCoach(JSONObject())
+    var citys: SuperCitys = SuperCitys(JSONObject())
 
     override fun filter() {
         super.filter()
@@ -58,5 +64,8 @@ class SuperCourse(data: JSONObject): SuperModel(data) {
 
 class SuperCourses(data: JSONObject): SuperModel(data) {
     var success: Boolean = true
+    var page: Int = 0
+    var totalCount: Int = 0
+    var perPage: Int = 0
     var rows: ArrayList<SuperCourse> = arrayListOf()
 }

@@ -40,7 +40,11 @@ open class DataService: BaseService() {
     var citysandareas: HashMap<Int, HashMap<String, Any>> = hashMapOf()
     lateinit var timetables: Timetables
 
+    var superModel: SuperModel = SuperModel(JSONObject())
+
     var image: Bitmap? = null
+
+    open fun getList(context: Context, token: String?, filter: Array<Array<Any>>?, page: Int, perPage: Int, complete: CompletionHandler){}
 
     fun getList(context: Context, type:String, titleField:String, params: HashMap<String,Any>, page:Int, perPage:Int, filter:Array<Array<Any>>?, complete:CompletionHandler) {
         val url = "$URL_LIST".format(type)

@@ -30,8 +30,9 @@ import org.jetbrains.anko.sdk27.coroutines.onClick
 
 
 class ManagerCourseVC: MyTableVC() {
-    var token: String? = null
-    var name: String? = null
+    var token: String? = null //coach token
+    var name: String? = null  //coach name
+    var manager_token: String? = null
 
     var superCourses: SuperCourses? = null
 
@@ -46,6 +47,9 @@ class ManagerCourseVC: MyTableVC() {
         }
         if (intent.hasExtra("name")) {
             name = intent.getStringExtra("name")
+        }
+        if (intent.hasExtra("manager_token")) {
+            manager_token = intent.getStringExtra("manager_token")
         }
 
         if (name == null) {
@@ -90,13 +94,22 @@ class ManagerCourseVC: MyTableVC() {
     }
 
     private fun getCourseList() {
-        val filter: Array<Array<Any>> = arrayOf()
+        var filter1: Array<Any>? = null
+        if (manager_token != null) {
+            filter1 = arrayListOf<Any>("manager_token", "=", manager_token!!).toTypedArray()
+        }
+        var filter: Array<Array<Any>>?
+        if (filter1 != null) {
+            filter = arrayOf(filter1)
+        } else {
+            filter = arrayOf()
+        }
 
         Loading.show(mask)
         CourseService.getList(this, token, filter, 1, 100) { success ->
 
             if (success) {
-                superCourses = CourseService.superCourses
+                superCourses = CourseService.superModel as SuperCourses
                 val items = generateItems()
                 adapter.update(items)
                 adapter.notifyDataSetChanged()
@@ -107,7 +120,7 @@ class ManagerCourseVC: MyTableVC() {
     }
 
     override fun generateItems(): ArrayList<Item> {
-        var items: ArrayList<Item> = arrayListOf()
+        val items: ArrayList<Item> = arrayListOf()
         if (superCourses != null) {
             for (row in superCourses!!.rows) {
                 items.add(ManagerCourseItem(this@ManagerCourseVC, row))
@@ -137,9 +150,9 @@ class ManagerCourseVC: MyTableVC() {
                     button("編輯") {
                         onClick {
                             dialog.dismiss()
-                            if (token != null) {
-                                goEditCourse(row.title, row.token, token!!)
-                            }
+                            //if (token != null) {
+                                goEditCourse(row.title, row.token, row.coach.token)
+                            //}
                         }
                     }
                     button("刪除") {

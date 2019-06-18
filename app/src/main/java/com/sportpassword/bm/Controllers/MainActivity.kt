@@ -70,8 +70,8 @@ class MainActivity : BaseActivity() {
     //private var mSectionPagerAdapter: SectionsPagerAdapter? = null
     //private val apiClient = VimeoClient.getInstance()
 
-    val tabsTextArr: Array<String> = arrayOf<String>("臨打", "教練", "球隊", "更多")
-    val tabsIconArr: Array<String> = arrayOf<String>("tempplay", "coach", "team", "more")
+    val tabsTextArr: Array<String> = arrayOf<String>("臨打", "課程", "球隊", "更多")
+    val tabsIconArr: Array<String> = arrayOf<String>("tempplay", "course", "team", "more")
 
     val fixedRows: ArrayList<Map<String, String>> = arrayListOf(
             mapOf("text" to "帳戶資料", "icon" to "account", "segue" to "account"),
@@ -193,8 +193,6 @@ class MainActivity : BaseActivity() {
 
         //mSectionPagerAdapter = SectionsPagerAdapter(supportFragmentManager)
         //tab_container.adapter = mSectionPagerAdapter
-
-
 
         tab_container.addOnPageChangeListener(TabLayout.TabLayoutOnPageChangeListener(tabs))
         tabs.addOnTabSelectedListener(TabLayout.ViewPagerOnTabSelectedListener(tab_container))
@@ -405,10 +403,6 @@ class MainActivity : BaseActivity() {
 
     fun search_team(view: View) {
         goSearch("team")
-    }
-
-    fun manager(view: View) {
-        goManager(view.tag as String)
     }
 
     private fun setMenuWidth() {

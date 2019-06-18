@@ -31,8 +31,13 @@ class MoreFragment : TabFragment() {
                               savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.tab_more, container, false)
 
-        val row1 = view.findViewById<ConstraintLayout>(R.id.more_arena_row)
+        val row1 = view.findViewById<ConstraintLayout>(R.id.more_coach_row)
         row1.setOnClickListener { view ->
+            (activity!! as MainActivity).goCoach()
+        }
+
+        val row2 = view.findViewById<ConstraintLayout>(R.id.more_arena_row)
+        row2.setOnClickListener { view ->
             (activity!! as MainActivity).goArena()
 //            val fm = activity!!.supportFragmentManager
 //            val arenaFragment = ArenaFragment.newInstance("arena", screenWidth)
@@ -42,30 +47,30 @@ class MoreFragment : TabFragment() {
 //                    .commit()
         }
 
-        val row2 = view.findViewById<ConstraintLayout>(R.id.more_teach_row)
-        row2.setOnClickListener() { view ->
-            (activity!! as MainActivity).goCourse()
+        val row3 = view.findViewById<ConstraintLayout>(R.id.more_teach_row)
+        row3.setOnClickListener() { view ->
+            (activity!! as MainActivity).goTeach()
 
             //val mainActivity = activity as MainActivity
             //mainActivity.test()
 
 //            val fm = activity!!.supportFragmentManager
-//            val teachFragment = CourseFragment.newInstance("teach", screenWidth)
+//            val teachFragment = TeachFragment.newInstance("teach", screenWidth)
 //            fm.beginTransaction()
 //                    .replace(R.id.more_container, teachFragment)
 //                    .addToBackStack(null)
 //                    .commit()
         }
-        val row3 = view.findViewById<ConstraintLayout>(R.id.more_pn_row)
-        row3.setOnClickListener() { view ->
+        val row4 = view.findViewById<ConstraintLayout>(R.id.more_pn_row)
+        row4.setOnClickListener() { view ->
             val intent = Intent(activity, ShowPNVC::class.java)
 //            intent.putExtra("title", "報名臨打")
 //            intent.putExtra("content", "孫志煌報名2019-03-09 17:00的臨打")
             startActivity(intent)
 
         }
-        val row4 = view.findViewById<ConstraintLayout>(R.id.more_version_row)
-        row4.setOnClickListener { view ->
+        val row5 = view.findViewById<ConstraintLayout>(R.id.more_version_row)
+        row5.setOnClickListener { view ->
             val p = context!!.applicationContext.packageManager.getPackageInfo(context!!.packageName, 0)
             val v = p.versionCode
             val n = p.versionName

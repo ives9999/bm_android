@@ -8,3 +8,7 @@ class SuperCity(data: JSONObject): SuperModel(data) {
     var name: String = ""
     var zip: String = ""
 }
+
+class SuperCitys(data: JSONObject): SuperModel(data) {
+    var rows: ArrayList<SuperCity> = arrayListOf()
+}

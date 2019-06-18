@@ -313,22 +313,34 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
         startActivity(intent)
     }
 
-    public fun goTeamTempPlayEdit(token: String) {
+    fun goTeamTempPlayEdit(token: String) {
         val intent = Intent(this, TeamTempPlayEditActivity::class.java)
         intent.putExtra("token", token)
         startActivity(intent)
     }
 
-    public fun goManager(page: String) {
+    fun manager(view: View) {
+        goManager(view.tag as String)
+    }
+
+    fun goManager(page: String) {
         if (!member.isLoggedIn) {
             Alert.show(this, "警告", "請先登入會員")
             return
         }
-        val intent = Intent(this, ManagerVC::class.java)
-        intent.putExtra("source", page)
-        startActivity(intent)
+        var intent: Intent? = null
+        if (page == "course") {
+            intent = Intent(this, ManagerCourseVC::class.java)
+            intent.putExtra("manager_token", member.token)
+        } else {
+            intent = Intent(this, ManagerVC::class.java)
+            intent.putExtra("source", page)
+        }
+        if (intent != null) {
+            startActivity(intent)
+        }
     }
-    public fun goManagerFunction(title: String, token: String, source: String) {
+    fun goManagerFunction(title: String, token: String, source: String) {
         val intent = Intent(this, ManagerFunctionVC::class.java)
         intent.putExtra("title", title)
         intent.putExtra("token", token)
@@ -414,12 +426,20 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
         startActivity(i)
     }
 
-    public fun goBlackList() {
+    fun goBlackList() {
         val intent = Intent(this, BlackListVC::class.java)
         startActivity(intent)
     }
 
-    public fun goArena() {
+    fun goCoach() {
+        val i = Intent(this, CoachVC::class.java)
+        i.putExtra("type", "coach")
+        i.putExtra("titleField", "name")
+        startActivity(i)
+
+    }
+
+    fun goArena() {
         val i = Intent(this, ArenaVC::class.java)
         i.putExtra("type", "arena")
         i.putExtra("titleField", "name")
@@ -427,7 +447,7 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
 
     }
 
-    public fun goCourse() {
+    fun goTeach() {
         val i = Intent(this, TeachVC::class.java)
         i.putExtra("type", "teach")
         i.putExtra("titleField", "title")
@@ -435,7 +455,7 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
 
     }
 
-    public fun goTimeTable(source: String, token: String) {
+    fun goTimeTable(source: String, token: String) {
         val i = Intent(this, TimeTableVC::class.java)
         i.putExtra("source", source)
         i.putExtra("token", token)
@@ -664,9 +684,7 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
         val tag = view.tag as String
         when (tag) {
             "coach" -> {
-                containerID = "coach_container"
-                val frag = getFragment(tag) as CoachFragment
-                searchRows = frag._searchRows
+                containerID = "constraintLayout"
             }
             "team" -> {
                 containerID = "team_container"
@@ -1306,8 +1324,7 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
         unmask()
         prepareParams()
         if (page == "coach") {
-            val frag = getFragment(page) as CoachFragment
-            frag.refresh()
+            refresh()
         } else if (page == "team") {
             val frag = getFragment(page) as TeamFragment
             frag.refresh()
@@ -1322,8 +1339,7 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
         prepareParams("all")
 //        println(city_id)
         if (page == "coach") {
-            val frag = getFragment(page) as CoachFragment
-            frag.refresh()
+            refresh()
         } else if (page == "team") {
             val frag = getFragment(page) as TeamFragment
             frag.refresh()

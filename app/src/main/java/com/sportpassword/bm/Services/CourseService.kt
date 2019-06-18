@@ -20,13 +20,13 @@ object CourseService: DataService() {
     lateinit var superCourses: SuperCourses
     lateinit var superCourse: SuperCourse
 
-    fun getList(context: Context, token: String?, filter: Array<Array<Any>>?, page: Int, perPage: Int, complete: CompletionHandler) {
+    override fun getList(context: Context, token: String?, filter: Array<Array<Any>>?, page: Int, perPage: Int, complete: CompletionHandler) {
 
         var url = URL_COURSE_LIST
         if (token != null) {
             url = url + "/" + token
         }
-//        println(url)
+        println(url)
         val header: MutableList<Pair<String, String>> = mutableListOf()
         header.add(Pair("Accept","application/json"))
         header.add(Pair("Content-Type","application/json; charset=utf-8"))
@@ -48,6 +48,7 @@ object CourseService: DataService() {
             }
             body.put("where", whereArr)
         }
+        println(body)
 
         MyHttpClient.instance.post(context, url, body.toString()) { success ->
             if (success) {
@@ -55,9 +56,14 @@ object CourseService: DataService() {
                 if (response != null) {
                     try {
                         val json = JSONObject(response.toString())
-                        superCourses = JSONParse.parse<SuperCourses>(json)!!
+//                        println(json)
+                        superModel = JSONParse.parse<SuperCourses>(json)!!
+                        //superCourses = JSONParse.parse<SuperCourses>(json)!!
 //                        for (row in superCourses.rows) {
-//                            row.print()
+//                            val citys = row.coach.citys
+//                            for (city in citys) {
+//                                city.print()
+//                            }
 //                        }
                         this.success = true
                     } catch (e: Exception) {

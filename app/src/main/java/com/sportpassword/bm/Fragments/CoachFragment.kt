@@ -60,7 +60,7 @@ class CoachFragment : TabFragment() {
 
     override fun setUserVisibleHint(isVisibleToUser: Boolean) {
         super.setUserVisibleHint(isVisibleToUser)
-        isCoachShow = isVisibleToUser
+        //isCourseShow = isVisibleToUser
     }
 
     override fun getDataStart(_page: Int, _perPage: Int) {

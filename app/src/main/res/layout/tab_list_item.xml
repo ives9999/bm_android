@@ -1,149 +1,186 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/linearLayout4"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    tools:layout_editor_absoluteY="81dp">
+    android:orientation="vertical">
 
-    <androidx.cardview.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/card_view"
+
+    <LinearLayout
+        android:id="@+id/container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        app:cardBackgroundColor="@android:color/transparent">
+        android:layout_marginLeft="4dp"
+        android:layout_marginRight="4dp"
+        android:orientation="horizontal">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/linearLayout22"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+        <LinearLayout
+            android:id="@+id/featrued_container"
+            android:layout_width="90dp"
+            android:layout_height="90dp"
+            android:layout_gravity="center_horizontal|center_vertical"
+            android:layout_marginRight="12dp">
 
             <ImageView
                 android:id="@+id/listFeatured"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
-                android:layout_marginBottom="8dp"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="2dp"
-                android:paddingBottom="8dp"
-                card_view:layout_constraintBottom_toBottomOf="parent"
-                card_view:layout_constraintStart_toStartOf="parent"
-                card_view:layout_constraintTop_toTopOf="parent" />
-
-            <TextView
-                android:id="@+id/title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="4dp"
-                android:layout_marginTop="2dp"
-                android:textColor="@color/WHITE"
-                android:textSize="20sp"
-                android:textStyle="bold"
-                app:layout_constraintStart_toEndOf="@+id/listFeatured"
-                app:layout_constraintTop_toTopOf="@+id/listFeatured"
-                tools:text="球隊" />
-            <Button
-                android:id="@+id/listCityBtn"
-                android:layout_width="wrap_content"
-                android:layout_height="24dp"
-                style="@style/city_button"
-                android:layout_marginStart="16dp"
-                card_view:layout_constraintBottom_toBottomOf="@+id/title"
-                card_view:layout_constraintStart_toEndOf="@+id/title"
-                card_view:layout_constraintTop_toTopOf="@+id/title"
-                />
+                android:background="@drawable/loading_square_120"
+                android:scaleType="fitCenter"
+                tools:srcCompat="@drawable/loading_square_120" />
+        </LinearLayout>
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
 
-            <TextView
-                android:id="@+id/listArenaTxt"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:textColor="@color/MY_GREEN"
-                android:textSize="18dp"
-                card_view:layout_constraintStart_toStartOf="@+id/title"
-                card_view:layout_constraintTop_toBottomOf="@+id/title"
-                tools:text="球館" />
+                android:layout_marginRight="8dp"
+                android:layout_weight="10"
+                android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/listBallTxt"
-                android:layout_width="wrap_content"
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+
+                    <TextView
+                        android:id="@+id/title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="4dp"
+                        android:layout_marginTop="2dp"
+                        android:layout_marginEnd="4dp"
+                        android:layout_weight="7"
+                        android:textColor="@color/WHITE"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        app:layout_constraintStart_toEndOf="@+id/listFeatured"
+                        app:layout_constraintTop_toTopOf="@+id/listFeatured"
+                        tools:text="球隊" />
+
+                    <Button
+                        android:id="@+id/listCityBtn"
+                        style="@style/city_button"
+                        android:layout_width="wrap_content"
+                        android:layout_height="24dp"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginEnd="4dp"
+                        android:layout_weight="3" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+
+                    <TextView
+                        android:id="@+id/listArenaTxt"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="12dp"
+                        android:layout_weight="5"
+                        android:textColor="@color/MY_GREEN"
+                        android:textSize="18dp"
+                        tools:text="球館" />
+
+                    <TextView
+                        android:id="@+id/listBallTxt"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="4"
+                        android:textColor="@color/MY_GREEN"
+                        android:textSize="18dp"
+                        tools:text="球種" />
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="2"
+                        android:orientation="horizontal">
+
+                        <ImageButton
+                            android:id="@+id/marker"
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:layout_gravity="center_horizontal|center_vertical"
+                            android:layout_marginStart="8dp"
+                            android:background="@android:color/transparent"
+                            android:scaleType="fitCenter"
+                            app:srcCompat="@drawable/marker" />
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+
+                    <TextView
+                        android:id="@+id/listDayTxt"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="12dp"
+                        android:layout_weight="6"
+                        android:textColor="@color/MY_GREEN"
+                        android:textSize="18dp"
+                        tools:text="星期" />
+
+                    <TextView
+                        android:id="@+id/listIntervalTxt"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="4"
+                        android:textColor="@color/MY_GREEN"
+                        android:textSize="18dp"
+                        tools:text="時段" />
+
+                </LinearLayout>
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/greater_container"
+                android:layout_width="20dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:textColor="@color/MY_GREEN"
-                android:textSize="18dp"
-                card_view:layout_constraintStart_toEndOf="@+id/listArenaTxt"
-                card_view:layout_constraintTop_toTopOf="@+id/listArenaTxt"
-                tools:text="球種" />
+                android:layout_gravity="center_vertical">
 
-            <TextView
-                android:id="@+id/listDayTxt"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:textColor="@color/MY_GREEN"
-                android:textSize="18dp"
-                card_view:layout_constraintStart_toStartOf="@+id/listArenaTxt"
-                card_view:layout_constraintTop_toBottomOf="@+id/listArenaTxt"
-                tools:text="星期" />
-
-            <TextView
-                android:id="@+id/listIntervalTxt"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="12dp"
-                android:textColor="@color/MY_GREEN"
-                android:textSize="18dp"
-                card_view:layout_constraintStart_toEndOf="@+id/listDayTxt"
-                card_view:layout_constraintTop_toTopOf="@+id/listDayTxt"
-                tools:text="時段" />
-
-
-            <ImageView
-                android:id="@+id/imageView14"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginTop="8dp"
-                app:srcCompat="@drawable/greater1"
-                card_view:layout_constraintBottom_toBottomOf="parent"
-                card_view:layout_constraintEnd_toEndOf="parent"
-                card_view:layout_constraintTop_toTopOf="parent" />
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/line1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="2dp"
-                card_view:layout_constraintTop_toBottomOf="@+id/listFeatured">
-
-                <include
-                    android:id="@+id/include"
-                    layout="@layout/divider"
+                <ImageView
+                    android:id="@+id/imageView14"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    card_view:layout_constraintBottom_toBottomOf="parent"
-                    card_view:layout_constraintStart_toStartOf="parent" />
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-            <ImageButton
-                android:id="@+id/marker"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:layout_marginStart="16dp"
-                android:background="@android:color/transparent"
-                android:scaleType="fitCenter"
-                app:srcCompat="@drawable/marker"
-                card_view:layout_constraintBottom_toBottomOf="@+id/listBallTxt"
-                card_view:layout_constraintStart_toEndOf="@+id/listBallTxt"
-                card_view:layout_constraintTop_toTopOf="@+id/listBallTxt" />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
+                    app:srcCompat="@drawable/greater1" />
+            </LinearLayout>
 
 
-    </androidx.cardview.widget.CardView>
+        </LinearLayout>
+
+    </LinearLayout>
 
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <LinearLayout
+        android:id="@+id/line1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp">
+
+        <include
+            android:id="@+id/include"
+            layout="@layout/divider"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+
+
+</LinearLayout>

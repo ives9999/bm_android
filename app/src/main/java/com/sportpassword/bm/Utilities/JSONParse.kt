@@ -1,9 +1,7 @@
 package com.sportpassword.bm.Utilities
 
 import com.beust.klaxon.internal.firstNotNullResult
-import com.sportpassword.bm.Models.BlackList
-import com.sportpassword.bm.Models.SuperCity
-import com.sportpassword.bm.Models.SuperModel
+import com.sportpassword.bm.Models.*
 import org.json.JSONArray
 import org.json.JSONObject
 import kotlin.reflect.KClass
@@ -59,6 +57,12 @@ class JSONParse {
                         if (key == "city") {
                             val city = JSONParse.parse<SuperCity>(value)!!
                             _setter(it, res, city)
+                        } else if (key == "citys") {
+                            val citys = JSONParse.parse<SuperCitys>(value)!!
+                            _setter(it, res, citys)
+                        } else if (key == "coach") {
+                            val coach = JSONParse.parse<SuperCoach>(value)!!
+                            _setter(it, res, coach)
                         }
                         //val d = makeMap(value)
                         //_setter(it, res, d)
