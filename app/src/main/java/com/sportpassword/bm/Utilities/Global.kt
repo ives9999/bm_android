@@ -625,6 +625,28 @@ fun Date.timeIntervalSince(stop: Date): Long {
     return TimeUnit.MILLISECONDS.toSeconds(diffInMs)
 }
 
+fun HashMap<String, Any>.toJSONString(): String {
+
+    var json: String = "{"
+    val tmps: ArrayList<String> = arrayListOf()
+    for ((key, value) in this) {
+        var str: String = ""
+        val type = value::class.simpleName!!
+        if (type == "Array") {
+            val values: Array<String> = value as Array<String>
+            val str1: String = values.joinToString(",")
+            str = "\"$key\":[$str1]"
+        } else {
+            str = "\"$key\":\"$value\""
+        }
+        tmps.add(str)
+    }
+    json += tmps.joinToString(",")
+    json += "}"
+
+    return json
+}
+
 fun <T1, T2> Map<T1, T2>.print() {
     for ((key, value) in this) {
         //println("${key} => ${value}")

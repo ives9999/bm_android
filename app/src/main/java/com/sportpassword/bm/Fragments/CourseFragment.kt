@@ -10,8 +10,7 @@ import com.sportpassword.bm.Models.SuperCourse
 import com.sportpassword.bm.Models.SuperCourses
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.CourseService
-import com.sportpassword.bm.Utilities.BASE_URL
-import com.sportpassword.bm.Utilities.Loading
+import com.sportpassword.bm.Utilities.*
 import com.squareup.picasso.Picasso
 import com.xwray.groupie.ExpandableGroup
 import com.xwray.groupie.GroupAdapter
@@ -21,6 +20,7 @@ import com.xwray.groupie.kotlinandroidextensions.Item
 import kotlinx.android.synthetic.main.mask.*
 import kotlinx.android.synthetic.main.tab_course.*
 import kotlinx.android.synthetic.main.tab_list_item.*
+import kotlinx.android.synthetic.main.tempplay_signup_one_item.*
 
 class CourseFragment : TabFragment() {
 
@@ -28,6 +28,14 @@ class CourseFragment : TabFragment() {
     protected lateinit var adapter: GroupAdapter<ViewHolder>
     protected val adapterSections: ArrayList<Section> = arrayListOf()
     var sections: ArrayList<String> = arrayListOf()
+
+    override val _searchRows: ArrayList<HashMap<String, String>> = arrayListOf(
+            hashMapOf("title" to "關鍵字","key" to KEYWORD_KEY,"value" to "","value_type" to "String","show" to "不限"),
+            hashMapOf("title" to "縣市","key" to CITY_KEY,"value" to "","value_type" to "Array","show" to "不限"),
+            hashMapOf("title" to "日期","key" to WEEKDAY_KEY,"value" to "","value_type" to "Array","show" to "不限"),
+            hashMapOf("title" to "開始時間之後","key" to START_TIME_KEY,"value" to "","value_type" to "String","show" to "不限"),
+            hashMapOf("title" to "結束時間之前","key" to END_TIME_KEY,"value" to "","value_type" to "String","show" to "不限")
+    )
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -106,7 +114,7 @@ class CourseFragment : TabFragment() {
         Loading.show(maskView)
         //println("page: $_page")
         //println(mainActivity!!.params)
-        dataService.getList(context!!, null, null, _page, _perPage) { success ->
+        dataService.getList(context!!, null, params, _page, _perPage) { success ->
             getDataEnd(success)
         }
     }
@@ -161,8 +169,60 @@ class CourseFragment : TabFragment() {
 
     }
 
+    fun layerSubmit() {
+        prepareParams()
+        page = 1
+        theFirstTime = true
+        refresh()
+    }
 
-        companion object {
+    fun prepareParams() {
+        params.clear()
+        for (searchRow in _searchRows) {
+            var value_type: String? = null
+            if (searchRow.containsKey("value_type")) {
+                value_type = searchRow.get("value_type")
+            }
+            var value: String = ""
+            if (searchRow.containsKey("value")) {
+                value = searchRow.get("value")!!
+            }
+            var key: String? = null
+            if (searchRow.containsKey("key")) {
+                key = searchRow.get("key")!!
+            }
+            if (value_type != null && key != null && value.length > 0) {
+                var values: Array<String>? = null
+                if (value_type == "String") {
+                    params[key] = value
+                } else if (value_type == "Array") {
+                    value = searchRow.get("value")!!
+                    values = value.split(",").toTypedArray()
+                }
+                if (values != null) {
+                    params[key] = values
+                }
+            }
+        }
+    }
+
+    override fun remove(indexPath: IndexPath) {
+        val row = _searchRows[indexPath.row]
+        val key = row["key"]!!
+        when (key) {
+            CITY_KEY -> mainActivity!!.citys.clear()
+            ARENA_KEY -> mainActivity!!.arenas.clear()
+            TEAM_WEEKDAYS_KEY -> mainActivity!!.weekdays.clear()
+            TEAM_PLAY_START_KEY -> mainActivity!!.times.clear()
+            TEAM_DEGREE_KEY -> mainActivity!!.degrees.clear()
+        }
+        _searchRows[indexPath.row]["detail"] = "全部"
+        val rows = mainActivity!!.generateSearchItems(type!!)
+        mainActivity!!.searchAdapter.update(rows)
+    }
+
+
+    companion object {
         // TODO: Rename parameter arguments, choose names that match
         // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
         private val ARG_PARAM1 = "TYPE"

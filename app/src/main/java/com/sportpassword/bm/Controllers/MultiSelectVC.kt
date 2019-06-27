@@ -12,10 +12,8 @@ import com.xwray.groupie.kotlinandroidextensions.Item
 import kotlinx.android.synthetic.main.activity_multi_select_vc.*
 import kotlinx.android.synthetic.main.select_item.*
 
-class MultiSelectVC : MyTableVC() {
+class MultiSelectVC : SelectVC() {
 
-    var title: String = "選擇"
-    var key: String? = null
     var selecteds: ArrayList<String> = arrayListOf()
 
     /*
@@ -40,15 +38,6 @@ class MultiSelectVC : MyTableVC() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_multi_select_vc)
 
-        if (intent.hasExtra("title")) {
-            title = intent.getStringExtra("title")
-        }
-        setMyTitle(title)
-
-        if (intent.hasExtra("rows")) {
-            rows = intent.getSerializableExtra("rows") as ArrayList<HashMap<String, String>>
-        }
-
         if (intent.hasExtra("selecteds")) {
             selecteds = intent.getStringArrayListExtra("selecteds")
         }
@@ -56,12 +45,7 @@ class MultiSelectVC : MyTableVC() {
         recyclerView = tableView
         initAdapter()
 
-        if (intent.hasExtra("key")) {
-            key = intent.getStringExtra("key")
-        }
-        if (key == null) {
-            //alertError()
-        }
+        init()
     }
 
     override fun generateItems(): ArrayList<Item> {
@@ -121,10 +105,6 @@ class MultiSelectVC : MyTableVC() {
         intent.putStringArrayListExtra("selecteds", selecteds)
         setResult(Activity.RESULT_OK, intent)
         finish()
-    }
-
-    fun cancel(view: View) {
-        prev()
     }
 }
 

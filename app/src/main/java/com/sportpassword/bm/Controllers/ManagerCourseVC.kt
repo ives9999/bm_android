@@ -94,15 +94,9 @@ class ManagerCourseVC: MyTableVC() {
     }
 
     private fun getCourseList() {
-        var filter1: Array<Any>? = null
-        if (manager_token != null) {
-            filter1 = arrayListOf<Any>("manager_token", "=", manager_token!!).toTypedArray()
-        }
-        var filter: Array<Array<Any>>?
-        if (filter1 != null) {
-            filter = arrayOf(filter1)
-        } else {
-            filter = arrayOf()
+        var filter: HashMap<String, Any>? = null
+        if (manager_token != null && manager_token != null) {
+            filter = hashMapOf("manager_token" to manager_token!!)
         }
 
         Loading.show(mask)

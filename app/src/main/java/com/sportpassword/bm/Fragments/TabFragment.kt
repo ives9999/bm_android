@@ -63,6 +63,8 @@ open class TabFragment : Fragment(), SearchItemDelegate {
     protected var isCourseShow: Boolean = false
     protected var isTeamShow: Boolean = false
 
+    var params: HashMap<String, Any> = hashMapOf()
+
     open val _searchRows: ArrayList<HashMap<String, String>> = arrayListOf()
 
     override fun onCreate(savedInstanceState: Bundle?) {

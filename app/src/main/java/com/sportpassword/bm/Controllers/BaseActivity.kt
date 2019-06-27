@@ -5,6 +5,7 @@ import android.app.AlertDialog
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.Color
@@ -40,6 +41,7 @@ import com.onesignal.OneSignal
 import com.sportpassword.bm.Adapters.SearchItem
 import com.sportpassword.bm.Adapters.SearchItemDelegate
 import com.sportpassword.bm.Fragments.CoachFragment
+import com.sportpassword.bm.Fragments.CourseFragment
 import com.sportpassword.bm.Fragments.TabFragment
 import com.sportpassword.bm.Fragments.TeamFragment
 import com.sportpassword.bm.Models.Area
@@ -59,8 +61,11 @@ import java.net.URL
 import java.util.*
 import kotlin.system.exitProcess
 import kotlinx.android.synthetic.main.mask.*
+import org.json.JSONArray
+import org.json.JSONObject
 import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
+import kotlin.reflect.jvm.internal.pcollections.HashPMap
 
 open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, SearchItemDelegate {
 
@@ -100,6 +105,7 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
     val REGISTER_REQUEST_CODE = 2
     val VALIDATE_REQUEST_CODE = 3
     val SEARCH_REQUEST_CODE = 4
+    val SEARCH_REQUEST_CODE1 = 5
 
     var dataService: DataService = DataService()
     
@@ -697,6 +703,11 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
             "teach" -> {
                 containerID = "constraintLayout"
             }
+            "course" -> {
+                containerID = "course_container"
+                val frag = getFragment(tag) as CourseFragment
+                searchRows = frag._searchRows
+            }
         }
         mask()
         addLayer(tag)
@@ -871,8 +882,12 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
         searchAdapter.setOnItemClickListener { item, view ->
             val searchItem = item as SearchItem
             val row = searchItem.row
-            if (searchItem.switch == false) {
-                prepareSearch(row, page)
+            if (page == "course") {
+                prepareSearch1(row, page);
+            } else {
+                if (searchItem.switch == false) {
+                    prepareSearch(row, page)
+                }
             }
         }
         val rows = generateSearchItems(page)
@@ -1062,6 +1077,62 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
         startActivityForResult(intent!!, SEARCH_REQUEST_CODE)
     }
 
+    protected fun prepareSearch1(idx: Int, page: String) {
+
+        var singleSelectIntent = Intent(this, SingleSelectVC::class.java)
+        var multiSelectIntent = Intent(this, MultiSelectVC::class.java)
+        val row = searchRows.get(idx)
+        var key = ""
+        if (row.containsKey("key")) {
+            key = row["key"]!!
+        }
+        var value = ""
+        if (row.containsKey("value")) {
+            value = row["value"]!!
+        }
+        var value_type: String? = null
+        if (row.containsKey("value_type")) {
+            value_type = row["value_type"]!!
+        }
+        singleSelectIntent.putExtra("title", "city")
+        singleSelectIntent.putExtra("key", key)
+        multiSelectIntent.putExtra("title", "city")
+        multiSelectIntent.putExtra("key", key)
+
+        if (value_type != null && value_type == "Array" && value.length > 0) {
+            var values: ArrayList<String> = arrayListOf()
+            if (value.contains(",")) {
+                values = value.split(",").toTypedArray().toCollection(java.util.ArrayList())
+            } else {
+                values.add(value)
+            }
+            multiSelectIntent.putExtra("selecteds", values)
+        }
+        if (value_type != null && value_type == "String" && value.length > 0) {
+            singleSelectIntent.putExtra("selected", value)
+        }
+
+        when (key) {
+            CITY_KEY -> {
+                startActivityForResult(multiSelectIntent, SEARCH_REQUEST_CODE1)
+            }
+            WEEKDAY_KEY -> {
+                val rows = WEEKDAY.makeSelect()
+                multiSelectIntent.putExtra("rows", rows)
+                startActivityForResult(multiSelectIntent, SEARCH_REQUEST_CODE1)
+            }
+            START_TIME_KEY, END_TIME_KEY -> {
+                val times = Global.makeTimes()
+                val rows: ArrayList<HashMap<String, String>> = arrayListOf()
+                for (time in times) {
+                    rows.add(hashMapOf("title" to time, "value" to time+":00"))
+                }
+                singleSelectIntent.putExtra("rows", rows)
+                startActivityForResult(singleSelectIntent, SEARCH_REQUEST_CODE1)
+            }
+        }
+    }
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
@@ -1170,6 +1241,112 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
                     searchAdapter.update(rows)
                 }
             }
+            SEARCH_REQUEST_CODE1 -> {
+                if (resultCode == Activity.RESULT_OK) {
+                    var key = ""
+                    if (data != null && data!!.hasExtra("key")) {
+                        key = data!!.getStringExtra("key")
+                    }
+                    var selecteds: ArrayList<String>? = null
+                    if (data!!.hasExtra("selecteds")) {
+                        selecteds = data!!.getStringArrayListExtra("selecteds")
+                    }
+                    var selected: String? = null
+                    if (data!!.hasExtra("selected")) {
+                        selected = data!!.getStringExtra("selected")
+                    }
+
+                    val getRow = fun(key: String): HashMap<String, String>? {
+                        var row: HashMap<String, String>? = null
+                        for ((i, searchRow) in searchRows.withIndex()) {
+                            if (searchRow.containsKey("key")) {
+                                if (key == searchRow.get("key")) {
+                                    row = searchRow
+                                    break
+                                }
+                            }
+                        }
+
+                        return row
+                    }
+
+                    val updateRow = fun(key: String, row:HashMap<String, String>) {
+                        var idx: Int = -1
+                        for ((i, searchRow) in searchRows.withIndex()) {
+                            if (searchRow.containsKey("key")) {
+                                if (key == searchRow.get("key")) {
+                                    idx = i
+                                    break
+                                }
+                            }
+                        }
+                        if (idx >= 0) {
+                            searchRows[idx] = row
+                        }
+                    }
+
+                    val row: HashMap<String, String>? = getRow(key)
+
+                    var show = ""
+
+                    when (key) {
+                        CITY_KEY -> {
+                            val session: SharedPreferences = this.getSharedPreferences(SESSION_FILENAME, 0)
+                            val str = session.getString("citys", "")!!
+                            var arr: JSONArray? = null
+                            if (str.length > 0) {
+                                try {
+                                    arr = JSONArray(str)
+                                } catch (e: java.lang.Exception) {
+                                    //println(e.localizedMessage)
+                                }
+                            }
+
+                            val texts: ArrayList<String> = arrayListOf()
+                            for (selected in selecteds!!) {
+                                if (arr != null) {
+                                    for (i in 0..arr!!.length()-1) {
+                                        val obj = arr!![i] as JSONObject
+                                        if (selected == obj.getString("value")) {
+                                            texts.add(obj.getString("title"))
+                                            break
+                                        }
+                                    }
+                                }
+                            }
+                            show = texts.joinToString(",")
+                            if (row != null && row.containsKey("show")) {
+                                row["show"] = show
+                                row["value"] = selecteds.joinToString(",")
+                                updateRow(key, row)
+                            }
+                        }
+                        WEEKDAY_KEY -> {
+                            val texts: ArrayList<String> = arrayListOf()
+                            for (selected in selecteds!!) {
+                                val text = WEEKDAY.intToString(selected.toInt())
+                                texts.add(text)
+                            }
+                            show = texts.joinToString(",")
+                            if (row != null && row.containsKey("show")) {
+                                row["show"] = show
+                                row["value"] = selecteds.joinToString(",")
+                                updateRow(key, row)
+                            }
+                        }
+                        START_TIME_KEY, END_TIME_KEY -> {
+                            if (row != null && row.containsKey("show") && selected != null) {
+                                row["show"] = selected.noSec()
+                                row["value"] = selected
+                                updateRow(key, row)
+                            }
+                        }
+
+                    }
+                    val rows = generateSearchItems("course")
+                    searchAdapter.update(rows)
+                }
+            }
         }
     }
 
@@ -1178,7 +1355,12 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
         for (i in 0..searchRows.size-1) {
             val row = searchRows[i] as HashMap<String, String>
             val title = row.get("title")!!
-            val detail = row.get("detail")!!
+            var detail: String = ""
+            if (row.containsKey("detail")) {
+                detail = row.get("detail")!!
+            } else if (row.containsKey("show")) {
+                detail = row.get("show")!!
+            }
             var bSwitch = false
             if (row.containsKey("switch")) {
                 bSwitch = row.get("switch")!!.toBoolean()
@@ -1192,7 +1374,7 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
                     5 -> parking = b
                 }
             })
-            if (page == "coach" || page == "team") {
+            if (page == "team" || page == "course") {
                 searchItem.delegate = getFragment(page)
             } else {
                 searchItem.delegate = this@BaseActivity
@@ -1213,6 +1395,10 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
             }
             if (page == "team" && frag::class == TeamFragment::class) {
                 _frag = frag as TeamFragment
+                break
+            }
+            if (page == "course" && frag::class == CourseFragment::class) {
+                _frag = frag as CourseFragment
                 break
             }
         }
@@ -1322,13 +1508,18 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
 
     open protected fun layerSubmit(page: String) {
         unmask()
-        prepareParams()
         if (page == "coach") {
+            prepareParams()
             refresh()
         } else if (page == "team") {
+            prepareParams()
             val frag = getFragment(page) as TeamFragment
             frag.refresh()
+        } else if (page == "course") {
+            val frag = getFragment(page) as CourseFragment
+            frag.layerSubmit()
         } else {
+            prepareParams()
             refresh()
         }
     }

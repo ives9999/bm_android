@@ -19,6 +19,7 @@ import org.json.JSONObject
 import java.io.InputStream
 import java.lang.Exception
 import java.net.URL
+import kotlin.reflect.KClass
 
 
 /**
@@ -44,8 +45,63 @@ open class DataService: BaseService() {
 
     var image: Bitmap? = null
 
-    open fun getList(context: Context, token: String?, filter: Array<Array<Any>>?, page: Int, perPage: Int, complete: CompletionHandler){}
+    open fun getList(context: Context, token: String?, _filter: HashMap<String, Any>?, page: Int, perPage: Int, complete: CompletionHandler) {
 
+        var url = getListURL()
+        if (token != null) {
+            url = url + "/" + token
+        }
+        println(url)
+
+        val header: MutableList<Pair<String, String>> = mutableListOf()
+        header.add(Pair("Accept","application/json"))
+        header.add(Pair("Content-Type","application/json; charset=utf-8"))
+
+        var filter: HashMap<String, Any>?
+        if (_filter == null) {
+            filter = hashMapOf()
+        } else {
+            filter = _filter
+        }
+        filter.put("source", "app")
+        filter.put("channel", "bm")
+        filter.put("status", "online")
+        filter.put("page", page)
+        filter.put("perPage", perPage)
+
+        val body = filter.toJSONString()
+        println(body)
+
+        MyHttpClient.instance.post(context, url, body) { success ->
+            if (success) {
+                val response = MyHttpClient.instance.response
+                if (response != null) {
+                    try {
+                        val json = JSONObject(response.toString())
+                        println(json)
+                        superModel = parseModel(json)
+                        //superCourses = JSONParse.parse<SuperCourses>(json)!!
+//                        for (row in superCourses.rows) {
+//                            val citys = row.coach.citys
+//                            for (city in citys) {
+//                                city.print()
+//                            }
+//                        }
+                        this.success = true
+                    } catch (e: Exception) {
+                        this.success = false
+                        msg = "parse json failed，請洽管理員"
+                    }
+                    complete(this.success)
+                } else {
+                    println("response is null")
+                }
+            } else {
+                msg = "網路錯誤，無法跟伺服器更新資料"
+                complete(success)
+            }
+        }
+    }
     fun getList(context: Context, type:String, titleField:String, params: HashMap<String,Any>, page:Int, perPage:Int, filter:Array<Array<Any>>?, complete:CompletionHandler) {
         val url = "$URL_LIST".format(type)
 //        println(url)
@@ -264,6 +320,9 @@ open class DataService: BaseService() {
         */
 
     }
+
+    open fun getListURL(): String {return URL_LIST}
+    open fun parseModel(json: JSONObject): SuperModel {return SuperModel(JSONObject())}
 
     open fun getOne(context: Context, type:String, titleField:String, token:String, complete: CompletionHandler) {
         val url = "$URL_ONE".format(type)

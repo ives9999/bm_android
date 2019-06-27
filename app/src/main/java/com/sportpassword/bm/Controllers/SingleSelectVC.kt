@@ -14,24 +14,13 @@ import kotlinx.android.synthetic.main.activity_single_select_vc.*
 import kotlinx.android.synthetic.main.color_select_item.view.*
 import kotlinx.android.synthetic.main.select_item.*
 
-class SingleSelectVC : MyTableVC() {
+class SingleSelectVC : SelectVC() {
 
-    var title: String = "選擇"
-    var key: String? = null
     var selected: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_single_select_vc)
-
-        if (intent.hasExtra("title")) {
-            title = intent.getStringExtra("title")
-        }
-        setMyTitle(title)
-
-        if (intent.hasExtra("rows")) {
-            rows = intent.getSerializableExtra("rows") as ArrayList<HashMap<String, String>>
-        }
 
         if (intent.hasExtra("selected")) {
             selected = intent.getStringExtra("selected")
@@ -40,12 +29,7 @@ class SingleSelectVC : MyTableVC() {
         recyclerView = tableView
         initAdapter()
 
-        if (intent.hasExtra("key")) {
-            key = intent.getStringExtra("key")
-        }
-        if (key == null) {
-            warningWithPrev("由於傳遞參數不正確，無法做選擇，請回上一頁重新進入")
-        }
+        init()
     }
 
     override fun generateItems(): ArrayList<Item> {
