@@ -2,10 +2,12 @@ package com.sportpassword.bm.Fragments
 
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.view.*
 import android.widget.ImageButton
 import com.sportpassword.bm.Adapters.GroupSection
+import com.sportpassword.bm.Controllers.ShowCourseVC
 import com.sportpassword.bm.Models.SuperCourse
 import com.sportpassword.bm.Models.SuperCourses
 import com.sportpassword.bm.R
@@ -18,6 +20,7 @@ import com.xwray.groupie.Section
 import com.xwray.groupie.ViewHolder
 import com.xwray.groupie.kotlinandroidextensions.Item
 import kotlinx.android.synthetic.main.mask.*
+import kotlinx.android.synthetic.main.search_row_item.*
 import kotlinx.android.synthetic.main.tab_course.*
 import kotlinx.android.synthetic.main.tab_list_item.*
 import kotlinx.android.synthetic.main.tempplay_signup_one_item.*
@@ -155,7 +158,7 @@ class CourseFragment : TabFragment() {
         val items: ArrayList<Item> = arrayListOf()
         if (superCourses != null) {
             for (row in superCourses!!.rows) {
-                items.add(ManagerCourseItem1(context!!, row))
+                items.add(CourseItem(context!!, row))
             }
         }
 
@@ -167,6 +170,13 @@ class CourseFragment : TabFragment() {
 
     fun rowClick(item: com.xwray.groupie.Item<ViewHolder>, view: View) {
 
+        val courseItem = item as CourseItem
+        val superCourse = courseItem.superCourse
+        //superCourse.print()
+        val intent = Intent(activity, ShowCourseVC::class.java)
+        intent.putExtra("course_token", superCourse.token)
+        intent.putExtra("title", superCourse.title)
+        startActivity(intent)
     }
 
     fun layerSubmit() {
@@ -178,6 +188,13 @@ class CourseFragment : TabFragment() {
 
     fun prepareParams() {
         params.clear()
+        if (mainActivity!!.keyword.length > 0) {
+            val row = getSearchRow(KEYWORD_KEY)
+            if (row != null && row.containsKey("value")) {
+                row["value"] = mainActivity!!.keyword
+                updateSearchRow(KEYWORD_KEY, row)
+            }
+        }
         for (searchRow in _searchRows) {
             var value_type: String? = null
             if (searchRow.containsKey("value_type")) {
@@ -207,19 +224,54 @@ class CourseFragment : TabFragment() {
     }
 
     override fun remove(indexPath: IndexPath) {
-        val row = _searchRows[indexPath.row]
-        val key = row["key"]!!
-        when (key) {
-            CITY_KEY -> mainActivity!!.citys.clear()
-            ARENA_KEY -> mainActivity!!.arenas.clear()
-            TEAM_WEEKDAYS_KEY -> mainActivity!!.weekdays.clear()
-            TEAM_PLAY_START_KEY -> mainActivity!!.times.clear()
-            TEAM_DEGREE_KEY -> mainActivity!!.degrees.clear()
+        var row: HashMap<String, String>? = null
+        if (_searchRows.size >= indexPath.row) {
+            row = _searchRows[indexPath.row]
         }
-        _searchRows[indexPath.row]["detail"] = "全部"
-        val rows = mainActivity!!.generateSearchItems(type!!)
-        mainActivity!!.searchAdapter.update(rows)
+        var key: String? = null
+        if (row != null && row.containsKey("key") && row.get("key")!!.length > 0) {
+            key = row!!.get("key")
+        }
+        if (row != null) {
+            row["value"] = ""
+            row["show"] = "不限"
+            updateSearchRow(indexPath.row, row)
+        }
     }
+
+    fun getSearchRow(key: String): HashMap<String, String>? {
+        var row: HashMap<String, String>? = null
+        for ((i, searchRow) in _searchRows.withIndex()) {
+            if (searchRow.containsKey("key")) {
+                if (key == searchRow.get("key")) {
+                    row = searchRow
+                    break
+                }
+            }
+        }
+
+        return row
+    }
+
+    fun updateSearchRow(idx: Int, row: HashMap<String, String>) {
+        _searchRows[idx] = row
+    }
+
+    fun updateSearchRow(key: String, row: HashMap<String, String>) {
+        var idx: Int = -1
+        for ((i, searchRow) in _searchRows.withIndex()) {
+            if (searchRow.containsKey("key")) {
+                if (key == searchRow.get("key")) {
+                    idx = i
+                    break
+                }
+            }
+        }
+        if (idx >= 0) {
+            _searchRows[idx] = row
+        }
+    }
+
 
 
     companion object {
@@ -247,7 +299,7 @@ class CourseFragment : TabFragment() {
         }
     }
 
-    class ManagerCourseItem1(val context: Context, val superCourse: SuperCourse): Item() {
+    class CourseItem(val context: Context, val superCourse: SuperCourse): Item() {
         override fun bind(viewHolder: com.xwray.groupie.kotlinandroidextensions.ViewHolder, position: Int) {
 
             val citys = superCourse.coach.citys

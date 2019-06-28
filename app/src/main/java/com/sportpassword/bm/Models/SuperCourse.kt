@@ -35,6 +35,7 @@ class SuperCourse(data: JSONObject): SuperModel(data) {
 
 
     var content: String = ""
+    var content_style: String = ""
     var status: String = "online"
     var token: String = ""
     var sort_order: Int = 0

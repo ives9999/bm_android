@@ -31,7 +31,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".Controllers.SelectVC"></activity>
+        <activity android:name=".Controllers.ShowCourseVC"></activity>
+        <activity android:name=".Controllers.SelectVC" />
         <activity android:name=".Controllers.CoachVC" />
         <activity android:name=".Controllers.ContentEditVC" />
         <activity android:name=".Controllers.MultiSelectVC" />

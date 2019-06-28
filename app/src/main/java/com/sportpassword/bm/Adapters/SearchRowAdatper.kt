@@ -34,7 +34,7 @@ class SearchRowAdatper(val section: Int, val itemClick: (Int) -> Unit): Recycler
 
     inner class ViewHolder(itemView: View, val itemClick: (Int)->Unit): RecyclerView.ViewHolder(itemView) {
         val titleView = itemView.findViewById<TextView>(R.id.row_title)
-        val keywordView = itemView.findViewById<EditText>(R.id.keyword)
+        val keywordView = itemView.findViewById<EditText>(R.id.keywordTxt)
         val detailView = itemView.findViewById<TextView>(R.id.row_detail)
         val greaterView = itemView.findViewById<ImageView>(R.id.greater)
 

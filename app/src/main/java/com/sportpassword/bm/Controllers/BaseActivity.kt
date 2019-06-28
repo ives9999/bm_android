@@ -883,7 +883,7 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
             val searchItem = item as SearchItem
             val row = searchItem.row
             if (page == "course") {
-                prepareSearch1(row, page);
+                prepareSearch1(row, page)
             } else {
                 if (searchItem.switch == false) {
                     prepareSearch(row, page)

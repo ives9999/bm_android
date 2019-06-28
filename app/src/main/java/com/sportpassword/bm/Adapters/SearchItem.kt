@@ -26,7 +26,7 @@ class SearchItem(val title: String, val detail: String, val keyword: String, val
         val indexPath = IndexPath(section, row)
 
         if ((section == 0 && position == 1) || (section == -1 && position == 0)) {
-            val keywordView = viewHolder.keyword
+            val keywordView = viewHolder.keywordTxt
             viewHolder.row_detail.visibility = View.INVISIBLE
             viewHolder.greater.visibility = View.INVISIBLE
             viewHolder.clearBtn.visibility = View.VISIBLE
@@ -52,7 +52,7 @@ class SearchItem(val title: String, val detail: String, val keyword: String, val
         } else {
             viewHolder.row_detail.visibility = View.VISIBLE
             viewHolder.greater.visibility = View.VISIBLE
-            viewHolder.keyword.visibility = View.INVISIBLE
+            viewHolder.keywordTxt.visibility = View.INVISIBLE
             viewHolder.clearBtn.visibility = View.VISIBLE
         }
 
@@ -61,7 +61,7 @@ class SearchItem(val title: String, val detail: String, val keyword: String, val
             switchView.visibility = View.VISIBLE
             viewHolder.row_detail.visibility = View.INVISIBLE
             viewHolder.greater.visibility = View.INVISIBLE
-            viewHolder.keyword.visibility = View.INVISIBLE
+            viewHolder.keywordTxt.visibility = View.INVISIBLE
             viewHolder.clearBtn.visibility = View.INVISIBLE
             switchView.setOnCheckedChangeListener { compoundButton, b ->
                 switched(position, b)
@@ -74,9 +74,10 @@ class SearchItem(val title: String, val detail: String, val keyword: String, val
         }
         viewHolder.clearBtn.setOnClickListener {
             if ((section == 0 && position == 1) || (section == -1 && position == 0)) {
-                viewHolder.keyword.setText("")
+                viewHolder.keywordTxt.setText("")
             } else {
                 if (delegate != null) {
+                    viewHolder.row_detail.text = "不限"
                     delegate!!.remove(indexPath)
                 }
             }

@@ -51,7 +51,7 @@ open class DataService: BaseService() {
         if (token != null) {
             url = url + "/" + token
         }
-        println(url)
+//        println(url)
 
         val header: MutableList<Pair<String, String>> = mutableListOf()
         header.add(Pair("Accept","application/json"))
@@ -70,7 +70,7 @@ open class DataService: BaseService() {
         filter.put("perPage", perPage)
 
         val body = filter.toJSONString()
-        println(body)
+//        println(body)
 
         MyHttpClient.instance.post(context, url, body) { success ->
             if (success) {
@@ -78,7 +78,7 @@ open class DataService: BaseService() {
                 if (response != null) {
                     try {
                         val json = JSONObject(response.toString())
-                        println(json)
+//                        println(json)
                         superModel = parseModel(json)
                         //superCourses = JSONParse.parse<SuperCourses>(json)!!
 //                        for (row in superCourses.rows) {
