@@ -134,10 +134,9 @@ class ManagerCourseVC: MyTableVC() {
                     button("檢視") {
                         onClick {
                             dialog.dismiss()
-                            val intent = Intent(this@ManagerCourseVC, ShowTimetableVC::class.java)
-//                            intent.putExtra("tt_id", event.id)
-//                            intent.putExtra("source", source)
-//                            intent.putExtra("token", token)
+                            val intent = Intent(this@ManagerCourseVC, ShowCourseVC::class.java)
+                            intent.putExtra("course_token", row.token)
+                            intent.putExtra("title", row.title)
                             startActivity(intent)
                         }
                     }

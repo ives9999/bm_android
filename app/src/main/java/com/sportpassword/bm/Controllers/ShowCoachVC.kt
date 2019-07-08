@@ -260,7 +260,7 @@ class ShowCoachVC : BaseActivity(), IconCellDelegate {
 
         for (i in 0..timetables!!.rows.size-1) {
             val row = timetables!!.rows[i]
-            val hours = (row.end_time.toDateTime("HH:mm:ss").timeIntervalSince(row.start_time.toDateTime("HH:mm:ss"))).toFloat()/(60*60)
+            val hours = (row.end_time.toDateTime("HH:mm:ss")!!.timeIntervalSince(row.start_time.toDateTime("HH:mm:ss")!!)).toFloat()/(60*60)
             //println(hours)
 
             val eventViewWidth = timetableCellWidth-8*timetableCellBorderWidth

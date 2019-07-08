@@ -30,9 +30,9 @@ class DateSelectVC : BaseActivity() {
         if (selected!!.isDate()) {
             date = selected!!.toDateTime("yyyy-MM-dd")
         }
-        val yyyy = date.gety()
-        val MM = date.getM()
-        val dd = date.getd()
+        val yyyy = date!!.gety()
+        val MM = date!!.getM()
+        val dd = date!!.getd()
         val calendar = Calendar.getInstance()
         calendar.set(Calendar.YEAR, yyyy);
         calendar.set(Calendar.MONTH, MM);

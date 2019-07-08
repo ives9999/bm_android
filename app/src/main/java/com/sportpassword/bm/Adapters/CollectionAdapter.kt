@@ -83,7 +83,7 @@ class CollectionAdapter(val context: Context, val iden: String="teach", val scre
             pvLbl.text = "瀏覽數：" + superData.data[PV_KEY]!!["show"] as String
 
             var createdAt: String = superData.data[CREATED_AT_KEY]!!["show"] as String
-            dateLbl.text = createdAt.toDateTime().toMyString("yyyy-MM-dd")
+            dateLbl.text = createdAt.toDateTime()!!.toMyString("yyyy-MM-dd")
             itemView.setOnClickListener{itemClick(superData)}
         }
     }

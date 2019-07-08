@@ -140,7 +140,7 @@ class EditItemActivity() : BaseActivity() {
             var s = start.toDateTime("HH:mm")
             val e = end.toDateTime("HH:mm")
             allTimes.add(start)
-            while (s.compareTo(e) < 0) {
+            while (s!!.compareTo(e) < 0) {
                 val cal = Calendar.getInstance()
                 cal.time = s
                 cal.add(Calendar.MINUTE, interval)

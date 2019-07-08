@@ -25,14 +25,17 @@ class ShowCourseVC : BaseActivity(), IconCellDelegate {
     var course_id: Int? = null
     var source: String  = "course" //course
     var course_token: String? = null    // course token
-    val tableRowKeys:Array<String> = arrayOf("weekday_text","date","interval","charge_text","limit_text","signup_count")
+    val tableRowKeys:Array<String> = arrayOf("weekday_text","date","interval","price_text_long","limit_text","kind_text","signup_count","pv","created_at_text")
     var tableRows: HashMap<String, HashMap<String,String>> = hashMapOf(
             "weekday_text" to hashMapOf("icon" to "calendar","title" to "日期","content" to ""),
             "date" to hashMapOf( "icon" to "calendar","title" to "期間","content" to ""),
             "interval" to hashMapOf( "icon" to "clock","title" to "時段","content" to ""),
-            "charge_text" to hashMapOf( "icon" to "money","title" to "收費","content" to ""),
+            "price_text_long" to hashMapOf( "icon" to "money","title" to "收費","content" to ""),
             "limit_text" to hashMapOf( "icon" to "group","title" to "接受報名人數","content" to ""),
-            "signup_count" to hashMapOf( "icon" to "group","title" to "已報名人數","content" to "")
+            "kind_text" to hashMapOf( "icon" to "cycle","title" to "週期","content" to ""),
+//            "signup_count" to hashMapOf( "icon" to "group","title" to "已報名人數","content" to ""),
+            "pv" to hashMapOf( "icon" to "pv","title" to "瀏覽數","content" to ""),
+            "created_at_text" to hashMapOf( "icon" to "calendar","title" to "建立日期","content" to "")
     )
     val coachTableRowKeys:Array<String> = arrayOf(NAME_KEY,MOBILE_KEY,LINE_KEY,FB_KEY,YOUTUBE_KEY,WEBSITE_KEY,EMAIL_KEY)
     var coachTableRows: HashMap<String, HashMap<String, String>> = hashMapOf(
@@ -101,64 +104,78 @@ class ShowCourseVC : BaseActivity(), IconCellDelegate {
                 if (success) {
                     superCourse = CourseService.superCourse
                     if (superCourse != null) {
+                        superCourse!!.filter()
                         superCoach = superCourse!!.coach
-                        for (key in tableRowKeys) {
-                            val kc = superCourse!!::class
-                            kc.memberProperties.forEach {
-                                if (key == it.name) {
-                                    val value = it.getter.call(superCourse).toString()
-                                    tableRows[key]!!["content"] = value
-                                }
-                            }
-                        }
-                        val content: String = "<html lang=\"zh-TW\"><head><meta charset=\"UTF-8\">"+superCourse!!.content_style+"</head><body><div class=\"content\">"+superCourse!!.content+"</div>"+"</body></html>"
-                        //println(content)
-                        contentView.loadDataWithBaseURL(null, content, "text/html", "UTF-8", null)
-                        //contentView.loadData(content, "text/html", "UTF-8")
-                        //contentView.loadData("<html><body style='background-color:#000;'>Hello, world!</body></html>", "text/html", "UTF-8")
+                        setMainData()
+                        setCoachData()
+                        setFeatured()
+                        setSignupData()
+                    }
+                }
+                closeRefresh()
+                Loading.hide(mask)
+            }
+        }
+    }
 
-                        val date = superCourse!!.start_date + " ~ " + superCourse!!.end_date
-                        tableRows["date"]!!["content"] = date
+    fun setMainData() {
+        for (key in tableRowKeys) {
+            val kc = superCourse!!::class
+            kc.memberProperties.forEach {
+                if (key == it.name) {
+                    val value = it.getter.call(superCourse).toString()
+                    tableRows[key]!!["content"] = value
+                }
+            }
+        }
+        val content: String = "<html lang=\"zh-TW\"><head><meta charset=\"UTF-8\">"+superCourse!!.content_style+"</head><body><div class=\"content\">"+superCourse!!.content+"</div>"+"</body></html>"
+        //println(content)
+        contentView.loadDataWithBaseURL(null, content, "text/html", "UTF-8", null)
+        //contentView.loadData(content, "text/html", "UTF-8")
+        //contentView.loadData("<html><body style='background-color:#000;'>Hello, world!</body></html>", "text/html", "UTF-8")
 
-                        val interval = superCourse!!.start_time_text + " ~ " + superCourse!!.end_time_text
-                        tableRows["interval"]!!["content"] = interval
+        val date = superCourse!!.start_date + " ~ " + superCourse!!.end_date
+        tableRows["date"]!!["content"] = date
 
-                        //tableRows["signup_count"]!!["content"] = superCourse!!.signup_count.toString() + "人"
+        val interval = superCourse!!.start_time_text + " ~ " + superCourse!!.end_time_text
+        tableRows["interval"]!!["content"] = interval
+
+        //tableRows["signup_count"]!!["content"] = superCourse!!.signup_count.toString() + "人"
 
 //                    println(tableRows)
-                        var items = generateCourseItem()
-                        adapter.update(items)
+        var items = generateCourseItem()
+        adapter.update(items)
 
-                        for (key in coachTableRowKeys) {
-                            val kc = superCoach!!::class
-                            kc.memberProperties.forEach {
-                                if (key == it.name) {
-                                    val value = it.getter.call(superCoach).toString()
-                                    coachTableRows[key]!!["content"] = value
-                                }
-                            }
-                        }
-                        //println(coachTableRows)
-                        items = generateCoachItem()
-                        coachAdapter.update(items)
-                        if (superCourse!!.featured_path.isNotEmpty()) {
-                            var featured_path = superCourse!!.featured_path
-                            if (!featured_path.startsWith("http://") && !featured_path.startsWith("https://")) {
-                                featured_path = BASE_URL + featured_path
-                            }
-                            Picasso.with(this@ShowCourseVC)
-                                    .load(featured_path)
-                                    .placeholder(R.drawable.loading_square_120)
-                                    .error(R.drawable.loading_square_120)
-                                    .into(featured)
-                        } else {
-                            featured.setImageResource(R.drawable.loading_square_120)
-                        }
-                    }
+        for (key in coachTableRowKeys) {
+            val kc = superCoach!!::class
+            kc.memberProperties.forEach {
+                if (key == it.name) {
+                    val value = it.getter.call(superCoach).toString()
+                    coachTableRows[key]!!["content"] = value
+                }
+            }
+        }
+    }
 
-                    isSignup = false
-//                    if (timetable!!.signups.size > 0) {
-//                        for (signup in timetable!!.signups) {
+    fun setCoachData() {
+        //println(coachTableRows)
+        val items = generateCoachItem()
+        coachAdapter.update(items)
+    }
+
+    fun setFeatured() {
+        if (superCourse!!.featured_path.isNotEmpty()) {
+            var featured_path = superCourse!!.featured_path
+            featured_path.image(this@ShowCourseVC, featured)
+        } else {
+            featured.setImageResource(R.drawable.loading_square_120)
+        }
+    }
+
+    fun setSignupData() {
+        isSignup = false
+//                    if (superCouse!!.signups.size > 0) {
+//                        for (signup in superCouse!!.signups) {
 //                            //signup.printRow()
 //                            if (signup.member_id == member.id) {
 //                                this.signup = signup
@@ -169,16 +186,11 @@ class ShowCourseVC : BaseActivity(), IconCellDelegate {
 //                            }
 //                        }
 //                    }
-                    if (isSignup) {
-                        signupBtn.text = "取消報名"
-                    } else {
-                        signupBtn.text = "報名"
-                    }
-                }
-                closeRefresh()
-                Loading.hide(mask)
-            }
-        }
+//                    if (isSignup) {
+//                        signupBtn.text = "取消報名"
+//                    } else {
+//                        signupBtn.text = "報名"
+//                    }
     }
 
     fun generateCourseItem(): ArrayList<Item> {

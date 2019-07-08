@@ -1,8 +1,6 @@
 package com.sportpassword.bm.Models
 
-import com.sportpassword.bm.Utilities.COURSE_KIND
-import com.sportpassword.bm.Utilities.CYCLE_UNIT
-import com.sportpassword.bm.Utilities.PRICE_UNIT
+import com.sportpassword.bm.Utilities.*
 import org.json.JSONObject
 
 class SuperCourse(data: JSONObject): SuperModel(data) {
@@ -18,8 +16,10 @@ class SuperCourse(data: JSONObject): SuperModel(data) {
     var price_text_long: String = ""
     var price_text_short: String = ""
     var limit: Int = -1
+    var limit_text: String = ""
     var kind: String = ""
     var kind1: COURSE_KIND = COURSE_KIND.cycle
+    var kind_text: String = ""
     var cycle: Int = -1
     var cycle_unit: String = ""
     var cycle_unit1: CYCLE_UNIT = CYCLE_UNIT.month
@@ -42,6 +42,7 @@ class SuperCourse(data: JSONObject): SuperModel(data) {
     var pv: Int = 0
     var created_id: Int = 0
     var created_at: String = ""
+    var created_at_text: String = ""
     var updated_at: String = ""
     var featured_path: String = ""
     var thumb: String = ""
@@ -59,7 +60,7 @@ class SuperCourse(data: JSONObject): SuperModel(data) {
         if (kind.count() > 0) {
             kind1 = COURSE_KIND.from(kind)
         }
-
+        created_at_text = created_at.noTime()
     }
 }
 

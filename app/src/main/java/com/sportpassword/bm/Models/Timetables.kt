@@ -44,10 +44,10 @@ class Timetable(data: JSONObject): SuperModel(data) {
     var _color: MYCOLOR = MYCOLOR.success
 
     fun filterRow() {
-        _start_hour = start_time.toDateTime("HH:mm:ss").getH()
-        _end_hour = end_time.toDateTime("HH:mm:ss").getH()
-        _start_minute = start_time.toDateTime("HH:mm:ss").getm()
-        _end_minute = end_time.toDateTime("HH:mm:ss").getm()
+        _start_hour = start_time.toDateTime("HH:mm:ss")!!.getH()
+        _end_hour = end_time.toDateTime("HH:mm:ss")!!.getH()
+        _start_minute = start_time.toDateTime("HH:mm:ss")!!.getm()
+        _end_minute = end_time.toDateTime("HH:mm:ss")!!.getm()
         _color = MYCOLOR.from(color)
     }
 }

@@ -15,6 +15,7 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.*
 import androidx.core.content.ContextCompat
 import com.sportpassword.bm.R
+import com.squareup.picasso.Picasso
 import org.jetbrains.anko.makeCall
 import java.text.ParseException
 import java.text.SimpleDateFormat
@@ -364,6 +365,13 @@ fun String.noSec(): String {
     }
     return res
 }
+fun String.noTime(): String {
+    var res: String = this
+    if (this.isDateTime()) {
+        res = res.toDateTime()!!.toMyString("yyyy-MM-dd")
+    }
+    return res
+}
 fun String.isPrimitive(): Boolean {
     val type = this.toLowerCase()
     var b: Boolean = false
@@ -426,15 +434,28 @@ fun String.telOrMobileShow(): String {
     }
     return this
 }
-fun String.toDateTime(pattern: String = "yyyy-MM-dd HH:mm:ss"): Date {
-    //val formatter = DateTimeFormatter.ofPattern(pattern, Locale.TAIWAN)
-    val formatter = SimpleDateFormat(pattern)
-    val date = formatter.parse(this)
+fun String.toDateTime(pattern: String = "yyyy-MM-dd HH:mm:ss"): Date? {
+    var date: Date? = null
+    if (this.isDateTime()) {
+        //val formatter = DateTimeFormatter.ofPattern(pattern, Locale.TAIWAN)
+        val formatter = SimpleDateFormat(pattern)
+        date = formatter.parse(this)
+    }
 
     return date
 }
 
 fun String.isDate(format: String="yyy-MM-dd"): Boolean {
+    try {
+        val df = SimpleDateFormat(format)
+        df.isLenient = false
+        df.parse(this)
+        return true
+    } catch (e: ParseException) {
+        return false
+    }
+}
+fun String.isDateTime(format: String="yyy-MM-dd HH:mm:ss"): Boolean {
     try {
         val df = SimpleDateFormat(format)
         df.isLenient = false
@@ -585,6 +606,18 @@ fun String.getFBPageID(): String? {
     return null
 }
 
+fun String.image(context: Context, imageView: ImageView) {
+    var path = this
+    if (!path.startsWith("http://") && !path.startsWith("https://")) {
+        path = BASE_URL + path
+    }
+    Picasso.with(context)
+            .load(path)
+            .placeholder(R.drawable.loading_square_120)
+            .error(R.drawable.loading_square_120)
+            .into(imageView)
+}
+
 fun Date.toMyString(pattern: String = "yyyy-MM-dd HH:mm:ss"): String {
     val formatter = SimpleDateFormat(pattern)
     return formatter.format(this)
@@ -709,13 +742,15 @@ object Global {
         val allTimes: ArrayList<String> = arrayListOf()
         var s = start_time.toDateTime("HH:mm")
         val e = end_time.toDateTime("HH:mm")
-        allTimes.add(start_time)
-        while (s.compareTo(e) < 0) {
-            val cal = Calendar.getInstance()
-            cal.time = s
-            cal.add(Calendar.MINUTE, interval)
-            s = cal.time
-            allTimes.add(s.toMyString("HH:mm"))
+        if (s != null && e != null) {
+            allTimes.add(start_time)
+            while (s!!.compareTo(e) < 0) {
+                val cal = Calendar.getInstance()
+                cal.time = s
+                cal.add(Calendar.MINUTE, interval)
+                s = cal.time
+                allTimes.add(s.toMyString("HH:mm"))
+            }
         }
 
         return allTimes
