@@ -5,9 +5,7 @@ import com.android.volley.Request
 import com.android.volley.Response
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
-import com.sportpassword.bm.Models.City
-import com.sportpassword.bm.Models.Coach
-import com.sportpassword.bm.Models.SuperCoach
+import com.sportpassword.bm.Models.*
 import com.sportpassword.bm.Utilities.*
 import org.json.JSONArray
 import org.json.JSONException
@@ -20,6 +18,20 @@ object CoachService: DataService() {
 
     override val model: Coach = Coach(-1, "", "", "")
     lateinit var superCoach: SuperCoach
+
+    override fun getListURL(): String {
+        return URL_COURSE_LIST
+    }
+    override fun getOneURL(): String {
+        return "$URL_ONE".format("coach")
+    }
+
+    override fun parseModels(json: JSONObject): SuperModel {
+        return JSONParse.parse<SuperCoaches>(json)!!
+    }
+    override fun parseModel(json: JSONObject): SuperModel {
+        return JSONParse.parse<SuperCoach>(json)!!
+    }
 
     override fun getOne(context: Context, type: String, titleField: String, token: String, complete: CompletionHandler) {
         val url = "$URL_ONE".format(type)

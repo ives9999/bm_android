@@ -25,13 +25,13 @@ class ShowCourseVC : BaseActivity(), IconCellDelegate {
     var course_id: Int? = null
     var source: String  = "course" //course
     var course_token: String? = null    // course token
-    val tableRowKeys:Array<String> = arrayOf("weekday_text","date","interval","price_text_long","limit_text","kind_text","signup_count","pv","created_at_text")
+    val tableRowKeys:Array<String> = arrayOf("weekday_text","date","interval","price_text_long","people_limit_text","kind_text","signup_count","pv","created_at_text")
     var tableRows: HashMap<String, HashMap<String,String>> = hashMapOf(
             "weekday_text" to hashMapOf("icon" to "calendar","title" to "日期","content" to ""),
             "date" to hashMapOf( "icon" to "calendar","title" to "期間","content" to ""),
             "interval" to hashMapOf( "icon" to "clock","title" to "時段","content" to ""),
             "price_text_long" to hashMapOf( "icon" to "money","title" to "收費","content" to ""),
-            "limit_text" to hashMapOf( "icon" to "group","title" to "接受報名人數","content" to ""),
+            "people_limit_text" to hashMapOf( "icon" to "group","title" to "接受報名人數","content" to ""),
             "kind_text" to hashMapOf( "icon" to "cycle","title" to "週期","content" to ""),
 //            "signup_count" to hashMapOf( "icon" to "group","title" to "已報名人數","content" to ""),
             "pv" to hashMapOf( "icon" to "pv","title" to "瀏覽數","content" to ""),
@@ -102,7 +102,7 @@ class ShowCourseVC : BaseActivity(), IconCellDelegate {
             Loading.show(mask)
             CourseService.getOne(this, course_token) { success ->
                 if (success) {
-                    superCourse = CourseService.superCourse
+                    superCourse = CourseService.superModel as SuperCourse
                     if (superCourse != null) {
                         superCourse!!.filter()
                         superCoach = superCourse!!.coach

@@ -85,9 +85,9 @@ class ShowCoachVC : BaseActivity(), IconCellDelegate {
     }
 
     override fun refresh() {
-        CoachService.getOne(this, type!!, "name", token!!) { success1 ->
+        CoachService.getOne(this, token!!) { success1 ->
             if (success1) {
-                this.superCoach = CoachService.superCoach
+                this.superCoach = CoachService.superModel as SuperCoach
                 for (key in contactRowKeys) {
                     val kc = superCoach!!::class
                     kc.memberProperties.forEach {

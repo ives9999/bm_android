@@ -147,6 +147,9 @@ val PRICE_UNIT_KEY: String = "price_unit"
 val WEEKDAY_KEY: String = "weekday"
 val START_TIME_KEY: String = "start_time"
 val END_TIME_KEY: String = "end_time"
+val PEOPLE_LIMIT_KEY: String = "people_limit"
+val START_DATE_KEY: String = "start_date"
+val END_DATE_KEY: String = "end_date"
 
 // User Defaults
 val NICKNAME_KEY: String = "nickname"

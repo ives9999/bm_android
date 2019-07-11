@@ -436,7 +436,7 @@ fun String.telOrMobileShow(): String {
 }
 fun String.toDateTime(pattern: String = "yyyy-MM-dd HH:mm:ss"): Date? {
     var date: Date? = null
-    if (this.isDateTime()) {
+    if (this.isDateTime() || this.isDate() || this.isTime()) {
         //val formatter = DateTimeFormatter.ofPattern(pattern, Locale.TAIWAN)
         val formatter = SimpleDateFormat(pattern)
         date = formatter.parse(this)
@@ -446,6 +446,16 @@ fun String.toDateTime(pattern: String = "yyyy-MM-dd HH:mm:ss"): Date? {
 }
 
 fun String.isDate(format: String="yyy-MM-dd"): Boolean {
+    try {
+        val df = SimpleDateFormat(format)
+        df.isLenient = false
+        df.parse(this)
+        return true
+    } catch (e: ParseException) {
+        return false
+    }
+}
+fun String.isTime(format: String="HH:mm:ss"): Boolean {
     try {
         val df = SimpleDateFormat(format)
         df.isLenient = false

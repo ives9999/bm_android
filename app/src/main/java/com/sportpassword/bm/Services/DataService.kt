@@ -79,7 +79,7 @@ open class DataService: BaseService() {
                     try {
                         val json = JSONObject(response.toString())
 //                        println(json)
-                        superModel = parseModel(json)
+                        superModel = parseModels(json)
                         //superCourses = JSONParse.parse<SuperCourses>(json)!!
 //                        for (row in superCourses.rows) {
 //                            val citys = row.coach.citys
@@ -322,7 +322,9 @@ open class DataService: BaseService() {
     }
 
     open fun getListURL(): String {return URL_LIST}
+    open fun getOneURL(): String {return URL_ONE}
     open fun parseModel(json: JSONObject): SuperModel {return SuperModel(JSONObject())}
+    open fun parseModels(json: JSONObject): SuperModel {return SuperModel(JSONObject())}
 
     open fun getOne(context: Context, type:String, titleField:String, token:String, complete: CompletionHandler) {
         val url = "$URL_ONE".format(type)
@@ -409,8 +411,48 @@ open class DataService: BaseService() {
     }
 
     open fun getOne(context: Context, id: Int, source: String, token: String, completion: CompletionHandler) {}
-    open fun getOne(context: Context, token: String?, completion: CompletionHandler) {}
+    open fun getOne(context: Context, token: String?, complete: CompletionHandler) {
 
+        val url = getOneURL()
+//        println(url)
+
+        val header: MutableList<Pair<String, String>> = mutableListOf()
+        header.add(Pair("Accept","application/json"))
+        header.add(Pair("Content-Type","application/json; charset=utf-8"))
+
+
+        val body = JSONObject()
+        body.put("source", "app")
+        body.put("token", token)
+        body.put("strip_html", false)
+//        println(body)
+
+        MyHttpClient.instance.post(context, url, body.toString()) { success ->
+
+            if (success) {
+                val response = MyHttpClient.instance.response
+                if (response != null) {
+                    try {
+                        val json = JSONObject(response.toString())
+//                        println(json)
+                        superModel = parseModel(json)
+//                        superCourse.print()
+                        this.success = true
+                    } catch (e: Exception) {
+                        this.success = false
+                        msg = "parse json failed，請洽管理員"
+                        println(e.localizedMessage)
+                    }
+                    complete(this.success)
+                } else {
+                    println("response is null")
+                }
+            } else {
+                msg = "網路錯誤，無法跟伺服器更新資料"
+                complete(success)
+            }
+        }
+    }
     open fun update(context: Context, params: MutableMap<String, String>, filePath: String, complete: CompletionHandler) {}
     open fun update(context: Context, type: String, _params: MutableMap<String, Any>, filePath: String, complete: CompletionHandler) {
 

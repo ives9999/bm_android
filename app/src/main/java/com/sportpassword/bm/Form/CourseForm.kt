@@ -24,9 +24,12 @@ class CourseForm: BaseForm {
         val weekdayFormItem = WeekdayFormItem()
         val startTimeFormItem = TimeFormItem(START_TIME_KEY, "開始時間", SELECT_TIME_TYPE.play_start, false)
         val endTimeFormItem = TimeFormItem(END_TIME_KEY, "結束時間", SELECT_TIME_TYPE.play_end, false)
+        val startDateFormItem = DateFormItem(START_DATE_KEY, "開始日期", SELECT_DATE_TYPE.start)
+        val endDateFormItem = DateFormItem(END_DATE_KEY, "結束日期", SELECT_DATE_TYPE.end)
+        val peopleLimitFormItem = TextFieldFormItem(PEOPLE_LIMIT_KEY, "人數限制", "")
         val contentFormItem = ContentFormItem(CONTENT_KEY, "詳細介紹", TEXT_INPUT_TYPE.content)
 
-        formItems = arrayListOf(section1,titleItem,youtubeItem,section2,priceItem,priceUnitItem,priceDescItem,section3,courseKindItem,cycleUnitItem,weekdayFormItem,startTimeFormItem,endTimeFormItem,contentFormItem)
+        formItems = arrayListOf(section1,titleItem,youtubeItem,section2,priceItem,priceUnitItem,priceDescItem,section3,courseKindItem,cycleUnitItem,weekdayFormItem,startTimeFormItem,endTimeFormItem,startDateFormItem,endDateFormItem,peopleLimitFormItem,contentFormItem)
 
     }
 }

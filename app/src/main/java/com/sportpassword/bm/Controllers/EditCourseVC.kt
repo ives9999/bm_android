@@ -218,6 +218,8 @@ class EditCourseVC : MyTableVC(), ImagePicker, ViewDelegate {
                 formItemAdapter = MoreAdapter(form, idx, indexPath, clearClick, promptClick, rowClick)
             } else if (formItem.uiProperties.cellType == FormItemCellType.time) {
                 formItemAdapter = MoreAdapter(form, idx, indexPath, clearClick, promptClick, rowClick)
+            } else if (formItem.uiProperties.cellType == FormItemCellType.date) {
+                formItemAdapter = MoreAdapter(form, idx, indexPath, clearClick, promptClick, rowClick)
             }
 
             if (formItemAdapter != null) {
@@ -242,6 +244,10 @@ class EditCourseVC : MyTableVC(), ImagePicker, ViewDelegate {
         val multiSelectIntent = Intent(this@EditCourseVC, MultiSelectVC::class.java)
         multiSelectIntent.putExtra("title", forItem.title)
         multiSelectIntent.putExtra("key", key)
+
+        val dateSelectIntent = Intent(this@EditCourseVC, DateSelectVC::class.java)
+        dateSelectIntent.putExtra("title", forItem.title)
+        dateSelectIntent.putExtra("key", key)
 
         val contentIntent = Intent(this@EditCourseVC, ContentEditVC::class.java)
         contentIntent.putExtra("title", forItem.title)
@@ -302,6 +308,13 @@ class EditCourseVC : MyTableVC(), ImagePicker, ViewDelegate {
                 contentIntent.putExtra("content", content)
             }
             startActivityForResult(contentIntent, SELECT_REQUEST_CODE)
+        } else if (key == START_DATE_KEY || key == END_DATE_KEY) {
+            if (forItem.sender != null) {
+                val tmp = forItem.sender as HashMap<String, String>
+                val selected = tmp.get("date")!!
+                dateSelectIntent.putExtra("selected", selected)
+            }
+            startActivityForResult(dateSelectIntent, SELECT_REQUEST_CODE)
         }
 
     }
@@ -353,6 +366,8 @@ class EditCourseVC : MyTableVC(), ImagePicker, ViewDelegate {
                         item = getFormItemFromKey(key) as TimeFormItem
                     } else if (key == CONTENT_KEY) {
                         item = getFormItemFromKey(key) as ContentFormItem
+                    } else if (key == START_DATE_KEY || key == END_DATE_KEY) {
+                        item = getFormItemFromKey(key) as DateFormItem
                     }
 
                     if (item != null && selected != null) {
@@ -462,7 +477,7 @@ class EditCourseVC : MyTableVC(), ImagePicker, ViewDelegate {
         if (coach_token != null) {
             params1["coach_token"] = coach_token!!
         }
-//        println(params)
+//        println(params1)
 //        println(filePath)
 
         CourseService.update(this, params1, filePath) { success ->

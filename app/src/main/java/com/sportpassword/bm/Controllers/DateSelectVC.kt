@@ -16,18 +16,31 @@ class DateSelectVC : BaseActivity() {
     lateinit var key: String
     var type: SELECT_DATE_TYPE = SELECT_DATE_TYPE.start
     var selected: String? = null
+    var title: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.date_select_vc)
-        setMyTitle("日期")
 
-        key = intent.getStringExtra("key")
-        type = intent.getSerializableExtra("type") as SELECT_DATE_TYPE
-        selected = intent.getStringExtra("selected")
+        if (intent.hasExtra("key")) {
+            key = intent.getStringExtra("key")
+        }
+        if (key == null) {
+            warningWithPrev("由於傳遞參數不正確，無法做選擇，請回上一頁重新進入")
+        }
+        //type = intent.getSerializableExtra("type") as SELECT_DATE_TYPE
+        if (intent.hasExtra("selected")) {
+            selected = intent.getStringExtra("selected")
+        }
+        if (intent.hasExtra("title")) {
+            title = intent.getStringExtra("title")
+        } else {
+            title = "日期"
+        }
 
+        setMyTitle(title!!)
         var date = Global.today().toDateTime("yyyy-MM-dd")
-        if (selected!!.isDate()) {
+        if (selected != null && selected!!.isDate()) {
             date = selected!!.toDateTime("yyyy-MM-dd")
         }
         val yyyy = date!!.gety()

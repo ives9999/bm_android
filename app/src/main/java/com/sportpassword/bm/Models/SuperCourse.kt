@@ -15,8 +15,8 @@ class SuperCourse(data: JSONObject): SuperModel(data) {
     var price_desc: String = ""
     var price_text_long: String = ""
     var price_text_short: String = ""
-    var limit: Int = -1
-    var limit_text: String = ""
+    var people_limit: Int = -1
+    var people_limit_text: String = ""
     var kind: String = ""
     var kind1: COURSE_KIND = COURSE_KIND.cycle
     var kind_text: String = ""
