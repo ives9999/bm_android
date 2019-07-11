@@ -100,7 +100,13 @@ open class MoreVC : BaseActivity() {
     }
     open protected fun initAdapter() {
         listAdapter = ListAdapter(this, type!!, screenWidth, { data ->
-            val intent = Intent(this, ShowActivity::class.java)
+
+            var intent: Intent? = null
+            if (type == "coach") {
+                intent = Intent(this, ShowCoachVC::class.java)
+            } else {
+                intent = Intent(this, ShowActivity::class.java)
+            }
             intent.putExtra("type", type)
             intent.putExtra("token", data.token)
             intent.putExtra("title", data.title)

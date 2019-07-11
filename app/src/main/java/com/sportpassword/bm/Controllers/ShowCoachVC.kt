@@ -15,14 +15,17 @@ import android.widget.TextView
 import com.sportpassword.bm.Adapters.IconCell
 import com.sportpassword.bm.Adapters.IconCellDelegate
 import com.sportpassword.bm.Models.SuperCoach
+import com.sportpassword.bm.Models.SuperCourses
 import com.sportpassword.bm.Models.Timetables
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.CoachService
+import com.sportpassword.bm.Services.CourseService
 import com.sportpassword.bm.Utilities.*
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.kotlinandroidextensions.Item
 import com.xwray.groupie.kotlinandroidextensions.ViewHolder
 import kotlinx.android.synthetic.main.activity_show_coach_vc.*
+import kotlinx.android.synthetic.main.mask.*
 import org.jetbrains.anko.backgroundColor
 import org.jetbrains.anko.textColor
 import kotlin.reflect.full.memberProperties
@@ -33,6 +36,7 @@ class ShowCoachVC : BaseActivity(), IconCellDelegate {
     var token: String? = null
 
     var superCoach: SuperCoach? = null
+    var superCourses: SuperCourses? = null
     var timetables: Timetables? = null
     var city_id: Int = 0
     //var params: HashMap<String, Any> = hashMapOf() define in BaseActivity
@@ -50,6 +54,7 @@ class ShowCoachVC : BaseActivity(), IconCellDelegate {
     var eventTag: Int = 0
 
     lateinit var contactAdapter: GroupAdapter<ViewHolder>
+    lateinit var courseAdapter: GroupAdapter<ViewHolder>
     val contactRowKeys:ArrayList<String> = arrayListOf(MOBILE_KEY,LINE_KEY,FB_KEY,YOUTUBE_KEY,WEBSITE_KEY,EMAIL_KEY,COACH_SENIORITY_KEY,CREATED_AT_KEY,PV_KEY)
     var contactRows: HashMap<String, HashMap<String,String>> = hashMapOf(
     MOBILE_KEY to hashMapOf("icon" to "mobile","title" to "行動電話","content" to "","isPressed" to "true"),
@@ -71,8 +76,8 @@ class ShowCoachVC : BaseActivity(), IconCellDelegate {
         token = intent.getStringExtra("token")
         val title = intent.getStringExtra("title")
         setMyTitle(title)
-        timetableCellWidth = screenWidth.toFloat() / columnNum.toFloat()
-        addGrid()
+        //timetableCellWidth = screenWidth.toFloat() / columnNum.toFloat()
+        //addGrid()
 
         webViewSettings(this@ShowCoachVC, chargeWebView)
         webViewSettings(this@ShowCoachVC, expWebView)
@@ -80,11 +85,16 @@ class ShowCoachVC : BaseActivity(), IconCellDelegate {
         webViewSettings(this@ShowCoachVC, featWebView)
         webViewSettings(this@ShowCoachVC, detailWebView)
 
-        initAdapter()
+        refreshLayout = refresh
+        setRefreshListener()
+
+        initContactAdapter()
+        initCourseAdapter()
         refresh()
     }
 
     override fun refresh() {
+        Loading.show(mask)
         CoachService.getOne(this, token!!) { success1 ->
             if (success1) {
                 this.superCoach = CoachService.superModel as SuperCoach
@@ -98,24 +108,47 @@ class ShowCoachVC : BaseActivity(), IconCellDelegate {
                     }
                 }
                 this.getFeatured()
-                CoachService.getTT(this, token!!, type!!) { success2 ->
-                    if (success2) {
-                        this.timetables = CoachService.timetables
-//                        for (row in this.timetables!!.rows) {
-//                            row.print()
-//                        }
-                        markEvent()
+
+                var filter: HashMap<String, Any>? = null
+                if (superCoach != null) {
+                    filter = hashMapOf("coach_id" to superCoach!!.id)
+                }
+
+                CourseService.getList(this, token, filter, 1, 100) { success ->
+
+                    if (success) {
+                        superCourses = CourseService.superModel as SuperCourses
+                        val items = generateCourseItems()
+                        courseAdapter.update(items)
+                        courseAdapter.notifyDataSetChanged()
                     }
                 }
+                Loading.hide(mask)
+                closeRefresh()
+//                CoachService.getTT(this, token!!, type!!) { success2 ->
+//                    if (success2) {
+//                        this.timetables = CoachService.timetables
+////                        for (row in this.timetables!!.rows) {
+////                            row.print()
+////                        }
+//                        markEvent()
+//                    }
+//                }
             }
         }
     }
 
-    fun initAdapter() {
+    fun initContactAdapter() {
         contactAdapter = GroupAdapter()
-        val timetableItems = generateContactItem()
-        contactAdapter.addAll(timetableItems)
+        val contactItems = generateContactItem()
+        contactAdapter.addAll(contactItems)
         contactTableView.adapter = contactAdapter
+    }
+    fun initCourseAdapter() {
+        courseAdapter = GroupAdapter()
+        val courseItems = generateCourseItems()
+        courseAdapter.addAll(courseItems)
+        courseTableView.adapter = courseAdapter
     }
 
     fun generateContactItem(): ArrayList<Item> {
@@ -144,6 +177,17 @@ class ShowCoachVC : BaseActivity(), IconCellDelegate {
                     iconCell.delegate = this
                     items.add(iconCell)
                 }
+            }
+        }
+
+        return items
+    }
+
+    fun generateCourseItems(): ArrayList<Item> {
+        val items: ArrayList<Item> = arrayListOf()
+        if (superCourses != null) {
+            for (row in superCourses!!.rows) {
+                items.add(ManagerCourseItem(this@ShowCoachVC, row))
             }
         }
 
@@ -194,40 +238,40 @@ class ShowCoachVC : BaseActivity(), IconCellDelegate {
         webView.loadDataWithBaseURL(null, html, "text/html", "UTF-8", null)
     }
 
-    fun addGrid() {
-        for (i in 0..totalGridCount-1) {
-            val startTime: Int = i / columnNum + startNum
-            val weekday: Int = i % columnNum
-
-            val grid = generateView(timetableCellWidth, timetableCellHeight.toFloat(), i)
-            grid.setBackgroundResource(R.drawable.timetable_item_border)
-
-            if (weekday == 0) {
-                addTimeLabel(grid, startTime)
-            }
-
-            timetableView.addView(grid)
-            gridViews.add(grid)
-            val c = ConstraintSet()
-            c.clone(timetableView)
-            if (startTime == startNum) {
-                c.connect(grid.id, ConstraintSet.TOP, timetableView.id, ConstraintSet.TOP, 0)
-                if (weekday == 0) {
-                    c.connect(grid.id, ConstraintSet.LEFT, timetableView.id, ConstraintSet.LEFT, 0)
-                } else {
-                    c.connect(grid.id, ConstraintSet.LEFT, gridViews[i-1].id, ConstraintSet.RIGHT, 0)
-                }
-            } else {
-                c.connect(grid.id, ConstraintSet.TOP, gridViews[i-8].id, ConstraintSet.BOTTOM, 0)
-                if (weekday == 0) {
-                    c.connect(grid.id, ConstraintSet.LEFT, timetableView.id, ConstraintSet.LEFT, 0)
-                } else {
-                    c.connect(grid.id, ConstraintSet.LEFT, gridViews[i-1].id, ConstraintSet.RIGHT, 0)
-                }
-            }
-            c.applyTo(timetableView)
-        }
-    }
+//    fun addGrid() {
+//        for (i in 0..totalGridCount-1) {
+//            val startTime: Int = i / columnNum + startNum
+//            val weekday: Int = i % columnNum
+//
+//            val grid = generateView(timetableCellWidth, timetableCellHeight.toFloat(), i)
+//            grid.setBackgroundResource(R.drawable.timetable_item_border)
+//
+//            if (weekday == 0) {
+//                addTimeLabel(grid, startTime)
+//            }
+//
+//            timetableView.addView(grid)
+//            gridViews.add(grid)
+//            val c = ConstraintSet()
+//            c.clone(timetableView)
+//            if (startTime == startNum) {
+//                c.connect(grid.id, ConstraintSet.TOP, timetableView.id, ConstraintSet.TOP, 0)
+//                if (weekday == 0) {
+//                    c.connect(grid.id, ConstraintSet.LEFT, timetableView.id, ConstraintSet.LEFT, 0)
+//                } else {
+//                    c.connect(grid.id, ConstraintSet.LEFT, gridViews[i-1].id, ConstraintSet.RIGHT, 0)
+//                }
+//            } else {
+//                c.connect(grid.id, ConstraintSet.TOP, gridViews[i-8].id, ConstraintSet.BOTTOM, 0)
+//                if (weekday == 0) {
+//                    c.connect(grid.id, ConstraintSet.LEFT, timetableView.id, ConstraintSet.LEFT, 0)
+//                } else {
+//                    c.connect(grid.id, ConstraintSet.LEFT, gridViews[i-1].id, ConstraintSet.RIGHT, 0)
+//                }
+//            }
+//            c.applyTo(timetableView)
+//        }
+//    }
     protected fun generateView(width: Float, height: Float, tag: Any?=null, bColor: Int?=null): ViewGroup {
         val view = ConstraintLayout(this)
         if (tag != null) {
@@ -241,7 +285,7 @@ class ShowCoachVC : BaseActivity(), IconCellDelegate {
         }
 
         view.setOnClickListener {
-            clickEvent(it)
+            //clickEvent(it)
         }
         return view
     }
@@ -256,76 +300,76 @@ class ShowCoachVC : BaseActivity(), IconCellDelegate {
         parent.addView(t)
     }
 
-    fun markEvent() {
-
-        for (i in 0..timetables!!.rows.size-1) {
-            val row = timetables!!.rows[i]
-            val hours = (row.end_time.toDateTime("HH:mm:ss")!!.timeIntervalSince(row.start_time.toDateTime("HH:mm:ss")!!)).toFloat()/(60*60)
-            //println(hours)
-
-            val eventViewWidth = timetableCellWidth-8*timetableCellBorderWidth
-            val eventViewHeight = timetableCellHeight*hours-8*timetableCellBorderWidth
-            val eventView = generateView(eventViewWidth, eventViewHeight, 1000+i , row._color.toColor())
-            timetableView.addView(eventView)
-            eventViews.add(eventView)
-            val c1 = ConstraintSet()
-            c1.clone(timetableView)
-            val weekday = row.weekday
-            val _start_hour = row._start_hour
-            val _start_minute = row._start_minute
-            var y: Float = timetableCellBorderWidth*2.toFloat()
-            if (_start_minute > 0) {
-                val a = _start_minute.toFloat()/60
-                val b = (timetableCellHeight-2*timetableCellBorderWidth).toFloat()
-                y = a * b
-            }
-            val idx = columnNum*(_start_hour-startNum) + weekday
-            c1.connect(eventView.id, ConstraintSet.TOP, gridViews[idx].id, ConstraintSet.TOP, y.toInt())
-            c1.connect(eventView.id, ConstraintSet.LEFT, gridViews[idx].id, ConstraintSet.LEFT, timetableCellBorderWidth*4)
-            c1.applyTo(timetableView)
-
-            val titleLbl = TextView(this)
-            var lp = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT)
-            lp.setMargins(3, 3, 3, 3)
-            titleLbl.layoutParams = lp
-            titleLbl.gravity = Gravity.CENTER
-            titleLbl.text = row.title
-            titleLbl.textSize = 12f
-            titleLbl.textColor = Color.BLACK
-            //titleLbl.setBackgroundColor(Color.WHITE)
-            eventView.addView(titleLbl)
-
-            /*
-            val line = DrawLine(this, 3f, 55f, eventViewWidth-6f, 55f)
-            eventView.addView(line)
-
-            val contentLbl = TextView(this)
-            lp = LinearLayout.LayoutParams(eventViewWidth, eventViewHeight-55)
-            lp.setMargins(3, 10, 0, 0)
-            contentLbl.layoutParams = lp
-            contentLbl.gravity = Gravity.CENTER
-            contentLbl.text = "人數：\n" + row.limit_text
-            contentLbl.textSize = 12f
-            contentLbl.textColor = Color.BLACK
-            eventView.addView(contentLbl)
-            */
-        }
-    }
-    protected fun clickEvent(view: View) {
-
-        val tag = view.tag as Int
-//        println(tag)
-        //event
-        if (tag >= 1000) {
-            val idx = tag - 1000
-            val event = timetables!!.rows[idx]
-            val intent = Intent(this@ShowCoachVC, ShowTimetableVC::class.java)
-            intent.putExtra("tt_id", event.id)
-            intent.putExtra("source", type)
-            intent.putExtra("token", token)
-            startActivity(intent)
-        }
-    }
+//    fun markEvent() {
+//
+//        for (i in 0..timetables!!.rows.size-1) {
+//            val row = timetables!!.rows[i]
+//            val hours = (row.end_time.toDateTime("HH:mm:ss")!!.timeIntervalSince(row.start_time.toDateTime("HH:mm:ss")!!)).toFloat()/(60*60)
+//            //println(hours)
+//
+//            val eventViewWidth = timetableCellWidth-8*timetableCellBorderWidth
+//            val eventViewHeight = timetableCellHeight*hours-8*timetableCellBorderWidth
+//            val eventView = generateView(eventViewWidth, eventViewHeight, 1000+i , row._color.toColor())
+//            timetableView.addView(eventView)
+//            eventViews.add(eventView)
+//            val c1 = ConstraintSet()
+//            c1.clone(timetableView)
+//            val weekday = row.weekday
+//            val _start_hour = row._start_hour
+//            val _start_minute = row._start_minute
+//            var y: Float = timetableCellBorderWidth*2.toFloat()
+//            if (_start_minute > 0) {
+//                val a = _start_minute.toFloat()/60
+//                val b = (timetableCellHeight-2*timetableCellBorderWidth).toFloat()
+//                y = a * b
+//            }
+//            val idx = columnNum*(_start_hour-startNum) + weekday
+//            c1.connect(eventView.id, ConstraintSet.TOP, gridViews[idx].id, ConstraintSet.TOP, y.toInt())
+//            c1.connect(eventView.id, ConstraintSet.LEFT, gridViews[idx].id, ConstraintSet.LEFT, timetableCellBorderWidth*4)
+//            c1.applyTo(timetableView)
+//
+//            val titleLbl = TextView(this)
+//            var lp = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT)
+//            lp.setMargins(3, 3, 3, 3)
+//            titleLbl.layoutParams = lp
+//            titleLbl.gravity = Gravity.CENTER
+//            titleLbl.text = row.title
+//            titleLbl.textSize = 12f
+//            titleLbl.textColor = Color.BLACK
+//            //titleLbl.setBackgroundColor(Color.WHITE)
+//            eventView.addView(titleLbl)
+//
+//            /*
+//            val line = DrawLine(this, 3f, 55f, eventViewWidth-6f, 55f)
+//            eventView.addView(line)
+//
+//            val contentLbl = TextView(this)
+//            lp = LinearLayout.LayoutParams(eventViewWidth, eventViewHeight-55)
+//            lp.setMargins(3, 10, 0, 0)
+//            contentLbl.layoutParams = lp
+//            contentLbl.gravity = Gravity.CENTER
+//            contentLbl.text = "人數：\n" + row.limit_text
+//            contentLbl.textSize = 12f
+//            contentLbl.textColor = Color.BLACK
+//            eventView.addView(contentLbl)
+//            */
+//        }
+//    }
+//    protected fun clickEvent(view: View) {
+//
+//        val tag = view.tag as Int
+////        println(tag)
+//        //event
+//        if (tag >= 1000) {
+//            val idx = tag - 1000
+//            val event = timetables!!.rows[idx]
+//            val intent = Intent(this@ShowCoachVC, ShowTimetableVC::class.java)
+//            intent.putExtra("tt_id", event.id)
+//            intent.putExtra("source", type)
+//            intent.putExtra("token", token)
+//            startActivity(intent)
+//        }
+//    }
 
     override fun didSelectRowAt(view: View, position: Int) {
         val key = contactRowKeys[position]

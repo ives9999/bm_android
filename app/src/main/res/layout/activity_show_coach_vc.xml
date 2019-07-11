@@ -61,126 +61,26 @@
                     android:id="@+id/contactTableView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" >
+
+                </androidx.recyclerview.widget.RecyclerView>
 
                 <TextView
-                    android:id="@+id/timetableLbl"
-                    android:layout_width="wrap_content"
+                    android:id="@+id/courseLbl"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="12dp"
                     android:layout_marginTop="12dp"
-                    android:text="課程表"
+                    android:text="課程"
                     android:textColor="@color/MY_RED"
                     android:textSize="18sp" />
-
-                <LinearLayout
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/courseTableView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:id="@+id/ll"
-                    android:orientation="vertical"
-                    >
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" >
 
-                    <LinearLayout
-                        android:id="@+id/WeekdaysView"
-                        android:layout_width="match_parent"
-                        android:layout_height="36dp"
-                        android:background="@color/grey"
-                        android:orientation="horizontal"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent">
-
-                        <TextView
-                            android:id="@+id/time"
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:layout_weight="1.7" />
-
-                        <TextView
-                            android:id="@+id/day1"
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:layout_weight="1"
-                            android:gravity="center_vertical|center_horizontal"
-                            android:text="一"
-                            android:textAlignment="center"
-                            android:textColor="@color/WHITE"
-                            android:textSize="18sp" />
-
-                        <TextView
-                            android:id="@+id/day2"
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:layout_weight="1"
-                            android:gravity="center_vertical|center_horizontal"
-                            android:text="二"
-                            android:textAlignment="center"
-                            android:textColor="@color/WHITE"
-                            android:textSize="18sp" />
-
-                        <TextView
-                            android:id="@+id/day3"
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:layout_weight="1"
-                            android:gravity="center_vertical|center_horizontal"
-                            android:text="三"
-                            android:textAlignment="center"
-                            android:textColor="@color/WHITE"
-                            android:textSize="18sp" />
-
-                        <TextView
-                            android:id="@+id/day4"
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:layout_weight="1"
-                            android:gravity="center_vertical|center_horizontal"
-                            android:text="四"
-                            android:textAlignment="center"
-                            android:textColor="@color/WHITE"
-                            android:textSize="18sp" />
-
-                        <TextView
-                            android:id="@+id/day5"
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:layout_weight="1"
-                            android:gravity="center_vertical|center_horizontal"
-                            android:text="五"
-                            android:textAlignment="center"
-                            android:textColor="@color/WHITE"
-                            android:textSize="18sp" />
-
-                        <TextView
-                            android:id="@+id/day6"
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:layout_weight="1"
-                            android:gravity="center_vertical|center_horizontal"
-                            android:text="六"
-                            android:textAlignment="center"
-                            android:textColor="@color/WHITE"
-                            android:textSize="18sp" />
-
-                        <TextView
-                            android:id="@+id/day7"
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:layout_weight="1"
-                            android:gravity="center_vertical|center_horizontal"
-                            android:text="日"
-                            android:textAlignment="center"
-                            android:textColor="@color/WHITE"
-                            android:textSize="18sp" />
-                    </LinearLayout>
-
-                    <androidx.constraintlayout.widget.ConstraintLayout
-                        android:id="@+id/timetableView"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
-
-                    </androidx.constraintlayout.widget.ConstraintLayout>
-                </LinearLayout>
+                </androidx.recyclerview.widget.RecyclerView>
 
                 <TextView
                     android:id="@+id/chargeLbl"
@@ -267,5 +167,6 @@
         </androidx.core.widget.NestedScrollView>
 
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+    <include layout="@layout/mask" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
