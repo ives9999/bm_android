@@ -55,8 +55,8 @@ class EditItemActivity() : BaseActivity() {
     //來源的頁面，有coach, team, arena, teach 4種
     var page: String = ""
 
-    var start: String = "07:00"
-    var end: String = "23:00"
+    var start: String = "07:00:00"
+    var end: String = "23:00:00"
     //minute
     var interval: Int = 30
     var allTimes: ArrayList<String> = arrayListOf()
@@ -127,19 +127,21 @@ class EditItemActivity() : BaseActivity() {
                 setMyTitle("結束時間")
             }
             //println(value)
-            times = intent.getSerializableExtra("times") as HashMap<String, Any>
+            if (intent.hasExtra("times")) {
+                times = intent.getSerializableExtra("times") as HashMap<String, Any>
+            }
             if (intent.hasExtra("start")) {
                 start = intent.getStringExtra("start")
             }
             if (intent.hasExtra("end")) {
-                start = intent.getStringExtra("end")
+                end = intent.getStringExtra("end")
             }
             if (intent.hasExtra("interval")) {
                 interval = intent.getIntExtra("interval", 60)
             }
             var s = start.toDateTime("HH:mm")
             val e = end.toDateTime("HH:mm")
-            allTimes.add(start)
+            allTimes.add(s!!.toMyString("HH:mm"))
             while (s!!.compareTo(e) < 0) {
                 val cal = Calendar.getInstance()
                 cal.time = s
