@@ -117,25 +117,32 @@
 
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
-    <!--<LinearLayout-->
-        <!--android:id="@+id/footer"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="50dp"-->
-        <!--android:layout_alignParentBottom="true"-->
-        <!--android:background="@color/MY_GREEN"-->
-        <!--android:gravity="center_horizontal|center_vertical"-->
-        <!--android:orientation="vertical">-->
+    <LinearLayout
+        android:id="@+id/footer"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_alignParentBottom="true"
+        android:background="@color/MY_GREEN"
+        android:gravity="center|center_vertical"
+        android:orientation="horizontal">
 
+        <Button
+            android:id="@+id/signupButton"
+            style="@style/submit_button"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:layout_marginRight="16dp"
+            android:onClick="signup"
+            android:text="報名" />
+        <Button
+            android:id="@+id/signupListButton"
+            style="@style/cancel_button"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:onClick="signupList"
+            android:text="報名列表" />
 
-        <!--<Button-->
-            <!--android:id="@+id/signupBtn"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="30dp"-->
-            <!--style="@style/submit_button"-->
-            <!--android:onClick="signupSubmit"-->
-            <!--android:text="報名"-->
-            <!--/>-->
-    <!--</LinearLayout>-->
+    </LinearLayout>
     <include layout="@layout/mask" />
 
 </RelativeLayout>
