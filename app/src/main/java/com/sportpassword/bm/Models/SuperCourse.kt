@@ -48,6 +48,10 @@ class SuperCourse(data: JSONObject): SuperModel(data) {
     var thumb: String = ""
     var coach: SuperCoach = SuperCoach(JSONObject())
     var citys: SuperCitys = SuperCitys(JSONObject())
+    var nextCourseTime: HashMap<String, String> = hashMapOf()
+    //var signups: SuperSignups = SuperSignups()
+    var isSignup: Boolean = false
+    var signup_id: Int = 0
 
     override fun filter() {
         super.filter()

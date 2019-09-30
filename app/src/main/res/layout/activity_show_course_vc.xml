@@ -58,10 +58,28 @@
                 </androidx.recyclerview.widget.RecyclerView>
 
                 <TextView
-                    android:id="@+id/coachDetailLbl"
+                    android:id="@+id/signupDetailLbl"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/tableView"
+                    android:layout_marginLeft="12dp"
+                    android:layout_marginBottom="8dp"
+                    android:text="報名資料"
+                    android:textColor="@color/MY_RED"
+                    android:textSize="24dp" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/signupTableView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    android:layout_below="@+id/signupDetailLbl" />
+
+                <TextView
+                    android:id="@+id/coachDetailLbl"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/signupTableView"
                     android:layout_marginLeft="12dp"
                     android:layout_marginBottom="8dp"
                     android:text="教練資料"

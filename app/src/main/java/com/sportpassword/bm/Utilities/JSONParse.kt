@@ -63,6 +63,15 @@ class JSONParse {
                         } else if (key == "coach") {
                             val coach = JSONParse.parse<SuperCoach>(value)!!
                             _setter(it, res, coach)
+                        } else if (key == "nextCourseTime") {
+                            var d: HashMap<String, String> = hashMapOf()
+                            val date = value.get("date").toString()
+                            val deadline = value.get("deadline").toString()
+                            d["date"] = date
+                            d["deadline"] = deadline
+                            //println(date)
+                            //println(deadline)
+                            _setter(it, res, d)
                         }
                         //val d = makeMap(value)
                         //_setter(it, res, d)

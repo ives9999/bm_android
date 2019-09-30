@@ -37,6 +37,13 @@ class ShowCourseVC : BaseActivity(), IconCellDelegate {
             "pv" to hashMapOf( "icon" to "pv","title" to "瀏覽數","content" to ""),
             "created_at_text" to hashMapOf( "icon" to "calendar","title" to "建立日期","content" to "")
     )
+
+    val signupTableRowKeys:Array<String> = arrayOf("date", "deadline")
+    var signupTableRows: HashMap<String, HashMap<String, String>> = hashMapOf(
+            "date" to hashMapOf("icon" to "calendar","title" to "報名上課日期","content" to "","isPressed" to "false"),
+            "deadline" to hashMapOf("icon" to "clock","title" to "報名截止時間","content" to "","isPressed" to "false")
+    )
+
     val coachTableRowKeys:Array<String> = arrayOf(NAME_KEY,MOBILE_KEY,LINE_KEY,FB_KEY,YOUTUBE_KEY,WEBSITE_KEY,EMAIL_KEY)
     var coachTableRows: HashMap<String, HashMap<String, String>> = hashMapOf(
             NAME_KEY to hashMapOf("icon" to "coach","title" to "教練","content" to "","isPressed" to "true"),
@@ -51,10 +58,11 @@ class ShowCourseVC : BaseActivity(), IconCellDelegate {
     var superCoach: SuperCoach? = null
 
     lateinit var adapter: GroupAdapter<ViewHolder>
+    lateinit var signupAdapter: GroupAdapter<ViewHolder>
     lateinit var coachAdapter: GroupAdapter<ViewHolder>
 
-    var isSignup: Boolean = false
-    var signup: Signup? = null
+//    var isSignup: Boolean = false
+//    var signup: Signup? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -87,6 +95,12 @@ class ShowCourseVC : BaseActivity(), IconCellDelegate {
         adapter.addAll(timetableItems)
         tableView.adapter = adapter
 
+        signupAdapter = GroupAdapter()
+        val signupItems = generateSignupItem()
+        signupAdapter.addAll(signupItems)
+        signupTableView.adapter = signupAdapter
+
+
         coachAdapter = GroupAdapter()
         coachAdapter.setOnItemClickListener { item, view ->
 
@@ -103,13 +117,14 @@ class ShowCourseVC : BaseActivity(), IconCellDelegate {
             CourseService.getOne(this, course_token) { success ->
                 if (success) {
                     superCourse = CourseService.superModel as SuperCourse
+                    superCourse!!.print()
                     if (superCourse != null) {
                         superCourse!!.filter()
                         superCoach = superCourse!!.coach
                         setMainData()
+                        setSignupData()
                         setCoachData()
                         setFeatured()
-                        setSignupData()
                     }
                 }
                 closeRefresh()
@@ -145,7 +160,18 @@ class ShowCourseVC : BaseActivity(), IconCellDelegate {
 //                    println(tableRows)
         var items = generateCourseItem()
         adapter.update(items)
+    }
 
+    fun setSignupData() {
+        val nextCourseTime = superCourse!!.nextCourseTime
+        for (key in signupTableRowKeys) {
+            signupTableRows[key]!!["content"] = nextCourseTime[key]!!
+        }
+        val items = generateSignupItem()
+        signupAdapter.update(items)
+    }
+
+    fun setCoachData() {
         for (key in coachTableRowKeys) {
             val kc = superCoach!!::class
             kc.memberProperties.forEach {
@@ -155,9 +181,6 @@ class ShowCourseVC : BaseActivity(), IconCellDelegate {
                 }
             }
         }
-    }
-
-    fun setCoachData() {
         //println(coachTableRows)
         val items = generateCoachItem()
         coachAdapter.update(items)
@@ -172,8 +195,8 @@ class ShowCourseVC : BaseActivity(), IconCellDelegate {
         }
     }
 
-    fun setSignupData() {
-        isSignup = false
+//    fun setSignupData() {
+//        isSignup = false
 //                    if (superCouse!!.signups.size > 0) {
 //                        for (signup in superCouse!!.signups) {
 //                            //signup.printRow()
@@ -191,7 +214,7 @@ class ShowCourseVC : BaseActivity(), IconCellDelegate {
 //                    } else {
 //                        signupBtn.text = "報名"
 //                    }
-    }
+//    }
 
     fun generateCourseItem(): ArrayList<Item> {
 
@@ -217,6 +240,37 @@ class ShowCourseVC : BaseActivity(), IconCellDelegate {
                 }
                 if (icon.length > 0 && title.length > 0) {
                     val iconCell = IconCell(this@ShowCourseVC, icon, title, content, isPressed)
+                    iconCell.delegate = this
+                    items.add(iconCell)
+                }
+            }
+        }
+
+        return items
+    }
+
+    fun generateSignupItem(): ArrayList<Item> {
+        var items: ArrayList<Item> = arrayListOf()
+        var icon = ""
+        var title = ""
+        var content = ""
+        for (key in signupTableRowKeys) {
+            if (signupTableRows.containsKey(key)) {
+                val row = signupTableRows[key]!!
+                if (row.containsKey("icon")) {
+                    icon = row["icon"]!!
+                }
+                if (row.containsKey("title")) {
+                    title = row["title"]!!
+                }
+                if (row.containsKey("content")) {
+                    content = row["content"]!!
+                    if (key == MOBILE_KEY) {
+                        content = content.mobileShow()
+                    }
+                }
+                if (icon.length > 0 && title.length > 0) {
+                    val iconCell = IconCell(this@ShowCourseVC, icon, title, content, false)
                     iconCell.delegate = this
                     items.add(iconCell)
                 }
