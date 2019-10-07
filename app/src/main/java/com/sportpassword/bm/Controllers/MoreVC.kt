@@ -39,8 +39,12 @@ open class MoreVC : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        type = intent.getStringExtra("type")
-        titleField = intent.getStringExtra("titleField")
+        if (intent.hasExtra("type")) {
+            type = intent.getStringExtra("type")
+        }
+        if (intent.hasExtra("titleField")) {
+            titleField = intent.getStringExtra("titleField")
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -98,7 +102,7 @@ open class MoreVC : BaseActivity() {
         listAdapter.lists = superDataLists
         listAdapter.notifyDataSetChanged()
     }
-    open protected fun initAdapter() {
+    open protected fun initAdapter(include_section: Boolean=false) {
         listAdapter = ListAdapter(this, type!!, screenWidth, { data ->
 
             var intent: Intent? = null

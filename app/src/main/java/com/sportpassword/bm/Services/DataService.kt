@@ -45,6 +45,9 @@ open class DataService: BaseService() {
 
     var image: Bitmap? = null
 
+    var able: SuperModel = SuperModel(JSONObject()) // for signup list able model
+    var signup_date: JSONObject = JSONObject()//signup_date use
+
     open fun getList(context: Context, token: String?, _filter: HashMap<String, Any>?, page: Int, perPage: Int, complete: CompletionHandler) {
 
         var url = getListURL()
@@ -411,10 +414,10 @@ open class DataService: BaseService() {
     }
 
     open fun getOne(context: Context, id: Int, source: String, token: String, completion: CompletionHandler) {}
-    open fun getOne(context: Context, token: String?, complete: CompletionHandler) {
+    open fun getOne(context: Context, params: HashMap<String, String>, complete: CompletionHandler) {
 
         val url = getOneURL()
-//        println(url)
+        //println(url)
 
         val header: MutableList<Pair<String, String>> = mutableListOf()
         header.add(Pair("Accept","application/json"))
@@ -423,9 +426,14 @@ open class DataService: BaseService() {
 
         val body = JSONObject()
         body.put("source", "app")
-        body.put("token", token)
+        if (params.containsKey("token")) {
+            body.put("token", params["token"])
+        }
+        if (params.containsKey("member_token")) {
+            body.put("member_token", params["member_token"])
+        }
         body.put("strip_html", false)
-//        println(body)
+        //println(body)
 
         MyHttpClient.instance.post(context, url, body.toString()) { success ->
 
@@ -1307,15 +1315,140 @@ open class DataService: BaseService() {
         Volley.newRequestQueue(context).add(request)
     }
 
-    fun signup(context: Context, type: String, token: String, member_token: String, tt_id: Int, complete: CompletionHandler) {
-        val url = "$URL_SIGNUP".format(type, token)
-        //println(url)
-        val body = JSONObject()
-        body.put("source", "app")
+    open fun getSignupURL(token: String): String { return ""}
+    open fun getSignupDateURL(token: String): String { return ""}
+    open fun getSignupListURL(token: String? = null): String { return ""}
+    open fun parseAbleForSingupList(data: JSONObject): SuperModel { return SuperModel(data) }
+
+    fun signup_date(context: Context, token: String, member_token: String, complete: CompletionHandler) {
+        val url = getSignupDateURL(token)
+        //print(url)
+        val jsonString: String = "{\"device\": \"app\", \"channel\": \"bm\", \"member_token\": " + member_token + "}"
+        val body: JSONObject = JSONObject(jsonString)
+        //print(body)
+
+        MyHttpClient.instance.post(context, url, body.toString()) { success ->
+
+            if (success) {
+                val response = MyHttpClient.instance.response
+                if (response != null) {
+                    try {
+                        val json = JSONObject(response.toString())
+//                        println(json)
+                        this.success = json.getBoolean("success")
+                        if (this.success) {
+                            this.signup_date = json
+                        } else {
+                            this.msg = json.getString("msg")
+                        }
+                    } catch (e: Exception) {
+                        this.success = false
+                        msg = "parse json failed，請洽管理員"
+                        println(e.localizedMessage)
+                    }
+                    complete(this.success)
+                } else {
+                    println("response is null")
+                }
+            } else {
+                msg = "網路錯誤，無法跟伺服器更新資料"
+                complete(success)
+            }
+        }
+    }
+
+    fun signup(context: Context, token: String, member_token: String, signup_id: Int, course_date: String, course_deadline: String, complete: CompletionHandler) {
+        val url = getSignupURL(token)
+        //print(url)
+//        val jsonString: String = "{\"device\": \"app\", \"channel\": \"bm\", \"member_token\": " + member_token + ", \"signup_id\": " + signup_id.toString() + ", \"course_date\": " + course_date + ", \"course_deadline\": " + course_deadline + "}"
+        val body: JSONObject = JSONObject()
+        body.put("device", "app")
         body.put("channel", "bm")
         body.put("member_token", member_token)
-        body.put("tt_id", tt_id)
-        val requestBody = body.toString()
+        body.put("signup_id", signup_id.toString())
+        body.put("able_date", course_date)
+        body.put("cancel_deadline", course_deadline)
+
+        MyHttpClient.instance.post(context, url, body.toString()) { success ->
+
+            if (success) {
+                val response = MyHttpClient.instance.response
+                if (response != null) {
+                    try {
+                        val json = JSONObject(response.toString())
+//                        println(json)
+                        this.success = json.getBoolean("success")
+                        if (json.has("msg")) {
+                            this.msg = json.getString("msg")
+                        }
+                    } catch (e: Exception) {
+                        this.success = false
+                        msg = "parse json failed，請洽管理員"
+                        println(e.localizedMessage)
+                    }
+                    complete(this.success)
+                } else {
+                    println("response is null")
+                }
+            } else {
+                msg = "網路錯誤，無法跟伺服器更新資料"
+                complete(success)
+            }
+        }
+    }
+
+    fun signup_list(context: Context, token: String? = null, page: Int = 1, perPage: Int = 8, complete: CompletionHandler) {
+        val url: String = getSignupListURL(token)
+        //print(url)
+        val jsonString: String = "{\"device\": \"app\", \"channel\": \"bm\", \"page\": " + page.toString() + ", \"perPage\": " + perPage + "}"
+        val body: JSONObject = JSONObject(jsonString)
+        //print(body)
+
+        MyHttpClient.instance.post(context, url, body.toString()) { success ->
+
+            if (success) {
+                val response = MyHttpClient.instance.response
+                if (response != null) {
+                    try {
+                        val json = JSONObject(response.toString())
+//                        println(json)
+                        if (json.has("able")) {
+                            able = parseAbleForSingupList(json.getJSONObject("able"))
+                            //able.print()
+                        }
+                        val s: SuperSignups = JSONParse.parse<SuperSignups>(json)!!
+//                        for (i in 0..s.rows.size-1) {
+//                            val row = s.rows[i]
+//                            row.print()
+//                        }
+                        superModel = s
+                        complete(true)
+                    } catch (e: Exception) {
+                        this.success = false
+                        msg = "parse json failed，請洽管理員"
+                        println(e.localizedMessage)
+                        complete(false)
+                    }
+                } else {
+                    println("response is null")
+                    complete(false)
+                }
+            } else {
+                msg = "網路錯誤，無法跟伺服器更新資料"
+                complete(success)
+            }
+        }
+    }
+
+//    fun signup(context: Context, type: String, token: String, member_token: String, tt_id: Int, complete: CompletionHandler) {
+//        val url = "$URL_SIGNUP".format(type, token)
+        //println(url)
+//        val body = JSONObject()
+//        body.put("source", "app")
+//        body.put("channel", "bm")
+//        body.put("member_token", member_token)
+//        body.put("tt_id", tt_id)
+//        val requestBody = body.toString()
         //println(requestBody)
 
         /*
@@ -1380,47 +1513,47 @@ open class DataService: BaseService() {
         }
         Volley.newRequestQueue(context).add(request)
         */
-    }
+//    }
 
-    fun cancelSignup(context: Context, type: String, member_token: String, signup_id: Int, complete: CompletionHandler) {
-        val url = "$URL_CANCEL_SIGNUP".format(type, signup_id)
-        println(url)
-        val body = JSONObject()
-        body.put("source", "app")
-        body.put("channel", "bm")
-        body.put("member_token", member_token)
-        val requestBody = body.toString()
-        println(requestBody)
-
-        val request = object : JsonObjectRequest(Request.Method.POST, url, null, Response.Listener { json ->
-            //println(json)
-            try {
-                success = json.getBoolean("success")
-            } catch (e: JSONException) {
-                println(e.localizedMessage)
-                success = false
-                msg = "無法刪除球隊，請稍後再試 " + e.localizedMessage
-            }
-            if (!success) {
-                msg = json.getString("msg")
-            }
-            complete(success)
-        }, Response.ErrorListener { error ->
-            //Log.d("ERROR", "Could not register user: $error")
-            println(error.localizedMessage)
-            this.msg = "取得失敗，網站或網路錯誤"
-            complete(false)
-        }) {
-            override fun getBodyContentType(): String {
-                return HEADER
-            }
-
-            override fun getBody(): ByteArray {
-                return requestBody.toByteArray()
-            }
-        }
-        Volley.newRequestQueue(context).add(request)
-    }
+//    fun cancelSignup(context: Context, type: String, member_token: String, signup_id: Int, complete: CompletionHandler) {
+//        val url = "$URL_CANCEL_SIGNUP".format(type, signup_id)
+//        println(url)
+//        val body = JSONObject()
+//        body.put("source", "app")
+//        body.put("channel", "bm")
+//        body.put("member_token", member_token)
+//        val requestBody = body.toString()
+//        println(requestBody)
+//
+//        val request = object : JsonObjectRequest(Request.Method.POST, url, null, Response.Listener { json ->
+//            //println(json)
+//            try {
+//                success = json.getBoolean("success")
+//            } catch (e: JSONException) {
+//                println(e.localizedMessage)
+//                success = false
+//                msg = "無法刪除球隊，請稍後再試 " + e.localizedMessage
+//            }
+//            if (!success) {
+//                msg = json.getString("msg")
+//            }
+//            complete(success)
+//        }, Response.ErrorListener { error ->
+//            //Log.d("ERROR", "Could not register user: $error")
+//            println(error.localizedMessage)
+//            this.msg = "取得失敗，網站或網路錯誤"
+//            complete(false)
+//        }) {
+//            override fun getBodyContentType(): String {
+//                return HEADER
+//            }
+//
+//            override fun getBody(): ByteArray {
+//                return requestBody.toByteArray()
+//            }
+//        }
+//        Volley.newRequestQueue(context).add(request)
+//    }
 
     open fun setData(id: Int, title: String, token: String, featured_path: String, vimeo: String, youtube: String): SuperData {
         val data = SuperData(id, title, token, featured_path, vimeo, youtube)

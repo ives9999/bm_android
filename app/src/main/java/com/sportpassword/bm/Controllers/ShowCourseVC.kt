@@ -1,23 +1,25 @@
 package com.sportpassword.bm.Controllers
 
+import android.app.AlertDialog
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 import com.sportpassword.bm.Adapters.IconCell
 import com.sportpassword.bm.Adapters.IconCellDelegate
-import com.sportpassword.bm.Models.Signup
 import com.sportpassword.bm.Models.SuperCoach
 import com.sportpassword.bm.Models.SuperCourse
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.CourseService
 import com.sportpassword.bm.Utilities.*
+import com.sportpassword.bm.member
 import com.squareup.picasso.Picasso
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.ViewHolder
 import com.xwray.groupie.kotlinandroidextensions.Item
 import kotlinx.android.synthetic.main.activity_show_course_vc.*
 import kotlinx.android.synthetic.main.mask.*
+import org.json.JSONObject
 import kotlin.reflect.full.memberProperties
 
 class ShowCourseVC : BaseActivity(), IconCellDelegate {
@@ -63,6 +65,13 @@ class ShowCourseVC : BaseActivity(), IconCellDelegate {
 
 //    var isSignup: Boolean = false
 //    var signup: Signup? = null
+
+    var signup_date: JSONObject = JSONObject()
+    var isSignup: Boolean = false
+    var canCancelSignup: Boolean = false
+    var signup_id: Int = 0
+    var course_date: String = ""
+    var course_deadline: String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -114,10 +123,11 @@ class ShowCourseVC : BaseActivity(), IconCellDelegate {
         //super.refresh()
         if (course_token != null) {
             Loading.show(mask)
-            CourseService.getOne(this, course_token) { success ->
+            val params: HashMap<String, String> = hashMapOf("token" to course_token!!, "member_token" to member.token)
+            CourseService.getOne(this, params) { success ->
                 if (success) {
                     superCourse = CourseService.superModel as SuperCourse
-                    superCourse!!.print()
+                    //superCourse!!.print()
                     if (superCourse != null) {
                         superCourse!!.filter()
                         superCoach = superCourse!!.coach
@@ -125,6 +135,12 @@ class ShowCourseVC : BaseActivity(), IconCellDelegate {
                         setSignupData()
                         setCoachData()
                         setFeatured()
+
+                        if (superCourse!!.isSignup) {
+                            signupButton.setText("取消報名")
+                        } else {
+                            signupButton.setText("報名")
+                        }
                     }
                 }
                 closeRefresh()
@@ -218,7 +234,7 @@ class ShowCourseVC : BaseActivity(), IconCellDelegate {
 
     fun generateCourseItem(): ArrayList<Item> {
 
-        var items: ArrayList<Item> = arrayListOf()
+        val items: ArrayList<Item> = arrayListOf()
         var icon = ""
         var title = ""
         var content = ""
@@ -250,7 +266,7 @@ class ShowCourseVC : BaseActivity(), IconCellDelegate {
     }
 
     fun generateSignupItem(): ArrayList<Item> {
-        var items: ArrayList<Item> = arrayListOf()
+        val items: ArrayList<Item> = arrayListOf()
         var icon = ""
         var title = ""
         var content = ""
@@ -281,7 +297,7 @@ class ShowCourseVC : BaseActivity(), IconCellDelegate {
     }
 
     fun generateCoachItem(): ArrayList<Item> {
-        var items: ArrayList<Item> = arrayListOf()
+        val items: ArrayList<Item> = arrayListOf()
         var icon = ""
         var title = ""
         var content = ""
@@ -357,6 +373,99 @@ class ShowCourseVC : BaseActivity(), IconCellDelegate {
                     val email = superCoach!!.email
                     email.email(this)
                 }
+            }
+        }
+    }
+
+    fun showSignupModal() {
+        var title: String = ""
+        if (isSignup) {
+            title = "取消報名"
+        } else {
+            title = "報名"
+        }
+        val signup_html = "報名課程日期是：" + course_date + "\r\n" + "報名取消截止時間是：" + course_deadline.noSec()
+        val cancel_signup_html = "報名課程日期是：" + course_date + "\r\n" + "報名取消截止時間是：" + course_deadline.noSec()
+        val cant_cancel_signup_html = "已經超過取消報名期限，無法取消\r\n" + "報名課程日期是：" + course_date + "\r\n" + "報名取消截止時間是：" + course_deadline.noSec()
+        var msg = signup_html
+
+        if (!isSignup && !canCancelSignup) {
+            msg = signup_html
+        } else {
+            if (isSignup && canCancelSignup) {
+                msg = cancel_signup_html
+            } else {
+                msg = cant_cancel_signup_html
+                title = "警告"
+            }
+        }
+        val alert = AlertDialog.Builder(this).create()
+        alert.setTitle(title)
+        alert.setMessage(msg)
+        if ((!isSignup && !canCancelSignup) || (isSignup && canCancelSignup)) {
+            alert.setButton(AlertDialog.BUTTON_NEGATIVE, title, { Interface, j ->
+                signup()
+            })
+        }
+        alert.setButton(AlertDialog.BUTTON_POSITIVE, "關閉", { Interface, j ->
+            //finish()
+        })
+        alert.show()
+    }
+
+    fun signup() {
+        if (!member.isLoggedIn) {
+            warning("請先登入會員")
+            return
+        }
+        Loading.show(mask)
+        CourseService.signup(this, course_token!!, member.token, signup_id, course_date, course_deadline) { success ->
+            Loading.hide(mask)
+            val msg = CourseService.msg
+            var title = "警告"
+            val alert = AlertDialog.Builder(this).create()
+            if (CourseService.success) {
+                title = "提示"
+                alert.setButton(AlertDialog.BUTTON_POSITIVE, "關閉", { Interface, j ->
+                    refresh()
+                })
+            } else {
+                alert.setButton(AlertDialog.BUTTON_POSITIVE, "關閉", { Interface, j ->
+                })
+            }
+            alert.setTitle(title)
+            alert.setMessage(msg)
+
+            alert.show()
+        }
+    }
+
+    fun signupListButtonPressed(view: View) {
+        //println("aaa")
+        val intent = Intent(this, SignupListVC::class.java)
+        intent.putExtra("able", "course")
+        intent.putExtra("able_token", course_token)
+        startActivity(intent)
+    }
+
+    fun signupButtonPressed(view: View) {
+        if (!member.isLoggedIn) {
+            warning("請先登入會員")
+            return
+        }
+        Loading.show(mask)
+        CourseService.signup_date(this, course_token!!, member.token) { success ->
+            Loading.hide(mask)
+            if (success) {
+                signup_date = CourseService.signup_date
+                //println(signup_date)
+                isSignup = signup_date.getBoolean("isSignup")
+                canCancelSignup = signup_date.getBoolean("cancel")
+                signup_id = signup_date.getInt("signup_id")
+                course_date = signup_date.getString("course_date")
+                course_deadline = signup_date.getString("course_deadline")
+
+                showSignupModal()
             }
         }
     }

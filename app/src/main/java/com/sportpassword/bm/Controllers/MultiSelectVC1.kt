@@ -2,7 +2,6 @@ package com.sportpassword.bm.Controllers
 
 import android.app.Activity
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import com.sportpassword.bm.R
@@ -12,7 +11,7 @@ import com.xwray.groupie.kotlinandroidextensions.Item
 import kotlinx.android.synthetic.main.activity_multi_select_vc.*
 import kotlinx.android.synthetic.main.select_item.*
 
-class MultiSelectVC : SelectVC() {
+class MultiSelectVC1 : SelectVC1() {
 
     var selecteds: ArrayList<String> = arrayListOf()
 

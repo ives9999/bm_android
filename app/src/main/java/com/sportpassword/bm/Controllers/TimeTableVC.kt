@@ -477,7 +477,7 @@ class TimeTableVC : BaseActivity(), ViewDelegate {
                     8-> {
                         layerCancel()
                         removeLayerChildViews()
-                        val intent1 = Intent(this, ColorSelectVC::class.java)
+                        val intent1 = Intent(this, ColorSelectVC1::class.java)
                         intent1.putExtra("key", COLOR_SELECT_KEY)
                         if (formItem.sender != null) {
                             intent1.putExtra("selecteds", formItem.sender as ArrayList<MYCOLOR>)
@@ -488,7 +488,7 @@ class TimeTableVC : BaseActivity(), ViewDelegate {
                     9-> {
                         layerCancel()
                         removeLayerChildViews()
-                        val intent1 = Intent(this, StatusSelectVC::class.java)
+                        val intent1 = Intent(this, StatusSelectVC1::class.java)
                         intent1.putExtra("key", STATUS_SELECT_KEY)
                         intent1.putExtra("selected", formItem.sender as STATUS)
                         startActivityForResult(intent1, SEARCH_REQUEST_CODE)

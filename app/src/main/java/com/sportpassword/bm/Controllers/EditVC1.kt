@@ -10,7 +10,6 @@ import com.sportpassword.bm.Services.TeamService
 import kotlinx.android.synthetic.main.edit_vc.*
 import org.jetbrains.anko.sdk27.coroutines.onClick
 import androidx.appcompat.app.AlertDialog
-import android.view.Menu
 import android.view.View
 import android.widget.*
 import com.sportpassword.bm.Models.*
@@ -28,7 +27,7 @@ import org.jetbrains.anko.toast
 import java.io.File
 import kotlinx.android.synthetic.main.mask.*
 
-class EditVC : MyTableVC(), ImagePicker {
+class EditVC1 : MyTableVC1(), ImagePicker {
 
     override val ACTION_CAMERA_REQUEST_CODE = 100
     override val ACTION_PHOTO_REQUEST_CODE = 200
@@ -466,7 +465,7 @@ class EditVC : MyTableVC(), ImagePicker {
 
 //        println(key)
         hideKeyboard()
-        val intent = Intent(this@EditVC, EditItemActivity::class.java)
+        val intent = Intent(this@EditVC1, EditItemActivity::class.java)
         intent.putExtra("key", key)
         if (key == TEAM_WEEKDAYS_KEY) {
             val value: MutableList<Int> = model.data[key]!!["value"] as MutableList<Int>

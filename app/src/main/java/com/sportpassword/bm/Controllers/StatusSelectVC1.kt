@@ -2,7 +2,6 @@ package com.sportpassword.bm.Controllers
 
 import android.app.Activity
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import com.sportpassword.bm.R
@@ -12,7 +11,7 @@ import com.xwray.groupie.kotlinandroidextensions.Item
 import kotlinx.android.synthetic.main.mytablevc.*
 import kotlinx.android.synthetic.main.status_select_item.*
 
-class StatusSelectVC : MyTableVC() {
+class StatusSelectVC1 : MyTableVC1() {
 
     lateinit var key: String
     lateinit var all: ArrayList<HashMap<String, Any>>

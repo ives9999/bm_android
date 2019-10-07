@@ -1,20 +1,17 @@
 package com.sportpassword.bm.Controllers
 
 import android.app.Activity
-import android.app.AlertDialog
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
-import androidx.core.content.ContextCompat
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Utilities.selected
 import com.sportpassword.bm.Utilities.unSelected
 import com.xwray.groupie.kotlinandroidextensions.Item
 import kotlinx.android.synthetic.main.activity_single_select_vc.*
-import kotlinx.android.synthetic.main.color_select_item.view.*
 import kotlinx.android.synthetic.main.select_item.*
 
-class SingleSelectVC : SelectVC() {
+class SingleSelectVC1 : SelectVC1() {
 
     var selected: String? = null
 

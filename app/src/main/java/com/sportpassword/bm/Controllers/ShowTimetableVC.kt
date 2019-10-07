@@ -15,7 +15,6 @@ import android.view.View
 import android.webkit.*
 import com.sportpassword.bm.Adapters.IconCell
 import com.sportpassword.bm.Adapters.IconCellDelegate
-import com.sportpassword.bm.Models.Signup
 import com.sportpassword.bm.Models.SuperCoach
 import com.sportpassword.bm.Models.Timetable
 import com.sportpassword.bm.R
@@ -65,7 +64,6 @@ class ShowTimetableVC : BaseActivity(), IconCellDelegate {
     lateinit var coachAdapter: GroupAdapter<ViewHolder>
 
     var isSignup: Boolean = false
-    var signup: Signup? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -106,18 +104,18 @@ class ShowTimetableVC : BaseActivity(), IconCellDelegate {
                     }
 
                     isSignup = false
-                    if (timetable!!.signups.size > 0) {
-                        for (signup in timetable!!.signups) {
-                            //signup.printRow()
-                            if (signup.member_id == member.id) {
-                                this.signup = signup
-                                if (signup.status == "normal") {
-                                    isSignup = true
-                                }
-                                break
-                            }
-                        }
-                    }
+//                    if (timetable!!.signups.size > 0) {
+//                        for (signup in timetable!!.signups) {
+//                            //signup.printRow()
+//                            if (signup.member_id == member.id) {
+//                                this.signup = signup
+//                                if (signup.status == "normal") {
+//                                    isSignup = true
+//                                }
+//                                break
+//                            }
+//                        }
+//                    }
                     if (isSignup) {
                         signupBtn.text = "取消報名"
                     } else {
@@ -297,29 +295,29 @@ class ShowTimetableVC : BaseActivity(), IconCellDelegate {
                 val tt_id = timetable!!.id
                 Loading.show(mask)
                 if (!isSignup) {//報名
-                    dataService.signup(this, "timetable", token!!, member.token, tt_id) { success ->
-                        Loading.hide(mask)
-                        if (!success) {
-                            warning(dataService.msg)
-                        } else {
-                            info("您已經報名成功")
-                            refresh()
-                        }
-                    }
+//                    dataService.signup(this, "timetable", token!!, member.token, tt_id) { success ->
+//                        Loading.hide(mask)
+//                        if (!success) {
+//                            warning(dataService.msg)
+//                        } else {
+//                            info("您已經報名成功")
+//                            refresh()
+//                        }
+//                    }
                 } else {//取消報名
-                    if (signup != null) {
-                        dataService.cancelSignup(this, "timetable", member.token, signup!!.id) { success ->
-                            unmask()
-                            if (!success) {
-                                warning(dataService.msg)
-                            } else {
-                                info("取消報名成功")
-                                refresh()
-                            }
-                        }
-                    } else {
-                        warning("沒有取得報名資料，無法取消報名，請洽管理員")
-                    }
+//                    if (signup != null) {
+//                        dataService.cancelSignup(this, "timetable", member.token, signup!!.id) { success ->
+//                            unmask()
+//                            if (!success) {
+//                                warning(dataService.msg)
+//                            } else {
+//                                info("取消報名成功")
+//                                refresh()
+//                            }
+//                        }
+//                    } else {
+//                        warning("沒有取得報名資料，無法取消報名，請洽管理員")
+//                    }
                 }
             } else {
                 warning("沒有取得課程表，請重新進入")

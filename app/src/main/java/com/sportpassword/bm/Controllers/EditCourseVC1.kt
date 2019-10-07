@@ -8,7 +8,6 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import androidx.appcompat.app.AlertDialog
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
-import com.facebook.internal.Mutable
 import com.sportpassword.bm.Adapters.Form.*
 import com.sportpassword.bm.Form.CourseForm
 import com.sportpassword.bm.Form.FormItem.*
@@ -26,7 +25,7 @@ import org.jetbrains.anko.sdk27.coroutines.onClick
 import java.io.File
 import kotlin.reflect.full.declaredMemberProperties
 
-class EditCourseVC : MyTableVC(), ImagePicker, ViewDelegate {
+class EditCourseVC1 : MyTableVC1(), ImagePicker, ViewDelegate {
 
     override val ACTION_CAMERA_REQUEST_CODE = 100
     override val ACTION_PHOTO_REQUEST_CODE = 200
@@ -110,7 +109,8 @@ class EditCourseVC : MyTableVC(), ImagePicker, ViewDelegate {
 
     override fun refresh() {
         Loading.show(mask)
-        CourseService.getOne(this, course_token) { success ->
+        val params: HashMap<String, String> = hashMapOf("token" to course_token!!)
+        CourseService.getOne(this, params) { success ->
             if (success) {
                 superCourse = CourseService.superCourse
                 putValue()
@@ -237,19 +237,19 @@ class EditCourseVC : MyTableVC(), ImagePicker, ViewDelegate {
         val forItem = form.formItems[idx]
         val key = forItem.name
 
-        val singleSelectIntent = Intent(this@EditCourseVC, SingleSelectVC::class.java)
+        val singleSelectIntent = Intent(this@EditCourseVC1, SingleSelectVC1::class.java)
         singleSelectIntent.putExtra("title", forItem.title)
         singleSelectIntent.putExtra("key", key)
 
-        val multiSelectIntent = Intent(this@EditCourseVC, MultiSelectVC::class.java)
+        val multiSelectIntent = Intent(this@EditCourseVC1, MultiSelectVC1::class.java)
         multiSelectIntent.putExtra("title", forItem.title)
         multiSelectIntent.putExtra("key", key)
 
-        val dateSelectIntent = Intent(this@EditCourseVC, DateSelectVC::class.java)
+        val dateSelectIntent = Intent(this@EditCourseVC1, DateSelectVC::class.java)
         dateSelectIntent.putExtra("title", forItem.title)
         dateSelectIntent.putExtra("key", key)
 
-        val contentIntent = Intent(this@EditCourseVC, ContentEditVC::class.java)
+        val contentIntent = Intent(this@EditCourseVC1, ContentEditVC::class.java)
         contentIntent.putExtra("title", forItem.title)
         contentIntent.putExtra("key", key)
 

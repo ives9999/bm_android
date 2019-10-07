@@ -8,7 +8,6 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.View
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-import com.sportpassword.bm.Adapters.ManagerAdapter
 import com.sportpassword.bm.Models.SuperCourse
 import com.sportpassword.bm.Models.SuperCourses
 import com.sportpassword.bm.R
@@ -22,14 +21,13 @@ import com.squareup.picasso.Picasso
 import com.xwray.groupie.kotlinandroidextensions.Item
 import kotlinx.android.synthetic.main.manager_course_item.*
 import kotlinx.android.synthetic.main.manager_course_vc.*
-import kotlinx.android.synthetic.main.manager_vc.*
 import kotlinx.android.synthetic.main.mask.*
 import com.xwray.groupie.ViewHolder
 import org.jetbrains.anko.*
 import org.jetbrains.anko.sdk27.coroutines.onClick
 
 
-class ManagerCourseVC: MyTableVC() {
+class ManagerCourseVC1: MyTableVC1() {
     var token: String? = null //coach token
     var name: String? = null  //coach name
     var manager_token: String? = null
@@ -117,7 +115,7 @@ class ManagerCourseVC: MyTableVC() {
         val items: ArrayList<Item> = arrayListOf()
         if (superCourses != null) {
             for (row in superCourses!!.rows) {
-                items.add(ManagerCourseItem(this@ManagerCourseVC, row))
+                items.add(ManagerCourseItem(this@ManagerCourseVC1, row))
             }
         }
 
@@ -134,7 +132,7 @@ class ManagerCourseVC: MyTableVC() {
                     button("檢視") {
                         onClick {
                             dialog.dismiss()
-                            val intent = Intent(this@ManagerCourseVC, ShowCourseVC::class.java)
+                            val intent = Intent(this@ManagerCourseVC1, ShowCourseVC::class.java)
                             intent.putExtra("course_token", row.token)
                             intent.putExtra("title", row.title)
                             startActivity(intent)
@@ -164,7 +162,7 @@ class ManagerCourseVC: MyTableVC() {
 
     fun add(view: View) {
         if (member.validate < 1) {
-            Alert.show(this@ManagerCourseVC, "錯誤", "未通過EMail認證，無法新增課程，認證完後，請先登出再登入")
+            Alert.show(this@ManagerCourseVC1, "錯誤", "未通過EMail認證，無法新增課程，認證完後，請先登出再登入")
         } else {
             if (token != null) {
                 goEditCourse("新增課程", "", token!!)

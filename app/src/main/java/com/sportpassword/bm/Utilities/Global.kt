@@ -357,6 +357,15 @@ fun String.truncate(length: Int, trailing: String = "…"): String {
         return this
     }
 }
+fun String.noYear(): String {
+    val arr: List<String> = this.split("-")
+    var res: String = this
+    if (arr.size > 2) {
+        res = "${arr[1]}-${arr[2]}"
+    }
+
+    return res
+}
 fun String.noSec(): String {
     val arr: List<String> = this.split(":")
     var res: String = this

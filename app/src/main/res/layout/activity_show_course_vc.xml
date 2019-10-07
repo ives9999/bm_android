@@ -132,14 +132,14 @@
             android:layout_width="wrap_content"
             android:layout_height="30dp"
             android:layout_marginRight="16dp"
-            android:onClick="signup"
+            android:onClick="signupButtonPressed"
             android:text="報名" />
         <Button
             android:id="@+id/signupListButton"
             style="@style/cancel_button"
             android:layout_width="wrap_content"
             android:layout_height="30dp"
-            android:onClick="signupList"
+            android:onClick="signupListButtonPressed"
             android:text="報名列表" />
 
     </LinearLayout>

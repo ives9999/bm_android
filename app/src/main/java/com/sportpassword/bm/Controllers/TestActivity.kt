@@ -59,7 +59,7 @@ class TestActivity : AppCompatActivity() {
                 "\" height=\"" +
                 height +
                 "\" src=\"https://www.youtube.com/embed/Uwj6vyYrhHo\" frameborder=\"0\" allow=\"autoplay; encrypted-media\" allowfullscreen></iframe></body></html>"
-        println(html)
+        //println(html)
         //val url = "https://player.vimeo.com/external/265966500.m3u8?s=34b38682f7d95a03185deb417e4c0945e3923882"
         //webView.loadUrl(url)
         //webView.settings.pluginState = WebSettings.PluginState.ON

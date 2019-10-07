@@ -49,7 +49,7 @@ class TempPlayVC : MoreVC() {
         return true
     }
 
-    override fun initAdapter() {
+    override fun initAdapter(include_section: Boolean) {
         tempPlayListAdapter = TempPlayListAdapter(this, { data ->
             show(data)
         }, { city_id ->

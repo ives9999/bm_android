@@ -65,7 +65,6 @@ import org.json.JSONArray
 import org.json.JSONObject
 import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
-import kotlin.reflect.jvm.internal.pcollections.HashPMap
 
 open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, SearchItemDelegate {
 
@@ -151,35 +150,37 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
 
     private fun _setURLConstants() {
         gSimulate = isEmulator()
-        gSimulate = true
+        //gSimulate = true
         BASE_URL = if (gSimulate) LOCALHOST_BASE_URL else REMOTE_BASE_URL
         //println("os: " + BASE_URL)
+
         URL_HOME = BASE_URL + "/app/"
-        URL_LIST = "${URL_HOME}%s"
-        URL_SHOW = "${URL_HOME}%s/show/%s?device=app"
-        URL_LOGIN = URL_HOME + "login"
-        URL_FB_LOGIN = URL_HOME + "member/fb"
-        URL_REGISTER = URL_HOME + "register"
-        URL_FORGETPASSWORD = "$BASE_URL/member/forget_password"
-        URL_CHANGE_PASSWORD = "$BASE_URL/member/change_password"
-        URL_MEMBER_UPDATE = URL_HOME + "member/update"
-        URL_EMAIL_VALIDATE = URL_HOME + "member/email_validate"
-        URL_MOBILE_VALIDATE = URL_HOME + "member/mobile_validate"
-        URL_SEND_EMAIL_VALIDATE = URL_HOME + "member/sendEmailValidate"
-        URL_SEND_MOBILE_VALIDATE = URL_HOME + "member/sendMobileValidate"
-        URL_MEMBER_GETONE = URL_HOME + "member/getOne"
-        URL_MEMBER_BLACKLIST = URL_HOME + "member/blacklist"
-        URL_CITYS = URL_HOME + "citys"
+
+        URL_AREA_BY_CITY_IDS = URL_HOME + "area_by_citys"
         URL_ARENA_BY_CITY_ID = URL_HOME + "arena_by_city"
         URL_ARENA_BY_CITY_IDS = URL_HOME + "arena_by_citys"
-        URL_AREA_BY_CITY_IDS = URL_HOME + "area_by_citys"
-        URL_TEAM_UPDATE = URL_HOME + "team/update"
-        URL_UPDATE = URL_HOME + "%s/update"
+        URL_CANCEL_SIGNUP = URL_HOME + "%s/cancelSignup/%d"
+        URL_CHANGE_PASSWORD = "$BASE_URL/member/change_password"
+        URL_CITYS = URL_HOME + "citys"
+        URL_COURSE_LIST = URL_HOME + "course/list"
         URL_DELETE = URL_HOME + "%s/delete"
-        URL_TT = URL_HOME + "%s/tt"
-        URL_TT_UPDATE = URL_HOME + "%s/tt/update"
-        URL_TT_DELETE = URL_HOME + "%s/tt/delete"
+        URL_EMAIL_VALIDATE = URL_HOME + "member/email_validate"
+        URL_FB_LOGIN = URL_HOME + "member/fb"
+        URL_FORGETPASSWORD = "$BASE_URL/member/forget_password"
+        URL_LIST = "${URL_HOME}%s"
+        URL_LOGIN = URL_HOME + "login"
+        URL_MEMBER_BLACKLIST = URL_HOME + "member/blacklist"
+        URL_MEMBER_GETONE = URL_HOME + "member/getOne"
+        URL_MEMBER_UPDATE = URL_HOME + "member/update"
+        URL_MOBILE_VALIDATE = URL_HOME + "member/mobile_validate"
         URL_ONE = "${URL_HOME}%s/one"
+        URL_REGISTER = URL_HOME + "register"
+        URL_SEND_EMAIL_VALIDATE = URL_HOME + "member/sendEmailValidate"
+        URL_SEND_MOBILE_VALIDATE = URL_HOME + "member/sendMobileValidate"
+        URL_SHOW = "${URL_HOME}%s/show/%s?device=app"
+        URL_SIGNUP = URL_HOME + "%s/signup/%s"
+        URL_SIGNUP_DATE = "${URL_HOME}%s/signup_date/%s"
+        URL_SIGNUP_LIST = "${URL_HOME}%s/signup_list"
         URL_TEAM = URL_HOME + "team/"
         URL_TEAM_TEMP_PLAY = URL_TEAM + "tempPlay/onoff"
         URL_TEAM_TEMP_PLAY_LIST = URL_TEAM + "tempPlay/list"
@@ -188,10 +189,11 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
         URL_TEAM_CANCELPLUSONE = BASE_URL + "/team/tempPlay/cancelPlusOne/"
         URL_TEAM_TEMP_PLAY_DATE = URL_TEAM + "tempPlay/date"
         URL_TEAM_TEMP_PLAY_DATE_PLAYER = URL_TEAM + "tempPlay/datePlayer"
-        URL_SIGNUP = URL_HOME + "%s/signup/%s"
-        URL_CANCEL_SIGNUP = URL_HOME + "%s/cancelSignup/%d"
-
-        URL_COURSE_LIST = URL_HOME + "course/list"
+        URL_TEAM_UPDATE = URL_HOME + "team/update"
+        URL_TT = URL_HOME + "%s/tt"
+        URL_TT_DELETE = URL_HOME + "%s/tt/delete"
+        URL_TT_UPDATE = URL_HOME + "%s/tt/update"
+        URL_UPDATE = URL_HOME + "%s/update"
 
     }
 
@@ -312,7 +314,7 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
     }
 
     public fun goEdit(source: String, title: String="", token: String="") {
-        val intent = Intent(this, EditVC::class.java)
+        val intent = Intent(this, EditVC1::class.java)
         intent.putExtra("token", token)
         intent.putExtra("source", source)
         intent.putExtra("title", title)
@@ -336,7 +338,7 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
         }
         var intent: Intent? = null
         if (page == "course") {
-            intent = Intent(this, ManagerCourseVC::class.java)
+            intent = Intent(this, ManagerCourseVC1::class.java)
             intent.putExtra("manager_token", member.token)
         } else {
             intent = Intent(this, ManagerVC::class.java)
@@ -347,7 +349,7 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
         }
     }
     fun goManagerFunction(title: String, token: String, source: String) {
-        val intent = Intent(this, ManagerFunctionVC::class.java)
+        val intent = Intent(this, ManagerFunctionVC1::class.java)
         intent.putExtra("title", title)
         intent.putExtra("token", token)
         intent.putExtra("source", source)
@@ -355,7 +357,7 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
     }
 
     fun goEditCourse(title: String, course_token: String, coach_token:String) {
-        val intent = Intent(this, EditCourseVC::class.java)
+        val intent = Intent(this, EditCourseVC1::class.java)
         intent.putExtra("title", title)
         intent.putExtra("course_token", course_token)
         intent.putExtra("coach_token", coach_token)
@@ -469,7 +471,7 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
     }
 
     fun goCourse(name: String, token: String) {
-        val i = Intent(this, ManagerCourseVC::class.java)
+        val i = Intent(this, ManagerCourseVC1::class.java)
         i.putExtra("token", token)
         i.putExtra("name", name)
         startActivity(i)
@@ -1079,8 +1081,8 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
 
     protected fun prepareSearch1(idx: Int, page: String) {
 
-        var singleSelectIntent = Intent(this, SingleSelectVC::class.java)
-        var multiSelectIntent = Intent(this, MultiSelectVC::class.java)
+        var singleSelectIntent = Intent(this, SingleSelectVC1::class.java)
+        var multiSelectIntent = Intent(this, MultiSelectVC1::class.java)
         val row = searchRows.get(idx)
         var key = ""
         if (row.containsKey("key")) {

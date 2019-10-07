@@ -36,10 +36,37 @@ object CourseService: DataService() {
         return JSONParse.parse<SuperCourse>(json)!!
     }
 
+    override fun getSignupListURL(token: String?): String {
+        var url: String = URL_SIGNUP_LIST.format("course")
+        if (token != null) {
+            url = url + "/" + token!!
+        }
+
+        return url
+    }
+
+    override fun getSignupURL(token: String): String {
+        val url: String = URL_SIGNUP.format("course", token)
+
+        return url
+    }
+
+    override fun getSignupDateURL(token: String): String {
+        val url: String = URL_SIGNUP_DATE.format("course", token)
+
+        return url
+    }
+
+    override fun parseAbleForSingupList(data: JSONObject): SuperModel {
+        val s: SuperCourse = JSONParse.parse<SuperCourse>(data)!!
+
+        return s
+    }
+
     override fun update(context: Context, _params: MutableMap<String, String>, filePath: String, complete: CompletionHandler) {
 
         val url = "$URL_UPDATE".format("course")
-        println(url)
+        //println(url)
 
         val header: MutableList<Pair<String, String>> = mutableListOf()
         header.add(Pair("Accept","application/json"))
@@ -63,7 +90,7 @@ object CourseService: DataService() {
         }
         json += tmps.joinToString(",")
         json += "}"
-        println(json)
+        //println(json)
 
         var filePaths: ArrayList<String>? = null
         if (filePath.length > 0) {

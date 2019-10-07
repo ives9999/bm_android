@@ -38,7 +38,7 @@ class TeachVC : MoreVC() {
         collectionAdapter.notifyDataSetChanged()
     }
 
-    override fun initAdapter() {
+    override fun initAdapter(include_section: Boolean) {
         collectionAdapter = CollectionAdapter(this, type!!, screenWidth) { data ->
             val intent = Intent(this, ShowActivity::class.java)
             intent.putExtra("type", type)

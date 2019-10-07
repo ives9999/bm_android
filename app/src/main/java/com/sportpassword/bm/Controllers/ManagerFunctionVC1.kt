@@ -1,17 +1,15 @@
 package com.sportpassword.bm.Controllers
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Utilities.setImage
-import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.kotlinandroidextensions.Item
 import com.xwray.groupie.ViewHolder
 import kotlinx.android.synthetic.main.function_item.*
 import kotlinx.android.synthetic.main.manager_function_vc.*
 
-class ManagerFunctionVC : MyTableVC() {
+class ManagerFunctionVC1 : MyTableVC1() {
 
     var token: String = ""
     var title: String = ""

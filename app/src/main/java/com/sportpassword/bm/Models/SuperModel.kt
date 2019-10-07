@@ -9,6 +9,9 @@ import kotlin.reflect.full.memberProperties
 
 open class SuperModel(data: JSONObject) {
 
+    open fun toHashMap() {
+
+    }
 
     open fun filter() {
 

@@ -1,7 +1,6 @@
 package com.sportpassword.bm.Controllers
 
 import android.content.SharedPreferences
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import com.sportpassword.bm.App
@@ -12,7 +11,7 @@ import kotlinx.android.synthetic.main.mask.*
 import org.json.JSONArray
 import org.json.JSONObject
 
-open class SelectVC : MyTableVC() {
+open class SelectVC1 : MyTableVC1() {
 
     var title: String = "選擇"
     var key: String? = null

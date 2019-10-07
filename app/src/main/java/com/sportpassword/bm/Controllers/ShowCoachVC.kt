@@ -95,7 +95,8 @@ class ShowCoachVC : BaseActivity(), IconCellDelegate {
 
     override fun refresh() {
         Loading.show(mask)
-        CoachService.getOne(this, token!!) { success1 ->
+        val params: HashMap<String, String> = hashMapOf("token" to token!!)
+        CoachService.getOne(this, params) { success1 ->
             if (success1) {
                 this.superCoach = CoachService.superModel as SuperCoach
                 for (key in contactRowKeys) {

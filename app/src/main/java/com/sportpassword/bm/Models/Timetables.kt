@@ -35,7 +35,7 @@ class Timetable(data: JSONObject): SuperModel(data) {
     var created_id: Int = 0
     var created_at: String = ""
     var updated_at: String = ""
-    var signups: ArrayList<Signup> = arrayListOf()
+//    var signups: ArrayList<Signup> = arrayListOf()
 
     var _start_hour: Int = 0
     var _end_hour: Int = 0
