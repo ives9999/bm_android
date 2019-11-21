@@ -1,17 +1,27 @@
 package com.sportpassword.bm.Fragments
 
+import android.content.Context
 import android.os.Bundle
 import android.view.*
 import android.widget.ImageButton
+import com.sportpassword.bm.Adapters.GroupSection
+import com.sportpassword.bm.Models.SuperCourse
 import com.sportpassword.bm.Models.SuperCourses
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.CourseService
 import com.sportpassword.bm.Utilities.*
+import com.squareup.picasso.Picasso
+import com.xwray.groupie.ExpandableGroup
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.Section
 import com.xwray.groupie.ViewHolder
+import com.xwray.groupie.kotlinandroidextensions.Item
+import kotlinx.android.synthetic.main.course_calendar_item.*
 import kotlinx.android.synthetic.main.mask.*
 import kotlinx.android.synthetic.main.tab_course.*
+import java.util.*
+import kotlin.collections.ArrayList
+import kotlin.collections.HashMap
 
 class CourseCalendarFragment : TabFragment() {
 
@@ -19,6 +29,10 @@ class CourseCalendarFragment : TabFragment() {
     protected lateinit var adapter: GroupAdapter<ViewHolder>
     protected val adapterSections: ArrayList<Section> = arrayListOf()
     var sections: ArrayList<String> = arrayListOf()
+
+    var year: Int = Date().getY()
+    var month: Int = Date().getm()
+    var monthLastDay: Int = 31
 
     override val _searchRows: ArrayList<HashMap<String, String>> = arrayListOf(
             hashMapOf("title" to "關鍵字","key" to KEYWORD_KEY,"value" to "","value_type" to "String","show" to "不限"),
@@ -32,6 +46,9 @@ class CourseCalendarFragment : TabFragment() {
         super.onCreate(savedInstanceState)
         dataService = CourseService
         setHasOptionsMenu(true)
+
+        monthLastDay = Global.getMonthLastDay(year, month)
+        //println(monthLastDay)
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -48,7 +65,7 @@ class CourseCalendarFragment : TabFragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-        val rootView = inflater.inflate(R.layout.tab_course, container, false)
+        val rootView = inflater.inflate(R.layout.tab_course_calendar, container, false)
 
         return rootView
     }
@@ -58,11 +75,76 @@ class CourseCalendarFragment : TabFragment() {
         refreshLayout = tab_refresh
         maskView = mask
 
-        //initAdapter(false)
+        initAdapter(false)
         recyclerView.setHasFixedSize(true)
         setRecyclerViewScrollListener()
         setRecyclerViewRefreshListener()
         //refresh()
+
+    }
+
+    fun initAdapter(include_section: Boolean=false) {
+        adapter = GroupAdapter()
+        adapter.setOnItemClickListener { item, view ->
+            //rowClick(item, view)
+        }
+        if (include_section) {
+            for (section in sections) {
+                adapterSections.add(Section())
+            }
+            for ((idx, title) in sections.withIndex()) {
+                val expandableGroup = ExpandableGroup(GroupSection(title), true)
+                val items = generateItems(idx)
+                adapterSections[idx].addAll(items)
+                expandableGroup.add(adapterSections[idx])
+                adapter.add(expandableGroup)
+            }
+        } else {
+            val items = generateItems()
+            adapter.addAll(items)
+        }
+        recyclerView.adapter = adapter
+    }
+
+    override fun setUserVisibleHint(isVisibleToUser: Boolean) {
+        super.setUserVisibleHint(isVisibleToUser)
+        isCourseShow = isVisibleToUser
+    }
+
+    fun generateItems(): ArrayList<Item> {
+        val items: ArrayList<Item> = arrayListOf()
+        for (i in 1..monthLastDay) {
+
+            val day: Int = i
+            val date: String = "%4d-%02d-%02d".format(year, month, i)
+            //println(date)
+            var rows: ArrayList<SuperCourse> = arrayListOf()
+            if (superCourses != null) {
+                rows = superCourses!!.rows
+            }
+            items.add(CalendarItem(context!!, date, rows))
+
+        }
+
+        return items
+    }
+    fun generateItems(section: Int): ArrayList<Item> {
+        return arrayListOf()
+    }
+
+    class CalendarItem(val context: Context, val date: String, val superCourses: ArrayList<SuperCourse>): Item() {
+
+        override fun bind(viewHolder: com.xwray.groupie.kotlinandroidextensions.ViewHolder, position: Int) {
+
+            val d: Date = date.toDate()!!
+            val weekday_i = d.dateToWeekday()
+            println(weekday_i)
+            val weekday_c: String = d.dateToWeekdayForChinese()
+
+            viewHolder.date.text = "%s(%s)".format(date, weekday_c)
+        }
+
+        override fun getLayout() = R.layout.course_calendar_item
 
     }
 

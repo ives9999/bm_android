@@ -2,7 +2,7 @@ package com.sportpassword.bm.Models
 
 import com.sportpassword.bm.Utilities.MYCOLOR
 import com.sportpassword.bm.Utilities.getH
-import com.sportpassword.bm.Utilities.getm
+import com.sportpassword.bm.Utilities.geti
 import com.sportpassword.bm.Utilities.toDateTime
 import org.json.JSONObject
 
@@ -46,8 +46,8 @@ class Timetable(data: JSONObject): SuperModel(data) {
     fun filterRow() {
         _start_hour = start_time.toDateTime("HH:mm:ss")!!.getH()
         _end_hour = end_time.toDateTime("HH:mm:ss")!!.getH()
-        _start_minute = start_time.toDateTime("HH:mm:ss")!!.getm()
-        _end_minute = end_time.toDateTime("HH:mm:ss")!!.getm()
+        _start_minute = start_time.toDateTime("HH:mm:ss")!!.geti()
+        _end_minute = end_time.toDateTime("HH:mm:ss")!!.geti()
         _color = MYCOLOR.from(color)
     }
 }

@@ -443,6 +443,17 @@ fun String.telOrMobileShow(): String {
     }
     return this
 }
+fun String.toDate(pattern: String = "yyyy-MM-dd"): Date? {
+    var date: Date? = null
+    if (this.isDate()) {
+        //val formatter = DateTimeFormatter.ofPattern(pattern, Locale.TAIWAN)
+        val formatter = SimpleDateFormat(pattern)
+        date = formatter.parse(this)
+    }
+
+    return date
+}
+
 fun String.toDateTime(pattern: String = "yyyy-MM-dd HH:mm:ss"): Date? {
     var date: Date? = null
     if (this.isDateTime() || this.isDate() || this.isTime()) {
@@ -641,14 +652,14 @@ fun Date.toMyString(pattern: String = "yyyy-MM-dd HH:mm:ss"): String {
     val formatter = SimpleDateFormat(pattern)
     return formatter.format(this)
 }
-fun Date.gety(): Int {
+fun Date.getY(): Int {
     val formatter = SimpleDateFormat("yyyy")
     val res = formatter.format(this).toInt()
     return res
 }
-fun Date.getM(): Int {
+fun Date.getm(): Int {
     val formatter = SimpleDateFormat("MM")
-    val res = formatter.format(this).toInt()-1
+    val res = formatter.format(this).toInt()
     return res
 }
 fun Date.getd(): Int {
@@ -661,7 +672,7 @@ fun Date.getH(): Int {
     val res = formatter.format(this).toInt()
     return res
 }
-fun Date.getm(): Int {
+fun Date.geti(): Int {
     val formatter = SimpleDateFormat("mm")
     val res = formatter.format(this).toInt()
     return res
@@ -669,6 +680,40 @@ fun Date.getm(): Int {
 fun Date.gets(): Int {
     val formatter = SimpleDateFormat("ss")
     val res = formatter.format(this).toInt()
+    return res
+}
+
+fun Date.dateToWeekday(): Int {
+    val c: Calendar = Calendar.getInstance()
+    //month: 0 for 1月
+    c.set(this.getY(), this.getm()-1, this.getd())
+    //SUNDAY is 1, MONDAY is 2
+    var weekday = c.get(Calendar.DAY_OF_WEEK)-1
+    if (weekday == 0) { weekday = 7}
+
+    return weekday
+}
+
+fun Date.dateToWeekdayForChinese(): String {
+
+    val weekday = this.dateToWeekday()
+    var res: String = "一"
+    if (weekday == 1) {
+        res = "一"
+    } else if (weekday == 2) {
+        res = "二"
+    } else if (weekday == 3) {
+        res = "三"
+    } else if (weekday == 4) {
+        res = "四"
+    } else if (weekday == 5) {
+        res = "五"
+    } else if (weekday == 6) {
+        res = "六"
+    } else if (weekday == 7) {
+        res = "日"
+    }
+
     return res
 }
 
@@ -798,6 +843,11 @@ object Global {
         }
 
         return res
+    }
+
+    fun getMonthLastDay(year: Int, month: Int): Int {
+
+        return Calendar.getInstance().getActualMaximum(Calendar.DAY_OF_MONTH)
     }
 }
 
