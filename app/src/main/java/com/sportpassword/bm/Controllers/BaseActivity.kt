@@ -518,8 +518,8 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
     protected fun loginFB() {
         val playerID = _getPlayerID()
         //val context = this
-        FacebookSdk.sdkInitialize(getApplicationContext());
-        AppEventsLogger.activateApp(this);
+        //FacebookSdk.sdkInitialize(getApplicationContext());
+        //AppEventsLogger.activateApp(this);
         callbackManager = CallbackManager.Factory.create()
         LoginManager.getInstance().logOut()
         LoginManager.getInstance().logInWithReadPermissions(this, Arrays.asList("email,public_profile"))
