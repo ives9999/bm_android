@@ -179,10 +179,10 @@ class ShowCourseVC : BaseActivity(), IconCellDelegate {
     }
 
     fun setSignupData() {
-        val nextCourseTime = superCourse!!.nextCourseTime
-        for (key in signupTableRowKeys) {
-            signupTableRows[key]!!["content"] = nextCourseTime[key]!!
-        }
+//        val nextCourseTime = superCourse!!.nextCourseTime
+//        for (key in signupTableRowKeys) {
+//            signupTableRows[key]!!["content"] = nextCourseTime[key]!!
+//        }
         val items = generateSignupItem()
         signupAdapter.update(items)
     }
