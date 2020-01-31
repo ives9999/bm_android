@@ -94,6 +94,7 @@ open class DataService: BaseService() {
                     } catch (e: Exception) {
                         this.success = false
                         msg = "parse json failed，請洽管理員"
+                        println(e.localizedMessage)
                     }
                     complete(this.success)
                 } else {

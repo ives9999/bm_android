@@ -41,8 +41,13 @@ class JSONParse {
                         val tmps = getSubType(type)
                         val subType = tmps.get("type")!!
                         when (subType) {
-                            "Boolean", "Int", "Float", "Double", "String" -> {
-
+                            "IntArray" -> {
+                                val rows: IntArray = intArrayOf(value.length())
+                                for (i in 0..value.length() - 1) {
+                                    val v = value[i] as Int
+                                    rows[i] = v
+                                }
+                                _setter(it, res, rows)
                             }
                             else -> {
                                 if (tmps.containsKey("value_type")) {
@@ -72,6 +77,9 @@ class JSONParse {
                             //println(date)
                             //println(deadline)
                             _setter(it, res, d)
+                        } else if (key == "date_model") {
+                            val date_model = JSONParse.parse<SuperDate>(value)!!
+                            _setter(it, res, date_model)
                         }
                         //val d = makeMap(value)
                         //_setter(it, res, d)

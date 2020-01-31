@@ -52,6 +52,10 @@ class SuperCourse(data: JSONObject): SuperModel(data) {
     //var signups: SuperSignups = SuperSignups()
     var isSignup: Boolean = false
     var signup_id: Int = 0
+    var weekday_arr: IntArray = intArrayOf()
+    var date_model: SuperDate = SuperDate(JSONObject())
+    var signup_normal_models: ArrayList<SuperSignupNormal> = arrayListOf()
+    var signup_standby_models: ArrayList<SuperSignupStandby> = arrayListOf()
 
     override fun filter() {
         super.filter()

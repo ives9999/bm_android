@@ -130,6 +130,7 @@ class ShowCourseVC : BaseActivity(), IconCellDelegate {
                     //superCourse!!.print()
                     if (superCourse != null) {
                         superCourse!!.filter()
+                        superCourse!!.print()
                         superCoach = superCourse!!.coach
                         setMainData()
                         setSignupData()
