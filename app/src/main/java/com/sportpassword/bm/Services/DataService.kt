@@ -1321,10 +1321,10 @@ open class DataService: BaseService() {
     open fun getSignupListURL(token: String? = null): String { return ""}
     open fun parseAbleForSingupList(data: JSONObject): SuperModel { return SuperModel(data) }
 
-    fun signup_date(context: Context, token: String, member_token: String, complete: CompletionHandler) {
+    fun signup_date(context: Context, token: String, member_token: String, date_token: String, complete: CompletionHandler) {
         val url = getSignupDateURL(token)
         //print(url)
-        val jsonString: String = "{\"device\": \"app\", \"channel\": \"bm\", \"member_token\": " + member_token + "}"
+        val jsonString: String = "{\"device\": \"app\", \"channel\": \"bm\", \"member_token\": " + member_token + "\"date_token\"" + date_token + "}"
         val body: JSONObject = JSONObject(jsonString)
         //print(body)
 
@@ -1358,7 +1358,7 @@ open class DataService: BaseService() {
         }
     }
 
-    fun signup(context: Context, token: String, member_token: String, signup_id: Int, course_date: String, course_deadline: String, complete: CompletionHandler) {
+    fun signup(context: Context, token: String, member_token: String, date_token: String, course_deadline: String, complete: CompletionHandler) {
         val url = getSignupURL(token)
         //print(url)
 //        val jsonString: String = "{\"device\": \"app\", \"channel\": \"bm\", \"member_token\": " + member_token + ", \"signup_id\": " + signup_id.toString() + ", \"course_date\": " + course_date + ", \"course_deadline\": " + course_deadline + "}"
@@ -1366,8 +1366,7 @@ open class DataService: BaseService() {
         body.put("device", "app")
         body.put("channel", "bm")
         body.put("member_token", member_token)
-        body.put("signup_id", signup_id.toString())
-        body.put("able_date", course_date)
+        body.put("able_date_token", date_token)
         body.put("cancel_deadline", course_deadline)
 
         MyHttpClient.instance.post(context, url, body.toString()) { success ->

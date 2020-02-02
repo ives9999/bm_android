@@ -7,6 +7,7 @@ import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 import com.sportpassword.bm.Adapters.IconCell
 import com.sportpassword.bm.Adapters.IconCellDelegate
+import com.sportpassword.bm.Adapters.OlCell
 import com.sportpassword.bm.Models.SuperCoach
 import com.sportpassword.bm.Models.SuperCourse
 import com.sportpassword.bm.R
@@ -68,6 +69,7 @@ class ShowCourseVC : BaseActivity(), IconCellDelegate {
 
     var signup_date: JSONObject = JSONObject()
     var isSignup: Boolean = false
+    var isStandby: Boolean = false
     var canCancelSignup: Boolean = false
     var signup_id: Int = 0
     var course_date: String = ""
@@ -127,10 +129,9 @@ class ShowCourseVC : BaseActivity(), IconCellDelegate {
             CourseService.getOne(this, params) { success ->
                 if (success) {
                     superCourse = CourseService.superModel as SuperCourse
-                    //superCourse!!.print()
                     if (superCourse != null) {
                         superCourse!!.filter()
-                        superCourse!!.print()
+                        //superCourse!!.print()
                         superCoach = superCourse!!.coach
                         setMainData()
                         setSignupData()
@@ -140,7 +141,12 @@ class ShowCourseVC : BaseActivity(), IconCellDelegate {
                         if (superCourse!!.isSignup) {
                             signupButton.setText("取消報名")
                         } else {
-                            signupButton.setText("報名")
+                            val count = superCourse!!.signup_normal_models.count()
+                            if (count >= superCourse!!.people_limit) {
+                                signupButton.setText("候補")
+                            } else {
+                                signupButton.setText("報名")
+                            }
                         }
                     }
                 }
@@ -271,25 +277,43 @@ class ShowCourseVC : BaseActivity(), IconCellDelegate {
         var icon = ""
         var title = ""
         var content = ""
-        for (key in signupTableRowKeys) {
-            if (signupTableRows.containsKey(key)) {
-                val row = signupTableRows[key]!!
-                if (row.containsKey("icon")) {
-                    icon = row["icon"]!!
+        if (superCourse != null) {
+            for (i in 0..superCourse!!.people_limit - 1) {
+//            if (signupTableRows.containsKey(key)) {
+//                val row = signupTableRows[key]!!
+//                if (row.containsKey("icon")) {
+//                    icon = row["icon"]!!
+//                }
+//                if (row.containsKey("title")) {
+//                    title = row["title"]!!
+//                }
+//                if (row.containsKey("content")) {
+//                    content = row["content"]!!
+//                    if (key == MOBILE_KEY) {
+//                        content = content.mobileShow()
+//                    }
+//                }
+//                if (icon.length > 0 && title.length > 0) {
+//                    val iconCell = IconCell(this@ShowCourseVC, icon, title, content, false)
+//                    iconCell.delegate = this
+//                    items.add(iconCell)
+//                }
+//            }
+                var name = ""
+                val tmp = superCourse!!.signup_normal_models[i].member_name?.let {
+                    name = it
                 }
-                if (row.containsKey("title")) {
-                    title = row["title"]!!
-                }
-                if (row.containsKey("content")) {
-                    content = row["content"]!!
-                    if (key == MOBILE_KEY) {
-                        content = content.mobileShow()
+                val olCell = OlCell(this@ShowCourseVC, (i + 1).toString(), name)
+                items.add(olCell)
+            }
+            if (superCourse!!.signup_standby_models.count() > 0) {
+                for (i in 0..superCourse!!.signup_standby_models.count() - 1) {
+                    var name = ""
+                    val tmp = superCourse!!.signup_standby_models[i].member_name?.let {
+                        name = it
                     }
-                }
-                if (icon.length > 0 && title.length > 0) {
-                    val iconCell = IconCell(this@ShowCourseVC, icon, title, content, false)
-                    iconCell.delegate = this
-                    items.add(iconCell)
+                    val olCell = OlCell(this@ShowCourseVC, "候補" + (i + 1).toString(), name)
+                    items.add(olCell)
                 }
             }
         }
@@ -385,21 +409,30 @@ class ShowCourseVC : BaseActivity(), IconCellDelegate {
         } else {
             title = "報名"
         }
+        if (isStandby) {
+            title = "候補報名"
+        }
         val signup_html = "報名課程日期是：" + course_date + "\r\n" + "報名取消截止時間是：" + course_deadline.noSec()
         val cancel_signup_html = "報名課程日期是：" + course_date + "\r\n" + "報名取消截止時間是：" + course_deadline.noSec()
         val cant_cancel_signup_html = "已經超過取消報名期限，無法取消\r\n" + "報名課程日期是：" + course_date + "\r\n" + "報名取消截止時間是：" + course_deadline.noSec()
+        val standby_html = "此課程報名已經額滿，請排候補" + "\r\n" + signup_html
         var msg = signup_html
 
-        if (!isSignup && !canCancelSignup) {
-            msg = signup_html
+        if (isStandby) {
+            msg = standby_html
         } else {
-            if (isSignup && canCancelSignup) {
-                msg = cancel_signup_html
+            if (!isSignup && !canCancelSignup) {
+                msg = signup_html
             } else {
-                msg = cant_cancel_signup_html
-                title = "警告"
+                if (isSignup && canCancelSignup) {
+                    msg = cancel_signup_html
+                } else {
+                    msg = cant_cancel_signup_html
+                    title = "警告"
+                }
             }
         }
+
         val alert = AlertDialog.Builder(this).create()
         alert.setTitle(title)
         alert.setMessage(msg)
@@ -420,7 +453,7 @@ class ShowCourseVC : BaseActivity(), IconCellDelegate {
             return
         }
         Loading.show(mask)
-        CourseService.signup(this, course_token!!, member.token, signup_id, course_date, course_deadline) { success ->
+        CourseService.signup(this, course_token!!, member.token, superCourse!!.date_model.token, course_deadline) { success ->
             Loading.hide(mask)
             val msg = CourseService.msg
             var title = "警告"
@@ -455,12 +488,13 @@ class ShowCourseVC : BaseActivity(), IconCellDelegate {
             return
         }
         Loading.show(mask)
-        CourseService.signup_date(this, course_token!!, member.token) { success ->
+        CourseService.signup_date(this, course_token!!, member.token, superCourse!!.date_model.token) { success ->
             Loading.hide(mask)
             if (success) {
                 signup_date = CourseService.signup_date
                 //println(signup_date)
                 isSignup = signup_date.getBoolean("isSignup")
+                isStandby = signup_date.getBoolean("isStandby")
                 canCancelSignup = signup_date.getBoolean("cancel")
                 signup_id = signup_date.getInt("signup_id")
                 course_date = signup_date.getString("course_date")

@@ -45,6 +45,12 @@ open class SuperModel(data: JSONObject) {
                             child.memberProperties.forEach{ it1 ->
                                 _print(it1, row, child.simpleName+" : ")
                             }
+                        } else {
+                            println("${prefix}${it.name} => ${row} [")
+                            row::class.memberProperties.forEach{ it1 ->
+                                _print(it1, row, "    ")
+                            }
+                            println("]")
                         }
                     }
                 }
