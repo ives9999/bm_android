@@ -1323,10 +1323,10 @@ open class DataService: BaseService() {
 
     fun signup_date(context: Context, token: String, member_token: String, date_token: String, complete: CompletionHandler) {
         val url = getSignupDateURL(token)
-        //print(url)
-        val jsonString: String = "{\"device\": \"app\", \"channel\": \"bm\", \"member_token\": " + member_token + "\"date_token\"" + date_token + "}"
+        //println(url)
+        val jsonString: String = "{\"device\": \"app\", \"channel\": \"bm\", \"member_token\": " + member_token + ",\"date_token\":" + date_token + "}"
         val body: JSONObject = JSONObject(jsonString)
-        //print(body)
+        //println(body)
 
         MyHttpClient.instance.post(context, url, body.toString()) { success ->
 
@@ -1335,7 +1335,7 @@ open class DataService: BaseService() {
                 if (response != null) {
                     try {
                         val json = JSONObject(response.toString())
-//                        println(json)
+                        //println(json)
                         this.success = json.getBoolean("success")
                         if (this.success) {
                             this.signup_date = json

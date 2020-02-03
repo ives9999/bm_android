@@ -403,35 +403,31 @@ class ShowCourseVC : BaseActivity(), IconCellDelegate {
     }
 
     fun showSignupModal() {
-        var title: String = ""
-        if (isSignup) {
-            title = "取消報名"
-        } else {
-            title = "報名"
-        }
-        if (isStandby) {
-            title = "候補報名"
-        }
+
         val signup_html = "報名課程日期是：" + course_date + "\r\n" + "報名取消截止時間是：" + course_deadline.noSec()
         val cancel_signup_html = "報名課程日期是：" + course_date + "\r\n" + "報名取消截止時間是：" + course_deadline.noSec()
         val cant_cancel_signup_html = "已經超過取消報名期限，無法取消\r\n" + "報名課程日期是：" + course_date + "\r\n" + "報名取消截止時間是：" + course_deadline.noSec()
         val standby_html = "此課程報名已經額滿，請排候補" + "\r\n" + signup_html
+
+        var title: String = ""
         var msg = signup_html
 
-        if (isStandby) {
-            msg = standby_html
-        } else {
-            if (!isSignup && !canCancelSignup) {
-                msg = signup_html
+        if (isSignup) {
+            title = "取消報名"
+            if (canCancelSignup) {
+                msg = cancel_signup_html
             } else {
-                if (isSignup && canCancelSignup) {
-                    msg = cancel_signup_html
-                } else {
-                    msg = cant_cancel_signup_html
-                    title = "警告"
-                }
+                msg = cant_cancel_signup_html
+            }
+        } else {
+            if (isStandby) {
+                title = "候補報名"
+                msg = standby_html
+            } else {
+                title = "報名"
             }
         }
+
 
         val alert = AlertDialog.Builder(this).create()
         alert.setTitle(title)
@@ -494,11 +490,11 @@ class ShowCourseVC : BaseActivity(), IconCellDelegate {
                 signup_date = CourseService.signup_date
                 //println(signup_date)
                 isSignup = signup_date.getBoolean("isSignup")
-                isStandby = signup_date.getBoolean("isStandby")
+                isStandby = signup_date.getBoolean("standby")
                 canCancelSignup = signup_date.getBoolean("cancel")
-                signup_id = signup_date.getInt("signup_id")
-                course_date = signup_date.getString("course_date")
-                course_deadline = signup_date.getString("course_deadline")
+                //signup_id = signup_date.getInt("signup_id")
+                course_date = signup_date.getString("date")
+                course_deadline = signup_date.getString("deadline")
 
                 showSignupModal()
             }
