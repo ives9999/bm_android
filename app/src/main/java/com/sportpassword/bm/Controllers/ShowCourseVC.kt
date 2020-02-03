@@ -490,7 +490,7 @@ class ShowCourseVC : BaseActivity(), IconCellDelegate {
                 signup_date = CourseService.signup_date
                 //println(signup_date)
                 isSignup = signup_date.getBoolean("isSignup")
-                isStandby = signup_date.getBoolean("standby")
+                isStandby = signup_date.getBoolean("isStandby")
                 canCancelSignup = signup_date.getBoolean("cancel")
                 //signup_id = signup_date.getInt("signup_id")
                 course_date = signup_date.getString("date")
