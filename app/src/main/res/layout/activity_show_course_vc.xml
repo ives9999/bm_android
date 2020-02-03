@@ -69,11 +69,23 @@
                     android:textColor="@color/MY_RED"
                     android:textSize="24dp" />
 
+                <TextView
+                    android:id="@+id/signupTimeLbl"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/signupDetailLbl"
+                    android:layout_marginLeft="12dp"
+                    android:layout_marginBottom="8dp"
+                    android:text=""
+                    android:textColor="@color/WHITE"
+                    android:textSize="16dp"
+                    tools:text="下次上課時間：2020-02-06 20:00~22:00" />
+
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/signupTableView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/signupDetailLbl"
+                    android:layout_below="@+id/signupTimeLbl"
                     android:layout_marginBottom="12dp"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 

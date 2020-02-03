@@ -10,6 +10,7 @@ import com.sportpassword.bm.Adapters.IconCellDelegate
 import com.sportpassword.bm.Adapters.OlCell
 import com.sportpassword.bm.Models.SuperCoach
 import com.sportpassword.bm.Models.SuperCourse
+import com.sportpassword.bm.Models.SuperDate
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.CourseService
 import com.sportpassword.bm.Utilities.*
@@ -190,6 +191,11 @@ class ShowCourseVC : BaseActivity(), IconCellDelegate {
 //        for (key in signupTableRowKeys) {
 //            signupTableRows[key]!!["content"] = nextCourseTime[key]!!
 //        }
+        val date_modal: SuperDate = superCourse!!.date_model
+        val date: String = date_modal.date
+        val start_time: String = superCourse!!.start_time_text
+        val end_time: String = superCourse!!.end_time_text
+        signupTimeLbl.text = "下次上課時間：" + date + " " + start_time + " ~ " + end_time
         val items = generateSignupItem()
         signupAdapter.update(items)
     }
@@ -300,8 +306,10 @@ class ShowCourseVC : BaseActivity(), IconCellDelegate {
 //                }
 //            }
                 var name = ""
-                val tmp = superCourse!!.signup_normal_models[i].member_name?.let {
-                    name = it
+                if (superCourse!!.signup_normal_models.count() > i) {
+                    val tmp = superCourse!!.signup_normal_models[i].member_name?.let {
+                        name = it
+                    }
                 }
                 val olCell = OlCell(this@ShowCourseVC, (i + 1).toString(), name)
                 items.add(olCell)
