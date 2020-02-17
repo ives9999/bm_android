@@ -15,8 +15,9 @@ class TabAdapter(fm: FragmentManager, val tabs: Array<String>, val screenWidth: 
         when(position) {
             0 -> return TempPlayFragment.newInstance("tempPlay", screenWidth)
             1 -> return CourseFragment.newInstance("course", screenWidth)
-            2 -> return TeamFragment.newInstance("team", screenWidth)
-            3 -> return MoreFragment.newInstance("more", screenWidth)
+            2 -> return MemberFragment.newInstance("member", screenWidth)
+            3 -> return TeamFragment.newInstance("team", screenWidth)
+            4 -> return MoreFragment.newInstance("more", screenWidth)
             else -> return TempPlayFragment.newInstance("tempPlay", screenWidth)
         }
     }

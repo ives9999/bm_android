@@ -70,16 +70,9 @@ class MainActivity : BaseActivity() {
     //private var mSectionPagerAdapter: SectionsPagerAdapter? = null
     //private val apiClient = VimeoClient.getInstance()
 
-    val tabsTextArr: Array<String> = arrayOf<String>("臨打", "課程", "球隊", "更多")
-    val tabsIconArr: Array<String> = arrayOf<String>("tempplay", "course", "team", "more")
+    val tabsTextArr: Array<String> = arrayOf<String>("臨打", "課程", "會員", "球隊", "更多")
+    val tabsIconArr: Array<String> = arrayOf<String>("tempplay", "course", "member", "team", "more")
 
-    val fixedRows: ArrayList<Map<String, String>> = arrayListOf(
-            mapOf("text" to "帳戶資料", "icon" to "account", "segue" to "account"),
-            mapOf("text" to "更改密碼", "icon" to "password", "segue" to "password")
-    )
-    var _rows: ArrayList<Map<String, String>> = arrayListOf()
-
-    lateinit var memberFunctionsAdapter: MemberFunctionsAdapter
 //    lateinit var menuTeamListAdapter: MenuTeamListAdapter
 
 //    private val vimeoClient = VimeoClient.getInstance()
@@ -197,35 +190,35 @@ class MainActivity : BaseActivity() {
         //val menuID = resources.getIdentifier("menu", "drawable", packageName)
         //println(menuID)
         //supportActionBar!!.setHomeAsUpIndicator(menuID)
-        supportActionBar!!.setDisplayHomeAsUpEnabled(true)
-        supportActionBar!!.setHomeAsUpIndicator(R.drawable.menu)
+        //supportActionBar!!.setDisplayHomeAsUpEnabled(true)
+        //supportActionBar!!.setHomeAsUpIndicator(R.drawable.menu)
 
         //會員側邊欄
-        val toggle = ActionBarDrawerToggle(
-                this, drawer_layout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close)
-        drawer_layout.addDrawerListener(toggle)
-        toggle.syncState()
-        setMenuWidth()
-
-        drawer_layout.addDrawerListener(
-                object : DrawerLayout.DrawerListener {
-                    override fun onDrawerStateChanged(newState: Int) {
-
-                    }
-
-                    override fun onDrawerSlide(drawerView: View, slideOffset: Float) {
-                    }
-
-                    override fun onDrawerClosed(drawerView: View) {
-                    }
-
-                    override fun onDrawerOpened(drawerView: View) {
-                        //refreshMember()
-                        _loginout()
-                        setRefreshListener()
-                    }
-                }
-        )
+//        val toggle = ActionBarDrawerToggle(
+//                this, drawer_layout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close)
+//        drawer_layout.addDrawerListener(toggle)
+//        toggle.syncState()
+//        setMenuWidth()
+//
+//        drawer_layout.addDrawerListener(
+//                object : DrawerLayout.DrawerListener {
+//                    override fun onDrawerStateChanged(newState: Int) {
+//
+//                    }
+//
+//                    override fun onDrawerSlide(drawerView: View, slideOffset: Float) {
+//                    }
+//
+//                    override fun onDrawerClosed(drawerView: View) {
+//                    }
+//
+//                    override fun onDrawerOpened(drawerView: View) {
+//                        //refreshMember()
+//                        _loginout()
+//                        setRefreshListener()
+//                    }
+//                }
+//        )
 
         //下方tab bar
         for (i in tabsTextArr.indices) {
@@ -262,13 +255,13 @@ class MainActivity : BaseActivity() {
             }
         })
 
-        _loginout()
+        //_loginout()
 
-        if (!member.justGetMemberOne && member.isLoggedIn) {
-            _updatePlayerIDWhenIsNull()
-        }
-
-        refreshLayout = menu_refresh
+//        if (!member.justGetMemberOne && member.isLoggedIn) {
+//            _updatePlayerIDWhenIsNull()
+//        }
+//
+//        refreshLayout = menu_refresh
 
         //println("$URL_LIST".format("team"))
         //member.print()
@@ -306,163 +299,24 @@ class MainActivity : BaseActivity() {
         super.onDestroy()
     }
 
-    override fun refresh() {
-        if (member.isLoggedIn) {
-            //initTeamList()
-            refreshMember() { success ->
-                closeRefresh()
-                if (success) {
-                    _loginout()
-                }
-            }
-        } else {
-            _logoutBlock()
-        }
-    }
-
-    private fun setValidateRow() {
-        _rows.clear()
-        for (row in fixedRows) {
-            _rows.add(row)
-        }
-        if (member.isLoggedIn) {
-            val validate: Int = member.validate
-            if (validate and EMAIL_VALIDATE <= 0) {
-                val function: Map<String, String> = mapOf("text" to "email認證", "icon" to "email", "segue" to "email")
-                _rows.add(function)
-            }
-            if (validate and MOBILE_VALIDATE <= 0) {
-                val function: Map<String, String> = mapOf("text" to "手機認證", "icon" to "mobile_validate", "segue" to "mobile")
-                _rows.add(function)
-            }
-        }
-    }
-    private fun setBlackListRow() {
-        if (member.isTeamManager) {
-            val row: Map<String, String> = mapOf("text" to "黑名單", "icon" to "blacklist", "segue" to "blacklist")
-            _rows.add(row)
-        }
-    }
-
     private fun setTitle(title: String) {
         //val titleView = toolbar.findViewById<View>(R.id.toolbar_title) as TextView
         //titleView.text = title
         toolbar_title.text = title
     }
 
-    protected fun _loginout() {
-        if (member.isLoggedIn) {
-            _loginBlock()
-        } else {
-            _logoutBlock()
-        }
-    }
-    protected fun _loginBlock() {
-        _loginAdapter()
-        nicknameLbl.text = member.nickname
-        loginBtn.text = "登出"
-        registerBtn.visibility = View.INVISIBLE
-        forgetPasswordBtn.visibility = View.INVISIBLE
-        menu_member_container.visibility = View.VISIBLE
-        //menu_team_container.visibility = View.VISIBLE
-        refreshLayout = menu_refresh
-//        initMemberFunction()
-    }
-    protected fun _logoutBlock() {
-        nicknameLbl.text = "未登入"
-        loginBtn.text = "登入"
-        registerBtn.visibility = View.VISIBLE
-        forgetPasswordBtn.visibility = View.VISIBLE
-        menu_member_container.visibility = View.INVISIBLE
-        //menu_team_container.visibility = View.INVISIBLE
-    }
-    protected fun _goMemberFunctions(segue: String) {
-        when(segue) {
-            "account" -> goEditMember()
-            "password" -> goUpdatePassword()
-            "email" -> goValidate("email")
-            "mobile" -> goValidate("mobile")
-            "blacklist" -> goBlackList()
-            "refresh" -> goRefresh()
-        }
-    }
-    protected fun _loginAdapter() {
-        setValidateRow()
-        setBlackListRow()
-        val row: Map<String, String> = mapOf("text" to "重新整理", "icon" to "refresh", "segue" to "refresh")
-        _rows.add(row)
-        memberFunctionsAdapter = MemberFunctionsAdapter(this, _rows, {
-            type -> _goMemberFunctions(type)
-        })
-        member_functions_container.adapter = memberFunctionsAdapter
-        val layoutManager = LinearLayoutManager(this)
-        member_functions_container.layoutManager = layoutManager
-        memberFunctionsAdapter.notifyDataSetChanged()
-    }
 
-    protected fun goRefresh() {
-        _getMemberOne(member.token) {
-            _loginout()
-        }
-    }
-
-    fun loginBtnPressed(view: View) {
-        if (member.isLoggedIn) {
-            if (member.uid.length > 0 && member.social == "fb") {
-//                FacebookSdk.sdkInitialize(getApplicationContext());
-//                AppEventsLogger.activateApp(this);
-                LoginManager.getInstance().logOut()
-            }
-            MemberService.logout()
-            refresh()
-//            val memberDidChange = Intent(NOTIF_MEMBER_DID_CHANGE)
-//            LocalBroadcastManager.getInstance(this).sendBroadcast(memberDidChange)
-        } else {
-            //goLogin()
-            val loginIntent: Intent = Intent(this, LoginActivity::class.java)
-            //startActivity(loginIntent)
-            startActivityForResult(loginIntent, LOGIN_REQUEST_CODE)
-
-        }
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        when (requestCode) {
-            LOGIN_REQUEST_CODE -> {
-                _loginout()
-            }
-            REGISTER_REQUEST_CODE -> {
-                _loginout()
-            }
-            VALIDATE_REQUEST_CODE -> {
-                hideKeyboard()
-                goRefresh()
-            }
-        }
-    }
-
-    fun registerBtnPressed(view: View){
-        //goRegister()
-        val registerIntent: Intent = Intent(this, RegisterActivity::class.java)
-        startActivityForResult(registerIntent, REGISTER_REQUEST_CODE)
-    }
-
-    fun forgetpasswordBtnPressed(view: View) {
-        val forgetPasswordIntent = Intent(this, ForgetPasswordActivity::class.java)
-        startActivity(forgetPasswordIntent)
-    }
 
     fun search_team(view: View) {
         goSearch("team")
     }
 
-    private fun setMenuWidth() {
-        val l = drawer.layoutParams
-        val w = screenWidth * 0.85
-        l.width = w.toInt()
-        drawer.layoutParams = l
-    }
+//    private fun setMenuWidth() {
+//        val l = drawer.layoutParams
+//        val w = screenWidth * 0.85
+//        l.width = w.toInt()
+//        drawer.layoutParams = l
+//    }
 
     override fun onBackPressed() {
         if (drawer_layout.isDrawerOpen(GravityCompat.START)) {

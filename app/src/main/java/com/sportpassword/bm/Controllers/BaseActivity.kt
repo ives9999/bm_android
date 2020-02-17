@@ -558,7 +558,7 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
         return playerID
     }
 
-    protected fun _getMemberOne(token: String, completion: CompletionHandler) {
+    public fun _getMemberOne(token: String, completion: CompletionHandler) {
         if (member.isLoggedIn) {
             Loading.show(mask)
             MemberService.getOne(this, token) { success ->
