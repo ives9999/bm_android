@@ -92,7 +92,7 @@ class ShowCourseVC : BaseActivity(), IconCellDelegate {
             source = intent.getStringExtra("source")
         }
 
-        webViewSettings(this@ShowCourseVC, contentView)
+        //webViewSettings(this@ShowCourseVC, contentView) oppo will crash
 
         refreshLayout = refresh
         setRefreshListener()
@@ -168,9 +168,10 @@ class ShowCourseVC : BaseActivity(), IconCellDelegate {
             }
         }
         val content: String = "<html lang=\"zh-TW\"><head><meta charset=\"UTF-8\">"+superCourse!!.content_style+"</head><body><div class=\"content\">"+superCourse!!.content+"</div>"+"</body></html>"
+        //val content: String = "<html lang=\"zh-TW\"><head><meta charset=\"UTF-8\"></head><body style=\"background-color: #000;color:#fff;font-size:28px;\">"+superCourse!!.content+"</body></html>"
         //println(content)
         contentView.loadDataWithBaseURL(null, content, "text/html", "UTF-8", null)
-        //contentView.loadData(content, "text/html", "UTF-8")
+        //contentView.loadData(strHtml, "text/html; charset=utf-8", "UTF-8")
         //contentView.loadData("<html><body style='background-color:#000;'>Hello, world!</body></html>", "text/html", "UTF-8")
 
         val date = superCourse!!.start_date + " ~ " + superCourse!!.end_date
