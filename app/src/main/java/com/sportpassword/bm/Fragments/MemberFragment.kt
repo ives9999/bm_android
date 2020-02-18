@@ -4,15 +4,13 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.*
+import android.widget.Button
 import android.widget.ImageButton
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.facebook.login.LoginManager
 import com.sportpassword.bm.Adapters.GroupSection
 import com.sportpassword.bm.Adapters.MemberFunctionsAdapter
-import com.sportpassword.bm.Controllers.ForgetPasswordActivity
-import com.sportpassword.bm.Controllers.LoginActivity
-import com.sportpassword.bm.Controllers.RegisterActivity
-import com.sportpassword.bm.Controllers.ShowCourseVC
+import com.sportpassword.bm.Controllers.*
 import com.sportpassword.bm.Models.SuperCourse
 import com.sportpassword.bm.Models.SuperCourses
 import com.sportpassword.bm.R
@@ -27,9 +25,11 @@ import com.xwray.groupie.Section
 import com.xwray.groupie.ViewHolder
 import com.xwray.groupie.kotlinandroidextensions.Item
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.adapter_member_functions.*
 import kotlinx.android.synthetic.main.login_out.*
 import kotlinx.android.synthetic.main.mask.*
-import kotlinx.android.synthetic.main.menu_member_function.*
+import kotlinx.android.synthetic.main.mask.text
+import kotlinx.android.synthetic.main.member_function.*
 import kotlinx.android.synthetic.main.nav_header_main.*
 import kotlinx.android.synthetic.main.tab_member.*
 
@@ -42,6 +42,9 @@ class MemberFragment: TabFragment() {
     var _rows: ArrayList<Map<String, String>> = arrayListOf()
 
     lateinit var memberFunctionsAdapter: MemberFunctionsAdapter
+    protected lateinit var adapter: GroupAdapter<ViewHolder>
+    protected val adapterSections: ArrayList<Section> = arrayListOf()
+    var sections: ArrayList<String> = arrayListOf()
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -58,31 +61,35 @@ class MemberFragment: TabFragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        //recyclerView = list_container
+        recyclerView = list_container
         refreshLayout = member_refresh
         maskView = mask
 
-//        recyclerView.setHasFixedSize(true)
-//        setRecyclerViewScrollListener()
-//        setRecyclerViewRefreshListener()
+        val loginBtn = view.findViewById<Button>(R.id.loginBtn)
+        loginBtn.setOnClickListener { loginBtnPressed(view) }
+        val reginBtn = view.findViewById<Button>(R.id.registerBtn)
+        reginBtn.setOnClickListener { registerBtnPressed(view) }
+        val forgetPasswordBtn = view.findViewById<Button>(R.id.forgetPasswordBtn)
+        forgetPasswordBtn.setOnClickListener { forgetpasswordBtnPressed(view) }
+
+        setRecyclerViewRefreshListener()
         _loginout()
-        //refresh()
 
     }
 
     override fun refresh() {
         if (member.isLoggedIn) {
             //initTeamList()
-//            refreshMember() { success ->
-//                closeRefresh()
-//                if (success) {
-//                    _loginout()
-//                }
-//            }
+            mainActivity!!.refreshMember() { success ->
+                if (success) {
+                    _loginout()
+                }
+            }
         } else {
-            //_logoutBlock()
+            _logoutBlock()
         }
     }
+
 
     private fun setValidateRow() {
         _rows.clear()
@@ -134,33 +141,44 @@ class MemberFragment: TabFragment() {
         member_container.visibility = View.INVISIBLE
         //menu_team_container.visibility = View.INVISIBLE
     }
-    protected fun _goMemberFunctions(segue: String) {
-        when(segue) {
-//            "account" -> goEditMember()
-//            "password" -> goUpdatePassword()
-//            "email" -> goValidate("email")
-//            "mobile" -> goValidate("mobile")
-//            "blacklist" -> goBlackList()
-//            "refresh" -> goRefresh()
-        }
-    }
     protected fun _loginAdapter() {
+
+        adapter = GroupAdapter()
+        adapter.setOnItemClickListener { item, view ->
+            rowClick(item, view)
+        }
+
+        val items = generateItems()
+        adapter.addAll(items)
+        recyclerView.adapter = adapter
+    }
+
+    fun generateItems(): ArrayList<Item> {
+        val items: ArrayList<Item> = arrayListOf()
+
         setValidateRow()
         //setBlackListRow()
         val row: Map<String, String> = mapOf("text" to "重新整理", "icon" to "refresh", "segue" to "refresh")
         _rows.add(row)
-        memberFunctionsAdapter = MemberFunctionsAdapter(context!!, _rows, {
-            type -> _goMemberFunctions(type)
-        })
-        member_functions_container.adapter = memberFunctionsAdapter
-        val layoutManager = LinearLayoutManager(activity)
-        member_functions_container.layoutManager = layoutManager
-        memberFunctionsAdapter.notifyDataSetChanged()
+        for (_row in _rows) {
+            items.add(MemberItem(context!!, _row["text"]!!, _row["icon"]!!, _row["segue"]!!))
+        }
+
+        return items;
     }
 
-    protected fun goRefresh() {
-        mainActivity!!._getMemberOne(member.token) {
-            _loginout()
+    fun rowClick(item: com.xwray.groupie.Item<ViewHolder>, view: View) {
+
+        val memberItem = item as MemberItem
+        val segue = memberItem.segue
+
+        when(segue) {
+            "account" -> mainActivity!!.goEditMember()
+            "password" -> goUpdatePassword()
+            "email" -> mainActivity!!.goValidate("email")
+            "mobile" -> mainActivity!!.goValidate("mobile")
+//            "blacklist" -> goBlackList()
+            "refresh" -> refresh()
         }
     }
 
@@ -184,6 +202,24 @@ class MemberFragment: TabFragment() {
         }
     }
 
+    fun registerBtnPressed(view: View){
+        //goRegister()
+        val registerIntent: Intent = Intent(activity, RegisterActivity::class.java)
+        startActivityForResult(registerIntent, mainActivity!!.REGISTER_REQUEST_CODE)
+    }
+
+    fun forgetpasswordBtnPressed(view: View) {
+        val forgetPasswordIntent = Intent(activity, ForgetPasswordActivity::class.java)
+        startActivity(forgetPasswordIntent)
+    }
+
+    fun goUpdatePassword() {
+        val updatePasswordIntent = Intent(activity, UpdatePasswordActivity::class.java)
+        startActivity(updatePasswordIntent)
+
+    }
+
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         when (requestCode) {
@@ -195,20 +231,9 @@ class MemberFragment: TabFragment() {
             }
             mainActivity!!.VALIDATE_REQUEST_CODE -> {
                 mainActivity!!.hideKeyboard()
-                goRefresh()
+                refresh()
             }
         }
-    }
-
-    fun registerBtnPressed(view: View){
-        //goRegister()
-        val registerIntent: Intent = Intent(activity, RegisterActivity::class.java)
-        startActivityForResult(registerIntent, mainActivity!!.REGISTER_REQUEST_CODE)
-    }
-
-    fun forgetpasswordBtnPressed(view: View) {
-        val forgetPasswordIntent = Intent(activity, ForgetPasswordActivity::class.java)
-        startActivity(forgetPasswordIntent)
     }
 
 
@@ -240,6 +265,19 @@ class MemberFragment: TabFragment() {
             fragment.arguments = args
             return fragment
         }
+    }
+
+    class MemberItem(val context: Context, val text: String, val icon: String, val segue: String): Item() {
+        override fun bind(viewHolder: com.xwray.groupie.kotlinandroidextensions.ViewHolder, position: Int) {
+
+            viewHolder.text.text = text
+            val iconID = context.resources.getIdentifier(icon, "drawable", context.packageName)
+            viewHolder.icon.setImageResource(iconID)
+
+        }
+
+        override fun getLayout() = R.layout.adapter_member_functions
+
     }
 
 }

@@ -410,12 +410,6 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
         startActivity(accountIntent)
     }
 
-    public fun goUpdatePassword() {
-        val updatePasswordIntent = Intent(this, UpdatePasswordActivity::class.java)
-        startActivity(updatePasswordIntent)
-
-    }
-
     public fun goValidate(type: String) {
         val intent = Intent(this, ValidateActivity::class.java)
         intent.putExtra("type", type)
@@ -588,7 +582,7 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
         }
     }
 
-    protected fun refreshMember(completion: CompletionHandler) {
+    fun refreshMember(completion: CompletionHandler) {
         _getMemberOne(member.token, completion)
     }
 
@@ -1638,7 +1632,7 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
         }
         refreshLayout.setOnRefreshListener(refreshListener)
     }
-    open protected fun closeRefresh() {
+    open public fun closeRefresh() {
         refreshLayout.isRefreshing = false
     }
     open protected fun refresh() {}

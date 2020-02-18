@@ -46,7 +46,6 @@ import kotlinx.android.synthetic.main.tab.view.*
 import com.sportpassword.bm.member
 import kotlinx.android.synthetic.main.activity_test.*
 import kotlinx.android.synthetic.main.login_out.*
-import kotlinx.android.synthetic.main.menu_member_function.*
 import kotlinx.android.synthetic.main.nav_header_main.*
 import kotlinx.android.synthetic.main.pure_mask.*
 //import me.leolin.shortcutbadger.ShortcutBadger

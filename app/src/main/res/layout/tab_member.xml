@@ -30,7 +30,15 @@
                 android:id="@+id/member_container"
                 android:layout_below="@+id/member_data"
                 android:orientation="vertical">
-                <include layout="@layout/menu_member_function" />
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/list_container"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/background"
+                    android:scrollbars="vertical"
+                    app:layoutManager="androidx.recyclerview.widget.GridLayoutManager">
+
+                </androidx.recyclerview.widget.RecyclerView>
             </LinearLayout>
         </RelativeLayout>
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
