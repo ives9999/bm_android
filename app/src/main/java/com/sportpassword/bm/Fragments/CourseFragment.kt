@@ -76,7 +76,6 @@ class CourseFragment : TabFragment() {
         setRecyclerViewScrollListener()
         setRecyclerViewRefreshListener()
         refresh()
-
     }
 
     override fun refresh() {
