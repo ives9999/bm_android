@@ -35,8 +35,6 @@ open class MoreVC : BaseActivity() {
     protected lateinit var recyclerView: RecyclerView
     open protected lateinit var listAdapter: ListAdapter
 
-    protected lateinit var scrollerListenr: RecyclerView.OnScrollListener
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         if (intent.hasExtra("type")) {

@@ -34,7 +34,7 @@ class MemberFragment: TabFragment() {
     )
     var memberRows: ArrayList<Map<String, String>> = arrayListOf()
     var signupRows: ArrayList<Map<String, String>> = arrayListOf(
-            mapOf("text" to "課程報名", "segue" to "password")
+            mapOf("text" to "課程報名", "segue" to "calendar_course_signup")
     )
     var rows: ArrayList<ArrayList<String>> = arrayListOf()
 
@@ -145,6 +145,7 @@ class MemberFragment: TabFragment() {
             rowClick(item, view)
         }
 
+        adapterSections.clear()
         for (section in sections) {
             adapterSections.add(Section())
         }
@@ -162,7 +163,7 @@ class MemberFragment: TabFragment() {
     fun generateItems(idx: Int): ArrayList<Item> {
         val items: ArrayList<Item> = arrayListOf()
 
-        var _rows: ArrayList<Map<String, String>>
+        val _rows: ArrayList<Map<String, String>>
         if (idx == 1) {
             _rows = signupRows
         } else {
@@ -179,7 +180,7 @@ class MemberFragment: TabFragment() {
             items.add(MemberItem(context!!, text, icon, segue))
         }
 
-        return items;
+        return items
     }
 
     fun rowClick(item: com.xwray.groupie.Item<ViewHolder>, view: View) {
@@ -193,6 +194,7 @@ class MemberFragment: TabFragment() {
             "email" -> mainActivity!!.goValidate("email")
             "mobile" -> mainActivity!!.goValidate("mobile")
 //            "blacklist" -> goBlackList()
+            "calendar_course_signup" -> goCalendarCourseSignup()
             "refresh" -> refresh()
         }
     }
@@ -231,7 +233,11 @@ class MemberFragment: TabFragment() {
     fun goUpdatePassword() {
         val updatePasswordIntent = Intent(activity, UpdatePasswordActivity::class.java)
         startActivity(updatePasswordIntent)
+    }
 
+    fun goCalendarCourseSignup() {
+        val intent = Intent(activity, CourseCalendarVC::class.java)
+        startActivity(intent)
     }
 
 

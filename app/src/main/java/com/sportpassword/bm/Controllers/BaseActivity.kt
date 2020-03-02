@@ -70,6 +70,7 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
 
     protected lateinit var refreshLayout: SwipeRefreshLayout
     protected lateinit var refreshListener: SwipeRefreshLayout.OnRefreshListener
+    protected lateinit var scrollerListenr: RecyclerView.OnScrollListener
 
     var screenWidth: Int = 0
     var density: Float = 0f
@@ -107,7 +108,7 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
     val SEARCH_REQUEST_CODE1 = 5
 
     var dataService: DataService = DataService()
-    
+
     //for layer
     var layerMask: LinearLayout? = null
     var layerBlackView: RelativeLayout? = null

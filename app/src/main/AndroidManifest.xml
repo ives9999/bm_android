@@ -132,6 +132,7 @@
             android:label="@string/title_activity_my_map_vc" />
         <activity android:name=".Controllers.TimeTableVC" />
         <activity android:name=".Controllers.StatusSelectVC1" />
+        <activity android:name=".Controllers.CourseCalendarVC" />
     </application>
 
 </manifest>

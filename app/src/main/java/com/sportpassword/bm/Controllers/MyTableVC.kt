@@ -18,7 +18,6 @@ import kotlinx.android.synthetic.main.mask.*
 open class MyTableVC: BaseActivity() {
 
     protected lateinit var recyclerView: RecyclerView
-    protected lateinit var scrollerListenr: RecyclerView.OnScrollListener
     protected lateinit var adapter: GroupAdapter<ViewHolder>
     protected val adapterSections: ArrayList<Section> = arrayListOf()
 
