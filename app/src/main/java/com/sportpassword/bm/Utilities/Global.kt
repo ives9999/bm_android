@@ -722,6 +722,23 @@ fun Date.timeIntervalSince(stop: Date): Long {
     return TimeUnit.MILLISECONDS.toSeconds(diffInMs)
 }
 
+fun Date.getMonthDays(_y: Int?=null, _m: Int?=null): Int {
+    var y = _y
+    if (y == null) {
+        y = this.getY()
+    }
+    var m = _m
+    if (m == null) {
+        m = this.getm()
+    }
+    val calendar = Calendar.getInstance()
+    calendar.set(Calendar.YEAR, y)
+    calendar.set(Calendar.MONTH, m)
+    val d = calendar.getActualMaximum(Calendar.DAY_OF_MONTH)
+
+    return d
+}
+
 fun HashMap<String, Any>.toJSONString(): String {
 
     var json: String = "{"

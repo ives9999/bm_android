@@ -56,6 +56,7 @@ abstract class MyTableVC1 : BaseActivity() {
             }
         } else {
             val items = generateItems()
+            println(items.size)
             adapter.addAll(items)
         }
         recyclerView.adapter = adapter
