@@ -62,6 +62,10 @@ abstract class MyTableVC1 : BaseActivity() {
         recyclerView.adapter = adapter
     }
 
+    override fun refresh() {
+        page = 1
+        getDataStart(page, perPage)
+    }
     open protected fun getDataStart(_page: Int, _perPage: Int) {}
 
     open protected fun getDataEnd(success: Boolean) {}

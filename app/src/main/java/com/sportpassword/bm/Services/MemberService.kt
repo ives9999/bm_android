@@ -611,6 +611,16 @@ object MemberService: BaseService() {
         */
     }
 
+    public fun memberSignupCalendar(year: Int, month: Int, member_token: String?=null, source: String="course", complete: CompletionHandler): Pair<Boolean, String> {
+        var res = true
+        if (member_token == null) {
+            res = false
+            return Pair(res, "沒有傳輸會員碼錯誤，請洽管理員")
+        }
+
+        return Pair(res, "")
+    }
+
 
     private fun jsonToMember(json: JSONObject) {
         json.put(ISLOGGEDIN_KEY, true)

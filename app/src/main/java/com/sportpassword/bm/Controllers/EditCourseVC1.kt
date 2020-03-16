@@ -112,7 +112,7 @@ class EditCourseVC1 : MyTableVC1(), ImagePicker, ViewDelegate {
         val params: HashMap<String, String> = hashMapOf("token" to course_token!!)
         CourseService.getOne(this, params) { success ->
             if (success) {
-                superCourse = CourseService.superCourse
+                superCourse = CourseService.superModel as SuperCourse
                 putValue()
                 notifyChanged(true)
 

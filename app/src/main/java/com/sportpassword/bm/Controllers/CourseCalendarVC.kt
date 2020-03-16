@@ -6,6 +6,7 @@ import com.sportpassword.bm.Models.SuperCourse
 import com.sportpassword.bm.Models.SuperCourses
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.CourseService
+import com.sportpassword.bm.Services.MemberService
 import com.sportpassword.bm.Utilities.*
 import com.xwray.groupie.GroupAdapter
 import kotlinx.android.synthetic.main.course_calendar_item.*
@@ -15,6 +16,7 @@ import java.util.*
 import kotlin.collections.ArrayList
 import com.xwray.groupie.kotlinandroidextensions.Item
 import com.xwray.groupie.kotlinandroidextensions.ViewHolder
+import org.jetbrains.anko.alert
 import kotlin.collections.HashMap
 
 
@@ -45,6 +47,7 @@ class CourseCalendarVC: MyTableVC1() {
         recyclerView.setHasFixedSize(true)
         setRecyclerViewScrollListener()
         setRecyclerViewRefreshListener()
+        refresh()
     }
 
     override fun initAdapter(include_section: Boolean) {
@@ -57,6 +60,15 @@ class CourseCalendarVC: MyTableVC1() {
     override fun getDataStart(_page: Int, _perPage: Int) {
         Loading.show(maskView)
         loading = true
+
+        val res = MemberService.memberSignupCalendar(y, m) { success ->
+
+        }
+        if (!res.first) {
+            Loading.hide(maskView)
+            loading = false
+            Alert.show(this, "警告", res.second)
+        }
     }
 
     override fun getDataEnd(success: Boolean) {
