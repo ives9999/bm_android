@@ -1,13 +1,17 @@
 package com.sportpassword.bm.Controllers
 
 import android.content.Context
+import android.content.DialogInterface
 import android.os.Bundle
+import android.view.View
+import com.sportpassword.bm.Models.Member
 import com.sportpassword.bm.Models.SuperCourse
 import com.sportpassword.bm.Models.SuperCourses
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.CourseService
 import com.sportpassword.bm.Services.MemberService
 import com.sportpassword.bm.Utilities.*
+import com.sportpassword.bm.member
 import com.xwray.groupie.GroupAdapter
 import kotlinx.android.synthetic.main.course_calendar_item.*
 import kotlinx.android.synthetic.main.mask.*
@@ -16,9 +20,13 @@ import java.util.*
 import kotlin.collections.ArrayList
 import com.xwray.groupie.kotlinandroidextensions.Item
 import com.xwray.groupie.kotlinandroidextensions.ViewHolder
+import kotlinx.android.synthetic.main.tab_course.list_container
+import kotlinx.android.synthetic.main.tab_course.tab_refresh
+import kotlinx.android.synthetic.main.tab_course_calendar.*
 import org.jetbrains.anko.alert
 import kotlin.collections.HashMap
-
+import org.jetbrains.anko.*
+import org.jetbrains.anko.sdk27.coroutines.onClick
 
 class CourseCalendarVC: MyTableVC1() {
 
@@ -35,6 +43,10 @@ class CourseCalendarVC: MyTableVC1() {
 
         val title = "會員報名課程列表"
         setMyTitle(title)
+
+        year.text = y.toString()
+        month.text = m.toString()
+        year_month.text = "$y-$m"
 
         dataService = CourseService
         calendarParams = makeCalendar()
@@ -61,7 +73,7 @@ class CourseCalendarVC: MyTableVC1() {
         Loading.show(maskView)
         loading = true
 
-        val res = MemberService.memberSignupCalendar(y, m) { success ->
+        val res = MemberService.memberSignupCalendar(y, m, member.token) { success ->
 
         }
         if (!res.first) {
@@ -155,6 +167,53 @@ class CourseCalendarVC: MyTableVC1() {
 
         return res
     }
+
+    fun yearPick(view: View) {
+
+        val years = mutableListOf<String>()
+        for (i in y downTo y-5) {
+            years.add(i.toString())
+        }
+        selector("選擇月份", years.toList(), { dialogInterface, i ->
+            y = years[i].toInt()
+            year.text = y.toString()
+            year_month.text = "$y-$m"
+        })
+
+
+//        var dialog: DialogInterface
+//        dialog = alert {
+//            title = "選項"
+//            customView {
+//                verticalLayout {
+//
+//                    button("確定") {
+//                        onClick {
+//                            dialog.dismiss()
+//                            layerDelete()
+//                        }
+//                    }
+//                    button("取消") {
+//                        onClick {dialog.dismiss()}
+//                    }
+//                }
+//            }
+//        }.show()
+    }
+
+    fun monthPick(view: View) {
+
+        val months = mutableListOf<String>()
+        for (i in 1..12) {
+            months.add(i.toString())
+        }
+        selector("選擇年份", months.toList(), { dialogInterface, i ->
+            m = months[i].toInt()
+            month.text = m.toString()
+            year_month.text = "$y-$m"
+        })
+
+    }
 }
 
 class CourseCalendarItem(val context: Context, val date: String, val superCourses: ArrayList<SuperCourse>): Item() {
@@ -163,7 +222,7 @@ class CourseCalendarItem(val context: Context, val date: String, val superCourse
 
         val d: Date = date.toDate()!!
         val weekday_i = d.dateToWeekday()
-        println(weekday_i)
+//        println(weekday_i)
         val weekday_c: String = d.dateToWeekdayForChinese()
 
         viewHolder.date.text = "%s(%s)".format(date, weekday_c)
