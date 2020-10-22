@@ -29,7 +29,7 @@ class ShowCourseVC : BaseActivity(), IconCellDelegate {
     var course_id: Int? = null
     var source: String  = "course" //course
     var course_token: String? = null    // course token
-    val tableRowKeys:Array<String> = arrayOf("weekday_text","date","interval","price_text_long","people_limit_text","kind_text","signup_count","pv","created_at_text")
+    var tableRowKeys:MutableList<String> = mutableListOf("weekday_text","date","interval","price_text_long","people_limit_text","kind_text","signup_count","pv","created_at_text")
     var tableRows: HashMap<String, HashMap<String,String>> = hashMapOf(
             "weekday_text" to hashMapOf("icon" to "calendar","title" to "日期","content" to ""),
             "date" to hashMapOf( "icon" to "calendar","title" to "期間","content" to ""),
@@ -174,8 +174,14 @@ class ShowCourseVC : BaseActivity(), IconCellDelegate {
         //contentView.loadData(strHtml, "text/html; charset=utf-8", "UTF-8")
         //contentView.loadData("<html><body style='background-color:#000;'>Hello, world!</body></html>", "text/html", "UTF-8")
 
-        val date = superCourse!!.start_date + " ~ " + superCourse!!.end_date
-        tableRows["date"]!!["content"] = date
+        if (superCourse!!.start_date.length > 0) {
+            val date = superCourse!!.start_date + " ~ " + superCourse!!.end_date
+            tableRows["date"]!!["content"] = date
+        } else {
+            tableRowKeys.remove("date");
+            //println(tableRowKeys);
+            tableRows.remove("date");
+        }
 
         val interval = superCourse!!.start_time_text + " ~ " + superCourse!!.end_time_text
         tableRows["interval"]!!["content"] = interval
