@@ -195,7 +195,6 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
         URL_TT_DELETE = URL_HOME + "%s/tt/delete"
         URL_TT_UPDATE = URL_HOME + "%s/tt/update"
         URL_UPDATE = URL_HOME + "%s/update"
-
     }
 
     protected fun setMyTitle(title: String) {
@@ -439,7 +438,6 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
         i.putExtra("type", "coach")
         i.putExtra("titleField", "name")
         startActivity(i)
-
     }
 
     fun goArena() {
@@ -447,7 +445,6 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
         i.putExtra("type", "arena")
         i.putExtra("titleField", "name")
         startActivity(i)
-
     }
 
     fun goTeach() {
@@ -455,7 +452,13 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
         i.putExtra("type", "teach")
         i.putExtra("titleField", "title")
         startActivity(i)
+    }
 
+    fun goStore() {
+        val i = Intent(this, StoreVC::class.java)
+        i.putExtra("type", "store")
+        i.putExtra("titleField", "name")
+        startActivity(i)
     }
 
     fun goTimeTable(source: String, token: String) {

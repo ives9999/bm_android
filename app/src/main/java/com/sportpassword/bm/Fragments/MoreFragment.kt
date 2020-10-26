@@ -80,6 +80,21 @@ class MoreFragment : TabFragment() {
             dialog.show()
         }
 
+        val rowStore = view.findViewById<ConstraintLayout>(R.id.more_store_row)
+        rowStore.setOnClickListener() { view ->
+            (activity!! as MainActivity).goStore()
+
+            //val mainActivity = activity as MainActivity
+            //mainActivity.test()
+
+//            val fm = activity!!.supportFragmentManager
+//            val teachFragment = TeachFragment.newInstance("teach", screenWidth)
+//            fm.beginTransaction()
+//                    .replace(R.id.more_container, teachFragment)
+//                    .addToBackStack(null)
+//                    .commit()
+        }
+
         return view
     }
 
