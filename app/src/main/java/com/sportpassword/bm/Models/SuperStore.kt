@@ -24,7 +24,7 @@ class SuperStore(data: JSONObject): SuperModel(data) {
     var city_id: Int = 0
     var area_id: Int = 0
     var road: String = ""
-    var zip: String = ""
+    var zip: Int = 0
 
     var content: String = ""
     var status: String = "online"
@@ -57,5 +57,5 @@ class SuperStores(data: JSONObject): SuperModel(data) {
     var page: Int = 0
     var totalCount: Int = 0
     var perPage: Int = 0
-    var rows: ArrayList<SuperCourse> = arrayListOf()
+    var rows: ArrayList<SuperStore> = arrayListOf()
 }
