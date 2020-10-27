@@ -10,22 +10,20 @@
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/store_refresh"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        >
+        app:layout_constraintTop_toTopOf="parent">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/store_list"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:scrollbars="vertical">
+            android:background="@drawable/background"
+            android:scrollbars="vertical"
+            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager">
 
         </androidx.recyclerview.widget.RecyclerView>
-
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
-
     <include layout="@layout/mask" />
-    <include layout="@layout/pure_mask" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
