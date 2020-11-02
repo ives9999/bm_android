@@ -33,7 +33,6 @@ class SuperCourse(data: JSONObject): SuperModel(data) {
     var end_time_text: String = ""
     var youtube: String = ""
 
-
     var content: String = ""
     var content_style: String = ""
     var status: String = "online"

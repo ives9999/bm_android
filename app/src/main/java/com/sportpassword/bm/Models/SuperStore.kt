@@ -45,6 +45,8 @@ class SuperStore(data: JSONObject): SuperModel(data) {
     var tel_text: String = ""
     var mobile_text: String = ""
 
+    var content_style: String = ""
+
     override fun filter() {
         super.filter()
         created_at_text = created_at.noTime()
