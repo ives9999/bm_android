@@ -1,8 +1,10 @@
 package com.sportpassword.bm.Controllers
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import com.sportpassword.bm.Fragments.CourseFragment
 import com.sportpassword.bm.Models.SuperStore
 import com.sportpassword.bm.Models.SuperStores
 import com.sportpassword.bm.R
@@ -46,6 +48,9 @@ class StoreVC : MyTableVC1() {
 
     override fun initAdapter(include_section: Boolean) {
         adapter = GroupAdapter()
+        adapter.setOnItemClickListener { item, view ->
+            rowClick(item, view)
+        }
         val items = generateItems()
         adapter.addAll(items)
         recyclerView.adapter = adapter
@@ -100,6 +105,17 @@ class StoreVC : MyTableVC1() {
         }
 
         return items
+    }
+
+    override fun rowClick(item: com.xwray.groupie.Item<com.xwray.groupie.ViewHolder>, view: View) {
+
+        val storeItem = item as StoreItem
+        val superStore = storeItem.superStore
+        //superCourse.print()
+        val intent = Intent(this, ShowStoreVC::class.java)
+        intent.putExtra("store_token", superStore.token)
+        intent.putExtra("title", superStore.name)
+        startActivity(intent)
     }
 }
 
