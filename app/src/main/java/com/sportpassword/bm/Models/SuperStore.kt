@@ -17,6 +17,7 @@ class SuperStore(data: JSONObject): SuperModel(data) {
     var fb: String = ""
     var website: String = ""
     var email: String = ""
+    var line: String = ""
 
     var open_time: String = ""
     var close_time: String = ""

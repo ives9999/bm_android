@@ -57,6 +57,29 @@
 
                 </androidx.recyclerview.widget.RecyclerView>
 
+                <TextView
+                    android:id="@+id/contentLbl"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/tableView"
+                    android:layout_marginLeft="12dp"
+                    android:layout_marginBottom="8dp"
+                    android:text="詳細介紹"
+                    android:textColor="@color/MY_RED"
+                    android:textSize="24dp" />
+
+                <WebView
+                    android:id="@+id/contentView"
+                    style="@android:style/Widget.WebView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/contentLbl"
+                    android:layout_marginLeft="12dp"
+                    android:layout_marginRight="12dp"
+                    android:layout_marginBottom="50dp"
+                    android:background="@android:color/transparent"
+                    android:padding="12dp" />
+
 
             </RelativeLayout>
         </ScrollView>

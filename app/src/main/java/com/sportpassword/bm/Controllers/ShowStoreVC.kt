@@ -109,7 +109,7 @@ class ShowStoreVC : BaseActivity(), IconCellDelegate {
         val content: String = "<html lang=\"zh-TW\"><head><meta charset=\"UTF-8\">"+superStore!!.content_style+"</head><body><div class=\"content\">"+superStore!!.content+"</div>"+"</body></html>"
         //val content: String = "<html lang=\"zh-TW\"><head><meta charset=\"UTF-8\"></head><body style=\"background-color: #000;color:#fff;font-size:28px;\">"+superCourse!!.content+"</body></html>"
         //println(content)
-        ////contentView.loadDataWithBaseURL(null, content, "text/html", "UTF-8", null)
+        contentView.loadDataWithBaseURL(null, content, "text/html", "UTF-8", null)
         //contentView.loadData(strHtml, "text/html; charset=utf-8", "UTF-8")
         //contentView.loadData("<html><body style='background-color:#000;'>Hello, world!</body></html>", "text/html", "UTF-8")
 
@@ -123,7 +123,7 @@ class ShowStoreVC : BaseActivity(), IconCellDelegate {
         }
 
 //                    println(tableRows)
-        var items = generateStoreItem()
+        val items = generateStoreItem()
         adapter.update(items)
     }
 
@@ -155,6 +155,12 @@ class ShowStoreVC : BaseActivity(), IconCellDelegate {
                 if (row.containsKey("content")) {
                     content = row["content"]!!
                 }
+                if (key == "website" && content.isNotEmpty()) {
+                    content = "連結請按此"
+                }
+                if (key == "fb" && content.isNotEmpty()) {
+                    content = "連結請按此"
+                }
                 if (row.containsKey("isPressed")) {
                     isPressed = row["isPressed"]!!.toBoolean()
                 }
@@ -170,12 +176,29 @@ class ShowStoreVC : BaseActivity(), IconCellDelegate {
     }
 
     override fun didSelectRowAt(view: View, position: Int) {
-//        println("delegate:"+position)
-        val parent = view.parent
-        if (parent is RecyclerView) {
-            val p = parent as RecyclerView
-            //println(p.getIDString())
-            val id = p.getIDString()
+        val key = tableRowKeys[position]
+        if (key == MOBILE_KEY) {
+            val mobile = superStore!!.mobile
+            this.mobile = mobile
+            val permission: String = android.Manifest.permission.CALL_PHONE
+            if (permissionExist(permission)) {
+                mobile.makeCall(this)
+            } else {
+                val permissions = arrayOf(permission)
+                requestPermission(permissions, REQUEST_PHONE_CALL)
+            }
+        } else if (key == LINE_KEY) {
+            val line = superStore!!.line
+            line.line(this)
+        } else if (key == FB_KEY) {
+            val fb = superStore!!.fb
+            fb.fb(this)
+        } else if (key == WEBSITE_KEY) {
+            val website = superStore!!.website
+            website.website(this)
+        } else if (key == EMAIL_KEY) {
+            val email = superStore!!.email
+            email.email(this)
         }
     }
 
