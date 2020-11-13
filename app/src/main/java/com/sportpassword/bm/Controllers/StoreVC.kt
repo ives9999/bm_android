@@ -15,8 +15,10 @@ import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.kotlinandroidextensions.Item
 import com.xwray.groupie.kotlinandroidextensions.ViewHolder
 import kotlinx.android.synthetic.main.activity_store_vc.*
+import kotlinx.android.synthetic.main.list1_cell.*
 import kotlinx.android.synthetic.main.mask.*
 import kotlinx.android.synthetic.main.tab_list_item.*
+import kotlinx.android.synthetic.main.tab_list_item.listFeatured
 import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
 
@@ -100,6 +102,7 @@ class StoreVC : MyTableVC1() {
         val items: ArrayList<Item> = arrayListOf()
         if (superStores != null) {
             for (row in superStores!!.rows) {
+                //row.print()
                 items.add(StoreItem(this, row))
             }
         }
@@ -124,21 +127,19 @@ class StoreItem(val context: Context, val superStore: SuperStore): Item() {
     override fun bind(viewHolder: ViewHolder, position: Int) {
 
         //println(superStore);
-        viewHolder.listCityBtn.text = superStore.city
-        viewHolder.title.text = superStore.name
+        viewHolder.cityBtn.text = superStore.city
+        viewHolder.titleTxt.text = superStore.name
         Picasso.with(context)
                 .load(BASE_URL + superStore.featured_path)
                 .placeholder(R.drawable.loading_square_120)
                 .error(R.drawable.loading_square_120)
                 .into(viewHolder.listFeatured)
-        viewHolder.listBallTxt.visibility = View.INVISIBLE
-        viewHolder.listArenaTxt.text = superStore.address
-        viewHolder.listDayTxt.text = superStore.tel_text
-        viewHolder.listIntervalTxt.text = superStore.open_time_text+"~"+superStore.close_time_text
-        viewHolder.marker.visibility = View.INVISIBLE
+        viewHolder.telTxt.text = superStore.tel_text
+        viewHolder.business_timeTxt.text = superStore.open_time_text+"~"+superStore.close_time_text
+        viewHolder.addressTxt.text = superStore.address
     }
 
-    override fun getLayout() = R.layout.tab_list_item
+    override fun getLayout() = R.layout.list1_cell
 }
 
 

@@ -29,7 +29,6 @@ class JSONParse {
 
         fun setter(kc: KClass<*>, data: JSONObject, res: Any) {
             val d = makeMap(data)
-            println(d)
             kc.memberProperties.forEach{
                 val key = it.name
                 val value = d[key]
@@ -51,12 +50,32 @@ class JSONParse {
                             }
                             else -> {
                                 if (tmps.containsKey("value_type")) {
-                                    val valueType = tmps.get("value_type")!!
-                                    val rows = setRows(kc, it, res, value, valueType)
-                                    _setter(it, res, rows)
-                                }
-                                if (key == "managers") {
-
+                                    if (key == "managers") {
+                                        val rows: ArrayList<HashMap<String, Any>> = arrayListOf()
+                                        val arr = value as JSONArray
+                                        for (i in 0..arr.length()-1) {
+                                            val json = arr[i] as JSONObject
+                                            val keys = json.keys()
+                                            val map1: HashMap<String, Any> = hashMapOf()
+                                            while (keys.hasNext()) {
+                                                val key1 = keys.next()
+                                                var value1 = json.get(key1)
+                                                if (value1 is Int) {
+                                                   value1 = value1 as Int
+                                                } else if (value1 is String) {
+                                                    value1 = value1 as String
+                                                }
+                                                map1.put(key1, value1)
+                                            }
+                                            rows.add(map1)
+                                        }
+//                                        println(rows)
+                                        _setter(it, res, rows)
+                                    } else {
+                                        val valueType = tmps.get("value_type")!!
+                                        val rows = setRows(kc, it, res, value, valueType)
+                                        _setter(it, res, rows)
+                                    }
                                 }
                             }
                         }
@@ -107,26 +126,20 @@ class JSONParse {
 
         private fun setRows(kc: KClass<*>, it: KProperty1<out Any, Any?>, obj: Any, value: Any, subType: String): ArrayList<Any> {
             val packageName = kc.java.`package`.name
-            if (it.name == "managers") {
-                val rows: ArrayList<HashMap<String, Any>> = arrayListOf()
+            val child = Class.forName(packageName + "." + subType).kotlin
 
-                return rows
-            } else {
-                val child = Class.forName(packageName + "." + subType).kotlin
-
-                val rows: ArrayList<Any> = arrayListOf()
-                if (child != null) {
-                    val arr = value as JSONArray
-                    for (i in 0..arr.length() - 1) {
-                        val j = arr[i] as JSONObject
-                        val row = newInstance(child, j)
-                        //val row = newInstance(child, j, obj)
-                        setter(child, j, row)
-                        rows.add(row)
-                    }
+            val rows: ArrayList<Any> = arrayListOf()
+            if (child != null) {
+                val arr = value as JSONArray
+                for (i in 0..arr.length() - 1) {
+                    val j = arr[i] as JSONObject
+                    val row = newInstance(child, j)
+                    //val row = newInstance(child, j, obj)
+                    setter(child, j, row)
+                    rows.add(row)
                 }
-                return rows
             }
+            return rows
         }
 
          fun newInstance(kc: KClass<*>, data: JSONObject, obj: Any? = null): Any {
