@@ -81,7 +81,7 @@ open class DataService: BaseService() {
                 if (response != null) {
                     try {
                         val json = JSONObject(response.toString())
-//                        println(json)
+                        //println(json)
                         superModel = parseModels(json)
                         //superCourses = JSONParse.parse<SuperCourses>(json)!!
 //                        for (row in superCourses.rows) {

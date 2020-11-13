@@ -48,6 +48,8 @@ class SuperStore(data: JSONObject): SuperModel(data) {
 
     var content_style: String = ""
 
+    var managers: ArrayList<HashMap<String, Any>> = arrayListOf()
+
     override fun filter() {
         super.filter()
         created_at_text = created_at.noTime()
