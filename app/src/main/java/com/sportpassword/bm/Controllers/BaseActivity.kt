@@ -12,29 +12,27 @@ import android.graphics.Color
 import android.graphics.Point
 import android.os.AsyncTask
 import android.os.Build
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
-import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
-import androidx.localbroadcastmanager.content.LocalBroadcastManager
-import androidx.core.widget.NestedScrollView
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-import androidx.appcompat.app.ActionBar
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import android.view.*
 import android.view.animation.Animation
 import android.view.animation.TranslateAnimation
 import android.view.inputmethod.InputMethodManager
 import android.webkit.*
 import android.widget.*
+import androidx.appcompat.app.ActionBar
+import androidx.appcompat.app.AppCompatActivity
+import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
+import androidx.core.widget.NestedScrollView
+import androidx.localbroadcastmanager.content.LocalBroadcastManager
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.facebook.CallbackManager
 import com.facebook.FacebookCallback
 import com.facebook.FacebookException
-import com.facebook.FacebookSdk
-import com.facebook.appevents.AppEventsLogger
 import com.facebook.login.LoginManager
 import com.facebook.login.LoginResult
 import com.onesignal.OneSignal
@@ -55,16 +53,14 @@ import com.sportpassword.bm.Utilities.*
 import com.sportpassword.bm.member
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.ViewHolder
+import kotlinx.android.synthetic.main.mask.*
 import org.jetbrains.anko.*
+import org.json.JSONArray
+import org.json.JSONObject
 import java.net.HttpURLConnection
 import java.net.URL
 import java.util.*
 import kotlin.system.exitProcess
-import kotlinx.android.synthetic.main.mask.*
-import org.json.JSONArray
-import org.json.JSONObject
-import kotlin.collections.ArrayList
-import kotlin.collections.HashMap
 
 open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, SearchItemDelegate {
 
@@ -72,6 +68,7 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
     protected lateinit var refreshListener: SwipeRefreshLayout.OnRefreshListener
     protected lateinit var scrollerListenr: RecyclerView.OnScrollListener
 
+    var source_activity: String = ""  //來源的activity
     var screenWidth: Int = 0
     var density: Float = 0f
 
@@ -89,6 +86,7 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
     var citys: ArrayList<City> = arrayListOf()
     var citys_coach: ArrayList<City> = arrayListOf()
     var citys_team: ArrayList<City> = arrayListOf()
+    var citys_store: ArrayList<City> = arrayListOf()
     var areas: ArrayList<Area> = arrayListOf()
     var air_condition: Boolean = false
     var bathroom: Boolean = false
@@ -314,7 +312,7 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
         startActivity(intent)
     }
 
-    public fun goEdit(source: String, title: String="", token: String="") {
+    public fun goEdit(source: String, title: String = "", token: String = "") {
         val intent = Intent(this, EditVC1::class.java)
         intent.putExtra("token", token)
         intent.putExtra("source", source)
@@ -357,7 +355,7 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
         startActivity(intent)
     }
 
-    fun goEditCourse(title: String, course_token: String, coach_token:String) {
+    fun goEditCourse(title: String, course_token: String, coach_token: String) {
         val intent = Intent(this, EditCourseVC1::class.java)
         intent.putExtra("title", title)
         intent.putExtra("course_token", course_token)
@@ -384,7 +382,7 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
         //val intent = Intent(this)
     }
 
-    public fun goDelete(page: String, token: String="") {
+    public fun goDelete(page: String, token: String = "") {
         Alert.delete(this, {
             Loading.show(mask)
             dataService.delete(this, page, token) { success ->
@@ -396,7 +394,7 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
         })
     }
 
-    fun goDelete1(page: String, token: String="") {
+    fun goDelete1(page: String, token: String = "") {
         Alert.delete(this, {
             Loading.show(mask)
             dataService.delete(this, page, token) { success ->
@@ -511,7 +509,7 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
     }
     protected fun _showKeyboard(view: View) {
         val inputManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-        inputManager.toggleSoftInput(InputMethodManager.SHOW_FORCED,InputMethodManager.HIDE_IMPLICIT_ONLY);
+        inputManager.toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY);
     }
 
     protected fun loginFB() {
@@ -523,7 +521,7 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
         LoginManager.getInstance().logOut()
         LoginManager.getInstance().logInWithReadPermissions(this, Arrays.asList("email,public_profile"))
         LoginManager.getInstance().registerCallback(callbackManager,
-                object: FacebookCallback<LoginResult> {
+                object : FacebookCallback<LoginResult> {
                     override fun onSuccess(result: LoginResult?) {
                         MemberService.FBLogin(this@BaseActivity, playerID) { success ->
                             if (success) {
@@ -532,7 +530,7 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
                                 finish()
                             } else {
                                 val msg = MemberService.msg
-                                Alert.show(this@BaseActivity,"錯誤", msg)
+                                Alert.show(this@BaseActivity, "錯誤", msg)
                             }
                         }
                     }
@@ -629,7 +627,7 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
     }
 
     protected fun addBlackList(memberName: String, memberToken: String, teamToken: String) {
-        warning("是否真的要將球友"+memberName+"設為黑名單\n之後可以解除", "取消", "加入", {
+        warning("是否真的要將球友" + memberName + "設為黑名單\n之後可以解除", "取消", "加入", {
             reasonBox(memberToken, teamToken)
         })
 
@@ -671,7 +669,7 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
                 || "google_sdk" == Build.PRODUCT)
     }
 
-    fun TextView.setMyText(value: String, default: String="") {
+    fun TextView.setMyText(value: String, default: String = "") {
         if (value.isEmpty()) text = default else text = value
     }
 
@@ -709,7 +707,21 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
                 val frag = getFragment(tag) as CourseFragment
                 searchRows = frag._searchRows
             }
+            "store" -> {
+                containerID = "constraintLayout"
+            }
         }
+
+//        val parent = getMyParent()
+//        val params: LinearLayout.LayoutParams = LinearLayout.LayoutParams(300, 400)
+//        params.leftMargin = 200
+//        params.topMargin = 200
+//        val v = LinearLayout(this)
+//        v.translationX = 200f
+//        v.translationY = 200f
+//        v.backgroundColor = Color.RED
+//        parent.addView(v, params)
+
         mask()
         addLayer(tag)
     }
@@ -758,6 +770,7 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
                 override fun onAnimationEnd(p0: Animation?) {
                     removeLayerChildViews()
                 }
+
                 override fun onAnimationStart(p0: Animation?) {}
             })
             animate.duration = 500
@@ -799,10 +812,12 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
         val h = parent.measuredHeight
         if (layerBlackView == null) {
 
-            val lp = RelativeLayout.LayoutParams(w - (2 * layerRightLeftPadding), ViewGroup.LayoutParams.MATCH_PARENT)
-            lp.setMargins(layerRightLeftPadding, layerTopPadding, layerRightLeftPadding, 0)
+            val lp = RelativeLayout.LayoutParams(w - (2 * layerRightLeftPadding), h - layerTopPadding)
+            //lp.setMargins(layerRightLeftPadding, layerTopPadding, layerRightLeftPadding, 0)
             layerBlackView = RelativeLayout(this)
             layerBlackView!!.layoutParams = lp
+            layerBlackView!!.translationX = layerRightLeftPadding.toFloat()
+            layerBlackView!!.translationY = layerTopPadding.toFloat()
             layerBlackView!!.backgroundColor = Color.BLACK
             layerMask!!.addView(layerBlackView)
 
@@ -810,7 +825,7 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
             lp.setMargins(0, 0, 0, 0)
             layerScrollView = NestedScrollView(this)
             layerScrollView!!.layoutParams = lp1
-            layerScrollView!!.setOnScrollChangeListener(object: NestedScrollView.OnScrollChangeListener {
+            layerScrollView!!.setOnScrollChangeListener(object : NestedScrollView.OnScrollChangeListener {
                 override fun onScrollChange(p0: NestedScrollView?, p1: Int, p2: Int, p3: Int, p4: Int) {
                     if (currentFocus != null) {
                         currentFocus.clearFocus()
@@ -851,6 +866,7 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
             override fun onAnimationRepeat(p0: Animation?) {}
             override fun onAnimationEnd(p0: Animation?) {
             }
+
             override fun onAnimationStart(p0: Animation?) {
             }
         })
@@ -874,7 +890,7 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
         val searchTableView = RecyclerView(this)
         searchTableView.id = R.id.SearchRecycleItem
         val padding: Int = 80
-        val lp1 = RecyclerView.LayoutParams(w-(2*padding), 1000)
+        val lp1 = RecyclerView.LayoutParams(w - (2 * padding), 1000)
         lp1.setMargins(0, 30, 0, 30)
         searchTableView.layoutParams = lp1
         searchTableView.layoutManager = LinearLayoutManager(this)
@@ -883,7 +899,7 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
         searchAdapter.setOnItemClickListener { item, view ->
             val searchItem = item as SearchItem
             val row = searchItem.row
-            if (page == "course") {
+            if (page == "course" || page == "store") {
                 prepareSearch1(row, page)
             } else {
                 if (searchItem.switch == false) {
@@ -914,7 +930,7 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
         layerSubmitBtn = layoutInflater.inflate(R.layout.submit_button, null) as Button
         //layerSubmitBtn = Button(this, null, R.style.submit_button)
 //        val submitBtnWidth = 260
-        val lp2 = LinearLayout.LayoutParams(260, 90)
+        val lp2 = LinearLayout.LayoutParams(300, 90)
 //        lp2.setMargins(16, 0, 0, 0)
         layerSubmitBtn!!.layoutParams = lp2
         //layerSubmitBtn!!.text = "送出"
@@ -938,7 +954,7 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
         layerCancelBtn = layoutInflater.inflate(R.layout.cancel_button, null) as Button
 //        layerCancelBtn = Button(this)
 //        val cancelBtnWidth = 260
-        val lp2 = LinearLayout.LayoutParams(260, 90)
+        val lp2 = LinearLayout.LayoutParams(300, 90)
         lp2.setMargins(16, 0, 0, 0)
 //        val center = (w-(2*padding)-cancelBtnWidth)/2
 //        var x = center
@@ -970,7 +986,7 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
         layerDeleteBtn = layoutInflater.inflate(R.layout.delete_button, null) as Button
         //layerDeleteBtn = Button(this)
 //        val deleteBtnWidth = 260
-        val lp2 = LinearLayout.LayoutParams(260, 90)
+        val lp2 = LinearLayout.LayoutParams(300, 90)
         lp2.setMargins(16, 0, 0, 0)
         layerDeleteBtn!!.layoutParams = lp2
 //        layerDeleteBtn!!.text = "刪除"
@@ -1126,7 +1142,7 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
                 val times = Global.makeTimes()
                 val rows: ArrayList<HashMap<String, String>> = arrayListOf()
                 for (time in times) {
-                    rows.add(hashMapOf("title" to time, "value" to time+":00"))
+                    rows.add(hashMapOf("title" to time, "value" to time + ":00"))
                 }
                 singleSelectIntent.putExtra("rows", rows)
                 startActivityForResult(singleSelectIntent, SEARCH_REQUEST_CODE1)
@@ -1168,6 +1184,10 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
                             } else if (page == "team") {
                                 citys_team = citys
                             }
+// move to SEARCH_REQUEST_CODE1 block
+//                            else if (page == "store") {
+//                                citys_store = citys
+//                            }
                         }
                         ARENA_KEY -> {
                             idx = 2
@@ -1271,7 +1291,7 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
                         return row
                     }
 
-                    val updateRow = fun(key: String, row:HashMap<String, String>) {
+                    val updateRow = fun(key: String, row: HashMap<String, String>) {
                         var idx: Int = -1
                         for ((i, searchRow) in searchRows.withIndex()) {
                             if (searchRow.containsKey("key")) {
@@ -1306,7 +1326,7 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
                             val texts: ArrayList<String> = arrayListOf()
                             for (selected in selecteds!!) {
                                 if (arr != null) {
-                                    for (i in 0..arr!!.length()-1) {
+                                    for (i in 0..arr!!.length() - 1) {
                                         val obj = arr!![i] as JSONObject
                                         if (selected == obj.getString("value")) {
                                             texts.add(obj.getString("title"))
@@ -1344,7 +1364,7 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
                         }
 
                     }
-                    val rows = generateSearchItems("course")
+                    val rows = generateSearchItems(source_activity)
                     searchAdapter.update(rows)
                 }
             }
@@ -1369,7 +1389,7 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
             val searchItem = SearchItem(title, detail, keyword, bSwitch, -1, i, { k ->
                 keyword = k
             }, { idx, b ->
-                when (idx){
+                when (idx) {
                     3 -> air_condition = b
                     4 -> bathroom = b
                     5 -> parking = b
@@ -1407,7 +1427,7 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
         return _frag
     }
 
-    fun prepareParams(city_type: String="simple") {
+    open fun prepareParams(city_type: String = "simple") {
         val city_ids: ArrayList<Int> = arrayListOf()
         if (citys.size > 0) {
             citys.forEach {
@@ -1608,16 +1628,16 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
     fun warning(msg: String) {
         Alert.show(this, "警告", msg)
     }
-    fun warning(msg: String, showCloseButton: Boolean=false, buttonTitle: String, buttonAction: ()->Unit) {
+    fun warning(msg: String, showCloseButton: Boolean = false, buttonTitle: String, buttonAction: () -> Unit) {
         Alert.show(this, "警告", msg, showCloseButton, buttonTitle, buttonAction)
     }
-    fun warning(msg: String, closeButtonTitle: String, buttonTitle: String, buttonAction: ()->Unit) {
+    fun warning(msg: String, closeButtonTitle: String, buttonTitle: String, buttonAction: () -> Unit) {
         Alert.show(this, "警告", msg, closeButtonTitle, buttonTitle, buttonAction)
     }
     fun info(msg: String) {
         Alert.show(this, "訊息", msg)
     }
-    fun info(msg: String, closeButtonTitle: String, buttonTitle: String, buttonAction: ()->Unit) {
+    fun info(msg: String, closeButtonTitle: String, buttonTitle: String, buttonAction: () -> Unit) {
         Alert.show(this, "訊息", msg, closeButtonTitle, buttonTitle, buttonAction)
     }
 
@@ -1642,7 +1662,7 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
     }
     open protected fun refresh() {}
 
-    open protected fun setTeamData(imageView: ImageView?=null) {
+    open protected fun setTeamData(imageView: ImageView? = null) {
     }
 
     override fun remove(indexPath: IndexPath) {

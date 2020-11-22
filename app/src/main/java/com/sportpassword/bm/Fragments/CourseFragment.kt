@@ -33,7 +33,7 @@ class CourseFragment : TabFragment() {
     var sections: ArrayList<String> = arrayListOf()
 
     override val _searchRows: ArrayList<HashMap<String, String>> = arrayListOf(
-            hashMapOf("title" to "關鍵字","key" to KEYWORD_KEY,"value" to "","value_type" to "String","show" to "不限"),
+            hashMapOf("title" to "關鍵字","key" to KEYWORD_KEY,"value" to "","value_type" to "String","show" to ""),
             hashMapOf("title" to "縣市","key" to CITY_KEY,"value" to "","value_type" to "Array","show" to "不限"),
             hashMapOf("title" to "日期","key" to WEEKDAY_KEY,"value" to "","value_type" to "Array","show" to "不限"),
             hashMapOf("title" to "開始時間之後","key" to START_TIME_KEY,"value" to "","value_type" to "String","show" to "不限"),
@@ -43,6 +43,8 @@ class CourseFragment : TabFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        mainActivity!!.source_activity = "course"
         dataService = CourseService
         setHasOptionsMenu(true)
     }

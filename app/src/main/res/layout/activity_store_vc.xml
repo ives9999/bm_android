@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/background"
+    android:id="@+id/constraintLayout"
     tools:context=".Controllers.StoreVC">
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
@@ -25,5 +26,6 @@
         </androidx.recyclerview.widget.RecyclerView>
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
     <include layout="@layout/mask" />
+    <include layout="@layout/pure_mask" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

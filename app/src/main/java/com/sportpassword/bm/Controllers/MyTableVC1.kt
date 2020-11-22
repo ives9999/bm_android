@@ -1,12 +1,15 @@
 package com.sportpassword.bm.Controllers
 
 import android.os.Bundle
+import android.view.Menu
 import androidx.recyclerview.widget.RecyclerView
 import android.view.View
+import android.widget.ImageButton
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.sportpassword.bm.Adapters.GroupSection
 import com.sportpassword.bm.Adapters.ListAdapter
+import com.sportpassword.bm.R
 import com.sportpassword.bm.Utilities.PERPAGE
 import com.xwray.groupie.ExpandableGroup
 import com.xwray.groupie.GroupAdapter
@@ -38,6 +41,19 @@ abstract class MyTableVC1 : BaseActivity() {
         super.onCreate(savedInstanceState)
     }
 
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.search_manager, menu)
+        val memuView = menu!!.findItem(R.id.menu_search_manager).actionView
+
+        val searchBtn = memuView.findViewById<ImageButton>(R.id.search)
+        val ManagerBtn = memuView.findViewById<ImageButton>(R.id.manager)
+        ManagerBtn.visibility = View.GONE
+
+        searchBtn.tag = "store"
+
+        return true
+    }
+
     open fun initAdapter(include_section: Boolean=false) {
         adapter = GroupAdapter()
         adapter.setOnItemClickListener { item, view ->
@@ -64,6 +80,7 @@ abstract class MyTableVC1 : BaseActivity() {
 
     override fun refresh() {
         page = 1
+        theFirstTime = true
         getDataStart(page, perPage)
     }
     open protected fun getDataStart(_page: Int, _perPage: Int) {}
