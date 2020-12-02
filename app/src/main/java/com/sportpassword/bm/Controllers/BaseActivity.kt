@@ -586,15 +586,18 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
     }
 
     fun refreshMember(completion: CompletionHandler) {
-        _getMemberOne(member.token, completion)
+        member.token?.let { _getMemberOne(it, completion) }
     }
 
     protected fun _updatePlayerIDWhenIsNull() {
-        _getMemberOne(member.token) { success ->
-            if (success) {
-                member.justGetMemberOne = true
-                if (member.player_id.length == 0) {
-                    _updatePlayerID()
+        val token = member.token
+        if (token != null) {
+            _getMemberOne(token) { success ->
+                if (success) {
+                    member.justGetMemberOne = true
+                    if (member.player_id?.length == 0) {
+                        _updatePlayerID()
+                    }
                 }
             }
         }
@@ -648,12 +651,15 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
     }
     protected fun _addBlackList(reason: String, memberToken: String, teamToken: String) {
         Loading.show(mask)
-        TeamService.addBlackList(this, teamToken, memberToken, member.token, reason) { success ->
-            Loading.hide(mask)
-            if (success) {
-                info("加入黑名單成功")
-            } else {
-                warning(TeamService.msg)
+        val token = member.token
+        if (token != null) {
+            TeamService.addBlackList(this, teamToken, memberToken, token, reason) { success ->
+                Loading.hide(mask)
+                if (success) {
+                    info("加入黑名單成功")
+                } else {
+                    warning(TeamService.msg)
+                }
             }
         }
     }
@@ -827,9 +833,7 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
             layerScrollView!!.layoutParams = lp1
             layerScrollView!!.setOnScrollChangeListener(object : NestedScrollView.OnScrollChangeListener {
                 override fun onScrollChange(p0: NestedScrollView?, p1: Int, p2: Int, p3: Int, p4: Int) {
-                    if (currentFocus != null) {
-                        currentFocus.clearFocus()
-                    }
+                    currentFocus?.clearFocus()
                 }
 
             })

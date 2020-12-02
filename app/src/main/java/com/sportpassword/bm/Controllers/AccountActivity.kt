@@ -57,9 +57,11 @@ class AccountActivity : BaseActivity() {
     }
 
     override fun refresh() {
-        _getMemberOne(member.token) {
+        member.token?.let {
+            _getMemberOne(it) {
             setData()
             closeRefresh()
+        }
         }
     }
 
@@ -80,25 +82,31 @@ class AccountActivity : BaseActivity() {
         super.onActivityResult(requestCode, resultCode, data)
         when (requestCode) {
             ACCOUNT_REQUEST_CODE -> {
-                _getMemberOne(member.token) {
-                    setData()
+                member.token?.let {
+                    _getMemberOne(it) {
+                        setData()
+                    }
                 }
             }
         }
     }
 
     private fun setData() {
-        accountNicknameLbl.setMyText(member.nickname, default)
-        accountNickname.setMyText(member.nickname, default)
-        val sex = MEMBER_SEX.valueOf(member.sex)
-        accountSexLbl.setMyText(sex.value, default)
-        accountSex.setMyText(sex.value, default)
-        accountName.setMyText(member.name, default)
-        accountEmail.setMyText(member.email, default)
-        accountDob.setMyText(member.dob, default)
-        accountMobile.setMyText(member.mobile, default)
+        member.nickname?.let { accountNicknameLbl.setMyText(it, default) }
+        member.nickname?.let { accountNickname.setMyText(it, default) }
+        val sex = member.sex?.let { MEMBER_SEX.valueOf(it) }
+        if (sex != null) {
+            accountSexLbl.setMyText(sex.value, default)
+        }
+        if (sex != null) {
+            accountSex.setMyText(sex.value, default)
+        }
+        member.name?.let { accountName.setMyText(it, default) }
+        member.email?.let { accountEmail.setMyText(it, default) }
+        member.dob?.let { accountDob.setMyText(it, default) }
+        member.mobile?.let { accountMobile.setMyText(it, default) }
         println("tel:" + member.tel)
-        accountTel.setMyText(member.tel, default)
+        member.tel?.let { accountTel.setMyText(it, default) }
         val res = member.validateShow(member.validate)
         accountValidate.text = res.joinToString(",")
         accountType.text = member.typeShow(member.type)

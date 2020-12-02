@@ -26,13 +26,13 @@ class ValidateActivity : BaseActivity() {
         if (type == "email") {
             setMyTitle("email認證")
             typeLbl.text = "email"
-            typeTxt.setMyText(member.email, "")
+            typeTxt.setMyText(member.email!!, "")
             typeTxt.inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS
             codeTxt.inputType = InputType.TYPE_CLASS_TEXT
         } else if (type == "mobile") {
             setMyTitle("手機認證")
             typeLbl.text = "手機"
-            typeTxt.setMyText(member.mobile, "")
+            typeTxt.setMyText(member.mobile!!, "")
             typeTxt.inputType = InputType.TYPE_CLASS_PHONE
             codeTxt.inputType = InputType.TYPE_CLASS_NUMBER
         }
@@ -46,7 +46,7 @@ class ValidateActivity : BaseActivity() {
             Alert.show(this, "警告", "請填寫認證碼")
         } else {
             Loading.show(mask)
-            MemberService.validate(this, type, code, member.token) { success ->
+            MemberService.validate(this, type, code, member.token!!) { success ->
                 Loading.hide(mask)
                 if (success) {
                     Alert.show(this, "訊息", "認證成功", {
@@ -72,7 +72,7 @@ class ValidateActivity : BaseActivity() {
             Alert.show(this, "警告", msg)
         } else {
             Loading.show(mask)
-            MemberService.sendVaildateCode(this, type, value, member.token) { success ->
+            MemberService.sendVaildateCode(this, type, value, member.token!!) { success ->
                 Loading.hide(mask)
                 if (success) {
                     var msg = ""

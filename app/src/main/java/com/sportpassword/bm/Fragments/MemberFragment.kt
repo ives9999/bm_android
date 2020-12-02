@@ -201,7 +201,7 @@ class MemberFragment: TabFragment() {
 
     fun loginBtnPressed(view: View) {
         if (member.isLoggedIn) {
-            if (member.uid.length > 0 && member.social == "fb") {
+            if (member.uid!!.length > 0 && member.social == "fb") {
 //                FacebookSdk.sdkInitialize(getApplicationContext());
 //                AppEventsLogger.activateApp(this);
                 LoginManager.getInstance().logOut()

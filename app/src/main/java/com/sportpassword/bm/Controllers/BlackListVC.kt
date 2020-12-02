@@ -28,7 +28,7 @@ class BlackListVC : BaseActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_black_list_vc)
         setMyTitle("黑名單")
-        memberToken = member.token
+        memberToken = member.token.toString()
 
         refreshLayout = contentView!!.findViewById<SwipeRefreshLayout>(R.id.blacklist_refresh)
         setRefreshListener()
@@ -67,14 +67,17 @@ class BlackListVC : BaseActivity() {
         val memberToken = row.token
         val teamToken = row.team.get("token") as String
 
-        Loading.show(mask)
-        TeamService.removeBlackList(this, teamToken, memberToken, member.token) { success ->
-            Loading.hide(mask)
-            if (success) {
-                info("移除黑名單成功")
-                refresh()
-            } else {
-                warning(TeamService.msg)
+        val token = member.token
+        if (token != null) {
+            Loading.show(mask)
+            TeamService.removeBlackList(this, teamToken, memberToken, token) { success ->
+                Loading.hide(mask)
+                if (success) {
+                    info("移除黑名單成功")
+                    refresh()
+                } else {
+                    warning(TeamService.msg)
+                }
             }
         }
     }

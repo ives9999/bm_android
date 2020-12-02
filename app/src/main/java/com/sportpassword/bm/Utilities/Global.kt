@@ -776,7 +776,7 @@ fun <T> List<T>.print() {
 fun Activity.hideKeyboard() {
     val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
     if (imm != null && currentFocus != null) {
-        imm.hideSoftInputFromWindow(currentFocus.windowToken, 0);
+        imm.hideSoftInputFromWindow(currentFocus!!.windowToken, 0);
     }
 }
 fun ImageView.setImage(name: String) {

@@ -87,7 +87,7 @@ class ShowTempPlayActivity : BaseActivity() {
             })
             return
         }
-        if (member.name.length == 0) {
+        if (member.name!!.length == 0) {
             warning("要使用臨打功能，請先輸入真實姓名", true, "輸入姓名", {
                 goEditMember()
             })
@@ -137,7 +137,7 @@ class ShowTempPlayActivity : BaseActivity() {
         super.onActivityResult(requestCode, resultCode, data)
         when (requestCode) {
             VALIDATE_REQUEST_CODE -> {
-                _getMemberOne(member.token) {
+                _getMemberOne(member.token!!) {
 
                 }
             }
@@ -209,6 +209,6 @@ class ShowTempPlayActivity : BaseActivity() {
         show_degree.text = lbl + ": " + text
 
         name = data[NAME_KEY]!!["value"] as String
-        memberToken = member.token
+        memberToken = member.token!!
     }
 }

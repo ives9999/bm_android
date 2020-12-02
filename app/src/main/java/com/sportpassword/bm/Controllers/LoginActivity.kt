@@ -55,8 +55,11 @@ class LoginActivity : BaseActivity() {
                 if (MemberService.success) {
                     //LocalBroadcastManager.getInstance(this).sendBroadcast(memberDidChangeIntent)
                     //finish()
-                    _getMemberOne(member.token) {
-                        finish()
+                    val token = member.token
+                    if (token != null) {
+                        _getMemberOne(token) {
+                            finish()
+                        }
                     }
                 } else {
                     Alert.show(this, "警告", MemberService.msg)

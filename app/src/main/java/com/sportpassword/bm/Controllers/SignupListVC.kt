@@ -36,7 +36,7 @@ class SignupListVC : MyTableVC() {
         setContentView(R.layout.activity_signup_list_vc)
 
         setMyTitle("報名列表")
-        memberToken = member.token
+        memberToken = member.token!!
         perPage = 15
 
         if (intent.hasExtra("able")) {

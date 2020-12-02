@@ -340,34 +340,36 @@ class StoreItem(val context: Context, val row: SuperStore): Item() {
             }
         }
 
-        var showManager = false
-        val managers = row.managers
-        if (managers.count() > 0) {
-            val member_id = member.id
-            for (manager in managers) {
-                //print(manager)
-                if (manager.containsKey("id") && manager["id"] != null) {
-                    val manager_id = manager["id"] as Int
-                    if (member_id == manager_id) {
-                        showManager = true
-                        break
-                    }
-                }
-            }
-        }
-        if (showManager) {
-            viewHolder.editIcon.setOnClickListener {
-                if (list1CellDelegate != null) {
-                    list1CellDelegate!!.cellEdit(position)
-                }
-                if (list1CellDelegate != null) {
-                    list1CellDelegate!!.cellDelete(position)
-                }
-            }
-        } else {
-            viewHolder.editIcon.visibility = View.INVISIBLE
-            viewHolder.deleteIcon.visibility = View.INVISIBLE
-        }
+
+//如果要啟動管理功能，請打開這個註解
+//        var showManager = false
+//        val managers = row.managers
+//        if (managers.count() > 0) {
+//            val member_id = member.id
+//            for (manager in managers) {
+//                //print(manager)
+//                if (manager.containsKey("id") && manager["id"] != null) {
+//                    val manager_id = manager["id"] as Int
+//                    if (member_id == manager_id) {
+//                        showManager = true
+//                        break
+//                    }
+//                }
+//            }
+//        }
+//        if (showManager) {
+//            viewHolder.editIcon.setOnClickListener {
+//                if (list1CellDelegate != null) {
+//                    list1CellDelegate!!.cellEdit(position)
+//                }
+//                if (list1CellDelegate != null) {
+//                    list1CellDelegate!!.cellDelete(position)
+//                }
+//            }
+//        } else {
+//            viewHolder.editIcon.visibility = View.INVISIBLE
+//            viewHolder.deleteIcon.visibility = View.INVISIBLE
+//        }
 
     }
 

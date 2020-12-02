@@ -126,7 +126,7 @@ class ShowCourseVC : BaseActivity(), IconCellDelegate {
         //super.refresh()
         if (course_token != null) {
             Loading.show(mask)
-            val params: HashMap<String, String> = hashMapOf("token" to course_token!!, "member_token" to member.token)
+            val params: HashMap<String, String> = hashMapOf("token" to course_token!!, "member_token" to member.token!!)
             CourseService.getOne(this, params) { success ->
                 if (success) {
                     superCourse = CourseService.superModel as SuperCourse
@@ -464,7 +464,7 @@ class ShowCourseVC : BaseActivity(), IconCellDelegate {
             return
         }
         Loading.show(mask)
-        CourseService.signup(this, course_token!!, member.token, superCourse!!.date_model.token, course_deadline) { success ->
+        CourseService.signup(this, course_token!!, member.token!!, superCourse!!.date_model.token, course_deadline) { success ->
             Loading.hide(mask)
             val msg = CourseService.msg
             var title = "警告"
@@ -499,7 +499,7 @@ class ShowCourseVC : BaseActivity(), IconCellDelegate {
             return
         }
         Loading.show(mask)
-        CourseService.signup_date(this, course_token!!, member.token, superCourse!!.date_model.token) { success ->
+        CourseService.signup_date(this, course_token!!, member.token!!, superCourse!!.date_model.token) { success ->
             Loading.hide(mask)
             if (success) {
                 signup_date = CourseService.signup_date

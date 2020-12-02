@@ -110,9 +110,9 @@ interface ImagePicker {
     }
 
     fun showImagePickerLayer() {
-        imagePickerLayer!!.window.setGravity(Gravity.BOTTOM)
-        imagePickerLayer!!.window.attributes.windowAnimations = R.style.DialogAnimation_2
-        imagePickerLayer!!.window.setBackgroundDrawableResource(R.color.LAYER)
+        imagePickerLayer!!.window!!.setGravity(Gravity.BOTTOM)
+        imagePickerLayer!!.window!!.attributes.windowAnimations = R.style.DialogAnimation_2
+        imagePickerLayer!!.window!!.setBackgroundDrawableResource(R.color.LAYER)
 
         imagePickerLayer!!.setView(alertView)
         imagePickerLayer!!.show()
@@ -157,12 +157,12 @@ interface ImagePicker {
     }
 
     fun selectToFile(data: Intent) {
-        val inputStream = activity.contentResolver.openInputStream(data.data)
+        val inputStream = activity.contentResolver.openInputStream(data.data!!)
         val fileOutputStream = FileOutputStream(file)
         val buffer = ByteArray(1024)
         var byteRead: Int
         while (true) {
-            byteRead = inputStream.read(buffer)
+            byteRead = inputStream!!.read(buffer)
             if (byteRead == -1) break
             fileOutputStream.write(buffer, 0, byteRead)
         }
@@ -172,10 +172,12 @@ interface ImagePicker {
 
     fun cameraToFile() {
         val cursor = activity.contentResolver.query(Uri.parse(currentPhotoPath), Array(1) { android.provider.MediaStore.Images.ImageColumns.DATA}, null, null, null)
-        cursor.moveToFirst()
-        filePath = cursor.getString(0)
-        cursor.close()
-        file = File(filePath)
+        if (cursor != null) {
+            cursor.moveToFirst()
+            filePath = cursor.getString(0)
+            cursor.close()
+            file = File(filePath)
+        }
     }
 
     fun dealPhoto(requestCode: Int, resultCode: Int, data: Intent?) {

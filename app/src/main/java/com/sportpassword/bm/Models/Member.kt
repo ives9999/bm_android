@@ -22,56 +22,56 @@ class Member(context: Context) {
     var id: Int
         get() = session.getInt(ID_KEY, 0)
         set(value) = session.edit().putInt(ID_KEY, value).apply()
-    var nickname: String
+    var nickname: String?
         get() = session.getString(NICKNAME_KEY, "")
         set(value) = session.edit().putString(NICKNAME_KEY, value).apply()
-    var uid: String
+    var uid: String?
         get() = session.getString(UID_KEY, "")
         set(value) = session.edit().putString(UID_KEY, value).apply()
-    var name: String
+    var name: String?
         get() = session.getString(NAME_KEY, "")
         set(value) = session.edit().putString(NAME_KEY, value).apply()
-    var channel: String
+    var channel: String?
         get() = session.getString(CHANNEL_KEY, "")
         set(value) = session.edit().putString(CHANNEL_KEY, value).apply()
-    var dob: String
+    var dob: String?
         get() = session.getString(DOB_KEY, "")
         set(value) = session.edit().putString(DOB_KEY, value).apply()
-    var sex: String
+    var sex: String?
         get() = session.getString(SEX_KEY, "")
         set(value) = session.edit().putString(SEX_KEY, value).apply()
-    var tel: String
+    var tel: String?
         get() = session.getString(TEL_KEY, "")
         set(value) = session.edit().putString(TEL_KEY, value).apply()
-    var mobile: String
+    var mobile: String?
         get() = session.getString(MOBILE_KEY, "")
         set(value) = session.edit().putString(MOBILE_KEY, value).apply()
-    var email: String
+    var email: String?
         get() = session.getString(EMAIL_KEY, "")
         set(value) = session.edit().putString(EMAIL_KEY, value).apply()
-    var pid: String
+    var pid: String?
         get() = session.getString(PID_KEY, "")
         set(value) = session.edit().putString(PID_KEY, value).apply()
-    var avatar: String
+    var avatar: String?
         get() = session.getString(AVATAR_KEY, "")
         set(value) = session.edit().putString(AVATAR_KEY, value).apply()
-    var player_id: String
+    var player_id: String?
         get() = session.getString(PLAYERID_KEY, "")
         set(value) = session.edit().putString(PLAYERID_KEY, value).apply()
     var type: Int
         get() = session.getInt(MEMBER_TYPE_KEY, 0)
         set(value) = session.edit().putInt(MEMBER_TYPE_KEY, value).apply()
-    var social: String
+    var social: String?
         get() = session.getString(SOCIAL_KEY, "")
         set(value) = session.edit().putString(SOCIAL_KEY, value).apply()
-    var role: MEMBER_ROLE
-        get() = MEMBER_ROLE.valueOf(session.getString(MEMBER_ROLE_KEY, "member"))
+    var role: MEMBER_ROLE?
+        get() = session.getString(MEMBER_ROLE_KEY, "member")?.let { MEMBER_ROLE.valueOf(it) }
         //set(value) = session.edit().putString(MEMBER_ROLE_KEY, getMemberRoleRawValue(value)).apply()
-        set(value) = session.edit().putString(MEMBER_ROLE_KEY, value.value).apply()
+        set(value) = session.edit().putString(MEMBER_ROLE_KEY, value?.value).apply()
     var validate: Int
         get() = session.getInt(VALIDATE_KEY, 0)
         set(value) = session.edit().putInt(VALIDATE_KEY, value).apply()
-    var token: String
+    var token: String?
         get() = session.getString(TOKEN_KEY, "")
         set(value) = session.edit().putString(TOKEN_KEY, value).apply()
 

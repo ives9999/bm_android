@@ -78,7 +78,7 @@ class ShowStoreVC : BaseActivity(), IconCellDelegate {
         //super.refresh()
         if (store_token != null) {
             Loading.show(mask)
-            val params: HashMap<String, String> = hashMapOf("token" to store_token!!, "member_token" to member.token)
+            val params: HashMap<String, String> = hashMapOf("token" to store_token!!, "member_token" to member.token!!)
             StoreService.getOne(this, params) { success ->
                 if (success) {
                     superStore = StoreService.superModel as SuperStore

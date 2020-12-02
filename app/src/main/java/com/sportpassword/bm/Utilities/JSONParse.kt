@@ -125,7 +125,7 @@ class JSONParse {
         }
 
         private fun setRows(kc: KClass<*>, it: KProperty1<out Any, Any?>, obj: Any, value: Any, subType: String): ArrayList<Any> {
-            val packageName = kc.java.`package`.name
+            val packageName = kc.java.`package`?.name
             val child = Class.forName(packageName + "." + subType).kotlin
 
             val rows: ArrayList<Any> = arrayListOf()

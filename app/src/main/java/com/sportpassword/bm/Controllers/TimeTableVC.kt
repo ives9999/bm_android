@@ -644,7 +644,7 @@ class TimeTableVC : BaseActivity(), ViewDelegate {
     fun prepareParams() {
         params.clear()
         params["model_token"] = token
-        params["created_token"] = member.token
+        params["created_token"] = member.token!!
         for (formItem in form.formItems) {
             if (formItem.name != null && formItem.value != null) {
                 val value = formItem.value!!
