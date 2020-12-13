@@ -37,9 +37,7 @@ open class FormItemAdapter(val form: BaseForm, val idx: Int, val indexPath: Inde
 
     override fun bind(viewHolder: ViewHolder, position: Int) {
         val formItem = form.formItems[position]
-        if (formItem.title != null) {
-            viewHolder.title.text = formItem.title
-        }
+        viewHolder.title.text = formItem.title
         if (formItem.value != null) {
             viewHolder.clear.visibility = View.VISIBLE
             viewHolder.clear.setOnClickListener {
@@ -55,17 +53,15 @@ open class FormItemAdapter(val form: BaseForm, val idx: Int, val indexPath: Inde
             }
         } else {
             viewHolder.promptBtn.visibility = View.INVISIBLE
-            val con =  ConstraintSet()
-            val l = viewHolder.containerView
-            con.clone(viewHolder.container)
-            con.connect(viewHolder.detail.id, ConstraintSet.LEFT, viewHolder.title.id, ConstraintSet.RIGHT, 8)
-            con.applyTo(viewHolder.container)
+//            val con =  ConstraintSet()
+//            val l = viewHolder.containerView
+//            con.clone(viewHolder.container)
+//            con.connect(viewHolder.detail.id, ConstraintSet.LEFT, viewHolder.title.id, ConstraintSet.RIGHT, 8)
+//            con.applyTo(viewHolder.container)
         }
         if (formItem.uiProperties.cellType == FormItemCellType.textField) {
             val textField = viewHolder.textField
-            if (formItem.placeholder != null) {
-                textField.hint = formItem.placeholder
-            }
+            textField.hint = formItem.placeholder
             if (formItem.value != null) {
                 textField.setText(formItem.value)
             }
@@ -83,11 +79,7 @@ open class FormItemAdapter(val form: BaseForm, val idx: Int, val indexPath: Inde
             })
         }
         if (formItem.uiProperties.cellType == FormItemCellType.weekday || formItem.uiProperties.cellType == FormItemCellType.time || formItem.uiProperties.cellType == FormItemCellType.status || formItem.uiProperties.cellType == FormItemCellType.more || formItem.uiProperties.cellType == FormItemCellType.date) {
-            if (formItem.show != null) {
-                viewHolder.detail.text = formItem.show
-            } else {
-                viewHolder.detail.text = ""
-            }
+            viewHolder.detail.text = formItem.show
             viewHolder.detail.backgroundColor = Color.TRANSPARENT
         }
 

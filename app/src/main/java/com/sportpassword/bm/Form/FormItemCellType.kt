@@ -11,6 +11,7 @@ enum class FormItemCellType {
     status,
     content,
     more,
+    password,
     section;
 
     fun registerCell(): Int {
@@ -23,6 +24,7 @@ enum class FormItemCellType {
             status -> return R.layout.formitem_more
             more -> return R.layout.formitem_more
             content -> return R.layout.formitem_content
+            password -> return R.layout.formitem_password
 
             else -> return R.layout.formitem_more
         }

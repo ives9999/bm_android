@@ -1,9 +1,12 @@
 package com.sportpassword.bm.Adapters.Form
 
+import android.opengl.Visibility
 import android.text.Editable
+import android.text.InputType
 import android.text.TextWatcher
 import android.view.View
 import com.sportpassword.bm.Form.BaseForm
+import com.sportpassword.bm.Form.FormItem.TextFieldFormItem
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Utilities.IndexPath
 import com.xwray.groupie.kotlinandroidextensions.ViewHolder
@@ -18,10 +21,8 @@ class TextFieldAdapter(form: BaseForm, idx: Int, indexPath: IndexPath, clearClic
 
     override fun bind(viewHolder: ViewHolder, position: Int) {
 
-        val formItem = form.formItems[position]
-        if (formItem.title != null) {
-            viewHolder.title.text = formItem.title
-        }
+        val formItem: TextFieldFormItem = form.formItems[position] as TextFieldFormItem
+        viewHolder.title.text = formItem.title
         viewHolder.clear.setOnClickListener {
             //clearClick(row)
             viewHolder.textField.setText("")
@@ -37,12 +38,19 @@ class TextFieldAdapter(form: BaseForm, idx: Int, indexPath: IndexPath, clearClic
         }
 
         val textField = viewHolder.textField
-        if (formItem.placeholder != null) {
-            textField.hint = formItem.placeholder
-        }
+        textField.hint = formItem.placeholder
         if (formItem.value != null) {
             textField.setText(formItem.value)
         }
+
+        if (formItem.isRequired) {
+            viewHolder.required.visibility = View.VISIBLE
+        } else {
+            viewHolder.required.visibility = View.INVISIBLE
+        }
+
+        textField.inputType = formItem.uiProperties.keyboardType
+
         textField.addTextChangedListener(object: TextWatcher {
             override fun afterTextChanged(p0: Editable?) {
             }

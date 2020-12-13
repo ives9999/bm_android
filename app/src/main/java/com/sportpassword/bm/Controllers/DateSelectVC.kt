@@ -51,7 +51,7 @@ class DateSelectVC : BaseActivity() {
         calendar.set(Calendar.MONTH, MM);
         calendar.set(Calendar.DAY_OF_MONTH, dd);
         val milliTime = calendar.timeInMillis
-        datePicker.setDate(milliTime, true, true)
+        //datePicker.setDate(milliTime, true, true)
 
         datePicker.setOnDateChangeListener { calendarView, yyyy, MM, dd ->
             selected = "" + yyyy + "-" + (MM+1) + "-" + dd

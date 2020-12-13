@@ -28,25 +28,6 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/registerBtn"
-        style="@style/Widget.AppCompat.Button.Borderless"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:background="@android:color/transparent"
-        android:drawableLeft="@drawable/register"
-        android:drawablePadding="4dp"
-        android:fontFamily="sans-serif"
-        android:padding="16dp"
-        android:text="註冊"
-        android:textColor="@color/WHITE"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        android:typeface="serif"
-        app:layout_constraintStart_toEndOf="@+id/loginBtn"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <Button
         android:id="@+id/forgetPasswordBtn"
         style="@style/Widget.AppCompat.Button.Borderless"
         android:layout_width="wrap_content"
@@ -62,7 +43,26 @@
         android:textSize="18sp"
         android:textStyle="bold"
         android:typeface="serif"
-        app:layout_constraintStart_toEndOf="@+id/registerBtn"
+        app:layout_constraintStart_toEndOf="@id/loginBtn"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/registerBtn"
+        style="@style/Widget.AppCompat.Button.Borderless"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:background="@android:color/transparent"
+        android:drawableLeft="@drawable/register"
+        android:drawablePadding="4dp"
+        android:fontFamily="sans-serif"
+        android:padding="16dp"
+        android:text="註冊"
+        android:textColor="@color/WHITE"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:typeface="serif"
+        app:layout_constraintStart_toEndOf="@id/forgetPasswordBtn"
         app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
