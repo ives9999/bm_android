@@ -8,7 +8,7 @@ import android.widget.LinearLayout
 import androidx.appcompat.app.AlertDialog
 import com.sportpassword.bm.Adapters.Form.*
 import com.sportpassword.bm.Form.CourseForm
-import com.sportpassword.bm.Form.FormItem.FormItem
+import com.sportpassword.bm.Form.FormItem.*
 import com.sportpassword.bm.Form.FormItemCellType
 import com.sportpassword.bm.Form.RegisterForm
 import com.sportpassword.bm.R
@@ -89,6 +89,14 @@ class RegisterActivity : MyTableVC1(), ImagePicker {
             prepare(i)
         }
 
+        val sexClick = {selected: String ->
+            val forItem = getFormItemFromKey(SEX_KEY)
+            if (forItem != null) {
+                forItem.value = selected
+            }
+            //println("main:$selected")
+        }
+
         val arr: ArrayList<FormItem> = arrayListOf()
         for (key in section_keys[section]) {
             for (formItem in form.formItems) {
@@ -123,17 +131,11 @@ class RegisterActivity : MyTableVC1(), ImagePicker {
                 formItemAdapter = TextFieldAdapter(form, idx, indexPath, clearClick, promptClick)
             } else if (formItem.uiProperties.cellType == FormItemCellType.password) {
                 formItemAdapter = TextFieldAdapter(form, idx, indexPath, clearClick, promptClick)
-            } else if (formItem.uiProperties.cellType == FormItemCellType.content) {
-                formItemAdapter = ContentAdapter(form, idx, indexPath, clearClick, promptClick, rowClick)
-            } else if (formItem.uiProperties.cellType == FormItemCellType.more) {
-                formItemAdapter = MoreAdapter(form, idx, indexPath, clearClick, promptClick, rowClick)
-            } else if (formItem.uiProperties.cellType == FormItemCellType.section) {
-                break
-            } else if (formItem.uiProperties.cellType == FormItemCellType.weekday) {
-                formItemAdapter = MoreAdapter(form, idx, indexPath, clearClick, promptClick, rowClick)
-            } else if (formItem.uiProperties.cellType == FormItemCellType.time) {
-                formItemAdapter = MoreAdapter(form, idx, indexPath, clearClick, promptClick, rowClick)
             } else if (formItem.uiProperties.cellType == FormItemCellType.date) {
+                formItemAdapter = MoreAdapter(form, idx, indexPath, clearClick, promptClick, rowClick)
+            } else if (formItem.uiProperties.cellType == FormItemCellType.sex) {
+                formItemAdapter = SexAdapter(form, idx, indexPath, sexClick, clearClick, promptClick)
+            } else if (formItem.uiProperties.cellType == FormItemCellType.city) {
                 formItemAdapter = MoreAdapter(form, idx, indexPath, clearClick, promptClick, rowClick)
             }
 
@@ -310,8 +312,76 @@ class RegisterActivity : MyTableVC1(), ImagePicker {
 //    }
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
+        //println(data)
+        when (requestCode) {
+            ACTION_PHOTO_REQUEST_CODE -> {
+                //println(data.data)
+                dealPhoto(requestCode, resultCode, data)
+            }
+            ACTION_CAMERA_REQUEST_CODE -> {
+                dealCamera(requestCode, resultCode, data)
+            }
+            SELECT_REQUEST_CODE -> {
+                if (data != null) {
+                    var key: String? = null
+                    if (data.hasExtra("key")) {
+                        key = data.getStringExtra("key")
+                    }
+                    var selected: String? = null
+                    if (data.hasExtra("selected")) {
+                        selected = data.getStringExtra("selected")
+                    }
+    //                println(selected)
 
-        callbackManager?.onActivityResult(requestCode, resultCode, data)
+                    var selecteds: ArrayList<String>? = null
+                    if (data.hasExtra("selecteds")) {
+                        selecteds = data.getStringArrayListExtra("selecteds")
+                    }
+
+                    var content: String? = null
+                    if (data.hasExtra("content")) {
+                        content = data.getStringExtra("content")
+                    }
+
+                    var item: FormItem? = null
+                    if (key == PRICE_UNIT_KEY) {
+                        item = getFormItemFromKey(key) as PriceUnitFormItem
+                    } else if (key == COURSE_KIND_KEY) {
+                        item = getFormItemFromKey(key) as CourseKindFormItem
+                    } else if (key == CYCLE_UNIT_KEY) {
+                        item = getFormItemFromKey(key) as CycleUnitFormItem
+                    } else if (key == WEEKDAY_KEY) {
+                        item = getFormItemFromKey(key) as WeekdayFormItem
+                    } else if (key == START_TIME_KEY || key == END_TIME_KEY) {
+                        item = getFormItemFromKey(key) as TimeFormItem
+                    } else if (key == CONTENT_KEY) {
+                        item = getFormItemFromKey(key) as ContentFormItem
+                    } else if (key == DOB_KEY) {
+                        item = getFormItemFromKey(key) as DateFormItem
+                    }
+
+                    if (item != null && selected != null) {
+                        item.value = selected
+                        item.make()
+                    }
+                    if (item != null && selecteds != null) {
+                        var value: String = "-1"
+                        if (key == WEEKDAY_KEY) {
+                            val tmps: ArrayList<Int> = ArrayList(selecteds.map {it.toInt()})
+                            value = Global.weekdaysToDBValue(tmps).toString()
+                        }
+                        item.value = value
+                        item.make()
+                    }
+                    if (item != null && content != null) {
+                        item.value = content
+                        item.make()
+                    }
+
+                    notifyChanged(true)
+                }
+            }
+        }
     }
 
     override fun setImage(newFile: File?, url: String?) {

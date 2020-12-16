@@ -44,17 +44,20 @@ class DateSelectVC : BaseActivity() {
             date = selected!!.toDateTime("yyyy-MM-dd")
         }
         val yyyy = date!!.getY()
-        val MM = date!!.getm()
-        val dd = date!!.getd()
+        val MM = date.getm() - 1
+        val dd = date.getd()
         val calendar = Calendar.getInstance()
         calendar.set(Calendar.YEAR, yyyy);
         calendar.set(Calendar.MONTH, MM);
         calendar.set(Calendar.DAY_OF_MONTH, dd);
         val milliTime = calendar.timeInMillis
-        //datePicker.setDate(milliTime, true, true)
-
-        datePicker.setOnDateChangeListener { calendarView, yyyy, MM, dd ->
+        datePicker.setDate(milliTime, true, true)
+        if (selected == null) {
             selected = "" + yyyy + "-" + (MM+1) + "-" + dd
+        }
+
+        datePicker.setOnDateChangeListener { calendarView, yyyy1, MM1, dd1 ->
+            selected = "" + yyyy1 + "-" + (MM1+1) + "-" + dd1
         }
     }
 

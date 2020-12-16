@@ -163,6 +163,8 @@ class EditCourseVC1 : MyTableVC1(), ImagePicker, ViewDelegate {
         val rows: ArrayList<Item> = arrayListOf()
 
         val clearClick = { i: Int ->
+            val forItem = form.formItems[i]
+            forItem.reset()
         }
 
         val promptClick = {i: Int ->

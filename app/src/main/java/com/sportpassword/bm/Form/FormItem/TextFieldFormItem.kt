@@ -14,8 +14,7 @@ open class TextFieldFormItem: FormItem {
     constructor(name: String, title: String, placeholder: String? = null, value: String? = null): super(name, title, placeholder, value) {
     }
 
-    constructor(name: String, title: String, placeholder: String? = null, value: String? = null, isRequired: Boolean = false): super(name, title, placeholder, value) {
-        this.isRequired = isRequired
+    constructor(name: String, title: String, placeholder: String? = null, value: String? = null, isRequired: Boolean = false, tooltip: String? = null): super(name, title, placeholder, value, tooltip, isRequired) {
         reset()
     }
 

@@ -23,9 +23,7 @@ class MoreAdapter(form: BaseForm, idx: Int, indexPath: IndexPath, clearClick:(id
     override fun bind(viewHolder: ViewHolder, position: Int) {
 
         val formItem = form.formItems[position]
-        if (formItem.title != null) {
-            viewHolder.title.text = formItem.title
-        }
+        viewHolder.title.text = formItem.title
         if (formItem.value != null) {
             viewHolder.detail.visibility = View.VISIBLE
             viewHolder.detail.text = formItem.show
@@ -56,11 +54,7 @@ class MoreAdapter(form: BaseForm, idx: Int, indexPath: IndexPath, clearClick:(id
 //            }
         }
 
-        if (formItem.show != null) {
-            viewHolder.detail.text = formItem.show
-        } else {
-            viewHolder.detail.text = ""
-        }
+        viewHolder.detail.text = formItem.show
         viewHolder.detail.backgroundColor = Color.TRANSPARENT
 
         if (formItem.uiProperties.cellType == FormItemCellType.color) {

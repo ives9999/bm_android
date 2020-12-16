@@ -16,18 +16,20 @@ class RegisterForm: BaseForm() {
         val section2 = SectionFormItem("個人資料")
         val nameItem = TextFieldFormItem(NAME_KEY, "姓名", "請輸入真實姓名", null, true)
         val nicknameItem = TextFieldFormItem(NICKNAME_KEY, "暱稱", "網路上使用", null, true)
-        val dobFormItem = DateFormItem(DOB_KEY, "生日", "")
+        val dobItem = DateFormItem(DOB_KEY, "生日", "")
+        val sexItem = SexFormItem(SEX_KEY, "M", true)
 
         val section3 = SectionFormItem("聯絡資料")
         val mobileItem = TextFieldFormItem(MOBILE_KEY, "行動電話", "", null, true)
         val telItem = TextFieldFormItem(TEL_KEY, "市內電話", "", null, false)
+        val cityItem = CityFormItem(true)
         val section4 = SectionFormItem("社群資料")
         val section5 = SectionFormItem("隱私權")
 
         formItems = arrayListOf(
                 section1,emailItem,passwordItem, repasswordItem,
-                section2,nameItem,nicknameItem,dobFormItem,
-                section3,mobileItem,telItem,
+                section2,nameItem,nicknameItem,dobItem, sexItem,
+                section3,mobileItem,telItem,cityItem,
                 section4,
                 section5
         )

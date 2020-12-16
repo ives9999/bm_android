@@ -25,7 +25,7 @@ open class FormItem {
     //content is ["type":TEXT_INPUT_TYPE,"text":"課程說明"]
     var sender: Any? = null
 
-    constructor(name: String, title: String, placeholder: String? = null, value: String? = null, tooltip: String? = null) {
+    constructor(name: String, title: String, placeholder: String? = null, value: String? = null, tooltip: String? = null, isRequired: Boolean = false) {
         this.title = title
         this.name = name
         if (placeholder != null) {
@@ -35,6 +35,7 @@ open class FormItem {
             this.tooltip = tooltip
         }
         this.value = value
+        this.isRequired = isRequired
     }
 
     open fun reset() {

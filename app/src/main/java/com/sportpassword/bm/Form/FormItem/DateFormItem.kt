@@ -13,6 +13,7 @@ class DateFormItem: FormItem {
     }
 
     constructor(name: String, title: String, placeholder: String? = null, value: String? = null): super(name, title, placeholder, value) {
+        this.dateType = SELECT_DATE_TYPE.start
     }
 
     constructor(name: String = START_DATE_KEY, title: String = "日期", dateType: SELECT_DATE_TYPE, tooltip: String? = null, isRequired: Boolean = true): super(name, title, "", null, tooltip) {
