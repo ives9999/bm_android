@@ -11,7 +11,7 @@ import com.xwray.groupie.kotlinandroidextensions.Item
 import kotlinx.android.synthetic.main.activity_single_select_vc.*
 import kotlinx.android.synthetic.main.select_item.*
 
-class SingleSelectVC1 : SelectVC1() {
+open class SingleSelectVC1 : SelectVC1() {
 
     var selected: String? = null
 

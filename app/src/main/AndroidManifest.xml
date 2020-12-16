@@ -135,6 +135,7 @@
         <activity android:name=".Controllers.TimeTableVC" />
         <activity android:name=".Controllers.StatusSelectVC1" />
         <activity android:name=".Controllers.CourseCalendarVC" />
+        <activity android:name=".Controllers.SelectCityVC" />
     </application>
 
 </manifest>

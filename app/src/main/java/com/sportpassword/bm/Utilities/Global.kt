@@ -6,6 +6,7 @@ import android.app.AlertDialog
 import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
@@ -796,6 +797,12 @@ fun TextView.selected() {
 fun TextView.unSelected() {
     val uncheckedColor = ContextCompat.getColor(context, R.color.WHITE)
     this.setTextColor(uncheckedColor)
+}
+
+fun SharedPreferences.getAllCitys(): ArrayList<HashMap<String, String>> {
+    var tmps: ArrayList<HashMap<String, String>> = arrayListOf()
+
+    return tmps
 }
 
 object Global {

@@ -162,14 +162,6 @@ class RegisterActivity : MyTableVC1(), ImagePicker {
         multiSelectIntent.putExtra("title", forItem.title)
         multiSelectIntent.putExtra("key", key)
 
-        val dateSelectIntent = Intent(this, DateSelectVC::class.java)
-        dateSelectIntent.putExtra("title", forItem.title)
-        dateSelectIntent.putExtra("key", key)
-
-        val contentIntent = Intent(this, ContentEditVC::class.java)
-        contentIntent.putExtra("title", forItem.title)
-        contentIntent.putExtra("key", key)
-
         if (key == PRICE_UNIT_KEY) {
             val rows = PRICE_UNIT.makeSelect()
             singleSelectIntent.putExtra("rows", rows)
@@ -218,20 +210,26 @@ class RegisterActivity : MyTableVC1(), ImagePicker {
                 singleSelectIntent.putExtra("selected", selected)
             }
             startActivityForResult(singleSelectIntent, SELECT_REQUEST_CODE)
-        } else if (key == CONTENT_KEY) {
-            if (forItem.sender != null) {
-                val content = forItem.sender as String
-//                println(selecteds)
-                contentIntent.putExtra("content", content)
-            }
-            startActivityForResult(contentIntent, SELECT_REQUEST_CODE)
         } else if (key == DOB_KEY) {
+            val dateSelectIntent = Intent(this, DateSelectVC::class.java)
+            dateSelectIntent.putExtra("title", forItem.title)
+            dateSelectIntent.putExtra("key", key)
             if (forItem.sender != null) {
                 val tmp = forItem.sender as HashMap<String, String>
                 val selected = tmp.get("date")!!
                 dateSelectIntent.putExtra("selected", selected)
             }
             startActivityForResult(dateSelectIntent, SELECT_REQUEST_CODE)
+        } else if (key == CITY_KEY) {
+            val citySelectIntent = Intent(this, SelectCityVC::class.java)
+            citySelectIntent.putExtra("title", forItem.title)
+            citySelectIntent.putExtra("key", key)
+            if (forItem.sender != null) {
+                val tmp = forItem.sender as HashMap<String, String>
+                val selected = tmp.get("selected")!!
+                citySelectIntent.putExtra("selected", selected)
+            }
+            startActivityForResult(citySelectIntent, SELECT_REQUEST_CODE)
         }
 
     }
@@ -358,6 +356,8 @@ class RegisterActivity : MyTableVC1(), ImagePicker {
                         item = getFormItemFromKey(key) as ContentFormItem
                     } else if (key == DOB_KEY) {
                         item = getFormItemFromKey(key) as DateFormItem
+                    } else if (key == CITY_KEY) {
+                        item = getFormItemFromKey(key) as CityFormItem
                     }
 
                     if (item != null && selected != null) {

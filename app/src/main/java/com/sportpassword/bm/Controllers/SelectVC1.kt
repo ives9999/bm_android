@@ -4,6 +4,7 @@ import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.View
 import com.sportpassword.bm.App
+import com.sportpassword.bm.R
 import com.sportpassword.bm.Utilities.CITY_KEY
 import com.sportpassword.bm.Utilities.Loading
 import com.sportpassword.bm.Utilities.SESSION_FILENAME
