@@ -15,19 +15,14 @@ import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.*
 import androidx.core.content.ContextCompat
-import com.beust.klaxon.Parser
 import com.google.gson.Gson
 import com.google.gson.JsonArray
 import com.google.gson.JsonParser
-import com.google.gson.internal.LinkedTreeMap
-import com.google.gson.reflect.TypeToken
 import com.sportpassword.bm.Models.City
 import com.sportpassword.bm.R
+import com.sportpassword.bm.Services.DataService
 import com.squareup.picasso.Picasso
 import org.jetbrains.anko.makeCall
-import org.json.JSONArray
-import org.json.JSONObject
-import java.lang.StringBuilder
 import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.*
@@ -809,18 +804,32 @@ fun TextView.unSelected() {
     this.setTextColor(uncheckedColor)
 }
 
+var SharedPreferences.context: Context
+    get() = this.context
+    set(context: Context) {this.context = context}
+
 fun SharedPreferences.getAllCitys(): ArrayList<City> {
     var tmps: ArrayList<City> = arrayListOf()
+    //this.edit().remove("citys").commit()
     var citys_string: String = this.getString("citys", "") as String
-//    println(citys_string)
+    //println(citys_string)
 
-    val jsonArray: JsonArray = JsonParser.parseString(citys_string).asJsonArray
+    if (citys_string.length > 0) {
+        val jsonArray: JsonArray = JsonParser.parseString(citys_string).asJsonArray
 //    println(jsonArray)
-    val gson = Gson()
-    for (_city in jsonArray) {
-        val city: City = gson.fromJson(_city, City::class.java)
-        //println("name:${city.name} => id:${city.id}")
-        tmps.add(city)
+        val gson = Gson()
+        for (_city in jsonArray) {
+            val city: City = gson.fromJson(_city, City::class.java)
+            //println("name:${city.name} => id:${city.id}")
+            tmps.add(city)
+        }
+    } else {
+        if (this.context != null) {
+            val dataService: DataService = DataService()
+            dataService.getCitys(this.context, "all", false) { success ->
+
+            }
+        }
     }
 
     return tmps
