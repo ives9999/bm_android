@@ -3,6 +3,7 @@ package com.sportpassword.bm.Form.FormItem
 import android.content.SharedPreferences
 import com.sportpassword.bm.App
 import com.sportpassword.bm.Form.FormItemCellType
+import com.sportpassword.bm.Models.City
 import com.sportpassword.bm.Utilities.CITY_KEY
 import com.sportpassword.bm.Utilities.SESSION_FILENAME
 import com.sportpassword.bm.Utilities.TT_COLOR
@@ -14,7 +15,7 @@ class CityFormItem: FormItem {
     var selected_city_names: MutableList<String> = mutableListOf()
 
     val session: SharedPreferences = App.instance.getSharedPreferences(SESSION_FILENAME, 0)
-    var citysFromCache: ArrayList<HashMap<String, String>> = arrayListOf()
+    var citysFromCache: ArrayList<City> = arrayListOf()
 
     init {
         uiProperties.cellType = FormItemCellType.city
@@ -64,8 +65,8 @@ class CityFormItem: FormItem {
             val tmps = value!!.split(",")
             for (tmp in tmps) {
                 for (city in citysFromCache) {
-                    if (city["id"] == tmp) {
-                        selected_city_names.add(city["name"]!!)
+                    if (city.id == tmp.toInt()) {
+                        selected_city_names.add(city.name)
                         break
                     }
                 }

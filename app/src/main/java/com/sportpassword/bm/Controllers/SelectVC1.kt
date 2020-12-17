@@ -40,11 +40,12 @@ open class SelectVC1 : MyTableVC1() {
     }
 
     fun init() {
-        if (key != null && key == CITY_KEY) {
-            getCitys()
-        }
+//        if (key != null && key == CITY_KEY) {
+//            getCitys()
+//        }
     }
 
+    //已經不再使用了，直接使用session的getAllCitys
     fun getCitys() {
         Loading.show(mask)
         dataService.getCitys(this, "all", false) { success->
@@ -54,12 +55,12 @@ open class SelectVC1 : MyTableVC1() {
                 val arr: JSONArray = JSONArray()
                 rows = arrayListOf()
                 for (city in citys) {
-                    val title = city.name
-                    val value = city.id.toString()
-                    rows.add(hashMapOf("title" to title, "value" to value))
+                    val name = city.name
+                    val id = city.id.toString()
+                    rows.add(hashMapOf("name" to name, "id" to id))
                     val obj = JSONObject()
-                    obj.put("title", title)
-                    obj.put("value", value)
+                    obj.put("name", name)
+                    obj.put("id", id)
                     arr.put(obj)
                 }
 
