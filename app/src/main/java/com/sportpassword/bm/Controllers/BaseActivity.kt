@@ -1634,7 +1634,7 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
 
     open protected fun layerDelete() {}
 
-    fun getCitys() {
+    fun getCitys(complete: (rows: ArrayList<HashMap<String, String>>)-> Unit): ArrayList<HashMap<String, String>> {
         var rows: ArrayList<HashMap<String, String>> = session.getAllCitys()
         if (rows.count() == 0) {
             Loading.show(mask)
@@ -1656,10 +1656,12 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
                     if (arr.length() > 0) {
                         session.edit().putString("citys", arr.toString()).apply()
                     }
+                    complete(rows)
                 }
             }
             Loading.hide(mask)
         }
+        return rows
     }
 
     fun warning(msg: String) {

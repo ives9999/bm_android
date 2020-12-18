@@ -1,10 +1,11 @@
 package com.sportpassword.bm.Form
 
 import android.text.InputType
+import com.sportpassword.bm.Controllers.BaseActivity
 import com.sportpassword.bm.Form.FormItem.*
 import com.sportpassword.bm.Utilities.*
 
-class RegisterForm: BaseForm() {
+class RegisterForm(delegate: BaseActivity): BaseForm(null, null, "", false, delegate) {
 
     override fun configureItems() {
 
@@ -22,7 +23,7 @@ class RegisterForm: BaseForm() {
         val section3 = SectionFormItem("聯絡資料")
         val mobileItem = TextFieldFormItem(MOBILE_KEY, "行動電話", "", null, true)
         val telItem = TextFieldFormItem(TEL_KEY, "市內電話", "", null, false)
-        val cityItem = CityFormItem(true)
+        val cityItem = CityFormItem(true, this.delegate)
         val section4 = SectionFormItem("社群資料")
         val section5 = SectionFormItem("隱私權")
 

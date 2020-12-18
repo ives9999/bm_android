@@ -47,7 +47,7 @@ class RegisterActivity : MyTableVC1(), ImagePicker {
 
 
     //Form
-    var form: RegisterForm = RegisterForm()
+    lateinit var form: RegisterForm
 
     var section_keys: ArrayList<ArrayList<String>> = arrayListOf()
     private var isFeaturedChange: Boolean = false
@@ -61,6 +61,7 @@ class RegisterActivity : MyTableVC1(), ImagePicker {
         setMyTitle("註冊")
         hidekeyboard(register_layout)
 
+        form = RegisterForm(this)
         sections = form.getSections()
         section_keys = form.getSectionKeys()
 

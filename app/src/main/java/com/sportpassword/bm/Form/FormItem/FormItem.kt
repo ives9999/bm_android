@@ -1,5 +1,6 @@
 package com.sportpassword.bm.Form.FormItem
 
+import com.sportpassword.bm.Controllers.BaseActivity
 import com.sportpassword.bm.Form.FormItemUIProperties
 
 open class FormItem {
@@ -17,6 +18,7 @@ open class FormItem {
     //var valueCompletion: ((String?) -> Void)?
     var uiProperties = FormItemUIProperties()
     var show: String = ""
+    var delegate: BaseActivity? = null
 
     //weekday is [Int]
     //time is ["type":SELECT_TIME_TYPE,"time":"09:00"]
@@ -25,7 +27,7 @@ open class FormItem {
     //content is ["type":TEXT_INPUT_TYPE,"text":"課程說明"]
     var sender: Any? = null
 
-    constructor(name: String, title: String, placeholder: String? = null, value: String? = null, tooltip: String? = null, isRequired: Boolean = false) {
+    constructor(name: String, title: String, placeholder: String? = null, value: String? = null, tooltip: String? = null, isRequired: Boolean = false, delegate: BaseActivity? = null) {
         this.title = title
         this.name = name
         if (placeholder != null) {
@@ -33,6 +35,9 @@ open class FormItem {
         }
         if (tooltip != null) {
             this.tooltip = tooltip
+        }
+        if (delegate != null) {
+            this.delegate = delegate
         }
         this.value = value
         this.isRequired = isRequired

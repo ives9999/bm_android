@@ -2,6 +2,7 @@ package com.sportpassword.bm.Form.FormItem
 
 import android.content.SharedPreferences
 import com.sportpassword.bm.App
+import com.sportpassword.bm.Controllers.BaseActivity
 import com.sportpassword.bm.Form.FormItemCellType
 import com.sportpassword.bm.Models.City
 import com.sportpassword.bm.Utilities.CITY_KEY
@@ -14,18 +15,19 @@ class CityFormItem: FormItem {
     var selected_city_ids: MutableList<Int> = mutableListOf()
     var selected_city_names: MutableList<String> = mutableListOf()
 
-    val session: SharedPreferences = App.instance.getSharedPreferences(SESSION_FILENAME, 0)
-    var citysFromCache: ArrayList<City> = arrayListOf()
+    var citysFromCache: ArrayList<HashMap<String, String>> = arrayListOf()
 
     init {
         uiProperties.cellType = FormItemCellType.city
     }
 
-    constructor(isRequired: Boolean = false): super(CITY_KEY, "縣市", "", null, null, isRequired) {
+    constructor(isRequired: Boolean = false, delegate: BaseActivity? = null): super(CITY_KEY, "縣市", "", null, null, isRequired, delegate) {
 
-        //if (session.array(forKey: "citys") != null) {
-            citysFromCache = session.getAllCitys()
-        //}
+        if (this.delegate != null) {
+            citysFromCache = delegate!!.getCitys { rows ->
+                citysFromCache = rows
+            }
+        }
 
         reset()
     }
@@ -65,8 +67,8 @@ class CityFormItem: FormItem {
             val tmps = value!!.split(",")
             for (tmp in tmps) {
                 for (city in citysFromCache) {
-                    if (city.id == tmp.toInt()) {
-                        selected_city_names.add(city.name)
+                    if (city["id"] == tmp) {
+                        selected_city_names.add(city["name"]!!)
                         break
                     }
                 }

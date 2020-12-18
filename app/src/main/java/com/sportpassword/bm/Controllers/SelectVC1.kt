@@ -71,6 +71,18 @@ open class SelectVC1 : MyTableVC1() {
 //        }
 //    }
 
+    fun rowsBridge(rowsFromSession: ArrayList<HashMap<String, String>>) {
+
+        if (rows.count() > 0) {
+            rows.clear()
+        } else {
+            rows = arrayListOf()
+        }
+        for(row in rowsFromSession) {
+            rows!!.add(hashMapOf("title" to row["name"]!!, "value" to row["id"]!!))
+        }
+    }
+
     fun cancel(view: View) {
         prev()
     }

@@ -1,24 +1,19 @@
 package com.sportpassword.bm.Form
 
+import com.sportpassword.bm.Controllers.BaseActivity
 import com.sportpassword.bm.Form.FormItem.FormItem
 
 
-open class BaseForm {
+open class BaseForm(var id: Int? = null, var values: HashMap<String, String>? = null, title: String = "", var isSection: Boolean = false, var delegate: BaseActivity? = null) {
 
     var formItems: ArrayList<FormItem> = arrayListOf()
-    var title: String? = null
-    var values: HashMap<String, String>? = null
-    var id: Int? = null
+    var title: String? = title
     var isChange: Boolean = false
-    var isSection: Boolean = false
 
-    constructor(id: Int? = null, values: HashMap<String, String>? = null, title: String = "", isSection: Boolean=false) {
-        this.id = id
-        this.values = values
-        this.title = title
+    init {
+        this.delegate = delegate
         this.configureItems()
         this.fillValue()
-        this.isSection = isSection
     }
 
     open fun isChanged(): Pair<Boolean, String?> {
