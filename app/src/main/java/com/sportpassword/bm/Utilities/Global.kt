@@ -804,12 +804,8 @@ fun TextView.unSelected() {
     this.setTextColor(uncheckedColor)
 }
 
-var SharedPreferences.context: Context
-    get() = this.context
-    set(context: Context) {this.context = context}
-
-fun SharedPreferences.getAllCitys(): ArrayList<City> {
-    var tmps: ArrayList<City> = arrayListOf()
+fun SharedPreferences.getAllCitys(): ArrayList<HashMap<String, String>> {
+    var tmps: ArrayList<HashMap<String, String>> = arrayListOf()
     //this.edit().remove("citys").commit()
     var citys_string: String = this.getString("citys", "") as String
     //println(citys_string)
@@ -821,14 +817,7 @@ fun SharedPreferences.getAllCitys(): ArrayList<City> {
         for (_city in jsonArray) {
             val city: City = gson.fromJson(_city, City::class.java)
             //println("name:${city.name} => id:${city.id}")
-            tmps.add(city)
-        }
-    } else {
-        if (this.context != null) {
-            val dataService: DataService = DataService()
-            dataService.getCitys(this.context, "all", false) { success ->
-
-            }
+            tmps.add(hashMapOf("id" to city.id.toString(), "name" to city.name))
         }
     }
 

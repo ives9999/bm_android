@@ -38,6 +38,7 @@ import com.facebook.login.LoginResult
 import com.onesignal.OneSignal
 import com.sportpassword.bm.Adapters.SearchItem
 import com.sportpassword.bm.Adapters.SearchItemDelegate
+import com.sportpassword.bm.App
 import com.sportpassword.bm.Fragments.CoachFragment
 import com.sportpassword.bm.Fragments.CourseFragment
 import com.sportpassword.bm.Fragments.TabFragment
@@ -60,6 +61,8 @@ import org.json.JSONObject
 import java.net.HttpURLConnection
 import java.net.URL
 import java.util.*
+import kotlin.collections.ArrayList
+import kotlin.collections.HashMap
 import kotlin.system.exitProcess
 
 open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, SearchItemDelegate {
@@ -122,6 +125,8 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
     var layerVisibility: Boolean = false
 
     val body_css = "<style>body{background-color:#000;padding-left:8px;padding-right:8px;margin-top:0;padding-top:0;color:#888888;font-size:18px;}a{color:#a6d903;}</style>"
+
+    val session: SharedPreferences = App.instance.getSharedPreferences(SESSION_FILENAME, 0)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -1628,6 +1633,34 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
     }
 
     open protected fun layerDelete() {}
+
+    fun getCitys() {
+        var rows: ArrayList<HashMap<String, String>> = session.getAllCitys()
+        if (rows.count() == 0) {
+            Loading.show(mask)
+            dataService.getCitys(this, "all", false) { success ->
+                if (success) {
+                    val citys = dataService.citys
+                    val arr: JSONArray = JSONArray()
+                    rows = arrayListOf()
+                    for (city in citys) {
+                        val name = city.name
+                        val id = city.id.toString()
+                        rows.add(hashMapOf("title" to name, "value" to id))
+                        val obj = JSONObject()
+                        obj.put("name", name)
+                        obj.put("id", id)
+                        arr.put(obj)
+                    }
+
+                    if (arr.length() > 0) {
+                        session.edit().putString("citys", arr.toString()).apply()
+                    }
+                }
+            }
+            Loading.hide(mask)
+        }
+    }
 
     fun warning(msg: String) {
         Alert.show(this, "警告", msg)

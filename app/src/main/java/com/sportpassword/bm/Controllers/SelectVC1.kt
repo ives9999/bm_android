@@ -17,8 +17,6 @@ open class SelectVC1 : MyTableVC1() {
     var title: String = "選擇"
     var key: String? = null
 
-    val session: SharedPreferences = App.instance.getSharedPreferences(SESSION_FILENAME, 0)
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -46,32 +44,32 @@ open class SelectVC1 : MyTableVC1() {
     }
 
     //已經不再使用了，直接使用session的getAllCitys
-    fun getCitys() {
-        Loading.show(mask)
-        dataService.getCitys(this, "all", false) { success->
-
-            if (success) {
-                val citys = dataService.citys
-                val arr: JSONArray = JSONArray()
-                rows = arrayListOf()
-                for (city in citys) {
-                    val name = city.name
-                    val id = city.id.toString()
-                    rows.add(hashMapOf("name" to name, "id" to id))
-                    val obj = JSONObject()
-                    obj.put("name", name)
-                    obj.put("id", id)
-                    arr.put(obj)
-                }
-
-                if (arr.length() > 0) {
-                    session.edit().putString("citys", arr.toString()).apply()
-                }
-            }
-            notifyChanged()
-            Loading.hide(mask)
-        }
-    }
+//    fun getCitys() {
+//        Loading.show(mask)
+//        dataService.getCitys(this, "all", false) { success->
+//
+//            if (success) {
+//                val citys = dataService.citys
+//                val arr: JSONArray = JSONArray()
+//                rows = arrayListOf()
+//                for (city in citys) {
+//                    val name = city.name
+//                    val id = city.id.toString()
+//                    rows.add(hashMapOf("name" to name, "id" to id))
+//                    val obj = JSONObject()
+//                    obj.put("name", name)
+//                    obj.put("id", id)
+//                    arr.put(obj)
+//                }
+//
+//                if (arr.length() > 0) {
+//                    session.edit().putString("citys", arr.toString()).apply()
+//                }
+//            }
+//            notifyChanged()
+//            Loading.hide(mask)
+//        }
+//    }
 
     fun cancel(view: View) {
         prev()
