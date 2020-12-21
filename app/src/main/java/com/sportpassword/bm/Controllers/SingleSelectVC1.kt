@@ -65,17 +65,29 @@ open class SingleSelectVC1 : SelectVC1() {
         if (!row.containsKey("value")) {
             warningWithPrev("由於傳遞參數不正確，無法做選擇，請回上一頁重新進入")
         }
-        val selected = row.get("value")!!
-        val intent = Intent()
-        intent.putExtra("key", key)
-        intent.putExtra("selected", selected)
-        setResult(Activity.RESULT_OK, intent)
-        finish()
+
+        var cancel: Boolean = false
+        if (selected != null && selected!!.isNotEmpty()) {
+            if (selected == row["value"]) {
+                cancel = true
+            }
+        }
+        if (!cancel) {
+            selected = row["value"]
+            dealSelected()
+            val intent = Intent()
+            intent.putExtra("key", key)
+            intent.putExtra("selected", selected)
+            setResult(Activity.RESULT_OK, intent)
+            finish()
+        }
     }
+
+    //selected 有時候是56.0要把它處理成56
+    open fun dealSelected() {}
 }
 
 class SingleSelectItem(val title: String, val value: String, val isSelected: Boolean, val rowClick:(idx: Int)->Unit): Item() {
-
 
     override fun bind(viewHolder: com.xwray.groupie.kotlinandroidextensions.ViewHolder, position: Int) {
 

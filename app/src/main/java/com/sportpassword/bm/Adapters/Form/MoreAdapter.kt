@@ -11,6 +11,12 @@ import com.sportpassword.bm.R
 import com.sportpassword.bm.Utilities.IndexPath
 import com.xwray.groupie.kotlinandroidextensions.ViewHolder
 import kotlinx.android.synthetic.main.formitem_more.*
+import kotlinx.android.synthetic.main.formitem_more.clear
+import kotlinx.android.synthetic.main.formitem_more.container
+import kotlinx.android.synthetic.main.formitem_more.promptBtn
+import kotlinx.android.synthetic.main.formitem_more.required
+import kotlinx.android.synthetic.main.formitem_more.title
+import kotlinx.android.synthetic.main.formitem_textfield.*
 import org.jetbrains.anko.backgroundColor
 
 class MoreAdapter(form: BaseForm, idx: Int, indexPath: IndexPath, clearClick:(idx: Int)->Unit, promptClick:(idx: Int)->Unit, val rowClick:(idx: Int)->Unit): FormItemAdapter(form, idx, indexPath, clearClick, promptClick) {
@@ -52,6 +58,11 @@ class MoreAdapter(form: BaseForm, idx: Int, indexPath: IndexPath, clearClick:(id
 //                con.applyTo(l)
 //                viewHolder.detail.gravity = Gravity.LEFT
 //            }
+        }
+        if (formItem.isRequired) {
+            viewHolder.required.visibility = View.VISIBLE
+        } else {
+            viewHolder.required.visibility = View.INVISIBLE
         }
 
         viewHolder.detail.text = formItem.show

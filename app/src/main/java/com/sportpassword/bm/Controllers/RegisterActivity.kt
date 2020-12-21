@@ -23,6 +23,7 @@ import kotlinx.android.synthetic.main.activity_register.edit_featured
 import kotlinx.android.synthetic.main.activity_register.featured_text
 import kotlinx.android.synthetic.main.activity_register.refresh
 import kotlinx.android.synthetic.main.mask.*
+import org.jetbrains.anko.alert
 import java.io.File
 import kotlin.reflect.full.declaredMemberProperties
 
@@ -98,6 +99,20 @@ class RegisterActivity : MyTableVC1(), ImagePicker {
             //println("main:$selected")
         }
 
+        val privacyClick = {checked: Boolean ->
+            val formItem = getFormItemFromKey(PRIVACY_KEY)
+            if (formItem != null) {
+                if (checked) {
+                    formItem.value = "true"
+                } else {
+                    formItem.value = "false"
+                }
+            }
+            if (!checked) {
+                warning("必須同意隱私權條款，才能完成註冊")
+            }
+        }
+
         val arr: ArrayList<FormItem> = arrayListOf()
         for (key in section_keys[section]) {
             for (formItem in form.formItems) {
@@ -138,6 +153,10 @@ class RegisterActivity : MyTableVC1(), ImagePicker {
                 formItemAdapter = SexAdapter(form, idx, indexPath, sexClick, clearClick, promptClick)
             } else if (formItem.uiProperties.cellType == FormItemCellType.city) {
                 formItemAdapter = MoreAdapter(form, idx, indexPath, clearClick, promptClick, rowClick)
+            } else if (formItem.uiProperties.cellType == FormItemCellType.area) {
+                formItemAdapter = MoreAdapter(form, idx, indexPath, clearClick, promptClick, rowClick)
+            } else if (formItem.uiProperties.cellType == FormItemCellType.privacy) {
+                formItemAdapter = PrivacyAdapter(form, idx, indexPath, privacyClick, clearClick, promptClick)
             }
 
             if (formItemAdapter != null) {
@@ -171,53 +190,12 @@ class RegisterActivity : MyTableVC1(), ImagePicker {
                 singleSelectIntent.putExtra("selected", selected)
             }
             startActivityForResult(singleSelectIntent, SELECT_REQUEST_CODE)
-        } else if (key == COURSE_KIND_KEY) {
-            val rows = COURSE_KIND.makeSelect()
-            singleSelectIntent.putExtra("rows", rows)
-            if (forItem.sender != null) {
-                val selected = forItem.sender as String
-                singleSelectIntent.putExtra("selected", selected)
-            }
-            startActivityForResult(singleSelectIntent, SELECT_REQUEST_CODE)
-        } else if (key == CYCLE_UNIT_KEY) {
-            val rows = CYCLE_UNIT.makeSelect()
-            singleSelectIntent.putExtra("rows", rows)
-            if (forItem.sender != null) {
-                val selected = forItem.sender as String
-                singleSelectIntent.putExtra("selected", selected)
-            }
-            startActivityForResult(singleSelectIntent, SELECT_REQUEST_CODE)
-        } else if (key == WEEKDAY_KEY) {
-            val rows = WEEKDAY.makeSelect()
-//            println(rows)
-            multiSelectIntent.putExtra("rows", rows)
-            if (forItem.sender != null) {
-                val selecteds = forItem.sender as ArrayList<String>
-//                println(selecteds)
-                multiSelectIntent.putExtra("selecteds", selecteds)
-            }
-            startActivityForResult(multiSelectIntent, SELECT_REQUEST_CODE)
-        } else if (key == START_TIME_KEY || key == END_TIME_KEY) {
-            val times = Global.makeTimes()
-            val rows: ArrayList<HashMap<String, String>> = arrayListOf()
-            for (time in times) {
-                rows.add(hashMapOf("title" to time, "value" to time+":00"))
-            }
-//            println(rows)
-            singleSelectIntent.putExtra("rows", rows)
-            if (forItem.sender != null) {
-                val tmp = forItem.sender as HashMap<String, String>
-                val selected = tmp.get("time")!!
-                singleSelectIntent.putExtra("selected", selected)
-            }
-            startActivityForResult(singleSelectIntent, SELECT_REQUEST_CODE)
         } else if (key == DOB_KEY) {
             val dateSelectIntent = Intent(this, DateSelectVC::class.java)
             dateSelectIntent.putExtra("title", forItem.title)
             dateSelectIntent.putExtra("key", key)
             if (forItem.sender != null) {
-                val tmp = forItem.sender as HashMap<String, String>
-                val selected = tmp.get("date")!!
+                val selected = forItem.sender as String
                 dateSelectIntent.putExtra("selected", selected)
             }
             startActivityForResult(dateSelectIntent, SELECT_REQUEST_CODE)
@@ -226,11 +204,26 @@ class RegisterActivity : MyTableVC1(), ImagePicker {
             citySelectIntent.putExtra("title", forItem.title)
             citySelectIntent.putExtra("key", key)
             if (forItem.sender != null) {
-                val tmp = forItem.sender as HashMap<String, String>
-                val selected = tmp.get("selected")!!
+                val selected = forItem.sender as String
                 citySelectIntent.putExtra("selected", selected)
             }
             startActivityForResult(citySelectIntent, SELECT_REQUEST_CODE)
+        } else if (key == AREA_KEY) {
+            val cityItem = getFormItemFromKey(CITY_KEY)
+            val city_id = cityItem?.value
+            if (city_id == null) {
+                warning("請先選擇縣市")
+            } else {
+                val areaSelectIntent = Intent(this, SelectAreaVC::class.java)
+                areaSelectIntent.putExtra("title", forItem.title)
+                areaSelectIntent.putExtra("key", key)
+                areaSelectIntent.putExtra("city_id", city_id)
+                if (forItem.sender != null) {
+                    val selected = forItem.sender as String
+                    areaSelectIntent.putExtra("selected", selected)
+                }
+                startActivityForResult(areaSelectIntent, SELECT_REQUEST_CODE)
+            }
         }
 
     }
@@ -337,45 +330,32 @@ class RegisterActivity : MyTableVC1(), ImagePicker {
                         selecteds = data.getStringArrayListExtra("selecteds")
                     }
 
-                    var content: String? = null
-                    if (data.hasExtra("content")) {
-                        content = data.getStringExtra("content")
-                    }
-
                     var item: FormItem? = null
                     if (key == PRICE_UNIT_KEY) {
                         item = getFormItemFromKey(key) as PriceUnitFormItem
-                    } else if (key == COURSE_KIND_KEY) {
-                        item = getFormItemFromKey(key) as CourseKindFormItem
-                    } else if (key == CYCLE_UNIT_KEY) {
-                        item = getFormItemFromKey(key) as CycleUnitFormItem
-                    } else if (key == WEEKDAY_KEY) {
-                        item = getFormItemFromKey(key) as WeekdayFormItem
-                    } else if (key == START_TIME_KEY || key == END_TIME_KEY) {
-                        item = getFormItemFromKey(key) as TimeFormItem
-                    } else if (key == CONTENT_KEY) {
-                        item = getFormItemFromKey(key) as ContentFormItem
                     } else if (key == DOB_KEY) {
                         item = getFormItemFromKey(key) as DateFormItem
                     } else if (key == CITY_KEY) {
                         item = getFormItemFromKey(key) as CityFormItem
+                    } else if (key == AREA_KEY) {
+                        item = getFormItemFromKey(key) as AreaFormItem
                     }
 
                     if (item != null && selected != null) {
+                        if (item.value != selected) {
+                            item.reset()
+                        }
+                        if (key == AREA_KEY) {
+                            val item1: AreaFormItem = item as AreaFormItem
+                            val cityItem = getFormItemFromKey(CITY_KEY)
+                            item1.city_id = cityItem!!.value!!.toInt()
+                        }
                         item.value = selected
                         item.make()
                     }
                     if (item != null && selecteds != null) {
                         var value: String = "-1"
-                        if (key == WEEKDAY_KEY) {
-                            val tmps: ArrayList<Int> = ArrayList(selecteds.map {it.toInt()})
-                            value = Global.weekdaysToDBValue(tmps).toString()
-                        }
                         item.value = value
-                        item.make()
-                    }
-                    if (item != null && content != null) {
-                        item.value = content
                         item.make()
                     }
 

@@ -35,6 +35,7 @@ import com.facebook.FacebookCallback
 import com.facebook.FacebookException
 import com.facebook.login.LoginManager
 import com.facebook.login.LoginResult
+import com.google.gson.internal.LinkedTreeMap
 import com.onesignal.OneSignal
 import com.sportpassword.bm.Adapters.SearchItem
 import com.sportpassword.bm.Adapters.SearchItemDelegate
@@ -1661,6 +1662,45 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
             }
             Loading.hide(mask)
         }
+        return rows
+    }
+
+    fun getAreasFromCity(city_id: Int, complete: (rows: ArrayList<HashMap<String, String>>) -> Unit): ArrayList<HashMap<String, String>> {
+        var rows: ArrayList<HashMap<String, String>> = session.getAreasFromCity(city_id)
+        if (rows.count() == 0) {
+            Loading.show(mask)
+            val city_ids: ArrayList<Int> = arrayListOf(city_id)
+            dataService.getAreaByCityIDs(this, city_ids, "all") { success ->
+                if (success) {
+                    val allAreas = session.getAllAreas()
+                    val areas = dataService.citysandareas
+                    //println(areas)
+                    for ((key, value) in areas) {
+                        if (value.containsKey("rows")) {
+                            val _rows = value["rows"] as ArrayList<*>
+                            val row: HashMap<String, String> = hashMapOf()
+                            for (_row in _rows) {
+                                val tmps = _row as LinkedTreeMap<*, *>
+                                for ((key1, value1) in tmps) {
+                                    val _key1 = key1.toString()
+                                    val _value1 = value1.toString()
+                                    row[_key1] = _value1
+                                }
+                                rows.add(row)
+                            }
+                        }
+                        allAreas[city_id.toString()] = value
+                    }
+
+                    session.edit().putString("areas", allAreas.toString()).apply()
+
+                    complete(rows)
+                }
+            }
+
+            Loading.hide(mask)
+        }
+
         return rows
     }
 

@@ -9,4 +9,5 @@ import kotlinx.android.parcel.Parcelize
  * Created by ives on 2018/3/4.
  */
 @Parcelize
-data class City(val id: Int, val name: String): Parcelable
+data class City(val id: Int, val name: String): Parcelable {
+}

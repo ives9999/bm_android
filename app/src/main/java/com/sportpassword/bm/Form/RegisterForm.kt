@@ -1,6 +1,5 @@
 package com.sportpassword.bm.Form
 
-import android.text.InputType
 import com.sportpassword.bm.Controllers.BaseActivity
 import com.sportpassword.bm.Form.FormItem.*
 import com.sportpassword.bm.Utilities.*
@@ -24,15 +23,22 @@ class RegisterForm(delegate: BaseActivity): BaseForm(null, null, "", false, dele
         val mobileItem = TextFieldFormItem(MOBILE_KEY, "行動電話", "", null, true)
         val telItem = TextFieldFormItem(TEL_KEY, "市內電話", "", null, false)
         val cityItem = CityFormItem(true, this.delegate)
+        val areaItem = AreaFormItem(true, this.delegate)
+        val roadItem = TextFieldFormItem(ROAD_KEY, "住址", "路街名、巷、弄、號", null, true)
+
         val section4 = SectionFormItem("社群資料")
+        val fbItem = TextFieldFormItem(FB_KEY, "FB", "請輸入FB網址", null)
+        val lineItem = TextFieldFormItem(LINE_KEY, "Line", "請輸入Line ID", null)
+
         val section5 = SectionFormItem("隱私權")
+        val privacyItem = PrivacyFormItem(true, this.delegate)
 
         formItems = arrayListOf(
                 section1,emailItem,passwordItem, repasswordItem,
                 section2,nameItem,nicknameItem,dobItem, sexItem,
-                section3,mobileItem,telItem,cityItem,
-                section4,
-                section5
+                section3,mobileItem,telItem,cityItem,areaItem,roadItem,
+                section4,fbItem,lineItem,
+                section5,privacyItem
         )
     }
 }

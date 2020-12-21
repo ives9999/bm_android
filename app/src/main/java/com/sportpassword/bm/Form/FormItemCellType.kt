@@ -15,6 +15,7 @@ enum class FormItemCellType {
     sex,
     city,
     area,
+    privacy,
     section;
 
     fun registerCell(): Int {
@@ -31,6 +32,7 @@ enum class FormItemCellType {
             sex -> return  R.layout.formitem_sex
             city -> return R.layout.formitem_more
             area -> return R.layout.formitem_more
+            privacy -> return R.layout.formitem_privacy
 
             else -> return R.layout.formitem_more
         }
