@@ -8,7 +8,7 @@ import com.sportpassword.bm.Utilities.IndexPath
 import com.xwray.groupie.kotlinandroidextensions.ViewHolder
 import kotlinx.android.synthetic.main.formitem_sex.*
 
-class SexAdapter(form: BaseForm, idx: Int, indexPath: IndexPath, val click: (selected: String)->Unit, clearClick:(idx: Int)->Unit, promptClick:(idx: Int)->Unit): FormItemAdapter(form, idx, indexPath, clearClick, promptClick) {
+class SexAdapter(form: BaseForm, idx: Int, indexPath: IndexPath, clearClick:(idx: Int)->Unit, promptClick:(idx: Int)->Unit): FormItemAdapter(form, idx, indexPath, clearClick, promptClick) {
 
     override fun getLayout(): Int {
 
@@ -27,8 +27,10 @@ class SexAdapter(form: BaseForm, idx: Int, indexPath: IndexPath, val click: (sel
         }
 
         viewHolder.sex.setOnCheckedChangeListener{ _, i ->
-            val radio = viewHolder.sex.findViewById<RadioButton>(i)
-            click(radio.tag.toString())
+            if (sexDelegate != null) {
+                val radio = viewHolder.sex.findViewById<RadioButton>(i)
+                sexDelegate!!.sexChanged(radio.tag.toString())
+            }
         }
     }
 }

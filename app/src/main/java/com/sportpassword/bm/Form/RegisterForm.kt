@@ -11,7 +11,7 @@ class RegisterForm(delegate: BaseActivity): BaseForm(null, null, "", false, dele
         val section1 = SectionFormItem("登入資料")
         val emailItem = TextFieldFormItem(EMAIL_KEY, "EMail", "請輸入EMail", null, true)
         val passwordItem = PasswordFormItem(PASSWORD_KEY, "密碼", "請輸入密碼", null, true)
-        val repasswordItem = PasswordFormItem(REPASSWORD_KEY, "密碼確認", "再次輸入密碼", null, true)
+        val repasswordItem = PasswordFormItem(REPASSWORD_KEY, "密碼確認", "再次輸入密碼", null, true, null, true, passwordItem)
 
         val section2 = SectionFormItem("個人資料")
         val nameItem = TextFieldFormItem(NAME_KEY, "姓名", "請輸入真實姓名", null, true)

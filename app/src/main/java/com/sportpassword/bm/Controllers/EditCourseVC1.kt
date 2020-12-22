@@ -25,7 +25,7 @@ import org.jetbrains.anko.sdk27.coroutines.onClick
 import java.io.File
 import kotlin.reflect.full.declaredMemberProperties
 
-class EditCourseVC1 : MyTableVC1(), ImagePicker, ViewDelegate {
+class EditCourseVC1 : MyTableVC1(), ImagePicker, TextFieldChangeDelegate {
 
     override val ACTION_CAMERA_REQUEST_CODE = 100
     override val ACTION_PHOTO_REQUEST_CODE = 200
@@ -225,7 +225,7 @@ class EditCourseVC1 : MyTableVC1(), ImagePicker, ViewDelegate {
             }
 
             if (formItemAdapter != null) {
-                formItemAdapter!!.delegate = this
+                formItemAdapter!!.textFieldDelegate = this
                 rows.add(formItemAdapter!!)
             }
 //            idx++

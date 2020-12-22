@@ -27,7 +27,7 @@ import org.jetbrains.anko.alert
 import java.io.File
 import kotlin.reflect.full.declaredMemberProperties
 
-class RegisterActivity : MyTableVC1(), ImagePicker {
+class RegisterActivity : MyTableVC1(), ImagePicker, TextFieldChangeDelegate, SexChangeDelegate, PrivacyChangeDelegate {
 
     //image picker
     override val ACTION_CAMERA_REQUEST_CODE = 100
@@ -46,7 +46,6 @@ class RegisterActivity : MyTableVC1(), ImagePicker {
     private var originMarginBottom = 0
     private lateinit var originScaleType: ImageView.ScaleType
 
-
     //Form
     lateinit var form: RegisterForm
 
@@ -54,6 +53,24 @@ class RegisterActivity : MyTableVC1(), ImagePicker {
     private var isFeaturedChange: Boolean = false
 
     val SELECT_REQUEST_CODE = 1
+
+    val testData: HashMap<String, String> = hashMapOf(
+        EMAIL_KEY to "ives@housetube.tw",
+        PASSWORD_KEY to "1234",
+        REPASSWORD_KEY to "1234",
+        NAME_KEY to "孫志煌",
+        NICKNAME_KEY to "列車長",
+        DOB_KEY to "1969-01-05",
+        MOBILE_KEY to "0911299994",
+        TEL_KEY to "062295888",
+        CITY_KEY to "218",
+        "city_name" to "台南市",
+        AREA_KEY to "219",
+        "area_name" to "中西區",
+        ROAD_KEY to "南華街101號8樓",
+        FB_KEY to "https://www.facebook.com/ives.sun",
+        LINE_KEY to "ives9999"
+    )
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -66,11 +83,32 @@ class RegisterActivity : MyTableVC1(), ImagePicker {
         sections = form.getSections()
         section_keys = form.getSectionKeys()
 
+        initData()
+
         recyclerView = editTableView
         initAdapter(true)
 
         refreshLayout = refresh
         setRefreshListener()
+    }
+
+    private fun initData() {
+        if (testData.count() > 0) {
+            for ((key, value) in testData) {
+                val formItem = getFormItemFromKey(key)
+                if (formItem != null) {
+                    if (key == AREA_KEY && testData.containsKey("area_name")) {
+                        val _formItem = formItem as AreaFormItem
+                        _formItem.selected_area_names = arrayListOf(testData["area_name"]!!)
+                    } else if (key == CITY_KEY && testData.containsKey("city_name")) { // test data session has, so not implement.
+                        //val _formItem = formItem as CityFormItem
+                        //_formItem.selected_city_names = arrayListOf(testData["city_name"]!!)
+                    }
+                    formItem.value = value
+                    formItem.make()
+                }
+            }
+        }
     }
 
     override fun generateItems(section: Int): ArrayList<Item> {
@@ -89,28 +127,6 @@ class RegisterActivity : MyTableVC1(), ImagePicker {
 
         val rowClick = { i: Int ->
             prepare(i)
-        }
-
-        val sexClick = {selected: String ->
-            val forItem = getFormItemFromKey(SEX_KEY)
-            if (forItem != null) {
-                forItem.value = selected
-            }
-            //println("main:$selected")
-        }
-
-        val privacyClick = {checked: Boolean ->
-            val formItem = getFormItemFromKey(PRIVACY_KEY)
-            if (formItem != null) {
-                if (checked) {
-                    formItem.value = "true"
-                } else {
-                    formItem.value = "false"
-                }
-            }
-            if (!checked) {
-                warning("必須同意隱私權條款，才能完成註冊")
-            }
         }
 
         val arr: ArrayList<FormItem> = arrayListOf()
@@ -145,22 +161,25 @@ class RegisterActivity : MyTableVC1(), ImagePicker {
             var formItemAdapter: FormItemAdapter? = null
             if (formItem.uiProperties.cellType == FormItemCellType.textField) {
                 formItemAdapter = TextFieldAdapter(form, idx, indexPath, clearClick, promptClick)
+                formItemAdapter!!.textFieldDelegate = this
             } else if (formItem.uiProperties.cellType == FormItemCellType.password) {
                 formItemAdapter = TextFieldAdapter(form, idx, indexPath, clearClick, promptClick)
+                formItemAdapter!!.textFieldDelegate = this
             } else if (formItem.uiProperties.cellType == FormItemCellType.date) {
                 formItemAdapter = MoreAdapter(form, idx, indexPath, clearClick, promptClick, rowClick)
             } else if (formItem.uiProperties.cellType == FormItemCellType.sex) {
-                formItemAdapter = SexAdapter(form, idx, indexPath, sexClick, clearClick, promptClick)
+                formItemAdapter = SexAdapter(form, idx, indexPath, clearClick, promptClick)
+                formItemAdapter!!.sexDelegate = this
             } else if (formItem.uiProperties.cellType == FormItemCellType.city) {
                 formItemAdapter = MoreAdapter(form, idx, indexPath, clearClick, promptClick, rowClick)
             } else if (formItem.uiProperties.cellType == FormItemCellType.area) {
                 formItemAdapter = MoreAdapter(form, idx, indexPath, clearClick, promptClick, rowClick)
             } else if (formItem.uiProperties.cellType == FormItemCellType.privacy) {
-                formItemAdapter = PrivacyAdapter(form, idx, indexPath, privacyClick, clearClick, promptClick)
+                formItemAdapter = PrivacyAdapter(form, idx, indexPath, clearClick, promptClick)
+                formItemAdapter!!.privacyDelegate = this
             }
 
             if (formItemAdapter != null) {
-                //formItemAdapter!!.delegate = this
                 rows.add(formItemAdapter!!)
             }
 //            idx++
@@ -264,6 +283,19 @@ class RegisterActivity : MyTableVC1(), ImagePicker {
 //    }
 
     fun submit(view: View) {
+
+        for (formItem in form.formItems) {
+            formItem.checkValidity()
+            if (!formItem.isValid) {
+                if (formItem.msg != null) {
+                    warning(formItem.msg!!)
+                } else {
+                    warning("有錯誤")
+                }
+            }
+        }
+
+
 //        val email: String = registerEmailTxt.text.toString()
 //        if (email.isEmpty()) {
 //            Alert.show(this, "警告", "EMail沒填")
@@ -430,5 +462,34 @@ class RegisterActivity : MyTableVC1(), ImagePicker {
 
     fun cancel(view: View) {
         prev()
+    }
+
+    override fun textFieldTextChanged(indexPath: IndexPath, text: String) {
+        val item = form.formItems[indexPath.row]
+        item.value = text
+        item.make()
+    }
+
+    override fun sexChanged(sex: String) {
+        val forItem = getFormItemFromKey(SEX_KEY)
+        if (forItem != null) {
+            forItem.value = sex
+        }
+        println(sex)
+
+    }
+
+    override fun privateChanged(checked: Boolean) {
+        val formItem = getFormItemFromKey(PRIVACY_KEY)
+        if (formItem != null) {
+            if (checked) {
+                formItem.value = "1"
+            } else {
+                formItem.value = null
+            }
+        }
+        if (!checked) {
+            warning("必須同意隱私權條款，才能完成註冊")
+        }
     }
 }

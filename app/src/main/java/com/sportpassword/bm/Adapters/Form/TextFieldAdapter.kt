@@ -59,8 +59,10 @@ class TextFieldAdapter(form: BaseForm, idx: Int, indexPath: IndexPath, clearClic
             }
 
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                val _indexPath: IndexPath = IndexPath(indexPath.section, position)
-                delegate?.textFieldTextChanged(_indexPath, p0.toString())
+                if (textFieldDelegate != null) {
+                    val _indexPath: IndexPath = IndexPath(indexPath.section, position)
+                    textFieldDelegate?.textFieldTextChanged(_indexPath, p0.toString())
+                }
             }
         })
     }

@@ -28,7 +28,7 @@ import org.jetbrains.anko.*
 import org.jetbrains.anko.sdk27.coroutines.onClick
 import kotlin.reflect.full.declaredMemberProperties
 
-class TimeTableVC : BaseActivity(), ViewDelegate {
+class TimeTableVC : BaseActivity(), TextFieldChangeDelegate {
 
     var source: String = "coach"
     var token: String = "token"
@@ -633,7 +633,7 @@ class TimeTableVC : BaseActivity(), ViewDelegate {
             }
 
             if (formItemAdapter != null) {
-                formItemAdapter!!.delegate = this
+                formItemAdapter!!.textFieldDelegate = this
                 rows.add(formItemAdapter!!)
             }
         }

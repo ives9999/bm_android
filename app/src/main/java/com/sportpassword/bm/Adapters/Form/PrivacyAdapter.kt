@@ -9,7 +9,7 @@ import kotlinx.android.synthetic.main.formitem_privacy.*
 import kotlinx.android.synthetic.main.formitem_sex.required
 import kotlinx.android.synthetic.main.formitem_sex.title
 
-class PrivacyAdapter(form: BaseForm, idx: Int, indexPath: IndexPath, val click: (checked: Boolean)->Unit, clearClick:(idx: Int)->Unit, promptClick:(idx: Int)->Unit): FormItemAdapter(form, idx, indexPath, clearClick, promptClick) {
+class PrivacyAdapter(form: BaseForm, idx: Int, indexPath: IndexPath, clearClick:(idx: Int)->Unit, promptClick:(idx: Int)->Unit): FormItemAdapter(form, idx, indexPath, clearClick, promptClick) {
 
     override fun getLayout(): Int {
 
@@ -29,7 +29,9 @@ class PrivacyAdapter(form: BaseForm, idx: Int, indexPath: IndexPath, val click: 
 
         viewHolder.privacyBox.setOnCheckedChangeListener{ buttonView, isChecked ->
             //println(isChecked)
-            click(isChecked)
+            if (privacyDelegate != null) {
+                privacyDelegate!!.privateChanged(isChecked)
+            }
         }
     }
 }

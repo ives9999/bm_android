@@ -22,13 +22,24 @@ import kotlinx.android.synthetic.main.formitem_more.promptBtn as promptBtn
 import kotlinx.android.synthetic.main.formitem_more.detail as detail
 import kotlinx.android.synthetic.main.formitem_more.container as container
 
-interface ViewDelegate {
+interface TextFieldChangeDelegate {
     fun textFieldTextChanged(indexPath: IndexPath, text: String)
+}
+
+interface SexChangeDelegate {
+    fun sexChanged(sex: String) {}
+}
+
+interface PrivacyChangeDelegate {
+    fun privateChanged(checked: Boolean) {}
 }
 
 open class FormItemAdapter(val form: BaseForm, val idx: Int, val indexPath: IndexPath, val clearClick:(idx: Int)->Unit, val promptClick:(idx: Int)->Unit): Item() {
 
-    var delegate: ViewDelegate? = null
+    var textFieldDelegate: TextFieldChangeDelegate? = null
+    var sexDelegate: SexChangeDelegate? = null
+    var privacyDelegate: PrivacyChangeDelegate? = null
+
     override fun getLayout(): Int {
         val formItem = form.formItems[idx]
 
@@ -74,7 +85,7 @@ open class FormItemAdapter(val form: BaseForm, val idx: Int, val indexPath: Inde
 
                 override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
                     val _indexPath: IndexPath = IndexPath(indexPath.section, position)
-                    delegate?.textFieldTextChanged(_indexPath, p0.toString())
+                    textFieldDelegate?.textFieldTextChanged(_indexPath, p0.toString())
                 }
             })
         }

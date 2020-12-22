@@ -9,6 +9,7 @@ class PrivacyFormItem(isRequired: Boolean = true, delegate: BaseActivity? = null
     init {
         uiProperties.cellType = FormItemCellType.privacy
         reset()
+        this.value = "1"
     }
 
     override fun reset() {
