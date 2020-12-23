@@ -27,8 +27,9 @@ import com.sportpassword.bm.member
 import org.jetbrains.anko.*
 import org.jetbrains.anko.sdk27.coroutines.onClick
 import kotlin.reflect.full.declaredMemberProperties
+import com.sportpassword.bm.Form.ValueChangedDelegate
 
-class TimeTableVC : BaseActivity(), TextFieldChangeDelegate {
+class TimeTableVC : BaseActivity(), ValueChangedDelegate {
 
     var source: String = "coach"
     var token: String = "token"
@@ -633,7 +634,7 @@ class TimeTableVC : BaseActivity(), TextFieldChangeDelegate {
             }
 
             if (formItemAdapter != null) {
-                formItemAdapter!!.textFieldDelegate = this
+                formItemAdapter!!.valueChangedDelegate = this
                 rows.add(formItemAdapter!!)
             }
         }
@@ -718,6 +719,12 @@ class TimeTableVC : BaseActivity(), TextFieldChangeDelegate {
         val item = form.formItems[indexPath.row]
         item.value = text
         item.make()
+    }
+
+    override fun sexChanged(sex: String) {
+    }
+
+    override fun privateChanged(checked: Boolean) {
     }
 
 }

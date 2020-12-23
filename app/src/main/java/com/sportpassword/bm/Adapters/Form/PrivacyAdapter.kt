@@ -29,8 +29,8 @@ class PrivacyAdapter(form: BaseForm, idx: Int, indexPath: IndexPath, clearClick:
 
         viewHolder.privacyBox.setOnCheckedChangeListener{ buttonView, isChecked ->
             //println(isChecked)
-            if (privacyDelegate != null) {
-                privacyDelegate!!.privateChanged(isChecked)
+            if (valueChangedDelegate != null) {
+                valueChangedDelegate!!.privateChanged(isChecked)
             }
         }
     }

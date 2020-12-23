@@ -27,9 +27,9 @@ class SexAdapter(form: BaseForm, idx: Int, indexPath: IndexPath, clearClick:(idx
         }
 
         viewHolder.sex.setOnCheckedChangeListener{ _, i ->
-            if (sexDelegate != null) {
+            if (valueChangedDelegate != null) {
                 val radio = viewHolder.sex.findViewById<RadioButton>(i)
-                sexDelegate!!.sexChanged(radio.tag.toString())
+                valueChangedDelegate!!.sexChanged(radio.tag.toString())
             }
         }
     }

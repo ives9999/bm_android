@@ -26,8 +26,9 @@ import kotlinx.android.synthetic.main.mask.*
 import org.jetbrains.anko.alert
 import java.io.File
 import kotlin.reflect.full.declaredMemberProperties
+import com.sportpassword.bm.Form.ValueChangedDelegate
 
-class RegisterActivity : MyTableVC1(), ImagePicker, TextFieldChangeDelegate, SexChangeDelegate, PrivacyChangeDelegate {
+class RegisterActivity : MyTableVC1(), ImagePicker, ValueChangedDelegate {
 
     //image picker
     override val ACTION_CAMERA_REQUEST_CODE = 100
@@ -161,25 +162,22 @@ class RegisterActivity : MyTableVC1(), ImagePicker, TextFieldChangeDelegate, Sex
             var formItemAdapter: FormItemAdapter? = null
             if (formItem.uiProperties.cellType == FormItemCellType.textField) {
                 formItemAdapter = TextFieldAdapter(form, idx, indexPath, clearClick, promptClick)
-                formItemAdapter!!.textFieldDelegate = this
             } else if (formItem.uiProperties.cellType == FormItemCellType.password) {
                 formItemAdapter = TextFieldAdapter(form, idx, indexPath, clearClick, promptClick)
-                formItemAdapter!!.textFieldDelegate = this
             } else if (formItem.uiProperties.cellType == FormItemCellType.date) {
                 formItemAdapter = MoreAdapter(form, idx, indexPath, clearClick, promptClick, rowClick)
             } else if (formItem.uiProperties.cellType == FormItemCellType.sex) {
                 formItemAdapter = SexAdapter(form, idx, indexPath, clearClick, promptClick)
-                formItemAdapter!!.sexDelegate = this
             } else if (formItem.uiProperties.cellType == FormItemCellType.city) {
                 formItemAdapter = MoreAdapter(form, idx, indexPath, clearClick, promptClick, rowClick)
             } else if (formItem.uiProperties.cellType == FormItemCellType.area) {
                 formItemAdapter = MoreAdapter(form, idx, indexPath, clearClick, promptClick, rowClick)
             } else if (formItem.uiProperties.cellType == FormItemCellType.privacy) {
                 formItemAdapter = PrivacyAdapter(form, idx, indexPath, clearClick, promptClick)
-                formItemAdapter!!.privacyDelegate = this
             }
 
             if (formItemAdapter != null) {
+                formItemAdapter!!.valueChangedDelegate = this
                 rows.add(formItemAdapter!!)
             }
 //            idx++
@@ -468,6 +466,7 @@ class RegisterActivity : MyTableVC1(), ImagePicker, TextFieldChangeDelegate, Sex
         val item = form.formItems[indexPath.row]
         item.value = text
         item.make()
+        println(text)
     }
 
     override fun sexChanged(sex: String) {
@@ -491,5 +490,6 @@ class RegisterActivity : MyTableVC1(), ImagePicker, TextFieldChangeDelegate, Sex
         if (!checked) {
             warning("必須同意隱私權條款，才能完成註冊")
         }
+        println(checked)
     }
 }

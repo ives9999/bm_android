@@ -12,6 +12,7 @@ import com.sportpassword.bm.Adapters.Form.*
 import com.sportpassword.bm.Form.CourseForm
 import com.sportpassword.bm.Form.FormItem.*
 import com.sportpassword.bm.Form.FormItemCellType
+import com.sportpassword.bm.Form.ValueChangedDelegate
 import com.sportpassword.bm.Models.SuperCourse
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.CourseService
@@ -25,7 +26,7 @@ import org.jetbrains.anko.sdk27.coroutines.onClick
 import java.io.File
 import kotlin.reflect.full.declaredMemberProperties
 
-class EditCourseVC1 : MyTableVC1(), ImagePicker, TextFieldChangeDelegate {
+class EditCourseVC1 : MyTableVC1(), ImagePicker, ValueChangedDelegate {
 
     override val ACTION_CAMERA_REQUEST_CODE = 100
     override val ACTION_PHOTO_REQUEST_CODE = 200
@@ -225,7 +226,7 @@ class EditCourseVC1 : MyTableVC1(), ImagePicker, TextFieldChangeDelegate {
             }
 
             if (formItemAdapter != null) {
-                formItemAdapter!!.textFieldDelegate = this
+                formItemAdapter!!.valueChangedDelegate = this
                 rows.add(formItemAdapter!!)
             }
 //            idx++
@@ -426,6 +427,12 @@ class EditCourseVC1 : MyTableVC1(), ImagePicker, TextFieldChangeDelegate {
         val item = form.formItems[indexPath.row]
         item.value = text
         item.make()
+    }
+
+    override fun sexChanged(sex: String) {
+    }
+
+    override fun privateChanged(checked: Boolean) {
     }
 
     private fun getFormItemFromKey(key: String): FormItem? {

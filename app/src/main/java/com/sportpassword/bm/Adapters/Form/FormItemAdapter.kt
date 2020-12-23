@@ -8,6 +8,7 @@ import androidx.constraintlayout.widget.ConstraintSet
 import com.sportpassword.bm.Form.BaseForm
 import com.sportpassword.bm.Form.FormItem.ColorFormItem
 import com.sportpassword.bm.Form.FormItemCellType
+import com.sportpassword.bm.Form.ValueChangedDelegate
 import com.sportpassword.bm.Utilities.IndexPath
 import com.xwray.groupie.kotlinandroidextensions.Item
 import com.xwray.groupie.kotlinandroidextensions.ViewHolder
@@ -22,23 +23,24 @@ import kotlinx.android.synthetic.main.formitem_more.promptBtn as promptBtn
 import kotlinx.android.synthetic.main.formitem_more.detail as detail
 import kotlinx.android.synthetic.main.formitem_more.container as container
 
-interface TextFieldChangeDelegate {
-    fun textFieldTextChanged(indexPath: IndexPath, text: String)
-}
-
-interface SexChangeDelegate {
-    fun sexChanged(sex: String) {}
-}
-
-interface PrivacyChangeDelegate {
-    fun privateChanged(checked: Boolean) {}
-}
+//interface TextFieldChangeDelegate {
+//    fun textFieldTextChanged(indexPath: IndexPath, text: String)
+//}
+//
+//interface SexChangeDelegate {
+//    fun sexChanged(sex: String) {}
+//}
+//
+//interface PrivacyChangeDelegate {
+//    fun privateChanged(checked: Boolean) {}
+//}
 
 open class FormItemAdapter(val form: BaseForm, val idx: Int, val indexPath: IndexPath, val clearClick:(idx: Int)->Unit, val promptClick:(idx: Int)->Unit): Item() {
 
-    var textFieldDelegate: TextFieldChangeDelegate? = null
-    var sexDelegate: SexChangeDelegate? = null
-    var privacyDelegate: PrivacyChangeDelegate? = null
+    var valueChangedDelegate: ValueChangedDelegate? = null
+//    var textFieldDelegate: TextFieldChangeDelegate? = null
+//    var sexDelegate: SexChangeDelegate? = null
+//    var privacyDelegate: PrivacyChangeDelegate? = null
 
     override fun getLayout(): Int {
         val formItem = form.formItems[idx]
@@ -85,7 +87,7 @@ open class FormItemAdapter(val form: BaseForm, val idx: Int, val indexPath: Inde
 
                 override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
                     val _indexPath: IndexPath = IndexPath(indexPath.section, position)
-                    textFieldDelegate?.textFieldTextChanged(_indexPath, p0.toString())
+                    valueChangedDelegate?.textFieldTextChanged(_indexPath, p0.toString())
                 }
             })
         }
