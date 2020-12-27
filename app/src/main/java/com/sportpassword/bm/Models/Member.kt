@@ -112,7 +112,10 @@ class Member(context: Context) {
         for ((key, value) in MEMBER_ARRAY) {
             val hashMap: HashMap<String, String> = value as HashMap<String, String>
             val type: String = hashMap["type"] as String
-            
+            if (json)
+            if (type == "String") {
+
+            }
         }
         
         id = json.getInt(ID_KEY)
