@@ -3,10 +3,11 @@ package com.sportpassword.bm.Form.FormItem
 import com.sportpassword.bm.Controllers.BaseActivity
 import com.sportpassword.bm.Form.FormItemCellType
 import com.sportpassword.bm.Models.City
+import com.sportpassword.bm.Utilities.CITY_ID_KEY
 import com.sportpassword.bm.Utilities.CITY_KEY
 import com.sportpassword.bm.Utilities.Global
 
-class CityFormItem(isRequired: Boolean = false, delegate: BaseActivity? = null) : FormItem(CITY_KEY, "縣市", "", null, null, isRequired, delegate) {
+class CityFormItem(isRequired: Boolean = false, delegate: BaseActivity? = null) : FormItem(CITY_ID_KEY, "縣市", "", null, null, isRequired, delegate) {
 
     var selected_city_ids: MutableList<Int> = mutableListOf()
     var selected_city_names: MutableList<String> = mutableListOf()

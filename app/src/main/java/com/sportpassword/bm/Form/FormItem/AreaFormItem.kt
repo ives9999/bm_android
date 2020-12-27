@@ -2,10 +2,11 @@ package com.sportpassword.bm.Form.FormItem
 
 import com.sportpassword.bm.Controllers.BaseActivity
 import com.sportpassword.bm.Form.FormItemCellType
+import com.sportpassword.bm.Utilities.AREA_ID_KEY
 import com.sportpassword.bm.Utilities.AREA_KEY
 import com.sportpassword.bm.Utilities.Global
 
-class AreaFormItem(isRequired: Boolean = false, delegate: BaseActivity? = null) : FormItem(AREA_KEY, "區域", "", null, null, isRequired, delegate) {
+class AreaFormItem(isRequired: Boolean = false, delegate: BaseActivity? = null) : FormItem(AREA_ID_KEY, "區域", "", null, null, isRequired, delegate) {
 
     var selected_area_ids: MutableList<Int> = mutableListOf()
     var selected_area_names: MutableList<String> = mutableListOf()

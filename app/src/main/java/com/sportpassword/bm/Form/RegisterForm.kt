@@ -41,4 +41,20 @@ class RegisterForm(delegate: BaseActivity): BaseForm(null, null, "", false, dele
                 section5,privacyItem
         )
     }
+
+    fun removeItem(key: String) {
+        for (i in 0..formItems.size-1) {
+            val formItem = formItems[i]
+            if (key == formItem.name) {
+                formItems.removeAt(i)
+                break
+            }
+        }
+    }
+
+    fun removeItems(keys: ArrayList<String>) {
+        for (key in keys) {
+            removeItem(key)
+        }
+    }
 }

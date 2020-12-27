@@ -113,11 +113,13 @@ val COURSE_PROVIDER_KEY: String = "provider_url"
 // General key
 val ADDRESS_KEY = "address"
 val AREA_KEY: String = "area"
+val AREA_ID_KEY: String = "area_id"
 val AREAS_KEY: String = "areas"
 val ARENA_KEY: String = "arena"
 val CAT_KEY: String = "cat_id"
 val CHARGE_KEY = "charge"
 val CITY_KEY: String = "city"
+val CITY_ID_KEY: String = "city_id"
 val CITYS_KEY: String = "citys"
 val COLOR_KEY: String = "color"
 val CONTENT_KEY: String = "content"
@@ -214,6 +216,12 @@ val MEMBER_ARRAY: Map<String, Map<String, String>> = mapOf(
         SEX_KEY to hashMapOf("text" to "性別","type" to "String", "default" to "M"),
         TEL_KEY to hashMapOf("text" to "電話","type" to "String", "default" to ""),
         MOBILE_KEY to hashMapOf("text" to "手機","type" to "String", "default" to "","icon" to "mobile"),
+        CITY_ID_KEY to hashMapOf("text" to "縣市","type" to "Int","default" to "0"),
+        AREA_ID_KEY to hashMapOf("text" to "區域","type" to "Int","default" to "0"),
+        ROAD_KEY to hashMapOf("text" to "路名","type" to "String", "default" to ""),
+        ZIP_KEY to hashMapOf("text" to "郵遞區號","type" to "Int","default" to "0"),
+        FB_KEY to hashMapOf("text" to "Facebook","type" to "String", "default" to ""),
+        LINE_KEY to hashMapOf("text" to "Line","type" to "String", "default" to ""),
         PID_KEY to hashMapOf("text" to "身分證字號","type" to "String", "default" to ""),
         AVATAR_KEY to hashMapOf("type" to "String", "default" to ""),
         MEMBER_TYPE_KEY to hashMapOf("text" to "會員類型","type" to "Int", "default" to "0"),

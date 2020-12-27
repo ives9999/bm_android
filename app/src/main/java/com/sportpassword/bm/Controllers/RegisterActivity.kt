@@ -27,6 +27,8 @@ import org.jetbrains.anko.alert
 import java.io.File
 import kotlin.reflect.full.declaredMemberProperties
 import com.sportpassword.bm.Form.ValueChangedDelegate
+import com.sportpassword.bm.Models.Member
+import com.sportpassword.bm.member
 
 class RegisterActivity : MyTableVC1(), ImagePicker, ValueChangedDelegate {
 
@@ -53,6 +55,9 @@ class RegisterActivity : MyTableVC1(), ImagePicker, ValueChangedDelegate {
     var section_keys: ArrayList<ArrayList<String>> = arrayListOf()
     private var isFeaturedChange: Boolean = false
 
+    private var old_selected_city: String = ""
+    private var member_token: String = ""
+
     val SELECT_REQUEST_CODE = 1
 
     val testData: HashMap<String, String> = hashMapOf(
@@ -64,9 +69,9 @@ class RegisterActivity : MyTableVC1(), ImagePicker, ValueChangedDelegate {
         DOB_KEY to "1969-01-05",
         MOBILE_KEY to "0911299994",
         TEL_KEY to "062295888",
-        CITY_KEY to "218",
+        CITY_ID_KEY to "218",
         "city_name" to "台南市",
-        AREA_KEY to "219",
+        AREA_ID_KEY to "219",
         "area_name" to "中西區",
         ROAD_KEY to "南華街101號8樓",
         FB_KEY to "https://www.facebook.com/ives.sun",
@@ -94,20 +99,54 @@ class RegisterActivity : MyTableVC1(), ImagePicker, ValueChangedDelegate {
     }
 
     private fun initData() {
-        if (testData.count() > 0) {
-            for ((key, value) in testData) {
-                val formItem = getFormItemFromKey(key)
-                if (formItem != null) {
-                    if (key == AREA_KEY && testData.containsKey("area_name")) {
-                        val _formItem = formItem as AreaFormItem
-                        _formItem.selected_area_names = arrayListOf(testData["area_name"]!!)
-                    } else if (key == CITY_KEY && testData.containsKey("city_name")) { // test data session has, so not implement.
-                        //val _formItem = formItem as CityFormItem
-                        //_formItem.selected_city_names = arrayListOf(testData["city_name"]!!)
-                    }
-                    formItem.value = value
-                    formItem.make()
+
+        if (member.isLoggedIn) {
+
+            member.memberPrint()
+            form.removeItems(arrayListOf(PASSWORD_KEY, REPASSWORD_KEY, PRIVACY_KEY))
+            form.formItems.removeAt(form.formItems.size - 1)
+
+            val keys: ArrayList<String> = arrayListOf()
+            for (formItem in form.formItems) {
+                if (formItem.name != null) {
+                    keys.add(formItem.name!!)
                 }
+            }
+
+            member_token = member.token!!
+            for (key in keys) {
+                if (MEMBER_ARRAY.containsKey(key)) {
+                    val value: String = member.fetch(key)
+                    val formItem = getFormItemFromKey(key)
+                    if (formItem != null) {
+                        if (key == AREA_ID_KEY) {
+                            val cityFormItem: CityFormItem = getFormItemFromKey(CITY_ID_KEY) as CityFormItem
+                            val areaFormItem: AreaFormItem = formItem as AreaFormItem
+                            areaFormItem.city_id = (cityFormItem.value)?.toInt()
+                        }
+                        formItem.value = value
+                        formItem.make()
+                    }
+                }
+            }
+            old_selected_city = member.fetch(CITY_ID_KEY)
+        } else {
+            if (testData.count() > 0) {
+                for ((key, value) in testData) {
+                    val formItem = getFormItemFromKey(key)
+                    if (formItem != null) {
+                        if (key == AREA_ID_KEY && testData.containsKey("area_name")) {
+                            val _formItem = formItem as AreaFormItem
+                            _formItem.selected_area_names = arrayListOf(testData["area_name"]!!)
+                        } else if (key == CITY_ID_KEY && testData.containsKey("city_name")) { // test data session has, so not implement.
+                            //val _formItem = formItem as CityFormItem
+                            //_formItem.selected_city_names = arrayListOf(testData["city_name"]!!)
+                        }
+                        formItem.value = value
+                        formItem.make()
+                    }
+                }
+                old_selected_city = testData[CITY_ID_KEY]!!
             }
         }
     }
@@ -216,7 +255,7 @@ class RegisterActivity : MyTableVC1(), ImagePicker, ValueChangedDelegate {
                 dateSelectIntent.putExtra("selected", selected)
             }
             startActivityForResult(dateSelectIntent, SELECT_REQUEST_CODE)
-        } else if (key == CITY_KEY) {
+        } else if (key == CITY_ID_KEY) {
             val citySelectIntent = Intent(this, SelectCityVC::class.java)
             citySelectIntent.putExtra("title", forItem.title)
             citySelectIntent.putExtra("key", key)
@@ -225,8 +264,8 @@ class RegisterActivity : MyTableVC1(), ImagePicker, ValueChangedDelegate {
                 citySelectIntent.putExtra("selected", selected)
             }
             startActivityForResult(citySelectIntent, SELECT_REQUEST_CODE)
-        } else if (key == AREA_KEY) {
-            val cityItem = getFormItemFromKey(CITY_KEY)
+        } else if (key == AREA_ID_KEY) {
+            val cityItem = getFormItemFromKey(CITY_ID_KEY)
             val city_id = cityItem?.value
             if (city_id == null) {
                 warning("請先選擇縣市")
@@ -365,9 +404,9 @@ class RegisterActivity : MyTableVC1(), ImagePicker, ValueChangedDelegate {
                         item = getFormItemFromKey(key) as PriceUnitFormItem
                     } else if (key == DOB_KEY) {
                         item = getFormItemFromKey(key) as DateFormItem
-                    } else if (key == CITY_KEY) {
+                    } else if (key == CITY_ID_KEY) {
                         item = getFormItemFromKey(key) as CityFormItem
-                    } else if (key == AREA_KEY) {
+                    } else if (key == AREA_ID_KEY) {
                         item = getFormItemFromKey(key) as AreaFormItem
                     }
 
@@ -375,10 +414,18 @@ class RegisterActivity : MyTableVC1(), ImagePicker, ValueChangedDelegate {
                         if (item.value != selected) {
                             item.reset()
                         }
-                        if (key == AREA_KEY) {
+                        if (key == AREA_ID_KEY) {
                             val item1: AreaFormItem = item as AreaFormItem
-                            val cityItem = getFormItemFromKey(CITY_KEY)
+                            val cityItem = getFormItemFromKey(CITY_ID_KEY)
                             item1.city_id = cityItem!!.value!!.toInt()
+                        } else if (key == CITY_ID_KEY) {
+                            val item1 = getFormItemFromKey(AREA_ID_KEY)
+                            if (old_selected_city != selected) {
+                                if (item1 != null) {
+                                    item1!!.reset()
+                                }
+                                old_selected_city = selected
+                            }
                         }
                         item.value = selected
                         item.make()
@@ -466,7 +513,7 @@ class RegisterActivity : MyTableVC1(), ImagePicker, ValueChangedDelegate {
         val item = form.formItems[indexPath.row]
         item.value = text
         item.make()
-        println(text)
+        //println(text)
     }
 
     override fun sexChanged(sex: String) {
@@ -474,7 +521,7 @@ class RegisterActivity : MyTableVC1(), ImagePicker, ValueChangedDelegate {
         if (forItem != null) {
             forItem.value = sex
         }
-        println(sex)
+        //println(sex)
 
     }
 
@@ -490,6 +537,6 @@ class RegisterActivity : MyTableVC1(), ImagePicker, ValueChangedDelegate {
         if (!checked) {
             warning("必須同意隱私權條款，才能完成註冊")
         }
-        println(checked)
+        //println(checked)
     }
 }

@@ -189,7 +189,7 @@ class MemberFragment: TabFragment() {
         val segue = memberItem.segue
 
         when(segue) {
-            "account" -> mainActivity!!.goEditMember()
+            "account" -> mainActivity!!.goRegister()
             "password" -> goUpdatePassword()
             "email" -> mainActivity!!.goValidate("email")
             "mobile" -> mainActivity!!.goValidate("mobile")

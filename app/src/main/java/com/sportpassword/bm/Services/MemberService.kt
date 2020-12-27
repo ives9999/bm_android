@@ -100,7 +100,9 @@ object MemberService: BaseService() {
                 msg = "無法登入，沒有傳回成功值 " + e.localizedMessage
             }
             if (success) {
+                //print(json)
                 jsonToMember(json)
+                //member.memberPrint()
                 if (json.has("msg")) {
                     Alert.show(context, "警告", json.getString("msg"), {
                         complete(true)

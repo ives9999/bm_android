@@ -49,6 +49,24 @@ class Member(context: Context) {
     var email: String?
         get() = session.getString(EMAIL_KEY, "")
         set(value) = session.edit().putString(EMAIL_KEY, value).apply()
+    var city_id: Int
+        get() = session.getInt(CITY_ID_KEY, 0)
+        set(value) = session.edit().putInt(CITY_ID_KEY, value).apply()
+    var area_id: Int
+        get() = session.getInt(AREA_ID_KEY, 0)
+        set(value) = session.edit().putInt(AREA_ID_KEY, value).apply()
+    var road: String?
+        get() = session.getString(ROAD_KEY, "")
+        set(value) = session.edit().putString(ROAD_KEY, value).apply()
+    var zip: Int
+        get() = session.getInt(ZIP_KEY, 0)
+        set(value) = session.edit().putInt(ZIP_KEY, value).apply()
+    var fb: String?
+        get() = session.getString(FB_KEY, "")
+        set(value) = session.edit().putString(FB_KEY, value).apply()
+    var line: String?
+        get() = session.getString(LINE_KEY, "")
+        set(value) = session.edit().putString(LINE_KEY, value).apply()
     var pid: String?
         get() = session.getString(PID_KEY, "")
         set(value) = session.edit().putString(PID_KEY, value).apply()
@@ -90,6 +108,13 @@ class Member(context: Context) {
     }
 
     fun  setMemberData(json: JSONObject) {
+        
+        for ((key, value) in MEMBER_ARRAY) {
+            val hashMap: HashMap<String, String> = value as HashMap<String, String>
+            val type: String = hashMap["type"] as String
+            
+        }
+        
         id = json.getInt(ID_KEY)
         if (json.has(VALIDATE_KEY)) {
             try {
@@ -153,6 +178,48 @@ class Member(context: Context) {
             mobile = json.getString(MOBILE_KEY)
         } else {
             mobile = ""
+        }
+        if (json.has(CITY_ID_KEY)) {
+            try {
+                city_id = json.getInt(CITY_ID_KEY)
+            } catch (e: Exception) {
+                city_id = 0
+            }
+        } else {
+            city_id = 0
+        }
+        if (json.has(AREA_ID_KEY)) {
+            try {
+                area_id = json.getInt(AREA_ID_KEY)
+            } catch (e: Exception) {
+                area_id = 0
+            }
+        } else {
+            area_id = 0
+        }
+        if (json.has(ROAD_KEY)) {
+            road = json.getString(ROAD_KEY)
+        } else {
+            road = ""
+        }
+        if (json.has(ZIP_KEY)) {
+            try {
+                zip = json.getInt(ZIP_KEY)
+            } catch (e: Exception) {
+                zip = 0
+            }
+        } else {
+            zip = 0
+        }
+        if (json.has(FB_KEY)) {
+            fb = json.getString(FB_KEY)
+        } else {
+            road = ""
+        }
+        if (json.has(LINE_KEY)) {
+            line = json.getString(LINE_KEY)
+        } else {
+            line = ""
         }
         if (json.has(PID_KEY)) {
             pid = json.getString(PID_KEY)
