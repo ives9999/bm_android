@@ -648,6 +648,26 @@ object MemberService: BaseService() {
             //session.dump()
         }
 
+        val kClass = member::class
+        val instance = member::class.objectInstance
+        kClass.memberProperties.forEach {
+            val name = it.name
+            //val value = it.getter.call(member)
+            //println("${name}=>${value}")
+
+            val hashMap: HashMap<String, String> = MEMBER_ARRAY[name] as HashMap<String, String>
+            val type: String = hashMap["type"] as String
+            if (type == "Int") {
+                val value: Int = session.getInt(name, 0)
+            } else if (type == "String") {
+                val value: String = session.getString(name, "")!!
+            } else if (type == "Boolean") {
+                val value: Boolean = session.getBoolean(name, false)
+            }
+            val field = it.javaField
+            field.setInt()
+        }
+
         //val res = JSONParse.newInstance()
 //        member::class.memberProperties.forEach{
 //            val name = it.name
@@ -664,3 +684,21 @@ object MemberService: BaseService() {
         //member.setMemberData(json)
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
