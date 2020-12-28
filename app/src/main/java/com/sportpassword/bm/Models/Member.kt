@@ -15,104 +15,105 @@ import kotlin.reflect.full.valueParameters
 /**
  * Created by ivessun on 2018/2/5.
  */
-class Member(context: Context) {
+class Member(data: JSONObject): SuperModel(data){
 
-    val session: SharedPreferences = context.getSharedPreferences(SESSION_FILENAME, 0)
+    //val session: SharedPreferences = context.getSharedPreferences(SESSION_FILENAME, 0)
 
-    var id: Int
-        get() = session.getInt(ID_KEY, 0)
-        set(value) = session.edit().putInt(ID_KEY, value).apply()
-    var nickname: String?
-        get() = session.getString(NICKNAME_KEY, "")
-        set(value) = session.edit().putString(NICKNAME_KEY, value).apply()
-    var uid: String?
-        get() = session.getString(UID_KEY, "")
-        set(value) = session.edit().putString(UID_KEY, value).apply()
-    var name: String?
-        get() = session.getString(NAME_KEY, "")
-        set(value) = session.edit().putString(NAME_KEY, value).apply()
-    var channel: String?
-        get() = session.getString(CHANNEL_KEY, "")
-        set(value) = session.edit().putString(CHANNEL_KEY, value).apply()
-    var dob: String?
-        get() = session.getString(DOB_KEY, "")
-        set(value) = session.edit().putString(DOB_KEY, value).apply()
-    var sex: String?
-        get() = session.getString(SEX_KEY, "")
-        set(value) = session.edit().putString(SEX_KEY, value).apply()
-    var tel: String?
-        get() = session.getString(TEL_KEY, "")
-        set(value) = session.edit().putString(TEL_KEY, value).apply()
-    var mobile: String?
-        get() = session.getString(MOBILE_KEY, "")
-        set(value) = session.edit().putString(MOBILE_KEY, value).apply()
-    var email: String?
-        get() = session.getString(EMAIL_KEY, "")
-        set(value) = session.edit().putString(EMAIL_KEY, value).apply()
-    var city_id: Int
-        get() = session.getInt(CITY_ID_KEY, 0)
-        set(value) = session.edit().putInt(CITY_ID_KEY, value).apply()
-    var area_id: Int
-        get() = session.getInt(AREA_ID_KEY, 0)
-        set(value) = session.edit().putInt(AREA_ID_KEY, value).apply()
-    var road: String?
-        get() = session.getString(ROAD_KEY, "")
-        set(value) = session.edit().putString(ROAD_KEY, value).apply()
-    var zip: Int
-        get() = session.getInt(ZIP_KEY, 0)
-        set(value) = session.edit().putInt(ZIP_KEY, value).apply()
-    var fb: String?
-        get() = session.getString(FB_KEY, "")
-        set(value) = session.edit().putString(FB_KEY, value).apply()
-    var line: String?
-        get() = session.getString(LINE_KEY, "")
-        set(value) = session.edit().putString(LINE_KEY, value).apply()
-    var pid: String?
-        get() = session.getString(PID_KEY, "")
-        set(value) = session.edit().putString(PID_KEY, value).apply()
-    var avatar: String?
-        get() = session.getString(AVATAR_KEY, "")
-        set(value) = session.edit().putString(AVATAR_KEY, value).apply()
-    var player_id: String?
-        get() = session.getString(PLAYERID_KEY, "")
-        set(value) = session.edit().putString(PLAYERID_KEY, value).apply()
-    var type: Int
-        get() = session.getInt(MEMBER_TYPE_KEY, 0)
-        set(value) = session.edit().putInt(MEMBER_TYPE_KEY, value).apply()
-    var social: String?
-        get() = session.getString(SOCIAL_KEY, "")
-        set(value) = session.edit().putString(SOCIAL_KEY, value).apply()
-    var role: MEMBER_ROLE?
-        get() = session.getString(MEMBER_ROLE_KEY, "member")?.let { MEMBER_ROLE.valueOf(it) }
-        //set(value) = session.edit().putString(MEMBER_ROLE_KEY, getMemberRoleRawValue(value)).apply()
-        set(value) = session.edit().putString(MEMBER_ROLE_KEY, value?.value).apply()
-    var validate: Int
-        get() = session.getInt(VALIDATE_KEY, 0)
-        set(value) = session.edit().putInt(VALIDATE_KEY, value).apply()
-    var token: String?
-        get() = session.getString(TOKEN_KEY, "")
-        set(value) = session.edit().putString(TOKEN_KEY, value).apply()
+    var id: Int = -1
+        ////get() = session.getInt(ID_KEY, 0)
+        ////set(value) = session.edit().putInt(ID_KEY, value).apply()
+    var nickname: String = ""
+        ////get() = session.getString(NICKNAME_KEY, "")
+        ////set(value) = session.edit().putString(NICKNAME_KEY, value).apply()
+    var uid: String = ""
+        ////get() = session.getString(UID_KEY, "")
+        ////set(value) = session.edit().putString(UID_KEY, value).apply()
+    var name: String = ""
+        ////get() = session.getString(NAME_KEY, "")
+        ////set(value) = session.edit().putString(NAME_KEY, value).apply()
+    var channel: String = "bm"
+        ////get() = session.getString(CHANNEL_KEY, "")
+        ////set(value) = session.edit().putString(CHANNEL_KEY, value).apply()
+    var dob: String = ""
+        ////get() = session.getString(DOB_KEY, "")
+        ////set(value) = session.edit().putString(DOB_KEY, value).apply()
+    var sex: String = "M"
+        ////get() = session.getString(SEX_KEY, "")
+        ////set(value) = session.edit().putString(SEX_KEY, value).apply()
+    var tel: String = ""
+        ////get() = session.getString(TEL_KEY, "")
+        ////set(value) = session.edit().putString(TEL_KEY, value).apply()
+    var mobile: String = ""
+        ////get() = session.getString(MOBILE_KEY, "")
+        ////set(value) = session.edit().putString(MOBILE_KEY, value).apply()
+    var email: String = ""
+        ////get() = session.getString(EMAIL_KEY, "")
+        ////set(value) = session.edit().putString(EMAIL_KEY, value).apply()
+    var city_id: Int = 0
+        ////get() = session.getInt(CITY_ID_KEY, 0)
+        ////set(value) = session.edit().putInt(CITY_ID_KEY, value).apply()
+    var area_id: Int = 0
+        ////get() = session.getInt(AREA_ID_KEY, 0)
+        ////set(value) = session.edit().putInt(AREA_ID_KEY, value).apply()
+    var road: String = ""
+        ////get() = session.getString(ROAD_KEY, "")
+        ////set(value) = session.edit().putString(ROAD_KEY, value).apply()
+    var zip: Int = 0
+        //get() = session.getInt(ZIP_KEY, 0)
+        //set(value) = session.edit().putInt(ZIP_KEY, value).apply()
+    var fb: String = ""
+        //get() = session.getString(FB_KEY, "")
+        //set(value) = session.edit().putString(FB_KEY, value).apply()
+    var line: String = ""
+        //get() = session.getString(LINE_KEY, "")
+        //set(value) = session.edit().putString(LINE_KEY, value).apply()
+    var pid: String = ""
+        //get() = session.getString(PID_KEY, "")
+        //set(value) = session.edit().putString(PID_KEY, value).apply()
+    var avatar: String = ""
+        //get() = session.getString(AVATAR_KEY, "")
+        //set(value) = session.edit().putString(AVATAR_KEY, value).apply()
+    var player_id: String = ""
+        //get() = session.getString(PLAYERID_KEY, "")
+        //set(value) = session.edit().putString(PLAYERID_KEY, value).apply()
+    var type: Int = 0
+        //get() = session.getInt(MEMBER_TYPE_KEY, 0)
+        //set(value) = session.edit().putInt(MEMBER_TYPE_KEY, value).apply()
+    var social: String = ""
+        //get() = session.getString(SOCIAL_KEY, "")
+        //set(value) = session.edit().putString(SOCIAL_KEY, value).apply()
+    var role: String = "member"
+        //get() = session.getString(MEMBER_ROLE_KEY, "member")?.let { MEMBER_ROLE.valueOf(it) }
+        ////set(value) = session.edit().putString(MEMBER_ROLE_KEY, getMemberRoleRawValue(value)).apply()
+        //set(value) = session.edit().putString(MEMBER_ROLE_KEY, value?.value).apply()
+    var validate: Int = 0
+        //get() = session.getInt(VALIDATE_KEY, 0)
+        //set(value) = session.edit().putInt(VALIDATE_KEY, value).apply()
+    var token: String = ""
+        //get() = session.getString(TOKEN_KEY, "")
+        //set(value) = session.edit().putString(TOKEN_KEY, value).apply()
 
-    var isLoggedIn: Boolean
-        get() = session.getBoolean(ISLOGGEDIN_KEY, false)
-        set(value) = session.edit().putBoolean(ISLOGGEDIN_KEY, value).apply()
-    var isTeamManager: Boolean
-        get() = session.getBoolean(ISTEAMMANAGER_KEY, false)
-        set(value) = session.edit().putBoolean(ISTEAMMANAGER_KEY, value).apply()
-    var justGetMemberOne: Boolean
-        get() = session.getBoolean("justGetMemberOne", false)
-        set(value) = session.edit().putBoolean("justGetMemberOne", value).apply()
-
-    init {
-        justGetMemberOne = false
-    }
+    var isLoggedIn: Boolean = false
+        //get() = session.getBoolean(ISLOGGEDIN_KEY, false)
+        //set(value) = session.edit().putBoolean(ISLOGGEDIN_KEY, value).apply()
+    var isTeamManager: Boolean = false
+        //get() = session.getBoolean(ISTEAMMANAGER_KEY, false)
+        //set(value) = session.edit().putBoolean(ISTEAMMANAGER_KEY, value).apply()
+    var justGetMemberOne: Boolean = false
+        //get() = session.getBoolean("justGetMemberOne", false)
+        //set(value) = session.edit().putBoolean("justGetMemberOne", value).apply()
 
     fun  setMemberData(json: JSONObject) {
         
-        for ((key, value) in MEMBER_ARRAY) {
-            val hashMap: HashMap<String, String> = value as HashMap<String, String>
-            val type: String = hashMap["type"] as String
-        }
+//        for ((key, value) in MEMBER_ARRAY) {
+//            if (json.has(key)) {
+//                val hashMap: HashMap<String, String> = value as HashMap<String, String>
+//                val type: String = hashMap["type"] as String
+//                if (type == String) {
+//                    val _value = json.getString(key)
+//                }
+//            }
+//        }
         
         id = json.getInt(ID_KEY)
         if (json.has(VALIDATE_KEY)) {
@@ -249,7 +250,7 @@ class Member(context: Context) {
         if (json.has(MEMBER_ROLE_KEY)) {
             roleString = json.getString(MEMBER_ROLE_KEY)
         }
-        role = MEMBER_ROLE.valueOf(roleString)
+        //role = MEMBER_ROLE.valueOf(roleString)
 
         if (json.has(ISLOGGEDIN_KEY)) {
             try {

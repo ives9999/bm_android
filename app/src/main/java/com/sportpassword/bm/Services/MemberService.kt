@@ -1,6 +1,7 @@
 package com.sportpassword.bm.Services
 
 import android.content.Context
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
 import com.android.volley.Request
@@ -10,7 +11,6 @@ import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import org.json.JSONException
 import org.json.JSONObject
-import com.sportpassword.bm.Models.Member
 import com.sportpassword.bm.Utilities.*
 import com.sportpassword.bm.member
 import com.android.volley.VolleyError
@@ -20,8 +20,9 @@ import com.facebook.GraphRequest
 import com.facebook.GraphResponse
 import com.facebook.Profile
 import com.facebook.login.LoginManager
-import com.sportpassword.bm.Models.BlackList
-import com.sportpassword.bm.Models.BlackLists
+import com.sportpassword.bm.Models.*
+import kotlin.reflect.full.memberProperties
+import kotlin.reflect.jvm.javaField
 
 
 /**
@@ -101,7 +102,7 @@ object MemberService: BaseService() {
             }
             if (success) {
                 //print(json)
-                jsonToMember(json)
+                jsonToMember(json, context)
                 //member.memberPrint()
                 if (json.has("msg")) {
                     Alert.show(context, "警告", json.getString("msg"), {
@@ -256,7 +257,7 @@ object MemberService: BaseService() {
                 msg = "無法執行，沒有傳回成功值 " + e.localizedMessage
             }
             if (success) {
-                jsonToMember(json)
+                jsonToMember(json, context)
             } else {
                 makeErrorMsg(json)
             }
@@ -385,7 +386,7 @@ object MemberService: BaseService() {
                 msg = "無法執行，沒有傳回成功值 " + e.localizedMessage
             }
             if (success) {
-                jsonToMember(json)
+                jsonToMember(json, context)
                 complete(true)
             } else {
                 if (json.has("msg")) {
@@ -504,7 +505,7 @@ object MemberService: BaseService() {
             }
             if (success) {
                 //println(json)
-                jsonToMember(json)
+                jsonToMember(json, context)
                 complete(true)
             } else {
                 FBLogout()
@@ -623,9 +624,43 @@ object MemberService: BaseService() {
         return Pair(res, "")
     }
 
+    private fun jsonToMember(json: JSONObject, context: Context) {
 
-    private fun jsonToMember(json: JSONObject) {
         json.put(ISLOGGEDIN_KEY, true)
-        member.setMemberData(json)
+        val _member: SuperModel = JSONParse.parse<Member>(json)!!
+        val _member1: Member = _member as Member
+        _member1.isLoggedIn = true
+        //member.memberPrint()
+
+        val session: SharedPreferences = context.getSharedPreferences(SESSION_FILENAME, 0)
+        Member::class.memberProperties.forEach {
+            val name = it.name
+            //val type = it.returnType
+            val value = it.getter.call(member)
+            when (value) {
+                is Int ->
+                    session.edit().putInt(name, value).apply()
+                is String ->
+                    session.edit().putString(name, value).apply()
+                is Boolean ->
+                    session.edit().putBoolean(name, value).apply()
+            }
+            //session.dump()
+        }
+
+        //val res = JSONParse.newInstance()
+//        member::class.memberProperties.forEach{
+//            val name = it.name
+//            //val value = _member1.g
+//            val field = it.javaField
+//            if (field != null) {
+//                field.isAccessible = true
+//                //field.set
+//            }
+//        }
+//        member.isLoggedIn = true
+
+        //JSONParse._parse(Member::class, json)
+        //member.setMemberData(json)
     }
 }

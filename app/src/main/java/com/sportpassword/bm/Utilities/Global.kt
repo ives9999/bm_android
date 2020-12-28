@@ -808,6 +808,12 @@ fun TextView.unSelected() {
     this.setTextColor(uncheckedColor)
 }
 
+fun SharedPreferences.dump() {
+    this.all.map {
+        println("${it.key}=>${it.value}")
+    }
+}
+
 // return is [
 //             ["id": "5", "name": "新北市"],
 //             ["id": "6", "name": "台北市"]

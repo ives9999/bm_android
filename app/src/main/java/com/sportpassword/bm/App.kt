@@ -12,6 +12,7 @@ import com.onesignal.OneSignal
 import com.sportpassword.bm.Models.Member
 import com.sportpassword.bm.Utilities.MyNotificationOpenedHandler
 import com.sportpassword.bm.Utilities.MyNotificationReceivedHandler
+import org.json.JSONObject
 
 /**
  * Created by ives on 2018/2/6.
@@ -53,7 +54,7 @@ class App: Application() {
     }
 
     override fun onCreate() {
-        member = Member(applicationContext)
+        member = Member(JSONObject())
         super.onCreate()
         instance = this
 
