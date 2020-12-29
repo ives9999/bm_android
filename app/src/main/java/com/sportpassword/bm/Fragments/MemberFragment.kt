@@ -43,7 +43,6 @@ class MemberFragment: TabFragment() {
     protected val adapterSections: ArrayList<Section> = arrayListOf()
     var sections: ArrayList<String> = arrayListOf("會員資料", "報名")
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         dataService = CourseService

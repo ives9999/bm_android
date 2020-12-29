@@ -20,105 +20,39 @@ class Member(data: JSONObject): SuperModel(data){
     //val session: SharedPreferences = context.getSharedPreferences(SESSION_FILENAME, 0)
 
     var id: Int = -1
-        ////get() = session.getInt(ID_KEY, 0)
-        ////set(value) = session.edit().putInt(ID_KEY, value).apply()
     var nickname: String = ""
-        ////get() = session.getString(NICKNAME_KEY, "")
-        ////set(value) = session.edit().putString(NICKNAME_KEY, value).apply()
     var uid: String = ""
-        ////get() = session.getString(UID_KEY, "")
-        ////set(value) = session.edit().putString(UID_KEY, value).apply()
     var name: String = ""
-        ////get() = session.getString(NAME_KEY, "")
-        ////set(value) = session.edit().putString(NAME_KEY, value).apply()
     var channel: String = "bm"
-        ////get() = session.getString(CHANNEL_KEY, "")
-        ////set(value) = session.edit().putString(CHANNEL_KEY, value).apply()
     var dob: String = ""
-        ////get() = session.getString(DOB_KEY, "")
-        ////set(value) = session.edit().putString(DOB_KEY, value).apply()
     var sex: String = "M"
-        ////get() = session.getString(SEX_KEY, "")
-        ////set(value) = session.edit().putString(SEX_KEY, value).apply()
     var tel: String = ""
-        ////get() = session.getString(TEL_KEY, "")
-        ////set(value) = session.edit().putString(TEL_KEY, value).apply()
     var mobile: String = ""
-        ////get() = session.getString(MOBILE_KEY, "")
-        ////set(value) = session.edit().putString(MOBILE_KEY, value).apply()
     var email: String = ""
-        ////get() = session.getString(EMAIL_KEY, "")
-        ////set(value) = session.edit().putString(EMAIL_KEY, value).apply()
     var city_id: Int = 0
-        ////get() = session.getInt(CITY_ID_KEY, 0)
-        ////set(value) = session.edit().putInt(CITY_ID_KEY, value).apply()
     var area_id: Int = 0
-        ////get() = session.getInt(AREA_ID_KEY, 0)
-        ////set(value) = session.edit().putInt(AREA_ID_KEY, value).apply()
     var road: String = ""
-        ////get() = session.getString(ROAD_KEY, "")
-        ////set(value) = session.edit().putString(ROAD_KEY, value).apply()
     var zip: Int = 0
-        //get() = session.getInt(ZIP_KEY, 0)
-        //set(value) = session.edit().putInt(ZIP_KEY, value).apply()
     var fb: String = ""
-        //get() = session.getString(FB_KEY, "")
-        //set(value) = session.edit().putString(FB_KEY, value).apply()
     var line: String = ""
-        //get() = session.getString(LINE_KEY, "")
-        //set(value) = session.edit().putString(LINE_KEY, value).apply()
     var pid: String = ""
-        //get() = session.getString(PID_KEY, "")
-        //set(value) = session.edit().putString(PID_KEY, value).apply()
     var avatar: String = ""
-        //get() = session.getString(AVATAR_KEY, "")
-        //set(value) = session.edit().putString(AVATAR_KEY, value).apply()
     var player_id: String = ""
-        //get() = session.getString(PLAYERID_KEY, "")
-        //set(value) = session.edit().putString(PLAYERID_KEY, value).apply()
     var type: Int = 0
-        //get() = session.getInt(MEMBER_TYPE_KEY, 0)
-        //set(value) = session.edit().putInt(MEMBER_TYPE_KEY, value).apply()
     var social: String = ""
-        //get() = session.getString(SOCIAL_KEY, "")
-        //set(value) = session.edit().putString(SOCIAL_KEY, value).apply()
     var role: String = "member"
-        //get() = session.getString(MEMBER_ROLE_KEY, "member")?.let { MEMBER_ROLE.valueOf(it) }
-        ////set(value) = session.edit().putString(MEMBER_ROLE_KEY, getMemberRoleRawValue(value)).apply()
-        //set(value) = session.edit().putString(MEMBER_ROLE_KEY, value?.value).apply()
     var validate: Int = 0
-        //get() = session.getInt(VALIDATE_KEY, 0)
-        //set(value) = session.edit().putInt(VALIDATE_KEY, value).apply()
     var token: String = ""
-        //get() = session.getString(TOKEN_KEY, "")
-        //set(value) = session.edit().putString(TOKEN_KEY, value).apply()
-
     var isLoggedIn: Boolean = false
-        //get() = session.getBoolean(ISLOGGEDIN_KEY, false)
-        //set(value) = session.edit().putBoolean(ISLOGGEDIN_KEY, value).apply()
     var isTeamManager: Boolean = false
-        //get() = session.getBoolean(ISTEAMMANAGER_KEY, false)
-        //set(value) = session.edit().putBoolean(ISTEAMMANAGER_KEY, value).apply()
     var justGetMemberOne: Boolean = false
-        //get() = session.getBoolean("justGetMemberOne", false)
-        //set(value) = session.edit().putBoolean("justGetMemberOne", value).apply()
 
-    fun  setMemberData(json: JSONObject) {
-        
-//        for ((key, value) in MEMBER_ARRAY) {
-//            if (json.has(key)) {
-//                val hashMap: HashMap<String, String> = value as HashMap<String, String>
-//                val type: String = hashMap["type"] as String
-//                if (type == String) {
-//                    val _value = json.getString(key)
-//                }
-//            }
-//        }
-        
-        id = json.getInt(ID_KEY)
+    fun  setMemberData(json: SharedPreferences) {
+                
+        id = json.getInt(ID_KEY, -1)
         if (json.has(VALIDATE_KEY)) {
             try {
-                validate = json.getInt(VALIDATE_KEY)
+                validate = json.getInt(VALIDATE_KEY, 0)
             } catch (e: Exception) {
                 validate = 0
             }
@@ -127,7 +61,7 @@ class Member(data: JSONObject): SuperModel(data){
         }
         if (json.has(MEMBER_TYPE_KEY)) {
             try {
-                type = json.getInt(MEMBER_TYPE_KEY)
+                type = json.getInt(MEMBER_TYPE_KEY, 0)
             } catch (e: Exception) {
                 type = 0
             }
@@ -135,53 +69,53 @@ class Member(data: JSONObject): SuperModel(data){
             type = 0
         }
         if (json.has(NICKNAME_KEY)) {
-            nickname = json.getString(NICKNAME_KEY)
+            nickname = json.getString(NICKNAME_KEY, "")!!
         } else {
             nickname = ""
         }
         if (json.has(EMAIL_KEY)) {
-            email = json.getString(EMAIL_KEY)
+            email = json.getString(EMAIL_KEY, "")!!
         } else {
             email = ""
         }
         if (json.has(TOKEN_KEY)) {
-            token = json.getString(TOKEN_KEY)
+            token = json.getString(TOKEN_KEY, "")!!
         } else {
             token = ""
         }
         if (json.has(UID_KEY)) {
-            uid = json.getString(UID_KEY)
+            uid = json.getString(UID_KEY, "")!!
         } else {
             uid = ""
         }
         if (json.has(PLAYERID_KEY)) {
-            player_id = json.getString(PLAYERID_KEY)
+            player_id = json.getString(PLAYERID_KEY, "")!!
         } else {
             player_id = ""
         }
         if (json.has(NAME_KEY)) {
-            name = json.getString(NAME_KEY)
+            name = json.getString(NAME_KEY, "")!!
         } else {
             name = ""
         }
         if (json.has(CHANNEL_KEY)) {
-            channel = json.getString(CHANNEL_KEY)
+            channel = json.getString(CHANNEL_KEY, "bm")!!
         } else {
             channel = CHANNEL
         }
         if (json.has(TEL_KEY)) {
-            tel = json.getString(TEL_KEY)
+            tel = json.getString(TEL_KEY, "")!!
         } else {
             tel = ""
         }
         if (json.has(MOBILE_KEY)) {
-            mobile = json.getString(MOBILE_KEY)
+            mobile = json.getString(MOBILE_KEY, "")!!
         } else {
             mobile = ""
         }
         if (json.has(CITY_ID_KEY)) {
             try {
-                city_id = json.getInt(CITY_ID_KEY)
+                city_id = json.getInt(CITY_ID_KEY, 0)
             } catch (e: Exception) {
                 city_id = 0
             }
@@ -190,7 +124,7 @@ class Member(data: JSONObject): SuperModel(data){
         }
         if (json.has(AREA_ID_KEY)) {
             try {
-                area_id = json.getInt(AREA_ID_KEY)
+                area_id = json.getInt(AREA_ID_KEY, 0)
             } catch (e: Exception) {
                 area_id = 0
             }
@@ -198,13 +132,13 @@ class Member(data: JSONObject): SuperModel(data){
             area_id = 0
         }
         if (json.has(ROAD_KEY)) {
-            road = json.getString(ROAD_KEY)
+            road = json.getString(ROAD_KEY, "")!!
         } else {
             road = ""
         }
         if (json.has(ZIP_KEY)) {
             try {
-                zip = json.getInt(ZIP_KEY)
+                zip = json.getInt(ZIP_KEY, 0)
             } catch (e: Exception) {
                 zip = 0
             }
@@ -212,49 +146,50 @@ class Member(data: JSONObject): SuperModel(data){
             zip = 0
         }
         if (json.has(FB_KEY)) {
-            fb = json.getString(FB_KEY)
+            fb = json.getString(FB_KEY, "")!!
         } else {
             road = ""
         }
         if (json.has(LINE_KEY)) {
-            line = json.getString(LINE_KEY)
+            line = json.getString(LINE_KEY, "")!!
         } else {
             line = ""
         }
         if (json.has(PID_KEY)) {
-            pid = json.getString(PID_KEY)
+            pid = json.getString(PID_KEY, "")!!
         } else {
             pid = ""
         }
         if (json.has(AVATAR_KEY)) {
-            avatar = json.getString(AVATAR_KEY)
+            avatar = json.getString(AVATAR_KEY, "")!!
         } else {
             avatar = ""
         }
         if (json.has(DOB_KEY)) {
-            dob = json.getString(DOB_KEY)
+            dob = json.getString(DOB_KEY, "")!!
         } else {
             dob = ""
         }
         if (json.has(SEX_KEY)) {
-            sex = json.getString(SEX_KEY)
+            sex = json.getString(SEX_KEY, "M")!!
         } else {
             sex = "M"
         }
         if (json.has(SOCIAL_KEY)) {
-            social = json.getString(SOCIAL_KEY)
+            social = json.getString(SOCIAL_KEY, "")!!
         } else {
             social = ""
         }
         var roleString = "member"
         if (json.has(MEMBER_ROLE_KEY)) {
-            roleString = json.getString(MEMBER_ROLE_KEY)
+            roleString = json.getString(MEMBER_ROLE_KEY, "member")!!
         }
+        role = roleString
         //role = MEMBER_ROLE.valueOf(roleString)
 
         if (json.has(ISLOGGEDIN_KEY)) {
             try {
-                isLoggedIn = json.getBoolean(ISLOGGEDIN_KEY)
+                isLoggedIn = json.getBoolean(ISLOGGEDIN_KEY, false)
             } catch (e: Exception) {
                 isLoggedIn = false
             }
@@ -304,7 +239,7 @@ class Member(data: JSONObject): SuperModel(data){
                 json.put(k1, tmp)
             }
         }
-        setMemberData(json)
+        //setMemberData(json)
         justGetMemberOne = false
     }
 

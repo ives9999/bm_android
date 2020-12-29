@@ -814,6 +814,10 @@ fun SharedPreferences.dump() {
     }
 }
 
+fun SharedPreferences.has(key: String): Boolean {
+    return this.contains(key)
+}
+
 // return is [
 //             ["id": "5", "name": "新北市"],
 //             ["id": "6", "name": "台北市"]

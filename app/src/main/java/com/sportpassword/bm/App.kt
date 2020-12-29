@@ -10,8 +10,7 @@ import android.util.Log
 import com.onesignal.OSNotificationOpenResult
 import com.onesignal.OneSignal
 import com.sportpassword.bm.Models.Member
-import com.sportpassword.bm.Utilities.MyNotificationOpenedHandler
-import com.sportpassword.bm.Utilities.MyNotificationReceivedHandler
+import com.sportpassword.bm.Utilities.*
 import org.json.JSONObject
 
 /**
@@ -21,6 +20,7 @@ import org.json.JSONObject
 val member: Member by lazy {
     App.member!!
 }
+
 class App: Application() {
 
     companion object {
@@ -57,6 +57,14 @@ class App: Application() {
         member = Member(JSONObject())
         super.onCreate()
         instance = this
+        val session: SharedPreferences = this.getSharedPreferences(SESSION_FILENAME, 0)
+        //session.dump()
+        if (session.has(ISLOGGEDIN_KEY)) {
+            val isLoggedIn = session.getBoolean(ISLOGGEDIN_KEY, false)
+            if (isLoggedIn) {
+                member!!.setMemberData(session)
+            }
+        }
 
         // OneSignal Initialization
         OneSignal.startInit(this)

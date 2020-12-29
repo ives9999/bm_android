@@ -630,13 +630,13 @@ object MemberService: BaseService() {
         val _member: SuperModel = JSONParse.parse<Member>(json)!!
         val _member1: Member = _member as Member
         _member1.isLoggedIn = true
-        //member.memberPrint()
+        //_member1.memberPrint()
 
         val session: SharedPreferences = context.getSharedPreferences(SESSION_FILENAME, 0)
         Member::class.memberProperties.forEach {
             val name = it.name
             //val type = it.returnType
-            val value = it.getter.call(member)
+            val value = it.getter.call(_member1)
             when (value) {
                 is Int ->
                     session.edit().putInt(name, value).apply()
@@ -645,28 +645,33 @@ object MemberService: BaseService() {
                 is Boolean ->
                     session.edit().putBoolean(name, value).apply()
             }
-            //session.dump()
         }
+        //session.dump()
+        member.setMemberData(session)
+        member.memberPrint()
 
-        val kClass = member::class
-        val instance = member::class.objectInstance
-        kClass.memberProperties.forEach {
-            val name = it.name
-            //val value = it.getter.call(member)
-            //println("${name}=>${value}")
-
-            val hashMap: HashMap<String, String> = MEMBER_ARRAY[name] as HashMap<String, String>
-            val type: String = hashMap["type"] as String
-            if (type == "Int") {
-                val value: Int = session.getInt(name, 0)
-            } else if (type == "String") {
-                val value: String = session.getString(name, "")!!
-            } else if (type == "Boolean") {
-                val value: Boolean = session.getBoolean(name, false)
-            }
-            val field = it.javaField
-            field.setInt()
-        }
+//        val kClass = member::class
+//        val instance = kClass.objectInstance
+//        kClass.memberProperties.forEach {
+//            val name = it.name
+//            //val value = it.getter.call(member)
+//            //println("${name}=>${value}")
+//
+//            val hashMap: HashMap<String, String> = MEMBER_ARRAY[name] as HashMap<String, String>
+//            val type: String = hashMap["type"] as String
+//            if (type == "Int") {
+//                val value: Int = session.getInt(name, 0)
+//                val field = it.javaField
+//                if (field != null ) {
+//                    field.isAccessible = true
+//                    field.set(instance, value)
+//                }
+//            } else if (type == "String") {
+//                val value: String = session.getString(name, "")!!
+//            } else if (type == "Boolean") {
+//                val value: Boolean = session.getBoolean(name, false)
+//            }
+//        }
 
         //val res = JSONParse.newInstance()
 //        member::class.memberProperties.forEach{
