@@ -26,7 +26,7 @@ object CourseService: DataService() {
         return URL_COURSE_LIST
     }
     override fun getOneURL(): String {
-        return "$URL_ONE".format("course")
+        return URL_ONE.format("course")
     }
 
     override fun parseModels(json: JSONObject): SuperModel {
@@ -65,7 +65,7 @@ object CourseService: DataService() {
 
     override fun update(context: Context, _params: MutableMap<String, String>, filePath: String, complete: CompletionHandler) {
 
-        val url = "$URL_UPDATE".format("course")
+        val url = URL_UPDATE.format("course")
         //println(url)
 
         val header: MutableList<Pair<String, String>> = mutableListOf()
@@ -74,7 +74,7 @@ object CourseService: DataService() {
 
         //val PARAMS1: MutableMap<String, String> = PARAMS.toMutableMap()
         //var params: MutableMap<String, String> = _params
-        var params = _params.let { map1 ->
+        val params = _params.let { map1 ->
             PARAMS.let { map2 ->
                 map1 + map2
             }
@@ -86,14 +86,14 @@ object CourseService: DataService() {
         for ((key, value) in params) {
 
             params1.add(Pair(key, value))
-            tmps.add("\""+key+"\""+":"+"\""+value+"\"")
+            tmps.add("\"$key\":\"$value\"")
         }
         json += tmps.joinToString(",")
         json += "}"
         //println(json)
 
         var filePaths: ArrayList<String>? = null
-        if (filePath.length > 0) {
+        if (filePath.isNotEmpty()) {
             filePaths = arrayListOf()
             filePaths.add(filePath)
         }

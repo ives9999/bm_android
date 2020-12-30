@@ -818,6 +818,19 @@ fun SharedPreferences.has(key: String): Boolean {
     return this.contains(key)
 }
 
+fun SharedPreferences.resetMember() {
+    for ((key, value) in MEMBER_ARRAY) {
+        val hashMap: HashMap<String, String> = value as HashMap<String, String>
+        val type: String = hashMap["type"] as String
+        when (type) {
+            "String" -> this.edit().putString(key, "").apply()
+            "Int" -> this.edit().putInt(key, 0).apply()
+            "Boolean" -> this.edit().putBoolean(key, false).apply()
+        }
+    }
+    this.edit().putInt("id", -1).apply()
+}
+
 // return is [
 //             ["id": "5", "name": "新北市"],
 //             ["id": "6", "name": "台北市"]

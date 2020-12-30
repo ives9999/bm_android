@@ -329,6 +329,7 @@ open class DataService: BaseService() {
     open fun getOneURL(): String {return URL_ONE}
     open fun parseModel(json: JSONObject): SuperModel {return SuperModel(JSONObject())}
     open fun parseModels(json: JSONObject): SuperModel {return SuperModel(JSONObject())}
+    open fun jsonToMember(json: JSONObject, context: Context){}
 
     open fun getOne(context: Context, type:String, titleField:String, token:String, complete: CompletionHandler) {
         val url = "$URL_ONE".format(type)
@@ -462,11 +463,84 @@ open class DataService: BaseService() {
             }
         }
     }
-    open fun update(context: Context, params: MutableMap<String, String>, filePath: String, complete: CompletionHandler) {}
+    open fun update(context: Context, _params: MutableMap<String, String>, filePath: String, complete: CompletionHandler) {
+
+        val url: String = getUpdateURL()
+        val header: MutableList<Pair<String, String>> = mutableListOf()
+        header.add(Pair("Accept","application/json"))
+        header.add(Pair("Content-Type","application/json"))
+
+        val params = _params.let { map1 ->
+            PARAMS.let { map2 ->
+                map1 + map2
+            }
+        }
+
+        val params1: MutableList<Pair<String, String>> = mutableListOf()
+        //var jsonString: String = "{"
+        val tmps: ArrayList<String> = arrayListOf()
+        for ((key, value) in params) {
+
+            params1.add(Pair(key, value))
+            tmps.add("\"$key\":\"$value\"")
+        }
+        //jsonString += tmps.joinToString(",")
+        //jsonString += "}"
+        //println(jsonString)
+
+        var filePaths: ArrayList<String>? = null
+        if (filePath.isNotEmpty()) {
+            filePaths = arrayListOf()
+            filePaths.add(filePath)
+        }
+
+        MyHttpClient.instance.uploadFile(context, url, null, filePaths, params1, header) { success ->
+            if (success) {
+                val response = MyHttpClient.instance.response
+                if (response != null) {
+                    val responseStr = response.toString()
+//                    println(responseStr)
+                    try {
+                        val json = JSONObject(responseStr)
+                        //println(json)
+                        this.success = json.getBoolean("success")
+                        if (this.success) {
+                            this.id = json.getInt("id")
+                            val obj = json.getJSONObject("model")
+                            jsonToMember(obj, context)
+                        } else {
+                            if (json.has("msg")) {
+                                msg = json.getString("msg")
+                            }
+                            if (json.has("errors")) {
+                                msg = ""
+                                val errors = json.getJSONArray("errors")
+                                for (i in 0..errors.length()-1) {
+                                    msg += errors.getString(i) + "\n"
+                                }
+                            }
+                        }
+                    } catch (e: Exception) {
+                        this.success = false
+                        msg = "parse json failed，請洽管理員"
+                    }
+                    complete(true)
+                } else {
+                    msg = "伺服器沒有傳回任何值，更新失敗，請洽管理員"
+                    complete(false)
+                }
+
+            } else {
+                msg = "網路錯誤，無法跟伺服器更新資料"
+                complete(success)
+            }
+        }
+    }
+
     open fun update(context: Context, type: String, _params: MutableMap<String, Any>, filePath: String, complete: CompletionHandler) {
 
 //        println(_params)
-        val url = "$URL_UPDATE".format(type)
+        val url = URL_UPDATE.format(type)
 //        println(url)
 //        val params: MutableList<Pair<String, String>> = mutableListOf()
         var postString: String = """
@@ -866,7 +940,7 @@ open class DataService: BaseService() {
     }
 
     open fun delete(context: Context, type: String, token: String, complete: CompletionHandler) {
-        val url = "$URL_DELETE".format(type)
+        val url = URL_DELETE.format(type)
         //println(url)
         val body = JSONObject()
         body.put("source", "app")
@@ -1316,6 +1390,7 @@ open class DataService: BaseService() {
         Volley.newRequestQueue(context).add(request)
     }
 
+    open fun getUpdateURL(): String {return ""}
     open fun getSignupURL(token: String): String { return ""}
     open fun getSignupDateURL(token: String): String { return ""}
     open fun getSignupListURL(token: String? = null): String { return ""}

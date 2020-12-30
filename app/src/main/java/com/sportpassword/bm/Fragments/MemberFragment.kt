@@ -76,6 +76,7 @@ class MemberFragment: TabFragment() {
     override fun refresh() {
         if (member.isLoggedIn) {
             //initTeamList()
+                //member.memberPrint()
             mainActivity!!.refreshMember() { success ->
                 if (success) {
                     _loginout()
@@ -205,7 +206,7 @@ class MemberFragment: TabFragment() {
 //                AppEventsLogger.activateApp(this);
                 LoginManager.getInstance().logOut()
             }
-            MemberService.logout()
+            MemberService.logout(mainActivity!!)
             refresh()
 //            val memberDidChange = Intent(NOTIF_MEMBER_DID_CHANGE)
 //            LocalBroadcastManager.getInstance(this).sendBroadcast(memberDidChange)

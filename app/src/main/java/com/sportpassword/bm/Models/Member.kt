@@ -50,152 +50,32 @@ class Member(data: JSONObject): SuperModel(data){
     fun  setMemberData(json: SharedPreferences) {
                 
         id = json.getInt(ID_KEY, -1)
-        if (json.has(VALIDATE_KEY)) {
-            try {
-                validate = json.getInt(VALIDATE_KEY, 0)
-            } catch (e: Exception) {
-                validate = 0
-            }
-        } else {
-            validate = 0
-        }
-        if (json.has(MEMBER_TYPE_KEY)) {
-            try {
-                type = json.getInt(MEMBER_TYPE_KEY, 0)
-            } catch (e: Exception) {
-                type = 0
-            }
-        } else {
-            type = 0
-        }
-        if (json.has(NICKNAME_KEY)) {
-            nickname = json.getString(NICKNAME_KEY, "")!!
-        } else {
-            nickname = ""
-        }
-        if (json.has(EMAIL_KEY)) {
-            email = json.getString(EMAIL_KEY, "")!!
-        } else {
-            email = ""
-        }
-        if (json.has(TOKEN_KEY)) {
-            token = json.getString(TOKEN_KEY, "")!!
-        } else {
-            token = ""
-        }
-        if (json.has(UID_KEY)) {
-            uid = json.getString(UID_KEY, "")!!
-        } else {
-            uid = ""
-        }
-        if (json.has(PLAYERID_KEY)) {
-            player_id = json.getString(PLAYERID_KEY, "")!!
-        } else {
-            player_id = ""
-        }
-        if (json.has(NAME_KEY)) {
-            name = json.getString(NAME_KEY, "")!!
-        } else {
-            name = ""
-        }
-        if (json.has(CHANNEL_KEY)) {
-            channel = json.getString(CHANNEL_KEY, "bm")!!
-        } else {
-            channel = CHANNEL
-        }
-        if (json.has(TEL_KEY)) {
-            tel = json.getString(TEL_KEY, "")!!
-        } else {
-            tel = ""
-        }
-        if (json.has(MOBILE_KEY)) {
-            mobile = json.getString(MOBILE_KEY, "")!!
-        } else {
-            mobile = ""
-        }
-        if (json.has(CITY_ID_KEY)) {
-            try {
-                city_id = json.getInt(CITY_ID_KEY, 0)
-            } catch (e: Exception) {
-                city_id = 0
-            }
-        } else {
-            city_id = 0
-        }
-        if (json.has(AREA_ID_KEY)) {
-            try {
-                area_id = json.getInt(AREA_ID_KEY, 0)
-            } catch (e: Exception) {
-                area_id = 0
-            }
-        } else {
-            area_id = 0
-        }
-        if (json.has(ROAD_KEY)) {
-            road = json.getString(ROAD_KEY, "")!!
-        } else {
-            road = ""
-        }
-        if (json.has(ZIP_KEY)) {
-            try {
-                zip = json.getInt(ZIP_KEY, 0)
-            } catch (e: Exception) {
-                zip = 0
-            }
-        } else {
-            zip = 0
-        }
-        if (json.has(FB_KEY)) {
-            fb = json.getString(FB_KEY, "")!!
-        } else {
-            road = ""
-        }
-        if (json.has(LINE_KEY)) {
-            line = json.getString(LINE_KEY, "")!!
-        } else {
-            line = ""
-        }
-        if (json.has(PID_KEY)) {
-            pid = json.getString(PID_KEY, "")!!
-        } else {
-            pid = ""
-        }
-        if (json.has(AVATAR_KEY)) {
-            avatar = json.getString(AVATAR_KEY, "")!!
-        } else {
-            avatar = ""
-        }
-        if (json.has(DOB_KEY)) {
-            dob = json.getString(DOB_KEY, "")!!
-        } else {
-            dob = ""
-        }
-        if (json.has(SEX_KEY)) {
-            sex = json.getString(SEX_KEY, "M")!!
-        } else {
-            sex = "M"
-        }
-        if (json.has(SOCIAL_KEY)) {
-            social = json.getString(SOCIAL_KEY, "")!!
-        } else {
-            social = ""
-        }
-        var roleString = "member"
-        if (json.has(MEMBER_ROLE_KEY)) {
-            roleString = json.getString(MEMBER_ROLE_KEY, "member")!!
-        }
+        validate = json.getInt(VALIDATE_KEY, 0)
+        type = json.getInt(MEMBER_TYPE_KEY, 0)
+        nickname = json.getString(NICKNAME_KEY, "")!!
+        email = json.getString(EMAIL_KEY, "")!!
+        token = json.getString(TOKEN_KEY, "")!!
+        uid = json.getString(UID_KEY, "")!!
+        player_id = json.getString(PLAYERID_KEY, "")!!
+        name = json.getString(NAME_KEY, "")!!
+        channel = json.getString(CHANNEL_KEY, "bm")!!
+        tel = json.getString(TEL_KEY, "")!!
+        mobile = json.getString(MOBILE_KEY, "")!!
+        city_id = json.getInt(CITY_ID_KEY, 0)
+        area_id = json.getInt(AREA_ID_KEY, 0)
+        road = json.getString(ROAD_KEY, "")!!
+        zip = json.getInt(ZIP_KEY, 0)
+        fb = json.getString(FB_KEY, "")!!
+        line = json.getString(LINE_KEY, "")!!
+        pid = json.getString(PID_KEY, "")!!
+        avatar = json.getString(AVATAR_KEY, "")!!
+        dob = json.getString(DOB_KEY, "")!!
+        sex = json.getString(SEX_KEY, "M")!!
+        social = json.getString(SOCIAL_KEY, "")!!
+        val roleString = json.getString(MEMBER_ROLE_KEY, "member")!!
         role = roleString
         //role = MEMBER_ROLE.valueOf(roleString)
-
-        if (json.has(ISLOGGEDIN_KEY)) {
-            try {
-                isLoggedIn = json.getBoolean(ISLOGGEDIN_KEY, false)
-            } catch (e: Exception) {
-                isLoggedIn = false
-            }
-        } else {
-            isLoggedIn = false
-        }
+        isLoggedIn = json.getBoolean(ISLOGGEDIN_KEY, false)
         val value: Int = type and TEAM_TYPE
         if (value > 0) isTeamManager = true else isTeamManager= false
     }
@@ -239,6 +119,7 @@ class Member(data: JSONObject): SuperModel(data){
                 json.put(k1, tmp)
             }
         }
+        isLoggedIn = false
         //setMemberData(json)
         justGetMemberOne = false
     }

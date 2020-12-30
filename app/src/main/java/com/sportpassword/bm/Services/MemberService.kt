@@ -20,6 +20,7 @@ import com.facebook.GraphRequest
 import com.facebook.GraphResponse
 import com.facebook.Profile
 import com.facebook.login.LoginManager
+import com.sportpassword.bm.Controllers.MainActivity
 import com.sportpassword.bm.Models.*
 import kotlin.reflect.full.memberProperties
 import kotlin.reflect.jvm.javaField
@@ -28,11 +29,14 @@ import kotlin.reflect.jvm.javaField
 /**
  * Created by ives on 2018/2/4.
  */
-object MemberService: BaseService() {
+object MemberService: DataService() {
 
-    var success: Boolean = false
     var one: JSONObject? = null
     lateinit var blackLists: BlackLists
+
+    override fun getUpdateURL(): String {
+        return URL_MEMBER_UPDATE
+    }
 
     fun register(context: Context, email: String, password: String, repassword: String, complete: CompletionHandler) {
         val url = URL_REGISTER
@@ -531,8 +535,9 @@ object MemberService: BaseService() {
         Volley.newRequestQueue(context).add(request)
     }
 
-    fun logout() {
+    fun logout(mainActivity: MainActivity) {
         FBLogout()
+        mainActivity.session.resetMember()
         member.reset()
     }
     fun FBLogout() {
@@ -624,7 +629,7 @@ object MemberService: BaseService() {
         return Pair(res, "")
     }
 
-    private fun jsonToMember(json: JSONObject, context: Context) {
+    override fun jsonToMember(json: JSONObject, context: Context) {
 
         json.put(ISLOGGEDIN_KEY, true)
         val _member: SuperModel = JSONParse.parse<Member>(json)!!
@@ -648,7 +653,7 @@ object MemberService: BaseService() {
         }
         //session.dump()
         member.setMemberData(session)
-        member.memberPrint()
+        //member.memberPrint()
 
 //        val kClass = member::class
 //        val instance = kClass.objectInstance

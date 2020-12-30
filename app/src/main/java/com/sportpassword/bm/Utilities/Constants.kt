@@ -153,6 +153,7 @@ val MOBILE_KEY: String = "mobile"
 val TEL_KEY: String = "tel"
 val THUMB_KEY = "thumb"
 val TITLE_KEY: String = "title"
+val TYPE_KEY: String = "type"
 val UPDATED_AT_KEY: String = "updated_at"
 val VIMEO_KEY: String = "vimeo"
 val WEBSITE_KEY: String = "website"
@@ -227,7 +228,8 @@ val MEMBER_ARRAY: Map<String, Map<String, String>> = mapOf(
         MEMBER_TYPE_KEY to hashMapOf("text" to "會員類型","type" to "Int", "default" to "0"),
         SOCIAL_KEY to hashMapOf("type" to "String", "default" to ""),
         MEMBER_ROLE_KEY to mapOf("text" to "會員身份","type" to "String", "default" to "member"),
-        VALIDATE_KEY to mapOf("text" to "驗證","type" to "Int", "default" to "0")
+        VALIDATE_KEY to mapOf("text" to "驗證","type" to "Int", "default" to "0"),
+        TYPE_KEY to mapOf("text" to "類型","type" to "Int", "default" to "0")
 )
 
 // Notification Constants

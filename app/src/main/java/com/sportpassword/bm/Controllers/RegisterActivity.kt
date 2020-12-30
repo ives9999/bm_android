@@ -102,9 +102,17 @@ class RegisterActivity : MyTableVC1(), ImagePicker, ValueChangedDelegate {
 
         if (member.isLoggedIn) {
 
-            member.memberPrint()
+            //member.memberPrint()
             form.removeItems(arrayListOf(PASSWORD_KEY, REPASSWORD_KEY, PRIVACY_KEY))
+//            for (formItem in form.formItems) {
+//                println(formItem.name)
+//            }
+//            println("==========")
             form.formItems.removeAt(form.formItems.size - 1)
+//            for (formItem in form.formItems) {
+//                println(formItem.name)
+//            }
+            sections.removeAt(sections.size - 1)
 
             val keys: ArrayList<String> = arrayListOf()
             for (formItem in form.formItems) {
@@ -332,6 +340,48 @@ class RegisterActivity : MyTableVC1(), ImagePicker, ValueChangedDelegate {
             }
         }
 
+        Loading.show(mask)
+        val params: HashMap<String, String> = hashMapOf()
+        for (formItem in form.formItems) {
+
+            if (formItem.value != null) {
+                val value: String = formItem.value!!
+                params[formItem.name!!] = value
+            }
+            if (params.containsKey(CITY_KEY)) {
+                params[CITY_ID_KEY] = params[CITY_KEY]!!
+                params.remove(CITY_KEY)
+            }
+            if (params.containsKey(AREA_KEY)) {
+                params[AREA_ID_KEY] = params[AREA_KEY]!!
+                params.remove(AREA_KEY)
+            }
+            if (member_token.length > 0) {
+                params[TOKEN_KEY] = member_token
+            }
+        }
+        //println(params)
+
+        MemberService.update(this, params, "") { success ->
+            Loading.hide(mask)
+            if (success) {
+                if (MemberService.success) {
+                    var msg: String = ""
+                    if (this.member_token.isNotEmpty()) {
+                        msg = "修改成功"
+                    } else {
+                        msg = "註冊成功，已經寄出email與手機的認證訊息，請繼續完成認證程序"
+                    }
+                    Alert.show(this, "成功", msg) {
+                        prev()
+                    }
+                } else {
+                    Alert.show(this, "警告", MemberService.msg)
+                }
+            } else {
+                Alert.show(this, "警告", "伺服器錯誤，請稍後再試，或洽管理人員")
+            }
+        }
 
 //        val email: String = registerEmailTxt.text.toString()
 //        if (email.isEmpty()) {
