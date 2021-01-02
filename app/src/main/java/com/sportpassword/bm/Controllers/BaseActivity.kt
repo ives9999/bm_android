@@ -179,6 +179,7 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
         URL_MEMBER_UPDATE = URL_HOME + "member/update"
         URL_MOBILE_VALIDATE = URL_HOME + "member/mobile_validate"
         URL_ONE = "${URL_HOME}%s/one"
+        URL_PRODUCT_LIST = URL_HOME + "product/list"
         URL_REGISTER = URL_HOME + "register"
         URL_SEND_EMAIL_VALIDATE = URL_HOME + "member/sendEmailValidate"
         URL_SEND_MOBILE_VALIDATE = URL_HOME + "member/sendMobileValidate"
@@ -463,6 +464,11 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
         val i = Intent(this, StoreVC::class.java)
         i.putExtra("type", "store")
         i.putExtra("titleField", "name")
+        startActivity(i)
+    }
+
+    fun goProduct() {
+        val i = Intent(this, ProductVC::class.java)
         startActivity(i)
     }
 

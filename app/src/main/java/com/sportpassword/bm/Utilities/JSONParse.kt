@@ -102,6 +102,9 @@ class JSONParse {
                         } else if (key == "date_model") {
                             val date_model = JSONParse.parse<SuperDate>(value)!!
                             _setter(it, res, date_model)
+                        } else if (key == "prices") {
+                            val productPrice = JSONParse.parse<SuperProductPrice>(value)!!
+                            _setter(it, res, productPrice)
                         }
                         //val d = makeMap(value)
                         //_setter(it, res, d)

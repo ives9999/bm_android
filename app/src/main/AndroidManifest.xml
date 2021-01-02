@@ -137,6 +137,7 @@
         <activity android:name=".Controllers.CourseCalendarVC" />
         <activity android:name=".Controllers.SelectCityVC" />
         <activity android:name=".Controllers.SelectAreaVC" />
+        <activity android:name=".Controllers.ProductVC" />
     </application>
 
 </manifest>

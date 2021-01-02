@@ -3,6 +3,7 @@ package com.sportpassword.bm.Fragments
 
 import android.app.AlertDialog
 import android.content.Intent
+import android.content.pm.PackageInfo
 import android.os.Bundle
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
@@ -10,6 +11,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import androidx.core.content.pm.PackageInfoCompat
 import com.sportpassword.bm.Controllers.MainActivity
 import com.sportpassword.bm.Controllers.ShowPNVC
 
@@ -31,13 +33,13 @@ class MoreFragment : TabFragment() {
                               savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.tab_more, container, false)
 
-        val row1 = view.findViewById<ConstraintLayout>(R.id.more_coach_row)
-        row1.setOnClickListener { view ->
+        val row2 = view.findViewById<ConstraintLayout>(R.id.more_coach_row)
+        row2.setOnClickListener {
             (activity!! as MainActivity).goCoach()
         }
 
-        val row2 = view.findViewById<ConstraintLayout>(R.id.more_arena_row)
-        row2.setOnClickListener { view ->
+        val row3 = view.findViewById<ConstraintLayout>(R.id.more_arena_row)
+        row3.setOnClickListener {
             (activity!! as MainActivity).goArena()
 //            val fm = activity!!.supportFragmentManager
 //            val arenaFragment = ArenaFragment.newInstance("arena", screenWidth)
@@ -47,8 +49,8 @@ class MoreFragment : TabFragment() {
 //                    .commit()
         }
 
-        val row3 = view.findViewById<ConstraintLayout>(R.id.more_teach_row)
-        row3.setOnClickListener() { view ->
+        val row4 = view.findViewById<ConstraintLayout>(R.id.more_teach_row)
+        row4.setOnClickListener() {
             (activity!! as MainActivity).goTeach()
 
             //val mainActivity = activity as MainActivity
@@ -61,18 +63,19 @@ class MoreFragment : TabFragment() {
 //                    .addToBackStack(null)
 //                    .commit()
         }
-        val row4 = view.findViewById<ConstraintLayout>(R.id.more_pn_row)
-        row4.setOnClickListener() { view ->
+        val row5 = view.findViewById<ConstraintLayout>(R.id.more_pn_row)
+        row5.setOnClickListener() {
             val intent = Intent(activity, ShowPNVC::class.java)
 //            intent.putExtra("title", "報名臨打")
 //            intent.putExtra("content", "孫志煌報名2019-03-09 17:00的臨打")
             startActivity(intent)
 
         }
-        val row5 = view.findViewById<ConstraintLayout>(R.id.more_version_row)
-        row5.setOnClickListener { view ->
+        val row6 = view.findViewById<ConstraintLayout>(R.id.more_version_row)
+        row6.setOnClickListener {
             val p = context!!.applicationContext.packageManager.getPackageInfo(context!!.packageName, 0)
-            val v = p.versionCode
+            val v = PackageInfoCompat.getLongVersionCode(p).toInt()
+            //val v = p.versionCode
             val n = p.versionName
             val builder = AlertDialog.Builder(context!!)
             builder.setMessage(n + "#" + v)
@@ -81,7 +84,7 @@ class MoreFragment : TabFragment() {
         }
 
         val rowStore = view.findViewById<ConstraintLayout>(R.id.more_store_row)
-        rowStore.setOnClickListener() { view ->
+        rowStore.setOnClickListener() {
             (activity!! as MainActivity).goStore()
 
             //val mainActivity = activity as MainActivity
@@ -93,6 +96,11 @@ class MoreFragment : TabFragment() {
 //                    .replace(R.id.more_container, teachFragment)
 //                    .addToBackStack(null)
 //                    .commit()
+        }
+
+        val rowProduct = view.findViewById<ConstraintLayout>(R.id.more_product_row)
+        rowProduct.setOnClickListener {
+            (activity!! as MainActivity).goProduct()
         }
 
         return view

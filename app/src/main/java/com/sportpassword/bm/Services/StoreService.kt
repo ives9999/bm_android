@@ -16,7 +16,7 @@ object StoreService: DataService() {
         return URL_STORE_LIST
     }
     override fun getOneURL(): String {
-        return "$URL_ONE".format("store")
+        return URL_ONE.format("store")
     }
 
     override fun parseModels(json: JSONObject): SuperModel {
@@ -28,7 +28,7 @@ object StoreService: DataService() {
 
     override fun update(context: Context, _params: MutableMap<String, String>, filePath: String, complete: CompletionHandler) {
 
-        val url = "$URL_UPDATE".format("store")
+        val url = URL_UPDATE.format("store")
         //println(url)
 
         val header: MutableList<Pair<String, String>> = mutableListOf()
@@ -37,7 +37,7 @@ object StoreService: DataService() {
 
         //val PARAMS1: MutableMap<String, String> = PARAMS.toMutableMap()
         //var params: MutableMap<String, String> = _params
-        var params = _params.let { map1 ->
+        val params = _params.let { map1 ->
             PARAMS.let { map2 ->
                 map1 + map2
             }
