@@ -16,11 +16,7 @@ class SuperProduct(data: JSONObject): SuperModel(data) {
     var shipping: String = ""
     var gateway: String = ""
 
-    var price_dummy: Int = -1
-    var price_member: Int = -1
-    var price_nonmember: Int = -1
-    var shipping_fee: Int = -1
-
+    var content: String = ""
     var alias: String = ""
 
     var status: String = "online"

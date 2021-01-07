@@ -51,12 +51,60 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/imagesLbl"
-                    android:background="#FFEB3B"
-                    android:orientation="vertical" />
+                    android:orientation="vertical" >
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/contentLbl"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/imageContainerView"
+                    android:layout_marginLeft="12dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginBottom="8dp"
+                    android:text="詳細介紹"
+                    android:textColor="@color/MY_RED"
+                    android:textSize="24sp" />
+
+                <TextView
+                    android:id="@+id/contentView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/contentLbl"
+                    android:text="TextView"
+                    android:textColor="#FFFFFF"
+                    android:textSize="16sp" />
 
             </RelativeLayout>
         </ScrollView>
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+    <LinearLayout
+        android:id="@+id/footer"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_alignParentBottom="true"
+        android:background="@color/MY_GREEN"
+        android:gravity="center|center_vertical"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/submitBtn"
+            style="@style/submit_button"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:layout_marginRight="16dp"
+            android:onClick="submitBtnPressed"
+            android:text="購買" />
+        <Button
+            android:id="@+id/cancelBtn"
+            style="@style/cancel_button"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:onClick="cancelBtnPressed"
+            android:text="取消" />
+
+    </LinearLayout>
     <include layout="@layout/mask" />
 
 </RelativeLayout>

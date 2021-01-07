@@ -1,16 +1,20 @@
 package com.sportpassword.bm.Controllers
 
+import android.graphics.Bitmap
 import android.graphics.Color
 import android.os.Bundle
+import android.view.View
 import android.widget.ImageView
 import android.widget.LinearLayout
 import com.sportpassword.bm.Models.SuperProduct
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.ProductService
 import com.sportpassword.bm.Services.StoreService
+import com.sportpassword.bm.Utilities.BASE_URL
 import com.sportpassword.bm.Utilities.Loading
 import com.sportpassword.bm.Utilities.image
 import com.sportpassword.bm.member
+import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_show_product_vc.*
 import kotlinx.android.synthetic.main.mask.*
 
@@ -81,19 +85,30 @@ class ShowProductVC: BaseActivity() {
         val images: ArrayList<String> = superProduct!!.images
         images.forEachIndexed { idx, s ->
             val imageView: ImageView = ImageView(this)
-            imageView.scaleType = ImageView.ScaleType.FIT_CENTER
-            if (idx == 0) {
-                imageView.setBackgroundColor(Color.BLUE)
-            }
-            val lp = LinearLayout.LayoutParams(container.layoutParams.width, LinearLayout.LayoutParams.WRAP_CONTENT)
-            //lp.setMargins(0, 8, 0, 0)
+            container.addView(imageView)
+            //imageView.setBackgroundColor(Color.BLUE)
+            //imageView.scaleType = ImageView.ScaleType.FIT_START
+            //imageView.layoutParams.height = 400
+//            if (idx == 0) {
+//                imageView.setBackgroundColor(Color.BLUE)
+//            }
+            val lp = LinearLayout.LayoutParams(container.layoutParams.width, 800)
+            lp.setMargins(0, 0, 0, 16)
             imageView.layoutParams = lp
             s.image(this, imageView)
-            container.addView(imageView)
         }
     }
 
     fun setContent() {
+        contentView.text = superProduct!!.content
+    }
 
+    fun submitBtnPressed(view: View) {
+        //print("purchase")
+        //toOrder(superProduct: superProduct!)
+    }
+
+    fun cancelBtnPressed(view: View) {
+        prev()
     }
 }
