@@ -33,6 +33,7 @@ class SuperProduct(data: JSONObject): SuperModel(data) {
     var created_at_text: String = ""
     var featured_path: String = ""
     var thumb: String = ""
+    var images: ArrayList<String> = arrayListOf()
 
     var prices: SuperProductPrice = SuperProductPrice(data)
 }

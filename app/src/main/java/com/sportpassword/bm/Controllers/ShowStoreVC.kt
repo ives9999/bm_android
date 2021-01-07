@@ -130,7 +130,7 @@ class ShowStoreVC : BaseActivity(), IconCellDelegate {
     fun setFeatured() {
         if (superStore!!.featured_path.isNotEmpty()) {
             var featured_path = superStore!!.featured_path
-            featured_path.image(this@ShowStoreVC, featured)
+            featured_path.image(this, featured)
         } else {
             featured.setImageResource(R.drawable.loading_square_120)
         }

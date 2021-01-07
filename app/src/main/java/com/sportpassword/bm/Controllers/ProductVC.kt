@@ -80,7 +80,7 @@ class ProductVC : MyTableVC1() {
                     page = superProducts!!.page
                     perPage = superProducts!!.perPage
                     totalCount = superProducts!!.totalCount
-                    var _totalPage: Int = totalCount / perPage
+                    val _totalPage: Int = totalCount / perPage
                     totalPage = if (totalCount % perPage > 0) _totalPage + 1 else _totalPage
                     theFirstTime = false
                     val items = generateItems()
@@ -189,7 +189,7 @@ class ProductVC : MyTableVC1() {
         val items: ArrayList<Item> = arrayListOf()
         if (superProducts != null) {
             for (row in superProducts!!.rows) {
-                //row.print()
+//                row.print()
                 val productItem = ProductItem(this, row)
                 //productItem.list1CellDelegate = this
                 items.add(productItem)
@@ -204,10 +204,7 @@ class ProductVC : MyTableVC1() {
         val productItem = item as ProductItem
         val superProduct = productItem.row
         //superCourse.print()
-        val intent = Intent(this, ShowStoreVC::class.java)
-        intent.putExtra("product_token", superProduct.token)
-        intent.putExtra("title", superProduct.name)
-        startActivity(intent)
+        goShowProduct(superProduct.token, superProduct.name)
     }
 }
 

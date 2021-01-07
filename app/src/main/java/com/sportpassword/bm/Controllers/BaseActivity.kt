@@ -472,6 +472,13 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
         startActivity(i)
     }
 
+    fun goShowProduct(token: String, title: String) {
+        val i = Intent(this, ShowProductVC::class.java)
+        i.putExtra("product_token", token)
+        i.putExtra("title", title)
+        startActivity(i)
+    }
+
     fun goTimeTable(source: String, token: String) {
         val i = Intent(this, TimeTableVC::class.java)
         i.putExtra("source", source)

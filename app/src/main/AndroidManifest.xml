@@ -138,6 +138,7 @@
         <activity android:name=".Controllers.SelectCityVC" />
         <activity android:name=".Controllers.SelectAreaVC" />
         <activity android:name=".Controllers.ProductVC" />
+        <activity android:name=".Controllers.ShowProductVC" />
     </application>
 
 </manifest>

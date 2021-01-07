@@ -71,6 +71,14 @@ class JSONParse {
                                         }
 //                                        println(rows)
                                         _setter(it, res, rows)
+                                    } else if (key == "images") {
+                                        val rows: ArrayList<String> = arrayListOf()
+                                        val arr = value as JSONArray
+                                        for (i in 0..arr.length()-1) {
+                                            val image: String = arr[i].toString()
+                                            rows.add(image)
+                                        }
+                                        _setter(it, res, rows)
                                     } else {
                                         val valueType = tmps.get("value_type")!!
                                         val rows = setRows(kc, it, res, value, valueType)
@@ -132,15 +140,13 @@ class JSONParse {
             val child = Class.forName(packageName + "." + subType).kotlin
 
             val rows: ArrayList<Any> = arrayListOf()
-            if (child != null) {
-                val arr = value as JSONArray
-                for (i in 0..arr.length() - 1) {
-                    val j = arr[i] as JSONObject
-                    val row = newInstance(child, j)
-                    //val row = newInstance(child, j, obj)
-                    setter(child, j, row)
-                    rows.add(row)
-                }
+            val arr = value as JSONArray
+            for (i in 0..arr.length() - 1) {
+                val j = arr[i] as JSONObject
+                val row = newInstance(child, j)
+                //val row = newInstance(child, j, obj)
+                setter(child, j, row)
+                rows.add(row)
             }
             return rows
         }
