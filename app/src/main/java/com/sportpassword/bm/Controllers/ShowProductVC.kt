@@ -1,6 +1,9 @@
 package com.sportpassword.bm.Controllers
 
+import android.graphics.Color
 import android.os.Bundle
+import android.widget.ImageView
+import android.widget.LinearLayout
 import com.sportpassword.bm.Models.SuperProduct
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.ProductService
@@ -8,8 +11,7 @@ import com.sportpassword.bm.Services.StoreService
 import com.sportpassword.bm.Utilities.Loading
 import com.sportpassword.bm.Utilities.image
 import com.sportpassword.bm.member
-import kotlinx.android.synthetic.main.activity_show_product_vc.featured
-import kotlinx.android.synthetic.main.activity_show_product_vc.refresh
+import kotlinx.android.synthetic.main.activity_show_product_vc.*
 import kotlinx.android.synthetic.main.mask.*
 
 class ShowProductVC: BaseActivity() {
@@ -74,7 +76,21 @@ class ShowProductVC: BaseActivity() {
     }
 
     fun setImages() {
-
+        val container = imageContainerView
+        //var upView =
+        val images: ArrayList<String> = superProduct!!.images
+        images.forEachIndexed { idx, s ->
+            val imageView: ImageView = ImageView(this)
+            imageView.scaleType = ImageView.ScaleType.FIT_CENTER
+            if (idx == 0) {
+                imageView.setBackgroundColor(Color.BLUE)
+            }
+            val lp = LinearLayout.LayoutParams(container.layoutParams.width, LinearLayout.LayoutParams.WRAP_CONTENT)
+            //lp.setMargins(0, 8, 0, 0)
+            imageView.layoutParams = lp
+            s.image(this, imageView)
+            container.addView(imageView)
+        }
     }
 
     fun setContent() {

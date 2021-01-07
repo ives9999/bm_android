@@ -35,7 +35,7 @@
                     app:srcCompat="@drawable/loading_square" />
 
                 <TextView
-                    android:id="@+id/storeDetailLbl"
+                    android:id="@+id/imagesLbl"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/featured"
@@ -47,9 +47,11 @@
                     android:textSize="24sp" />
 
                 <LinearLayout
+                    android:id="@+id/imageContainerView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:id="@+id/imageContainerView"
+                    android:layout_below="@+id/imagesLbl"
+                    android:background="#FFEB3B"
                     android:orientation="vertical" />
 
             </RelativeLayout>
