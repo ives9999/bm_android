@@ -12,6 +12,7 @@ import android.graphics.Color
 import android.graphics.Paint
 import android.net.Uri
 import android.view.View
+import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.*
 import androidx.core.content.ContextCompat
@@ -789,6 +790,20 @@ fun Activity.hideKeyboard() {
         imm.hideSoftInputFromWindow(currentFocus!!.windowToken, 0);
     }
 }
+
+fun ViewGroup.showImages(images: ArrayList<String>, context: Context) {
+    images.forEachIndexed { _, s ->
+        val imageView: ImageView = ImageView(context)
+        this.addView(imageView)
+        imageView.scaleType = ImageView.ScaleType.FIT_START
+        imageView.adjustViewBounds = true
+        val lp = LinearLayout.LayoutParams(this.layoutParams.width, LinearLayout.LayoutParams.WRAP_CONTENT)
+        lp.setMargins(0, 0, 0, 16)
+        imageView.layoutParams = lp
+        s.image(context, imageView)
+    }
+}
+
 fun ImageView.setImage(name: String) {
     val id = context.resources.getIdentifier(name, "drawable", context.packageName)
     this.setImageResource(id)

@@ -13,6 +13,7 @@ import com.sportpassword.bm.Services.StoreService
 import com.sportpassword.bm.Utilities.BASE_URL
 import com.sportpassword.bm.Utilities.Loading
 import com.sportpassword.bm.Utilities.image
+import com.sportpassword.bm.Utilities.showImages
 import com.sportpassword.bm.member
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_show_product_vc.*
@@ -80,23 +81,8 @@ class ShowProductVC: BaseActivity() {
     }
 
     fun setImages() {
-        val container = imageContainerView
-        //var upView =
         val images: ArrayList<String> = superProduct!!.images
-        images.forEachIndexed { idx, s ->
-            val imageView: ImageView = ImageView(this)
-            container.addView(imageView)
-            //imageView.setBackgroundColor(Color.BLUE)
-            //imageView.scaleType = ImageView.ScaleType.FIT_START
-            //imageView.layoutParams.height = 400
-//            if (idx == 0) {
-//                imageView.setBackgroundColor(Color.BLUE)
-//            }
-            val lp = LinearLayout.LayoutParams(container.layoutParams.width, 800)
-            lp.setMargins(0, 0, 0, 16)
-            imageView.layoutParams = lp
-            s.image(this, imageView)
-        }
+        imageContainerView.showImages(images, this)
     }
 
     fun setContent() {
