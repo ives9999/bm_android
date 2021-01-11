@@ -47,6 +47,7 @@ import com.sportpassword.bm.Fragments.TeamFragment
 import com.sportpassword.bm.Models.Area
 import com.sportpassword.bm.Models.City
 import com.sportpassword.bm.Models.SuperData
+import com.sportpassword.bm.Models.SuperProduct
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.DataService
 import com.sportpassword.bm.Services.MemberService
@@ -476,6 +477,13 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
         val i = Intent(this, ShowProductVC::class.java)
         i.putExtra("product_token", token)
         i.putExtra("title", title)
+        startActivity(i)
+    }
+
+    fun goOrder(superProduct: SuperProduct) {
+        val i = Intent(this, OrderVC::class.java)
+        i.putExtra("superProduct", superProduct)
+        //i.putExtra("title", title)
         startActivity(i)
     }
 

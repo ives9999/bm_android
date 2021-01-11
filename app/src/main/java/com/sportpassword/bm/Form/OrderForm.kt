@@ -4,7 +4,7 @@ import com.sportpassword.bm.Controllers.BaseActivity
 import com.sportpassword.bm.Form.FormItem.*
 import com.sportpassword.bm.Utilities.*
 
-class RegisterForm(delegate: BaseActivity): BaseForm(null, null, "", false, delegate) {
+class OrderForm(delegate: BaseActivity): BaseForm(null, null, "", false, delegate) {
 
     override fun configureItems() {
 
@@ -41,5 +41,4 @@ class RegisterForm(delegate: BaseActivity): BaseForm(null, null, "", false, dele
                 section5,privacyItem
         )
     }
-
 }

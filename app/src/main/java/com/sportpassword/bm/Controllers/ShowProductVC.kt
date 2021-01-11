@@ -91,7 +91,7 @@ class ShowProductVC: BaseActivity() {
 
     fun submitBtnPressed(view: View) {
         //print("purchase")
-        //toOrder(superProduct: superProduct!)
+        goOrder(superProduct!!)
     }
 
     fun cancelBtnPressed(view: View) {

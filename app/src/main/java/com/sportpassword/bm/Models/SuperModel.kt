@@ -4,10 +4,11 @@ import com.sportpassword.bm.Utilities.JSONParse
 import com.sportpassword.bm.Utilities.isPrimitive
 import com.sportpassword.bm.Utilities.print
 import org.json.JSONObject
+import java.io.Serializable
 import kotlin.reflect.KProperty1
 import kotlin.reflect.full.memberProperties
 
-open class SuperModel(data: JSONObject) {
+open class SuperModel(data: JSONObject): Serializable {
 
     open fun toHashMap() {
 

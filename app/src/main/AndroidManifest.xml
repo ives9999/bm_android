@@ -31,7 +31,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".Controllers.ShowStoreVC"></activity>
+        <activity android:name=".Controllers.OrderVC"></activity>
+        <activity android:name=".Controllers.ShowStoreVC" />
         <activity android:name=".Controllers.StoreVC" />
         <activity android:name=".Controllers.SignupListVC" />
         <activity android:name=".Controllers.ShowCourseVC" />
