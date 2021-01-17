@@ -9,6 +9,8 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.sportpassword.bm.Adapters.GroupSection
 import com.sportpassword.bm.Adapters.ListAdapter
+import com.sportpassword.bm.Form.BaseForm
+import com.sportpassword.bm.Form.FormItem.FormItem
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Utilities.PERPAGE
 import com.xwray.groupie.ExpandableGroup
@@ -29,6 +31,8 @@ abstract class MyTableVC1 : BaseActivity() {
 
     protected var loading: Boolean = false
     protected lateinit var maskView: View
+
+    protected lateinit var form: BaseForm
 
     protected var theFirstTime: Boolean = true
     protected var page: Int = 1
@@ -72,7 +76,7 @@ abstract class MyTableVC1 : BaseActivity() {
             }
         } else {
             val items = generateItems()
-            println(items.size)
+            //println(items.size)
             adapter.addAll(items)
         }
         recyclerView.adapter = adapter
@@ -159,5 +163,18 @@ abstract class MyTableVC1 : BaseActivity() {
             refreshLayout.isRefreshing = false
         }
         refreshLayout.setOnRefreshListener(refreshListener)
+    }
+
+    open fun getFormItemFromKey(key: String): FormItem? {
+
+        var res: FormItem? = null
+        for (formItem in form.formItems) {
+            if (formItem.name == key) {
+                res = formItem
+                break
+            }
+        }
+
+        return res
     }
 }

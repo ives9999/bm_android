@@ -49,9 +49,6 @@ class RegisterActivity : MyTableVC1(), ImagePicker, ValueChangedDelegate {
     private var originMarginBottom = 0
     private lateinit var originScaleType: ImageView.ScaleType
 
-    //Form
-    lateinit var form: RegisterForm
-
     var section_keys: ArrayList<ArrayList<String>> = arrayListOf()
     private var isFeaturedChange: Boolean = false
 
@@ -523,19 +520,6 @@ class RegisterActivity : MyTableVC1(), ImagePicker, ValueChangedDelegate {
 //        item.value = text
 //        item.make()
 //    }
-
-    private fun getFormItemFromKey(key: String): FormItem? {
-
-        var res: FormItem? = null
-        for (formItem in form.formItems) {
-            if (formItem.name == key) {
-                res = formItem
-                break
-            }
-        }
-
-        return res
-    }
 
 //    fun getImageViewParams() {
 //        val l = edit_featured.layoutParams as LinearLayout.LayoutParams

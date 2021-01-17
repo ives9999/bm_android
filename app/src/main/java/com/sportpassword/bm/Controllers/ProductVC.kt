@@ -210,19 +210,24 @@ class ProductVC : MyTableVC1() {
 
 class ProductItem(val context: Context, val row: SuperProduct): Item() {
 
-    var list1CellDelegate: List1CellDelegate? = null
+    //var list1CellDelegate: List1CellDelegate? = null
 
     override fun bind(viewHolder: ViewHolder, position: Int) {
 
         //println(superStore);
         viewHolder.cityBtn.text = "購買"
+        viewHolder.cityBtn.setOnClickListener {
+            val a: ProductVC = context as ProductVC
+            a.goOrder(row)
+        }
+
         viewHolder.titleTxt.text = row.name
         Picasso.with(context)
                 .load(BASE_URL + row.featured_path)
                 .placeholder(R.drawable.loading_square_120)
                 .error(R.drawable.loading_square_120)
                 .into(viewHolder.listFeatured)
-        viewHolder.telTxt.text = "價格： " + row.prices.price_member + " 元"
+        viewHolder.telTxt.text = "價格： " + row.prices[0].price_member + " 元"
         viewHolder.business_timeTxt.visibility = View.GONE
         viewHolder.addressTxt.visibility = View.GONE
 

@@ -15,6 +15,8 @@ class SuperProduct(data: JSONObject): SuperModel(data) {
     var weight: String = ""
     var shipping: String = ""
     var gateway: String = ""
+    var order_min: Int = 1
+    var order_max: Int = 1
 
     var content: String = ""
     var alias: String = ""
@@ -29,9 +31,15 @@ class SuperProduct(data: JSONObject): SuperModel(data) {
     var created_at_text: String = ""
     var featured_path: String = ""
     var thumb: String = ""
+
     var images: ArrayList<String> = arrayListOf()
 
-    var prices: SuperProductPrice = SuperProductPrice(data)
+    var prices: ArrayList<SuperProductPrice> = arrayListOf()
+    var colors: HashMap<String, String> = hashMapOf()
+    var sizes: ArrayList<String> = arrayListOf()
+    var weights: ArrayList<String> = arrayListOf()
+    var shippings: ArrayList<String> = arrayListOf()
+    var gateways: ArrayList<String> = arrayListOf()
 }
 
 class SuperProducts(data: JSONObject): SuperModel(data) {

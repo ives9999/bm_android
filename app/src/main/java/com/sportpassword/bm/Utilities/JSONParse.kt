@@ -53,7 +53,7 @@ class JSONParse {
                                     if (key == "managers") {
                                         val rows: ArrayList<HashMap<String, Any>> = arrayListOf()
                                         val arr = value as JSONArray
-                                        for (i in 0..arr.length()-1) {
+                                        for (i in 0..arr.length() - 1) {
                                             val json = arr[i] as JSONObject
                                             val keys = json.keys()
                                             val map1: HashMap<String, Any> = hashMapOf()
@@ -61,7 +61,7 @@ class JSONParse {
                                                 val key1 = keys.next()
                                                 var value1 = json.get(key1)
                                                 if (value1 is Int) {
-                                                   value1 = value1 as Int
+                                                    value1 = value1 as Int
                                                 } else if (value1 is String) {
                                                     value1 = value1 as String
                                                 }
@@ -71,7 +71,16 @@ class JSONParse {
                                         }
 //                                        println(rows)
                                         _setter(it, res, rows)
-                                    } else if (key == "images") {
+                                    } else if (key == "prices") {
+                                        val rows: ArrayList<SuperProductPrice> = arrayListOf()
+                                        val arr = value as JSONArray
+                                        for (i in 0..arr.length() - 1) {
+                                            val json = arr[i] as JSONObject
+                                            val price = JSONParse.parse<SuperProductPrice>(json)
+                                            rows.add(price!!)
+                                        }
+                                        _setter(it, res, rows)
+                                    } else if (key == "images" || key == "sizes" || key == "weights" || key == "shippings" || key == "gateways") {
                                         val rows: ArrayList<String> = arrayListOf()
                                         val arr = value as JSONArray
                                         for (i in 0..arr.length()-1) {

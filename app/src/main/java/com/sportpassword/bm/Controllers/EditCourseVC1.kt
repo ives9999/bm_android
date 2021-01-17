@@ -46,9 +46,6 @@ class EditCourseVC1 : MyTableVC1(), ImagePicker, ValueChangedDelegate {
     var course_token: String? = null
     var coach_token: String? = null
 
-    //Form
-    var form: CourseForm = CourseForm()
-
     private var originW: Int = 0
     private var originH: Int = 0
     private var originMarginTop = 0
@@ -84,6 +81,7 @@ class EditCourseVC1 : MyTableVC1(), ImagePicker, ValueChangedDelegate {
         }
 
         setMyTitle(title)
+        form = CourseForm()
 
         imageView = edit_featured
         getImageViewParams()
@@ -433,19 +431,6 @@ class EditCourseVC1 : MyTableVC1(), ImagePicker, ValueChangedDelegate {
     }
 
     override fun privateChanged(checked: Boolean) {
-    }
-
-    private fun getFormItemFromKey(key: String): FormItem? {
-
-        var res: FormItem? = null
-        for (formItem in form.formItems) {
-            if (formItem.name == key) {
-                res = formItem
-                break
-            }
-        }
-
-        return res
     }
 
     fun getImageViewParams() {
