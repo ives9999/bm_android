@@ -57,21 +57,25 @@ class OrderVC : MyTableVC1(), ValueChangedDelegate {
         val nameItem = getFormItemFromKey(NAME_KEY)
         if (nameItem != null) {
             nameItem.value = member.name
+            nameItem.make()
         }
 
         val mobileItem = getFormItemFromKey(MOBILE_KEY)
         if (mobileItem != null) {
             mobileItem.value = member.mobile
+            mobileItem.make()
         }
 
         val emailItem = getFormItemFromKey(EMAIL_KEY)
         if (emailItem != null) {
             emailItem.value = member.email
+            emailItem.make()
         }
 
         val addressItem = getFormItemFromKey(ADDRESS_KEY)
         if (addressItem != null) {
             addressItem.value = member.road
+            addressItem.make()
         }
 
     }
