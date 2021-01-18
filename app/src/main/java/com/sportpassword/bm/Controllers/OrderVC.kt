@@ -10,10 +10,8 @@ import com.sportpassword.bm.Form.RegisterForm
 import com.sportpassword.bm.Form.ValueChangedDelegate
 import com.sportpassword.bm.Models.SuperProduct
 import com.sportpassword.bm.R
-import com.sportpassword.bm.Utilities.Alert
-import com.sportpassword.bm.Utilities.IndexPath
-import com.sportpassword.bm.Utilities.PRIVACY_KEY
-import com.sportpassword.bm.Utilities.SEX_KEY
+import com.sportpassword.bm.Utilities.*
+import com.sportpassword.bm.member
 import com.xwray.groupie.kotlinandroidextensions.Item
 import kotlinx.android.synthetic.main.activity_order_vc.*
 
@@ -54,6 +52,26 @@ class OrderVC : MyTableVC1(), ValueChangedDelegate {
         if (productNameItem != null) {
             productNameItem.value = superProduct!!.name
             productNameItem.make()
+        }
+
+        val nameItem = getFormItemFromKey(NAME_KEY)
+        if (nameItem != null) {
+            nameItem.value = member.name
+        }
+
+        val mobileItem = getFormItemFromKey(MOBILE_KEY)
+        if (mobileItem != null) {
+            mobileItem.value = member.mobile
+        }
+
+        val emailItem = getFormItemFromKey(EMAIL_KEY)
+        if (emailItem != null) {
+            emailItem.value = member.email
+        }
+
+        val addressItem = getFormItemFromKey(ADDRESS_KEY)
+        if (addressItem != null) {
+            addressItem.value = member.road
         }
 
     }
