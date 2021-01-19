@@ -1,5 +1,6 @@
 package com.sportpassword.bm.Controllers
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.AlertDialog
 import android.content.BroadcastReceiver
@@ -60,6 +61,10 @@ import kotlinx.android.synthetic.main.mask.*
 import org.jetbrains.anko.*
 import org.json.JSONArray
 import org.json.JSONObject
+import java.io.BufferedReader
+import java.io.IOException
+import java.io.InputStreamReader
+import java.lang.reflect.Method
 import java.net.HttpURLConnection
 import java.net.URL
 import java.util.*
@@ -692,14 +697,35 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
     }
 
     fun isEmulator(): Boolean {
-        return (Build.FINGERPRINT.startsWith("generic")
+
+        val result = (Build.FINGERPRINT.startsWith("google/sdk_gphone_")
+                && Build.FINGERPRINT.endsWith(":user/release-keys")
+                && Build.MANUFACTURER == "Google" && Build.PRODUCT.startsWith("sdk_gphone_") && Build.BRAND == "google"
+                && Build.MODEL.startsWith("sdk_gphone_"))
+                //
+                || Build.FINGERPRINT.startsWith("generic")
                 || Build.FINGERPRINT.startsWith("unknown")
                 || Build.MODEL.contains("google_sdk")
                 || Build.MODEL.contains("Emulator")
                 || Build.MODEL.contains("Android SDK built for x86")
+                //bluestacks
+                || "QC_Reference_Phone" == Build.BOARD && !"Xiaomi".equals(Build.MANUFACTURER, ignoreCase = true) //bluestacks
                 || Build.MANUFACTURER.contains("Genymotion")
+                || Build.HOST.startsWith("Build") //MSI App Player
                 || Build.BRAND.startsWith("generic") && Build.DEVICE.startsWith("generic")
-                || "google_sdk" == Build.PRODUCT)
+                || Build.PRODUCT == "google_sdk"
+                // another Android SDK emulator check
+                || SystemProperties.getProp("ro.kernel.qemu") == "1"
+        return result
+
+//        return (Build.FINGERPRINT.startsWith("generic")
+//                || Build.FINGERPRINT.startsWith("unknown")
+//                || Build.MODEL.contains("google_sdk")
+//                || Build.MODEL.contains("Emulator")
+//                || Build.MODEL.contains("Android SDK built for x86")
+//                || Build.MANUFACTURER.contains("Genymotion")
+//                || Build.BRAND.startsWith("generic") && Build.DEVICE.startsWith("generic")
+//                || "google_sdk" == Build.PRODUCT)
     }
 
     fun TextView.setMyText(value: String, default: String = "") {
@@ -1796,6 +1822,35 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
 
     }
 
+}
+
+object SystemProperties {
+    private var failedUsingReflection = false
+    private var getPropMethod: Method? = null
+
+    @SuppressLint("PrivateApi")
+    fun getProp(propName: String, defaultResult: String = ""): String {
+        if (!failedUsingReflection) try {
+            if (getPropMethod == null) {
+                val clazz = Class.forName("android.os.SystemProperties")
+                getPropMethod = clazz.getMethod("get", String::class.java, String::class.java)
+            }
+            return getPropMethod!!.invoke(null, propName, defaultResult) as String? ?: defaultResult
+        } catch (e: Exception) {
+            getPropMethod = null
+            failedUsingReflection = true
+        }
+        var process: Process? = null
+        try {
+            process = Runtime.getRuntime().exec("getprop \"$propName\" \"$defaultResult\"")
+            val reader = BufferedReader(InputStreamReader(process.inputStream))
+            return reader.readLine()
+        } catch (e: IOException) {
+        } finally {
+            process?.destroy()
+        }
+        return defaultResult
+    }
 }
 
 
