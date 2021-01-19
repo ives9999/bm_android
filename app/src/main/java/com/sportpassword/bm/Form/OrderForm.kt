@@ -4,18 +4,19 @@ import com.sportpassword.bm.Controllers.BaseActivity
 import com.sportpassword.bm.Form.FormItem.*
 import com.sportpassword.bm.Utilities.*
 
-class OrderForm(type: String, delegate: BaseActivity): BaseForm(null, null, "", false, delegate) {
-
-    var type: String = "clothes"
+class OrderForm(var type: String, delegate: BaseActivity) : BaseForm(null, null, "", false, delegate) {
 
     init {
-        this.type = type
+        configureItems()
     }
 
     override fun configureItems() {
 
         val section1 = SectionFormItem("商品名稱")
         val productItem = PlainFormItem("Product_Name", "商品")
+
+        formItems = arrayListOf(section1,productItem)
+        formItems.addAll(setAttributesItem())
 
         val section3 = SectionFormItem("款項")
         val subTotalItem = PlainFormItem(SUBTOTAL_KEY, "小計", "元", true)
@@ -28,24 +29,24 @@ class OrderForm(type: String, delegate: BaseActivity): BaseForm(null, null, "", 
         val emailItem = PlainFormItem(EMAIL_KEY, "EMail")
         val addressItem = PlainFormItem(ADDRESS_KEY, "住址")
 
-        formItems = arrayListOf(
-                section1,productItem,
+        formItems.addAll(arrayListOf(
                 section3,subTotalItem,shippingFeeItem,totalItem,
-                section4,nameItem,mobileItem,emailItem,addressItem
+                section4,nameItem,mobileItem,emailItem,addressItem)
         )
     }
 
     fun setAttributesItem(): ArrayList<FormItem> {
 
-        val formItem: ArrayList<FormItem> = arrayListOf()
+        val formItems: ArrayList<FormItem> = arrayListOf()
         val section2 = SectionFormItem("商品選項")
-        formItem.add(section2)
+        formItems.add(section2)
 
         if (this.type == "clothes") {
-            //val colorItem = Color1FormItem(true)
-            //formItem.add(colorItem)
+            val colorItem = TagFormItem(COLOR_KEY, "顏色", true)
+            val sizeItem = TagFormItem(SIZE_KEY, "尺寸", true)
+            formItems.addAll(arrayListOf(colorItem, sizeItem))
         }
 
-        return formItem
+        return formItems
     }
 }

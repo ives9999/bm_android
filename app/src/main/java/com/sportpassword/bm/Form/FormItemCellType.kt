@@ -18,7 +18,6 @@ enum class FormItemCellType {
     privacy,
     plain,
     tag,
-    color1,
     clothesSize,
     number,
     weight,
@@ -41,7 +40,8 @@ enum class FormItemCellType {
             privacy -> return R.layout.formitem_privacy
             plain -> return R.layout.formitem_plain
             tag -> return R.layout.formitem_tag
-            //tag -> return R.layout.formitem_tag
+            clothesSize -> return R.layout.formitem_tag
+            weight -> return R.layout.formitem_tag
 
             else -> return R.layout.formitem_more
         }
