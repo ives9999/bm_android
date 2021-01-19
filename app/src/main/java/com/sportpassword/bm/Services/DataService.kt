@@ -54,7 +54,7 @@ open class DataService: BaseService() {
         if (token != null) {
             url = url + "/" + token
         }
-        //println(url)
+        println(url)
 
         val header: MutableList<Pair<String, String>> = mutableListOf()
         header.add(Pair("Accept","application/json"))
@@ -106,9 +106,10 @@ open class DataService: BaseService() {
             }
         }
     }
+
     fun getList(context: Context, type:String, titleField:String, params: HashMap<String,Any>, page:Int, perPage:Int, filter:Array<Array<Any>>?, complete:CompletionHandler) {
         val url = "$URL_LIST".format(type)
-//        println(url)
+        //println(url)
 //        println(params)
 
 //        params.put("city_type", "simple")
