@@ -124,7 +124,7 @@ class OrderVC : MyTableVC1(), ValueChangedDelegate {
             } else if (formItem.uiProperties.cellType == FormItemCellType.plain) {
                 formItemAdapter = PlainAdapter(form, idx, indexPath, clearClick, promptClick)
             } else if (formItem.uiProperties.cellType == FormItemCellType.tag) {
-                formItemAdapter = TagAdapter(form, idx, indexPath, clearClick, promptClick)
+                formItemAdapter = TagAdapter(this, form, idx, indexPath, clearClick, promptClick)
             }
 
             if (formItemAdapter != null) {
