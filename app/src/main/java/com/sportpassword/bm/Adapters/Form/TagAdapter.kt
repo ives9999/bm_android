@@ -4,6 +4,7 @@ import android.content.Context
 import android.view.View
 import android.view.ViewGroup
 import android.widget.RadioButton
+import android.widget.TableLayout
 import android.widget.TableRow
 import com.sportpassword.bm.Form.BaseForm
 import com.sportpassword.bm.Form.FormItem.TagFormItem
@@ -11,7 +12,8 @@ import com.sportpassword.bm.R
 import com.sportpassword.bm.Utilities.IndexPath
 import com.sportpassword.bm.Views.Tag
 import com.xwray.groupie.kotlinandroidextensions.ViewHolder
-import kotlinx.android.synthetic.main.formitem_sex.*
+import kotlinx.android.synthetic.main.formitem_tag.*
+import kotlinx.android.synthetic.main.tag.view.*
 
 class TagAdapter(form: BaseForm, idx: Int, indexPath: IndexPath, clearClick:(idx: Int)->Unit, promptClick:(idx: Int)->Unit): FormItemAdapter(form, idx, indexPath, clearClick, promptClick) {
 
@@ -43,23 +45,24 @@ class TagAdapter(form: BaseForm, idx: Int, indexPath: IndexPath, clearClick:(idx
         val _formItem: TagFormItem = formItem as TagFormItem
         if (count == 0) {
             tagDicts = _formItem.tags
+            count = tagDicts.size
         }
         val q: Int = count / column
         val r: Int = count % column
         if (r > 0) { row = q + 1 } else  { row = q }
 
+        val tableRow: TableRow = TableRow(context)
+        tableRow.layoutParams = ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT)
+        viewHolder.tag_container.addView(tableRow)
         count = 0
         for (tagDict in tagDicts) {
             for ((key, value) in tagDict) {
                 val tag: Tag = Tag(context)
-                val tableRow: TableRow = TableRow(context)
-                tableRow.layoutParams = ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT)
                 tableRow.addView(tag)
-                viewHolder.containerView.addView(tableRow)
-                tag.tag = count
+                //tag.tag = count
+                tag.tag_view.text = value
                 //tag.key = key
                 //tag.value = value
-                //tag.text = value
 
 //                for (idx in _formItem.selected_idxs) {
 //                    if (count == idx) {

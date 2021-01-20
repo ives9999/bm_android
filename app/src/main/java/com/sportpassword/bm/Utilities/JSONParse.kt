@@ -122,6 +122,14 @@ class JSONParse {
                         } else if (key == "prices") {
                             val productPrice = JSONParse.parse<SuperProductPrice>(value)!!
                             _setter(it, res, productPrice)
+                        } else if (key == "colors") {
+                            val d: HashMap<String, String> = hashMapOf()
+                            val keys = value.keys()
+                            while (keys.hasNext()) {
+                                val key = keys.next()
+                                d[key] = value[key].toString()
+                            }
+                            _setter(it, res, d)
                         }
                         //val d = makeMap(value)
                         //_setter(it, res, d)

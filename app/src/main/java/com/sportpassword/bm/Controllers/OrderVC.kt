@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.View
 import com.sportpassword.bm.Adapters.Form.*
 import com.sportpassword.bm.Form.FormItem.FormItem
+import com.sportpassword.bm.Form.FormItem.TagFormItem
 import com.sportpassword.bm.Form.FormItemCellType
 import com.sportpassword.bm.Form.OrderForm
 import com.sportpassword.bm.Form.RegisterForm
@@ -78,6 +79,16 @@ class OrderVC : MyTableVC1(), ValueChangedDelegate {
             addressItem.make()
         }
 
+        val colorItem = getFormItemFromKey(COLOR_KEY)
+        if (colorItem != null) {
+            val _colorItem = colorItem as TagFormItem
+            val res: ArrayList<HashMap<String, String>> = arrayListOf()
+            for ((key, value) in superProduct!!.colors) {
+                val dict: HashMap<String, String> = hashMapOf(key to value)
+                res.add(dict)
+            }
+            colorItem.tags = res
+        }
     }
 
     override fun generateItems(section: Int): ArrayList<Item> {
@@ -124,7 +135,7 @@ class OrderVC : MyTableVC1(), ValueChangedDelegate {
             } else if (formItem.uiProperties.cellType == FormItemCellType.plain) {
                 formItemAdapter = PlainAdapter(form, idx, indexPath, clearClick, promptClick)
             } else if (formItem.uiProperties.cellType == FormItemCellType.tag) {
-                formItemAdapter = TagAdapter(this, form, idx, indexPath, clearClick, promptClick)
+                formItemAdapter = TagAdapter(form, idx, indexPath, clearClick, promptClick)
             }
 
             if (formItemAdapter != null) {

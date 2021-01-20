@@ -34,7 +34,7 @@
             tools:text="title" />
 
         <TableLayout
-            android:id="@+id/containerView"
+            android:id="@+id/tag_container"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
