@@ -559,6 +559,10 @@ class RegisterActivity : MyTableVC1(), ImagePicker, ValueChangedDelegate {
 
     }
 
+    override fun tagChecked(checked: Boolean, name: String, key: String, value: String) {}
+
+    override fun stepperValueChanged(number: Int, name: String) {}
+
     override fun privateChanged(checked: Boolean) {
         val formItem = getFormItemFromKey(PRIVACY_KEY)
         if (formItem != null) {

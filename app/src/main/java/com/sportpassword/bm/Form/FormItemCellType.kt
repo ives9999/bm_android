@@ -42,6 +42,7 @@ enum class FormItemCellType {
             tag -> return R.layout.formitem_tag
             clothesSize -> return R.layout.formitem_tag
             weight -> return R.layout.formitem_tag
+            number -> return R.layout.formitem_number
 
             else -> return R.layout.formitem_more
         }

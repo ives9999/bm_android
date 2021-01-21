@@ -43,8 +43,9 @@ class OrderForm(var type: String, delegate: BaseActivity) : BaseForm(null, null,
 
         if (this.type == "clothes") {
             val colorItem = TagFormItem(COLOR_KEY, "顏色", true)
-            val sizeItem = TagFormItem(SIZE_KEY, "尺寸", true)
-            formItems.addAll(arrayListOf(colorItem, sizeItem))
+            val sizeItem = TagFormItem(CLOTHES_SIZE_KEY, "尺寸", true)
+            val numberItem = NumberFormItem()
+            formItems.addAll(arrayListOf(colorItem, sizeItem, numberItem))
         }
 
         return formItems

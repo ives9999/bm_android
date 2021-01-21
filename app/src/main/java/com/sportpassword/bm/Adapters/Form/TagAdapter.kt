@@ -7,6 +7,7 @@ import android.widget.RadioButton
 import android.widget.TableLayout
 import android.widget.TableRow
 import com.sportpassword.bm.Form.BaseForm
+import com.sportpassword.bm.Form.FormItem.FormItem
 import com.sportpassword.bm.Form.FormItem.TagFormItem
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Utilities.IndexPath
@@ -26,6 +27,7 @@ class TagAdapter(form: BaseForm, idx: Int, indexPath: IndexPath, clearClick:(idx
 
     var tagLabels: ArrayList<Tag> = arrayListOf()
     var tagDicts: ArrayList<HashMap<String, String>> = arrayListOf()
+    lateinit var formItem: FormItem
 
     override fun getLayout(): Int {
         return R.layout.formitem_tag
@@ -33,6 +35,7 @@ class TagAdapter(form: BaseForm, idx: Int, indexPath: IndexPath, clearClick:(idx
 
     override fun bind(viewHolder: ViewHolder, position: Int) {
         val formItem = form.formItems[position]
+        this.formItem = formItem
         viewHolder.title.text = formItem.title
         val context: Context = viewHolder.title.context
 
@@ -51,15 +54,21 @@ class TagAdapter(form: BaseForm, idx: Int, indexPath: IndexPath, clearClick:(idx
         val (q, r) = count.quotientAndRemainder(column)
         if (r > 0) { row = q + 1 } else  { row = q }
 
-        val tableRow: TableRow = TableRow(context)
-        tableRow.layoutParams = ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT)
-        viewHolder.tag_container.addView(tableRow)
+        var tableRow: TableRow? = null
         count = 0
         for (tagDict in tagDicts) {
-            val (q1, r1) = count.quotientAndRemainder(column)
+            var (rowCount, columnCount) = count.quotientAndRemainder(column)
+            rowCount++
+            columnCount++
+            if (columnCount == 1) {
+                tableRow = TableRow(context)
+                tableRow.layoutParams = ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT)
+                viewHolder.tag_container.addView(tableRow)
+            }
+
             for ((key, value) in tagDict) {
                 val tag: Tag = Tag(context)
-                tableRow.addView(tag)
+                tableRow!!.addView(tag)
                 tag.key = key
                 tag.value = value
                 tag.tag = count
@@ -79,22 +88,24 @@ class TagAdapter(form: BaseForm, idx: Int, indexPath: IndexPath, clearClick:(idx
             }
             count = count + 1
         }
-
-
-//        viewHolder.sex.setOnCheckedChangeListener{ _, i ->
-//            if (valueChangedDelegate != null) {
-//                val radio = viewHolder.sex.findViewById<RadioButton>(i)
-//                valueChangedDelegate!!.sexChanged(radio.tag.toString())
-//            }
-//        }
     }
 
     fun handleTap(view: View) {
         val tag: Tag = view as Tag
         //println(tag.tag)
+        val _formItem: TagFormItem = formItem as TagFormItem
+        val idx: Int = tag.tag as Int
+        _formItem.selected_idxs = arrayListOf(idx)
+        _formItem.value = tag.key
+        _formItem.show = tag.value
+
         tag.isChecked = !tag.isChecked
         tag.setSelectedStyle()
         clearOtherTagSelected(tag)
+        if (valueChangedDelegate != null) {
+            valueChangedDelegate!!.tagChecked(tag.isChecked, this.formItem.name!!, tag.key, tag.value)
+        }
+
     }
 
     fun clearOtherTagSelected(selectedTag: Tag) {

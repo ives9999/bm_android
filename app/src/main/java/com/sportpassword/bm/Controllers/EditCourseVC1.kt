@@ -427,11 +427,13 @@ class EditCourseVC1 : MyTableVC1(), ImagePicker, ValueChangedDelegate {
         item.make()
     }
 
-    override fun sexChanged(sex: String) {
-    }
+    override fun sexChanged(sex: String) {}
 
-    override fun privateChanged(checked: Boolean) {
-    }
+    override fun privateChanged(checked: Boolean) {}
+
+    override fun tagChecked(checked: Boolean, name: String, key: String, value: String) {}
+
+    override fun stepperValueChanged(number: Int, name: String) {}
 
     fun getImageViewParams() {
         val l = edit_featured.layoutParams as LinearLayout.LayoutParams
