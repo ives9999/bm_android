@@ -10,6 +10,7 @@ import com.sportpassword.bm.Form.BaseForm
 import com.sportpassword.bm.Form.FormItem.TagFormItem
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Utilities.IndexPath
+import com.sportpassword.bm.Utilities.quotientAndRemainder
 import com.sportpassword.bm.Views.Tag
 import com.xwray.groupie.kotlinandroidextensions.ViewHolder
 import kotlinx.android.synthetic.main.formitem_tag.*
@@ -23,7 +24,7 @@ class TagAdapter(form: BaseForm, idx: Int, indexPath: IndexPath, clearClick:(idx
     val column: Int = 3
     var row: Int = 0
 
-    //var tagLabels: [Tag] = [Tag]()
+    var tagLabels: ArrayList<Tag> = arrayListOf()
     var tagDicts: ArrayList<HashMap<String, String>> = arrayListOf()
 
     override fun getLayout(): Int {
@@ -47,8 +48,7 @@ class TagAdapter(form: BaseForm, idx: Int, indexPath: IndexPath, clearClick:(idx
             tagDicts = _formItem.tags
             count = tagDicts.size
         }
-        val q: Int = count / column
-        val r: Int = count % column
+        val (q, r) = count.quotientAndRemainder(column)
         if (r > 0) { row = q + 1 } else  { row = q }
 
         val tableRow: TableRow = TableRow(context)
@@ -56,31 +56,28 @@ class TagAdapter(form: BaseForm, idx: Int, indexPath: IndexPath, clearClick:(idx
         viewHolder.tag_container.addView(tableRow)
         count = 0
         for (tagDict in tagDicts) {
+            val (q1, r1) = count.quotientAndRemainder(column)
             for ((key, value) in tagDict) {
                 val tag: Tag = Tag(context)
                 tableRow.addView(tag)
-                //tag.tag = count
+                tag.key = key
+                tag.value = value
+                tag.tag = count
                 tag.tag_view.text = value
-                //tag.key = key
-                //tag.value = value
+                tag.setOnClickListener {
+                    handleTap(it)
+                }
 
-//                for (idx in _formItem.selected_idxs) {
-//                    if (count == idx) {
-//                        tag.selected = true
-//                        tag.setSelectedStyle()
-//                    }
-//                }
-    //            val gestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(handleTap(sender:)))
-    //            tag.addGestureRecognizer(gestureRecognizer)
-    //            tagLabels.append(tag)
-
-                //tag.backgroundColor = UIColor.red
-                //res = count.quotientAndRemainder(dividingBy: column)
-                //print(res)
-                //setMargin(block: tag, row_count: res.quotient + 1, column_count: res.remainder + 1)
-                count = count + 1
+                for (idx in _formItem.selected_idxs) {
+                    if (count == idx) {
+                        tag.isChecked = true
+                        tag.setSelectedStyle()
+                    }
+                }
+                tagLabels.add(tag)
                 break
             }
+            count = count + 1
         }
 
 
@@ -91,4 +88,43 @@ class TagAdapter(form: BaseForm, idx: Int, indexPath: IndexPath, clearClick:(idx
 //            }
 //        }
     }
+
+    fun handleTap(view: View) {
+        val tag: Tag = view as Tag
+        //println(tag.tag)
+        tag.isChecked = !tag.isChecked
+        tag.setSelectedStyle()
+        clearOtherTagSelected(tag)
+    }
+
+    fun clearOtherTagSelected(selectedTag: Tag) {
+        if (selectedTag.isChecked) {
+            for (tagLabel in tagLabels) {
+                if (tagLabel != selectedTag) {
+                    tagLabel.isChecked = false
+                    tagLabel.unSelectedStyle()
+                }
+            }
+        }
+    }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

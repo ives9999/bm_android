@@ -659,6 +659,12 @@ fun String.image(context: Context, imageView: ImageView) {
             .into(imageView)
 }
 
+fun Int.quotientAndRemainder(dividingBy: Int): Pair<Int, Int> {
+    val q: Int = this / dividingBy
+    val r: Int = this % dividingBy
+    return Pair(q, r)
+}
+
 fun Date.toMyString(pattern: String = "yyyy-MM-dd HH:mm:ss"): String {
     val formatter = SimpleDateFormat(pattern)
     return formatter.format(this)

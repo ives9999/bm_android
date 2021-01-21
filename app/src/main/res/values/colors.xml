@@ -23,5 +23,11 @@
     <color name="solid_black">#ff000000</color>
     <color name="photo_crop_dim_color">#cc000000</color>
     <color name="photo_crop_highlight_color">#fff</color>
+
+    <color name="TAG_UNSELECTED_BACKGROUND">#b9b9b9</color>
+    <color name="TAG_UNSELECTED_TEXTCOLOR">#000000</color>
+    <color name="TAG_SELECTED_BACKGROUND">#000000</color>
+    <color name="TAG_SELECTED_BOLDCOLOR">#F11B90</color>
+    <color name="TAG_SELECTED_TEXTCOLOR">#FFFFFF</color>
 </resources>
 
