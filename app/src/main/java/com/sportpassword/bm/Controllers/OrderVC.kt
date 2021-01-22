@@ -43,14 +43,13 @@ class OrderVC : MyTableVC1(), ValueChangedDelegate {
             sections = form.getSections()
             section_keys = form.getSectionKeys()
 
-            initData()
-
             recyclerView = editTableView
             initAdapter(true)
 
             refreshLayout = refresh
             setRefreshListener()
 
+            initData()
         } else {
             warning("傳送商品資料錯誤，請洽管理員，或稍後再試")
         }
@@ -113,6 +112,16 @@ class OrderVC : MyTableVC1(), ValueChangedDelegate {
             numberItem.min = superProduct!!.order_min
             numberItem.max = superProduct!!.order_max
         }
+
+        if (getFormItemFromKey(SUBTOTAL_KEY) != null) {
+            selected_price = superProduct!!.prices[selected_idx].price_member
+            updateSubTotal()
+        }
+
+        if (getFormItemFromKey(SHIPPING_FEE_KEY) != null) {
+            shippingFee = superProduct!!.prices[selected_idx].shipping_fee
+            updateShippingFee()
+        }
     }
 
     override fun generateItems(section: Int): ArrayList<Item> {
@@ -161,7 +170,7 @@ class OrderVC : MyTableVC1(), ValueChangedDelegate {
             } else if (formItem.uiProperties.cellType == FormItemCellType.tag) {
                 formItemAdapter = TagAdapter(form, idx, indexPath, clearClick, promptClick)
             } else if (formItem.uiProperties.cellType == FormItemCellType.number) {
-
+                formItemAdapter = NumberAdapter(form, idx, indexPath, clearClick, promptClick)
             }
 
             if (formItemAdapter != null) {
@@ -202,7 +211,7 @@ class OrderVC : MyTableVC1(), ValueChangedDelegate {
             total = sub_total + shippingFee
             priceItem.value = total.toString()
             priceItem.make()
-            //tableView.reloadData()
+            //adapter.notifyDataSetChanged()
             notifyChanged(true)
         }
     }

@@ -54,6 +54,7 @@ class TagAdapter(form: BaseForm, idx: Int, indexPath: IndexPath, clearClick:(idx
         val (q, r) = count.quotientAndRemainder(column)
         if (r > 0) { row = q + 1 } else  { row = q }
 
+        viewHolder.tag_container.removeAllViews()
         var tableRow: TableRow? = null
         count = 0
         for (tagDict in tagDicts) {
