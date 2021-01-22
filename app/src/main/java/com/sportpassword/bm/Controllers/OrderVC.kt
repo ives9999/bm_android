@@ -87,30 +87,60 @@ class OrderVC : MyTableVC1(), ValueChangedDelegate {
             addressItem.make()
         }
 
-        val colorItem = getFormItemFromKey(COLOR_KEY) as TagFormItem
+        val colorItem = getFormItemFromKey(COLOR_KEY)
         if (colorItem != null) {
+            val item = colorItem as TagFormItem
             val res: ArrayList<HashMap<String, String>> = arrayListOf()
             for ((key, value) in superProduct!!.colors) {
                 val dict: HashMap<String, String> = hashMapOf(key to value)
                 res.add(dict)
             }
-            colorItem.tags = res
+            item.tags = res
         }
 
-        val clothesSizeItem = getFormItemFromKey(CLOTHES_SIZE_KEY) as TagFormItem
+        val clothesSizeItem = getFormItemFromKey(CLOTHES_SIZE_KEY)
         if (clothesSizeItem != null) {
+            val item = clothesSizeItem as TagFormItem
             val res: ArrayList<HashMap<String, String>> = arrayListOf()
             for (size in superProduct!!.sizes) {
                 val dict: HashMap<String, String> = hashMapOf(size to size)
                 res.add(dict)
             }
-            clothesSizeItem.tags = res
+            item.tags = res
         }
 
-        val numberItem = getFormItemFromKey(NUMBER_KEY) as NumberFormItem
+        val weightItem = getFormItemFromKey(WEIGHT_KEY)
+        if (weightItem != null) {
+            val item = weightItem as TagFormItem
+            val res: ArrayList<HashMap<String, String>> = arrayListOf()
+            for (weight in superProduct!!.weights) {
+                val dict: HashMap<String, String> = hashMapOf(weight to weight)
+                res.add(dict)
+            }
+            item.tags = res
+        }
+
+        if (superProduct!!.type == "mejump") {
+            val typeItem = getFormItemFromKey("type")
+            if (typeItem != null) {
+                val item = typeItem as TagFormItem
+                val res: ArrayList<HashMap<String, String>> = arrayListOf()
+                for (value in superProduct!!.prices) {
+                    val type: String = value.price_title
+                    val typePrice: String = value.price_member.toString()
+                    val str: String = type + " " + typePrice
+                    val dict: HashMap<String, String> = hashMapOf(value.id.toString() to str)
+                    res.add(dict)
+                }
+                item.tags = res
+            }
+        }
+
+        val numberItem = getFormItemFromKey(NUMBER_KEY)
         if (numberItem != null) {
-            numberItem.min = superProduct!!.order_min
-            numberItem.max = superProduct!!.order_max
+            val item = numberItem as NumberFormItem
+            item.min = superProduct!!.order_min
+            item.max = superProduct!!.order_max
         }
 
         if (getFormItemFromKey(SUBTOTAL_KEY) != null) {
@@ -170,7 +200,12 @@ class OrderVC : MyTableVC1(), ValueChangedDelegate {
             } else if (formItem.uiProperties.cellType == FormItemCellType.tag) {
                 formItemAdapter = TagAdapter(form, idx, indexPath, clearClick, promptClick)
             } else if (formItem.uiProperties.cellType == FormItemCellType.number) {
-                formItemAdapter = NumberAdapter(form, idx, indexPath, clearClick, promptClick)
+                val _formItem = formItem as NumberFormItem
+                var number: Int = 1
+                if (_formItem.value != null) {
+                    number = _formItem.value!!.toInt()
+                }
+                formItemAdapter = NumberAdapter(form, idx, indexPath, number, _formItem.min, _formItem.max, clearClick, promptClick)
             }
 
             if (formItemAdapter != null) {
@@ -228,13 +263,15 @@ class OrderVC : MyTableVC1(), ValueChangedDelegate {
                     updateSubTotal()
                     break
                 }
-                idx = idx + 1
+                idx += 1
             }
         }
     }
 
     override fun stepperValueChanged(number: Int, name: String) {
         selected_number = number
+        val numberFormItem: NumberFormItem = getFormItemFromKey(name) as NumberFormItem
+        numberFormItem.value = number.toString()
         updateSubTotal()
     }
 

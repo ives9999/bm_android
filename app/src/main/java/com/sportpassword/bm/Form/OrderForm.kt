@@ -46,6 +46,15 @@ class OrderForm(var type: String, delegate: BaseActivity) : BaseForm(null, null,
             val sizeItem = TagFormItem(CLOTHES_SIZE_KEY, "尺寸", true)
             val numberItem = NumberFormItem()
             formItems.addAll(arrayListOf(colorItem, sizeItem, numberItem))
+        } else if (this.type == "racket") {
+            val colorItem = TagFormItem(COLOR_KEY, "顏色", true)
+            val weightItem = TagFormItem(WEIGHT_KEY, "重量", true)
+            val numberItem = NumberFormItem()
+            formItems.addAll(arrayListOf(colorItem, weightItem, numberItem))
+        } else if (this.type == "mejump") {
+            val typeItem = TagFormItem("type", "種類", true)
+            val numberItem = NumberFormItem()
+            formItems.addAll(arrayListOf(typeItem, numberItem))
         }
 
         return formItems

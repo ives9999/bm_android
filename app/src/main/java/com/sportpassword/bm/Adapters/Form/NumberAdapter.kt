@@ -9,12 +9,18 @@ import com.sportpassword.bm.Utilities.IndexPath
 import com.xwray.groupie.kotlinandroidextensions.ViewHolder
 import kotlinx.android.synthetic.main.formitem_number.*
 
-class NumberAdapter(form: BaseForm, idx: Int, indexPath: IndexPath, clearClick:(idx: Int)->Unit, promptClick:(idx: Int)->Unit): FormItemAdapter(form, idx, indexPath, clearClick, promptClick) {
+class NumberAdapter(form: BaseForm, idx: Int, indexPath: IndexPath, number: Int, min: Int, max: Int, clearClick:(idx: Int)->Unit, promptClick:(idx: Int)->Unit): FormItemAdapter(form, idx, indexPath, clearClick, promptClick) {
 
     lateinit var formItem: FormItem
     var number: Int = 1
     var min: Int = 1
     var max: Int = 5
+
+    init {
+        this.number = number
+        this.min = min
+        this.max = max
+    }
 
     override fun getLayout(): Int {
         return R.layout.formitem_number
