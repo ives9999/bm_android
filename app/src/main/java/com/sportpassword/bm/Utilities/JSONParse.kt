@@ -80,7 +80,7 @@ class JSONParse {
                                             rows.add(price!!)
                                         }
                                         _setter(it, res, rows)
-                                    } else if (key == "images" || key == "sizes" || key == "weights" || key == "shippings" || key == "gateways") {
+                                    } else if (key == "images" || key == "sizes" || key == "weights" || key == "shippings" || key == "gateways" || key == "colors") {
                                         val rows: ArrayList<String> = arrayListOf()
                                         val arr = value as JSONArray
                                         for (i in 0..arr.length()-1) {
@@ -122,15 +122,16 @@ class JSONParse {
                         } else if (key == "prices") {
                             val productPrice = JSONParse.parse<SuperProductPrice>(value)!!
                             _setter(it, res, productPrice)
-                        } else if (key == "colors") {
-                            val d: HashMap<String, String> = hashMapOf()
-                            val keys = value.keys()
-                            while (keys.hasNext()) {
-                                val key = keys.next()
-                                d[key] = value[key].toString()
-                            }
-                            _setter(it, res, d)
                         }
+//                        else if (key == "colors") {
+//                            val d: HashMap<String, String> = hashMapOf()
+//                            val keys = value.keys()
+//                            while (keys.hasNext()) {
+//                                val key = keys.next()
+//                                d[key] = value[key].toString()
+//                            }
+//                            _setter(it, res, d)
+//                        }
                         //val d = makeMap(value)
                         //_setter(it, res, d)
                     }

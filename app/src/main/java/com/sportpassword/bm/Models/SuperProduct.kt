@@ -35,7 +35,7 @@ class SuperProduct(data: JSONObject): SuperModel(data) {
     var images: ArrayList<String> = arrayListOf()
 
     var prices: ArrayList<SuperProductPrice> = arrayListOf()
-    var colors: HashMap<String, String> = hashMapOf()
+    var colors: ArrayList<String> = arrayListOf()
     var sizes: ArrayList<String> = arrayListOf()
     var weights: ArrayList<String> = arrayListOf()
     var shippings: ArrayList<String> = arrayListOf()

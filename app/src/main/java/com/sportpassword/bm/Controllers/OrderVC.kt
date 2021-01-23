@@ -91,8 +91,8 @@ class OrderVC : MyTableVC1(), ValueChangedDelegate {
         if (colorItem != null) {
             val item = colorItem as TagFormItem
             val res: ArrayList<HashMap<String, String>> = arrayListOf()
-            for ((key, value) in superProduct!!.colors) {
-                val dict: HashMap<String, String> = hashMapOf(key to value)
+            for (color in superProduct!!.colors) {
+                val dict: HashMap<String, String> = hashMapOf(color to color)
                 res.add(dict)
             }
             item.tags = res
