@@ -1048,6 +1048,18 @@ object Global {
 
         return areas
     }
+
+    fun zoneIDToName(zone_id: Int): String {
+        var value = ""
+        for (zone in Zone.zones) {
+            val id = zone["id"] as Int
+            if (id == zone_id) {
+                value = zone["name"] as String
+                break
+            }
+        }
+        return value
+    }
 }
 
 class IndexPath(val section: Int, val row: Int){}

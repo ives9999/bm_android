@@ -14,5 +14,9 @@ class NumberFormItem(name: String = NUMBER_KEY, title: String = "數量", isRequ
         reset()
     }
 
-
+    override fun reset() {
+        super.reset()
+        this.value = "1"
+        make()
+    }
 }

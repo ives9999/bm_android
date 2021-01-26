@@ -282,8 +282,50 @@ class OrderVC : MyTableVC1(), ValueChangedDelegate {
     override fun privateChanged(checked: Boolean) {}
 
     fun submitBtnPressed(view: View) {
-        //print("purchase")
-        goOrder(superProduct!!)
+
+        val params: HashMap<String, String> = hashMapOf()
+
+        params["device"] = "app"
+        params["product_id"] = superProduct!!.id.toString()
+        params["type"] = superProduct!!.type
+        params["price_id"] = superProduct!!.prices[selected_idx].id.toString()
+
+        params["member_id"] = member.id.toString()
+        params["order_name"] = member.name
+        params["order_tel"] = member.mobile
+        params["order_email"] = member.email
+
+        val city_name = Global.zoneIDToName(member.city_id)
+        val area_name = Global.zoneIDToName(member.area_id)
+        params["order_city"] = city_name
+        params["order_area"] = area_name
+        params["order_road"] = member.road
+
+        val numberFormItem = getFormItemFromKey(NUMBER_KEY)
+        params["quantity"] = numberFormItem!!.value!!
+
+        val totalFormItem = getFormItemFromKey(TOTAL_KEY)
+        params["amount"] = totalFormItem!!.value!!
+
+        val shippingFeeFormItem = getFormItemFromKey(SHIPPING_FEE_KEY)
+        params["shipping_fee"] = shippingFeeFormItem!!.value!!
+
+        var item = getFormItemFromKey(COLOR_KEY)
+        if (item != null) {
+            params["color"] = item.value!!
+        }
+
+        item = getFormItemFromKey(CLOTHES_SIZE_KEY)
+        if (item != null) {
+            params["size"] = item.value!!
+        }
+
+        item = getFormItemFromKey(WEIGHT_KEY)
+        if (item != null) {
+            params["weight"] = item.value!!
+        }
+
+        println(params)
     }
 
     fun cancelBtnPressed(view: View) {
