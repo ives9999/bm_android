@@ -10,8 +10,10 @@ import com.sportpassword.bm.Form.FormItemCellType
 import com.sportpassword.bm.Form.OrderForm
 import com.sportpassword.bm.Form.RegisterForm
 import com.sportpassword.bm.Form.ValueChangedDelegate
+import com.sportpassword.bm.Models.SuperOrder
 import com.sportpassword.bm.Models.SuperProduct
 import com.sportpassword.bm.R
+import com.sportpassword.bm.Services.OrderService
 import com.sportpassword.bm.Utilities.*
 import com.sportpassword.bm.member
 import com.xwray.groupie.kotlinandroidextensions.Item
@@ -324,8 +326,14 @@ class OrderVC : MyTableVC1(), ValueChangedDelegate {
         if (item != null) {
             params["weight"] = item.value!!
         }
+        //println(params)
 
-        println(params)
+        OrderService.update(this, "", params) { success ->
+            if (success) {
+                val superOrder: SuperOrder = OrderService.superModel as SuperOrder
+                val a: Int = 6
+            }
+        }
     }
 
     fun cancelBtnPressed(view: View) {
