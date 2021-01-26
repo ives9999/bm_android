@@ -326,7 +326,7 @@ class OrderVC : MyTableVC1(), ValueChangedDelegate {
         if (item != null) {
             params["weight"] = item.value!!
         }
-        //println(params)
+        println(params)
 
         OrderService.update(this, "", params) { success ->
             if (success) {

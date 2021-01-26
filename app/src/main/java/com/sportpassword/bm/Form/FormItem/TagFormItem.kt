@@ -10,9 +10,14 @@ class TagFormItem(name: String = TAG_KEY, title: String = "標籤", isRequire: B
         get() = field
         set(value) {
             field = value
-            selected_idxs = arrayListOf(0)
-            for ((key, value) in tags[0]) {
-                this.value = value
+            for (selected_idx in selected_idxs) {
+                for ((idx, tag) in field.withIndex()) {
+                    if (selected_idx == idx) {
+                        for ((_, value) in tag) {
+                            this.value = value
+                        }
+                    }
+                }
             }
         }
 
