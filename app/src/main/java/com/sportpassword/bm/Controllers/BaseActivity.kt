@@ -487,10 +487,14 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
     }
 
     fun goOrder(superProduct: SuperProduct) {
-        val i = Intent(this, OrderVC::class.java)
-        i.putExtra("superProduct", superProduct)
-        //i.putExtra("title", title)
-        startActivity(i)
+        if (!member.isLoggedIn) {
+            goLogin()
+        } else {
+            val i = Intent(this, OrderVC::class.java)
+            i.putExtra("superProduct", superProduct)
+            //i.putExtra("title", title)
+            startActivity(i)
+        }
     }
 
     fun goTimeTable(source: String, token: String) {
