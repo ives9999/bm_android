@@ -57,7 +57,7 @@ class OrderVC : MyTableVC1(), ValueChangedDelegate {
         }
     }
 
-    fun initData() {
+    private fun initData() {
 
         val productNameItem = getFormItemFromKey("Product_Name")
         if (productNameItem != null) {
@@ -331,7 +331,15 @@ class OrderVC : MyTableVC1(), ValueChangedDelegate {
         OrderService.update(this, "", params) { success ->
             if (success) {
                 val superOrder: SuperOrder = OrderService.superModel as SuperOrder
-                val a: Int = 6
+                if (total > 0) {
+                    info("訂單已經成立，是否前往結帳？", "取消", "結帳") {
+                        println("aaa");
+                    }
+                } else {
+                    info("訂單已經成立，結帳金額為零，我們會儘速處理您的訂單", "", "關閉") {
+                        prev()
+                    }
+                }
             }
         }
     }
