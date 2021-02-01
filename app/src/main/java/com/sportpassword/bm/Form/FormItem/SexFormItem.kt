@@ -5,30 +5,27 @@ import com.sportpassword.bm.Utilities.SEX_KEY
 import com.sportpassword.bm.Utilities.STATUS
 import com.sportpassword.bm.Utilities.TT_STATUS
 
-class SexFormItem: FormItem {
+class SexFormItem(value: String = "M", isRequired: Boolean = false) : FormItem(SEX_KEY, "性別", null, value, null, isRequired) {
 
-    var oldSelected: String? = null
-    var selected: String = "M"
+    //var oldSelected: String? = null
+    //var selected: String = "M"
 
     init {
         uiProperties.cellType = FormItemCellType.sex
     }
 
-    constructor(name: String, title: String, placeholder: String? = null, value: String? = null): super(name, title, placeholder, value) {
-    }
-
-    constructor(name: String = SEX_KEY, value: String = "M", isRequired: Boolean = false): super(name, "性別", null, value, null, isRequired) {
+    init {
         reset()
     }
 
     override fun reset() {
         super.reset()
-        selected = "M"
+        //selected = "M"
         make()
     }
 
     override fun make() {
-        value = selected
-        sender = selected
+        //value = selected
+        sender = value
     }
 }

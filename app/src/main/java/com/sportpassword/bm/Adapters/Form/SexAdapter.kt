@@ -11,6 +11,12 @@ import kotlinx.android.synthetic.main.formitem_sex.*
 
 class SexAdapter(formItem: FormItem, clearClick:(formItem: FormItem)->Unit, promptClick:(formItem: FormItem)->Unit): FormItemAdapter(formItem, clearClick, promptClick) {
 
+    var sex: String = "M"
+    init {
+        if (formItem.value != null) {
+            sex = formItem.value!!
+        }
+    }
     override fun getLayout(): Int {
 
         return R.layout.formitem_sex
@@ -26,10 +32,19 @@ class SexAdapter(formItem: FormItem, clearClick:(formItem: FormItem)->Unit, prom
             viewHolder.required.visibility = View.INVISIBLE
         }
 
+        if (sex == "M") {
+            viewHolder.male.isChecked = true
+        } else {
+            viewHolder.female.isChecked = true
+        }
+
         viewHolder.sex.setOnCheckedChangeListener{ _, i ->
             if (valueChangedDelegate != null) {
                 val radio = viewHolder.sex.findViewById<RadioButton>(i)
-                valueChangedDelegate!!.sexChanged(radio.tag.toString())
+                sex = radio.tag.toString()
+                formItem.value = sex
+                formItem.make()
+                valueChangedDelegate!!.sexChanged(sex)
             }
         }
     }

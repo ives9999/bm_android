@@ -58,7 +58,7 @@ class TextFieldAdapter(formItem: FormItem, clearClick:(formItem: FormItem)->Unit
 
         textField.addTextChangedListener(object: TextWatcher {
             override fun afterTextChanged(p0: Editable?) {
-                bFocus = false
+                //bFocus = false
             }
 
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
@@ -66,13 +66,15 @@ class TextFieldAdapter(formItem: FormItem, clearClick:(formItem: FormItem)->Unit
             }
 
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+//                println("hasFocus:${bFocus}")
+//                println("string:${p0.toString()}")
                 if (valueChangedDelegate != null && bFocus) {
                     //println(p0.toString())
                     //formItem.value
                     //val _indexPath: IndexPath = IndexPath(indexPath.section, position)
-                    //formItem.value = p0.toString()
-                    //formItem.make()
-                    println("change:${formItem.name}: ${p0.toString()}")
+                    //println("change:${formItem.name}: ${p0.toString()}")
+                    formItem.value = p0.toString()
+                    formItem.make()
                     valueChangedDelegate?.textFieldTextChanged(formItem, p0.toString())
                 }
             }

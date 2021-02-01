@@ -557,17 +557,19 @@ class RegisterActivity : MyTableVC1(), ImagePicker, ValueChangedDelegate {
     override fun textFieldTextChanged(formItem: FormItem, text: String) {
 //        val item = getFormItemFromKey(key)
 //        if (item != null) {
-        formItem!!.value = text
-        formItem!!.make()
+        //move to adapter
+//        formItem!!.value = text
+//        formItem!!.make()
 //        }
         //println(text)
     }
 
     override fun sexChanged(sex: String) {
-        val forItem = getFormItemFromKey(SEX_KEY)
-        if (forItem != null) {
-            forItem.value = sex
-        }
+        //move to adapter
+//        val forItem = getFormItemFromKey(SEX_KEY)
+//        if (forItem != null) {
+//            forItem.value = sex
+//        }
         //println(sex)
 
     }
@@ -577,14 +579,15 @@ class RegisterActivity : MyTableVC1(), ImagePicker, ValueChangedDelegate {
     override fun stepperValueChanged(number: Int, name: String) {}
 
     override fun privateChanged(checked: Boolean) {
-        val formItem = getFormItemFromKey(PRIVACY_KEY)
-        if (formItem != null) {
-            if (checked) {
-                formItem.value = "1"
-            } else {
-                formItem.value = null
-            }
-        }
+        //move to adapter
+//        val formItem = getFormItemFromKey(PRIVACY_KEY)
+//        if (formItem != null) {
+//            if (checked) {
+//                formItem.value = "1"
+//            } else {
+//                formItem.value = null
+//            }
+//        }
         if (!checked) {
             warning("必須同意隱私權條款，才能完成註冊")
         }

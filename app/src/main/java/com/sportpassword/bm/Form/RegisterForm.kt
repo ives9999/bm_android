@@ -17,7 +17,7 @@ class RegisterForm(delegate: BaseActivity): BaseForm(null, null, "", false, dele
         val nameItem = TextFieldFormItem(NAME_KEY, "姓名", "請輸入真實姓名", null, true)
         val nicknameItem = TextFieldFormItem(NICKNAME_KEY, "暱稱", "網路上使用", null, true)
         val dobItem = DateFormItem(DOB_KEY, "生日", "")
-        val sexItem = SexFormItem(SEX_KEY, "M", true)
+        val sexItem = SexFormItem("M", true)
 
         val section3 = SectionFormItem("聯絡資料")
         val mobileItem = TextFieldFormItem(MOBILE_KEY, "行動電話", "", null, true)
