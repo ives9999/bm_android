@@ -198,16 +198,16 @@ class OrderVC : MyTableVC1(), ValueChangedDelegate {
             if (formItem.uiProperties.cellType == FormItemCellType.textField) {
                 formItemAdapter = TextFieldAdapter(formItem, clearClick, promptClick)
             } else if (formItem.uiProperties.cellType == FormItemCellType.plain) {
-                formItemAdapter = PlainAdapter(formItem, clearClick, promptClick)
+                formItemAdapter = PlainAdapter(formItem)
             } else if (formItem.uiProperties.cellType == FormItemCellType.tag) {
-                formItemAdapter = TagAdapter(formItem, clearClick, promptClick)
+                formItemAdapter = TagAdapter(formItem)
             } else if (formItem.uiProperties.cellType == FormItemCellType.number) {
                 val _formItem = formItem as NumberFormItem
                 var number: Int = 1
                 if (_formItem.value != null) {
                     number = _formItem.value!!.toInt()
                 }
-                formItemAdapter = NumberAdapter(formItem, number, _formItem.min, _formItem.max, clearClick, promptClick)
+                formItemAdapter = NumberAdapter(formItem, number, _formItem.min, _formItem.max)
             }
 
             if (formItemAdapter != null) {

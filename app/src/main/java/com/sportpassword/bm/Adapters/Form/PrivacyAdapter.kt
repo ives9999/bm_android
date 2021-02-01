@@ -10,7 +10,7 @@ import kotlinx.android.synthetic.main.formitem_privacy.*
 import kotlinx.android.synthetic.main.formitem_sex.required
 import kotlinx.android.synthetic.main.formitem_sex.title
 
-class PrivacyAdapter(formItem: FormItem, clearClick:(formItem: FormItem)->Unit, promptClick:(formItem: FormItem)->Unit): FormItemAdapter(formItem, clearClick, promptClick) {
+class PrivacyAdapter(formItem: FormItem): FormItemAdapter(formItem) {
 
     override fun getLayout(): Int {
 

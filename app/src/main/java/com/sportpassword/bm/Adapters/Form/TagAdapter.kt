@@ -17,7 +17,7 @@ import com.xwray.groupie.kotlinandroidextensions.ViewHolder
 import kotlinx.android.synthetic.main.formitem_tag.*
 import kotlinx.android.synthetic.main.tag.view.*
 
-class TagAdapter(formItem: FormItem, clearClick:(formItem: FormItem)->Unit, promptClick:(formItem: FormItem)->Unit): FormItemAdapter(formItem, clearClick, promptClick) {
+class TagAdapter(formItem: FormItem): FormItemAdapter(formItem) {
 
     val labelHeight: Int = 30
     val horizonMergin: Int = 8

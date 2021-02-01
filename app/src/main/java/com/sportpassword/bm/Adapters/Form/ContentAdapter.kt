@@ -10,7 +10,7 @@ import kotlinx.android.synthetic.main.formitem_content.*
 import org.jetbrains.anko.backgroundColor
 import com.sportpassword.bm.Form.FormItem.FormItem
 
-class ContentAdapter(formItem: FormItem, clearClick:(formItem: FormItem)->Unit, promptClick:(formItem: FormItem)->Unit, val rowClick:(formItem: FormItem)->Unit): FormItemAdapter(formItem, clearClick, promptClick) {
+class ContentAdapter(formItem: FormItem, clearClick:(formItem: FormItem)->Unit, val rowClick:(formItem: FormItem)->Unit): FormItemAdapter(formItem, clearClick, {}) {
 
     override fun getLayout(): Int {
 
@@ -19,9 +19,7 @@ class ContentAdapter(formItem: FormItem, clearClick:(formItem: FormItem)->Unit, 
 
     override fun bind(viewHolder: ViewHolder, position: Int) {
 
-        if (formItem.title != null) {
-            viewHolder.title.text = formItem.title
-        }
+        viewHolder.title.text = formItem.title
         if (formItem.value != null) {
             viewHolder.clear.visibility = View.VISIBLE
             viewHolder.clear.setOnClickListener {
@@ -47,11 +45,7 @@ class ContentAdapter(formItem: FormItem, clearClick:(formItem: FormItem)->Unit, 
 //            }
         }
 
-        if (formItem.show != null) {
-            viewHolder.detail.text = formItem.show
-        } else {
-            viewHolder.detail.text = ""
-        }
+        viewHolder.detail.text = formItem.show
         viewHolder.detail.backgroundColor = Color.TRANSPARENT
 
         viewHolder.container.setOnClickListener {

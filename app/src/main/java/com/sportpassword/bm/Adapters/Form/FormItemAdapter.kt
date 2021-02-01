@@ -36,7 +36,7 @@ import kotlinx.android.synthetic.main.formitem_more.container as container
 //    fun privateChanged(checked: Boolean) {}
 //}
 
-open class FormItemAdapter(formItem: FormItem, val clearClick:(formItem: FormItem)->Unit, val promptClick:(formItem: FormItem)->Unit): Item() {
+open class FormItemAdapter(formItem: FormItem, val clearClick:(formItem: FormItem)->Unit = {}, val promptClick:(formItem: FormItem)->Unit = {}): Item() {
 
     var valueChangedDelegate: ValueChangedDelegate? = null
 //    var textFieldDelegate: TextFieldChangeDelegate? = null

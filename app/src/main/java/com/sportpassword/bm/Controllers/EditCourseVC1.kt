@@ -208,17 +208,17 @@ class EditCourseVC1 : MyTableVC1(), ImagePicker, ValueChangedDelegate {
             if (formItem.uiProperties.cellType == FormItemCellType.textField) {
                 formItemAdapter = TextFieldAdapter(formItem, clearClick, promptClick)
             } else if (formItem.uiProperties.cellType == FormItemCellType.content) {
-                formItemAdapter = ContentAdapter(formItem, clearClick, promptClick, rowClick)
+                formItemAdapter = ContentAdapter(formItem, clearClick, rowClick)
             } else if (formItem.uiProperties.cellType == FormItemCellType.more) {
-                formItemAdapter = MoreAdapter(formItem, clearClick, promptClick, rowClick)
+                formItemAdapter = MoreAdapter(formItem, clearClick, rowClick)
             } else if (formItem.uiProperties.cellType == FormItemCellType.section) {
                 break
             } else if (formItem.uiProperties.cellType == FormItemCellType.weekday) {
-                formItemAdapter = MoreAdapter(formItem, clearClick, promptClick, rowClick)
+                formItemAdapter = MoreAdapter(formItem, clearClick, rowClick)
             } else if (formItem.uiProperties.cellType == FormItemCellType.time) {
-                formItemAdapter = MoreAdapter(formItem, clearClick, promptClick, rowClick)
+                formItemAdapter = MoreAdapter(formItem, clearClick, rowClick)
             } else if (formItem.uiProperties.cellType == FormItemCellType.date) {
-                formItemAdapter = MoreAdapter(formItem, clearClick, promptClick, rowClick)
+                formItemAdapter = MoreAdapter(formItem, clearClick, rowClick)
             }
 
             if (formItemAdapter != null) {

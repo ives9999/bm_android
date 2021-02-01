@@ -12,7 +12,7 @@ import com.xwray.groupie.kotlinandroidextensions.ViewHolder
 import kotlinx.android.synthetic.main.formitem_more.*
 import org.jetbrains.anko.backgroundColor
 
-class PlainAdapter(formItem: FormItem, clearClick:(formItem: FormItem)->Unit, promptClick:(formItem: FormItem)->Unit): FormItemAdapter(formItem, clearClick, promptClick) {
+class PlainAdapter(formItem: FormItem): FormItemAdapter(formItem) {
 
     override fun getLayout(): Int {
 

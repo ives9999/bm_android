@@ -9,7 +9,7 @@ import com.sportpassword.bm.Utilities.IndexPath
 import com.xwray.groupie.kotlinandroidextensions.ViewHolder
 import kotlinx.android.synthetic.main.formitem_number.*
 
-class NumberAdapter(formItem: FormItem, number: Int, min: Int, max: Int, clearClick:(formItem: FormItem)->Unit, promptClick:(formItem: FormItem)->Unit): FormItemAdapter(formItem, clearClick, promptClick) {
+class NumberAdapter(formItem: FormItem, number: Int, min: Int, max: Int): FormItemAdapter(formItem) {
 
     var number: Int = 1
     var min: Int = 1
@@ -26,7 +26,6 @@ class NumberAdapter(formItem: FormItem, number: Int, min: Int, max: Int, clearCl
     }
 
     override fun bind(viewHolder: ViewHolder, position: Int) {
-        this.formItem = formItem
         viewHolder.title.text = formItem.title
 
         if (formItem.isRequired) {

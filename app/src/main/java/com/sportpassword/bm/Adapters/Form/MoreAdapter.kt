@@ -20,7 +20,7 @@ import kotlinx.android.synthetic.main.formitem_more.title
 import kotlinx.android.synthetic.main.formitem_textfield.*
 import org.jetbrains.anko.backgroundColor
 
-class MoreAdapter(formItem: FormItem, clearClick:(formItem: FormItem)->Unit, promptClick:(formItem: FormItem)->Unit, val rowClick:(formItem: FormItem)->Unit): FormItemAdapter(formItem, clearClick, promptClick) {
+class MoreAdapter(formItem: FormItem, clearClick:(formItem: FormItem)->Unit, val rowClick:(formItem: FormItem)->Unit): FormItemAdapter(formItem, clearClick) {
 
     override fun getLayout(): Int {
 

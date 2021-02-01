@@ -9,7 +9,7 @@ import com.sportpassword.bm.Utilities.IndexPath
 import com.xwray.groupie.kotlinandroidextensions.ViewHolder
 import kotlinx.android.synthetic.main.formitem_sex.*
 
-class SexAdapter(formItem: FormItem, clearClick:(formItem: FormItem)->Unit, promptClick:(formItem: FormItem)->Unit): FormItemAdapter(formItem, clearClick, promptClick) {
+class SexAdapter(formItem: FormItem): FormItemAdapter(formItem) {
 
     var sex: String = "M"
     init {

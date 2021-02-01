@@ -207,15 +207,15 @@ class RegisterActivity : MyTableVC1(), ImagePicker, ValueChangedDelegate {
             } else if (formItem.uiProperties.cellType == FormItemCellType.password) {
                 formItemAdapter = TextFieldAdapter(formItem, clearClick, promptClick)
             } else if (formItem.uiProperties.cellType == FormItemCellType.date) {
-                formItemAdapter = MoreAdapter(formItem, clearClick, promptClick, rowClick)
+                formItemAdapter = MoreAdapter(formItem, clearClick, rowClick)
             } else if (formItem.uiProperties.cellType == FormItemCellType.sex) {
-                formItemAdapter = SexAdapter(formItem, clearClick, promptClick)
+                formItemAdapter = SexAdapter(formItem)
             } else if (formItem.uiProperties.cellType == FormItemCellType.city) {
-                formItemAdapter = MoreAdapter(formItem, clearClick, promptClick, rowClick)
+                formItemAdapter = MoreAdapter(formItem, clearClick, rowClick)
             } else if (formItem.uiProperties.cellType == FormItemCellType.area) {
-                formItemAdapter = MoreAdapter(formItem, clearClick, promptClick, rowClick)
+                formItemAdapter = MoreAdapter(formItem, clearClick, rowClick)
             } else if (formItem.uiProperties.cellType == FormItemCellType.privacy) {
-                formItemAdapter = PrivacyAdapter(formItem, clearClick, promptClick)
+                formItemAdapter = PrivacyAdapter(formItem)
             }
 
             if (formItemAdapter != null) {
