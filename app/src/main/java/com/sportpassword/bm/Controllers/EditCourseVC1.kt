@@ -161,20 +161,18 @@ class EditCourseVC1 : MyTableVC1(), ImagePicker, ValueChangedDelegate {
 
         val rows: ArrayList<Item> = arrayListOf()
 
-        val clearClick = { i: Int ->
-            val forItem = form.formItems[i]
-            forItem.reset()
+        val clearClick = { formItem: FormItem ->
+            formItem.reset()
         }
 
-        val promptClick = {i: Int ->
-            val forItem = form.formItems[i]
-            if (forItem.tooltip != null) {
-                Alert.show(this, "提示", forItem.tooltip!!)
+        val promptClick = {formItem: FormItem ->
+            if (formItem.tooltip != null) {
+                Alert.show(this, "提示", formItem.tooltip!!)
             }
         }
 
-        val rowClick = { i: Int ->
-            prepare(i)
+        val rowClick = { formItem: FormItem ->
+            prepare(formItem)
         }
 
         val arr: ArrayList<FormItem> = arrayListOf()
@@ -198,8 +196,8 @@ class EditCourseVC1 : MyTableVC1(), ImagePicker, ValueChangedDelegate {
 
             val indexPath: IndexPath = IndexPath(section, i)
             var idx: Int = 0
-            for ((j, _forItem) in form.formItems.withIndex()) {
-                if (formItem.name == _forItem.name) {
+            for ((j, _formItem) in form.formItems.withIndex()) {
+                if (formItem.name == _formItem.name) {
                     idx = j
                     break
                 }
@@ -208,19 +206,19 @@ class EditCourseVC1 : MyTableVC1(), ImagePicker, ValueChangedDelegate {
 
             var formItemAdapter: FormItemAdapter? = null
             if (formItem.uiProperties.cellType == FormItemCellType.textField) {
-                formItemAdapter = TextFieldAdapter(form, idx, indexPath, clearClick, promptClick)
+                formItemAdapter = TextFieldAdapter(formItem, clearClick, promptClick)
             } else if (formItem.uiProperties.cellType == FormItemCellType.content) {
-                formItemAdapter = ContentAdapter(form, idx, indexPath, clearClick, promptClick, rowClick)
+                formItemAdapter = ContentAdapter(formItem, clearClick, promptClick, rowClick)
             } else if (formItem.uiProperties.cellType == FormItemCellType.more) {
-                formItemAdapter = MoreAdapter(form, idx, indexPath, clearClick, promptClick, rowClick)
+                formItemAdapter = MoreAdapter(formItem, clearClick, promptClick, rowClick)
             } else if (formItem.uiProperties.cellType == FormItemCellType.section) {
                 break
             } else if (formItem.uiProperties.cellType == FormItemCellType.weekday) {
-                formItemAdapter = MoreAdapter(form, idx, indexPath, clearClick, promptClick, rowClick)
+                formItemAdapter = MoreAdapter(formItem, clearClick, promptClick, rowClick)
             } else if (formItem.uiProperties.cellType == FormItemCellType.time) {
-                formItemAdapter = MoreAdapter(form, idx, indexPath, clearClick, promptClick, rowClick)
+                formItemAdapter = MoreAdapter(formItem, clearClick, promptClick, rowClick)
             } else if (formItem.uiProperties.cellType == FormItemCellType.date) {
-                formItemAdapter = MoreAdapter(form, idx, indexPath, clearClick, promptClick, rowClick)
+                formItemAdapter = MoreAdapter(formItem, clearClick, promptClick, rowClick)
             }
 
             if (formItemAdapter != null) {
@@ -233,48 +231,47 @@ class EditCourseVC1 : MyTableVC1(), ImagePicker, ValueChangedDelegate {
         return rows
     }
 
-    fun prepare(idx: Int) {
+    fun prepare(formItem: FormItem) {
 
-        val forItem = form.formItems[idx]
-        val key = forItem.name
+        val key = formItem.name
 
         val singleSelectIntent = Intent(this@EditCourseVC1, SingleSelectVC1::class.java)
-        singleSelectIntent.putExtra("title", forItem.title)
+        singleSelectIntent.putExtra("title", formItem.title)
         singleSelectIntent.putExtra("key", key)
 
         val multiSelectIntent = Intent(this@EditCourseVC1, MultiSelectVC1::class.java)
-        multiSelectIntent.putExtra("title", forItem.title)
+        multiSelectIntent.putExtra("title", formItem.title)
         multiSelectIntent.putExtra("key", key)
 
         val dateSelectIntent = Intent(this@EditCourseVC1, DateSelectVC::class.java)
-        dateSelectIntent.putExtra("title", forItem.title)
+        dateSelectIntent.putExtra("title", formItem.title)
         dateSelectIntent.putExtra("key", key)
 
         val contentIntent = Intent(this@EditCourseVC1, ContentEditVC::class.java)
-        contentIntent.putExtra("title", forItem.title)
+        contentIntent.putExtra("title", formItem.title)
         contentIntent.putExtra("key", key)
 
         if (key == PRICE_UNIT_KEY) {
             val rows = PRICE_UNIT.makeSelect()
             singleSelectIntent.putExtra("rows", rows)
-            if (forItem.sender != null) {
-                val selected = forItem.sender as String
+            if (formItem.sender != null) {
+                val selected = formItem.sender as String
                 singleSelectIntent.putExtra("selected", selected)
             }
             startActivityForResult(singleSelectIntent, SELECT_REQUEST_CODE)
         } else if (key == COURSE_KIND_KEY) {
             val rows = COURSE_KIND.makeSelect()
             singleSelectIntent.putExtra("rows", rows)
-            if (forItem.sender != null) {
-                val selected = forItem.sender as String
+            if (formItem.sender != null) {
+                val selected = formItem.sender as String
                 singleSelectIntent.putExtra("selected", selected)
             }
             startActivityForResult(singleSelectIntent, SELECT_REQUEST_CODE)
         } else if (key == CYCLE_UNIT_KEY) {
             val rows = CYCLE_UNIT.makeSelect()
             singleSelectIntent.putExtra("rows", rows)
-            if (forItem.sender != null) {
-                val selected = forItem.sender as String
+            if (formItem.sender != null) {
+                val selected = formItem.sender as String
                 singleSelectIntent.putExtra("selected", selected)
             }
             startActivityForResult(singleSelectIntent, SELECT_REQUEST_CODE)
@@ -282,8 +279,8 @@ class EditCourseVC1 : MyTableVC1(), ImagePicker, ValueChangedDelegate {
             val rows = WEEKDAY.makeSelect()
 //            println(rows)
             multiSelectIntent.putExtra("rows", rows)
-            if (forItem.sender != null) {
-                val selecteds = forItem.sender as ArrayList<String>
+            if (formItem.sender != null) {
+                val selecteds = formItem.sender as ArrayList<String>
 //                println(selecteds)
                 multiSelectIntent.putExtra("selecteds", selecteds)
             }
@@ -296,22 +293,22 @@ class EditCourseVC1 : MyTableVC1(), ImagePicker, ValueChangedDelegate {
             }
 //            println(rows)
             singleSelectIntent.putExtra("rows", rows)
-            if (forItem.sender != null) {
-                val tmp = forItem.sender as HashMap<String, String>
+            if (formItem.sender != null) {
+                val tmp = formItem.sender as HashMap<String, String>
                 val selected = tmp.get("time")!!
                 singleSelectIntent.putExtra("selected", selected)
             }
             startActivityForResult(singleSelectIntent, SELECT_REQUEST_CODE)
         } else if (key == CONTENT_KEY) {
-            if (forItem.sender != null) {
-                val content = forItem.sender as String
+            if (formItem.sender != null) {
+                val content = formItem.sender as String
 //                println(selecteds)
                 contentIntent.putExtra("content", content)
             }
             startActivityForResult(contentIntent, SELECT_REQUEST_CODE)
         } else if (key == START_DATE_KEY || key == END_DATE_KEY) {
-            if (forItem.sender != null) {
-                val tmp = forItem.sender as HashMap<String, String>
+            if (formItem.sender != null) {
+                val tmp = formItem.sender as HashMap<String, String>
                 val selected = tmp.get("date")!!
                 dateSelectIntent.putExtra("selected", selected)
             }
@@ -419,12 +416,13 @@ class EditCourseVC1 : MyTableVC1(), ImagePicker, ValueChangedDelegate {
         closeImagePickerLayer()
     }
 
-    override fun textFieldTextChanged(indexPath: IndexPath, text: String) {
+    override fun textFieldTextChanged(formItem: FormItem, text: String) {
         //println(row)
         //println(text)
-        val item = form.formItems[indexPath.row]
-        item.value = text
-        item.make()
+        if (formItem != null) {
+            formItem.value = text
+            formItem.make()
+        }
     }
 
     override fun sexChanged(sex: String) {}

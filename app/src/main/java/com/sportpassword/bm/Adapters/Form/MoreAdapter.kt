@@ -6,6 +6,7 @@ import android.view.View
 import androidx.constraintlayout.widget.ConstraintSet
 import com.sportpassword.bm.Form.BaseForm
 import com.sportpassword.bm.Form.FormItem.ColorFormItem
+import com.sportpassword.bm.Form.FormItem.FormItem
 import com.sportpassword.bm.Form.FormItemCellType
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Utilities.IndexPath
@@ -19,7 +20,7 @@ import kotlinx.android.synthetic.main.formitem_more.title
 import kotlinx.android.synthetic.main.formitem_textfield.*
 import org.jetbrains.anko.backgroundColor
 
-class MoreAdapter(form: BaseForm, idx: Int, indexPath: IndexPath, clearClick:(idx: Int)->Unit, promptClick:(idx: Int)->Unit, val rowClick:(idx: Int)->Unit): FormItemAdapter(form, idx, indexPath, clearClick, promptClick) {
+class MoreAdapter(formItem: FormItem, clearClick:(formItem: FormItem)->Unit, promptClick:(formItem: FormItem)->Unit, val rowClick:(formItem: FormItem)->Unit): FormItemAdapter(formItem, clearClick, promptClick) {
 
     override fun getLayout(): Int {
 
@@ -28,7 +29,6 @@ class MoreAdapter(form: BaseForm, idx: Int, indexPath: IndexPath, clearClick:(id
 
     override fun bind(viewHolder: ViewHolder, position: Int) {
 
-        val formItem = form.formItems[position]
         viewHolder.title.text = formItem.title
         if (formItem.value != null) {
             viewHolder.detail.visibility = View.VISIBLE
@@ -37,7 +37,7 @@ class MoreAdapter(form: BaseForm, idx: Int, indexPath: IndexPath, clearClick:(id
             viewHolder.clear.setOnClickListener {
                 formItem.reset()
                 viewHolder.detail.text = ""
-                clearClick(idx)
+                clearClick(formItem)
             }
         } else {
             viewHolder.clear.visibility = View.INVISIBLE
@@ -46,7 +46,7 @@ class MoreAdapter(form: BaseForm, idx: Int, indexPath: IndexPath, clearClick:(id
         if (formItem.tooltip != null) {
             viewHolder.promptBtn.visibility = View.VISIBLE
             viewHolder.promptBtn.setOnClickListener {
-                promptClick(idx)
+                promptClick(formItem)
             }
         } else {
             viewHolder.promptBtn.visibility = View.INVISIBLE
@@ -80,7 +80,7 @@ class MoreAdapter(form: BaseForm, idx: Int, indexPath: IndexPath, clearClick:(id
         }
 
         viewHolder.container.setOnClickListener {
-            rowClick(idx)
+            rowClick(formItem)
         }
     }
 }

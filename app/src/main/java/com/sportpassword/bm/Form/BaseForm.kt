@@ -96,6 +96,15 @@ open class BaseForm(var id: Int? = null, var values: HashMap<String, String>? = 
         return res
     }
 
+    open fun getFormItemFromKey(key: String): FormItem {
+        for (formItem in formItems) {
+            if (formItem.name == key) {
+                return formItem
+            }
+        }
+        return formItems[0]
+    }
+
     fun removeItem(key: String) {
         for (i in 0..formItems.size-1) {
             val formItem = formItems[i]

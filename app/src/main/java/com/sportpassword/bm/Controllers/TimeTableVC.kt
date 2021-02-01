@@ -409,14 +409,13 @@ class TimeTableVC : BaseActivity(), ValueChangedDelegate {
         searchAdapter = GroupAdapter()
         searchAdapter.setOnItemClickListener { item, view ->
             val itemAdapter = item as FormItemAdapter
-            val idx = itemAdapter.idx
-            val formItem = form.formItems[idx]
+            val formItem = itemAdapter.formItem
             if (formItem.name != TITLE_KEY && formItem.name != TT_LIMIT) {
                 val intent = Intent(this, EditItemActivity::class.java)
-                when (idx) {
+                when (formItem.name) {
                     //0 is title
                     //weekday
-                    1 -> {
+                    WEEKDAY_KEY -> {
                         layerCancel()
                         removeLayerChildViews()
                         intent.putExtra("key", TEAM_WEEKDAYS_KEY)
@@ -425,7 +424,7 @@ class TimeTableVC : BaseActivity(), ValueChangedDelegate {
                         startActivityForResult(intent, SEARCH_REQUEST_CODE)
                     }
                     //start_date
-                    2-> {
+                    TT_START_DATE-> {
                         layerCancel()
                         removeLayerChildViews()
                         val intent1 = Intent(this, DateSelectVC::class.java)
@@ -438,7 +437,7 @@ class TimeTableVC : BaseActivity(), ValueChangedDelegate {
                         startActivityForResult(intent1, SEARCH_REQUEST_CODE)
                     }
                     //end_date
-                    3-> {
+                    TT_END_DATE-> {
                         layerCancel()
                         removeLayerChildViews()
                         val intent1 = Intent(this, DateSelectVC::class.java)
@@ -451,7 +450,7 @@ class TimeTableVC : BaseActivity(), ValueChangedDelegate {
                         startActivityForResult(intent1, SEARCH_REQUEST_CODE)
                     }
                     //start_time
-                    4-> {
+                    START_TIME_KEY-> {
                         layerCancel()
                         removeLayerChildViews()
                         intent.putExtra("key", TEAM_PLAY_START_KEY)
@@ -462,7 +461,7 @@ class TimeTableVC : BaseActivity(), ValueChangedDelegate {
                         startActivityForResult(intent, SEARCH_REQUEST_CODE)
                     }
                     //end_time
-                    5-> {
+                    END_TIME_KEY-> {
                         layerCancel()
                         removeLayerChildViews()
                         intent.putExtra("key", TEAM_PLAY_END_KEY)
@@ -475,7 +474,7 @@ class TimeTableVC : BaseActivity(), ValueChangedDelegate {
                     //6 is charge
                     //7 is limit
                     //color
-                    8-> {
+                    TT_COLOR-> {
                         layerCancel()
                         removeLayerChildViews()
                         val intent1 = Intent(this, ColorSelectVC1::class.java)
@@ -486,7 +485,7 @@ class TimeTableVC : BaseActivity(), ValueChangedDelegate {
                         startActivityForResult(intent1, SEARCH_REQUEST_CODE)
                     }
                     //status
-                    9-> {
+                    TT_STATUS-> {
                         layerCancel()
                         removeLayerChildViews()
                         val intent1 = Intent(this, StatusSelectVC1::class.java)
@@ -495,7 +494,7 @@ class TimeTableVC : BaseActivity(), ValueChangedDelegate {
                         startActivityForResult(intent1, SEARCH_REQUEST_CODE)
                     }
                     //content
-                    10-> {
+                    TT_CONTENT-> {
                         layerCancel()
                         removeLayerChildViews()
                         intent.putExtra("key", CONTENT_KEY)
@@ -600,21 +599,19 @@ class TimeTableVC : BaseActivity(), ValueChangedDelegate {
 //        var indexPath: HashMap<String, Int> = hashMapOf()
 //        indexPath["section"] = section
 
-        val clearClick = { i: Int ->
-            val forItem = form.formItems[i]
-            forItem.reset()
+        val clearClick = { formItem: FormItem ->
+            formItem.reset()
             val rows = generateFormItems()
             searchAdapter.update(rows)
         }
 
-        val promptClick = {i: Int ->
-            val forItem = form.formItems[i]
-            if (forItem.tooltip != null) {
-                Alert.show(this, "提示", forItem.tooltip!!)
+        val promptClick = {formItem: FormItem ->
+            if (formItem.tooltip != null) {
+                Alert.show(this, "提示", formItem.tooltip!!)
             }
         }
 
-        val rowClick = { i: Int ->
+        val rowClick = { formItem: FormItem ->
 
         }
 
@@ -626,11 +623,11 @@ class TimeTableVC : BaseActivity(), ValueChangedDelegate {
 
             var formItemAdapter: FormItemAdapter? = null
             if (formItem.uiProperties.cellType == FormItemCellType.textField) {
-                formItemAdapter = TextFieldAdapter(form, idx, indexPath, clearClick, promptClick)
+                formItemAdapter = TextFieldAdapter(formItem, clearClick, promptClick)
             } else if (formItem.uiProperties.cellType == FormItemCellType.content) {
-                formItemAdapter = ContentAdapter(form, idx, indexPath, clearClick, promptClick, rowClick)
+                formItemAdapter = ContentAdapter(formItem, clearClick, promptClick, rowClick)
             } else {
-                formItemAdapter = MoreAdapter(form, idx, indexPath, clearClick, promptClick, rowClick)
+                formItemAdapter = MoreAdapter(formItem, clearClick, promptClick, rowClick)
             }
 
             if (formItemAdapter != null) {
@@ -713,12 +710,12 @@ class TimeTableVC : BaseActivity(), ValueChangedDelegate {
         }
     }
 
-    override fun textFieldTextChanged(indexPath: IndexPath, text: String) {
+    override fun textFieldTextChanged(formItem: FormItem, text: String) {
         //println(row)
         //println(text)
-        val item = form.formItems[indexPath.row]
-        item.value = text
-        item.make()
+        //val item = form.formItems[indexPath.row]
+//        formItem.value = text
+//        formItem.make()
     }
 
     override fun sexChanged(sex: String) {}

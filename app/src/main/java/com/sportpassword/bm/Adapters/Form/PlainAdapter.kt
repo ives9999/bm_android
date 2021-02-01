@@ -4,6 +4,7 @@ import android.graphics.Color
 import android.view.View
 import com.sportpassword.bm.Form.BaseForm
 import com.sportpassword.bm.Form.FormItem.ColorFormItem
+import com.sportpassword.bm.Form.FormItem.FormItem
 import com.sportpassword.bm.Form.FormItemCellType
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Utilities.IndexPath
@@ -11,7 +12,7 @@ import com.xwray.groupie.kotlinandroidextensions.ViewHolder
 import kotlinx.android.synthetic.main.formitem_more.*
 import org.jetbrains.anko.backgroundColor
 
-class PlainAdapter(form: BaseForm, idx: Int, indexPath: IndexPath, clearClick:(idx: Int)->Unit, promptClick:(idx: Int)->Unit): FormItemAdapter(form, idx, indexPath, clearClick, promptClick) {
+class PlainAdapter(formItem: FormItem, clearClick:(formItem: FormItem)->Unit, promptClick:(formItem: FormItem)->Unit): FormItemAdapter(formItem, clearClick, promptClick) {
 
     override fun getLayout(): Int {
 
@@ -20,7 +21,6 @@ class PlainAdapter(form: BaseForm, idx: Int, indexPath: IndexPath, clearClick:(i
 
     override fun bind(viewHolder: ViewHolder, position: Int) {
 
-        val formItem = form.formItems[position]
         viewHolder.title.text = formItem.title
         viewHolder.detail.text = formItem.show
         viewHolder.detail.backgroundColor = Color.TRANSPARENT

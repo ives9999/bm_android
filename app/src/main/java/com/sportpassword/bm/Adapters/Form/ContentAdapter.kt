@@ -8,8 +8,9 @@ import com.sportpassword.bm.Utilities.IndexPath
 import com.xwray.groupie.kotlinandroidextensions.ViewHolder
 import kotlinx.android.synthetic.main.formitem_content.*
 import org.jetbrains.anko.backgroundColor
+import com.sportpassword.bm.Form.FormItem.FormItem
 
-class ContentAdapter(form: BaseForm, idx: Int, indexPath: IndexPath, clearClick:(idx: Int)->Unit, promptClick:(idx: Int)->Unit, val rowClick:(idx: Int)->Unit): FormItemAdapter(form, idx, indexPath, clearClick, promptClick) {
+class ContentAdapter(formItem: FormItem, clearClick:(formItem: FormItem)->Unit, promptClick:(formItem: FormItem)->Unit, val rowClick:(formItem: FormItem)->Unit): FormItemAdapter(formItem, clearClick, promptClick) {
 
     override fun getLayout(): Int {
 
@@ -18,15 +19,13 @@ class ContentAdapter(form: BaseForm, idx: Int, indexPath: IndexPath, clearClick:
 
     override fun bind(viewHolder: ViewHolder, position: Int) {
 
-        val formItem = form.formItems[position]
-
         if (formItem.title != null) {
             viewHolder.title.text = formItem.title
         }
         if (formItem.value != null) {
             viewHolder.clear.visibility = View.VISIBLE
             viewHolder.clear.setOnClickListener {
-                clearClick(idx)
+                clearClick(formItem)
             }
         } else {
             viewHolder.clear.visibility = View.INVISIBLE
@@ -34,7 +33,7 @@ class ContentAdapter(form: BaseForm, idx: Int, indexPath: IndexPath, clearClick:
         if (formItem.tooltip != null) {
             viewHolder.promptBtn.visibility = View.VISIBLE
             viewHolder.promptBtn.setOnClickListener {
-                promptClick(idx)
+                promptClick(formItem)
             }
         } else {
             viewHolder.promptBtn.visibility = View.INVISIBLE
@@ -56,7 +55,7 @@ class ContentAdapter(form: BaseForm, idx: Int, indexPath: IndexPath, clearClick:
         viewHolder.detail.backgroundColor = Color.TRANSPARENT
 
         viewHolder.container.setOnClickListener {
-            rowClick(idx)
+            rowClick(formItem)
         }
     }
 }

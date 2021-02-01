@@ -160,18 +160,17 @@ class RegisterActivity : MyTableVC1(), ImagePicker, ValueChangedDelegate {
 
         val rows: ArrayList<Item> = arrayListOf()
 
-        val clearClick = { i: Int ->
+        val clearClick = { formItem: FormItem ->
         }
 
-        val promptClick = {i: Int ->
-            val forItem = form.formItems[i]
-            if (forItem.tooltip != null) {
-                Alert.show(this, "提示", forItem.tooltip!!)
+        val promptClick = { formItem: FormItem ->
+            if (formItem.tooltip != null) {
+                Alert.show(this, "提示", formItem.tooltip!!)
             }
         }
 
-        val rowClick = { i: Int ->
-            prepare(i)
+        val rowClick = { formItem: FormItem ->
+            prepare(formItem)
         }
 
         val arr: ArrayList<FormItem> = arrayListOf()
@@ -202,22 +201,21 @@ class RegisterActivity : MyTableVC1(), ImagePicker, ValueChangedDelegate {
                 }
             }
 
-
             var formItemAdapter: FormItemAdapter? = null
             if (formItem.uiProperties.cellType == FormItemCellType.textField) {
-                formItemAdapter = TextFieldAdapter(form, idx, indexPath, clearClick, promptClick)
+                formItemAdapter = TextFieldAdapter(formItem, clearClick, promptClick)
             } else if (formItem.uiProperties.cellType == FormItemCellType.password) {
-                formItemAdapter = TextFieldAdapter(form, idx, indexPath, clearClick, promptClick)
+                formItemAdapter = TextFieldAdapter(formItem, clearClick, promptClick)
             } else if (formItem.uiProperties.cellType == FormItemCellType.date) {
-                formItemAdapter = MoreAdapter(form, idx, indexPath, clearClick, promptClick, rowClick)
+                formItemAdapter = MoreAdapter(formItem, clearClick, promptClick, rowClick)
             } else if (formItem.uiProperties.cellType == FormItemCellType.sex) {
-                formItemAdapter = SexAdapter(form, idx, indexPath, clearClick, promptClick)
+                formItemAdapter = SexAdapter(formItem, clearClick, promptClick)
             } else if (formItem.uiProperties.cellType == FormItemCellType.city) {
-                formItemAdapter = MoreAdapter(form, idx, indexPath, clearClick, promptClick, rowClick)
+                formItemAdapter = MoreAdapter(formItem, clearClick, promptClick, rowClick)
             } else if (formItem.uiProperties.cellType == FormItemCellType.area) {
-                formItemAdapter = MoreAdapter(form, idx, indexPath, clearClick, promptClick, rowClick)
+                formItemAdapter = MoreAdapter(formItem, clearClick, promptClick, rowClick)
             } else if (formItem.uiProperties.cellType == FormItemCellType.privacy) {
-                formItemAdapter = PrivacyAdapter(form, idx, indexPath, clearClick, promptClick)
+                formItemAdapter = PrivacyAdapter(formItem, clearClick, promptClick)
             }
 
             if (formItemAdapter != null) {
@@ -227,45 +225,121 @@ class RegisterActivity : MyTableVC1(), ImagePicker, ValueChangedDelegate {
 //            idx++
         }
 
+//        val formItem = getFormItemFromKey(MOBILE_KEY)
+//        println("generate:${formItem!!.name}:${formItem!!.value}")
+
         return rows
     }
 
-    fun prepare(idx: Int) {
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        //println(data)
+        when (requestCode) {
+            ACTION_PHOTO_REQUEST_CODE -> {
+                //println(data.data)
+                dealPhoto(requestCode, resultCode, data)
+            }
+            ACTION_CAMERA_REQUEST_CODE -> {
+                dealCamera(requestCode, resultCode, data)
+            }
+            SELECT_REQUEST_CODE -> {
+                if (data != null) {
+                    var key: String? = null
+                    if (data.hasExtra("key")) {
+                        key = data.getStringExtra("key")
+                    }
+                    var selected: String? = null
+                    if (data.hasExtra("selected")) {
+                        selected = data.getStringExtra("selected")
+                    }
+                    //                println(selected)
 
-        val forItem = form.formItems[idx]
-        val key = forItem.name
+                    var selecteds: ArrayList<String>? = null
+                    if (data.hasExtra("selecteds")) {
+                        selecteds = data.getStringArrayListExtra("selecteds")
+                    }
+
+                    var item: FormItem? = null
+                    if (key == PRICE_UNIT_KEY) {
+                        item = getFormItemFromKey(key) as PriceUnitFormItem
+                    } else if (key == DOB_KEY) {
+                        item = getFormItemFromKey(key) as DateFormItem
+                    } else if (key == CITY_ID_KEY) {
+                        item = getFormItemFromKey(key) as CityFormItem
+                    } else if (key == AREA_ID_KEY) {
+                        item = getFormItemFromKey(key) as AreaFormItem
+                    }
+
+                    if (item != null && selected != null) {
+                        if (item.value != selected) {
+                            item.reset()
+                        }
+                        if (key == AREA_ID_KEY) {
+                            val item1: AreaFormItem = item as AreaFormItem
+                            val cityItem = getFormItemFromKey(CITY_ID_KEY)
+                            item1.city_id = cityItem!!.value!!.toInt()
+                        } else if (key == CITY_ID_KEY) {
+                            val item1 = getFormItemFromKey(AREA_ID_KEY)
+                            if (old_selected_city != selected) {
+                                if (item1 != null) {
+                                    item1!!.reset()
+                                }
+                                old_selected_city = selected
+                            }
+                        }
+                        item.value = selected
+                        item.make()
+                    }
+                    if (item != null && selecteds != null) {
+                        var value: String = "-1"
+                        item.value = value
+                        item.make()
+                    }
+
+//                    val formItem = getFormItemFromKey(MOBILE_KEY)
+//                    println("result:${formItem!!.name}:${formItem!!.value}")
+
+                    notifyChanged(true)
+                }
+            }
+        }
+    }
+
+    fun prepare(formItem: FormItem) {
+
+        val key = formItem.name
 
         val singleSelectIntent = Intent(this, SingleSelectVC1::class.java)
-        singleSelectIntent.putExtra("title", forItem.title)
+        singleSelectIntent.putExtra("title", formItem.title)
         singleSelectIntent.putExtra("key", key)
 
         val multiSelectIntent = Intent(this, MultiSelectVC1::class.java)
-        multiSelectIntent.putExtra("title", forItem.title)
+        multiSelectIntent.putExtra("title", formItem.title)
         multiSelectIntent.putExtra("key", key)
 
         if (key == PRICE_UNIT_KEY) {
             val rows = PRICE_UNIT.makeSelect()
             singleSelectIntent.putExtra("rows", rows)
-            if (forItem.sender != null) {
-                val selected = forItem.sender as String
+            if (formItem.sender != null) {
+                val selected = formItem.sender as String
                 singleSelectIntent.putExtra("selected", selected)
             }
             startActivityForResult(singleSelectIntent, SELECT_REQUEST_CODE)
         } else if (key == DOB_KEY) {
             val dateSelectIntent = Intent(this, DateSelectVC::class.java)
-            dateSelectIntent.putExtra("title", forItem.title)
+            dateSelectIntent.putExtra("title", formItem.title)
             dateSelectIntent.putExtra("key", key)
-            if (forItem.sender != null) {
-                val selected = forItem.sender as String
-                dateSelectIntent.putExtra("selected", selected)
+            if (formItem.sender != null) {
+                //val selected = forItem.value
+                dateSelectIntent.putExtra("selected", formItem.value)
             }
             startActivityForResult(dateSelectIntent, SELECT_REQUEST_CODE)
         } else if (key == CITY_ID_KEY) {
             val citySelectIntent = Intent(this, SelectCityVC::class.java)
-            citySelectIntent.putExtra("title", forItem.title)
+            citySelectIntent.putExtra("title", formItem.title)
             citySelectIntent.putExtra("key", key)
-            if (forItem.sender != null) {
-                val selected = forItem.sender as String
+            if (formItem.sender != null) {
+                val selected = formItem.sender as String
                 citySelectIntent.putExtra("selected", selected)
             }
             startActivityForResult(citySelectIntent, SELECT_REQUEST_CODE)
@@ -276,11 +350,11 @@ class RegisterActivity : MyTableVC1(), ImagePicker, ValueChangedDelegate {
                 warning("請先選擇縣市")
             } else {
                 val areaSelectIntent = Intent(this, SelectAreaVC::class.java)
-                areaSelectIntent.putExtra("title", forItem.title)
+                areaSelectIntent.putExtra("title", formItem.title)
                 areaSelectIntent.putExtra("key", key)
                 areaSelectIntent.putExtra("city_id", city_id)
-                if (forItem.sender != null) {
-                    val selected = forItem.sender as String
+                if (formItem.sender != null) {
+                    val selected = formItem.sender as String
                     areaSelectIntent.putExtra("selected", selected)
                 }
                 startActivityForResult(areaSelectIntent, SELECT_REQUEST_CODE)
@@ -418,76 +492,6 @@ class RegisterActivity : MyTableVC1(), ImagePicker, ValueChangedDelegate {
 //    fun registerFBSubmit(view: View) {
 //        loginFB()
 //    }
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        //println(data)
-        when (requestCode) {
-            ACTION_PHOTO_REQUEST_CODE -> {
-                //println(data.data)
-                dealPhoto(requestCode, resultCode, data)
-            }
-            ACTION_CAMERA_REQUEST_CODE -> {
-                dealCamera(requestCode, resultCode, data)
-            }
-            SELECT_REQUEST_CODE -> {
-                if (data != null) {
-                    var key: String? = null
-                    if (data.hasExtra("key")) {
-                        key = data.getStringExtra("key")
-                    }
-                    var selected: String? = null
-                    if (data.hasExtra("selected")) {
-                        selected = data.getStringExtra("selected")
-                    }
-    //                println(selected)
-
-                    var selecteds: ArrayList<String>? = null
-                    if (data.hasExtra("selecteds")) {
-                        selecteds = data.getStringArrayListExtra("selecteds")
-                    }
-
-                    var item: FormItem? = null
-                    if (key == PRICE_UNIT_KEY) {
-                        item = getFormItemFromKey(key) as PriceUnitFormItem
-                    } else if (key == DOB_KEY) {
-                        item = getFormItemFromKey(key) as DateFormItem
-                    } else if (key == CITY_ID_KEY) {
-                        item = getFormItemFromKey(key) as CityFormItem
-                    } else if (key == AREA_ID_KEY) {
-                        item = getFormItemFromKey(key) as AreaFormItem
-                    }
-
-                    if (item != null && selected != null) {
-                        if (item.value != selected) {
-                            item.reset()
-                        }
-                        if (key == AREA_ID_KEY) {
-                            val item1: AreaFormItem = item as AreaFormItem
-                            val cityItem = getFormItemFromKey(CITY_ID_KEY)
-                            item1.city_id = cityItem!!.value!!.toInt()
-                        } else if (key == CITY_ID_KEY) {
-                            val item1 = getFormItemFromKey(AREA_ID_KEY)
-                            if (old_selected_city != selected) {
-                                if (item1 != null) {
-                                    item1!!.reset()
-                                }
-                                old_selected_city = selected
-                            }
-                        }
-                        item.value = selected
-                        item.make()
-                    }
-                    if (item != null && selecteds != null) {
-                        var value: String = "-1"
-                        item.value = value
-                        item.make()
-                    }
-
-                    notifyChanged(true)
-                }
-            }
-        }
-    }
 
     override fun setImage(newFile: File?, url: String?) {
         featured_text.visibility = View.INVISIBLE
@@ -543,10 +547,12 @@ class RegisterActivity : MyTableVC1(), ImagePicker, ValueChangedDelegate {
         prev()
     }
 
-    override fun textFieldTextChanged(indexPath: IndexPath, text: String) {
-        val item = form.formItems[indexPath.row]
-        item.value = text
-        item.make()
+    override fun textFieldTextChanged(formItem: FormItem, text: String) {
+//        val item = getFormItemFromKey(key)
+//        if (item != null) {
+        formItem!!.value = text
+        formItem!!.make()
+//        }
         //println(text)
     }
 

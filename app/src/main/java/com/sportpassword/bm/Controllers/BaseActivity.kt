@@ -45,10 +45,7 @@ import com.sportpassword.bm.Fragments.CoachFragment
 import com.sportpassword.bm.Fragments.CourseFragment
 import com.sportpassword.bm.Fragments.TabFragment
 import com.sportpassword.bm.Fragments.TeamFragment
-import com.sportpassword.bm.Models.Area
-import com.sportpassword.bm.Models.City
-import com.sportpassword.bm.Models.SuperData
-import com.sportpassword.bm.Models.SuperProduct
+import com.sportpassword.bm.Models.*
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.DataService
 import com.sportpassword.bm.Services.MemberService
@@ -488,12 +485,31 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
 
     fun goOrder(superProduct: SuperProduct) {
         if (!member.isLoggedIn) {
-            goLogin()
+            warning(msg, true, "登入") {
+                goLogin()
+            }
         } else {
-            val i = Intent(this, OrderVC::class.java)
-            i.putExtra("superProduct", superProduct)
-            //i.putExtra("title", title)
-            startActivity(i)
+            var msg: String = ""
+            //val _member: Member = Member(JSONObject())
+            for (key in MEMBER_MUST_ARRAY) {
+                val type: String = MEMBER_ARRAY[key]!!["type"]!!
+                val value: String = member.fetch(key)
+                if (value.isEmpty() || value == "0") {
+                    msg += MEMBER_MUST_ARRAY_WARNING[key]!! + "\n"
+                }
+            }
+
+            if (msg.isNotEmpty()) {
+                warning(msg, true, "填寫") {
+                    goRegister()
+                }
+            } else {
+
+                val i = Intent(this, OrderVC::class.java)
+                i.putExtra("superProduct", superProduct)
+                //i.putExtra("title", title)
+                startActivity(i)
+            }
         }
     }
 

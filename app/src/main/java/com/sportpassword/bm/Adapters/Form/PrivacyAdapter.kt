@@ -2,6 +2,7 @@ package com.sportpassword.bm.Adapters.Form
 
 import android.view.View
 import com.sportpassword.bm.Form.BaseForm
+import com.sportpassword.bm.Form.FormItem.FormItem
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Utilities.IndexPath
 import com.xwray.groupie.kotlinandroidextensions.ViewHolder
@@ -9,7 +10,7 @@ import kotlinx.android.synthetic.main.formitem_privacy.*
 import kotlinx.android.synthetic.main.formitem_sex.required
 import kotlinx.android.synthetic.main.formitem_sex.title
 
-class PrivacyAdapter(form: BaseForm, idx: Int, indexPath: IndexPath, clearClick:(idx: Int)->Unit, promptClick:(idx: Int)->Unit): FormItemAdapter(form, idx, indexPath, clearClick, promptClick) {
+class PrivacyAdapter(formItem: FormItem, clearClick:(formItem: FormItem)->Unit, promptClick:(formItem: FormItem)->Unit): FormItemAdapter(formItem, clearClick, promptClick) {
 
     override fun getLayout(): Int {
 
@@ -18,7 +19,6 @@ class PrivacyAdapter(form: BaseForm, idx: Int, indexPath: IndexPath, clearClick:
 
     override fun bind(viewHolder: ViewHolder, position: Int) {
 
-        val formItem = form.formItems[position]
         viewHolder.title.text = formItem.title
 
         if (formItem.isRequired) {

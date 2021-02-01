@@ -160,10 +160,10 @@ class OrderVC : MyTableVC1(), ValueChangedDelegate {
 
         val rows: ArrayList<Item> = arrayListOf()
 
-        val clearClick = { i: Int ->
+        val clearClick = { formItem: FormItem ->
         }
 
-        val promptClick = {i: Int ->
+        val promptClick = { formItem: FormItem ->
         }
 
         val arr: ArrayList<FormItem> = arrayListOf()
@@ -196,18 +196,18 @@ class OrderVC : MyTableVC1(), ValueChangedDelegate {
 
             var formItemAdapter: FormItemAdapter? = null
             if (formItem.uiProperties.cellType == FormItemCellType.textField) {
-                formItemAdapter = TextFieldAdapter(form, idx, indexPath, clearClick, promptClick)
+                formItemAdapter = TextFieldAdapter(formItem, clearClick, promptClick)
             } else if (formItem.uiProperties.cellType == FormItemCellType.plain) {
-                formItemAdapter = PlainAdapter(form, idx, indexPath, clearClick, promptClick)
+                formItemAdapter = PlainAdapter(formItem, clearClick, promptClick)
             } else if (formItem.uiProperties.cellType == FormItemCellType.tag) {
-                formItemAdapter = TagAdapter(form, idx, indexPath, clearClick, promptClick)
+                formItemAdapter = TagAdapter(formItem, clearClick, promptClick)
             } else if (formItem.uiProperties.cellType == FormItemCellType.number) {
                 val _formItem = formItem as NumberFormItem
                 var number: Int = 1
                 if (_formItem.value != null) {
                     number = _formItem.value!!.toInt()
                 }
-                formItemAdapter = NumberAdapter(form, idx, indexPath, number, _formItem.min, _formItem.max, clearClick, promptClick)
+                formItemAdapter = NumberAdapter(formItem, number, _formItem.min, _formItem.max, clearClick, promptClick)
             }
 
             if (formItemAdapter != null) {
@@ -277,7 +277,7 @@ class OrderVC : MyTableVC1(), ValueChangedDelegate {
         updateSubTotal()
     }
 
-    override fun textFieldTextChanged(indexPath: IndexPath, text: String) {}
+    override fun textFieldTextChanged(formItem: FormItem, text: String) {}
 
     override fun sexChanged(sex: String) {}
 

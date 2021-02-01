@@ -17,7 +17,7 @@ import com.xwray.groupie.kotlinandroidextensions.ViewHolder
 import kotlinx.android.synthetic.main.formitem_tag.*
 import kotlinx.android.synthetic.main.tag.view.*
 
-class TagAdapter(form: BaseForm, idx: Int, indexPath: IndexPath, clearClick:(idx: Int)->Unit, promptClick:(idx: Int)->Unit): FormItemAdapter(form, idx, indexPath, clearClick, promptClick) {
+class TagAdapter(formItem: FormItem, clearClick:(formItem: FormItem)->Unit, promptClick:(formItem: FormItem)->Unit): FormItemAdapter(formItem, clearClick, promptClick) {
 
     val labelHeight: Int = 30
     val horizonMergin: Int = 8
@@ -27,15 +27,12 @@ class TagAdapter(form: BaseForm, idx: Int, indexPath: IndexPath, clearClick:(idx
 
     var tagLabels: ArrayList<Tag> = arrayListOf()
     var tagDicts: ArrayList<HashMap<String, String>> = arrayListOf()
-    lateinit var formItem: FormItem
 
     override fun getLayout(): Int {
         return R.layout.formitem_tag
     }
 
     override fun bind(viewHolder: ViewHolder, position: Int) {
-        val formItem = form.formItems[position]
-        this.formItem = formItem
         viewHolder.title.text = formItem.title
         val context: Context = viewHolder.title.context
 

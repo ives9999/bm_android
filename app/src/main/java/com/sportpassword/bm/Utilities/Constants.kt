@@ -242,6 +242,21 @@ val MEMBER_ARRAY: Map<String, Map<String, String>> = mapOf(
         TYPE_KEY to mapOf("text" to "類型","type" to "Int", "default" to "0")
 )
 
+val MEMBER_MUST_ARRAY: ArrayList<String> = arrayListOf(
+    NAME_KEY, NICKNAME_KEY, EMAIL_KEY, MOBILE_KEY, SEX_KEY, CITY_ID_KEY, AREA_ID_KEY, ROAD_KEY
+)
+
+val MEMBER_MUST_ARRAY_WARNING: HashMap<String, String> = hashMapOf(
+    NAME_KEY to "沒有填寫姓名",
+    NICKNAME_KEY to "沒有填寫暱稱",
+    EMAIL_KEY to "沒有填寫email",
+    MOBILE_KEY to "沒有填寫手機",
+    SEX_KEY to "沒有選擇性別",
+    CITY_ID_KEY to "沒有選擇縣市",
+    AREA_ID_KEY to "沒有選擇區域",
+    ROAD_KEY to "沒有填寫路名"
+)
+
 // Notification Constants
 val NOTIF_MEMBER_DID_CHANGE = "notifMemberChanged"
 val NOTIF_MEMBER_UPDATE = "notifMemberUpdate"

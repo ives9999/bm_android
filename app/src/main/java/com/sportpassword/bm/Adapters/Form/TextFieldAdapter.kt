@@ -1,19 +1,16 @@
 package com.sportpassword.bm.Adapters.Form
 
-import android.opengl.Visibility
 import android.text.Editable
-import android.text.InputType
 import android.text.TextWatcher
 import android.view.View
-import com.sportpassword.bm.Form.BaseForm
-import com.sportpassword.bm.Form.FormItem.TextFieldFormItem
+import com.sportpassword.bm.Form.FormItem.FormItem
 import com.sportpassword.bm.R
-import com.sportpassword.bm.Utilities.IndexPath
 import com.xwray.groupie.kotlinandroidextensions.ViewHolder
 import kotlinx.android.synthetic.main.formitem_textfield.*
 
-class TextFieldAdapter(form: BaseForm, idx: Int, indexPath: IndexPath, clearClick:(idx: Int)->Unit, promptClick:(idx: Int)->Unit): FormItemAdapter(form, idx, indexPath, clearClick, promptClick) {
+class TextFieldAdapter(formItem: FormItem, clearClick:(formItem: FormItem)->Unit, promptClick:(formItem: FormItem)->Unit): FormItemAdapter(formItem, clearClick, promptClick) {
 
+    var bFocus: Boolean = false
     override fun getLayout(): Int {
 
         return R.layout.formitem_textfield
@@ -21,7 +18,10 @@ class TextFieldAdapter(form: BaseForm, idx: Int, indexPath: IndexPath, clearClic
 
     override fun bind(viewHolder: ViewHolder, position: Int) {
 
-        val formItem: TextFieldFormItem = form.formItems[position] as TextFieldFormItem
+        //val formItem: TextFieldFormItem = form.formItems[position] as TextFieldFormItem
+//        if (formItem.name == MOBILE_KEY) {
+//            println("adapt:${position}:${formItem.name}:${formItem.value}")
+//        }
         viewHolder.title.text = formItem.title
         viewHolder.clear.setOnClickListener {
             //clearClick(row)
@@ -31,12 +31,11 @@ class TextFieldAdapter(form: BaseForm, idx: Int, indexPath: IndexPath, clearClic
         if (formItem.tooltip != null) {
             viewHolder.promptBtn.visibility = View.VISIBLE
             viewHolder.promptBtn.setOnClickListener {
-                promptClick(idx)
+                promptClick(formItem)
             }
         } else {
             viewHolder.promptBtn.visibility = View.INVISIBLE
         }
-
         val textField = viewHolder.textField
         textField.hint = formItem.placeholder
         if (formItem.value != null) {
@@ -51,17 +50,30 @@ class TextFieldAdapter(form: BaseForm, idx: Int, indexPath: IndexPath, clearClic
 
         textField.inputType = formItem.uiProperties.keyboardType
 
+        textField.setOnFocusChangeListener { view, hasFocus ->
+            if (hasFocus) {
+                bFocus = true
+            }
+        }
+
         textField.addTextChangedListener(object: TextWatcher {
             override fun afterTextChanged(p0: Editable?) {
+                bFocus = false
             }
 
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                //println("before:${formItem.name}: ${p0.toString()}")
             }
 
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                if (valueChangedDelegate != null) {
-                    val _indexPath: IndexPath = IndexPath(indexPath.section, position)
-                    valueChangedDelegate?.textFieldTextChanged(_indexPath, p0.toString())
+                if (valueChangedDelegate != null && bFocus) {
+                    //println(p0.toString())
+                    //formItem.value
+                    //val _indexPath: IndexPath = IndexPath(indexPath.section, position)
+                    //formItem.value = p0.toString()
+                    //formItem.make()
+                    println("change:${formItem.name}: ${p0.toString()}")
+                    valueChangedDelegate?.textFieldTextChanged(formItem, p0.toString())
                 }
             }
         })

@@ -7,6 +7,7 @@ import android.view.View
 import androidx.constraintlayout.widget.ConstraintSet
 import com.sportpassword.bm.Form.BaseForm
 import com.sportpassword.bm.Form.FormItem.ColorFormItem
+import com.sportpassword.bm.Form.FormItem.FormItem
 import com.sportpassword.bm.Form.FormItemCellType
 import com.sportpassword.bm.Form.ValueChangedDelegate
 import com.sportpassword.bm.Utilities.IndexPath
@@ -35,26 +36,28 @@ import kotlinx.android.synthetic.main.formitem_more.container as container
 //    fun privateChanged(checked: Boolean) {}
 //}
 
-open class FormItemAdapter(val form: BaseForm, val idx: Int, val indexPath: IndexPath, val clearClick:(idx: Int)->Unit, val promptClick:(idx: Int)->Unit): Item() {
+open class FormItemAdapter(formItem: FormItem, val clearClick:(formItem: FormItem)->Unit, val promptClick:(formItem: FormItem)->Unit): Item() {
 
     var valueChangedDelegate: ValueChangedDelegate? = null
 //    var textFieldDelegate: TextFieldChangeDelegate? = null
 //    var sexDelegate: SexChangeDelegate? = null
 //    var privacyDelegate: PrivacyChangeDelegate? = null
+    var formItem: FormItem = FormItem("", "")
+
+    init {
+        this.formItem = formItem
+    }
 
     override fun getLayout(): Int {
-        val formItem = form.formItems[idx]
-
         return formItem.uiProperties.cellType!!.registerCell()
     }
 
     override fun bind(viewHolder: ViewHolder, position: Int) {
-        val formItem = form.formItems[position]
         viewHolder.title.text = formItem.title
         if (formItem.value != null) {
             viewHolder.clear.visibility = View.VISIBLE
             viewHolder.clear.setOnClickListener {
-                clearClick(idx)
+                clearClick(formItem)
             }
         } else {
             viewHolder.clear.visibility = View.INVISIBLE
@@ -62,7 +65,7 @@ open class FormItemAdapter(val form: BaseForm, val idx: Int, val indexPath: Inde
         if (formItem.tooltip != null) {
             viewHolder.promptBtn.visibility = View.VISIBLE
             viewHolder.promptBtn.setOnClickListener {
-                promptClick(idx)
+                promptClick(formItem)
             }
         } else {
             viewHolder.promptBtn.visibility = View.INVISIBLE
@@ -86,8 +89,7 @@ open class FormItemAdapter(val form: BaseForm, val idx: Int, val indexPath: Inde
                 }
 
                 override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                    val _indexPath: IndexPath = IndexPath(indexPath.section, position)
-                    valueChangedDelegate?.textFieldTextChanged(_indexPath, p0.toString())
+                    valueChangedDelegate?.textFieldTextChanged(formItem, p0.toString())
                 }
             })
         }

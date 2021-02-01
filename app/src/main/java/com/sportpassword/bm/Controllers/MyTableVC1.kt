@@ -106,7 +106,7 @@ abstract class MyTableVC1 : BaseActivity() {
 
     open fun notifyChanged(include_section: Boolean=false) {
         if (include_section) {
-            for ((idx, title) in sections.withIndex()) {
+            for ((idx, _) in sections.withIndex()) {
                 val items = generateItems(idx)
                 adapterSections[idx].update(items)
             }
