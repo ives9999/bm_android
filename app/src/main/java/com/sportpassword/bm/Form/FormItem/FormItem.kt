@@ -59,7 +59,7 @@ open class FormItem {
                 msg = "${title} 沒有填寫或選擇欄位值"
                 return
             }
-            if (value != null && (value?.isEmpty()!!)) {
+            if (value != null && (value?.isEmpty()!!) || value == "0") {
                 isValid = false
                 msg = "${title} 欄位值不能為空白"
                 return

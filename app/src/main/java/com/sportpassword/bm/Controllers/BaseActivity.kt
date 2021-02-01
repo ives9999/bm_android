@@ -484,12 +484,12 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
     }
 
     fun goOrder(superProduct: SuperProduct) {
+        var msg: String = ""
         if (!member.isLoggedIn) {
-            warning(msg, true, "登入") {
+            warning("必須先登入會員，才能進行購買", true, "登入") {
                 goLogin()
             }
         } else {
-            var msg: String = ""
             //val _member: Member = Member(JSONObject())
             for (key in MEMBER_MUST_ARRAY) {
                 val type: String = MEMBER_ARRAY[key]!!["type"]!!

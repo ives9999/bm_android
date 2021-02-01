@@ -400,57 +400,64 @@ class RegisterActivity : MyTableVC1(), ImagePicker, ValueChangedDelegate {
 
     fun submit(view: View) {
 
+        var isSubmit: Boolean = true
+        var msg: String = ""
         for (formItem in form.formItems) {
             formItem.checkValidity()
             if (!formItem.isValid) {
                 if (formItem.msg != null) {
-                    warning(formItem.msg!!)
+                    msg += formItem.msg!! + "\n"
                 } else {
                     warning("有錯誤")
                 }
+                isSubmit = false
             }
         }
 
-        Loading.show(mask)
-        val params: HashMap<String, String> = hashMapOf()
-        for (formItem in form.formItems) {
+        if (!isSubmit) {
+            warning(msg)
+        } else {
+            Loading.show(mask)
+            val params: HashMap<String, String> = hashMapOf()
+            for (formItem in form.formItems) {
 
-            if (formItem.value != null) {
-                val value: String = formItem.value!!
-                params[formItem.name!!] = value
+                if (formItem.value != null) {
+                    val value: String = formItem.value!!
+                    params[formItem.name!!] = value
+                }
+                if (params.containsKey(CITY_KEY)) {
+                    params[CITY_ID_KEY] = params[CITY_KEY]!!
+                    params.remove(CITY_KEY)
+                }
+                if (params.containsKey(AREA_KEY)) {
+                    params[AREA_ID_KEY] = params[AREA_KEY]!!
+                    params.remove(AREA_KEY)
+                }
+                if (member_token.length > 0) {
+                    params[TOKEN_KEY] = member_token
+                }
             }
-            if (params.containsKey(CITY_KEY)) {
-                params[CITY_ID_KEY] = params[CITY_KEY]!!
-                params.remove(CITY_KEY)
-            }
-            if (params.containsKey(AREA_KEY)) {
-                params[AREA_ID_KEY] = params[AREA_KEY]!!
-                params.remove(AREA_KEY)
-            }
-            if (member_token.length > 0) {
-                params[TOKEN_KEY] = member_token
-            }
-        }
-        //println(params)
+            //println(params)
 
-        MemberService.update(this, params, "") { success ->
-            Loading.hide(mask)
-            if (success) {
-                if (MemberService.success) {
-                    var msg: String = ""
-                    if (this.member_token.isNotEmpty()) {
-                        msg = "修改成功"
+            MemberService.update(this, params, "") { success ->
+                Loading.hide(mask)
+                if (success) {
+                    if (MemberService.success) {
+                        var msg: String = ""
+                        if (this.member_token.isNotEmpty()) {
+                            msg = "修改成功"
+                        } else {
+                            msg = "註冊成功，已經寄出email與手機的認證訊息，請繼續完成認證程序"
+                        }
+                        Alert.show(this, "成功", msg) {
+                            prev()
+                        }
                     } else {
-                        msg = "註冊成功，已經寄出email與手機的認證訊息，請繼續完成認證程序"
-                    }
-                    Alert.show(this, "成功", msg) {
-                        prev()
+                        Alert.show(this, "警告", MemberService.msg)
                     }
                 } else {
-                    Alert.show(this, "警告", MemberService.msg)
+                    Alert.show(this, "警告", "伺服器錯誤，請稍後再試，或洽管理人員")
                 }
-            } else {
-                Alert.show(this, "警告", "伺服器錯誤，請稍後再試，或洽管理人員")
             }
         }
 
