@@ -118,6 +118,7 @@ dependencies {
     implementation 'com.squareup.okhttp3:okhttp:3.11.0'
     implementation "me.leolin:ShortcutBadger:1.1.22@aar"
     implementation "com.google.code.gson:gson:2.8.6"
+    implementation "tw.com.ecpay.paymentgatewaykit:ECPayPaymentGatewayKit:1.0.1"
 }
 
 configurations.all {
