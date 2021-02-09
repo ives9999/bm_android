@@ -296,6 +296,7 @@ class OrderVC : MyTableVC1(), ValueChangedDelegate {
         params["order_name"] = member.name
         params["order_tel"] = member.mobile
         params["order_email"] = member.email
+        params["gateway"] = "credit_card"
 
         val city_name = Global.zoneIDToName(member.city_id)
         val area_name = Global.zoneIDToName(member.area_id)
@@ -330,10 +331,13 @@ class OrderVC : MyTableVC1(), ValueChangedDelegate {
 
         OrderService.update(this, "", params) { success ->
             if (success) {
-                val superOrder: SuperOrder = OrderService.superModel as SuperOrder
                 if (total > 0) {
+                    val ecpay_token: String = OrderService.token
+                    val order_token: String = OrderService.order_token
+                    val tokenExpireDate: String = OrderService.tokenExpireDate
                     info("訂單已經成立，是否前往結帳？", "取消", "結帳") {
-                        println("aaa");
+                        //println("aaa");
+                        goPayment(ecpay_token, order_token, tokenExpireDate)
                     }
                 } else {
                     info("訂單已經成立，結帳金額為零，我們會儘速處理您的訂單", "", "關閉") {

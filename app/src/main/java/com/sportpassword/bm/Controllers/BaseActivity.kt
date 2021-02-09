@@ -513,6 +513,15 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
         }
     }
 
+    fun goPayment(ecpay_token: String, order_token: String, tokenExpireDate: String) {
+        val i = Intent(this, PaymentVC::class.java)
+        i.putExtra("ecpay_token", ecpay_token)
+        i.putExtra("order_token", order_token)
+        i.putExtra("tokenExpireDate", tokenExpireDate)
+        startActivity(i)
+    }
+
+
     fun goTimeTable(source: String, token: String) {
         val i = Intent(this, TimeTableVC::class.java)
         i.putExtra("source", source)

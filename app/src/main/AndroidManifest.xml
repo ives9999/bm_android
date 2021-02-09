@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.sportpassword.bm">
 
     <uses-permission android:name="android.permission.INTERNET" />
@@ -30,8 +31,11 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
-        android:usesCleartextTraffic="true">
-        <activity android:name=".Controllers.OrderVC"></activity>
+        android:usesCleartextTraffic="true"
+        tools:replace="android:allowBackup"
+        tools:targetApi="m">
+        <activity android:name=".Controllers.PaymentVC"></activity>
+        <activity android:name=".Controllers.OrderVC" />
         <activity android:name=".Controllers.ShowStoreVC" />
         <activity android:name=".Controllers.StoreVC" />
         <activity android:name=".Controllers.SignupListVC" />
