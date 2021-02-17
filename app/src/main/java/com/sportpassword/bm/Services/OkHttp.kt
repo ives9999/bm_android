@@ -6,6 +6,7 @@ import androidx.annotation.Keep
 import android.util.Log
 import com.sportpassword.bm.Utilities.CompletionHandler
 import okhttp3.*
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.internal.tls.OkHostnameVerifier
 import org.json.JSONObject
 import java.io.File
@@ -48,7 +49,7 @@ class MyHttpClient private constructor() {
     will be translated to
 
     String readFile(String name) throws IOException {...}
-    ***/
+     ***/
 
     @Throws(Exception::class)
     /***
@@ -212,7 +213,7 @@ class MyHttpClient private constructor() {
     private inner class OkRequest {
         private var mType: Type? = null
         var mUrl: String? = null
-        private set
+            private set
         private var mRequestParams: List<Pair<String, String>>? = null
         private var mRequestHeaders: List<Pair<String, String>>? = null
         private var mFilePaths: ArrayList<String>? = null
@@ -248,7 +249,7 @@ class MyHttpClient private constructor() {
         fun getDataRequest(): Request {
             val request: Request
             val builder = Request.Builder()
-            builder.url(mUrl)
+            mUrl?.let { builder.url(it) }
             builder.header("Connection", "Close")
             if (mRequestHeaders?.isEmpty() ?: false) {
                 for (header in mRequestHeaders!!) {
@@ -279,7 +280,7 @@ class MyHttpClient private constructor() {
                     }
 
                     if (mPostString != null) {
-                        val body = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), mPostString)
+                        val body = RequestBody.create("application/json; charset=utf-8".toMediaTypeOrNull(), mPostString!!)
                         bodyBuilder.addPart(body)
                     }
                     val a = bodyBuilder.build()
@@ -310,7 +311,7 @@ class MyHttpClient private constructor() {
 //}
 //""".trimIndent()
 //                        println(json)
-                        val body = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), mPostString)
+                        val body = RequestBody.create("application/json; charset=utf-8".toMediaTypeOrNull(), mPostString!!)
                         builder.post(body)
                     }
                 }
@@ -322,19 +323,19 @@ class MyHttpClient private constructor() {
 
     inner class OkResponse(private val response: Response?) {
         val responseCode: Int
-            get() = response!!.code()
+            get() = response!!.code
 
         val body: ByteArray?
             get() {
 //                var result: String? = null
                 var result: ByteArray? = null
-                if (response != null && response.body() != null) {
+                if (response != null && response.body != null) {
                     try {
-                        result = response.body()!!.bytes()
+                        result = response.body!!.bytes()
                         //result = response.body()!!.string()
 //                        println(result)
                     } catch (e: IOException) {
-                        Log.e(TAG, e.message)
+                        Log.e(TAG, e.message!!)
                         println(e.localizedMessage)
                     }
                     headers
@@ -344,9 +345,13 @@ class MyHttpClient private constructor() {
         val headers: MutableMap<String, MutableList<String>>?
             get() {
                 var headers: MutableMap<String, MutableList<String>>? = null
-                if (response != null && response.headers() != null) {
+                if (response != null && response.headers != null) {
                     try {
-                        headers = response.headers().toMultimap()
+                        val tmp: Map<String, List<String>> = response.headers.toMultimap()
+                        headers = mutableMapOf()
+                        for ((k, v) in tmp) {
+                            headers[k] = v.toMutableList()
+                        }
                     } catch (e: Exception) {
 
                     }
@@ -357,22 +362,23 @@ class MyHttpClient private constructor() {
 
     private inner class MyHostnameVerifier: HostnameVerifier {
         override fun verify(hostname: String, session: SSLSession): Boolean {
-            var result = false
-            try {
-                val certs = session.peerCertificates as Array<X509Certificate>
-                if (certs.isNotEmpty()) {
-                    for (i in certs.indices) {
-                        result = OkHostnameVerifier.INSTANCE.verify(hostname, certs[i])
-                        if (result) {
-                            break
-                        }
-                    }
-                } else {
-                    result = true
-                }
-            } catch (e: SSLPeerUnverifiedException) {
-                e.printStackTrace()
-            }
+            val result = true
+//            try {
+//                val certs = session.peerCertificates as Array<X509Certificate>
+//                if (certs.isNotEmpty()) {
+//                    for (i in certs.indices) {
+//                        OkHostnameVerifier.verify(hostname, certs[i])
+//                        //result = OkHostnameVerifier.INSTANCE.verify(hostname, certs[i])
+//                        if (result) {
+//                            break
+//                        }
+//                    }
+//                } else {
+//                    result = true
+//                }
+//            } catch (e: SSLPeerUnverifiedException) {
+//                e.printStackTrace()
+//            }
 
             return result
         }
@@ -388,7 +394,7 @@ class MyHttpClient private constructor() {
 open class MyResponse {
 
     var statusCode: Int = 0
-    private set
+        private set
     private var responseAsString: String? = null
     private var responseAsBytes: ByteArray? = null
     private var headers: MutableMap<String, MutableList<String>>? = null

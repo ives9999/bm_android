@@ -18,6 +18,7 @@ import com.sportpassword.bm.Utilities.*
 import com.sportpassword.bm.member
 import com.xwray.groupie.kotlinandroidextensions.Item
 import kotlinx.android.synthetic.main.activity_order_vc.*
+import kotlinx.android.synthetic.main.mask.*
 
 class OrderVC : MyTableVC1(), ValueChangedDelegate {
 
@@ -285,6 +286,7 @@ class OrderVC : MyTableVC1(), ValueChangedDelegate {
 
     fun submitBtnPressed(view: View) {
 
+        Loading.show(mask)
         val params: HashMap<String, String> = hashMapOf()
 
         params["device"] = "app"
@@ -330,6 +332,7 @@ class OrderVC : MyTableVC1(), ValueChangedDelegate {
         //println(params)
 
         OrderService.update(this, "", params) { success ->
+            Loading.hide(mask)
             if (success) {
                 if (total > 0) {
                     val ecpay_token: String = OrderService.token

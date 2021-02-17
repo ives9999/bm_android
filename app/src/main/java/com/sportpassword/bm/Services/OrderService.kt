@@ -22,7 +22,7 @@ object OrderService: DataService() {
         if (token.length > 0) {
             url = URL_ORDER.format("/${token}")
         }
-        println(url)
+        //println(url)
 
         val header: MutableList<Pair<String, String>> = mutableListOf()
         header.add(Pair("Accept","application/json"))
@@ -32,7 +32,7 @@ object OrderService: DataService() {
         for ((key, value) in params) {
             body.put(key, value)
         }
-        println(body)
+        //println(body)
 
         MyHttpClient.instance.post(context, url, body.toString()) { success ->
 
