@@ -80,6 +80,17 @@ class JSONParse {
                                             rows.add(price!!)
                                         }
                                         _setter(it, res, rows)
+                                    } else if (key == "order_clothes") {
+                                        val rows: ArrayList<SuperOrderClothes> = arrayListOf()
+                                        val arr = value as JSONArray
+                                        for (i in 0..arr.length() - 1) {
+                                            val json = arr[i] as JSONObject
+                                            val tmp = JSONParse.parse<SuperOrderClothes>(json)
+                                            if (tmp != null) {
+                                                rows.add(tmp)
+                                            }
+                                        }
+                                        _setter(it, res, rows)
                                     } else if (key == "images" || key == "sizes" || key == "weights" || key == "shippings" || key == "gateways" || key == "colors") {
                                         val rows: ArrayList<String> = arrayListOf()
                                         val arr = value as JSONArray

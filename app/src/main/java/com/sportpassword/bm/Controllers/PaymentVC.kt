@@ -2,12 +2,17 @@ package com.sportpassword.bm.Controllers
 
 import android.content.Intent
 import android.os.Bundle
-import android.view.View
-import com.facebook.internal.Utility
+import com.sportpassword.bm.Models.SuperProducts
 import com.sportpassword.bm.R
+import com.sportpassword.bm.Services.OrderService
+import com.sportpassword.bm.Utilities.Loading
+import com.xwray.groupie.GroupAdapter
+import kotlinx.android.synthetic.main.activity_payment_vc.*
+import kotlinx.android.synthetic.main.activity_product_vc.*
+import kotlinx.android.synthetic.main.mask.*
 import tw.com.ecpay.paymentgatewaykit.manager.*
 
-class PaymentVC : BaseActivity() {
+class PaymentVC : MyTableVC1() {
 
     var ecpay_token: String = ""
     var order_token: String = ""
@@ -30,8 +35,65 @@ class PaymentVC : BaseActivity() {
         val title: String = getString(R.string.app_name)
         setMyTitle(title)
 
-        PaymentkitManager.initialize(this, ServerType.Stage)
-        PaymentkitManager.createPayment(this, ecpay_token, LanguageCode.zhTW, false, title, PaymentkitManager.RequestCode_CreatePayment)
+        dataService = OrderService
+        recyclerView = payment_list
+        refreshLayout = refresh
+        maskView = mask
+        setRefreshListener()
+
+        initAdapter()
+        refresh()
+
+//        PaymentkitManager.initialize(this, ServerType.Stage)
+//        PaymentkitManager.createPayment(this, ecpay_token, LanguageCode.zhTW, false, title, PaymentkitManager.RequestCode_CreatePayment)
+    }
+
+    override fun refresh() {
+        getDataStart(page, perPage)
+        params.clear()
+    }
+
+    override fun initAdapter(include_section: Boolean) {
+        adapter = GroupAdapter()
+        val items = generateItems()
+        adapter.addAll(items)
+        recyclerView.adapter = adapter
+    }
+
+    override fun getDataStart(_page: Int, _perPage: Int) {
+        Loading.show(maskView)
+        loading = true
+
+        dataService.getList(this, null, params, _page, _perPage) { success ->
+            getDataEnd(success)
+        }
+    }
+
+    override fun getDataEnd(success: Boolean) {
+        if (success) {
+            if (theFirstTime) {
+                superProducts = dataService.superModel as SuperProducts
+                if (superProducts != null) {
+                    page = superProducts!!.page
+                    perPage = superProducts!!.perPage
+                    totalCount = superProducts!!.totalCount
+                    val _totalPage: Int = totalCount / perPage
+                    totalPage = if (totalCount % perPage > 0) _totalPage + 1 else _totalPage
+                    theFirstTime = false
+                    val items = generateItems()
+//                    println(items);
+                    adapter.update(items)
+                    adapter.notifyDataSetChanged()
+                }
+            }
+
+            page++
+        } else {
+            warning(dataService.msg)
+        }
+//        mask?.let { mask?.dismiss() }
+        Loading.hide(maskView)
+        loading = false
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

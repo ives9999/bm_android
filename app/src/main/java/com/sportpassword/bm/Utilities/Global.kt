@@ -28,6 +28,7 @@ import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.DataService
 import com.squareup.picasso.Picasso
 import org.jetbrains.anko.makeCall
+import java.text.NumberFormat
 import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.*
@@ -357,6 +358,73 @@ enum class WEEKDAY(val value: Int) {
     }
 }
 
+enum class ORDER_PROCESS(val englishName: String, val chineseName: String) {
+    normal("normal", "訂單成立"),
+    shipping("shipping", "出貨中"),
+    payment("payment", "完成付款"),
+    complete("complete", "訂單完成"),
+    cancel("cancel", "訂單取消");
+
+    fun toChineseString(): String {
+        return chineseName
+    }
+
+    fun toEnglishString(): String {
+        return englishName
+    }
+
+    companion object: MYENUM<ORDER_PROCESS>() {
+
+        fun getRawValueFromString(value: String): String {
+            return ORDER_PROCESS.valueOf(value).toChineseString()
+        }
+    }
+}
+
+enum class PAYMENT_PROCESS(val englishName: String, val chineseName: String) {
+    normal("normal", "未付款"),
+    code("code", "取得付款代碼"),
+    complete("complete", "完成付款");
+
+    fun toChineseString(): String {
+        return chineseName
+    }
+
+    fun toEnglishString(): String {
+        return englishName
+    }
+
+    companion object: MYENUM<PAYMENT_PROCESS>() {
+
+        fun getRawValueFromString(value: String): String {
+            return PAYMENT_PROCESS.valueOf(value).toChineseString()
+        }
+    }
+}
+
+enum class SHIPPING_PROCESS(val englishName: String, val chineseName: String) {
+    normal("normal", "準備中"),
+    shipping("shipping", "出貨中"),
+    store("store", "商品已到便利商店"),
+    complete("complete", "已完成取貨"),
+    back("back", "貨物退回");
+
+    fun toChineseString(): String {
+        return chineseName
+    }
+
+    fun toEnglishString(): String {
+        return englishName
+    }
+
+    companion object: MYENUM<SHIPPING_PROCESS>() {
+
+        fun getRawValueFromString(value: String): String {
+            return SHIPPING_PROCESS.valueOf(value).toChineseString()
+        }
+    }
+}
+
 /**
  * Created by ives on 2018/3/8.
  */
@@ -663,6 +731,10 @@ fun Int.quotientAndRemainder(dividingBy: Int): Pair<Int, Int> {
     val q: Int = this / dividingBy
     val r: Int = this % dividingBy
     return Pair(q, r)
+}
+
+fun Int.formattedWithSeparator(): String {
+    return NumberFormat.getNumberInstance().format(this)
 }
 
 fun Date.toMyString(pattern: String = "yyyy-MM-dd HH:mm:ss"): String {
