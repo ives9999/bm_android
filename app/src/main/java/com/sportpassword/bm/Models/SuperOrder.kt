@@ -187,3 +187,34 @@ class SuperOrder(data: JSONObject): SuperModel(data) {
         return product_price
     }
 }
+
+inline fun <reified T> Any.getField(propertyName: String): T? {
+    val getterName = "get" + propertyName.capitalize()
+    return try {
+        javaClass.getMethod(getterName).invoke(this) as? T
+    } catch (e: NoSuchMethodError) {
+        println(e.localizedMessage)
+        null
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

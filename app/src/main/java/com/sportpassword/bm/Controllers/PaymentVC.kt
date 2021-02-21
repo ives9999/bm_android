@@ -1,26 +1,75 @@
 package com.sportpassword.bm.Controllers
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import com.sportpassword.bm.Models.SuperProducts
+import com.sportpassword.bm.Adapters.GroupSection
+import com.sportpassword.bm.Models.*
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.OrderService
+import com.sportpassword.bm.Services.StoreService
+import com.sportpassword.bm.Utilities.JSONParse
 import com.sportpassword.bm.Utilities.Loading
+import com.sportpassword.bm.member
+import com.xwray.groupie.ExpandableGroup
 import com.xwray.groupie.GroupAdapter
+import com.xwray.groupie.Section
+import com.xwray.groupie.kotlinandroidextensions.Item
+import com.xwray.groupie.kotlinandroidextensions.ViewHolder
 import kotlinx.android.synthetic.main.activity_payment_vc.*
 import kotlinx.android.synthetic.main.activity_product_vc.*
 import kotlinx.android.synthetic.main.mask.*
+import kotlinx.android.synthetic.main.payment_cell.*
 import tw.com.ecpay.paymentgatewaykit.manager.*
+import kotlin.reflect.KProperty1
+import kotlin.reflect.full.memberProperties
 
 class PaymentVC : MyTableVC1() {
 
     var ecpay_token: String = ""
     var order_token: String = ""
     var tokenExpireDate: String = ""
+    var superOrder: SuperOrder? = null
+
+    val rows1: ArrayList<ArrayList<HashMap<String, String>>> = arrayListOf(
+            arrayListOf(
+                    hashMapOf("name" to "商品名稱", "value" to "", "key" to "product_name"),
+                    hashMapOf("name" to "商品屬性", "value" to "", "key" to "attribute")
+            ),
+            arrayListOf(
+                    hashMapOf("name" to "訂單編號", "value" to "", "key" to "order_no"),
+                    hashMapOf("name" to "商品數量", "value" to "", "key" to "quantity_show"),
+                    hashMapOf("name" to "商品金額", "value" to "product_price", "key" to "product_price_show"),
+                    hashMapOf("name" to "運費", "value" to "shipping_fee", "key" to "shipping_fee_show"),
+                    hashMapOf("name" to "訂單總金額", "value" to "", "key" to "amount_show"),
+                    hashMapOf("name" to "訂單建立時間", "value" to "", "key" to "created_at_show"),
+                    hashMapOf("name" to "訂單狀態", "value" to "", "key" to "order_process_show")
+            ),
+            arrayListOf(
+                    hashMapOf("name" to "付款方式", "value" to "", "key" to "gateway_ch"),
+                    hashMapOf("name" to "付款時間", "value" to "", "key" to "payment_at_show"),
+                    hashMapOf("name" to "付款狀態", "value" to "", "key" to "payment_process_show")
+            ),
+            arrayListOf(
+                    hashMapOf("name" to "到貨方式", "value" to "", "key" to "method_ch"),
+                    hashMapOf("name" to "到貨時間", "value" to "", "key" to "shipping_at_show"),
+                    hashMapOf("name" to "到貨狀態", "value" to "", "key" to "shipping_process_show")
+            ),
+            arrayListOf(
+                    hashMapOf("name" to "訂購人姓名", "value" to "", "key" to "order_name"),
+                    hashMapOf("name" to "訂購人電話", "value" to "", "key" to "order_tel"),
+                    hashMapOf("name" to "訂購人EMail", "value" to "", "key" to "order_email"),
+                    hashMapOf("name" to "訂購人住址", "value" to "", "key" to "address")
+            )
+    )
+
+    var paymentSections: ArrayList<Section> = arrayListOf(Section(), Section(), Section(), Section(), Section())
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_payment_vc)
+
+        sections = arrayListOf("商品", "訂單", "付款", "物流", "訂購人")
 
         if (intent.hasExtra("ecpay_token")) {
             ecpay_token = intent.getStringExtra("ecpay_token")!!
@@ -49,51 +98,91 @@ class PaymentVC : MyTableVC1() {
     }
 
     override fun refresh() {
-        getDataStart(page, perPage)
-        params.clear()
+        if (order_token != null) {
+            Loading.show(mask)
+            val params: HashMap<String, String> = hashMapOf("token" to order_token!!, "member_token" to member.token!!)
+            dataService.getOne(this, params) { success ->
+                if (success) {
+                    superOrder = dataService.superModel as SuperOrder
+                    if (superOrder != null) {
+                        superOrder!!.filter()
+                        //superOrder!!.print()
+
+                        setMyTitle(superOrder!!.product.name)
+                        setupOrderData()
+                        setData()
+//                    println(items);
+                        adapter.notifyDataSetChanged()
+                    }
+                }
+                closeRefresh()
+                Loading.hide(mask)
+            }
+        }
+    }
+
+    private fun setupOrderData() {
+
+        if (superOrder != null) {
+            val mirror = SuperOrder::class
+            mirror.memberProperties.forEach { property->
+                val label = property.name
+                for ((idx, row) in rows1.withIndex()) {
+                    for ((idx1, row1) in row.withIndex()) {
+                        val key: String = row1["key"]!!
+                        if (key == label) {
+                            val type1 = getClassType(property)
+                            when (type1) {
+                                "String" -> {
+                                    val t: String? = superOrder!!.getField<String>(label)
+                                    if (t != null) {
+                                        rows1[idx][idx1]["value"] = t
+                                    }
+                                }
+                                "int" -> {
+                                    val t: Int? = superOrder!!.getField<Int>(label)
+                                    if (t != null) {
+                                        rows1[idx][idx1]["value"] = t.toString()
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            //println(rows1)
+        }
     }
 
     override fun initAdapter(include_section: Boolean) {
         adapter = GroupAdapter()
-        val items = generateItems()
-        adapter.addAll(items)
+        setData()
+
         recyclerView.adapter = adapter
     }
 
-    override fun getDataStart(_page: Int, _perPage: Int) {
-        Loading.show(maskView)
-        loading = true
-
-        dataService.getList(this, null, params, _page, _perPage) { success ->
-            getDataEnd(success)
+    private fun setData() {
+        adapter.clear()
+        for ((idx, section) in sections.withIndex()) {
+            val expandableGroup: ExpandableGroup = ExpandableGroup(GroupSection(section), true)
+            val items: ArrayList<Item> = generateItems(idx)
+            paymentSections[idx].update(items)
+            //paymentSections[idx].addAll(items)
+            expandableGroup.add(paymentSections[idx])
+            adapter.add(expandableGroup)
         }
     }
 
-    override fun getDataEnd(success: Boolean) {
-        if (success) {
-            if (theFirstTime) {
-                superProducts = dataService.superModel as SuperProducts
-                if (superProducts != null) {
-                    page = superProducts!!.page
-                    perPage = superProducts!!.perPage
-                    totalCount = superProducts!!.totalCount
-                    val _totalPage: Int = totalCount / perPage
-                    totalPage = if (totalCount % perPage > 0) _totalPage + 1 else _totalPage
-                    theFirstTime = false
-                    val items = generateItems()
-//                    println(items);
-                    adapter.update(items)
-                    adapter.notifyDataSetChanged()
-                }
-            }
-
-            page++
-        } else {
-            warning(dataService.msg)
+    override fun generateItems(section: Int): ArrayList<Item> {
+        val res: ArrayList<Item> = arrayListOf()
+        val _rows1: ArrayList<HashMap<String, String>> = rows1[section]
+        for ((idx, _rows) in _rows1.withIndex()) {
+            val paymentItem: PaymentItem = PaymentItem(this, _rows);
+            res.add(paymentItem)
         }
-//        mask?.let { mask?.dismiss() }
-        Loading.hide(maskView)
-        loading = false
+
+        return res
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -278,6 +367,23 @@ class PaymentVC : MyTableVC1() {
         return sb.toString()
     }
 
+    fun getClassType(it: KProperty1<out SuperModel, Any?>): String {
+        val type = it.returnType.toString()
+        val tmps = JSONParse.getSubType(type)
+        val subType = tmps.get("type")!!
+
+        return subType
+    }
+}
+
+class PaymentItem(val context: Context, val row: HashMap<String, String>): Item() {
+
+    override fun bind(viewHolder: ViewHolder, position: Int) {
+        viewHolder.titleLbl.text = row["name"]
+        viewHolder.contentLbl.text = row["value"]
+    }
+
+    override fun getLayout() = R.layout.payment_cell
 }
 
 

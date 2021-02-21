@@ -6,6 +6,7 @@ import com.sportpassword.bm.Models.SuperOrder
 import com.sportpassword.bm.Models.SuperProduct
 import com.sportpassword.bm.Utilities.CompletionHandler
 import com.sportpassword.bm.Utilities.JSONParse
+import com.sportpassword.bm.Utilities.URL_ONE
 import com.sportpassword.bm.Utilities.URL_ORDER
 import org.json.JSONObject
 import java.lang.Exception
@@ -15,6 +16,10 @@ object OrderService: DataService() {
     var token: String = ""
     var tokenExpireDate: String = ""
     var order_token: String = ""
+
+    override fun getOneURL(): String {
+        return URL_ONE.format("order")
+    }
 
     fun update(context: Context, token: String = "", params: HashMap<String, String>, complete: CompletionHandler) {
 

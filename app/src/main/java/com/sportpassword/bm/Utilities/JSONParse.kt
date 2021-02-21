@@ -91,6 +91,28 @@ class JSONParse {
                                             }
                                         }
                                         _setter(it, res, rows)
+                                    } else if (key == "order_racket") {
+                                        val rows: ArrayList<SuperOrderRacket> = arrayListOf()
+                                        val arr = value as JSONArray
+                                        for (i in 0..arr.length() - 1) {
+                                            val json = arr[i] as JSONObject
+                                            val tmp = JSONParse.parse<SuperOrderRacket>(json)
+                                            if (tmp != null) {
+                                                rows.add(tmp)
+                                            }
+                                        }
+                                        _setter(it, res, rows)
+                                    } else if (key == "order_mejump") {
+                                        val rows: ArrayList<SuperOrderMejump> = arrayListOf()
+                                        val arr = value as JSONArray
+                                        for (i in 0..arr.length() - 1) {
+                                            val json = arr[i] as JSONObject
+                                            val tmp = JSONParse.parse<SuperOrderMejump>(json)
+                                            if (tmp != null) {
+                                                rows.add(tmp)
+                                            }
+                                        }
+                                        _setter(it, res, rows)
                                     } else if (key == "images" || key == "sizes" || key == "weights" || key == "shippings" || key == "gateways" || key == "colors") {
                                         val rows: ArrayList<String> = arrayListOf()
                                         val arr = value as JSONArray
