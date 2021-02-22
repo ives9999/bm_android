@@ -340,7 +340,7 @@ class OrderVC : MyTableVC1(), ValueChangedDelegate {
                     val tokenExpireDate: String = OrderService.tokenExpireDate
                     info("訂單已經成立，是否前往結帳？", "取消", "結帳") {
                         //println("aaa");
-                        goPayment(ecpay_token, order_token, tokenExpireDate)
+                        goPayment(order_token, ecpay_token, tokenExpireDate)
                     }
                 } else {
                     info("訂單已經成立，結帳金額為零，我們會儘速處理您的訂單", "", "關閉") {

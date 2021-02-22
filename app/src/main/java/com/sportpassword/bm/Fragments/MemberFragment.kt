@@ -33,6 +33,9 @@ class MemberFragment: TabFragment() {
             mapOf("text" to "更改密碼", "icon" to "password", "segue" to "password")
     )
     var memberRows: ArrayList<Map<String, String>> = arrayListOf()
+    var orderRows: ArrayList<Map<String, String>> = arrayListOf(
+            mapOf("text" to "訂單查詢", "icon" to "order", "segue" to "member_order_list")
+    )
     var signupRows: ArrayList<Map<String, String>> = arrayListOf(
             mapOf("text" to "課程報名", "segue" to "calendar_course_signup")
     )
@@ -41,7 +44,7 @@ class MemberFragment: TabFragment() {
     lateinit var memberFunctionsAdapter: MemberFunctionsAdapter
     protected lateinit var adapter: GroupAdapter<ViewHolder>
     protected val adapterSections: ArrayList<Section> = arrayListOf()
-    var sections: ArrayList<String> = arrayListOf("會員資料", "報名")
+    var sections: ArrayList<String> = arrayListOf("會員資料", "訂單")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -165,7 +168,7 @@ class MemberFragment: TabFragment() {
 
         val _rows: ArrayList<Map<String, String>>
         if (idx == 1) {
-            _rows = signupRows
+            _rows = orderRows
         } else {
             setValidateRow()
             //setBlackListRow()
