@@ -91,12 +91,16 @@ class SuperOrder(data: JSONObject): SuperModel(data) {
         if (payment_at.length > 0) {
             payment_at_show = payment_at.noSec()
         }
-        payment_process_show = PAYMENT_PROCESS.getRawValueFromString(payment.process)
+        if (payment.process.length > 0) {
+            payment_process_show = PAYMENT_PROCESS.getRawValueFromString(payment.process)
+        }
 
         if (shipping_at.length > 0) {
             shipping_at_show = shipping_at.noSec()
         }
-        shipping_process_show = SHIPPING_PROCESS.getRawValueFromString(shipping.process)
+        if (shipping.process.length > 0) {
+            shipping_process_show = SHIPPING_PROCESS.getRawValueFromString(shipping.process)
+        }
     }
 
     private fun makeAttributes(): String {
@@ -193,7 +197,7 @@ class SuperOrders(data: JSONObject): SuperModel(data) {
     var page: Int = 0
     var totalCount: Int = 0
     var perPage: Int = 0
-    var rows: ArrayList<SuperOrder> = arrayListOf()
+    var rows: ArrayList<SuperModel> = arrayListOf()
 }
 
 

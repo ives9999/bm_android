@@ -11,7 +11,11 @@ import com.sportpassword.bm.Adapters.GroupSection
 import com.sportpassword.bm.Adapters.ListAdapter
 import com.sportpassword.bm.Form.BaseForm
 import com.sportpassword.bm.Form.FormItem.FormItem
+import com.sportpassword.bm.Models.SuperModel
+import com.sportpassword.bm.Models.SuperOrder
+import com.sportpassword.bm.Models.SuperOrders
 import com.sportpassword.bm.R
+import com.sportpassword.bm.Utilities.Loading
 import com.sportpassword.bm.Utilities.PERPAGE
 import com.xwray.groupie.ExpandableGroup
 import com.xwray.groupie.GroupAdapter
@@ -40,6 +44,10 @@ abstract class MyTableVC1 : BaseActivity() {
     protected var totalCount: Int = 0
     protected var totalPage: Int = 0
 
+    //protected lateinit var superModels: SuperModel
+
+    //取代superDataLists(define in BaseActivity)，放置所有拿到的SuperModel，分頁時會使用到
+    var <T> allSuperModels: ArrayList<T> = arrayListOf()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -87,11 +95,44 @@ abstract class MyTableVC1 : BaseActivity() {
         theFirstTime = true
         getDataStart(page, perPage)
     }
-    open protected fun getDataStart(_page: Int, _perPage: Int) {}
+    protected open fun getDataStart(_page: Int, _perPage: Int) {}
 
-    open protected fun getDataEnd(success: Boolean) {}
+    protected open fun getDataEnd(success: Boolean) {}
 
-    open protected fun notifyDataSetChanged() {
+    /*
+    protected open fun<T, TS> getDataEnd1(success: Boolean) {
+        if (success) {
+            superModels = dataService.superModel as TS
+            for ((idx, superOrder) in superModels.rows.withIndex()) {
+                superOrder.filter()
+            }
+            allSuperModels.addAll(superModels!!.rows)
+            if (theFirstTime) {
+                if (superModels != null) {
+                    page = superModels!!.page
+                    perPage = superModels!!.perPage
+                    totalCount = superModels!!.totalCount
+                    val _totalPage: Int = totalCount / perPage
+                    totalPage = if (totalCount % perPage > 0) _totalPage + 1 else _totalPage
+                    theFirstTime = false
+                }
+            }
+            val items = generateItems()
+//                    println(items);
+            adapter.update(items)
+            adapter.notifyDataSetChanged()
+
+            page++
+        } else {
+            warning(dataService.msg)
+        }
+//        mask?.let { mask?.dismiss() }
+        Loading.hide(maskView)
+        loading = false
+    }
+     */
+
+    protected open fun notifyDataSetChanged() {
         if (page == 1) {
             superDataLists = arrayListOf()
         }
@@ -129,7 +170,8 @@ abstract class MyTableVC1 : BaseActivity() {
 
     }
 
-    open protected fun setRecyclerViewScrollListener() {
+    //分頁時使用，當往下移動到第n-1筆時，就向server取得下一頁的筆數
+    open fun setRecyclerViewScrollListener() {
 
         var pos: Int = 0
 
@@ -141,22 +183,56 @@ abstract class MyTableVC1 : BaseActivity() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
                 val layoutManager = recyclerView.layoutManager as GridLayoutManager
-                if (superDataLists.size < totalCount) {
+                if (allSuperModels.size < totalCount) {
                     pos = layoutManager.findLastVisibleItemPosition()
-                    println("pos:${pos}")
+                    //println("pos:${pos}")
                 }
             }
+
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
                 super.onScrollStateChanged(recyclerView, newState)
 
-                println("superDataLists.size:${superDataLists.size}")
-                if (superDataLists.size == pos + 1 && newState == RecyclerView.SCROLL_STATE_IDLE && superDataLists.size < totalCount && !loading) {
+                //println("allSuperModels.size:${allSuperModels.size}")
+                //pos表示目前顯示到第幾筆
+                if (allSuperModels.size == pos + 1 &&
+                        newState == RecyclerView.SCROLL_STATE_IDLE &&
+                        allSuperModels.size < totalCount &&
+                        !loading) {
                     getDataStart(page, perPage)
                 }
             }
         }
         recyclerView.addOnScrollListener(scrollerListenr)
     }
+
+//    open protected fun setRecyclerViewScrollListener() {
+//
+//        var pos: Int = 0
+//
+//        scrollerListenr = object: RecyclerView.OnScrollListener() {
+//
+//        }
+//
+//        scrollerListenr = object: RecyclerView.OnScrollListener() {
+//            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+//                super.onScrolled(recyclerView, dx, dy)
+//                val layoutManager = recyclerView.layoutManager as GridLayoutManager
+//                if (superDataLists.size < totalCount) {
+//                    pos = layoutManager.findLastVisibleItemPosition()
+//                    println("pos:${pos}")
+//                }
+//            }
+//            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+//                super.onScrollStateChanged(recyclerView, newState)
+//
+//                println("superDataLists.size:${superDataLists.size}")
+//                if (superDataLists.size == pos + 1 && newState == RecyclerView.SCROLL_STATE_IDLE && superDataLists.size < totalCount && !loading) {
+//                    getDataStart(page, perPage)
+//                }
+//            }
+//        }
+//        recyclerView.addOnScrollListener(scrollerListenr)
+//    }
 
     open protected fun setRecyclerViewRefreshListener() {
         refreshListener = SwipeRefreshLayout.OnRefreshListener {

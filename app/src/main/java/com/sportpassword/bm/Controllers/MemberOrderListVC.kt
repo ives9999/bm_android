@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.sportpassword.bm.Models.SuperModel
 import com.sportpassword.bm.Models.SuperOrder
 import com.sportpassword.bm.Models.SuperOrders
 import com.sportpassword.bm.R
@@ -24,6 +25,7 @@ import kotlinx.android.synthetic.main.order_list_cell.*
 class MemberOrderListVC : MyTableVC1() {
 
     var superOrders: SuperOrders? = null
+    protected lateinit var superModels: SuperModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,7 +42,7 @@ class MemberOrderListVC : MyTableVC1() {
         setRecyclerViewScrollListener()
 
         initAdapter()
-        perPage = 20
+        perPage = 10
         refresh()
     }
 
@@ -72,8 +74,12 @@ class MemberOrderListVC : MyTableVC1() {
 
     override fun getDataEnd(success: Boolean) {
         if (success) {
+            superOrders = dataService.superModel as SuperOrders
+            for ((idx, superOrder) in superOrders!!.rows.withIndex()) {
+                superOrder.filter()
+            }
+            allSuperModels.addAll(superOrders!!.rows)
             if (theFirstTime) {
-                superOrders = dataService.superModel as SuperOrders
                 if (superOrders != null) {
                     page = superOrders!!.page
                     perPage = superOrders!!.perPage
@@ -81,16 +87,12 @@ class MemberOrderListVC : MyTableVC1() {
                     val _totalPage: Int = totalCount / perPage
                     totalPage = if (totalCount % perPage > 0) _totalPage + 1 else _totalPage
                     theFirstTime = false
-
-                    for ((idx, superOrder) in superOrders!!.rows.withIndex()) {
-                        superOrder.filter()
-                    }
-                    val items = generateItems()
-//                    println(items);
-                    adapter.update(items)
-                    adapter.notifyDataSetChanged()
                 }
             }
+            val items = generateItems()
+//                    println(items);
+            adapter.update(items)
+            adapter.notifyDataSetChanged()
 
             page++
         } else {
@@ -103,13 +105,10 @@ class MemberOrderListVC : MyTableVC1() {
 
     override fun generateItems(): ArrayList<Item> {
         val items: ArrayList<Item> = arrayListOf()
-        if (superOrders != null) {
-            for (row in superOrders!!.rows) {
-//                row.print()
-                val orderItem = OrderItem(this, row)
-                //productItem.list1CellDelegate = this
-                items.add(orderItem)
-            }
+        for (row in allSuperModels) {
+            val orderItem = OrderItem(this, (row as SuperOrder))
+            //productItem.list1CellDelegate = this
+            items.add(orderItem)
         }
 
         return items
@@ -117,39 +116,9 @@ class MemberOrderListVC : MyTableVC1() {
 
     override fun rowClick(item: com.xwray.groupie.Item<com.xwray.groupie.ViewHolder>, view: View) {
 
-        val productItem = item as ProductItem
-        val superProduct = productItem.row
-        //superCourse.print()
-        goShowProduct(superProduct.token, superProduct.name)
-    }
-
-    override fun setRecyclerViewScrollListener() {
-
-        var pos: Int = 0
-
-        scrollerListenr = object: RecyclerView.OnScrollListener() {
-
-        }
-
-        scrollerListenr = object: RecyclerView.OnScrollListener() {
-            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                super.onScrolled(recyclerView, dx, dy)
-                val layoutManager = recyclerView.layoutManager as GridLayoutManager
-                if (superDataLists.size < totalCount) {
-                    pos = layoutManager.findLastVisibleItemPosition()
-                    println("pos:${pos}")
-                }
-            }
-            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
-                super.onScrollStateChanged(recyclerView, newState)
-
-                println("superDataLists.size:${superDataLists.size}")
-                if (superDataLists.size == pos + 1 && newState == RecyclerView.SCROLL_STATE_IDLE && superDataLists.size < totalCount && !loading) {
-                    getDataStart(page, perPage)
-                }
-            }
-        }
-        recyclerView.addOnScrollListener(scrollerListenr)
+        val orderItem = item as OrderItem
+        val superOrder = orderItem.row
+        goPayment(superOrder.token)
     }
 }
 
