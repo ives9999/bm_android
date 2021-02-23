@@ -7,9 +7,9 @@ import com.sportpassword.bm.Adapters.GroupSection
 import com.sportpassword.bm.Models.*
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.OrderService
-import com.sportpassword.bm.Services.StoreService
 import com.sportpassword.bm.Utilities.JSONParse
 import com.sportpassword.bm.Utilities.Loading
+import com.sportpassword.bm.Utilities.getField
 import com.sportpassword.bm.member
 import com.xwray.groupie.ExpandableGroup
 import com.xwray.groupie.GroupAdapter
@@ -17,7 +17,6 @@ import com.xwray.groupie.Section
 import com.xwray.groupie.kotlinandroidextensions.Item
 import com.xwray.groupie.kotlinandroidextensions.ViewHolder
 import kotlinx.android.synthetic.main.activity_payment_vc.*
-import kotlinx.android.synthetic.main.activity_product_vc.*
 import kotlinx.android.synthetic.main.mask.*
 import kotlinx.android.synthetic.main.payment_cell.*
 import tw.com.ecpay.paymentgatewaykit.manager.*

@@ -188,14 +188,12 @@ class SuperOrder(data: JSONObject): SuperModel(data) {
     }
 }
 
-inline fun <reified T> Any.getField(propertyName: String): T? {
-    val getterName = "get" + propertyName.capitalize()
-    return try {
-        javaClass.getMethod(getterName).invoke(this) as? T
-    } catch (e: NoSuchMethodError) {
-        println(e.localizedMessage)
-        null
-    }
+class SuperOrders(data: JSONObject): SuperModel(data) {
+    var success: Boolean = true
+    var page: Int = 0
+    var totalCount: Int = 0
+    var perPage: Int = 0
+    var rows: ArrayList<SuperOrder> = arrayListOf()
 }
 
 

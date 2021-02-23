@@ -1,13 +1,8 @@
 package com.sportpassword.bm.Services
 
 import android.content.Context
-import com.sportpassword.bm.Models.SuperModel
-import com.sportpassword.bm.Models.SuperOrder
-import com.sportpassword.bm.Models.SuperProduct
-import com.sportpassword.bm.Utilities.CompletionHandler
-import com.sportpassword.bm.Utilities.JSONParse
-import com.sportpassword.bm.Utilities.URL_ONE
-import com.sportpassword.bm.Utilities.URL_ORDER
+import com.sportpassword.bm.Models.*
+import com.sportpassword.bm.Utilities.*
 import org.json.JSONObject
 import java.lang.Exception
 
@@ -19,6 +14,9 @@ object OrderService: DataService() {
 
     override fun getOneURL(): String {
         return URL_ONE.format("order")
+    }
+    override fun getListURL(): String {
+        return URL_ORDER_LIST
     }
 
     fun update(context: Context, token: String = "", params: HashMap<String, String>, complete: CompletionHandler) {
@@ -76,5 +74,9 @@ object OrderService: DataService() {
 
     override fun parseModel(json: JSONObject): SuperModel {
         return JSONParse.parse<SuperOrder>(json)!!
+    }
+
+    override fun parseModels(json: JSONObject): SuperModel {
+        return JSONParse.parse<SuperOrders>(json)!!
     }
 }

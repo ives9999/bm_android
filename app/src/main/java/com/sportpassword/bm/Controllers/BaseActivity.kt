@@ -183,6 +183,7 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
         URL_MOBILE_VALIDATE = URL_HOME + "member/mobile_validate"
         URL_ONE = "${URL_HOME}%s/one"
         URL_ORDER = "${URL_HOME}order/payment%s"
+        URL_ORDER_LIST = URL_HOME + "order/list"
         URL_PRODUCT_LIST = URL_HOME + "product/list"
         URL_REGISTER = URL_HOME + "register"
         URL_SEND_EMAIL_VALIDATE = URL_HOME + "member/sendEmailValidate"
@@ -533,6 +534,11 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
         val i = Intent(this, ManagerCourseVC1::class.java)
         i.putExtra("token", token)
         i.putExtra("name", name)
+        startActivity(i)
+    }
+
+    fun goMemberOrderList() {
+        val i = Intent(this, MemberOrderListVC::class.java)
         startActivity(i)
     }
 

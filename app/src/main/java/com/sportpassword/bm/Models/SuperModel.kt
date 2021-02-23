@@ -18,6 +18,10 @@ open class SuperModel(data: JSONObject): Serializable {
 
     }
 
+    open fun <T: SuperModel> getSuperRows(): ArrayList<T>? {
+        return null
+    }
+
     fun print() {
         this::class.memberProperties.forEach {
             //println(it.name + " => " + it.getter.call(this))

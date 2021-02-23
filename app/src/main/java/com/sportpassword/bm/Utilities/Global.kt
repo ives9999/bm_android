@@ -1289,3 +1289,13 @@ class DrawLine(context: Context, val startX: Float, val startY: Float, val stopX
         canvas.drawLine(startX, startY, stopX, stopY, paint)
     }
 }
+
+inline fun <reified T> Any.getField(propertyName: String): T? {
+    val getterName = "get" + propertyName.capitalize()
+    return try {
+        javaClass.getMethod(getterName).invoke(this) as? T
+    } catch (e: NoSuchMethodError) {
+        println(e.localizedMessage)
+        null
+    }
+}
