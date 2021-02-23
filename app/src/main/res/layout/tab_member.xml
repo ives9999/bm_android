@@ -24,16 +24,19 @@
                     layout="@layout/nav_header_main"
                     />
             </LinearLayout>
+
             <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
                 android:id="@+id/member_container"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:layout_below="@+id/member_data"
+                android:layout_marginBottom="60dp"
                 android:orientation="vertical">
+
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/list_container"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:background="@drawable/background"
                     android:scrollbars="vertical"
                     app:layoutManager="androidx.recyclerview.widget.GridLayoutManager">

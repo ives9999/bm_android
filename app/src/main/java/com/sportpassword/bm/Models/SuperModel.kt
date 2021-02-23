@@ -66,3 +66,32 @@ open class SuperModel(data: JSONObject): Serializable {
 
     }
 }
+
+class SuperModelArray<T>(data: JSONObject) {
+    var success: Boolean = true
+    var page: Int = 0
+    var totalCount: Int = 0
+    var perPage: Int = 0
+    var rows: ArrayList<T> = arrayListOf()
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

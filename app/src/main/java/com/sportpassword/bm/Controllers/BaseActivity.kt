@@ -516,9 +516,13 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
 
     fun goPayment(order_token: String, ecpay_token: String?=null, tokenExpireDate: String?=null) {
         val i = Intent(this, PaymentVC::class.java)
-        i.putExtra("ecpay_token", ecpay_token)
         i.putExtra("order_token", order_token)
-        i.putExtra("tokenExpireDate", tokenExpireDate)
+        if (ecpay_token != null) {
+            i.putExtra("ecpay_token", ecpay_token)
+        }
+        if (tokenExpireDate != null) {
+            i.putExtra("tokenExpireDate", tokenExpireDate)
+        }
         startActivity(i)
     }
 

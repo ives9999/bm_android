@@ -197,7 +197,7 @@ class SuperOrders(data: JSONObject): SuperModel(data) {
     var page: Int = 0
     var totalCount: Int = 0
     var perPage: Int = 0
-    var rows: ArrayList<SuperModel> = arrayListOf()
+    var rows: ArrayList<SuperOrder> = arrayListOf()
 }
 
 

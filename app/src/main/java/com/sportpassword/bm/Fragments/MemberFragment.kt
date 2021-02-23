@@ -172,8 +172,8 @@ class MemberFragment: TabFragment() {
         } else {
             setValidateRow()
             //setBlackListRow()
-//            val row: Map<String, String> = mapOf("text" to "重新整理", "icon" to "refresh", "segue" to "refresh")
-//            memberRows.add(row)
+            val row: Map<String, String> = mapOf("text" to "重新整理", "icon" to "refresh", "segue" to "refresh")
+            memberRows.add(row)
             _rows = memberRows
         }
         for (_row in _rows) {

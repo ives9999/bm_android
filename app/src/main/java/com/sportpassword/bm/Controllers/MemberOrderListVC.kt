@@ -25,7 +25,11 @@ import kotlinx.android.synthetic.main.order_list_cell.*
 class MemberOrderListVC : MyTableVC1() {
 
     var superOrders: SuperOrders? = null
-    protected lateinit var superModels: SuperModel
+    //protected lateinit var superModels: SuperModel
+
+    //取代superDataLists(define in BaseActivity)，放置所有拿到的SuperModel，分頁時會使用到
+    var allSuperModels: ArrayList<SuperOrder> = arrayListOf()
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -119,6 +123,41 @@ class MemberOrderListVC : MyTableVC1() {
         val orderItem = item as OrderItem
         val superOrder = orderItem.row
         goPayment(superOrder.token)
+    }
+
+    //分頁時使用，當往下移動到第n-1筆時，就向server取得下一頁的筆數
+    override fun setRecyclerViewScrollListener() {
+
+        var pos: Int = 0
+
+        scrollerListenr = object: RecyclerView.OnScrollListener() {
+
+        }
+
+        scrollerListenr = object: RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+                val layoutManager = recyclerView.layoutManager as GridLayoutManager
+                if (allSuperModels.size < totalCount) {
+                    pos = layoutManager.findLastVisibleItemPosition()
+                    //println("pos:${pos}")
+                }
+            }
+
+            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                super.onScrollStateChanged(recyclerView, newState)
+
+                //println("allSuperModels.size:${allSuperModels.size}")
+                //pos表示目前顯示到第幾筆
+                if (allSuperModels.size == pos + 1 &&
+                        newState == RecyclerView.SCROLL_STATE_IDLE &&
+                        allSuperModels.size < totalCount &&
+                        !loading) {
+                    getDataStart(page, perPage)
+                }
+            }
+        }
+        recyclerView.addOnScrollListener(scrollerListenr)
     }
 }
 
