@@ -18,42 +18,17 @@ import androidx.fragment.app.FragmentPagerAdapter
 import androidx.core.content.ContextCompat
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import androidx.core.view.GravityCompat
-import androidx.drawerlayout.widget.DrawerLayout
-import androidx.appcompat.app.ActionBarDrawerToggle
-import androidx.recyclerview.widget.LinearLayoutManager
-import android.util.Base64
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-import android.widget.ArrayAdapter
-import com.facebook.FacebookSdk
-import com.facebook.appevents.AppEventsLogger
-import com.facebook.login.LoginManager
-import com.onesignal.OneSignal
-import com.sportpassword.bm.Adapters.MemberFunctionsAdapter
-import com.sportpassword.bm.Adapters.MenuTeamListAdapter
 import com.sportpassword.bm.Adapters.TabAdapter
-import com.sportpassword.bm.Fragments.CoachFragment
-import com.sportpassword.bm.Models.Team
 import com.sportpassword.bm.R
-import com.sportpassword.bm.Services.DataService
-import com.sportpassword.bm.Services.MemberService
-import com.sportpassword.bm.Services.TeamService
 import com.sportpassword.bm.Utilities.*
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
 import kotlinx.android.synthetic.main.tab.view.*
-import com.sportpassword.bm.member
 import kotlinx.android.synthetic.main.activity_test.*
 import kotlinx.android.synthetic.main.login_out.*
 import kotlinx.android.synthetic.main.nav_header_main.*
 import kotlinx.android.synthetic.main.pure_mask.*
-//import me.leolin.shortcutbadger.ShortcutBadger
-
-import okhttp3.CacheControl
-import org.jetbrains.anko.sdk27.coroutines.onClick
-import java.security.MessageDigest
-
 
 class MainActivity : BaseActivity() {
 

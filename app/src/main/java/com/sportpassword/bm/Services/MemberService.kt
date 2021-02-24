@@ -7,23 +7,14 @@ import android.util.Log
 import com.android.volley.Request
 import com.android.volley.Response
 import com.android.volley.toolbox.JsonObjectRequest
-import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import org.json.JSONException
 import org.json.JSONObject
 import com.sportpassword.bm.Utilities.*
 import com.sportpassword.bm.member
-import com.android.volley.VolleyError
-import com.beust.klaxon.Klaxon
-import com.facebook.AccessToken
-import com.facebook.GraphRequest
-import com.facebook.GraphResponse
-import com.facebook.Profile
-import com.facebook.login.LoginManager
 import com.sportpassword.bm.Controllers.MainActivity
 import com.sportpassword.bm.Models.*
 import kotlin.reflect.full.memberProperties
-import kotlin.reflect.jvm.javaField
 
 
 /**
@@ -414,6 +405,7 @@ object MemberService: DataService() {
         Volley.newRequestQueue(context).add(request)
     }
 
+    /*
     fun FBLogin(context: Context, playerID: String, complete: (Boolean) -> Unit) {
         val accessToken = AccessToken.getCurrentAccessToken()
         val request = GraphRequest.newMeRequest(accessToken) { json: JSONObject, response: GraphResponse? ->
@@ -534,15 +526,15 @@ object MemberService: DataService() {
 
         Volley.newRequestQueue(context).add(request)
     }
-
+*/
     fun logout(mainActivity: MainActivity) {
-        FBLogout()
+        //FBLogout()
         mainActivity.session.resetMember()
         member.reset()
     }
-    fun FBLogout() {
-        LoginManager.getInstance().logOut()
-    }
+//    fun FBLogout() {
+//        LoginManager.getInstance().logOut()
+//    }
 
     fun blacklist(context: Context, token: String, complete: CompletionHandler) {
         val url = URL_MEMBER_BLACKLIST

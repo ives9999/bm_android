@@ -3,14 +3,11 @@ package com.sportpassword.bm.Services
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
-import android.util.Log
 import com.android.volley.Request
 import com.android.volley.Response
 import com.android.volley.toolbox.JsonArrayRequest
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
-import com.facebook.internal.Mutable
-//import com.ohmerhe.kolley.request.Http
 import com.sportpassword.bm.Models.*
 import com.sportpassword.bm.Utilities.*
 import org.json.JSONArray

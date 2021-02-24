@@ -5,7 +5,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.*
 import android.widget.Button
-import com.facebook.login.LoginManager
 import com.sportpassword.bm.Adapters.GroupSection
 import com.sportpassword.bm.Adapters.MemberFunctionsAdapter
 import com.sportpassword.bm.Controllers.*
@@ -205,11 +204,11 @@ class MemberFragment: TabFragment() {
 
     fun loginBtnPressed(view: View) {
         if (member.isLoggedIn) {
-            if (member.uid!!.length > 0 && member.social == "fb") {
-//                FacebookSdk.sdkInitialize(getApplicationContext());
-//                AppEventsLogger.activateApp(this);
-                LoginManager.getInstance().logOut()
-            }
+//            if (member.uid!!.length > 0 && member.social == "fb") {
+////                FacebookSdk.sdkInitialize(getApplicationContext());
+////                AppEventsLogger.activateApp(this);
+//                LoginManager.getInstance().logOut()
+//            }
             MemberService.logout(mainActivity!!)
             refresh()
 //            val memberDidChange = Intent(NOTIF_MEMBER_DID_CHANGE)

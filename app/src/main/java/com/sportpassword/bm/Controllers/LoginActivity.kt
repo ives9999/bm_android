@@ -6,10 +6,6 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.TextView
-import com.facebook.*
-import com.facebook.appevents.AppEventsLogger
-import com.facebook.login.LoginManager
-import com.facebook.login.LoginResult
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.MemberService
 import com.sportpassword.bm.Utilities.*
@@ -70,14 +66,14 @@ class LoginActivity : BaseActivity() {
         }
     }
 
-    fun loginFBSubmit(view: View) {
-        loginFB()
-    }
+//    fun loginFBSubmit(view: View) {
+//        loginFB()
+//    }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
-        callbackManager?.onActivityResult(requestCode, resultCode, data)
+        //callbackManager?.onActivityResult(requestCode, resultCode, data)
     }
 
     fun loginForgetPassword(view: View) {

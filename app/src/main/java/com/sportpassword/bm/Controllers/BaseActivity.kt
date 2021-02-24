@@ -31,11 +31,6 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-import com.facebook.CallbackManager
-import com.facebook.FacebookCallback
-import com.facebook.FacebookException
-import com.facebook.login.LoginManager
-import com.facebook.login.LoginResult
 import com.google.gson.internal.LinkedTreeMap
 import com.onesignal.OneSignal
 import com.sportpassword.bm.Adapters.SearchItem
@@ -81,8 +76,6 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
 
     var msg: String = ""
     var superDataLists: ArrayList<SuperData> = arrayListOf()
-
-    protected var callbackManager: CallbackManager? = null
 
     val REQUEST_PHONE_CALL = 100
     var mobile: String = ""
@@ -584,6 +577,7 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
         inputManager.toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY);
     }
 
+    /*
     protected fun loginFB() {
         val playerID = _getPlayerID()
         //val context = this
@@ -618,6 +612,7 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
                 }
         )
     }
+     */
 
     protected fun _getPlayerID(): String {
         var playerID = ""
