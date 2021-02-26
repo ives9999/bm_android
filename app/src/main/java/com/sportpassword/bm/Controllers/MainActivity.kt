@@ -23,7 +23,6 @@ import com.sportpassword.bm.Adapters.TabAdapter
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Utilities.*
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.app_bar_main.*
 import kotlinx.android.synthetic.main.tab.view.*
 import kotlinx.android.synthetic.main.activity_test.*
 import kotlinx.android.synthetic.main.login_out.*
@@ -291,14 +290,6 @@ class MainActivity : BaseActivity() {
 //        l.width = w.toInt()
 //        drawer.layoutParams = l
 //    }
-
-    override fun onBackPressed() {
-        if (drawer_layout.isDrawerOpen(GravityCompat.START)) {
-            drawer_layout.closeDrawer(GravityCompat.START)
-        } else {
-            super.onBackPressed()
-        }
-    }
 
     @RequiresApi(Build.VERSION_CODES.M)
     fun setTabIconSelected(tab: TabLayout.Tab) {

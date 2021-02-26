@@ -34,7 +34,7 @@
         android:usesCleartextTraffic="true"
         tools:replace="android:allowBackup"
         tools:targetApi="m">
-        <activity android:name=".Controllers.MemberOrderListVC"></activity>
+        <activity android:name=".Controllers.MemberOrderListVC" />
         <activity android:name=".Controllers.PaymentVC" />
         <activity android:name=".Controllers.OrderVC" />
         <activity android:name=".Controllers.ShowStoreVC" />

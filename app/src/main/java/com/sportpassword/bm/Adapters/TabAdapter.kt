@@ -9,7 +9,7 @@ import com.sportpassword.bm.Fragments.*
  * Created by ivessun on 2018/2/23.
  */
 
-class TabAdapter(fm: FragmentManager, val tabs: Array<String>, val screenWidth: Int=0): FragmentPagerAdapter(fm) {
+class TabAdapter(fm: FragmentManager, private val tabs: Array<String>, val screenWidth: Int=0): FragmentPagerAdapter(fm) {
     override fun getItem(position: Int): Fragment {
         //println("position: $position")
         when(position) {

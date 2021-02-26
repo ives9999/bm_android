@@ -11,6 +11,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.RelativeLayout
+import android.widget.ScrollView
+import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.content.ContextCompat
 import com.sportpassword.bm.Adapters.inter
 import com.sportpassword.bm.Controllers.Arena
 import com.sportpassword.bm.Controllers.EditItemActivity
@@ -25,6 +29,8 @@ import com.xwray.groupie.Section
 import com.xwray.groupie.ViewHolder
 import com.sportpassword.bm.Adapters.SearchItem
 import com.sportpassword.bm.App
+import kotlinx.android.synthetic.main.activity_main.*
+import org.jetbrains.anko.backgroundColor
 
 /**
  * A simple [Fragment] subclass.
@@ -80,6 +86,19 @@ class TempPlayFragment : TabFragment(), inter {
         val btn = view.findViewById<Button>(R.id.submit_btn)
         btn.setOnClickListener { submit(view) }
         return view
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        val w = (mainActivity!!.screenWidth.toFloat() / mainActivity!!.density).toInt()
+        val h = ((mainActivity!!.screenHeight.toFloat()) / (mainActivity!!.density)).toInt()
+        val lp = RelativeLayout.LayoutParams(w - (2 * mainActivity!!.layerRightLeftPadding), h - mainActivity!!.layerTopPadding)
+        val adContainer: RelativeLayout = RelativeLayout(mainActivity!!)
+        adContainer.layoutParams = lp
+        adContainer.backgroundColor = ContextCompat.getColor(mainActivity!!, R.color.MY_RED)
+//        val aaa = view.findViewById<ConstraintLayout>(R.id.aaa)
+//        aaa.addView(adContainer)
     }
 
 //    override fun onResume() {

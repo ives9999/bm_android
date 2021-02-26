@@ -72,6 +72,7 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
 
     var source_activity: String = ""  //來源的activity
     var screenWidth: Int = 0
+    var screenHeight: Int = 0
     var density: Float = 0f
 
     var msg: String = ""
@@ -133,6 +134,7 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
         _setURLConstants()
 
         getScreenWidth()
+        getScreenHeight()
 
         //OneSignal.setSubscription(true)
         //OneSignal.promptLocation() prompt location auth when location auth is close
@@ -256,6 +258,12 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
         //println("density: " + density)
         //val width: Float = displayMetrics.widthPixels / density
         screenWidth = displayMetrics.widthPixels
+    }
+
+    protected fun getScreenHeight() {
+        val displayMetrics = resources.displayMetrics
+        density = displayMetrics.density
+        screenHeight = displayMetrics.heightPixels
     }
 
     override fun onSupportNavigateUp(): Boolean {
