@@ -1,23 +1,14 @@
 package com.sportpassword.bm.Controllers
 
-import android.app.NotificationManager
-import android.content.BroadcastReceiver
-import android.content.Context
-import android.content.Intent
 import android.content.IntentFilter
-import android.content.pm.PackageManager
-import android.graphics.Color
 import android.graphics.PorterDuff
 import android.os.Build
 import android.os.Bundle
 import androidx.annotation.RequiresApi
 import com.google.android.material.tabs.TabLayout
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
 import androidx.core.content.ContextCompat
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
-import androidx.core.view.GravityCompat
 import android.view.View
 import com.sportpassword.bm.Adapters.TabAdapter
 import com.sportpassword.bm.R
@@ -27,7 +18,6 @@ import kotlinx.android.synthetic.main.tab.view.*
 import kotlinx.android.synthetic.main.activity_test.*
 import kotlinx.android.synthetic.main.login_out.*
 import kotlinx.android.synthetic.main.nav_header_main.*
-import kotlinx.android.synthetic.main.pure_mask.*
 
 class MainActivity : BaseActivity() {
 
@@ -73,7 +63,6 @@ class MainActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         hideKeyboard()
 
-
 //        val signatureList: List<String>
 //        try {
 //            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
@@ -112,50 +101,10 @@ class MainActivity : BaseActivity() {
 
 //        OneSignal.clearOneSignalNotifications()
 
-
-//        val testAccount = TestAccountStore(this.applicationContext)
-//        val configBuilder = Configuration.Builder(VIMEO_ID, VIMEO_SECRET, "private public create edit delete interact", testAccount).setCacheDirectory(this.cacheDir)
-//        VimeoClient.initialize(configBuilder.build())
-//        val token = VimeoClient.getInstance().vimeoAccount.accessToken
-//        println(token)
-
-
-//        val token = vimeoClient.vimeoAccount.accessToken
-//        //println(token)
-//        if (token == null) {
-//            authenticateWithClientCredentials() { success ->
-//                println(vimeoToken)
-//                if (success) {
-//                    //val uri = "/videos/265966500"
-//                    val uri = "/me/videos"
-//                    println(uri)
-////                    vimeoClient.fetchContent(uri, CacheControl.FORCE_NETWORK, object: ModelCallback<VideoList>(VideoList::class.java) {
-////                        override fun success(t: VideoList?) {
-////                            println(t)
-////                        }
-////
-////                        override fun failure(error: VimeoError?) {
-////                            println(error!!.localizedMessage)
-////                        }
-////                    })
-//                    vimeoClient.fetchNetworkContent(uri, object: ModelCallback<VideoList>(VideoList::class.java) {
-//                        override fun success(t: VideoList?) {
-//                            println("aaa")
-//                            println(t)
-//                            //val embed = t!!.embed.html
-//                            //println(embed)
-//                        }
-//
-//                        override fun failure(error: VimeoError?) {
-//                            println(error!!.localizedMessage)
-//                        }
-//                    })
-//                }
-//            }
-//        }
-
         //println("detect:" + gSimulate)
         setContentView(R.layout.activity_main)
+
+        //App 最上面的標題列
         setSupportActionBar(toolbar)
         supportActionBar!!.setDisplayShowTitleEnabled(false)
 
@@ -205,15 +154,16 @@ class MainActivity : BaseActivity() {
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
 
+        //把fragment放到ViewPager容器內
         val w = (screenWidth.toFloat() / density).toInt()
         val adapter = TabAdapter(supportFragmentManager, tabsTextArr, w)
-        tab_container.adapter = adapter
+        fragment_container.adapter = adapter
 
         //mSectionPagerAdapter = SectionsPagerAdapter(supportFragmentManager)
         //tab_container.adapter = mSectionPagerAdapter
 
-        tab_container.addOnPageChangeListener(TabLayout.TabLayoutOnPageChangeListener(tabs))
-        tabs.addOnTabSelectedListener(TabLayout.ViewPagerOnTabSelectedListener(tab_container))
+        fragment_container.addOnPageChangeListener(TabLayout.TabLayoutOnPageChangeListener(tabs))
+        tabs.addOnTabSelectedListener(TabLayout.ViewPagerOnTabSelectedListener(fragment_container))
         tabs.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab?) {
                 this@MainActivity.setTabIconSelected(tab!!)
@@ -259,6 +209,7 @@ class MainActivity : BaseActivity() {
 //        } catch (e: Exception) {
 //            println(e.localizedMessage)
 //        }
+        home_total_ad.visibility = View.GONE
     }
 
     override fun onResume() {
@@ -277,8 +228,6 @@ class MainActivity : BaseActivity() {
         //titleView.text = title
         toolbar_title.text = title
     }
-
-
 
     fun search_team(view: View) {
         goSearch("team")
@@ -304,118 +253,4 @@ class MainActivity : BaseActivity() {
         val color = ContextCompat.getColor(this, R.color.WHITE)
         tab.icon!!.setColorFilter(color, PorterDuff.Mode.SRC_IN)
     }
-
-
-    /**
-     * A [FragmentPagerAdapter] that returns a fragment corresponding to
-     * one of the sections/tabs/pages.
-     */
-//    inner class SectionsPagerAdapter(fm: FragmentManager) : FragmentPagerAdapter(fm) {
-//
-//        override fun getItem(position: Int): Fragment {
-//            // getItem is called to instantiate the fragment for the given page.
-//            // Return a PlaceholderFragment (defined as a static inner class below).
-//            return PlaceholderFragment.newInstance(position + 1)
-//        }
-//
-//        override fun getCount(): Int {
-//            // Show 3 total pages.
-//            return tabsTextArr.size
-//        }
-//    }
-
-    /**
-     * A placeholder fragment containing a simple view.
-     */
-//    class PlaceholderFragment : Fragment() {
-//
-//        override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-//                                  savedInstanceState: Bundle?): View? {
-//            val rootView = inflater.inflate(R.layout.tab, container, false)
-//            //rootView.section_label.text = getString(R.string.section_format, arguments!!.getInt(ARG_SECTION_NUMBER))
-//            return rootView
-//        }
-//
-//        companion object {
-//            /**
-//             * The fragment argument representing the section number for this
-//             * fragment.
-//             */
-//            private val ARG_SECTION_NUMBER = "section_number"
-//
-//            /**
-//             * Returns a new instance of this fragment for the given section
-//             * number.
-//             */
-//            fun newInstance(sectionNumber: Int): PlaceholderFragment {
-//                val fragment = PlaceholderFragment()
-//                val args = Bundle()
-//                args.putInt(ARG_SECTION_NUMBER, sectionNumber)
-//                fragment.arguments = args
-//                return fragment
-//            }
-//        }
-//    }
-
-    //    private val teamUpdate = object: BroadcastReceiver() {
-//        override fun onReceive(context: Context?, intent: Intent?) {
-//            refresh()
-//        }
-//    }
-
-//    private fun initMemberFunction() {
-//        menu_account_container.setOnClickListener {view ->
-//            val accountIntent = Intent(this, AccountActivity::class.java)
-//            startActivity(accountIntent)
-//        }
-//        menu_updatepassword_container.setOnClickListener { view ->
-//            val updatePasswordIntent = Intent(this, UpdatePasswordActivity::class.java)
-//            startActivity(updatePasswordIntent)
-//        }
-//    }
-
-//    private fun initTeamList() {
-//        val filter1: Array<Any> = arrayOf("channel", "=", CHANNEL)
-//        val filter2: Array<Any> = arrayOf("manager_id", "=", member.id)
-//        val filter: Array<Array<Any>> = arrayOf(filter1, filter2)
-//
-//        TeamService.getList(this, "team", "name", 1, 100, filter) { success ->
-//            if (success) {
-//                this.menuTeamListAdapter = MenuTeamListAdapter(this, TeamService.superDataLists,
-//                        { team -> goEditTeam(team.token) },
-//                        { team -> goDeleteTeam(team.token) },
-//                        { team -> goTeamTempPlayEdit(team.token) }
-//                )
-//                menu_team_list.adapter = this.menuTeamListAdapter
-//
-//                val layoutManager = LinearLayoutManager(this)
-//                menu_team_list.layoutManager = layoutManager
-//                closeRefresh()
-//            }
-//        }
-//        menu_team_add.onClick {
-//            if (member.validate < 1) {
-//                Alert.show(this@MainActivity, "錯誤", "未通過EMail認證，無法新增球隊，認證完後，請先登出再登入")
-//            } else {
-//                goEditTeam()
-//            }
-//        }
-//
-//    }
-
-    //    private fun authenticateWithClientCredentials(complete: CompletionHandler) {
-//        vimeoClient.authorizeWithClientCredentialsGrant(object: AuthCallback {
-//            override fun success() {
-//                val accessToken = vimeoClient.vimeoAccount.accessToken
-//                //println(accessToken)
-//                vimeoToken = accessToken
-//                complete(true)
-//            }
-//
-//            override fun failure(error: VimeoError?) {
-//                //println("failure")
-//                complete(false)
-//            }
-//        })
-//    }
 }

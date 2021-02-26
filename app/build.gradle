@@ -130,6 +130,7 @@ dependencies {
     implementation "com.squareup.retrofit2:converter-gson:2.8.1"
 
     implementation "tw.com.ecpay.paymentgatewaykit:ECPayPaymentGatewayKit:1.0.2"
+    implementation "com.github.zhpanvip:BannerViewPager:3.5.0"
 }
 
 configurations.all {
@@ -137,3 +138,10 @@ configurations.all {
         force 'com.android.support:support-v4:28.0.0'
     }
 }
+
+
+
+
+
+
+

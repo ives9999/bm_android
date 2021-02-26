@@ -29,6 +29,7 @@ import com.xwray.groupie.Section
 import com.xwray.groupie.ViewHolder
 import com.sportpassword.bm.Adapters.SearchItem
 import com.sportpassword.bm.App
+import com.sportpassword.bm.Controllers.HomeTotalAdVC
 import kotlinx.android.synthetic.main.activity_main.*
 import org.jetbrains.anko.backgroundColor
 
@@ -70,6 +71,9 @@ class TempPlayFragment : TabFragment(), inter {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        val intent = Intent(activity, HomeTotalAdVC::class.java)
+        startActivity(intent)
 
 //        if (!Session.exist(Session.loginResetKey)) {
 //            Session.loginReset = gReset
