@@ -4,34 +4,61 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/background"
     android:orientation="vertical"
+    android:paddingLeft="10dp"
+    android:paddingTop="10dp"
+    android:paddingRight="10dp"
     tools:context=".Controllers.HomeTotalAdVC">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="50dp"
+        android:alpha="0.8"
+        android:background="#FFFFFF"
         android:orientation="vertical">
 
-        <LinearLayout
+        <com.zhpan.bannerview.BannerViewPager
+            android:id="@+id/ad_container"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:layout_height="wrap_content" />
+    </LinearLayout>
 
-            <com.zhpan.bannerview.BannerViewPager
-                android:id="@+id/ad_container"
-                android:layout_width="match_parent"
-                android:layout_margin="10dp"
-                android:layout_height="300dp" />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginTop="-50dp"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:id="@+id/footer"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_alignParentBottom="true"
+            android:background="@color/MY_GREEN"
+            android:gravity="center|center_vertical"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/submitBtn"
+                style="@style/submit_button"
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:layout_marginRight="16dp"
+                android:onClick="submitBtnPressed"
+                android:text="購買" />
+
+            <Button
+                android:id="@+id/cancelBtn"
+                style="@style/cancel_button"
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:onClick="cancelBtnPressed"
+                android:text="關閉" />
 
         </LinearLayout>
 
-    </LinearLayout>
+    </RelativeLayout>
 
-    <Button
-        android:id="@+id/button5"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:onClick="cancelBtnPressed"
-        android:text="Button" />
 </LinearLayout>
