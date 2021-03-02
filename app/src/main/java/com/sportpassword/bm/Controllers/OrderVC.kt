@@ -347,6 +347,8 @@ class OrderVC : MyTableVC1(), ValueChangedDelegate {
                         goPayment(order_token)
                     }
                 }
+            } else {
+                info("訂單失敗，或接收失敗，請洽管理員")
             }
         }
     }

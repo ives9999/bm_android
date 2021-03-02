@@ -49,9 +49,15 @@ object OrderService: DataService() {
                         //val obj = json.getJSONObject("order")
                         this.success = json.getBoolean("success")
                         if (this.success) {
-                            this.token = json.getString("token")
-                            this.order_token = json.getString("order_token")
-                            this.tokenExpireDate = json.getString("tokenExpireDate")
+                            if (json.has("token")) {
+                                this.token = json.getString("token")
+                            }
+                            if (json.has("order_token")) {
+                                this.order_token = json.getString("order_token")
+                            }
+                            if (json.has("tokenExpireDate")) {
+                                this.tokenExpireDate = json.getString("tokenExpireDate")
+                            }
                         } else {
                             this.msg = json.getString("msg")
                             complete(false)

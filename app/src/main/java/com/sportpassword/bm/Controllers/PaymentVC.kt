@@ -92,8 +92,12 @@ class PaymentVC : MyTableVC1() {
         initAdapter()
         //refresh()
 
-        PaymentkitManager.initialize(this, ServerType.Stage)
-        PaymentkitManager.createPayment(this, ecpay_token, LanguageCode.zhTW, false, title, PaymentkitManager.RequestCode_CreatePayment)
+        if (ecpay_token.length > 0) {
+            PaymentkitManager.initialize(this, ServerType.Stage)
+            PaymentkitManager.createPayment(this, ecpay_token, LanguageCode.zhTW, false, title, PaymentkitManager.RequestCode_CreatePayment)
+        } else {
+            refresh()
+        }
     }
 
     override fun refresh() {
@@ -192,7 +196,8 @@ class PaymentVC : MyTableVC1() {
                 when (it.callbackStatus) {
                     CallbackStatus.Success -> if (it.getRtnCode() == 1) {
                         info("完成付款，我們將儘速將商品運送給您，謝謝您的光顧!!", "", "關閉") {
-                            goProduct()
+                            refresh()
+                            //goProduct()
                         }
                     } else {
                         val sb = StringBuffer()
