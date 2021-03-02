@@ -334,9 +334,9 @@ class OrderVC : MyTableVC1(), ValueChangedDelegate {
         OrderService.update(this, "", params) { success ->
             Loading.hide(mask)
             if (success) {
+                val order_token: String = OrderService.order_token
                 if (total > 0) {
                     val ecpay_token: String = OrderService.token
-                    val order_token: String = OrderService.order_token
                     val tokenExpireDate: String = OrderService.tokenExpireDate
                     info("訂單已經成立，是否前往結帳？", "取消", "結帳") {
                         //println("aaa");
@@ -344,7 +344,7 @@ class OrderVC : MyTableVC1(), ValueChangedDelegate {
                     }
                 } else {
                     info("訂單已經成立，結帳金額為零，我們會儘速處理您的訂單", "", "關閉") {
-                        prev()
+                        goPayment(order_token)
                     }
                 }
             }

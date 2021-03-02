@@ -90,10 +90,10 @@ class PaymentVC : MyTableVC1() {
         setRefreshListener()
 
         initAdapter()
-        refresh()
+        //refresh()
 
-//        PaymentkitManager.initialize(this, ServerType.Stage)
-//        PaymentkitManager.createPayment(this, ecpay_token, LanguageCode.zhTW, false, title, PaymentkitManager.RequestCode_CreatePayment)
+        PaymentkitManager.initialize(this, ServerType.Stage)
+        PaymentkitManager.createPayment(this, ecpay_token, LanguageCode.zhTW, false, title, PaymentkitManager.RequestCode_CreatePayment)
     }
 
     override fun refresh() {

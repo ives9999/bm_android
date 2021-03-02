@@ -69,15 +69,21 @@ class TempPlayFragment : TabFragment(), inter {
 
     var searchSections: ArrayList<Section> = arrayListOf(Section(), Section())
 
+    var firstTimeLoading: Boolean = false
+    //var firstTimeLoading: Boolean = true
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        val intent = Intent(activity, HomeTotalAdVC::class.java)
-        startActivity(intent)
 
 //        if (!Session.exist(Session.loginResetKey)) {
 //            Session.loginReset = gReset
 //        }
+
+        if (firstTimeLoading) {
+            val intent = Intent(activity, HomeTotalAdVC::class.java)
+            startActivity(intent)
+            firstTimeLoading = false
+        }
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -89,6 +95,7 @@ class TempPlayFragment : TabFragment(), inter {
 
         val btn = view.findViewById<Button>(R.id.submit_btn)
         btn.setOnClickListener { submit(view) }
+
         return view
     }
 
