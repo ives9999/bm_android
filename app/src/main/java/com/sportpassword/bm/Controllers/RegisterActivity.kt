@@ -16,7 +16,6 @@ import com.sportpassword.bm.Services.MemberService
 import com.sportpassword.bm.Utilities.*
 import com.sportpassword.bm.Views.ImagePicker
 import com.xwray.groupie.kotlinandroidextensions.Item
-import kotlinx.android.synthetic.main.activity_edit_course_vc.*
 import kotlinx.android.synthetic.main.activity_register.*
 import kotlinx.android.synthetic.main.activity_register.editTableView
 import kotlinx.android.synthetic.main.activity_register.edit_featured
@@ -29,6 +28,9 @@ import kotlin.reflect.full.declaredMemberProperties
 import com.sportpassword.bm.Form.ValueChangedDelegate
 import com.sportpassword.bm.Models.Member
 import com.sportpassword.bm.member
+import kotlinx.android.synthetic.main.activity_register.edit_featured_container
+import kotlinx.android.synthetic.main.edit_vc.*
+import org.jetbrains.anko.sdk27.coroutines.onClick
 
 class RegisterActivity : MyTableVC1(), ImagePicker, ValueChangedDelegate {
 
@@ -85,6 +87,13 @@ class RegisterActivity : MyTableVC1(), ImagePicker, ValueChangedDelegate {
         form = RegisterForm(this)
         sections = form.getSections()
         section_keys = form.getSectionKeys()
+
+        imageView = edit_featured
+        getImageViewParams()
+        initImagePicker(R.layout.image_picker_layer)
+        edit_featured_container.onClick {
+            showImagePickerLayer()
+        }
 
         initData()
 
@@ -552,6 +561,16 @@ class RegisterActivity : MyTableVC1(), ImagePicker, ValueChangedDelegate {
 
     fun cancel(view: View) {
         prev()
+    }
+
+    fun getImageViewParams() {
+        val l = edit_featured.layoutParams as LinearLayout.LayoutParams
+        originW = l.width
+        originH = l.height
+        originScaleType = edit_featured.scaleType
+        //val m = edit_featured.
+        originMarginTop = l.topMargin
+        originMarginBottom = l.bottomMargin
     }
 
     override fun textFieldTextChanged(formItem: FormItem, text: String) {

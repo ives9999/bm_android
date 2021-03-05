@@ -14,7 +14,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/BLACK"
-        android:orientation="vertical"
         tools:layout_editor_absoluteX="16dp">
 
 
@@ -33,7 +32,7 @@
                 android:paddingBottom="16dp"
                 android:paddingTop="16dp"
                 android:text="新增圖片從"
-                android:textColor="@color/WHITE"
+                android:textColor="@color/BLACK"
                 android:textSize="18sp" />
 
             <include
@@ -53,7 +52,7 @@
                 android:layout_marginTop="12dp"
                 android:background="@android:color/transparent"
                 android:text="照片"
-                android:textColor="@color/WHITE"
+                android:textColor="@color/BLACK"
                 android:textSize="24sp"
                 tools:layout_editor_absoluteX="67dp"
                 tools:layout_editor_absoluteY="38dp" />
@@ -75,7 +74,7 @@
                 android:layout_marginTop="12dp"
                 android:background="@android:color/transparent"
                 android:text="相機"
-                android:textColor="@color/WHITE"
+                android:textColor="@color/BLACK"
                 android:textSize="24sp"
                 tools:layout_editor_absoluteX="161dp"
                 tools:layout_editor_absoluteY="156dp" />
@@ -99,7 +98,7 @@
                 android:layout_marginTop="12dp"
                 android:background="@android:color/transparent"
                 android:text="移除"
-                android:textColor="@color/WHITE"
+                android:textColor="@color/BLACK"
                 android:textSize="24sp"
                 tools:layout_editor_absoluteX="161dp"
                 tools:layout_editor_absoluteY="156dp" />
@@ -121,7 +120,7 @@
                 android:layout_marginTop="12dp"
                 android:background="@android:color/transparent"
                 android:text="取消"
-                android:textColor="@color/WHITE"
+                android:textColor="@color/BLACK"
                 android:textSize="24sp"
                 tools:layout_editor_absoluteX="161dp"
                 tools:layout_editor_absoluteY="156dp" />
