@@ -463,7 +463,7 @@ open class DataService: BaseService() {
     open fun update(context: Context, _params: MutableMap<String, String>, filePath: String, complete: CompletionHandler) {
 
         val url: String = getUpdateURL()
-        println(url)
+        //println(url)
         val header: MutableList<Pair<String, String>> = mutableListOf()
         header.add(Pair("Accept","application/json"))
         header.add(Pair("Content-Type","application/json"))
@@ -485,7 +485,7 @@ open class DataService: BaseService() {
         }
         jsonString += tmps.joinToString(",")
         jsonString += "}"
-        println(jsonString)
+        //println(jsonString)
 
         var filePaths: ArrayList<String>? = null
         if (filePath.isNotEmpty()) {
@@ -498,7 +498,7 @@ open class DataService: BaseService() {
                 val response = MyHttpClient.instance.response
                 if (response != null) {
                     val responseStr = response.toString()
-                    println(responseStr)
+                    //println(responseStr)
                     try {
                         val json = JSONObject(responseStr)
                         //println(json)

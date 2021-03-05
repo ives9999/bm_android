@@ -633,7 +633,13 @@ object MemberService: DataService() {
         Member::class.memberProperties.forEach {
             val name = it.name
             //val type = it.returnType
-            val value = it.getter.call(_member1)
+            var value = it.getter.call(_member1)
+            if (name == "avatar") {
+                val a: String = value.toString()
+                if (a.length > 0) {
+                    value = BASE_URL + a
+                }
+            }
             when (value) {
                 is Int ->
                     session.edit().putInt(name, value).apply()

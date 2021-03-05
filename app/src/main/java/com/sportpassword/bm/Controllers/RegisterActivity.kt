@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.View
 import android.widget.ImageView
 import android.widget.LinearLayout
+import android.widget.RelativeLayout
 import androidx.appcompat.app.AlertDialog
 import com.sportpassword.bm.Adapters.Form.*
 import com.sportpassword.bm.Form.CourseForm
@@ -144,6 +145,8 @@ class RegisterActivity : MyTableVC1(), ImagePicker, ValueChangedDelegate {
                 }
             }
             old_selected_city = member.fetch(CITY_ID_KEY)
+            //println(member.avatar)
+            setImage(null, member.avatar)
         } else {
             if (testData.count() > 0) {
                 for ((key, value) in testData) {
@@ -446,9 +449,14 @@ class RegisterActivity : MyTableVC1(), ImagePicker, ValueChangedDelegate {
                     params[TOKEN_KEY] = member_token
                 }
             }
+            params["do"] = "update"
+            if (isFeaturedChange) {
+                params["featured"] = "1"
+            }
             //println(params)
+            //println(filePath)
 
-            MemberService.update(this, params, "") { success ->
+            MemberService.update(this, params, filePath) { success ->
                 Loading.hide(mask)
                 if (success) {
                     if (MemberService.success) {
@@ -511,7 +519,7 @@ class RegisterActivity : MyTableVC1(), ImagePicker, ValueChangedDelegate {
 
     override fun setImage(newFile: File?, url: String?) {
         featured_text.visibility = View.INVISIBLE
-        val layoutParams = edit_featured.layoutParams as LinearLayout.LayoutParams
+        val layoutParams = edit_featured.layoutParams as RelativeLayout.LayoutParams
         layoutParams.width = LinearLayout.LayoutParams.MATCH_PARENT
         layoutParams.height = LinearLayout.LayoutParams.MATCH_PARENT
         layoutParams.setMargins(0, 0, 0, 0)
@@ -522,7 +530,7 @@ class RegisterActivity : MyTableVC1(), ImagePicker, ValueChangedDelegate {
 
     override fun removeImage() {
         featured_text.visibility = View.VISIBLE
-        val layoutParams = edit_featured.layoutParams as LinearLayout.LayoutParams
+        val layoutParams = edit_featured.layoutParams as RelativeLayout.LayoutParams
         layoutParams.width = originW
         layoutParams.height = originH
         layoutParams.setMargins(0, originMarginTop, 0, originMarginBottom)
@@ -564,7 +572,7 @@ class RegisterActivity : MyTableVC1(), ImagePicker, ValueChangedDelegate {
     }
 
     fun getImageViewParams() {
-        val l = edit_featured.layoutParams as LinearLayout.LayoutParams
+        val l = edit_featured.layoutParams as RelativeLayout.LayoutParams
         originW = l.width
         originH = l.height
         originScaleType = edit_featured.scaleType

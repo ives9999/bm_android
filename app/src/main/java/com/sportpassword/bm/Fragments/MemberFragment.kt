@@ -24,6 +24,7 @@ import kotlinx.android.synthetic.main.mask.*
 import kotlinx.android.synthetic.main.mask.text
 import kotlinx.android.synthetic.main.nav_header_main.*
 import kotlinx.android.synthetic.main.tab_member.*
+import org.jetbrains.anko.image
 
 class MemberFragment: TabFragment() {
 
@@ -124,6 +125,9 @@ class MemberFragment: TabFragment() {
     protected fun _loginBlock() {
         _loginAdapter()
         nicknameLbl.text = member.nickname
+        if (member.avatar.length > 0) {
+            member.avatar.image(mainActivity!!, avatarView)
+        }
         loginBtn.text = "登出"
         registerBtn.visibility = View.INVISIBLE
         forgetPasswordBtn.visibility = View.INVISIBLE
