@@ -12,10 +12,8 @@ class SexFormItem(value: String = "M", isRequired: Boolean = false) : FormItem(S
 
     init {
         uiProperties.cellType = FormItemCellType.sex
-    }
-
-    init {
         reset()
+        this.value = value
     }
 
     override fun reset() {

@@ -1,73 +1,82 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/validate_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/background"
-    android:clickable="true"
     android:focusableInTouchMode="true"
+    android:orientation="vertical"
     tools:context=".Controllers.ValidateActivity">
 
-    <TextView
-        android:id="@+id/typeLbl"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="46dp"
-        android:text="email"
-        android:textAlignment="center"
-        android:textColor="@color/WHITE"
-        android:textSize="24sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <EditText
-        android:id="@+id/typeTxt"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="32dp"
-        android:ems="10"
-        android:inputType="textPersonName"
-        android:textColor="@color/WHITE"
-        android:textSize="24sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/typeLbl"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/textView4"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="44dp"
-        android:text="認證碼"
-        android:textAlignment="center"
-        android:textColor="@color/WHITE"
-        android:textSize="24sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/typeLbl" />
-
-    <EditText
-        android:id="@+id/codeTxt"
-        android:layout_width="224dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
         android:layout_marginTop="24dp"
-        android:ems="10"
-        android:inputType="textPersonName"
-        android:textColor="@color/WHITE"
-        android:textSize="24sp"
-        app:layout_constraintStart_toEndOf="@+id/textView4"
-        app:layout_constraintTop_toBottomOf="@+id/typeTxt" />
+        android:layout_marginBottom="24dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/typeLbl"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:text="email"
+            android:textAlignment="center"
+            android:textColor="@color/WHITE"
+            android:textSize="18dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <EditText
+            android:id="@+id/typeTxt"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginStart="12dp"
+            android:layout_marginEnd="12dp"
+            android:background="@drawable/edittext_border"
+            android:inputType="textPersonName"
+            android:paddingStart="8dp"
+            android:paddingEnd="8dp"
+            android:textAlignment="textEnd"
+            android:textColor="@color/WHITE" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/textView4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:text="認證碼"
+            android:textAlignment="center"
+            android:textColor="@color/WHITE"
+            android:textSize="18dp" />
+
+        <EditText
+            android:id="@+id/codeTxt"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginStart="12dp"
+            android:layout_marginEnd="12dp"
+            android:background="@drawable/edittext_border"
+            android:paddingStart="8dp"
+            android:paddingEnd="8dp"
+            android:inputType="textPersonName"
+            android:textAlignment="textEnd"
+            android:textColor="@color/WHITE" />
+    </LinearLayout>
 
     <Button
         android:id="@+id/submit"
         android:layout_width="128dp"
         android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
         android:layout_marginStart="8dp"
         android:layout_marginTop="36dp"
         android:background="@drawable/button_rc"
@@ -76,15 +85,13 @@
         android:textColor="@color/WHITE"
         android:textSize="18sp"
         android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/codeTxt" />
 
     <Button
         android:id="@+id/resend"
-        android:layout_width="180dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
         android:layout_marginStart="8dp"
         android:layout_marginTop="36dp"
         android:layout_marginEnd="8dp"
@@ -93,10 +100,7 @@
         android:text="重新寄發認證碼"
         android:textColor="@color/WHITE"
         android:textSize="18sp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/submit" />
+        android:textStyle="bold" />
     <include layout="@layout/mask" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>

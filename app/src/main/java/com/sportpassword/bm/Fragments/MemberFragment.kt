@@ -79,10 +79,14 @@ class MemberFragment: TabFragment() {
     override fun refresh() {
         if (member.isLoggedIn) {
             //initTeamList()
-                //member.memberPrint()
+                // member.memberPrint()
+            Loading.show(mask)
             mainActivity!!.refreshMember() { success ->
+                Loading.hide(mask)
                 if (success) {
                     _loginout()
+                } else {
+                    mainActivity!!.warning("伺服器錯誤，請稍後再試或聯絡管理員")
                 }
             }
         } else {
@@ -142,6 +146,7 @@ class MemberFragment: TabFragment() {
         registerBtn.visibility = View.VISIBLE
         forgetPasswordBtn.visibility = View.VISIBLE
         member_container.visibility = View.INVISIBLE
+        avatarView.setImageResource(R.drawable.menuprofileicon)
         //menu_team_container.visibility = View.INVISIBLE
     }
     protected fun _loginAdapter() {
