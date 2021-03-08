@@ -93,7 +93,7 @@ class PaymentVC : MyTableVC1() {
         //refresh()
 
         if (ecpay_token.length > 0) {
-            PaymentkitManager.initialize(this, ServerType.Stage)
+            PaymentkitManager.initialize(this, ServerType.Prod)
             PaymentkitManager.createPayment(this, ecpay_token, LanguageCode.zhTW, false, title, PaymentkitManager.RequestCode_CreatePayment)
         } else {
             refresh()
