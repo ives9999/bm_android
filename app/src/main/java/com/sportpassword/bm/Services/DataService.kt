@@ -107,7 +107,7 @@ open class DataService: BaseService() {
     fun getList(context: Context, type:String, titleField:String, params: HashMap<String,Any>, page:Int, perPage:Int, filter:Array<Array<Any>>?, complete:CompletionHandler) {
         val url = "$URL_LIST".format(type)
         //println(url)
-//        println(params)
+        //println(params)
 
 //        params.put("city_type", "simple")
 //        params.put("city_id", arrayListOf(11))
@@ -196,7 +196,7 @@ open class DataService: BaseService() {
             body.put("where", whereArr)
         }
         //println(params1)
-//        println(body.toString())
+        //println(body.toString())
 //        val requestBody = MyHttpClient.instance.toJsonString(body, filter)
         //println(requestBody)
         //println("coach getList refresh: $refresh")
@@ -241,6 +241,7 @@ open class DataService: BaseService() {
                             //val dataList: SuperData = Coach(id, title, featured_path)
                             val data = setData(id, title, token, featured_path, vimeo, youtube)
                             val map = setData1(obj)
+                            //println(map)
                             data.data = map
                             superDataLists.add(data)
                         }

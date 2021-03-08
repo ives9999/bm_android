@@ -121,9 +121,14 @@ class ListAdapter(val context: Context, val iden: String="team", val screenWidth
         private fun bindTeam(superData: SuperData) {
             if (superData.data.containsKey(CITY_KEY)) {
                 //println(superData.superData["city"]!!["show"])
-                cityView.text = superData.data[CITY_KEY]!!["show"] as String
-                cityView.setOnClickListener {
-                    searchCity(superData)
+                val city = superData.data[CITY_KEY]!!["show"] as String
+                if (city.length > 0) {
+                    cityView.text = city
+                    cityView.setOnClickListener {
+                        searchCity(superData)
+                    }
+                } else {
+                    cityView.visibility = View.INVISIBLE
                 }
             }
             if (superData.data.containsKey(ARENA_KEY)) {
@@ -145,10 +150,15 @@ class ListAdapter(val context: Context, val iden: String="team", val screenWidth
 
         private fun bindCoach(superData: SuperData) {
             if (superData.data.containsKey(CITYS_KEY)) {
-                //println(superData.superData["city"]!!["show"])
-                cityView.text = superData.data[CITYS_KEY]!!["show"] as String
-                cityView.setOnClickListener {
-                    searchCity(superData)
+                println(superData.data["citys"]!!)
+                val city = superData.data[CITYS_KEY]!!["show"] as String
+                if (city.length > 0) {
+                    cityView.text = city
+                    cityView.setOnClickListener {
+                        searchCity(superData)
+                    }
+                } else {
+                    cityView.visibility = View.INVISIBLE
                 }
             }
             if (superData.data.containsKey(MOBILE_KEY)) {
@@ -167,9 +177,14 @@ class ListAdapter(val context: Context, val iden: String="team", val screenWidth
         private fun bindCourse(superData: SuperData) {
             if (superData.data.containsKey(CITYS_KEY)) {
                 //println(superData.superData["city"]!!["show"])
-                cityView.text = superData.data[CITYS_KEY]!!["show"] as String
-                cityView.setOnClickListener {
-                    searchCity(superData)
+                val city = superData.data[CITYS_KEY]!!["show"] as String
+                if (city.length > 0) {
+                    cityView.text = city
+                    cityView.setOnClickListener {
+                        searchCity(superData)
+                    }
+                } else {
+                    cityView.visibility = View.INVISIBLE
                 }
             }
             if (superData.data.containsKey(MOBILE_KEY)) {
@@ -188,9 +203,14 @@ class ListAdapter(val context: Context, val iden: String="team", val screenWidth
         private fun bindArena(superData: SuperData) {
             if (superData.data.containsKey(CITY_KEY)) {
                 //println(superData.superData["city"]!!["show"])
-                cityView.text = superData.data[CITY_KEY]!!["show"] as String
-                cityView.setOnClickListener {
-                    searchCity(superData)
+                val city = superData.data[CITY_KEY]!!["show"] as String
+                if (city.length > 0) {
+                    cityView.text = city
+                    cityView.setOnClickListener {
+                        searchCity(superData)
+                    }
+                } else {
+                    cityView.visibility = View.INVISIBLE
                 }
             }
             if (superData.data.containsKey(TEL_KEY)) {
