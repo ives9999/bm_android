@@ -47,6 +47,7 @@ class Team(id: Int, name: String, token: String, featured_path: String, vimeo: S
                 TEAM_TEMP_FEE_F_KEY to mutableMapOf("ch" to "臨打費用：女","vtype" to "Int","value" to -1,"submit" to true,"atype" to none,"show" to "","text_field" to true,"keyboardType" to numberPad),
                 TEAM_TEMP_CONTENT_KEY to mutableMapOf("ch" to "臨打說明","vtype" to "String","value" to "","submit" to true,"atype" to more,"segue" to TO_TEXT_INPUT,"sender" to mutableMapOf<String, Any>(),"show" to ""),
                 CITY_KEY to mutableMapOf("ch" to "區域","vtype" to "array","value" to 0,"submit" to true,"atype" to more,"segue" to TO_CITY,"sender" to 0,"show" to ""),
+                CITY_ID_KEY to mutableMapOf("ch" to "區域","vtype" to "Int","value" to -1,"submit" to true,"atype" to more,"segue" to TO_CITY,"sender" to -1,"show" to ""),
                 ARENA_KEY to mutableMapOf("ch" to "球館","vtype" to "array","value" to 0,"submit" to true,"atype" to more,"segue" to TO_ARENA,"sender" to mutableMapOf<String, Int>(),"show" to ""),
                 TEAM_WEEKDAYS_KEY to mutableMapOf("ch" to "星期幾","vtype" to "array","value" to mutableListOf<Int>(),"submit" to true,"atype" to more,"segue" to TO_DAY,"sender" to mutableListOf<Int>(),"show" to ""),
 

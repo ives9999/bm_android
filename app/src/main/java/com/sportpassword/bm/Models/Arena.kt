@@ -31,6 +31,7 @@ class Arena(id: Int, name: String, token: String="", featured_path: String=""): 
                 ARENA_INTERVAL_KEY to mutableMapOf("ch" to "營業時間","vtype" to "String","value" to "","show" to "","submit" to false),
                 ARENA_BLOCK_KEY to mutableMapOf("ch" to "場地","vtype" to "Int","value" to 0,"show" to "","submit" to false),
                 CITY_KEY to mutableMapOf("ch" to "縣市","vtype" to "String","value" to "","show" to "","submit" to false),
+                CITY_ID_KEY to mutableMapOf("ch" to "區域","vtype" to "Int","value" to -1,"submit" to true,"atype" to more,"show" to ""),
                 AREA_KEY to mutableMapOf("ch" to "區域","vtype" to "String","value" to "","show" to "","submit" to false),
                 ROAD_KEY to mutableMapOf("ch" to "路名","vtype" to "String","value" to "","show" to "","submit" to false),
                 ADDRESS_KEY to mutableMapOf("ch" to "住址","vtype" to "String","value" to "","show" to "","submit" to false),

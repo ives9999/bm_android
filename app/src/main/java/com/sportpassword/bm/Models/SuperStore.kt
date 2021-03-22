@@ -1,9 +1,6 @@
 package com.sportpassword.bm.Models
 
-import com.sportpassword.bm.Utilities.COURSE_KIND
-import com.sportpassword.bm.Utilities.CYCLE_UNIT
-import com.sportpassword.bm.Utilities.PRICE_UNIT
-import com.sportpassword.bm.Utilities.noTime
+import com.sportpassword.bm.Utilities.*
 import org.json.JSONObject
 
 class SuperStore(data: JSONObject): SuperModel(data) {
@@ -42,7 +39,6 @@ class SuperStore(data: JSONObject): SuperModel(data) {
     var city: String = ""
     var open_time_text: String = ""
     var close_time_text: String = ""
-    var address: String = ""
     var tel_text: String = ""
     var mobile_text: String = ""
 
@@ -50,8 +46,38 @@ class SuperStore(data: JSONObject): SuperModel(data) {
 
     var managers: ArrayList<HashMap<String, Any>> = arrayListOf()
 
+    var city_show: String = ""
+    var area_show: String = ""
+    var address: String = ""
+    var tel_show: String = ""
+    var mobile_show: String = ""
+    var open_time_show: String = ""
+    var close_time_show: String = ""
+
     override fun filter() {
         super.filter()
+        if (city_id > 0) {
+            city_show = Global.zoneIDToName(city_id)
+            area_show = Global.zoneIDToName(area_id)
+            address = zip.toString() + city_show + area_show + road
+        }
+
+        if (tel.length > 0) {
+            tel_show = tel.telShow()
+        }
+        
+        if (mobile.length > 0) {
+            mobile_show = mobile.mobileShow()
+        }
+        
+        if (open_time.length > 0) {
+            open_time_show = open_time.noSec()
+        }
+        
+        if (close_time.length > 0) {
+            close_time_show = close_time.noSec()
+        }
+
         created_at_text = created_at.noTime()
     }
 

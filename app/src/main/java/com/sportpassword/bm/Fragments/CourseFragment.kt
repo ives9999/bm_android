@@ -160,6 +160,7 @@ class CourseFragment : TabFragment() {
         val items: ArrayList<Item> = arrayListOf()
         if (superCourses != null) {
             for (row in superCourses!!.rows) {
+                row.filter()
                 items.add(CourseItem(context!!, row))
             }
         }
@@ -304,9 +305,14 @@ class CourseFragment : TabFragment() {
     class CourseItem(val context: Context, val superCourse: SuperCourse): Item() {
         override fun bind(viewHolder: com.xwray.groupie.kotlinandroidextensions.ViewHolder, position: Int) {
 
-            val citys = superCourse.coach.citys
-            if (citys.size > 0) {
-                viewHolder.listCityBtn.text = citys[0].name
+//            val citys = superCourse.coach.citys
+//            if (citys.size > 0) {
+//                viewHolder.listCityBtn.text = citys[0].name
+//            }
+            if (superCourse.city_show.length > 0) {
+                viewHolder.listCityBtn.text = superCourse.city_show
+            } else {
+                viewHolder.listCityBtn.visibility = View.GONE
             }
             viewHolder.title.text = superCourse.title
             Picasso.with(context)

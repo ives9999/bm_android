@@ -47,6 +47,7 @@ class SuperCourse(data: JSONObject): SuperModel(data) {
     var thumb: String = ""
     var coach: SuperCoach = SuperCoach(JSONObject())
     var citys: SuperCitys = SuperCitys(JSONObject())
+    var city_id: Int = -1
     var nextCourseTime: HashMap<String, String> = hashMapOf()
     //var signups: SuperSignups = SuperSignups()
     var isSignup: Boolean = false
@@ -56,8 +57,14 @@ class SuperCourse(data: JSONObject): SuperModel(data) {
     var signup_normal_models: ArrayList<SuperSignupNormal> = arrayListOf()
     var signup_standby_models: ArrayList<SuperSignupStandby> = arrayListOf()
 
+    var city_show: String = ""
+
     override fun filter() {
         super.filter()
+
+        if (city_id > 0) {
+            city_show = Global.zoneIDToName(city_id)
+        }
         if (price_unit.count() > 0) {
             price_unit1 = PRICE_UNIT.from(price_unit)
         }
@@ -66,6 +73,12 @@ class SuperCourse(data: JSONObject): SuperModel(data) {
         }
         if (kind.count() > 0) {
             kind1 = COURSE_KIND.from(kind)
+        }
+        if (start_time.length > 0) {
+            start_time_text = start_time.noSec()
+        }
+        if (end_time.length > 0) {
+            end_time_text = end_time.noSec()
         }
         created_at_text = created_at.noTime()
     }

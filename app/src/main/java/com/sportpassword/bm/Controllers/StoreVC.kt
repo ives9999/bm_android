@@ -209,6 +209,7 @@ class StoreVC : MyTableVC1(), List1CellDelegate {
         if (superStores != null) {
             for (row in superStores!!.rows) {
                 //row.print()
+                row.filter()
                 val storeItem = StoreItem(this, row)
                 storeItem.list1CellDelegate = this
                 items.add(storeItem)
@@ -292,15 +293,15 @@ class StoreItem(val context: Context, val row: SuperStore): Item() {
     override fun bind(viewHolder: ViewHolder, position: Int) {
 
         //println(superStore);
-        viewHolder.cityBtn.text = row.city
+        viewHolder.cityBtn.text = row.city_show
         viewHolder.titleTxt.text = row.name
         Picasso.with(context)
                 .load(BASE_URL + row.featured_path)
                 .placeholder(R.drawable.loading_square_120)
                 .error(R.drawable.loading_square_120)
                 .into(viewHolder.listFeatured)
-        viewHolder.telTxt.text = row.tel_text
-        viewHolder.business_timeTxt.text = row.open_time_text+"~"+row.close_time_text
+        viewHolder.telTxt.text = row.tel_show
+        viewHolder.business_timeTxt.text = row.open_time_show+"~"+row.close_time_show
         viewHolder.addressTxt.text = row.address
 
         viewHolder.refreshIcon.setOnClickListener {

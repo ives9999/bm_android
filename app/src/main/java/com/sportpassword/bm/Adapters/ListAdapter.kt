@@ -57,9 +57,10 @@ class ListAdapter(val context: Context, val iden: String="team", val screenWidth
                 bindCoach(superData)
             } else if (iden == "arena") {
                 bindArena(superData)
-            } else if (iden == "course") {
-                bindCourse(superData)
             }
+//            else if (iden == "course") {
+//                bindCourse(superData)
+//            }
             if (superData.vimeo.isEmpty() && superData.youtube.isEmpty()) {
                 nameView.visibility = View.VISIBLE
                 featuredView.visibility = View.VISIBLE
@@ -119,16 +120,24 @@ class ListAdapter(val context: Context, val iden: String="team", val screenWidth
         }
 
         private fun bindTeam(superData: SuperData) {
-            if (superData.data.containsKey(CITY_KEY)) {
-                //println(superData.superData["city"]!!["show"])
-                val city = superData.data[CITY_KEY]!!["show"] as String
-                if (city.length > 0) {
-                    cityView.text = city
-                    cityView.setOnClickListener {
-                        searchCity(superData)
-                    }
+//            if (superData.data.containsKey(CITY_KEY)) {
+//                //println(superData.superData["city"]!!["show"])
+//                val city = superData.data[CITY_KEY]!!["show"] as String
+//                if (city.length > 0) {
+//                    cityView.text = city
+//                    cityView.setOnClickListener {
+//                        searchCity(superData)
+//                    }
+//                } else {
+//                    cityView.visibility = View.INVISIBLE
+//                }
+//            }
+            if (superData.data.containsKey(CITY_ID_KEY)) {
+                val tmp: String = superData.data[CITY_ID_KEY]!!["show"] as String
+                if (tmp.length > 0) {
+                    cityView.text = tmp
                 } else {
-                    cityView.visibility = View.INVISIBLE
+                    cityView.visibility = View.GONE
                 }
             }
             if (superData.data.containsKey(ARENA_KEY)) {
@@ -149,16 +158,24 @@ class ListAdapter(val context: Context, val iden: String="team", val screenWidth
         }
 
         private fun bindCoach(superData: SuperData) {
-            if (superData.data.containsKey(CITYS_KEY)) {
-                println(superData.data["citys"]!!)
-                val city = superData.data[CITYS_KEY]!!["show"] as String
-                if (city.length > 0) {
-                    cityView.text = city
-                    cityView.setOnClickListener {
-                        searchCity(superData)
-                    }
+//            if (superData.data.containsKey(CITYS_KEY)) {
+//                //println(superData.data["citys"]!!)
+//                val city = superData.data[CITYS_KEY]!!["show"] as String
+//                if (city.length > 0) {
+//                    cityView.text = city
+//                    cityView.setOnClickListener {
+//                        searchCity(superData)
+//                    }
+//                } else {
+//                    cityView.visibility = View.INVISIBLE
+//                }
+//            }
+            if (superData.data.containsKey(CITY_ID_KEY)) {
+                val tmp: String = superData.data[CITY_ID_KEY]!!["show"] as String
+                if (tmp.length > 0) {
+                    cityView.text = tmp
                 } else {
-                    cityView.visibility = View.INVISIBLE
+                    cityView.visibility = View.GONE
                 }
             }
             if (superData.data.containsKey(MOBILE_KEY)) {
@@ -174,43 +191,51 @@ class ListAdapter(val context: Context, val iden: String="team", val screenWidth
             }
         }
 
-        private fun bindCourse(superData: SuperData) {
-            if (superData.data.containsKey(CITYS_KEY)) {
-                //println(superData.superData["city"]!!["show"])
-                val city = superData.data[CITYS_KEY]!!["show"] as String
-                if (city.length > 0) {
-                    cityView.text = city
-                    cityView.setOnClickListener {
-                        searchCity(superData)
-                    }
-                } else {
-                    cityView.visibility = View.INVISIBLE
-                }
-            }
-            if (superData.data.containsKey(MOBILE_KEY)) {
-                //println(superData.superData["arena"]!!["show"])
-                arenaView.text = superData.data[MOBILE_KEY]!!["show"] as String
-            }
-            if (superData.data.containsKey(COACH_SENIORITY_KEY)) {
-                ballView.text = "年資: " + superData.data[COACH_SENIORITY_KEY]!!["show"] as String
-            }
-            if (superData.data.containsKey(LINE_KEY)) {
-                //println(superData.superData["arena"]!!["show"])
-                dayView.text = "line id: " + superData.data[LINE_KEY]!!["show"] as String
-            }
-        }
+//        private fun bindCourse(superData: SuperData) {
+//            if (superData.data.containsKey(CITYS_KEY)) {
+//                //println(superData.superData["city"]!!["show"])
+//                val city = superData.data[CITYS_KEY]!!["show"] as String
+//                if (city.length > 0) {
+//                    cityView.text = city
+//                    cityView.setOnClickListener {
+//                        searchCity(superData)
+//                    }
+//                } else {
+//                    cityView.visibility = View.INVISIBLE
+//                }
+//            }
+//            if (superData.data.containsKey(MOBILE_KEY)) {
+//                //println(superData.superData["arena"]!!["show"])
+//                arenaView.text = superData.data[MOBILE_KEY]!!["show"] as String
+//            }
+//            if (superData.data.containsKey(COACH_SENIORITY_KEY)) {
+//                ballView.text = "年資: " + superData.data[COACH_SENIORITY_KEY]!!["show"] as String
+//            }
+//            if (superData.data.containsKey(LINE_KEY)) {
+//                //println(superData.superData["arena"]!!["show"])
+//                dayView.text = "line id: " + superData.data[LINE_KEY]!!["show"] as String
+//            }
+//        }
 
         private fun bindArena(superData: SuperData) {
-            if (superData.data.containsKey(CITY_KEY)) {
-                //println(superData.superData["city"]!!["show"])
-                val city = superData.data[CITY_KEY]!!["show"] as String
-                if (city.length > 0) {
-                    cityView.text = city
-                    cityView.setOnClickListener {
-                        searchCity(superData)
-                    }
+//            if (superData.data.containsKey(CITY_KEY)) {
+//                //println(superData.superData["city"]!!["show"])
+//                val city = superData.data[CITY_KEY]!!["show"] as String
+//                if (city.length > 0) {
+//                    cityView.text = city
+//                    cityView.setOnClickListener {
+//                        searchCity(superData)
+//                    }
+//                } else {
+//                    cityView.visibility = View.INVISIBLE
+//                }
+//            }
+            if (superData.data.containsKey(CITY_ID_KEY)) {
+                val tmp: String = superData.data[CITY_ID_KEY]!!["show"] as String
+                if (tmp.length > 0) {
+                    cityView.text = tmp
                 } else {
-                    cityView.visibility = View.INVISIBLE
+                    cityView.visibility = View.GONE
                 }
             }
             if (superData.data.containsKey(TEL_KEY)) {

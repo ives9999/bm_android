@@ -84,6 +84,11 @@ object ArenaService: DataService() {
             try {
                 model.data[key]!!["value"] = tmp.getInt(key)
                 model.data[key]!!["show"] = tmp.getInt(key).toString()
+
+                if (key == CITY_ID_KEY) {
+                    val city_id: Int = tmp.getInt(key)
+                    model.data[key]!!["show"] = Global.zoneIDToName(city_id)
+                }
             } catch (e: JSONException) {
                 //println(e.localizedMessage)
                 model.data[key]!!["value"] = -1

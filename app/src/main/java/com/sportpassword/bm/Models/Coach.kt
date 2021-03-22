@@ -30,6 +30,7 @@ class Coach(id: Int, name: String, token: String, featured_path: String="", vime
                 YOUTUBE_KEY to mutableMapOf("ch" to "youtube","vtype" to "String","value" to "","show" to "","submit" to true,"atype" to none,"text_field" to true,"keyboardType" to defaultPad),
                 COACH_SENIORITY_KEY to mutableMapOf("ch" to "年資","vtype" to "Int","value" to -1,"show" to "","submit" to true,"atype" to none,"text_field" to true,"keyboardType" to numberPad),
                 CITYS_KEY to mutableMapOf("ch" to "區域","vtype" to "array","value" to 0,"show" to "","submit" to true,"atype" to more,"sender" to 0),
+                CITY_ID_KEY to mutableMapOf("ch" to "區域","vtype" to "Int","value" to -1,"submit" to true,"atype" to more,"sender" to -1,"show" to ""),
                 COACH_EXP_KEY to mutableMapOf("ch" to "經歷","vtype" to "String","value" to "","show" to "","submit" to true,"atype" to more,"sender" to ""),
                 COACH_FEAT_KEY to mutableMapOf("ch" to "比賽成績","vtype" to "String","value" to "","show" to "","submit" to true,"atype" to more,"sender" to ""),
                 COACH_LICENSE_KEY to mutableMapOf("ch" to "證照","vtype" to "String","value" to "","show" to "","submit" to true,"atype" to more,"sender" to ""),
