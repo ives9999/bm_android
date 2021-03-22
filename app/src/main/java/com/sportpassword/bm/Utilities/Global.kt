@@ -7,6 +7,7 @@ import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
+import android.content.pm.PackageManager
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
@@ -15,6 +16,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.*
+import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.google.gson.Gson
 import com.google.gson.JsonArray
@@ -22,6 +24,8 @@ import com.google.gson.JsonObject
 import com.google.gson.JsonParser
 import com.google.gson.internal.LinkedTreeMap
 import com.google.gson.reflect.TypeToken
+import com.sportpassword.bm.Controllers.BaseActivity
+import com.sportpassword.bm.Controllers.MainActivity
 import com.sportpassword.bm.Models.Area
 import com.sportpassword.bm.Models.City
 import com.sportpassword.bm.R
@@ -575,8 +579,15 @@ fun String.isDateTime(format: String="yyy-MM-dd HH:mm:ss"): Boolean {
     }
 }
 
-fun String.makeCall(context: Context) {
-    context.makeCall(this)
+fun String.makeCall(activity: BaseActivity) {
+
+    if (this.isNotEmpty()) {
+        if (!activity.permissionExist(android.Manifest.permission.CALL_PHONE)){
+            activity.requestPermission(arrayOf(android.Manifest.permission.CALL_PHONE), activity.REQUEST_PHONE_CALL)
+        } else {
+            activity.makeCall(this)
+        }
+    }
 }
 
 fun String.youtube(context: Context) {

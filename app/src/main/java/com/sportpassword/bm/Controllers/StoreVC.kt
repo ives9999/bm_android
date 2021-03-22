@@ -2,10 +2,10 @@ package com.sportpassword.bm.Controllers
 
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.os.Bundle
 import android.view.View
-import com.sportpassword.bm.Fragments.CourseFragment
-import com.sportpassword.bm.Models.Member
+import androidx.core.app.ActivityCompat
 import com.sportpassword.bm.Models.SuperStore
 import com.sportpassword.bm.Models.SuperStores
 import com.sportpassword.bm.R
@@ -97,14 +97,15 @@ class StoreVC : MyTableVC1(), List1CellDelegate {
                     adapter.notifyDataSetChanged()
                 }
             }
-
+            Loading.hide(maskView)
+            loading = false
             page++
         } else {
             warning(dataService.msg)
+            Loading.hide(maskView)
+            loading = false
         }
 //        mask?.let { mask?.dismiss() }
-        Loading.hide(maskView)
-        loading = false
 //        println("page:$page")
 //        println("perPage:$perPage")
 //        println("totalCount:$totalCount")
@@ -249,6 +250,11 @@ class StoreVC : MyTableVC1(), List1CellDelegate {
             val row = superStores!!.rows[index]
             if (row.tel.length > 0) {
                 row.tel.makeCall(this)
+//                if (!permissionExist(android.Manifest.permission.CALL_PHONE)){
+//                    requestPermission(arrayOf(android.Manifest.permission.CALL_PHONE), REQUEST_PHONE_CALL)
+//                } else {
+//                    row.tel.makeCall(this)
+//                }
             }
         }
     }
