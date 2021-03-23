@@ -249,12 +249,8 @@ class StoreVC : MyTableVC1(), List1CellDelegate {
         if (superStores != null && superStores!!.totalCount > index) {
             val row = superStores!!.rows[index]
             if (row.tel.length > 0) {
+                println(row.tel)
                 row.tel.makeCall(this)
-//                if (!permissionExist(android.Manifest.permission.CALL_PHONE)){
-//                    requestPermission(arrayOf(android.Manifest.permission.CALL_PHONE), REQUEST_PHONE_CALL)
-//                } else {
-//                    row.tel.makeCall(this)
-//                }
             }
         }
     }

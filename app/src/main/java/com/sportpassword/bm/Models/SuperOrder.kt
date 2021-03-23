@@ -86,7 +86,10 @@ class SuperOrder(data: JSONObject): SuperModel(data) {
         amount_show = thousandNumber(amount)
 
         created_at_show = created_at.noSec()
-        order_process_show = ORDER_PROCESS.getRawValueFromString(process)
+
+        if (process.length > 0) {
+            order_process_show = ORDER_PROCESS.getRawValueFromString(process)
+        }
 
         if (payment_at.length > 0) {
             payment_at_show = payment_at.noSec()
