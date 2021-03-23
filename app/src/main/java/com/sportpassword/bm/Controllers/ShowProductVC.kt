@@ -68,6 +68,8 @@ class ShowProductVC: BaseActivity() {
                 closeRefresh()
                 Loading.hide(mask)
             }
+        } else {
+            warning("沒有接收到商品token，所以無法顯示商品內頁，請洽管理員")
         }
     }
 
@@ -91,7 +93,7 @@ class ShowProductVC: BaseActivity() {
 
     fun submitBtnPressed(view: View) {
         //print("purchase")
-        goOrder(superProduct!!)
+        goOrder(superProduct!!.token)
     }
 
     fun cancelBtnPressed(view: View) {

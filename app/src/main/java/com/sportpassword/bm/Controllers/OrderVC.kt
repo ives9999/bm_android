@@ -14,6 +14,7 @@ import com.sportpassword.bm.Models.SuperOrder
 import com.sportpassword.bm.Models.SuperProduct
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.OrderService
+import com.sportpassword.bm.Services.ProductService
 import com.sportpassword.bm.Utilities.*
 import com.sportpassword.bm.member
 import com.xwray.groupie.kotlinandroidextensions.Item
@@ -22,6 +23,7 @@ import kotlinx.android.synthetic.main.mask.*
 
 class OrderVC : MyTableVC1(), ValueChangedDelegate {
 
+    var product_token: String? = null
     var superProduct: SuperProduct? = null
     var section_keys: ArrayList<ArrayList<String>> = arrayListOf()
 
@@ -37,28 +39,59 @@ class OrderVC : MyTableVC1(), ValueChangedDelegate {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_order_vc)
 
-        if (intent.hasExtra("superProduct")) {
-            superProduct = intent.getSerializableExtra("superProduct") as? SuperProduct
-            setMyTitle(superProduct!!.name)
+        if (intent.hasExtra("product_token")) {
+            product_token = intent.getStringExtra("product_token")
+            //superProduct = intent.getSerializableExtra("superProduct") as? SuperProduct
+
             hidekeyboard(order_layout)
 
-            form = OrderForm(superProduct!!.type, this)
-            sections = form.getSections()
-            section_keys = form.getSectionKeys()
-
+            dataService = ProductService
             recyclerView = editTableView
-            initAdapter(true)
 
             refreshLayout = refresh
             setRefreshListener()
 
-            initData()
+            //initData()
+            refresh()
         } else {
             warning("傳送商品資料錯誤，請洽管理員，或稍後再試")
         }
     }
 
+    override fun refresh() {
+        if (product_token != null) {
+            Loading.show(mask)
+            val params: HashMap<String, String> = hashMapOf("token" to product_token!!, "member_token" to member.token!!)
+            dataService.getOne(this, params) { success ->
+                if (success) {
+                    superProduct = dataService.superModel as SuperProduct
+                    if (superProduct != null) {
+                        superProduct!!.filter()
+                        setMyTitle(superProduct!!.name)
+                        //superCourse!!.print()
+                        //setMyTitle(superProduct!!.name)
+                        initData()
+                        notifyChanged(true)
+                        //val items = generateItems(sections.size)
+//                    println(items)
+                        //adapter.update(items)
+                        //adapter.notifyDataSetChanged()
+                    }
+                }
+                closeRefresh()
+                Loading.hide(mask)
+            }
+        } else {
+            warning("沒有接收到商品token，所以無法顯示商品內頁，請洽管理員")
+        }
+    }
+
     private fun initData() {
+
+        form = OrderForm(superProduct!!.type, this)
+        sections = form.getSections()
+        section_keys = form.getSectionKeys()
+        initAdapter(true)
 
         val productNameItem = getFormItemFromKey("Product_Name")
         if (productNameItem != null) {
@@ -253,6 +286,7 @@ class OrderVC : MyTableVC1(), ValueChangedDelegate {
             notifyChanged(true)
         }
     }
+
 
     override fun tagChecked(checked: Boolean, name: String, key: String, value: String) {
         //println(value)

@@ -35,30 +35,10 @@
                     app:srcCompat="@drawable/loading_square" />
 
                 <TextView
-                    android:id="@+id/imagesLbl"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/featured"
-                    android:layout_marginLeft="12dp"
-                    android:layout_marginTop="16dp"
-                    android:layout_marginBottom="8dp"
-                    android:text="商品圖片"
-                    android:textColor="@color/MY_RED"
-                    android:textSize="24sp" />
-
-                <LinearLayout
-                    android:id="@+id/imageContainerView"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/imagesLbl"
-                    android:orientation="vertical" >
-                </LinearLayout>
-
-                <TextView
                     android:id="@+id/contentLbl"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/imageContainerView"
+                    android:layout_below="@+id/featured"
                     android:layout_marginLeft="12dp"
                     android:layout_marginTop="16dp"
                     android:layout_marginBottom="8dp"
@@ -74,6 +54,26 @@
                     android:text="TextView"
                     android:textColor="#FFFFFF"
                     android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/imagesLbl"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/contentView"
+                    android:layout_marginLeft="12dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginBottom="8dp"
+                    android:text="商品圖片"
+                    android:textColor="@color/MY_RED"
+                    android:textSize="24sp" />
+
+                <LinearLayout
+                    android:id="@+id/imageContainerView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/imagesLbl"
+                    android:orientation="vertical" >
+                </LinearLayout>
 
             </RelativeLayout>
         </ScrollView>

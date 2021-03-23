@@ -481,7 +481,7 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
         startActivity(i)
     }
 
-    fun goOrder(superProduct: SuperProduct) {
+    fun goOrder(product_token: String) {
         var msg: String = ""
         if (!member.isLoggedIn) {
             warning("必須先登入會員，才能進行購買", true, "登入") {
@@ -504,7 +504,7 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
             } else {
 
                 val i = Intent(this, OrderVC::class.java)
-                i.putExtra("superProduct", superProduct)
+                i.putExtra("product_token", product_token)
                 //i.putExtra("title", title)
                 startActivity(i)
             }

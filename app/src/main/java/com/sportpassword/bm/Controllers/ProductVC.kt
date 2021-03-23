@@ -218,7 +218,7 @@ class ProductItem(val context: Context, val row: SuperProduct): Item() {
         viewHolder.cityBtn.text = "購買"
         viewHolder.cityBtn.setOnClickListener {
             val a: ProductVC = context as ProductVC
-            a.goOrder(row)
+            a.goOrder(row.token)
         }
 
         viewHolder.titleTxt.text = row.name
