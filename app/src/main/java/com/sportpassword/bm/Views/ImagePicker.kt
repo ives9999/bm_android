@@ -105,13 +105,16 @@ interface ImagePicker {
             //val values = ContentValues(1)
             //values.put(MediaStore.Images.Media.MIME_TYPE, "image/jpg")
             //val fileUri = activity.contentResolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values)
-            val capturedImage = File(activity.externalCacheDir, "My_Captured_Photo.jpg")
+            val directoryStorage = activity.getExternalFilesDir(Environment.DIRECTORY_PICTURES)
+            val capturedImage = File.createTempFile("My_Captured_Photo.jpg", ".jpg", directoryStorage)
+            val fileUri = FileProvider.getUriForFile(activity,"com.example.androidcamera.fileprovider", capturedImage)
+            //val capturedImage = File(activity.externalCacheDir, "My_Captured_Photo.jpg")
             //val fileUri = File()
-            if (capturedImage.exists()) {
-                capturedImage.delete()
-            }
-            capturedImage.createNewFile()
-            val fileUri = FileProvider.getUriForFile(activity, "com.example.androidcamera.fileprovider", capturedImage)
+//            if (capturedImage.exists()) {
+//                capturedImage.delete()
+//            }
+            //capturedImage.createNewFile()
+            //val fileUri = FileProvider.getUriForFile(activity, "com.example.androidcamera.fileprovider", capturedImage)
 
             val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
             if (intent.resolveActivity(activity.packageManager) != null) {
