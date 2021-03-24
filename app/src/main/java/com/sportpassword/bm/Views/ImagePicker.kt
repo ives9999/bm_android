@@ -5,7 +5,9 @@ import android.app.Activity
 import android.content.ContentValues
 import android.content.Context
 import android.content.Intent
+import android.graphics.BitmapFactory
 import android.net.Uri
+import android.os.Build
 import android.os.Environment
 import android.provider.MediaStore
 import androidx.core.app.ActivityCompat.startActivityForResult
@@ -30,6 +32,7 @@ import kotlinx.android.synthetic.main.edit_vc.*
 import org.jetbrains.anko.makeCall
 import java.io.File
 import java.io.FileOutputStream
+import java.lang.Exception
 
 /**
  * Created by ives on 2018/3/14.
@@ -45,6 +48,7 @@ interface ImagePicker {
     var currentPhotoPath: String
     var filePath: String
     var file: File?
+    //var fileUri: Uri
     var imageView: ImageView
 
     fun initImagePicker(resource: Int) {
@@ -98,29 +102,61 @@ interface ImagePicker {
 
     fun grantCameraPermission() {
 
-
+        var b1: Boolean = false
+        var b2: Boolean = false
         if (!activity.permissionsExist(arrayListOf(Manifest.permission.READ_EXTERNAL_STORAGE))) {
             activity.requestPermission(arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE), ACTION_PHOTO_REQUEST_CODE)
         } else {
+            b1 = true
+        }
+        if (!activity.permissionsExist(arrayListOf(Manifest.permission.CAMERA))) {
+            activity.requestPermission(arrayOf(Manifest.permission.CAMERA), ACTION_PHOTO_REQUEST_CODE)
+        } else {
+            b2 = true
+        }
+
+
+        if (b1 && b2) {
             //val values = ContentValues(1)
             //values.put(MediaStore.Images.Media.MIME_TYPE, "image/jpg")
             //val fileUri = activity.contentResolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values)
-            val capturedImage = File(activity.externalCacheDir, "My_Captured_Photo.jpg")
+            val capturedImage = File(activity.getExternalFilesDir(Environment.DIRECTORY_PICTURES), "My_Captured_Photo.jpg")
             //val fileUri = File()
             if (capturedImage.exists()) {
                 capturedImage.delete()
             }
             capturedImage.createNewFile()
-            val fileUri = FileProvider.getUriForFile(activity, "com.example.androidcamera.fileprovider", capturedImage)
 
-            val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-            if (intent.resolveActivity(activity.packageManager) != null) {
-                currentPhotoPath = fileUri.toString()
-                //println(currentPhotoPath)
-                intent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri)
-                intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_GRANT_WRITE_URI_PERMISSION)
-                activity.startActivityForResult(intent, ACTION_CAMERA_REQUEST_CODE)
+            var fileUri = Uri.EMPTY
+            if (Build.VERSION.SDK_INT >= 24) {
+                try {
+                    fileUri = FileProvider.getUriForFile(activity, "com.sportpassword.bm.fileprovider", capturedImage)
+                } catch (e: Exception) {
+                    println(e.localizedMessage)
+                }
+            } else {
+                fileUri = Uri.fromFile(capturedImage)
             }
+
+            val intent = Intent("android.media.action.IMAGE_CAPTURE")
+            //val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+            if (intent.resolveActivity(activity.packageManager) != null) {
+                if (fileUri != Uri.EMPTY) {
+                    currentPhotoPath = fileUri.toString()
+                    //println(currentPhotoPath)
+                    intent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri)
+                    //intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_GRANT_WRITE_URI_PERMISSION)
+                    try {
+                        activity.startActivityForResult(intent, ACTION_CAMERA_REQUEST_CODE)
+                    } catch (e: Exception) {
+                        println(e.localizedMessage)
+                    }
+                } else {
+                    activity.warning("設定照相暫存檔失敗，請洽管理員")
+                }
+            }
+        } else {
+            activity.warning("由於您並沒有同意取得你裝置檔案權限或使用相機的權限，因此無法使用相機上傳照片的功能")
         }
 
 
@@ -212,13 +248,36 @@ interface ImagePicker {
     }
 
     fun cameraToFile() {
-        val cursor = activity.contentResolver.query(Uri.parse(currentPhotoPath), Array(1) { android.provider.MediaStore.Images.ImageColumns.DATA}, null, null, null)
-        if (cursor != null) {
-            cursor.moveToFirst()
-            filePath = cursor.getString(0)
-            cursor.close()
-            file = File(filePath)
+
+        //var path: String? = null
+        var uri: Uri = Uri.parse(currentPhotoPath)
+        //val bitmap = BitmapFactory.decodeStream(activity.contentResolver.openInputStream(uri))
+        val inputStream = activity.contentResolver.openInputStream(uri)
+
+        val fileOutputStream = FileOutputStream(file)
+        val buffer = ByteArray(1024)
+        var byteRead: Int
+        while (true) {
+            byteRead = inputStream!!.read(buffer)
+            if (byteRead == -1) break
+            fileOutputStream.write(buffer, 0, byteRead)
         }
+        fileOutputStream.close()
+        inputStream.close()
+        //val cursor = activity.contentResolver.query(fileUri, null, selection, null, null)
+
+
+//        val cursor = activity.contentResolver.query(Uri.parse(currentPhotoPath), Array(1) { android.provider.MediaStore.Images.ImageColumns.DATA}, null, null, null)
+//        if (cursor != null) {
+//            cursor.moveToFirst()
+//            try {
+//                filePath = cursor.getString(0)
+//            } catch (e: Exception) {
+//                println(e.localizedMessage)
+//            }
+//            cursor.close()
+//            file = File(filePath)
+//        }
     }
 
     fun dealPhoto(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -241,6 +300,7 @@ interface ImagePicker {
     fun dealCamera(requestCode: Int, resultCode: Int, data: Intent?) {
         if (resultCode == Activity.RESULT_OK) {
 
+            file = makeTempEmptyFile()
             cameraToFile()
             //println(file)
             setImage(file, null)

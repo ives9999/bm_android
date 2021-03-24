@@ -36,7 +36,7 @@
         tools:targetApi="m">
 
         <provider
-            android:authorities="com.example.androidcamera.fileprovider"
+            android:authorities="com.sportpassword.bm.fileprovider"
             android:name="androidx.core.content.FileProvider"
             android:exported="false"
             android:grantUriPermissions="true">
@@ -45,7 +45,7 @@
                 android:resource="@xml/providerfile"/>
         </provider>
 
-        <activity android:name=".Controllers.HomeTotalAdVC"></activity>
+        <activity android:name=".Controllers.HomeTotalAdVC" />
         <activity android:name=".Controllers.MemberOrderListVC" />
         <activity android:name=".Controllers.PaymentVC" />
         <activity android:name=".Controllers.OrderVC" />
