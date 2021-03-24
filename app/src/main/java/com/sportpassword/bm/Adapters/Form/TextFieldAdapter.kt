@@ -62,7 +62,7 @@ class TextFieldAdapter(formItem: FormItem, clearClick:(formItem: FormItem)->Unit
             }
 
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                //println("before:${formItem.name}: ${p0.toString()}")
+                println("before:${formItem.name}: ${p0.toString()}")
             }
 
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {

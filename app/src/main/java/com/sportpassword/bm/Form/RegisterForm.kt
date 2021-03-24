@@ -1,5 +1,6 @@
 package com.sportpassword.bm.Form
 
+import android.text.InputType
 import com.sportpassword.bm.Controllers.BaseActivity
 import com.sportpassword.bm.Form.FormItem.*
 import com.sportpassword.bm.Utilities.*
@@ -9,7 +10,7 @@ class RegisterForm(delegate: BaseActivity): BaseForm(null, null, "", false, dele
     override fun configureItems() {
 
         val section1 = SectionFormItem("登入資料")
-        val emailItem = TextFieldFormItem(EMAIL_KEY, "EMail", "請輸入EMail", null, true)
+        val emailItem = TextFieldFormItem(EMAIL_KEY, "EMail", "請輸入EMail", null, InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS, true)
         val passwordItem = PasswordFormItem(PASSWORD_KEY, "密碼", "請輸入密碼", null, true)
         val repasswordItem = PasswordFormItem(REPASSWORD_KEY, "密碼確認", "再次輸入密碼", null, true, null, true, passwordItem)
 

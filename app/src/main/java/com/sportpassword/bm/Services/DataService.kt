@@ -425,7 +425,7 @@ open class DataService: BaseService() {
         header.add(Pair("Content-Type","application/json; charset=utf-8"))
 
         val body = JSONObject()
-        body.put("source", "app")
+        //body.put("source", "app")
         if (params.containsKey("token")) {
             body.put("token", params["token"])
         }
@@ -433,7 +433,7 @@ open class DataService: BaseService() {
             body.put("member_token", params["member_token"])
         }
         body.put("strip_html", false)
-        println(body)
+        //println(body)
 
         MyHttpClient.instance.post(context, url, body.toString()) { success ->
 
@@ -464,7 +464,7 @@ open class DataService: BaseService() {
     open fun update(context: Context, _params: MutableMap<String, String>, filePath: String, complete: CompletionHandler) {
 
         val url: String = getUpdateURL()
-        //println(url)
+        println(url)
         val header: MutableList<Pair<String, String>> = mutableListOf()
         header.add(Pair("Accept","application/json"))
         header.add(Pair("Content-Type","application/json"))
@@ -474,7 +474,7 @@ open class DataService: BaseService() {
                 map1 + map2
             }
         }
-        //println(_params)
+        println(_params)
 
         val params1: MutableList<Pair<String, String>> = mutableListOf()
         var jsonString: String = "{"
@@ -541,7 +541,7 @@ open class DataService: BaseService() {
 
 //        println(_params)
         val url = URL_UPDATE.format(type)
-//        println(url)
+        //println(url)
 //        val params: MutableList<Pair<String, String>> = mutableListOf()
         var postString: String = """
 {
@@ -656,7 +656,7 @@ open class DataService: BaseService() {
 //        params.putAll(PARAMS)
 //        println(params)
 
-//        println(params1)
+        //println(params1)
 
 
         var filePaths: ArrayList<String>? = null
