@@ -15,6 +15,7 @@ import android.view.View
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.LinearLayout
+import androidx.core.content.FileProvider
 import com.github.babedev.dexter.dsl.runtimePermission
 import com.sportpassword.bm.R
 import org.jetbrains.anko.layoutInflater
@@ -22,9 +23,11 @@ import org.jetbrains.anko.sdk27.coroutines.onClick
 import org.jetbrains.anko.toast
 import com.github.babedev.dexter.dsl.runtimePermission
 import com.sportpassword.bm.Controllers.BaseActivity
+import com.sportpassword.bm.Utilities.makeCall
 import com.squareup.picasso.MemoryPolicy
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.edit_vc.*
+import org.jetbrains.anko.makeCall
 import java.io.File
 import java.io.FileOutputStream
 
@@ -67,59 +70,96 @@ interface ImagePicker {
     }
 
     fun grantPhotoPermission() {
-        activity.runtimePermission {
-            permissions(Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE) {
-                checked { report ->
-                    if (report.areAllPermissionsGranted()) {
-                        val intent = Intent(Intent.ACTION_GET_CONTENT)
-                        intent.type = "image/*"
-                        activity.startActivityForResult(intent, ACTION_PHOTO_REQUEST_CODE)
-                    } else {
-                        //closeImagePickerLayer()
-                        activity.toast("由於您沒有同意使用照片的權限，因此無法設定代表圖")
-                    }
-                }
-            }
+
+        //println(activity.permissionsExist(arrayListOf(android.Manifest.permission.READ_EXTERNAL_STORAGE, android.Manifest.permission.WRITE_EXTERNAL_STORAGE)))
+        if (!activity.permissionsExist(arrayListOf(Manifest.permission.READ_EXTERNAL_STORAGE))) {
+            activity.requestPermission(arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE), ACTION_PHOTO_REQUEST_CODE)
+        } else {
+            val intent = Intent(Intent.ACTION_GET_CONTENT)
+            intent.type = "image/*"
+            activity.startActivityForResult(intent, ACTION_PHOTO_REQUEST_CODE)
         }
+
+//        activity.runtimePermission {
+//            permissions(Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE) {
+//                checked { report ->
+//                    if (report.areAllPermissionsGranted()) {
+//                        val intent = Intent(Intent.ACTION_GET_CONTENT)
+//                        intent.type = "image/*"
+//                        activity.startActivityForResult(intent, ACTION_PHOTO_REQUEST_CODE)
+//                    } else {
+//                        //closeImagePickerLayer()
+//                        activity.toast("由於您沒有同意使用照片的權限，因此無法設定代表圖")
+//                    }
+//                }
+//            }
+//        }
     }
 
     fun grantCameraPermission() {
-        activity.runtimePermission {
-            permissions(Manifest.permission.CAMERA, Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE) {
-                checked { report ->
-                    if (report.areAllPermissionsGranted()) {
 
-                        val values = ContentValues(1)
-                        values.put(MediaStore.Images.Media.MIME_TYPE, "image/jpg")
-                        val fileUri = activity.contentResolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values)
-                        val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-                        if (intent.resolveActivity(activity.packageManager) != null) {
-                            currentPhotoPath = fileUri.toString()
-                            //println(currentPhotoPath)
-                            intent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri)
-                            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_GRANT_WRITE_URI_PERMISSION)
-                            activity.startActivityForResult(intent, ACTION_CAMERA_REQUEST_CODE)
-                        }
-                    } else {
-                        //closeImagePickerLayer()
-                        activity.toast("由於您沒有同意使用照片的權限，因此無法設定代表圖")
-                    }
-                }
+
+        if (!activity.permissionsExist(arrayListOf(Manifest.permission.READ_EXTERNAL_STORAGE))) {
+            activity.requestPermission(arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE), ACTION_PHOTO_REQUEST_CODE)
+        } else {
+            //val values = ContentValues(1)
+            //values.put(MediaStore.Images.Media.MIME_TYPE, "image/jpg")
+            //val fileUri = activity.contentResolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values)
+            val capturedImage = File(activity.externalCacheDir, "My_Captured_Photo.jpg")
+            //val fileUri = File()
+            if (capturedImage.exists()) {
+                capturedImage.delete()
+            }
+            capturedImage.createNewFile()
+            val fileUri = FileProvider.getUriForFile(activity, "com.example.androidcamera.fileprovider", capturedImage)
+
+            val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+            if (intent.resolveActivity(activity.packageManager) != null) {
+                currentPhotoPath = fileUri.toString()
+                //println(currentPhotoPath)
+                intent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri)
+                intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_GRANT_WRITE_URI_PERMISSION)
+                activity.startActivityForResult(intent, ACTION_CAMERA_REQUEST_CODE)
             }
         }
+
+
+//        activity.runtimePermission {
+//            permissions(Manifest.permission.CAMERA, Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE) {
+//                checked { report ->
+//                    if (report.areAllPermissionsGranted()) {
+//
+//                        val values = ContentValues(1)
+//                        values.put(MediaStore.Images.Media.MIME_TYPE, "image/jpg")
+//                        val fileUri = activity.contentResolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values)
+//                        val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+//                        if (intent.resolveActivity(activity.packageManager) != null) {
+//                            currentPhotoPath = fileUri.toString()
+//                            //println(currentPhotoPath)
+//                            intent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri)
+//                            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_GRANT_WRITE_URI_PERMISSION)
+//                            activity.startActivityForResult(intent, ACTION_CAMERA_REQUEST_CODE)
+//                        }
+//                    } else {
+//                        //closeImagePickerLayer()
+//                        activity.toast("由於您沒有同意使用照片的權限，因此無法設定代表圖")
+//                    }
+//                }
+//            }
+//        }
     }
 
     fun showImagePickerLayer() {
-        imagePickerLayer!!.window!!.setGravity(Gravity.BOTTOM)
-        imagePickerLayer!!.window!!.attributes.windowAnimations = R.style.DialogAnimation_2
-        imagePickerLayer!!.window!!.setBackgroundDrawableResource(R.color.LAYER)
+        imagePickerLayer.window!!.setGravity(Gravity.BOTTOM)
+        imagePickerLayer.window!!.attributes.windowAnimations = R.style.DialogAnimation_2
+        imagePickerLayer.window!!.setBackgroundDrawableResource(R.color.LAYER)
 
-        imagePickerLayer!!.setView(alertView)
-        imagePickerLayer!!.show()
+        imagePickerLayer.setView(alertView)
+        imagePickerLayer.show()
     }
 
     fun closeImagePickerLayer() {
-        imagePickerLayer!!.dismiss()
+        imagePickerLayer.dismiss()
     }
 
     fun setImage(newFile: File?, url: String?){
@@ -145,7 +185,8 @@ interface ImagePicker {
     }
 
     fun makeTempEmptyFile(): File? {
-        val dir = File("" + Environment.getExternalStorageDirectory() + "/Android/data" + activity.applicationContext.packageName + "Files")
+        val dir = File(activity.getExternalFilesDir(null)!!.absolutePath)
+        //val dir = File("" + Environment.getExternalStorageDirectory() + "/Android/data" + activity.applicationContext.packageName + "Files")
         if (!dir.exists()) {
             if (!dir.mkdir()) {
                 return null
@@ -167,7 +208,7 @@ interface ImagePicker {
             fileOutputStream.write(buffer, 0, byteRead)
         }
         fileOutputStream.close()
-        inputStream!!.close()
+        inputStream.close()
     }
 
     fun cameraToFile() {

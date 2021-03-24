@@ -146,7 +146,9 @@ class RegisterActivity : MyTableVC1(), ImagePicker, ValueChangedDelegate {
             }
             old_selected_city = member.fetch(CITY_ID_KEY)
             if (member.avatar.length > 0) {
-                val avatar: String = BASE_URL + member.avatar
+                //println(member.avatar)
+                val avatar: String = member.avatar
+                //val avatar: String = BASE_URL + member.avatar
                 setImage(null, avatar)
             }
         } else {

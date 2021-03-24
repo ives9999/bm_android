@@ -276,6 +276,19 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
         return permission == PackageManager.PERMISSION_GRANTED
     }
 
+    fun permissionsExist(permissions: ArrayList<String>): Boolean {
+        var b: Boolean = false
+        for (permission in permissions) {
+            val permission = ContextCompat.checkSelfPermission(this, permission)
+            if (permission != PackageManager.PERMISSION_GRANTED) {
+                return false
+            } else {
+                b = true
+            }
+        }
+        return b
+    }
+
     fun requestPermission(permissions: Array<out String>, requestCode: Int) {
         ActivityCompat.requestPermissions(this, permissions, requestCode)
     }
