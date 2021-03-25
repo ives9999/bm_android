@@ -218,24 +218,41 @@ class RegisterActivity : MyTableVC1(), ImagePicker, ValueChangedDelegate {
             }
 
             var formItemAdapter: FormItemAdapter? = null
-            if (formItem.uiProperties.cellType == FormItemCellType.textField) {
-                formItemAdapter = TextFieldAdapter(formItem, clearClick, promptClick)
-            } else if (formItem.uiProperties.cellType == FormItemCellType.password) {
-                formItemAdapter = TextFieldAdapter(formItem, clearClick, promptClick)
-            } else if (formItem.uiProperties.cellType == FormItemCellType.date) {
-                formItemAdapter = MoreAdapter(formItem, clearClick, rowClick)
-            } else if (formItem.uiProperties.cellType == FormItemCellType.sex) {
-                formItemAdapter = SexAdapter(formItem)
-            } else if (formItem.uiProperties.cellType == FormItemCellType.city) {
-                formItemAdapter = MoreAdapter(formItem, clearClick, rowClick)
-            } else if (formItem.uiProperties.cellType == FormItemCellType.area) {
-                formItemAdapter = MoreAdapter(formItem, clearClick, rowClick)
-            } else if (formItem.uiProperties.cellType == FormItemCellType.privacy) {
-                formItemAdapter = PrivacyAdapter(formItem)
+
+            if (formItem.name == MOBILE_KEY) {
+                formItemAdapter = MobileAdapter(formItem, clearClick, promptClick)
+            } else if (formItem.name == EMAIL_KEY) {
+                formItemAdapter = EmailAdapter(formItem, clearClick, promptClick)
+            } else if (formItem.name == NAME_KEY) {
+                formItemAdapter = TitleAdapter(formItem, clearClick, promptClick)
+            } else if (formItem.name == NICKNAME_KEY) {
+                formItemAdapter = NicknameAdapter(formItem, clearClick, promptClick)
+            } else if (formItem.name == TEL_KEY) {
+                formItemAdapter = TelAdapter(formItem, clearClick, promptClick)
+            } else if (formItem.name == ROAD_KEY) {
+                formItemAdapter = RoadAdapter(formItem, clearClick, promptClick)
+            } else if (formItem.name == FB_KEY) {
+                formItemAdapter = FBAdapter(formItem, clearClick, promptClick)
+            } else if (formItem.name == LINE_KEY) {
+                formItemAdapter = LineAdapter(formItem, clearClick, promptClick)
+            } else {
+                if (formItem.uiProperties.cellType == FormItemCellType.password) {
+                    formItemAdapter = TextFieldAdapter(formItem, clearClick, promptClick)
+                } else if (formItem.uiProperties.cellType == FormItemCellType.date) {
+                    formItemAdapter = MoreAdapter(formItem, clearClick, rowClick)
+                } else if (formItem.uiProperties.cellType == FormItemCellType.sex) {
+                    formItemAdapter = SexAdapter(formItem)
+                } else if (formItem.uiProperties.cellType == FormItemCellType.city) {
+                    formItemAdapter = MoreAdapter(formItem, clearClick, rowClick)
+                } else if (formItem.uiProperties.cellType == FormItemCellType.area) {
+                    formItemAdapter = MoreAdapter(formItem, clearClick, rowClick)
+                } else if (formItem.uiProperties.cellType == FormItemCellType.privacy) {
+                    formItemAdapter = PrivacyAdapter(formItem)
+                }
             }
 
             if (formItemAdapter != null) {
-                formItemAdapter!!.valueChangedDelegate = this
+                formItemAdapter.valueChangedDelegate = this
                 rows.add(formItemAdapter!!)
             }
 //            idx++

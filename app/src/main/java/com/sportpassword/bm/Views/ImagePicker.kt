@@ -48,7 +48,6 @@ interface ImagePicker {
     var currentPhotoPath: String
     var filePath: String
     var file: File?
-    //var fileUri: Uri
     var imageView: ImageView
 
     fun initImagePicker(resource: Int) {

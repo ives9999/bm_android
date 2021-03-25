@@ -4,6 +4,14 @@ import com.sportpassword.bm.R
 
 enum class FormItemCellType {
     textField,
+    title,
+    nickname,
+    email,
+    tel,
+    mobile,
+    road,
+    fb,
+    line,
     weekday,
     date,
     time,
@@ -26,6 +34,14 @@ enum class FormItemCellType {
     fun registerCell(): Int {
         when (this) {
             textField -> return R.layout.formitem_textfield
+            title -> return R.layout.formitem_title
+            nickname -> return R.layout.formitem_nickname
+            email -> return R.layout.formitem_email
+            tel -> return R.layout.formitem_tel
+            mobile -> return R.layout.formitem_mobile
+            road -> return R.layout.formitem_road
+            fb -> return R.layout.formitem_fb
+            line -> return R.layout.formitem_line
             weekday -> return R.layout.formitem_more
             date -> return R.layout.formitem_more
             time -> return R.layout.formitem_more
