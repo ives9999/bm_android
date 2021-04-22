@@ -80,7 +80,7 @@ class VolleyMultipartRequest : Request<NetworkResponse> {
 
         try {
             // populate text payload
-            val params = params.toMap()
+            val params = params!!.toMap()
             if (params != null && params.size > 0) {
                 textParse(dos, params, paramsEncoding)
             }

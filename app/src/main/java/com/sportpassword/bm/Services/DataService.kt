@@ -8,6 +8,8 @@ import com.android.volley.Response
 import com.android.volley.toolbox.JsonArrayRequest
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import com.sportpassword.bm.Models.*
 import com.sportpassword.bm.Utilities.*
 import org.json.JSONArray
@@ -40,10 +42,64 @@ open class DataService: BaseService() {
 
     var superModel: SuperModel = SuperModel(JSONObject())
 
+    var table: Table? = null
+    var tables: Tables<Table>? = null
+
     var image: Bitmap? = null
 
     var able: SuperModel = SuperModel(JSONObject()) // for signup list able model
     var signup_date: JSONObject = JSONObject()//signup_date use
+
+    open fun <T1: Table, T2: Tables<T1>> getList1(context: Context, token: String?, _filter: HashMap<String, Any>?, page: Int, perPage: Int, complete: CompletionHandler) {
+        var url = getListURL()
+        if (token != null) {
+            url = url + "/" + token
+        }
+        //println(url)
+
+        val header: MutableList<Pair<String, String>> = mutableListOf()
+        header.add(Pair("Accept","application/json"))
+        header.add(Pair("Content-Type","application/json; charset=utf-8"))
+
+        var filter: HashMap<String, Any>?
+        if (_filter == null) {
+            filter = hashMapOf()
+        } else {
+            filter = _filter
+        }
+        filter.put("source", "app")
+        filter.put("channel", "bm")
+        filter.put("status", "online")
+        filter.put("page", page)
+        filter.put("perPage", perPage)
+
+        val body = filter.toJSONString()
+        //println(body)
+
+        MyHttpClient.instance.post(context, url, body) { success ->
+            if (success) {
+                val response = MyHttpClient.instance.response
+                if (response != null) {
+                    try {
+                        val sType = object : TypeToken<T2>() {}.type
+                        val s = Gson().fromJson<T2>(response.toString(), sType)
+                        //val sType = object : TypeToken<T>() {}.type
+                        //val s = Gson().fromJson<T>(response.toString(), sType)
+                    } catch (e: Exception) {
+                        this.success = false
+                        msg = "parse json failed，請洽管理員"
+                        println(e.localizedMessage)
+                    }
+                    complete(this.success)
+                } else {
+                    println("response is null")
+                }
+            } else {
+                msg = "網路錯誤，無法跟伺服器更新資料"
+                complete(success)
+            }
+        }
+    }
 
     open fun getList(context: Context, token: String?, _filter: HashMap<String, Any>?, page: Int, perPage: Int, complete: CompletionHandler) {
 
@@ -77,6 +133,9 @@ open class DataService: BaseService() {
                 val response = MyHttpClient.instance.response
                 if (response != null) {
                     try {
+
+                        val s = Gson().fromJson<SuperCourses>(response.toString(), SuperCourses::class.java)
+
                         val json = JSONObject(response.toString())
                         //println(json)
                         superModel = parseModels(json)
@@ -418,7 +477,7 @@ open class DataService: BaseService() {
     open fun getOne(context: Context, params: HashMap<String, String>, complete: CompletionHandler) {
 
         val url = getOneURL()
-        println(url)
+        //println(url)
 
         val header: MutableList<Pair<String, String>> = mutableListOf()
         header.add(Pair("Accept","application/json"))
@@ -441,8 +500,12 @@ open class DataService: BaseService() {
                 val response = MyHttpClient.instance.response
                 if (response != null) {
                     try {
+                        val j = response.toString()
+                        val m = Gson().fromJson<SuperStore>(j, SuperStore::class.java)
+
                         val json = JSONObject(response.toString())
 //                        //println(json)
+
                         superModel = parseModel(json)
 //                        superCourse.print()
                         this.success = true
