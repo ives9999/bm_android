@@ -42,15 +42,22 @@ open class DataService: BaseService() {
 
     var superModel: SuperModel = SuperModel(JSONObject())
 
-    var table: Table? = null
-    var tables: Tables<Table>? = null
+    var jsonString: String = ""
 
     var image: Bitmap? = null
 
     var able: SuperModel = SuperModel(JSONObject()) // for signup list able model
     var signup_date: JSONObject = JSONObject()//signup_date use
 
-    open fun <T1: Table, T2: Tables<T1>> getList1(context: Context, token: String?, _filter: HashMap<String, Any>?, page: Int, perPage: Int, complete: CompletionHandler) {
+    //open fun <T1: Table, T2: Tables<T1>> getList1(context: Context, token: String?, _filter: HashMap<String, Any>?, page: Int, perPage: Int, complete: CompletionHandler) {
+
+//    inline fun <reified T: Tables> list(context: Context, token: String?, _filter: HashMap<String, Any>?, page: Int, perPage: Int, complete: CompletionHandler) = getList2(T, context, token, _filter, page, perPage)
+//
+//    open fun getList2(t: Tables, context: Context, token: String?, _filter: HashMap<String, Any>?, page: Int, perPage: Int) {
+//
+//    }
+
+    open fun getList1(context: Context, token: String?, _filter: HashMap<String, Any>?, page: Int, perPage: Int, complete: CompletionHandler) {
         var url = getListURL()
         if (token != null) {
             url = url + "/" + token
@@ -81,10 +88,15 @@ open class DataService: BaseService() {
                 val response = MyHttpClient.instance.response
                 if (response != null) {
                     try {
-                        val sType = object : TypeToken<T2>() {}.type
-                        val s = Gson().fromJson<T2>(response.toString(), sType)
-                        //val sType = object : TypeToken<T>() {}.type
-                        //val s = Gson().fromJson<T>(response.toString(), sType)
+                        //val sType = object : TypeToken<T2>() {}.type
+                        //val s = Gson().fromJson<T2>(response.toString(), sType)
+                        //val sType = object : TypeToken<T2>() {}.type
+                        //val s = Gson().fromJson<T2>(response.toString(), T2::class.java)
+//                        if (s != null) {
+//                            tables = s as T2
+//                        }
+                        jsonString = response.toString()
+                        this.success = true
                     } catch (e: Exception) {
                         this.success = false
                         msg = "parse json failed，請洽管理員"
@@ -134,7 +146,7 @@ open class DataService: BaseService() {
                 if (response != null) {
                     try {
 
-                        val s = Gson().fromJson<SuperCourses>(response.toString(), SuperCourses::class.java)
+                        //val s = Gson().fromJson<SuperCourses>(response.toString(), SuperCourses::class.java)
 
                         val json = JSONObject(response.toString())
                         //println(json)

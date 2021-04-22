@@ -1,11 +1,18 @@
 package com.sportpassword.bm.Models
 
-class Tables<T: Table> {
+import com.sportpassword.bm.Utilities.BASE_URL
+import com.sportpassword.bm.Utilities.Global
+import com.sportpassword.bm.Utilities.mobileShow
+import com.sportpassword.bm.Utilities.noTime
+
+//因為 data class 不太適用於繼承，所以這邊就不用 data class的宣告
+//class Tables<T: Table> {
+open class Tables {
     var success: Boolean = true
     var page: Int = 0
     var totalCount: Int = 0
     var perPage: Int = 0
-    var rows: ArrayList<T> = arrayListOf()
+    //var rows: ArrayList<T> = arrayListOf()
 }
 
 open class Table {
@@ -32,4 +39,36 @@ open class Table {
     var address: String = ""
     var city_show: String = ""
     var mobile_show: String = ""
+
+    open fun filterRow() {
+        if (featured_path.isNotEmpty()) {
+            if (!featured_path.startsWith("http://") && !featured_path.startsWith("https://")) {
+                featured_path = BASE_URL + featured_path
+                //print(featured_path)
+            }
+        }
+
+        if (city_id > 0) {
+            city_show = Global.zoneIDToName(city_id)
+        }
+
+        if (mobile.length > 0) {
+            mobile_show = mobile.mobileShow()
+        }
+
+        if (created_at.length > 0) {
+            created_at_show = created_at.noTime()
+        }
+
+        if (updated_at.length > 0) {
+            updated_at_show = updated_at.noTime()
+        }
+    }
+
+//    public fun printRow() {
+//        let mirror: Mirror? = Mirror(reflecting: self)
+//        for property in mirror!.children {
+//            print("\(property.label ?? "")=>\(property.value)")
+//        }
+//    }
 }

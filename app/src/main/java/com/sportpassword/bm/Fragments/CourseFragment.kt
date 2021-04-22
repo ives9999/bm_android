@@ -6,10 +6,10 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.*
 import android.widget.ImageButton
+import com.google.gson.Gson
 import com.sportpassword.bm.Adapters.GroupSection
 import com.sportpassword.bm.Controllers.ShowCourseVC
-import com.sportpassword.bm.Models.SuperCourse
-import com.sportpassword.bm.Models.SuperCourses
+import com.sportpassword.bm.Models.*
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.CourseService
 import com.sportpassword.bm.Utilities.*
@@ -24,10 +24,13 @@ import kotlinx.android.synthetic.main.search_row_item.*
 import kotlinx.android.synthetic.main.tab_course.*
 import kotlinx.android.synthetic.main.tab_list_item.*
 import kotlinx.android.synthetic.main.tempplay_signup_one_item.*
+import java.lang.Exception
 
 class CourseFragment : TabFragment() {
 
-    var superCourses: SuperCourses? = null
+    //var superCourses: SuperCourses? = null
+    var coursesTable: CoursesTable? = null
+
     protected lateinit var adapter: GroupAdapter<ViewHolder>
     protected val adapterSections: ArrayList<Section> = arrayListOf()
     var sections: ArrayList<String> = arrayListOf()
@@ -119,27 +122,46 @@ class CourseFragment : TabFragment() {
         Loading.show(maskView)
         //println("page: $_page")
         //println(mainActivity!!.params)
-        dataService.getList(context!!, null, params, _page, _perPage) { success ->
+
+        dataService.getList1(context!!, null, params, _page, _perPage) { success ->
             getDataEnd(success)
         }
+    }
+
+    inline fun <reified T: Tables> parse(jsonString: String): T? {
+
+        var t: T? = null
+        try {
+            t = Gson().fromJson<T>(jsonString, T::class.java)
+        } catch (e: Exception) {
+            mainActivity!!.warning(e.localizedMessage)
+        }
+
+        return t
     }
 
     override fun getDataEnd(success: Boolean) {
         if (success) {
             if (theFirstTime) {
 
-                superCourses = dataService.superModel as SuperCourses
-                if (superCourses != null) {
-                    page = superCourses!!.page
-                    perPage = superCourses!!.perPage
-                    totalCount = superCourses!!.totalCount
-                    var _totalPage: Int = totalCount / perPage
-                    totalPage = if (totalCount % perPage > 0) _totalPage + 1 else _totalPage
-                    theFirstTime = false
+                if (dataService.jsonString.isNotEmpty()) {
+                    coursesTable = parse<CoursesTable>(dataService.jsonString)
 
-                    val items = generateItems()
-                    adapter.update(items)
-                    adapter.notifyDataSetChanged()
+                    //superCourses = dataService.superModel as SuperCourses
+                    if (coursesTable != null) {
+                        page = coursesTable!!.page
+                        perPage = coursesTable!!.perPage
+                        totalCount = coursesTable!!.totalCount
+                        var _totalPage: Int = totalCount / perPage
+                        totalPage = if (totalCount % perPage > 0) _totalPage + 1 else _totalPage
+                        theFirstTime = false
+
+                        val items = generateItems()
+                        adapter.update(items)
+                        adapter.notifyDataSetChanged()
+                    }
+                } else {
+                    mainActivity!!.warning("沒有取得回傳的json字串，請洽管理員")
                 }
 
             }
@@ -158,9 +180,9 @@ class CourseFragment : TabFragment() {
 
     fun generateItems(): ArrayList<Item> {
         val items: ArrayList<Item> = arrayListOf()
-        if (superCourses != null) {
-            for (row in superCourses!!.rows) {
-                row.filter()
+        if (coursesTable != null) {
+            for (row in coursesTable!!.rows) {
+                row.filterRow()
                 items.add(CourseItem(context!!, row))
             }
         }
@@ -174,11 +196,11 @@ class CourseFragment : TabFragment() {
     fun rowClick(item: com.xwray.groupie.Item<ViewHolder>, view: View) {
 
         val courseItem = item as CourseItem
-        val superCourse = courseItem.superCourse
+        val courseTable = courseItem.courseTable
         //superCourse.print()
         val intent = Intent(activity, ShowCourseVC::class.java)
-        intent.putExtra("course_token", superCourse.token)
-        intent.putExtra("title", superCourse.title)
+        intent.putExtra("course_token", courseTable.token)
+        intent.putExtra("title", courseTable.title)
         startActivity(intent)
     }
 
@@ -302,27 +324,27 @@ class CourseFragment : TabFragment() {
         }
     }
 
-    class CourseItem(val context: Context, val superCourse: SuperCourse): Item() {
+    class CourseItem(val context: Context, val courseTable: CourseTable): Item() {
         override fun bind(viewHolder: com.xwray.groupie.kotlinandroidextensions.ViewHolder, position: Int) {
 
 //            val citys = superCourse.coach.citys
 //            if (citys.size > 0) {
 //                viewHolder.listCityBtn.text = citys[0].name
 //            }
-            if (superCourse.city_show.length > 0) {
-                viewHolder.listCityBtn.text = superCourse.city_show
+            if (courseTable.city_show.length > 0) {
+                viewHolder.listCityBtn.text = courseTable.city_show
             } else {
                 viewHolder.listCityBtn.visibility = View.GONE
             }
-            viewHolder.title.text = superCourse.title
+            viewHolder.title.text = courseTable.title
             Picasso.with(context)
-                    .load(BASE_URL + superCourse.featured_path)
+                    .load(courseTable.featured_path)
                     .placeholder(R.drawable.loading_square_120)
                     .error(R.drawable.loading_square_120)
                     .into(viewHolder.listFeatured)
-            viewHolder.listArenaTxt.text = superCourse.price_text_short
-            viewHolder.listDayTxt.text = superCourse.weekday_text
-            viewHolder.listIntervalTxt.text = superCourse.start_time_text+"~"+superCourse.end_time_text
+            viewHolder.listArenaTxt.text = courseTable.price_text_short
+            viewHolder.listDayTxt.text = courseTable.weekday_text
+            viewHolder.listIntervalTxt.text = courseTable.start_time_show+"~"+courseTable.end_time_show
             viewHolder.marker.visibility = View.INVISIBLE
         }
 
