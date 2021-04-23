@@ -41,9 +41,6 @@ import org.jetbrains.anko.backgroundColor
 class TempPlayFragment : TabFragment(), inter {
 
 //    protected lateinit var searchAdapter: SearchAdapter
-    protected lateinit var adapter: GroupAdapter<ViewHolder>
-
-    protected val sections: ArrayList<String> = arrayListOf("一般", "更多")
     protected val rows: ArrayList<ArrayList<HashMap<String, String>>> = arrayListOf(
             arrayListOf(
                     hashMapOf("title" to "關鍵字","detail" to "全部","key" to KEYWORD_KEY),
@@ -79,6 +76,7 @@ class TempPlayFragment : TabFragment(), inter {
 //            Session.loginReset = gReset
 //        }
 
+        sections = arrayListOf("一般", "更多")
         if (firstTimeLoading) {
             val intent = Intent(activity, HomeTotalAdVC::class.java)
             startActivity(intent)
@@ -91,7 +89,7 @@ class TempPlayFragment : TabFragment(), inter {
         val view = inflater.inflate(R.layout.tab_tempplay_search, container, false)
 
         recyclerView = view.findViewById<RecyclerView>(R.id.search_container)
-        initAdapter()
+        initAdapter(true)
 
         val btn = view.findViewById<Button>(R.id.submit_btn)
         btn.setOnClickListener { submit(view) }
@@ -120,7 +118,7 @@ class TempPlayFragment : TabFragment(), inter {
 //        }
 //    }
 
-    override fun initAdapter() {
+    override fun initAdapter(include_section: Boolean) {
 
         adapter = GroupAdapter()
         adapter.clear()
@@ -148,14 +146,14 @@ class TempPlayFragment : TabFragment(), inter {
             if (idx == 0) isShow = false else isShow = true
 
             val expandableGroup = ExpandableGroup(GroupSection(section, isShow), isExpanded)
-            val items = generateItems(idx)
+            val items = generateItems1(idx)
             searchSections[idx].addAll(items)
             expandableGroup.add(searchSections[idx])
             adapter.add(expandableGroup)
         }
     }
 
-    private fun generateItems(section: Int): ArrayList<SearchItem> {
+    fun generateItems1(section: Int): ArrayList<SearchItem> {
         val _rows: ArrayList<SearchItem> = arrayListOf()
         val row = rows[section]
         for (i in 0..row.size-1) {
@@ -324,7 +322,7 @@ class TempPlayFragment : TabFragment(), inter {
                         }
                     }
                     rows[section][row]["detail"] = value
-                    val items = generateItems(section)
+                    val items = generateItems1(section)
                     searchSections[section].update(items)
 //                    adapter.notifyDataSetChanged()
                 }
@@ -362,7 +360,7 @@ class TempPlayFragment : TabFragment(), inter {
             TEAM_DEGREE_KEY -> degrees.clear()
         }
         rows[indexPath.section][indexPath.row]["detail"] = "全部"
-        val items = generateItems(indexPath.section)
+        val items = generateItems1(indexPath.section)
         searchSections[indexPath.section].update(items)
     }
 

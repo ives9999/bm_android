@@ -11,18 +11,23 @@ import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.sportpassword.bm.Adapters.GroupSection
 import com.sportpassword.bm.Adapters.ListAdapter
 import com.sportpassword.bm.Adapters.SearchItemDelegate
-import com.sportpassword.bm.Controllers.Arena
-import com.sportpassword.bm.Controllers.MainActivity
-import com.sportpassword.bm.Controllers.ShowActivity
-import com.sportpassword.bm.Controllers.ShowCoachVC
+import com.sportpassword.bm.Controllers.*
 import com.sportpassword.bm.Models.City
+import com.sportpassword.bm.Models.CoursesTable
 import com.sportpassword.bm.Models.SuperData
+import com.sportpassword.bm.Models.Tables
 
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.DataService
 import com.sportpassword.bm.Utilities.*
+import com.xwray.groupie.ExpandableGroup
+import com.xwray.groupie.GroupAdapter
+import com.xwray.groupie.Section
+import com.xwray.groupie.ViewHolder
+import com.xwray.groupie.kotlinandroidextensions.Item
 import kotlinx.android.synthetic.main.tab.*
 
 
@@ -52,18 +57,23 @@ open class TabFragment : Fragment(), SearchItemDelegate {
     protected lateinit var recyclerView: RecyclerView
     protected lateinit var refreshLayout: SwipeRefreshLayout
     protected lateinit var listAdapter: ListAdapter
+    protected lateinit var adapter: GroupAdapter<ViewHolder>
+    var sections: ArrayList<String> = arrayListOf()
+    protected val adapterSections: ArrayList<Section> = arrayListOf()
+
     protected lateinit var dataService: DataService
     protected lateinit var that: TabFragment
 
     protected lateinit var refreshListener: SwipeRefreshLayout.OnRefreshListener
     protected lateinit var scrollerListenr: RecyclerView.OnScrollListener
-//    var vimeoClient: VimeoClient? = null
+    //    var vimeoClient: VimeoClient? = null
     var mainActivity: MainActivity? = null
 
     protected var isCourseShow: Boolean = false
     protected var isTeamShow: Boolean = false
 
     var params: HashMap<String, Any> = hashMapOf()
+    var tables: Tables? = null
 
     open val _searchRows: ArrayList<HashMap<String, String>> = arrayListOf()
 
@@ -83,45 +93,69 @@ open class TabFragment : Fragment(), SearchItemDelegate {
         return view
     }
 
-    fun init() {
-        initAdapter()
+//    open fun init() {
+//        initAdapter()
+//
+//        recyclerView.setHasFixedSize(true)
+//        setRecyclerViewScrollListener()
+//        setRecyclerViewRefreshListener()
+//        refresh()
+//
+//    }
 
-        recyclerView.setHasFixedSize(true)
-        setRecyclerViewScrollListener()
-        setRecyclerViewRefreshListener()
-        refresh()
-
+    open fun initAdapter(include_section: Boolean=false) {
+        adapter = GroupAdapter()
+        adapter.setOnItemClickListener { item, view ->
+            rowClick(item, view)
+        }
+        if (include_section) {
+            for (section in sections) {
+                adapterSections.add(Section())
+            }
+            for ((idx, title) in sections.withIndex()) {
+                val expandableGroup = ExpandableGroup(GroupSection(title), true)
+                val items = generateItems(idx)
+                adapterSections[idx].addAll(items)
+                expandableGroup.add(adapterSections[idx])
+                adapter.add(expandableGroup)
+            }
+        } else {
+            val items = generateItems()
+            adapter.addAll(items)
+        }
+        recyclerView.adapter = adapter
     }
-    open protected fun initAdapter() {
-        listAdapter = ListAdapter(context!!, type!!, screenWidth, { data ->
-            var intent: Intent? = null
-            if (type == "course") {
-                intent = Intent(activity, ShowCoachVC::class.java)
-            } else {
-                intent = Intent(activity, ShowActivity::class.java)
-            }
-            intent.putExtra("type", type)
-            intent.putExtra("token", data.token)
-            intent.putExtra("title", data.title)
-            startActivity(intent)
-        }, { data ->
-            var key = CITY_KEY
-            if (type == "course") {
-                key = CITYS_KEY
-            }
-            if (data.data.containsKey(key)) {
-                if (data.data[key]!!.containsKey("value")) {
-                    val city_id = data.data[CITY_KEY]!!["value"] as Int
-                    mainActivity!!.cityBtnPressed(city_id, type!!)
-                }
-            }
 
-        }, { data, address ->
-
-        })
-        recyclerView.adapter = listAdapter
-
-    }
+//    open protected fun initAdapter() {
+//        listAdapter = ListAdapter(context!!, type!!, screenWidth, { data ->
+//            var intent: Intent? = null
+//            if (type == "course") {
+//                intent = Intent(activity, ShowCoachVC::class.java)
+//            } else {
+//                intent = Intent(activity, ShowActivity::class.java)
+//            }
+//            intent.putExtra("type", type)
+//            intent.putExtra("token", data.token)
+//            intent.putExtra("title", data.title)
+//            startActivity(intent)
+//        }, { data ->
+//            var key = CITY_KEY
+//            if (type == "course") {
+//                key = CITYS_KEY
+//            }
+//            if (data.data.containsKey(key)) {
+//                if (data.data[key]!!.containsKey("value")) {
+//                    val city_id = data.data[CITY_KEY]!!["value"] as Int
+//                    mainActivity!!.cityBtnPressed(city_id, type!!)
+//                }
+//            }
+//
+//        }, { data, address ->
+//
+//        })
+//        recyclerView.adapter = listAdapter
+//
+//    }
 
     open fun refresh() {
         page = 1
@@ -129,14 +163,68 @@ open class TabFragment : Fragment(), SearchItemDelegate {
         listAdapter.notifyDataSetChanged()
     }
 
-    open protected fun getDataStart(_page: Int, _perPage: Int) {
+    open fun getDataStart1(_page: Int, _perPage: Int) {
+        Loading.show(maskView)
+        //println("page: $_page")
+        //println(mainActivity!!.params)
+
+        dataService.getList1(context!!, null, params, _page, _perPage) { success ->
+            getDataEnd1(success)
+        }
+    }
+
+    fun getDataEnd1(success: Boolean) {
+        if (success) {
+            if (theFirstTime) {
+
+                if (dataService.jsonString.isNotEmpty()) {
+                    tables = jsonToModel<CoursesTable>(dataService.jsonString)
+                    genericTable()
+
+                    //superCourses = dataService.superModel as SuperCourses
+                    if (tables != null) {
+                        page = tables!!.page
+                        perPage = tables!!.perPage
+                        totalCount = tables!!.totalCount
+                        val _totalPage: Int = totalCount / perPage
+                        totalPage = if (totalCount % perPage > 0) _totalPage + 1 else _totalPage
+                        theFirstTime = false
+
+                        val items = generateItems()
+                        adapter.update(items)
+                        adapter.notifyDataSetChanged()
+                    } else {
+                        mainActivity!!.warning(Global.message)
+                        Global.message = ""
+                    }
+                } else {
+                    mainActivity!!.warning("沒有取得回傳的json字串，請洽管理員")
+                }
+
+            }
+
+            //notifyDataSetChanged()
+            page++
+        }
+//        mask?.let { mask?.dismiss() }
+        Loading.hide(maskView)
+        loading = false
+//        println("page:$page")
+//        println("perPage:$perPage")
+//        println("totalCount:$totalCount")
+//        println("totalPage:$totalPage")
+    }
+
+    open fun genericTable() {}
+
+    open fun getDataStart(_page: Int, _perPage: Int) {
         if (isCourseShow || isTeamShow) {
             Loading.show(maskView)
         }
         loading = true
     }
 
-    open protected fun getDataEnd(success: Boolean) {
+    open fun getDataEnd(success: Boolean) {
         if (success) {
             if (theFirstTime) {
                 page = dataService.page
@@ -158,6 +246,18 @@ open class TabFragment : Fragment(), SearchItemDelegate {
 //        println("totalCount:$totalCount")
 //        println("totalPage:$totalPage")
     }
+
+    open fun generateItems(): ArrayList<Item> {
+        val items: ArrayList<Item> = arrayListOf()
+
+        return items
+    }
+
+    open fun generateItems(section: Int): ArrayList<Item> {
+        return arrayListOf()
+    }
+
+    open fun rowClick(item: com.xwray.groupie.Item<ViewHolder>, view: View) {}
 
     open protected fun notifyDataSetChanged() {
         if (page == 1) {

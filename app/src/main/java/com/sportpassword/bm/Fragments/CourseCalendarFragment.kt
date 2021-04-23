@@ -26,9 +26,6 @@ import kotlin.collections.HashMap
 class CourseCalendarFragment : TabFragment() {
 
     var superCourses: SuperCourses? = null
-    protected lateinit var adapter: GroupAdapter<ViewHolder>
-    protected val adapterSections: ArrayList<Section> = arrayListOf()
-    var sections: ArrayList<String> = arrayListOf()
 
     var year: Int = Date().getY()
     var month: Int = Date().getm()
@@ -83,7 +80,7 @@ class CourseCalendarFragment : TabFragment() {
 
     }
 
-    fun initAdapter(include_section: Boolean=false) {
+    override fun initAdapter(include_section: Boolean) {
         adapter = GroupAdapter()
         adapter.setOnItemClickListener { item, view ->
             //rowClick(item, view)
@@ -111,7 +108,7 @@ class CourseCalendarFragment : TabFragment() {
         isCourseShow = isVisibleToUser
     }
 
-    fun generateItems(): ArrayList<Item> {
+    override fun generateItems(): ArrayList<Item> {
         val items: ArrayList<Item> = arrayListOf()
         for (i in 1..monthLastDay) {
 
@@ -128,7 +125,7 @@ class CourseCalendarFragment : TabFragment() {
 
         return items
     }
-    fun generateItems(section: Int): ArrayList<Item> {
+    override fun generateItems(section: Int): ArrayList<Item> {
         return arrayListOf()
     }
 

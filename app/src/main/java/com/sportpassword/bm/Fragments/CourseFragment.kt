@@ -31,10 +31,6 @@ class CourseFragment : TabFragment() {
     //var superCourses: SuperCourses? = null
     var coursesTable: CoursesTable? = null
 
-    protected lateinit var adapter: GroupAdapter<ViewHolder>
-    protected val adapterSections: ArrayList<Section> = arrayListOf()
-    var sections: ArrayList<String> = arrayListOf()
-
     override val _searchRows: ArrayList<HashMap<String, String>> = arrayListOf(
             hashMapOf("title" to "關鍵字","key" to KEYWORD_KEY,"value" to "","value_type" to "String","show" to ""),
             hashMapOf("title" to "縣市","key" to CITY_KEY,"value" to "","value_type" to "Array","show" to "不限"),
@@ -86,99 +82,86 @@ class CourseFragment : TabFragment() {
     override fun refresh() {
         page = 1
         theFirstTime = true
-        getDataStart(page, perPage)
+        getDataStart1(page, perPage)
     }
 
-    fun initAdapter(include_section: Boolean=false) {
-        adapter = GroupAdapter()
-        adapter.setOnItemClickListener { item, view ->
-            rowClick(item, view)
+    override fun genericTable() {
+        if (tables != null) {
+            coursesTable = tables as CoursesTable
         }
-        if (include_section) {
-            for (section in sections) {
-                adapterSections.add(Section())
-            }
-            for ((idx, title) in sections.withIndex()) {
-                val expandableGroup = ExpandableGroup(GroupSection(title), true)
-                val items = generateItems(idx)
-                adapterSections[idx].addAll(items)
-                expandableGroup.add(adapterSections[idx])
-                adapter.add(expandableGroup)
-            }
-        } else {
-            val items = generateItems()
-            adapter.addAll(items)
-        }
-        recyclerView.adapter = adapter
     }
+
+//    fun initAdapter(include_section: Boolean=false) {
+//        adapter = GroupAdapter()
+//        adapter.setOnItemClickListener { item, view ->
+//            rowClick(item, view)
+//        }
+//        if (include_section) {
+//            for (section in sections) {
+//                adapterSections.add(Section())
+//            }
+//            for ((idx, title) in sections.withIndex()) {
+//                val expandableGroup = ExpandableGroup(GroupSection(title), true)
+//                val items = generateItems(idx)
+//                adapterSections[idx].addAll(items)
+//                expandableGroup.add(adapterSections[idx])
+//                adapter.add(expandableGroup)
+//            }
+//        } else {
+//            val items = generateItems()
+//            adapter.addAll(items)
+//        }
+//        recyclerView.adapter = adapter
+//    }
 
     override fun setUserVisibleHint(isVisibleToUser: Boolean) {
         super.setUserVisibleHint(isVisibleToUser)
         isCourseShow = isVisibleToUser
     }
 
-    override fun getDataStart(_page: Int, _perPage: Int) {
-        super.getDataStart(_page, _perPage)
-        Loading.show(maskView)
-        //println("page: $_page")
-        //println(mainActivity!!.params)
+//    fun getDataEnd1(success: Boolean) {
+//        if (success) {
+//            if (theFirstTime) {
+//
+//                if (dataService.jsonString.isNotEmpty()) {
+//                    tables = jsonToModel<CoursesTable>(dataService.jsonString)
+//
+//                    //superCourses = dataService.superModel as SuperCourses
+//                    if (tables != null) {
+//                        coursesTable = tables as CoursesTable
+//                        page = tables!!.page
+//                        perPage = tables!!.perPage
+//                        totalCount = tables!!.totalCount
+//                        val _totalPage: Int = totalCount / perPage
+//                        totalPage = if (totalCount % perPage > 0) _totalPage + 1 else _totalPage
+//                        theFirstTime = false
+//
+//                        val items = generateItems()
+//                        adapter.update(items)
+//                        adapter.notifyDataSetChanged()
+//                    } else {
+//                        mainActivity!!.warning(Global.message)
+//                        Global.message = ""
+//                    }
+//                } else {
+//                    mainActivity!!.warning("沒有取得回傳的json字串，請洽管理員")
+//                }
+//
+//            }
+//
+//            //notifyDataSetChanged()
+//            page++
+//        }
+////        mask?.let { mask?.dismiss() }
+//        Loading.hide(maskView)
+//        loading = false
+////        println("page:$page")
+////        println("perPage:$perPage")
+////        println("totalCount:$totalCount")
+////        println("totalPage:$totalPage")
+//    }
 
-        dataService.getList1(context!!, null, params, _page, _perPage) { success ->
-            getDataEnd(success)
-        }
-    }
-
-    inline fun <reified T: Tables> parse(jsonString: String): T? {
-
-        var t: T? = null
-        try {
-            t = Gson().fromJson<T>(jsonString, T::class.java)
-        } catch (e: Exception) {
-            mainActivity!!.warning(e.localizedMessage)
-        }
-
-        return t
-    }
-
-    override fun getDataEnd(success: Boolean) {
-        if (success) {
-            if (theFirstTime) {
-
-                if (dataService.jsonString.isNotEmpty()) {
-                    coursesTable = parse<CoursesTable>(dataService.jsonString)
-
-                    //superCourses = dataService.superModel as SuperCourses
-                    if (coursesTable != null) {
-                        page = coursesTable!!.page
-                        perPage = coursesTable!!.perPage
-                        totalCount = coursesTable!!.totalCount
-                        var _totalPage: Int = totalCount / perPage
-                        totalPage = if (totalCount % perPage > 0) _totalPage + 1 else _totalPage
-                        theFirstTime = false
-
-                        val items = generateItems()
-                        adapter.update(items)
-                        adapter.notifyDataSetChanged()
-                    }
-                } else {
-                    mainActivity!!.warning("沒有取得回傳的json字串，請洽管理員")
-                }
-
-            }
-
-            //notifyDataSetChanged()
-            page++
-        }
-//        mask?.let { mask?.dismiss() }
-        Loading.hide(maskView)
-        loading = false
-//        println("page:$page")
-//        println("perPage:$perPage")
-//        println("totalCount:$totalCount")
-//        println("totalPage:$totalPage")
-    }
-
-    fun generateItems(): ArrayList<Item> {
+    override fun generateItems(): ArrayList<Item> {
         val items: ArrayList<Item> = arrayListOf()
         if (coursesTable != null) {
             for (row in coursesTable!!.rows) {
@@ -189,11 +172,8 @@ class CourseFragment : TabFragment() {
 
         return items
     }
-    fun generateItems(section: Int): ArrayList<Item> {
-        return arrayListOf()
-    }
 
-    fun rowClick(item: com.xwray.groupie.Item<ViewHolder>, view: View) {
+    override fun rowClick(item: com.xwray.groupie.Item<ViewHolder>, view: View) {
 
         val courseItem = item as CourseItem
         val courseTable = courseItem.courseTable

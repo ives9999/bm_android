@@ -42,9 +42,6 @@ class MemberFragment: TabFragment() {
     var rows: ArrayList<ArrayList<String>> = arrayListOf()
 
     lateinit var memberFunctionsAdapter: MemberFunctionsAdapter
-    protected lateinit var adapter: GroupAdapter<ViewHolder>
-    protected val adapterSections: ArrayList<Section> = arrayListOf()
-    var sections: ArrayList<String> = arrayListOf("會員資料", "訂單")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -171,7 +168,7 @@ class MemberFragment: TabFragment() {
         recyclerView.adapter = adapter
     }
 
-    fun generateItems(idx: Int): ArrayList<Item> {
+    override fun generateItems(idx: Int): ArrayList<Item> {
         val items: ArrayList<Item> = arrayListOf()
 
         val _rows: ArrayList<Map<String, String>>
@@ -194,7 +191,7 @@ class MemberFragment: TabFragment() {
         return items
     }
 
-    fun rowClick(item: com.xwray.groupie.Item<ViewHolder>, view: View) {
+    override fun rowClick(item: com.xwray.groupie.Item<ViewHolder>, view: View) {
 
         val memberItem = item as MemberItem
         val segue = memberItem.segue

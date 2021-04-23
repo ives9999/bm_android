@@ -28,6 +28,7 @@ import com.sportpassword.bm.Controllers.BaseActivity
 import com.sportpassword.bm.Controllers.MainActivity
 import com.sportpassword.bm.Models.Area
 import com.sportpassword.bm.Models.City
+import com.sportpassword.bm.Models.Tables
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.DataService
 import com.squareup.picasso.Picasso
@@ -1012,6 +1013,9 @@ fun SharedPreferences.getAllAreas(): HashMap<String, HashMap<String, Any>> {
 }
 
 object Global {
+
+    var message: String = ""
+
     val weekdays: ArrayList<HashMap<String, Any>> = arrayListOf(
             hashMapOf("value" to 1,"text" to "星期一","simple_text" to "一","checked" to false,"title" to "星期一"),
             hashMapOf("value" to 2,"text" to "星期二","simple_text" to "二","checked" to false,"title" to "星期二"),
@@ -1026,6 +1030,7 @@ object Global {
         val sdf = SimpleDateFormat("yyyy-MM-dd", Locale.TAIWAN)
         return sdf.format(Date())
     }
+
     fun nowTime(): String {
         val sdf = SimpleDateFormat("hh:mm:ss", Locale.TAIWAN)
         return sdf.format(Date())
@@ -1309,4 +1314,16 @@ inline fun <reified T> Any.getField(propertyName: String): T? {
         println(e.localizedMessage)
         null
     }
+}
+
+inline fun <reified T: Tables> jsonToModel(jsonString: String): T? {
+
+    var t: T? = null
+    try {
+        t = Gson().fromJson<T>(jsonString, T::class.java)
+    } catch (e: java.lang.Exception) {
+        Global.message = e.localizedMessage
+    }
+
+    return t
 }
