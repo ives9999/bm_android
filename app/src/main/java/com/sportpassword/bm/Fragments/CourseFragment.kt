@@ -86,12 +86,13 @@ class CourseFragment : TabFragment() {
     override fun refresh() {
         page = 1
         theFirstTime = true
-        //getDataStart1(page, perPage)
+        getDataStart1(page, perPage)
     }
 
     override fun genericTable() {
-        if (tables != null) {
-            coursesTable = tables as CoursesTable
+        coursesTable = jsonToModel<CoursesTable>(dataService.jsonString)
+        if (coursesTable != null) {
+            tables = coursesTable
         }
     }
 

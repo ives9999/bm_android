@@ -178,7 +178,7 @@ open class TabFragment : Fragment(), SearchItemDelegate {
             if (theFirstTime) {
 
                 if (dataService.jsonString.isNotEmpty()) {
-                    tables = jsonToModel<TeamsTable>(dataService.jsonString)
+                    //println(dataService.jsonString)
                     genericTable()
 
                     //superCourses = dataService.superModel as SuperCourses

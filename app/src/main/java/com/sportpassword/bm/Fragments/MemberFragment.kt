@@ -45,8 +45,10 @@ class MemberFragment: TabFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        dataService = CourseService
+        dataService = MemberService
         setHasOptionsMenu(true)
+
+        sections = arrayListOf("會員資料", "訂單")
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -70,7 +72,7 @@ class MemberFragment: TabFragment() {
 
         setRecyclerViewRefreshListener()
         _loginout()
-
+        refresh()
     }
 
     override fun refresh() {

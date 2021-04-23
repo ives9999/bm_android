@@ -78,8 +78,9 @@ class TeamFragment: TabFragment() {
     }
 
     override fun genericTable() {
-        if (tables != null) {
-            teamsTable = tables as TeamsTable
+        teamsTable = jsonToModel<TeamsTable>(dataService.jsonString)
+        if (teamsTable != null) {
+            tables = teamsTable
         }
     }
 
@@ -122,7 +123,7 @@ class TeamFragment: TabFragment() {
             } else {
                 viewHolder.listCityBtn.visibility = View.GONE
             }
-            viewHolder.title.text = teamTable.title
+            viewHolder.title.text = teamTable.name
             Picasso.with(context)
                     .load(teamTable.featured_path)
                     .placeholder(R.drawable.loading_square_120)

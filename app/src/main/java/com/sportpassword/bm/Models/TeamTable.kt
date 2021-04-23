@@ -44,11 +44,11 @@ class TeamTable: Table() {
 
         super.filterRow()
 
-        if (play_start.length > 0) {
+        if (play_start != null && play_start.isNotEmpty()) {
             play_start_show = play_start.noSec()
         }
 
-        if (play_end.length > 0) {
+        if (play_end != null && play_end.isNotEmpty()) {
             play_end_show = play_end.noSec()
         }
 
@@ -69,7 +69,7 @@ class TeamTable: Table() {
             weekdays_show = show.joinToString(",")
         }
 
-        if (play_start.length > 0 && play_end.length > 0) {
+        if (play_start != null && play_end != null && play_start.isNotEmpty() && play_end.isNotEmpty()) {
             interval_show = play_start.noSec() + " ~ " + play_end.noSec()
         }
 

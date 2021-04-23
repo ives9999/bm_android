@@ -42,11 +42,11 @@ class ArenaTable: Table() {
             area_show = Global.zoneIDToName(area_id)
         }
         
-        if (tel.length > 0) {
+        if (tel != null && tel.length > 0) {
             tel_show = tel.telShow()
         }
         
-        if (open_time.length > 0 && close_time.length > 0) {
+        if (open_time != null && close_time != null && open_time.length > 0 && close_time.length > 0) {
             interval_show = open_time.noSec() + " ~ " + close_time.noSec()
         }
         
