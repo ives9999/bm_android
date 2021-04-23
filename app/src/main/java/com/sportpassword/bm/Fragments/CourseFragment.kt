@@ -21,7 +21,10 @@ import com.xwray.groupie.ViewHolder
 import com.xwray.groupie.kotlinandroidextensions.Item
 import kotlinx.android.synthetic.main.mask.*
 import kotlinx.android.synthetic.main.search_row_item.*
+import kotlinx.android.synthetic.main.tab.*
 import kotlinx.android.synthetic.main.tab_course.*
+import kotlinx.android.synthetic.main.tab_course.list_container
+import kotlinx.android.synthetic.main.tab_course.tab_refresh
 import kotlinx.android.synthetic.main.tab_list_item.*
 import kotlinx.android.synthetic.main.tempplay_signup_one_item.*
 import java.lang.Exception
@@ -79,10 +82,11 @@ class CourseFragment : TabFragment() {
         refresh()
     }
 
+
     override fun refresh() {
         page = 1
         theFirstTime = true
-        getDataStart1(page, perPage)
+        //getDataStart1(page, perPage)
     }
 
     override fun genericTable() {

@@ -44,7 +44,12 @@ class CoachFragment : TabFragment() {
         recyclerView = list_container
         refreshLayout = tab_refresh
         maskView = mask
-        init()
+
+        initAdapter(false)
+        recyclerView.setHasFixedSize(true)
+        setRecyclerViewScrollListener()
+        setRecyclerViewRefreshListener()
+        refresh()
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {

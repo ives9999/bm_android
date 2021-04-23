@@ -98,8 +98,8 @@ class TempPlayFragment : TabFragment(), inter {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
 
+        super.onViewCreated(view, savedInstanceState)
         val w = (mainActivity!!.screenWidth.toFloat() / mainActivity!!.density).toInt()
         val h = ((mainActivity!!.screenHeight.toFloat()) / (mainActivity!!.density)).toInt()
         val lp = RelativeLayout.LayoutParams(w - (2 * mainActivity!!.layerRightLeftPadding), h - mainActivity!!.layerTopPadding)

@@ -21,6 +21,8 @@ import com.sportpassword.bm.Controllers.ShowPNVC
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Utilities.CITYS_KEY
 import com.sportpassword.bm.Utilities.CITY_KEY
+import kotlinx.android.synthetic.main.mask.*
+import kotlinx.android.synthetic.main.tab_course.*
 
 
 /**
@@ -113,45 +115,7 @@ class MoreFragment : TabFragment() {
         return view
     }
 
-    override fun init() {
-        initAdapter()
-
-        recyclerView.setHasFixedSize(true)
-        setRecyclerViewScrollListener()
-        setRecyclerViewRefreshListener()
-
-    }
-
-    override fun initAdapter(include_section: Boolean) {
-        listAdapter = ListAdapter(context!!, type!!, screenWidth, { data ->
-            var intent: Intent? = null
-            if (type == "course") {
-                intent = Intent(activity, ShowCoachVC::class.java)
-            } else {
-                intent = Intent(activity, ShowActivity::class.java)
-            }
-            intent.putExtra("type", type)
-            intent.putExtra("token", data.token)
-            intent.putExtra("title", data.title)
-            startActivity(intent)
-        }, { data ->
-            var key = CITY_KEY
-            if (type == "course") {
-                key = CITYS_KEY
-            }
-            if (data.data.containsKey(key)) {
-                if (data.data[key]!!.containsKey("value")) {
-                    val city_id = data.data[CITY_KEY]!!["value"] as Int
-                    mainActivity!!.cityBtnPressed(city_id, type!!)
-                }
-            }
-
-        }, { data, address ->
-
-        })
-        recyclerView.adapter = listAdapter
-
-    }
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {}
 
     companion object {
         // TODO: Rename parameter arguments, choose names that match

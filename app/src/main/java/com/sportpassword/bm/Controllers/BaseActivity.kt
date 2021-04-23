@@ -189,6 +189,7 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
         URL_SIGNUP_LIST = "${URL_HOME}%s/signup_list"
         URL_STORE_LIST = URL_HOME + "store/list"
         URL_TEAM = URL_HOME + "team/"
+        URL_TEAM_LIST = URL_HOME + "team/list"
         URL_TEAM_TEMP_PLAY = URL_TEAM + "tempPlay/onoff"
         URL_TEAM_TEMP_PLAY_LIST = URL_TEAM + "tempPlay/list"
         URL_TEAM_TEMP_PLAY_BLACKLIST = URL_TEAM + "tempPlay/blacklist"

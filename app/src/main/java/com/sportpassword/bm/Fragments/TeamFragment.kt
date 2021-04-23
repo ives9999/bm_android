@@ -1,19 +1,29 @@
 package com.sportpassword.bm.Fragments
 
+import android.content.Context
 import android.os.Bundle
 import android.view.*
 import android.widget.ImageButton
+import com.sportpassword.bm.Models.CourseTable
+import com.sportpassword.bm.Models.CoursesTable
+import com.sportpassword.bm.Models.TeamTable
+import com.sportpassword.bm.Models.TeamsTable
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.TeamService
 import com.sportpassword.bm.Utilities.Loading
 import kotlinx.android.synthetic.main.mask.*
 import kotlinx.android.synthetic.main.tab_coach.*
 import com.sportpassword.bm.Utilities.*
+import com.squareup.picasso.Picasso
+import com.xwray.groupie.kotlinandroidextensions.Item
+import kotlinx.android.synthetic.main.tab_list_item.*
 
 /**
  * Created by ives on 2018/2/25.
  */
 class TeamFragment: TabFragment() {
+
+    var teamsTable: TeamsTable? = null
 
     override val _searchRows: ArrayList<HashMap<String, String>> = arrayListOf(
         hashMapOf("title" to "關鍵字","detail" to "全部","key" to KEYWORD_KEY),
@@ -53,7 +63,36 @@ class TeamFragment: TabFragment() {
         recyclerView = list_container
         refreshLayout = tab_refresh
         maskView = mask
-        init()
+
+        initAdapter(false)
+        recyclerView.setHasFixedSize(true)
+        setRecyclerViewScrollListener()
+        setRecyclerViewRefreshListener()
+        refresh()
+    }
+
+    override fun refresh() {
+        page = 1
+        theFirstTime = true
+        getDataStart1(page, perPage)
+    }
+
+    override fun genericTable() {
+        if (tables != null) {
+            teamsTable = tables as TeamsTable
+        }
+    }
+
+    override fun generateItems(): ArrayList<Item> {
+        val items: ArrayList<Item> = arrayListOf()
+        if (teamsTable != null) {
+            for (row in teamsTable!!.rows) {
+                row.filterRow()
+                items.add(TeamItem(context!!, row))
+            }
+        }
+
+        return items
     }
 
     override fun setUserVisibleHint(isVisibleToUser: Boolean) {
@@ -61,14 +100,45 @@ class TeamFragment: TabFragment() {
         isTeamShow = isVisibleToUser
     }
 
-    override fun getDataStart(_page: Int, _perPage: Int) {
-        super.getDataStart(_page, _perPage)
-        Loading.show(maskView)
-        //println("page: $_page")
-        //println(mainActivity!!.params)
-        TeamService.getList(context!!, "team", "name", mainActivity!!.params, _page, _perPage, null) { success ->
-            getDataEnd(success)
+//    override fun getDataStart(_page: Int, _perPage: Int) {
+//        super.getDataStart(_page, _perPage)
+//        Loading.show(maskView)
+//        //println("page: $_page")
+//        //println(mainActivity!!.params)
+//        TeamService.getList(context!!, "team", "name", mainActivity!!.params, _page, _perPage, null) { success ->
+//            getDataEnd(success)
+//        }
+//    }
+
+    class TeamItem(val context: Context, val teamTable: TeamTable): Item() {
+        override fun bind(viewHolder: com.xwray.groupie.kotlinandroidextensions.ViewHolder, position: Int) {
+
+//            val citys = superCourse.coach.citys
+//            if (citys.size > 0) {
+//                viewHolder.listCityBtn.text = citys[0].name
+//            }
+            if (teamTable.city_show.length > 0) {
+                viewHolder.listCityBtn.text = teamTable.city_show
+            } else {
+                viewHolder.listCityBtn.visibility = View.GONE
+            }
+            viewHolder.title.text = teamTable.title
+            Picasso.with(context)
+                    .load(teamTable.featured_path)
+                    .placeholder(R.drawable.loading_square_120)
+                    .error(R.drawable.loading_square_120)
+                    .into(viewHolder.listFeatured)
+            if (teamTable.arena != null) {
+                viewHolder.listArenaTxt.text = teamTable.arena!!.name
+            }
+            viewHolder.listBallTxt.text = teamTable.ball
+            viewHolder.listDayTxt.text = teamTable.weekdays_show
+            viewHolder.listIntervalTxt.text = teamTable.interval_show
+            viewHolder.marker.visibility = View.INVISIBLE
         }
+
+        override fun getLayout() = R.layout.tab_list_item
+
     }
 
     companion object {

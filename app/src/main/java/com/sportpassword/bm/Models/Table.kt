@@ -52,15 +52,15 @@ open class Table {
             city_show = Global.zoneIDToName(city_id)
         }
 
-        if (mobile.length > 0) {
+        if (mobile != null && mobile.isNotEmpty()) {
             mobile_show = mobile.mobileShow()
         }
 
-        if (created_at.length > 0) {
+        if (created_at.isNotEmpty()) {
             created_at_show = created_at.noTime()
         }
 
-        if (updated_at.length > 0) {
+        if (updated_at.isNotEmpty()) {
             updated_at_show = updated_at.noTime()
         }
     }

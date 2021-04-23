@@ -17,6 +17,7 @@ import com.sportpassword.bm.Adapters.SearchItemDelegate
 import com.sportpassword.bm.Controllers.*
 import com.sportpassword.bm.Models.City
 import com.sportpassword.bm.Models.CoursesTable
+import com.sportpassword.bm.Models.TeamsTable
 import com.sportpassword.bm.Models.SuperData
 import com.sportpassword.bm.Models.Tables
 
@@ -28,7 +29,6 @@ import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.Section
 import com.xwray.groupie.ViewHolder
 import com.xwray.groupie.kotlinandroidextensions.Item
-import kotlinx.android.synthetic.main.tab.*
 
 
 /**
@@ -56,7 +56,7 @@ open class TabFragment : Fragment(), SearchItemDelegate {
 
     protected lateinit var recyclerView: RecyclerView
     protected lateinit var refreshLayout: SwipeRefreshLayout
-    protected lateinit var listAdapter: ListAdapter
+    //protected lateinit var listAdapter: ListAdapter
     protected lateinit var adapter: GroupAdapter<ViewHolder>
     var sections: ArrayList<String> = arrayListOf()
     protected val adapterSections: ArrayList<Section> = arrayListOf()
@@ -160,7 +160,7 @@ open class TabFragment : Fragment(), SearchItemDelegate {
     open fun refresh() {
         page = 1
         getDataStart(page, perPage)
-        listAdapter.notifyDataSetChanged()
+        adapter.notifyDataSetChanged()
     }
 
     open fun getDataStart1(_page: Int, _perPage: Int) {
@@ -178,7 +178,7 @@ open class TabFragment : Fragment(), SearchItemDelegate {
             if (theFirstTime) {
 
                 if (dataService.jsonString.isNotEmpty()) {
-                    tables = jsonToModel<CoursesTable>(dataService.jsonString)
+                    tables = jsonToModel<TeamsTable>(dataService.jsonString)
                     genericTable()
 
                     //superCourses = dataService.superModel as SuperCourses
@@ -235,7 +235,8 @@ open class TabFragment : Fragment(), SearchItemDelegate {
                 theFirstTime = false
             }
 
-            notifyDataSetChanged()
+            adapter.notifyDataSetChanged()
+            //notifyDataSetChanged()
             page++
         }
 //        mask?.let { mask?.dismiss() }
@@ -259,18 +260,18 @@ open class TabFragment : Fragment(), SearchItemDelegate {
 
     open fun rowClick(item: com.xwray.groupie.Item<ViewHolder>, view: View) {}
 
-    open protected fun notifyDataSetChanged() {
-        if (page == 1) {
-            superDataLists = arrayListOf()
-        }
-        superDataLists.addAll(dataService.superDataLists)
-//        for (data in superDataLists) {
-//            data.print()
-//            println("===================")
+//    open protected fun notifyDataSetChanged() {
+//        if (page == 1) {
+//            superDataLists = arrayListOf()
 //        }
-        listAdapter.lists = superDataLists
-        listAdapter.notifyDataSetChanged()
-    }
+//        superDataLists.addAll(dataService.superDataLists)
+////        for (data in superDataLists) {
+////            data.print()
+////            println("===================")
+////        }
+//        listAdapter.lists = superDataLists
+//        listAdapter.notifyDataSetChanged()
+//    }
 
     open protected fun setRecyclerViewScrollListener() {
 
