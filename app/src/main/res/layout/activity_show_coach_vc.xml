@@ -31,7 +31,7 @@
                 >
 
                 <Button
-                    android:id="@+id/cityBtn"
+                    android:id="@+id/buyBtn"
                     android:layout_width="wrap_content"
                     android:layout_height="30dp"
                     android:layout_marginLeft="12dp"

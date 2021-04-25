@@ -9,8 +9,12 @@ import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.TeachService
 import kotlinx.android.synthetic.main.activity_teach_vc.*
 import com.sportpassword.bm.Utilities.*
+import kotlinx.android.synthetic.main.mask.*
 
-class TeachVC : MoreVC() {
+class TeachVC : MyTableVC1() {
+
+    protected var type: String = "teach"
+    protected var titleField: String = "title"
 
     lateinit var collectionAdapter: CollectionAdapter
     val _searchRows: ArrayList<HashMap<String, String>> = arrayListOf(
@@ -21,6 +25,9 @@ class TeachVC : MoreVC() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_teach_vc)
 
+        if (intent.hasExtra("type")) {
+            type = intent.getStringExtra("type")
+        }
         setMyTitle("教學")
 
         searchRows = _searchRows
@@ -53,6 +60,32 @@ class TeachVC : MoreVC() {
 
         setRecyclerViewScrollListener()
         setRecyclerViewRefreshListener()
+    }
+
+    override fun getDataStart(_page: Int, _perPage: Int) {
+        //println("page: $_page")
+        Loading.show(mask)
+        dataService.getList(this, type!!, titleField, params, _page, _perPage, null) { success ->
+            getDataEnd(success)
+        }
+    }
+
+    override fun getDataEnd(success: Boolean) {
+        if (success) {
+            if (theFirstTime) {
+                page = dataService.page
+                perPage = dataService.perPage
+                totalCount = dataService.totalCount
+                var _totalPage: Int = totalCount / perPage
+                totalPage = if (totalCount % perPage > 0) _totalPage+1 else _totalPage
+                theFirstTime = false
+                closeRefresh()
+            }
+
+            notifyDataSetChanged()
+            page++
+        }
+        Loading.hide(mask)
     }
 
     override fun notifyDataSetChanged() {

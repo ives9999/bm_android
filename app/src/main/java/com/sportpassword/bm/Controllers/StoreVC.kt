@@ -2,43 +2,36 @@ package com.sportpassword.bm.Controllers
 
 import android.content.Context
 import android.content.Intent
-import android.content.pm.PackageManager
 import android.os.Bundle
 import android.view.View
-import androidx.core.app.ActivityCompat
-import com.sportpassword.bm.Models.SuperStore
-import com.sportpassword.bm.Models.SuperStores
+import com.sportpassword.bm.Models.*
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.StoreService
 import com.sportpassword.bm.Utilities.*
-import com.sportpassword.bm.member
 import com.squareup.picasso.Picasso
-import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.kotlinandroidextensions.Item
 import com.xwray.groupie.kotlinandroidextensions.ViewHolder
 import kotlinx.android.synthetic.main.activity_store_vc.*
-import kotlinx.android.synthetic.main.list1_cell.*
 import kotlinx.android.synthetic.main.mask.*
-import kotlinx.android.synthetic.main.tab_list_item.*
-import kotlinx.android.synthetic.main.tab_list_item.listFeatured
+import kotlinx.android.synthetic.main.store_list_cell.*
 import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
-import kotlin.reflect.jvm.internal.impl.util.MemberKindCheck
 
-class StoreVC : MyTableVC1(), List1CellDelegate {
+class StoreVC : MyTableVC1() {
 
     val _searchRows: ArrayList<HashMap<String, String>> = arrayListOf(
             hashMapOf("title" to "關鍵字","key" to KEYWORD_KEY,"value" to "","value_type" to "String","show" to ""),
             hashMapOf("title" to "縣市","key" to CITY_KEY,"value" to "","value_type" to "Array","show" to "不限"),
     )
 
-    var superStores: SuperStores? = null
+    var storesTable: StoresTable? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_store_vc)
 
         source_activity = "store"
+        searchRows = _searchRows
         val title_field = intent.getStringExtra("titleField")
         setMyTitle("體育用品店")
 
@@ -53,71 +46,12 @@ class StoreVC : MyTableVC1(), List1CellDelegate {
         refresh()
     }
 
-    override fun refresh() {
-        page = 1
-        theFirstTime = true
-        getDataStart(page, perPage)
-        searchRows = _searchRows
-        params.clear()
-    }
-
-    override fun initAdapter(include_section: Boolean) {
-        adapter = GroupAdapter()
-        adapter.setOnItemClickListener { item, view ->
-            rowClick(item, view)
-        }
-        val items = generateItems()
-        adapter.addAll(items)
-        recyclerView.adapter = adapter
-    }
-
-    override fun getDataStart(_page: Int, _perPage: Int) {
-        Loading.show(maskView)
-        loading = true
-
-        dataService.getList(this, null, params, _page, _perPage) { success ->
-            getDataEnd(success)
+    override fun genericTable() {
+        storesTable = jsonToModel<StoresTable>(dataService.jsonString)
+        if (storesTable != null) {
+            tables = storesTable
         }
     }
-
-    override fun getDataEnd(success: Boolean) {
-        if (success) {
-            if (theFirstTime) {
-                superStores = dataService.superModel as SuperStores
-                if (superStores != null) {
-                    page = superStores!!.page
-                    perPage = superStores!!.perPage
-                    totalCount = superStores!!.totalCount
-                    var _totalPage: Int = totalCount / perPage
-                    totalPage = if (totalCount % perPage > 0) _totalPage + 1 else _totalPage
-                    theFirstTime = false
-                    val items = generateItems()
-//                    println(items);
-                    adapter.update(items)
-                    adapter.notifyDataSetChanged()
-                }
-            }
-            Loading.hide(maskView)
-            loading = false
-            page++
-        } else {
-            warning(dataService.msg)
-            Loading.hide(maskView)
-            loading = false
-        }
-//        mask?.let { mask?.dismiss() }
-//        println("page:$page")
-//        println("perPage:$perPage")
-//        println("totalCount:$totalCount")
-//        println("totalPage:$totalPage")
-    }
-
-//    fun layerSubmit() {
-//        //prepareParams()
-//        page = 1
-//        theFirstTime = true
-//        refresh()
-//    }
 
     override fun prepareParams(city_type: String) {
         params.clear()
@@ -207,10 +141,10 @@ class StoreVC : MyTableVC1(), List1CellDelegate {
 
     override fun generateItems(): ArrayList<Item> {
         val items: ArrayList<Item> = arrayListOf()
-        if (superStores != null) {
-            for (row in superStores!!.rows) {
+        if (storesTable != null) {
+            for (row in storesTable!!.rows) {
                 //row.print()
-                row.filter()
+                row.filterRow()
                 val storeItem = StoreItem(this, row)
                 storeItem.list1CellDelegate = this
                 items.add(storeItem)
@@ -231,64 +165,14 @@ class StoreVC : MyTableVC1(), List1CellDelegate {
         startActivity(intent)
     }
 
-    override fun cellRefresh(index: Int) {
-        refresh()
-    }
+//    override fun cellRefresh(index: Int) {
+//        refresh()
+//    }
 
-    override fun cellShowMap(index: Int) {
-        if (superStores != null && superStores!!.totalCount > index) {
-            val row = superStores!!.rows[index]
-            val intent = Intent(this, MyMapVC::class.java)
-            intent.putExtra("title", row.name)
-            intent.putExtra("address", row.address)
-            startActivity(intent)
-        }
-    }
 
-    override fun cellTel(index: Int) {
-        if (superStores != null && superStores!!.totalCount > index) {
-            val row = superStores!!.rows[index]
-            if (row.tel.length > 0) {
-                println(row.tel)
-                row.tel.makeCall(this)
-            }
-        }
-    }
-
-    override fun cellMobile(index: Int) {
-        if (superStores != null && superStores!!.totalCount > index) {
-            val row = superStores!!.rows[index]
-            if (row.mobile.length > 0) {
-                row.mobile.makeCall(this)
-            }
-        }
-    }
-
-    override fun cellEdit(index: Int) {
-        if (superStores != null && superStores!!.totalCount > index) {
-            val row = superStores!!.rows[index]
-
-        }
-    }
-
-    override fun cellDelete(index: Int) {
-        if (superStores != null && superStores!!.totalCount > index) {
-            val row = superStores!!.rows[index]
-
-        }
-    }
 }
 
-interface List1CellDelegate {
-    fun cellRefresh(row: Int)
-    fun cellShowMap(row: Int)
-    fun cellTel(row: Int)
-    fun cellMobile(row: Int)
-    fun cellEdit(row: Int)
-    fun cellDelete(row: Int)
-}
-
-class StoreItem(val context: Context, val row: SuperStore): Item() {
+class StoreItem(val context: Context, val row: StoreTable): Item() {
 
     var list1CellDelegate: List1CellDelegate? = null
 
@@ -298,47 +182,45 @@ class StoreItem(val context: Context, val row: SuperStore): Item() {
         viewHolder.cityBtn.text = row.city_show
         viewHolder.titleTxt.text = row.name
         Picasso.with(context)
-                .load(BASE_URL + row.featured_path)
+                .load(row.featured_path)
                 .placeholder(R.drawable.loading_square_120)
                 .error(R.drawable.loading_square_120)
                 .into(viewHolder.listFeatured)
-        viewHolder.telTxt.text = row.tel_show
-        viewHolder.business_timeTxt.text = row.open_time_show+"~"+row.close_time_show
+
+        viewHolder.business_timeTxt.text = "${row.open_time_show}~${row.close_time_show}"
+
         viewHolder.addressTxt.text = row.address
+
+        viewHolder.likeIcon.setOnClickListener {
+            if (list1CellDelegate != null) {
+                list1CellDelegate!!.cellLike(row)
+            }
+        }
 
         viewHolder.refreshIcon.setOnClickListener {
 //            println(position)
             if (list1CellDelegate != null) {
-                list1CellDelegate!!.cellRefresh(position)
+                list1CellDelegate!!.cellRefresh()
             }
         }
 
-        if (row.address.isEmpty()) {
+        if (row.address == null || row.address.isEmpty()) {
             viewHolder.mapIcon.visibility = View.GONE
         } else {
             viewHolder.mapIcon.setOnClickListener {
                 if (list1CellDelegate != null) {
-                    list1CellDelegate!!.cellShowMap(position)
+                    list1CellDelegate!!.cellShowMap(row)
                 }
             }
         }
 
-        if (row.tel.isEmpty()) {
+        if (row.tel == null || row.tel.isEmpty()) {
             viewHolder.telIcon.visibility = View.GONE
         } else {
+            viewHolder.telLbl.text = row.tel_show
             viewHolder.telIcon.setOnClickListener {
                 if (list1CellDelegate != null) {
-                    list1CellDelegate!!.cellTel(position)
-                }
-            }
-        }
-
-        if (row.mobile.isEmpty()) {
-            //viewHolder.mobileIcon.visibility = View.GONE
-        } else {
-            viewHolder.mobileIcon.setOnClickListener {
-                if (list1CellDelegate != null) {
-                    list1CellDelegate!!.cellMobile(position)
+                    list1CellDelegate!!.cellMobile(row.tel)
                 }
             }
         }
@@ -376,7 +258,7 @@ class StoreItem(val context: Context, val row: SuperStore): Item() {
 
     }
 
-    override fun getLayout() = R.layout.list1_cell
+    override fun getLayout() = R.layout.store_list_cell
 }
 
 

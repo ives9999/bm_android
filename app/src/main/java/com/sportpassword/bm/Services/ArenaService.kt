@@ -11,6 +11,13 @@ object ArenaService: DataService() {
 
     override val model: Arena = Arena(-1, "", "", "")
 
+    override fun getListURL(): String {
+        return URL_ARENA_LIST
+    }
+    override fun getOneURL(): String {
+        return "$URL_ONE".format("arena")
+    }
+
     override fun setData(id: Int, title: String, token: String, featured_path: String, vimeo: String, youtube: String): Arena {
         val data = Arena(id, title, token, featured_path)
         return data

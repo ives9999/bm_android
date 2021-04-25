@@ -20,7 +20,7 @@ object CoachService: DataService() {
     lateinit var superCoach: SuperCoach
 
     override fun getListURL(): String {
-        return URL_COURSE_LIST
+        return URL_COACH_LIST
     }
     override fun getOneURL(): String {
         return "$URL_ONE".format("coach")

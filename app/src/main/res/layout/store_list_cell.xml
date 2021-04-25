@@ -67,20 +67,25 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="2dp"
-                                android:layout_weight="7"
                                 android:textColor="@color/WHITE"
                                 android:textSize="18sp"
                                 android:textStyle="bold"
                                 app:layout_constraintStart_toEndOf="@+id/listFeatured"
                                 app:layout_constraintTop_toTopOf="@+id/listFeatured"
                                 tools:text="球隊" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_marginBottom="12dp"
+                            android:orientation="horizontal">
 
                             <Button
-                                android:id="@+id/buyBtn"
+                                android:id="@+id/cityBtn"
                                 style="@style/city_button"
                                 android:layout_width="wrap_content"
-                                android:layout_height="24dp"
-                                android:layout_weight="3" />
+                                android:layout_height="26dp" />
 
                         </LinearLayout>
 
@@ -91,7 +96,7 @@
 
 
                             <TextView
-                                android:id="@+id/priceLbl"
+                                android:id="@+id/telLbl"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginRight="12dp"
@@ -155,7 +160,7 @@
                         android:layout_weight="1"
                         android:background="@null"
                         android:scaleType="fitCenter"
-                        app:srcCompat="@drawable/map" />
+                        app:srcCompat="@drawable/like" />
 
                     <ImageButton
                         android:id="@+id/telIcon"
@@ -165,7 +170,7 @@
                         android:layout_weight="1"
                         android:background="@null"
                         android:scaleType="fitCenter"
-                        app:srcCompat="@drawable/tel" />
+                        app:srcCompat="@drawable/mobile" />
 
                     <ImageButton
                         android:id="@+id/mapIcon"
@@ -175,7 +180,17 @@
                         android:layout_weight="1"
                         android:background="@null"
                         android:scaleType="fitCenter"
-                        app:srcCompat="@drawable/mobile" />
+                        app:srcCompat="@drawable/map" />
+
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:gravity="center_horizontal|center_vertical">
+
 
                     <ImageButton
                         android:id="@+id/refreshIcon"
@@ -186,35 +201,6 @@
                         android:background="@null"
                         android:scaleType="fitCenter"
                         app:srcCompat="@drawable/refresh" />
-                </LinearLayout>
-
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:gravity="center_horizontal|center_vertical">
-
-                    <ImageButton
-                        android:id="@+id/editIcon"
-                        android:layout_width="36dp"
-                        android:layout_height="36dp"
-                        android:layout_weight="1"
-                        android:background="@null"
-                        android:scaleType="fitCenter"
-                        android:visibility="invisible"
-                        app:srcCompat="@drawable/edit1" />
-
-                    <ImageButton
-                        android:id="@+id/deleteIcon"
-                        android:layout_width="36dp"
-                        android:layout_height="36dp"
-                        android:layout_marginLeft="16dp"
-                        android:layout_weight="1"
-                        android:background="@null"
-                        android:scaleType="fitCenter"
-                        android:visibility="invisible"
-                        app:srcCompat="@drawable/delete" />
                 </LinearLayout>
             </RelativeLayout>
         </LinearLayout>

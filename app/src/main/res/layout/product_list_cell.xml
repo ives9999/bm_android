@@ -63,25 +63,16 @@
 
 
                             <TextView
-                                android:id="@+id/titleTxt"
+                                android:id="@+id/titleLbl"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="2dp"
-                                android:layout_weight="7"
                                 android:textColor="@color/WHITE"
                                 android:textSize="18sp"
                                 android:textStyle="bold"
                                 app:layout_constraintStart_toEndOf="@+id/listFeatured"
                                 app:layout_constraintTop_toTopOf="@+id/listFeatured"
                                 tools:text="球隊" />
-
-                            <Button
-                                android:id="@+id/buyBtn"
-                                style="@style/city_button"
-                                android:layout_width="wrap_content"
-                                android:layout_height="24dp"
-                                android:layout_weight="3" />
-
                         </LinearLayout>
 
                         <LinearLayout
@@ -100,34 +91,14 @@
                                 android:textSize="18dp"
                                 tools:text="市內電話" />
 
-                            <TextView
-                                android:id="@+id/business_timeTxt"
+                            <Button
+                                android:id="@+id/buyBtn"
+                                style="@style/city_button"
                                 android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="4"
-                                android:textColor="@color/MY_GREEN"
-                                android:textSize="18dp"
-                                tools:text="營業時間" />
+                                android:layout_height="26dp"
+                                android:text="購買" />
 
                         </LinearLayout>
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal">
-
-
-                            <TextView
-                                android:id="@+id/addressTxt"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="6"
-                                android:textColor="@color/MY_GREEN"
-                                android:textSize="18dp"
-                                tools:text="住址" />
-
-                        </LinearLayout>
-
 
                     </LinearLayout>
 
@@ -155,27 +126,17 @@
                         android:layout_weight="1"
                         android:background="@null"
                         android:scaleType="fitCenter"
-                        app:srcCompat="@drawable/map" />
+                        app:srcCompat="@drawable/like" />
 
-                    <ImageButton
-                        android:id="@+id/telIcon"
-                        android:layout_width="36dp"
-                        android:layout_height="36dp"
-                        android:layout_marginLeft="16dp"
-                        android:layout_weight="1"
-                        android:background="@null"
-                        android:scaleType="fitCenter"
-                        app:srcCompat="@drawable/tel" />
+                </LinearLayout>
 
-                    <ImageButton
-                        android:id="@+id/mapIcon"
-                        android:layout_width="36dp"
-                        android:layout_height="36dp"
-                        android:layout_marginLeft="16dp"
-                        android:layout_weight="1"
-                        android:background="@null"
-                        android:scaleType="fitCenter"
-                        app:srcCompat="@drawable/mobile" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:gravity="center_horizontal|center_vertical">
+
 
                     <ImageButton
                         android:id="@+id/refreshIcon"
@@ -186,35 +147,6 @@
                         android:background="@null"
                         android:scaleType="fitCenter"
                         app:srcCompat="@drawable/refresh" />
-                </LinearLayout>
-
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:gravity="center_horizontal|center_vertical">
-
-                    <ImageButton
-                        android:id="@+id/editIcon"
-                        android:layout_width="36dp"
-                        android:layout_height="36dp"
-                        android:layout_weight="1"
-                        android:background="@null"
-                        android:scaleType="fitCenter"
-                        android:visibility="invisible"
-                        app:srcCompat="@drawable/edit1" />
-
-                    <ImageButton
-                        android:id="@+id/deleteIcon"
-                        android:layout_width="36dp"
-                        android:layout_height="36dp"
-                        android:layout_marginLeft="16dp"
-                        android:layout_weight="1"
-                        android:background="@null"
-                        android:scaleType="fitCenter"
-                        android:visibility="invisible"
-                        app:srcCompat="@drawable/delete" />
                 </LinearLayout>
             </RelativeLayout>
         </LinearLayout>

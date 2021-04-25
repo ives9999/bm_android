@@ -1,11 +1,9 @@
 package com.sportpassword.bm.Controllers
 
-import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.Color
 import android.os.Bundle
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.constraintlayout.widget.ConstraintSet
 import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
@@ -217,13 +215,13 @@ class ShowCoachVC : BaseActivity(), IconCellDelegate {
                         city_id = city.id
                         params["city_id"] = arrayListOf(city_id)
                         params["city_type"] = "all"
-                        cityBtn.setText(city.name)
+                        buyBtn.setText(city.name)
                     }
                 } else {
-                    cityBtn.visibility = View.GONE
+                    buyBtn.visibility = View.GONE
                 }
             } else {
-                cityBtn.visibility = View.GONE
+                buyBtn.visibility = View.GONE
             }
             setContact()
             setWeb(chargeWebView, superCoach!!.charge)

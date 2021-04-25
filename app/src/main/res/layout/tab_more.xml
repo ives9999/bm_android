@@ -20,7 +20,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="fill_horizontal"
-            android:padding="12dp">
+            android:paddingStart="12dp"
+            android:paddingTop="18dp"
+            android:paddingEnd="12dp"
+            android:paddingBottom="18dp">
 
             <ImageView
                 android:id="@+id/imageViewProduct"
@@ -69,7 +72,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="fill_horizontal"
-            android:padding="12dp">
+            android:paddingStart="12dp"
+            android:paddingTop="18dp"
+            android:paddingEnd="12dp"
+            android:paddingBottom="18dp">
 
             <ImageView
                 android:id="@+id/imageViewCourse"
@@ -118,7 +124,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="fill_horizontal"
-            android:padding="12dp">
+            android:paddingStart="12dp"
+            android:paddingTop="18dp"
+            android:paddingEnd="12dp"
+            android:paddingBottom="18dp">
 
             <ImageView
                 android:id="@+id/imageView7"
@@ -168,7 +177,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="fill_horizontal"
-            android:padding="12dp">
+            android:paddingStart="12dp"
+            android:paddingTop="18dp"
+            android:paddingEnd="12dp"
+            android:paddingBottom="18dp">
 
             <ImageView
                 android:id="@+id/imageView8"
@@ -217,7 +229,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="fill_horizontal"
-            android:padding="12dp">
+            android:paddingStart="12dp"
+            android:paddingTop="18dp"
+            android:paddingEnd="12dp"
+            android:paddingBottom="18dp">
 
             <ImageView
                 android:id="@+id/imageViewStore"
@@ -266,7 +281,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="fill_horizontal"
-            android:padding="12dp">
+            android:paddingStart="12dp"
+            android:paddingTop="18dp"
+            android:paddingEnd="12dp"
+            android:paddingBottom="18dp">
 
             <ImageView
                 android:id="@+id/imageView11"
@@ -315,7 +333,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="fill_horizontal"
-            android:padding="12dp">
+            android:paddingStart="12dp"
+            android:paddingTop="18dp"
+            android:paddingEnd="12dp"
+            android:paddingBottom="18dp">
 
             <ImageView
                 android:id="@+id/imageView21"

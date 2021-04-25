@@ -18,7 +18,6 @@ import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.kotlinandroidextensions.Item
 import com.xwray.groupie.kotlinandroidextensions.ViewHolder
 import kotlinx.android.synthetic.main.activity_member_order_list_vc.*
-import kotlinx.android.synthetic.main.list1_cell.*
 import kotlinx.android.synthetic.main.mask.*
 import kotlinx.android.synthetic.main.order_list_cell.*
 

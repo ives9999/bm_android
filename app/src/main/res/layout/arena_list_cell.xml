@@ -67,20 +67,32 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="2dp"
-                                android:layout_weight="7"
                                 android:textColor="@color/WHITE"
                                 android:textSize="18sp"
                                 android:textStyle="bold"
                                 app:layout_constraintStart_toEndOf="@+id/listFeatured"
                                 app:layout_constraintTop_toTopOf="@+id/listFeatured"
                                 tools:text="球隊" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_marginBottom="12dp"
+                            android:orientation="horizontal">
 
                             <Button
-                                android:id="@+id/buyBtn"
+                                android:id="@+id/cityBtn"
                                 style="@style/city_button"
                                 android:layout_width="wrap_content"
-                                android:layout_height="24dp"
-                                android:layout_weight="3" />
+                                android:layout_height="26dp" />
+
+                            <Button
+                                android:id="@+id/areaBtn"
+                                style="@style/city_button"
+                                android:layout_width="wrap_content"
+                                android:layout_height="26dp"
+                                android:layout_marginStart="12dp" />
 
                         </LinearLayout>
 
@@ -91,23 +103,22 @@
 
 
                             <TextView
-                                android:id="@+id/priceLbl"
+                                android:id="@+id/telLbl"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginRight="12dp"
-                                android:layout_weight="5"
                                 android:textColor="@color/MY_GREEN"
                                 android:textSize="18dp"
                                 tools:text="市內電話" />
 
                             <TextView
-                                android:id="@+id/business_timeTxt"
+                                android:id="@+id/parkingLbl"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_weight="4"
                                 android:textColor="@color/MY_GREEN"
+                                android:layout_marginStart="12dp"
                                 android:textSize="18dp"
-                                tools:text="營業時間" />
+                                tools:text="停車場" />
 
                         </LinearLayout>
 
@@ -118,13 +129,21 @@
 
 
                             <TextView
-                                android:id="@+id/addressTxt"
+                                android:id="@+id/intervalLbl"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_weight="6"
                                 android:textColor="@color/MY_GREEN"
                                 android:textSize="18dp"
-                                tools:text="住址" />
+                                tools:text="時段" />
+
+                            <TextView
+                                android:id="@+id/air_conditionLbl"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textColor="@color/MY_GREEN"
+                                android:textSize="18dp"
+                                android:layout_marginStart="12dp"
+                                tools:text="空調" />
 
                         </LinearLayout>
 
@@ -155,7 +174,7 @@
                         android:layout_weight="1"
                         android:background="@null"
                         android:scaleType="fitCenter"
-                        app:srcCompat="@drawable/map" />
+                        app:srcCompat="@drawable/like" />
 
                     <ImageButton
                         android:id="@+id/telIcon"
@@ -165,7 +184,7 @@
                         android:layout_weight="1"
                         android:background="@null"
                         android:scaleType="fitCenter"
-                        app:srcCompat="@drawable/tel" />
+                        app:srcCompat="@drawable/mobile" />
 
                     <ImageButton
                         android:id="@+id/mapIcon"
@@ -175,7 +194,17 @@
                         android:layout_weight="1"
                         android:background="@null"
                         android:scaleType="fitCenter"
-                        app:srcCompat="@drawable/mobile" />
+                        app:srcCompat="@drawable/map" />
+
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:gravity="center_horizontal|center_vertical">
+
 
                     <ImageButton
                         android:id="@+id/refreshIcon"
@@ -186,35 +215,6 @@
                         android:background="@null"
                         android:scaleType="fitCenter"
                         app:srcCompat="@drawable/refresh" />
-                </LinearLayout>
-
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:gravity="center_horizontal|center_vertical">
-
-                    <ImageButton
-                        android:id="@+id/editIcon"
-                        android:layout_width="36dp"
-                        android:layout_height="36dp"
-                        android:layout_weight="1"
-                        android:background="@null"
-                        android:scaleType="fitCenter"
-                        android:visibility="invisible"
-                        app:srcCompat="@drawable/edit1" />
-
-                    <ImageButton
-                        android:id="@+id/deleteIcon"
-                        android:layout_width="36dp"
-                        android:layout_height="36dp"
-                        android:layout_marginLeft="16dp"
-                        android:layout_weight="1"
-                        android:background="@null"
-                        android:scaleType="fitCenter"
-                        android:visibility="invisible"
-                        app:srcCompat="@drawable/delete" />
                 </LinearLayout>
             </RelativeLayout>
         </LinearLayout>

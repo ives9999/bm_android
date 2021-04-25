@@ -1,5 +1,6 @@
 package com.sportpassword.bm.Controllers
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import androidx.recyclerview.widget.RecyclerView
@@ -11,19 +12,22 @@ import com.sportpassword.bm.Adapters.GroupSection
 import com.sportpassword.bm.Adapters.ListAdapter
 import com.sportpassword.bm.Form.BaseForm
 import com.sportpassword.bm.Form.FormItem.FormItem
-import com.sportpassword.bm.Models.SuperModel
-import com.sportpassword.bm.Models.SuperOrder
-import com.sportpassword.bm.Models.SuperOrders
+import com.sportpassword.bm.Models.*
 import com.sportpassword.bm.R
+import com.sportpassword.bm.Utilities.Global
 import com.sportpassword.bm.Utilities.Loading
 import com.sportpassword.bm.Utilities.PERPAGE
+import com.sportpassword.bm.Utilities.makeCall
 import com.xwray.groupie.ExpandableGroup
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.Section
 import com.xwray.groupie.ViewHolder
 import com.xwray.groupie.kotlinandroidextensions.Item
+import kotlinx.android.synthetic.main.mask.*
 
-abstract class MyTableVC1 : BaseActivity() {
+abstract class MyTableVC1 : BaseActivity(), List1CellDelegate {
+
+    var tables: Tables? = null
 
     var sections: ArrayList<String> = arrayListOf()
     var rows: ArrayList<HashMap<String, String>> = arrayListOf()
@@ -91,46 +95,70 @@ abstract class MyTableVC1 : BaseActivity() {
     }
 
     override fun refresh() {
+//        page = 1
+//        theFirstTime = true
+//        getDataStart(page, perPage)
+
         page = 1
         theFirstTime = true
-        getDataStart(page, perPage)
+        getDataStart1(page, perPage)
+        params.clear()
     }
+
+    open fun getDataStart1(_page: Int, _perPage: Int) {
+        Loading.show(mask)
+
+        dataService.getList1(this, null, params, _page, _perPage) { success ->
+            getDataEnd1(success)
+        }
+    }
+
+    open fun getDataEnd1(success: Boolean) {
+        if (success) {
+            if (theFirstTime) {
+
+                if (dataService.jsonString.isNotEmpty()) {
+                    //println(dataService.jsonString)
+                    genericTable()
+
+                    //superCourses = dataService.superModel as SuperCourses
+                    if (tables != null) {
+                        page = tables!!.page
+                        perPage = tables!!.perPage
+                        totalCount = tables!!.totalCount
+                        val _totalPage: Int = totalCount / perPage
+                        totalPage = if (totalCount % perPage > 0) _totalPage + 1 else _totalPage
+                        theFirstTime = false
+
+                        val items = generateItems()
+                        adapter.update(items)
+                        adapter.notifyDataSetChanged()
+                        page++
+                    } else {
+                        warning(Global.message)
+                        Global.message = ""
+                    }
+                } else {
+                    warning("沒有取得回傳的json字串，請洽管理員")
+                }
+
+            }
+
+            //notifyDataSetChanged()
+            page++
+        }
+//        mask?.let { mask?.dismiss() }
+        Loading.hide(mask)
+        loading = false
+//        println("page:$page")
+//        println("perPage:$perPage")
+//        println("totalCount:$totalCount")
+//        println("totalPage:$totalPage")
+    }
+
     protected open fun getDataStart(_page: Int, _perPage: Int) {}
 
     protected open fun getDataEnd(success: Boolean) {}
-
-    /*
-    protected open fun<T, TS> getDataEnd1(success: Boolean) {
-        if (success) {
-            superModels = dataService.superModel as TS
-            for ((idx, superOrder) in superModels.rows.withIndex()) {
-                superOrder.filter()
-            }
-            allSuperModels.addAll(superModels!!.rows)
-            if (theFirstTime) {
-                if (superModels != null) {
-                    page = superModels!!.page
-                    perPage = superModels!!.perPage
-                    totalCount = superModels!!.totalCount
-                    val _totalPage: Int = totalCount / perPage
-                    totalPage = if (totalCount % perPage > 0) _totalPage + 1 else _totalPage
-                    theFirstTime = false
-                }
-            }
-            val items = generateItems()
-//                    println(items);
-            adapter.update(items)
-            adapter.notifyDataSetChanged()
-
-            page++
-        } else {
-            warning(dataService.msg)
-        }
-//        mask?.let { mask?.dismiss() }
-        Loading.hide(maskView)
-        loading = false
-    }
-     */
 
     protected open fun notifyDataSetChanged() {
         if (page == 1) {
@@ -166,9 +194,8 @@ abstract class MyTableVC1 : BaseActivity() {
         return arrayListOf()
     }
 
-    open fun rowClick(item: com.xwray.groupie.Item<ViewHolder>, view: View) {
-
-    }
+    open fun genericTable() {}
+    open fun rowClick(item: com.xwray.groupie.Item<ViewHolder>, view: View) {}
 
 
 
@@ -222,4 +249,54 @@ abstract class MyTableVC1 : BaseActivity() {
 
         return res
     }
+
+    override fun cellRefresh() {
+        refresh()
+    }
+
+    override fun cellLike(row: Table) {
+        println(row.id)
+    }
+
+    override fun cellShowMap(row: Table) {
+        println(row.address)
+//        val intent = Intent(this, MyMapVC::class.java)
+//        var name: String = ""
+//        if (row.name.isNotEmpty()) {
+//            name = row.name
+//        } else if (row.title.isNotEmpty()) {
+//            name = row.title
+//        }
+//        intent.putExtra("title", name)
+//        intent.putExtra("address", row.address)
+//        startActivity(intent)
+    }
+
+    override fun cellMobile(mobile: String) {
+        println(mobile)
+        //mobile.makeCall(this)
+    }
+
+    override fun cellEdit(row: Table) {
+//        if (storesTable != null && storesTable!!.totalCount > index) {
+//            val row = storesTable!!.rows[index]
+//
+//        }
+    }
+
+    override fun cellDelete(row: Table) {
+//        if (storesTable != null && storesTable!!.totalCount > index) {
+//            val row = storesTable!!.rows[index]
+//
+//        }
+    }
+}
+
+interface List1CellDelegate {
+    fun cellRefresh(){}
+    fun cellLike(row: Table){}
+    fun cellShowMap(row: Table){}
+    fun cellMobile(mobile: String){}
+    fun cellEdit(row: Table){}
+    fun cellDelete(row: Table){}
 }

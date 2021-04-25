@@ -1,21 +1,22 @@
 package com.sportpassword.bm.Controllers
 
 import android.content.Context
-import android.content.Intent
 import android.os.Bundle
 import android.view.View
-import com.sportpassword.bm.Models.SuperProduct
-import com.sportpassword.bm.Models.SuperProducts
+import com.sportpassword.bm.Models.*
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.ProductService
 import com.sportpassword.bm.Utilities.*
 import com.squareup.picasso.Picasso
-import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.kotlinandroidextensions.Item
 import com.xwray.groupie.kotlinandroidextensions.ViewHolder
 import kotlinx.android.synthetic.main.activity_product_vc.*
-import kotlinx.android.synthetic.main.list1_cell.*
 import kotlinx.android.synthetic.main.mask.*
+import kotlinx.android.synthetic.main.product_list_cell.*
+import kotlinx.android.synthetic.main.product_list_cell.buyBtn
+import kotlinx.android.synthetic.main.product_list_cell.listFeatured
+import kotlinx.android.synthetic.main.product_list_cell.priceLbl
+import kotlinx.android.synthetic.main.product_list_cell.refreshIcon
 
 class ProductVC : MyTableVC1() {
 
@@ -24,7 +25,7 @@ class ProductVC : MyTableVC1() {
             hashMapOf("title" to "縣市","key" to CITY_KEY,"value" to "","value_type" to "Array","show" to "不限"),
     )
 
-    var superProducts: SuperProducts? = null
+    var productsTable: ProductsTable? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,58 +46,11 @@ class ProductVC : MyTableVC1() {
         refresh()
     }
 
-    override fun refresh() {
-        page = 1
-        theFirstTime = true
-        getDataStart(page, perPage)
-        searchRows = _searchRows
-        params.clear()
-    }
-
-    override fun initAdapter(include_section: Boolean) {
-        adapter = GroupAdapter()
-        adapter.setOnItemClickListener { item, view ->
-            rowClick(item, view)
+    override fun genericTable() {
+        productsTable = jsonToModel<ProductsTable>(dataService.jsonString)
+        if (productsTable != null) {
+            tables = productsTable
         }
-        val items = generateItems()
-        adapter.addAll(items)
-        recyclerView.adapter = adapter
-    }
-
-    override fun getDataStart(_page: Int, _perPage: Int) {
-        Loading.show(maskView)
-        loading = true
-
-        dataService.getList(this, null, params, _page, _perPage) { success ->
-            getDataEnd(success)
-        }
-    }
-
-    override fun getDataEnd(success: Boolean) {
-        if (success) {
-            if (theFirstTime) {
-                superProducts = dataService.superModel as SuperProducts
-                if (superProducts != null) {
-                    page = superProducts!!.page
-                    perPage = superProducts!!.perPage
-                    totalCount = superProducts!!.totalCount
-                    val _totalPage: Int = totalCount / perPage
-                    totalPage = if (totalCount % perPage > 0) _totalPage + 1 else _totalPage
-                    theFirstTime = false
-                    val items = generateItems()
-//                    println(items);
-                    adapter.update(items)
-                    adapter.notifyDataSetChanged()
-                }
-            }
-
-            page++
-        } else {
-            warning(dataService.msg)
-        }
-//        mask?.let { mask?.dismiss() }
-        Loading.hide(maskView)
-        loading = false
     }
 
     override fun prepareParams(city_type: String) {
@@ -187,11 +141,11 @@ class ProductVC : MyTableVC1() {
 
     override fun generateItems(): ArrayList<Item> {
         val items: ArrayList<Item> = arrayListOf()
-        if (superProducts != null) {
-            for (row in superProducts!!.rows) {
-//                row.print()
+        if (productsTable != null) {
+            for (row in productsTable!!.rows) {
+                row.filterRow()
                 val productItem = ProductItem(this, row)
-                //productItem.list1CellDelegate = this
+                productItem.list1CellDelegate = this
                 items.add(productItem)
             }
         }
@@ -208,35 +162,43 @@ class ProductVC : MyTableVC1() {
     }
 }
 
-class ProductItem(val context: Context, val row: SuperProduct): Item() {
+class ProductItem(val context: Context, val row: ProductTable): Item() {
 
-    //var list1CellDelegate: List1CellDelegate? = null
+    var list1CellDelegate: List1CellDelegate? = null
 
     override fun bind(viewHolder: ViewHolder, position: Int) {
 
         //println(superStore);
-        viewHolder.cityBtn.text = "購買"
-        viewHolder.cityBtn.setOnClickListener {
+        viewHolder.buyBtn.setOnClickListener {
             val a: ProductVC = context as ProductVC
             a.goOrder(row.token)
         }
 
-        viewHolder.titleTxt.text = row.name
+        viewHolder.titleLbl.text = row.name
+
+        val tmp: String = (row.prices[0].price_member).formattedWithSeparator()
+        val price: String = "NT$ ${tmp}"
+        viewHolder.priceLbl.text = price
+
         Picasso.with(context)
-                .load(BASE_URL + row.featured_path)
+                .load(row.featured_path)
                 .placeholder(R.drawable.loading_square_120)
                 .error(R.drawable.loading_square_120)
                 .into(viewHolder.listFeatured)
-        viewHolder.telTxt.text = "價格： " + row.prices[0].price_member + " 元"
-        viewHolder.business_timeTxt.visibility = View.GONE
-        viewHolder.addressTxt.visibility = View.GONE
 
-        viewHolder.mapIcon.visibility = View.GONE
-        viewHolder.telIcon.visibility = View.GONE
-        viewHolder.mobileIcon.visibility = View.GONE
-        viewHolder.refreshIcon.visibility = View.GONE
-        viewHolder.iconView.visibility = View.GONE
+        viewHolder.likeIcon.setOnClickListener {
+            if (list1CellDelegate != null) {
+                list1CellDelegate!!.cellLike(row)
+            }
+        }
+
+        viewHolder.refreshIcon.setOnClickListener {
+//            println(position)
+            if (list1CellDelegate != null) {
+                list1CellDelegate!!.cellRefresh()
+            }
+        }
     }
 
-    override fun getLayout() = R.layout.list1_cell
+    override fun getLayout() = R.layout.product_list_cell
 }

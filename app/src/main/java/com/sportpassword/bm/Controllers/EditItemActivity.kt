@@ -201,18 +201,18 @@ class EditItemActivity() : BaseActivity() {
             arenaAdapter = GroupAdapter()
             arenaAdapter.setOnItemClickListener { item, view ->
                 val arenaItem = item as ArenaItem
-                val arena = arenaItem.arena
-
-                var checked = false
-                if (view.mark1.visibility == View.INVISIBLE) {
-                    checked = true
-                }
-                arenaItem.toggleClick(view, checked)
+//                val arena = arenaItem.arena
+//
+//                var checked = false
+//                if (view.mark1.visibility == View.INVISIBLE) {
+//                    checked = true
+//                }
+//                arenaItem.toggleClick(view, checked)
 
                 if (select == "just one") {
                     arenas.clear()
                 }
-                setArena(arena)
+//                setArena(arena)
                 if (select == "just one") {
                     submit(View(this))
                 }
@@ -309,8 +309,8 @@ class EditItemActivity() : BaseActivity() {
                                     break
                                 }
                             }
-                            val arenaItem = ArenaItem(this, arena, checked)
-                            _rows.add(arenaItem)
+//                            val arenaItem = ArenaItem(this, arena, checked)
+//                            _rows.add(arenaItem)
                         }
                         expandableGroup.add(Section(_rows))
                         arenaAdapter.add(expandableGroup)
@@ -537,41 +537,41 @@ class EditItemActivity() : BaseActivity() {
     }
 }
 
-class ArenaItem(val context: Context, val arena: com.sportpassword.bm.Controllers.Arena, val checked: Boolean=false): Item() {
-
-    val checkedColor = ContextCompat.getColor(context, R.color.MY_GREEN)
-    val uncheckedColor = ContextCompat.getColor(context, R.color.WHITE)
-
-    override fun getLayout() = R.layout.activity_edit_team_item_adapter
-
-    override fun bind(viewHolder: ViewHolder, position: Int) {
-
-        viewHolder.item1.text = arena.name
-        toggleClick(viewHolder.itemView, checked)
-    }
-
-    fun toggleClick(itemView: View, checked: Boolean) {
-        if (checked) {
-            setSelectedStyle(itemView)
-        } else {
-            unSetSelectedStyle(itemView)
-        }
-    }
-
-    fun setSelectedStyle(itemView: View) {
-        val item1View = itemView.item1
-        val mark1View = itemView.mark1
-        item1View.setTextColor(checkedColor)
-        mark1View.visibility = View.VISIBLE
-        mark1View.setColorFilter(checkedColor)
-    }
-    fun unSetSelectedStyle(itemView: View) {
-        val item1View = itemView.item1
-        val mark1View = itemView.mark1
-        item1View.setTextColor(uncheckedColor)
-        mark1View.visibility = View.INVISIBLE
-    }
-}
+//class ArenaItem(val context: Context, val arena: com.sportpassword.bm.Controllers.Arena, val checked: Boolean=false): Item() {
+//
+//    val checkedColor = ContextCompat.getColor(context, R.color.MY_GREEN)
+//    val uncheckedColor = ContextCompat.getColor(context, R.color.WHITE)
+//
+//    override fun getLayout() = R.layout.activity_edit_team_item_adapter
+//
+//    override fun bind(viewHolder: ViewHolder, position: Int) {
+//
+//        viewHolder.item1.text = arena.name
+//        toggleClick(viewHolder.itemView, checked)
+//    }
+//
+//    fun toggleClick(itemView: View, checked: Boolean) {
+//        if (checked) {
+//            setSelectedStyle(itemView)
+//        } else {
+//            unSetSelectedStyle(itemView)
+//        }
+//    }
+//
+//    fun setSelectedStyle(itemView: View) {
+//        val item1View = itemView.item1
+//        val mark1View = itemView.mark1
+//        item1View.setTextColor(checkedColor)
+//        mark1View.visibility = View.VISIBLE
+//        mark1View.setColorFilter(checkedColor)
+//    }
+//    fun unSetSelectedStyle(itemView: View) {
+//        val item1View = itemView.item1
+//        val mark1View = itemView.mark1
+//        item1View.setTextColor(uncheckedColor)
+//        mark1View.visibility = View.INVISIBLE
+//    }
+//}
 
 class AreaItem(val context: Context, val area: Area, val checked: Boolean=false): Item() {
 
