@@ -176,9 +176,13 @@ class ProductItem(val context: Context, val row: ProductTable): Item() {
 
         viewHolder.titleLbl.text = row.name
 
-        val tmp: String = (row.prices[0].price_member).formattedWithSeparator()
-        val price: String = "NT$ ${tmp}"
-        viewHolder.priceLbl.text = price
+        if (row.prices.size > 0) {
+            val tmp: String = (row.prices[0].price_member).formattedWithSeparator()
+            val price: String = "NT$ ${tmp}"
+            viewHolder.priceLbl.text = price
+        } else {
+            viewHolder.priceLbl.text = "未提供"
+        }
 
         Picasso.with(context)
                 .load(row.featured_path)

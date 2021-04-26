@@ -6,28 +6,19 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.*
 import android.widget.ImageButton
-import com.google.gson.Gson
-import com.sportpassword.bm.Adapters.GroupSection
 import com.sportpassword.bm.Controllers.ShowCourseVC
 import com.sportpassword.bm.Models.*
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.CourseService
 import com.sportpassword.bm.Utilities.*
 import com.squareup.picasso.Picasso
-import com.xwray.groupie.ExpandableGroup
 import com.xwray.groupie.GroupAdapter
-import com.xwray.groupie.Section
 import com.xwray.groupie.ViewHolder
 import com.xwray.groupie.kotlinandroidextensions.Item
 import kotlinx.android.synthetic.main.mask.*
-import kotlinx.android.synthetic.main.search_row_item.*
-import kotlinx.android.synthetic.main.tab.*
-import kotlinx.android.synthetic.main.tab_course.*
 import kotlinx.android.synthetic.main.tab_course.list_container
 import kotlinx.android.synthetic.main.tab_course.tab_refresh
-import kotlinx.android.synthetic.main.tab_list_item.*
-import kotlinx.android.synthetic.main.tempplay_signup_one_item.*
-import java.lang.Exception
+import kotlinx.android.synthetic.main.course_list_cell.*
 
 class CourseFragment : TabFragment() {
 
@@ -49,6 +40,13 @@ class CourseFragment : TabFragment() {
         mainActivity!!.source_activity = "course"
         dataService = CourseService
         setHasOptionsMenu(true)
+
+        //initAdapter(false)
+        adapter = GroupAdapter()
+        adapter.setOnItemClickListener { item, view ->
+            rowClick(item, view)
+        }
+
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -71,15 +69,28 @@ class CourseFragment : TabFragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+
         recyclerView = list_container
         refreshLayout = tab_refresh
         maskView = mask
-
-        initAdapter(false)
         recyclerView.setHasFixedSize(true)
         setRecyclerViewScrollListener()
         setRecyclerViewRefreshListener()
-        refresh()
+        recyclerView.adapter = adapter
+
+        //refresh()
+    }
+
+    override fun onStart() {
+        super.onStart()
+
+        val i = 6
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        val i = 6
     }
 
 
@@ -312,28 +323,48 @@ class CourseFragment : TabFragment() {
     class CourseItem(val context: Context, val courseTable: CourseTable): Item() {
         override fun bind(viewHolder: com.xwray.groupie.kotlinandroidextensions.ViewHolder, position: Int) {
 
-//            val citys = superCourse.coach.citys
-//            if (citys.size > 0) {
-//                viewHolder.listCityBtn.text = citys[0].name
-//            }
+            viewHolder.titleLbl.text = courseTable.title
+
             if (courseTable.city_show.length > 0) {
-                viewHolder.listCityBtn.text = courseTable.city_show
+                viewHolder.cityBtn.text = courseTable.city_show
             } else {
-                viewHolder.listCityBtn.visibility = View.GONE
+                viewHolder.cityBtn.visibility = View.GONE
             }
-            viewHolder.title.text = courseTable.title
+
             Picasso.with(context)
                     .load(courseTable.featured_path)
                     .placeholder(R.drawable.loading_square_120)
                     .error(R.drawable.loading_square_120)
                     .into(viewHolder.listFeatured)
-            viewHolder.listArenaTxt.text = courseTable.price_text_short
-            viewHolder.listDayTxt.text = courseTable.weekday_text
-            viewHolder.listIntervalTxt.text = courseTable.start_time_show+"~"+courseTable.end_time_show
-            viewHolder.marker.visibility = View.INVISIBLE
+
+            if (courseTable.price_text_short.length > 0) {
+                viewHolder.priceLbl.text = courseTable.price_text_short
+            } else {
+                viewHolder.priceLbl.text = "價格:未提供"
+            }
+
+            if (courseTable.weekdays_show.length > 0) {
+                viewHolder.weekdayLbl.text = courseTable.weekdays_show
+            } else {
+                viewHolder.weekdayLbl.text = "未提供"
+            }
+
+            if (courseTable.interval_show.length > 0) {
+                viewHolder.intervalLbl.text = courseTable.interval_show
+            } else {
+                viewHolder.intervalLbl.text = "未提供"
+            }
+
+            viewHolder.people_limitLbl.text = courseTable.people_limit_show
+
+            if (courseTable.signup_count_show.length > 0) {
+                viewHolder.signup_countLbl.text = "已報名:${courseTable.signup_count_show}"
+            } else {
+                viewHolder.signup_countLbl.visibility = View.INVISIBLE
+            }
         }
 
-        override fun getLayout() = R.layout.tab_list_item
+        override fun getLayout() = R.layout.course_list_cell
 
     }
 }

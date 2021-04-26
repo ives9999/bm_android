@@ -64,7 +64,7 @@
 
 
                             <TextView
-                                android:id="@+id/titleTxt"
+                                android:id="@+id/titleLbl"
                                 style="@style/list_text_title"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
@@ -87,6 +87,14 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="26dp" />
 
+                            <TextView
+                                android:id="@+id/priceLbl"
+                                style="@style/highlight"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="12dp"
+                                tools:text="價格" />
+
                         </LinearLayout>
 
                         <LinearLayout
@@ -96,19 +104,20 @@
 
 
                             <TextView
-                                android:id="@+id/telLbl"
+                                android:id="@+id/weekdayLbl"
                                 style="@style/list_text_general"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginRight="12dp"
-                                tools:text="市內電話" />
+                                tools:text="星期幾" />
 
                             <TextView
-                                android:id="@+id/business_timeTxt"
+                                android:id="@+id/intervalLbl"
                                 style="@style/list_text_general"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                tools:text="營業時間" />
+                                android:layout_marginStart="12dp"
+                                tools:text="時段" />
 
                         </LinearLayout>
 
@@ -119,11 +128,19 @@
 
 
                             <TextView
-                                android:id="@+id/addressTxt"
+                                android:id="@+id/people_limitLbl"
                                 style="@style/list_text_general"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                tools:text="住址" />
+                                tools:text="人數" />
+
+                            <TextView
+                                android:id="@+id/signup_countLbl"
+                                style="@style/list_text_general"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="12dp"
+                                tools:text="報名人數" />
 
                         </LinearLayout>
 

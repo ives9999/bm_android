@@ -72,7 +72,7 @@ class MemberFragment: TabFragment() {
 
         setRecyclerViewRefreshListener()
         _loginout()
-        refresh()
+        //refresh()
     }
 
     override fun refresh() {
