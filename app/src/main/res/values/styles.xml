@@ -103,5 +103,26 @@
         <item name="windowNoTitle">true</item>
     </style>
 
+    <style name="list_text_title">
+        <item name="android:textColor">@color/WHITE</item>
+        <item name="android:textSize">22dp</item>
+        <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="list_text_general">
+        <item name="android:textColor">@color/TEXTGRAY</item>
+        <item name="android:textSize">18dp</item>
+        <item name="android:fontFamily">sans-serif-light</item>
+        <item name="android:textStyle">normal</item>
+    </style>
+
+    <style name="highlight">
+        <item name="android:textColor">@color/MY_WEIGHT_RED</item>
+        <item name="android:textSize">18dp</item>
+        <item name="android:fontFamily">sans-serif-light</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
 
 </resources>

@@ -67,9 +67,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="2dp"
-                                android:textColor="@color/WHITE"
-                                android:textSize="18sp"
-                                android:textStyle="bold"
+                                style="@style/list_text_title"
                                 app:layout_constraintStart_toEndOf="@+id/listFeatured"
                                 app:layout_constraintTop_toTopOf="@+id/listFeatured"
                                 tools:text="球隊" />
@@ -100,18 +98,14 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginRight="12dp"
-                                android:layout_weight="5"
-                                android:textColor="@color/MY_GREEN"
-                                android:textSize="18dp"
+                                style="@style/list_text_general"
                                 tools:text="行動電話" />
 
                             <TextView
                                 android:id="@+id/seniorityLbl"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_weight="4"
-                                android:textColor="@color/MY_GREEN"
-                                android:textSize="18dp"
+                                style="@style/list_text_general"
                                 tools:text="年資" />
 
                         </LinearLayout>
@@ -126,9 +120,7 @@
                                 android:id="@+id/line"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_weight="6"
-                                android:textColor="@color/MY_GREEN"
-                                android:textSize="18dp"
+                                style="@style/list_text_general"
                                 tools:text="Line ID" />
 
                         </LinearLayout>

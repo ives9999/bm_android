@@ -67,9 +67,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="2dp"
-                                android:textColor="@color/WHITE"
-                                android:textSize="18sp"
-                                android:textStyle="bold"
+                                style="@style/list_text_title"
                                 app:layout_constraintStart_toEndOf="@+id/listFeatured"
                                 app:layout_constraintTop_toTopOf="@+id/listFeatured"
                                 tools:text="球隊" />
@@ -107,17 +105,15 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginRight="12dp"
-                                android:textColor="@color/MY_GREEN"
-                                android:textSize="18dp"
+                                style="@style/list_text_general"
                                 tools:text="市內電話" />
 
                             <TextView
                                 android:id="@+id/parkingLbl"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:textColor="@color/MY_GREEN"
                                 android:layout_marginStart="12dp"
-                                android:textSize="18dp"
+                                style="@style/list_text_general"
                                 tools:text="停車場" />
 
                         </LinearLayout>
@@ -132,17 +128,15 @@
                                 android:id="@+id/intervalLbl"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:textColor="@color/MY_GREEN"
-                                android:textSize="18dp"
+                                style="@style/list_text_general"
                                 tools:text="時段" />
 
                             <TextView
                                 android:id="@+id/air_conditionLbl"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:textColor="@color/MY_GREEN"
-                                android:textSize="18dp"
                                 android:layout_marginStart="12dp"
+                                style="@style/list_text_general"
                                 tools:text="空調" />
 
                         </LinearLayout>

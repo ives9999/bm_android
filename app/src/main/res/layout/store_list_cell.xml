@@ -56,6 +56,7 @@
                         android:orientation="vertical">
 
                         <LinearLayout
+                            style="@style/list_text_title"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginBottom="12dp"
@@ -64,15 +65,14 @@
 
                             <TextView
                                 android:id="@+id/titleTxt"
+                                style="@style/list_text_title"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="2dp"
-                                android:textColor="@color/WHITE"
-                                android:textSize="18sp"
-                                android:textStyle="bold"
+                                android:textAllCaps="false"
                                 app:layout_constraintStart_toEndOf="@+id/listFeatured"
                                 app:layout_constraintTop_toTopOf="@+id/listFeatured"
-                                tools:text="球隊" />
+                                tools:text="體育用品店" />
                         </LinearLayout>
 
                         <LinearLayout
@@ -97,21 +97,17 @@
 
                             <TextView
                                 android:id="@+id/telLbl"
+                                style="@style/list_text_general"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginRight="12dp"
-                                android:layout_weight="5"
-                                android:textColor="@color/MY_GREEN"
-                                android:textSize="18dp"
                                 tools:text="市內電話" />
 
                             <TextView
                                 android:id="@+id/business_timeTxt"
+                                style="@style/list_text_general"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_weight="4"
-                                android:textColor="@color/MY_GREEN"
-                                android:textSize="18dp"
                                 tools:text="營業時間" />
 
                         </LinearLayout>
@@ -124,11 +120,10 @@
 
                             <TextView
                                 android:id="@+id/addressTxt"
+                                style="@style/list_text_general"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="6"
-                                android:textColor="@color/MY_GREEN"
-                                android:textSize="18dp"
                                 tools:text="住址" />
 
                         </LinearLayout>

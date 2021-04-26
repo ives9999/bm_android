@@ -2,6 +2,7 @@
 <resources>
     <color name="CELL_SELECTED">#665D65</color>
     <color name="MY_LIGHT_RED">#FF4081</color>
+    <color name="MY_WEIGHT_RED">#FF3030</color>
     <color name="colorPrimary">#a6d903</color>
     <color name="colorPrimaryDark">#658501</color>
     <color name="colorAccent">#FF4081</color>
@@ -15,6 +16,7 @@
     <color name="TAB_BACKGROUND">#3d3f41</color>
     <color name="grey">#808080</color>
     <color name="LAYER">#f0e4e4</color>
+    <color name="TEXTGRAY">#BFBFBF</color>
     <color name="TEXTBORDER">#a6d903</color>
     <color name="TEXTBACKGROUND">#3d3f41</color>
     <color name="LISTTITLE">#265b03</color>
