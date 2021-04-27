@@ -50,15 +50,15 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="商品名稱"
-                    android:textColor="@color/WHITE" />
+                    style="@style/list_text_title" />
 
                 <TextView
                     android:id="@+id/priceLbl"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
-                    android:text="金額"
-                    android:textColor="@color/MY_RED" />
+                    style="@style/highlight"
+                    android:text="金額" />
             </RelativeLayout>
 
             <RelativeLayout
@@ -70,7 +70,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="訂單編號"
-                    android:textColor="@color/WHITE" />
+                    style="@style/list_text_general" />
 
                 <TextView
                     android:id="@+id/dateLbl"
@@ -80,7 +80,7 @@
                     android:layout_alignParentLeft="false"
                     android:layout_alignParentEnd="true"
                     android:text="日期"
-                    android:textColor="@color/WHITE" />
+                    style="@style/list_text_general" />
             </RelativeLayout>
         </LinearLayout>
 

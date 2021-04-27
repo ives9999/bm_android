@@ -3,24 +3,32 @@ package com.sportpassword.bm.Controllers
 import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
+import android.view.View
 import android.widget.ImageButton
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.sportpassword.bm.Adapters.TempPlayListAdapter
+import com.sportpassword.bm.Fragments.TeamItem
 import com.sportpassword.bm.Models.City
+import com.sportpassword.bm.Models.ProductsTable
+import com.sportpassword.bm.Models.TeamsTable
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.TeamService
 import com.sportpassword.bm.Utilities.DEGREE
 import com.sportpassword.bm.Utilities.Loading
 import com.sportpassword.bm.Utilities.TOKEN_KEY
+import com.sportpassword.bm.Utilities.jsonToModel
+import com.xwray.groupie.kotlinandroidextensions.Item
 import kotlinx.android.synthetic.main.activity_temp_play_vc.*
 import kotlinx.android.synthetic.main.mask.*
 
-class TempPlayVC : MoreVC() {
+class TempPlayVC : MyTableVC1() {
 
-    protected lateinit var tempPlayListAdapter: TempPlayListAdapter
-    protected var dataLists: ArrayList<Map<String, Map<String, Any>>> = arrayListOf()
+//    protected lateinit var tempPlayListAdapter: TempPlayListAdapter
+//    protected var dataLists: ArrayList<Map<String, Map<String, Any>>> = arrayListOf()
+
+    var mysTable: TeamsTable? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -49,26 +57,35 @@ class TempPlayVC : MoreVC() {
         return true
     }
 
-    override fun initAdapter(include_section: Boolean) {
-        tempPlayListAdapter = TempPlayListAdapter(this, { data ->
-            show(data)
-        }, { city_id ->
-            cityBtnPressed(city_id, "temp_play")
-        }, { arena_id ->
-            arenaBtnPressed(arena_id)
-        })
-        recyclerView.adapter = tempPlayListAdapter
-
-        recyclerView.setHasFixedSize(true)
-
-        setRecyclerViewScrollListener()
-        setRecyclerViewRefreshListener()
+    override fun genericTable() {
+        mysTable = jsonToModel<TeamsTable>(dataService.jsonString)
+        if (mysTable != null) {
+            tables = mysTable
+        }
     }
 
-    override fun refresh() {
-        page = 1
-        getDataStart(page, perPage)
-        tempPlayListAdapter.notifyDataSetChanged()
+    override fun generateItems(): ArrayList<Item> {
+        val items: ArrayList<Item> = arrayListOf()
+        if (mysTable != null) {
+            for (row in mysTable!!.rows) {
+                row.filterRow()
+                val myItem = TeamItem(this, row)
+                myItem.list1CellDelegate = this
+                items.add(myItem)
+            }
+        }
+
+        return items
+    }
+
+    override fun rowClick(item: com.xwray.groupie.Item<com.xwray.groupie.ViewHolder>, view: View) {
+
+        val myItem = item as TeamItem
+        val table = myItem.row
+        val intent = Intent(this, ShowTempPlayActivity::class.java)
+        //intent.putExtra("position", position)
+        intent.putExtra(TOKEN_KEY, table.token)
+        startActivity(intent)
     }
 
     private fun show(data: Map<String, Map<String, Any>>) {
@@ -86,62 +103,5 @@ class TempPlayVC : MoreVC() {
         arenas.add(Arena(arena_id, ""))
         prepareParams()
         refresh()
-    }
-
-    override fun getDataStart(_page: Int, _perPage: Int) {
-        Loading.show(mask)
-        TeamService.tempPlay_list(this, params, _page, _perPage) { success ->
-            getDataEnd(success)
-        }
-    }
-
-    override fun notifyDataSetChanged() {
-        if (page == 1) {
-            dataLists = arrayListOf()
-        }
-        dataLists.addAll(TeamService.tempPlayLists)
-//        var arr: ArrayList<String> = arrayListOf()
-//        for (i in 0..dataLists.size-1) {
-//            val row = dataLists[i]
-//            val id = row.get("id")!!["show"] as String
-//            arr.add(id)
-//        }
-//        println(arr)
-        tempPlayListAdapter.lists = dataLists
-        tempPlayListAdapter.notifyDataSetChanged()
-    }
-
-    override fun setRecyclerViewScrollListener() {
-
-        var pos: Int = 0
-
-        scrollerListenr = object: RecyclerView.OnScrollListener() {
-            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                super.onScrolled(recyclerView, dx, dy)
-                val layoutManager = recyclerView!!.layoutManager as GridLayoutManager
-                if (this@TempPlayVC.dataLists.size < this@TempPlayVC.totalCount) {
-                    pos = layoutManager.findLastVisibleItemPosition()
-                }
-            }
-            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
-                super.onScrollStateChanged(recyclerView, newState)
-
-                if (this@TempPlayVC.dataLists.size == pos + 1 && newState == RecyclerView.SCROLL_STATE_IDLE && this@TempPlayVC.dataLists.size < this@TempPlayVC.totalCount && !this@TempPlayVC.loading) {
-                    this@TempPlayVC.getDataStart(this@TempPlayVC.page, this@TempPlayVC.perPage)
-                }
-            }
-        }
-        recyclerView.addOnScrollListener(scrollerListenr)
-    }
-
-    override fun setRecyclerViewRefreshListener() {
-        refreshListener = SwipeRefreshLayout.OnRefreshListener {
-            this.page = 1
-            this.getDataStart(this.page, this.perPage)
-            this.tempPlayListAdapter.notifyDataSetChanged()
-
-            tempplay_refresh.isRefreshing = false
-        }
-        refreshLayout.setOnRefreshListener(refreshListener)
     }
 }
