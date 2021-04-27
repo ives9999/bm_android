@@ -198,7 +198,6 @@ class StoreItem(val context: Context, val row: StoreTable): Item() {
         }
 
         viewHolder.refreshIcon.setOnClickListener {
-//            println(position)
             if (list1CellDelegate != null) {
                 list1CellDelegate!!.cellRefresh()
             }

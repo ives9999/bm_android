@@ -6,6 +6,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.*
 import android.widget.ImageButton
+import com.sportpassword.bm.Controllers.List1CellDelegate
 import com.sportpassword.bm.Controllers.ShowCourseVC
 import com.sportpassword.bm.Models.*
 import com.sportpassword.bm.R
@@ -16,8 +17,7 @@ import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.ViewHolder
 import com.xwray.groupie.kotlinandroidextensions.Item
 import kotlinx.android.synthetic.main.mask.*
-import kotlinx.android.synthetic.main.tab_course.list_container
-import kotlinx.android.synthetic.main.tab_course.tab_refresh
+import kotlinx.android.synthetic.main.tab_course.*
 import kotlinx.android.synthetic.main.course_list_cell.*
 
 class CourseFragment : TabFragment() {
@@ -81,19 +81,6 @@ class CourseFragment : TabFragment() {
         //refresh()
     }
 
-    override fun onStart() {
-        super.onStart()
-
-        val i = 6
-    }
-
-    override fun onResume() {
-        super.onResume()
-
-        val i = 6
-    }
-
-
     override fun refresh() {
         page = 1
         theFirstTime = true
@@ -133,6 +120,9 @@ class CourseFragment : TabFragment() {
     override fun setUserVisibleHint(isVisibleToUser: Boolean) {
         super.setUserVisibleHint(isVisibleToUser)
         isCourseShow = isVisibleToUser
+        if (isVisibleToUser) {
+            refresh()
+        }
     }
 
 //    fun getDataEnd1(success: Boolean) {
@@ -182,7 +172,9 @@ class CourseFragment : TabFragment() {
         if (coursesTable != null) {
             for (row in coursesTable!!.rows) {
                 row.filterRow()
-                items.add(CourseItem(context!!, row))
+                val courseItem = CourseItem(context!!, row)
+                courseItem.list1CellDelegate = this
+                items.add(courseItem)
             }
         }
 
@@ -293,8 +285,6 @@ class CourseFragment : TabFragment() {
         }
     }
 
-
-
     companion object {
         // TODO: Rename parameter arguments, choose names that match
         // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -319,52 +309,55 @@ class CourseFragment : TabFragment() {
             return fragment
         }
     }
+}
 
-    class CourseItem(val context: Context, val courseTable: CourseTable): Item() {
-        override fun bind(viewHolder: com.xwray.groupie.kotlinandroidextensions.ViewHolder, position: Int) {
+class CourseItem(val context: Context, val courseTable: CourseTable): Item() {
 
-            viewHolder.titleLbl.text = courseTable.title
+    var list1CellDelegate: List1CellDelegate? = null
 
-            if (courseTable.city_show.length > 0) {
-                viewHolder.cityBtn.text = courseTable.city_show
-            } else {
-                viewHolder.cityBtn.visibility = View.GONE
-            }
+    override fun bind(viewHolder: com.xwray.groupie.kotlinandroidextensions.ViewHolder, position: Int) {
 
-            Picasso.with(context)
-                    .load(courseTable.featured_path)
-                    .placeholder(R.drawable.loading_square_120)
-                    .error(R.drawable.loading_square_120)
-                    .into(viewHolder.listFeatured)
+        viewHolder.titleLbl.text = courseTable.title
 
-            if (courseTable.price_text_short.length > 0) {
-                viewHolder.priceLbl.text = courseTable.price_text_short
-            } else {
-                viewHolder.priceLbl.text = "價格:未提供"
-            }
-
-            if (courseTable.weekdays_show.length > 0) {
-                viewHolder.weekdayLbl.text = courseTable.weekdays_show
-            } else {
-                viewHolder.weekdayLbl.text = "未提供"
-            }
-
-            if (courseTable.interval_show.length > 0) {
-                viewHolder.intervalLbl.text = courseTable.interval_show
-            } else {
-                viewHolder.intervalLbl.text = "未提供"
-            }
-
-            viewHolder.people_limitLbl.text = courseTable.people_limit_show
-
-            if (courseTable.signup_count_show.length > 0) {
-                viewHolder.signup_countLbl.text = "已報名:${courseTable.signup_count_show}"
-            } else {
-                viewHolder.signup_countLbl.visibility = View.INVISIBLE
-            }
+        if (courseTable.city_show.length > 0) {
+            viewHolder.cityBtn.text = courseTable.city_show
+        } else {
+            viewHolder.cityBtn.visibility = View.GONE
         }
 
-        override fun getLayout() = R.layout.course_list_cell
+        Picasso.with(context)
+                .load(courseTable.featured_path)
+                .placeholder(R.drawable.loading_square_120)
+                .error(R.drawable.loading_square_120)
+                .into(viewHolder.listFeatured)
 
+        if (courseTable.price_text_short.length > 0) {
+            viewHolder.priceLbl.text = courseTable.price_text_short
+        } else {
+            viewHolder.priceLbl.text = "價格:未提供"
+        }
+
+        if (courseTable.weekdays_show.length > 0) {
+            viewHolder.weekdayLbl.text = courseTable.weekdays_show
+        } else {
+            viewHolder.weekdayLbl.text = "未提供"
+        }
+
+        if (courseTable.interval_show.length > 0) {
+            viewHolder.intervalLbl.text = courseTable.interval_show
+        } else {
+            viewHolder.intervalLbl.text = "未提供"
+        }
+
+        viewHolder.people_limitLbl.text = courseTable.people_limit_show
+
+        if (courseTable.signup_count_show.length > 0) {
+            viewHolder.signup_countLbl.text = "已報名:${courseTable.signup_count_show}"
+        } else {
+            viewHolder.signup_countLbl.visibility = View.INVISIBLE
+        }
     }
+
+    override fun getLayout() = R.layout.course_list_cell
+
 }

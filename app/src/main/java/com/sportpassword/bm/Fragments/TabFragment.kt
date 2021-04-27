@@ -37,7 +37,7 @@ import com.xwray.groupie.kotlinandroidextensions.Item
  * create an instance of this fragment.
  */
 
-open class TabFragment : Fragment(), SearchItemDelegate {
+open class TabFragment : Fragment(), SearchItemDelegate, List1CellDelegate {
 
     // TODO: Rename and change types of parameters
     protected var type: String? = null
@@ -307,17 +307,6 @@ open class TabFragment : Fragment(), SearchItemDelegate {
             refreshLayout.isRefreshing = false
         }
         refreshLayout.setOnRefreshListener(refreshListener)
-    }
-
-    override fun setUserVisibleHint(isVisibleToUser: Boolean) {
-        super.setUserVisibleHint(isVisibleToUser)
-        if (mainActivity != null) {
-            if (mainActivity!!.layerMask != null) {
-                if (mainActivity!!.layerMask!!.visibility == View.VISIBLE) {
-                    mainActivity!!.unmask()
-                }
-            }
-        }
     }
 
     override fun remove(indexPath: IndexPath) {
