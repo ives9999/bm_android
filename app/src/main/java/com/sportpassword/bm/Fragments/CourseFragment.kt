@@ -11,6 +11,7 @@ import com.sportpassword.bm.Controllers.ShowCourseVC
 import com.sportpassword.bm.Models.*
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.CourseService
+import com.sportpassword.bm.Services.TeamService
 import com.sportpassword.bm.Utilities.*
 import com.squareup.picasso.Picasso
 import com.xwray.groupie.GroupAdapter
@@ -22,8 +23,7 @@ import kotlinx.android.synthetic.main.course_list_cell.*
 
 class CourseFragment : TabFragment() {
 
-    //var superCourses: SuperCourses? = null
-    var coursesTable: CoursesTable? = null
+    var mysTable: CoursesTable? = null
 
     override val _searchRows: ArrayList<HashMap<String, String>> = arrayListOf(
             hashMapOf("title" to "關鍵字","key" to KEYWORD_KEY,"value" to "","value_type" to "String","show" to ""),
@@ -88,9 +88,9 @@ class CourseFragment : TabFragment() {
     }
 
     override fun genericTable() {
-        coursesTable = jsonToModel<CoursesTable>(dataService.jsonString)
-        if (coursesTable != null) {
-            tables = coursesTable
+        mysTable = jsonToModel<CoursesTable>(dataService.jsonString)
+        if (mysTable != null) {
+            tables = mysTable
         }
     }
 
@@ -117,9 +117,10 @@ class CourseFragment : TabFragment() {
 //        recyclerView.adapter = adapter
 //    }
 
+
+    //當fragment啟動時，第一個被執行的韓式，甚至還在OnCreate函式之前
     override fun setUserVisibleHint(isVisibleToUser: Boolean) {
         super.setUserVisibleHint(isVisibleToUser)
-        isCourseShow = isVisibleToUser
         if (isVisibleToUser) {
             refresh()
         }
@@ -169,12 +170,12 @@ class CourseFragment : TabFragment() {
 
     override fun generateItems(): ArrayList<Item> {
         val items: ArrayList<Item> = arrayListOf()
-        if (coursesTable != null) {
-            for (row in coursesTable!!.rows) {
+        if (mysTable != null) {
+            for (row in mysTable!!.rows) {
                 row.filterRow()
-                val courseItem = CourseItem(context!!, row)
-                courseItem.list1CellDelegate = this
-                items.add(courseItem)
+                val myItem = CourseItem(context!!, row)
+                myItem.list1CellDelegate = this
+                items.add(myItem)
             }
         }
 

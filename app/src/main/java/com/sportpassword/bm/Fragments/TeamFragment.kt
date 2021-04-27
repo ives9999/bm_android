@@ -24,8 +24,7 @@ import kotlinx.android.synthetic.main.tab_course.*
  */
 class TeamFragment: TabFragment() {
 
-    //var teamsTable: TeamsTable? = null
-    var teamsTable: CoursesTable? = null
+    var mysTable: TeamsTable? = null
 
     var bInit: Boolean = false
 
@@ -41,8 +40,7 @@ class TeamFragment: TabFragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        //this.dataService = TeamService
-        this.dataService = CourseService
+        this.dataService = TeamService
         setHasOptionsMenu(true)
 
         adapter = GroupAdapter()
@@ -76,9 +74,13 @@ class TeamFragment: TabFragment() {
         recyclerView = list_container
         refreshLayout = tab_refresh
         maskView = mask
+
         recyclerView.setHasFixedSize(true)
         setRecyclerViewScrollListener()
         setRecyclerViewRefreshListener()
+
+        recyclerView.adapter = adapter
+
         refresh()
         bInit = true
     }
@@ -87,25 +89,25 @@ class TeamFragment: TabFragment() {
         page = 1
         theFirstTime = true
         getDataStart1(page, perPage)
+
+
     }
 
     override fun genericTable() {
-        //teamsTable = jsonToModel<TeamsTable>(dataService.jsonString)
-        teamsTable = jsonToModel<CoursesTable>(dataService.jsonString)
-        if (teamsTable != null) {
-            tables = teamsTable
+        mysTable = jsonToModel<TeamsTable>(dataService.jsonString)
+        if (mysTable != null) {
+            tables = mysTable
         }
     }
 
     override fun generateItems(): ArrayList<Item> {
         val items: ArrayList<Item> = arrayListOf()
-        if (teamsTable != null) {
-            for (row in teamsTable!!.rows) {
+        if (mysTable != null) {
+            for (row in mysTable!!.rows) {
                 row.filterRow()
-                //val teamItem = TeamItem(context!!, row)
-                val teamItem = CourseItem(context!!, row)
-                teamItem.list1CellDelegate = this
-                items.add(teamItem)
+                val myItem = TeamItem(context!!, row)
+                myItem.list1CellDelegate = this
+                items.add(myItem)
             }
         }
 
@@ -114,7 +116,6 @@ class TeamFragment: TabFragment() {
 
     override fun setUserVisibleHint(isVisibleToUser: Boolean) {
         super.setUserVisibleHint(isVisibleToUser)
-        isTeamShow = isVisibleToUser
         if (isVisibleToUser && bInit) {
             refresh()
         }
