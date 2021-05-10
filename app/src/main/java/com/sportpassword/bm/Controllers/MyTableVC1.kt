@@ -200,13 +200,13 @@ abstract class MyTableVC1 : BaseActivity(), List1CellDelegate {
 
 
 
-    open protected fun setRecyclerViewScrollListener() {
+    protected open fun setRecyclerViewScrollListener() {
 
         var pos: Int = 0
 
-        scrollerListenr = object: RecyclerView.OnScrollListener() {
-
-        }
+//        scrollerListenr = object: RecyclerView.OnScrollListener() {
+//
+//        }
 
         scrollerListenr = object: RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
@@ -214,7 +214,7 @@ abstract class MyTableVC1 : BaseActivity(), List1CellDelegate {
                 val layoutManager = recyclerView.layoutManager as GridLayoutManager
                 if (superDataLists.size < totalCount) {
                     pos = layoutManager.findLastVisibleItemPosition()
-                    println("pos:${pos}")
+                    //println("pos:${pos}")
                 }
             }
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
@@ -229,7 +229,7 @@ abstract class MyTableVC1 : BaseActivity(), List1CellDelegate {
         recyclerView.addOnScrollListener(scrollerListenr)
     }
 
-    open protected fun setRecyclerViewRefreshListener() {
+    protected open fun setRecyclerViewRefreshListener() {
         refreshListener = SwipeRefreshLayout.OnRefreshListener {
             refresh()
 

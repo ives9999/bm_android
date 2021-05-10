@@ -88,7 +88,7 @@ class CourseFragment : TabFragment() {
 
     override fun genericTable() {
         //println(dataService.jsonString)
-        mysTable = jsonToModel<CoursesTable>(dataService.jsonString)
+        mysTable = jsonToModels<CoursesTable>(dataService.jsonString)
         if (mysTable != null) {
             tables = mysTable
         }

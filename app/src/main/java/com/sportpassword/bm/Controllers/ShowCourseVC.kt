@@ -24,22 +24,20 @@ import kotlinx.android.synthetic.main.mask.*
 import org.json.JSONObject
 import kotlin.reflect.full.memberProperties
 
-class ShowCourseVC : BaseActivity(), IconCellDelegate {
+class ShowCourseVC : ShowVC() {
 
     var course_id: Int? = null
     var source: String  = "course" //course
-    var course_token: String? = null    // course token
-    var tableRowKeys:MutableList<String> = mutableListOf("weekday_text","date","interval","price_text_long","people_limit_text","kind_text","signup_count","pv","created_at_text")
-    var tableRows: HashMap<String, HashMap<String,String>> = hashMapOf(
-            "weekday_text" to hashMapOf("icon" to "calendar","title" to "日期","content" to ""),
-            "date" to hashMapOf( "icon" to "calendar","title" to "期間","content" to ""),
-            "interval" to hashMapOf( "icon" to "clock","title" to "時段","content" to ""),
-            "price_text_long" to hashMapOf( "icon" to "money","title" to "收費","content" to ""),
-            "people_limit_text" to hashMapOf( "icon" to "group","title" to "接受報名人數","content" to ""),
-            "kind_text" to hashMapOf( "icon" to "cycle","title" to "週期","content" to ""),
-//            "signup_count" to hashMapOf( "icon" to "group","title" to "已報名人數","content" to ""),
-            "pv" to hashMapOf( "icon" to "pv","title" to "瀏覽數","content" to ""),
-            "created_at_text" to hashMapOf( "icon" to "calendar","title" to "建立日期","content" to "")
+
+    val coachTableRowKeys:Array<String> = arrayOf(NAME_KEY,MOBILE_KEY,LINE_KEY,FB_KEY,YOUTUBE_KEY,WEBSITE_KEY,EMAIL_KEY)
+    var coachTableRows: HashMap<String, HashMap<String, String>> = hashMapOf(
+        NAME_KEY to hashMapOf("icon" to "coach","title" to "教練","content" to "","isPressed" to "true"),
+        MOBILE_KEY to hashMapOf("icon" to "mobile","title" to "行動電話","content" to "","isPressed" to "true"),
+        LINE_KEY to hashMapOf("icon" to "lineicon","title" to "line id","content" to "","isPressed" to "false"),
+        FB_KEY to hashMapOf("icon" to "fb","title" to "fb","content" to "","isPressed" to "true"),
+        YOUTUBE_KEY to hashMapOf("icon" to "youtube","title" to "youtube","content" to "","isPressed" to "true"),
+        WEBSITE_KEY to hashMapOf("icon" to "website","title" to "網站","content" to "","isPressed" to "true"),
+        EMAIL_KEY to hashMapOf("icon" to "email","title" to "郵件","content" to "","isPressed" to "true")
     )
 
     val signupTableRowKeys:Array<String> = arrayOf("date", "deadline")
@@ -48,20 +46,9 @@ class ShowCourseVC : BaseActivity(), IconCellDelegate {
             "deadline" to hashMapOf("icon" to "clock","title" to "報名截止時間","content" to "","isPressed" to "false")
     )
 
-    val coachTableRowKeys:Array<String> = arrayOf(NAME_KEY,MOBILE_KEY,LINE_KEY,FB_KEY,YOUTUBE_KEY,WEBSITE_KEY,EMAIL_KEY)
-    var coachTableRows: HashMap<String, HashMap<String, String>> = hashMapOf(
-            NAME_KEY to hashMapOf("icon" to "coach","title" to "教練","content" to "","isPressed" to "true"),
-            MOBILE_KEY to hashMapOf("icon" to "mobile","title" to "行動電話","content" to "","isPressed" to "true"),
-            LINE_KEY to hashMapOf("icon" to "lineicon","title" to "line id","content" to "","isPressed" to "false"),
-            FB_KEY to hashMapOf("icon" to "fb","title" to "fb","content" to "","isPressed" to "true"),
-            YOUTUBE_KEY to hashMapOf("icon" to "youtube","title" to "youtube","content" to "","isPressed" to "true"),
-            WEBSITE_KEY to hashMapOf("icon" to "website","title" to "網站","content" to "","isPressed" to "true"),
-            EMAIL_KEY to hashMapOf("icon" to "email","title" to "郵件","content" to "","isPressed" to "true")
-    )
     var superCourse: SuperCourse? = null
     var superCoach: SuperCoach? = null
 
-    lateinit var adapter: GroupAdapter<ViewHolder>
     lateinit var signupAdapter: GroupAdapter<ViewHolder>
     lateinit var coachAdapter: GroupAdapter<ViewHolder>
 
@@ -77,32 +64,35 @@ class ShowCourseVC : BaseActivity(), IconCellDelegate {
     var course_deadline: String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_show_course_vc)
 
-        val title = intent.getStringExtra("title")
-        setMyTitle(title)
-
-        if (intent.hasExtra("course_token")) {
-            course_token = intent.getStringExtra("course_token")
-        }
         dataService = CourseService
-
-        if (intent.hasExtra("sourse")) {
-            source = intent.getStringExtra("source")
-        }
-
-        //webViewSettings(this@ShowCourseVC, contentView) oppo will crash
 
         refreshLayout = refresh
         setRefreshListener()
 
         initAdapter()
+        super.onCreate(savedInstanceState)
+
+        tableRowKeys = mutableListOf("weekday_text","date","interval","price_text_long","people_limit_text","kind_text","signup_count","pv","created_at_text")
+        tableRows = hashMapOf(
+            "weekday_text" to hashMapOf("icon" to "calendar","title" to "日期","content" to ""),
+            "date" to hashMapOf( "icon" to "calendar","title" to "期間","content" to ""),
+            "interval" to hashMapOf( "icon" to "clock","title" to "時段","content" to ""),
+            "price_text_long" to hashMapOf( "icon" to "money","title" to "收費","content" to ""),
+            "people_limit_text" to hashMapOf( "icon" to "group","title" to "接受報名人數","content" to ""),
+            "kind_text" to hashMapOf( "icon" to "cycle","title" to "週期","content" to ""),
+//            "signup_count" to hashMapOf( "icon" to "group","title" to "已報名人數","content" to ""),
+            "pv" to hashMapOf( "icon" to "pv","title" to "瀏覽數","content" to ""),
+            "created_at_text" to hashMapOf( "icon" to "calendar","title" to "建立日期","content" to "")
+        )
+
         refresh()
     }
 
-    fun initAdapter() {
-        adapter = GroupAdapter()
+    override fun initAdapter() {
+        super.initAdapter()
+
         val timetableItems = generateCourseItem()
         adapter.addAll(timetableItems)
         tableView.adapter = adapter
@@ -120,13 +110,14 @@ class ShowCourseVC : BaseActivity(), IconCellDelegate {
         val coachItems = generateCoachItem()
         coachAdapter.addAll(coachItems)
         coachTableView.adapter = coachAdapter
+
     }
 
     override fun refresh() {
         //super.refresh()
-        if (course_token != null) {
+        if (token != null) {
             Loading.show(mask)
-            val params: HashMap<String, String> = hashMapOf("token" to course_token!!, "member_token" to member.token!!)
+            val params: HashMap<String, String> = hashMapOf("token" to token!!, "member_token" to member.token!!)
             CourseService.getOne(this, params) { success ->
                 if (success) {
                     superCourse = CourseService.superModel as SuperCourse
@@ -274,11 +265,11 @@ class ShowCourseVC : BaseActivity(), IconCellDelegate {
                 if (row.containsKey("isPressed")) {
                     isPressed = row["isPressed"]!!.toBoolean()
                 }
-                if (icon.length > 0 && title.length > 0) {
-                    val iconCell = IconCell(this@ShowCourseVC, icon, title, content, isPressed)
-                    iconCell.delegate = this
-                    items.add(iconCell)
-                }
+//                if (icon.length > 0 && title.length > 0) {
+//                    val iconCell = IconCell(this@ShowCourseVC, icon, title, content, isPressed)
+//                    iconCell.delegate = this
+//                    items.add(iconCell)
+//                }
             }
         }
 
@@ -360,18 +351,18 @@ class ShowCourseVC : BaseActivity(), IconCellDelegate {
                 if (row.containsKey("isPressed")) {
                     isPressed = row["isPressed"]!!.toBoolean()
                 }
-                if (icon.length > 0 && title.length > 0) {
-                    val iconCell = IconCell(this@ShowCourseVC, icon, title, content, isPressed)
-                    iconCell.delegate = this
-                    items.add(iconCell)
-                }
+//                if (icon.length > 0 && title.length > 0) {
+//                    val iconCell = IconCell(this@ShowCourseVC, icon, title, content, isPressed)
+//                    iconCell.delegate = this
+//                    items.add(iconCell)
+//                }
             }
         }
 
         return items
     }
 
-    override fun didSelectRowAt(view: View, position: Int) {
+    fun didSelectRowAt(view: View, position: Int) {
 //        println("delegate:"+position)
         val parent = view.parent
         if (parent is RecyclerView) {
@@ -464,7 +455,7 @@ class ShowCourseVC : BaseActivity(), IconCellDelegate {
             return
         }
         Loading.show(mask)
-        CourseService.signup(this, course_token!!, member.token!!, superCourse!!.date_model.token, course_deadline) { success ->
+        CourseService.signup(this, token!!, member.token!!, superCourse!!.date_model.token, course_deadline) { success ->
             Loading.hide(mask)
             val msg = CourseService.msg
             var title = "警告"
@@ -489,7 +480,7 @@ class ShowCourseVC : BaseActivity(), IconCellDelegate {
         //println("aaa")
         val intent = Intent(this, SignupListVC::class.java)
         intent.putExtra("able", "course")
-        intent.putExtra("able_token", course_token)
+        intent.putExtra("able_token", token)
         startActivity(intent)
     }
 
@@ -499,7 +490,7 @@ class ShowCourseVC : BaseActivity(), IconCellDelegate {
             return
         }
         Loading.show(mask)
-        CourseService.signup_date(this, course_token!!, member.token!!, superCourse!!.date_model.token) { success ->
+        CourseService.signup_date(this, token!!, member.token!!, superCourse!!.date_model.token) { success ->
             Loading.hide(mask)
             if (success) {
                 signup_date = CourseService.signup_date

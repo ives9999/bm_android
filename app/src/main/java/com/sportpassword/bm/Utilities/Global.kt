@@ -28,6 +28,7 @@ import com.sportpassword.bm.Controllers.BaseActivity
 import com.sportpassword.bm.Controllers.MainActivity
 import com.sportpassword.bm.Models.Area
 import com.sportpassword.bm.Models.City
+import com.sportpassword.bm.Models.Table
 import com.sportpassword.bm.Models.Tables
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.DataService
@@ -1316,7 +1317,7 @@ inline fun <reified T> Any.getField(propertyName: String): T? {
     }
 }
 
-inline fun <reified T: Tables> jsonToModel(jsonString: String): T? {
+inline fun <reified T: Tables> jsonToModels(jsonString: String): T? {
 
     var t: T? = null
     try {
@@ -1327,3 +1328,16 @@ inline fun <reified T: Tables> jsonToModel(jsonString: String): T? {
 
     return t
 }
+
+inline fun <reified T: Table> jsonToModel(jsonString: String): T? {
+
+    var t: T? = null
+    try {
+        t = Gson().fromJson<T>(jsonString, T::class.java)
+    } catch (e: java.lang.Exception) {
+        Global.message = e.localizedMessage
+    }
+
+    return t
+}
+

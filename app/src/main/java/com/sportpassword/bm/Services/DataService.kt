@@ -515,6 +515,45 @@ open class DataService: BaseService() {
     }
 
     open fun getOne(context: Context, id: Int, source: String, token: String, completion: CompletionHandler) {}
+
+    open fun getOne1(context: Context, params: HashMap<String, String>, complete: CompletionHandler) {
+        val url = getOneURL()
+        //println(url)
+
+        val header: MutableList<Pair<String, String>> = mutableListOf()
+        header.add(Pair("Accept","application/json"))
+        header.add(Pair("Content-Type","application/json; charset=utf-8"))
+
+        params.put("strip_html", "false")
+        val objectMapper = ObjectMapper()
+        val body: String = objectMapper.writeValueAsString(params)
+
+        //println(body)
+
+        MyHttpClient.instance.post(context, url, body) { success ->
+
+            if (success) {
+                val response = MyHttpClient.instance.response
+                if (response != null) {
+                    try {
+                        jsonString = response.toString()
+                        this.success = true
+                    } catch (e: Exception) {
+                        this.success = false
+                        msg = "parse json failed，請洽管理員"
+                        println(e.localizedMessage)
+                    }
+                    complete(this.success)
+                } else {
+                    println("response is null")
+                }
+            } else {
+                msg = "網路錯誤，無法跟伺服器更新資料"
+                complete(success)
+            }
+        }
+    }
+
     open fun getOne(context: Context, params: HashMap<String, String>, complete: CompletionHandler) {
 
         val url = getOneURL()
@@ -565,6 +604,7 @@ open class DataService: BaseService() {
             }
         }
     }
+
     open fun update(context: Context, _params: MutableMap<String, String>, filePath: String, complete: CompletionHandler) {
 
         val url: String = getUpdateURL()

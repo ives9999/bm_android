@@ -15,9 +15,7 @@ import com.sportpassword.bm.Models.ProductsTable
 import com.sportpassword.bm.Models.TeamsTable
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.TeamService
-import com.sportpassword.bm.Utilities.DEGREE
-import com.sportpassword.bm.Utilities.Loading
-import com.sportpassword.bm.Utilities.TOKEN_KEY
+import com.sportpassword.bm.Utilities.*
 import com.sportpassword.bm.Utilities.jsonToModel
 import com.xwray.groupie.kotlinandroidextensions.Item
 import kotlinx.android.synthetic.main.activity_temp_play_vc.*
@@ -58,7 +56,7 @@ class TempPlayVC : MyTableVC1() {
     }
 
     override fun genericTable() {
-        mysTable = jsonToModel<TeamsTable>(dataService.jsonString)
+        mysTable = jsonToModels<TeamsTable>(dataService.jsonString)
         if (mysTable != null) {
             tables = mysTable
         }

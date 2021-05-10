@@ -54,7 +54,7 @@ class ArenaVC : MyTableVC1() {
 
     override fun genericTable() {
         //storesTable = jsonToModel<StoresTable>(dataService.jsonString)
-        arenasTable = jsonToModel<ArenasTable>(dataService.jsonString)
+        arenasTable = jsonToModels<ArenasTable>(dataService.jsonString)
         if (arenasTable != null) {
             tables = arenasTable
         }

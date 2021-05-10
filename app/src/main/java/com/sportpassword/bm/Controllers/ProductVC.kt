@@ -48,7 +48,7 @@ class ProductVC : MyTableVC1() {
     }
 
     override fun genericTable() {
-        productsTable = jsonToModel<ProductsTable>(dataService.jsonString)
+        productsTable = jsonToModels<ProductsTable>(dataService.jsonString)
         if (productsTable != null) {
             tables = productsTable
         }

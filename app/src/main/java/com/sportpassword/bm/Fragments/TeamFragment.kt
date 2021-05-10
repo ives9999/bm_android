@@ -92,7 +92,7 @@ class TeamFragment: TabFragment() {
     }
 
     override fun genericTable() {
-        mysTable = jsonToModel<TeamsTable>(dataService.jsonString)
+        mysTable = jsonToModels<TeamsTable>(dataService.jsonString)
         if (mysTable != null) {
             tables = mysTable
         }

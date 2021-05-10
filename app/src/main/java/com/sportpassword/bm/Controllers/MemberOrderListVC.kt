@@ -11,6 +11,7 @@ import com.sportpassword.bm.Services.OrderService
 import com.sportpassword.bm.Utilities.BASE_URL
 import com.sportpassword.bm.Utilities.Loading
 import com.sportpassword.bm.Utilities.jsonToModel
+import com.sportpassword.bm.Utilities.jsonToModels
 import com.sportpassword.bm.member
 import com.squareup.picasso.Picasso
 import com.xwray.groupie.GroupAdapter
@@ -49,7 +50,7 @@ class MemberOrderListVC : MyTableVC1() {
     }
 
     override fun genericTable() {
-        mysTable = jsonToModel<OrdersTable>(dataService.jsonString)
+        mysTable = jsonToModels<OrdersTable>(dataService.jsonString)
         if (mysTable != null) {
             tables = mysTable
         }

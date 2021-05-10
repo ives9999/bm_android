@@ -10,11 +10,9 @@ import com.sportpassword.bm.Fragments.ListItem
 import com.sportpassword.bm.Models.*
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.CoachService
-//import com.sportpassword.bm.Services.StoreService
-import com.sportpassword.bm.Utilities.CITY_KEY
-import com.sportpassword.bm.Utilities.IndexPath
-import com.sportpassword.bm.Utilities.KEYWORD_KEY
+import com.sportpassword.bm.Utilities.*
 import com.sportpassword.bm.Utilities.jsonToModel
+//import com.sportpassword.bm.Services.StoreService
 import com.squareup.picasso.Picasso
 import com.xwray.groupie.kotlinandroidextensions.Item
 import com.xwray.groupie.kotlinandroidextensions.ViewHolder
@@ -63,7 +61,7 @@ class CoachVC : MyTableVC1() {
 
     override fun genericTable() {
         //storesTable = jsonToModel<StoresTable>(dataService.jsonString)
-        coachesTable = jsonToModel<CoachesTable>(dataService.jsonString)
+        coachesTable = jsonToModels<CoachesTable>(dataService.jsonString)
         if (coachesTable != null) {
             tables = coachesTable
         }
