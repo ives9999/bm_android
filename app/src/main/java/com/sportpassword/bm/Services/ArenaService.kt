@@ -14,8 +14,13 @@ object ArenaService: DataService() {
     override fun getListURL(): String {
         return URL_ARENA_LIST
     }
+
     override fun getOneURL(): String {
         return "$URL_ONE".format("arena")
+    }
+
+    override fun getLikeURL(token: String): String {
+        return URL_ARENA_LIKE.format(token)
     }
 
     override fun setData(id: Int, title: String, token: String, featured_path: String, vimeo: String, youtube: String): Arena {

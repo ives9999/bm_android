@@ -17,8 +17,13 @@ object CourseService: DataService() {
     override fun getListURL(): String {
         return URL_COURSE_LIST
     }
+
     override fun getOneURL(): String {
         return URL_ONE.format("course")
+    }
+
+    override fun getLikeURL(token: String): String {
+        return URL_COURSE_LIKE.format(token)
     }
 
     override fun parseModels(json: JSONObject): SuperModel {

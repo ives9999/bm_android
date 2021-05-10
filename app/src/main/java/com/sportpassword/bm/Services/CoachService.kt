@@ -22,8 +22,13 @@ object CoachService: DataService() {
     override fun getListURL(): String {
         return URL_COACH_LIST
     }
+
     override fun getOneURL(): String {
         return "$URL_ONE".format("coach")
+    }
+
+    override fun getLikeURL(token: String): String {
+        return URL_COACH_LIKE.format(token)
     }
 
     override fun parseModels(json: JSONObject): SuperModel {

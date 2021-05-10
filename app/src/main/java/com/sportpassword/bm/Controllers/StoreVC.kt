@@ -4,11 +4,11 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import com.sportpassword.bm.Fragments.ListItem
 import com.sportpassword.bm.Models.*
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.StoreService
 import com.sportpassword.bm.Utilities.*
-import com.squareup.picasso.Picasso
 import com.xwray.groupie.kotlinandroidextensions.Item
 import com.xwray.groupie.kotlinandroidextensions.ViewHolder
 import kotlinx.android.synthetic.main.activity_store_vc.*
@@ -165,65 +165,46 @@ class StoreVC : MyTableVC1() {
         startActivity(intent)
     }
 
-//    override fun cellRefresh(index: Int) {
-//        refresh()
-//    }
-
-
+    override fun cellMobile(row: Table) {
+        val _row: StoreTable = row as StoreTable
+        if (_row.tel_show.isNotEmpty()) {
+            println(_row.tel)
+            //makeCall(_row.tel)
+        }
+    }
 }
 
-class StoreItem(val context: Context, val row: StoreTable): Item() {
-
-    var list1CellDelegate: List1CellDelegate? = null
+class StoreItem(override var context: Context, var _row: StoreTable): ListItem<Table>(context, _row) {
 
     override fun bind(viewHolder: ViewHolder, position: Int) {
 
+        super.bind(viewHolder, position)
+
+        val row: StoreTable = _row
         //println(superStore);
         viewHolder.cityBtn.text = row.city_show
-        viewHolder.titleTxt.text = row.name
-        Picasso.with(context)
-                .load(row.featured_path)
-                .placeholder(R.drawable.loading_square_120)
-                .error(R.drawable.loading_square_120)
-                .into(viewHolder.listFeatured)
+        viewHolder.titleLbl.text = row.name
 
         viewHolder.business_timeTxt.text = "${row.open_time_show}~${row.close_time_show}"
 
         viewHolder.addressTxt.text = row.address
 
-        viewHolder.likeIcon.setOnClickListener {
-            if (list1CellDelegate != null) {
-                list1CellDelegate!!.cellLike(row)
-            }
-        }
-
-        viewHolder.refreshIcon.setOnClickListener {
-            if (list1CellDelegate != null) {
-                list1CellDelegate!!.cellRefresh()
-            }
-        }
-
-        if (row.address == null || row.address.isEmpty()) {
-            viewHolder.mapIcon.visibility = View.GONE
-        } else {
-            viewHolder.mapIcon.setOnClickListener {
-                if (list1CellDelegate != null) {
-                    list1CellDelegate!!.cellShowMap(row)
-                }
-            }
-        }
-
-        if (row.tel == null || row.tel.isEmpty()) {
-            viewHolder.telIcon.visibility = View.GONE
-        } else {
+        if (row.tel_show.isNotEmpty()) {
             viewHolder.telLbl.text = row.tel_show
+        } else {
+            viewHolder.telLbl.visibility = View.INVISIBLE
+        }
+
+        if (!row.tel_show.isEmpty()) {
+            viewHolder.telIcon.visibility = View.VISIBLE
             viewHolder.telIcon.setOnClickListener {
                 if (list1CellDelegate != null) {
-                    list1CellDelegate!!.cellMobile(row.tel)
+                    list1CellDelegate!!.cellMobile(row)
                 }
             }
+        } else {
+            viewHolder.telIcon.visibility = View.GONE
         }
-
 
 //如果要啟動管理功能，請打開這個註解
 //        var showManager = false

@@ -78,7 +78,7 @@ class CourseTable: Table() {
         }
 
         if (people_limit > 0) {
-            people_limit_show = "可報名:{people_limit}位"
+            people_limit_show = "可報名:${people_limit}位"
         } else {
             people_limit_show = "未提供報名"
         }
@@ -89,9 +89,9 @@ class CourseTable: Table() {
 //            signup_count_show = "0位"
 //        }
 //
-//        if (coachTable != null) {
-//            mobile = coachTable!.mobile
-//            coachTable!.filterRow()
-//        }
+        if (coach != null) {
+            mobile = coach!!.mobile
+            coach!!.filterRow()
+        }
     }
 }

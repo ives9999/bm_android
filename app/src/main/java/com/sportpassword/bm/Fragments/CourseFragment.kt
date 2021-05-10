@@ -33,7 +33,6 @@ class CourseFragment : TabFragment() {
             hashMapOf("title" to "結束時間之前","key" to END_TIME_KEY,"value" to "","value_type" to "String","show" to "不限")
     )
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -88,6 +87,7 @@ class CourseFragment : TabFragment() {
     }
 
     override fun genericTable() {
+        //println(dataService.jsonString)
         mysTable = jsonToModel<CoursesTable>(dataService.jsonString)
         if (mysTable != null) {
             tables = mysTable
@@ -185,7 +185,7 @@ class CourseFragment : TabFragment() {
     override fun rowClick(item: com.xwray.groupie.Item<ViewHolder>, view: View) {
 
         val courseItem = item as CourseItem
-        val courseTable = courseItem.courseTable
+        val courseTable = courseItem.row
         //superCourse.print()
         val intent = Intent(activity, ShowCourseVC::class.java)
         intent.putExtra("course_token", courseTable.token)
@@ -312,50 +312,48 @@ class CourseFragment : TabFragment() {
     }
 }
 
-class CourseItem(val context: Context, val courseTable: CourseTable): Item() {
-
-    var list1CellDelegate: List1CellDelegate? = null
+class CourseItem(override var context: Context, var _row: CourseTable): ListItem<Table>(context, _row) {
 
     override fun bind(viewHolder: com.xwray.groupie.kotlinandroidextensions.ViewHolder, position: Int) {
 
-        viewHolder.titleLbl.text = courseTable.title
+        super.bind(viewHolder, position)
 
-        if (courseTable.city_show.length > 0) {
-            viewHolder.cityBtn.text = courseTable.city_show
+        val row: CourseTable = _row
+
+        if (row.city_show.length > 0) {
+            viewHolder.cityBtn.text = row.city_show
         } else {
             viewHolder.cityBtn.visibility = View.GONE
         }
 
-        Picasso.with(context)
-                .load(courseTable.featured_path)
-                .placeholder(R.drawable.loading_square_120)
-                .error(R.drawable.loading_square_120)
-                .into(viewHolder.listFeatured)
-
-        if (courseTable.price_text_short.length > 0) {
-            viewHolder.priceLbl.text = courseTable.price_text_short
+        if (row.price_text_short != null && row.price_text_short.isNotEmpty()) {
+            viewHolder.priceLbl.text = row.price_text_short
         } else {
             viewHolder.priceLbl.text = "價格:未提供"
         }
 
-        if (courseTable.weekdays_show.length > 0) {
-            viewHolder.weekdayLbl.text = courseTable.weekdays_show
+        if (row.weekdays_show.length > 0) {
+            viewHolder.weekdayLbl.text = row.weekdays_show
         } else {
             viewHolder.weekdayLbl.text = "未提供"
         }
 
-        if (courseTable.interval_show.length > 0) {
-            viewHolder.intervalLbl.text = courseTable.interval_show
+        if (row.interval_show.length > 0) {
+            viewHolder.intervalLbl.text = row.interval_show
         } else {
             viewHolder.intervalLbl.text = "未提供"
         }
 
-        viewHolder.people_limitLbl.text = courseTable.people_limit_show
+        viewHolder.people_limitLbl.text = row.people_limit_show
 
-        if (courseTable.signup_count_show.length > 0) {
-            viewHolder.signup_countLbl.text = "已報名:${courseTable.signup_count_show}"
+        if (row.signup_count_show.length > 0) {
+            viewHolder.signup_countLbl.text = "已報名:${row.signup_count_show}"
         } else {
             viewHolder.signup_countLbl.visibility = View.INVISIBLE
+        }
+
+        if (row.mobile.isEmpty()) {
+            viewHolder.telIcon.visibility = View.INVISIBLE
         }
     }
 

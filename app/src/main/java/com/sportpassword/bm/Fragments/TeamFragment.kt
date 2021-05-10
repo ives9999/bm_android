@@ -5,9 +5,7 @@ import android.os.Bundle
 import android.view.*
 import android.widget.ImageButton
 import com.sportpassword.bm.Controllers.List1CellDelegate
-import com.sportpassword.bm.Models.CoursesTable
-import com.sportpassword.bm.Models.TeamTable
-import com.sportpassword.bm.Models.TeamsTable
+import com.sportpassword.bm.Models.*
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.CourseService
 import com.sportpassword.bm.Services.TeamService
@@ -157,19 +155,13 @@ class TeamFragment: TabFragment() {
     }
 }
 
-class TeamItem(val context: Context, val row: TeamTable): Item() {
-
-    var list1CellDelegate: List1CellDelegate? = null
+class TeamItem(override var context: Context, var _row: TeamTable): ListItem<Table>(context, _row) {
 
     override fun bind(viewHolder: com.xwray.groupie.kotlinandroidextensions.ViewHolder, position: Int) {
 
-        Picasso.with(context)
-                .load(row.featured_path)
-                .placeholder(R.drawable.loading_square_120)
-                .error(R.drawable.loading_square_120)
-                .into(viewHolder.listFeatured)
+        super.bind(viewHolder, position)
 
-        viewHolder.titleLbl.text = row.name
+        val row: TeamTable = _row
 
         if (row.city_show.length > 0) {
             viewHolder.cityBtn.text = row.city_show
@@ -198,38 +190,6 @@ class TeamItem(val context: Context, val row: TeamTable): Item() {
 
         viewHolder.temp_quantityLbl.text = row.temp_quantity_show
         viewHolder.signup_countLbl.text = row.temp_signup_count_show
-
-        viewHolder.likeIcon.setOnClickListener {
-            if (list1CellDelegate != null) {
-                list1CellDelegate!!.cellLike(row)
-            }
-        }
-
-        viewHolder.refreshIcon.setOnClickListener {
-            if (list1CellDelegate != null) {
-                list1CellDelegate!!.cellRefresh()
-            }
-        }
-
-        if (row.address == null || row.address.isEmpty()) {
-            viewHolder.mapIcon.visibility = View.GONE
-        } else {
-            viewHolder.mapIcon.setOnClickListener {
-                if (list1CellDelegate != null) {
-                    list1CellDelegate!!.cellShowMap(row)
-                }
-            }
-        }
-
-        if (row.mobile == null || row.mobile.isEmpty()) {
-            viewHolder.telIcon.visibility = View.GONE
-        } else {
-            viewHolder.telIcon.setOnClickListener {
-                if (list1CellDelegate != null) {
-                    list1CellDelegate!!.cellMobile(row.mobile)
-                }
-            }
-        }
     }
 
     override fun getLayout() = R.layout.team_list_cell

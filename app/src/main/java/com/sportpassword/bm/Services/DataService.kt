@@ -12,14 +12,18 @@ import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.sportpassword.bm.Models.*
 import com.sportpassword.bm.Utilities.*
+import com.sportpassword.bm.member
 import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject
 import java.io.InputStream
+import java.io.OutputStreamWriter
 import java.lang.Exception
+import java.net.HttpURLConnection
 import java.net.URL
-import kotlin.reflect.KClass
-
+import com.fasterxml.jackson.databind.ObjectMapper
+import org.apache.http.client.HttpClient
+import org.apache.http.impl.client.HttpClientBuilder
 
 /**
  * Created by ives on 2018/2/14.
@@ -80,6 +84,10 @@ open class DataService: BaseService() {
         filter.put("page", page)
         filter.put("perPage", perPage)
 
+        if (member.isLoggedIn) {
+            filter.put("member_token", member.token)
+        }
+
         val body = filter.toJSONString()
         println(body)
 
@@ -125,7 +133,7 @@ open class DataService: BaseService() {
         header.add(Pair("Accept","application/json"))
         header.add(Pair("Content-Type","application/json; charset=utf-8"))
 
-        var filter: HashMap<String, Any>?
+        val filter: HashMap<String, Any>?
         if (_filter == null) {
             filter = hashMapOf()
         } else {
@@ -395,7 +403,28 @@ open class DataService: BaseService() {
 
     }
 
+    fun like(context: Context, token: String, able_id: Int) {
+
+        val likeUrl: String = getLikeURL(token)
+        println(likeUrl)
+
+        val params = mapOf("member_token" to member.token, "able_id" to able_id)
+        val objectMapper = ObjectMapper()
+        val body: String = objectMapper.writeValueAsString(params)
+
+        println(body)
+
+        val header: MutableList<Pair<String, String>> = mutableListOf()
+        header.add(Pair("Accept","application/json"))
+        header.add(Pair("Content-Type","application/json; charset=utf-8"))
+
+        MyHttpClient.instance.post(context, likeUrl, body) {
+
+        }
+    }
+
     open fun getListURL(): String {return URL_LIST}
+    open fun getLikeURL(token: String): String {return URL_LIST}
     open fun getOneURL(): String {return URL_ONE}
     open fun parseModel(json: JSONObject): SuperModel {return SuperModel(JSONObject())}
     open fun parseModels(json: JSONObject): SuperModel {return SuperModel(JSONObject())}

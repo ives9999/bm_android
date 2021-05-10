@@ -3,6 +3,7 @@ package com.sportpassword.bm.Controllers
 import android.content.Context
 import android.os.Bundle
 import android.view.View
+import com.sportpassword.bm.Fragments.ListItem
 import com.sportpassword.bm.Models.*
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.ProductService
@@ -162,19 +163,18 @@ class ProductVC : MyTableVC1() {
     }
 }
 
-class ProductItem(val context: Context, val row: ProductTable): Item() {
-
-    var list1CellDelegate: List1CellDelegate? = null
+class ProductItem(override var context: Context, var _row: ProductTable): ListItem<Table>(context, _row) {
 
     override fun bind(viewHolder: ViewHolder, position: Int) {
 
-        //println(superStore);
+
+        super.bind(viewHolder, position)
+
+        val row: ProductTable = _row
         viewHolder.buyBtn.setOnClickListener {
             val a: ProductVC = context as ProductVC
             a.goOrder(row.token)
         }
-
-        viewHolder.titleLbl.text = row.name
 
         if (row.prices.size > 0) {
             val tmp: String = (row.prices[0].price_member).formattedWithSeparator()
@@ -182,25 +182,6 @@ class ProductItem(val context: Context, val row: ProductTable): Item() {
             viewHolder.priceLbl.text = price
         } else {
             viewHolder.priceLbl.text = "未提供"
-        }
-
-        Picasso.with(context)
-                .load(row.featured_path)
-                .placeholder(R.drawable.loading_square_120)
-                .error(R.drawable.loading_square_120)
-                .into(viewHolder.listFeatured)
-
-        viewHolder.likeIcon.setOnClickListener {
-            if (list1CellDelegate != null) {
-                list1CellDelegate!!.cellLike(row)
-            }
-        }
-
-        viewHolder.refreshIcon.setOnClickListener {
-//            println(position)
-            if (list1CellDelegate != null) {
-                list1CellDelegate!!.cellRefresh()
-            }
         }
     }
 

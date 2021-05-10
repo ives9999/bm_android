@@ -18,6 +18,7 @@ import com.sportpassword.bm.Utilities.Global
 import com.sportpassword.bm.Utilities.Loading
 import com.sportpassword.bm.Utilities.PERPAGE
 import com.sportpassword.bm.Utilities.makeCall
+import com.sportpassword.bm.member
 import com.xwray.groupie.ExpandableGroup
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.Section
@@ -255,7 +256,11 @@ abstract class MyTableVC1 : BaseActivity(), List1CellDelegate {
     }
 
     override fun cellLike(row: Table) {
-        println(row.id)
+        if (!member.isLoggedIn) {
+            goLogin()
+        } else {
+            dataService.like(this, row.token, row.id)
+        }
     }
 
     override fun cellShowMap(row: Table) {
@@ -272,9 +277,11 @@ abstract class MyTableVC1 : BaseActivity(), List1CellDelegate {
 //        startActivity(intent)
     }
 
-    override fun cellMobile(mobile: String) {
-        println(mobile)
-        //mobile.makeCall(this)
+    override fun cellMobile(row: Table) {
+        if (row.mobile_show.isNotEmpty()) {
+            println(row.mobile)
+            //mobile.makeCall(this)
+        }
     }
 
     override fun cellEdit(row: Table) {
@@ -296,7 +303,7 @@ interface List1CellDelegate {
     fun cellRefresh(){}
     fun cellLike(row: Table){}
     fun cellShowMap(row: Table){}
-    fun cellMobile(mobile: String){}
+    fun cellMobile(row: Table){}
     fun cellEdit(row: Table){}
     fun cellDelete(row: Table){}
 }

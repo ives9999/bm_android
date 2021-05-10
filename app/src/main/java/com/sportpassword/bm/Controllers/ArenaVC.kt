@@ -7,10 +7,8 @@ import android.view.Menu
 import android.view.MenuInflater
 import android.view.View
 import com.sportpassword.bm.Adapters.SearchItemDelegate
-import com.sportpassword.bm.Models.ArenaTable
-import com.sportpassword.bm.Models.ArenasTable
-import com.sportpassword.bm.Models.CoachTable
-import com.sportpassword.bm.Models.CoachesTable
+import com.sportpassword.bm.Fragments.ListItem
+import com.sportpassword.bm.Models.*
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.ArenaService
 import kotlinx.android.synthetic.main.activity_arena_vc.*
@@ -20,6 +18,11 @@ import com.xwray.groupie.kotlinandroidextensions.Item
 import com.xwray.groupie.kotlinandroidextensions.ViewHolder
 import kotlinx.android.synthetic.main.activity_store_vc.*
 import kotlinx.android.synthetic.main.arena_list_cell.*
+import kotlinx.android.synthetic.main.arena_list_cell.cityBtn
+import kotlinx.android.synthetic.main.arena_list_cell.intervalLbl
+import kotlinx.android.synthetic.main.arena_list_cell.telIcon
+import kotlinx.android.synthetic.main.course_list_cell.*
+import org.jetbrains.anko.makeCall
 
 
 class ArenaVC : MyTableVC1() {
@@ -84,6 +87,14 @@ class ArenaVC : MyTableVC1() {
         startActivity(intent)
     }
 
+    override fun cellMobile(row: Table) {
+        val _row: ArenaTable = row as ArenaTable
+        if (_row.tel_show.isNotEmpty()) {
+            println(_row.tel)
+            //makeCall(_row.tel)
+        }
+    }
+
     override fun remove(indexPath: IndexPath) {
         val row = _searchRows[indexPath.row]
         val key = row["key"]!!
@@ -97,20 +108,15 @@ class ArenaVC : MyTableVC1() {
     }
 }
 
-class ArenaItem(val context: Context, val row: ArenaTable): Item() {
-
-    var list1CellDelegate: List1CellDelegate? = null
+class ArenaItem(override var context: Context, var _row: ArenaTable): ListItem<Table>(context, _row) {
 
     override fun bind(viewHolder: ViewHolder, position: Int) {
 
         //println(superStore);
 
-        viewHolder.titleTxt.text = row.name
-        Picasso.with(context)
-                .load(row.featured_path)
-                .placeholder(R.drawable.loading_square_120)
-                .error(R.drawable.loading_square_120)
-                .into(viewHolder.listFeatured)
+        super.bind(viewHolder, position)
+
+        val row: ArenaTable = _row
 
         if (row.city_show.isNotEmpty()) {
             viewHolder.cityBtn.text = row.city_show
@@ -124,11 +130,10 @@ class ArenaItem(val context: Context, val row: ArenaTable): Item() {
             viewHolder.cityBtn.visibility = View.GONE
         }
 
-
-        if (row.tel != null && row.tel.isNotEmpty()) {
+        if (row.tel_show.isNotEmpty()) {
             viewHolder.telLbl.text = row.tel_show
         } else {
-            viewHolder.telLbl.text = "電話:未提供"
+            viewHolder.telLbl.visibility = View.INVISIBLE
         }
 
         viewHolder.parkingLbl.text = "停車場:${row.parking_show}"
@@ -141,39 +146,16 @@ class ArenaItem(val context: Context, val row: ArenaTable): Item() {
 
         viewHolder.air_conditionLbl.text = row.air_condition_show
 
-        viewHolder.likeIcon.setOnClickListener {
-            if (list1CellDelegate != null) {
-                list1CellDelegate!!.cellLike(row)
-            }
-        }
-
-        viewHolder.refreshIcon.setOnClickListener {
-//            println(position)
-            if (list1CellDelegate != null) {
-                list1CellDelegate!!.cellRefresh()
-            }
-        }
-
-        if (row.tel == null || row.tel.isEmpty()) {
-            viewHolder.telIcon.visibility = View.GONE
-        } else {
+        if (!row.tel_show.isEmpty()) {
+            viewHolder.telIcon.visibility = View.VISIBLE
             viewHolder.telIcon.setOnClickListener {
                 if (list1CellDelegate != null) {
-                    list1CellDelegate!!.cellMobile(row.tel)
+                    list1CellDelegate!!.cellMobile(row)
                 }
             }
-        }
-
-        if (row.address.isEmpty()) {
-            viewHolder.mapIcon.visibility = View.GONE
         } else {
-            viewHolder.mapIcon.setOnClickListener {
-                if (list1CellDelegate != null) {
-                    list1CellDelegate!!.cellShowMap(row)
-                }
-            }
+            viewHolder.telIcon.visibility = View.GONE
         }
-
     }
 
     override fun getLayout() = R.layout.arena_list_cell

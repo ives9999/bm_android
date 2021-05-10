@@ -1,9 +1,8 @@
 package com.sportpassword.bm.Services
 
 import com.sportpassword.bm.Models.*
-import com.sportpassword.bm.Utilities.JSONParse
-import com.sportpassword.bm.Utilities.URL_ONE
-import com.sportpassword.bm.Utilities.URL_PRODUCT_LIST
+import com.sportpassword.bm.Utilities.*
+import com.sportpassword.bm.Utilities.URL_COURSE_LIKE
 import org.json.JSONObject
 
 object ProductService: DataService() {
@@ -17,6 +16,10 @@ object ProductService: DataService() {
 
     override fun getOneURL(): String {
         return URL_ONE.format("product")
+    }
+
+    override fun getLikeURL(token: String): String {
+        return URL_PRODUCT_LIKE.format(token)
     }
 
     override fun parseModels(json: JSONObject): SuperModel {

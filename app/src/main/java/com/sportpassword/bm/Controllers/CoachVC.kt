@@ -6,9 +6,8 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.View
 import android.widget.ImageButton
-import com.sportpassword.bm.Models.CoachTable
-import com.sportpassword.bm.Models.CoachesTable
-import com.sportpassword.bm.Models.StoresTable
+import com.sportpassword.bm.Fragments.ListItem
+import com.sportpassword.bm.Models.*
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.CoachService
 //import com.sportpassword.bm.Services.StoreService
@@ -77,8 +76,7 @@ class CoachVC : MyTableVC1() {
                 //row.print()
                 row.filterRow()
                 val coachItem = CoachItem(this, row)
-                //val coachItem = CoachItem(this, row)
-                //coachItem.list1CellDelegate = this
+                coachItem.list1CellDelegate = this
                 items.add(coachItem)
             }
         }
@@ -109,29 +107,24 @@ class CoachVC : MyTableVC1() {
     }
 }
 
-class CoachItem(val context: Context, val row: CoachTable): Item() {
-
-    var list1CellDelegate: List1CellDelegate? = null
+class CoachItem(override var context: Context, var _row: CoachTable): ListItem<Table>(context, _row) {
 
     override fun bind(viewHolder: ViewHolder, position: Int) {
 
-        //println(superStore);
+        super.bind(viewHolder, position)
+
+        val row: CoachTable = _row
+
         if (row.city_show.isNotEmpty()) {
             viewHolder.cityBtn.text = row.city_show
         } else {
             viewHolder.cityBtn.visibility = View.GONE
         }
-        viewHolder.titleTxt.text = row.name
-        Picasso.with(context)
-                .load(row.featured_path)
-                .placeholder(R.drawable.loading_square_120)
-                .error(R.drawable.loading_square_120)
-                .into(viewHolder.listFeatured)
 
-        if (row.mobile != null && row.mobile.isNotEmpty()) {
+        if (row.mobile_show.isNotEmpty()) {
             viewHolder.mobileLbl.text = row.mobile_show
         } else {
-            viewHolder.mobileLbl.text = "行動電話:未提供"
+            viewHolder.mobileLbl.visibility = View.INVISIBLE
         }
 
         if (row.seniority >= 0) {
@@ -145,30 +138,6 @@ class CoachItem(val context: Context, val row: CoachTable): Item() {
         } else {
             viewHolder.line.text = "Line:未提供"
         }
-
-        viewHolder.likeIcon.setOnClickListener {
-            if (list1CellDelegate != null) {
-                list1CellDelegate!!.cellLike(row)
-            }
-        }
-
-        viewHolder.refreshIcon.setOnClickListener {
-//            println(position)
-            if (list1CellDelegate != null) {
-                list1CellDelegate!!.cellRefresh()
-            }
-        }
-
-        if (row.mobile == null || row.mobile.isEmpty()) {
-            viewHolder.telIcon.visibility = View.GONE
-        } else {
-            viewHolder.telIcon.setOnClickListener {
-                if (list1CellDelegate != null) {
-                    list1CellDelegate!!.cellMobile(row.mobile)
-                }
-            }
-        }
-
     }
 
     override fun getLayout() = R.layout.coach_list_cell

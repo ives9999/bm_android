@@ -15,8 +15,13 @@ object StoreService: DataService() {
     override fun getListURL(): String {
         return URL_STORE_LIST
     }
+
     override fun getOneURL(): String {
         return URL_ONE.format("store")
+    }
+
+    override fun getLikeURL(token: String): String {
+        return URL_STORE_LIKE.format(token)
     }
 
     override fun parseModels(json: JSONObject): SuperModel {

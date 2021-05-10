@@ -28,6 +28,8 @@ open class Table {
     var token: String = ""
     var sort_order: Int = 0
     var pv: Int = 0
+    var like: Boolean = false
+    var like_count: Int = 0
     var created_id: Int = 0
     var featured_path: String = ""
     var created_at: String = ""

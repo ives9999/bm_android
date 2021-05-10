@@ -2,6 +2,7 @@ package com.sportpassword.bm.Fragments
 
 
 import android.app.Dialog
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -11,25 +12,33 @@ import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageButton
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.sportpassword.bm.Adapters.GroupSection
 import com.sportpassword.bm.Adapters.ListAdapter
 import com.sportpassword.bm.Adapters.SearchItemDelegate
 import com.sportpassword.bm.Controllers.*
-import com.sportpassword.bm.Models.City
-import com.sportpassword.bm.Models.CoursesTable
-import com.sportpassword.bm.Models.TeamsTable
-import com.sportpassword.bm.Models.SuperData
-import com.sportpassword.bm.Models.Tables
+import com.sportpassword.bm.Models.*
 
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.DataService
 import com.sportpassword.bm.Utilities.*
+import com.sportpassword.bm.member
+import com.squareup.picasso.Picasso
 import com.xwray.groupie.ExpandableGroup
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.Section
 import com.xwray.groupie.ViewHolder
 import com.xwray.groupie.kotlinandroidextensions.Item
+import kotlinx.android.synthetic.main.course_list_cell.*
+import kotlinx.android.synthetic.main.course_list_cell.likeIcon
+import kotlinx.android.synthetic.main.course_list_cell.listFeatured
+import kotlinx.android.synthetic.main.course_list_cell.refreshIcon
+import kotlinx.android.synthetic.main.course_list_cell.telIcon
+import kotlinx.android.synthetic.main.course_list_cell.titleLbl
+import kotlinx.android.synthetic.main.list1_cell.*
+import kotlinx.android.synthetic.main.list1_cell.mapIcon
+import kotlinx.android.synthetic.main.team_list_cell.*
 
 
 /**
@@ -274,6 +283,26 @@ open class TabFragment : Fragment(), SearchItemDelegate, List1CellDelegate {
 //        listAdapter.notifyDataSetChanged()
 //    }
 
+    override fun cellRefresh() {
+        refresh()
+    }
+
+    override fun cellShowMap(row: Table) {
+        println(row.address)
+    }
+
+    override fun cellMobile(row: Table) {
+        println(row.mobile)
+    }
+
+    override fun cellLike(row: Table) {
+        if (!member.isLoggedIn) {
+            mainActivity!!.goLogin()
+        } else {
+            dataService.like(mainActivity!!, row.token, row.id)
+        }
+    }
+
     open protected fun setRecyclerViewScrollListener() {
 
         var pos: Int = 0
@@ -352,3 +381,83 @@ open class TabFragment : Fragment(), SearchItemDelegate, List1CellDelegate {
     }
 
 }// Required empty public constructor
+
+open class ListItem<T: Table>(open var context: Context, open var row: T): Item() {
+
+    var list1CellDelegate: List1CellDelegate? = null
+    var isLike: Boolean = false
+
+    override fun bind(
+        viewHolder: com.xwray.groupie.kotlinandroidextensions.ViewHolder,
+        position: Int
+    ) {
+        val v = viewHolder.containerView
+
+        if (row.title.isNotEmpty()) {
+            viewHolder.titleLbl.text = row.title
+        } else {
+            viewHolder.titleLbl.text = row.name
+        }
+
+        Picasso.with(context)
+            .load(row.featured_path)
+            .placeholder(R.drawable.loading_square_120)
+            .error(R.drawable.loading_square_120)
+            .into(viewHolder.listFeatured)
+
+        viewHolder.refreshIcon.setOnClickListener {
+            if (list1CellDelegate != null) {
+                list1CellDelegate!!.cellRefresh()
+            }
+        }
+
+        var a = v.findViewById<ImageButton>(R.id.telIcon)
+        if (a != null) {
+            if (row.mobile == null || row.mobile.isEmpty()) {
+                viewHolder.telIcon.visibility = View.GONE
+            } else {
+                viewHolder.telIcon.setOnClickListener {
+                    if (list1CellDelegate != null) {
+                        list1CellDelegate!!.cellMobile(row)
+                    }
+                }
+            }
+        }
+
+        a = v.findViewById<ImageButton>(R.id.mapIcon)
+        if (a != null) {
+
+            if (row.address == null || row.address.isEmpty()) {
+                viewHolder.mapIcon.visibility = View.GONE
+            } else {
+                viewHolder.mapIcon.setOnClickListener {
+                    if (list1CellDelegate != null) {
+                        list1CellDelegate!!.cellShowMap(row)
+                    }
+                }
+            }
+        }
+
+        viewHolder.likeIcon.setOnClickListener {
+            if (list1CellDelegate != null) {
+                list1CellDelegate!!.cellLike(row)
+                setLike(viewHolder)
+            }
+        }
+
+        isLike = !row.like
+        setLike(viewHolder)
+    }
+
+    override fun getLayout() = R.layout.course_list_cell
+
+    fun setLike(viewHolder: com.xwray.groupie.kotlinandroidextensions.ViewHolder) {
+        isLike = !isLike
+        if (isLike) {
+            viewHolder.likeIcon.setImage("like1")
+        } else {
+            viewHolder.likeIcon.setImage("like")
+        }
+    }
+}
+

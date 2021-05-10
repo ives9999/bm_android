@@ -29,8 +29,13 @@ object TeamService: DataService() {
     override fun getListURL(): String {
         return URL_TEAM_LIST
     }
+
     override fun getOneURL(): String {
         return URL_ONE.format("team")
+    }
+
+    override fun getLikeURL(token: String): String {
+        return URL_TEAM_LIKE.format(token)
     }
 
     fun tempPlay_list(context: Context, params: HashMap<String,Any>, page:Int, perPage:Int, complete: CompletionHandler) {
