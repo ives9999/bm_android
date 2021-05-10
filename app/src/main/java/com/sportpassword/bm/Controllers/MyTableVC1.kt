@@ -220,7 +220,7 @@ abstract class MyTableVC1 : BaseActivity(), List1CellDelegate {
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
                 super.onScrollStateChanged(recyclerView, newState)
 
-                println("superDataLists.size:${superDataLists.size}")
+                //println("superDataLists.size:${superDataLists.size}")
                 if (superDataLists.size == pos + 1 && newState == RecyclerView.SCROLL_STATE_IDLE && superDataLists.size < totalCount && !loading) {
                     getDataStart(page, perPage)
                 }
