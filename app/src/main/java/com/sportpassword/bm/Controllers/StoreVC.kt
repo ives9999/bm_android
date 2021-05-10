@@ -145,9 +145,9 @@ class StoreVC : MyTableVC1() {
             for (row in storesTable!!.rows) {
                 //row.print()
                 row.filterRow()
-                val storeItem = StoreItem(this, row)
-                storeItem.list1CellDelegate = this
-                items.add(storeItem)
+                val myItem = StoreItem(this, row)
+                myItem.list1CellDelegate = this
+                items.add(myItem)
             }
         }
 
@@ -163,14 +163,6 @@ class StoreVC : MyTableVC1() {
         intent.putExtra("store_token", superStore.token)
         intent.putExtra("title", superStore.name)
         startActivity(intent)
-    }
-
-    override fun cellMobile(row: Table) {
-        val _row: StoreTable = row as StoreTable
-        if (_row.tel_show.isNotEmpty()) {
-            println(_row.tel)
-            //makeCall(_row.tel)
-        }
     }
 }
 
@@ -188,23 +180,6 @@ class StoreItem(override var context: Context, var _row: StoreTable): ListItem<T
         viewHolder.business_timeTxt.text = "${row.open_time_show}~${row.close_time_show}"
 
         viewHolder.addressTxt.text = row.address
-
-        if (row.tel_show.isNotEmpty()) {
-            viewHolder.telLbl.text = row.tel_show
-        } else {
-            viewHolder.telLbl.visibility = View.INVISIBLE
-        }
-
-        if (!row.tel_show.isEmpty()) {
-            viewHolder.telIcon.visibility = View.VISIBLE
-            viewHolder.telIcon.setOnClickListener {
-                if (list1CellDelegate != null) {
-                    list1CellDelegate!!.cellMobile(row)
-                }
-            }
-        } else {
-            viewHolder.telIcon.visibility = View.GONE
-        }
 
 //如果要啟動管理功能，請打開這個註解
 //        var showManager = false

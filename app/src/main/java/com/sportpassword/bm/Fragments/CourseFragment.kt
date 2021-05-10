@@ -351,10 +351,6 @@ class CourseItem(override var context: Context, var _row: CourseTable): ListItem
         } else {
             viewHolder.signup_countLbl.visibility = View.INVISIBLE
         }
-
-        if (row.mobile.isEmpty()) {
-            viewHolder.telIcon.visibility = View.INVISIBLE
-        }
     }
 
     override fun getLayout() = R.layout.course_list_cell

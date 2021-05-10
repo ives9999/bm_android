@@ -66,10 +66,10 @@ class ArenaVC : MyTableVC1() {
             for (row in arenasTable!!.rows) {
                 //row.print()
                 row.filterRow()
-                val arenaItem = ArenaItem(this, row)
+                val myItem = ArenaItem(this, row)
                 //val coachItem = CoachItem(this, row)
-                arenaItem.list1CellDelegate = this
-                items.add(arenaItem)
+                myItem.list1CellDelegate = this
+                items.add(myItem)
             }
         }
 
@@ -85,14 +85,6 @@ class ArenaVC : MyTableVC1() {
         intent.putExtra("arena_token", arenaTable.token)
         intent.putExtra("title", arenaTable.name)
         startActivity(intent)
-    }
-
-    override fun cellMobile(row: Table) {
-        val _row: ArenaTable = row as ArenaTable
-        if (_row.tel_show.isNotEmpty()) {
-            println(_row.tel)
-            //makeCall(_row.tel)
-        }
     }
 
     override fun remove(indexPath: IndexPath) {
@@ -130,12 +122,6 @@ class ArenaItem(override var context: Context, var _row: ArenaTable): ListItem<T
             viewHolder.cityBtn.visibility = View.GONE
         }
 
-        if (row.tel_show.isNotEmpty()) {
-            viewHolder.telLbl.text = row.tel_show
-        } else {
-            viewHolder.telLbl.visibility = View.INVISIBLE
-        }
-
         viewHolder.parkingLbl.text = "停車場:${row.parking_show}"
 
         if (row.interval_show.isNotEmpty()) {
@@ -145,17 +131,6 @@ class ArenaItem(override var context: Context, var _row: ArenaTable): ListItem<T
         }
 
         viewHolder.air_conditionLbl.text = row.air_condition_show
-
-        if (!row.tel_show.isEmpty()) {
-            viewHolder.telIcon.visibility = View.VISIBLE
-            viewHolder.telIcon.setOnClickListener {
-                if (list1CellDelegate != null) {
-                    list1CellDelegate!!.cellMobile(row)
-                }
-            }
-        } else {
-            viewHolder.telIcon.visibility = View.GONE
-        }
     }
 
     override fun getLayout() = R.layout.arena_list_cell

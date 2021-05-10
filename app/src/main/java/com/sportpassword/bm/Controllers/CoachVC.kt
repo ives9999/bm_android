@@ -121,12 +121,6 @@ class CoachItem(override var context: Context, var _row: CoachTable): ListItem<T
             viewHolder.cityBtn.visibility = View.GONE
         }
 
-        if (row.mobile_show.isNotEmpty()) {
-            viewHolder.mobileLbl.text = row.mobile_show
-        } else {
-            viewHolder.mobileLbl.visibility = View.INVISIBLE
-        }
-
         if (row.seniority >= 0) {
             viewHolder.seniorityLbl.text = "年資:${row.seniority_show}"
         } else {

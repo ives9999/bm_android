@@ -91,6 +91,7 @@ class CourseTable: Table() {
 //
         if (coach != null) {
             mobile = coach!!.mobile
+            mobile_show = mobile.mobileShow()
             coach!!.filterRow()
         }
     }

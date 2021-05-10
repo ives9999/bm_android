@@ -169,7 +169,6 @@ class TeamItem(override var context: Context, var _row: TeamTable): ListItem<Tab
             viewHolder.cityBtn.visibility = View.GONE
         }
 
-
         if (row.arena != null) {
             viewHolder.arenaBtn.text = row.arena!!.name
         } else {

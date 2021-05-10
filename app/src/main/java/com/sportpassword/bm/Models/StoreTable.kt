@@ -10,7 +10,6 @@ class StoresTable: Tables() {
 
 class StoreTable: Table() {
 
-    var tel: String = ""
     var fb: String = ""
     var website: String = ""
     var email: String = ""
@@ -25,7 +24,6 @@ class StoreTable: Table() {
 
     var content: String = ""
 
-    var tel_show: String = ""
     var open_time_show: String = ""
     var close_time_show: String = ""
     var interval_show: String = ""
@@ -37,10 +35,6 @@ class StoreTable: Table() {
             val city_name = Global.zoneIDToName(city_id)
             val area_name = Global.zoneIDToName(area_id)
             address = zip.toString() + city_name + area_name + road
-        }
-
-        if (tel != null && tel.length > 0) {
-            tel_show = tel.telShow()
         }
 
         if (open_time != null && open_time.length > 0) {

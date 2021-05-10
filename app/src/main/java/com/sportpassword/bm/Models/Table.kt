@@ -21,6 +21,7 @@ open class Table {
     var name: String = ""
     var title: String = ""
     var channel: String = ""
+    var tel: String = ""
     var mobile: String = ""
     var city_id: Int = -1
     var slug: String = ""
@@ -41,6 +42,7 @@ open class Table {
     var address: String = ""
     var city_show: String = ""
     var mobile_show: String = ""
+    var tel_show: String = ""
 
     open fun filterRow() {
         if (featured_path.isNotEmpty()) {
@@ -56,6 +58,10 @@ open class Table {
 
         if (mobile != null && mobile.isNotEmpty()) {
             mobile_show = mobile.mobileShow()
+        }
+
+        if (tel != null && tel.isNotEmpty()) {
+            tel_show = tel.mobileShow()
         }
 
         if (created_at.isNotEmpty()) {

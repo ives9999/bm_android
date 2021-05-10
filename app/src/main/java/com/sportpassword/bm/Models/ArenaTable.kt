@@ -10,7 +10,6 @@ class ArenasTable: Tables() {
 
 class ArenaTable: Table() {
 
-    var tel: String = ""
     var fb: String = ""
     var website: String = ""
     var email: String = ""
@@ -29,7 +28,6 @@ class ArenaTable: Table() {
     var color: String = ""
 
     var area_show: String = ""
-    var tel_show: String = ""
     var interval_show: String = ""
     var air_condition_show: String = ""
     var parking_show: String = ""
@@ -41,11 +39,7 @@ class ArenaTable: Table() {
         if (area_id > 0) {
             area_show = Global.zoneIDToName(area_id)
         }
-        
-        if (tel != null && tel.length > 0) {
-            tel_show = tel.telShow()
-        }
-        
+
         if (open_time != null && close_time != null && open_time.length > 0 && close_time.length > 0) {
             interval_show = open_time.noSec() + " ~ " + close_time.noSec()
         }

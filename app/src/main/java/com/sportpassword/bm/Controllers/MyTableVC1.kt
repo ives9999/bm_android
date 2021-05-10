@@ -278,9 +278,10 @@ abstract class MyTableVC1 : BaseActivity(), List1CellDelegate {
     }
 
     override fun cellMobile(row: Table) {
-        if (row.mobile_show.isNotEmpty()) {
+        if (row.tel_show.isNotEmpty()) {
+            println(row.tel)
+        } else if (row.mobile_show.isNotEmpty()) {
             println(row.mobile)
-            //mobile.makeCall(this)
         }
     }
 

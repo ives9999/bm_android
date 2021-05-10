@@ -292,7 +292,11 @@ open class TabFragment : Fragment(), SearchItemDelegate, List1CellDelegate {
     }
 
     override fun cellMobile(row: Table) {
-        println(row.mobile)
+        if (row.tel_show.isNotEmpty()) {
+            println(row.tel)
+        } else if (row.mobile_show.isNotEmpty()) {
+            println(row.mobile)
+        }
     }
 
     override fun cellLike(row: Table) {
@@ -413,14 +417,22 @@ open class ListItem<T: Table>(open var context: Context, open var row: T): Item(
 
         var a = v.findViewById<ImageButton>(R.id.telIcon)
         if (a != null) {
-            if (row.mobile == null || row.mobile.isEmpty()) {
-                viewHolder.telIcon.visibility = View.GONE
-            } else {
-                viewHolder.telIcon.setOnClickListener {
-                    if (list1CellDelegate != null) {
+            if (row.mobile_show.isNotEmpty()) {
+                if (list1CellDelegate != null) {
+                    viewHolder.telIcon.setOnClickListener {
                         list1CellDelegate!!.cellMobile(row)
                     }
+                    viewHolder.telIcon.visibility = View.VISIBLE
                 }
+            } else if (row.tel_show.isNotEmpty()) {
+                if (list1CellDelegate != null) {
+                    viewHolder.telIcon.setOnClickListener {
+                        list1CellDelegate!!.cellMobile(row)
+                    }
+                    viewHolder.telIcon.visibility = View.VISIBLE
+                }
+            } else {
+                viewHolder.telIcon.visibility = View.GONE
             }
         }
 
