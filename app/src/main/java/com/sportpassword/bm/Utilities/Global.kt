@@ -1341,3 +1341,10 @@ inline fun <reified T: Table> jsonToModel(jsonString: String): T? {
     return t
 }
 
+inline fun <reified T: Table> refreshOne(): T? {
+
+    val t = jsonToModel<T>("aaa")
+
+    return t
+}
+

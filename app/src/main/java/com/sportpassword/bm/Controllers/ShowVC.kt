@@ -8,6 +8,7 @@ import com.sportpassword.bm.Models.Table
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.CourseService
 import com.sportpassword.bm.Utilities.Loading
+import com.sportpassword.bm.Utilities.image
 import com.sportpassword.bm.Utilities.jsonToModel
 import com.sportpassword.bm.member
 import com.xwray.groupie.GroupAdapter
@@ -15,6 +16,8 @@ import com.xwray.groupie.ViewHolder
 import kotlinx.android.synthetic.main.activity_show_course_vc.*
 import kotlinx.android.synthetic.main.mask.*
 import kotlin.reflect.KClass
+import kotlin.reflect.full.memberProperties
+
 
 open class ShowVC: BaseActivity() {
 
@@ -44,14 +47,28 @@ open class ShowVC: BaseActivity() {
         adapter = GroupAdapter()
     }
 
-    fun <T: Table> refresh1(t: KClass<T>){
+    open fun genericTable() {}
+
+    override fun refresh() {
         if (token != null) {
             Loading.show(mask)
             val params: HashMap<String, String> = hashMapOf("token" to token!!, "member_token" to member.token!!)
             dataService.getOne(this, params) { success ->
                 if (success) {
-                    val jsonString = dataService.jsonString
-                    table = jsonToModel<t>(dataService.jsonString)
+                    genericTable()
+                    if (table != null) {
+                        table!!.filterRow()
+
+                        if (table!!.name.isNotEmpty()) {
+                            setMyTitle(table!!.name)
+                        } else if (table!!.title.isNotEmpty()) {
+                            setMyTitle(table!!.title)
+                        }
+
+                        setFeatured()
+                        setData()
+                        setContent()
+                    }
 
 //                    if (superCourse != null) {
 //                        superCourse!!.filter()
@@ -80,4 +97,35 @@ open class ShowVC: BaseActivity() {
         }
     }
 
+    fun setFeatured() {
+        if (table != null && table!!.featured_path.isNotEmpty()) {
+            var featured_path = table!!.featured_path
+            featured_path.image(this, featured)
+        } else {
+            featured.setImageResource(R.drawable.loading_square_120)
+        }
+    }
+
+    open fun setMainData(table: Table) {
+        for (key in tableRowKeys) {
+            val kc = table::class
+            kc.memberProperties.forEach {
+                if (key == it.name) {
+                    val value = it.getter.call(table).toString()
+                    tableRows[key]!!["content"] = value
+                }
+            }
+        }
+    }
+
+    open fun setContent() {
+        val content: String = "<html lang=\"zh-TW\"><head><meta charset=\"UTF-8\">"+table!!.content_style+"</head><body><div class=\"content\">"+superCourse!!.content+"</div>"+"</body></html>"
+        //val content: String = "<html lang=\"zh-TW\"><head><meta charset=\"UTF-8\"></head><body style=\"background-color: #000;color:#fff;font-size:28px;\">"+superCourse!!.content+"</body></html>"
+        //println(content)
+        contentView.loadDataWithBaseURL(null, content, "text/html", "UTF-8", null)
+        //contentView.loadData(strHtml, "text/html; charset=utf-8", "UTF-8")
+        //contentView.loadData("<html><body style='background-color:#000;'>Hello, world!</body></html>", "text/html", "UTF-8")
+    }
+
+    open fun setData() {}
 }

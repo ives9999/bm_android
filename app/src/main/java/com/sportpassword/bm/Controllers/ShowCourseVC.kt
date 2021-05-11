@@ -8,9 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.sportpassword.bm.Adapters.IconCell
 import com.sportpassword.bm.Adapters.IconCellDelegate
 import com.sportpassword.bm.Adapters.OlCell
-import com.sportpassword.bm.Models.SuperCoach
-import com.sportpassword.bm.Models.SuperCourse
-import com.sportpassword.bm.Models.SuperDate
+import com.sportpassword.bm.Models.*
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.CourseService
 import com.sportpassword.bm.Utilities.*
@@ -46,8 +44,8 @@ class ShowCourseVC : ShowVC() {
             "deadline" to hashMapOf("icon" to "clock","title" to "報名截止時間","content" to "","isPressed" to "false")
     )
 
-    var superCourse: SuperCourse? = null
-    var superCoach: SuperCoach? = null
+    var myTable: CourseTable? = null
+    var coachTable: CoachTable? = null
 
     lateinit var signupAdapter: GroupAdapter<ViewHolder>
     lateinit var coachAdapter: GroupAdapter<ViewHolder>
@@ -74,17 +72,17 @@ class ShowCourseVC : ShowVC() {
         initAdapter()
         super.onCreate(savedInstanceState)
 
-        tableRowKeys = mutableListOf("weekday_text","date","interval","price_text_long","people_limit_text","kind_text","signup_count","pv","created_at_text")
+        tableRowKeys = mutableListOf("weekday_text","interval_show","date","price_text_long","people_limit_text","kind_text","pv","created_at_show")
         tableRows = hashMapOf(
             "weekday_text" to hashMapOf("icon" to "calendar","title" to "日期","content" to ""),
+            "interval_show" to hashMapOf( "icon" to "clock","title" to "時段","content" to ""),
             "date" to hashMapOf( "icon" to "calendar","title" to "期間","content" to ""),
-            "interval" to hashMapOf( "icon" to "clock","title" to "時段","content" to ""),
             "price_text_long" to hashMapOf( "icon" to "money","title" to "收費","content" to ""),
             "people_limit_text" to hashMapOf( "icon" to "group","title" to "接受報名人數","content" to ""),
             "kind_text" to hashMapOf( "icon" to "cycle","title" to "週期","content" to ""),
 //            "signup_count" to hashMapOf( "icon" to "group","title" to "已報名人數","content" to ""),
             "pv" to hashMapOf( "icon" to "pv","title" to "瀏覽數","content" to ""),
-            "created_at_text" to hashMapOf( "icon" to "calendar","title" to "建立日期","content" to "")
+            "created_at_show" to hashMapOf( "icon" to "calendar","title" to "建立日期","content" to "")
         )
 
         refresh()
@@ -110,78 +108,85 @@ class ShowCourseVC : ShowVC() {
         val coachItems = generateCoachItem()
         coachAdapter.addAll(coachItems)
         coachTableView.adapter = coachAdapter
-
     }
 
-    override fun refresh() {
-        //super.refresh()
-        if (token != null) {
-            Loading.show(mask)
-            val params: HashMap<String, String> = hashMapOf("token" to token!!, "member_token" to member.token!!)
-            CourseService.getOne(this, params) { success ->
-                if (success) {
-                    superCourse = CourseService.superModel as SuperCourse
-                    if (superCourse != null) {
-                        superCourse!!.filter()
-                        //superCourse!!.print()
-                        superCoach = superCourse!!.coach
-                        setMainData()
-                        setSignupData()
-                        setCoachData()
-                        setFeatured()
-
-                        if (superCourse!!.isSignup) {
-                            signupButton.setText("取消報名")
-                        } else {
-                            val count = superCourse!!.signup_normal_models.count()
-                            if (count >= superCourse!!.people_limit) {
-                                signupButton.setText("候補")
-                            } else {
-                                signupButton.setText("報名")
-                            }
-                        }
-                    }
-                }
-                closeRefresh()
-                Loading.hide(mask)
-            }
+    override fun genericTable() {
+        //storesTable = jsonToModel<StoresTable>(dataService.jsonString)
+        table = jsonToModel<CourseTable>(dataService.jsonString)
+        if (table != null) {
+            myTable = table as CourseTable
         }
     }
 
-    fun setMainData() {
-        for (key in tableRowKeys) {
-            val kc = superCourse!!::class
-            kc.memberProperties.forEach {
-                if (key == it.name) {
-                    val value = it.getter.call(superCourse).toString()
-                    tableRows[key]!!["content"] = value
-                }
+//    override fun refresh() {
+//        //super.refresh()
+//        if (token != null) {
+//            Loading.show(mask)
+//            val params: HashMap<String, String> = hashMapOf("token" to token!!, "member_token" to member.token!!)
+//            CourseService.getOne(this, params) { success ->
+//                if (success) {
+//                    superCourse = CourseService.superModel as SuperCourse
+//                    if (superCourse != null) {
+//                        superCourse!!.filter()
+//                        //superCourse!!.print()
+//                        superCoach = superCourse!!.coach
+//                        setMainData()
+//                        setSignupData()
+//                        setCoachData()
+//                        setFeatured()
+//
+//                        if (superCourse!!.isSignup) {
+//                            signupButton.setText("取消報名")
+//                        } else {
+//                            val count = superCourse!!.signup_normal_models.count()
+//                            if (count >= superCourse!!.people_limit) {
+//                                signupButton.setText("候補")
+//                            } else {
+//                                signupButton.setText("報名")
+//                            }
+//                        }
+//                    }
+//                }
+//                closeRefresh()
+//                Loading.hide(mask)
+//            }
+//        }
+//    }
+
+    override fun setData() {
+
+        if (myTable != null) {
+
+            setMainData(myTable!!)
+            val items = generateCourseItem()
+            adapter.update(items)
+
+            if (myTable!!.coach != null) {
+                coachTable = myTable!!.coach
+                setCoachData()
+                val items = generateCoachItem()
+                coachAdapter.update(items)
             }
+
+            if (myTable!!.dateTable != null) {
+                setNextTime()
+            }
+
+
+//            if (myTable!!.coach != null) {
+//                if (myTable!!.start_date != null && myTable!!.start_date.isNotEmpty()) {
+//                    val date = myTable!!.start_date + " ~ " + myTable!!.end_date
+//                    tableRows["date"]!!["content"] = date
+//                } else {
+//                    tableRowKeys.remove("date");
+//                    //println(tableRowKeys);
+//                    tableRows.remove("date");
+//                }
+//
+//                val interval = superCourse!!.start_time_text + " ~ " + superCourse!!.end_time_text
+//                tableRows["interval"]!!["content"] = interval
+//            }
         }
-        val content: String = "<html lang=\"zh-TW\"><head><meta charset=\"UTF-8\">"+superCourse!!.content_style+"</head><body><div class=\"content\">"+superCourse!!.content+"</div>"+"</body></html>"
-        //val content: String = "<html lang=\"zh-TW\"><head><meta charset=\"UTF-8\"></head><body style=\"background-color: #000;color:#fff;font-size:28px;\">"+superCourse!!.content+"</body></html>"
-        //println(content)
-        contentView.loadDataWithBaseURL(null, content, "text/html", "UTF-8", null)
-        //contentView.loadData(strHtml, "text/html; charset=utf-8", "UTF-8")
-        //contentView.loadData("<html><body style='background-color:#000;'>Hello, world!</body></html>", "text/html", "UTF-8")
-
-        if (superCourse!!.start_date.length > 0) {
-            val date = superCourse!!.start_date + " ~ " + superCourse!!.end_date
-            tableRows["date"]!!["content"] = date
-        } else {
-            tableRowKeys.remove("date");
-            //println(tableRowKeys);
-            tableRows.remove("date");
-        }
-
-        val interval = superCourse!!.start_time_text + " ~ " + superCourse!!.end_time_text
-        tableRows["interval"]!!["content"] = interval
-
-        //tableRows["signup_count"]!!["content"] = superCourse!!.signup_count.toString() + "人"
-
-//                    println(tableRows)
-        var items = generateCourseItem()
-        adapter.update(items)
     }
 
     fun setSignupData() {
@@ -200,10 +205,10 @@ class ShowCourseVC : ShowVC() {
 
     fun setCoachData() {
         for (key in coachTableRowKeys) {
-            val kc = superCoach!!::class
+            val kc = coachTable!!::class
             kc.memberProperties.forEach {
                 if (key == it.name) {
-                    val value = it.getter.call(superCoach).toString()
+                    val value = it.getter.call(coachTable).toString()
                     coachTableRows[key]!!["content"] = value
                 }
             }
@@ -213,14 +218,7 @@ class ShowCourseVC : ShowVC() {
         coachAdapter.update(items)
     }
 
-    fun setFeatured() {
-        if (superCourse!!.featured_path.isNotEmpty()) {
-            var featured_path = superCourse!!.featured_path
-            featured_path.image(this@ShowCourseVC, featured)
-        } else {
-            featured.setImageResource(R.drawable.loading_square_120)
-        }
-    }
+
 
 //    fun setSignupData() {
 //        isSignup = false
