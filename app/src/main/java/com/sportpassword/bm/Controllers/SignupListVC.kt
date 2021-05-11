@@ -2,7 +2,6 @@ package com.sportpassword.bm.Controllers
 
 import android.os.Bundle
 import android.view.View
-import com.sportpassword.bm.Adapters.GroupSection
 import com.sportpassword.bm.Models.SuperCourse
 import com.sportpassword.bm.Models.SuperSignup
 import com.sportpassword.bm.Models.SuperSignups
@@ -12,9 +11,6 @@ import com.sportpassword.bm.Utilities.Loading
 import com.sportpassword.bm.Utilities.noSec
 import com.sportpassword.bm.Utilities.noYear
 import com.sportpassword.bm.member
-import com.xwray.groupie.ExpandableGroup
-import com.xwray.groupie.GroupAdapter
-import com.xwray.groupie.Section
 import com.xwray.groupie.kotlinandroidextensions.Item
 import kotlinx.android.synthetic.main.activity_signup_list_vc.*
 import kotlinx.android.synthetic.main.mask.*
@@ -131,7 +127,7 @@ class SignupItem(val no: Int, val signuper: String, val signupTime: String, val 
         }
         viewHolder.noLbl.setText(_no)
         viewHolder.signuperLbl.setText(signuper)
-        viewHolder.signupTimeLbl.setText(signupTime)
+        viewHolder.signupDateLbl.setText(signupTime)
         viewHolder.courseDateLbl.setText(courseDate)
     }
 

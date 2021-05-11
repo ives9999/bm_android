@@ -23,7 +23,6 @@ class ArenaTable: Table() {
     var parking: Int = -1
     var bathroom: Int = -1
     var charge: String = ""
-    var content: String = ""
     var manager_id: Int = -1
     var color: String = ""
 

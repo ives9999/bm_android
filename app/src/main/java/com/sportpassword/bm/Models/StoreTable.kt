@@ -22,8 +22,6 @@ class StoreTable: Table() {
     var road: String = ""
     var zip: Int = -1
 
-    var content: String = ""
-
     var open_time_show: String = ""
     var close_time_show: String = ""
     var interval_show: String = ""

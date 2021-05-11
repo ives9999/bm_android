@@ -16,7 +16,6 @@ class CoachTable: Table() {
     var feat: String = ""
     var license: String = ""
     var charge: String = ""
-    var content: String = ""
     var color: String = ""
     var manager_id: Int = 0
 

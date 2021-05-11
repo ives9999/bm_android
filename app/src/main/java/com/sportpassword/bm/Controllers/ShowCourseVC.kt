@@ -5,15 +5,12 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
-import com.sportpassword.bm.Adapters.IconCell
-import com.sportpassword.bm.Adapters.IconCellDelegate
 import com.sportpassword.bm.Adapters.OlCell
 import com.sportpassword.bm.Models.*
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.CourseService
 import com.sportpassword.bm.Utilities.*
 import com.sportpassword.bm.member
-import com.squareup.picasso.Picasso
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.ViewHolder
 import com.xwray.groupie.kotlinandroidextensions.Item
@@ -125,21 +122,21 @@ class ShowCourseVC : ShowVC() {
 //            val params: HashMap<String, String> = hashMapOf("token" to token!!, "member_token" to member.token!!)
 //            CourseService.getOne(this, params) { success ->
 //                if (success) {
-//                    superCourse = CourseService.superModel as SuperCourse
-//                    if (superCourse != null) {
-//                        superCourse!!.filter()
-//                        //superCourse!!.print()
-//                        superCoach = superCourse!!.coach
+//                    myTable = CourseService.superModel as SuperCourse
+//                    if (myTable != null) {
+//                        myTable!!.filter()
+//                        //myTable!!.print()
+//                        coachTable = myTable!!.coach
 //                        setMainData()
 //                        setSignupData()
 //                        setCoachData()
 //                        setFeatured()
 //
-//                        if (superCourse!!.isSignup) {
+//                        if (myTable!!.isSignup) {
 //                            signupButton.setText("取消報名")
 //                        } else {
-//                            val count = superCourse!!.signup_normal_models.count()
-//                            if (count >= superCourse!!.people_limit) {
+//                            val count = myTable!!.signup_normal_models.count()
+//                            if (count >= myTable!!.people_limit) {
 //                                signupButton.setText("候補")
 //                            } else {
 //                                signupButton.setText("報名")
@@ -183,25 +180,25 @@ class ShowCourseVC : ShowVC() {
 //                    tableRows.remove("date");
 //                }
 //
-//                val interval = superCourse!!.start_time_text + " ~ " + superCourse!!.end_time_text
+//                val interval = myTable!!.start_time_text + " ~ " + myTable!!.end_time_text
 //                tableRows["interval"]!!["content"] = interval
 //            }
         }
     }
 
-    fun setSignupData() {
-//        val nextCourseTime = superCourse!!.nextCourseTime
-//        for (key in signupTableRowKeys) {
-//            signupTableRows[key]!!["content"] = nextCourseTime[key]!!
+//    fun setSignupData() {
+//        if (myTable != null) {
+//            val dateTable: DateTable? = myTable!!.dateTable
+//            if (dateTable != null) {
+//                val date: String = dateTable.date
+//                val start_time: String = myTable!!.start_time_show
+//                val end_time: String = myTable!!.end_time_show
+//                signupDateLbl.text = "下次上課時間：" + date + " " + start_time + " ~ " + end_time
+//                val items = generateSignupItem()
+//                signupAdapter.update(items)
+//            }
 //        }
-        val date_modal: SuperDate = superCourse!!.date_model
-        val date: String = date_modal.date
-        val start_time: String = superCourse!!.start_time_text
-        val end_time: String = superCourse!!.end_time_text
-        signupTimeLbl.text = "下次上課時間：" + date + " " + start_time + " ~ " + end_time
-        val items = generateSignupItem()
-        signupAdapter.update(items)
-    }
+//    }
 
     fun setCoachData() {
         for (key in coachTableRowKeys) {
@@ -216,6 +213,27 @@ class ShowCourseVC : ShowVC() {
         //println(coachTableRows)
         val items = generateCoachItem()
         coachAdapter.update(items)
+    }
+
+    fun setNextTime() {
+        if (myTable != null) {
+            val dateTable: DateTable? = myTable!!.dateTable
+            if (dateTable != null) {
+                val date: String = dateTable!!.date
+                val start_time: String = myTable!!.start_time_show
+                val end_time: String = myTable!!.end_time_show
+                val next_time = "下次上課時間：${date} ${start_time} ~ ${end_time}"
+                signupDateLbl.text = next_time
+                val items = generateSignupItem()
+                signupAdapter.update(items)
+            }
+        }
+
+
+//        let nextCourseTime: [String: String] = courseTable!.nextCourseTime
+//        for key in signupTableRowKeys {
+//            signupTableRows[key]!["content"] = nextCourseTime[key]
+//        }
     }
 
 
@@ -279,8 +297,8 @@ class ShowCourseVC : ShowVC() {
         var icon = ""
         var title = ""
         var content = ""
-        if (superCourse != null) {
-            for (i in 0..superCourse!!.people_limit - 1) {
+        if (myTable != null) {
+            for (i in 0..myTable!!.people_limit - 1) {
 //            if (signupTableRows.containsKey(key)) {
 //                val row = signupTableRows[key]!!
 //                if (row.containsKey("icon")) {
@@ -302,21 +320,21 @@ class ShowCourseVC : ShowVC() {
 //                }
 //            }
                 var name = ""
-                if (superCourse!!.signup_normal_models.count() > i) {
-                    val tmp = superCourse!!.signup_normal_models[i].member_name?.let {
+                if (myTable!!.signupNormalTables.count() > i) {
+                    val tmp = myTable!!.signupNormalTables[i].member_name?.let {
                         name = it
                     }
                 }
-                val olCell = OlCell(this@ShowCourseVC, (i + 1).toString(), name)
+                val olCell = OlCell(this, (i + 1).toString(), name)
                 items.add(olCell)
             }
-            if (superCourse!!.signup_standby_models.count() > 0) {
-                for (i in 0..superCourse!!.signup_standby_models.count() - 1) {
+            if (myTable!!.signupStandbyTables.count() > 0) {
+                for (i in 0..myTable!!.signupStandbyTables.count() - 1) {
                     var name = ""
-                    val tmp = superCourse!!.signup_standby_models[i].member_name?.let {
+                    val tmp = myTable!!.signupStandbyTables[i].member_name?.let {
                         name = it
                     }
-                    val olCell = OlCell(this@ShowCourseVC, "候補" + (i + 1).toString(), name)
+                    val olCell = OlCell(this, "候補" + (i + 1).toString(), name)
                     items.add(olCell)
                 }
             }
@@ -373,11 +391,11 @@ class ShowCourseVC : ShowVC() {
                 if (key == NAME_KEY) {
                     val intent = Intent(this, ShowActivity::class.java)
                     intent.putExtra("type", source)
-                    intent.putExtra("token", superCoach!!.token)
-                    intent.putExtra("title", superCoach!!.name)
+                    intent.putExtra("token", coachTable!!.token)
+                    intent.putExtra("title", coachTable!!.name)
                     startActivity(intent)
                 } else if (key == MOBILE_KEY) {
-                    val mobile = superCoach!!.mobile
+                    val mobile = coachTable!!.mobile
                     this.mobile = mobile
                     val permission: String = android.Manifest.permission.CALL_PHONE
                     if (permissionExist(permission)) {
@@ -387,19 +405,19 @@ class ShowCourseVC : ShowVC() {
                         requestPermission(permissions, REQUEST_PHONE_CALL)
                     }
                 } else if (key == LINE_KEY) {
-                    val line = superCoach!!.line
+                    val line = coachTable!!.line
                     line.line(this)
                 } else if (key == FB_KEY) {
-                    val fb = superCoach!!.fb
+                    val fb = coachTable!!.fb
                     fb.fb(this)
                 } else if (key == YOUTUBE_KEY) {
-                    val youtube = superCoach!!.youtube
+                    val youtube = coachTable!!.youtube
                     youtube.youtube(this)
                 } else if (key == WEBSITE_KEY) {
-                    val website = superCoach!!.website
+                    val website = coachTable!!.website
                     website.website(this)
                 } else if (key == EMAIL_KEY) {
-                    val email = superCoach!!.email
+                    val email = coachTable!!.email
                     email.email(this)
                 }
             }
@@ -437,13 +455,13 @@ class ShowCourseVC : ShowVC() {
         alert.setTitle(title)
         alert.setMessage(msg)
         if ((!isSignup && !canCancelSignup) || (isSignup && canCancelSignup)) {
-            alert.setButton(AlertDialog.BUTTON_NEGATIVE, title, { Interface, j ->
+            alert.setButton(AlertDialog.BUTTON_NEGATIVE, title) { _, _ ->
                 signup()
-            })
+            }
         }
-        alert.setButton(AlertDialog.BUTTON_POSITIVE, "關閉", { Interface, j ->
+        alert.setButton(AlertDialog.BUTTON_POSITIVE, "關閉") { _, _ ->
             //finish()
-        })
+        }
         alert.show()
     }
 
@@ -453,19 +471,19 @@ class ShowCourseVC : ShowVC() {
             return
         }
         Loading.show(mask)
-        CourseService.signup(this, token!!, member.token!!, superCourse!!.date_model.token, course_deadline) { success ->
+        CourseService.signup(this, token!!, member.token!!, myTable!!.dateTable!!.token, course_deadline) { success ->
             Loading.hide(mask)
             val msg = CourseService.msg
             var title = "警告"
             val alert = AlertDialog.Builder(this).create()
             if (CourseService.success) {
                 title = "提示"
-                alert.setButton(AlertDialog.BUTTON_POSITIVE, "關閉", { Interface, j ->
+                alert.setButton(AlertDialog.BUTTON_POSITIVE, "關閉") { _, _ ->
                     refresh()
-                })
+                }
             } else {
-                alert.setButton(AlertDialog.BUTTON_POSITIVE, "關閉", { Interface, j ->
-                })
+                alert.setButton(AlertDialog.BUTTON_POSITIVE, "關閉") { _, _ ->
+                }
             }
             alert.setTitle(title)
             alert.setMessage(msg)
@@ -488,7 +506,7 @@ class ShowCourseVC : ShowVC() {
             return
         }
         Loading.show(mask)
-        CourseService.signup_date(this, token!!, member.token!!, superCourse!!.date_model.token) { success ->
+        CourseService.signup_date(this, token!!, member.token, myTable!!.dateTable!!.token) { success ->
             Loading.hide(mask)
             if (success) {
                 signup_date = CourseService.signup_date

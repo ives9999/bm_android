@@ -17,7 +17,6 @@ class ProductTable: Table() {
     var order_min: Int = 1
     var order_max: Int = 1
 
-    var content: String = ""
     var alias: String = ""
 
     var images: ArrayList<String> = arrayListOf()

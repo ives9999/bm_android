@@ -119,7 +119,11 @@ open class ShowVC: BaseActivity() {
     }
 
     open fun setContent() {
-        val content: String = "<html lang=\"zh-TW\"><head><meta charset=\"UTF-8\">"+table!!.content_style+"</head><body><div class=\"content\">"+superCourse!!.content+"</div>"+"</body></html>"
+        var content: String = ""
+        if (table != null) {
+            content =
+                "<html lang=\"zh-TW\"><head><meta charset=\"UTF-8\">" + body_css + "</head><body><div class=\"content\">" + table!!.content + "</div>" + "</body></html>"
+        }
         //val content: String = "<html lang=\"zh-TW\"><head><meta charset=\"UTF-8\"></head><body style=\"background-color: #000;color:#fff;font-size:28px;\">"+superCourse!!.content+"</body></html>"
         //println(content)
         contentView.loadDataWithBaseURL(null, content, "text/html", "UTF-8", null)

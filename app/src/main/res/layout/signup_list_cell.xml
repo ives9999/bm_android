@@ -44,7 +44,7 @@
                     tools:text="David" />
 
                 <TextView
-                    android:id="@+id/signupTimeLbl"
+                    android:id="@+id/signupDateLbl"
                     android:layout_width="102dp"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="12dp"

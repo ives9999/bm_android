@@ -21,7 +21,6 @@ class TeamTable: Table() {
     var ball: String = ""
     var degree: String = ""
     var charge: String = ""
-    var content: String = ""
     var manager_id: Int = -1
     var temp_fee_M: Int = -1
     var temp_fee_F: Int = -1

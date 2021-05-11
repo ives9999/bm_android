@@ -31,7 +31,6 @@ class CourseTable: Table() {
     var deadline: String = ""
     var youtube: String = ""
 
-    var content: String = ""
     var content_style: String = ""
     var created_at_text: String = ""
     var coach: CoachTable? = null

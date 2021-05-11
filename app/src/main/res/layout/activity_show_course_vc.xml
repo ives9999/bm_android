@@ -70,7 +70,7 @@
                     android:textSize="24dp" />
 
                 <TextView
-                    android:id="@+id/signupTimeLbl"
+                    android:id="@+id/signupDateLbl"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/signupDetailLbl"
@@ -85,7 +85,7 @@
                     android:id="@+id/signupTableView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/signupTimeLbl"
+                    android:layout_below="@+id/signupDateLbl"
                     android:layout_marginBottom="12dp"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 

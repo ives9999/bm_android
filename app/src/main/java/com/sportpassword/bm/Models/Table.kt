@@ -27,6 +27,7 @@ open class Table {
     var slug: String = ""
     var status: String = "online"
     var token: String = ""
+    var content: String = ""
     var sort_order: Int = 0
     var pv: Int = 0
     var like: Boolean = false
