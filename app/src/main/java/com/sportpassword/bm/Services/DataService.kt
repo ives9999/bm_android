@@ -22,6 +22,7 @@ import java.lang.Exception
 import java.net.HttpURLConnection
 import java.net.URL
 import com.fasterxml.jackson.databind.ObjectMapper
+import mu.KotlinLogging
 import org.apache.http.client.HttpClient
 import org.apache.http.impl.client.HttpClientBuilder
 
@@ -517,6 +518,9 @@ open class DataService: BaseService() {
     open fun getOne(context: Context, id: Int, source: String, token: String, completion: CompletionHandler) {}
 
     open fun getOne1(context: Context, params: HashMap<String, String>, complete: CompletionHandler) {
+
+        val logger = KotlinLogging.logger {}
+        logger.info { "test" }
         val url = getOneURL()
         //println(url)
 
@@ -537,7 +541,8 @@ open class DataService: BaseService() {
                 if (response != null) {
                     try {
                         jsonString = response.toString()
-                        println(jsonString)
+                        //logger.info(jsonString)
+                        //println(jsonString)
                         this.success = true
                     } catch (e: Exception) {
                         this.success = false

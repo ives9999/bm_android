@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 import com.google.gson.JsonParseException
+import com.google.gson.JsonSyntaxException
 import com.sportpassword.bm.Adapters.OlCell
 import com.sportpassword.bm.Models.*
 import com.sportpassword.bm.R
@@ -112,7 +113,7 @@ class ShowCourseVC : ShowVC() {
         println(dataService.jsonString)
         try {
             table = jsonToModel<CourseTable>(dataService.jsonString)
-        } catch (e: JsonParseException) {
+        } catch (e: Exception) {
             println(e.localizedMessage)
         }
         if (table != null) {
@@ -165,16 +166,16 @@ class ShowCourseVC : ShowVC() {
             val items = generateCourseItem()
             adapter.update(items)
 
-            if (myTable!!.coach != null) {
-                coachTable = myTable!!.coach
-                setCoachData()
-                val items = generateCoachItem()
-                coachAdapter.update(items)
-            }
-
-            if (myTable!!.dateTable != null) {
-                setNextTime()
-            }
+//            if (myTable!!.coach != null) {
+//                coachTable = myTable!!.coach
+//                setCoachData()
+//                val items = generateCoachItem()
+//                coachAdapter.update(items)
+//            }
+//
+//            if (myTable!!.dateTable != null) {
+//                setNextTime()
+//            }
 
 
 //            if (myTable!!.coach != null) {
@@ -193,7 +194,7 @@ class ShowCourseVC : ShowVC() {
         }
     }
 
-//    fun setSignupData() {
+    fun setSignupData() {
 //        if (myTable != null) {
 //            val dateTable: DateTable? = myTable!!.dateTable
 //            if (dateTable != null) {
@@ -205,36 +206,36 @@ class ShowCourseVC : ShowVC() {
 //                signupAdapter.update(items)
 //            }
 //        }
-//    }
+    }
 
     fun setCoachData() {
-        for (key in coachTableRowKeys) {
-            val kc = coachTable!!::class
-            kc.memberProperties.forEach {
-                if (key == it.name) {
-                    val value = it.getter.call(coachTable).toString()
-                    coachTableRows[key]!!["content"] = value
-                }
-            }
-        }
-        //println(coachTableRows)
-        val items = generateCoachItem()
-        coachAdapter.update(items)
+//        for (key in coachTableRowKeys) {
+//            val kc = coachTable!!::class
+//            kc.memberProperties.forEach {
+//                if (key == it.name) {
+//                    val value = it.getter.call(coachTable).toString()
+//                    coachTableRows[key]!!["content"] = value
+//                }
+//            }
+//        }
+//        //println(coachTableRows)
+//        val items = generateCoachItem()
+//        coachAdapter.update(items)
     }
 
     fun setNextTime() {
-        if (myTable != null) {
-            val dateTable: DateTable? = myTable!!.dateTable
-            if (dateTable != null) {
-                val date: String = dateTable!!.date
-                val start_time: String = myTable!!.start_time_show
-                val end_time: String = myTable!!.end_time_show
-                val next_time = "下次上課時間：${date} ${start_time} ~ ${end_time}"
-                signupDateLbl.text = next_time
-                val items = generateSignupItem()
-                signupAdapter.update(items)
-            }
-        }
+//        if (myTable != null) {
+//            val dateTable: DateTable? = myTable!!.dateTable
+//            if (dateTable != null) {
+//                val date: String = dateTable!!.date
+//                val start_time: String = myTable!!.start_time_show
+//                val end_time: String = myTable!!.end_time_show
+//                val next_time = "下次上課時間：${date} ${start_time} ~ ${end_time}"
+//                signupDateLbl.text = next_time
+//                val items = generateSignupItem()
+//                signupAdapter.update(items)
+//            }
+//        }
 
 
 //        let nextCourseTime: [String: String] = courseTable!.nextCourseTime
@@ -273,28 +274,23 @@ class ShowCourseVC : ShowVC() {
         var title = ""
         var content = ""
         var isPressed: Boolean = false
-        for (key in tableRowKeys) {
-            if (tableRows.containsKey(key)) {
-                val row = tableRows[key]!!
-                if (row.containsKey("icon")) {
-                    icon = row["icon"]!!
-                }
-                if (row.containsKey("title")) {
-                    title = row["title"]!!
-                }
-                if (row.containsKey("content")) {
-                    content = row["content"]!!
-                }
-                if (row.containsKey("isPressed")) {
-                    isPressed = row["isPressed"]!!.toBoolean()
-                }
-//                if (icon.length > 0 && title.length > 0) {
-//                    val iconCell = IconCell(this@ShowCourseVC, icon, title, content, isPressed)
-//                    iconCell.delegate = this
-//                    items.add(iconCell)
+//        for (key in tableRowKeys) {
+//            if (tableRows.containsKey(key)) {
+//                val row = tableRows[key]!!
+//                if (row.containsKey("icon")) {
+//                    icon = row["icon"]!!
 //                }
-            }
-        }
+//                if (row.containsKey("title")) {
+//                    title = row["title"]!!
+//                }
+//                if (row.containsKey("content")) {
+//                    content = row["content"]!!
+//                }
+//                if (row.containsKey("isPressed")) {
+//                    isPressed = row["isPressed"]!!.toBoolean()
+//                }
+//            }
+//        }
 
         return items
     }
@@ -304,10 +300,41 @@ class ShowCourseVC : ShowVC() {
         var icon = ""
         var title = ""
         var content = ""
-        if (myTable != null) {
-            for (i in 0..myTable!!.people_limit - 1) {
-//            if (signupTableRows.containsKey(key)) {
-//                val row = signupTableRows[key]!!
+//        if (myTable != null) {
+//            for (i in 0..myTable!!.people_limit - 1) {
+//                var name = ""
+//                if (myTable!!.signupNormalTables.count() > i) {
+//                    val tmp = myTable!!.signupNormalTables[i].member_name?.let {
+//                        name = it
+//                    }
+//                }
+//                val olCell = OlCell(this, (i + 1).toString(), name)
+//                items.add(olCell)
+//            }
+//            if (myTable!!.signupStandbyTables.count() > 0) {
+//                for (i in 0..myTable!!.signupStandbyTables.count() - 1) {
+//                    var name = ""
+//                    val tmp = myTable!!.signupStandbyTables[i].member_name?.let {
+//                        name = it
+//                    }
+//                    val olCell = OlCell(this, "候補" + (i + 1).toString(), name)
+//                    items.add(olCell)
+//                }
+//            }
+//        }
+
+        return items
+    }
+
+    fun generateCoachItem(): ArrayList<Item> {
+        val items: ArrayList<Item> = arrayListOf()
+        var icon = ""
+        var title = ""
+        var content = ""
+        var isPressed: Boolean = false
+//        for (key in coachTableRowKeys) {
+//            if (coachTableRows.containsKey(key)) {
+//                val row = coachTableRows[key]!!
 //                if (row.containsKey("icon")) {
 //                    icon = row["icon"]!!
 //                }
@@ -320,183 +347,127 @@ class ShowCourseVC : ShowVC() {
 //                        content = content.mobileShow()
 //                    }
 //                }
-//                if (icon.length > 0 && title.length > 0) {
-//                    val iconCell = IconCell(this@ShowCourseVC, icon, title, content, false)
-//                    iconCell.delegate = this
-//                    items.add(iconCell)
+//                if (row.containsKey("isPressed")) {
+//                    isPressed = row["isPressed"]!!.toBoolean()
 //                }
 //            }
-                var name = ""
-                if (myTable!!.signupNormalTables.count() > i) {
-                    val tmp = myTable!!.signupNormalTables[i].member_name?.let {
-                        name = it
-                    }
-                }
-                val olCell = OlCell(this, (i + 1).toString(), name)
-                items.add(olCell)
-            }
-            if (myTable!!.signupStandbyTables.count() > 0) {
-                for (i in 0..myTable!!.signupStandbyTables.count() - 1) {
-                    var name = ""
-                    val tmp = myTable!!.signupStandbyTables[i].member_name?.let {
-                        name = it
-                    }
-                    val olCell = OlCell(this, "候補" + (i + 1).toString(), name)
-                    items.add(olCell)
-                }
-            }
-        }
-
-        return items
-    }
-
-    fun generateCoachItem(): ArrayList<Item> {
-        val items: ArrayList<Item> = arrayListOf()
-        var icon = ""
-        var title = ""
-        var content = ""
-        var isPressed: Boolean = false
-        for (key in coachTableRowKeys) {
-            if (coachTableRows.containsKey(key)) {
-                val row = coachTableRows[key]!!
-                if (row.containsKey("icon")) {
-                    icon = row["icon"]!!
-                }
-                if (row.containsKey("title")) {
-                    title = row["title"]!!
-                }
-                if (row.containsKey("content")) {
-                    content = row["content"]!!
-                    if (key == MOBILE_KEY) {
-                        content = content.mobileShow()
-                    }
-                }
-                if (row.containsKey("isPressed")) {
-                    isPressed = row["isPressed"]!!.toBoolean()
-                }
-//                if (icon.length > 0 && title.length > 0) {
-//                    val iconCell = IconCell(this@ShowCourseVC, icon, title, content, isPressed)
-//                    iconCell.delegate = this
-//                    items.add(iconCell)
-//                }
-            }
-        }
+//        }
 
         return items
     }
 
     fun didSelectRowAt(view: View, position: Int) {
-//        println("delegate:"+position)
-        val parent = view.parent
-        if (parent is RecyclerView) {
-            val p = parent as RecyclerView
-            //println(p.getIDString())
-            val id = p.getIDString()
-            if (id == coachTableView.getIDString()) {
-                //println(position)
-                val key = coachTableRowKeys[position]
-                if (key == NAME_KEY) {
-                    val intent = Intent(this, ShowActivity::class.java)
-                    intent.putExtra("type", source)
-                    intent.putExtra("token", coachTable!!.token)
-                    intent.putExtra("title", coachTable!!.name)
-                    startActivity(intent)
-                } else if (key == MOBILE_KEY) {
-                    val mobile = coachTable!!.mobile
-                    this.mobile = mobile
-                    val permission: String = android.Manifest.permission.CALL_PHONE
-                    if (permissionExist(permission)) {
-                        mobile.makeCall(this)
-                    } else {
-                        val permissions = arrayOf(permission)
-                        requestPermission(permissions, REQUEST_PHONE_CALL)
-                    }
-                } else if (key == LINE_KEY) {
-                    val line = coachTable!!.line
-                    line.line(this)
-                } else if (key == FB_KEY) {
-                    val fb = coachTable!!.fb
-                    fb.fb(this)
-                } else if (key == YOUTUBE_KEY) {
-                    val youtube = coachTable!!.youtube
-                    youtube.youtube(this)
-                } else if (key == WEBSITE_KEY) {
-                    val website = coachTable!!.website
-                    website.website(this)
-                } else if (key == EMAIL_KEY) {
-                    val email = coachTable!!.email
-                    email.email(this)
-                }
-            }
-        }
+////        println("delegate:"+position)
+//        val parent = view.parent
+//        if (parent is RecyclerView) {
+//            val p = parent as RecyclerView
+//            //println(p.getIDString())
+//            val id = p.getIDString()
+//            if (id == coachTableView.getIDString()) {
+//                //println(position)
+//                val key = coachTableRowKeys[position]
+//                if (key == NAME_KEY) {
+//                    val intent = Intent(this, ShowActivity::class.java)
+//                    intent.putExtra("type", source)
+//                    intent.putExtra("token", coachTable!!.token)
+//                    intent.putExtra("title", coachTable!!.name)
+//                    startActivity(intent)
+//                } else if (key == MOBILE_KEY) {
+//                    val mobile = coachTable!!.mobile
+//                    this.mobile = mobile
+//                    val permission: String = android.Manifest.permission.CALL_PHONE
+//                    if (permissionExist(permission)) {
+//                        mobile.makeCall(this)
+//                    } else {
+//                        val permissions = arrayOf(permission)
+//                        requestPermission(permissions, REQUEST_PHONE_CALL)
+//                    }
+//                } else if (key == LINE_KEY) {
+//                    val line = coachTable!!.line
+//                    line.line(this)
+//                } else if (key == FB_KEY) {
+//                    val fb = coachTable!!.fb
+//                    fb.fb(this)
+//                } else if (key == YOUTUBE_KEY) {
+//                    val youtube = coachTable!!.youtube
+//                    youtube.youtube(this)
+//                } else if (key == WEBSITE_KEY) {
+//                    val website = coachTable!!.website
+//                    website.website(this)
+//                } else if (key == EMAIL_KEY) {
+//                    val email = coachTable!!.email
+//                    email.email(this)
+//                }
+//            }
+//        }
     }
 
     fun showSignupModal() {
 
-        val signup_html = "報名課程日期是：" + course_date + "\r\n" + "報名取消截止時間是：" + course_deadline.noSec()
-        val cancel_signup_html = "報名課程日期是：" + course_date + "\r\n" + "報名取消截止時間是：" + course_deadline.noSec()
-        val cant_cancel_signup_html = "已經超過取消報名期限，無法取消\r\n" + "報名課程日期是：" + course_date + "\r\n" + "報名取消截止時間是：" + course_deadline.noSec()
-        val standby_html = "此課程報名已經額滿，請排候補" + "\r\n" + signup_html
-
-        var title: String = ""
-        var msg = signup_html
-
-        if (isSignup) {
-            title = "取消報名"
-            if (canCancelSignup) {
-                msg = cancel_signup_html
-            } else {
-                msg = cant_cancel_signup_html
-            }
-        } else {
-            if (isStandby) {
-                title = "候補報名"
-                msg = standby_html
-            } else {
-                title = "報名"
-            }
-        }
-
-
-        val alert = AlertDialog.Builder(this).create()
-        alert.setTitle(title)
-        alert.setMessage(msg)
-        if ((!isSignup && !canCancelSignup) || (isSignup && canCancelSignup)) {
-            alert.setButton(AlertDialog.BUTTON_NEGATIVE, title) { _, _ ->
-                signup()
-            }
-        }
-        alert.setButton(AlertDialog.BUTTON_POSITIVE, "關閉") { _, _ ->
-            //finish()
-        }
-        alert.show()
+//        val signup_html = "報名課程日期是：" + course_date + "\r\n" + "報名取消截止時間是：" + course_deadline.noSec()
+//        val cancel_signup_html = "報名課程日期是：" + course_date + "\r\n" + "報名取消截止時間是：" + course_deadline.noSec()
+//        val cant_cancel_signup_html = "已經超過取消報名期限，無法取消\r\n" + "報名課程日期是：" + course_date + "\r\n" + "報名取消截止時間是：" + course_deadline.noSec()
+//        val standby_html = "此課程報名已經額滿，請排候補" + "\r\n" + signup_html
+//
+//        var title: String = ""
+//        var msg = signup_html
+//
+//        if (isSignup) {
+//            title = "取消報名"
+//            if (canCancelSignup) {
+//                msg = cancel_signup_html
+//            } else {
+//                msg = cant_cancel_signup_html
+//            }
+//        } else {
+//            if (isStandby) {
+//                title = "候補報名"
+//                msg = standby_html
+//            } else {
+//                title = "報名"
+//            }
+//        }
+//
+//
+//        val alert = AlertDialog.Builder(this).create()
+//        alert.setTitle(title)
+//        alert.setMessage(msg)
+//        if ((!isSignup && !canCancelSignup) || (isSignup && canCancelSignup)) {
+//            alert.setButton(AlertDialog.BUTTON_NEGATIVE, title) { _, _ ->
+//                signup()
+//            }
+//        }
+//        alert.setButton(AlertDialog.BUTTON_POSITIVE, "關閉") { _, _ ->
+//            //finish()
+//        }
+//        alert.show()
     }
 
     fun signup() {
-        if (!member.isLoggedIn) {
-            warning("請先登入會員")
-            return
-        }
-        Loading.show(mask)
-        CourseService.signup(this, token!!, member.token!!, myTable!!.dateTable!!.token, course_deadline) { success ->
-            Loading.hide(mask)
-            val msg = CourseService.msg
-            var title = "警告"
-            val alert = AlertDialog.Builder(this).create()
-            if (CourseService.success) {
-                title = "提示"
-                alert.setButton(AlertDialog.BUTTON_POSITIVE, "關閉") { _, _ ->
-                    refresh()
-                }
-            } else {
-                alert.setButton(AlertDialog.BUTTON_POSITIVE, "關閉") { _, _ ->
-                }
-            }
-            alert.setTitle(title)
-            alert.setMessage(msg)
-
-            alert.show()
-        }
+//        if (!member.isLoggedIn) {
+//            warning("請先登入會員")
+//            return
+//        }
+//        Loading.show(mask)
+//        CourseService.signup(this, token!!, member.token!!, myTable!!.dateTable!!.token, course_deadline) { success ->
+//            Loading.hide(mask)
+//            val msg = CourseService.msg
+//            var title = "警告"
+//            val alert = AlertDialog.Builder(this).create()
+//            if (CourseService.success) {
+//                title = "提示"
+//                alert.setButton(AlertDialog.BUTTON_POSITIVE, "關閉") { _, _ ->
+//                    refresh()
+//                }
+//            } else {
+//                alert.setButton(AlertDialog.BUTTON_POSITIVE, "關閉") { _, _ ->
+//                }
+//            }
+//            alert.setTitle(title)
+//            alert.setMessage(msg)
+//
+//            alert.show()
+//        }
     }
 
     fun signupListButtonPressed(view: View) {
@@ -508,25 +479,25 @@ class ShowCourseVC : ShowVC() {
     }
 
     fun signupButtonPressed(view: View) {
-        if (!member.isLoggedIn) {
-            warning("請先登入會員")
-            return
-        }
-        Loading.show(mask)
-        CourseService.signup_date(this, token!!, member.token, myTable!!.dateTable!!.token) { success ->
-            Loading.hide(mask)
-            if (success) {
-                signup_date = CourseService.signup_date
-                //println(signup_date)
-                isSignup = signup_date.getBoolean("isSignup")
-                isStandby = signup_date.getBoolean("isStandby")
-                canCancelSignup = signup_date.getBoolean("cancel")
-                //signup_id = signup_date.getInt("signup_id")
-                course_date = signup_date.getString("date")
-                course_deadline = signup_date.getString("deadline")
-
-                showSignupModal()
-            }
-        }
+//        if (!member.isLoggedIn) {
+//            warning("請先登入會員")
+//            return
+//        }
+//        Loading.show(mask)
+//        CourseService.signup_date(this, token!!, member.token, myTable!!.dateTable!!.token) { success ->
+//            Loading.hide(mask)
+//            if (success) {
+//                signup_date = CourseService.signup_date
+//                //println(signup_date)
+//                isSignup = signup_date.getBoolean("isSignup")
+//                isStandby = signup_date.getBoolean("isStandby")
+//                canCancelSignup = signup_date.getBoolean("cancel")
+//                //signup_id = signup_date.getInt("signup_id")
+//                course_date = signup_date.getString("date")
+//                course_deadline = signup_date.getString("deadline")
+//
+//                showSignupModal()
+//            }
+//        }
     }
 }
