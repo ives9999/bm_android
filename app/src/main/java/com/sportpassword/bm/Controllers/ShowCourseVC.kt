@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
+import com.google.gson.JsonParseException
 import com.sportpassword.bm.Adapters.OlCell
 import com.sportpassword.bm.Models.*
 import com.sportpassword.bm.R
@@ -108,10 +109,16 @@ class ShowCourseVC : ShowVC() {
     }
 
     override fun genericTable() {
-        //storesTable = jsonToModel<StoresTable>(dataService.jsonString)
-        table = jsonToModel<CourseTable>(dataService.jsonString)
+        println(dataService.jsonString)
+        try {
+            table = jsonToModel<CourseTable>(dataService.jsonString)
+        } catch (e: JsonParseException) {
+            println(e.localizedMessage)
+        }
         if (table != null) {
             myTable = table as CourseTable
+        } else {
+            warning("解析伺服器所傳的字串失敗，請洽管理員")
         }
     }
 

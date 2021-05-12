@@ -537,6 +537,7 @@ open class DataService: BaseService() {
                 if (response != null) {
                     try {
                         jsonString = response.toString()
+                        println(jsonString)
                         this.success = true
                     } catch (e: Exception) {
                         this.success = false

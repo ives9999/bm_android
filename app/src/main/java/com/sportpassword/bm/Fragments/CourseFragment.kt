@@ -6,6 +6,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.*
 import android.widget.ImageButton
+import com.google.gson.JsonParseException
 import com.sportpassword.bm.Controllers.List1CellDelegate
 import com.sportpassword.bm.Controllers.ShowCourseVC
 import com.sportpassword.bm.Models.*
@@ -88,7 +89,11 @@ class CourseFragment : TabFragment() {
 
     override fun genericTable() {
         //println(dataService.jsonString)
-        mysTable = jsonToModels<CoursesTable>(dataService.jsonString)
+        try {
+            mysTable = jsonToModels<CoursesTable>(dataService.jsonString)
+        } catch (e: JsonParseException) {
+            println(e.localizedMessage)
+        }
         if (mysTable != null) {
             tables = mysTable
         }
@@ -188,8 +193,8 @@ class CourseFragment : TabFragment() {
         val courseTable = courseItem.row
         //superCourse.print()
         val intent = Intent(activity, ShowCourseVC::class.java)
-        intent.putExtra("course_token", courseTable.token)
-        intent.putExtra("title", courseTable.title)
+        intent.putExtra("token", courseTable.token)
+        //intent.putExtra("title", courseTable.title)
         startActivity(intent)
     }
 
