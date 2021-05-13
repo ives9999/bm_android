@@ -132,7 +132,6 @@ dependencies {
     implementation "tw.com.ecpay.paymentgatewaykit:ECPayPaymentGatewayKit:1.0.2"
     implementation "com.github.zhpanvip:BannerViewPager:3.5.0"
     implementation "com.fasterxml.jackson.module:jackson-module-kotlin:2.12.1"
-    implementation "io.github.microutils:kotlin-logging:1.12.5"
 }
 
 configurations.all {

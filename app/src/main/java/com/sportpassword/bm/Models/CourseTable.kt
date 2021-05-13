@@ -35,8 +35,8 @@ class CourseTable: Table() {
     var created_at_text: String = ""
     var coach: CoachTable? = null
     var dateTable: DateTable? = null
-    //var signupNormalTables: ArrayList<SignupNormalTable> = arrayListOf()
-    //var signupStandbyTables: ArrayList<SignupStandbyTable> = arrayListOf()
+    var signupNormalTables: ArrayList<SignupNormalTable> = arrayListOf()
+    var signupStandbyTables: ArrayList<SignupStandbyTable> = arrayListOf()
 
     //var nextCourseTime: [String: String] = [String: String]()
     var isSignup: Boolean = false

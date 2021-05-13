@@ -5,7 +5,7 @@ class CoachesTable: Tables() {
     var rows: ArrayList<CoachTable> = arrayListOf()
 }
 
-class CoachTable {
+class CoachTable: Table() {
 
 //    var email: String = ""
 //    var website: String = ""

@@ -3,6 +3,7 @@ package com.sportpassword.bm.Services
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.os.Environment
 import com.android.volley.Request
 import com.android.volley.Response
 import com.android.volley.toolbox.JsonArrayRequest
@@ -22,9 +23,9 @@ import java.lang.Exception
 import java.net.HttpURLConnection
 import java.net.URL
 import com.fasterxml.jackson.databind.ObjectMapper
-import mu.KotlinLogging
 import org.apache.http.client.HttpClient
 import org.apache.http.impl.client.HttpClientBuilder
+import java.io.File
 
 /**
  * Created by ives on 2018/2/14.
@@ -519,8 +520,6 @@ open class DataService: BaseService() {
 
     open fun getOne1(context: Context, params: HashMap<String, String>, complete: CompletionHandler) {
 
-        val logger = KotlinLogging.logger {}
-        logger.info { "test" }
         val url = getOneURL()
         //println(url)
 
@@ -541,7 +540,12 @@ open class DataService: BaseService() {
                 if (response != null) {
                     try {
                         jsonString = response.toString()
-                        //logger.info(jsonString)
+
+//                        val n = context.getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS)
+//                        println(n)
+//                        val fileName: String = "zzz.txt"
+//                        val myFile: File = File(n, fileName)
+//                        myFile.writeText(jsonString)
                         //println(jsonString)
                         this.success = true
                     } catch (e: Exception) {
