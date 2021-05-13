@@ -6,6 +6,8 @@ import android.os.Bundle
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 import com.google.gson.JsonParseException
+import com.sportpassword.bm.Adapters.IconCell
+import com.sportpassword.bm.Adapters.IconCellDelegate
 import com.sportpassword.bm.Adapters.OlCell
 import com.sportpassword.bm.Models.*
 import com.sportpassword.bm.R
@@ -20,7 +22,7 @@ import kotlinx.android.synthetic.main.mask.*
 import org.json.JSONObject
 import kotlin.reflect.full.memberProperties
 
-class ShowCourseVC : ShowVC() {
+class ShowCourseVC : ShowVC(), IconCellDelegate {
 
     var course_id: Int? = null
     var source: String  = "course" //course
@@ -44,6 +46,7 @@ class ShowCourseVC : ShowVC() {
 
     var myTable: CourseTable? = null
     var coachTable: CoachTable? = null
+    var dateTable: DateTable? = null
 
     lateinit var signupAdapter: GroupAdapter<ViewHolder>
     lateinit var coachAdapter: GroupAdapter<ViewHolder>
@@ -109,11 +112,12 @@ class ShowCourseVC : ShowVC() {
     }
 
     override fun genericTable() {
-        println(dataService.jsonString)
+        //println(dataService.jsonString)
         try {
             table = jsonToModel<CourseTable>(dataService.jsonString)
         } catch (e: JsonParseException) {
-            println(e.localizedMessage)
+            warning(e.localizedMessage)
+            //println(e.localizedMessage)
         }
         if (table != null) {
             myTable = table as CourseTable
@@ -162,6 +166,20 @@ class ShowCourseVC : ShowVC() {
         if (myTable != null) {
 
             setMainData(myTable!!)
+
+            if (myTable!!.coach != null) {
+                if (myTable!!.start_date != null && myTable!!.start_date.isNotEmpty()) {
+                    val date = myTable!!.start_date + " ~ " + myTable!!.end_date
+                    tableRows["date"]!!["content"] = date
+                } else {
+                    tableRowKeys.remove("date");
+                    //println(tableRowKeys);
+                    tableRows.remove("date");
+                }
+
+                val interval = myTable!!.interval_show
+                tableRows["interval_show"]!!["content"] = interval
+            }
             val items = generateCourseItem()
             adapter.update(items)
 
@@ -173,39 +191,21 @@ class ShowCourseVC : ShowVC() {
             }
 
             if (myTable!!.dateTable != null) {
-                setNextTime()
+                dateTable = myTable!!.dateTable
+                //setNextTime()
+                setSignupData()
             }
-
-
-//            if (myTable!!.coach != null) {
-//                if (myTable!!.start_date != null && myTable!!.start_date.isNotEmpty()) {
-//                    val date = myTable!!.start_date + " ~ " + myTable!!.end_date
-//                    tableRows["date"]!!["content"] = date
-//                } else {
-//                    tableRowKeys.remove("date");
-//                    //println(tableRowKeys);
-//                    tableRows.remove("date");
-//                }
-//
-//                val interval = myTable!!.start_time_text + " ~ " + myTable!!.end_time_text
-//                tableRows["interval"]!!["content"] = interval
-//            }
         }
     }
 
-//    fun setSignupData() {
-//        if (myTable != null) {
-//            val dateTable: DateTable? = myTable!!.dateTable
-//            if (dateTable != null) {
-//                val date: String = dateTable.date
-//                val start_time: String = myTable!!.start_time_show
-//                val end_time: String = myTable!!.end_time_show
-//                signupDateLbl.text = "下次上課時間：" + date + " " + start_time + " ~ " + end_time
-//                val items = generateSignupItem()
-//                signupAdapter.update(items)
-//            }
-//        }
-//    }
+    fun setSignupData() {
+        val date: String = dateTable!!.date
+        val start_time: String = myTable!!.start_time_show
+        val end_time: String = myTable!!.end_time_show
+        signupDateLbl.text = "下次上課時間：" + date + " " + start_time + " ~ " + end_time
+        val items = generateSignupItem()
+        signupAdapter.update(items)
+    }
 
     fun setCoachData() {
         for (key in coachTableRowKeys) {
@@ -222,26 +222,18 @@ class ShowCourseVC : ShowVC() {
         coachAdapter.update(items)
     }
 
-    fun setNextTime() {
-        if (myTable != null) {
-            val dateTable: DateTable? = myTable!!.dateTable
-            if (dateTable != null) {
-                val date: String = dateTable!!.date
-                val start_time: String = myTable!!.start_time_show
-                val end_time: String = myTable!!.end_time_show
-                val next_time = "下次上課時間：${date} ${start_time} ~ ${end_time}"
-                signupDateLbl.text = next_time
-                val items = generateSignupItem()
-                signupAdapter.update(items)
-            }
-        }
-
+//    fun setNextTime() {
+//        val date: String = dateTable!!.date
+//        val start_time: String = myTable!!.start_time_show
+//        val end_time: String = myTable!!.end_time_show
+//        val next_time = "下次上課時間：${date} ${start_time} ~ ${end_time}"
+//        signupDateLbl.text = next_time
 
 //        let nextCourseTime: [String: String] = courseTable!.nextCourseTime
 //        for key in signupTableRowKeys {
 //            signupTableRows[key]!["content"] = nextCourseTime[key]
 //        }
-    }
+//    }
 
 
 
@@ -288,11 +280,11 @@ class ShowCourseVC : ShowVC() {
                 if (row.containsKey("isPressed")) {
                     isPressed = row["isPressed"]!!.toBoolean()
                 }
-//                if (icon.length > 0 && title.length > 0) {
-//                    val iconCell = IconCell(this@ShowCourseVC, icon, title, content, isPressed)
-//                    iconCell.delegate = this
-//                    items.add(iconCell)
-//                }
+                if (icon.length > 0 && title.length > 0) {
+                    val iconCell = IconCell(this, icon, title, content, isPressed)
+                    iconCell.delegate = this
+                    items.add(iconCell)
+                }
             }
         }
 
@@ -320,11 +312,11 @@ class ShowCourseVC : ShowVC() {
 //                        content = content.mobileShow()
 //                    }
 //                }
-//                if (icon.length > 0 && title.length > 0) {
-//                    val iconCell = IconCell(this@ShowCourseVC, icon, title, content, false)
-//                    iconCell.delegate = this
-//                    items.add(iconCell)
-//                }
+////                if (icon.length > 0 && title.length > 0) {
+////                    val iconCell = IconCell(this@ShowCourseVC, icon, title, content, false)
+////                    iconCell.delegate = this
+////                    items.add(iconCell)
+////                }
 //            }
                 var name = ""
                 if (myTable!!.signupNormalTables.count() > i) {
@@ -374,18 +366,18 @@ class ShowCourseVC : ShowVC() {
                 if (row.containsKey("isPressed")) {
                     isPressed = row["isPressed"]!!.toBoolean()
                 }
-//                if (icon.length > 0 && title.length > 0) {
-//                    val iconCell = IconCell(this@ShowCourseVC, icon, title, content, isPressed)
-//                    iconCell.delegate = this
-//                    items.add(iconCell)
-//                }
+                if (icon.length > 0 && title.length > 0) {
+                    val iconCell = IconCell(this@ShowCourseVC, icon, title, content, isPressed)
+                    iconCell.delegate = this
+                    items.add(iconCell)
+                }
             }
         }
 
         return items
     }
 
-    fun didSelectRowAt(view: View, position: Int) {
+    override fun didSelectRowAt(view: View, position: Int) {
 //        println("delegate:"+position)
 //        val parent = view.parent
 //        if (parent is RecyclerView) {
