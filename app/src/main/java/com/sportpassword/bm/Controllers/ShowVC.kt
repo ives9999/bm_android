@@ -1,6 +1,7 @@
 package com.sportpassword.bm.Controllers
 
 import android.os.Bundle
+import android.view.View
 import com.sportpassword.bm.Models.CourseTable
 import com.sportpassword.bm.Models.CoursesTable
 import com.sportpassword.bm.Models.SuperCourse
@@ -26,6 +27,9 @@ open class ShowVC: BaseActivity() {
     var tableRows: HashMap<String, HashMap<String,String>> = hashMapOf()
 
     var table: Table? = null
+
+    var isLike: Boolean = false
+    var likeCount: Int = 0
 
     lateinit var adapter: GroupAdapter<ViewHolder>
 
@@ -68,6 +72,9 @@ open class ShowVC: BaseActivity() {
                         setFeatured()
                         setData()
                         setContent()
+                        isLike = table!!.like
+                        likeCount = table!!.like_count
+
                     }
 
 //                    if (superCourse != null) {
@@ -129,6 +136,25 @@ open class ShowVC: BaseActivity() {
         contentView.loadDataWithBaseURL(null, content, "text/html", "UTF-8", null)
         //contentView.loadData(strHtml, "text/html; charset=utf-8", "UTF-8")
         //contentView.loadData("<html><body style='background-color:#000;'>Hello, world!</body></html>", "text/html", "UTF-8")
+    }
+
+    fun setLike() {
+        isLike = !isLike
+        //likeButton.initStatus(isLike, table!.like_count)
+    }
+
+    fun likeButtonPressed(view: View) {
+        if (!member.isLoggedIn) {
+            toLogin()
+        } else {
+            if (table != null) {
+                isLike = !isLike
+                setLike()
+                dataService.like(this, table!!.token, table!!.id)
+            } else {
+                warning("沒有取得內容資料值，請稍後再試或洽管理員")
+            }
+        }
     }
 
     open fun setData() {}

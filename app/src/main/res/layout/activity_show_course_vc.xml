@@ -155,8 +155,8 @@
 
 
         <Button
-            android:id="@+id/bSearch"
-            style="@style/submit_button"
+            android:id="@+id/likeButton"
+            style="@style/like_button"
             android:layout_width="wrap_content"
             android:layout_height="30dp"
             android:drawableStart="@drawable/like_show"

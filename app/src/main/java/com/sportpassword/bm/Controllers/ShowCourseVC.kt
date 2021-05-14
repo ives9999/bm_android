@@ -523,9 +523,9 @@ class ShowCourseVC : ShowVC(), IconCellDelegate {
         }
     }
 
-    fun likeButtonPressed(view: View) {
-        if (!member.isLoggedIn) {
-            toLogin()
-        }
-    }
+//    fun likeButtonPressed(view: View) {
+//        if (!member.isLoggedIn) {
+//            toLogin()
+//        }
+//    }
 }
