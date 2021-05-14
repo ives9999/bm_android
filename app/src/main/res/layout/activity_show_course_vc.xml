@@ -86,6 +86,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/signupDateLbl"
+                    android:layout_marginTop="7dp"
                     android:layout_marginBottom="12dp"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
@@ -148,9 +149,20 @@
             style="@style/submit_button"
             android:layout_width="wrap_content"
             android:layout_height="30dp"
-            android:layout_marginRight="16dp"
+            android:layout_marginEnd="16dp"
             android:onClick="signupButtonPressed"
             android:text="報名" />
+
+
+        <Button
+            android:id="@+id/bSearch"
+            style="@style/submit_button"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:drawableStart="@drawable/like_show"
+            android:onClick="likeButtonPressed"
+            android:text="100人"
+            android:textSize="16dp" />
 
     </LinearLayout>
     <include layout="@layout/mask" />

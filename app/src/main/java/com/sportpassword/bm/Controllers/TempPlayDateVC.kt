@@ -43,7 +43,7 @@ class TempPlayDateVC : BaseActivity() {
                 tempPlayDateAdapter = TempPlayDateAdapter(this, rows, { position ->
                     val date = rows[position]
                     //println(date)
-                    goTempPlayDatePlayer(date, name, token)
+                    toTempPlayDatePlayer(date, name, token)
                 })
                 temp_play_date_list.adapter = tempPlayDateAdapter
                 val layoutManager = LinearLayoutManager(this)

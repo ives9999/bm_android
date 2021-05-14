@@ -77,10 +77,10 @@ class LoginActivity : BaseActivity() {
     }
 
     fun loginForgetPassword(view: View) {
-        goForgetPassword()
+        toForgetPassword()
     }
 
     fun loginRegister(view: View) {
-        goRegister()
+        toRegister()
     }
 }

@@ -142,14 +142,14 @@ class ManagerCourseVC1: MyTableVC1() {
                         onClick {
                             dialog.dismiss()
                             //if (token != null) {
-                                goEditCourse(row.title, row.token, row.coach.token)
+                                toEditCourse(row.title, row.token, row.coach.token)
                             //}
                         }
                     }
                     button("刪除") {
                         onClick {
                             dialog.dismiss()
-                            goDelete1("course", row.token!!)
+                            toDelete1("course", row.token!!)
                         }
                     }
                     button("取消") {
@@ -165,7 +165,7 @@ class ManagerCourseVC1: MyTableVC1() {
             Alert.show(this@ManagerCourseVC1, "錯誤", "未通過EMail認證，無法新增課程，認證完後，請先登出再登入")
         } else {
             if (token != null) {
-                goEditCourse("新增課程", "", token!!)
+                toEditCourse("新增課程", "", token!!)
             }
         }
     }

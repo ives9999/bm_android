@@ -74,7 +74,7 @@ class MemberOrderListVC : MyTableVC1() {
 
         val orderItem = item as OrderItem
         val table = orderItem.row
-        goPayment(table.token)
+        toPayment(table.token)
     }
 
     //分頁時使用，當往下移動到第n-1筆時，就向server取得下一頁的筆數

@@ -44,12 +44,12 @@ class MoreFragment : TabFragment() {
 
         val row2 = view.findViewById<ConstraintLayout>(R.id.more_coach_row)
         row2.setOnClickListener {
-            (activity!! as MainActivity).goCoach()
+            (activity!! as MainActivity).toCoach()
         }
 
         val row3 = view.findViewById<ConstraintLayout>(R.id.more_arena_row)
         row3.setOnClickListener {
-            (activity!! as MainActivity).goArena()
+            (activity!! as MainActivity).toArena()
 //            val fm = activity!!.supportFragmentManager
 //            val arenaFragment = ArenaFragment.newInstance("arena", screenWidth)
 //            fm.beginTransaction()
@@ -60,7 +60,7 @@ class MoreFragment : TabFragment() {
 
         val row4 = view.findViewById<ConstraintLayout>(R.id.more_teach_row)
         row4.setOnClickListener() {
-            (activity!! as MainActivity).goTeach()
+            (activity!! as MainActivity).toTeach()
 
             //val mainActivity = activity as MainActivity
             //mainActivity.test()
@@ -94,7 +94,7 @@ class MoreFragment : TabFragment() {
 
         val rowStore = view.findViewById<ConstraintLayout>(R.id.more_store_row)
         rowStore.setOnClickListener() {
-            (activity!! as MainActivity).goStore()
+            (activity!! as MainActivity).toStore()
 
             //val mainActivity = activity as MainActivity
             //mainActivity.test()
@@ -109,7 +109,7 @@ class MoreFragment : TabFragment() {
 
         val rowProduct = view.findViewById<ConstraintLayout>(R.id.more_product_row)
         rowProduct.setOnClickListener {
-            (activity!! as MainActivity).goProduct()
+            (activity!! as MainActivity).toProduct()
         }
 
         return view

@@ -230,7 +230,7 @@ class MainActivity : BaseActivity() {
     }
 
     fun search_team(view: View) {
-        goSearch("team")
+        toSearch("team")
     }
 
 //    private fun setMenuWidth() {

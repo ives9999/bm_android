@@ -581,11 +581,11 @@ class RegisterActivity : MyTableVC1(), ImagePicker, ValueChangedDelegate {
 //    }
 
     fun registerForgetPassword(view: View) {
-        goForgetPassword()
+        toForgetPassword()
     }
 
     fun registerLogin(view: View) {
-        goLogin()
+        toLogin()
     }
 
     fun cancel(view: View) {

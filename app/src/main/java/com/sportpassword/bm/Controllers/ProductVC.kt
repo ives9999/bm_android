@@ -159,7 +159,7 @@ class ProductVC : MyTableVC1() {
         val productItem = item as ProductItem
         val superProduct = productItem.row
         //superCourse.print()
-        goShowProduct(superProduct.token, superProduct.name)
+        toShowProduct(superProduct.token, superProduct.name)
     }
 }
 
@@ -173,7 +173,7 @@ class ProductItem(override var context: Context, var _row: ProductTable): ListIt
         val row: ProductTable = _row
         viewHolder.buyBtn.setOnClickListener {
             val a: ProductVC = context as ProductVC
-            a.goOrder(row.token)
+            a.toOrder(row.token)
         }
 
         if (row.prices.size > 0) {

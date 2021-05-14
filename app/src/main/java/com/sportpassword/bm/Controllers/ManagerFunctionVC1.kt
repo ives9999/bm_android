@@ -83,27 +83,27 @@ class ManagerFunctionVC1 : MyTableVC1() {
         when (source) {
             "coach" -> {
                 when (key) {
-                    "edit" -> goEdit(source, title, token)
-                    "calendar" -> goTimeTable(source, token)
-                    "signup_list" -> goTempPlayDate(title, token)
-                    "delete" -> goDelete(source, token)
-                    "course" -> goCourse(title, token)
+                    "edit" -> toEdit(source, title, token)
+                    "calendar" -> toTimeTable(source, token)
+                    "signup_list" -> toTempPlayDate(title, token)
+                    "delete" -> toDelete(source, token)
+                    "course" -> toCourse(title, token)
                 }
             }
             "team" -> {
                 when (key) {
-                    "edit" -> goEdit(source, title, token)
-                    "edit_tempplay" -> goTeamTempPlayEdit(token)
-                    "tempplay_list" -> goTempPlayDate(title, token)
-                    "delete" -> goDelete(source, token)
+                    "edit" -> toEdit(source, title, token)
+                    "edit_tempplay" -> toTeamTempPlayEdit(token)
+                    "tempplay_list" -> toTempPlayDate(title, token)
+                    "delete" -> toDelete(source, token)
                 }
             }
             "arena" -> {
                 when (key) {
-                    "edit" -> goEdit(source, title, token)
-                    "calendar" -> goEdit(source, title, token)
-                    "signup_list" -> goTempPlayDate(title, token)
-                    "delete" -> goDelete(source, token)
+                    "edit" -> toEdit(source, title, token)
+                    "calendar" -> toEdit(source, title, token)
+                    "signup_list" -> toTempPlayDate(title, token)
+                    "delete" -> toDelete(source, token)
                 }
             }
         }

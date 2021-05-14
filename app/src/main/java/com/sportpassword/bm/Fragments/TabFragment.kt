@@ -301,7 +301,7 @@ open class TabFragment : Fragment(), SearchItemDelegate, List1CellDelegate {
 
     override fun cellLike(row: Table) {
         if (!member.isLoggedIn) {
-            mainActivity!!.goLogin()
+            mainActivity!!.toLogin()
         } else {
             dataService.like(mainActivity!!, row.token, row.id)
         }

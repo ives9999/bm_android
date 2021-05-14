@@ -26,6 +26,18 @@ class CoachTable: Table() {
     override fun filterRow() {
         super.filterRow()
 
+        if (website == null) {
+            website = "未提供"
+        }
+
+        if (fb == null) {
+            fb = "未提供"
+        }
+
+        if (youtube == null) {
+            youtube = "未提供"
+        }
+
         if (seniority >= 0) {
             seniority_show = "${seniority}年"
         }

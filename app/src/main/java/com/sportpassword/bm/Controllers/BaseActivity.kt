@@ -323,17 +323,17 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
         finish()
     }
 
-    public fun goLogin() {
+    public fun toLogin() {
         val loginIntent: Intent = Intent(this, LoginActivity::class.java)
         startActivity(loginIntent)
     }
 
-    public fun goRegister() {
+    public fun toRegister() {
         val registerIntent: Intent = Intent(this, RegisterActivity::class.java)
         startActivity(registerIntent)
     }
 
-    public fun goForgetPassword() {
+    public fun toForgetPassword() {
         val forgetPasswordIntent: Intent = Intent(this, ForgetPasswordActivity::class.java)
         startActivity(forgetPasswordIntent)
     }
@@ -343,7 +343,7 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
         startActivity(intent)
     }
 
-    public fun goEdit(source: String, title: String = "", token: String = "") {
+    public fun toEdit(source: String, title: String = "", token: String = "") {
         val intent = Intent(this, EditVC1::class.java)
         intent.putExtra("token", token)
         intent.putExtra("source", source)
@@ -351,17 +351,17 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
         startActivity(intent)
     }
 
-    fun goTeamTempPlayEdit(token: String) {
+    fun toTeamTempPlayEdit(token: String) {
         val intent = Intent(this, TeamTempPlayEditActivity::class.java)
         intent.putExtra("token", token)
         startActivity(intent)
     }
 
     fun manager(view: View) {
-        goManager(view.tag as String)
+        toManager(view.tag as String)
     }
 
-    fun goManager(page: String) {
+    fun toManager(page: String) {
         if (!member.isLoggedIn) {
             Alert.show(this, "警告", "請先登入會員")
             return
@@ -378,7 +378,7 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
             startActivity(intent)
         }
     }
-    fun goManagerFunction(title: String, token: String, source: String) {
+    fun toManagerFunction(title: String, token: String, source: String) {
         val intent = Intent(this, ManagerFunctionVC1::class.java)
         intent.putExtra("title", title)
         intent.putExtra("token", token)
@@ -386,7 +386,7 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
         startActivity(intent)
     }
 
-    fun goEditCourse(title: String, course_token: String, coach_token: String) {
+    fun toEditCourse(title: String, course_token: String, coach_token: String) {
         val intent = Intent(this, EditCourseVC1::class.java)
         intent.putExtra("title", title)
         intent.putExtra("course_token", course_token)
@@ -395,13 +395,13 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
         startActivityForResult(intent, GENERAL_REQUEST_CODE)
     }
 
-    public fun goTempPlayDate(name: String, token: String) {
+    public fun toTempPlayDate(name: String, token: String) {
         val intent = Intent(this, TempPlayDateVC::class.java)
         intent.putExtra("name", name)
         intent.putExtra("token", token)
         startActivity(intent)
     }
-    public fun goTempPlayDatePlayer(date: String, name: String, token: String) {
+    public fun toTempPlayDatePlayer(date: String, name: String, token: String) {
         val intent = Intent(this, TempPlayDatePlayerVC::class.java)
         intent.putExtra("date", date)
         intent.putExtra("teamName", name)
@@ -409,23 +409,23 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
         startActivity(intent)
     }
 
-    public fun goSearch(type: String) {
+    public fun toSearch(type: String) {
         //val intent = Intent(this)
     }
 
-    public fun goDelete(page: String, token: String = "") {
+    public fun toDelete(page: String, token: String = "") {
         Alert.delete(this, {
             Loading.show(mask)
             dataService.delete(this, page, token) { success ->
                 Loading.hide(mask)
 //                val teamUpdate = Intent(NOTIF_TEAM_UPDATE)
 //                LocalBroadcastManager.getInstance(this).sendBroadcast(teamUpdate)
-                goManager(page)
+                toManager(page)
             }
         })
     }
 
-    fun goDelete1(page: String, token: String = "") {
+    fun toDelete1(page: String, token: String = "") {
         Alert.delete(this, {
             Loading.show(mask)
             dataService.delete(this, page, token) { success ->
@@ -435,18 +435,18 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
         })
     }
 
-    public fun goEditMember() {
+    public fun toEditMember() {
         val accountIntent = Intent(this, AccountActivity::class.java)
         startActivity(accountIntent)
     }
 
-    public fun goValidate(type: String) {
+    public fun toValidate(type: String) {
         val intent = Intent(this, ValidateActivity::class.java)
         intent.putExtra("type", type)
         startActivityForResult(intent, VALIDATE_REQUEST_CODE)
     }
 
-    public fun goTempPlaySignupOne(teamId: Int, teamToken: String, teamName: String, near_date: String, memberToken: String, status: String, off_at: String) {
+    public fun toTempPlaySignupOne(teamId: Int, teamToken: String, teamName: String, near_date: String, memberToken: String, status: String, off_at: String) {
         val i = Intent(this, TempPlaySignupOneVC::class.java)
         i.putExtra("id", teamId)
         i.putExtra("name", teamName)
@@ -458,56 +458,56 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
         startActivity(i)
     }
 
-    fun goBlackList() {
+    fun toBlackList() {
         val intent = Intent(this, BlackListVC::class.java)
         startActivity(intent)
     }
 
-    fun goCoach() {
+    fun toCoach() {
         val i = Intent(this, CoachVC::class.java)
         i.putExtra("type", "coach")
         i.putExtra("titleField", "name")
         startActivity(i)
     }
 
-    fun goArena() {
+    fun toArena() {
         val i = Intent(this, ArenaVC::class.java)
         i.putExtra("type", "arena")
         i.putExtra("titleField", "name")
         startActivity(i)
     }
 
-    fun goTeach() {
+    fun toTeach() {
         val i = Intent(this, TeachVC::class.java)
         i.putExtra("type", "teach")
         i.putExtra("titleField", "title")
         startActivity(i)
     }
 
-    fun goStore() {
+    fun toStore() {
         val i = Intent(this, StoreVC::class.java)
         i.putExtra("type", "store")
         i.putExtra("titleField", "name")
         startActivity(i)
     }
 
-    fun goProduct() {
+    fun toProduct() {
         val i = Intent(this, ProductVC::class.java)
         startActivity(i)
     }
 
-    fun goShowProduct(token: String, title: String) {
+    fun toShowProduct(token: String, title: String) {
         val i = Intent(this, ShowProductVC::class.java)
         i.putExtra("product_token", token)
         i.putExtra("title", title)
         startActivity(i)
     }
 
-    fun goOrder(product_token: String) {
+    fun toOrder(product_token: String) {
         var msg: String = ""
         if (!member.isLoggedIn) {
             warning("必須先登入會員，才能進行購買", true, "登入") {
-                goLogin()
+                toLogin()
             }
         } else {
             //val _member: Member = Member(JSONObject())
@@ -521,7 +521,7 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
 
             if (msg.isNotEmpty()) {
                 warning(msg, true, "填寫") {
-                    goRegister()
+                    toRegister()
                 }
             } else {
 
@@ -533,7 +533,7 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
         }
     }
 
-    fun goPayment(order_token: String, ecpay_token: String?=null, tokenExpireDate: String?=null) {
+    fun toPayment(order_token: String, ecpay_token: String?=null, tokenExpireDate: String?=null) {
         val i = Intent(this, PaymentVC::class.java)
         i.putExtra("order_token", order_token)
         if (ecpay_token != null) {
@@ -546,21 +546,21 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
     }
 
 
-    fun goTimeTable(source: String, token: String) {
+    fun toTimeTable(source: String, token: String) {
         val i = Intent(this, TimeTableVC::class.java)
         i.putExtra("source", source)
         i.putExtra("token", token)
         startActivity(i)
     }
 
-    fun goCourse(name: String, token: String) {
+    fun toCourse(name: String, token: String) {
         val i = Intent(this, ManagerCourseVC1::class.java)
         i.putExtra("token", token)
         i.putExtra("name", name)
         startActivity(i)
     }
 
-    fun goMemberOrderList() {
+    fun toMemberOrderList() {
         val i = Intent(this, MemberOrderListVC::class.java)
         startActivity(i)
     }

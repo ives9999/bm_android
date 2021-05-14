@@ -199,14 +199,14 @@ class MemberFragment: TabFragment() {
         val segue = memberItem.segue
 
         when(segue) {
-            "account" -> mainActivity!!.goRegister()
-            "password" -> goUpdatePassword()
-            "email" -> mainActivity!!.goValidate("email")
-            "mobile" -> mainActivity!!.goValidate("mobile")
+            "account" -> mainActivity!!.toRegister()
+            "password" -> toUpdatePassword()
+            "email" -> mainActivity!!.toValidate("email")
+            "mobile" -> mainActivity!!.toValidate("mobile")
 //            "blacklist" -> goBlackList()
-            "calendar_course_signup" -> goCalendarCourseSignup()
+            "calendar_course_signup" -> toCalendarCourseSignup()
             "refresh" -> refresh()
-            "member_order_list" -> mainActivity!!.goMemberOrderList()
+            "member_order_list" -> mainActivity!!.toMemberOrderList()
         }
     }
 
@@ -241,12 +241,12 @@ class MemberFragment: TabFragment() {
         startActivity(forgetPasswordIntent)
     }
 
-    fun goUpdatePassword() {
+    fun toUpdatePassword() {
         val updatePasswordIntent = Intent(activity, UpdatePasswordActivity::class.java)
         startActivity(updatePasswordIntent)
     }
 
-    fun goCalendarCourseSignup() {
+    fun toCalendarCourseSignup() {
         val intent = Intent(activity, CourseCalendarVC::class.java)
         startActivity(intent)
     }

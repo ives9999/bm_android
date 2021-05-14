@@ -82,16 +82,16 @@ class CourseTable: Table() {
             people_limit_show = "未提供報名"
         }
 
-//        if (signupNormalTables.count > 0) {
-//            signup_count_show = "\(signupNormalTables.count)位"
-//        } else {
-//            signup_count_show = "0位"
-//        }
-//
-//        if (coach != null) {
-//            mobile = coach!!.mobile
-//            mobile_show = mobile.mobileShow()
-//            coach!!.filterRow()
-//        }
+        if (signupNormalTables.size > 0) {
+            signup_count_show = "${signupNormalTables.size}位"
+        } else {
+            signup_count_show = "0位"
+        }
+
+        if (coach != null) {
+            mobile = coach!!.mobile
+            mobile_show = mobile.mobileShow()
+            coach!!.filterRow()
+        }
     }
 }

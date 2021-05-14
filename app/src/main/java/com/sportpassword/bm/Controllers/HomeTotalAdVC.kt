@@ -55,7 +55,7 @@ class HomeTotalAdVC : BaseActivity() {
     }
 
     fun submitBtnPressed(view: View) {
-        goProduct()
+        toProduct()
     }
 
     fun cancelBtnPressed(view: View) {

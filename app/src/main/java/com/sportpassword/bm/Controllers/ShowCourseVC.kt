@@ -121,6 +121,7 @@ class ShowCourseVC : ShowVC(), IconCellDelegate {
         }
         if (table != null) {
             myTable = table as CourseTable
+            myTable!!.filterRow()
         } else {
             warning("解析伺服器所傳的字串失敗，請洽管理員")
         }
@@ -519,6 +520,12 @@ class ShowCourseVC : ShowVC(), IconCellDelegate {
 
                 showSignupModal()
             }
+        }
+    }
+
+    fun likeButtonPressed(view: View) {
+        if (!member.isLoggedIn) {
+            toLogin()
         }
     }
 }

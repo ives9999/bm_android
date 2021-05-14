@@ -56,7 +56,7 @@ class ShowTempPlayActivity : BaseActivity() {
                 val id: Int = data[ID_KEY]!!["value"] as Int
                 setTeamData(featuredView)
                 signupsAdapter = SignupsAdapter(this, {token, near_date, status, off_at ->
-                    goTempPlaySignupOne(id, teamToken, name, near_date, token, status, off_at)
+                    toTempPlaySignupOne(id, teamToken, name, near_date, token, status, off_at)
                 })
                 val layoutManager = LinearLayoutManager(this)
                 show_signups_container.adapter = signupsAdapter
@@ -83,13 +83,13 @@ class ShowTempPlayActivity : BaseActivity() {
         }
         if ((member.validate and MOBILE_VALIDATE) == 0) {
             warning("要使用臨打功能，須先通過手機認證", true, "手機認證", {
-                goValidate("mobile")
+                toValidate("mobile")
             })
             return
         }
         if (member.name!!.length == 0) {
             warning("要使用臨打功能，請先輸入真實姓名", true, "輸入姓名", {
-                goEditMember()
+                toEditMember()
             })
             return
         }

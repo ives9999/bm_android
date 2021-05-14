@@ -66,7 +66,7 @@ class ManagerVC : BaseActivity() {
 //                }
                 managerAdapter = ManagerAdapter(this, dataService.superDataLists,
                         { title, token ->
-                            goManagerFunction(title, token, source)
+                            toManagerFunction(title, token, source)
                         }
                 )
                 manager_list.adapter = managerAdapter
@@ -80,7 +80,7 @@ class ManagerVC : BaseActivity() {
         if (member.validate < 1) {
             Alert.show(this@ManagerVC, "錯誤", "未通過EMail認證，無法新增球隊，認證完後，請先登出再登入")
         } else {
-            goEdit(source)
+            toEdit(source)
         }
     }
 }

@@ -257,7 +257,7 @@ abstract class MyTableVC1 : BaseActivity(), List1CellDelegate {
 
     override fun cellLike(row: Table) {
         if (!member.isLoggedIn) {
-            goLogin()
+            toLogin()
         } else {
             dataService.like(this, row.token, row.id)
         }
