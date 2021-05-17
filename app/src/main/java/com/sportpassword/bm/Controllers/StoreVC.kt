@@ -12,8 +12,12 @@ import com.sportpassword.bm.Utilities.*
 import com.xwray.groupie.kotlinandroidextensions.Item
 import com.xwray.groupie.kotlinandroidextensions.ViewHolder
 import kotlinx.android.synthetic.main.activity_store_vc.*
+import kotlinx.android.synthetic.main.arena_list_cell.*
 import kotlinx.android.synthetic.main.mask.*
 import kotlinx.android.synthetic.main.store_list_cell.*
+import kotlinx.android.synthetic.main.store_list_cell.cityBtn
+import kotlinx.android.synthetic.main.store_list_cell.telLbl
+import kotlinx.android.synthetic.main.store_list_cell.titleLbl
 import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
 
@@ -176,6 +180,12 @@ class StoreItem(override var context: Context, var _row: StoreTable): ListItem<T
         viewHolder.business_timeTxt.text = "${row.open_time_show}~${row.close_time_show}"
 
         viewHolder.addressTxt.text = row.address
+
+        if (row.tel_show.isNotEmpty()) {
+            viewHolder.telLbl.text = row.tel_show
+        } else {
+            viewHolder.telLbl.text = "電話：未提供"
+        }
 
 //如果要啟動管理功能，請打開這個註解
 //        var showManager = false
