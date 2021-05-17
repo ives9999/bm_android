@@ -46,5 +46,17 @@ class StoreTable: Table() {
         if (open_time != null && close_time != null && open_time.length > 0 && close_time.length > 0) {
             interval_show = "${open_time_show}~${close_time_show}"
         }
+
+        if (line == null) {
+            line = "未提供"
+        }
+
+        if (website == null) {
+            website = "未提供"
+        }
+
+        if (email == null) {
+            email = "未提供"
+        }
     }
 }

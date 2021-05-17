@@ -1,9 +1,7 @@
 package com.sportpassword.bm.Models
 
-import com.sportpassword.bm.Utilities.BASE_URL
-import com.sportpassword.bm.Utilities.Global
+import com.sportpassword.bm.Utilities.*
 import com.sportpassword.bm.Utilities.mobileShow
-import com.sportpassword.bm.Utilities.noTime
 
 //因為 data class 不太適用於繼承，所以這邊就不用 data class的宣告
 //class Tables<T: Table> {
@@ -62,7 +60,7 @@ open class Table {
         }
 
         if (tel != null && tel.isNotEmpty()) {
-            tel_show = tel.mobileShow()
+            tel_show = tel.telShow()
         }
 
         if (created_at.isNotEmpty()) {
