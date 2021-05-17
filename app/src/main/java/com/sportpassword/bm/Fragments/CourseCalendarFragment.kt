@@ -49,15 +49,15 @@ class CourseCalendarFragment : TabFragment() {
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater!!.inflate(R.menu.search_manager, menu)
+        inflater.inflate(R.menu.search_manager, menu)
         super.onCreateOptionsMenu(menu, inflater)
-        val memuView = menu!!.findItem(R.id.menu_search_manager).actionView
+        val memuView = menu.findItem(R.id.menu_search_manager).actionView
 
         val searchBtn = memuView.findViewById<ImageButton>(R.id.search)
-        val ManagerBtn = memuView.findViewById<ImageButton>(R.id.manager)
+        //val ManagerBtn = memuView.findViewById<ImageButton>(R.id.manager)
 
         searchBtn.tag = type
-        ManagerBtn.tag = type
+        //ManagerBtn.tag = type
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -135,7 +135,7 @@ class CourseCalendarFragment : TabFragment() {
 
             val d: Date = date.toDate()!!
             val weekday_i = d.dateToWeekday()
-            println(weekday_i)
+            //println(weekday_i)
             val weekday_c: String = d.dateToWeekdayForChinese()
 
             viewHolder.date.text = "%s(%s)".format(date, weekday_c)
@@ -149,8 +149,8 @@ class CourseCalendarFragment : TabFragment() {
     companion object {
         // TODO: Rename parameter arguments, choose names that match
         // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-        private val ARG_PARAM1 = "TYPE"
-        private val ARG_PARAM2 = "SCREEN_WIDTH"
+        private const val ARG_PARAM1 = "TYPE"
+        private const val ARG_PARAM2 = "SCREEN_WIDTH"
 
         /**
          * Use this factory method to create a new instance of

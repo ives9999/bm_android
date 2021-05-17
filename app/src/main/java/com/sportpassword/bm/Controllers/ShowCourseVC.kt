@@ -22,10 +22,10 @@ import kotlinx.android.synthetic.main.mask.*
 import org.json.JSONObject
 import kotlin.reflect.full.memberProperties
 
-class ShowCourseVC : ShowVC(), IconCellDelegate {
+class ShowCourseVC : ShowVC() {
 
-    var course_id: Int? = null
-    var source: String  = "course" //course
+    //var course_id: Int? = null
+    //var source: String  = "course" //course
 
     val coachTableRowKeys:Array<String> = arrayOf(NAME_KEY,MOBILE_KEY,LINE_KEY,FB_KEY,YOUTUBE_KEY,WEBSITE_KEY,EMAIL_KEY)
     var coachTableRows: HashMap<String, HashMap<String, String>> = hashMapOf(
@@ -91,10 +91,6 @@ class ShowCourseVC : ShowVC(), IconCellDelegate {
 
     override fun initAdapter() {
         super.initAdapter()
-
-        val timetableItems = generateCourseItem()
-        adapter.addAll(timetableItems)
-        tableView.adapter = adapter
 
         signupAdapter = GroupAdapter()
         val signupItems = generateSignupItem()
@@ -166,8 +162,6 @@ class ShowCourseVC : ShowVC(), IconCellDelegate {
 
         if (myTable != null) {
 
-            setMainData(myTable!!)
-
             if (myTable!!.coach != null) {
                 if (myTable!!.start_date != null && myTable!!.start_date.isNotEmpty()) {
                     val date = myTable!!.start_date + " ~ " + myTable!!.end_date
@@ -181,8 +175,7 @@ class ShowCourseVC : ShowVC(), IconCellDelegate {
                 val interval = myTable!!.interval_show
                 tableRows["interval_show"]!!["content"] = interval
             }
-            val items = generateCourseItem()
-            adapter.update(items)
+            setMainData(myTable!!)
 
             if (myTable!!.coach != null) {
                 coachTable = myTable!!.coach
@@ -259,38 +252,38 @@ class ShowCourseVC : ShowVC(), IconCellDelegate {
 //                    }
 //    }
 
-    fun generateCourseItem(): ArrayList<Item> {
-
-        val items: ArrayList<Item> = arrayListOf()
-        var icon = ""
-        var title = ""
-        var content = ""
-        var isPressed: Boolean = false
-        for (key in tableRowKeys) {
-            if (tableRows.containsKey(key)) {
-                val row = tableRows[key]!!
-                if (row.containsKey("icon")) {
-                    icon = row["icon"]!!
-                }
-                if (row.containsKey("title")) {
-                    title = row["title"]!!
-                }
-                if (row.containsKey("content")) {
-                    content = row["content"]!!
-                }
-                if (row.containsKey("isPressed")) {
-                    isPressed = row["isPressed"]!!.toBoolean()
-                }
-                if (icon.length > 0 && title.length > 0) {
-                    val iconCell = IconCell(this, icon, title, content, isPressed)
-                    iconCell.delegate = this
-                    items.add(iconCell)
-                }
-            }
-        }
-
-        return items
-    }
+//    fun generateCourseItem(): ArrayList<Item> {
+//
+//        val items: ArrayList<Item> = arrayListOf()
+//        var icon = ""
+//        var title = ""
+//        var content = ""
+//        var isPressed: Boolean = false
+//        for (key in tableRowKeys) {
+//            if (tableRows.containsKey(key)) {
+//                val row = tableRows[key]!!
+//                if (row.containsKey("icon")) {
+//                    icon = row["icon"]!!
+//                }
+//                if (row.containsKey("title")) {
+//                    title = row["title"]!!
+//                }
+//                if (row.containsKey("content")) {
+//                    content = row["content"]!!
+//                }
+//                if (row.containsKey("isPressed")) {
+//                    isPressed = row["isPressed"]!!.toBoolean()
+//                }
+//                if (icon.length > 0 && title.length > 0) {
+//                    val iconCell = IconCell(this, icon, title, content, isPressed)
+//                    iconCell.delegate = this
+//                    items.add(iconCell)
+//                }
+//            }
+//        }
+//
+//        return items
+//    }
 
     fun generateSignupItem(): ArrayList<Item> {
         val items: ArrayList<Item> = arrayListOf()
@@ -379,49 +372,49 @@ class ShowCourseVC : ShowVC(), IconCellDelegate {
     }
 
     override fun didSelectRowAt(view: View, position: Int) {
-//        println("delegate:"+position)
-//        val parent = view.parent
-//        if (parent is RecyclerView) {
-//            val p = parent as RecyclerView
-//            //println(p.getIDString())
-//            val id = p.getIDString()
-//            if (id == coachTableView.getIDString()) {
-//                //println(position)
-//                val key = coachTableRowKeys[position]
-//                if (key == NAME_KEY) {
-//                    val intent = Intent(this, ShowActivity::class.java)
-//                    intent.putExtra("type", source)
-//                    intent.putExtra("token", coachTable!!.token)
-//                    intent.putExtra("title", coachTable!!.name)
-//                    startActivity(intent)
-//                } else if (key == MOBILE_KEY) {
-//                    val mobile = coachTable!!.mobile
-//                    this.mobile = mobile
-//                    val permission: String = android.Manifest.permission.CALL_PHONE
-//                    if (permissionExist(permission)) {
-//                        mobile.makeCall(this)
-//                    } else {
-//                        val permissions = arrayOf(permission)
-//                        requestPermission(permissions, REQUEST_PHONE_CALL)
-//                    }
-//                } else if (key == LINE_KEY) {
-//                    val line = coachTable!!.line
-//                    line.line(this)
-//                } else if (key == FB_KEY) {
-//                    val fb = coachTable!!.fb
-//                    fb.fb(this)
-//                } else if (key == YOUTUBE_KEY) {
-//                    val youtube = coachTable!!.youtube
-//                    youtube.youtube(this)
-//                } else if (key == WEBSITE_KEY) {
-//                    val website = coachTable!!.website
-//                    website.website(this)
-//                } else if (key == EMAIL_KEY) {
-//                    val email = coachTable!!.email
-//                    email.email(this)
-//                }
-//            }
-//        }
+        //println("delegate:"+position)
+        val parent = view.parent
+        if (parent is RecyclerView) {
+            val p = parent as RecyclerView
+            //println(p.getIDString())
+            val id = p.getIDString()
+            if (id == coachTableView.getIDString()) {
+                //println(position)
+                val key = coachTableRowKeys[position]
+                if (key == NAME_KEY) {
+                    val intent = Intent(this, ShowActivity::class.java)
+                    //intent.putExtra("type", source)
+                    intent.putExtra("token", coachTable!!.token)
+                    intent.putExtra("title", coachTable!!.name)
+                    startActivity(intent)
+                } else if (key == MOBILE_KEY) {
+                    val mobile = coachTable!!.mobile
+                    this.mobile = mobile
+                    val permission: String = android.Manifest.permission.CALL_PHONE
+                    if (permissionExist(permission)) {
+                        mobile.makeCall(this)
+                    } else {
+                        val permissions = arrayOf(permission)
+                        requestPermission(permissions, REQUEST_PHONE_CALL)
+                    }
+                } else if (key == LINE_KEY) {
+                    val line = coachTable!!.line
+                    line.line(this)
+                } else if (key == FB_KEY) {
+                    val fb = coachTable!!.fb
+                    fb.fb(this)
+                } else if (key == YOUTUBE_KEY) {
+                    val youtube = coachTable!!.youtube
+                    youtube.youtube(this)
+                } else if (key == WEBSITE_KEY) {
+                    val website = coachTable!!.website
+                    website.website(this)
+                } else if (key == EMAIL_KEY) {
+                    val email = coachTable!!.email
+                    email.email(this)
+                }
+            }
+        }
     }
 
     fun showSignupModal() {

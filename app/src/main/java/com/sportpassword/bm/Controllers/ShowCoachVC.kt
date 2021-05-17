@@ -1,5 +1,6 @@
 package com.sportpassword.bm.Controllers
 
+import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.Color
 import android.os.Bundle
@@ -10,32 +11,27 @@ import android.view.ViewGroup
 import android.webkit.WebView
 import android.widget.LinearLayout
 import android.widget.TextView
-import com.sportpassword.bm.Adapters.IconCell
-import com.sportpassword.bm.Adapters.IconCellDelegate
-import com.sportpassword.bm.Models.SuperCoach
-import com.sportpassword.bm.Models.SuperCourses
-import com.sportpassword.bm.Models.Timetables
+import com.google.gson.JsonParseException
+import com.sportpassword.bm.Models.*
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.CoachService
 import com.sportpassword.bm.Services.CourseService
 import com.sportpassword.bm.Utilities.*
+import com.squareup.picasso.Picasso
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.kotlinandroidextensions.Item
 import com.xwray.groupie.kotlinandroidextensions.ViewHolder
 import kotlinx.android.synthetic.main.activity_show_coach_vc.*
-import kotlinx.android.synthetic.main.mask.*
+import kotlinx.android.synthetic.main.activity_show_coach_vc.featured
+import kotlinx.android.synthetic.main.manager_course_item.*
 import org.jetbrains.anko.backgroundColor
 import org.jetbrains.anko.textColor
-import kotlin.reflect.full.memberProperties
 
-class ShowCoachVC : BaseActivity(), IconCellDelegate {
+class ShowCoachVC: ShowVC() {
 
-    var type: String? = null
-    var token: String? = null
-
-    var superCoach: SuperCoach? = null
-    var superCourses: SuperCourses? = null
-    var timetables: Timetables? = null
+    var myTable: CoachTable? = null
+    var coursesTable: CoursesTable? = null
+    //var timetables: Timetables? = null
     var city_id: Int = 0
     //var params: HashMap<String, Any> = hashMapOf() define in BaseActivity
     var featured: Bitmap? = null
@@ -51,98 +47,45 @@ class ShowCoachVC : BaseActivity(), IconCellDelegate {
     val eventViews: ArrayList<ViewGroup> = arrayListOf()
     var eventTag: Int = 0
 
-    lateinit var contactAdapter: GroupAdapter<ViewHolder>
     lateinit var courseAdapter: GroupAdapter<ViewHolder>
-    val contactRowKeys:ArrayList<String> = arrayListOf(MOBILE_KEY,LINE_KEY,FB_KEY,YOUTUBE_KEY,WEBSITE_KEY,EMAIL_KEY,COACH_SENIORITY_KEY,CREATED_AT_KEY,PV_KEY)
-    var contactRows: HashMap<String, HashMap<String,String>> = hashMapOf(
-    MOBILE_KEY to hashMapOf("icon" to "mobile","title" to "行動電話","content" to "","isPressed" to "true"),
-    LINE_KEY to hashMapOf("icon" to "lineicon","title" to "line id","content" to "","isPressed" to "false"),
-    FB_KEY to hashMapOf("icon" to "fb","title" to "fb","content" to "","isPressed" to "true"),
-    YOUTUBE_KEY to hashMapOf("icon" to "youtube","title" to "youtube","content" to "","isPressed" to "true"),
-    WEBSITE_KEY to hashMapOf("icon" to "website","title" to "網站","content" to "","isPressed" to "true"),
-    EMAIL_KEY to hashMapOf("icon" to "email","title" to "email","content" to "","isPressed" to "true"),
-    COACH_SENIORITY_KEY to hashMapOf("icon" to "seniority","title" to "年資","content" to "","isPressed" to "false"),
-    CREATED_AT_KEY to hashMapOf("icon" to "calendar","title" to "建立日期","content" to "","isPressed" to "false"),
-    PV_KEY to hashMapOf("icon" to "pv","title" to "瀏覽數","content" to "","isPressed" to "false")
-    )
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+
         setContentView(R.layout.activity_show_coach_vc)
 
-        type = intent.getStringExtra("type")
-        token = intent.getStringExtra("token")
-        val title = intent.getStringExtra("title")
-        setMyTitle(title)
+        dataService = CoachService
+        refreshLayout = refresh
+        setRefreshListener()
+        initAdapter()
+        initCourseAdapter()
+
+        super.onCreate(savedInstanceState)
+
         //timetableCellWidth = screenWidth.toFloat() / columnNum.toFloat()
         //addGrid()
 
-        webViewSettings(this@ShowCoachVC, chargeWebView)
-        webViewSettings(this@ShowCoachVC, expWebView)
-        webViewSettings(this@ShowCoachVC, licenseWebView)
-        webViewSettings(this@ShowCoachVC, featWebView)
-        webViewSettings(this@ShowCoachVC, detailWebView)
+        tableRowKeys = arrayListOf(MOBILE_KEY,LINE_KEY,FB_KEY,YOUTUBE_KEY,WEBSITE_KEY,EMAIL_KEY,COACH_SENIORITY_KEY,CREATED_AT_KEY,PV_KEY)
+        tableRows = hashMapOf(
+            MOBILE_KEY to hashMapOf("icon" to "mobile","title" to "行動電話","content" to "","isPressed" to "true"),
+            LINE_KEY to hashMapOf("icon" to "lineicon","title" to "line id","content" to "","isPressed" to "false"),
+            FB_KEY to hashMapOf("icon" to "fb","title" to "fb","content" to "","isPressed" to "true"),
+            YOUTUBE_KEY to hashMapOf("icon" to "youtube","title" to "youtube","content" to "","isPressed" to "true"),
+            WEBSITE_KEY to hashMapOf("icon" to "website","title" to "網站","content" to "","isPressed" to "true"),
+            EMAIL_KEY to hashMapOf("icon" to "email","title" to "email","content" to "","isPressed" to "true"),
+            COACH_SENIORITY_KEY to hashMapOf("icon" to "seniority","title" to "年資","content" to "","isPressed" to "false"),
+            CREATED_AT_KEY to hashMapOf("icon" to "calendar","title" to "建立日期","content" to "","isPressed" to "false"),
+            PV_KEY to hashMapOf("icon" to "pv","title" to "瀏覽數","content" to "","isPressed" to "false")
+        )
 
-        refreshLayout = refresh
-        setRefreshListener()
+        webViewSettings(this, chargeWebView)
+        webViewSettings(this, expWebView)
+        webViewSettings(this, licenseWebView)
+        webViewSettings(this, featWebView)
+        webViewSettings(this, contentView)
 
-        initContactAdapter()
-        initCourseAdapter()
         refresh()
     }
 
-    override fun refresh() {
-        Loading.show(mask)
-        val params: HashMap<String, String> = hashMapOf("token" to token!!)
-        CoachService.getOne(this, params) { success1 ->
-            if (success1) {
-                this.superCoach = CoachService.superModel as SuperCoach
-                for (key in contactRowKeys) {
-                    val kc = superCoach!!::class
-                    kc.memberProperties.forEach {
-                        if (key == it.name) {
-                            val value = it.getter.call(superCoach).toString()
-                            contactRows[key]!!["content"] = value
-                        }
-                    }
-                }
-                this.getFeatured()
-
-                var filter: HashMap<String, Any>? = null
-                if (superCoach != null) {
-                    filter = hashMapOf("coach_id" to superCoach!!.id)
-                }
-
-                CourseService.getList(this, token, filter, 1, 100) { success ->
-
-                    if (success) {
-                        superCourses = CourseService.superModel as SuperCourses
-                        val items = generateCourseItems()
-                        courseAdapter.update(items)
-                        courseAdapter.notifyDataSetChanged()
-                    }
-                }
-                Loading.hide(mask)
-                closeRefresh()
-//                CoachService.getTT(this, token!!, type!!) { success2 ->
-//                    if (success2) {
-//                        this.timetables = CoachService.timetables
-////                        for (row in this.timetables!!.rows) {
-////                            row.print()
-////                        }
-//                        markEvent()
-//                    }
-//                }
-            }
-        }
-    }
-
-    fun initContactAdapter() {
-        contactAdapter = GroupAdapter()
-        val contactItems = generateContactItem()
-        contactAdapter.addAll(contactItems)
-        contactTableView.adapter = contactAdapter
-    }
     fun initCourseAdapter() {
         courseAdapter = GroupAdapter()
         val courseItems = generateCourseItems()
@@ -150,97 +93,171 @@ class ShowCoachVC : BaseActivity(), IconCellDelegate {
         courseTableView.adapter = courseAdapter
     }
 
-    fun generateContactItem(): ArrayList<Item> {
-        var items: ArrayList<Item> = arrayListOf()
-        var icon = ""
-        var title = ""
-        var content = ""
-        var isPressed: Boolean = false
-        for (key in contactRowKeys) {
-            if (contactRows.containsKey(key)) {
-                val row = contactRows[key]!!
-                if (row.containsKey("icon")) {
-                    icon = row["icon"]!!
-                }
-                if (row.containsKey("title")) {
-                    title = row["title"]!!
-                }
-                if (row.containsKey("content")) {
-                    content = row["content"]!!
-                }
-                if (row.containsKey("isPressed")) {
-                    isPressed = row["isPressed"]!!.toBoolean()
-                }
-                if (icon.length > 0 && title.length > 0) {
-                    val iconCell = IconCell(this@ShowCoachVC, icon, title, content, isPressed)
-                    iconCell.delegate = this
-                    items.add(iconCell)
-                }
-            }
-        }
 
-        return items
+    override fun genericTable() {
+        //println(dataService.jsonString)
+        try {
+            table = jsonToModel<CoachTable>(dataService.jsonString)
+        } catch (e: JsonParseException) {
+            warning(e.localizedMessage!!)
+            //println(e.localizedMessage)
+        }
+        if (table != null) {
+            myTable = table as CoachTable
+            myTable!!.filterRow()
+        } else {
+            warning("解析伺服器所傳的字串失敗，請洽管理員")
+        }
     }
+
+//    override fun refresh() {
+//        Loading.show(mask)
+//        val params: HashMap<String, String> = hashMapOf("token" to token!!)
+//        CoachService.getOne(this, params) { success1 ->
+//            if (success1) {
+//                this.superCoach = CoachService.superModel as SuperCoach
+//                for (key in contactRowKeys) {
+//                    val kc = superCoach!!::class
+//                    kc.memberProperties.forEach {
+//                        if (key == it.name) {
+//                            val value = it.getter.call(superCoach).toString()
+//                            contactRows[key]!!["content"] = value
+//                        }
+//                    }
+//                }
+//                this.getFeatured()
+//
+//                var filter: HashMap<String, Any>? = null
+//                if (superCoach != null) {
+//                    filter = hashMapOf("coach_id" to superCoach!!.id)
+//                }
+//
+//                CourseService.getList(this, token, filter, 1, 100) { success ->
+//
+//                    if (success) {
+//                        superCourses = CourseService.superModel as SuperCourses
+//                        val items = generateCourseItems()
+//                        courseAdapter.update(items)
+//                        courseAdapter.notifyDataSetChanged()
+//                    }
+//                }
+//                Loading.hide(mask)
+//                closeRefresh()
+////                CoachService.getTT(this, token!!, type!!) { success2 ->
+////                    if (success2) {
+////                        this.timetables = CoachService.timetables
+//////                        for (row in this.timetables!!.rows) {
+//////                            row.print()
+//////                        }
+////                        markEvent()
+////                    }
+////                }
+//            }
+//        }
+//    }
+
+//    fun initContactAdapter() {
+//        contactAdapter = GroupAdapter()
+//        val contactItems = generateContactItem()
+//        contactAdapter.addAll(contactItems)
+//        contactTableView.adapter = contactAdapter
+//    }
+//
+
+//    fun generateContactItem(): ArrayList<Item> {
+//        var items: ArrayList<Item> = arrayListOf()
+//        var icon = ""
+//        var title = ""
+//        var content = ""
+//        var isPressed: Boolean = false
+//        for (key in contactRowKeys) {
+//            if (contactRows.containsKey(key)) {
+//                val row = contactRows[key]!!
+//                if (row.containsKey("icon")) {
+//                    icon = row["icon"]!!
+//                }
+//                if (row.containsKey("title")) {
+//                    title = row["title"]!!
+//                }
+//                if (row.containsKey("content")) {
+//                    content = row["content"]!!
+//                }
+//                if (row.containsKey("isPressed")) {
+//                    isPressed = row["isPressed"]!!.toBoolean()
+//                }
+//                if (icon.length > 0 && title.length > 0) {
+//                    val iconCell = IconCell(this, icon, title, content, isPressed)
+//                    iconCell.delegate = this
+//                    items.add(iconCell)
+//                }
+//            }
+//        }
+//
+//        return items
+//    }
 
     fun generateCourseItems(): ArrayList<Item> {
         val items: ArrayList<Item> = arrayListOf()
-        if (superCourses != null) {
-            for (row in superCourses!!.rows) {
-                items.add(ManagerCourseItem(this@ShowCoachVC, row))
+        if (coursesTable != null) {
+            for (row in coursesTable!!.rows) {
+                items.add(CoachCourseItem(this, row))
             }
         }
 
         return items
     }
 
-    fun getFeatured() {
-        val url = BASE_URL + superCoach!!.featured_path
-        CoachService.getImage(url) { success ->
-            if (success) {
-                this.featured = CoachService.image
-                if (this.featured != null) {
-                    featuredView.layoutParams.height = featured!!.height
-                    featuredView.setImageBitmap(featured!!)
-                }
-            }
-        }
-        setData()
-    }
-
-    fun setData() {
-        if (superCoach != null) {
-            if (superCoach!!.citys != null) {
-                if (superCoach!!.citys.size > 0) {
-                    for (city in superCoach!!.citys) {
-                        city_id = city.id
-                        params["city_id"] = arrayListOf(city_id)
-                        params["city_type"] = "all"
-                        buyBtn.setText(city.name)
-                    }
-                } else {
-                    buyBtn.visibility = View.GONE
+    override fun setData() {
+        if (myTable != null) {
+            if (myTable!!.citys.size > 0) {
+                for (city in myTable!!.citys) {
+                    params["city_id"] = arrayListOf(city.id)
+                    params["city_type"] = "all"
+                    cityBtn.setText(city.name)
                 }
             } else {
-                buyBtn.visibility = View.GONE
+                cityBtn.visibility = View.GONE
             }
-            setContact()
-            setWeb(chargeWebView, superCoach!!.charge)
-            setWeb(expWebView, superCoach!!.exp)
-            setWeb(licenseWebView, superCoach!!.license)
-            setWeb(featWebView, superCoach!!.feat)
-            setWeb(detailWebView, superCoach!!.content)
-        }
-    }
 
-    fun setContact() {
-        val items = generateContactItem()
-        contactAdapter.update(items)
+            setMainData(myTable!!)
+            if (myTable!!.charge != null) {
+                setWeb(chargeWebView, myTable!!.charge)
+            }
+            if (myTable!!.exp != null) {
+                setWeb(expWebView, myTable!!.exp)
+            }
+            if (myTable!!.license != null) {
+                setWeb(licenseWebView, myTable!!.license)
+            }
+            if (myTable!!.feat != null) {
+                setWeb(featWebView, myTable!!.feat)
+            }
+
+            setCourse()
+        }
     }
 
     fun setWeb(webView: WebView, content: String) {
         val html: String = "<html><HEAD><meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0, shrink-to-fit=no\">"+body_css+"</HEAD><body>"+content+"</body></html>"
         //println(content)
         webView.loadDataWithBaseURL(null, html, "text/html", "UTF-8", null)
+    }
+
+    fun setCourse() {
+        var filter: HashMap<String, Any>? = null
+        if (myTable != null) {
+            filter = hashMapOf("coach_id" to myTable!!.id)
+        }
+        CourseService.getList1(this, token, filter, 1, 100) { success ->
+
+            if (success) {
+                //println(CourseService.jsonString)
+                coursesTable = jsonToModels<CoursesTable>(CourseService.jsonString)
+                val items = generateCourseItems()
+                courseAdapter.update(items)
+                courseAdapter.notifyDataSetChanged()
+            }
+        }
     }
 
 //    fun addGrid() {
@@ -377,9 +394,9 @@ class ShowCoachVC : BaseActivity(), IconCellDelegate {
 //    }
 
     override fun didSelectRowAt(view: View, position: Int) {
-        val key = contactRowKeys[position]
+        val key = tableRowKeys[position]
         if (key == MOBILE_KEY) {
-            val mobile = superCoach!!.mobile
+            val mobile = myTable!!.mobile
             this.mobile = mobile
             val permission: String = android.Manifest.permission.CALL_PHONE
             if (permissionExist(permission)) {
@@ -389,20 +406,34 @@ class ShowCoachVC : BaseActivity(), IconCellDelegate {
                 requestPermission(permissions, REQUEST_PHONE_CALL)
             }
         } else if (key == LINE_KEY) {
-            val line = superCoach!!.line
+            val line = myTable!!.line
             line.line(this)
         } else if (key == FB_KEY) {
-            val fb = superCoach!!.fb
+            val fb = myTable!!.fb
             fb.fb(this)
         } else if (key == YOUTUBE_KEY) {
-            val youtube = superCoach!!.youtube
+            val youtube = myTable!!.youtube
             youtube.youtube(this)
         } else if (key == WEBSITE_KEY) {
-            val website = superCoach!!.website
+            val website = myTable!!.website
             website.website(this)
         } else if (key == EMAIL_KEY) {
-            val email = superCoach!!.email
+            val email = myTable!!.email
             email.email(this)
         }
     }
+}
+
+class CoachCourseItem(val context: Context, val courseTable: CourseTable): Item() {
+    override fun bind(viewHolder: com.xwray.groupie.kotlinandroidextensions.ViewHolder, position: Int) {
+        viewHolder.title.text = courseTable.title
+        Picasso.with(context)
+            .load(BASE_URL + courseTable.featured_path)
+            .placeholder(R.drawable.loading_square)
+            .error(R.drawable.load_failed_square)
+            .into(viewHolder.featured)
+    }
+
+    override fun getLayout() = R.layout.manager_course_item
+
 }

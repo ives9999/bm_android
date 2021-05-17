@@ -46,19 +46,18 @@ class CourseFragment : TabFragment() {
         adapter.setOnItemClickListener { item, view ->
             rowClick(item, view)
         }
-
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.search_manager, menu)
         super.onCreateOptionsMenu(menu, inflater)
-        val memuView = menu!!.findItem(R.id.menu_search_manager).actionView
+        val memuView = menu.findItem(R.id.menu_search_manager).actionView
 
         val searchBtn = memuView.findViewById<ImageButton>(R.id.search)
-        val ManagerBtn = memuView.findViewById<ImageButton>(R.id.manager)
+        //val ManagerBtn = memuView.findViewById<ImageButton>(R.id.manager)
 
         searchBtn.tag = type
-        ManagerBtn.tag = type
+        //ManagerBtn.tag = type
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -205,7 +204,7 @@ class CourseFragment : TabFragment() {
         refresh()
     }
 
-    fun prepareParams() {
+    private fun prepareParams() {
         params.clear()
         if (mainActivity!!.keyword.length > 0) {
             val row = getSearchRow(KEYWORD_KEY)
@@ -258,7 +257,7 @@ class CourseFragment : TabFragment() {
         }
     }
 
-    fun getSearchRow(key: String): HashMap<String, String>? {
+    private fun getSearchRow(key: String): HashMap<String, String>? {
         var row: HashMap<String, String>? = null
         for ((i, searchRow) in _searchRows.withIndex()) {
             if (searchRow.containsKey("key")) {
@@ -272,11 +271,11 @@ class CourseFragment : TabFragment() {
         return row
     }
 
-    fun updateSearchRow(idx: Int, row: HashMap<String, String>) {
+    private fun updateSearchRow(idx: Int, row: HashMap<String, String>) {
         _searchRows[idx] = row
     }
 
-    fun updateSearchRow(key: String, row: HashMap<String, String>) {
+    private fun updateSearchRow(key: String, row: HashMap<String, String>) {
         var idx: Int = -1
         for ((i, searchRow) in _searchRows.withIndex()) {
             if (searchRow.containsKey("key")) {
@@ -294,8 +293,8 @@ class CourseFragment : TabFragment() {
     companion object {
         // TODO: Rename parameter arguments, choose names that match
         // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-        private val ARG_PARAM1 = "TYPE"
-        private val ARG_PARAM2 = "SCREEN_WIDTH"
+        private const val ARG_PARAM1 = "TYPE"
+        private const val ARG_PARAM2 = "SCREEN_WIDTH"
 
         /**
          * Use this factory method to create a new instance of

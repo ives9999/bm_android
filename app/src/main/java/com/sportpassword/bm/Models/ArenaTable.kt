@@ -30,6 +30,7 @@ class ArenaTable: Table() {
     var interval_show: String = ""
     var air_condition_show: String = ""
     var parking_show: String = ""
+    var bathroom_show: String = ""
 
     override fun filterRow() {
         
@@ -44,8 +45,8 @@ class ArenaTable: Table() {
         }
         
         when (air_condition) {
-        1 -> air_condition_show = "空調：有"
-        0 -> air_condition_show = "空調：無"
+        1 -> air_condition_show = "有"
+        0 -> air_condition_show = "無"
         else -> air_condition_show = "未提供"
         }
         
@@ -53,6 +54,12 @@ class ArenaTable: Table() {
             parking_show = "${parking}個"
         } else {
             parking_show = "未提供"
+        }
+
+        if (bathroom > 0) {
+            bathroom_show = "${bathroom}個"
+        } else {
+            bathroom_show = "未提供"
         }
         
         if (city_id > 0 && area_id > 0) {

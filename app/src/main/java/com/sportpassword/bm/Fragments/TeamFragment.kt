@@ -1,10 +1,12 @@
 package com.sportpassword.bm.Fragments
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.view.*
 import android.widget.ImageButton
 import com.sportpassword.bm.Controllers.List1CellDelegate
+import com.sportpassword.bm.Controllers.ShowCourseVC
 import com.sportpassword.bm.Models.*
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.CourseService
@@ -13,6 +15,7 @@ import kotlinx.android.synthetic.main.mask.*
 import com.sportpassword.bm.Utilities.*
 import com.squareup.picasso.Picasso
 import com.xwray.groupie.GroupAdapter
+import com.xwray.groupie.ViewHolder
 import com.xwray.groupie.kotlinandroidextensions.Item
 import kotlinx.android.synthetic.main.team_list_cell.*
 import kotlinx.android.synthetic.main.tab_course.*
@@ -54,10 +57,10 @@ class TeamFragment: TabFragment() {
         val memuView = menu.findItem(R.id.menu_search_manager).actionView
 
         val searchBtn = memuView.findViewById<ImageButton>(R.id.search)
-        val ManagerBtn = memuView.findViewById<ImageButton>(R.id.manager)
+        //val ManagerBtn = memuView.findViewById<ImageButton>(R.id.manager)
 
         searchBtn.tag = type
-        ManagerBtn.tag = type
+        //ManagerBtn.tag = type
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -112,6 +115,13 @@ class TeamFragment: TabFragment() {
         return items
     }
 
+    override fun rowClick(item: com.xwray.groupie.Item<ViewHolder>, view: View) {
+
+        val teamItem = item as TeamItem
+        val table = teamItem.row
+        mainActivity!!.toShowTeam(table.token)
+    }
+
     override fun setUserVisibleHint(isVisibleToUser: Boolean) {
         super.setUserVisibleHint(isVisibleToUser)
         if (isVisibleToUser && bInit) {
@@ -132,8 +142,8 @@ class TeamFragment: TabFragment() {
     companion object {
         // TODO: Rename parameter arguments, choose names that match
         // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-        private val ARG_PARAM1 = "TYPE"
-        private val ARG_PARAM2 = "SCREEN_WIDTH"
+        private const val ARG_PARAM1 = "TYPE"
+        private const val ARG_PARAM2 = "SCREEN_WIDTH"
 
         /**
          * Use this factory method to create a new instance of

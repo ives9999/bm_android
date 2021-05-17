@@ -79,12 +79,9 @@ class ArenaVC : MyTableVC1() {
     override fun rowClick(item: com.xwray.groupie.Item<com.xwray.groupie.ViewHolder>, view: View) {
 
         val arenaItem = item as ArenaItem
-        val arenaTable = arenaItem.row
+        val table = arenaItem.row
         //superCourse.print()
-        val intent = Intent(this, ShowCoachVC::class.java)
-        intent.putExtra("arena_token", arenaTable.token)
-        intent.putExtra("title", arenaTable.name)
-        startActivity(intent)
+        toShowArena(table.token)
     }
 
     override fun remove(indexPath: IndexPath) {
@@ -122,6 +119,12 @@ class ArenaItem(override var context: Context, var _row: ArenaTable): ListItem<T
             viewHolder.cityBtn.visibility = View.GONE
         }
 
+        if (row.tel_show.isNotEmpty()) {
+            viewHolder.telLbl.text = row.tel_show
+        } else {
+            viewHolder.telLbl.text = "電話：未提供"
+        }
+
         viewHolder.parkingLbl.text = "停車場:${row.parking_show}"
 
         if (row.interval_show.isNotEmpty()) {
@@ -130,7 +133,7 @@ class ArenaItem(override var context: Context, var _row: ArenaTable): ListItem<T
             viewHolder.intervalLbl.text = "未提供"
         }
 
-        viewHolder.air_conditionLbl.text = row.air_condition_show
+        viewHolder.air_conditionLbl.text = "空調:${row.air_condition_show}"
     }
 
     override fun getLayout() = R.layout.arena_list_cell

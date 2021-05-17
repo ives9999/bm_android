@@ -63,8 +63,8 @@ abstract class MyTableVC1 : BaseActivity(), List1CellDelegate {
         val memuView = menu!!.findItem(R.id.menu_search_manager).actionView
 
         val searchBtn = memuView.findViewById<ImageButton>(R.id.search)
-        val ManagerBtn = memuView.findViewById<ImageButton>(R.id.manager)
-        ManagerBtn.visibility = View.GONE
+//        val ManagerBtn = memuView.findViewById<ImageButton>(R.id.manager)
+//        ManagerBtn.visibility = View.GONE
 
         searchBtn.tag = "store"
 

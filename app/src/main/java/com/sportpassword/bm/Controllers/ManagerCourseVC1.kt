@@ -8,6 +8,7 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.View
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import com.sportpassword.bm.Models.CourseTable
 import com.sportpassword.bm.Models.SuperCourse
 import com.sportpassword.bm.Models.SuperCourses
 import com.sportpassword.bm.R
@@ -115,7 +116,7 @@ class ManagerCourseVC1: MyTableVC1() {
         val items: ArrayList<Item> = arrayListOf()
         if (superCourses != null) {
             for (row in superCourses!!.rows) {
-                items.add(ManagerCourseItem(this@ManagerCourseVC1, row))
+                //items.add(ManagerCourseItem(this@ManagerCourseVC1, row))
             }
         }
 
@@ -124,7 +125,7 @@ class ManagerCourseVC1: MyTableVC1() {
 
     override fun rowClick(item: com.xwray.groupie.Item<ViewHolder>, view: View) {
         val managerCourseItem = item as ManagerCourseItem
-        val row = managerCourseItem.superCourse
+        val row = managerCourseItem.courseTable
         dialog = alert {
             title = "選項"
             customView {
@@ -142,14 +143,14 @@ class ManagerCourseVC1: MyTableVC1() {
                         onClick {
                             dialog.dismiss()
                             //if (token != null) {
-                                toEditCourse(row.title, row.token, row.coach.token)
+                                toEditCourse(row.title, row.token, row.coach!!.token)
                             //}
                         }
                     }
                     button("刪除") {
                         onClick {
                             dialog.dismiss()
-                            toDelete1("course", row.token!!)
+                            toDelete1("course", row.token)
                         }
                     }
                     button("取消") {
@@ -171,11 +172,11 @@ class ManagerCourseVC1: MyTableVC1() {
     }
 }
 
-class ManagerCourseItem(val context: Context, val superCourse: SuperCourse): Item() {
+class ManagerCourseItem(val context: Context, val courseTable: CourseTable): Item() {
     override fun bind(viewHolder: com.xwray.groupie.kotlinandroidextensions.ViewHolder, position: Int) {
-        viewHolder.title.text = superCourse.title
+        viewHolder.title.text = courseTable.title
         Picasso.with(context)
-                .load(BASE_URL + superCourse.featured_path)
+                .load(BASE_URL + courseTable.featured_path)
                 .placeholder(R.drawable.loading_square)
                 .error(R.drawable.load_failed_square)
                 .into(viewHolder.featured)

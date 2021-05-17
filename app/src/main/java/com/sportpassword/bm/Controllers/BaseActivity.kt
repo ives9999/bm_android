@@ -496,10 +496,33 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
         startActivity(i)
     }
 
-    fun toShowProduct(token: String, title: String) {
+    fun toShowTeam(token: String) {
+        val i = Intent(this, ShowTeamVC::class.java)
+        i.putExtra("token", token)
+        startActivity(i)
+    }
+
+    fun toShowCoach(token: String) {
+        val i = Intent(this, ShowCoachVC::class.java)
+        i.putExtra("token", token)
+        startActivity(i)
+    }
+
+    fun toShowArena(token: String) {
+        val i = Intent(this, ShowArenaVC::class.java)
+        i.putExtra("token", token)
+        startActivity(i)
+    }
+
+    fun toShowProduct(token: String) {
         val i = Intent(this, ShowProductVC::class.java)
-        i.putExtra("product_token", token)
-        i.putExtra("title", title)
+        i.putExtra("token", token)
+        startActivity(i)
+    }
+
+    fun toShowStore(token: String) {
+        val i = Intent(this, ShowStoreVC::class.java)
+        i.putExtra("token", token)
         startActivity(i)
     }
 

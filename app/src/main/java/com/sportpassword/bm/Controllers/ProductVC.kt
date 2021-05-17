@@ -26,7 +26,7 @@ class ProductVC : MyTableVC1() {
             hashMapOf("title" to "縣市","key" to CITY_KEY,"value" to "","value_type" to "Array","show" to "不限"),
     )
 
-    var productsTable: ProductsTable? = null
+    var mysTable: ProductsTable? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -48,9 +48,9 @@ class ProductVC : MyTableVC1() {
     }
 
     override fun genericTable() {
-        productsTable = jsonToModels<ProductsTable>(dataService.jsonString)
-        if (productsTable != null) {
-            tables = productsTable
+        mysTable = jsonToModels<ProductsTable>(dataService.jsonString)
+        if (mysTable != null) {
+            tables = mysTable
         }
     }
 
@@ -142,8 +142,8 @@ class ProductVC : MyTableVC1() {
 
     override fun generateItems(): ArrayList<Item> {
         val items: ArrayList<Item> = arrayListOf()
-        if (productsTable != null) {
-            for (row in productsTable!!.rows) {
+        if (mysTable != null) {
+            for (row in mysTable!!.rows) {
                 row.filterRow()
                 val productItem = ProductItem(this, row)
                 productItem.list1CellDelegate = this
@@ -157,9 +157,9 @@ class ProductVC : MyTableVC1() {
     override fun rowClick(item: com.xwray.groupie.Item<com.xwray.groupie.ViewHolder>, view: View) {
 
         val productItem = item as ProductItem
-        val superProduct = productItem.row
+        val myTable = productItem.row
         //superCourse.print()
-        toShowProduct(superProduct.token, superProduct.name)
+        toShowProduct(myTable.token)
     }
 }
 

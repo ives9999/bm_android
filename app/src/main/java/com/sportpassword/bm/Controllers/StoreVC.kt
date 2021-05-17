@@ -157,12 +157,8 @@ class StoreVC : MyTableVC1() {
     override fun rowClick(item: com.xwray.groupie.Item<com.xwray.groupie.ViewHolder>, view: View) {
 
         val storeItem = item as StoreItem
-        val superStore = storeItem.row
-        //superCourse.print()
-        val intent = Intent(this, ShowStoreVC::class.java)
-        intent.putExtra("store_token", superStore.token)
-        intent.putExtra("title", superStore.name)
-        startActivity(intent)
+        val table = storeItem.row
+        toShowStore(table!!.token)
     }
 }
 

@@ -105,7 +105,8 @@ open class DataService: BaseService() {
 //                        if (s != null) {
 //                            tables = s as T2
 //                        }
-                        jsonString = response.toString()
+                        this.jsonString = response.toString()
+                        //println(jsonString)
                         this.success = true
                     } catch (e: Exception) {
                         this.success = false
@@ -410,7 +411,7 @@ open class DataService: BaseService() {
         val likeUrl: String = getLikeURL(token)
         println(likeUrl)
 
-        val params = mapOf("member_token" to member.token, "able_id" to able_id)
+        val params = mapOf("member_token" to member.token, "able_id" to able_id, "device" to "app")
         val objectMapper = ObjectMapper()
         val body: String = objectMapper.writeValueAsString(params)
 
@@ -521,7 +522,7 @@ open class DataService: BaseService() {
     open fun getOne1(context: Context, params: HashMap<String, String>, complete: CompletionHandler) {
 
         val url = getOneURL()
-        //println(url)
+        println(url)
 
         val header: MutableList<Pair<String, String>> = mutableListOf()
         header.add(Pair("Accept","application/json"))
@@ -531,7 +532,7 @@ open class DataService: BaseService() {
         val objectMapper = ObjectMapper()
         val body: String = objectMapper.writeValueAsString(params)
 
-        //println(body)
+        println(body)
 
         MyHttpClient.instance.post(context, url, body) { success ->
 

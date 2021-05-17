@@ -72,6 +72,9 @@ open class Table {
         if (updated_at.isNotEmpty()) {
             updated_at_show = updated_at.noTime()
         }
+        if (content == null) {
+            content = ""
+        }
     }
 
 //    public fun printRow() {

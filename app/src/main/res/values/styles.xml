@@ -97,7 +97,7 @@
     </style>
 
     <style name="like_button">
-        <item name="android:background">@drawable/button_rc</item>
+        <item name="android:background">@drawable/button_like</item>
         <item name="android:textColor">@color/WHITE</item>
     </style>
 

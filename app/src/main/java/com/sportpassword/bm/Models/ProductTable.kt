@@ -32,7 +32,7 @@ class ProductTable: Table() {
         super.filterRow()
         if (images.size > 0) {
             for ((idx, image) in images.withIndex()) {
-                if (!image.startsWith("http://") || !image.startsWith("https://")) {
+                if (!image.startsWith("http://") && !image.startsWith("https://")) {
                     val _image = BASE_URL + image
                     images[idx] = _image
                 }

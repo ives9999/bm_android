@@ -72,7 +72,7 @@
                                 android:textAllCaps="false"
                                 app:layout_constraintStart_toEndOf="@+id/listFeatured"
                                 app:layout_constraintTop_toTopOf="@+id/listFeatured"
-                                tools:text="體育用品店" />
+                                tools:text="標題" />
                         </LinearLayout>
 
                         <LinearLayout

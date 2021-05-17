@@ -1,37 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/background"
     tools:context=".Controllers.ShowCoachVC">
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/refresh"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
         android:background="@drawable/background"
         android:clickable="true"
         android:focusable="true"
-        android:focusableInTouchMode="true"
-        tools:context=".Controllers.TimeTableVC">
+        android:focusableInTouchMode="true">
 
 
         <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_marginLeft="12dp"
-            android:layout_marginTop="12dp">
+            android:layout_marginTop="12dp"
+            >
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
+                android:paddingBottom="200dp"
                 >
 
                 <Button
-                    android:id="@+id/buyBtn"
+                    android:id="@+id/cityBtn"
                     android:layout_width="wrap_content"
                     android:layout_height="30dp"
                     android:layout_marginLeft="12dp"
@@ -40,7 +42,7 @@
                     android:textSize="18dp" />
 
                 <ImageView
-                    android:id="@+id/featuredView"
+                    android:id="@+id/featured"
                     android:layout_width="match_parent"
                     android:layout_height="200dp"
                     android:layout_marginTop="12dp"
@@ -48,98 +50,98 @@
                     app:srcCompat="@drawable/loading_square" />
 
                 <TextView
-                    android:id="@+id/contactLbl"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="12dp"
-                    android:layout_marginTop="12dp"
-                    android:text="聯絡資料"
-                    android:textColor="@color/MY_RED"
-                    android:textSize="18sp" />
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/contactTableView"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" >
-
-                </androidx.recyclerview.widget.RecyclerView>
-
-                <TextView
                     android:id="@+id/courseLbl"
+                    style="@style/list_text_title"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="12dp"
                     android:layout_marginTop="12dp"
                     android:text="課程"
-                    android:textColor="@color/MY_RED"
                     android:textSize="18sp" />
+
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/courseTableView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" >
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager">
+
+                </androidx.recyclerview.widget.RecyclerView>
+
+                <TextView
+                    android:id="@+id/mainDataLbl"
+                    style="@style/list_text_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="12dp"
+                    android:layout_marginTop="12dp"
+                    android:text="聯絡資料"
+                    android:textSize="18sp" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/tableView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/mainDataLbl"
+                    android:layout_marginBottom="12dp"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager">
 
                 </androidx.recyclerview.widget.RecyclerView>
 
                 <TextView
                     android:id="@+id/chargeLbl"
+                    style="@style/list_text_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="12dp"
                     android:layout_marginTop="12dp"
                     android:text="收費方式"
-                    android:textColor="@color/MY_RED"
                     android:textSize="18sp" />
 
                 <WebView
                     android:id="@+id/chargeWebView"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    >
+                    android:layout_height="wrap_content">
 
                 </WebView>
 
                 <TextView
                     android:id="@+id/expLbl"
+                    style="@style/list_text_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="12dp"
                     android:layout_marginTop="12dp"
                     android:text="經歷"
-                    android:textColor="@color/MY_RED"
                     android:textSize="18sp" />
 
                 <WebView
                     android:id="@+id/expWebView"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    />
+                    android:layout_height="wrap_content" />
 
                 <TextView
                     android:id="@+id/licenseLbl"
+                    style="@style/list_text_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="12dp"
                     android:layout_marginTop="12dp"
                     android:text="證照"
-                    android:textColor="@color/MY_RED"
                     android:textSize="18sp" />
 
                 <WebView
                     android:id="@+id/licenseWebView"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    />
+                    android:layout_height="wrap_content" />
 
                 <TextView
                     android:id="@+id/featLbl"
+                    style="@style/list_text_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="12dp"
                     android:layout_marginTop="12dp"
                     android:text="比賽成績"
-                    android:textColor="@color/MY_RED"
                     android:textSize="18sp" />
 
                 <WebView
@@ -148,17 +150,17 @@
                     android:layout_height="wrap_content" />
 
                 <TextView
-                    android:id="@+id/detailLbl"
+                    android:id="@+id/contentDataLbl"
+                    style="@style/list_text_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="12dp"
                     android:layout_marginTop="12dp"
                     android:text="詳細介紹"
-                    android:textColor="@color/MY_RED"
                     android:textSize="18sp" />
 
                 <WebView
-                    android:id="@+id/detailWebView"
+                    android:id="@+id/contentView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
 
@@ -167,6 +169,28 @@
         </androidx.core.widget.NestedScrollView>
 
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+    <LinearLayout
+        android:id="@+id/footer"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_alignParentBottom="true"
+        android:background="@color/MY_GREEN"
+        android:gravity="center|center_vertical"
+        android:orientation="horizontal">
+
+
+        <Button
+            android:id="@+id/likeButton"
+            style="@style/like_button"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:drawableStart="@drawable/like_show"
+            android:onClick="likeButtonPressed"
+            android:text="100人"
+            android:textSize="16dp" />
+
+    </LinearLayout>
     <include layout="@layout/mask" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</RelativeLayout>

@@ -51,7 +51,7 @@ class CoachVC : MyTableVC1() {
         val memuView = menu!!.findItem(R.id.menu_search_manager).actionView
 
         val searchBtn = memuView.findViewById<ImageButton>(R.id.search)
-        val ManagerBtn = memuView.findViewById<ImageButton>(R.id.manager)
+        //val ManagerBtn = memuView.findViewById<ImageButton>(R.id.manager)
 
 //        searchBtn.tag = type
 //        ManagerBtn.tag = type
@@ -61,6 +61,7 @@ class CoachVC : MyTableVC1() {
 
     override fun genericTable() {
         //storesTable = jsonToModel<StoresTable>(dataService.jsonString)
+        //println(dataService.jsonString)
         coachesTable = jsonToModels<CoachesTable>(dataService.jsonString)
         if (coachesTable != null) {
             tables = coachesTable
@@ -72,10 +73,10 @@ class CoachVC : MyTableVC1() {
         if (coachesTable != null) {
             for (row in coachesTable!!.rows) {
                 //row.print()
-                //row.filterRow()
-                //val coachItem = CoachItem(this, row)
-                //coachItem.list1CellDelegate = this
-                //items.add(coachItem)
+                row.filterRow()
+                val coachItem = CoachItem(this, row)
+                coachItem.list1CellDelegate = this
+                items.add(coachItem)
             }
         }
 
@@ -84,13 +85,9 @@ class CoachVC : MyTableVC1() {
 
     override fun rowClick(item: com.xwray.groupie.Item<com.xwray.groupie.ViewHolder>, view: View) {
 
-//        val coachItem = item as CoachItem
-//        val coachTable = coachItem.row
-//        //superCourse.print()
-//        val intent = Intent(this, ShowCoachVC::class.java)
-//        intent.putExtra("coach_token", coachTable.token)
-//        intent.putExtra("title", coachTable.name)
-//        startActivity(intent)
+        val coachItem = item as CoachItem
+        val myTable = coachItem.row
+        toShowCoach(myTable.token)
     }
 
     override fun remove(indexPath: IndexPath) {
@@ -99,38 +96,42 @@ class CoachVC : MyTableVC1() {
         when (key) {
             CITY_KEY -> citys.clear()
         }
-        _searchRows[indexPath.row]["detail"] = "全部"
+//        _searchRows[indexPath.row]["detail"] = "全部"
 //        val rows = generateSearchItems(type!!)
 //        searchAdapter.update(rows)
     }
 }
 
-//class CoachItem(override var context: Context, var _row: CoachTable): ListItem<Table>(context, _row) {
-//
-//    override fun bind(viewHolder: ViewHolder, position: Int) {
-//
-//        super.bind(viewHolder, position)
-//
-//        val row: CoachTable = _row
-//
-//        if (row.city_show.isNotEmpty()) {
-//            viewHolder.cityBtn.text = row.city_show
-//        } else {
-//            viewHolder.cityBtn.visibility = View.GONE
-//        }
-//
-////        if (row.seniority >= 0) {
-////            viewHolder.seniorityLbl.text = "年資:${row.seniority_show}"
-////        } else {
-////            viewHolder.seniorityLbl.text = "年資:未提供"
-////        }
-////
-////        if (row.line != null && row.line.isNotEmpty()) {
-////            viewHolder.line.text = "Line:${row.line}"
-////        } else {
-////            viewHolder.line.text = "Line:未提供"
-////        }
-//    }
-//
-//    override fun getLayout() = R.layout.coach_list_cell
-//}
+class CoachItem(override var context: Context, var _row: CoachTable): ListItem<Table>(context, _row) {
+
+    override fun bind(viewHolder: ViewHolder, position: Int) {
+
+        super.bind(viewHolder, position)
+
+        val row: CoachTable = _row
+
+        if (row.city_show.isNotEmpty()) {
+            viewHolder.cityBtn.text = row.city_show
+        } else {
+            viewHolder.cityBtn.visibility = View.GONE
+        }
+
+        if (row.mobile_show.isNotEmpty()) {
+            viewHolder.mobileLbl.text = row.mobile_show
+        }
+
+        if (row.seniority >= 0) {
+            viewHolder.seniorityLbl.text = "年資:${row.seniority_show}"
+        } else {
+            viewHolder.seniorityLbl.text = "年資:未提供"
+        }
+
+        if (row.line != null && row.line.isNotEmpty()) {
+            viewHolder.line.text = "Line:${row.line}"
+        } else {
+            viewHolder.line.text = "Line:未提供"
+        }
+    }
+
+    override fun getLayout() = R.layout.coach_list_cell
+}

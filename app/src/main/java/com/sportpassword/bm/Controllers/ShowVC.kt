@@ -2,6 +2,9 @@ package com.sportpassword.bm.Controllers
 
 import android.os.Bundle
 import android.view.View
+import android.widget.Button
+import com.sportpassword.bm.Adapters.IconCell
+import com.sportpassword.bm.Adapters.IconCellDelegate
 import com.sportpassword.bm.Models.CourseTable
 import com.sportpassword.bm.Models.CoursesTable
 import com.sportpassword.bm.Models.SuperCourse
@@ -14,13 +17,14 @@ import com.sportpassword.bm.Utilities.jsonToModel
 import com.sportpassword.bm.member
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.ViewHolder
+import com.xwray.groupie.kotlinandroidextensions.Item
 import kotlinx.android.synthetic.main.activity_show_course_vc.*
 import kotlinx.android.synthetic.main.mask.*
 import kotlin.reflect.KClass
 import kotlin.reflect.full.memberProperties
 
 
-open class ShowVC: BaseActivity() {
+open class ShowVC: BaseActivity(), IconCellDelegate {
 
     var token: String? = null    // course token
     var tableRowKeys:MutableList<String> = mutableListOf()
@@ -44,11 +48,15 @@ open class ShowVC: BaseActivity() {
         setRefreshListener()
 
         initAdapter()
-        refresh()
+        //refresh()
     }
 
     open fun initAdapter() {
         adapter = GroupAdapter()
+
+        val items = generateMainItem()
+        adapter.addAll(items)
+        tableView.adapter = adapter
     }
 
     open fun genericTable() {}
@@ -56,7 +64,7 @@ open class ShowVC: BaseActivity() {
     override fun refresh() {
         if (token != null) {
             Loading.show(mask)
-            val params: HashMap<String, String> = hashMapOf("token" to token!!, "member_token" to member.token!!)
+            val params: HashMap<String, String> = hashMapOf("token" to token!!, "member_token" to member.token)
             dataService.getOne1(this, params) { success ->
                 if (success) {
                     genericTable()
@@ -72,31 +80,13 @@ open class ShowVC: BaseActivity() {
                         setFeatured()
                         setData()
                         setContent()
+
                         isLike = table!!.like
                         likeCount = table!!.like_count
 
-                    }
+                        setLike()
 
-//                    if (superCourse != null) {
-//                        superCourse!!.filter()
-//                        //superCourse!!.print()
-//                        superCoach = superCourse!!.coach
-//                        setMainData()
-//                        setSignupData()
-//                        setCoachData()
-//                        setFeatured()
-//
-//                        if (superCourse!!.isSignup) {
-//                            signupButton.setText("取消報名")
-//                        } else {
-//                            val count = superCourse!!.signup_normal_models.count()
-//                            if (count >= superCourse!!.people_limit) {
-//                                signupButton.setText("候補")
-//                            } else {
-//                                signupButton.setText("報名")
-//                            }
-//                        }
-//                    }
+                    }
                 }
                 closeRefresh()
                 Loading.hide(mask)
@@ -104,9 +94,42 @@ open class ShowVC: BaseActivity() {
         }
     }
 
+    fun generateMainItem(): ArrayList<Item> {
+
+        val items: ArrayList<Item> = arrayListOf()
+        var icon = ""
+        var title = ""
+        var content = ""
+        var isPressed: Boolean = false
+        for (key in tableRowKeys) {
+            if (tableRows.containsKey(key)) {
+                val row = tableRows[key]!!
+                if (row.containsKey("icon")) {
+                    icon = row["icon"]!!
+                }
+                if (row.containsKey("title")) {
+                    title = row["title"]!!
+                }
+                if (row.containsKey("content")) {
+                    content = row["content"]!!
+                }
+                if (row.containsKey("isPressed")) {
+                    isPressed = row["isPressed"]!!.toBoolean()
+                }
+                if (icon.length > 0 && title.length > 0) {
+                    val iconCell = IconCell(this, icon, title, content, isPressed)
+                    iconCell.delegate = this
+                    items.add(iconCell)
+                }
+            }
+        }
+
+        return items
+    }
+
     fun setFeatured() {
         if (table != null && table!!.featured_path.isNotEmpty()) {
-            var featured_path = table!!.featured_path
+            val featured_path = table!!.featured_path
             featured_path.image(this, featured)
         } else {
             featured.setImageResource(R.drawable.loading_square_120)
@@ -123,13 +146,17 @@ open class ShowVC: BaseActivity() {
                 }
             }
         }
+
+        val items = generateMainItem()
+        adapter.update(items)
+
     }
 
     open fun setContent() {
         var content: String = ""
         if (table != null) {
             content =
-                "<html lang=\"zh-TW\"><head><meta charset=\"UTF-8\">" + body_css + "</head><body><div class=\"content\">" + table!!.content + "</div>" + "</body></html>"
+                "<html><HEAD><meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0, shrink-to-fit=no\">"+body_css+"</HEAD><body>"+table!!.content+"</body></html>"
         }
         //val content: String = "<html lang=\"zh-TW\"><head><meta charset=\"UTF-8\"></head><body style=\"background-color: #000;color:#fff;font-size:28px;\">"+superCourse!!.content+"</body></html>"
         //println(content)
@@ -139,11 +166,41 @@ open class ShowVC: BaseActivity() {
     }
 
     fun setLike() {
-        isLike = !isLike
         //likeButton.initStatus(isLike, table!.like_count)
+        //val _likeButton = view as Button
+
+        setIcon()
+        setCount()
+    }
+
+    private fun setIcon() {
+        var res: Int = R.drawable.like_show
+        if (isLike) {
+            res = R.drawable.like_show1
+        }
+        likeButton.setCompoundDrawablesWithIntrinsicBounds(res, 0, 0, 0)
+    }
+
+    private fun setCount() {
+        if (table!!.like) {
+            if (isLike) {
+                likeCount = table!!.like_count
+            } else {
+                likeCount = table!!.like_count - 1
+            }
+        } else {
+            if (isLike) {
+                likeCount = table!!.like_count + 1
+            } else {
+                likeCount = table!!.like_count
+            }
+        }
+
+        likeButton.text = "${likeCount.toString()}人"
     }
 
     fun likeButtonPressed(view: View) {
+
         if (!member.isLoggedIn) {
             toLogin()
         } else {
@@ -156,6 +213,8 @@ open class ShowVC: BaseActivity() {
             }
         }
     }
+
+    override fun didSelectRowAt(view: View, position: Int) {}
 
     open fun setData() {}
 }

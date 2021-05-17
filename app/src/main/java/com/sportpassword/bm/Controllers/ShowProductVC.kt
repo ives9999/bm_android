@@ -6,94 +6,106 @@ import android.os.Bundle
 import android.view.View
 import android.widget.ImageView
 import android.widget.LinearLayout
+import com.google.gson.JsonParseException
+import com.sportpassword.bm.Models.ProductTable
 import com.sportpassword.bm.Models.SuperProduct
+import com.sportpassword.bm.Models.TeamTable
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.ProductService
 import com.sportpassword.bm.Services.StoreService
-import com.sportpassword.bm.Utilities.BASE_URL
-import com.sportpassword.bm.Utilities.Loading
-import com.sportpassword.bm.Utilities.image
-import com.sportpassword.bm.Utilities.showImages
+import com.sportpassword.bm.Utilities.*
 import com.sportpassword.bm.member
 import com.squareup.picasso.Picasso
+import com.xwray.groupie.GroupAdapter
+import kotlinx.android.synthetic.main.activity_show_course_vc.*
 import kotlinx.android.synthetic.main.activity_show_product_vc.*
+import kotlinx.android.synthetic.main.activity_show_product_vc.contentView
+import kotlinx.android.synthetic.main.activity_show_product_vc.featured
+import kotlinx.android.synthetic.main.activity_show_product_vc.refresh
+import kotlinx.android.synthetic.main.activity_show_team_vc.*
+import kotlinx.android.synthetic.main.activity_show_team_vc.tableView
 import kotlinx.android.synthetic.main.mask.*
 
-class ShowProductVC: BaseActivity() {
+class ShowProductVC: ShowVC() {
 
-    var source: String  = "product" //course
-    var product_token: String? = null    // course token
-    var superProduct: SuperProduct? = null
+    var myTable: ProductTable? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+
         setContentView(R.layout.activity_show_product_vc)
 
-        if (intent.hasExtra("title")) {
-            val title = intent.getStringExtra("title")
-            setMyTitle(title)
-        }
-
-        if (intent.hasExtra("product_token")) {
-            product_token = intent.getStringExtra("product_token")
-        }
         dataService = ProductService
-
-//        if (intent.hasExtra("sourse")) {
-//            source = intent.getStringExtra("source")
-//        }
 
         refreshLayout = refresh
         setRefreshListener()
+
+        super.onCreate(savedInstanceState)
+
         refresh()
     }
 
-    override fun refresh() {
-        //super.refresh()
-        if (product_token != null) {
-            Loading.show(mask)
-            val params: HashMap<String, String> = hashMapOf("token" to product_token!!, "member_token" to member.token!!)
-            dataService.getOne(this, params) { success ->
-                if (success) {
-                    superProduct = dataService.superModel as SuperProduct
-                    if (superProduct != null) {
-                        superProduct!!.filter()
-                        //superCourse!!.print()
-                        //setMyTitle(superProduct!!.name)
-                        setFeatured()
-                        setImages()
-                        setContent()
-                    }
-                }
-                closeRefresh()
-                Loading.hide(mask)
-            }
-        } else {
-            warning("沒有接收到商品token，所以無法顯示商品內頁，請洽管理員")
+    override fun initAdapter() {}
+
+    override fun setData() {
+
+        if (myTable != null) {
+            setImages()
         }
     }
 
-    fun setFeatured() {
-        if (superProduct!!.featured_path.isNotEmpty()) {
-            val featured_path = superProduct!!.featured_path
-            featured_path.image(this, featured)
+//    override fun refresh() {
+//        //super.refresh()
+//        if (product_token != null) {
+//            Loading.show(mask)
+//            val params: HashMap<String, String> = hashMapOf("token" to product_token!!, "member_token" to member.token!!)
+//            dataService.getOne(this, params) { success ->
+//                if (success) {
+//                    superProduct = dataService.superModel as SuperProduct
+//                    if (superProduct != null) {
+//                        superProduct!!.filter()
+//                        //superCourse!!.print()
+//                        //setMyTitle(superProduct!!.name)
+//                        setFeatured()
+//                        setImages()
+//                        setContent()
+//                    }
+//                }
+//                closeRefresh()
+//                Loading.hide(mask)
+//            }
+//        } else {
+//            warning("沒有接收到商品token，所以無法顯示商品內頁，請洽管理員")
+//        }
+//    }
+
+    override fun genericTable() {
+        //println(dataService.jsonString)
+        try {
+            table = jsonToModel<ProductTable>(dataService.jsonString)
+        } catch (e: JsonParseException) {
+            warning(e.localizedMessage!!)
+            //println(e.localizedMessage)
+        }
+        if (table != null) {
+            myTable = table as ProductTable
+            myTable!!.filterRow()
         } else {
-            featured.setImageResource(R.drawable.loading_square_120)
+            warning("解析伺服器所傳的字串失敗，請洽管理員")
         }
     }
 
     fun setImages() {
-        val images: ArrayList<String> = superProduct!!.images
+        val images: ArrayList<String> = myTable!!.images
         imageContainerView.showImages(images, this)
     }
 
-    fun setContent() {
-        contentView.text = superProduct!!.content
+    override fun setContent() {
+        contentView.text = myTable!!.content
     }
 
     fun submitBtnPressed(view: View) {
         //print("purchase")
-        toOrder(superProduct!!.token)
+        toOrder(myTable!!.token)
     }
 
     fun cancelBtnPressed(view: View) {

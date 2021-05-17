@@ -44,7 +44,7 @@ class StoreTable: Table() {
         }
 
         if (open_time != null && close_time != null && open_time.length > 0 && close_time.length > 0) {
-            interval_show = "${open_time}~${close_time}"
+            interval_show = "${open_time_show}~${close_time_show}"
         }
     }
 }

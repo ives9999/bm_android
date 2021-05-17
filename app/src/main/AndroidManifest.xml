@@ -141,6 +141,8 @@
         <activity android:name=".Controllers.SelectAreaVC" />
         <activity android:name=".Controllers.ProductVC" />
         <activity android:name=".Controllers.ShowProductVC" />
+        <activity android:name=".Controllers.ShowTeamVC" />
+        <activity android:name=".Controllers.ShowArenaVC" />
     </application>
 
 </manifest>

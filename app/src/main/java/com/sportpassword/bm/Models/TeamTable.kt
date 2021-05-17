@@ -51,6 +51,18 @@ class TeamTable: Table() {
             play_end_show = play_end.noSec()
         }
 
+        if (website == null) {
+            website = "未提供"
+        }
+
+        if (fb == null) {
+            fb = "未提供"
+        }
+
+        if (youtube == null) {
+            youtube = "未提供"
+        }
+
         if (temp_status == "on") {
             temp_quantity_show = "臨打：${temp_quantity}位"
             temp_signup_count_show = "報名：${temp_signup_count}位"
