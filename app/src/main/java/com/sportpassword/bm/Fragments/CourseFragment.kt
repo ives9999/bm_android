@@ -189,12 +189,8 @@ class CourseFragment : TabFragment() {
     override fun rowClick(item: com.xwray.groupie.Item<ViewHolder>, view: View) {
 
         val courseItem = item as CourseItem
-        val courseTable = courseItem.row
-        //superCourse.print()
-        val intent = Intent(activity, ShowCourseVC::class.java)
-        intent.putExtra("token", courseTable.token)
-        //intent.putExtra("title", courseTable.title)
-        startActivity(intent)
+        val table = courseItem.row
+        mainActivity!!.toShowCourse(table.token)
     }
 
     fun layerSubmit() {

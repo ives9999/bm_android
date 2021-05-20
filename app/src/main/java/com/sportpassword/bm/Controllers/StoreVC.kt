@@ -28,7 +28,7 @@ class StoreVC : MyTableVC1() {
             hashMapOf("title" to "縣市","key" to CITY_KEY,"value" to "","value_type" to "Array","show" to "不限"),
     )
 
-    var storesTable: StoresTable? = null
+    var mysTable: StoresTable? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,8 +41,8 @@ class StoreVC : MyTableVC1() {
 
         dataService = StoreService
         searchRows = _searchRows
-        recyclerView = store_list
-        refreshLayout = store_refresh
+        recyclerView = list_container
+        refreshLayout = refresh
         maskView = mask
         setRefreshListener()
 
@@ -51,9 +51,9 @@ class StoreVC : MyTableVC1() {
     }
 
     override fun genericTable() {
-        storesTable = jsonToModels<StoresTable>(dataService.jsonString)
-        if (storesTable != null) {
-            tables = storesTable
+        mysTable = jsonToModels<StoresTable>(dataService.jsonString)
+        if (mysTable != null) {
+            tables = mysTable
         }
     }
 
@@ -145,8 +145,8 @@ class StoreVC : MyTableVC1() {
 
     override fun generateItems(): ArrayList<Item> {
         val items: ArrayList<Item> = arrayListOf()
-        if (storesTable != null) {
-            for (row in storesTable!!.rows) {
+        if (mysTable != null) {
+            for (row in mysTable!!.rows) {
                 //row.print()
                 row.filterRow()
                 val myItem = StoreItem(this, row)

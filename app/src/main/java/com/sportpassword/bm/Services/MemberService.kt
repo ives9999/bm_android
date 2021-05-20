@@ -8,12 +8,14 @@ import com.android.volley.Request
 import com.android.volley.Response
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
+import com.fasterxml.jackson.databind.ObjectMapper
 import org.json.JSONException
 import org.json.JSONObject
 import com.sportpassword.bm.Utilities.*
 import com.sportpassword.bm.member
 import com.sportpassword.bm.Controllers.MainActivity
 import com.sportpassword.bm.Models.*
+import java.lang.Exception
 import kotlin.reflect.full.memberProperties
 
 
@@ -609,6 +611,48 @@ object MemberService: DataService() {
         }
         Volley.newRequestQueue(context).add(request)
         */
+    }
+
+    fun likelist(context: Context, able_type: String, like_list: String="喜歡", page: Int=1, perPage: Int=20, complete: CompletionHandler) {
+
+        val params = mapOf(
+            "device" to "app",
+            "channel" to CHANNEL,
+            "member_token" to member.token,
+            "able_type" to able_type,
+            "like_list" to like_list,
+            "page" to page,
+            "perpage" to perPage
+        )
+        val objectMapper = ObjectMapper()
+        val body: String = objectMapper.writeValueAsString(params)
+        println(body)
+
+        val url: String = URL_MEMBER_LIKELIST
+        println(url)
+
+        MyHttpClient.instance.post(context, url, body) { success ->
+            if (success) {
+                val response = MyHttpClient.instance.response
+                if (response != null) {
+                    try {
+                        this.jsonString = response.toString()
+                        //println(jsonString)
+                        this.success = true
+                    } catch (e: Exception) {
+                        this.success = false
+                        msg = "parse json failed，請洽管理員"
+                        println(e.localizedMessage)
+                    }
+                    complete(this.success)
+                } else {
+                    println("response is null")
+                }
+            } else {
+                msg = "網路錯誤，無法跟伺服器更新資料"
+                complete(success)
+            }
+        }
     }
 
     public fun memberSignupCalendar(year: Int, month: Int, member_token: String?=null, source: String="course", complete: CompletionHandler): Pair<Boolean, String> {

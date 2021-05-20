@@ -175,6 +175,7 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
         URL_EMAIL_VALIDATE = URL_HOME + "member/email_validate"
         URL_FB_LOGIN = URL_HOME + "member/fb"
         URL_FORGETPASSWORD = "$BASE_URL/member/forget_password"
+        URL_MEMBER_LIKELIST = "${URL_HOME}member/likelist"
         URL_LIST = "${URL_HOME}%s"
         URL_LOGIN = URL_HOME + "login"
         URL_MEMBER_BLACKLIST = URL_HOME + "member/blacklist"
@@ -496,6 +497,12 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
         startActivity(i)
     }
 
+    fun toShowCourse(token: String) {
+        val i = Intent(this, ShowCourseVC::class.java)
+        i.putExtra("token", token)
+        startActivity(i)
+    }
+
     fun toShowTeam(token: String) {
         val i = Intent(this, ShowTeamVC::class.java)
         i.putExtra("token", token)
@@ -576,10 +583,15 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
         startActivity(i)
     }
 
-    fun toCourse(name: String, token: String) {
-        val i = Intent(this, ManagerCourseVC1::class.java)
-        i.putExtra("token", token)
-        i.putExtra("name", name)
+    fun toCourse(member_like: Boolean) {
+        val i = Intent(this, CourseVC::class.java)
+        i.putExtra("member_like", member_like)
+        startActivity(i)
+    }
+
+    fun toTeam(member_like: Boolean = false) {
+        val i = Intent(this, TeamVC::class.java)
+        i.putExtra("member_like", member_like)
         startActivity(i)
     }
 

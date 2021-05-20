@@ -45,8 +45,8 @@ class ArenaVC : MyTableVC1() {
 
         dataService = ArenaService
         searchRows = _searchRows
-        recyclerView = store_list
-        refreshLayout = store_refresh
+        recyclerView = list_container
+        refreshLayout = refresh
         initAdapter()
 
         refresh()

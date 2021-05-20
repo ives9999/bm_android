@@ -87,7 +87,7 @@ class ManagerFunctionVC1 : MyTableVC1() {
                     "calendar" -> toTimeTable(source, token)
                     "signup_list" -> toTempPlayDate(title, token)
                     "delete" -> toDelete(source, token)
-                    "course" -> toCourse(title, token)
+                    //"course" -> toCourse(title, token)
                 }
             }
             "team" -> {

@@ -16,7 +16,6 @@ import com.sportpassword.bm.Utilities.jsonToModel
 import com.squareup.picasso.Picasso
 import com.xwray.groupie.kotlinandroidextensions.Item
 import com.xwray.groupie.kotlinandroidextensions.ViewHolder
-import kotlinx.android.synthetic.main.activity_coach_vc.*
 import kotlinx.android.synthetic.main.activity_store_vc.*
 import kotlinx.android.synthetic.main.coach_list_cell.*
 
@@ -39,8 +38,8 @@ class CoachVC : MyTableVC1() {
         dataService = CoachService
         //dataService = CoachService
         searchRows = _searchRows
-        recyclerView = store_list
-        refreshLayout = store_refresh
+        recyclerView = list_container
+        refreshLayout = refresh
         initAdapter()
 
         refresh()

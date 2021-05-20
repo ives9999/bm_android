@@ -6,7 +6,6 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.CALL_PHONE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -17,11 +16,6 @@
     <uses-feature
         android:name="android.hardware.camera"
         android:required="false" />
-    <!--
-         The ACCESS_COARSE/FINE_LOCATION permissions are not required to use
-         Google Maps Android API v2, but you must specify either coarse or fine
-         location permissions for the 'MyLocation' functionality. 
-    -->
 
     <application
         android:name=".App"
@@ -34,15 +28,17 @@
         android:usesCleartextTraffic="true"
         tools:replace="android:allowBackup"
         tools:targetApi="m">
+        <activity android:name=".Controllers.CourseVC"></activity>
+        <activity android:name=".Controllers.TeamVC" />
 
         <provider
-            android:authorities="com.sportpassword.bm.fileprovider"
             android:name="androidx.core.content.FileProvider"
+            android:authorities="com.sportpassword.bm.fileprovider"
             android:exported="false"
             android:grantUriPermissions="true">
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/providerfile"/>
+                android:resource="@xml/providerfile" />
         </provider>
 
         <activity android:name=".Controllers.HomeTotalAdVC" />

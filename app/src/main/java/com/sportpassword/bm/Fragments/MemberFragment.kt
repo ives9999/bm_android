@@ -36,6 +36,14 @@ class MemberFragment: TabFragment() {
     var orderRows: ArrayList<Map<String, String>> = arrayListOf(
             mapOf("text" to "訂單查詢", "icon" to "order", "segue" to "member_order_list")
     )
+    var likeRows: ArrayList<Map<String, String>> = arrayListOf(
+        mapOf("text" to "球隊", "icon" to "team", "segue" to "toLike", "able_type" to "team"),
+        mapOf("text" to "球館", "icon" to "arena", "segue" to "toLike", "able_type" to "arena"),
+        mapOf("text" to "教練", "icon" to "coach", "segue" to "toLike", "able_type" to "coach"),
+        mapOf("text" to "課程", "icon" to "course", "segue" to "toLike", "able_type" to "course"),
+        mapOf("text" to "商品", "icon" to "product", "segue" to "toLike", "able_type" to "product"),
+        mapOf("text" to "體育用品店", "icon" to "store", "segue" to "toLike", "able_type" to "store")
+    )
     var signupRows: ArrayList<Map<String, String>> = arrayListOf(
             mapOf("text" to "課程報名", "segue" to "calendar_course_signup")
     )
@@ -48,7 +56,7 @@ class MemberFragment: TabFragment() {
         dataService = MemberService
         setHasOptionsMenu(true)
 
-        sections = arrayListOf("會員資料", "訂單")
+        sections = arrayListOf("會員資料", "訂單", "喜歡")
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -176,6 +184,8 @@ class MemberFragment: TabFragment() {
         val _rows: ArrayList<Map<String, String>>
         if (idx == 1) {
             _rows = orderRows
+        } else if (idx == 2) {
+            _rows = likeRows
         } else {
             setValidateRow()
             //setBlackListRow()
@@ -183,11 +193,12 @@ class MemberFragment: TabFragment() {
             memberRows.add(row)
             _rows = memberRows
         }
+
         for (_row in _rows) {
-            val text = if (_row.containsKey("text")) _row["text"]!! else ""
-            val icon = if (_row.containsKey("icon")) _row["icon"]!! else ""
-            val segue = if (_row.containsKey("segue")) _row["segue"]!! else ""
-            items.add(MemberItem(context!!, text, icon, segue))
+            //val text = if (_row.containsKey("text")) _row["text"]!! else ""
+            //val icon = if (_row.containsKey("icon")) _row["icon"]!! else ""
+            //val segue = if (_row.containsKey("segue")) _row["segue"]!! else ""
+            items.add(MemberItem(context!!, _row))
         }
 
         return items
@@ -196,7 +207,11 @@ class MemberFragment: TabFragment() {
     override fun rowClick(item: com.xwray.groupie.Item<ViewHolder>, view: View) {
 
         val memberItem = item as MemberItem
-        val segue = memberItem.segue
+        val row = memberItem.row
+        var segue: String = ""
+        if (row.containsKey("segue")) {
+            segue = row["segue"]!!
+        }
 
         when(segue) {
             "account" -> mainActivity!!.toRegister()
@@ -207,6 +222,18 @@ class MemberFragment: TabFragment() {
             "calendar_course_signup" -> toCalendarCourseSignup()
             "refresh" -> refresh()
             "member_order_list" -> mainActivity!!.toMemberOrderList()
+            "toLike" -> {
+                var able_type: String? = null
+                if (row.containsKey("able_type")) {
+                    able_type = row["able_type"]
+                }
+                if (able_type != null) {
+                    when(able_type) {
+                        "team" -> mainActivity!!.toTeam(true)
+                        "course" -> mainActivity!!.toCourse(true)
+                    }
+                }
+            }
         }
     }
 
@@ -299,12 +326,19 @@ class MemberFragment: TabFragment() {
         }
     }
 
-    class MemberItem(val context: Context, val text: String, val icon: String, val segue: String): Item() {
+    class MemberItem(val context: Context, val row: Map<String, String>): Item() {
         override fun bind(viewHolder: com.xwray.groupie.kotlinandroidextensions.ViewHolder, position: Int) {
 
-            viewHolder.text.text = text
-            val iconID = context.resources.getIdentifier(icon, "drawable", context.packageName)
-            viewHolder.icon.setImageResource(iconID)
+            if (row.containsKey("text")) {
+                val text: String = row["text"]!!
+                viewHolder.text.text = text
+            }
+
+            if (row.containsKey("icon")) {
+                val icon: String = row["icon"]!!
+                val iconID = context.resources.getIdentifier(icon, "drawable", context.packageName)
+                viewHolder.icon.setImageResource(iconID)
+            }
 
         }
 

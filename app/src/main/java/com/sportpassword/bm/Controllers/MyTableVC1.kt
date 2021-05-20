@@ -14,6 +14,7 @@ import com.sportpassword.bm.Form.BaseForm
 import com.sportpassword.bm.Form.FormItem.FormItem
 import com.sportpassword.bm.Models.*
 import com.sportpassword.bm.R
+import com.sportpassword.bm.Services.MemberService
 import com.sportpassword.bm.Utilities.Global
 import com.sportpassword.bm.Utilities.Loading
 import com.sportpassword.bm.Utilities.PERPAGE
@@ -29,6 +30,7 @@ import kotlinx.android.synthetic.main.mask.*
 abstract class MyTableVC1 : BaseActivity(), List1CellDelegate {
 
     var tables: Tables? = null
+    var able_type: String = "coach"
 
     var sections: ArrayList<String> = arrayListOf()
     var rows: ArrayList<HashMap<String, String>> = arrayListOf()
@@ -49,6 +51,10 @@ abstract class MyTableVC1 : BaseActivity(), List1CellDelegate {
     protected var totalCount: Int = 0
     protected var totalPage: Int = 0
 
+    var jsonString: String? = null
+
+    var member_like: Boolean = false
+
     //protected lateinit var superModels: SuperModel
 
     //取代superDataLists(define in BaseActivity)，放置所有拿到的SuperModel，分頁時會使用到
@@ -56,6 +62,10 @@ abstract class MyTableVC1 : BaseActivity(), List1CellDelegate {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        if (intent.hasExtra("member_like")) {
+            member_like = intent.getBooleanExtra("member_like", false)
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -109,8 +119,16 @@ abstract class MyTableVC1 : BaseActivity(), List1CellDelegate {
     open fun getDataStart1(_page: Int, _perPage: Int) {
         Loading.show(mask)
 
-        dataService.getList1(this, null, params, _page, _perPage) { success ->
-            getDataEnd1(success)
+        if (member_like) {
+            MemberService.likelist(this, able_type) { success ->
+                jsonString = MemberService.jsonString
+                getDataEnd1(success)
+            }
+        } else {
+            dataService.getList1(this, null, params, _page, _perPage) { success ->
+                jsonString = dataService.jsonString
+                getDataEnd1(success)
+            }
         }
     }
 
@@ -118,7 +136,7 @@ abstract class MyTableVC1 : BaseActivity(), List1CellDelegate {
         if (success) {
             if (theFirstTime) {
 
-                if (dataService.jsonString.isNotEmpty()) {
+                if (jsonString != null && jsonString!!.isNotEmpty()) {
                     //println(dataService.jsonString)
                     genericTable()
 
