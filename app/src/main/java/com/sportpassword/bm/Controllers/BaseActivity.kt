@@ -464,17 +464,27 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
         startActivity(intent)
     }
 
-    fun toCoach() {
-        val i = Intent(this, CoachVC::class.java)
-        i.putExtra("type", "coach")
-        i.putExtra("titleField", "name")
+    fun toCourse(member_like: Boolean) {
+        val i = Intent(this, CourseVC::class.java)
+        i.putExtra("member_like", member_like)
         startActivity(i)
     }
 
-    fun toArena() {
+    fun toTeam(member_like: Boolean = false) {
+        val i = Intent(this, TeamVC::class.java)
+        i.putExtra("member_like", member_like)
+        startActivity(i)
+    }
+
+    fun toCoach(member_like: Boolean = false) {
+        val i = Intent(this, CoachVC::class.java)
+        i.putExtra("member_like", member_like)
+        startActivity(i)
+    }
+
+    fun toArena(member_like: Boolean = false) {
         val i = Intent(this, ArenaVC::class.java)
-        i.putExtra("type", "arena")
-        i.putExtra("titleField", "name")
+        i.putExtra("member_like", member_like)
         startActivity(i)
     }
 
@@ -485,15 +495,15 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
         startActivity(i)
     }
 
-    fun toStore() {
+    fun toStore(member_like: Boolean = false) {
         val i = Intent(this, StoreVC::class.java)
-        i.putExtra("type", "store")
-        i.putExtra("titleField", "name")
+        i.putExtra("member_like", member_like)
         startActivity(i)
     }
 
-    fun toProduct() {
+    fun toProduct(member_like: Boolean = false) {
         val i = Intent(this, ProductVC::class.java)
+        i.putExtra("member_like", member_like)
         startActivity(i)
     }
 
@@ -583,23 +593,10 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
         startActivity(i)
     }
 
-    fun toCourse(member_like: Boolean) {
-        val i = Intent(this, CourseVC::class.java)
-        i.putExtra("member_like", member_like)
-        startActivity(i)
-    }
-
-    fun toTeam(member_like: Boolean = false) {
-        val i = Intent(this, TeamVC::class.java)
-        i.putExtra("member_like", member_like)
-        startActivity(i)
-    }
-
     fun toMemberOrderList() {
         val i = Intent(this, MemberOrderListVC::class.java)
         startActivity(i)
     }
-
 
     protected fun getAllChildrenBFS(v: View): List<View> {
         var visited: ArrayList<View> = arrayListOf()

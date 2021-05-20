@@ -34,9 +34,10 @@ class StoreVC : MyTableVC1() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_store_vc)
 
-        source_activity = "store"
+        //source_activity = "store"
+        //val title_field = intent.getStringExtra("titleField")
+        able_type = "store"
         searchRows = _searchRows
-        val title_field = intent.getStringExtra("titleField")
         setMyTitle("體育用品店")
 
         dataService = StoreService
@@ -51,7 +52,7 @@ class StoreVC : MyTableVC1() {
     }
 
     override fun genericTable() {
-        mysTable = jsonToModels<StoresTable>(dataService.jsonString)
+        mysTable = jsonToModels<StoresTable>(jsonString!!)
         if (mysTable != null) {
             tables = mysTable
         }

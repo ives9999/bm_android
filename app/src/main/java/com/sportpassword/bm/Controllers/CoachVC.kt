@@ -35,6 +35,8 @@ class CoachVC : MyTableVC1() {
         //setContentView(R.layout.activity_coach_vc)
 
         setMyTitle("教練")
+        able_type = "coach"
+
         dataService = CoachService
         //dataService = CoachService
         searchRows = _searchRows
@@ -61,7 +63,7 @@ class CoachVC : MyTableVC1() {
     override fun genericTable() {
         //storesTable = jsonToModel<StoresTable>(dataService.jsonString)
         //println(dataService.jsonString)
-        coachesTable = jsonToModels<CoachesTable>(dataService.jsonString)
+        coachesTable = jsonToModels<CoachesTable>(jsonString!!)
         if (coachesTable != null) {
             tables = coachesTable
         }

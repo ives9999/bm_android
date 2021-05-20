@@ -41,7 +41,9 @@ class ArenaVC : MyTableVC1() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_store_vc)
+
         setMyTitle("球館")
+        able_type = "arena"
 
         dataService = ArenaService
         searchRows = _searchRows
@@ -54,7 +56,7 @@ class ArenaVC : MyTableVC1() {
 
     override fun genericTable() {
         //storesTable = jsonToModel<StoresTable>(dataService.jsonString)
-        arenasTable = jsonToModels<ArenasTable>(dataService.jsonString)
+        arenasTable = jsonToModels<ArenasTable>(jsonString!!)
         if (arenasTable != null) {
             tables = arenasTable
         }

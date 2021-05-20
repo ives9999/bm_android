@@ -230,7 +230,11 @@ class MemberFragment: TabFragment() {
                 if (able_type != null) {
                     when(able_type) {
                         "team" -> mainActivity!!.toTeam(true)
+                        "arena" -> mainActivity!!.toArena(true)
+                        "coach" -> mainActivity!!.toCoach(true)
                         "course" -> mainActivity!!.toCourse(true)
+                        "product" -> mainActivity!!.toProduct(true)
+                        "store" -> mainActivity!!.toStore(true)
                     }
                 }
             }
