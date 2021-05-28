@@ -1309,17 +1309,17 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
             SEARCH_REQUEST_CODE -> {
                 if (resultCode == Activity.RESULT_OK) {
                     var key = ""
-                    if (data != null && data!!.hasExtra("key")) {
-                        key = data!!.getStringExtra("key")
+                    if (data != null && data.hasExtra("key")) {
+                        key = data.getStringExtra("key")!!
                     }
                     var page = ""
-                    if (data != null && data!!.hasExtra("page")) {
-                        page = data!!.getStringExtra("page")
+                    if (data != null && data.hasExtra("page")) {
+                        page = data.getStringExtra("page")!!
                     }
                     when (key) {
                         CITY_KEY -> {
                             idx = 1
-                            citys = data!!.getParcelableArrayListExtra("citys")
+                            citys = data!!.getParcelableArrayListExtra("citys")!!
                             if (citys.size > 0) {
                                 var arr: ArrayList<String> = arrayListOf()
                                 for (city in citys) {
@@ -1341,7 +1341,7 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
                         }
                         ARENA_KEY -> {
                             idx = 2
-                            arenas = data!!.getParcelableArrayListExtra("arenas")
+                            arenas = data!!.getParcelableArrayListExtra("arenas")!!
                             if (arenas.size > 0) {
                                 var arr: ArrayList<String> = arrayListOf()
                                 for (arena in arenas) {
@@ -1354,7 +1354,7 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
                         }
                         TEAM_WEEKDAYS_KEY -> {
                             idx = 3
-                            weekdays = data!!.getIntegerArrayListExtra("weekdays")
+                            weekdays = data.getIntegerArrayListExtra("weekdays")!!
                             if (weekdays.size > 0) {
                                 var arr: ArrayList<String> = arrayListOf()
                                 val gDays = Global.weekdays
@@ -1395,7 +1395,7 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
                         }
                         AREA_KEY -> {
                             idx = 2
-                            areas = data!!.getParcelableArrayListExtra("areas")
+                            areas = data.getParcelableArrayListExtra("areas")!!
                             if (areas.size > 0) {
                                 var arr: ArrayList<String> = arrayListOf()
                                 for (area in areas) {
@@ -1415,16 +1415,16 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
             SEARCH_REQUEST_CODE1 -> {
                 if (resultCode == Activity.RESULT_OK) {
                     var key = ""
-                    if (data != null && data!!.hasExtra("key")) {
-                        key = data!!.getStringExtra("key")
+                    if (data != null && data.hasExtra("key")) {
+                        key = data.getStringExtra("key")!!
                     }
                     var selecteds: ArrayList<String>? = null
                     if (data!!.hasExtra("selecteds")) {
-                        selecteds = data!!.getStringArrayListExtra("selecteds")
+                        selecteds = data.getStringArrayListExtra("selecteds")
                     }
                     var selected: String? = null
-                    if (data!!.hasExtra("selected")) {
-                        selected = data!!.getStringExtra("selected")
+                    if (data.hasExtra("selected")) {
+                        selected = data.getStringExtra("selected")
                     }
 
                     val getRow = fun(key: String): HashMap<String, String>? {

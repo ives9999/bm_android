@@ -35,7 +35,7 @@ class AccountUpdate1Activity : BaseActivity() {
 
         hidekeyboard(testa)
 
-        field = intent.getStringExtra("field")
+        field = intent.getStringExtra("field")!!
         value = member.fetch(field)
 
         accountTxt.visibility = View.INVISIBLE
