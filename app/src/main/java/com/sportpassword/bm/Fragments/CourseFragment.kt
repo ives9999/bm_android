@@ -58,6 +58,10 @@ class CourseFragment : TabFragment() {
 
         searchBtn.tag = type
         //ManagerBtn.tag = type
+
+        //android:onClick="showSearchPanel" define in layout/menu_search_manager.xml
+
+        //function showSearchPanel is defined in BaseActivity
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -120,6 +124,10 @@ class CourseFragment : TabFragment() {
 //        }
 //        recyclerView.adapter = adapter
 //    }
+
+    override fun prepare() {
+        val i: Int = 5
+    }
 
 
     //當fragment啟動時，第一個被執行的韓式，甚至還在OnCreate函式之前

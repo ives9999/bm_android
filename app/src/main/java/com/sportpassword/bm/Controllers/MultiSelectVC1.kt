@@ -38,7 +38,7 @@ class MultiSelectVC1 : SelectVC1() {
         setContentView(R.layout.activity_multi_select_vc)
 
         if (intent.hasExtra("selecteds")) {
-            selecteds = intent.getStringArrayListExtra("selecteds")
+            selecteds = intent.getStringArrayListExtra("selecteds")!!
         }
 
         recyclerView = tableView

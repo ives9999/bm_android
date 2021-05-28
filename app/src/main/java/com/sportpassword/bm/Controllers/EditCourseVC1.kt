@@ -67,13 +67,13 @@ class EditCourseVC1 : MyTableVC1(), ImagePicker, ValueChangedDelegate {
         setContentView(R.layout.activity_edit_course_vc)
 
         if (intent.hasExtra("title")) {
-            title = intent.getStringExtra("title")
+            title = intent.getStringExtra("title")!!
         }
         if (intent.hasExtra("course_token")) {
-            course_token = intent.getStringExtra("course_token")
+            course_token = intent.getStringExtra("course_token")!!
         }
         if (intent.hasExtra("coach_token")) {
-            coach_token = intent.getStringExtra("coach_token")
+            coach_token = intent.getStringExtra("coach_token")!!
         }
 
         if (coach_token == null) {

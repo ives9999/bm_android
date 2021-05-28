@@ -30,9 +30,17 @@ class TempPlayDatePlayerVC : BaseActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_temp_play_date_player)
 
-        date = intent.getStringExtra("date")
-        teamName = intent.getStringExtra("teamName")
-        teamToken = intent.getStringExtra("token")
+        if (intent.hasExtra("date")) {
+            date = intent.getStringExtra("date")!!
+        }
+
+        if (intent.hasExtra("teamName")) {
+            teamName = intent.getStringExtra("teamName")!!
+        }
+
+        if (intent.hasExtra("token")) {
+            teamToken = intent.getStringExtra("token")!!
+        }
         setMyTitle(teamName + date + "臨打")
 
         refreshLayout = contentView!!.findViewById<SwipeRefreshLayout>(R.id.tempPlayDatePlayer_refresh)

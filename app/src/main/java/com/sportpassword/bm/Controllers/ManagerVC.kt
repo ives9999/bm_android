@@ -23,7 +23,7 @@ class ManagerVC : BaseActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.manager_vc)
         if (intent.hasExtra("source")) {
-            source = intent.getStringExtra("source")
+            source = intent.getStringExtra("source")!!
         }
         if (source == "team") {
             setMyTitle("球隊管理")

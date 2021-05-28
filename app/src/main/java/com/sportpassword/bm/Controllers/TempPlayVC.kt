@@ -37,9 +37,12 @@ class TempPlayVC : MyTableVC1() {
         citys = intent.getSerializableExtra("citys") as ArrayList<City>
         arenas = intent.getSerializableExtra("arenas") as ArrayList<Arena>
         degrees = intent.getSerializableExtra("degrees") as ArrayList<DEGREE>
-        weekdays = intent.getIntegerArrayListExtra("weekdays")
+
+        if (intent.hasExtra("weekdays")) {
+            weekdays = intent.getIntegerArrayListExtra("weekdays")!!
+        }
         times = intent.getSerializableExtra("times") as HashMap<String, Any>
-        keyword = intent.getStringExtra("keyword")
+        keyword = intent.getStringExtra("keyword")!!
 
         prepareParams()
 

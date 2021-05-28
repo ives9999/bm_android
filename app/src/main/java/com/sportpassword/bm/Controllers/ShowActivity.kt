@@ -15,10 +15,10 @@ class ShowActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_show)
 
-        val type = intent.getStringExtra("type")
-        val token = intent.getStringExtra("token")
-        val title = intent.getStringExtra("title")
-        val url = "$URL_SHOW".format(type, token)
+        val type: String = intent.getStringExtra("type")!!
+        val token: String = intent.getStringExtra("token")!!
+        val title: String = intent.getStringExtra("title")!!
+        val url = URL_SHOW.format(type, token)
         //println(url)
         setMyTitle(title)
 

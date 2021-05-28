@@ -61,9 +61,9 @@ class EditVC1 : MyTableVC1(), ImagePicker {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.edit_vc)
 
-        source = intent.getStringExtra("source")
-        token = intent.getStringExtra("token")
-        val tmp = intent.getStringExtra("title")
+        source = intent.getStringExtra("source")!!
+        token = intent.getStringExtra("token")!!
+        val tmp = intent.getStringExtra("title")!!
 
         if (source == "coach") {
             title = "新增教練"
@@ -537,10 +537,10 @@ class EditVC1 : MyTableVC1(), ImagePicker {
                 if (resultCode == Activity.RESULT_OK) {
                     var key = ""
                     if (data != null && data!!.hasExtra("key")) {
-                        key = data!!.getStringExtra("key")
+                        key = data!!.getStringExtra("key")!!
                     }
                     if (key == TEAM_WEEKDAYS_KEY) {
-                        val days: ArrayList<Int> = data!!.getIntegerArrayListExtra("weekdays")
+                        val days: ArrayList<Int> = data!!.getIntegerArrayListExtra("weekdays")!!
                         updateDays(days)
                     } else if (key == TEAM_PLAY_START_KEY || key == TEAM_PLAY_END_KEY) {
                         val times: HashMap<String, Any> = data!!.getSerializableExtra("times") as HashMap<String, Any>
@@ -553,17 +553,17 @@ class EditVC1 : MyTableVC1(), ImagePicker {
                         val degrees: ArrayList<DEGREE> = data!!.getSerializableExtra("degrees") as ArrayList<DEGREE>
                         updateDegree(degrees)
                     } else if (key == CITY_KEY || key == CITYS_KEY) {
-                        val citys: ArrayList<City> = data!!.getParcelableArrayListExtra("citys")
+                        val citys: ArrayList<City> = data!!.getSerializableExtra("citys") as ArrayList<City>
                         updateCity(citys)
                     } else if (key == ARENA_KEY) {
-                        val arenas:ArrayList<com.sportpassword.bm.Controllers.Arena> = data!!.getParcelableArrayListExtra("arenas")
+                        val arenas:ArrayList<com.sportpassword.bm.Controllers.Arena> = data!!.getSerializableExtra("arenas") as ArrayList<com.sportpassword.bm.Controllers.Arena>
 //                        val id: Int = data!!.getIntExtra("id", model.data[TEAM_ARENA_KEY]!!["value"] as Int)
 //                        val name: String = data!!.getStringExtra("name")
                         updateArena(arenas)
                     } else {
                         var content = ""
-                        if (data != null && data!!.hasExtra("res")) {
-                            content = data!!.getStringExtra("res")
+                        if (data != null && data.hasExtra("res")) {
+                            content = data.getStringExtra("res")!!
                             val type = model.contentKey2Type(key)
                             updateText(key, content)
                         }

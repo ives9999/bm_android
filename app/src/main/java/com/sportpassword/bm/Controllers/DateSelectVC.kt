@@ -23,17 +23,17 @@ class DateSelectVC : BaseActivity() {
         setContentView(R.layout.date_select_vc)
 
         if (intent.hasExtra("key")) {
-            key = intent.getStringExtra("key")
+            key = intent.getStringExtra("key")!!
         }
         if (key == null) {
             warningWithPrev("由於傳遞參數不正確，無法做選擇，請回上一頁重新進入")
         }
         //type = intent.getSerializableExtra("type") as SELECT_DATE_TYPE
         if (intent.hasExtra("selected")) {
-            selected = intent.getStringExtra("selected")
+            selected = intent.getStringExtra("selected")!!
         }
         if (intent.hasExtra("title")) {
-            title = intent.getStringExtra("title")
+            title = intent.getStringExtra("title")!!
         } else {
             title = "日期"
         }

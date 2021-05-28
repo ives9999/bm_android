@@ -19,7 +19,7 @@ class ContentEditVC : BaseActivity() {
         setContentView(R.layout.activity_content_edit_vc)
 
         if (intent.hasExtra("title")) {
-            title = intent.getStringExtra("title")
+            title = intent.getStringExtra("title")!!
         }
         setMyTitle(title)
 

@@ -34,13 +34,33 @@ class  TempPlaySignupOneVC : BaseActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_temp_play_signup_one_vc)
 
-        memberToken = intent.getStringExtra("memberToken")
-        teamToken = intent.getStringExtra("token")
-        team_name = intent.getStringExtra("name")
-        team_id = intent.getIntExtra("id", -1)
-        near_date = intent.getStringExtra("near_date")
-        status = intent.getStringExtra("status")
-        off_at = intent.getStringExtra("off_at")
+        if (intent.hasExtra("memberToken")) {
+            memberToken = intent.getStringExtra("memberToken")!!
+        }
+
+        if (intent.hasExtra("token")) {
+            teamToken = intent.getStringExtra("token")!!
+        }
+
+        if (intent.hasExtra("name")) {
+            team_name = intent.getStringExtra("name")!!
+        }
+
+        if (intent.hasExtra("team_id")) {
+            team_id = intent.getIntExtra("id", -1)
+        }
+
+        if (intent.hasExtra("near_date")) {
+            near_date = intent.getStringExtra("near_date")!!
+        }
+
+        if (intent.hasExtra("status")) {
+            status = intent.getStringExtra("status")!!
+        }
+
+        if (intent.hasExtra("off_at")) {
+            off_at = intent.getStringExtra("off_at")!!
+        }
 //        println(memberToken)
 //        println(team_name)
 //        println(team_id)

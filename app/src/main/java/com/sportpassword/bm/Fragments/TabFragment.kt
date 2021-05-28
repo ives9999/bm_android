@@ -283,6 +283,10 @@ open class TabFragment : Fragment(), SearchItemDelegate, List1CellDelegate {
 //        listAdapter.notifyDataSetChanged()
 //    }
 
+    open fun prepare() {
+
+    }
+
     override fun cellRefresh() {
         refresh()
     }

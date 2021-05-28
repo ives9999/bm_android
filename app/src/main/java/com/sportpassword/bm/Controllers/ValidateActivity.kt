@@ -22,7 +22,10 @@ class ValidateActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_validate)
 
-        type = intent.getStringExtra("type")
+        if (intent.hasExtra("type")) {
+            type = intent.getStringExtra("type")!!
+        }
+
         if (type == "email") {
             setMyTitle("email認證")
             typeLbl.text = "email"

@@ -177,7 +177,7 @@ class TempPlayFragment : TabFragment(), inter {
     override fun prepare(section: Int, row: Int) {
 //        println(section)
 //        println(row)
-        var intent = Intent(activity, EditItemActivity::class.java)
+        val intent = Intent(activity, EditItemActivity::class.java)
         when (section) {
             0 -> {
                 when (row) {
@@ -233,7 +233,7 @@ class TempPlayFragment : TabFragment(), inter {
                 }
             }
         }
-        startActivityForResult(intent!!, SELECT_REQUEST_CODE)
+        startActivityForResult(intent, SELECT_REQUEST_CODE)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -247,14 +247,14 @@ class TempPlayFragment : TabFragment(), inter {
             SELECT_REQUEST_CODE -> {
                 if (resultCode == Activity.RESULT_OK) {
                     var key = ""
-                    if (data != null && data!!.hasExtra("key")) {
-                        key = data!!.getStringExtra("key")
+                    if (data != null && data.hasExtra("key")) {
+                        key = data.getStringExtra("key")!!
                     }
 
                     if (key == CITY_KEY) { // city
                         section = 0
                         row = 1
-                        citys = data!!.getParcelableArrayListExtra("citys")
+                        citys = data!!.getSerializableExtra("citys") as ArrayList<City>
                         if (citys.size > 0) {
                             var arr: ArrayList<String> = arrayListOf()
                             for (city in citys) {
@@ -267,7 +267,7 @@ class TempPlayFragment : TabFragment(), inter {
                     } else if (key == ARENA_KEY) { // arena
                         section = 1
                         row = 0
-                        arenas = data!!.getParcelableArrayListExtra("arenas")
+                        arenas = data!!.getSerializableExtra("arenas") as ArrayList<Arena>
                         if (arenas.size > 0) {
                             var arr: ArrayList<String> = arrayListOf()
                             for (arena in arenas) {
@@ -280,7 +280,7 @@ class TempPlayFragment : TabFragment(), inter {
                     } else if (key == TEAM_WEEKDAYS_KEY) {
                         section = 0
                         row = 2
-                        weekdays = data!!.getIntegerArrayListExtra("weekdays")
+                        weekdays = data!!.getIntegerArrayListExtra("weekdays")!!
 //                        println(weekdays)
 
                         if (weekdays.size > 0) {

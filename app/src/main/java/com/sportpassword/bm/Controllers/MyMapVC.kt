@@ -30,8 +30,13 @@ class MyMapVC : BaseActivity(), OnMapReadyCallback {
         mapFragment.getMapAsync(this)
 
 
-        title = intent.getStringExtra("title")
-        address = intent.getStringExtra("address")
+        if (intent.hasExtra("title")) {
+            title = intent.getStringExtra("title")!!
+        }
+
+        if (intent.hasExtra("address")) {
+            address = intent.getStringExtra("address")!!
+        }
 
         setMyTitle(title)
 

@@ -72,6 +72,7 @@ class SearchItem(val title: String, val detail: String, val keyword: String, val
         } else {
             switchView.visibility = View.INVISIBLE
         }
+
         viewHolder.clearBtn.setOnClickListener {
             if ((section == 0 && position == 1) || (section == -1 && position == 0)) {
                 viewHolder.keywordTxt.setText("")

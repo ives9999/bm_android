@@ -78,22 +78,22 @@ class EditItemActivity() : BaseActivity() {
 
         //get intent
         if (intent.hasExtra("key")) {
-            key = intent.getStringExtra("key")
+            key = intent.getStringExtra("key")!!
         } else {
             key = ""
         }
         //println(key)
         if (intent.hasExtra("source")) {
-            source = intent.getStringExtra("source")
+            source = intent.getStringExtra("source")!!
         }
         if (intent.hasExtra("page")) {
-            page = intent.getStringExtra("page")
+            page = intent.getStringExtra("page")!!
         }
         if (intent.hasExtra("type")) {
-            type = intent.getStringExtra("type")
+            type = intent.getStringExtra("type")!!
         }
         if (intent.hasExtra("select")) {
-            select = intent.getStringExtra("select")
+            select = intent.getStringExtra("select")!!
         }
         if (key == TEAM_WEEKDAYS_KEY || key == TEAM_PLAY_START_KEY || key == TEAM_PLAY_END_KEY || key == TEAM_DEGREE_KEY || key == CITY_KEY || key == CITYS_KEY || key == ARENA_KEY) {
             content_container.visibility = View.INVISIBLE
@@ -105,7 +105,7 @@ class EditItemActivity() : BaseActivity() {
         }
         if (key == TEAM_WEEKDAYS_KEY) {
             setMyTitle("星期幾")
-            selectedWeekdays = intent.getIntegerArrayListExtra("weekdays")
+            selectedWeekdays = intent.getIntegerArrayListExtra("weekdays")!!
             for (i in 0..allWeekdays.size-1) {
                 val weekday = allWeekdays[i]
                 var checked = false
@@ -131,10 +131,10 @@ class EditItemActivity() : BaseActivity() {
                 times = intent.getSerializableExtra("times") as HashMap<String, Any>
             }
             if (intent.hasExtra("start")) {
-                start = intent.getStringExtra("start")
+                start = intent.getStringExtra("start")!!
             }
             if (intent.hasExtra("end")) {
-                end = intent.getStringExtra("end")
+                end = intent.getStringExtra("end")!!
             }
             if (intent.hasExtra("interval")) {
                 interval = intent.getIntExtra("interval", 60)
@@ -178,19 +178,19 @@ class EditItemActivity() : BaseActivity() {
         } else if (key == CITY_KEY || key == CITYS_KEY) {
             setMyTitle("縣市")
 //            oldCity = intent.getIntExtra("value", 0)
-            citys = intent.getParcelableArrayListExtra("citys")
+            citys = intent.getParcelableArrayListExtra("citys")!!
         } else if (key == ARENA_KEY) {
             setMyTitle("球館")
-            citysForArena = intent.getIntegerArrayListExtra("citys_for_arena")
-            arenas = intent.getParcelableArrayListExtra("arenas")
+            citysForArena = intent.getIntegerArrayListExtra("citys_for_arena")!!
+            arenas = intent.getParcelableArrayListExtra("arenas")!!
         } else if (key == AREA_KEY) {
             setMyTitle("區域")
-            citysForArea = intent.getIntegerArrayListExtra("citys_for_area")
-            areas = intent.getParcelableArrayListExtra("areas")
+            citysForArea = intent.getIntegerArrayListExtra("citys_for_area")!!
+            areas = intent.getParcelableArrayListExtra("areas")!!
         } else if (key==TEAM_TEMP_CONTENT_KEY || key==CHARGE_KEY || key==CONTENT_KEY || key==COACH_EXP_KEY || key==COACH_FEAT_KEY || key==COACH_LICENSE_KEY) {
             val type = model.contentKey2Type(key)
             setMyTitle(type.value)
-            val value: String = intent.getStringExtra("value")
+            val value: String = intent.getStringExtra("value")!!
             content.setText(value)
             content.requestFocus()
             content.setSelection(content.text.length)

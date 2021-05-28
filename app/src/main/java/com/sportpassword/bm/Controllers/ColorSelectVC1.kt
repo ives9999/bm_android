@@ -28,7 +28,7 @@ class ColorSelectVC1: MyTableVC1() {
         if (intent.hasExtra("selecteds")) {
             selecteds = intent.getSerializableExtra("selecteds") as ArrayList<MYCOLOR>
         }
-        key = intent.getStringExtra("key")
+        key = intent.getStringExtra("key")!!
 
         all = MYCOLOR.all()
         recyclerView = mytable

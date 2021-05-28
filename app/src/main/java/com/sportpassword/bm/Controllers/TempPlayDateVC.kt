@@ -23,8 +23,13 @@ class TempPlayDateVC : BaseActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_temp_play_date)
 
-        name = intent.getStringExtra("name")
-        token = intent.getStringExtra("token")
+        if (intent.hasExtra("name")) {
+            name = intent.getStringExtra("name")!!
+        }
+
+        if (intent.hasExtra("token")) {
+            token = intent.getStringExtra("token")!!
+        }
         setMyTitle(name + "開放臨打日期")
 
         refreshLayout = contentView!!.findViewById<SwipeRefreshLayout>(R.id.tempPlayDate_refresh)

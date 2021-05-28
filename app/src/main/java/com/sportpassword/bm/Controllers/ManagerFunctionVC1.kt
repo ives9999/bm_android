@@ -20,9 +20,9 @@ class ManagerFunctionVC1 : MyTableVC1() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.manager_function_vc)
 
-        title = intent.getStringExtra("title")
-        token = intent.getStringExtra("token")
-        source = intent.getStringExtra("source")
+        title = intent.getStringExtra("title")!!
+        token = intent.getStringExtra("token")!!
+        source = intent.getStringExtra("source")!!
 
         setMyTitle(title)
 

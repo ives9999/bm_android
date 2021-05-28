@@ -598,6 +598,17 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
         startActivity(i)
     }
 
+    fun toSelectCity(key: String, selected: String?=null, requestCode: Int) {
+        val i = Intent(this, SelectCityVC::class.java)
+
+        i.putExtra("key", key)
+        if (selected != null) {
+            i.putExtra("selected", selected)
+        }
+
+        startActivityForResult(i, requestCode)
+    }
+
     protected fun getAllChildrenBFS(v: View): List<View> {
         var visited: ArrayList<View> = arrayListOf()
         var unvisited: ArrayList<View> = arrayListOf()
@@ -1050,7 +1061,11 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
             val searchItem = item as SearchItem
             val row = searchItem.row
             if (page == "course" || page == "store") {
-                prepareSearch1(row, page)
+
+                //val tag = parent.tag as String
+                val frag = getFragment(page) as CourseFragment
+                frag.prepare()
+                //prepareSearch1(row, page)
             } else {
                 if (searchItem.switch == false) {
                     prepareSearch(row, page)
@@ -1169,7 +1184,7 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
     }
 
     protected fun prepareSearch(idx: Int, page: String) {
-        var intent = Intent(this, EditItemActivity::class.java)
+        val intent = Intent(this, EditItemActivity::class.java)
         val row = searchRows.get(idx)
         var key = ""
         if (row.containsKey("key")) {
@@ -1246,8 +1261,8 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
 
     protected fun prepareSearch1(idx: Int, page: String) {
 
-        var singleSelectIntent = Intent(this, SingleSelectVC1::class.java)
-        var multiSelectIntent = Intent(this, MultiSelectVC1::class.java)
+        val singleSelectIntent = Intent(this, SingleSelectVC1::class.java)
+        val multiSelectIntent = Intent(this, MultiSelectVC1::class.java)
         val row = searchRows.get(idx)
         var key = ""
         if (row.containsKey("key")) {
@@ -1281,7 +1296,8 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
 
         when (key) {
             CITY_KEY -> {
-                startActivityForResult(multiSelectIntent, SEARCH_REQUEST_CODE1)
+                toSelectCity(key, null, SEARCH_REQUEST_CODE1)
+                //startActivityForResult(multiSelectIntent, SEARCH_REQUEST_CODE1)
             }
             WEEKDAY_KEY -> {
                 val rows = WEEKDAY.makeSelect()
@@ -1354,7 +1370,7 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
                         }
                         TEAM_WEEKDAYS_KEY -> {
                             idx = 3
-                            weekdays = data.getIntegerArrayListExtra("weekdays")!!
+                            weekdays = data!!.getIntegerArrayListExtra("weekdays")!!
                             if (weekdays.size > 0) {
                                 var arr: ArrayList<String> = arrayListOf()
                                 val gDays = Global.weekdays
@@ -1395,7 +1411,7 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
                         }
                         AREA_KEY -> {
                             idx = 2
-                            areas = data.getParcelableArrayListExtra("areas")!!
+                            areas = data!!.getParcelableArrayListExtra("areas")!!
                             if (areas.size > 0) {
                                 var arr: ArrayList<String> = arrayListOf()
                                 for (area in areas) {
@@ -1522,6 +1538,7 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
     }
 
     fun generateSearchItems(page: String): ArrayList<SearchItem> {
+
         val rows: ArrayList<SearchItem> = arrayListOf()
         for (i in 0..searchRows.size-1) {
             val row = searchRows[i] as HashMap<String, String>

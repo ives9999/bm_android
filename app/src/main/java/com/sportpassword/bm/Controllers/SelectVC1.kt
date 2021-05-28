@@ -21,12 +21,12 @@ open class SelectVC1 : MyTableVC1() {
         super.onCreate(savedInstanceState)
 
         if (intent.hasExtra("title")) {
-            title = intent.getStringExtra("title")
+            title = intent.getStringExtra("title")!!
         }
         setMyTitle(title)
 
         if (intent.hasExtra("key")) {
-            key = intent.getStringExtra("key")
+            key = intent.getStringExtra("key")!!
         }
         if (key == null) {
             warningWithPrev("由於傳遞參數不正確，無法做選擇，請回上一頁重新進入")

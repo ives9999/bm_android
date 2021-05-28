@@ -36,11 +36,11 @@ class SignupListVC : MyTableVC() {
         perPage = 15
 
         if (intent.hasExtra("able")) {
-            able = intent.getStringExtra("able")
+            able = intent.getStringExtra("able")!!
         }
 
         if (intent.hasExtra("able_token")) {
-            able_token = intent.getStringExtra("able_token")
+            able_token = intent.getStringExtra("able_token")!!
         }
 
         if (able == "course") {

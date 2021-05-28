@@ -31,7 +31,7 @@ class ShowTempPlayActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_show_temp_play)
 
-        teamToken = intent.getStringExtra(TOKEN_KEY)
+        teamToken = intent.getStringExtra(TOKEN_KEY)!!
         //println(token)
 
         refreshLayout = contentView!!.findViewById<SwipeRefreshLayout>(R.id.tempPlayShow_refresh)

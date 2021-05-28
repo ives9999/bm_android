@@ -42,13 +42,13 @@ class ManagerCourseVC1: MyTableVC1() {
         setContentView(R.layout.manager_course_vc)
 
         if (intent.hasExtra("token")) {
-            token = intent.getStringExtra("token")
+            token = intent.getStringExtra("token")!!
         }
         if (intent.hasExtra("name")) {
-            name = intent.getStringExtra("name")
+            name = intent.getStringExtra("name")!!
         }
         if (intent.hasExtra("manager_token")) {
-            manager_token = intent.getStringExtra("manager_token")
+            manager_token = intent.getStringExtra("manager_token")!!
         }
 
         if (name == null) {

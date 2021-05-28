@@ -20,7 +20,7 @@ open class SingleSelectVC1 : SelectVC1() {
         setContentView(R.layout.activity_single_select_vc)
 
         if (intent.hasExtra("selected")) {
-            selected = intent.getStringExtra("selected")
+            selected = intent.getStringExtra("selected")!!
         }
 
         recyclerView = tableView

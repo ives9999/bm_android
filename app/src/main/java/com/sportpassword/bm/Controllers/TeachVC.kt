@@ -26,7 +26,7 @@ class TeachVC : MyTableVC1() {
         setContentView(R.layout.activity_teach_vc)
 
         if (intent.hasExtra("type")) {
-            type = intent.getStringExtra("type")
+            type = intent.getStringExtra("type")!!
         }
         setMyTitle("教學")
 

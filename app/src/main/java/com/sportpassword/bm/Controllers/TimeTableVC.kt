@@ -76,8 +76,14 @@ class TimeTableVC : BaseActivity(), ValueChangedDelegate {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_time_table_vc)
 
-        source = intent.getStringExtra("source")
-        token = intent.getStringExtra("token")
+        if (intent.hasExtra("source")) {
+            source = intent.getStringExtra("source")!!
+        }
+
+        if (intent.hasExtra("token")) {
+            token = intent.getStringExtra("token")!!
+        }
+
         dataService = CoachService
 
         setMyTitle("時刻表")
@@ -520,13 +526,13 @@ class TimeTableVC : BaseActivity(), ValueChangedDelegate {
             SEARCH_REQUEST_CODE -> {
                 if (resultCode == Activity.RESULT_OK) {
                     var key = ""
-                    if (data != null && data!!.hasExtra("key")) {
-                        key = data!!.getStringExtra("key")
+                    if (data != null && data.hasExtra("key")) {
+                        key = data.getStringExtra("key")!!
                     }
                     when (key) {
                         TEAM_WEEKDAYS_KEY -> {
                             idx = 1
-                            weekdays = data!!.getIntegerArrayListExtra("weekdays")
+                            weekdays = data!!.getIntegerArrayListExtra("weekdays")!!
                             val item = form.formItems[idx] as WeekdayFormItem
                             item.weekdays = weekdays
                             item.make()
@@ -538,7 +544,7 @@ class TimeTableVC : BaseActivity(), ValueChangedDelegate {
                             } else {
                                 idx = 3
                             }
-                            val selected = data!!.getStringExtra("selected")
+                            val selected = data.getStringExtra("selected")!!
                             val item = form.formItems[idx] as DateFormItem
                             item.value = selected
                             item.make()
@@ -578,7 +584,7 @@ class TimeTableVC : BaseActivity(), ValueChangedDelegate {
                         }
                         CONTENT_KEY -> {
                             idx = 10
-                            val value = data!!.getStringExtra("res")
+                            val value = data!!.getStringExtra("res")!!
                             val item = form.formItems[idx] as ContentFormItem
                             item.value = value
                             item.make()

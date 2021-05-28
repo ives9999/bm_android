@@ -28,7 +28,7 @@ class TeamTempPlayEditActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_team_temp_play_edit)
 
-        teamToken = intent.getStringExtra("token")
+        teamToken = intent.getStringExtra("token")!!
         refresh()
     }
 

@@ -41,7 +41,7 @@ open class ShowVC: BaseActivity(), IconCellDelegate {
         super.onCreate(savedInstanceState)
 
         if (intent.hasExtra("token")) {
-            token = intent.getStringExtra("token")
+            token = intent.getStringExtra("token")!!
         }
 
         refreshLayout = refresh

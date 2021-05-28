@@ -24,7 +24,9 @@ class StatusSelectVC1 : MyTableVC1() {
         setMyTitle("狀態")
 
         selected = intent.getSerializableExtra("selected") as STATUS
-        key = intent.getStringExtra("key")
+        if (intent.hasExtra("key")) {
+            key = intent.getStringExtra("key")!!
+        }
 
         all = STATUS.all()
         recyclerView = mytable

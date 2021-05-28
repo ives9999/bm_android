@@ -13,7 +13,7 @@ class SelectAreaVC: SingleSelectVC1() {
         super.onCreate(savedInstanceState)
 
         if (intent.hasExtra("city_id")) {
-            city_id = intent.getStringExtra("city_id").toInt()
+            city_id = intent.getStringExtra("city_id")!!.toInt()
         }
         if (city_id == null || city_id == 0) {
             warning("請先選擇縣市")
