@@ -1,13 +1,16 @@
 package com.sportpassword.bm.Fragments
 
 
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.*
 import android.widget.ImageButton
+import androidx.activity.result.contract.ActivityResultContracts
 import com.google.gson.JsonParseException
 import com.sportpassword.bm.Controllers.List1CellDelegate
+import com.sportpassword.bm.Controllers.SelectCityVC
 import com.sportpassword.bm.Controllers.ShowCourseVC
 import com.sportpassword.bm.Models.*
 import com.sportpassword.bm.R
@@ -26,15 +29,17 @@ class CourseFragment : TabFragment() {
 
     var mysTable: CoursesTable? = null
 
-    override val _searchRows: ArrayList<HashMap<String, String>> = arrayListOf(
-            hashMapOf("title" to "關鍵字","key" to KEYWORD_KEY,"value" to "","value_type" to "String","show" to ""),
-            hashMapOf("title" to "縣市","key" to CITY_KEY,"value" to "","value_type" to "Array","show" to "不限"),
-            hashMapOf("title" to "日期","key" to WEEKDAY_KEY,"value" to "","value_type" to "Array","show" to "不限"),
-            hashMapOf("title" to "開始時間之後","key" to START_TIME_KEY,"value" to "","value_type" to "String","show" to "不限"),
-            hashMapOf("title" to "結束時間之前","key" to END_TIME_KEY,"value" to "","value_type" to "String","show" to "不限")
-    )
 
     override fun onCreate(savedInstanceState: Bundle?) {
+
+        searchRows = arrayListOf(
+            hashMapOf("title" to "關鍵字","key" to KEYWORD_KEY,"value" to "","value_type" to "String","show" to ""),
+            hashMapOf("title" to "縣市","key" to CITY_KEY,"value" to "","value_type" to "Array","show" to "不限"),
+            hashMapOf("title" to "星期幾","key" to WEEKDAY_KEY,"value" to "","value_type" to "Array","show" to "不限"),
+            hashMapOf("title" to "開始時間","key" to START_TIME_KEY,"value" to "","value_type" to "String","show" to "不限"),
+            hashMapOf("title" to "結束時間","key" to END_TIME_KEY,"value" to "","value_type" to "String","show" to "不限")
+        )
+        able_type = "course"
         super.onCreate(savedInstanceState)
 
         mainActivity!!.source_activity = "course"
@@ -125,8 +130,26 @@ class CourseFragment : TabFragment() {
 //        recyclerView.adapter = adapter
 //    }
 
-    override fun prepare() {
-        val i: Int = 5
+    override fun prepare(idx: Int) {
+
+        val row = searchRows.get(idx)
+        var key: String = ""
+        if (row.containsKey("key")) {
+            key = row["key"]!!
+        }
+
+        var value: String = ""
+        if (row.containsKey("value")) {
+            value = row["value"]!!
+        }
+        if (key == CITY_KEY) {
+            mainActivity!!.toSelectCity(key, value, null, able_type)
+        } else if (key == WEEKDAY_KEY) {
+            mainActivity!!.toSelectWeekday(key, value, null, able_type)
+        } else if (key == START_TIME_KEY || key == END_TIME_KEY) {
+
+            mainActivity!!.toSelectTime(key, value, null, able_type)
+        }
     }
 
 
@@ -185,7 +208,7 @@ class CourseFragment : TabFragment() {
         if (mysTable != null) {
             for (row in mysTable!!.rows) {
                 row.filterRow()
-                val myItem = CourseItem(context!!, row)
+                val myItem = CourseItem(requireContext(), row)
                 myItem.list1CellDelegate = this
                 items.add(myItem)
             }
@@ -201,98 +224,62 @@ class CourseFragment : TabFragment() {
         mainActivity!!.toShowCourse(table.token)
     }
 
-    fun layerSubmit() {
-        prepareParams()
-        page = 1
-        theFirstTime = true
-        refresh()
-    }
+//    fun layerSubmit() {
+//        prepareParams()
+//        page = 1
+//        theFirstTime = true
+//        refresh()
+//    }
 
-    private fun prepareParams() {
-        params.clear()
-        if (mainActivity!!.keyword.length > 0) {
-            val row = getSearchRow(KEYWORD_KEY)
-            if (row != null && row.containsKey("value")) {
-                row["value"] = mainActivity!!.keyword
-                updateSearchRow(KEYWORD_KEY, row)
-            }
-        }
-        for (searchRow in _searchRows) {
-            var value_type: String? = null
-            if (searchRow.containsKey("value_type")) {
-                value_type = searchRow.get("value_type")
-            }
-            var value: String = ""
-            if (searchRow.containsKey("value")) {
-                value = searchRow.get("value")!!
-            }
-            var key: String? = null
-            if (searchRow.containsKey("key")) {
-                key = searchRow.get("key")!!
-            }
-            if (value_type != null && key != null && value.length > 0) {
-                var values: Array<String>? = null
-                if (value_type == "String") {
-                    params[key] = value
-                } else if (value_type == "Array") {
-                    value = searchRow.get("value")!!
-                    values = value.split(",").toTypedArray()
-                }
-                if (values != null) {
-                    params[key] = values
-                }
-            }
-        }
-    }
 
     override fun remove(indexPath: IndexPath) {
         var row: HashMap<String, String>? = null
-        if (_searchRows.size >= indexPath.row) {
-            row = _searchRows[indexPath.row]
+        if (searchRows.size >= indexPath.row) {
+            row = searchRows[indexPath.row]
         }
         var key: String? = null
         if (row != null && row.containsKey("key") && row.get("key")!!.length > 0) {
-            key = row!!.get("key")
+            key = row.get("key")
         }
         if (row != null) {
             row["value"] = ""
             row["show"] = "不限"
-            updateSearchRow(indexPath.row, row)
+            replaceRows(key!!, row)
         }
     }
 
-    private fun getSearchRow(key: String): HashMap<String, String>? {
-        var row: HashMap<String, String>? = null
-        for ((i, searchRow) in _searchRows.withIndex()) {
-            if (searchRow.containsKey("key")) {
-                if (key == searchRow.get("key")) {
-                    row = searchRow
-                    break
-                }
-            }
-        }
+//    private fun getSearchRow(key: String): HashMap<String, String>? {
+//        var row: HashMap<String, String>? = null
+//        for ((i, searchRow) in searchRows.withIndex()) {
+//            if (searchRow.containsKey("key")) {
+//                if (key == searchRow.get("key")) {
+//                    row = searchRow
+//                    break
+//                }
+//            }
+//        }
+//
+//        return row
+//    }
+//
+//    private fun updateSearchRow(idx: Int, row: HashMap<String, String>) {
+//        searchRows[idx] = row
+//    }
 
-        return row
-    }
-
-    private fun updateSearchRow(idx: Int, row: HashMap<String, String>) {
-        _searchRows[idx] = row
-    }
-
-    private fun updateSearchRow(key: String, row: HashMap<String, String>) {
-        var idx: Int = -1
-        for ((i, searchRow) in _searchRows.withIndex()) {
-            if (searchRow.containsKey("key")) {
-                if (key == searchRow.get("key")) {
-                    idx = i
-                    break
-                }
-            }
-        }
-        if (idx >= 0) {
-            _searchRows[idx] = row
-        }
-    }
+//    private fun updateSearchRow(key: String, row: HashMap<String, String>) {
+//        var idx: Int = -1
+//        for ((i, searchRow) in searchRows.withIndex()) {
+//            if (searchRow.containsKey("key")) {
+//                if (key == searchRow.get("key")) {
+//                    idx = i
+//                    break
+//                }
+//            }
+//        }
+//        if (idx >= 0) {
+//            searchRows[idx] = row
+//        }
+//    }
 
     companion object {
         // TODO: Rename parameter arguments, choose names that match

@@ -541,7 +541,7 @@ fun String.toDate(pattern: String = "yyyy-MM-dd"): Date? {
 
 fun String.toDateTime(pattern: String = "yyyy-MM-dd HH:mm:ss"): Date? {
     var date: Date? = null
-    if (this.isDateTime() || this.isDate() || this.isTime()) {
+    if (this.isDateTime(pattern) || this.isDate(pattern) || this.isTime(pattern)) {
         //val formatter = DateTimeFormatter.ofPattern(pattern, Locale.TAIWAN)
         val formatter = SimpleDateFormat(pattern)
         date = formatter.parse(this)

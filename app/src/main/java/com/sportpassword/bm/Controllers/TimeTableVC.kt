@@ -362,7 +362,7 @@ class TimeTableVC : BaseActivity(), ValueChangedDelegate {
     fun showEditEvent(buttonCount: Int = 2) {
         mask()
         layerBtnCount = buttonCount
-        addLayer("")
+        addSearchLayer("")
     }
 
     override fun _addLayer(page: String) {
@@ -514,7 +514,7 @@ class TimeTableVC : BaseActivity(), ValueChangedDelegate {
         searchAdapter.addAll(rows)
 
         editTableView.adapter = searchAdapter
-        layerContainerView!!.addView(editTableView)
+        //layerContainerView!!.addView(editTableView)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

@@ -31,15 +31,17 @@ class CourseCalendarFragment : TabFragment() {
     var month: Int = Date().getm()
     var monthLastDay: Int = 31
 
-    override val _searchRows: ArrayList<HashMap<String, String>> = arrayListOf(
+    override fun onCreate(savedInstanceState: Bundle?) {
+
+        searchRows = arrayListOf(
             hashMapOf("title" to "關鍵字","key" to KEYWORD_KEY,"value" to "","value_type" to "String","show" to "不限"),
             hashMapOf("title" to "縣市","key" to CITY_KEY,"value" to "","value_type" to "Array","show" to "不限"),
             hashMapOf("title" to "日期","key" to WEEKDAY_KEY,"value" to "","value_type" to "Array","show" to "不限"),
             hashMapOf("title" to "開始時間之後","key" to START_TIME_KEY,"value" to "","value_type" to "String","show" to "不限"),
             hashMapOf("title" to "結束時間之前","key" to END_TIME_KEY,"value" to "","value_type" to "String","show" to "不限")
-    )
+        )
+        able_type = "course"
 
-    override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         dataService = CourseService
         setHasOptionsMenu(true)

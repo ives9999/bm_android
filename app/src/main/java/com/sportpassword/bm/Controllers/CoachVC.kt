@@ -21,15 +21,16 @@ import kotlinx.android.synthetic.main.coach_list_cell.*
 
 class CoachVC : MyTableVC1() {
 
-    var coachesTable: CoachesTable? = null
+    var mysTable: CoachesTable? = null
     //var storesTable: StoresTable? = null
 
-    val _searchRows: ArrayList<HashMap<String, String>> = arrayListOf(
-            hashMapOf("title" to "關鍵字","detail" to "全部","key" to KEYWORD_KEY),
-            hashMapOf("title" to "縣市","detail" to "全部","key" to CITY_KEY)
-    )
-
     override fun onCreate(savedInstanceState: Bundle?) {
+
+        searchRows = arrayListOf(
+            hashMapOf("title" to "關鍵字","show" to "全部","key" to KEYWORD_KEY,"value" to ""),
+            hashMapOf("title" to "縣市","show" to "全部","key" to CITY_KEY,"value" to "")
+        )
+
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_store_vc)
         //setContentView(R.layout.activity_coach_vc)
@@ -39,7 +40,6 @@ class CoachVC : MyTableVC1() {
 
         dataService = CoachService
         //dataService = CoachService
-        searchRows = _searchRows
         recyclerView = list_container
         refreshLayout = refresh
         initAdapter()
@@ -54,8 +54,10 @@ class CoachVC : MyTableVC1() {
         val searchBtn = memuView.findViewById<ImageButton>(R.id.search)
         //val ManagerBtn = memuView.findViewById<ImageButton>(R.id.manager)
 
-//        searchBtn.tag = type
+        searchBtn.tag = "coach"
 //        ManagerBtn.tag = type
+
+        // searchBtn onClick action is showSearchPanel, defined in menu_search_manager.xml layount
 
         return true
     }
@@ -63,16 +65,16 @@ class CoachVC : MyTableVC1() {
     override fun genericTable() {
         //storesTable = jsonToModel<StoresTable>(dataService.jsonString)
         //println(dataService.jsonString)
-        coachesTable = jsonToModels<CoachesTable>(jsonString!!)
-        if (coachesTable != null) {
-            tables = coachesTable
+        mysTable = jsonToModels<CoachesTable>(jsonString!!)
+        if (mysTable != null) {
+            tables = mysTable
         }
     }
 
     override fun generateItems(): ArrayList<Item> {
         val items: ArrayList<Item> = arrayListOf()
-        if (coachesTable != null) {
-            for (row in coachesTable!!.rows) {
+        if (mysTable != null) {
+            for (row in mysTable!!.rows) {
                 //row.print()
                 row.filterRow()
                 val coachItem = CoachItem(this, row)
@@ -92,7 +94,7 @@ class CoachVC : MyTableVC1() {
     }
 
     override fun remove(indexPath: IndexPath) {
-        val row = _searchRows[indexPath.row]
+        val row = searchRows[indexPath.row]
         val key = row["key"]!!
         when (key) {
             CITY_KEY -> citys.clear()
@@ -100,6 +102,27 @@ class CoachVC : MyTableVC1() {
 //        _searchRows[indexPath.row]["detail"] = "全部"
 //        val rows = generateSearchItems(type!!)
 //        searchAdapter.update(rows)
+    }
+
+    override fun prepare(idx: Int) {
+
+        val row = searchRows.get(idx)
+        var key: String = ""
+        if (row.containsKey("key")) {
+            key = row["key"]!!
+        }
+
+        var value: String = ""
+        if (row.containsKey("value") && row["value"]!!.isNotEmpty()) {
+            value = row["value"]!!
+        }
+
+
+        when (key) {
+            CITY_KEY -> {
+                toSelectCity(key, value, this)
+            }
+        }
     }
 }
 

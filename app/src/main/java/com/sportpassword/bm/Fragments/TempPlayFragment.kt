@@ -16,7 +16,6 @@ import android.widget.ScrollView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import com.sportpassword.bm.Adapters.inter
-import com.sportpassword.bm.Controllers.Arena
 import com.sportpassword.bm.Controllers.EditItemActivity
 import com.sportpassword.bm.Controllers.TempPlayVC
 import com.sportpassword.bm.Models.City
@@ -30,6 +29,7 @@ import com.xwray.groupie.ViewHolder
 import com.sportpassword.bm.Adapters.SearchItem
 import com.sportpassword.bm.App
 import com.sportpassword.bm.Controllers.HomeTotalAdVC
+import com.sportpassword.bm.Models.Arena
 import kotlinx.android.synthetic.main.activity_main.*
 import org.jetbrains.anko.backgroundColor
 
@@ -209,7 +209,7 @@ class TempPlayFragment : TabFragment(), inter {
 //                        citys.add(City(11, ""))
 
                         if (citys.size == 0) {
-                            Alert.warning(this@TempPlayFragment.context!!, "請先選擇縣市")
+                            //Alert.warning(this@TempPlayFragment.context!!, "請先選擇縣市")
                             return
                         }
                         intent.putExtra("key", ARENA_KEY)
@@ -223,7 +223,7 @@ class TempPlayFragment : TabFragment(), inter {
                         }
                         intent.putIntegerArrayListExtra("citys_for_arena", citysForArena)
 
-                        intent.putParcelableArrayListExtra("arenas", arenas)
+                        //intent.putParcelableArrayListExtra("arenas", arenas)
                     }
                     1 -> {// degree
                         intent.putExtra("key", TEAM_DEGREE_KEY)
@@ -267,16 +267,16 @@ class TempPlayFragment : TabFragment(), inter {
                     } else if (key == ARENA_KEY) { // arena
                         section = 1
                         row = 0
-                        arenas = data!!.getSerializableExtra("arenas") as ArrayList<Arena>
-                        if (arenas.size > 0) {
-                            var arr: ArrayList<String> = arrayListOf()
-                            for (arena in arenas) {
-                                arr.add(arena.name)
-                            }
-                            value = arr.joinToString()
-                        } else {
-                            value = "全部"
-                        }
+//                        arenas = data!!.getSerializableExtra("arenas") as ArrayList<Arena>
+//                        if (arenas.size > 0) {
+//                            var arr: ArrayList<String> = arrayListOf()
+//                            for (arena in arenas) {
+//                                arr.add(arena.name)
+//                            }
+//                            value = arr.joinToString()
+//                        } else {
+//                            value = "全部"
+//                        }
                     } else if (key == TEAM_WEEKDAYS_KEY) {
                         section = 0
                         row = 2

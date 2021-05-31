@@ -36,7 +36,7 @@ class SelectCityVC: SingleSelectVC1() {
         for(city in citys) {
             val name = city.name
             val id = city.id
-            rows!!.add(hashMapOf("title" to name, "value" to id.toString()))
+            rows.add(hashMapOf("title" to name, "value" to id.toString()))
         }
     }
 }

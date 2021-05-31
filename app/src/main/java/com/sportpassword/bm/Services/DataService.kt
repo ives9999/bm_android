@@ -3,14 +3,12 @@ package com.sportpassword.bm.Services
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
-import android.os.Environment
 import com.android.volley.Request
 import com.android.volley.Response
 import com.android.volley.toolbox.JsonArrayRequest
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
 import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
 import com.sportpassword.bm.Models.*
 import com.sportpassword.bm.Utilities.*
 import com.sportpassword.bm.member
@@ -18,14 +16,9 @@ import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject
 import java.io.InputStream
-import java.io.OutputStreamWriter
 import java.lang.Exception
-import java.net.HttpURLConnection
 import java.net.URL
 import com.fasterxml.jackson.databind.ObjectMapper
-import org.apache.http.client.HttpClient
-import org.apache.http.impl.client.HttpClientBuilder
-import java.io.File
 
 /**
  * Created by ives on 2018/2/14.
@@ -41,7 +34,7 @@ open class DataService: BaseService() {
     open val model: SuperData = SuperData(-1, "", "", "")
     lateinit var data: MutableMap<String, MutableMap<String, Any>>
     var citys: ArrayList<City> = arrayListOf()
-    var arenas: ArrayList<Arena> = arrayListOf()
+    var arenas: ArrayList<ArenaTable> = arrayListOf()
     var citysandarenas: HashMap<Int, HashMap<String, Any>> = hashMapOf()
     var citysandareas: HashMap<Int, HashMap<String, Any>> = hashMapOf()
     lateinit var timetables: Timetables
@@ -1247,7 +1240,10 @@ open class DataService: BaseService() {
                     val obj = json.getJSONObject(i)
                     val id: Int = obj.getInt("id")
                     val name: String = obj.getString("name")
-                    arenas.add(Arena(id, name))
+                    val arena: ArenaTable = ArenaTable()
+                    arena.id = id
+                    arena.name = name
+                    arenas.add(arena)
                 }
             } catch (e: JSONException) {
                 println(e.localizedMessage)

@@ -22,12 +22,15 @@ import kotlinx.android.synthetic.main.tab_coach.*
  */
 class CoachFragment : TabFragment() {
 
-    override val _searchRows: ArrayList<HashMap<String, String>> = arrayListOf(
-        hashMapOf("title" to "關鍵字","detail" to "全部","key" to KEYWORD_KEY),
-        hashMapOf("title" to "縣市","detail" to "全部","key" to CITY_KEY)
-    )
 
     override fun onCreate(savedInstanceState: Bundle?) {
+
+        searchRows = arrayListOf(
+            hashMapOf("title" to "關鍵字","detail" to "全部","key" to KEYWORD_KEY),
+            hashMapOf("title" to "縣市","detail" to "全部","key" to CITY_KEY)
+        )
+        able_type = "coach"
+
         super.onCreate(savedInstanceState)
         this.dataService = CoachService
         setHasOptionsMenu(true)

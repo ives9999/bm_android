@@ -29,16 +29,18 @@ class TeamFragment: TabFragment() {
 
     var bInit: Boolean = false
 
-    override val _searchRows: ArrayList<HashMap<String, String>> = arrayListOf(
-        hashMapOf("title" to "關鍵字","detail" to "全部","key" to KEYWORD_KEY),
-        hashMapOf("title" to "縣市","detail" to "全部","key" to CITY_KEY),
-        hashMapOf("title" to "球館","detail" to "全部","key" to ARENA_KEY),
-        hashMapOf("title" to "日期","detail" to "全部","key" to TEAM_WEEKDAYS_KEY),
-        hashMapOf("title" to "時段","detail" to "全部","key" to TEAM_PLAY_START_KEY),
-        hashMapOf("title" to "程度","detail" to "全部","key" to TEAM_DEGREE_KEY)
-    )
-
     override fun onCreate(savedInstanceState: Bundle?) {
+
+        searchRows = arrayListOf(
+            hashMapOf("title" to "關鍵字","show" to "全部","key" to KEYWORD_KEY,"value" to ""),
+            hashMapOf("title" to "縣市","show" to "全部","key" to CITY_KEY,"value" to ""),
+            hashMapOf("title" to "球館","show" to "全部","key" to ARENA_KEY,"value" to ""),
+            hashMapOf("title" to "星期幾","show" to "全部","key" to WEEKDAY_KEY,"value" to ""),
+            hashMapOf("title" to "時段","show" to "全部","key" to TEAM_PLAY_START_KEY,"value" to ""),
+            hashMapOf("title" to "程度","show" to "全部","key" to TEAM_DEGREE_KEY,"value" to "")
+        )
+        able_type = "team"
+
         super.onCreate(savedInstanceState)
 
         this.dataService = TeamService
@@ -106,13 +108,46 @@ class TeamFragment: TabFragment() {
         if (mysTable != null) {
             for (row in mysTable!!.rows) {
                 row.filterRow()
-                val myItem = TeamItem(context!!, row)
+                val myItem = TeamItem(requireContext(), row)
                 myItem.list1CellDelegate = this
                 items.add(myItem)
             }
         }
 
         return items
+    }
+
+    override fun prepare(idx: Int) {
+
+        var row = searchRows.get(idx)
+        var key: String = ""
+        if (row.containsKey("key")) {
+            key = row["key"]!!
+        }
+
+        var value: String = ""
+        if (row.containsKey("value")) {
+            value = row["value"]!!
+        }
+        if (key == CITY_KEY) {
+            mainActivity!!.toSelectCity(key, value, null, able_type)
+        } else if (key == ARENA_KEY) {
+            row = getDefinedRow(CITY_KEY)
+            var city_id: Int? = null
+            if (row.containsKey("value") && row["value"] != null && row["value"]!!.length > 0) {
+                city_id = row["value"]!!.toInt()
+            }
+            if (city_id != null && city_id > 0) {
+                mainActivity!!.toSelectArena(key, value, city_id, null, able_type)
+            } else {
+                mainActivity!!.warning("請先選擇縣市")
+            }
+        } else if (key == WEEKDAY_KEY) {
+            mainActivity!!.toSelectWeekday(key, value, null, able_type)
+        } else if (key == START_TIME_KEY || key == END_TIME_KEY) {
+
+            mainActivity!!.toSelectTime(key, value, null, able_type)
+        }
     }
 
     override fun rowClick(item: com.xwray.groupie.Item<ViewHolder>, view: View) {

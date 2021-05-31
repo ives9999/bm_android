@@ -508,8 +508,8 @@ class EditVC1 : MyTableVC1(), ImagePicker {
                 }
                 if (tmp.containsKey("arena_id")) {
                     val arena_id: Int = tmp["arena_id"]!!
-                    val arenas: ArrayList<com.sportpassword.bm.Controllers.Arena> = arrayListOf(com.sportpassword.bm.Controllers.Arena(arena_id, ""))
-                    intent.putParcelableArrayListExtra("arenas", arenas)
+                    val arenas: ArrayList<Arena> = arrayListOf(Arena(arena_id, ""))
+                    //intent.putParcelableArrayListExtra("arenas", arenas)
                 }
 //                intent.putExtra("city_id", city_id)
 //                intent.putExtra("arena_id", arena_id)
@@ -556,7 +556,7 @@ class EditVC1 : MyTableVC1(), ImagePicker {
                         val citys: ArrayList<City> = data!!.getSerializableExtra("citys") as ArrayList<City>
                         updateCity(citys)
                     } else if (key == ARENA_KEY) {
-                        val arenas:ArrayList<com.sportpassword.bm.Controllers.Arena> = data!!.getSerializableExtra("arenas") as ArrayList<com.sportpassword.bm.Controllers.Arena>
+                        val arenas:ArrayList<Arena> = data!!.getSerializableExtra("arenas") as ArrayList<Arena>
 //                        val id: Int = data!!.getIntExtra("id", model.data[TEAM_ARENA_KEY]!!["value"] as Int)
 //                        val name: String = data!!.getStringExtra("name")
                         updateArena(arenas)
@@ -590,12 +590,9 @@ class EditVC1 : MyTableVC1(), ImagePicker {
         }
     }
 
-    fun updateArena(arenas: ArrayList<com.sportpassword.bm.Controllers.Arena>?=null) {
+    fun updateArena(arenas: ArrayList<Arena>?=null) {
         if (arenas != null && arenas.size > 0) {
-            val id = arenas[0].id
-            val name = arenas[0].name
-            val arena = Arena(id, name)
-            model.updateArena(arena)
+            model.updateArena(arenas[0])
         } else {
             model.updateArena()
         }

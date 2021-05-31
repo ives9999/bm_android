@@ -21,6 +21,7 @@ import android.view.animation.TranslateAnimation
 import android.view.inputmethod.InputMethodManager
 import android.webkit.*
 import android.widget.*
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -36,15 +37,14 @@ import com.onesignal.OneSignal
 import com.sportpassword.bm.Adapters.SearchItem
 import com.sportpassword.bm.Adapters.SearchItemDelegate
 import com.sportpassword.bm.App
+import com.sportpassword.bm.*
 import com.sportpassword.bm.Fragments.CoachFragment
 import com.sportpassword.bm.Fragments.CourseFragment
 import com.sportpassword.bm.Fragments.TabFragment
 import com.sportpassword.bm.Fragments.TeamFragment
 import com.sportpassword.bm.Models.*
 import com.sportpassword.bm.R
-import com.sportpassword.bm.Services.DataService
-import com.sportpassword.bm.Services.MemberService
-import com.sportpassword.bm.Services.TeamService
+import com.sportpassword.bm.Services.*
 import com.sportpassword.bm.Utilities.*
 import com.sportpassword.bm.member
 import com.xwray.groupie.GroupAdapter
@@ -64,7 +64,7 @@ import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
 import kotlin.system.exitProcess
 
-open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, SearchItemDelegate {
+open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, SearchItemDelegate, SingleSelectDelegate {
 
     protected lateinit var refreshLayout: SwipeRefreshLayout
     protected lateinit var refreshListener: SwipeRefreshLayout.OnRefreshListener
@@ -111,8 +111,8 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
     //for layer
     var layerMask: LinearLayout? = null
     var layerBlackView: RelativeLayout? = null
-    var layerScrollView: NestedScrollView? = null
-    var layerContainerView: LinearLayout? = null
+    //var layerScrollView: ScrollView? = null
+    //var layerContainerView: LinearLayout? = null
     var layerSubmitBtn: Button? = null
     var layerCancelBtn: Button? = null
     var layerDeleteBtn: Button? = null
@@ -125,6 +125,147 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
     val body_css = "<style>body{background-color:#000;padding-left:8px;padding-right:8px;margin-top:0;padding-top:0;color:#888888;font-size:18px;}a{color:#a6d903;}</style>"
 
     val session: SharedPreferences = App.instance.getSharedPreferences(SESSION_FILENAME, 0)
+
+    var delegate: BaseActivity? = null
+    override fun singleSelected(key: String, selected: String) {}
+
+    val selectCityVC = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { res ->
+        if (res.resultCode == Activity.RESULT_OK) {
+
+            if (res.data != null) {
+                val i: Intent? = res.data
+
+                if (i != null) {
+                    var key: String = ""
+                    if (i.hasExtra("key")) {
+                        key = i.getStringExtra("key")!!
+                    }
+
+                    var selected: String = ""
+                    if (i.hasExtra("selected")) {
+                        selected = i.getStringExtra("selected")!!
+                    }
+
+                    //activity
+                    if (delegate != null) {
+                        delegate!!.singleSelected(key, selected)
+                    } else {
+                        //fragment
+                        var able_type: String = "course"
+                        if (i.hasExtra("able_type")) {
+                            able_type = i.getStringExtra("able_type")!!
+                        }
+                        val f = getFragment(able_type)
+                        if (f != null) {
+                            f.singleSelected(key, selected)
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    val selectWeekdayVC = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { res ->
+        if (res.resultCode == Activity.RESULT_OK) {
+
+            if (res.data != null) {
+                val i: Intent? = res.data
+
+                if (i != null) {
+                    var key: String = ""
+                    if (i.hasExtra("key")) {
+                        key = i.getStringExtra("key")!!
+                    }
+
+                    var selected: String = ""
+                    if (i.hasExtra("selected")) {
+                        selected = i.getStringExtra("selected")!!
+                    }
+
+                    //activity
+                    if (delegate != null) {
+                        delegate!!.singleSelected(key, selected)
+                    } else {
+                        //fragment
+                        var able_type: String = "course"
+                        if (i.hasExtra("able_type")) {
+                            able_type = i.getStringExtra("able_type")!!
+                        }
+                        val f = getFragment(able_type)
+                        f?.singleSelected(key, selected)
+                    }
+                }
+            }
+        }
+    }
+
+    val selectTimeVC = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { res ->
+        if (res.resultCode == Activity.RESULT_OK) {
+
+            if (res.data != null) {
+                val i: Intent? = res.data
+
+                if (i != null) {
+                    var key: String = ""
+                    if (i.hasExtra("key")) {
+                        key = i.getStringExtra("key")!!
+                    }
+
+                    var selected: String = ""
+                    if (i.hasExtra("selected")) {
+                        selected = i.getStringExtra("selected")!! + ":00"
+                    }
+
+                    //activity
+                    if (delegate != null) {
+                        delegate!!.singleSelected(key, selected)
+                    } else {
+                        //fragment
+                        var able_type: String = "course"
+                        if (i.hasExtra("able_type")) {
+                            able_type = i.getStringExtra("able_type")!!
+                        }
+                        val f = getFragment(able_type)
+                        f?.singleSelected(key, selected)
+                    }
+                }
+            }
+        }
+    }
+
+    val selectArenaVC = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { res ->
+        if (res.resultCode == Activity.RESULT_OK) {
+
+            if (res.data != null) {
+                val i: Intent? = res.data
+
+                if (i != null) {
+                    var key: String = ""
+                    if (i.hasExtra("key")) {
+                        key = i.getStringExtra("key")!!
+                    }
+
+                    var selected: String = ""
+                    if (i.hasExtra("selected")) {
+                        selected = i.getStringExtra("selected")!! + ":00"
+                    }
+
+                    //activity
+                    if (delegate != null) {
+                        delegate!!.singleSelected(key, selected)
+                    } else {
+                        //fragment
+                        var able_type: String = "course"
+                        if (i.hasExtra("able_type")) {
+                            able_type = i.getStringExtra("able_type")!!
+                        }
+                        val f = getFragment(able_type)
+                        f?.singleSelected(key, selected)
+                    }
+                }
+            }
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -598,7 +739,7 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
         startActivity(i)
     }
 
-    fun toSelectCity(key: String, selected: String?=null, requestCode: Int) {
+    fun toSelectCity(key: String, selected: String?=null, delegate: BaseActivity?=null, able_type: String?=null) {
         val i = Intent(this, SelectCityVC::class.java)
 
         i.putExtra("key", key)
@@ -606,12 +747,80 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
             i.putExtra("selected", selected)
         }
 
-        startActivityForResult(i, requestCode)
+        if (able_type != null) {
+            i.putExtra("able_type", able_type)
+        }
+
+        if (delegate != null) {
+            this.delegate = delegate
+        }
+
+        selectCityVC.launch(i)
+    }
+
+    fun toSelectWeekday(key: String, selected: String?=null, delegate: BaseActivity?=null, able_type: String?=null) {
+        val i = Intent(this, SelectWeekdayVC::class.java)
+
+        i.putExtra("key", key)
+        if (selected != null) {
+            i.putExtra("selected", selected)
+        }
+
+        if (able_type != null) {
+            i.putExtra("able_type", able_type)
+        }
+
+        if (delegate != null) {
+            this.delegate = delegate
+        }
+
+        selectWeekdayVC.launch(i)
+    }
+
+    fun toSelectTime(key: String, selected: String?=null, delegate: BaseActivity?=null, able_type: String?=null) {
+        val i = Intent(this, SelectTimeVC::class.java)
+
+        i.putExtra("key", key)
+        if (selected != null) {
+            i.putExtra("selected", selected)
+        }
+
+        if (able_type != null) {
+            i.putExtra("able_type", able_type)
+        }
+
+        if (delegate != null) {
+            this.delegate = delegate
+        }
+
+        selectTimeVC.launch(i)
+    }
+
+    fun toSelectArena(key: String, selected: String?=null, city_id: Int, delegate: BaseActivity?=null, able_type: String?=null) {
+
+        val i = Intent(this, SelectArenaVC::class.java)
+
+        i.putExtra("key", key)
+        if (selected != null) {
+            i.putExtra("selected", selected)
+        }
+
+        if (able_type != null) {
+            i.putExtra("able_type", able_type)
+        }
+
+        if (delegate != null) {
+            this.delegate = delegate
+        }
+
+        i.putExtra("city_id", city_id)
+
+        selectArenaVC.launch(i)
     }
 
     protected fun getAllChildrenBFS(v: View): List<View> {
-        var visited: ArrayList<View> = arrayListOf()
-        var unvisited: ArrayList<View> = arrayListOf()
+        val visited: ArrayList<View> = arrayListOf()
+        val unvisited: ArrayList<View> = arrayListOf()
         unvisited.add(v)
 
         while (!unvisited.isEmpty()) {
@@ -855,9 +1064,9 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
                 containerID = "constraintLayout"
             }
             "team" -> {
-                containerID = "team_container"
+                containerID = "course_container"
                 val frag = getFragment(tag) as TeamFragment
-                searchRows = frag._searchRows
+                searchRows = frag.searchRows
             }
             "arena" -> {
                 containerID = "constraintLayout"
@@ -868,7 +1077,7 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
             "course" -> {
                 containerID = "course_container"
                 val frag = getFragment(tag) as CourseFragment
-                searchRows = frag._searchRows
+                searchRows = frag.searchRows
             }
             "store" -> {
                 containerID = "constraintLayout"
@@ -885,8 +1094,13 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
 //        v.backgroundColor = Color.RED
 //        parent.addView(v, params)
 
+        removeLayerChildViews()
+
+        //first add a mask
         mask()
-        addLayer(tag)
+
+        //second add search view in mask
+        addSearchLayer(tag)
     }
 
     protected fun mask() {
@@ -899,7 +1113,7 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
             layerMask!!.id = R.id.MyMask
             layerMask!!.layoutParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
             //mask.layoutParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT)
-            layerMask!!.backgroundColor = Color.parseColor("#ffffff")
+            layerMask!!.backgroundColor = Color.parseColor("#888888")
             //0是完全透明
             layerMask!!.alpha = 0.9f
             layerMask!!.setOnClickListener {
@@ -908,6 +1122,7 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
             val parent = getMyParent()
             parent.addView(layerMask)
         } else {
+            val v = layerMask!!.visibility
             layerMask!!.visibility = View.VISIBLE
         }
 //        mask.animate().setDuration(duration).alpha(alpha).setListener(object: Animator.AnimatorListener {
@@ -956,26 +1171,41 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
 
     protected fun removeLayerChildViews() {
         val parent = getMyParent()
-        layerContainerView!!.removeAllViews()
-        layerScrollView!!.removeAllViews()
-        layerBlackView!!.removeAllViews()
-        layerContainerView = null
-        layerMask!!.visibility = View.GONE
-        layerMask!!.removeAllViews()
-        layerScrollView = null
+//        if (layerContainerView != null) {
+//            layerContainerView!!.removeAllViews()
+//        }
+//
+//        if (layerScrollView != null) {
+//            layerScrollView!!.removeAllViews()
+//        }
+
+        if (layerBlackView != null) {
+            layerBlackView!!.removeAllViews()
+        }
+
+//        layerContainerView = null
+
+        if (layerMask != null) {
+            layerMask!!.visibility = View.GONE
+            layerMask!!.removeAllViews()
+        }
+
+//        layerScrollView = null
         layerBlackView = null
         parent.removeView(layerMask)
         layerMask = null
     }
 
-    protected fun addLayer(page: String) {
+    protected fun addSearchLayer(page: String) {
 
         val parent = getMyParent()
         val w = parent.measuredWidth
         val h = parent.measuredHeight
         if (layerBlackView == null) {
 
+            //container layer for search
             val lp = RelativeLayout.LayoutParams(w - (2 * layerRightLeftPadding), h - layerTopPadding)
+            //val lp = RelativeLayout.LayoutParams(w - (2 * layerRightLeftPadding), 1000)
             //lp.setMargins(layerRightLeftPadding, layerTopPadding, layerRightLeftPadding, 0)
             layerBlackView = RelativeLayout(this)
             layerBlackView!!.layoutParams = lp
@@ -984,29 +1214,30 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
             layerBlackView!!.backgroundColor = Color.BLACK
             layerMask!!.addView(layerBlackView)
 
-            val lp1 = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT)
-            lp.setMargins(0, 0, 0, 0)
-            layerScrollView = NestedScrollView(this)
-            layerScrollView!!.layoutParams = lp1
-            layerScrollView!!.setOnScrollChangeListener(object : NestedScrollView.OnScrollChangeListener {
-                override fun onScrollChange(p0: NestedScrollView?, p1: Int, p2: Int, p3: Int, p4: Int) {
-                    currentFocus?.clearFocus()
-                }
-
-            })
+//            val lp1 = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 2000)
+//            lp.setMargins(0, 0, 0, 60)
+//            layerScrollView = ScrollView(this)
+//            layerScrollView!!.layoutParams = lp1
+//            layerScrollView!!.backgroundColor = Color.RED
+//            layerScrollView!!.setOnScrollChangeListener(object : NestedScrollView.OnScrollChangeListener {
+//                override fun onScrollChange(p0: NestedScrollView?, p1: Int, p2: Int, p3: Int, p4: Int) {
+//                    currentFocus?.clearFocus()
+//                }
+//
+//            })
 //            layerScrollView!!.layoutParams = lp
 //            layerScrollView!!.backgroundColor = Color.GREEN
 
 //            val mask = getMask()
-            layerBlackView!!.addView(layerScrollView)
+            //layerBlackView!!.addView(layerScrollView)
 
-            val lp2 = LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT)
-            lp2.setMargins(0, 0, 0, 0)
-            layerContainerView = LinearLayout(this)
-            layerContainerView!!.orientation = LinearLayout.VERTICAL
-            layerContainerView!!.layoutParams = lp2
-//            layerContainerView!!.backgroundColor = Color.RED
-            layerScrollView!!.addView(layerContainerView)
+//            val lp2 = LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT)
+//            lp2.setMargins(0, 0, 0, 0)
+//            layerContainerView = LinearLayout(this)
+//            layerContainerView!!.orientation = LinearLayout.VERTICAL
+//            layerContainerView!!.layoutParams = lp2
+//            layerContainerView!!.backgroundColor = Color.BLUE
+            //layerScrollView!!.addView(layerContainerView)
 
             _addLayer(page)
 //            val l = LinearLayout(this)
@@ -1015,10 +1246,10 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
 //            layerContainerView!!.addView(l)
 
             //append bottom space
-            val bottomLayout = LinearLayout(this)
-            val lpx = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 200)
-            bottomLayout.layoutParams = lpx
-            layerContainerView!!.addView(bottomLayout)
+//            val bottomLayout = LinearLayout(this)
+//            val lpx = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 200)
+//            bottomLayout.layoutParams = lpx
+//            layerContainerView!!.addView(bottomLayout)
         }
 
 
@@ -1050,33 +1281,45 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
         val w = parent.measuredWidth
         val searchTableView = RecyclerView(this)
         searchTableView.id = R.id.SearchRecycleItem
-        val padding: Int = 80
-        val lp1 = RecyclerView.LayoutParams(w - (2 * padding), 1000)
-        lp1.setMargins(0, 30, 0, 30)
+//        val padding: Int = 80
+        //val lp1 = RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 800)
+        val lp1 = RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
+//        val lp1 = RecyclerView.LayoutParams(w - (2 * padding), 1000)
+        lp1.setMargins(0, 0, 0, 150)
         searchTableView.layoutParams = lp1
         searchTableView.layoutManager = LinearLayoutManager(this)
+        //searchTableView.backgroundColor = Color.RED
         searchTableView.backgroundColor = Color.TRANSPARENT
         searchAdapter = GroupAdapter<ViewHolder>()
         searchAdapter.setOnItemClickListener { item, view ->
             val searchItem = item as SearchItem
             val row = searchItem.row
-            if (page == "course" || page == "store") {
+            if (page == "course" || page == "team") {
 
                 //val tag = parent.tag as String
-                val frag = getFragment(page) as CourseFragment
-                frag.prepare()
+                var frag: TabFragment? = null
+                if (page == "course") {
+                    frag = getFragment(page) as CourseFragment
+                } else if (page == "team") {
+                    frag = getFragment(page) as TeamFragment
+                }
+                if (frag != null) {
+                    frag.prepare(row)
+                }
                 //prepareSearch1(row, page)
             } else {
-                if (searchItem.switch == false) {
-                    prepareSearch(row, page)
-                }
+                prepare(row)
+//                if (searchItem.switch == false) {
+//                    prepareSearch(row, page)
+//                }
             }
         }
         val rows = generateSearchItems(page)
         searchAdapter.addAll(rows)
 
         searchTableView.adapter = searchAdapter
-        layerContainerView!!.addView(searchTableView)
+        //layerContainerView!!.addView(searchTableView)
+        layerBlackView!!.addView(searchTableView)
     }
 
     protected fun layerAddButtonLayout() {
@@ -1183,6 +1426,8 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
         return parent
     }
 
+    open fun prepare(idx: Int) {}
+
     protected fun prepareSearch(idx: Int, page: String) {
         val intent = Intent(this, EditItemActivity::class.java)
         val row = searchRows.get(idx)
@@ -1219,7 +1464,7 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
                     citysForArena.add(city.id)
                 }
                 intent.putIntegerArrayListExtra("citys_for_arena", citysForArena)
-                intent.putParcelableArrayListExtra("arenas", arenas)
+                //intent.putParcelableArrayListExtra("arenas", arenas)
             }
             TEAM_WEEKDAYS_KEY -> {
                 intent.putExtra("key", TEAM_WEEKDAYS_KEY)
@@ -1296,7 +1541,7 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
 
         when (key) {
             CITY_KEY -> {
-                toSelectCity(key, null, SEARCH_REQUEST_CODE1)
+                //toSelectCity(key, null, SEARCH_REQUEST_CODE1)
                 //startActivityForResult(multiSelectIntent, SEARCH_REQUEST_CODE1)
             }
             WEEKDAY_KEY -> {
@@ -1357,16 +1602,16 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
                         }
                         ARENA_KEY -> {
                             idx = 2
-                            arenas = data!!.getParcelableArrayListExtra("arenas")!!
-                            if (arenas.size > 0) {
-                                var arr: ArrayList<String> = arrayListOf()
-                                for (arena in arenas) {
-                                    arr.add(arena.name)
-                                }
-                                value = arr.joinToString()
-                            } else {
-                                value = "全部"
-                            }
+//                            arenas = data!!.getParcelableArrayListExtra("arenas")!!
+//                            if (arenas.size > 0) {
+//                                var arr: ArrayList<String> = arrayListOf()
+//                                for (arena in arenas) {
+//                                    arr.add(arena.name)
+//                                }
+//                                value = arr.joinToString()
+//                            } else {
+//                                value = "全部"
+//                            }
                         }
                         TEAM_WEEKDAYS_KEY -> {
                             idx = 3
@@ -1705,7 +1950,10 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
             frag.refresh()
         } else if (page == "course") {
             val frag = getFragment(page) as CourseFragment
-            frag.layerSubmit()
+            frag.prepareParams()
+            frag.refresh()
+            //frag.layerSubmit()
+
         } else {
             prepareParams()
             refresh()

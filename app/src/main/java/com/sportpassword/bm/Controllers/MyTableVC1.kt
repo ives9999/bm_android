@@ -15,10 +15,7 @@ import com.sportpassword.bm.Form.FormItem.FormItem
 import com.sportpassword.bm.Models.*
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.MemberService
-import com.sportpassword.bm.Utilities.Global
-import com.sportpassword.bm.Utilities.Loading
-import com.sportpassword.bm.Utilities.PERPAGE
-import com.sportpassword.bm.Utilities.makeCall
+import com.sportpassword.bm.Utilities.*
 import com.sportpassword.bm.member
 import com.xwray.groupie.ExpandableGroup
 import com.xwray.groupie.GroupAdapter
@@ -267,6 +264,44 @@ abstract class MyTableVC1 : BaseActivity(), List1CellDelegate {
         }
 
         return res
+    }
+
+    fun getDefinedRow(key: String): HashMap<String, String> {
+
+        for (row in searchRows) {
+            if (row["key"] == key) {
+                return row
+            }
+        }
+
+        return hashMapOf()
+    }
+
+    fun replaceRows(key: String, row: HashMap<String, String>) {
+        for ((idx, _row) in searchRows.withIndex()) {
+            if (_row["key"] == key) {
+                searchRows[idx] = row
+                break
+            }
+        }
+    }
+
+    override fun singleSelected(key: String, selected: String) {
+
+        val row = getDefinedRow(key)
+        var show = ""
+        if (key == START_TIME_KEY || key == END_TIME_KEY) {
+            row["value"] = selected
+            show = selected.noSec()
+        } else if (key == CITY_KEY || key == AREA_KEY) {
+            row["value"] = selected
+            show = Global.zoneIDToName(selected.toInt())
+        }
+        row["show"] = show
+        replaceRows(key, row)
+
+        val rows = generateSearchItems(able_type)
+        searchAdapter.update(rows)
     }
 
     override fun cellRefresh() {

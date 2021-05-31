@@ -11,6 +11,10 @@ import com.xwray.groupie.kotlinandroidextensions.Item
 import kotlinx.android.synthetic.main.activity_single_select_vc.*
 import kotlinx.android.synthetic.main.select_item.*
 
+interface SingleSelectDelegate {
+    fun singleSelected(key: String, selected: String)
+}
+
 open class SingleSelectVC1 : SelectVC1() {
 
     var selected: String? = null
@@ -20,7 +24,11 @@ open class SingleSelectVC1 : SelectVC1() {
         setContentView(R.layout.activity_single_select_vc)
 
         if (intent.hasExtra("selected")) {
-            selected = intent.getStringExtra("selected")!!
+            selected = intent.getStringExtra("selected")
+        }
+
+        if (intent.hasExtra("able_type")) {
+            able_type = intent.getStringExtra("able_type")!!
         }
 
         recyclerView = tableView
@@ -72,14 +80,21 @@ open class SingleSelectVC1 : SelectVC1() {
                 cancel = true
             }
         }
+
+        //選擇其他的
         if (!cancel) {
             selected = row["value"]
-            dealSelected()
+            //dealSelected()
             val intent = Intent()
             intent.putExtra("key", key)
             intent.putExtra("selected", selected)
+            intent.putExtra("able_type", able_type)
             setResult(Activity.RESULT_OK, intent)
             finish()
+        } else { //取消原來的選擇
+            selected = ""
+            generateItems()
+            notifyChanged()
         }
     }
 

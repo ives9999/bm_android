@@ -39,6 +39,7 @@ import kotlinx.android.synthetic.main.course_list_cell.titleLbl
 import kotlinx.android.synthetic.main.list1_cell.*
 import kotlinx.android.synthetic.main.list1_cell.mapIcon
 import kotlinx.android.synthetic.main.team_list_cell.*
+import java.io.Serializable
 
 
 /**
@@ -47,7 +48,7 @@ import kotlinx.android.synthetic.main.team_list_cell.*
  * create an instance of this fragment.
  */
 
-open class TabFragment : Fragment(), SearchItemDelegate, List1CellDelegate {
+open class TabFragment : Fragment(), SearchItemDelegate, List1CellDelegate, Serializable {
 
     // TODO: Rename and change types of parameters
     protected var type: String? = null
@@ -84,14 +85,15 @@ open class TabFragment : Fragment(), SearchItemDelegate, List1CellDelegate {
 
     var params: HashMap<String, Any> = hashMapOf()
     var tables: Tables? = null
+    var able_type: String = "course"
 
-    open val _searchRows: ArrayList<HashMap<String, String>> = arrayListOf()
+    var searchRows: ArrayList<HashMap<String, String>> = arrayListOf()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         if (arguments != null) {
-            type = arguments!!.getString(ARG_PARAM1)
-            screenWidth = arguments!!.getInt(ARG_PARAM2)
+            type = requireArguments().getString(ARG_PARAM1)
+            screenWidth = requireArguments().getInt(ARG_PARAM2)
         }
         that = this
         mainActivity = activity as MainActivity
@@ -178,7 +180,7 @@ open class TabFragment : Fragment(), SearchItemDelegate, List1CellDelegate {
         //println("page: $_page")
         //println(mainActivity!!.params)
 
-        dataService.getList1(context!!, null, params, _page, _perPage) { success ->
+        dataService.getList1(requireContext(), null, params, _page, _perPage) { success ->
             getDataEnd1(success)
         }
     }
@@ -283,8 +285,99 @@ open class TabFragment : Fragment(), SearchItemDelegate, List1CellDelegate {
 //        listAdapter.notifyDataSetChanged()
 //    }
 
-    open fun prepare() {
+    open fun prepare(idx: Int) {}
 
+    open fun prepareParams() {
+        params.clear()
+        if (mainActivity!!.keyword.length > 0) {
+            val row = getDefinedRow(KEYWORD_KEY)
+            if (row.containsKey("value")) {
+                row["value"] = mainActivity!!.keyword
+                replaceRows(KEYWORD_KEY, row)
+            }
+        }
+
+        for (searchRow in searchRows) {
+//            var value_type: String? = null
+//            if (searchRow.containsKey("value_type")) {
+//                value_type = searchRow.get("value_type")
+//            }
+
+            var key: String? = null
+            if (searchRow.containsKey("key")) {
+                key = searchRow.get("key")!!
+            }
+
+            if (key == null) {
+                 continue
+            }
+
+            var value: String = ""
+            if (searchRow.containsKey("value")) {
+                value = searchRow.get("value")!!
+            }
+            if (value.isEmpty()) {
+                continue
+            }
+
+            params[key] = value
+//            if (value_type != null && key != null && value.length > 0) {
+//                var values: Array<String>? = null
+//                if (value_type == "String") {
+//                    params[key] = value
+//                } else if (value_type == "Array") {
+//                    value = searchRow.get("value")!!
+//                    values = value.split(",").toTypedArray()
+//                }
+//                if (values != null) {
+//                    params[key] = values
+//                }
+//            }
+        }
+    }
+
+    fun getDefinedRow(key: String): HashMap<String, String> {
+
+        for (row in searchRows) {
+            if (row["key"] == key) {
+                return row
+            }
+        }
+
+        return hashMapOf()
+    }
+
+    fun replaceRows(key: String, row: HashMap<String, String>) {
+        for ((idx, _row) in searchRows.withIndex()) {
+            if (_row["key"] == key) {
+                searchRows[idx] = row
+                break
+            }
+        }
+    }
+
+    fun singleSelected(key: String, selected: String) {
+
+        val row = getDefinedRow(key)
+        var show = ""
+        if (key == START_TIME_KEY || key == END_TIME_KEY) {
+            row["value"] = selected
+            show = selected.noSec()
+        } else if (key == CITY_KEY || key == AREA_KEY) {
+            row["value"] = selected
+            show = Global.zoneIDToName(selected.toInt())
+        } else if (key == ARENA_KEY) {
+            row["value"] = selected
+        } else if (key == WEEKDAY_KEY) {
+            row["value"] = selected
+            show = WEEKDAY.intToString(selected.toInt())
+        }
+
+        row["show"] = show
+        replaceRows(key, row)
+
+        val rows = mainActivity!!.generateSearchItems(able_type)
+        mainActivity!!.searchAdapter.update(rows)
     }
 
     override fun cellRefresh() {
@@ -349,7 +442,7 @@ open class TabFragment : Fragment(), SearchItemDelegate, List1CellDelegate {
     }
 
     override fun remove(indexPath: IndexPath) {
-        val row = _searchRows[indexPath.row]
+        val row = searchRows[indexPath.row]
         val key = row["key"]!!
         when (key) {
             CITY_KEY -> mainActivity!!.citys.clear()
@@ -358,7 +451,7 @@ open class TabFragment : Fragment(), SearchItemDelegate, List1CellDelegate {
             TEAM_PLAY_START_KEY -> mainActivity!!.times.clear()
             TEAM_DEGREE_KEY -> mainActivity!!.degrees.clear()
         }
-        _searchRows[indexPath.row]["detail"] = "全部"
+        searchRows[indexPath.row]["detail"] = "全部"
         val rows = mainActivity!!.generateSearchItems(type!!)
         mainActivity!!.searchAdapter.update(rows)
     }

@@ -28,7 +28,10 @@
         android:usesCleartextTraffic="true"
         tools:replace="android:allowBackup"
         tools:targetApi="m">
-        <activity android:name=".Controllers.CourseVC"></activity>
+        <activity android:name=".Controllers.SelectArenaVC"></activity>
+        <activity android:name=".Controllers.SelectTimeVC" />
+        <activity android:name=".Controllers.SelectWeekdayVC" />
+        <activity android:name=".Controllers.CourseVC" />
         <activity android:name=".Controllers.TeamVC" />
 
         <provider

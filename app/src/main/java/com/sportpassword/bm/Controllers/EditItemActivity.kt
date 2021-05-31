@@ -12,14 +12,11 @@ import android.view.Menu
 import android.view.View
 import android.widget.RelativeLayout
 import com.sportpassword.bm.Adapters.EditTeamItemAdapter
-import com.sportpassword.bm.Models.City
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.TeamService
 import com.sportpassword.bm.Utilities.*
 import com.sportpassword.bm.Adapters.GroupSection
-import com.sportpassword.bm.Models.Area
-import com.sportpassword.bm.Models.SuperData
-import com.sportpassword.bm.Models.Team
+import com.sportpassword.bm.Models.*
 import com.xwray.groupie.ExpandableGroup
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.Section
@@ -182,7 +179,7 @@ class EditItemActivity() : BaseActivity() {
         } else if (key == ARENA_KEY) {
             setMyTitle("球館")
             citysForArena = intent.getIntegerArrayListExtra("citys_for_arena")!!
-            arenas = intent.getParcelableArrayListExtra("arenas")!!
+            //arenas = intent.getParcelableArrayListExtra("arenas")!!
         } else if (key == AREA_KEY) {
             setMyTitle("區域")
             citysForArea = intent.getIntegerArrayListExtra("citys_for_area")!!
@@ -518,7 +515,7 @@ class EditItemActivity() : BaseActivity() {
             if (select == "just one" && arenas.size == 0) {
                 return
             }
-            intent.putParcelableArrayListExtra("arenas", arenas)
+            //intent.putParcelableArrayListExtra("arenas", arenas)
         } else if (key == AREA_KEY) {
             if (select == "just one" && areas.size == 0) {
                 return
@@ -630,8 +627,8 @@ class AreaItem(val context: Context, val area: Area, val checked: Boolean=false)
 //
 //}
 
-@Parcelize
-data class Arena(val id: Int, val name: String): Parcelable
+//@Parcelize
+//data class Arena(val id: Int, val name: String): Parcelable
 
 
 
