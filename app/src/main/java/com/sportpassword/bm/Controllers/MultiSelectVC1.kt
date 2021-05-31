@@ -52,27 +52,28 @@ open class MultiSelectVC1 : SelectVC1() {
         init()
     }
 
+    fun rowClick(i: Int) {
+        val row = rows[i]
+        var isExist = false
+        var at = 0
+        for ((idx, str) in selecteds.withIndex()) {
+            if (row["value"] == str) {
+                isExist = true
+                at = idx
+                break
+            }
+        }
+        if (isExist) {
+            selecteds.removeAt(at)
+        } else {
+            selecteds.add(row["value"]!!)
+        }
+    }
+
     override fun generateItems(): ArrayList<Item> {
 
         val items: ArrayList<Item> = arrayListOf()
 
-        val rowClick = { i: Int ->
-            val row = rows[i]
-            var isExist = false
-            var at = 0
-            for ((idx, str) in selecteds.withIndex()) {
-                if (row["value"] == str) {
-                    isExist = true
-                    at = idx
-                    break
-                }
-            }
-            if (isExist) {
-                selecteds.removeAt(at)
-            } else {
-                selecteds.add(row["value"]!!)
-            }
-        }
         for (row in rows) {
             var title: String? = null
             if (row.containsKey("title")) {
@@ -91,7 +92,7 @@ open class MultiSelectVC1 : SelectVC1() {
             }
 
             if (title != null && value != null) {
-                val item = MultiSelectItem(title, value, isSelected, rowClick)
+                val item = MultiSelectItem(title, value, isSelected, this)
                 items.add(item)
             }
         }
@@ -113,7 +114,7 @@ open class MultiSelectVC1 : SelectVC1() {
     }
 }
 
-class MultiSelectItem(val title: String, val value: String, val isSelected: Boolean, val rowClick:(idx: Int)->Any): Item() {
+class MultiSelectItem(val title: String, val value: String, val isSelected: Boolean, val delegate: MultiSelectVC1): Item() {
 
 
     override fun bind(viewHolder: com.xwray.groupie.kotlinandroidextensions.ViewHolder, position: Int) {
@@ -127,7 +128,7 @@ class MultiSelectItem(val title: String, val value: String, val isSelected: Bool
                 viewHolder.selected.visibility = View.VISIBLE
                 viewHolder.title.selected()
             }
-            rowClick(position)
+            delegate.rowClick(position)
         }
 
         if (isSelected) {

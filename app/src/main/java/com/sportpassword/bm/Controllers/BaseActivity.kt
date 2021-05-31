@@ -846,8 +846,8 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
             i.putExtra("able_type", able_type)
         }
 
-        if (selected != null) {
-            val selecteds: ArrayList<String> = selected!!.split(",").toCollection(ArrayList())
+        if (selected != null && selected.isNotEmpty()) {
+            val selecteds: ArrayList<String> = selected.split(",").toCollection(ArrayList())
             i.putStringArrayListExtra("selecteds", selecteds)
         }
 
