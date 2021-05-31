@@ -132,7 +132,7 @@ class TeamFragment: TabFragment() {
             value = row["value"]!!
         }
         if (key == CITY_KEY) {
-            mainActivity!!.toSelectCity(key, value, null, able_type)
+            mainActivity!!.toSelectCity(value, null, able_type)
         } else if (key == ARENA_KEY) {
             row = getDefinedRow(CITY_KEY)
             var city_id: Int? = null
@@ -140,15 +140,17 @@ class TeamFragment: TabFragment() {
                 city_id = row["value"]!!.toInt()
             }
             if (city_id != null && city_id > 0) {
-                mainActivity!!.toSelectArena(key, value, city_id, null, able_type)
+                mainActivity!!.toSelectArena(value, city_id, null, able_type)
             } else {
                 mainActivity!!.warning("請先選擇縣市")
             }
         } else if (key == WEEKDAY_KEY) {
-            mainActivity!!.toSelectWeekday(key, value, null, able_type)
+            mainActivity!!.toSelectWeekday(value, null, able_type)
         } else if (key == START_TIME_KEY || key == END_TIME_KEY) {
 
             mainActivity!!.toSelectTime(key, value, null, able_type)
+        } else if (key == DEGREE_KEY) {
+            mainActivity!!.toSelectDegree(value, null, able_type)
         }
     }
 

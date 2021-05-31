@@ -378,8 +378,20 @@ open class TabFragment : Fragment(), SearchItemDelegate, List1CellDelegate, Seri
         mainActivity!!.searchAdapter.update(rows)
     }
 
-    fun arenaSelected(key: String, selected: String, show: String) {
+    fun arenaSelected(selected: String, show: String) {
 
+        val key: String = ARENA_KEY
+        val row = getDefinedRow(key)
+        row["value"] = selected
+        row["show"] = show
+        replaceRows(key, row)
+
+        val rows = mainActivity!!.generateSearchItems(able_type)
+        mainActivity!!.searchAdapter.update(rows)
+    }
+
+    fun degreeSelected(selected: String, show: String) {
+        val key: String = DEGREE_KEY
         val row = getDefinedRow(key)
         row["value"] = selected
         row["show"] = show

@@ -2,6 +2,7 @@ package com.sportpassword.bm.Controllers
 
 import android.os.Bundle
 import com.sportpassword.bm.Utilities.WEEKDAY
+import com.sportpassword.bm.Utilities.WEEKDAY_KEY
 
 class SelectWeekdayVC : SingleSelectVC1() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -10,6 +11,8 @@ class SelectWeekdayVC : SingleSelectVC1() {
         val weekdays: ArrayList<WEEKDAY> = arrayListOf(
             WEEKDAY.mon, WEEKDAY.tue, WEEKDAY.wed, WEEKDAY.thu, WEEKDAY.fri, WEEKDAY.sat, WEEKDAY.sun
         )
+
+        key = WEEKDAY_KEY
 
         rowsBridge(weekdays)
         notifyChanged()

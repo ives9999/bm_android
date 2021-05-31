@@ -128,6 +128,8 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
 
     var delegate: BaseActivity? = null
     override fun singleSelected(key: String, selected: String) {}
+    open fun arenaSelected(selected: String, show: String) {}
+    open fun degreeSelected(selected: String, show: String) {}
 
     val selectCityVC = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { res ->
         if (res.resultCode == Activity.RESULT_OK) {
@@ -136,11 +138,7 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
                 val i: Intent? = res.data
 
                 if (i != null) {
-                    var key: String = ""
-                    if (i.hasExtra("key")) {
-                        key = i.getStringExtra("key")!!
-                    }
-
+                    var key: String = CITY_KEY
                     var selected: String = ""
                     if (i.hasExtra("selected")) {
                         selected = i.getStringExtra("selected")!!
@@ -172,11 +170,7 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
                 val i: Intent? = res.data
 
                 if (i != null) {
-                    var key: String = ""
-                    if (i.hasExtra("key")) {
-                        key = i.getStringExtra("key")!!
-                    }
-
+                    var key: String = WEEKDAY_KEY
                     var selected: String = ""
                     if (i.hasExtra("selected")) {
                         selected = i.getStringExtra("selected")!!
@@ -240,11 +234,7 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
                 val i: Intent? = res.data
 
                 if (i != null) {
-                    var key: String = ""
-                    if (i.hasExtra("key")) {
-                        key = i.getStringExtra("key")!!
-                    }
-
+                    var key: String = ARENA_KEY
                     var selected: String = ""
                     if (i.hasExtra("selected")) {
                         selected = i.getStringExtra("selected")!!
@@ -257,7 +247,7 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
 
                     //activity
                     if (delegate != null) {
-                        delegate!!.singleSelected(key, selected)
+                        delegate!!.arenaSelected(selected, show)
                     } else {
                         //fragment
                         var able_type: String = "course"
@@ -265,7 +255,43 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
                             able_type = i.getStringExtra("able_type")!!
                         }
                         val f = getFragment(able_type)
-                        f?.arenaSelected(key, selected, show)
+                        f?.arenaSelected(selected, show)
+                    }
+                }
+            }
+        }
+    }
+
+    val selectDegreeVC = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { res ->
+        if (res.resultCode == Activity.RESULT_OK) {
+
+            if (res.data != null) {
+                val i: Intent? = res.data
+
+                if (i != null) {
+                    var key: String = DEGREE_KEY
+                    var selected: String = ""
+                    if (i.hasExtra("selecteds")) {
+                        val selecteds = i.getStringArrayListExtra("selecteds")!!
+                        selected = selecteds.joinToString(",")
+                    }
+
+                    var show: String = ""
+                    if (i.hasExtra("show")) {
+                        show = i.getStringExtra("show")!!
+                    }
+
+                    //activity
+                    if (delegate != null) {
+                        delegate!!.degreeSelected(selected, show)
+                    } else {
+                        //fragment
+                        var able_type: String = "course"
+                        if (i.hasExtra("able_type")) {
+                            able_type = i.getStringExtra("able_type")!!
+                        }
+                        val f = getFragment(able_type)
+                        f?.degreeSelected(selected, show)
                     }
                 }
             }
@@ -744,13 +770,8 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
         startActivity(i)
     }
 
-    fun toSelectCity(key: String, selected: String?=null, delegate: BaseActivity?=null, able_type: String?=null) {
+    fun toSelectCity(selected: String?=null, delegate: BaseActivity?=null, able_type: String?=null) {
         val i = Intent(this, SelectCityVC::class.java)
-
-        i.putExtra("key", key)
-        if (selected != null) {
-            i.putExtra("selected", selected)
-        }
 
         if (able_type != null) {
             i.putExtra("able_type", able_type)
@@ -763,13 +784,8 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
         selectCityVC.launch(i)
     }
 
-    fun toSelectWeekday(key: String, selected: String?=null, delegate: BaseActivity?=null, able_type: String?=null) {
+    fun toSelectWeekday(selected: String?=null, delegate: BaseActivity?=null, able_type: String?=null) {
         val i = Intent(this, SelectWeekdayVC::class.java)
-
-        i.putExtra("key", key)
-        if (selected != null) {
-            i.putExtra("selected", selected)
-        }
 
         if (able_type != null) {
             i.putExtra("able_type", able_type)
@@ -801,11 +817,10 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
         selectTimeVC.launch(i)
     }
 
-    fun toSelectArena(key: String, selected: String?=null, city_id: Int, delegate: BaseActivity?=null, able_type: String?=null) {
+    fun toSelectArena(selected: String?=null, city_id: Int, delegate: BaseActivity?=null, able_type: String?=null) {
 
         val i = Intent(this, SelectArenaVC::class.java)
 
-        i.putExtra("key", key)
         if (selected != null) {
             i.putExtra("selected", selected)
         }
@@ -821,6 +836,26 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
         i.putExtra("city_id", city_id)
 
         selectArenaVC.launch(i)
+    }
+
+    fun toSelectDegree(selected: String?=null, delegate: BaseActivity?=null, able_type: String?=null) {
+
+        val i = Intent(this, SelectDegreeVC::class.java)
+
+        if (able_type != null) {
+            i.putExtra("able_type", able_type)
+        }
+
+        if (selected != null) {
+            val selecteds: ArrayList<String> = selected!!.split(",").toCollection(ArrayList())
+            i.putStringArrayListExtra("selecteds", selecteds)
+        }
+
+        if (delegate != null) {
+            this.delegate = delegate
+        }
+
+        selectDegreeVC.launch(i)
     }
 
     protected fun getAllChildrenBFS(v: View): List<View> {

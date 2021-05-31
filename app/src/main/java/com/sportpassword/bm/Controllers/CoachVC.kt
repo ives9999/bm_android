@@ -120,7 +120,7 @@ class CoachVC : MyTableVC1() {
 
         when (key) {
             CITY_KEY -> {
-                toSelectCity(key, value, this)
+                toSelectCity(value, this)
             }
         }
     }

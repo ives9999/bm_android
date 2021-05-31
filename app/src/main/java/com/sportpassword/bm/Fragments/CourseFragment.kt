@@ -143,9 +143,9 @@ class CourseFragment : TabFragment() {
             value = row["value"]!!
         }
         if (key == CITY_KEY) {
-            mainActivity!!.toSelectCity(key, value, null, able_type)
+            mainActivity!!.toSelectCity(value, null, able_type)
         } else if (key == WEEKDAY_KEY) {
-            mainActivity!!.toSelectWeekday(key, value, null, able_type)
+            mainActivity!!.toSelectWeekday(value, null, able_type)
         } else if (key == START_TIME_KEY || key == END_TIME_KEY) {
 
             mainActivity!!.toSelectTime(key, value, null, able_type)

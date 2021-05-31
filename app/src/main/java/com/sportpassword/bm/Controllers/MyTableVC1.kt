@@ -304,6 +304,18 @@ abstract class MyTableVC1 : BaseActivity(), List1CellDelegate {
         searchAdapter.update(rows)
     }
 
+    override fun arenaSelected(selected: String, show: String) {
+
+        val key: String = ARENA_KEY
+        val row = getDefinedRow(key)
+        row["value"] = selected
+        row["show"] = show
+        replaceRows(key, row)
+
+        val rows = generateSearchItems(able_type)
+        searchAdapter.update(rows)
+    }
+
     override fun cellRefresh() {
         refresh()
     }

@@ -11,7 +11,7 @@ import com.xwray.groupie.kotlinandroidextensions.Item
 import kotlinx.android.synthetic.main.activity_multi_select_vc.*
 import kotlinx.android.synthetic.main.select_item.*
 
-class MultiSelectVC1 : SelectVC1() {
+open class MultiSelectVC1 : SelectVC1() {
 
     var selecteds: ArrayList<String> = arrayListOf()
 
@@ -40,6 +40,11 @@ class MultiSelectVC1 : SelectVC1() {
         if (intent.hasExtra("selecteds")) {
             selecteds = intent.getStringArrayListExtra("selecteds")!!
         }
+
+        if (intent.hasExtra("able_type")) {
+            able_type = intent.getStringExtra("able_type")!!
+        }
+
 
         recyclerView = tableView
         initAdapter()
@@ -96,10 +101,11 @@ class MultiSelectVC1 : SelectVC1() {
 
 
 
-    fun submit(view: View) {
+    open fun submit(view: View) {
 
         val intent = Intent()
         intent.putExtra("key", key)
+        intent.putExtra("able_type", able_type)
         //println(selecteds);
         intent.putStringArrayListExtra("selecteds", selecteds)
         setResult(Activity.RESULT_OK, intent)

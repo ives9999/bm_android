@@ -3,6 +3,7 @@ package com.sportpassword.bm.Controllers
 import android.os.Bundle
 import com.sportpassword.bm.Models.City
 import com.sportpassword.bm.Services.DataService
+import com.sportpassword.bm.Utilities.CITY_KEY
 import com.sportpassword.bm.Utilities.Global
 import com.sportpassword.bm.Utilities.Loading
 import com.sportpassword.bm.Utilities.getAllCitys
@@ -21,6 +22,7 @@ class SelectCityVC: SingleSelectVC1() {
 //            notifyChanged()
 //        }
         val citys: ArrayList<City> = Global.getCitys()
+        key = CITY_KEY
 
         rowsBridge(citys)
         notifyChanged()

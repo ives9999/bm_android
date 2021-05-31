@@ -28,9 +28,6 @@ open class SelectVC1 : MyTableVC1() {
         if (intent.hasExtra("key")) {
             key = intent.getStringExtra("key")!!
         }
-        if (key == null) {
-            warningWithPrev("由於傳遞參數不正確，無法做選擇，請回上一頁重新進入")
-        }
 
         if (intent.hasExtra("rows")) {
             rows = intent.getSerializableExtra("rows") as ArrayList<HashMap<String, String>>

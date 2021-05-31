@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import com.sportpassword.bm.Models.ArenaTable
 import com.sportpassword.bm.Services.TeamService
+import com.sportpassword.bm.Utilities.ARENA_KEY
 import com.sportpassword.bm.Utilities.Global
 
 class SelectArenaVC : SingleSelectVC1() {
@@ -21,6 +22,8 @@ class SelectArenaVC : SingleSelectVC1() {
                 city_id = null
             }
         }
+
+        key = ARENA_KEY
 
         if (city_id != null) {
             TeamService.getArenaByCityID(this, city_id.toInt()) { success ->
