@@ -366,13 +366,22 @@ open class TabFragment : Fragment(), SearchItemDelegate, List1CellDelegate, Seri
         } else if (key == CITY_KEY || key == AREA_KEY) {
             row["value"] = selected
             show = Global.zoneIDToName(selected.toInt())
-        } else if (key == ARENA_KEY) {
-            row["value"] = selected
         } else if (key == WEEKDAY_KEY) {
             row["value"] = selected
             show = WEEKDAY.intToString(selected.toInt())
         }
 
+        row["show"] = show
+        replaceRows(key, row)
+
+        val rows = mainActivity!!.generateSearchItems(able_type)
+        mainActivity!!.searchAdapter.update(rows)
+    }
+
+    fun arenaSelected(key: String, selected: String, show: String) {
+
+        val row = getDefinedRow(key)
+        row["value"] = selected
         row["show"] = show
         replaceRows(key, row)
 

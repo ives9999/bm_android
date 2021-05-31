@@ -64,7 +64,7 @@ open class SingleSelectVC1 : SelectVC1() {
         return items
     }
 
-    fun submit(idx: Int) {
+    open fun submit(idx: Int) {
 
         if (idx >= rows.size) {
             warningWithPrev("由於傳遞參數不正確，無法做選擇，請回上一頁重新進入")

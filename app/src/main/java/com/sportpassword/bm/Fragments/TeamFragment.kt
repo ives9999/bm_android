@@ -2,9 +2,11 @@ package com.sportpassword.bm.Fragments
 
 import android.content.Context
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.view.*
 import android.widget.ImageButton
+import androidx.annotation.RequiresApi
 import com.sportpassword.bm.Controllers.List1CellDelegate
 import com.sportpassword.bm.Controllers.ShowCourseVC
 import com.sportpassword.bm.Models.*

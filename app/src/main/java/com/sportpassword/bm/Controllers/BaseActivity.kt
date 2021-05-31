@@ -247,7 +247,12 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
 
                     var selected: String = ""
                     if (i.hasExtra("selected")) {
-                        selected = i.getStringExtra("selected")!! + ":00"
+                        selected = i.getStringExtra("selected")!!
+                    }
+
+                    var show: String = ""
+                    if (i.hasExtra("show")) {
+                        show = i.getStringExtra("show")!!
                     }
 
                     //activity
@@ -260,7 +265,7 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
                             able_type = i.getStringExtra("able_type")!!
                         }
                         val f = getFragment(able_type)
-                        f?.singleSelected(key, selected)
+                        f?.arenaSelected(key, selected, show)
                     }
                 }
             }
