@@ -38,8 +38,8 @@ class TeamFragment: TabFragment() {
             hashMapOf("title" to "縣市","show" to "全部","key" to CITY_KEY,"value" to ""),
             hashMapOf("title" to "球館","show" to "全部","key" to ARENA_KEY,"value" to ""),
             hashMapOf("title" to "星期幾","show" to "全部","key" to WEEKDAY_KEY,"value" to ""),
-            hashMapOf("title" to "時段","show" to "全部","key" to TEAM_PLAY_START_KEY,"value" to ""),
-            hashMapOf("title" to "程度","show" to "全部","key" to TEAM_DEGREE_KEY,"value" to "")
+            hashMapOf("title" to "時段","show" to "全部","key" to START_TIME_KEY,"value" to ""),
+            hashMapOf("title" to "程度","show" to "全部","key" to DEGREE_KEY,"value" to "")
         )
         able_type = "team"
 
