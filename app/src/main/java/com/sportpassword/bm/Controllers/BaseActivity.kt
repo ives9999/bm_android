@@ -170,7 +170,7 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
                 val i: Intent? = res.data
 
                 if (i != null) {
-                    var key: String = WEEKDAY_KEY
+                    val key: String = WEEKDAY_KEY
                     var selected: String = ""
                     if (i.hasExtra("selected")) {
                         selected = i.getStringExtra("selected")!!
@@ -1097,6 +1097,7 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
         }
     }
 
+    ////// search panel start //////////////////////////////////////
     fun showSearchPanel(view: View) {
         val tag = view.tag as String
         when (tag) {
@@ -1466,6 +1467,9 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
         return parent
     }
 
+    ////// search panel end //////////////////////////////////////
+
+
     open fun prepare(idx: Int) {}
 
     protected fun prepareSearch(idx: Int, page: String) {
@@ -1542,63 +1546,6 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
             }
         }
         startActivityForResult(intent!!, SEARCH_REQUEST_CODE)
-    }
-
-    protected fun prepareSearch1(idx: Int, page: String) {
-
-        val singleSelectIntent = Intent(this, SingleSelectVC1::class.java)
-        val multiSelectIntent = Intent(this, MultiSelectVC1::class.java)
-        val row = searchRows.get(idx)
-        var key = ""
-        if (row.containsKey("key")) {
-            key = row["key"]!!
-        }
-        var value = ""
-        if (row.containsKey("value")) {
-            value = row["value"]!!
-        }
-        var value_type: String? = null
-        if (row.containsKey("value_type")) {
-            value_type = row["value_type"]!!
-        }
-        singleSelectIntent.putExtra("title", "city")
-        singleSelectIntent.putExtra("key", key)
-        multiSelectIntent.putExtra("title", "city")
-        multiSelectIntent.putExtra("key", key)
-
-        if (value_type != null && value_type == "Array" && value.length > 0) {
-            var values: ArrayList<String> = arrayListOf()
-            if (value.contains(",")) {
-                values = value.split(",").toTypedArray().toCollection(java.util.ArrayList())
-            } else {
-                values.add(value)
-            }
-            multiSelectIntent.putExtra("selecteds", values)
-        }
-        if (value_type != null && value_type == "String" && value.length > 0) {
-            singleSelectIntent.putExtra("selected", value)
-        }
-
-        when (key) {
-            CITY_KEY -> {
-                //toSelectCity(key, null, SEARCH_REQUEST_CODE1)
-                //startActivityForResult(multiSelectIntent, SEARCH_REQUEST_CODE1)
-            }
-            WEEKDAY_KEY -> {
-                val rows = WEEKDAY.makeSelect()
-                multiSelectIntent.putExtra("rows", rows)
-                startActivityForResult(multiSelectIntent, SEARCH_REQUEST_CODE1)
-            }
-            START_TIME_KEY, END_TIME_KEY -> {
-                val times = Global.makeTimes()
-                val rows: ArrayList<HashMap<String, String>> = arrayListOf()
-                for (time in times) {
-                    rows.add(hashMapOf("title" to time, "value" to time + ":00"))
-                }
-                singleSelectIntent.putExtra("rows", rows)
-                startActivityForResult(singleSelectIntent, SEARCH_REQUEST_CODE1)
-            }
-        }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -1985,8 +1932,8 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
             prepareParams()
             refresh()
         } else if (page == "team") {
-            prepareParams()
             val frag = getFragment(page) as TeamFragment
+            frag.prepareParams()
             frag.refresh()
         } else if (page == "course") {
             val frag = getFragment(page) as CourseFragment
