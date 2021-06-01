@@ -11,9 +11,12 @@ import org.jetbrains.anko.sdk27.coroutines.onCheckedChange
 
 interface SearchItemDelegate {
     fun remove(indexPath: IndexPath)
+    fun textChanged(str: String)
+    fun switchChanged(pos: Int, b: Boolean)
 }
 
-class SearchItem(val title: String, val detail: String, val keyword: String, val switch: Boolean, val section: Int, val row: Int, val inputK:(k: String)->Unit, val switched:(idx: Int, b: Boolean)->Unit): Item() {
+//class SearchItem(val title: String, val detail: String, val keyword: String, val switch: Boolean, val section: Int, val row: Int, val inputK:(k: String)->Unit, val switched:(idx: Int, b: Boolean)->Unit): Item() {
+class SearchItem(val title: String, val detail: String, val keyword: String, val switch: Boolean, val section: Int, val row: Int): Item() {
 
     var delegate: SearchItemDelegate? = null
 
@@ -45,7 +48,8 @@ class SearchItem(val title: String, val detail: String, val keyword: String, val
                 }
 
                 override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                    inputK(p0.toString())
+                    delegate?.textChanged(p0.toString())
+                    //inputK(p0.toString())
                 }
 
             })
@@ -64,7 +68,8 @@ class SearchItem(val title: String, val detail: String, val keyword: String, val
             viewHolder.keywordTxt.visibility = View.INVISIBLE
             viewHolder.clearBtn.visibility = View.INVISIBLE
             switchView.setOnCheckedChangeListener { compoundButton, b ->
-                switched(position, b)
+                delegate?.switchChanged(position, b)
+                //switched(position, b)
             }
 //            switchView.onCheckedChange{ view, b ->
 //                switched(position, b)

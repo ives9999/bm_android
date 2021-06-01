@@ -374,8 +374,8 @@ open class TabFragment : Fragment(), SearchItemDelegate, List1CellDelegate, Seri
         row["show"] = show
         replaceRows(key, row)
 
-        val rows = mainActivity!!.generateSearchItems(able_type)
-        mainActivity!!.searchAdapter.update(rows)
+        val rows = mainActivity!!.searchPanel.generateSearchItems()
+        mainActivity!!.searchPanel.searchAdapter.update(rows)
     }
 
     fun arenaSelected(selected: String, show: String) {
@@ -476,6 +476,13 @@ open class TabFragment : Fragment(), SearchItemDelegate, List1CellDelegate, Seri
         val rows = mainActivity!!.generateSearchItems(type!!)
         mainActivity!!.searchAdapter.update(rows)
     }
+    override fun textChanged(str: String) {
+        val key: String = KEYWORD_KEY
+        val row = getDefinedRow(key)
+        row["value"] = str
+    }
+    override fun switchChanged(pos: Int, b: Boolean) {}
+
 
     companion object {
         // TODO: Rename parameter arguments, choose names that match

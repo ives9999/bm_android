@@ -163,11 +163,7 @@ class TempPlayFragment : TabFragment(), inter {
             if (row[i].containsKey("switch")) {
                 bSwitch = row[i].get("switch")!!.toBoolean()
             }
-            val searchItem = SearchItem(title, detail, keyword, bSwitch, section, i, { k ->
-                keyword = k
-            }, { idx, b ->
-
-            })
+            val searchItem = SearchItem(title, detail, keyword, bSwitch, section, i)
             searchItem.delegate = this
             _rows.add(searchItem)
         }

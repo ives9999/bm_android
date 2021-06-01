@@ -26,6 +26,10 @@ import com.google.gson.internal.LinkedTreeMap
 import com.google.gson.reflect.TypeToken
 import com.sportpassword.bm.Controllers.BaseActivity
 import com.sportpassword.bm.Controllers.MainActivity
+import com.sportpassword.bm.Fragments.CoachFragment
+import com.sportpassword.bm.Fragments.CourseFragment
+import com.sportpassword.bm.Fragments.TabFragment
+import com.sportpassword.bm.Fragments.TeamFragment
 import com.sportpassword.bm.Models.Area
 import com.sportpassword.bm.Models.City
 import com.sportpassword.bm.Models.Table
@@ -1346,5 +1350,26 @@ inline fun <reified T: Table> refreshOne(): T? {
     val t = jsonToModel<T>("aaa")
 
     return t
+}
+
+fun getFragment(activity: BaseActivity, able_type: String): TabFragment? {
+    val frags = activity.supportFragmentManager.fragments
+    var _frag: TabFragment? = null
+    for (frag in frags) {
+        if (able_type == "coach" && frag::class == CoachFragment::class) {
+            _frag = frag as CoachFragment
+            break
+        }
+        if (able_type == "team" && frag::class == TeamFragment::class) {
+            _frag = frag as TeamFragment
+            break
+        }
+        if (able_type == "course" && frag::class == CourseFragment::class) {
+            _frag = frag as CourseFragment
+            break
+        }
+    }
+
+    return _frag
 }
 

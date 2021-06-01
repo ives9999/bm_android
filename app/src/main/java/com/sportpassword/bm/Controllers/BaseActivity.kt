@@ -46,6 +46,7 @@ import com.sportpassword.bm.Models.*
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.*
 import com.sportpassword.bm.Utilities.*
+import com.sportpassword.bm.Views.SearchPanel
 import com.sportpassword.bm.member
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.ViewHolder
@@ -100,6 +101,8 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
     lateinit var searchAdapter: GroupAdapter<ViewHolder>
     var params: HashMap<String, Any> = hashMapOf()
 
+    var searchPanel: SearchPanel = SearchPanel()
+
     val LOGIN_REQUEST_CODE = 1
     val REGISTER_REQUEST_CODE = 2
     val VALIDATE_REQUEST_CODE = 3
@@ -127,6 +130,8 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
     val session: SharedPreferences = App.instance.getSharedPreferences(SESSION_FILENAME, 0)
 
     var delegate: BaseActivity? = null
+
+
     override fun singleSelected(key: String, selected: String) {}
     open fun arenaSelected(selected: String, show: String) {}
     open fun degreeSelected(selected: String, show: String) {}
@@ -1135,20 +1140,19 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
 //        v.backgroundColor = Color.RED
 //        parent.addView(v, params)
 
-        removeLayerChildViews()
+        //removeLayerChildViews()
 
         //first add a mask
-        mask()
+        val p: ConstraintLayout = getMyParent()
+        //searchPanel.mask(this, p)
+        searchPanel.addSearchLayer(this, p, tag, searchRows)
+        //mask()
 
         //second add search view in mask
-        addSearchLayer(tag)
+       // addSearchLayer(tag)
     }
 
     protected fun mask() {
-//        val alpha = 0.8f
-//        val duration: Long = 200
-
-//        var mask = parent.findViewById<LinearLayout>(R.id.MyMask)
         if (layerMask == null) {
             layerMask = LinearLayout(this)
             layerMask!!.id = R.id.MyMask
@@ -1166,19 +1170,10 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
             val v = layerMask!!.visibility
             layerMask!!.visibility = View.VISIBLE
         }
-//        mask.animate().setDuration(duration).alpha(alpha).setListener(object: Animator.AnimatorListener {
-//            override fun onAnimationEnd(p0: Animator?) {
-//                mask.visibility = View.VISIBLE
-//            }
-//            override fun onAnimationRepeat(p0: Animator?) {}
-//            override fun onAnimationCancel(p0: Animator?) {}
-//            override fun onAnimationStart(p0: Animator?) {}
-//        })
     }
 
-    public fun unmask() {
+    fun unmask() {
         val duration: Long = 500
-//        var mask = getMask()
         if (layerBlackView != null) {
             val parent = getMyParent()
             val h = parent.measuredHeight
@@ -1196,17 +1191,6 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
             animate.fillAfter = true
             layerBlackView!!.startAnimation(animate)
             layerVisibility = false
-
-//            layerScrollView!!.animate().setDuration(duration).alpha(0f).setListener(object: Animator.AnimatorListener {
-//                override fun onAnimationEnd(p0: Animator?) {
-//                    mask.visibility = View.GONE
-//                    mask.removeAllViews()
-//                    layerScrollView = null
-//                }
-//                override fun onAnimationRepeat(p0: Animator?) {}
-//                override fun onAnimationCancel(p0: Animator?) {}
-//                override fun onAnimationStart(p0: Animator?) {}
-//            })
         }
     }
 
@@ -1785,15 +1769,7 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
             if (row.containsKey("switch")) {
                 bSwitch = row.get("switch")!!.toBoolean()
             }
-            val searchItem = SearchItem(title, detail, keyword, bSwitch, -1, i, { k ->
-                keyword = k
-            }, { idx, b ->
-                when (idx) {
-                    3 -> air_condition = b
-                    4 -> bathroom = b
-                    5 -> parking = b
-                }
-            })
+            val searchItem = SearchItem(title, detail, keyword, bSwitch, -1, i)
             if (page == "team" || page == "course") {
                 searchItem.delegate = getFragment(page)
             } else {
@@ -1805,7 +1781,9 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
         return rows
     }
 
-    protected fun getFragment(page: String): TabFragment? {
+
+    //已經移到Global成為 global function 了，以後停止使用
+    fun getFragment(page: String): TabFragment? {
         val frags = supportFragmentManager.fragments
         var _frag: TabFragment? = null
         for (frag in frags) {
@@ -2131,14 +2109,14 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
     open public fun closeRefresh() {
         refreshLayout.isRefreshing = false
     }
-    open protected fun refresh() {}
+    open fun refresh() {}
 
     open protected fun setTeamData(imageView: ImageView? = null) {
     }
 
-    override fun remove(indexPath: IndexPath) {
-
-    }
+    override fun remove(indexPath: IndexPath) {}
+    override fun textChanged(str: String) {}
+    override fun switchChanged(pos: Int, b: Boolean) {}
 
     class ConnectTask(val context: Context) : AsyncTask<Unit, Unit, String>() {
 
