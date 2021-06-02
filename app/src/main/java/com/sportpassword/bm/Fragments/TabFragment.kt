@@ -181,6 +181,7 @@ open class TabFragment : Fragment(), SearchItemDelegate, List1CellDelegate, Seri
         Loading.show(maskView)
         //println("page: $_page")
         //println(mainActivity!!.params)
+        loading = true
 
         dataService.getList1(requireContext(), null, params, _page, _perPage) { success ->
             getDataEnd1(success)

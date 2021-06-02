@@ -58,7 +58,7 @@ class CourseCalendarVC: MyTableVC1() {
         initAdapter()
         recyclerView.setHasFixedSize(true)
         setRecyclerViewScrollListener()
-        setRecyclerViewRefreshListener()
+        setRefreshListener()
         refresh()
     }
 

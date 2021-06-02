@@ -25,13 +25,28 @@ class SelectArenaVC : SingleSelectVC1() {
 
         key = ARENA_KEY
 
+//        val l: ArrayList<ArenaTable> = arrayListOf()
+//        val a: ArenaTable = ArenaTable()
+//        a.id = 1
+//        a.name = "aaa"
+//        l.add(a)
+//        val b: ArenaTable = ArenaTable()
+//        b.id = 2
+//        b.name = "bbb"
+//        l.add(b)
+//        rowsBridge(l)
+//        notifyChanged()
+
         if (city_id != null) {
             TeamService.getArenaByCityID(this, city_id.toInt()) { success ->
 
                 if (success) {
                     arenas1 = TeamService.arenas
                     if (arenas1 != null) {
-                        rowsBridge(arenas1!!)
+                        rows.add(hashMapOf("title" to "aaa", "value" to "1"))
+                        rows.add(hashMapOf("title" to "bbb", "value" to "2"))
+
+                        //rowsBridge(arenas1!!)
                         notifyChanged()
                     } else {
                         warning("無法取得球館資料，請洽管理員")

@@ -67,7 +67,7 @@ import kotlin.system.exitProcess
 
 open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, SearchItemDelegate, SingleSelectDelegate {
 
-    protected lateinit var refreshLayout: SwipeRefreshLayout
+    var refreshLayout: SwipeRefreshLayout? = null
     protected lateinit var refreshListener: SwipeRefreshLayout.OnRefreshListener
     protected lateinit var scrollerListenr: RecyclerView.OnScrollListener
 
@@ -2100,19 +2100,20 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
         alert.show()
     }
 
-    open protected fun setRefreshListener() {
-        refreshListener = SwipeRefreshLayout.OnRefreshListener {
-            refresh()
+    protected open fun setRefreshListener() {
+        if (refreshLayout != null) {
+            refreshListener = SwipeRefreshLayout.OnRefreshListener {
+                refresh()
+            }
+            refreshLayout!!.setOnRefreshListener(refreshListener)
         }
-        refreshLayout.setOnRefreshListener(refreshListener)
     }
-    open public fun closeRefresh() {
-        refreshLayout.isRefreshing = false
+    open fun closeRefresh() {
+        refreshLayout?.isRefreshing = false
     }
     open fun refresh() {}
 
-    open protected fun setTeamData(imageView: ImageView? = null) {
-    }
+    protected open fun setTeamData(imageView: ImageView? = null) {}
 
     override fun remove(indexPath: IndexPath) {}
     override fun textChanged(str: String) {}

@@ -6,7 +6,9 @@ import android.view.Menu
 import androidx.recyclerview.widget.RecyclerView
 import android.view.View
 import android.widget.ImageButton
+import android.widget.LinearLayout
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.sportpassword.bm.Adapters.GroupSection
 import com.sportpassword.bm.Adapters.ListAdapter
@@ -84,25 +86,27 @@ abstract class MyTableVC1 : BaseActivity(), List1CellDelegate {
         adapter.setOnItemClickListener { item, view ->
             rowClick(item, view)
         }
-        if (include_section) {
-            for (section in sections) {
-                adapterSections.add(Section())
-            }
-            for ((idx, title) in sections.withIndex()) {
-                val expandableGroup = ExpandableGroup(GroupSection(title), true)
-                val items = generateItems(idx)
-                adapterSections[idx].addAll(items)
-                expandableGroup.add(adapterSections[idx])
-                adapter.add(expandableGroup)
-            }
-        } else {
-            val items = generateItems()
-            //println(items.size)
-            adapter.addAll(items)
-        }
+//        if (include_section) {
+//            for (section in sections) {
+//                adapterSections.add(Section())
+//            }
+//            for ((idx, title) in sections.withIndex()) {
+//                val expandableGroup = ExpandableGroup(GroupSection(title), true)
+//                val items = generateItems(idx)
+//                adapterSections[idx].addAll(items)
+//                expandableGroup.add(adapterSections[idx])
+//                adapter.add(expandableGroup)
+//            }
+//        } else {
+//            val items = generateItems()
+//            //println(items.size)
+//            adapter.addAll(items)
+//        }
         recyclerView.adapter = adapter
         recyclerView.setHasFixedSize(true)
-        setRefreshListener()
+        if (refreshLayout != null) {
+            setRefreshListener()
+        }
         setRecyclerViewScrollListener()
     }
 
@@ -119,6 +123,7 @@ abstract class MyTableVC1 : BaseActivity(), List1CellDelegate {
 
     open fun getDataStart1(_page: Int, _perPage: Int) {
         Loading.show(mask)
+        loading = true
 
         if (member_like) {
             MemberService.likelist(this, able_type) { success ->
@@ -230,7 +235,7 @@ abstract class MyTableVC1 : BaseActivity(), List1CellDelegate {
         scrollerListenr = object: RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
-                val layoutManager = recyclerView.layoutManager as GridLayoutManager
+                val layoutManager = recyclerView.layoutManager as LinearLayoutManager
                 if (items.size < totalCount) {
                     pos = layoutManager.findLastVisibleItemPosition()
                     //println("pos:${pos}")
@@ -248,14 +253,14 @@ abstract class MyTableVC1 : BaseActivity(), List1CellDelegate {
         recyclerView.addOnScrollListener(scrollerListenr)
     }
 
-    protected open fun setRecyclerViewRefreshListener() {
-        refreshListener = SwipeRefreshLayout.OnRefreshListener {
-            refresh()
-
-            refreshLayout.isRefreshing = false
-        }
-        refreshLayout.setOnRefreshListener(refreshListener)
-    }
+//    protected open fun setRecyclerViewRefreshListener() {
+//        refreshListener = SwipeRefreshLayout.OnRefreshListener {
+//            refresh()
+//
+//            refreshLayout.isRefreshing = false
+//        }
+//        refreshLayout.setOnRefreshListener(refreshListener)
+//    }
 
     open fun getFormItemFromKey(key: String): FormItem? {
 

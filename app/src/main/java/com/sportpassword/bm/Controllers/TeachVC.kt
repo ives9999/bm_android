@@ -59,7 +59,7 @@ class TeachVC : MyTableVC1() {
         recyclerView.setHasFixedSize(true)
 
         setRecyclerViewScrollListener()
-        setRecyclerViewRefreshListener()
+        setRefreshListener()
     }
 
     override fun getDataStart(_page: Int, _perPage: Int) {
@@ -101,14 +101,14 @@ class TeachVC : MyTableVC1() {
         collectionAdapter.notifyDataSetChanged()
     }
 
-    override protected fun setRecyclerViewRefreshListener() {
+    override fun setRefreshListener() {
         refreshListener = SwipeRefreshLayout.OnRefreshListener {
             this@TeachVC.page = 1
             this.getDataStart(this.page, this.perPage)
             this.collectionAdapter.notifyDataSetChanged()
 
-            refreshLayout.isRefreshing = false
+            refreshLayout?.isRefreshing = false
         }
-        refreshLayout.setOnRefreshListener(refreshListener)
+        refreshLayout?.setOnRefreshListener(refreshListener)
     }
 }

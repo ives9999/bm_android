@@ -16,14 +16,9 @@ class SelectCityVC: SingleSelectVC1() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-//        val session_rows = getCitys { rows1 ->
-//            rows = rows1
-//            rowsBridge(rows)
-//            notifyChanged()
-//        }
-        val citys: ArrayList<City> = Global.getCitys()
         key = CITY_KEY
 
+        val citys: ArrayList<City> = Global.getCitys()
         rowsBridge(citys)
         notifyChanged()
     }

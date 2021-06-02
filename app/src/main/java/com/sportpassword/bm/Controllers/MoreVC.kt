@@ -153,11 +153,11 @@ open class MoreVC : MyTableVC1() {
         recyclerView.addOnScrollListener(scrollerListenr)
     }
 
-    override fun setRecyclerViewRefreshListener() {
-        refreshListener = SwipeRefreshLayout.OnRefreshListener {
-            refresh()
-            refreshLayout.isRefreshing = false
-        }
-        refreshLayout.setOnRefreshListener(refreshListener)
-    }
+//    override fun setRecyclerViewRefreshListener() {
+//        refreshListener = SwipeRefreshLayout.OnRefreshListener {
+//            refresh()
+//            refreshLayout.isRefreshing = false
+//        }
+//        refreshLayout.setOnRefreshListener(refreshListener)
+//    }
 }

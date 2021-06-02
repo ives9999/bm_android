@@ -40,7 +40,6 @@ open class SingleSelectVC1 : SelectVC1() {
     override fun generateItems(): ArrayList<Item> {
 
         val items: ArrayList<Item> = arrayListOf()
-
         val rowClick = { i: Int ->
             submit(i)
         }
