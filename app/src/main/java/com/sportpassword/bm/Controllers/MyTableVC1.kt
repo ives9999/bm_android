@@ -100,6 +100,9 @@ abstract class MyTableVC1 : BaseActivity(), List1CellDelegate {
             adapter.addAll(items)
         }
         recyclerView.adapter = adapter
+        recyclerView.setHasFixedSize(true)
+        setRefreshListener()
+        setRecyclerViewScrollListener()
     }
 
     override fun refresh() {
@@ -131,7 +134,7 @@ abstract class MyTableVC1 : BaseActivity(), List1CellDelegate {
 
     open fun getDataEnd1(success: Boolean) {
         if (success) {
-            if (theFirstTime) {
+            //if (theFirstTime) {
 
                 if (jsonString != null && jsonString!!.isNotEmpty()) {
                     //println(dataService.jsonString)
@@ -158,7 +161,7 @@ abstract class MyTableVC1 : BaseActivity(), List1CellDelegate {
                     warning("沒有取得回傳的json字串，請洽管理員")
                 }
 
-            }
+            //}
 
             //notifyDataSetChanged()
             page++
@@ -227,7 +230,7 @@ abstract class MyTableVC1 : BaseActivity(), List1CellDelegate {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
                 val layoutManager = recyclerView.layoutManager as GridLayoutManager
-                if (superDataLists.size < totalCount) {
+                if (rows.size < totalCount) {
                     pos = layoutManager.findLastVisibleItemPosition()
                     //println("pos:${pos}")
                 }
@@ -235,10 +238,10 @@ abstract class MyTableVC1 : BaseActivity(), List1CellDelegate {
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
                 super.onScrollStateChanged(recyclerView, newState)
 
-                //println("superDataLists.size:${superDataLists.size}")
-                if (superDataLists.size == pos + 1 && newState == RecyclerView.SCROLL_STATE_IDLE && superDataLists.size < totalCount && !loading) {
-                    getDataStart(page, perPage)
-                }
+//                println("tables.rows.size:${t.}")
+//                if (pageCount == pos + 1 && newState == RecyclerView.SCROLL_STATE_IDLE && pageCount < totalCount && !loading) {
+//                    getDataStart1(page, perPage)
+//                }
             }
         }
         recyclerView.addOnScrollListener(scrollerListenr)

@@ -10,7 +10,7 @@ open class Tables {
     var page: Int = 0
     var totalCount: Int = 0
     var perPage: Int = 0
-    //var rows: ArrayList<T> = arrayListOf()
+    //var rows: ArrayList<Table> = arrayListOf()
 }
 
 open class Table {

@@ -91,6 +91,7 @@ class CourseFragment : TabFragment() {
 
     override fun refresh() {
         page = 1
+        params.clear()
         theFirstTime = true
         getDataStart1(page, perPage)
     }

@@ -171,6 +171,7 @@ open class TabFragment : Fragment(), SearchItemDelegate, List1CellDelegate, Seri
 
     open fun refresh() {
         page = 1
+        params.clear()
         getDataStart(page, perPage)
         adapter.notifyDataSetChanged()
     }
@@ -387,7 +388,7 @@ open class TabFragment : Fragment(), SearchItemDelegate, List1CellDelegate, Seri
         replaceRows(key, row)
 
         val rows = mainActivity!!.generateSearchItems(able_type)
-        mainActivity!!.searchAdapter.update(rows)
+        mainActivity!!.searchPanel.searchAdapter.update(rows)
     }
 
     fun degreeSelected(selected: String, show: String) {
@@ -398,7 +399,7 @@ open class TabFragment : Fragment(), SearchItemDelegate, List1CellDelegate, Seri
         replaceRows(key, row)
 
         val rows = mainActivity!!.generateSearchItems(able_type)
-        mainActivity!!.searchAdapter.update(rows)
+        mainActivity!!.searchPanel.searchAdapter.update(rows)
     }
 
     override fun cellRefresh() {
