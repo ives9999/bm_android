@@ -30,7 +30,6 @@ import org.jetbrains.anko.makeCall
 class ArenaVC : MyTableVC1() {
 
     var arenasTable: ArenasTable? = null
-    var t: ArrayList<ArenaTable> = arrayListOf()
 
     val _searchRows: ArrayList<HashMap<String, String>> = arrayListOf(
         hashMapOf("title" to "關鍵字","detail" to "全部","key" to KEYWORD_KEY),
@@ -62,14 +61,12 @@ class ArenaVC : MyTableVC1() {
         arenasTable = jsonToModels<ArenasTable>(jsonString!!)
         if (arenasTable != null) {
             tables = arenasTable
-            t.addAll(arenasTable!!.rows)
         }
     }
 
     override fun generateItems(): ArrayList<Item> {
-        val items: ArrayList<Item> = arrayListOf()
         if (arenasTable != null) {
-            for (row in t) {
+            for (row in arenasTable!!.rows) {
                 //row.print()
                 row.filterRow()
                 val myItem = ArenaItem(this, row)
@@ -80,35 +77,6 @@ class ArenaVC : MyTableVC1() {
         }
 
         return items
-    }
-
-    override fun setRecyclerViewScrollListener() {
-
-        var pos: Int = 0
-
-//        scrollerListenr = object: RecyclerView.OnScrollListener() {
-//
-//        }
-
-        scrollerListenr = object: RecyclerView.OnScrollListener() {
-            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                super.onScrolled(recyclerView, dx, dy)
-                val layoutManager = recyclerView.layoutManager as GridLayoutManager
-                if (rows.size < totalCount) {
-                    pos = layoutManager.findLastVisibleItemPosition()
-                    //println("pos:${pos}")
-                }
-            }
-            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
-                super.onScrollStateChanged(recyclerView, newState)
-
-                println("tables.rows.size:${t.size}")
-                if (t.size == pos + 1 && newState == RecyclerView.SCROLL_STATE_IDLE && t.size < totalCount && !loading) {
-                    getDataStart1(page, perPage)
-                }
-            }
-        }
-        recyclerView.addOnScrollListener(scrollerListenr)
     }
 
     override fun rowClick(item: com.xwray.groupie.Item<com.xwray.groupie.ViewHolder>, view: View) {

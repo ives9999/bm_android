@@ -59,6 +59,7 @@ open class TabFragment : Fragment(), SearchItemDelegate, List1CellDelegate, Seri
     protected var perPage: Int = PERPAGE
     protected var totalCount: Int = 0
     protected var totalPage: Int = 0
+    val items: ArrayList<Item> = arrayListOf()
 
     protected var loading: Boolean = false
     protected lateinit var maskView: View
@@ -188,7 +189,7 @@ open class TabFragment : Fragment(), SearchItemDelegate, List1CellDelegate, Seri
 
     fun getDataEnd1(success: Boolean) {
         if (success) {
-            if (theFirstTime) {
+            //if (theFirstTime) {
 
                 if (dataService.jsonString.isNotEmpty()) {
                     //println(dataService.jsonString)
@@ -214,7 +215,7 @@ open class TabFragment : Fragment(), SearchItemDelegate, List1CellDelegate, Seri
                     mainActivity!!.warning("沒有取得回傳的json字串，請洽管理員")
                 }
 
-            }
+            //}
 
             //notifyDataSetChanged()
             page++
@@ -438,16 +439,18 @@ open class TabFragment : Fragment(), SearchItemDelegate, List1CellDelegate, Seri
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
                 val layoutManager = recyclerView.layoutManager as LinearLayoutManager
-                if (that.superDataLists.size < that.totalCount) {
+                if (items.size < that.totalCount) {
                     pos = layoutManager.findLastVisibleItemPosition()
+                    //println("pos:${pos}")
                 }
             }
 
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
                 super.onScrollStateChanged(recyclerView, newState)
 
-                if (that.superDataLists.size == pos + 1 && newState == RecyclerView.SCROLL_STATE_IDLE && that.superDataLists.size < that.totalCount && !that.loading) {
-                    that.getDataStart(that.page, that.perPage)
+                //println("items.size:${items.size}")
+                if (items.size == pos + 1 && newState == RecyclerView.SCROLL_STATE_IDLE && items.size < totalCount && !loading) {
+                    that.getDataStart1(page, perPage)
                 }
             }
         }

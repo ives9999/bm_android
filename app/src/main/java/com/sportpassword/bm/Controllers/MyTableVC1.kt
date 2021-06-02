@@ -47,6 +47,7 @@ abstract class MyTableVC1 : BaseActivity(), List1CellDelegate {
     protected var perPage: Int = PERPAGE
     protected var totalCount: Int = 0
     protected var totalPage: Int = 0
+    val items: ArrayList<Item> = arrayListOf()
 
     var jsonString: String? = null
 
@@ -230,7 +231,7 @@ abstract class MyTableVC1 : BaseActivity(), List1CellDelegate {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
                 val layoutManager = recyclerView.layoutManager as GridLayoutManager
-                if (rows.size < totalCount) {
+                if (items.size < totalCount) {
                     pos = layoutManager.findLastVisibleItemPosition()
                     //println("pos:${pos}")
                 }
@@ -238,10 +239,10 @@ abstract class MyTableVC1 : BaseActivity(), List1CellDelegate {
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
                 super.onScrollStateChanged(recyclerView, newState)
 
-//                println("tables.rows.size:${t.}")
-//                if (pageCount == pos + 1 && newState == RecyclerView.SCROLL_STATE_IDLE && pageCount < totalCount && !loading) {
-//                    getDataStart1(page, perPage)
-//                }
+                //println("tables.rows.size:${items.size}")
+                if (items.size == pos + 1 && newState == RecyclerView.SCROLL_STATE_IDLE && items.size < totalCount && !loading) {
+                    getDataStart1(page, perPage)
+                }
             }
         }
         recyclerView.addOnScrollListener(scrollerListenr)

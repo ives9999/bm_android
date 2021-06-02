@@ -205,7 +205,6 @@ class CourseFragment : TabFragment() {
 //    }
 
     override fun generateItems(): ArrayList<Item> {
-        val items: ArrayList<Item> = arrayListOf()
         if (mysTable != null) {
             for (row in mysTable!!.rows) {
                 row.filterRow()
