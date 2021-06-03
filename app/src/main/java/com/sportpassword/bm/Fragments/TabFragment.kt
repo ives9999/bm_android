@@ -477,9 +477,10 @@ open class TabFragment : Fragment(), SearchItemDelegate, List1CellDelegate, Seri
             TEAM_PLAY_START_KEY -> mainActivity!!.times.clear()
             TEAM_DEGREE_KEY -> mainActivity!!.degrees.clear()
         }
-        searchRows[indexPath.row]["detail"] = "全部"
-        val rows = mainActivity!!.generateSearchItems(type!!)
-        mainActivity!!.searchAdapter.update(rows)
+        searchRows[indexPath.row]["show"] = "全部"
+        searchRows[indexPath.row]["value"] = ""
+        val rows = mainActivity!!.searchPanel.generateSearchItems()
+        mainActivity!!.searchPanel.searchAdapter.update(rows)
     }
     override fun textChanged(str: String) {
         val key: String = KEYWORD_KEY

@@ -24,11 +24,12 @@ class SelectArenaVC : SingleSelectVC1() {
 
     var arenas1: ArrayList<ArenaTable>? = null
 
-    val mAdapter: MyAdapter = MyAdapter()
+//    val mAdapter: MyAdapter = MyAdapter()
     val adapter1 = GroupAdapter<ViewHolder>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+//        setContentView(R.layout.activity_single_select_vc)
 
         var city_id: Int? = null
         if (intent.hasExtra("city_id")) {
@@ -40,7 +41,16 @@ class SelectArenaVC : SingleSelectVC1() {
 
         key = ARENA_KEY
 
-        tableView.adapter = adapter1
+//        rows.add(hashMapOf("title" to "aaa", "value" to "1"))
+//        rows.add(hashMapOf("title" to "bbb", "value" to "2"))
+
+//        for (row in rows) {
+//            val item = MyItem(row["title"]!!)
+//            adapter.add(item)
+//        }
+
+        tableView.adapter = adapter
+
 
         if (city_id != null) {
             TeamService.getArenaByCityID(this, city_id) { success ->
@@ -48,24 +58,27 @@ class SelectArenaVC : SingleSelectVC1() {
                 if (success) {
                     arenas1 = TeamService.arenas
                     if (arenas1 != null) {
-//                        rows.add(hashMapOf("title" to "aaa", "value" to "1"))
-//                        rows.add(hashMapOf("title" to "bbb", "value" to "2"))
 //
-//                        for (row in rows) {
-//                            val item = MyItem(row["title"]!!)
-//                            adapter1.add(item)
-//                        }
 
 //                        mAdapter.updateList(rows)
 //                        mAdapter.notifyDataSetChanged()
 
                         rowsBridge(arenas1!!)
-                        for (row in rows) {
-                            val item = SingleSelectItem(row["title"]!!, row["value"]!!, false, {})
-                            adapter1.add(item)
-                        }
-                        tableView.adapter = adapter1
-                        adapter1.notifyDataSetChanged()
+                        notifyChanged()
+
+//                        for (row in rows) {
+//                            val item = SingleSelectItem(row["title"]!!, row["value"]!!, false, {})
+//                            adapter1.add(item)
+//                        }
+//                        rows.add(hashMapOf("title" to "aaa", "value" to "1"))
+//                        rows.add(hashMapOf("title" to "bbb", "value" to "2"))
+//                        for (row in rows) {
+//                            //val item = MyItem(row["title"]!!)
+//                            val item = MyItem(row["title"]!!, row["value"]!!, false, {})
+//                            adapter.add(item)
+//                        }
+//                        tableView.adapter = adapter1
+//                        adapter.notifyDataSetChanged()
 
                     } else {
                         warning("無法取得球館資料，請洽管理員")
@@ -128,12 +141,15 @@ class SelectArenaVC : SingleSelectVC1() {
     }
 }
 
-class MyItem(val title: String): Item() {
+class MyItem(var title: String): Item() {
+
+    constructor(title: String, name: String) : this(title) {}
 
     override fun bind(
         viewHolder: com.xwray.groupie.kotlinandroidextensions.ViewHolder,
         position: Int
     ) {
+        title = "aaa"
         viewHolder.title.text = title
     }
 

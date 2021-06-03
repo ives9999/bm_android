@@ -32,6 +32,7 @@ open class SingleSelectVC1 : SelectVC1() {
         }
 
         recyclerView = tableView
+        recyclerView.adapter = adapter
         initAdapter()
 //
 //        init()

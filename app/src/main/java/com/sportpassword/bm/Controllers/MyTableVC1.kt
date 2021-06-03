@@ -34,7 +34,7 @@ abstract class MyTableVC1 : BaseActivity(), List1CellDelegate {
     var sections: ArrayList<String> = arrayListOf()
     var rows: ArrayList<HashMap<String, String>> = arrayListOf()
 
-    protected lateinit var adapter: GroupAdapter<ViewHolder>
+    var adapter: GroupAdapter<ViewHolder> = GroupAdapter<ViewHolder>()
     protected val adapterSections: ArrayList<Section> = arrayListOf()
     protected lateinit var recyclerView: RecyclerView
     protected lateinit var listAdapter: ListAdapter
@@ -82,10 +82,10 @@ abstract class MyTableVC1 : BaseActivity(), List1CellDelegate {
     }
 
     open fun initAdapter(include_section: Boolean=false) {
-        adapter = GroupAdapter()
-        adapter.setOnItemClickListener { item, view ->
-            rowClick(item, view)
-        }
+//        adapter = GroupAdapter()
+//        adapter.setOnItemClickListener { item, view ->
+//            rowClick(item, view)
+//        }
 //        if (include_section) {
 //            for (section in sections) {
 //                adapterSections.add(Section())
@@ -103,7 +103,7 @@ abstract class MyTableVC1 : BaseActivity(), List1CellDelegate {
 //            adapter.addAll(items)
 //        }
         recyclerView.adapter = adapter
-        recyclerView.setHasFixedSize(true)
+//        recyclerView.setHasFixedSize(true)
         if (refreshLayout != null) {
             setRefreshListener()
         }

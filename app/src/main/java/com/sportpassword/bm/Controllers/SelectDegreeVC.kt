@@ -15,10 +15,12 @@ class SelectDegreeVC : MultiSelectVC1() {
     override fun onCreate(savedInstanceState: Bundle?) {
 
         key = DEGREE_KEY
-        rowsBridge()
+        super.onCreate(savedInstanceState)
+
         setMyTitle("選擇程度")
 
-        super.onCreate(savedInstanceState)
+        rowsBridge()
+        notifyChanged()
     }
 
     fun rowsBridge() {

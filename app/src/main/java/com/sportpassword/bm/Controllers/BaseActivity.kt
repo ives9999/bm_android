@@ -573,13 +573,13 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
         startActivityForResult(intent, GENERAL_REQUEST_CODE)
     }
 
-    public fun toTempPlayDate(name: String, token: String) {
+    fun toTempPlayDate(name: String, token: String) {
         val intent = Intent(this, TempPlayDateVC::class.java)
         intent.putExtra("name", name)
         intent.putExtra("token", token)
         startActivity(intent)
     }
-    public fun toTempPlayDatePlayer(date: String, name: String, token: String) {
+    fun toTempPlayDatePlayer(date: String, name: String, token: String) {
         val intent = Intent(this, TempPlayDatePlayerVC::class.java)
         intent.putExtra("date", date)
         intent.putExtra("teamName", name)
@@ -587,11 +587,11 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
         startActivity(intent)
     }
 
-    public fun toSearch(type: String) {
+    fun toSearch(type: String) {
         //val intent = Intent(this)
     }
 
-    public fun toDelete(page: String, token: String = "") {
+    fun toDelete(page: String, token: String = "") {
         Alert.delete(this, {
             Loading.show(mask)
             dataService.delete(this, page, token) { success ->
@@ -613,18 +613,18 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
         })
     }
 
-    public fun toEditMember() {
+    fun toEditMember() {
         val accountIntent = Intent(this, AccountActivity::class.java)
         startActivity(accountIntent)
     }
 
-    public fun toValidate(type: String) {
+    fun toValidate(type: String) {
         val intent = Intent(this, ValidateActivity::class.java)
         intent.putExtra("type", type)
         startActivityForResult(intent, VALIDATE_REQUEST_CODE)
     }
 
-    public fun toTempPlaySignupOne(teamId: Int, teamToken: String, teamName: String, near_date: String, memberToken: String, status: String, off_at: String) {
+    fun toTempPlaySignupOne(teamId: Int, teamToken: String, teamName: String, near_date: String, memberToken: String, status: String, off_at: String) {
         val i = Intent(this, TempPlaySignupOneVC::class.java)
         i.putExtra("id", teamId)
         i.putExtra("name", teamName)
@@ -776,7 +776,10 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
     }
 
     fun toSelectCity(selected: String?=null, delegate: BaseActivity?=null, able_type: String?=null) {
+
         val i = Intent(this, SelectCityVC::class.java)
+
+        i.putExtra("selected", selected)
 
         if (able_type != null) {
             i.putExtra("able_type", able_type)
