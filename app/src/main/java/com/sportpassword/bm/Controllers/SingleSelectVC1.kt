@@ -33,8 +33,8 @@ open class SingleSelectVC1 : SelectVC1() {
 
         recyclerView = tableView
         initAdapter()
-
-        init()
+//
+//        init()
     }
 
     override fun generateItems(): ArrayList<Item> {
