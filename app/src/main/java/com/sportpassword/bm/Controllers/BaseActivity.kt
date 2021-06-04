@@ -131,6 +131,7 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
 
     var delegate: BaseActivity? = null
 
+    var able_type: String = "coach"
 
     override fun singleSelected(key: String, selected: String) {}
     open fun arenaSelected(selected: String, show: String) {}
@@ -226,6 +227,41 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
                         }
                         val f = getFragment(able_type)
                         f?.singleSelected(key, selected)
+                    }
+                }
+            }
+        }
+    }
+
+    val selectAreaVC = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { res ->
+        if (res.resultCode == Activity.RESULT_OK) {
+
+            if (res.data != null) {
+                val i: Intent? = res.data
+
+                if (i != null) {
+                    var key: String = AREA_KEY
+                    var selected: String = ""
+                    if (i.hasExtra("selected")) {
+                        selected = i.getStringExtra("selected")!!
+                    }
+
+                    var show: String = ""
+                    if (i.hasExtra("show")) {
+                        show = i.getStringExtra("show")!!
+                    }
+
+                    //activity
+                    if (delegate != null) {
+                        delegate!!.arenaSelected(selected, show)
+                    } else {
+                        //fragment
+                        var able_type: String = "course"
+                        if (i.hasExtra("able_type")) {
+                            able_type = i.getStringExtra("able_type")!!
+                        }
+                        val f = getFragment(able_type)
+                        f?.arenaSelected(selected, show)
                     }
                 }
             }
@@ -792,6 +828,25 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
         selectCityVC.launch(i)
     }
 
+    fun toSelectArea(selected: String?=null, city_id: Int, delegate: BaseActivity?=null, able_type: String?=null) {
+
+        val i = Intent(this, SelectAreaVC::class.java)
+
+        i.putExtra("selected", selected)
+
+        if (able_type != null) {
+            i.putExtra("able_type", able_type)
+        }
+
+        if (delegate != null) {
+            this.delegate = delegate
+        }
+
+        i.putExtra("city_id", city_id)
+
+        selectAreaVC.launch(i)
+    }
+
     fun toSelectWeekday(selected: String?=null, delegate: BaseActivity?=null, able_type: String?=null) {
         val i = Intent(this, SelectWeekdayVC::class.java)
 
@@ -1107,14 +1162,13 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
 
     ////// search panel start //////////////////////////////////////
     fun showSearchPanel(view: View) {
-        val tag = view.tag as String
-        when (tag) {
+        when (able_type) {
             "coach" -> {
                 containerID = "constraintLayout"
             }
             "team" -> {
                 containerID = "course_container"
-                val frag = getFragment(tag) as TeamFragment
+                val frag = getFragment(able_type) as TeamFragment
                 searchRows = frag.searchRows
             }
             "arena" -> {
@@ -1125,7 +1179,7 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
             }
             "course" -> {
                 containerID = "course_container"
-                val frag = getFragment(tag) as CourseFragment
+                val frag = getFragment(able_type) as CourseFragment
                 searchRows = frag.searchRows
             }
             "store" -> {
@@ -1148,7 +1202,7 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
         //first add a mask
         val p: ConstraintLayout = getMyParent()
         //searchPanel.mask(this, p)
-        searchPanel.addSearchLayer(this, p, tag, searchRows)
+        searchPanel.addSearchLayer(this, p, able_type, searchRows)
         //mask()
 
         //second add search view in mask

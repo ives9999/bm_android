@@ -31,16 +31,18 @@ class ArenaVC : MyTableVC1() {
 
     var arenasTable: ArenasTable? = null
 
-    val _searchRows: ArrayList<HashMap<String, String>> = arrayListOf(
-        hashMapOf("title" to "關鍵字","detail" to "全部","key" to KEYWORD_KEY),
-        hashMapOf("title" to "縣市","detail" to "全部","key" to CITY_KEY),
-        hashMapOf("title" to "區域","detail" to "全部","key" to AREA_KEY),
-        hashMapOf("title" to "空調","detail" to "全部","key" to ARENA_AIR_CONDITION_KEY,"switch" to "true"),
-        hashMapOf("title" to "盥洗室","detail" to "全部","key" to ARENA_BATHROOM_KEY,"switch" to "true"),
-        hashMapOf("title" to "停車場","detail" to "全部","key" to ARENA_PARKING_KEY,"switch" to "true")
-    )
 
     override fun onCreate(savedInstanceState: Bundle?) {
+
+        searchRows = arrayListOf(
+            hashMapOf("title" to "關鍵字","show" to "全部","key" to KEYWORD_KEY,"value" to ""),
+            hashMapOf("title" to "縣市","show" to "全部","key" to CITY_KEY,"value" to ""),
+            hashMapOf("title" to "區域","show" to "全部","key" to AREA_KEY,"value" to ""),
+            hashMapOf("title" to "空調","show" to "全部","key" to ARENA_AIR_CONDITION_KEY,"switch" to "true","value" to ""),
+            hashMapOf("title" to "盥洗室","show" to "全部","key" to ARENA_BATHROOM_KEY,"switch" to "true","value" to ""),
+            hashMapOf("title" to "停車場","show" to "全部","key" to ARENA_PARKING_KEY,"switch" to "true","value" to "")
+        )
+
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_store_vc)
 
@@ -48,7 +50,6 @@ class ArenaVC : MyTableVC1() {
         able_type = "arena"
 
         dataService = ArenaService
-        searchRows = _searchRows
         recyclerView = list_container
         refreshLayout = refresh
         initAdapter()
@@ -79,6 +80,37 @@ class ArenaVC : MyTableVC1() {
         return items
     }
 
+    override fun prepare(idx: Int) {
+
+        var row = searchRows.get(idx)
+        var key: String = ""
+        if (row.containsKey("key")) {
+            key = row["key"]!!
+        }
+
+        var value: String = ""
+        if (row.containsKey("value") && row["value"]!!.isNotEmpty()) {
+            value = row["value"]!!
+        }
+
+        when (key) {
+            CITY_KEY -> {
+                toSelectCity(value, this)
+            } AREA_KEY -> {
+                row = getDefinedRow(CITY_KEY)
+                var city_id: Int? = null
+                if (row.containsKey("value") && row["value"] != null && row["value"]!!.length > 0) {
+                    city_id = row["value"]!!.toInt()
+                }
+                if (city_id != null && city_id > 0) {
+                    toSelectArea(value, city_id, null, able_type)
+                } else {
+                    warning("請先選擇縣市")
+                }
+            }
+        }
+    }
+
     override fun rowClick(item: com.xwray.groupie.Item<com.xwray.groupie.ViewHolder>, view: View) {
 
         val arenaItem = item as ArenaItem
@@ -88,13 +120,13 @@ class ArenaVC : MyTableVC1() {
     }
 
     override fun remove(indexPath: IndexPath) {
-        val row = _searchRows[indexPath.row]
+        val row = searchRows[indexPath.row]
         val key = row["key"]!!
         when (key) {
             CITY_KEY -> citys.clear()
             AREA_KEY -> areas.clear()
         }
-        _searchRows[indexPath.row]["detail"] = "全部"
+        searchRows[indexPath.row]["detail"] = "全部"
 //        val rows = generateSearchItems(type!!)
 //        searchAdapter.update(rows)
     }

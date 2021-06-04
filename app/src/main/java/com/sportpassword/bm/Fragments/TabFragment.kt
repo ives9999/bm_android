@@ -388,9 +388,7 @@ open class TabFragment : Fragment(), SearchItemDelegate, List1CellDelegate, Seri
         row["value"] = selected
         row["show"] = show
         replaceRows(key, row)
-
-        val rows = mainActivity!!.generateSearchItems(able_type)
-        mainActivity!!.searchPanel.searchAdapter.update(rows)
+        updateAdapter()
     }
 
     fun degreeSelected(selected: String, show: String) {
@@ -399,8 +397,11 @@ open class TabFragment : Fragment(), SearchItemDelegate, List1CellDelegate, Seri
         row["value"] = selected
         row["show"] = show
         replaceRows(key, row)
+        updateAdapter()
+    }
 
-        val rows = mainActivity!!.generateSearchItems(able_type)
+    protected fun updateAdapter() {
+        val rows =  mainActivity!!.generateSearchItems(able_type)
         mainActivity!!.searchPanel.searchAdapter.update(rows)
     }
 

@@ -29,7 +29,6 @@ import kotlinx.android.synthetic.main.mask.*
 abstract class MyTableVC1 : BaseActivity(), List1CellDelegate {
 
     var tables: Tables? = null
-    var able_type: String = "coach"
 
     var sections: ArrayList<String> = arrayListOf()
     var rows: ArrayList<HashMap<String, String>> = arrayListOf()
@@ -309,8 +308,7 @@ abstract class MyTableVC1 : BaseActivity(), List1CellDelegate {
         row["show"] = show
         replaceRows(key, row)
 
-        val rows = generateSearchItems(able_type)
-        searchAdapter.update(rows)
+        updateAdapter()
     }
 
     override fun arenaSelected(selected: String, show: String) {
@@ -321,8 +319,13 @@ abstract class MyTableVC1 : BaseActivity(), List1CellDelegate {
         row["show"] = show
         replaceRows(key, row)
 
+        updateAdapter()
+    }
+
+    protected fun updateAdapter() {
         val rows = generateSearchItems(able_type)
-        searchAdapter.update(rows)
+        searchPanel.searchAdapter.update(rows)
+
     }
 
     override fun cellRefresh() {

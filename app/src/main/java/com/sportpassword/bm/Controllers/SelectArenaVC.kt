@@ -51,14 +51,12 @@ class SelectArenaVC : SingleSelectVC1() {
 
         tableView.adapter = adapter
 
-
         if (city_id != null) {
             TeamService.getArenaByCityID(this, city_id) { success ->
 
                 if (success) {
                     arenas1 = TeamService.arenas
                     if (arenas1 != null) {
-//
 
 //                        mAdapter.updateList(rows)
 //                        mAdapter.notifyDataSetChanged()
