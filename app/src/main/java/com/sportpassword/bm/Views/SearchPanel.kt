@@ -23,7 +23,7 @@ import com.xwray.groupie.Item
 import com.xwray.groupie.ViewHolder
 import org.jetbrains.anko.backgroundColor
 
-class SearchPanel {
+open class SearchPanel {
 
     var context: Context? = null
     var layerMask: LinearLayout? = null
@@ -39,7 +39,7 @@ class SearchPanel {
     lateinit var searchAdapter: GroupAdapter<ViewHolder>
     var searchRows: ArrayList<HashMap<String, String>> = arrayListOf()
 
-    var layerRightLeftPadding: Int = 80
+    var layerRightLeftPadding: Int = 40
     var layerTopPadding: Int = 100
     var layerBtnCount: Int = 2
 
@@ -186,18 +186,14 @@ class SearchPanel {
         unmask()
         val activity: BaseActivity = context!! as BaseActivity
 
-        if (able_type == "coach") {
+        if (able_type == "coach" || able_type == "arena" || able_type == "product" || able_type == "store") {
             activity.prepareParams()
-            activity.refresh()
         } else if (able_type == "team") {
             val frag = getFragment(activity, able_type!!) as TeamFragment
             frag.prepareParams()
-            frag.refresh()
         } else if (able_type == "course") {
             val frag = getFragment(activity, able_type!!) as CourseFragment
             frag.prepareParams()
-            frag.refresh()
-
         } else {
             activity.warning("沒有傳送頁面類型參數，請洽管理員")
         }
@@ -229,7 +225,7 @@ class SearchPanel {
         }
     }
 
-    fun unmask() {
+    private fun unmask() {
 
         if (layerMask != null) {
             removeLayerChildViews()

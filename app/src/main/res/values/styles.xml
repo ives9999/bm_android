@@ -64,10 +64,10 @@
         <item name="colorControlActivated">@color/MY_RED</item>
 
         <!-- inactive thumb color -->
-        <item name="colorSwitchThumbNormal">@color/grey</item>
+        <item name="colorSwitchThumbNormal">@color/WHITE</item>
 
         <!-- inactive track color (30% transparency) -->
-        <item name="android:colorForeground">@color/MY_RED</item>
+        <item name="android:colorForeground">@color/WHITE</item>
     </style>
 
     <style name="submit_button">

@@ -292,13 +292,6 @@ open class TabFragment : Fragment(), SearchItemDelegate, List1CellDelegate, Seri
 
     open fun prepareParams() {
         params.clear()
-        if (mainActivity!!.keyword.length > 0) {
-            val row = getDefinedRow(KEYWORD_KEY)
-            if (row.containsKey("value")) {
-                row["value"] = mainActivity!!.keyword
-                replaceRows(KEYWORD_KEY, row)
-            }
-        }
 
         for (searchRow in searchRows) {
 //            var value_type: String? = null
@@ -324,6 +317,7 @@ open class TabFragment : Fragment(), SearchItemDelegate, List1CellDelegate, Seri
             }
 
             params[key] = value
+            refresh()
 //            if (value_type != null && key != null && value.length > 0) {
 //                var values: Array<String>? = null
 //                if (value_type == "String") {
@@ -488,6 +482,7 @@ open class TabFragment : Fragment(), SearchItemDelegate, List1CellDelegate, Seri
         val row = getDefinedRow(key)
         row["value"] = str
     }
+
     override fun switchChanged(pos: Int, b: Boolean) {}
 
 

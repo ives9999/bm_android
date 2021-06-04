@@ -21,14 +21,14 @@ import kotlinx.android.synthetic.main.product_list_cell.refreshIcon
 
 class ProductVC : MyTableVC1() {
 
-    val _searchRows: ArrayList<HashMap<String, String>> = arrayListOf(
-            hashMapOf("title" to "關鍵字","key" to KEYWORD_KEY,"value" to "","value_type" to "String","show" to ""),
-            hashMapOf("title" to "縣市","key" to CITY_KEY,"value" to "","value_type" to "Array","show" to "不限"),
-    )
-
     var mysTable: ProductsTable? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
+
+        searchRows = arrayListOf(
+            hashMapOf("title" to "標題關鍵字","key" to KEYWORD_KEY,"value" to "","value_type" to "String","show" to ""),
+        )
+
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_product_vc)
 
@@ -38,11 +38,9 @@ class ProductVC : MyTableVC1() {
         setMyTitle("商店")
 
         dataService = ProductService
-        searchRows = _searchRows
         recyclerView = product_list
         refreshLayout = product_refresh
         maskView = mask
-        setRefreshListener()
 
         initAdapter()
         refresh()
@@ -53,92 +51,6 @@ class ProductVC : MyTableVC1() {
         if (mysTable != null) {
             tables = mysTable
         }
-    }
-
-    override fun prepareParams(city_type: String) {
-        params.clear()
-        if (keyword.length > 0) {
-            val row = getSearchRow(KEYWORD_KEY)
-            if (row != null && row.containsKey("value")) {
-                row["value"] = keyword
-                updateSearchRow(KEYWORD_KEY, row)
-            }
-        }
-        for (searchRow in _searchRows) {
-            var value_type: String? = null
-            if (searchRow.containsKey("value_type")) {
-                value_type = searchRow.get("value_type")
-            }
-            var value: String = ""
-            if (searchRow.containsKey("value")) {
-                value = searchRow.get("value")!!
-            }
-            var key: String? = null
-            if (searchRow.containsKey("key")) {
-                key = searchRow.get("key")!!
-            }
-            if (value_type != null && key != null && value.isNotEmpty()) {
-                var values: Array<String>? = null
-                if (value_type == "String") {
-                    params[key] = value
-                } else if (value_type == "Array") {
-                    value = searchRow.get("value")!!
-                    values = value.split(",").toTypedArray()
-                }
-                if (values != null) {
-                    params[key] = values
-                }
-            }
-        }
-    }
-
-    fun updateSearchRow(idx: Int, row: HashMap<String, String>) {
-        _searchRows[idx] = row
-    }
-
-    fun updateSearchRow(key: String, row: HashMap<String, String>) {
-        var idx: Int = -1
-        for ((i, searchRow) in _searchRows.withIndex()) {
-            if (searchRow.containsKey("key")) {
-                if (key == searchRow.get("key")) {
-                    idx = i
-                    break
-                }
-            }
-        }
-        if (idx >= 0) {
-            _searchRows[idx] = row
-        }
-    }
-
-    override fun remove(indexPath: IndexPath) {
-        var row: HashMap<String, String>? = null
-        if (_searchRows.size >= indexPath.row) {
-            row = _searchRows[indexPath.row]
-        }
-        var key: String? = null
-        if (row != null && row.containsKey("key") && row.get("key")!!.isNotEmpty()) {
-            key = row.get("key")
-        }
-        if (row != null) {
-            row["value"] = ""
-            row["show"] = "不限"
-            updateSearchRow(indexPath.row, row)
-        }
-    }
-
-    fun getSearchRow(key: String): HashMap<String, String>? {
-        var row: HashMap<String, String>? = null
-        for ((i, searchRow) in _searchRows.withIndex()) {
-            if (searchRow.containsKey("key")) {
-                if (key == searchRow.get("key")) {
-                    row = searchRow
-                    break
-                }
-            }
-        }
-
-        return row
     }
 
     override fun generateItems(): ArrayList<Item> {

@@ -116,6 +116,7 @@ abstract class MyTableVC1 : BaseActivity(), List1CellDelegate {
 
         page = 1
         theFirstTime = true
+        items.clear()
         getDataStart1(page, perPage)
         params.clear()
     }
@@ -221,7 +222,49 @@ abstract class MyTableVC1 : BaseActivity(), List1CellDelegate {
     open fun genericTable() {}
     open fun rowClick(item: com.xwray.groupie.Item<ViewHolder>, view: View) {}
 
+    override fun prepareParams(city_type: String) {
+        params.clear()
 
+        for (searchRow in searchRows) {
+//            var value_type: String? = null
+//            if (searchRow.containsKey("value_type")) {
+//                value_type = searchRow.get("value_type")
+//            }
+
+            var key: String? = null
+            if (searchRow.containsKey("key")) {
+                key = searchRow.get("key")!!
+            }
+
+            if (key == null) {
+                continue
+            }
+
+            var value: String = ""
+            if (searchRow.containsKey("value")) {
+                value = searchRow.get("value")!!
+            }
+            if (value.isEmpty()) {
+                continue
+            }
+
+            params[key] = value
+//            if (value_type != null && key != null && value.length > 0) {
+//                var values: Array<String>? = null
+//                if (value_type == "String") {
+//                    params[key] = value
+//                } else if (value_type == "Array") {
+//                    value = searchRow.get("value")!!
+//                    values = value.split(",").toTypedArray()
+//                }
+//                if (values != null) {
+//                    params[key] = values
+//                }
+//            }
+        }
+        println(params)
+        refresh()
+    }
 
     protected open fun setRecyclerViewScrollListener() {
 
@@ -294,6 +337,12 @@ abstract class MyTableVC1 : BaseActivity(), List1CellDelegate {
         }
     }
 
+    private fun updateAdapter() {
+        val rows = generateSearchItems(able_type)
+        searchPanel.searchAdapter.update(rows)
+
+    }
+
     override fun singleSelected(key: String, selected: String) {
 
         val row = getDefinedRow(key)
@@ -322,10 +371,18 @@ abstract class MyTableVC1 : BaseActivity(), List1CellDelegate {
         updateAdapter()
     }
 
-    protected fun updateAdapter() {
-        val rows = generateSearchItems(able_type)
-        searchPanel.searchAdapter.update(rows)
+    override fun textChanged(str: String) {
+        val key: String = KEYWORD_KEY
+        val row = getDefinedRow(key)
+        row["value"] = str
+    }
 
+    override fun switchChanged(pos: Int, b: Boolean) {
+
+        val row = searchRows[pos]
+        val key = row["key"]!!
+        if (b) { row["value"] = "1" } else { row["value"] = "0" }
+        replaceRows(key, row)
     }
 
     override fun cellRefresh() {
