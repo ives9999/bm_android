@@ -24,6 +24,7 @@ import kotlinx.android.synthetic.main.arena_list_cell.cityBtn
 import kotlinx.android.synthetic.main.arena_list_cell.intervalLbl
 import kotlinx.android.synthetic.main.arena_list_cell.telIcon
 import kotlinx.android.synthetic.main.course_list_cell.*
+import kotlinx.android.synthetic.main.team_list_cell.*
 import org.jetbrains.anko.makeCall
 
 
@@ -123,12 +124,33 @@ class ArenaVC : MyTableVC1() {
         val row = searchRows[indexPath.row]
         val key = row["key"]!!
         when (key) {
-            CITY_KEY -> citys.clear()
-            AREA_KEY -> areas.clear()
+            CITY_KEY -> {
+                citys.clear()
+                row["show"] = "全部"
+            }
+            AREA_KEY -> {
+                areas.clear()
+                row["show"] = "全部"
+            }
         }
-        searchRows[indexPath.row]["detail"] = "全部"
-//        val rows = generateSearchItems(type!!)
-//        searchAdapter.update(rows)
+        row["value"] = ""
+
+    }
+
+    override fun cellArea(row: Table) {
+
+        val myTable: ArenaTable? = row as? ArenaTable
+        if (myTable != null) {
+            val key: String = AREA_KEY
+            val area_id: Int = myTable.area_id
+            val row = getDefinedRow(key)
+            row["value"] = area_id.toString()
+            replaceRows(key, row)
+            prepareParams()
+            refresh()
+        } else {
+            warning("轉為ArenaTable失敗，請洽管理員")
+        }
     }
 }
 
@@ -144,12 +166,22 @@ class ArenaItem(override var context: Context, var _row: ArenaTable): ListItem<T
 
         if (row.city_show.isNotEmpty()) {
             viewHolder.cityBtn.text = row.city_show
+            viewHolder.cityBtn.setOnClickListener {
+                if (list1CellDelegate != null) {
+                    list1CellDelegate!!.cellCity(row)
+                }
+            }
         } else {
             viewHolder.cityBtn.visibility = View.GONE
         }
 
         if (row.area_show.isNotEmpty()) {
             viewHolder.areaBtn.text = row.area_show
+            viewHolder.areaBtn.setOnClickListener {
+                if (list1CellDelegate != null) {
+                    list1CellDelegate!!.cellArea(row)
+                }
+            }
         } else {
             viewHolder.cityBtn.visibility = View.GONE
         }

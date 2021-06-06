@@ -34,7 +34,6 @@ class MemberOrderListVC : MyTableVC1() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_member_order_list_vc)
 
-        source_activity = "order"
         setMyTitle("會員訂單")
 
         dataService = OrderService

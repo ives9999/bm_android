@@ -15,6 +15,7 @@ import com.sportpassword.bm.Services.CourseService
 import com.sportpassword.bm.Services.TeamService
 import kotlinx.android.synthetic.main.mask.*
 import com.sportpassword.bm.Utilities.*
+import com.sportpassword.bm.member
 import com.squareup.picasso.Picasso
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.ViewHolder
@@ -41,6 +42,7 @@ class TeamFragment: TabFragment() {
             hashMapOf("title" to "時段","show" to "全部","key" to START_TIME_KEY,"value" to ""),
             hashMapOf("title" to "程度","show" to "全部","key" to DEGREE_KEY,"value" to "")
         )
+
         able_type = "team"
 
         super.onCreate(savedInstanceState)
@@ -63,7 +65,7 @@ class TeamFragment: TabFragment() {
         val searchBtn = memuView.findViewById<ImageButton>(R.id.search)
         //val ManagerBtn = memuView.findViewById<ImageButton>(R.id.manager)
 
-        searchBtn.tag = type
+        searchBtn.tag = able_type
         //ManagerBtn.tag = type
     }
 
@@ -88,13 +90,6 @@ class TeamFragment: TabFragment() {
 
         refresh()
         bInit = true
-    }
-
-    override fun refresh() {
-        page = 1
-        params.clear()
-        theFirstTime = true
-        getDataStart1(page, perPage)
     }
 
     override fun genericTable() {
@@ -159,6 +154,22 @@ class TeamFragment: TabFragment() {
         mainActivity!!.toShowTeam(table.token)
     }
 
+    override fun cellArena(row: Table) {
+
+        val myTable: TeamTable? = row as? TeamTable
+        if (myTable != null) {
+            val key: String = ARENA_KEY
+            val arena_id: Int = myTable.arena_id
+            val row = getDefinedRow(key)
+            row["value"] = arena_id.toString()
+            replaceRows(key, row)
+            prepareParams()
+            refresh()
+        } else {
+            mainActivity!!.warning("轉為TeamTable失敗，請洽管理員")
+        }
+    }
+
     override fun setUserVisibleHint(isVisibleToUser: Boolean) {
         super.setUserVisibleHint(isVisibleToUser)
         if (isVisibleToUser && bInit) {
@@ -212,12 +223,22 @@ class TeamItem(override var context: Context, var _row: TeamTable): ListItem<Tab
 
         if (row.city_show.length > 0) {
             viewHolder.cityBtn.text = row.city_show
+            viewHolder.cityBtn.setOnClickListener {
+                if (list1CellDelegate != null) {
+                    list1CellDelegate!!.cellCity(row)
+                }
+            }
         } else {
             viewHolder.cityBtn.visibility = View.GONE
         }
 
         if (row.arena != null) {
             viewHolder.arenaBtn.text = row.arena!!.name
+            viewHolder.arenaBtn.setOnClickListener {
+                if (list1CellDelegate != null) {
+                    list1CellDelegate!!.cellArena(row)
+                }
+            }
         } else {
             viewHolder.arenaBtn.visibility = View.GONE
         }

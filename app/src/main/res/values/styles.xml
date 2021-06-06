@@ -61,10 +61,10 @@
 
     <style name="MySwitch" parent="Theme.AppCompat.Light">
         <!-- active thumb & track color (30% transparency) -->
-        <item name="colorControlActivated">@color/MY_RED</item>
+        <item name="colorControlActivated">@color/WHITE</item>
 
         <!-- inactive thumb color -->
-        <item name="colorSwitchThumbNormal">@color/WHITE</item>
+        <item name="colorSwitchThumbNormal">@color/MY_GREY</item>
 
         <!-- inactive track color (30% transparency) -->
         <item name="android:colorForeground">@color/WHITE</item>
@@ -128,6 +128,5 @@
         <item name="android:fontFamily">sans-serif-light</item>
         <item name="android:textStyle">bold</item>
     </style>
-
 
 </resources>

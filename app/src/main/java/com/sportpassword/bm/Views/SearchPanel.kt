@@ -167,9 +167,9 @@ open class SearchPanel {
             //val tag = parent.tag as String
             var frag: TabFragment? = null
             if (able_type == "course") {
-                frag = activity.getFragment(able_type!!) as CourseFragment
+                frag = activity.getFragment() as CourseFragment
             } else if (able_type == "team") {
-                frag = activity.getFragment(able_type!!) as TeamFragment
+                frag = activity.getFragment() as TeamFragment
             }
             frag?.prepare(row)
             //prepareSearch1(row, page)
@@ -188,12 +188,15 @@ open class SearchPanel {
 
         if (able_type == "coach" || able_type == "arena" || able_type == "product" || able_type == "store") {
             activity.prepareParams()
+            activity.refresh()
         } else if (able_type == "team") {
             val frag = getFragment(activity, able_type!!) as TeamFragment
             frag.prepareParams()
+            frag.refresh()
         } else if (able_type == "course") {
             val frag = getFragment(activity, able_type!!) as CourseFragment
             frag.prepareParams()
+            frag.refresh()
         } else {
             activity.warning("沒有傳送頁面類型參數，請洽管理員")
         }
@@ -286,7 +289,7 @@ open class SearchPanel {
             }
             val searchItem = SearchItem(title, detail, "", bSwitch, -1, i)
             if (able_type == "team" || able_type == "course") {
-                searchItem.delegate = activity.getFragment(able_type!!)
+                searchItem.delegate = activity.getFragment()
             } else {
                 searchItem.delegate = activity
             }

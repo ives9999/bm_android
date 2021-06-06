@@ -17,11 +17,12 @@ class TeachVC : MyTableVC1() {
     protected var titleField: String = "title"
 
     lateinit var collectionAdapter: CollectionAdapter
-    val _searchRows: ArrayList<HashMap<String, String>> = arrayListOf(
-        hashMapOf("title" to "關鍵字","detail" to "全部","key" to KEYWORD_KEY)
-    )
 
     override fun onCreate(savedInstanceState: Bundle?) {
+
+        searchRows = arrayListOf(
+            hashMapOf("title" to "標題關鍵字","show" to "全部","key" to KEYWORD_KEY,"value" to "")
+        )
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_teach_vc)
 
@@ -30,9 +31,8 @@ class TeachVC : MyTableVC1() {
         }
         setMyTitle("教學")
 
-        searchRows = _searchRows
-        recyclerView = teach_list
         dataService = TeachService
+        recyclerView = teach_list
         refreshLayout = teach_refresh
         initAdapter()
 

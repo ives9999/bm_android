@@ -38,10 +38,7 @@ import com.sportpassword.bm.Adapters.SearchItem
 import com.sportpassword.bm.Adapters.SearchItemDelegate
 import com.sportpassword.bm.App
 import com.sportpassword.bm.*
-import com.sportpassword.bm.Fragments.CoachFragment
-import com.sportpassword.bm.Fragments.CourseFragment
-import com.sportpassword.bm.Fragments.TabFragment
-import com.sportpassword.bm.Fragments.TeamFragment
+import com.sportpassword.bm.Fragments.*
 import com.sportpassword.bm.Models.*
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.*
@@ -71,7 +68,6 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
     protected lateinit var refreshListener: SwipeRefreshLayout.OnRefreshListener
     protected lateinit var scrollerListenr: RecyclerView.OnScrollListener
 
-    var source_activity: String = ""  //來源的activity
     var screenWidth: Int = 0
     var screenHeight: Int = 0
     var density: Float = 0f
@@ -144,7 +140,7 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
                 val i: Intent? = res.data
 
                 if (i != null) {
-                    var key: String = CITY_KEY
+                    val key: String = CITY_KEY
                     var selected: String = ""
                     if (i.hasExtra("selected")) {
                         selected = i.getStringExtra("selected")!!
@@ -155,11 +151,11 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
                         delegate!!.singleSelected(key, selected)
                     } else {
                         //fragment
-                        var able_type: String = "course"
+                        able_type = "course"
                         if (i.hasExtra("able_type")) {
                             able_type = i.getStringExtra("able_type")!!
                         }
-                        val f = getFragment(able_type)
+                        val f = getFragment()
                         if (f != null) {
                             f.singleSelected(key, selected)
                         }
@@ -187,11 +183,11 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
                         delegate!!.singleSelected(key, selected)
                     } else {
                         //fragment
-                        var able_type: String = "course"
+                        able_type = "course"
                         if (i.hasExtra("able_type")) {
                             able_type = i.getStringExtra("able_type")!!
                         }
-                        val f = getFragment(able_type)
+                        val f = getFragment()
                         f?.singleSelected(key, selected)
                     }
                 }
@@ -221,11 +217,11 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
                         delegate!!.singleSelected(key, selected)
                     } else {
                         //fragment
-                        var able_type: String = "course"
+                        able_type = "course"
                         if (i.hasExtra("able_type")) {
                             able_type = i.getStringExtra("able_type")!!
                         }
-                        val f = getFragment(able_type)
+                        val f = getFragment()
                         f?.singleSelected(key, selected)
                     }
                 }
@@ -256,11 +252,11 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
                         delegate!!.arenaSelected(selected, show)
                     } else {
                         //fragment
-                        var able_type: String = "course"
+                        able_type = "course"
                         if (i.hasExtra("able_type")) {
                             able_type = i.getStringExtra("able_type")!!
                         }
-                        val f = getFragment(able_type)
+                        val f = getFragment()
                         f?.arenaSelected(selected, show)
                     }
                 }
@@ -291,11 +287,11 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
                         delegate!!.arenaSelected(selected, show)
                     } else {
                         //fragment
-                        var able_type: String = "course"
+                        able_type = "course"
                         if (i.hasExtra("able_type")) {
                             able_type = i.getStringExtra("able_type")!!
                         }
-                        val f = getFragment(able_type)
+                        val f = getFragment()
                         f?.arenaSelected(selected, show)
                     }
                 }
@@ -327,11 +323,11 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
                         delegate!!.degreeSelected(selected, show)
                     } else {
                         //fragment
-                        var able_type: String = "course"
+                        able_type = "course"
                         if (i.hasExtra("able_type")) {
                             able_type = i.getStringExtra("able_type")!!
                         }
-                        val f = getFragment(able_type)
+                        val f = getFragment()
                         f?.degreeSelected(selected, show)
                     }
                 }
@@ -683,9 +679,10 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
         startActivity(i)
     }
 
-    fun toTeam(member_like: Boolean = false) {
+    fun toTeam(params: HashMap<String, Any>?, member_like: Boolean = false) {
         val i = Intent(this, TeamVC::class.java)
         i.putExtra("member_like", member_like)
+        i.putExtra("params", params)
         startActivity(i)
     }
 
@@ -1162,13 +1159,17 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
 
     ////// search panel start //////////////////////////////////////
     fun showSearchPanel(view: View) {
+
+        if (view.tag != null) {
+            able_type = view.tag as String
+        }
         when (able_type) {
             "coach" -> {
                 containerID = "constraintLayout"
             }
             "team" -> {
                 containerID = "course_container"
-                val frag = getFragment(able_type) as TeamFragment
+                val frag = getFragment() as TeamFragment
                 searchRows = frag.searchRows
             }
             "arena" -> {
@@ -1179,7 +1180,7 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
             }
             "course" -> {
                 containerID = "course_container"
-                val frag = getFragment(able_type) as CourseFragment
+                val frag = getFragment() as CourseFragment
                 searchRows = frag.searchRows
             }
             "store" -> {
@@ -1381,9 +1382,9 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
                 //val tag = parent.tag as String
                 var frag: TabFragment? = null
                 if (page == "course") {
-                    frag = getFragment(page) as CourseFragment
+                    frag = getFragment() as CourseFragment
                 } else if (page == "team") {
-                    frag = getFragment(page) as TeamFragment
+                    frag = getFragment() as TeamFragment
                 }
                 if (frag != null) {
                     frag.prepare(row)
@@ -1803,7 +1804,7 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
                         }
 
                     }
-                    val rows = generateSearchItems(source_activity)
+                    val rows = generateSearchItems(able_type)
                     searchAdapter.update(rows)
                 }
             }
@@ -1828,7 +1829,7 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
             }
             val searchItem = SearchItem(title, detail, keyword, bSwitch, -1, i)
             if (page == "team" || page == "course") {
-                searchItem.delegate = getFragment(page)
+                searchItem.delegate = getFragment()
             } else {
                 searchItem.delegate = this@BaseActivity
             }
@@ -1840,20 +1841,24 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
 
 
     //已經移到Global成為 global function 了，以後停止使用
-    fun getFragment(page: String): TabFragment? {
+    fun getFragment(): TabFragment? {
         val frags = supportFragmentManager.fragments
         var _frag: TabFragment? = null
         for (frag in frags) {
-            if (page == "coach" && frag::class == CoachFragment::class) {
+            if (able_type == "coach" && frag::class == CoachFragment::class) {
                 _frag = frag as CoachFragment
                 break
             }
-            if (page == "team" && frag::class == TeamFragment::class) {
+            if (able_type == "team" && frag::class == TeamFragment::class) {
                 _frag = frag as TeamFragment
                 break
             }
-            if (page == "course" && frag::class == CourseFragment::class) {
+            if (able_type == "course" && frag::class == CourseFragment::class) {
                 _frag = frag as CourseFragment
+                break
+            }
+            if (able_type == "temp_play" && frag::class == TempPlayFragment::class) {
+                _frag = frag as TempPlayFragment
                 break
             }
         }
@@ -1967,11 +1972,11 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
             prepareParams()
             refresh()
         } else if (page == "team") {
-            val frag = getFragment(page) as TeamFragment
+            val frag = getFragment() as TeamFragment
             frag.prepareParams()
             frag.refresh()
         } else if (page == "course") {
-            val frag = getFragment(page) as CourseFragment
+            val frag = getFragment() as CourseFragment
             frag.prepareParams()
             frag.refresh()
             //frag.layerSubmit()
@@ -1990,7 +1995,7 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
         if (page == "coach") {
             refresh()
         } else if (page == "team") {
-            val frag = getFragment(page) as TeamFragment
+            val frag = getFragment() as TeamFragment
             frag.refresh()
         } else {
             refresh()

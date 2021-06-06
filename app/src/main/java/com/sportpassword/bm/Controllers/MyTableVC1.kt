@@ -82,9 +82,9 @@ abstract class MyTableVC1 : BaseActivity(), List1CellDelegate {
 
     open fun initAdapter(include_section: Boolean=false) {
 //        adapter = GroupAdapter()
-//        adapter.setOnItemClickListener { item, view ->
-//            rowClick(item, view)
-//        }
+        adapter.setOnItemClickListener { item, view ->
+            rowClick(item, view)
+        }
 //        if (include_section) {
 //            for (section in sections) {
 //                adapterSections.add(Section())
@@ -116,6 +116,7 @@ abstract class MyTableVC1 : BaseActivity(), List1CellDelegate {
 
         page = 1
         theFirstTime = true
+        adapter.clear()
         items.clear()
         getDataStart1(page, perPage)
         params.clear()
@@ -175,6 +176,7 @@ abstract class MyTableVC1 : BaseActivity(), List1CellDelegate {
 //        mask?.let { mask?.dismiss() }
         Loading.hide(mask)
         loading = false
+        refreshLayout!!.isRefreshing = false
 //        println("page:$page")
 //        println("perPage:$perPage")
 //        println("totalCount:$totalCount")
@@ -262,8 +264,8 @@ abstract class MyTableVC1 : BaseActivity(), List1CellDelegate {
 //                }
 //            }
         }
-        println(params)
-        refresh()
+//        println(params)
+//        refresh()
     }
 
     protected open fun setRecyclerViewScrollListener() {
@@ -280,13 +282,13 @@ abstract class MyTableVC1 : BaseActivity(), List1CellDelegate {
                 val layoutManager = recyclerView.layoutManager as LinearLayoutManager
                 if (items.size < totalCount) {
                     pos = layoutManager.findLastVisibleItemPosition()
-                    //println("pos:${pos}")
+//                    println("pos:${pos}")
                 }
             }
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
                 super.onScrollStateChanged(recyclerView, newState)
 
-                //println("tables.rows.size:${items.size}")
+//                println("items.size:${items.size}")
                 if (items.size == pos + 1 && newState == RecyclerView.SCROLL_STATE_IDLE && items.size < totalCount && !loading) {
                     getDataStart1(page, perPage)
                 }
@@ -295,14 +297,14 @@ abstract class MyTableVC1 : BaseActivity(), List1CellDelegate {
         recyclerView.addOnScrollListener(scrollerListenr)
     }
 
-//    protected open fun setRecyclerViewRefreshListener() {
-//        refreshListener = SwipeRefreshLayout.OnRefreshListener {
-//            refresh()
-//
-//            refreshLayout.isRefreshing = false
-//        }
-//        refreshLayout.setOnRefreshListener(refreshListener)
-//    }
+    protected open fun setRecyclerViewRefreshListener() {
+        refreshListener = SwipeRefreshLayout.OnRefreshListener {
+            refresh()
+
+            refreshLayout!!.isRefreshing = false
+        }
+        refreshLayout!!.setOnRefreshListener(refreshListener)
+    }
 
     open fun getFormItemFromKey(key: String): FormItem? {
 
@@ -398,24 +400,26 @@ abstract class MyTableVC1 : BaseActivity(), List1CellDelegate {
     }
 
     override fun cellShowMap(row: Table) {
-        println(row.address)
-//        val intent = Intent(this, MyMapVC::class.java)
-//        var name: String = ""
-//        if (row.name.isNotEmpty()) {
-//            name = row.name
-//        } else if (row.title.isNotEmpty()) {
-//            name = row.title
-//        }
-//        intent.putExtra("title", name)
-//        intent.putExtra("address", row.address)
-//        startActivity(intent)
+//        println(row.address)
+        val intent = Intent(this, MyMapVC::class.java)
+        var name: String = ""
+        if (row.name.isNotEmpty()) {
+            name = row.name
+        } else if (row.title.isNotEmpty()) {
+            name = row.title
+        }
+        intent.putExtra("title", name)
+        intent.putExtra("address", row.address)
+        startActivity(intent)
     }
 
     override fun cellMobile(row: Table) {
         if (row.tel_show.isNotEmpty()) {
-            println(row.tel)
+//            println(row.tel)
+            row.tel.makeCall(this)
         } else if (row.mobile_show.isNotEmpty()) {
-            println(row.mobile)
+//            println(row.mobile)
+            row.mobile.makeCall(this)
         }
     }
 
@@ -432,6 +436,16 @@ abstract class MyTableVC1 : BaseActivity(), List1CellDelegate {
 //
 //        }
     }
+
+    override fun cellCity(row: Table) {
+        val key: String = CITY_KEY
+        val city_id: Int = row.city_id
+        val row = getDefinedRow(key)
+        row["value"] = city_id.toString()
+        replaceRows(key, row)
+        prepareParams()
+        refresh()
+    }
 }
 
 interface List1CellDelegate {
@@ -441,4 +455,7 @@ interface List1CellDelegate {
     fun cellMobile(row: Table){}
     fun cellEdit(row: Table){}
     fun cellDelete(row: Table){}
+    fun cellCity(row: Table){}
+    fun cellArea(row: Table){}
+    fun cellArena(row: Table){}
 }

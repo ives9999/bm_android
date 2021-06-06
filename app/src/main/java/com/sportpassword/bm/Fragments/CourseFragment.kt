@@ -24,11 +24,17 @@ import com.xwray.groupie.kotlinandroidextensions.Item
 import kotlinx.android.synthetic.main.mask.*
 import kotlinx.android.synthetic.main.tab_course.*
 import kotlinx.android.synthetic.main.course_list_cell.*
+import kotlinx.android.synthetic.main.course_list_cell.cityBtn
+import kotlinx.android.synthetic.main.course_list_cell.intervalLbl
+import kotlinx.android.synthetic.main.course_list_cell.signup_countLbl
+import kotlinx.android.synthetic.main.course_list_cell.weekdayLbl
+import kotlinx.android.synthetic.main.team_list_cell.*
 
 class CourseFragment : TabFragment() {
 
     var mysTable: CoursesTable? = null
 
+    var bInit: Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -42,7 +48,6 @@ class CourseFragment : TabFragment() {
         able_type = "course"
         super.onCreate(savedInstanceState)
 
-        mainActivity!!.source_activity = "course"
         dataService = CourseService
         setHasOptionsMenu(true)
 
@@ -59,6 +64,7 @@ class CourseFragment : TabFragment() {
         val memuView = menu.findItem(R.id.menu_search_manager).actionView
 
         val searchBtn = memuView.findViewById<ImageButton>(R.id.search)
+        searchBtn.tag = able_type
         //val ManagerBtn = memuView.findViewById<ImageButton>(R.id.manager)
 
         searchBtn.tag = type
@@ -86,14 +92,8 @@ class CourseFragment : TabFragment() {
         setRecyclerViewRefreshListener()
         recyclerView.adapter = adapter
 
-        //refresh()
-    }
-
-    override fun refresh() {
-        page = 1
-        params.clear()
-        theFirstTime = true
-        getDataStart1(page, perPage)
+        refresh()
+        bInit = true
     }
 
     override fun genericTable() {
@@ -157,7 +157,7 @@ class CourseFragment : TabFragment() {
     //當fragment啟動時，第一個被執行的韓式，甚至還在OnCreate函式之前
     override fun setUserVisibleHint(isVisibleToUser: Boolean) {
         super.setUserVisibleHint(isVisibleToUser)
-        if (isVisibleToUser) {
+        if (isVisibleToUser && !bInit) {
             refresh()
         }
     }
@@ -317,6 +317,11 @@ class CourseItem(override var context: Context, var _row: CourseTable): ListItem
 
         if (row.city_show.length > 0) {
             viewHolder.cityBtn.text = row.city_show
+            viewHolder.cityBtn.setOnClickListener {
+                if (list1CellDelegate != null) {
+                    list1CellDelegate!!.cellCity(row)
+                }
+            }
         } else {
             viewHolder.cityBtn.visibility = View.GONE
         }

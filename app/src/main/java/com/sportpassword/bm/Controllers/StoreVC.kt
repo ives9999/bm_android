@@ -18,34 +18,33 @@ import kotlinx.android.synthetic.main.store_list_cell.*
 import kotlinx.android.synthetic.main.store_list_cell.cityBtn
 import kotlinx.android.synthetic.main.store_list_cell.telLbl
 import kotlinx.android.synthetic.main.store_list_cell.titleLbl
+import kotlinx.android.synthetic.main.team_list_cell.*
 import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
 
 class StoreVC : MyTableVC1() {
 
-    val _searchRows: ArrayList<HashMap<String, String>> = arrayListOf(
-            hashMapOf("title" to "關鍵字","key" to KEYWORD_KEY,"value" to "","value_type" to "String","show" to ""),
-            hashMapOf("title" to "縣市","key" to CITY_KEY,"value" to "","value_type" to "Array","show" to "不限"),
-    )
-
     var mysTable: StoresTable? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
+
+        searchRows = arrayListOf(
+            hashMapOf("title" to "關鍵字","show" to "全部","key" to KEYWORD_KEY,"value" to ""),
+            hashMapOf("title" to "縣市","show" to "全部","key" to CITY_KEY,"value" to "")
+        )
+
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_store_vc)
 
         //source_activity = "store"
         //val title_field = intent.getStringExtra("titleField")
         able_type = "store"
-        searchRows = _searchRows
         setMyTitle("體育用品店")
 
         dataService = StoreService
-        searchRows = _searchRows
         recyclerView = list_container
         refreshLayout = refresh
         maskView = mask
-        setRefreshListener()
 
         initAdapter()
         refresh()
@@ -56,92 +55,6 @@ class StoreVC : MyTableVC1() {
         if (mysTable != null) {
             tables = mysTable
         }
-    }
-
-    override fun prepareParams(city_type: String) {
-        params.clear()
-        if (keyword.length > 0) {
-            val row = getSearchRow(KEYWORD_KEY)
-            if (row != null && row.containsKey("value")) {
-                row["value"] = keyword
-                updateSearchRow(KEYWORD_KEY, row)
-            }
-        }
-        for (searchRow in _searchRows) {
-            var value_type: String? = null
-            if (searchRow.containsKey("value_type")) {
-                value_type = searchRow.get("value_type")
-            }
-            var value: String = ""
-            if (searchRow.containsKey("value")) {
-                value = searchRow.get("value")!!
-            }
-            var key: String? = null
-            if (searchRow.containsKey("key")) {
-                key = searchRow.get("key")!!
-            }
-            if (value_type != null && key != null && value.length > 0) {
-                var values: Array<String>? = null
-                if (value_type == "String") {
-                    params[key] = value
-                } else if (value_type == "Array") {
-                    value = searchRow.get("value")!!
-                    values = value.split(",").toTypedArray()
-                }
-                if (values != null) {
-                    params[key] = values
-                }
-            }
-        }
-    }
-
-    fun updateSearchRow(idx: Int, row: HashMap<String, String>) {
-        _searchRows[idx] = row
-    }
-
-    fun updateSearchRow(key: String, row: HashMap<String, String>) {
-        var idx: Int = -1
-        for ((i, searchRow) in _searchRows.withIndex()) {
-            if (searchRow.containsKey("key")) {
-                if (key == searchRow.get("key")) {
-                    idx = i
-                    break
-                }
-            }
-        }
-        if (idx >= 0) {
-            _searchRows[idx] = row
-        }
-    }
-
-    override fun remove(indexPath: IndexPath) {
-        var row: HashMap<String, String>? = null
-        if (_searchRows.size >= indexPath.row) {
-            row = _searchRows[indexPath.row]
-        }
-        var key: String? = null
-        if (row != null && row.containsKey("key") && row.get("key")!!.length > 0) {
-            key = row!!.get("key")
-        }
-        if (row != null) {
-            row["value"] = ""
-            row["show"] = "不限"
-            updateSearchRow(indexPath.row, row)
-        }
-    }
-
-    fun getSearchRow(key: String): HashMap<String, String>? {
-        var row: HashMap<String, String>? = null
-        for ((i, searchRow) in _searchRows.withIndex()) {
-            if (searchRow.containsKey("key")) {
-                if (key == searchRow.get("key")) {
-                    row = searchRow
-                    break
-                }
-            }
-        }
-
-        return row
     }
 
     override fun generateItems(): ArrayList<Item> {
@@ -159,12 +72,47 @@ class StoreVC : MyTableVC1() {
         return items
     }
 
+    override fun prepare(idx: Int) {
+
+        val row = searchRows.get(idx)
+        var key: String = ""
+        if (row.containsKey("key")) {
+            key = row["key"]!!
+        }
+
+        var value: String = ""
+        if (row.containsKey("value") && row["value"]!!.isNotEmpty()) {
+            value = row["value"]!!
+        }
+
+
+        when (key) {
+            CITY_KEY -> {
+                toSelectCity(value, this)
+            }
+        }
+    }
+
+
     override fun rowClick(item: com.xwray.groupie.Item<com.xwray.groupie.ViewHolder>, view: View) {
 
         val storeItem = item as StoreItem
         val table = storeItem.row
-        toShowStore(table!!.token)
+        toShowStore(table.token)
     }
+
+    override fun remove(indexPath: IndexPath) {
+        val row = searchRows[indexPath.row]
+        val key = row["key"]!!
+        when (key) {
+            CITY_KEY -> {
+                citys.clear()
+                row["show"] = "全部"
+            }
+        }
+        row["value"] = ""
+    }
+
 }
 
 class StoreItem(override var context: Context, var _row: StoreTable): ListItem<Table>(context, _row) {
@@ -176,6 +124,12 @@ class StoreItem(override var context: Context, var _row: StoreTable): ListItem<T
         val row: StoreTable = _row
         //println(superStore);
         viewHolder.cityBtn.text = row.city_show
+        viewHolder.cityBtn.setOnClickListener {
+            if (list1CellDelegate != null) {
+                list1CellDelegate!!.cellCity(row)
+            }
+        }
+
         viewHolder.titleLbl.text = row.name
 
         viewHolder.business_timeTxt.text = "${row.open_time_show}~${row.close_time_show}"

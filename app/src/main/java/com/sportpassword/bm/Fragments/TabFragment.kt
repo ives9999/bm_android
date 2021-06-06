@@ -59,7 +59,7 @@ open class TabFragment : Fragment(), SearchItemDelegate, List1CellDelegate, Seri
     protected var perPage: Int = PERPAGE
     protected var totalCount: Int = 0
     protected var totalPage: Int = 0
-    val items: ArrayList<Item> = arrayListOf()
+    var items: ArrayList<Item> = arrayListOf()
 
     protected var loading: Boolean = false
     protected lateinit var maskView: View
@@ -91,6 +91,7 @@ open class TabFragment : Fragment(), SearchItemDelegate, List1CellDelegate, Seri
     var searchRows: ArrayList<HashMap<String, String>> = arrayListOf()
 
     override fun onCreate(savedInstanceState: Bundle?) {
+
         super.onCreate(savedInstanceState)
         if (arguments != null) {
             type = requireArguments().getString(ARG_PARAM1)
@@ -98,6 +99,8 @@ open class TabFragment : Fragment(), SearchItemDelegate, List1CellDelegate, Seri
         }
         that = this
         mainActivity = activity as MainActivity
+        mainActivity!!.able_type = able_type
+
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -172,9 +175,10 @@ open class TabFragment : Fragment(), SearchItemDelegate, List1CellDelegate, Seri
 
     open fun refresh() {
         page = 1
-        params.clear()
-        getDataStart(page, perPage)
-        adapter.notifyDataSetChanged()
+        theFirstTime = true
+        adapter.clear()
+        items.clear()
+        getDataStart1(page, perPage)
     }
 
     open fun getDataStart1(_page: Int, _perPage: Int) {
@@ -317,20 +321,8 @@ open class TabFragment : Fragment(), SearchItemDelegate, List1CellDelegate, Seri
             }
 
             params[key] = value
-            refresh()
-//            if (value_type != null && key != null && value.length > 0) {
-//                var values: Array<String>? = null
-//                if (value_type == "String") {
-//                    params[key] = value
-//                } else if (value_type == "Array") {
-//                    value = searchRow.get("value")!!
-//                    values = value.split(",").toTypedArray()
-//                }
-//                if (values != null) {
-//                    params[key] = values
-//                }
-//            }
         }
+        println(params)
     }
 
     fun getDefinedRow(key: String): HashMap<String, String> {
@@ -353,7 +345,7 @@ open class TabFragment : Fragment(), SearchItemDelegate, List1CellDelegate, Seri
         }
     }
 
-    fun singleSelected(key: String, selected: String) {
+    open fun singleSelected(key: String, selected: String) {
 
         val row = getDefinedRow(key)
         var show = ""
@@ -375,7 +367,7 @@ open class TabFragment : Fragment(), SearchItemDelegate, List1CellDelegate, Seri
         mainActivity!!.searchPanel.searchAdapter.update(rows)
     }
 
-    fun arenaSelected(selected: String, show: String) {
+    open fun arenaSelected(selected: String, show: String) {
 
         val key: String = ARENA_KEY
         val row = getDefinedRow(key)
@@ -385,7 +377,7 @@ open class TabFragment : Fragment(), SearchItemDelegate, List1CellDelegate, Seri
         updateAdapter()
     }
 
-    fun degreeSelected(selected: String, show: String) {
+    open fun degreeSelected(selected: String, show: String) {
         val key: String = DEGREE_KEY
         val row = getDefinedRow(key)
         row["value"] = selected
@@ -400,6 +392,7 @@ open class TabFragment : Fragment(), SearchItemDelegate, List1CellDelegate, Seri
     }
 
     override fun cellRefresh() {
+        params.clear()
         refresh()
     }
 
@@ -421,6 +414,16 @@ open class TabFragment : Fragment(), SearchItemDelegate, List1CellDelegate, Seri
         } else {
             dataService.like(mainActivity!!, row.token, row.id)
         }
+    }
+
+    override fun cellCity(row: Table) {
+        val key: String = CITY_KEY
+        val city_id: Int = row.city_id
+        val row = getDefinedRow(key)
+        row["value"] = city_id.toString()
+        replaceRows(key, row)
+        prepareParams()
+        refresh()
     }
 
     open protected fun setRecyclerViewScrollListener() {
@@ -466,16 +469,32 @@ open class TabFragment : Fragment(), SearchItemDelegate, List1CellDelegate, Seri
         val row = searchRows[indexPath.row]
         val key = row["key"]!!
         when (key) {
-            CITY_KEY -> mainActivity!!.citys.clear()
-            ARENA_KEY -> mainActivity!!.arenas.clear()
-            TEAM_WEEKDAYS_KEY -> mainActivity!!.weekdays.clear()
-            TEAM_PLAY_START_KEY -> mainActivity!!.times.clear()
-            TEAM_DEGREE_KEY -> mainActivity!!.degrees.clear()
+            CITY_KEY -> {
+                mainActivity!!.citys.clear()
+                row["show"] = "全部"
+            }
+            ARENA_KEY -> {
+                mainActivity!!.arenas.clear()
+                row["show"] = "全部"
+            }
+            WEEKDAY_KEY -> {
+                mainActivity!!.weekdays.clear()
+                row["show"] = "全部"
+            }
+            START_TIME_KEY -> {
+                mainActivity!!.times.clear()
+                row["show"] = "全部"
+            }
+            END_TIME_KEY -> {
+                mainActivity!!.times.clear()
+                row["show"] = "全部"
+            }
+            DEGREE_KEY -> {
+                mainActivity!!.degrees.clear()
+                row["show"] = "全部"
+            }
         }
-        searchRows[indexPath.row]["show"] = "全部"
-        searchRows[indexPath.row]["value"] = ""
-        val rows = mainActivity!!.searchPanel.generateSearchItems()
-        mainActivity!!.searchPanel.searchAdapter.update(rows)
+        row["value"] = ""
     }
     override fun textChanged(str: String) {
         val key: String = KEYWORD_KEY
@@ -580,7 +599,9 @@ open class ListItem<T: Table>(open var context: Context, open var row: T): Item(
         viewHolder.likeIcon.setOnClickListener {
             if (list1CellDelegate != null) {
                 list1CellDelegate!!.cellLike(row)
-                setLike(viewHolder)
+                if (member.isLoggedIn) {
+                    setLike(viewHolder)
+                }
             }
         }
 

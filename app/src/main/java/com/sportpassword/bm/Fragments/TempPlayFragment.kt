@@ -28,9 +28,11 @@ import com.xwray.groupie.Section
 import com.xwray.groupie.ViewHolder
 import com.sportpassword.bm.Adapters.SearchItem
 import com.sportpassword.bm.App
+import com.sportpassword.bm.Controllers.BaseActivity
 import com.sportpassword.bm.Controllers.HomeTotalAdVC
 import com.sportpassword.bm.Models.Arena
-import kotlinx.android.synthetic.main.activity_main.*
+import com.xwray.groupie.kotlinandroidextensions.Item
+import kotlinx.android.synthetic.main.tab_tempplay_search.*
 import org.jetbrains.anko.backgroundColor
 
 /**
@@ -38,61 +40,86 @@ import org.jetbrains.anko.backgroundColor
  * Use the [TempPlayFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
+@Suppress("UNCHECKED_CAST")
 class TempPlayFragment : TabFragment(), inter {
 
 //    protected lateinit var searchAdapter: SearchAdapter
-    protected val rows: ArrayList<ArrayList<HashMap<String, String>>> = arrayListOf(
-            arrayListOf(
-                    hashMapOf("title" to "關鍵字","detail" to "全部","key" to KEYWORD_KEY),
-                    hashMapOf("title" to "縣市","detail" to "全部","key" to CITY_KEY),
-                    hashMapOf("title" to "日期","detail" to "全部","key" to TEAM_WEEKDAYS_KEY),
-                    hashMapOf("title" to "時段","detail" to "全部","key" to TEAM_PLAY_START_KEY)
-            ),
-            arrayListOf(
-                    hashMapOf("title" to "球館","detail" to "全部","key" to ARENA_KEY),
-                    hashMapOf("title" to "程度","detail" to "全部","key" to TEAM_DEGREE_KEY)
-            )
-    )
+//    protected val rows: ArrayList<ArrayList<HashMap<String, String>>> = arrayListOf(
+//            arrayListOf(
+//                    hashMapOf("title" to "關鍵字","detail" to "全部","key" to KEYWORD_KEY),
+//                    hashMapOf("title" to "縣市","detail" to "全部","key" to CITY_KEY),
+//                    hashMapOf("title" to "星期幾","detail" to "全部","key" to WEEKDAY_KEY),
+//                    hashMapOf("title" to "時段","detail" to "全部","key" to TEAM_PLAY_START_KEY)
+//            ),
+//            arrayListOf(
+//                    hashMapOf("title" to "球館","detail" to "全部","key" to ARENA_KEY),
+//                    hashMapOf("title" to "程度","detail" to "全部","key" to TEAM_DEGREE_KEY)
+//            )
+//    )
 //    protected val data: ArrayList<HashMap<String, ArrayList<HashMap<String, String>>>> = arrayListOf()
 
-    val SELECT_REQUEST_CODE = 1
+//    val SELECT_REQUEST_CODE = 1
 
-    var citys: ArrayList<City> = arrayListOf()
-    var weekdays: ArrayList<Int> = arrayListOf()
-    var times: HashMap<String, Any> = hashMapOf()
-    var arenas: ArrayList<Arena> = arrayListOf()
-    var degrees: ArrayList<DEGREE> = arrayListOf()
-    var keyword: String = ""
+//    var citys: ArrayList<City> = arrayListOf()
+//    var weekdays: ArrayList<Int> = arrayListOf()
+//    var times: HashMap<String, Any> = hashMapOf()
+//    var arenas: ArrayList<Arena> = arrayListOf()
+//    var degrees: ArrayList<DEGREE> = arrayListOf()
+//    var keyword: String = ""
 
-    var searchSections: ArrayList<Section> = arrayListOf(Section(), Section())
+    var searchSections: ArrayList<Section> = arrayListOf()
+    var mySections: ArrayList<HashMap<String, Any>> = arrayListOf()
 
+    //是否顯示開啟app進入頁面的廣告
     var firstTimeLoading: Boolean = false
     //var firstTimeLoading: Boolean = true
 
     override fun onCreate(savedInstanceState: Bundle?) {
+
+        //sections = arrayListOf("一般", "更多")
+
+        able_type = "temp_play"
+
+        searchRows = arrayListOf(
+            hashMapOf("title" to "關鍵字","show" to "全部","key" to KEYWORD_KEY,"value" to ""),
+            hashMapOf("title" to "縣市","show" to "全部","key" to CITY_KEY,"value" to ""),
+            hashMapOf("title" to "日期","show" to "全部","key" to WEEKDAY_KEY,"value" to ""),
+            hashMapOf("title" to "時段","show" to "全部","key" to START_TIME_KEY,"value" to ""),
+            hashMapOf("title" to "球館","show" to "全部","key" to ARENA_KEY,"value" to ""),
+            hashMapOf("title" to "程度","show" to "全部","key" to DEGREE_KEY,"value" to "")
+        )
+
+        mySections = arrayListOf(
+            hashMapOf("isExpanded" to true,"title" to "一般","key" to arrayListOf(KEYWORD_KEY,CITY_KEY,WEEKDAY_KEY,
+                START_TIME_KEY)),
+            hashMapOf("isExpanded" to false,"title" to "更多","key" to arrayListOf(ARENA_KEY, DEGREE_KEY))
+        )
+
         super.onCreate(savedInstanceState)
 
-//        if (!Session.exist(Session.loginResetKey)) {
-//            Session.loginReset = gReset
-//        }
-
-        sections = arrayListOf("一般", "更多")
         if (firstTimeLoading) {
             val intent = Intent(activity, HomeTotalAdVC::class.java)
             startActivity(intent)
             firstTimeLoading = false
         }
+
+        adapter = GroupAdapter()
+        generateSections()
+
+//        setData()
+
+//        for ((idx, title) in sections.withIndex()) {
+//            val expandableGroup = ExpandableGroup(GroupSection(title), true)
+//            items = generateItems(idx)
+//            adapterSections[idx].addAll(items)
+//            expandableGroup.add(adapterSections[idx])
+//            adapter.add(expandableGroup)
+//        }
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.tab_tempplay_search, container, false)
-
-        recyclerView = view.findViewById<RecyclerView>(R.id.search_container)
-        initAdapter(true)
-
-        val btn = view.findViewById<Button>(R.id.submit_btn)
-        btn.setOnClickListener { submit(view) }
 
         return view
     }
@@ -100,14 +127,32 @@ class TempPlayFragment : TabFragment(), inter {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
         super.onViewCreated(view, savedInstanceState)
+
+        recyclerView = search_container
+        recyclerView.adapter = adapter
+        adapter.setOnItemClickListener { item, _ ->
+            onClick(item)
+        }
+//        initAdapter(true)
+
+        val btn = view.findViewById<Button>(R.id.submit_btn)
+        btn.setOnClickListener { submit(view) }
+
         val w = (mainActivity!!.screenWidth.toFloat() / mainActivity!!.density).toInt()
         val h = ((mainActivity!!.screenHeight.toFloat()) / (mainActivity!!.density)).toInt()
         val lp = RelativeLayout.LayoutParams(w - (2 * mainActivity!!.layerRightLeftPadding), h - mainActivity!!.layerTopPadding)
         val adContainer: RelativeLayout = RelativeLayout(mainActivity!!)
         adContainer.layoutParams = lp
         adContainer.backgroundColor = ContextCompat.getColor(mainActivity!!, R.color.MY_RED)
-//        val aaa = view.findViewById<ConstraintLayout>(R.id.aaa)
-//        aaa.addView(adContainer)
+    }
+
+    fun onClick(item: com.xwray.groupie.Item<ViewHolder>) {
+
+        val searchItem = item as SearchItem
+        val idx_section: Int = searchItem.section
+        val idx_row: Int = searchItem.row
+
+        prepare(idx_section, idx_row)
     }
 
 //    override fun onResume() {
@@ -118,246 +163,428 @@ class TempPlayFragment : TabFragment(), inter {
 //        }
 //    }
 
-    override fun initAdapter(include_section: Boolean) {
+    //override fun initAdapter(include_section: Boolean) {
 
-        adapter = GroupAdapter()
+        //adapter = GroupAdapter()
+        //adapter.clear()
+        //searchSections = arrayListOf(Section(), Section())
+
+        //setData()
+
+
+        //recyclerView.adapter = adapter
+    //}
+
+//    private fun setData() {
+//
+//        adapter.setOnItemClickListener { item, view ->
+//            val searchItem = item as SearchItem
+//            val section = searchItem.section
+//            val row = searchItem.row
+//            if (section == 0 && row == 0) {
+//            } else {
+//                prepare(section, row)
+//            }
+//        }
+//
+//        var isExpanded = true
+//        var isShow = true
+//        for ((idx, section) in sections.withIndex()) {
+//            if (idx == 1) isExpanded = false else isExpanded = true
+//            if (idx == 0) isShow = false else isShow = true
+//
+//            val expandableGroup = ExpandableGroup(GroupSection(section, isShow), isExpanded)
+//            val items = generateSearchItems(idx)
+//            searchSections[idx].addAll(items)
+//            expandableGroup.add(searchSections[idx])
+//            adapter.add(expandableGroup)
+//        }
+//    }
+
+    fun generateSections() {
+
+        adapterSections.clear()
         adapter.clear()
-        searchSections = arrayListOf(Section(), Section())
+        for ((idx, section) in mySections.withIndex()) {
+            adapterSections.add(Section())
 
-        setData()
+            if (section.containsKey("title") && section.containsKey("isExpanded") && section.containsKey("key")) {
+                val title: String = section["title"] as String
+                val isExpanded: Boolean = section["isExpanded"] as Boolean
+                val expandableGroup = ExpandableGroup(GroupSection(title), isExpanded)
 
-        adapter.setOnItemClickListener { item, view ->
-            val searchItem = item as SearchItem
-            val section = searchItem.section
-            val row = searchItem.row
-            if (section == 0 && row == 0) {
-            } else {
-                prepare(section, row)
+                items = generateItems(idx)
+                adapterSections[idx].addAll(items)
+                expandableGroup.add(adapterSections[idx])
+                adapter.add(expandableGroup)
             }
         }
-        recyclerView.adapter = adapter
     }
 
-    private fun setData() {
-        var isExpanded = true
-        var isShow = true
-        for ((idx, section) in sections.withIndex()) {
-            if (idx == 1) isExpanded = false else isExpanded = true
-            if (idx == 0) isShow = false else isShow = true
+    override fun generateItems(section_idx: Int): ArrayList<Item> {
 
-            val expandableGroup = ExpandableGroup(GroupSection(section, isShow), isExpanded)
-            val items = generateItems1(idx)
-            searchSections[idx].addAll(items)
-            expandableGroup.add(searchSections[idx])
-            adapter.add(expandableGroup)
+        val res: ArrayList<Item> = arrayListOf()
+
+        val keys: ArrayList<String>? = mySections[section_idx]["key"] as? ArrayList<String>
+        val rows: ArrayList<HashMap<String, String>> = arrayListOf()
+        if (keys != null) {
+            for (key in keys) {
+                for (searchRow in searchRows) {
+                    if (searchRow.containsKey("key")) {
+                        if (searchRow["key"] == key) {
+                            rows.add(searchRow)
+                        }
+                    }
+                }
+            }
         }
-    }
 
-    fun generateItems1(section: Int): ArrayList<SearchItem> {
-        val _rows: ArrayList<SearchItem> = arrayListOf()
-        val row = rows[section]
-        for (i in 0..row.size-1) {
-            val title = row[i].get("title")!!
-            val detail = row[i].get("detail")!!
+        for ((row_idx, row) in rows.withIndex()) {
+            val title = row.get("title")!!
+            var detail: String = ""
+            if (row.containsKey("detail")) {
+                detail = row.get("detail")!!
+            } else if (row.containsKey("show")) {
+                detail = row.get("show")!!
+            }
             var bSwitch = false
-            if (row[i].containsKey("switch")) {
-                bSwitch = row[i].get("switch")!!.toBoolean()
+            if (row.containsKey("switch")) {
+                bSwitch = row.get("switch")!!.toBoolean()
             }
-            val searchItem = SearchItem(title, detail, keyword, bSwitch, section, i)
+            val searchItem = SearchItem(title, detail, "", bSwitch, section_idx, row_idx)
             searchItem.delegate = this
-            _rows.add(searchItem)
+
+            res.add(searchItem)
         }
-        return _rows
+
+        return res
     }
+
+//    fun generateItems1(section: Int): ArrayList<SearchItem> {
+//        val _rows: ArrayList<SearchItem> = arrayListOf()
+//        val row = rows[section]
+//        for (i in 0..row.size-1) {
+//            val title = row[i].get("title")!!
+//            val detail = row[i].get("detail")!!
+//            var bSwitch = false
+//            if (row[i].containsKey("switch")) {
+//                bSwitch = row[i].get("switch")!!.toBoolean()
+//            }
+//            val searchItem = SearchItem(title, detail, keyword, bSwitch, section, i)
+//            searchItem.delegate = this
+//            _rows.add(searchItem)
+//        }
+//        return _rows
+//    }
 
     override fun prepare(section: Int, row: Int) {
-//        println(section)
-//        println(row)
-        val intent = Intent(activity, EditItemActivity::class.java)
-        when (section) {
-            0 -> {
-                when (row) {
-                    1 -> {// city
-                        intent.putExtra("key", CITY_KEY)
-                        intent.putExtra("source", "search")
-                        intent.putExtra("type", "simple")
-                        intent.putExtra("select", "multi")
-                        intent.putParcelableArrayListExtra("citys", citys)
-                    }
-                    2 -> {// weekdays
-                        intent.putExtra("key", TEAM_WEEKDAYS_KEY)
-                        intent.putExtra("source", "search")
-                        intent.putIntegerArrayListExtra("weekdays", weekdays)
-                    }
-                    3 -> {// times
-                        intent.putExtra("key", TEAM_PLAY_START_KEY)
-                        intent.putExtra("source", "search")
-//                        times["time"] = "09:00"
-                        times["type"] = SELECT_TIME_TYPE.play_start
-                        intent.putExtra("times", times)
-                    }
-                }
+
+        var idx = 0
+        if (section == 0) {
+            idx = row
+        } else {
+            for (i in 0..section-1) {
+                val tmps: ArrayList<String> = mySections[i]["key"] as ArrayList<String>
+                idx += tmps.size
             }
-            1 -> {
-                when (row) {
-                    0 -> {// arena
-//                        citys.add(City(10, ""))
-//                        citys.add(City(11, ""))
-
-                        if (citys.size == 0) {
-                            //Alert.warning(this@TempPlayFragment.context!!, "請先選擇縣市")
-                            return
-                        }
-                        intent.putExtra("key", ARENA_KEY)
-                        intent.putExtra("source", "search")
-                        intent.putExtra("type", "simple")
-                        intent.putExtra("select", "multi")
-
-                        var citysForArena: ArrayList<Int> = arrayListOf()
-                        for (city in citys) {
-                            citysForArena.add(city.id)
-                        }
-                        intent.putIntegerArrayListExtra("citys_for_arena", citysForArena)
-
-                        //intent.putParcelableArrayListExtra("arenas", arenas)
-                    }
-                    1 -> {// degree
-                        intent.putExtra("key", TEAM_DEGREE_KEY)
-                        intent.putExtra("source", "search")
-                        intent.putExtra("degrees", degrees)
-                    }
-                }
-            }
+            idx += row
         }
-        startActivityForResult(intent, SELECT_REQUEST_CODE)
+
+        var row = searchRows.get(idx)
+        var key: String = ""
+        if (row.containsKey("key")) {
+            key = row["key"]!!
+        }
+
+        var value: String = ""
+        if (row.containsKey("value")) {
+            value = row["value"]!!
+        }
+        if (key == CITY_KEY) {
+            mainActivity!!.toSelectCity(value, null, able_type)
+        } else if (key == WEEKDAY_KEY) {
+            mainActivity!!.toSelectWeekday(value, null, able_type)
+        } else if (key == START_TIME_KEY || key == END_TIME_KEY) {
+            mainActivity!!.toSelectTime(key, value, null, able_type)
+        } else if (key == ARENA_KEY) {
+            row = getDefinedRow(CITY_KEY)
+            var city_id: Int? = null
+            if (row.containsKey("value") && row["value"] != null && row["value"]!!.length > 0) {
+                city_id = row["value"]!!.toInt()
+            }
+            if (city_id != null && city_id > 0) {
+                mainActivity!!.toSelectArena(value, city_id, null, able_type)
+            } else {
+                mainActivity!!.warning("請先選擇縣市")
+            }
+        } else if (key == DEGREE_KEY) {
+            mainActivity!!.toSelectDegree(value, null, able_type)
+        }
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
+    override fun singleSelected(key: String, selected: String) {
 
-        var section = 0
-        var row = 0
-        var value = "全部"
+        val row = getDefinedRow(key)
+        var show = ""
+//        val idx = getIdxFromKey(key)
 
-        when (requestCode) {
-            SELECT_REQUEST_CODE -> {
-                if (resultCode == Activity.RESULT_OK) {
-                    var key = ""
-                    if (data != null && data.hasExtra("key")) {
-                        key = data.getStringExtra("key")!!
-                    }
+        if (key == START_TIME_KEY || key == END_TIME_KEY) {
+            row["value"] = selected
+            show = selected.noSec()
+        } else if (key == CITY_KEY || key == AREA_KEY) {
+            row["value"] = selected
+            show = Global.zoneIDToName(selected.toInt())
+        } else if (key == WEEKDAY_KEY) {
+            row["value"] = selected
+            show = WEEKDAY.intToString(selected.toInt())
+        }
 
-                    if (key == CITY_KEY) { // city
-                        section = 0
-                        row = 1
-                        citys = data!!.getSerializableExtra("citys") as ArrayList<City>
-                        if (citys.size > 0) {
-                            var arr: ArrayList<String> = arrayListOf()
-                            for (city in citys) {
-                                arr.add(city.name)
-                            }
-                            value = arr.joinToString()
-                        } else {
-                            value = "全部"
-                        }
-                    } else if (key == ARENA_KEY) { // arena
-                        section = 1
-                        row = 0
-//                        arenas = data!!.getSerializableExtra("arenas") as ArrayList<Arena>
-//                        if (arenas.size > 0) {
+        row["show"] = show
+        replaceRows(key, row)
+
+        generateSections()
+        adapter.notifyDataSetChanged()
+    }
+
+    override fun arenaSelected(selected: String, show: String) {
+
+        val key: String = ARENA_KEY
+        val row = getDefinedRow(key)
+        row["value"] = selected
+        row["show"] = show
+        replaceRows(key, row)
+        generateSections()
+        adapter.notifyDataSetChanged()
+    }
+
+    override fun degreeSelected(selected: String, show: String) {
+        val key: String = DEGREE_KEY
+        val row = getDefinedRow(key)
+        row["value"] = selected
+        row["show"] = show
+        replaceRows(key, row)
+        generateSections()
+        adapter.notifyDataSetChanged()
+    }
+
+//    private fun getIdxFromKey(key: String): Int {
+//
+//        var idx: Int = 0
+//        for ((section_idx, section) in mySections.withIndex()) {
+//
+//            var bFind: Boolean = false
+//            if (section.containsKey("key")) {
+//
+//                val keys: ArrayList<String> = section["key"] as ArrayList<String>
+//                for (_key in keys) {
+//                    if (_key == key) {
+//                        idx = section_idx
+//                        bFind = true
+//                        break
+//                    }
+//                }
+//            }
+//            if (bFind) {
+//                break
+//            }
+//        }
+//
+//        return idx
+//    }
+
+
+//    override fun prepare(section: Int, row: Int) {
+//
+//        val row = searchRows.get(idx)
+//        var key: String = ""
+//        if (row.containsKey("key")) {
+//            key = row["key"]!!
+//        }
+//
+//        var value: String = ""
+//        if (row.containsKey("value")) {
+//            value = row["value"]!!
+//        }
+//
+//        val intent = Intent(activity, EditItemActivity::class.java)
+//        when (section) {
+//            0 -> {
+//                when (row) {
+//                    1 -> {// city
+//                        intent.putExtra("key", CITY_KEY)
+//                        intent.putExtra("source", "search")
+//                        intent.putExtra("type", "simple")
+//                        intent.putExtra("select", "multi")
+//                        intent.putParcelableArrayListExtra("citys", citys)
+//                    }
+//                    2 -> {// weekdays
+//                        intent.putExtra("key", TEAM_WEEKDAYS_KEY)
+//                        intent.putExtra("source", "search")
+//                        intent.putIntegerArrayListExtra("weekdays", weekdays)
+//                    }
+//                    3 -> {// times
+//                        intent.putExtra("key", TEAM_PLAY_START_KEY)
+//                        intent.putExtra("source", "search")
+//                        times["type"] = SELECT_TIME_TYPE.play_start
+//                        intent.putExtra("times", times)
+//                    }
+//                }
+//            }
+//            1 -> {
+//                when (row) {
+//                    0 -> {// arena
+//
+//                        if (citys.size == 0) {
+//                            //Alert.warning(this@TempPlayFragment.context!!, "請先選擇縣市")
+//                            return
+//                        }
+//                        intent.putExtra("key", ARENA_KEY)
+//                        intent.putExtra("source", "search")
+//                        intent.putExtra("type", "simple")
+//                        intent.putExtra("select", "multi")
+//
+//                        var citysForArena: ArrayList<Int> = arrayListOf()
+//                        for (city in citys) {
+//                            citysForArena.add(city.id)
+//                        }
+//                        intent.putIntegerArrayListExtra("citys_for_arena", citysForArena)
+//
+//                        //intent.putParcelableArrayListExtra("arenas", arenas)
+//                    }
+//                    1 -> {// degree
+//                        intent.putExtra("key", TEAM_DEGREE_KEY)
+//                        intent.putExtra("source", "search")
+//                        intent.putExtra("degrees", degrees)
+//                    }
+//                }
+//            }
+//        }
+//        startActivityForResult(intent, SELECT_REQUEST_CODE)
+//    }
+
+//    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+//        super.onActivityResult(requestCode, resultCode, data)
+//
+//        var section = 0
+//        var row = 0
+//        var value = "全部"
+//
+//        when (requestCode) {
+//            SELECT_REQUEST_CODE -> {
+//                if (resultCode == Activity.RESULT_OK) {
+//                    var key = ""
+//                    if (data != null && data.hasExtra("key")) {
+//                        key = data.getStringExtra("key")!!
+//                    }
+//
+//                    if (key == CITY_KEY) { // city
+//                        section = 0
+//                        row = 1
+//                        citys = data!!.getSerializableExtra("citys") as ArrayList<City>
+//                        if (citys.size > 0) {
 //                            var arr: ArrayList<String> = arrayListOf()
-//                            for (arena in arenas) {
-//                                arr.add(arena.name)
+//                            for (city in citys) {
+//                                arr.add(city.name)
 //                            }
 //                            value = arr.joinToString()
 //                        } else {
 //                            value = "全部"
 //                        }
-                    } else if (key == TEAM_WEEKDAYS_KEY) {
-                        section = 0
-                        row = 2
-                        weekdays = data!!.getIntegerArrayListExtra("weekdays")!!
-//                        println(weekdays)
-
-                        if (weekdays.size > 0) {
-                            var arr: ArrayList<String> = arrayListOf()
-                            val gDays = Global.weekdays
-                            for (day in weekdays) {
-                                for (gDay in gDays) {
-                                    if (day == gDay.get("value")!! as Int) {
-                                        arr.add(gDay.get("simple_text")!! as String)
-                                        break
-                                    }
-                                }
-                            }
-                            value = arr.joinToString()
-                        } else {
-                            value = "全部"
-                        }
-                    } else if (key == TEAM_PLAY_START_KEY) {
-                        section = 0
-                        row = 3
-                        times = data!!.getSerializableExtra("times") as HashMap<String, Any>
-                        if (times.containsKey("time")) {
-                            value = times["time"]!! as String
-                        } else {
-                            value = "全部"
-                        }
-                    } else if (key == TEAM_DEGREE_KEY) {
-                        section = 1
-                        row = 1
-                        degrees = data!!.getSerializableExtra("degrees") as ArrayList<DEGREE>
-                        if (degrees.size > 0) {
-                            var arr: ArrayList<String> = arrayListOf()
-                            degrees.forEach {
-                                arr.add(it.value)
-                            }
-                            value = arr.joinToString()
-                        } else {
-                            value = "全部"
-                        }
-                    }
-                    rows[section][row]["detail"] = value
-                    val items = generateItems1(section)
-                    searchSections[section].update(items)
-//                    adapter.notifyDataSetChanged()
-                }
-            }
-        }
-        rows[section][row]["detail"] = value
-//        setData()
-//        searchAdapter.data = this.data
-        adapter.notifyDataSetChanged()
-    }
+//                    } else if (key == ARENA_KEY) { // arena
+//                        section = 1
+//                        row = 0
+//                    } else if (key == TEAM_WEEKDAYS_KEY) {
+//                        section = 0
+//                        row = 2
+//                        weekdays = data!!.getIntegerArrayListExtra("weekdays")!!
+////                        println(weekdays)
+//
+//                        if (weekdays.size > 0) {
+//                            var arr: ArrayList<String> = arrayListOf()
+//                            val gDays = Global.weekdays
+//                            for (day in weekdays) {
+//                                for (gDay in gDays) {
+//                                    if (day == gDay.get("value")!! as Int) {
+//                                        arr.add(gDay.get("simple_text")!! as String)
+//                                        break
+//                                    }
+//                                }
+//                            }
+//                            value = arr.joinToString()
+//                        } else {
+//                            value = "全部"
+//                        }
+//                    } else if (key == TEAM_PLAY_START_KEY) {
+//                        section = 0
+//                        row = 3
+//                        times = data!!.getSerializableExtra("times") as HashMap<String, Any>
+//                        if (times.containsKey("time")) {
+//                            value = times["time"]!! as String
+//                        } else {
+//                            value = "全部"
+//                        }
+//                    } else if (key == TEAM_DEGREE_KEY) {
+//                        section = 1
+//                        row = 1
+//                        degrees = data!!.getSerializableExtra("degrees") as ArrayList<DEGREE>
+//                        if (degrees.size > 0) {
+//                            var arr: ArrayList<String> = arrayListOf()
+//                            degrees.forEach {
+//                                arr.add(it.value)
+//                            }
+//                            value = arr.joinToString()
+//                        } else {
+//                            value = "全部"
+//                        }
+//                    }
+//                    rows[section][row]["detail"] = value
+//                    val items = generateItems1(section)
+//                    searchSections[section].update(items)
+////                    adapter.notifyDataSetChanged()
+//                }
+//            }
+//        }
+//        rows[section][row]["detail"] = value
+////        setData()
+////        searchAdapter.data = this.data
+//        adapter.notifyDataSetChanged()
+//    }
 
     fun submit(view: View) {
-        val intent = Intent(activity, TempPlayVC::class.java)
-        intent.putExtra("type", "type")
-        intent.putExtra("titleField", "name")
-        intent.putExtra("citys", citys)
-        intent.putExtra("arenas", arenas)
-        intent.putExtra("degrees", degrees)
-        intent.putExtra("times", times)
-        intent.putIntegerArrayListExtra("weekdays", weekdays)
-        intent.putExtra("keyword", keyword)
 
-        startActivity(intent)
+        prepareParams()
+
+        mainActivity!!.toTeam(params)
+
+//        val intent = Intent(activity, TempPlayVC::class.java)
+//        intent.putExtra("type", "type")
+//        intent.putExtra("titleField", "name")
+//        intent.putExtra("citys", citys)
+//        intent.putExtra("arenas", arenas)
+//        intent.putExtra("degrees", degrees)
+//        intent.putExtra("times", times)
+//        intent.putIntegerArrayListExtra("weekdays", weekdays)
+//        intent.putExtra("keyword", keyword)
+//
+//        startActivity(intent)
     }
 
     override fun remove(indexPath: IndexPath) {
-        val row = rows[indexPath.section][indexPath.row]
-        val key = row["key"]!!
-        //println(key)
-        when (key) {
-            CITY_KEY -> citys.clear()
-            TEAM_WEEKDAYS_KEY -> weekdays.clear()
-            TEAM_PLAY_START_KEY -> times.clear()
-            ARENA_KEY -> arenas.clear()
-            TEAM_DEGREE_KEY -> degrees.clear()
+        var row: HashMap<String, String>? = null
+        if (searchRows.size >= indexPath.row) {
+            row = searchRows[indexPath.row]
         }
-        rows[indexPath.section][indexPath.row]["detail"] = "全部"
-        val items = generateItems1(indexPath.section)
-        searchSections[indexPath.section].update(items)
+        var key: String? = null
+        if (row != null && row.containsKey("key") && row.get("key")!!.length > 0) {
+            key = row.get("key")
+        }
+        if (row != null) {
+            row["value"] = ""
+            row["show"] = "全部"
+            replaceRows(key!!, row)
+            generateSections()
+            adapter.notifyDataSetChanged()
+        }
     }
 
     companion object {

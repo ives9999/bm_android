@@ -18,6 +18,8 @@ import com.xwray.groupie.kotlinandroidextensions.Item
 import com.xwray.groupie.kotlinandroidextensions.ViewHolder
 import kotlinx.android.synthetic.main.activity_store_vc.*
 import kotlinx.android.synthetic.main.coach_list_cell.*
+import kotlinx.android.synthetic.main.coach_list_cell.cityBtn
+import kotlinx.android.synthetic.main.team_list_cell.*
 
 class CoachVC : MyTableVC1() {
 
@@ -39,7 +41,6 @@ class CoachVC : MyTableVC1() {
         able_type = "coach"
 
         dataService = CoachService
-        //dataService = CoachService
         recyclerView = list_container
         refreshLayout = refresh
         initAdapter()
@@ -97,11 +98,13 @@ class CoachVC : MyTableVC1() {
         val row = searchRows[indexPath.row]
         val key = row["key"]!!
         when (key) {
-            CITY_KEY -> citys.clear()
+            CITY_KEY -> {
+                row["show"] = "全部"
+                citys.clear()
+            }
         }
-//        _searchRows[indexPath.row]["detail"] = "全部"
-//        val rows = generateSearchItems(type!!)
-//        searchAdapter.update(rows)
+
+        row["value"] = ""
     }
 
     override fun prepare(idx: Int) {
@@ -136,6 +139,12 @@ class CoachItem(override var context: Context, var _row: CoachTable): ListItem<T
 
         if (row.city_show.isNotEmpty()) {
             viewHolder.cityBtn.text = row.city_show
+            viewHolder.cityBtn.setOnClickListener {
+                if (list1CellDelegate != null) {
+                    list1CellDelegate!!.cellCity(row)
+                }
+            }
+
         } else {
             viewHolder.cityBtn.visibility = View.GONE
         }

@@ -83,7 +83,7 @@ class SearchItem(val title: String, val detail: String, val keyword: String, val
                 viewHolder.keywordTxt.setText("")
             } else {
                 if (delegate != null) {
-                    viewHolder.row_detail.text = "不限"
+                    viewHolder.row_detail.text = "全部"
                     delegate!!.remove(indexPath)
                 }
             }
