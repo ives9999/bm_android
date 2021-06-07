@@ -48,6 +48,19 @@ class MemberOrderListVC : MyTableVC1() {
         refresh()
     }
 
+    override fun refresh() {
+//        page = 1
+//        theFirstTime = true
+//        getDataStart(page, perPage)
+
+        page = 1
+        theFirstTime = true
+        adapter.clear()
+        items.clear()
+        getDataStart1(page, perPage, member.token)
+        params.clear()
+    }
+
     override fun genericTable() {
         mysTable = jsonToModels<OrdersTable>(dataService.jsonString)
         if (mysTable != null) {

@@ -122,7 +122,7 @@ abstract class MyTableVC1 : BaseActivity(), List1CellDelegate {
         params.clear()
     }
 
-    open fun getDataStart1(_page: Int, _perPage: Int) {
+    open fun getDataStart1(_page: Int, _perPage: Int, token: String? = null) {
         Loading.show(mask)
         loading = true
 
@@ -132,7 +132,7 @@ abstract class MyTableVC1 : BaseActivity(), List1CellDelegate {
                 getDataEnd1(success)
             }
         } else {
-            dataService.getList1(this, null, params, _page, _perPage) { success ->
+            dataService.getList1(this, token, params, _page, _perPage) { success ->
                 jsonString = dataService.jsonString
                 getDataEnd1(success)
             }

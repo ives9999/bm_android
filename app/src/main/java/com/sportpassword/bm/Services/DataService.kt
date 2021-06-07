@@ -67,7 +67,7 @@ open class DataService: BaseService() {
         header.add(Pair("Accept","application/json"))
         header.add(Pair("Content-Type","application/json; charset=utf-8"))
 
-        var filter: HashMap<String, Any>?
+        val filter: HashMap<String, Any>?
         if (_filter == null) {
             filter = hashMapOf()
         } else {
