@@ -79,6 +79,7 @@ class RegisterActivity : MyTableVC1(), ImagePicker, ValueChangedDelegate {
     )
 
     override fun onCreate(savedInstanceState: Bundle?) {
+
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_register)
 

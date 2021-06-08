@@ -85,22 +85,23 @@ abstract class MyTableVC1 : BaseActivity(), List1CellDelegate {
         adapter.setOnItemClickListener { item, view ->
             rowClick(item, view)
         }
-//        if (include_section) {
-//            for (section in sections) {
-//                adapterSections.add(Section())
-//            }
-//            for ((idx, title) in sections.withIndex()) {
-//                val expandableGroup = ExpandableGroup(GroupSection(title), true)
-//                val items = generateItems(idx)
-//                adapterSections[idx].addAll(items)
-//                expandableGroup.add(adapterSections[idx])
-//                adapter.add(expandableGroup)
-//            }
-//        } else {
-//            val items = generateItems()
-//            //println(items.size)
-//            adapter.addAll(items)
-//        }
+
+
+        // for member register and member update personal data
+        if (include_section) {
+            for (section in sections) {
+                adapterSections.add(Section())
+            }
+            for ((idx, title) in sections.withIndex()) {
+                val expandableGroup = ExpandableGroup(GroupSection(title), true)
+                val items = generateItems(idx)
+                adapterSections[idx].addAll(items)
+                expandableGroup.add(adapterSections[idx])
+                adapter.add(expandableGroup)
+            }
+        }
+
+
         recyclerView.adapter = adapter
 //        recyclerView.setHasFixedSize(true)
         if (refreshLayout != null) {

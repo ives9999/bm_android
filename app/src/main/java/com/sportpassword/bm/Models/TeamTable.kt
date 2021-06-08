@@ -67,8 +67,8 @@ class TeamTable: Table() {
             temp_quantity_show = "臨打：${temp_quantity}位"
             temp_signup_count_show = "報名：${temp_signup_count}位"
         } else {
-            temp_quantity_show = "未開放"
-            temp_signup_count_show = "未開放"
+            temp_quantity_show = "臨打：未開放"
+            temp_signup_count_show = ""
         }
 
         if (weekdays.size > 0) {
