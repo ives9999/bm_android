@@ -249,7 +249,7 @@ open class TabFragment : Fragment(), SearchItemDelegate, List1CellDelegate, Seri
                 page = dataService.page
                 perPage = dataService.perPage
                 totalCount = dataService.totalCount
-                var _totalPage: Int = totalCount / perPage
+                val _totalPage: Int = totalCount / perPage
                 totalPage = if (totalCount % perPage > 0) _totalPage+1 else _totalPage
                 theFirstTime = false
             }
