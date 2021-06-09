@@ -12,7 +12,7 @@ import kotlinx.android.synthetic.main.color_select_item.*
 import kotlinx.android.synthetic.main.mytablevc.*
 import org.jetbrains.anko.backgroundColor
 
-class ColorSelectVC1: MyTableVC1() {
+class ColorSelectVC: MyTableVC() {
 
     lateinit var key: String
     lateinit var all: ArrayList<HashMap<String, Any>>

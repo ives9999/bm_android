@@ -483,7 +483,7 @@ class TimeTableVC : BaseActivity(), ValueChangedDelegate {
                     TT_COLOR-> {
                         layerCancel()
                         removeLayerChildViews()
-                        val intent1 = Intent(this, ColorSelectVC1::class.java)
+                        val intent1 = Intent(this, ColorSelectVC::class.java)
                         intent1.putExtra("key", COLOR_SELECT_KEY)
                         if (formItem.sender != null) {
                             intent1.putExtra("selecteds", formItem.sender as ArrayList<MYCOLOR>)

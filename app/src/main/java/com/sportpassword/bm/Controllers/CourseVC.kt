@@ -14,7 +14,7 @@ import com.xwray.groupie.kotlinandroidextensions.Item
 import kotlinx.android.synthetic.main.activity_store_vc.*
 import kotlinx.android.synthetic.main.mask.*
 
-class CourseVC : MyTableVC1() {
+class CourseVC : MyTableVC() {
 
     var mysTable: CoursesTable? = null
 

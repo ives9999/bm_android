@@ -12,7 +12,7 @@ import kotlinx.android.synthetic.main.mask.*
 import org.json.JSONArray
 import org.json.JSONObject
 
-open class SelectVC1 : MyTableVC1() {
+open class SelectVC1 : MyTableVC() {
 
     var title: String = "選擇"
     var key: String? = null

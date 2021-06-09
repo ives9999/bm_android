@@ -9,7 +9,7 @@ import com.xwray.groupie.ViewHolder
 import kotlinx.android.synthetic.main.function_item.*
 import kotlinx.android.synthetic.main.manager_function_vc.*
 
-class ManagerFunctionVC1 : MyTableVC1() {
+class ManagerFunctionVC1 : MyTableVC() {
 
     var token: String = ""
     var title: String = ""

@@ -21,7 +21,7 @@ import kotlinx.android.synthetic.main.coach_list_cell.*
 import kotlinx.android.synthetic.main.coach_list_cell.cityBtn
 import kotlinx.android.synthetic.main.team_list_cell.*
 
-class CoachVC : MyTableVC1() {
+class CoachVC : MyTableVC() {
 
     var mysTable: CoachesTable? = null
     //var storesTable: StoresTable? = null

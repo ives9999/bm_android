@@ -22,7 +22,7 @@ import kotlinx.android.synthetic.main.team_list_cell.*
 import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
 
-class StoreVC : MyTableVC1() {
+class StoreVC : MyTableVC() {
 
     var mysTable: StoresTable? = null
 

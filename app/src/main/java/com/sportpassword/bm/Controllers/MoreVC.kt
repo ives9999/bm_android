@@ -21,7 +21,7 @@ import com.sportpassword.bm.Utilities.PERPAGE
 import kotlinx.android.synthetic.main.mask.*
 import java.lang.Exception
 
-open class MoreVC : MyTableVC1() {
+open class MoreVC : MyTableVC() {
 
 //    protected var type: String = "arena"
 //    protected var titleField: String = "name"

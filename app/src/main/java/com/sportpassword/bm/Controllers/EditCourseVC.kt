@@ -26,7 +26,7 @@ import org.jetbrains.anko.sdk27.coroutines.onClick
 import java.io.File
 import kotlin.reflect.full.declaredMemberProperties
 
-class EditCourseVC1 : MyTableVC1(), ImagePicker, ValueChangedDelegate {
+class EditCourseVC : MyTableVC(), ImagePicker, ValueChangedDelegate {
 
     override val ACTION_CAMERA_REQUEST_CODE = 100
     override val ACTION_PHOTO_REQUEST_CODE = 200
@@ -235,19 +235,19 @@ class EditCourseVC1 : MyTableVC1(), ImagePicker, ValueChangedDelegate {
 
         val key = formItem.name
 
-        val singleSelectIntent = Intent(this@EditCourseVC1, SingleSelectVC1::class.java)
+        val singleSelectIntent = Intent(this, SingleSelectVC1::class.java)
         singleSelectIntent.putExtra("title", formItem.title)
         singleSelectIntent.putExtra("key", key)
 
-        val multiSelectIntent = Intent(this@EditCourseVC1, MultiSelectVC1::class.java)
+        val multiSelectIntent = Intent(this, MultiSelectVC::class.java)
         multiSelectIntent.putExtra("title", formItem.title)
         multiSelectIntent.putExtra("key", key)
 
-        val dateSelectIntent = Intent(this@EditCourseVC1, DateSelectVC::class.java)
+        val dateSelectIntent = Intent(this, DateSelectVC::class.java)
         dateSelectIntent.putExtra("title", formItem.title)
         dateSelectIntent.putExtra("key", key)
 
-        val contentIntent = Intent(this@EditCourseVC1, ContentEditVC::class.java)
+        val contentIntent = Intent(this, ContentEditVC::class.java)
         contentIntent.putExtra("title", formItem.title)
         contentIntent.putExtra("key", key)
 

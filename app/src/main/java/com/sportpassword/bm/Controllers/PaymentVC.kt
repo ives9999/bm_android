@@ -23,7 +23,7 @@ import tw.com.ecpay.paymentgatewaykit.manager.*
 import kotlin.reflect.KProperty1
 import kotlin.reflect.full.memberProperties
 
-class PaymentVC : MyTableVC1() {
+class PaymentVC : MyTableVC() {
 
     var ecpay_token: String = ""
     var order_token: String = ""

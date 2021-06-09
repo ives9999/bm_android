@@ -6,10 +6,8 @@ import android.os.Bundle
 import android.view.*
 import android.widget.Button
 import com.sportpassword.bm.Adapters.GroupSection
-import com.sportpassword.bm.Adapters.MemberFunctionsAdapter
 import com.sportpassword.bm.Controllers.*
 import com.sportpassword.bm.R
-import com.sportpassword.bm.Services.CourseService
 import com.sportpassword.bm.Services.MemberService
 import com.sportpassword.bm.Utilities.*
 import com.sportpassword.bm.member
@@ -24,7 +22,6 @@ import kotlinx.android.synthetic.main.mask.*
 import kotlinx.android.synthetic.main.mask.text
 import kotlinx.android.synthetic.main.nav_header_main.*
 import kotlinx.android.synthetic.main.tab_member.*
-import org.jetbrains.anko.image
 
 class MemberFragment: TabFragment() {
 
@@ -32,7 +29,9 @@ class MemberFragment: TabFragment() {
             mapOf("text" to "帳戶資料", "icon" to "account", "segue" to "account"),
             mapOf("text" to "更改密碼", "icon" to "password", "segue" to "password")
     )
+
     var memberRows: ArrayList<Map<String, String>> = arrayListOf()
+
     var orderRows: ArrayList<Map<String, String>> = arrayListOf(
             mapOf("text" to "訂單查詢", "icon" to "order", "segue" to "member_order_list")
     )
@@ -44,19 +43,33 @@ class MemberFragment: TabFragment() {
         mapOf("text" to "商品", "icon" to "product", "segue" to "toLike", "able_type" to "product"),
         mapOf("text" to "體育用品店", "icon" to "store", "segue" to "toLike", "able_type" to "store")
     )
+
+    var courseRows: ArrayList<Map<String, String>> = arrayListOf(
+        mapOf("text" to "課程", "icon" to "course", "segue" to "manager_course")
+    )
+
     var signupRows: ArrayList<Map<String, String>> = arrayListOf(
             mapOf("text" to "課程報名", "segue" to "calendar_course_signup")
     )
+
     var rows: ArrayList<ArrayList<String>> = arrayListOf()
 
-    lateinit var memberFunctionsAdapter: MemberFunctionsAdapter
+    //lateinit var memberFunctionsAdapter: MemberFunctionsAdapter
+    var mySections: ArrayList<HashMap<String, Any>> = arrayListOf()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         dataService = MemberService
         setHasOptionsMenu(true)
 
-        sections = arrayListOf("會員資料", "訂單", "喜歡")
+        //sections = arrayListOf("會員資料", "訂單", "喜歡", "課程")
+
+        mySections = arrayListOf(
+            hashMapOf("isExpanded" to true,"title" to "會員資料"),
+            hashMapOf("isExpanded" to true,"title" to "訂單"),
+            hashMapOf("isExpanded" to false,"title" to "喜歡"),
+            hashMapOf("isExpanded" to true,"title" to "課程")
+        )
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -164,11 +177,16 @@ class MemberFragment: TabFragment() {
         }
 
         adapterSections.clear()
-        for (section in sections) {
+        for (section in mySections) {
             adapterSections.add(Section())
         }
-        for ((idx, title) in sections.withIndex()) {
-            val expandableGroup = ExpandableGroup(GroupSection(title), true)
+
+        for ((idx, section) in mySections.withIndex()) {
+
+            val title: String = section["title"] as String
+            val isExpanded: Boolean = section["isExpanded"] as Boolean
+            val expandableGroup = ExpandableGroup(GroupSection(title), isExpanded)
+
             val items = generateItems(idx)
             adapterSections[idx].addAll(items)
             expandableGroup.add(adapterSections[idx])
@@ -178,14 +196,16 @@ class MemberFragment: TabFragment() {
         recyclerView.adapter = adapter
     }
 
-    override fun generateItems(idx: Int): ArrayList<Item> {
+    override fun generateItems(section: Int): ArrayList<Item> {
         val items: ArrayList<Item> = arrayListOf()
 
         val _rows: ArrayList<Map<String, String>>
-        if (idx == 1) {
+        if (section == 1) {
             _rows = orderRows
-        } else if (idx == 2) {
+        } else if (section == 2) {
             _rows = likeRows
+        } else if (section == 3) {
+            _rows = courseRows
         } else {
             setValidateRow()
             //setBlackListRow()
@@ -198,7 +218,7 @@ class MemberFragment: TabFragment() {
             //val text = if (_row.containsKey("text")) _row["text"]!! else ""
             //val icon = if (_row.containsKey("icon")) _row["icon"]!! else ""
             //val segue = if (_row.containsKey("segue")) _row["segue"]!! else ""
-            items.add(MemberItem(context!!, _row))
+            items.add(MemberItem(requireContext(), _row))
         }
 
         return items
@@ -222,6 +242,7 @@ class MemberFragment: TabFragment() {
             "calendar_course_signup" -> toCalendarCourseSignup()
             "refresh" -> refresh()
             "member_order_list" -> mainActivity!!.toMemberOrderList()
+            "" -> mainActivity!!.toArena(false)
             "toLike" -> {
                 var able_type: String? = null
                 if (row.containsKey("able_type")) {

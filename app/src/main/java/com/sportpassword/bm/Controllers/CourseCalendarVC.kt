@@ -28,7 +28,7 @@ import kotlin.collections.HashMap
 import org.jetbrains.anko.*
 import org.jetbrains.anko.sdk27.coroutines.onClick
 
-class CourseCalendarVC: MyTableVC1() {
+class CourseCalendarVC: MyTableVC() {
 
     var superCourses: SuperCourses? = null
 

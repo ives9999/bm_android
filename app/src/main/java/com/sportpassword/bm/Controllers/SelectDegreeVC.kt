@@ -8,7 +8,7 @@ import com.sportpassword.bm.Utilities.DEGREE
 import com.sportpassword.bm.Utilities.DEGREE_KEY
 import com.sportpassword.bm.Utilities.Global
 
-class SelectDegreeVC : MultiSelectVC1() {
+class SelectDegreeVC : MultiSelectVC() {
 
     var rows1: ArrayList<DEGREE> = arrayListOf(DEGREE.high, DEGREE.soso, DEGREE.new)
 

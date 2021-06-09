@@ -33,7 +33,7 @@ import kotlinx.android.synthetic.main.activity_register.edit_featured_container
 import kotlinx.android.synthetic.main.edit_vc.*
 import org.jetbrains.anko.sdk27.coroutines.onClick
 
-class RegisterActivity : MyTableVC1(), ImagePicker, ValueChangedDelegate {
+class RegisterActivity : MyTableVC(), ImagePicker, ValueChangedDelegate {
 
     //image picker
     override val ACTION_CAMERA_REQUEST_CODE = 100
@@ -347,7 +347,7 @@ class RegisterActivity : MyTableVC1(), ImagePicker, ValueChangedDelegate {
         singleSelectIntent.putExtra("title", formItem.title)
         singleSelectIntent.putExtra("key", key)
 
-        val multiSelectIntent = Intent(this, MultiSelectVC1::class.java)
+        val multiSelectIntent = Intent(this, MultiSelectVC::class.java)
         multiSelectIntent.putExtra("title", formItem.title)
         multiSelectIntent.putExtra("key", key)
 

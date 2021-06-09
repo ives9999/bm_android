@@ -28,7 +28,7 @@ import kotlinx.android.synthetic.main.team_list_cell.*
 import org.jetbrains.anko.makeCall
 
 
-class ArenaVC : MyTableVC1() {
+class ArenaVC : MyTableVC() {
 
     var arenasTable: ArenasTable? = null
 
