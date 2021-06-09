@@ -8,15 +8,13 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.View
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import com.sportpassword.bm.Fragments.CourseItem
 import com.sportpassword.bm.Models.CourseTable
-import com.sportpassword.bm.Models.SuperCourse
+import com.sportpassword.bm.Models.CoursesTable
 import com.sportpassword.bm.Models.SuperCourses
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.CourseService
-import com.sportpassword.bm.Utilities.Alert
-import com.sportpassword.bm.Utilities.BASE_URL
-import com.sportpassword.bm.Utilities.GENERAL_REQUEST_CODE
-import com.sportpassword.bm.Utilities.Loading
+import com.sportpassword.bm.Utilities.*
 import com.sportpassword.bm.member
 import com.squareup.picasso.Picasso
 import com.xwray.groupie.kotlinandroidextensions.Item
@@ -24,16 +22,19 @@ import kotlinx.android.synthetic.main.manager_course_item.*
 import kotlinx.android.synthetic.main.manager_course_vc.*
 import kotlinx.android.synthetic.main.mask.*
 import com.xwray.groupie.ViewHolder
+import kotlinx.android.synthetic.main.activity_store_vc.*
+import kotlinx.android.synthetic.main.manager_course_vc.refresh
 import org.jetbrains.anko.*
 import org.jetbrains.anko.sdk27.coroutines.onClick
 
 
-class ManagerCourseVC1: MyTableVC() {
+class ManagerCourseVC: MyTableVC() {
     var token: String? = null //coach token
     var name: String? = null  //coach name
     var manager_token: String? = null
 
-    var superCourses: SuperCourses? = null
+    //var superCourses: SuperCourses? = null
+    var mysTable: CoursesTable? = null
 
     lateinit var dialog: DialogInterface
 
@@ -49,7 +50,11 @@ class ManagerCourseVC1: MyTableVC() {
         }
         if (intent.hasExtra("manager_token")) {
             manager_token = intent.getStringExtra("manager_token")!!
+            params["manager_token"] = manager_token!!
         }
+
+        this.dataService = CourseService
+        able_type = "course"
 
         if (name == null) {
             name = "課程"
@@ -57,10 +62,12 @@ class ManagerCourseVC1: MyTableVC() {
         setMyTitle(name!!)
 
         recyclerView = list
+        refreshLayout = refresh
+        maskView = mask
+        setRefreshListener()
+
         initAdapter()
 
-        refreshLayout = contentView!!.findViewById<SwipeRefreshLayout>(R.id.refresh)
-        setRefreshListener()
         refresh()
     }
 
@@ -88,40 +95,62 @@ class ManagerCourseVC1: MyTableVC() {
         return true
     }
 
-    override fun refresh() {
-        getCourseList()
-    }
-
-    private fun getCourseList() {
-        var filter: HashMap<String, Any>? = null
-        if (manager_token != null && manager_token != null) {
-            filter = hashMapOf("manager_token" to manager_token!!)
-        }
-
-        Loading.show(mask)
-        CourseService.getList(this, token, filter, 1, 100) { success ->
-
-            if (success) {
-                superCourses = CourseService.superModel as SuperCourses
-                val items = generateItems()
-                adapter.update(items)
-                adapter.notifyDataSetChanged()
-                closeRefresh()
-            }
-            Loading.hide(mask)
+    override fun genericTable() {
+        mysTable = jsonToModels<CoursesTable>(jsonString!!)
+        if (mysTable != null) {
+            tables = mysTable
         }
     }
 
     override fun generateItems(): ArrayList<Item> {
         val items: ArrayList<Item> = arrayListOf()
-        if (superCourses != null) {
-            for (row in superCourses!!.rows) {
-                //items.add(ManagerCourseItem(this@ManagerCourseVC1, row))
+        if (mysTable != null) {
+            for (row in mysTable!!.rows) {
+                //row.print()
+                row.filterRow()
+                val myItem = CourseItem(this, row)
+                myItem.list1CellDelegate = this
+                items.add(myItem)
             }
         }
 
         return items
     }
+
+//    override fun refresh() {
+//        getCourseList()
+//    }
+//
+//    private fun getCourseList() {
+//        var filter: HashMap<String, Any>? = null
+//        if (manager_token != null && manager_token != null) {
+//            filter = hashMapOf("manager_token" to manager_token!!)
+//        }
+//
+//        Loading.show(mask)
+//        CourseService.getList1(this, token, filter, 1, 100) { success ->
+//
+//            if (success) {
+//                superCourses = CourseService.superModel as SuperCourses
+//                val items = generateItems()
+//                adapter.update(items)
+//                adapter.notifyDataSetChanged()
+//                closeRefresh()
+//            }
+//            Loading.hide(mask)
+//        }
+//    }
+
+//    override fun generateItems(): ArrayList<Item> {
+//        val items: ArrayList<Item> = arrayListOf()
+//        if (superCourses != null) {
+//            for (row in superCourses!!.rows) {
+//                //items.add(ManagerCourseItem(this@ManagerCourseVC1, row))
+//            }
+//        }
+//
+//        return items
+//    }
 
     override fun rowClick(item: com.xwray.groupie.Item<ViewHolder>, view: View) {
         val managerCourseItem = item as ManagerCourseItem
@@ -133,7 +162,7 @@ class ManagerCourseVC1: MyTableVC() {
                     button("檢視") {
                         onClick {
                             dialog.dismiss()
-                            val intent = Intent(this@ManagerCourseVC1, ShowCourseVC::class.java)
+                            val intent = Intent(this@ManagerCourseVC, ShowCourseVC::class.java)
                             intent.putExtra("course_token", row.token)
                             intent.putExtra("title", row.title)
                             startActivity(intent)
@@ -150,7 +179,7 @@ class ManagerCourseVC1: MyTableVC() {
                     button("刪除") {
                         onClick {
                             dialog.dismiss()
-                            toDelete1("course", row.token)
+                            //toDelete1("course", row.token)
                         }
                     }
                     button("取消") {
@@ -163,7 +192,7 @@ class ManagerCourseVC1: MyTableVC() {
 
     fun add(view: View) {
         if (member.validate < 1) {
-            Alert.show(this@ManagerCourseVC1, "錯誤", "未通過EMail認證，無法新增課程，認證完後，請先登出再登入")
+            Alert.show(this@ManagerCourseVC, "錯誤", "未通過EMail認證，無法新增課程，認證完後，請先登出再登入")
         } else {
             if (token != null) {
                 toEditCourse("新增課程", "", token!!)

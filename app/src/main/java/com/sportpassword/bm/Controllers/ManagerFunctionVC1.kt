@@ -86,7 +86,7 @@ class ManagerFunctionVC1 : MyTableVC() {
                     "edit" -> toEdit(source, title, token)
                     "calendar" -> toTimeTable(source, token)
                     "signup_list" -> toTempPlayDate(title, token)
-                    "delete" -> toDelete(source, token)
+                    //"delete" -> toDelete(source, token)
                     //"course" -> toCourse(title, token)
                 }
             }
@@ -95,7 +95,7 @@ class ManagerFunctionVC1 : MyTableVC() {
                     "edit" -> toEdit(source, title, token)
                     "edit_tempplay" -> toTeamTempPlayEdit(token)
                     "tempplay_list" -> toTempPlayDate(title, token)
-                    "delete" -> toDelete(source, token)
+                    //"delete" -> toDelete(source, token)
                 }
             }
             "arena" -> {
@@ -103,7 +103,7 @@ class ManagerFunctionVC1 : MyTableVC() {
                     "edit" -> toEdit(source, title, token)
                     "calendar" -> toEdit(source, title, token)
                     "signup_list" -> toTempPlayDate(title, token)
-                    "delete" -> toDelete(source, token)
+                    //"delete" -> toDelete(source, token)
                 }
             }
         }

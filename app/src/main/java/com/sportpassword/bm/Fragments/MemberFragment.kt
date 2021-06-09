@@ -242,7 +242,7 @@ class MemberFragment: TabFragment() {
             "calendar_course_signup" -> toCalendarCourseSignup()
             "refresh" -> refresh()
             "member_order_list" -> mainActivity!!.toMemberOrderList()
-            "" -> mainActivity!!.toArena(false)
+            "manager_course" -> mainActivity!!.toManager("course")
             "toLike" -> {
                 var able_type: String? = null
                 if (row.containsKey("able_type")) {
