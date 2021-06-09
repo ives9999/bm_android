@@ -21,7 +21,7 @@ import kotlinx.android.synthetic.main.activity_member_order_list_vc.*
 import kotlinx.android.synthetic.main.mask.*
 import kotlinx.android.synthetic.main.order_list_cell.*
 
-class MemberOrderListVC : MyTableVC1() {
+class MemberOrderListVC : MyTableVC() {
 
     var mysTable: OrdersTable? = null
     //protected lateinit var superModels: SuperModel

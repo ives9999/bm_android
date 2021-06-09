@@ -13,7 +13,7 @@ import com.xwray.groupie.kotlinandroidextensions.Item
 import kotlinx.android.synthetic.main.activity_store_vc.*
 import kotlinx.android.synthetic.main.mask.*
 
-class TeamVC : MyTableVC1() {
+class TeamVC : MyTableVC() {
 
     var mysTable: TeamsTable? = null
 

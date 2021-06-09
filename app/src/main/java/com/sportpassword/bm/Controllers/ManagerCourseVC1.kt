@@ -28,7 +28,7 @@ import org.jetbrains.anko.*
 import org.jetbrains.anko.sdk27.coroutines.onClick
 
 
-class ManagerCourseVC1: MyTableVC1() {
+class ManagerCourseVC1: MyTableVC() {
     var token: String? = null //coach token
     var name: String? = null  //coach name
     var manager_token: String? = null

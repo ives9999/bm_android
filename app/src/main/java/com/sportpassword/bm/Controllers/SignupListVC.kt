@@ -77,7 +77,7 @@ class SignupListVC : MyTableVC() {
                 var _pageCount: Int = totalCount / perPage
                 totalPage = if (totalCount % perPage > 0) _pageCount+1 else _pageCount
             }
-            rows.addAll(signups.rows)
+            //rows.addAll(signups.rows)
             if (rows.size > 0) {
                 notifyChanged()
 //                var items = generateItems()
@@ -93,7 +93,7 @@ class SignupListVC : MyTableVC() {
             page++
         }
         Loading.hide(mask)
-        recyclerView.smoothScrollToPosition(scrollerPos + 1)
+        //recyclerView.smoothScrollToPosition(scrollerPos + 1)
 //        println("page:$page")
 //        println("perPage:$perPage")
 //        println("totalCount:$totalCount")

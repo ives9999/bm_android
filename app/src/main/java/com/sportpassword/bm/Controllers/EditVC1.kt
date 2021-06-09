@@ -27,7 +27,7 @@ import org.jetbrains.anko.toast
 import java.io.File
 import kotlinx.android.synthetic.main.mask.*
 
-class EditVC1 : MyTableVC1(), ImagePicker {
+class EditVC1 : MyTableVC(), ImagePicker {
 
     override val ACTION_CAMERA_REQUEST_CODE = 100
     override val ACTION_PHOTO_REQUEST_CODE = 200

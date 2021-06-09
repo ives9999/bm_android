@@ -22,7 +22,7 @@ import com.xwray.groupie.kotlinandroidextensions.Item
 import kotlinx.android.synthetic.main.activity_temp_play_vc.*
 import kotlinx.android.synthetic.main.mask.*
 
-class TempPlayVC : MyTableVC1() {
+class TempPlayVC : MyTableVC() {
 
 //    protected lateinit var tempPlayListAdapter: TempPlayListAdapter
 //    protected var dataLists: ArrayList<Map<String, Map<String, Any>>> = arrayListOf()

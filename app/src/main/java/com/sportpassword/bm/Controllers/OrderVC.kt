@@ -21,7 +21,7 @@ import com.xwray.groupie.kotlinandroidextensions.Item
 import kotlinx.android.synthetic.main.activity_order_vc.*
 import kotlinx.android.synthetic.main.mask.*
 
-class OrderVC : MyTableVC1(), ValueChangedDelegate {
+class OrderVC : MyTableVC(), ValueChangedDelegate {
 
     var product_token: String? = null
     var superProduct: SuperProduct? = null

@@ -11,7 +11,7 @@ import kotlinx.android.synthetic.main.activity_teach_vc.*
 import com.sportpassword.bm.Utilities.*
 import kotlinx.android.synthetic.main.mask.*
 
-class TeachVC : MyTableVC1() {
+class TeachVC : MyTableVC() {
 
     protected var type: String = "teach"
     protected var titleField: String = "title"

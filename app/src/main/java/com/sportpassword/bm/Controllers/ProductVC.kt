@@ -19,7 +19,7 @@ import kotlinx.android.synthetic.main.product_list_cell.listFeatured
 import kotlinx.android.synthetic.main.product_list_cell.priceLbl
 import kotlinx.android.synthetic.main.product_list_cell.refreshIcon
 
-class ProductVC : MyTableVC1() {
+class ProductVC : MyTableVC() {
 
     var mysTable: ProductsTable? = null
 

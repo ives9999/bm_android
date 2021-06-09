@@ -597,7 +597,7 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
     }
 
     fun toEditCourse(title: String, course_token: String, coach_token: String) {
-        val intent = Intent(this, EditCourseVC1::class.java)
+        val intent = Intent(this, EditCourseVC::class.java)
         intent.putExtra("title", title)
         intent.putExtra("course_token", course_token)
         intent.putExtra("coach_token", coach_token)

@@ -18,7 +18,7 @@ import org.json.JSONArray
 import org.json.JSONObject
 import java.lang.Exception
 
-class ShowPNVC : MyTableVC1(), OSPermissionObserver {
+class ShowPNVC : MyTableVC(), OSPermissionObserver {
 
     var pnArr: JSONArray? = null
     var isReceive: Boolean = false

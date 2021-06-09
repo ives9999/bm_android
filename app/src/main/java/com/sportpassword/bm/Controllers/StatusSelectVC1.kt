@@ -11,7 +11,7 @@ import com.xwray.groupie.kotlinandroidextensions.Item
 import kotlinx.android.synthetic.main.mytablevc.*
 import kotlinx.android.synthetic.main.status_select_item.*
 
-class StatusSelectVC1 : MyTableVC1() {
+class StatusSelectVC1 : MyTableVC() {
 
     lateinit var key: String
     lateinit var all: ArrayList<HashMap<String, Any>>
