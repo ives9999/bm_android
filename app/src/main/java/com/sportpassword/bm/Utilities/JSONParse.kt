@@ -1,15 +1,12 @@
 package com.sportpassword.bm.Utilities
 
-import com.beust.klaxon.internal.firstNotNullResult
 import com.sportpassword.bm.Models.*
 import org.json.JSONArray
 import org.json.JSONObject
 import kotlin.reflect.KClass
 import kotlin.reflect.KMutableProperty
-import kotlin.reflect.KProperty
 import kotlin.reflect.KProperty1
 import kotlin.reflect.full.memberProperties
-import kotlin.reflect.jvm.internal.impl.load.kotlin.JvmType
 import kotlin.reflect.jvm.isAccessible
 import kotlin.reflect.jvm.javaField
 import kotlin.reflect.jvm.javaSetter
@@ -317,7 +314,7 @@ class JSONParse {
             return kc
         }
 
-        fun getType(it: KProperty1<out SuperModel, Any?>): String {
+        fun getType(it: KProperty1<out CourseTable, *>): String {
             val type = it.returnType.toString()
             val tmps = getSubType(type)
             val subType = tmps.get("type")!!

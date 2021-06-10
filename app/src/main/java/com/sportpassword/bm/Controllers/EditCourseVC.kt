@@ -8,12 +8,13 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import androidx.appcompat.app.AlertDialog
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
+import com.google.gson.JsonParseException
 import com.sportpassword.bm.Adapters.Form.*
 import com.sportpassword.bm.Form.CourseForm
 import com.sportpassword.bm.Form.FormItem.*
 import com.sportpassword.bm.Form.FormItemCellType
 import com.sportpassword.bm.Form.ValueChangedDelegate
-import com.sportpassword.bm.Models.SuperCourse
+import com.sportpassword.bm.Models.CourseTable
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.CourseService
 import com.sportpassword.bm.Utilities.*
@@ -25,6 +26,7 @@ import kotlinx.android.synthetic.main.mask.*
 import org.jetbrains.anko.sdk27.coroutines.onClick
 import java.io.File
 import kotlin.reflect.full.declaredMemberProperties
+import kotlin.reflect.full.memberProperties
 
 class EditCourseVC : MyTableVC(), ImagePicker, ValueChangedDelegate {
 
@@ -40,7 +42,6 @@ class EditCourseVC : MyTableVC(), ImagePicker, ValueChangedDelegate {
     lateinit override var imagePickerLayer: AlertDialog
     lateinit override var alertView: View
     lateinit override var imageView: ImageView
-    lateinit var superCourse: SuperCourse
 
     var title: String = ""
     var course_token: String? = null
@@ -55,7 +56,10 @@ class EditCourseVC : MyTableVC(), ImagePicker, ValueChangedDelegate {
 
     val SELECT_REQUEST_CODE = 1
 
-//    val section_keys: ArrayList<ArrayList<String>> = arrayListOf(
+    var table: CourseTable? = null
+    var myTable: CourseTable? = null
+
+    //    val section_keys: ArrayList<ArrayList<String>> = arrayListOf(
 //            arrayListOf(TITLE_KEY, YOUTUBE_KEY),
 //            arrayListOf(PRICE_KEY, PRICE_UNIT_KEY)
 //    )
@@ -63,6 +67,9 @@ class EditCourseVC : MyTableVC(), ImagePicker, ValueChangedDelegate {
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
+
+        able_type = "course"
+
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_edit_course_vc)
 
@@ -82,6 +89,7 @@ class EditCourseVC : MyTableVC(), ImagePicker, ValueChangedDelegate {
 
         setMyTitle(title)
         form = CourseForm()
+        dataService = CourseService
 
         imageView = edit_featured
         getImageViewParams()
@@ -109,9 +117,9 @@ class EditCourseVC : MyTableVC(), ImagePicker, ValueChangedDelegate {
     override fun refresh() {
         Loading.show(mask)
         val params: HashMap<String, String> = hashMapOf("token" to course_token!!)
-        CourseService.getOne(this, params) { success ->
+        dataService.getOne1(this, params) { success ->
             if (success) {
-                superCourse = CourseService.superModel as SuperCourse
+                genericTable()
                 putValue()
                 notifyChanged(true)
 
@@ -122,35 +130,40 @@ class EditCourseVC : MyTableVC(), ImagePicker, ValueChangedDelegate {
         }
     }
 
+    override fun genericTable() {
+        //println(dataService.jsonString)
+        try {
+            table = jsonToModel<CourseTable>(dataService.jsonString)
+        } catch (e: JsonParseException) {
+            warning(e.localizedMessage)
+            //println(e.localizedMessage)
+        }
+        if (table != null) {
+            myTable = table as CourseTable
+            myTable!!.filterRow()
+        } else {
+            warning("解析伺服器所傳的字串失敗，請洽管理員")
+        }
+    }
+
     private fun putValue() {
-        if (superCourse != null) {
-            val kc = superCourse::class
+        if (myTable != null) {
+            val kc = myTable!!::class
             for (formItem in form.formItems) {
                 val name = formItem.name!!
-                kc.declaredMemberProperties.forEach {
+                kc.memberProperties.forEach {
                     if (it.name == formItem.name) {
-                        val type = JSONParse.getType(it)
-                        when (type) {
-                            "String" -> {
-                                val value = JSONParse.getValue<String>(name, superCourse, it)
-                                if (value != null) {
-                                    formItem.value = value
-                                }
-                            }
-                            "Int" -> {
-                                val value = JSONParse.getValue<Int>(name, superCourse, it)
-                                if (value != null) {
-                                    formItem.value = value.toString()
-                                }
 
-                            }
-                        }
+                        var value = it.getter.call(myTable).toString()
+                        if (value == "null") { value = "" }
+                        formItem.value = value
+
                         formItem.make()
                     }
                 }
             }
-            if (superCourse.featured_path.count() > 0) {
-                val featured: String = BASE_URL + superCourse.featured_path
+            if (myTable!!.featured_path.count() > 0) {
+                val featured: String = myTable!!.featured_path
 //                        println(featured)
                 setImage(null, featured)
             }
@@ -222,8 +235,8 @@ class EditCourseVC : MyTableVC(), ImagePicker, ValueChangedDelegate {
             }
 
             if (formItemAdapter != null) {
-                formItemAdapter!!.valueChangedDelegate = this
-                rows.add(formItemAdapter!!)
+                formItemAdapter.valueChangedDelegate = this
+                rows.add(formItemAdapter)
             }
 //            idx++
         }
@@ -276,6 +289,9 @@ class EditCourseVC : MyTableVC(), ImagePicker, ValueChangedDelegate {
             }
             startActivityForResult(singleSelectIntent, SELECT_REQUEST_CODE)
         } else if (key == WEEKDAY_KEY) {
+
+            //toSelectWeekday(value, this, able_type)
+
             val rows = WEEKDAY.makeSelect()
 //            println(rows)
             multiSelectIntent.putExtra("rows", rows)
@@ -286,19 +302,24 @@ class EditCourseVC : MyTableVC(), ImagePicker, ValueChangedDelegate {
             }
             startActivityForResult(multiSelectIntent, SELECT_REQUEST_CODE)
         } else if (key == START_TIME_KEY || key == END_TIME_KEY) {
-            val times = Global.makeTimes()
-            val rows: ArrayList<HashMap<String, String>> = arrayListOf()
-            for (time in times) {
-                rows.add(hashMapOf("title" to time, "value" to time+":00"))
-            }
-//            println(rows)
-            singleSelectIntent.putExtra("rows", rows)
-            if (formItem.sender != null) {
-                val tmp = formItem.sender as HashMap<String, String>
-                val selected = tmp.get("time")!!
-                singleSelectIntent.putExtra("selected", selected)
-            }
-            startActivityForResult(singleSelectIntent, SELECT_REQUEST_CODE)
+
+            val tmp = formItem.sender as HashMap<String, String>
+            val selected = tmp.get("time")!!
+            toSelectTime(key, selected, this, able_type)
+
+//            val times = Global.makeTimes()
+//            val rows: ArrayList<HashMap<String, String>> = arrayListOf()
+//            for (time in times) {
+//                rows.add(hashMapOf("title" to time, "value" to time+":00"))
+//            }
+////            println(rows)
+//            singleSelectIntent.putExtra("rows", rows)
+//            if (formItem.sender != null) {
+//                val tmp = formItem.sender as HashMap<String, String>
+//                val selected = tmp.get("time")!!
+//                singleSelectIntent.putExtra("selected", selected)
+//            }
+//            startActivityForResult(singleSelectIntent, SELECT_REQUEST_CODE)
         } else if (key == CONTENT_KEY) {
             if (formItem.sender != null) {
                 val content = formItem.sender as String

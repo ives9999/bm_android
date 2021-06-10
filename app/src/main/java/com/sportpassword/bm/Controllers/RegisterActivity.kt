@@ -25,7 +25,6 @@ import kotlinx.android.synthetic.main.activity_register.refresh
 import kotlinx.android.synthetic.main.mask.*
 import org.jetbrains.anko.alert
 import java.io.File
-import kotlin.reflect.full.declaredMemberProperties
 import com.sportpassword.bm.Form.ValueChangedDelegate
 import com.sportpassword.bm.Models.Member
 import com.sportpassword.bm.member
@@ -129,7 +128,7 @@ class RegisterActivity : MyTableVC(), ImagePicker, ValueChangedDelegate {
                 }
             }
 
-            member_token = member.token!!
+            member_token = member.token
             for (key in keys) {
                 if (MEMBER_ARRAY.containsKey(key)) {
                     val value: String = member.fetch(key)

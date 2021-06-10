@@ -56,9 +56,9 @@
         <activity android:name=".Controllers.SelectVC1" />
         <activity android:name=".Controllers.CoachVC" />
         <activity android:name=".Controllers.ContentEditVC" />
-        <activity android:name=".Controllers.MultiSelectVC1" />
+        <activity android:name=".Controllers.MultiSelectVC" />
         <activity android:name=".Controllers.SingleSelectVC1" />
-        <activity android:name=".Controllers.EditCourseVC1" />
+        <activity android:name=".Controllers.EditCourseVC" />
 
         <uses-library
             android:name="org.apache.http.legacy"

@@ -108,8 +108,8 @@ class ManagerCourseVC: MyTableVC() {
             for (row in mysTable!!.rows) {
                 //row.print()
                 row.filterRow()
-                val myItem = CourseItem(this, row)
-                myItem.list1CellDelegate = this
+                val myItem = ManagerCourseItem(this, row)
+                //myItem.list1CellDelegate = this
                 items.add(myItem)
             }
         }
@@ -162,10 +162,7 @@ class ManagerCourseVC: MyTableVC() {
                     button("檢視") {
                         onClick {
                             dialog.dismiss()
-                            val intent = Intent(this@ManagerCourseVC, ShowCourseVC::class.java)
-                            intent.putExtra("course_token", row.token)
-                            intent.putExtra("title", row.title)
-                            startActivity(intent)
+                            toShowCourse(row.token)
                         }
                     }
                     button("編輯") {
@@ -205,7 +202,7 @@ class ManagerCourseItem(val context: Context, val courseTable: CourseTable): Ite
     override fun bind(viewHolder: com.xwray.groupie.kotlinandroidextensions.ViewHolder, position: Int) {
         viewHolder.title.text = courseTable.title
         Picasso.with(context)
-                .load(BASE_URL + courseTable.featured_path)
+                .load(courseTable.featured_path)
                 .placeholder(R.drawable.loading_square)
                 .error(R.drawable.load_failed_square)
                 .into(viewHolder.featured)

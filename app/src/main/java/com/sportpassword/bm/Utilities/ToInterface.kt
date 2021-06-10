@@ -60,9 +60,7 @@ interface ToInterface {
             intent = Intent(mainDelegate, ManagerVC::class.java)
             intent.putExtra("source", page)
         }
-        if (intent != null) {
-            mainDelegate.startActivity(intent)
-        }
+        mainDelegate.startActivity(intent)
     }
     fun toManagerFunction(title: String, token: String, source: String) {
         val intent = Intent(mainDelegate, ManagerFunctionVC1::class.java)
