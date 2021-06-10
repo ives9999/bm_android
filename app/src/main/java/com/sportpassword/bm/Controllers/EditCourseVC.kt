@@ -25,7 +25,6 @@ import kotlinx.android.synthetic.main.activity_edit_course_vc.*
 import kotlinx.android.synthetic.main.mask.*
 import org.jetbrains.anko.sdk27.coroutines.onClick
 import java.io.File
-import kotlin.reflect.full.declaredMemberProperties
 import kotlin.reflect.full.memberProperties
 
 class EditCourseVC : MyTableVC(), ImagePicker, ValueChangedDelegate {
@@ -248,7 +247,7 @@ class EditCourseVC : MyTableVC(), ImagePicker, ValueChangedDelegate {
 
         val key = formItem.name
 
-        val singleSelectIntent = Intent(this, SingleSelectVC1::class.java)
+        val singleSelectIntent = Intent(this, SingleSelectVC::class.java)
         singleSelectIntent.putExtra("title", formItem.title)
         singleSelectIntent.putExtra("key", key)
 
@@ -265,61 +264,29 @@ class EditCourseVC : MyTableVC(), ImagePicker, ValueChangedDelegate {
         contentIntent.putExtra("key", key)
 
         if (key == PRICE_UNIT_KEY) {
-            val rows = PRICE_UNIT.makeSelect()
-            singleSelectIntent.putExtra("rows", rows)
-            if (formItem.sender != null) {
-                val selected = formItem.sender as String
-                singleSelectIntent.putExtra("selected", selected)
-            }
-            startActivityForResult(singleSelectIntent, SELECT_REQUEST_CODE)
+
+            val selected = formItem.sender as String
+            toSelectSingle(SelectPriceUnitVC::class.java, key, selected, this, able_type)
         } else if (key == COURSE_KIND_KEY) {
-            val rows = COURSE_KIND.makeSelect()
-            singleSelectIntent.putExtra("rows", rows)
-            if (formItem.sender != null) {
-                val selected = formItem.sender as String
-                singleSelectIntent.putExtra("selected", selected)
-            }
-            startActivityForResult(singleSelectIntent, SELECT_REQUEST_CODE)
+
+            val selected = formItem.sender as String
+            toSelectSingle(SelectCourseKindVC::class.java, key, selected, this, able_type)
+
         } else if (key == CYCLE_UNIT_KEY) {
-            val rows = CYCLE_UNIT.makeSelect()
-            singleSelectIntent.putExtra("rows", rows)
-            if (formItem.sender != null) {
-                val selected = formItem.sender as String
-                singleSelectIntent.putExtra("selected", selected)
-            }
-            startActivityForResult(singleSelectIntent, SELECT_REQUEST_CODE)
+
+            val selected = formItem.sender as String
+            toSelectSingle(SelectCycleUnitVC::class.java, key, selected, this, able_type)
+
         } else if (key == WEEKDAY_KEY) {
 
-            //toSelectWeekday(value, this, able_type)
-
-            val rows = WEEKDAY.makeSelect()
-//            println(rows)
-            multiSelectIntent.putExtra("rows", rows)
-            if (formItem.sender != null) {
-                val selecteds = formItem.sender as ArrayList<String>
-//                println(selecteds)
-                multiSelectIntent.putExtra("selecteds", selecteds)
-            }
-            startActivityForResult(multiSelectIntent, SELECT_REQUEST_CODE)
+            val tmp = formItem.sender as ArrayList<String>
+            val selecteds: String = tmp.joinToString(",")
+            toSelectWeekdays(selecteds, this, able_type)
         } else if (key == START_TIME_KEY || key == END_TIME_KEY) {
 
             val tmp = formItem.sender as HashMap<String, String>
             val selected = tmp.get("time")!!
-            toSelectTime(key, selected, this, able_type)
-
-//            val times = Global.makeTimes()
-//            val rows: ArrayList<HashMap<String, String>> = arrayListOf()
-//            for (time in times) {
-//                rows.add(hashMapOf("title" to time, "value" to time+":00"))
-//            }
-////            println(rows)
-//            singleSelectIntent.putExtra("rows", rows)
-//            if (formItem.sender != null) {
-//                val tmp = formItem.sender as HashMap<String, String>
-//                val selected = tmp.get("time")!!
-//                singleSelectIntent.putExtra("selected", selected)
-//            }
-//            startActivityForResult(singleSelectIntent, SELECT_REQUEST_CODE)
+            toSelectSingle(SelectTimeVC::class.java, key, selected, this, able_type)
         } else if (key == CONTENT_KEY) {
             if (formItem.sender != null) {
                 val content = formItem.sender as String
@@ -338,6 +305,33 @@ class EditCourseVC : MyTableVC(), ImagePicker, ValueChangedDelegate {
 
     }
 
+    override fun singleSelected(key: String, selected: String) {
+
+        val row = getDefinedRow(key)
+        var show = ""
+        var item: FormItem? = null
+
+        if (key == CITY_KEY || key == AREA_KEY) {
+            row["value"] = selected
+            show = Global.zoneIDToName(selected.toInt())
+        } else if (key == PRICE_UNIT_KEY) {
+            item = getFormItemFromKey(PriceUnitFormItem::class.java, key)
+        }
+//        else if (key == START_TIME_KEY || key == END_TIME_KEY) {
+//            item = getFormItemFromKey(key) as TimeFormItem
+//        } else if (key == COURSE_KIND_KEY) {
+//            item = getFormItemFromKey(key) as CourseKindFormItem
+//        } else if (key == CYCLE_UNIT_KEY) {
+//            item = getFormItemFromKey(key) as CycleUnitFormItem
+//        }
+        if (item != null) {
+            item.value = selected
+            item.make()
+        }
+
+        notifyChanged(true)
+    }
+
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
@@ -353,22 +347,22 @@ class EditCourseVC : MyTableVC(), ImagePicker, ValueChangedDelegate {
             SELECT_REQUEST_CODE -> {
                 if (data != null) {
                     var key: String? = null
-                    if (data!!.hasExtra("key")) {
+                    if (data.hasExtra("key")) {
                         key = data!!.getStringExtra("key")
                     }
                     var selected: String? = null
-                    if (data!!.hasExtra("selected")) {
+                    if (data.hasExtra("selected")) {
                         selected = data!!.getStringExtra("selected")
                     }
 //                println(selected)
 
                     var selecteds: ArrayList<String>? = null
-                    if (data!!.hasExtra("selecteds")) {
+                    if (data.hasExtra("selecteds")) {
                         selecteds = data!!.getStringArrayListExtra("selecteds")
                     }
 
                     var content: String? = null
-                    if (data!!.hasExtra("content")) {
+                    if (data.hasExtra("content")) {
                         content = data!!.getStringExtra("content")
                     }
 

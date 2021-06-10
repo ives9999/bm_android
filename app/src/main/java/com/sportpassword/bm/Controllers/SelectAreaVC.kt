@@ -2,10 +2,9 @@ package com.sportpassword.bm.Controllers
 
 import android.os.Bundle
 import com.sportpassword.bm.Models.Area
-import com.sportpassword.bm.Models.City
 import com.sportpassword.bm.Utilities.Global
 
-class SelectAreaVC: SingleSelectVC1() {
+class SelectAreaVC: SingleSelectVC() {
 
     var city_id: Int? = null
 

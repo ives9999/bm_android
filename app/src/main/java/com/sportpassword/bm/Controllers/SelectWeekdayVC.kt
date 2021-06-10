@@ -4,7 +4,7 @@ import android.os.Bundle
 import com.sportpassword.bm.Utilities.WEEKDAY
 import com.sportpassword.bm.Utilities.WEEKDAY_KEY
 
-class SelectWeekdayVC : SingleSelectVC1() {
+class SelectWeekdayVC : SingleSelectVC() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 

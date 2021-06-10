@@ -20,7 +20,7 @@ import kotlinx.android.synthetic.main.activity_single_select_vc.*
 import kotlinx.android.synthetic.main.select_item.*
 import kotlinx.android.synthetic.main.select_item.view.*
 
-class SelectArenaVC : SingleSelectVC1() {
+class SelectArenaVC : SingleSelectVC() {
 
     var arenas1: ArrayList<ArenaTable>? = null
 

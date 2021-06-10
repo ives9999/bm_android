@@ -4,7 +4,7 @@ import android.os.Bundle
 import com.sportpassword.bm.Utilities.Global
 import kotlin.collections.ArrayList
 
-class SelectTimeVC : SingleSelectVC1() {
+class SelectTimeVC : SingleSelectVC() {
 
     var start: String = "07:00"
     var end: String = "23:00"

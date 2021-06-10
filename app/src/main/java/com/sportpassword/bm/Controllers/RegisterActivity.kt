@@ -8,7 +8,6 @@ import android.widget.LinearLayout
 import android.widget.RelativeLayout
 import androidx.appcompat.app.AlertDialog
 import com.sportpassword.bm.Adapters.Form.*
-import com.sportpassword.bm.Form.CourseForm
 import com.sportpassword.bm.Form.FormItem.*
 import com.sportpassword.bm.Form.FormItemCellType
 import com.sportpassword.bm.Form.RegisterForm
@@ -23,13 +22,10 @@ import kotlinx.android.synthetic.main.activity_register.edit_featured
 import kotlinx.android.synthetic.main.activity_register.featured_text
 import kotlinx.android.synthetic.main.activity_register.refresh
 import kotlinx.android.synthetic.main.mask.*
-import org.jetbrains.anko.alert
 import java.io.File
 import com.sportpassword.bm.Form.ValueChangedDelegate
-import com.sportpassword.bm.Models.Member
 import com.sportpassword.bm.member
 import kotlinx.android.synthetic.main.activity_register.edit_featured_container
-import kotlinx.android.synthetic.main.edit_vc.*
 import org.jetbrains.anko.sdk27.coroutines.onClick
 
 class RegisterActivity : MyTableVC(), ImagePicker, ValueChangedDelegate {
@@ -342,7 +338,7 @@ class RegisterActivity : MyTableVC(), ImagePicker, ValueChangedDelegate {
 
         val key = formItem.name
 
-        val singleSelectIntent = Intent(this, SingleSelectVC1::class.java)
+        val singleSelectIntent = Intent(this, SingleSelectVC::class.java)
         singleSelectIntent.putExtra("title", formItem.title)
         singleSelectIntent.putExtra("key", key)
 

@@ -332,6 +332,26 @@ interface ToInterface {
         mainDelegate.selectWeekdayVC.launch(i)
     }
 
+    fun toSelectWeekdays(selected: String?=null, delegate: BaseActivity?=null, able_type: String?=null) {
+
+        val i = Intent(mainDelegate, SelectWeekdaysVC::class.java)
+
+        if (able_type != null) {
+            i.putExtra("able_type", able_type)
+        }
+
+        if (selected != null && selected.isNotEmpty()) {
+            val selecteds: ArrayList<String> = selected.split(",").toCollection(ArrayList())
+            i.putStringArrayListExtra("selecteds", selecteds)
+        }
+
+        if (delegate != null) {
+            mainDelegate.delegate = delegate
+        }
+
+        mainDelegate.selectWeekdaysVC.launch(i)
+    }
+
     fun toSelectTime(key: String, selected: String?=null, delegate: BaseActivity?=null, able_type: String?=null) {
         val i = Intent(mainDelegate, SelectTimeVC::class.java)
 
@@ -390,5 +410,45 @@ interface ToInterface {
         }
 
         mainDelegate.selectDegreeVC.launch(i)
+    }
+
+//    fun toSelectPriceUnit(selected: String?=null, delegate: BaseActivity?=null, able_type: String?=null) {
+//        val i = Intent(mainDelegate, SelectPriceUnitVC::class.java)
+//
+//        if (able_type != null) {
+//            i.putExtra("able_type", able_type)
+//        }
+//
+//        if (delegate != null) {
+//            mainDelegate.delegate = delegate
+//        }
+//
+//        mainDelegate.selectPriceUnitVC.launch(i)
+//    }
+
+    fun <T> toSelectSingle(cls: Class<T>, key: String?=null, selected: String?=null, delegate: BaseActivity?=null, able_type: String?=null) {
+        val i = Intent(mainDelegate, cls)
+
+        if (able_type != null) {
+            i.putExtra("able_type", able_type)
+        }
+
+        if (key != null) {
+            i.putExtra("key", key)
+        }
+
+        if (selected != null) {
+            i.putExtra("selected", selected)
+        }
+
+        if (delegate != null) {
+            mainDelegate.delegate = delegate
+        }
+
+        mainDelegate.selectSingleVC.launch(i)
+
+//        if (key == PRICE_UNIT_KEY) {
+//            mainDelegate.selectPriceUnitVC.launch(i)
+//        }
     }
 }

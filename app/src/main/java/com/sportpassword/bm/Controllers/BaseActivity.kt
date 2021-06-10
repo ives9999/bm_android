@@ -197,6 +197,42 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
         }
     }
 
+    val selectWeekdaysVC = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { res ->
+        if (res.resultCode == Activity.RESULT_OK) {
+
+            if (res.data != null) {
+                val i: Intent? = res.data
+
+                if (i != null) {
+                    var key: String = DEGREE_KEY
+                    var selected: String = ""
+                    if (i.hasExtra("selecteds")) {
+                        val selecteds = i.getStringArrayListExtra("selecteds")!!
+                        selected = selecteds.joinToString(",")
+                    }
+
+                    var show: String = ""
+                    if (i.hasExtra("show")) {
+                        show = i.getStringExtra("show")!!
+                    }
+
+                    //activity
+                    if (delegate != null) {
+                        delegate!!.degreeSelected(selected, show)
+                    } else {
+                        //fragment
+                        able_type = "course"
+                        if (i.hasExtra("able_type")) {
+                            able_type = i.getStringExtra("able_type")!!
+                        }
+                        val f = getFragment()
+                        f?.degreeSelected(selected, show)
+                    }
+                }
+            }
+        }
+    }
+
     val selectTimeVC = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { res ->
         if (res.resultCode == Activity.RESULT_OK) {
 
@@ -331,6 +367,74 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
                         }
                         val f = getFragment()
                         f?.degreeSelected(selected, show)
+                    }
+                }
+            }
+        }
+    }
+
+//    val selectPriceUnitVC = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { res ->
+//        if (res.resultCode == Activity.RESULT_OK) {
+//
+//            if (res.data != null) {
+//                val i: Intent? = res.data
+//
+//                if (i != null) {
+//                    val key: String = PRICE_UNIT_KEY
+//                    var selected: String = ""
+//                    if (i.hasExtra("selected")) {
+//                        selected = i.getStringExtra("selected")!!
+//                    }
+//
+//                    //activity
+//                    if (delegate != null) {
+//                        delegate!!.singleSelected(key, selected)
+//                    } else {
+//                        //fragment
+//                        able_type = "course"
+//                        if (i.hasExtra("able_type")) {
+//                            able_type = i.getStringExtra("able_type")!!
+//                        }
+//                        val f = getFragment()
+//                        if (f != null) {
+//                            f.singleSelected(key, selected)
+//                        }
+//                    }
+//                }
+//            }
+//        }
+//    }
+
+    val selectSingleVC = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { res ->
+        if (res.resultCode == Activity.RESULT_OK) {
+
+            if (res.data != null) {
+                val i: Intent? = res.data
+
+                if (i != null) {
+                    var key: String = ""
+                    if (i.hasExtra("key")) {
+                        key = i.getStringExtra("key")!!
+                    }
+
+                    var selected: String = ""
+                    if (i.hasExtra("selected")) {
+                        selected = i.getStringExtra("selected")!!
+                    }
+
+                    //activity
+                    if (delegate != null) {
+                        delegate!!.singleSelected(key, selected)
+                    } else {
+                        //fragment
+                        able_type = "course"
+                        if (i.hasExtra("able_type")) {
+                            able_type = i.getStringExtra("able_type")!!
+                        }
+                        val f = getFragment()
+                        if (f != null) {
+                            f.singleSelected(key, selected)
+                        }
                     }
                 }
             }

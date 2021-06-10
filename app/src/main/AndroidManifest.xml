@@ -28,7 +28,11 @@
         android:usesCleartextTraffic="true"
         tools:replace="android:allowBackup"
         tools:targetApi="m">
-        <activity android:name=".Controllers.SelectDegreeVC"></activity>
+        <activity android:name=".Controllers.SelectCycleUnitVC"></activity>
+        <activity android:name=".Controllers.SelectCourseKindVC" />
+        <activity android:name=".Controllers.SelectPriceUnitVC" />
+        <activity android:name=".Controllers.SelectWeekdaysVC" />
+        <activity android:name=".Controllers.SelectDegreeVC" />
         <activity android:name=".Controllers.SelectArenaVC" />
         <activity android:name=".Controllers.SelectTimeVC" />
         <activity android:name=".Controllers.SelectWeekdayVC" />
@@ -53,11 +57,11 @@
         <activity android:name=".Controllers.StoreVC" />
         <activity android:name=".Controllers.SignupListVC" />
         <activity android:name=".Controllers.ShowCourseVC" />
-        <activity android:name=".Controllers.SelectVC1" />
+        <activity android:name=".Controllers.SelectVC" />
         <activity android:name=".Controllers.CoachVC" />
         <activity android:name=".Controllers.ContentEditVC" />
         <activity android:name=".Controllers.MultiSelectVC" />
-        <activity android:name=".Controllers.SingleSelectVC1" />
+        <activity android:name=".Controllers.SingleSelectVC" />
         <activity android:name=".Controllers.EditCourseVC" />
 
         <uses-library

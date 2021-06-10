@@ -15,7 +15,7 @@ interface SingleSelectDelegate {
     fun singleSelected(key: String, selected: String)
 }
 
-open class SingleSelectVC1 : SelectVC1() {
+open class SingleSelectVC : SelectVC() {
 
     var selected: String? = null
 

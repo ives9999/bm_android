@@ -307,6 +307,19 @@ abstract class MyTableVC : BaseActivity(), List1CellDelegate {
         refreshLayout!!.setOnRefreshListener(refreshListener)
     }
 
+    fun <T: FormItem> getFormItemFromKey(cls: Class<T>, key: String): T? {
+
+        var res: T? = null
+        for (formItem in form.formItems) {
+            if (formItem.name == key) {
+                res = formItem as? T
+                break
+            }
+        }
+
+        return res
+    }
+
     open fun getFormItemFromKey(key: String): FormItem? {
 
         var res: FormItem? = null

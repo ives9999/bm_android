@@ -11,7 +11,7 @@ import com.xwray.groupie.kotlinandroidextensions.Item
 import kotlinx.android.synthetic.main.activity_multi_select_vc.*
 import kotlinx.android.synthetic.main.select_item.*
 
-open class MultiSelectVC : SelectVC1() {
+open class MultiSelectVC : SelectVC() {
 
     var selecteds: ArrayList<String> = arrayListOf()
 
