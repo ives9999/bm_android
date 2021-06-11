@@ -68,7 +68,7 @@ class MemberFragment: TabFragment() {
             hashMapOf("isExpanded" to true,"title" to "會員資料"),
             hashMapOf("isExpanded" to true,"title" to "訂單"),
             hashMapOf("isExpanded" to false,"title" to "喜歡"),
-            hashMapOf("isExpanded" to true,"title" to "課程")
+            hashMapOf("isExpanded" to true,"title" to "管理")
         )
     }
 

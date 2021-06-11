@@ -90,7 +90,8 @@ interface ToInterface {
         intent.putExtra("course_token", course_token)
         intent.putExtra("coach_token", coach_token)
 
-        mainDelegate.startActivityForResult(intent, GENERAL_REQUEST_CODE)
+        //mainDelegate.startActivityForResult(intent, GENERAL_REQUEST_CODE)
+        mainDelegate.editCourseResult?.launch(intent)
     }
 
     fun toTempPlayDate(name: String, token: String) {

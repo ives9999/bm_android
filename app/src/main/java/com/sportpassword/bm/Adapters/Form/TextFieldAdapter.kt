@@ -26,6 +26,7 @@ open class TextFieldAdapter(formItem: FormItem, clearClick:(formItem: FormItem)-
         viewHolder.clear.setOnClickListener {
             //clearClick(row)
             viewHolder.textField.setText("")
+            clearClick(formItem)
         }
 
         if (formItem.tooltip != null) {

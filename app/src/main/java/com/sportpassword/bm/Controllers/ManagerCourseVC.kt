@@ -7,6 +7,8 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.View
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.sportpassword.bm.Fragments.CourseItem
 import com.sportpassword.bm.Models.CourseTable
@@ -37,6 +39,24 @@ class ManagerCourseVC: MyTableVC() {
     var mysTable: CoursesTable? = null
 
     lateinit var dialog: DialogInterface
+
+    override var editCourseResult: ActivityResultLauncher<Intent>? = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { res ->
+
+        if (res.resultCode == Activity.RESULT_OK) {
+
+            if (res.data != null) {
+                val i: Intent? = res.data
+
+                if (i != null) {
+                    if (i.hasExtra("manager_token")) {
+                        manager_token = i.getStringExtra("manager_token")!!
+                        params["manager_token"] = manager_token!!
+                        refresh()
+                    }
+                }
+            }
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -76,22 +96,24 @@ class ManagerCourseVC: MyTableVC() {
 //        refresh()
 //    }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-
-        super.onActivityResult(requestCode, resultCode, data)
-        when (requestCode) {
-            GENERAL_REQUEST_CODE -> {
-
-                if (resultCode == Activity.RESULT_OK) {
-                    refresh()
-                }
-
-            }
-        }
-    }
+//    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+//
+//        super.onActivityResult(requestCode, resultCode, data)
+//        when (requestCode) {
+//            GENERAL_REQUEST_CODE -> {
+//
+//                if (resultCode == Activity.RESULT_OK) {
+//                    refresh()
+//                }
+//
+//            }
+//        }
+//    }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.add, menu)
+
+        //android:onClick="showSearchPanel" define in layout/menu_add.xml
         return true
     }
 
@@ -191,8 +213,8 @@ class ManagerCourseVC: MyTableVC() {
         if (member.validate < 1) {
             Alert.show(this@ManagerCourseVC, "錯誤", "未通過EMail認證，無法新增課程，認證完後，請先登出再登入")
         } else {
-            if (token != null) {
-                toEditCourse("新增課程", "", token!!)
+            if (manager_token != null) {
+                toEditCourse("新增課程", "", manager_token!!)
             }
         }
     }

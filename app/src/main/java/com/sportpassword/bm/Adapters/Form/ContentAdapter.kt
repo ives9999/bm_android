@@ -23,6 +23,7 @@ class ContentAdapter(formItem: FormItem, clearClick:(formItem: FormItem)->Unit, 
         if (formItem.value != null) {
             viewHolder.clear.visibility = View.VISIBLE
             viewHolder.clear.setOnClickListener {
+                viewHolder.detail.text = ""
                 clearClick(formItem)
             }
         } else {

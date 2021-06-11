@@ -38,12 +38,12 @@ class EditCourseVC : MyTableVC(), ImagePicker, ValueChangedDelegate {
     override var file: File? = null
     var params1: MutableMap<String, String> = mutableMapOf<String, String>()
 
-    lateinit override var imagePickerLayer: AlertDialog
-    lateinit override var alertView: View
-    lateinit override var imageView: ImageView
+    override lateinit var imagePickerLayer: AlertDialog
+    override lateinit var alertView: View
+    override lateinit var imageView: ImageView
 
     var title: String = ""
-    var course_token: String? = null
+    private var course_token: String? = null
     var coach_token: String? = null
 
     private var originW: Int = 0
@@ -52,8 +52,6 @@ class EditCourseVC : MyTableVC(), ImagePicker, ValueChangedDelegate {
     private var originMarginBottom = 0
     private lateinit var originScaleType: ImageView.ScaleType
     private var isFeaturedChange: Boolean = false
-
-    val SELECT_REQUEST_CODE = 1
 
     var table: CourseTable? = null
     var myTable: CourseTable? = null
@@ -175,6 +173,7 @@ class EditCourseVC : MyTableVC(), ImagePicker, ValueChangedDelegate {
 
         val clearClick = { formItem: FormItem ->
             formItem.reset()
+
         }
 
         val promptClick = {formItem: FormItem ->
@@ -266,8 +265,8 @@ class EditCourseVC : MyTableVC(), ImagePicker, ValueChangedDelegate {
         if (key == PRICE_UNIT_KEY) {
 
             val selected = formItem.sender as String
-
             toSelectSingle(SelectPriceUnitVC::class.java, key, selected, this, able_type)
+
         } else if (key == COURSE_KIND_KEY) {
 
             val selected = formItem.sender as String
@@ -347,79 +346,19 @@ class EditCourseVC : MyTableVC(), ImagePicker, ValueChangedDelegate {
     }
 
 
-//    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-//        super.onActivityResult(requestCode, resultCode, data)
-//        //println(data)
-//        when (requestCode) {
-//            ACTION_PHOTO_REQUEST_CODE -> {
-//                //println(data!!.data)
-//                dealPhoto(requestCode, resultCode, data)
-//            }
-//            ACTION_CAMERA_REQUEST_CODE -> {
-//                dealCamera(requestCode, resultCode, data)
-//            }
-//            SELECT_REQUEST_CODE -> {
-//                if (data != null) {
-//                    var key: String? = null
-//                    if (data.hasExtra("key")) {
-//                        key = data!!.getStringExtra("key")
-//                    }
-//                    var selected: String? = null
-//                    if (data.hasExtra("selected")) {
-//                        selected = data!!.getStringExtra("selected")
-//                    }
-////                println(selected)
-//
-//                    var selecteds: ArrayList<String>? = null
-//                    if (data.hasExtra("selecteds")) {
-//                        selecteds = data!!.getStringArrayListExtra("selecteds")
-//                    }
-//
-//                    var content: String? = null
-//                    if (data.hasExtra("content")) {
-//                        content = data!!.getStringExtra("content")
-//                    }
-//
-//                    var item: FormItem? = null
-//                    if (key == PRICE_UNIT_KEY) {
-//                        item = getFormItemFromKey(key) as PriceUnitFormItem
-//                    } else if (key == COURSE_KIND_KEY) {
-//                        item = getFormItemFromKey(key) as CourseKindFormItem
-//                    } else if (key == CYCLE_UNIT_KEY) {
-//                        item = getFormItemFromKey(key) as CycleUnitFormItem
-//                    } else if (key == WEEKDAY_KEY) {
-//                        item = getFormItemFromKey(key) as WeekdayFormItem
-//                    } else if (key == START_TIME_KEY || key == END_TIME_KEY) {
-//                        item = getFormItemFromKey(key) as TimeFormItem
-//                    } else if (key == CONTENT_KEY) {
-//                        item = getFormItemFromKey(key) as ContentFormItem
-//                    } else if (key == START_DATE_KEY || key == END_DATE_KEY) {
-//                        item = getFormItemFromKey(key) as DateFormItem
-//                    }
-//
-//                    if (item != null && selected != null) {
-//                        item.value = selected
-//                        item.make()
-//                    }
-//                    if (item != null && selecteds != null) {
-//                        var value: String = "-1"
-//                        if (key == WEEKDAY_KEY) {
-//                            val tmps: ArrayList<Int> = ArrayList(selecteds.map {it.toInt()})
-//                            value = Global.weekdaysToDBValue(tmps).toString()
-//                        }
-//                        item.value = value
-//                        item.make()
-//                    }
-//                    if (item != null && content != null) {
-//                        item.value = content
-//                        item.make()
-//                    }
-//
-//                    notifyChanged(true)
-//                }
-//            }
-//        }
-//    }
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        //println(data)
+        when (requestCode) {
+            ACTION_PHOTO_REQUEST_CODE -> {
+                //println(data!!.data)
+                dealPhoto(requestCode, resultCode, data)
+            }
+            ACTION_CAMERA_REQUEST_CODE -> {
+                dealCamera(requestCode, resultCode, data)
+            }
+        }
+    }
 
     override fun setImage(newFile: File?, url: String?) {
         featured_text.visibility = View.INVISIBLE
@@ -462,7 +401,7 @@ class EditCourseVC : MyTableVC(), ImagePicker, ValueChangedDelegate {
 
     override fun stepperValueChanged(number: Int, name: String) {}
 
-    fun getImageViewParams() {
+    private fun getImageViewParams() {
         val l = edit_featured.layoutParams as LinearLayout.LayoutParams
         originW = l.width
         originH = l.height
@@ -507,16 +446,17 @@ class EditCourseVC : MyTableVC(), ImagePicker, ValueChangedDelegate {
             Loading.hide(mask)
             if (success) {
                 if (CourseService.success) {
-                    Alert.update(this, action, {
+                    Alert.update(this, action) {
                         if (file != null) {
                             file!!.delete()
                         }
                         val update = Intent(NOTIF_COURSE_UPDATE)
                         LocalBroadcastManager.getInstance(this).sendBroadcast(update)
                         val intent = Intent()
+                        intent.putExtra("manager_token", member.token)
                         setResult(Activity.RESULT_OK, intent)
                         finish()
-                    })
+                    }
                 } else {
                     Alert.show(context, "錯誤", CourseService.msg)
                 }

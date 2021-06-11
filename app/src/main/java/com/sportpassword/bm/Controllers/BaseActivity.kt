@@ -147,6 +147,8 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
     open fun degreeSelected(selected: String, show: String) {}
     open fun contentEdit(key: String, content: String) {}
 
+    open var editCourseResult: ActivityResultLauncher<Intent>? = null
+
     val selectCityVC = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { res ->
         if (res.resultCode == Activity.RESULT_OK) {
 

@@ -38,9 +38,9 @@ class RegisterActivity : MyTableVC(), ImagePicker, ValueChangedDelegate {
     override var currentPhotoPath = ""
     override var filePath: String = ""
     override var file: File? = null
-    lateinit override var imagePickerLayer: AlertDialog
-    lateinit override var alertView: View
-    lateinit override var imageView: ImageView
+    override lateinit var imagePickerLayer: AlertDialog
+    override lateinit var alertView: View
+    override lateinit var imageView: ImageView
     private var originW: Int = 0
     private var originH: Int = 0
     private var originMarginTop = 0
@@ -588,7 +588,7 @@ class RegisterActivity : MyTableVC(), ImagePicker, ValueChangedDelegate {
         prev()
     }
 
-    fun getImageViewParams() {
+    private fun getImageViewParams() {
         val l = edit_featured.layoutParams as RelativeLayout.LayoutParams
         originW = l.width
         originH = l.height
