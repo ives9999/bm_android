@@ -247,25 +247,26 @@ class EditCourseVC : MyTableVC(), ImagePicker, ValueChangedDelegate {
 
         val key = formItem.name
 
-        val singleSelectIntent = Intent(this, SingleSelectVC::class.java)
-        singleSelectIntent.putExtra("title", formItem.title)
-        singleSelectIntent.putExtra("key", key)
-
-        val multiSelectIntent = Intent(this, MultiSelectVC::class.java)
-        multiSelectIntent.putExtra("title", formItem.title)
-        multiSelectIntent.putExtra("key", key)
+//        val singleSelectIntent = Intent(this, SingleSelectVC::class.java)
+//        singleSelectIntent.putExtra("title", formItem.title)
+//        singleSelectIntent.putExtra("key", key)
+//
+//        val multiSelectIntent = Intent(this, MultiSelectVC::class.java)
+//        multiSelectIntent.putExtra("title", formItem.title)
+//        multiSelectIntent.putExtra("key", key)
 
         val dateSelectIntent = Intent(this, DateSelectVC::class.java)
         dateSelectIntent.putExtra("title", formItem.title)
         dateSelectIntent.putExtra("key", key)
 
-        val contentIntent = Intent(this, ContentEditVC::class.java)
-        contentIntent.putExtra("title", formItem.title)
-        contentIntent.putExtra("key", key)
+//        val contentIntent = Intent(this, ContentEditVC::class.java)
+//        contentIntent.putExtra("title", formItem.title)
+//        contentIntent.putExtra("key", key)
 
         if (key == PRICE_UNIT_KEY) {
 
             val selected = formItem.sender as String
+
             toSelectSingle(SelectPriceUnitVC::class.java, key, selected, this, able_type)
         } else if (key == COURSE_KIND_KEY) {
 
@@ -282,25 +283,30 @@ class EditCourseVC : MyTableVC(), ImagePicker, ValueChangedDelegate {
             val tmp = formItem.sender as ArrayList<String>
             val selecteds: String = tmp.joinToString(",")
             toSelectWeekdays(selecteds, this, able_type)
+
         } else if (key == START_TIME_KEY || key == END_TIME_KEY) {
 
             val tmp = formItem.sender as HashMap<String, String>
             val selected = tmp.get("time")!!
             toSelectSingle(SelectTimeVC::class.java, key, selected, this, able_type)
+
         } else if (key == CONTENT_KEY) {
-            if (formItem.sender != null) {
-                val content = formItem.sender as String
-//                println(selecteds)
-                contentIntent.putExtra("content", content)
-            }
-            startActivityForResult(contentIntent, SELECT_REQUEST_CODE)
+
+            val content = formItem.sender as String
+            toEditContent(key, "詳細介紹", content, this)
+
         } else if (key == START_DATE_KEY || key == END_DATE_KEY) {
-            if (formItem.sender != null) {
-                val tmp = formItem.sender as HashMap<String, String>
-                val selected = tmp.get("date")!!
-                dateSelectIntent.putExtra("selected", selected)
-            }
-            startActivityForResult(dateSelectIntent, SELECT_REQUEST_CODE)
+
+            val tmp = formItem.sender as HashMap<String, String>
+            val selected = tmp.get("date")!!
+            toSelectDate(key, selected, this, able_type)
+
+//            if (formItem.sender != null) {
+//                val tmp = formItem.sender as HashMap<String, String>
+//                val selected = tmp.get("date")!!
+//                dateSelectIntent.putExtra("selected", selected)
+//            }
+//            startActivityForResult(dateSelectIntent, SELECT_REQUEST_CODE)
         }
 
     }
@@ -316,14 +322,13 @@ class EditCourseVC : MyTableVC(), ImagePicker, ValueChangedDelegate {
             show = Global.zoneIDToName(selected.toInt())
         } else if (key == PRICE_UNIT_KEY) {
             item = getFormItemFromKey(PriceUnitFormItem::class.java, key)
+        } else if (key == START_TIME_KEY || key == END_TIME_KEY) {
+            item = getFormItemFromKey(TimeFormItem::class.java, key)
+        } else if (key == COURSE_KIND_KEY) {
+            item = getFormItemFromKey(CourseKindFormItem::class.java, key)
+        } else if (key == CYCLE_UNIT_KEY) {
+            item = getFormItemFromKey(CycleUnitFormItem::class.java, key)
         }
-//        else if (key == START_TIME_KEY || key == END_TIME_KEY) {
-//            item = getFormItemFromKey(key) as TimeFormItem
-//        } else if (key == COURSE_KIND_KEY) {
-//            item = getFormItemFromKey(key) as CourseKindFormItem
-//        } else if (key == CYCLE_UNIT_KEY) {
-//            item = getFormItemFromKey(key) as CycleUnitFormItem
-//        }
         if (item != null) {
             item.value = selected
             item.make()
@@ -332,80 +337,89 @@ class EditCourseVC : MyTableVC(), ImagePicker, ValueChangedDelegate {
         notifyChanged(true)
     }
 
+    override fun contentEdit(key: String, content: String) {
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        //println(data)
-        when (requestCode) {
-            ACTION_PHOTO_REQUEST_CODE -> {
-                //println(data!!.data)
-                dealPhoto(requestCode, resultCode, data)
-            }
-            ACTION_CAMERA_REQUEST_CODE -> {
-                dealCamera(requestCode, resultCode, data)
-            }
-            SELECT_REQUEST_CODE -> {
-                if (data != null) {
-                    var key: String? = null
-                    if (data.hasExtra("key")) {
-                        key = data!!.getStringExtra("key")
-                    }
-                    var selected: String? = null
-                    if (data.hasExtra("selected")) {
-                        selected = data!!.getStringExtra("selected")
-                    }
-//                println(selected)
+        val item: ContentFormItem = getFormItemFromKey(key) as ContentFormItem
+        item.value = content
+        item.make()
 
-                    var selecteds: ArrayList<String>? = null
-                    if (data.hasExtra("selecteds")) {
-                        selecteds = data!!.getStringArrayListExtra("selecteds")
-                    }
-
-                    var content: String? = null
-                    if (data.hasExtra("content")) {
-                        content = data!!.getStringExtra("content")
-                    }
-
-                    var item: FormItem? = null
-                    if (key == PRICE_UNIT_KEY) {
-                        item = getFormItemFromKey(key) as PriceUnitFormItem
-                    } else if (key == COURSE_KIND_KEY) {
-                        item = getFormItemFromKey(key) as CourseKindFormItem
-                    } else if (key == CYCLE_UNIT_KEY) {
-                        item = getFormItemFromKey(key) as CycleUnitFormItem
-                    } else if (key == WEEKDAY_KEY) {
-                        item = getFormItemFromKey(key) as WeekdayFormItem
-                    } else if (key == START_TIME_KEY || key == END_TIME_KEY) {
-                        item = getFormItemFromKey(key) as TimeFormItem
-                    } else if (key == CONTENT_KEY) {
-                        item = getFormItemFromKey(key) as ContentFormItem
-                    } else if (key == START_DATE_KEY || key == END_DATE_KEY) {
-                        item = getFormItemFromKey(key) as DateFormItem
-                    }
-
-                    if (item != null && selected != null) {
-                        item.value = selected
-                        item.make()
-                    }
-                    if (item != null && selecteds != null) {
-                        var value: String = "-1"
-                        if (key == WEEKDAY_KEY) {
-                            val tmps: ArrayList<Int> = ArrayList(selecteds.map {it.toInt()})
-                            value = Global.weekdaysToDBValue(tmps).toString()
-                        }
-                        item.value = value
-                        item.make()
-                    }
-                    if (item != null && content != null) {
-                        item.value = content
-                        item.make()
-                    }
-
-                    notifyChanged(true)
-                }
-            }
-        }
+        notifyChanged(true)
     }
+
+
+//    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+//        super.onActivityResult(requestCode, resultCode, data)
+//        //println(data)
+//        when (requestCode) {
+//            ACTION_PHOTO_REQUEST_CODE -> {
+//                //println(data!!.data)
+//                dealPhoto(requestCode, resultCode, data)
+//            }
+//            ACTION_CAMERA_REQUEST_CODE -> {
+//                dealCamera(requestCode, resultCode, data)
+//            }
+//            SELECT_REQUEST_CODE -> {
+//                if (data != null) {
+//                    var key: String? = null
+//                    if (data.hasExtra("key")) {
+//                        key = data!!.getStringExtra("key")
+//                    }
+//                    var selected: String? = null
+//                    if (data.hasExtra("selected")) {
+//                        selected = data!!.getStringExtra("selected")
+//                    }
+////                println(selected)
+//
+//                    var selecteds: ArrayList<String>? = null
+//                    if (data.hasExtra("selecteds")) {
+//                        selecteds = data!!.getStringArrayListExtra("selecteds")
+//                    }
+//
+//                    var content: String? = null
+//                    if (data.hasExtra("content")) {
+//                        content = data!!.getStringExtra("content")
+//                    }
+//
+//                    var item: FormItem? = null
+//                    if (key == PRICE_UNIT_KEY) {
+//                        item = getFormItemFromKey(key) as PriceUnitFormItem
+//                    } else if (key == COURSE_KIND_KEY) {
+//                        item = getFormItemFromKey(key) as CourseKindFormItem
+//                    } else if (key == CYCLE_UNIT_KEY) {
+//                        item = getFormItemFromKey(key) as CycleUnitFormItem
+//                    } else if (key == WEEKDAY_KEY) {
+//                        item = getFormItemFromKey(key) as WeekdayFormItem
+//                    } else if (key == START_TIME_KEY || key == END_TIME_KEY) {
+//                        item = getFormItemFromKey(key) as TimeFormItem
+//                    } else if (key == CONTENT_KEY) {
+//                        item = getFormItemFromKey(key) as ContentFormItem
+//                    } else if (key == START_DATE_KEY || key == END_DATE_KEY) {
+//                        item = getFormItemFromKey(key) as DateFormItem
+//                    }
+//
+//                    if (item != null && selected != null) {
+//                        item.value = selected
+//                        item.make()
+//                    }
+//                    if (item != null && selecteds != null) {
+//                        var value: String = "-1"
+//                        if (key == WEEKDAY_KEY) {
+//                            val tmps: ArrayList<Int> = ArrayList(selecteds.map {it.toInt()})
+//                            value = Global.weekdaysToDBValue(tmps).toString()
+//                        }
+//                        item.value = value
+//                        item.make()
+//                    }
+//                    if (item != null && content != null) {
+//                        item.value = content
+//                        item.make()
+//                    }
+//
+//                    notifyChanged(true)
+//                }
+//            }
+//        }
+//    }
 
     override fun setImage(newFile: File?, url: String?) {
         featured_text.visibility = View.INVISIBLE

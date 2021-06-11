@@ -70,6 +70,20 @@ interface ToInterface {
         mainDelegate.startActivity(intent)
     }
 
+    fun toEditContent(key: String, title: String, content: String, delegate: BaseActivity?=null) {
+
+        val i = Intent(mainDelegate, ContentEditVC::class.java)
+        i.putExtra("key", key)
+        i.putExtra("title", title)
+        i.putExtra("content", content)
+
+        if (delegate != null) {
+            mainDelegate.delegate = delegate
+        }
+
+        mainDelegate.editContentVC.launch(i)
+    }
+
     fun toEditCourse(title: String, course_token: String, coach_token: String) {
         val intent = Intent(mainDelegate, EditCourseVC::class.java)
         intent.putExtra("title", title)
@@ -297,6 +311,7 @@ interface ToInterface {
         }
 
         mainDelegate.selectCityVC.launch(i)
+        //mainDelegate.vcResult!!.selectCityResult(mainDelegate)
     }
 
     fun toSelectArea(selected: String?=null, city_id: Int, delegate: BaseActivity?=null, able_type: String?=null) {
@@ -350,6 +365,25 @@ interface ToInterface {
         }
 
         mainDelegate.selectWeekdaysVC.launch(i)
+    }
+
+    fun toSelectDate(key: String, selected: String?=null, delegate: BaseActivity?=null, able_type: String?=null) {
+        val i = Intent(mainDelegate, DateSelectVC::class.java)
+
+        i.putExtra("key", key)
+        if (selected != null) {
+            i.putExtra("selected", selected)
+        }
+
+        if (able_type != null) {
+            i.putExtra("able_type", able_type)
+        }
+
+        if (delegate != null) {
+            mainDelegate.delegate = delegate
+        }
+
+        mainDelegate.selectDateVC.launch(i)
     }
 
     fun toSelectTime(key: String, selected: String?=null, delegate: BaseActivity?=null, able_type: String?=null) {

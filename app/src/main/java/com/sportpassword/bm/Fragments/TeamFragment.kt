@@ -8,6 +8,7 @@ import android.view.*
 import android.widget.ImageButton
 import androidx.annotation.RequiresApi
 import com.sportpassword.bm.Controllers.List1CellDelegate
+import com.sportpassword.bm.Controllers.SelectCityVC
 import com.sportpassword.bm.Controllers.ShowCourseVC
 import com.sportpassword.bm.Models.*
 import com.sportpassword.bm.R
@@ -125,7 +126,8 @@ class TeamFragment: TabFragment() {
             value = row["value"]!!
         }
         if (key == CITY_KEY) {
-            mainActivity!!.toSelectCity(value, null, able_type)
+            mainActivity!!.toSelectSingle(SelectCityVC::class.java, key, value, null, able_type)
+            //mainActivity!!.toSelectCity(value, null, able_type)
         } else if (key == ARENA_KEY) {
             row = getDefinedRow(CITY_KEY)
             var city_id: Int? = null

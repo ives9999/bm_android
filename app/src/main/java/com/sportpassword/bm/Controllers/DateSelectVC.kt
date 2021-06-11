@@ -9,8 +9,6 @@ import com.sportpassword.bm.Utilities.*
 import kotlinx.android.synthetic.main.date_select_vc.*
 import java.util.*
 
-
-
 class DateSelectVC : BaseActivity() {
 
     lateinit var key: String

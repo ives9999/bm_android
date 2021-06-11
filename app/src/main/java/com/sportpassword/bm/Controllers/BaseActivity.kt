@@ -21,6 +21,7 @@ import android.view.animation.TranslateAnimation
 import android.view.inputmethod.InputMethodManager
 import android.webkit.*
 import android.widget.*
+import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
@@ -69,6 +70,14 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
     override var mainDelegate: BaseActivity
         get() = this
         set(value) {}
+
+//    override var launcherDelegate: BaseActivity
+//        get() = this
+//        set(value) {}
+//
+//    override var launcher: ActivityResultLauncher<Intent>
+//        get() =
+//        set(value) {}
 
     var screenWidth: Int = 0
     var screenHeight: Int = 0
@@ -131,9 +140,12 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
 
     var able_type: String = "coach"
 
+    var vcResult: VCResult = VCResult()
+
     override fun singleSelected(key: String, selected: String) {}
     open fun arenaSelected(selected: String, show: String) {}
     open fun degreeSelected(selected: String, show: String) {}
+    open fun contentEdit(key: String, content: String) {}
 
     val selectCityVC = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { res ->
         if (res.resultCode == Activity.RESULT_OK) {
@@ -227,6 +239,40 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
                         }
                         val f = getFragment()
                         f?.degreeSelected(selected, show)
+                    }
+                }
+            }
+        }
+    }
+
+    val selectDateVC = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { res ->
+        if (res.resultCode == Activity.RESULT_OK) {
+
+            if (res.data != null) {
+                val i: Intent? = res.data
+
+                if (i != null) {
+                    var key: String = ""
+                    if (i.hasExtra("key")) {
+                        key = i.getStringExtra("key")!!
+                    }
+
+                    var selected: String = ""
+                    if (i.hasExtra("selected")) {
+                        selected = i.getStringExtra("selected")!! + ":00"
+                    }
+
+                    //activity
+                    if (delegate != null) {
+                        delegate!!.singleSelected(key, selected)
+                    } else {
+                        //fragment
+                        able_type = "course"
+                        if (i.hasExtra("able_type")) {
+                            able_type = i.getStringExtra("able_type")!!
+                        }
+                        val f = getFragment()
+                        f?.singleSelected(key, selected)
                     }
                 }
             }
@@ -441,6 +487,29 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
         }
     }
 
+    val editContentVC = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { res ->
+
+        if (res.resultCode == Activity.RESULT_OK) {
+
+            val i: Intent? = res.data
+            if (i != null) {
+                var key: String = ""
+                if (i.hasExtra("key")) {
+                    key = i.getStringExtra("key")!!
+                }
+
+                var content: String = ""
+                if (i.hasExtra("content")) {
+                    content = i.getStringExtra("content")!!
+                }
+
+                if (delegate != null) {
+                    delegate!!.contentEdit(key, content)
+                }
+            }
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -450,6 +519,8 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
 
         getScreenWidth()
         getScreenHeight()
+
+        vcResult.selectCityResult(this)
 
         //OneSignal.setSubscription(true)
         //OneSignal.promptLocation() prompt location auth when location auth is close
