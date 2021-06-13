@@ -43,7 +43,6 @@ open class SearchPanel {
     var layerTopPadding: Int = 100
     var layerBtnCount: Int = 2
 
-
     fun addSearchLayer(context: Context, p: ViewGroup, able_type: String, searchRows: ArrayList<HashMap<String, String>>) {
         parent = p
         this.context = context
