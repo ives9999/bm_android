@@ -1599,7 +1599,7 @@ open class DataService: BaseService() {
 
     fun signup(context: Context, token: String, member_token: String, date_token: String, course_deadline: String, complete: CompletionHandler) {
         val url = getSignupURL(token)
-        println(url)
+        //println(url)
 //        val jsonString: String = "{\"device\": \"app\", \"channel\": \"bm\", \"member_token\": " + member_token + ", \"signup_id\": " + signup_id.toString() + ", \"course_date\": " + course_date + ", \"course_deadline\": " + course_deadline + "}"
         val body: JSONObject = JSONObject()
         body.put("device", "app")
@@ -1607,7 +1607,7 @@ open class DataService: BaseService() {
         body.put("member_token", member_token)
         body.put("able_date_token", date_token)
         body.put("cancel_deadline", course_deadline)
-        println(body)
+        //println(body)
 
         MyHttpClient.instance.post(context, url, body.toString()) { success ->
 
