@@ -35,8 +35,8 @@ class CourseTable: Table() {
     var created_at_text: String = ""
     var coach: CoachTable? = null
     var dateTable: DateTable? = null
-    var signupNormalTables: ArrayList<SignupNormalTable> = arrayListOf()
-    var signupStandbyTables: ArrayList<SignupStandbyTable> = arrayListOf()
+    var signup_normal_models: ArrayList<SignupNormalTable> = arrayListOf()
+    var signup_standby_models: ArrayList<SignupStandbyTable> = arrayListOf()
 
     //var nextCourseTime: [String: String] = [String: String]()
     var isSignup: Boolean = false
@@ -68,7 +68,7 @@ class CourseTable: Table() {
         }
 
         if (weekday_arr.size > 0) {
-            var show: ArrayList<String> = arrayListOf()
+            val show: ArrayList<String> = arrayListOf()
             for (weekday in weekday_arr) {
                 val tmp: String = WEEKDAY.intToString(weekday)
                 show.add(tmp)
@@ -82,8 +82,8 @@ class CourseTable: Table() {
             people_limit_show = "未提供報名"
         }
 
-        if (signupNormalTables.size > 0) {
-            signup_count_show = "${signupNormalTables.size}位"
+        if (signup_normal_models.size > 0) {
+            signup_count_show = "${signup_normal_models.size}位"
         } else {
             signup_count_show = "0位"
         }

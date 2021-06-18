@@ -346,7 +346,7 @@ class CourseItem(override var context: Context, var _row: CourseTable): ListItem
 
         viewHolder.people_limitLbl.text = row.people_limit_show
 
-        if (row.signup_count_show.length > 0) {
+        if (row.signup_count_show.length > 0 && row.people_limit > 0) {
             viewHolder.signup_countLbl.text = "已報名:${row.signup_count_show}"
         } else {
             viewHolder.signup_countLbl.visibility = View.INVISIBLE

@@ -51,9 +51,6 @@ class ShowCourseVC : ShowVC() {
     lateinit var signupAdapter: GroupAdapter<ViewHolder>
     lateinit var coachAdapter: GroupAdapter<ViewHolder>
 
-//    var isSignup: Boolean = false
-//    var signup: Signup? = null
-
     var signup_date: JSONObject = JSONObject()
     var isSignup: Boolean = false
     var isStandby: Boolean = false
@@ -196,9 +193,24 @@ class ShowCourseVC : ShowVC() {
         val date: String = dateTable!!.date
         val start_time: String = myTable!!.start_time_show
         val end_time: String = myTable!!.end_time_show
-        signupDateLbl.text = "下次上課時間：" + date + " " + start_time + " ~ " + end_time
+        if (myTable!!.people_limit > 0) {
+            signupDateLbl.text = "下次上課時間：" + date + " " + start_time + " ~ " + end_time
+        } else {
+            signupDateLbl.text = "未提供報名"
+            signupButton.visibility = View.GONE
+        }
         val items = generateSignupItem()
         signupAdapter.update(items)
+
+        isSignup = myTable!!.isSignup
+        //isStandby
+        //canCancelSignup
+
+        if (isSignup) {
+            signupButton.text = "取消報名"
+        } else {
+            signupButton.text = "報名"
+        }
     }
 
     fun setCoachData() {
@@ -313,18 +325,18 @@ class ShowCourseVC : ShowVC() {
 ////                }
 //            }
                 var name = ""
-                if (myTable!!.signupNormalTables.count() > i) {
-                    val tmp = myTable!!.signupNormalTables[i].member_name?.let {
+                if (myTable!!.signup_normal_models.count() > i) {
+                    val tmp = myTable!!.signup_normal_models[i].member_name?.let {
                         name = it
                     }
                 }
                 val olCell = OlCell(this, (i + 1).toString(), name)
                 items.add(olCell)
             }
-            if (myTable!!.signupStandbyTables.count() > 0) {
-                for (i in 0..myTable!!.signupStandbyTables.count() - 1) {
+            if (myTable!!.signup_standby_models.count() > 0) {
+                for (i in 0..myTable!!.signup_standby_models.count() - 1) {
                     var name = ""
-                    val tmp = myTable!!.signupStandbyTables[i].member_name?.let {
+                    val tmp = myTable!!.signup_standby_models[i].member_name?.let {
                         name = it
                     }
                     val olCell = OlCell(this, "候補" + (i + 1).toString(), name)
@@ -447,7 +459,7 @@ class ShowCourseVC : ShowVC() {
         val alert = AlertDialog.Builder(this).create()
         alert.setTitle(title)
         alert.setMessage(msg)
-        if ((!isSignup && !canCancelSignup) || (isSignup && canCancelSignup)) {
+        if ((!myTable!!.isSignup && !canCancelSignup) || (myTable!!.isSignup && canCancelSignup)) {
             alert.setButton(AlertDialog.BUTTON_NEGATIVE, title) { _, _ ->
                 signup()
             }
@@ -512,6 +524,8 @@ class ShowCourseVC : ShowVC() {
                 course_deadline = signup_date.getString("deadline")
 
                 showSignupModal()
+            } else {
+                warning(CourseService.msg)
             }
         }
     }

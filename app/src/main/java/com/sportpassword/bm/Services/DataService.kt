@@ -1547,6 +1547,19 @@ open class DataService: BaseService() {
     open fun getSignupListURL(token: String? = null): String { return ""}
     open fun parseAbleForSingupList(data: JSONObject): SuperModel { return SuperModel(data) }
 
+
+//    {
+//        "success": true,
+//        "isSignup": false, 報名過了嗎？
+//        "cancel": false,
+//        "date": "2021-06-22",
+//        "deadline": "2021-06-22 15:00:00",
+//        "standby": true, 可以候補嗎？
+//        "isStandby": true,
+//        "cantSingup": false, 不能報名
+//        "msg": ""
+//    }
+
     fun signup_date(context: Context, token: String, member_token: String, date_token: String, complete: CompletionHandler) {
         val url = getSignupDateURL(token)
         //println(url)
@@ -1578,7 +1591,7 @@ open class DataService: BaseService() {
                     println("response is null")
                 }
             } else {
-                msg = "網路錯誤，無法跟伺服器更新資料"
+                msg = "從伺服器取得報名日期資料錯誤，請洽管理員"
                 complete(success)
             }
         }
@@ -1586,7 +1599,7 @@ open class DataService: BaseService() {
 
     fun signup(context: Context, token: String, member_token: String, date_token: String, course_deadline: String, complete: CompletionHandler) {
         val url = getSignupURL(token)
-        //print(url)
+        println(url)
 //        val jsonString: String = "{\"device\": \"app\", \"channel\": \"bm\", \"member_token\": " + member_token + ", \"signup_id\": " + signup_id.toString() + ", \"course_date\": " + course_date + ", \"course_deadline\": " + course_deadline + "}"
         val body: JSONObject = JSONObject()
         body.put("device", "app")
@@ -1594,6 +1607,7 @@ open class DataService: BaseService() {
         body.put("member_token", member_token)
         body.put("able_date_token", date_token)
         body.put("cancel_deadline", course_deadline)
+        println(body)
 
         MyHttpClient.instance.post(context, url, body.toString()) { success ->
 
