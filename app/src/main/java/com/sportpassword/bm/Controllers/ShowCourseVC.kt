@@ -186,6 +186,17 @@ class ShowCourseVC : ShowVC() {
                 //setNextTime()
                 setSignupData()
             }
+
+            if (myTable!!.isSignup) {
+                signupButton.text = "取消報名"
+            } else {
+                val count: Int = myTable!!.signup_normal_models.size
+                if (count >= myTable!!.people_limit) {
+                    signupButton.text = "候補"
+                } else {
+                    signupButton.text = "報名"
+                }
+            }
         }
     }
 
