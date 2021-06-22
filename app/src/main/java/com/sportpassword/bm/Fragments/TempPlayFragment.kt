@@ -4,13 +4,16 @@ package com.sportpassword.bm.Fragments
 import android.app.Activity
 import android.content.Intent
 import android.content.SharedPreferences
+import android.graphics.drawable.GradientDrawable
 import androidx.fragment.app.Fragment
 import android.os.Bundle
+import android.view.Gravity
 import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.LinearLayout
 import android.widget.RelativeLayout
 import android.widget.ScrollView
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -31,8 +34,10 @@ import com.sportpassword.bm.App
 import com.sportpassword.bm.Controllers.BaseActivity
 import com.sportpassword.bm.Controllers.HomeTotalAdVC
 import com.sportpassword.bm.Models.Arena
+import com.sportpassword.bm.Views.Tag
 import com.xwray.groupie.kotlinandroidextensions.Item
 import kotlinx.android.synthetic.main.tab_tempplay_search.*
+import kotlinx.android.synthetic.main.tag.view.*
 import org.jetbrains.anko.backgroundColor
 
 /**
@@ -69,6 +74,12 @@ class TempPlayFragment : TabFragment(), inter {
 
     var searchSections: ArrayList<Section> = arrayListOf()
     var mySections: ArrayList<HashMap<String, Any>> = arrayListOf()
+
+    var searchTags: ArrayList<HashMap<String, Any>> = arrayListOf(
+        hashMapOf("key" to "like", "selected" to true, "tag" to 0, "name" to "喜歡"),
+        hashMapOf("key" to "search", "selected" to false, "tag" to 1, "name" to "搜尋"),
+        hashMapOf("key" to "like", "selected" to false, "tag" to 2, "name" to "全部")
+    )
 
     //是否顯示開啟app進入頁面的廣告
     var firstTimeLoading: Boolean = false
@@ -144,6 +155,63 @@ class TempPlayFragment : TabFragment(), inter {
         val adContainer: RelativeLayout = RelativeLayout(mainActivity!!)
         adContainer.layoutParams = lp
         adContainer.backgroundColor = ContextCompat.getColor(mainActivity!!, R.color.MY_RED)
+
+        val lp1 = LinearLayout.LayoutParams(240, 120)
+        lp1.gravity = Gravity.CENTER_VERTICAL
+        //lp1.weight = 1F
+        val textSize: Float = 16F
+
+
+        val lp2 = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT)
+        lp2.gravity = Gravity.CENTER
+        lp2.weight = 1F
+
+//        tag_container.addView(ll)
+//        val tag: Tag = Tag(mainActivity!!)
+//        ll.addView(tag)
+//        tag.layoutParams = lp2
+//        tag.gravity = Gravity.CENTER
+//        tag.tag_view.text = "喜歡"
+//        tag.tag_view.layoutParams = lp1
+//        tag.tag_view.textSize = textSize
+
+
+//        val ll1 = LinearLayout(mainActivity!!)
+//        ll1.layoutParams = llParams
+//        ll1.backgroundColor = ContextCompat.getColor(mainActivity!!, R.color.MY_RED)
+//        tag_container.addView(ll1)
+//
+//        val ll2 = LinearLayout(mainActivity!!)
+//        ll2.layoutParams = llParams
+//        ll2.backgroundColor = ContextCompat.getColor(mainActivity!!, R.color.FBBLUE)
+//        tag_container.addView(ll2)
+
+
+
+
+        for (searchTag in searchTags) {
+
+            val tag: Tag = Tag(mainActivity!!)
+            tag_container.addView(tag)
+            tag.layoutParams = lp2
+            tag.gravity = Gravity.CENTER
+
+            var idx: Int = 1000
+            if (searchTag.containsKey("tag")) {
+                idx = searchTag["tag"] as Int
+            }
+            tag.tag = idx
+
+            var name: String = "預設"
+            if (searchTag.containsKey("name")) {
+                name = searchTag["name"] as String
+            }
+            tag.tag_view.text = name
+
+            tag.tag_view.layoutParams = lp1
+            tag.tag_view.textSize = textSize
+        }
+
     }
 
     fun onClick(item: com.xwray.groupie.Item<ViewHolder>) {
