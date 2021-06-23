@@ -156,44 +156,20 @@ class TempPlayFragment : TabFragment(), inter {
         adContainer.layoutParams = lp
         adContainer.backgroundColor = ContextCompat.getColor(mainActivity!!, R.color.MY_RED)
 
-        val lp1 = LinearLayout.LayoutParams(240, 120)
-        lp1.gravity = Gravity.CENTER_VERTICAL
+        val lp_tag = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT)
+        lp_tag.gravity = Gravity.CENTER
+        lp_tag.weight = 1F
+
+//        val lp_tag_view = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT)
+//        lp_tag_view.gravity = Gravity.CENTER_VERTICAL
         //lp1.weight = 1F
         val textSize: Float = 16F
-
-
-        val lp2 = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT)
-        lp2.gravity = Gravity.CENTER
-        lp2.weight = 1F
-
-//        tag_container.addView(ll)
-//        val tag: Tag = Tag(mainActivity!!)
-//        ll.addView(tag)
-//        tag.layoutParams = lp2
-//        tag.gravity = Gravity.CENTER
-//        tag.tag_view.text = "喜歡"
-//        tag.tag_view.layoutParams = lp1
-//        tag.tag_view.textSize = textSize
-
-
-//        val ll1 = LinearLayout(mainActivity!!)
-//        ll1.layoutParams = llParams
-//        ll1.backgroundColor = ContextCompat.getColor(mainActivity!!, R.color.MY_RED)
-//        tag_container.addView(ll1)
-//
-//        val ll2 = LinearLayout(mainActivity!!)
-//        ll2.layoutParams = llParams
-//        ll2.backgroundColor = ContextCompat.getColor(mainActivity!!, R.color.FBBLUE)
-//        tag_container.addView(ll2)
-
-
-
 
         for (searchTag in searchTags) {
 
             val tag: Tag = Tag(mainActivity!!)
             tag_container.addView(tag)
-            tag.layoutParams = lp2
+            tag.layoutParams = lp_tag
             tag.gravity = Gravity.CENTER
 
             var idx: Int = 1000
@@ -208,8 +184,9 @@ class TempPlayFragment : TabFragment(), inter {
             }
             tag.tag_view.text = name
 
-            tag.tag_view.layoutParams = lp1
+//            tag.tag_view.layoutParams = lp_tag_view
             tag.tag_view.textSize = textSize
+            tag.tag_view.setPadding(60, 15, 60, 15)
         }
 
     }

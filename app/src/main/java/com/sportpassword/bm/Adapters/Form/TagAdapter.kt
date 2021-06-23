@@ -3,9 +3,12 @@ package com.sportpassword.bm.Adapters.Form
 import android.content.Context
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
 import android.widget.RadioButton
 import android.widget.TableLayout
 import android.widget.TableRow
+import androidx.core.content.ContextCompat
+import androidx.recyclerview.widget.RecyclerView
 import com.sportpassword.bm.Form.BaseForm
 import com.sportpassword.bm.Form.FormItem.FormItem
 import com.sportpassword.bm.Form.FormItem.TagFormItem
@@ -16,6 +19,8 @@ import com.sportpassword.bm.Views.Tag
 import com.xwray.groupie.kotlinandroidextensions.ViewHolder
 import kotlinx.android.synthetic.main.formitem_tag.*
 import kotlinx.android.synthetic.main.tag.view.*
+import org.jetbrains.anko.Orientation
+import org.jetbrains.anko.backgroundColor
 
 class TagAdapter(formItem: FormItem): FormItemAdapter(formItem) {
 
@@ -52,15 +57,19 @@ class TagAdapter(formItem: FormItem): FormItemAdapter(formItem) {
         if (r > 0) { row = q + 1 } else  { row = q }
 
         viewHolder.tag_container.removeAllViews()
-        var tableRow: TableRow? = null
+        var tableRow: LinearLayout? = null
         count = 0
         for (tagDict in tagDicts) {
             var (rowCount, columnCount) = count.quotientAndRemainder(column)
             rowCount++
             columnCount++
             if (columnCount == 1) {
-                tableRow = TableRow(context)
-                tableRow.layoutParams = ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT)
+                tableRow = LinearLayout(context)
+                tableRow.orientation = LinearLayout.HORIZONTAL
+                val lp = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT)
+                lp.setMargins(0, 20, 0, 20)
+                tableRow.layoutParams = lp
+                tableRow.backgroundColor = ContextCompat.getColor(context, R.color.FBBLUE)
                 viewHolder.tag_container.addView(tableRow)
             }
 
