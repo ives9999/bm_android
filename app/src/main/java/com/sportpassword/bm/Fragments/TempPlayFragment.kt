@@ -89,7 +89,7 @@ class TempPlayFragment : TabFragment(), inter {
         searchRows = arrayListOf(
             hashMapOf("title" to "關鍵字","show" to "全部","key" to KEYWORD_KEY,"value" to ""),
             hashMapOf("title" to "縣市","show" to "全部","key" to CITY_KEY,"value" to ""),
-            hashMapOf("title" to "日期","show" to "全部","key" to WEEKDAY_KEY,"value" to ""),
+            hashMapOf("title" to "星期幾","show" to "全部","key" to WEEKDAY_KEY,"value" to ""),
             hashMapOf("title" to "時段","show" to "全部","key" to START_TIME_KEY,"value" to ""),
             hashMapOf("title" to "球館","show" to "全部","key" to ARENA_KEY,"value" to ""),
             hashMapOf("title" to "程度","show" to "全部","key" to DEGREE_KEY,"value" to "")
@@ -125,8 +125,9 @@ class TempPlayFragment : TabFragment(), inter {
 
         super.onViewCreated(view, savedInstanceState)
 
-        recyclerView = search_container
-        recyclerView.adapter = adapter
+//        recyclerView = search_container
+//        recyclerView.adapter = adapter
+
         adapter.setOnItemClickListener { item, _ ->
             onClick(item)
         }
@@ -182,7 +183,9 @@ class TempPlayFragment : TabFragment(), inter {
         }
         updateTabSelected(selectedTagIdx)
 
-        submit_btn.visibility = View.GONE
+        footer.visibility = View.GONE
+        remain.visibility = View.GONE
+
         recyclerView = search_container
         maskView = mask
 //        recyclerView.setHasFixedSize(true)
@@ -230,14 +233,24 @@ class TempPlayFragment : TabFragment(), inter {
             if (!selected) {
                 updateTabSelected(idx)
                 selectedTagIdx = idx
-                if (selectedTagIdx == 1) {
-                    submit_btn.visibility = View.VISIBLE
-                    //tableViewBottomConstraint.constant = 100
-                    //tableView.reloadData()
-                } else {
-                    submit_btn.visibility = View.GONE
-                    //tableViewBottomConstraint.constant = 0
-                    //refresh()
+                when (selectedTagIdx) {
+                    1-> {
+                        footer.visibility = View.VISIBLE
+                        remain.visibility = View.VISIBLE
+                        generateSections()
+                    }
+                    0-> {
+                        footer.visibility = View.GONE
+                        remain.visibility = View.GONE
+                        member_like = true
+                        refresh()
+                    }
+                    2-> {
+                        footer.visibility = View.GONE
+                        remain.visibility = View.GONE
+                        member_like = false
+                        refresh()
+                    }
                 }
             }
         }

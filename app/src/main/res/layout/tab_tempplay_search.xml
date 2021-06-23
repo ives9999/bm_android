@@ -1,28 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical"
     android:background="@drawable/background"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <LinearLayout
+        android:id="@+id/tag_container"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:layout_alignParentTop="true"
+        android:orientation="horizontal">
+
+    </LinearLayout>
+
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_below="@id/tag_container">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
-
-            <LinearLayout
-                android:id="@+id/tag_container"
-                android:layout_width="match_parent"
-                android:layout_height="80dp"
-                android:orientation="horizontal">
-
-            </LinearLayout>
 
 
             <androidx.recyclerview.widget.RecyclerView
@@ -34,25 +35,34 @@
 
             </androidx.recyclerview.widget.RecyclerView>
 
-            <Button
-                android:id="@+id/submit_btn"
-                style="@style/submit_button"
-                android:layout_width="wrap_content"
-                android:layout_height="30dp"
-                android:layout_gravity="center"
-                android:layout_marginTop="24dp"
-                android:layout_marginBottom="24dp"
-                android:text="送出"
-                app:layout_constraintTop_toBottomOf="@+id/search_container" />
-
             <LinearLayout
+                android:id="@+id/remain"
                 android:layout_width="match_parent"
-                android:layout_height="30dp"
-                android:orientation="vertical">
+                android:layout_height="80dp"
+                android:orientation="vertical" />
 
-            </LinearLayout>
         </LinearLayout>
     </ScrollView>
+
+    <LinearLayout
+        android:id="@+id/footer"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_alignParentBottom="true"
+        android:background="@color/MY_GREEN"
+        android:gravity="center|center_vertical"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/submit_btn"
+            style="@style/submit_button"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:text="送出"
+            android:textSize="16dp" />
+
+
+    </LinearLayout>
     <include layout="@layout/mask" />
 
-</LinearLayout>
+</RelativeLayout>

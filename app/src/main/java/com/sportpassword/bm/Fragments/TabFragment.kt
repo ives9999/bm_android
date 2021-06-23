@@ -87,6 +87,7 @@ open class TabFragment : Fragment(), SearchItemDelegate, List1CellDelegate, Seri
     var params: HashMap<String, Any> = hashMapOf()
     var tables: Tables? = null
     var able_type: String = "course"
+    var member_like: Boolean = false
 
     var searchRows: ArrayList<HashMap<String, String>> = arrayListOf()
 
