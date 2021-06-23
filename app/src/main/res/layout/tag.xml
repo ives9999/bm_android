@@ -10,14 +10,14 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:background="#F44336"
-        android:fontFamily="monospace"
+        android:fontFamily="sans-serif-smallcaps"
+        android:paddingStart="20dp"
+        android:paddingTop="8dp"
+        android:paddingEnd="20dp"
+        android:paddingBottom="8dp"
         android:text="tag"
         android:textColor="#FFFFFF"
-        android:paddingStart="28dp"
-        android:paddingTop="6dp"
-        android:paddingEnd="28dp"
-        android:paddingBottom="6dp"
-        android:textSize="18sp"
+        android:textSize="16dp"
         android:textStyle="bold" />
 
 </LinearLayout>

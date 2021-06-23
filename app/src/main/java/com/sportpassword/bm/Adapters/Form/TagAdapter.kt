@@ -1,6 +1,7 @@
 package com.sportpassword.bm.Adapters.Form
 
 import android.content.Context
+import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
@@ -66,15 +67,19 @@ class TagAdapter(formItem: FormItem): FormItemAdapter(formItem) {
             if (columnCount == 1) {
                 tableRow = LinearLayout(context)
                 tableRow.orientation = LinearLayout.HORIZONTAL
-                val lp = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT)
-                lp.setMargins(0, 20, 0, 20)
+                val lp = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 180)
                 tableRow.layoutParams = lp
-                tableRow.backgroundColor = ContextCompat.getColor(context, R.color.FBBLUE)
+//                tableRow.backgroundColor = ContextCompat.getColor(context, R.color.FBBLUE)
                 viewHolder.tag_container.addView(tableRow)
             }
 
+            val lp_tag = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT)
+            lp_tag.gravity = Gravity.CENTER
+            lp_tag.weight = 1F
+
             for ((key, value) in tagDict) {
                 val tag: Tag = Tag(context)
+                tag.layoutParams = lp_tag
                 tableRow!!.addView(tag)
                 tag.key = key
                 tag.value = value

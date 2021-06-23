@@ -1,27 +1,19 @@
 package com.sportpassword.bm.Fragments
 
 
-import android.app.Activity
 import android.content.Intent
-import android.content.SharedPreferences
-import android.graphics.drawable.GradientDrawable
 import androidx.fragment.app.Fragment
 import android.os.Bundle
 import android.view.Gravity
-import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.LinearLayout
 import android.widget.RelativeLayout
-import android.widget.ScrollView
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
+import com.google.gson.JsonParseException
 import com.sportpassword.bm.Adapters.inter
-import com.sportpassword.bm.Controllers.EditItemActivity
-import com.sportpassword.bm.Controllers.TempPlayVC
-import com.sportpassword.bm.Models.City
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Utilities.*
 import com.sportpassword.bm.Adapters.GroupSection
@@ -30,12 +22,12 @@ import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.Section
 import com.xwray.groupie.ViewHolder
 import com.sportpassword.bm.Adapters.SearchItem
-import com.sportpassword.bm.App
-import com.sportpassword.bm.Controllers.BaseActivity
 import com.sportpassword.bm.Controllers.HomeTotalAdVC
-import com.sportpassword.bm.Models.Arena
+import com.sportpassword.bm.Models.TeamsTable
+import com.sportpassword.bm.Services.TeamService
 import com.sportpassword.bm.Views.Tag
 import com.xwray.groupie.kotlinandroidextensions.Item
+import kotlinx.android.synthetic.main.mask.*
 import kotlinx.android.synthetic.main.tab_tempplay_search.*
 import kotlinx.android.synthetic.main.tag.view.*
 import org.jetbrains.anko.backgroundColor
@@ -72,14 +64,17 @@ class TempPlayFragment : TabFragment(), inter {
 //    var degrees: ArrayList<DEGREE> = arrayListOf()
 //    var keyword: String = ""
 
+    var mysTable: TeamsTable? = null
+
     var searchSections: ArrayList<Section> = arrayListOf()
     var mySections: ArrayList<HashMap<String, Any>> = arrayListOf()
 
     var searchTags: ArrayList<HashMap<String, Any>> = arrayListOf(
-        hashMapOf("key" to "like", "selected" to true, "tag" to 0, "name" to "喜歡"),
-        hashMapOf("key" to "search", "selected" to false, "tag" to 1, "name" to "搜尋"),
-        hashMapOf("key" to "like", "selected" to false, "tag" to 2, "name" to "全部")
+        hashMapOf("key" to "like", "selected" to true, "tag" to 0, "name" to "喜歡", "class" to ""),
+        hashMapOf("key" to "search", "selected" to false, "tag" to 1, "name" to "搜尋", "class" to ""),
+        hashMapOf("key" to "like", "selected" to false, "tag" to 2, "name" to "全部", "class" to "")
     )
+    var selectedTagIdx: Int = 0
 
     //是否顯示開啟app進入頁面的廣告
     var firstTimeLoading: Boolean = false
@@ -107,6 +102,7 @@ class TempPlayFragment : TabFragment(), inter {
         )
 
         super.onCreate(savedInstanceState)
+        dataService = TeamService
 
         if (firstTimeLoading) {
             val intent = Intent(activity, HomeTotalAdVC::class.java)
@@ -115,17 +111,7 @@ class TempPlayFragment : TabFragment(), inter {
         }
 
         adapter = GroupAdapter()
-        generateSections()
-
-//        setData()
-
-//        for ((idx, title) in sections.withIndex()) {
-//            val expandableGroup = ExpandableGroup(GroupSection(title), true)
-//            items = generateItems(idx)
-//            adapterSections[idx].addAll(items)
-//            expandableGroup.add(adapterSections[idx])
-//            adapter.add(expandableGroup)
-//        }
+//        generateSections()
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -165,7 +151,7 @@ class TempPlayFragment : TabFragment(), inter {
         //lp1.weight = 1F
         val textSize: Float = 16F
 
-        for (searchTag in searchTags) {
+        for ((i, searchTag) in searchTags.withIndex()) {
 
             val tag: Tag = Tag(mainActivity!!)
             tag_container.addView(tag)
@@ -187,8 +173,97 @@ class TempPlayFragment : TabFragment(), inter {
 //            tag.tag_view.layoutParams = lp_tag_view
             tag.tag_view.textSize = textSize
             tag.tag_view.setPadding(60, 15, 60, 15)
+
+            searchTags[i]["class"] = tag
+
+            tag.setOnClickListener {
+                tabPressed(it)
+            }
+        }
+        updateTabSelected(selectedTagIdx)
+
+        submit_btn.visibility = View.GONE
+        recyclerView = search_container
+        maskView = mask
+//        recyclerView.setHasFixedSize(true)
+        setRecyclerViewScrollListener()
+//        refreshLayout = tab_refresh
+//        setRecyclerViewRefreshListener()
+        recyclerView.adapter = adapter
+        refresh()
+    }
+
+    override fun genericTable() {
+        //println(dataService.jsonString)
+        try {
+            mysTable = jsonToModels<TeamsTable>(dataService.jsonString)
+        } catch (e: JsonParseException) {
+            println(e.localizedMessage)
+        }
+        if (mysTable != null) {
+            tables = mysTable
+        }
+    }
+
+    override fun generateItems(): ArrayList<Item> {
+        if (mysTable != null) {
+            for (row in mysTable!!.rows) {
+                row.filterRow()
+                val myItem = TeamItem(requireContext(), row)
+                myItem.list1CellDelegate = this
+                items.add(myItem)
+            }
         }
 
+        return items
+    }
+
+    fun tabPressed(view: View) {
+
+        val tag: Tag = view as Tag
+        val idx: Int? = tag.tag as? Int
+        if (idx != null) {
+            val selectedTag: HashMap<String, Any> = searchTags[idx]
+            val selected: Boolean = selectedTag["selected"] as? Boolean == true
+
+            //按了其他頁面的按鈕
+            if (!selected) {
+                updateTabSelected(idx)
+                selectedTagIdx = idx
+                if (selectedTagIdx == 1) {
+                    submit_btn.visibility = View.VISIBLE
+                    //tableViewBottomConstraint.constant = 100
+                    //tableView.reloadData()
+                } else {
+                    submit_btn.visibility = View.GONE
+                    //tableViewBottomConstraint.constant = 0
+                    //refresh()
+                }
+            }
+        }
+    }
+
+    private fun updateTabSelected(idx: Int) {
+
+        // set user click which tag, set tag selected is true
+        for ((i, searchTag) in searchTags.withIndex()) {
+            searchTag["selected"] = i == idx
+            searchTags[i] = searchTag
+        }
+        setTabSelectedStyle()
+    }
+
+    private fun setTabSelectedStyle() {
+
+        for (searchTag in searchTags) {
+            if (searchTag.containsKey("class")) {
+                val tag: Tag? = searchTag["class"] as? Tag
+                if (tag != null) {
+                    tag.isChecked = searchTag["selected"] as Boolean
+                    tag.setSelectedStyle()
+                }
+            }
+        }
     }
 
     fun onClick(item: com.xwray.groupie.Item<ViewHolder>) {
