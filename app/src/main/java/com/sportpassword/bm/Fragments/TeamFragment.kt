@@ -223,18 +223,25 @@ class TeamItem(override var context: Context, var _row: TeamTable): ListItem<Tab
 
         val row: TeamTable = _row
 
-        if (row.city_show.length > 0) {
-            viewHolder.cityBtn.text = row.city_show
+//        if (row.city_show.length > 0) {
+//            viewHolder.cityBtn.text = row.city_show
+//            viewHolder.cityBtn.setOnClickListener {
+//                if (list1CellDelegate != null) {
+//                    list1CellDelegate!!.cellCity(row)
+//                }
+//            }
+//        } else {
+//            viewHolder.cityBtn.visibility = View.GONE
+//        }
+
+        if (row.arena!!.name != null && row.arena!!.name.length > 0) {
+            viewHolder.cityBtn.text = row.arena!!.city_show
             viewHolder.cityBtn.setOnClickListener {
                 if (list1CellDelegate != null) {
                     list1CellDelegate!!.cellCity(row)
                 }
             }
-        } else {
-            viewHolder.cityBtn.visibility = View.GONE
-        }
 
-        if (row.arena != null) {
             viewHolder.arenaBtn.text = row.arena!!.name
             viewHolder.arenaBtn.setOnClickListener {
                 if (list1CellDelegate != null) {
@@ -242,6 +249,7 @@ class TeamItem(override var context: Context, var _row: TeamTable): ListItem<Tab
                 }
             }
         } else {
+            viewHolder.cityBtn.visibility = View.GONE
             viewHolder.arenaBtn.visibility = View.GONE
         }
 

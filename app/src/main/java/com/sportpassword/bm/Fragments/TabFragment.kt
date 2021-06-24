@@ -22,6 +22,7 @@ import com.sportpassword.bm.Models.*
 
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.DataService
+import com.sportpassword.bm.Services.MemberService
 import com.sportpassword.bm.Utilities.*
 import com.sportpassword.bm.member
 import com.squareup.picasso.Picasso
@@ -74,6 +75,7 @@ open class TabFragment : Fragment(), SearchItemDelegate, List1CellDelegate, Seri
     protected val adapterSections: ArrayList<Section> = arrayListOf()
 
     protected lateinit var dataService: DataService
+    protected var jsonString: String = ""
     protected lateinit var that: TabFragment
 
     protected lateinit var refreshListener: SwipeRefreshLayout.OnRefreshListener
@@ -179,6 +181,7 @@ open class TabFragment : Fragment(), SearchItemDelegate, List1CellDelegate, Seri
         theFirstTime = true
         adapter.clear()
         items.clear()
+        //println(perPage)
         getDataStart1(page, perPage)
     }
 
@@ -188,8 +191,16 @@ open class TabFragment : Fragment(), SearchItemDelegate, List1CellDelegate, Seri
         //println(mainActivity!!.params)
         loading = true
 
-        dataService.getList1(requireContext(), null, params, _page, _perPage) { success ->
-            getDataEnd1(success)
+        if (member_like) {
+            MemberService.likelist(requireContext(), able_type, "喜歡", _page, _perPage) { success ->
+                jsonString = MemberService.jsonString
+                getDataEnd1(success)
+            }
+        } else {
+            dataService.getList1(requireContext(), null, params, _page, _perPage) { success ->
+                jsonString = dataService.jsonString
+                getDataEnd1(success)
+            }
         }
     }
 
@@ -197,8 +208,8 @@ open class TabFragment : Fragment(), SearchItemDelegate, List1CellDelegate, Seri
         if (success) {
             //if (theFirstTime) {
 
-                if (dataService.jsonString.isNotEmpty()) {
-                    //println(dataService.jsonString)
+                if (jsonString.isNotEmpty()) {
+                    //println(jsonString)
                     genericTable()
 
                     //superCourses = dataService.superModel as SuperCourses

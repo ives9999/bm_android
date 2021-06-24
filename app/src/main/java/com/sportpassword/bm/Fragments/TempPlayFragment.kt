@@ -84,7 +84,7 @@ class TempPlayFragment : TabFragment(), inter {
 
         //sections = arrayListOf("一般", "更多")
 
-        able_type = "temp_play"
+        able_type = "team"
 
         searchRows = arrayListOf(
             hashMapOf("title" to "關鍵字","show" to "全部","key" to KEYWORD_KEY,"value" to ""),
@@ -193,13 +193,14 @@ class TempPlayFragment : TabFragment(), inter {
 //        refreshLayout = tab_refresh
 //        setRecyclerViewRefreshListener()
         recyclerView.adapter = adapter
+        member_like = true
         refresh()
     }
 
     override fun genericTable() {
         //println(dataService.jsonString)
         try {
-            mysTable = jsonToModels<TeamsTable>(dataService.jsonString)
+            mysTable = jsonToModels<TeamsTable>(jsonString)
         } catch (e: JsonParseException) {
             println(e.localizedMessage)
         }

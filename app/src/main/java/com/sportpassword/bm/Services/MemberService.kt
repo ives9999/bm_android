@@ -626,18 +626,18 @@ object MemberService: DataService() {
         )
         val objectMapper = ObjectMapper()
         val body: String = objectMapper.writeValueAsString(params)
-        println(body)
+//        println(body)
 
         val url: String = URL_MEMBER_LIKELIST
-        println(url)
+//        println(url)
 
         MyHttpClient.instance.post(context, url, body) { success ->
             if (success) {
                 val response = MyHttpClient.instance.response
                 if (response != null) {
                     try {
-                        this.jsonString = response.toString()
-                        //println(jsonString)
+                        jsonString = response.toString()
+//                        println(jsonString)
                         this.success = true
                     } catch (e: Exception) {
                         this.success = false
