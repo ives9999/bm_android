@@ -192,6 +192,8 @@ open class TabFragment : Fragment(), SearchItemDelegate, List1CellDelegate, Seri
         loading = true
 
         if (member_like) {
+            //var _able_type: String = able_type
+            //if (able_type == "temp_play") _able_type = "team"
             MemberService.likelist(requireContext(), able_type, "喜歡", _page, _perPage) { success ->
                 jsonString = MemberService.jsonString
                 getDataEnd1(success)

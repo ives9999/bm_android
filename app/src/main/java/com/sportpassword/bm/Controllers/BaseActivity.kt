@@ -1660,7 +1660,7 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
                 _frag = frag as CourseFragment
                 break
             }
-            if (able_type == "temp_play" && frag::class == TempPlayFragment::class) {
+            if (able_type == "team" && frag::class == TempPlayFragment::class) {
                 _frag = frag as TempPlayFragment
                 break
             }
