@@ -149,6 +149,99 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
 
     open var editCourseResult: ActivityResultLauncher<Intent>? = null
 
+    val editContentVC = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { res ->
+
+        if (res.resultCode == Activity.RESULT_OK) {
+
+            val i: Intent? = res.data
+            if (i != null) {
+                var key: String = ""
+                if (i.hasExtra("key")) {
+                    key = i.getStringExtra("key")!!
+                }
+
+                var content: String = ""
+                if (i.hasExtra("content")) {
+                    content = i.getStringExtra("content")!!
+                }
+
+                if (delegate != null) {
+                    delegate!!.contentEdit(key, content)
+                }
+            }
+        }
+    }
+
+    val selectAreaVC = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { res ->
+        if (res.resultCode == Activity.RESULT_OK) {
+
+            if (res.data != null) {
+                val i: Intent? = res.data
+
+                if (i != null) {
+                    var key: String = AREA_KEY
+                    var selected: String = ""
+                    if (i.hasExtra("selected")) {
+                        selected = i.getStringExtra("selected")!!
+                    }
+
+                    var show: String = ""
+                    if (i.hasExtra("show")) {
+                        show = i.getStringExtra("show")!!
+                    }
+
+                    //activity
+                    if (delegate != null) {
+                        delegate!!.singleSelected(key, selected)
+                    } else {
+                        //fragment
+                        able_type = "course"
+                        if (i.hasExtra("able_type")) {
+                            able_type = i.getStringExtra("able_type")!!
+                        }
+                        val f = getFragment()
+                        f?.singleSelected(key, selected)
+                    }
+                }
+            }
+        }
+    }
+
+    val selectArenaVC = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { res ->
+        if (res.resultCode == Activity.RESULT_OK) {
+
+            if (res.data != null) {
+                val i: Intent? = res.data
+
+                if (i != null) {
+                    var key: String = ARENA_KEY
+                    var selected: String = ""
+                    if (i.hasExtra("selected")) {
+                        selected = i.getStringExtra("selected")!!
+                    }
+
+                    var show: String = ""
+                    if (i.hasExtra("show")) {
+                        show = i.getStringExtra("show")!!
+                    }
+
+                    //activity
+                    if (delegate != null) {
+                        delegate!!.arenaSelected(selected, show)
+                    } else {
+                        //fragment
+                        able_type = "course"
+                        if (i.hasExtra("able_type")) {
+                            able_type = i.getStringExtra("able_type")!!
+                        }
+                        val f = getFragment()
+                        f?.arenaSelected(selected, show)
+                    }
+                }
+            }
+        }
+    }
+
     val selectCityVC = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { res ->
         if (res.resultCode == Activity.RESULT_OK) {
 
@@ -175,6 +268,149 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
                         if (f != null) {
                             f.singleSelected(key, selected)
                         }
+                    }
+                }
+            }
+        }
+    }
+
+    val selectDateVC = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { res ->
+        if (res.resultCode == Activity.RESULT_OK) {
+
+            if (res.data != null) {
+                val i: Intent? = res.data
+
+                if (i != null) {
+                    var key: String = ""
+                    if (i.hasExtra("key")) {
+                        key = i.getStringExtra("key")!!
+                    }
+
+                    var selected: String = ""
+                    if (i.hasExtra("selected")) {
+                        selected = i.getStringExtra("selected")!!
+                        if (key != DOB_KEY) {
+                            selected += ":00"
+                        }
+                    }
+
+                    //activity
+                    if (delegate != null) {
+                        delegate!!.singleSelected(key, selected)
+                    } else {
+                        //fragment
+                        able_type = "course"
+                        if (i.hasExtra("able_type")) {
+                            able_type = i.getStringExtra("able_type")!!
+                        }
+                        val f = getFragment()
+                        f?.singleSelected(key, selected)
+                    }
+                }
+            }
+        }
+    }
+
+    val selectDegreeVC = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { res ->
+        if (res.resultCode == Activity.RESULT_OK) {
+
+            if (res.data != null) {
+                val i: Intent? = res.data
+
+                if (i != null) {
+                    var key: String = DEGREE_KEY
+                    var selected: String = ""
+                    if (i.hasExtra("selecteds")) {
+                        val selecteds = i.getStringArrayListExtra("selecteds")!!
+                        selected = selecteds.joinToString(",")
+                    }
+
+                    var show: String = ""
+                    if (i.hasExtra("show")) {
+                        show = i.getStringExtra("show")!!
+                    }
+
+                    //activity
+                    if (delegate != null) {
+                        delegate!!.degreeSelected(selected, show)
+                    } else {
+                        //fragment
+                        able_type = "course"
+                        if (i.hasExtra("able_type")) {
+                            able_type = i.getStringExtra("able_type")!!
+                        }
+                        val f = getFragment()
+                        f?.degreeSelected(selected, show)
+                    }
+                }
+            }
+        }
+    }
+
+    val selectSingleVC = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { res ->
+        if (res.resultCode == Activity.RESULT_OK) {
+
+            if (res.data != null) {
+                val i: Intent? = res.data
+
+                if (i != null) {
+                    var key: String = ""
+                    if (i.hasExtra("key")) {
+                        key = i.getStringExtra("key")!!
+                    }
+
+                    var selected: String = ""
+                    if (i.hasExtra("selected")) {
+                        selected = i.getStringExtra("selected")!!
+                    }
+
+                    //activity
+                    if (delegate != null) {
+                        delegate!!.singleSelected(key, selected)
+                    } else {
+                        //fragment
+                        able_type = "course"
+                        if (i.hasExtra("able_type")) {
+                            able_type = i.getStringExtra("able_type")!!
+                        }
+                        val f = getFragment()
+                        if (f != null) {
+                            f.singleSelected(key, selected)
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    val selectTimeVC = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { res ->
+        if (res.resultCode == Activity.RESULT_OK) {
+
+            if (res.data != null) {
+                val i: Intent? = res.data
+
+                if (i != null) {
+                    var key: String = ""
+                    if (i.hasExtra("key")) {
+                        key = i.getStringExtra("key")!!
+                    }
+
+                    var selected: String = ""
+                    if (i.hasExtra("selected")) {
+                        selected = i.getStringExtra("selected")!! + ":00"
+                    }
+
+                    //activity
+                    if (delegate != null) {
+                        delegate!!.singleSelected(key, selected)
+                    } else {
+                        //fragment
+                        able_type = "course"
+                        if (i.hasExtra("able_type")) {
+                            able_type = i.getStringExtra("able_type")!!
+                        }
+                        val f = getFragment()
+                        f?.singleSelected(key, selected)
                     }
                 }
             }
@@ -247,180 +483,6 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
         }
     }
 
-    val selectDateVC = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { res ->
-        if (res.resultCode == Activity.RESULT_OK) {
-
-            if (res.data != null) {
-                val i: Intent? = res.data
-
-                if (i != null) {
-                    var key: String = ""
-                    if (i.hasExtra("key")) {
-                        key = i.getStringExtra("key")!!
-                    }
-
-                    var selected: String = ""
-                    if (i.hasExtra("selected")) {
-                        selected = i.getStringExtra("selected")!! + ":00"
-                    }
-
-                    //activity
-                    if (delegate != null) {
-                        delegate!!.singleSelected(key, selected)
-                    } else {
-                        //fragment
-                        able_type = "course"
-                        if (i.hasExtra("able_type")) {
-                            able_type = i.getStringExtra("able_type")!!
-                        }
-                        val f = getFragment()
-                        f?.singleSelected(key, selected)
-                    }
-                }
-            }
-        }
-    }
-
-    val selectTimeVC = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { res ->
-        if (res.resultCode == Activity.RESULT_OK) {
-
-            if (res.data != null) {
-                val i: Intent? = res.data
-
-                if (i != null) {
-                    var key: String = ""
-                    if (i.hasExtra("key")) {
-                        key = i.getStringExtra("key")!!
-                    }
-
-                    var selected: String = ""
-                    if (i.hasExtra("selected")) {
-                        selected = i.getStringExtra("selected")!! + ":00"
-                    }
-
-                    //activity
-                    if (delegate != null) {
-                        delegate!!.singleSelected(key, selected)
-                    } else {
-                        //fragment
-                        able_type = "course"
-                        if (i.hasExtra("able_type")) {
-                            able_type = i.getStringExtra("able_type")!!
-                        }
-                        val f = getFragment()
-                        f?.singleSelected(key, selected)
-                    }
-                }
-            }
-        }
-    }
-
-    val selectAreaVC = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { res ->
-        if (res.resultCode == Activity.RESULT_OK) {
-
-            if (res.data != null) {
-                val i: Intent? = res.data
-
-                if (i != null) {
-                    var key: String = AREA_KEY
-                    var selected: String = ""
-                    if (i.hasExtra("selected")) {
-                        selected = i.getStringExtra("selected")!!
-                    }
-
-                    var show: String = ""
-                    if (i.hasExtra("show")) {
-                        show = i.getStringExtra("show")!!
-                    }
-
-                    //activity
-                    if (delegate != null) {
-                        delegate!!.arenaSelected(selected, show)
-                    } else {
-                        //fragment
-                        able_type = "course"
-                        if (i.hasExtra("able_type")) {
-                            able_type = i.getStringExtra("able_type")!!
-                        }
-                        val f = getFragment()
-                        f?.arenaSelected(selected, show)
-                    }
-                }
-            }
-        }
-    }
-
-    val selectArenaVC = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { res ->
-        if (res.resultCode == Activity.RESULT_OK) {
-
-            if (res.data != null) {
-                val i: Intent? = res.data
-
-                if (i != null) {
-                    var key: String = ARENA_KEY
-                    var selected: String = ""
-                    if (i.hasExtra("selected")) {
-                        selected = i.getStringExtra("selected")!!
-                    }
-
-                    var show: String = ""
-                    if (i.hasExtra("show")) {
-                        show = i.getStringExtra("show")!!
-                    }
-
-                    //activity
-                    if (delegate != null) {
-                        delegate!!.arenaSelected(selected, show)
-                    } else {
-                        //fragment
-                        able_type = "course"
-                        if (i.hasExtra("able_type")) {
-                            able_type = i.getStringExtra("able_type")!!
-                        }
-                        val f = getFragment()
-                        f?.arenaSelected(selected, show)
-                    }
-                }
-            }
-        }
-    }
-
-    val selectDegreeVC = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { res ->
-        if (res.resultCode == Activity.RESULT_OK) {
-
-            if (res.data != null) {
-                val i: Intent? = res.data
-
-                if (i != null) {
-                    var key: String = DEGREE_KEY
-                    var selected: String = ""
-                    if (i.hasExtra("selecteds")) {
-                        val selecteds = i.getStringArrayListExtra("selecteds")!!
-                        selected = selecteds.joinToString(",")
-                    }
-
-                    var show: String = ""
-                    if (i.hasExtra("show")) {
-                        show = i.getStringExtra("show")!!
-                    }
-
-                    //activity
-                    if (delegate != null) {
-                        delegate!!.degreeSelected(selected, show)
-                    } else {
-                        //fragment
-                        able_type = "course"
-                        if (i.hasExtra("able_type")) {
-                            able_type = i.getStringExtra("able_type")!!
-                        }
-                        val f = getFragment()
-                        f?.degreeSelected(selected, show)
-                    }
-                }
-            }
-        }
-    }
-
 //    val selectPriceUnitVC = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { res ->
 //        if (res.resultCode == Activity.RESULT_OK) {
 //
@@ -452,65 +514,6 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
 //            }
 //        }
 //    }
-
-    val selectSingleVC = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { res ->
-        if (res.resultCode == Activity.RESULT_OK) {
-
-            if (res.data != null) {
-                val i: Intent? = res.data
-
-                if (i != null) {
-                    var key: String = ""
-                    if (i.hasExtra("key")) {
-                        key = i.getStringExtra("key")!!
-                    }
-
-                    var selected: String = ""
-                    if (i.hasExtra("selected")) {
-                        selected = i.getStringExtra("selected")!!
-                    }
-
-                    //activity
-                    if (delegate != null) {
-                        delegate!!.singleSelected(key, selected)
-                    } else {
-                        //fragment
-                        able_type = "course"
-                        if (i.hasExtra("able_type")) {
-                            able_type = i.getStringExtra("able_type")!!
-                        }
-                        val f = getFragment()
-                        if (f != null) {
-                            f.singleSelected(key, selected)
-                        }
-                    }
-                }
-            }
-        }
-    }
-
-    val editContentVC = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { res ->
-
-        if (res.resultCode == Activity.RESULT_OK) {
-
-            val i: Intent? = res.data
-            if (i != null) {
-                var key: String = ""
-                if (i.hasExtra("key")) {
-                    key = i.getStringExtra("key")!!
-                }
-
-                var content: String = ""
-                if (i.hasExtra("content")) {
-                    content = i.getStringExtra("content")!!
-                }
-
-                if (delegate != null) {
-                    delegate!!.contentEdit(key, content)
-                }
-            }
-        }
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
