@@ -1,10 +1,15 @@
 package com.sportpassword.bm.Utilities
 
 import android.content.Intent
+import android.net.Uri
+import android.os.Build
+import android.provider.MediaStore
 import android.view.View
+import androidx.core.content.FileProvider
 import com.sportpassword.bm.Controllers.*
 import com.sportpassword.bm.member
 import kotlinx.android.synthetic.main.mask.*
+import java.lang.Exception
 
 interface ToInterface {
 
@@ -269,6 +274,30 @@ interface ToInterface {
         }
 
         mainDelegate.selectDegreeVC.launch(i)
+    }
+
+    fun toSelectDeviceCamera() {
+
+        val i = Intent("android.media.action.IMAGE_CAPTURE")
+        if (i.resolveActivity(mainDelegate.packageManager) != null) {
+
+            if (mainDelegate.fileUri != Uri.EMPTY) {
+                mainDelegate.currentPhotoPath = mainDelegate.fileUri.toString()
+                //println(currentPhotoPath)
+                i.putExtra(MediaStore.EXTRA_OUTPUT, mainDelegate.fileUri)
+                //intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_GRANT_WRITE_URI_PERMISSION)
+                mainDelegate.selectDeviceCamera.launch(i)
+            } else {
+                mainDelegate.warning("設定照相暫存檔失敗，請洽管理員")
+            }
+        }
+    }
+
+    fun toSelectDevicePhoto() {
+
+        val i = Intent(Intent.ACTION_GET_CONTENT)
+        i.type = "image/*"
+        mainDelegate.selectDevicePhoto.launch(i)
     }
 
     fun <T> toSelectSingle(cls: Class<T>, key: String?=null, selected: String?=null, delegate: BaseActivity?=null, able_type: String?=null) {

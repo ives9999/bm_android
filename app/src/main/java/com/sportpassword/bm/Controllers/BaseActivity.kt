@@ -11,6 +11,7 @@ import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.Color
 import android.graphics.Point
+import android.net.Uri
 import android.os.AsyncTask
 import android.os.Build
 import android.os.Bundle
@@ -42,6 +43,7 @@ import com.sportpassword.bm.Models.*
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.*
 import com.sportpassword.bm.Utilities.*
+import com.sportpassword.bm.Views.ImagePicker
 import com.sportpassword.bm.Views.SearchPanel
 import com.sportpassword.bm.member
 import com.xwray.groupie.GroupAdapter
@@ -51,6 +53,7 @@ import org.jetbrains.anko.*
 import org.json.JSONArray
 import org.json.JSONObject
 import java.io.BufferedReader
+import java.io.File
 import java.io.IOException
 import java.io.InputStreamReader
 import java.lang.reflect.Method
@@ -61,11 +64,27 @@ import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
 import kotlin.system.exitProcess
 
-open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, SearchItemDelegate, SingleSelectDelegate, ToInterface {
+open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, SearchItemDelegate,
+    SingleSelectDelegate, ToInterface, ImagePicker {
 
     var refreshLayout: SwipeRefreshLayout? = null
     protected lateinit var refreshListener: SwipeRefreshLayout.OnRefreshListener
     protected lateinit var scrollerListenr: RecyclerView.OnScrollListener
+
+    // ImagePicker Interface property
+    override val ACTION_CAMERA_REQUEST_CODE = 100
+    override val ACTION_PHOTO_REQUEST_CODE = 200
+    override val activity = this
+    override val context = this
+    override lateinit var imagePickerLayer: androidx.appcompat.app.AlertDialog
+    override lateinit var alertView: View
+    override lateinit var imageView: ImageView
+    override var currentPhotoPath = ""
+    override var filePath: String = ""
+    override var file: File? = null
+    override var fileUri: Uri
+        get() = Uri.EMPTY
+        set(value) {}
 
     override var mainDelegate: BaseActivity
         get() = this
@@ -342,6 +361,32 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
                         val f = getFragment()
                         f?.degreeSelected(selected, show)
                     }
+                }
+            }
+        }
+    }
+
+    val selectDeviceCamera = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { res ->
+
+        if (res.resultCode == Activity.RESULT_OK) {
+
+            if (res.data != null) {
+                val i: Intent? = res.data
+                if (i != null) {
+                    dealCamera(ACTION_PHOTO_REQUEST_CODE, res.resultCode, res.data)
+                }
+            }
+        }
+    }
+
+    val selectDevicePhoto = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { res ->
+
+        if (res.resultCode == Activity.RESULT_OK) {
+
+            if (res.data != null) {
+                val i: Intent? = res.data
+                if (i != null) {
+                    dealPhoto(ACTION_PHOTO_REQUEST_CODE, res.resultCode, res.data)
                 }
             }
         }

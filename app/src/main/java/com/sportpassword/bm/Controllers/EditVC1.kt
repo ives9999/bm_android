@@ -199,7 +199,7 @@ class EditVC1 : MyTableVC(), ImagePicker {
         layoutParams.setMargins(0, 0, 0, 0)
         imageView.layoutParams = layoutParams
         isFeaturedChange = true
-        super.setImage(newFile, url)
+        super<MyTableVC>.setImage(newFile, url)
     }
 
     override fun removeImage() {
@@ -211,11 +211,11 @@ class EditVC1 : MyTableVC(), ImagePicker {
         imageView.layoutParams = layoutParams
         imageView.scaleType = originScaleType
         isFeaturedChange = true
-        super.removeImage()
+        super<MyTableVC>.removeImage()
         closeImagePickerLayer()
     }
 
-    fun getImageViewParams() {
+    private fun getImageViewParams() {
         val l = edit_featured.layoutParams as LinearLayout.LayoutParams
         originW = l.width
         originH = l.height

@@ -28,19 +28,9 @@ import com.sportpassword.bm.member
 import kotlinx.android.synthetic.main.activity_register.edit_featured_container
 import org.jetbrains.anko.sdk27.coroutines.onClick
 
-class RegisterActivity : MyTableVC(), ImagePicker, ValueChangedDelegate {
+class RegisterActivity : MyTableVC(), ValueChangedDelegate {
 
     //image picker
-    override val ACTION_CAMERA_REQUEST_CODE = 100
-    override val ACTION_PHOTO_REQUEST_CODE = 200
-    override val activity = this
-    override val context = this
-    override var currentPhotoPath = ""
-    override var filePath: String = ""
-    override var file: File? = null
-    override lateinit var imagePickerLayer: AlertDialog
-    override lateinit var alertView: View
-    override lateinit var imageView: ImageView
     private var originW: Int = 0
     private var originH: Int = 0
     private var originMarginTop = 0

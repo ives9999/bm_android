@@ -27,7 +27,7 @@ import org.jetbrains.anko.sdk27.coroutines.onClick
 import java.io.File
 import kotlin.reflect.full.memberProperties
 
-class EditCourseVC : MyTableVC(), ImagePicker, ValueChangedDelegate {
+class EditCourseVC : MyTableVC(), ValueChangedDelegate {
 
     override val ACTION_CAMERA_REQUEST_CODE = 100
     override val ACTION_PHOTO_REQUEST_CODE = 200

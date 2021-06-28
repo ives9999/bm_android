@@ -49,6 +49,7 @@ interface ImagePicker {
     var filePath: String
     var file: File?
     var imageView: ImageView
+    var fileUri: Uri
 
     fun initImagePicker(resource: Int) {
         imagePickerLayer = AlertDialog.Builder(context).create()
@@ -78,9 +79,10 @@ interface ImagePicker {
         if (!activity.permissionsExist(arrayListOf(Manifest.permission.READ_EXTERNAL_STORAGE))) {
             activity.requestPermission(arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE), ACTION_PHOTO_REQUEST_CODE)
         } else {
-            val intent = Intent(Intent.ACTION_GET_CONTENT)
-            intent.type = "image/*"
-            activity.startActivityForResult(intent, ACTION_PHOTO_REQUEST_CODE)
+            activity.toSelectDevicePhoto()
+//            val intent = Intent(Intent.ACTION_GET_CONTENT)
+//            intent.type = "image/*"
+//            activity.startActivityForResult(intent, ACTION_PHOTO_REQUEST_CODE)
         }
 
 //        activity.runtimePermission {
@@ -127,7 +129,6 @@ interface ImagePicker {
             }
             capturedImage.createNewFile()
 
-            var fileUri = Uri.EMPTY
             if (Build.VERSION.SDK_INT >= 24) {
                 try {
                     fileUri = FileProvider.getUriForFile(activity, "com.sportpassword.bm.fileprovider", capturedImage)
@@ -138,23 +139,22 @@ interface ImagePicker {
                 fileUri = Uri.fromFile(capturedImage)
             }
 
-            val intent = Intent("android.media.action.IMAGE_CAPTURE")
-            //val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-            if (intent.resolveActivity(activity.packageManager) != null) {
-                if (fileUri != Uri.EMPTY) {
-                    currentPhotoPath = fileUri.toString()
-                    //println(currentPhotoPath)
-                    intent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri)
-                    //intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_GRANT_WRITE_URI_PERMISSION)
-                    try {
-                        activity.startActivityForResult(intent, ACTION_CAMERA_REQUEST_CODE)
-                    } catch (e: Exception) {
-                        println(e.localizedMessage)
-                    }
-                } else {
-                    activity.warning("設定照相暫存檔失敗，請洽管理員")
-                }
-            }
+            activity.toSelectDeviceCamera()
+
+//            val intent = Intent("android.media.action.IMAGE_CAPTURE")
+//            if (intent.resolveActivity(activity.packageManager) != null) {
+//                if (fileUri != Uri.EMPTY) {
+//                    currentPhotoPath = fileUri.toString()
+//                    intent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri)
+//                    try {
+//                        activity.startActivityForResult(intent, ACTION_CAMERA_REQUEST_CODE)
+//                    } catch (e: Exception) {
+//                        println(e.localizedMessage)
+//                    }
+//                } else {
+//                    activity.warning("設定照相暫存檔失敗，請洽管理員")
+//                }
+//            }
         } else {
             activity.warning("由於您並沒有同意取得你裝置檔案權限或使用相機的權限，因此無法使用相機上傳照片的功能")
         }
