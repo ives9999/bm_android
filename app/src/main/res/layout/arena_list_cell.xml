@@ -32,7 +32,7 @@
                     android:layout_width="90dp"
                     android:layout_height="90dp"
                     android:layout_gravity="center_horizontal|center_vertical"
-                    android:layout_marginRight="12dp">
+                    android:layout_marginEnd="12dp">
 
                     <ImageView
                         android:id="@+id/listFeatured"
@@ -51,7 +51,7 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginRight="8dp"
+                        android:layout_marginEnd="8dp"
                         android:layout_weight="10"
                         android:orientation="vertical">
 

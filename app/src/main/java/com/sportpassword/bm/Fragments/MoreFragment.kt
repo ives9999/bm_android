@@ -2,26 +2,23 @@ package com.sportpassword.bm.Fragments
 
 
 import android.app.AlertDialog
+import android.content.Context
 import android.content.Intent
-import android.content.pm.PackageInfo
 import android.os.Bundle
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
+import androidx.core.content.ContextCompat
 import androidx.core.content.pm.PackageInfoCompat
-import com.sportpassword.bm.Adapters.ListAdapter
-import com.sportpassword.bm.Controllers.MainActivity
-import com.sportpassword.bm.Controllers.ShowActivity
-import com.sportpassword.bm.Controllers.ShowCoachVC
-import com.sportpassword.bm.Controllers.ShowPNVC
+import com.sportpassword.bm.Controllers.*
 
 import com.sportpassword.bm.R
-import com.sportpassword.bm.Utilities.CITYS_KEY
-import com.sportpassword.bm.Utilities.CITY_KEY
-import kotlinx.android.synthetic.main.mask.*
+import com.sportpassword.bm.Utilities.setImage
+import com.xwray.groupie.GroupAdapter
+import com.xwray.groupie.kotlinandroidextensions.Item
+import com.xwray.groupie.kotlinandroidextensions.ViewHolder
+import kotlinx.android.synthetic.main.function_item.*
 import kotlinx.android.synthetic.main.tab_course.*
 
 
@@ -34,88 +31,81 @@ class MoreFragment : TabFragment() {
 
     //protected lateinit var listAdapter: ListAdapter
 
+    val rows: ArrayList<HashMap<String, Any>> = arrayListOf(
+        hashMapOf("key" to "product", "text" to "商品","icon" to "product","color" to R.color.MY_LIGHT_RED),
+        hashMapOf("key" to "coach", "text" to "教練","icon" to "coach","color" to R.color.MY_WHITE),
+        hashMapOf("key" to "teach", "text" to "教學","icon" to "teach","color" to R.color.MY_WHITE),
+        hashMapOf("key" to "store", "text" to "體育用品店","icon" to "store","color" to R.color.MY_WHITE),
+        hashMapOf("key" to "pn", "text" to "推播訊息","icon" to "bell","color" to R.color.MY_WHITE),
+        hashMapOf("key" to "version", "text" to "版本","icon" to "version","color" to R.color.MY_WHITE)
+    )
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        adapter = GroupAdapter()
+        adapter.setOnItemClickListener { item, view ->
+            rowClick(item, view)
+        }
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-        val view = inflater.inflate(R.layout.tab_more, container, false)
-
-        val row2 = view.findViewById<ConstraintLayout>(R.id.more_coach_row)
-        row2.setOnClickListener {
-            (activity!! as MainActivity).toCoach()
-        }
-
-        val row3 = view.findViewById<ConstraintLayout>(R.id.more_arena_row)
-        row3.setOnClickListener {
-            (activity!! as MainActivity).toArena()
-//            val fm = activity!!.supportFragmentManager
-//            val arenaFragment = ArenaFragment.newInstance("arena", screenWidth)
-//            fm.beginTransaction()
-//                    .replace(R.id.more_container, arenaFragment)
-//                    .addToBackStack(null)
-//                    .commit()
-        }
-
-        val row4 = view.findViewById<ConstraintLayout>(R.id.more_teach_row)
-        row4.setOnClickListener() {
-            (activity!! as MainActivity).toTeach()
-
-            //val mainActivity = activity as MainActivity
-            //mainActivity.test()
-
-//            val fm = activity!!.supportFragmentManager
-//            val teachFragment = TeachFragment.newInstance("teach", screenWidth)
-//            fm.beginTransaction()
-//                    .replace(R.id.more_container, teachFragment)
-//                    .addToBackStack(null)
-//                    .commit()
-        }
-        val row5 = view.findViewById<ConstraintLayout>(R.id.more_pn_row)
-        row5.setOnClickListener() {
-            val intent = Intent(activity, ShowPNVC::class.java)
-//            intent.putExtra("title", "報名臨打")
-//            intent.putExtra("content", "孫志煌報名2019-03-09 17:00的臨打")
-            startActivity(intent)
-
-        }
-        val row6 = view.findViewById<ConstraintLayout>(R.id.more_version_row)
-        row6.setOnClickListener {
-            val p = context!!.applicationContext.packageManager.getPackageInfo(context!!.packageName, 0)
-            val v = PackageInfoCompat.getLongVersionCode(p).toInt()
-            //val v = p.versionCode
-            val n = p.versionName
-            val builder = AlertDialog.Builder(context!!)
-            builder.setMessage(n + "#" + v)
-            val dialog = builder.create()
-            dialog.show()
-        }
-
-        val rowStore = view.findViewById<ConstraintLayout>(R.id.more_store_row)
-        rowStore.setOnClickListener() {
-            (activity!! as MainActivity).toStore()
-
-            //val mainActivity = activity as MainActivity
-            //mainActivity.test()
-
-//            val fm = activity!!.supportFragmentManager
-//            val teachFragment = TeachFragment.newInstance("teach", screenWidth)
-//            fm.beginTransaction()
-//                    .replace(R.id.more_container, teachFragment)
-//                    .addToBackStack(null)
-//                    .commit()
-        }
-
-        val rowProduct = view.findViewById<ConstraintLayout>(R.id.more_product_row)
-        rowProduct.setOnClickListener {
-            (activity!! as MainActivity).toProduct()
-        }
+        val view = inflater.inflate(R.layout.tab_course, container, false)
 
         return view
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {}
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+
+        recyclerView = list_container
+        recyclerView.adapter = adapter
+        generateItems()
+        adapter.addAll(items)
+    }
+
+    override fun generateItems(): ArrayList<Item> {
+
+        for (row in rows) {
+
+            val myItem = MoreItem(requireContext(), row)
+            myItem.list1CellDelegate = this
+            items.add(myItem)
+        }
+
+        return items
+    }
+
+    override fun rowClick(item: com.xwray.groupie.Item<com.xwray.groupie.ViewHolder>, view: View) {
+
+        val row = (item as MoreItem).row
+        if (row.containsKey("key") && row["key"] != null) {
+
+            val key: String = row["key"]!! as String
+            when (key) {
+                "product"-> mainActivity!!.toProduct()
+                "coach"-> mainActivity!!.toCoach()
+                "teach"-> mainActivity!!.toTeach()
+                "store"-> mainActivity!!.toStore()
+                "pn"-> {
+                    val intent = Intent(activity, ShowPNVC::class.java)
+                    startActivity(intent)
+                }
+                "version"-> {
+                    val p = requireContext().applicationContext.packageManager.getPackageInfo(
+                        requireContext().packageName,
+                        0
+                    )
+                    val v = PackageInfoCompat.getLongVersionCode(p).toInt()
+                    val n = p.versionName
+                    val builder = AlertDialog.Builder(requireContext())
+                    builder.setMessage(n + "#" + v)
+                    val dialog = builder.create()
+                    dialog.show()
+                }
+            }
+        }
+    }
 
     companion object {
         // TODO: Rename parameter arguments, choose names that match
@@ -143,3 +133,24 @@ class MoreFragment : TabFragment() {
     }
 
 }// Required empty public constructor
+
+class MoreItem(val context: Context, val row: HashMap<String, Any>): Item() {
+
+    var list1CellDelegate: List1CellDelegate? = null
+
+    override fun bind(viewHolder: ViewHolder, position: Int) {
+
+        if (row.containsKey("icon") && row["icon"] != null) {
+            viewHolder.icon.setImage(row["icon"]!! as String)
+        }
+        if (row.containsKey("text") && row["text"] != null) {
+            viewHolder.text.text = row["text"]!! as String
+        }
+
+        if (row.containsKey("color") && row["color"] != null) {
+            viewHolder.text.setTextColor(ContextCompat.getColor(context, row["color"]!! as Int))
+        }
+    }
+
+    override fun getLayout() = R.layout.function_item
+}

@@ -32,7 +32,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="12dp"
                     android:layout_marginTop="12dp"
-                    android:textColor="@color/WHITE"
+                    android:textColor="@color/MY_WHITE"
                     android:textSize="24sp"
                     tools:text="Title" />
 

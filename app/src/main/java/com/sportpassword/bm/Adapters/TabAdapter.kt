@@ -13,12 +13,12 @@ class TabAdapter(fm: FragmentManager, private val tabs: Array<String>, val scree
     override fun getItem(position: Int): Fragment {
         //println("position: $position")
         when(position) {
-            0 -> return TempPlayFragment.newInstance("tempPlay", screenWidth)
+            0 -> return TempPlayFragment.newInstance("team", screenWidth)
             1 -> return CourseFragment.newInstance("course", screenWidth)
             2 -> return MemberFragment.newInstance("member", screenWidth)
-            3 -> return TeamFragment.newInstance("team", screenWidth)
+            3 -> return ArenaFragment.newInstance("arena", screenWidth)
             4 -> return MoreFragment.newInstance("more", screenWidth)
-            else -> return TempPlayFragment.newInstance("tempPlay", screenWidth)
+            else -> return TempPlayFragment.newInstance("team", screenWidth)
         }
     }
 

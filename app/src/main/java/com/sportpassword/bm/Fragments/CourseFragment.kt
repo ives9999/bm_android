@@ -108,29 +108,6 @@ class CourseFragment : TabFragment() {
         }
     }
 
-//    fun initAdapter(include_section: Boolean=false) {
-//        adapter = GroupAdapter()
-//        adapter.setOnItemClickListener { item, view ->
-//            rowClick(item, view)
-//        }
-//        if (include_section) {
-//            for (section in sections) {
-//                adapterSections.add(Section())
-//            }
-//            for ((idx, title) in sections.withIndex()) {
-//                val expandableGroup = ExpandableGroup(GroupSection(title), true)
-//                val items = generateItems(idx)
-//                adapterSections[idx].addAll(items)
-//                expandableGroup.add(adapterSections[idx])
-//                adapter.add(expandableGroup)
-//            }
-//        } else {
-//            val items = generateItems()
-//            adapter.addAll(items)
-//        }
-//        recyclerView.adapter = adapter
-//    }
-
     override fun prepare(idx: Int) {
 
         val row = searchRows.get(idx)
@@ -162,48 +139,6 @@ class CourseFragment : TabFragment() {
         }
     }
 
-//    fun getDataEnd1(success: Boolean) {
-//        if (success) {
-//            if (theFirstTime) {
-//
-//                if (dataService.jsonString.isNotEmpty()) {
-//                    tables = jsonToModel<CoursesTable>(dataService.jsonString)
-//
-//                    //superCourses = dataService.superModel as SuperCourses
-//                    if (tables != null) {
-//                        coursesTable = tables as CoursesTable
-//                        page = tables!!.page
-//                        perPage = tables!!.perPage
-//                        totalCount = tables!!.totalCount
-//                        val _totalPage: Int = totalCount / perPage
-//                        totalPage = if (totalCount % perPage > 0) _totalPage + 1 else _totalPage
-//                        theFirstTime = false
-//
-//                        val items = generateItems()
-//                        adapter.update(items)
-//                        adapter.notifyDataSetChanged()
-//                    } else {
-//                        mainActivity!!.warning(Global.message)
-//                        Global.message = ""
-//                    }
-//                } else {
-//                    mainActivity!!.warning("沒有取得回傳的json字串，請洽管理員")
-//                }
-//
-//            }
-//
-//            //notifyDataSetChanged()
-//            page++
-//        }
-////        mask?.let { mask?.dismiss() }
-//        Loading.hide(maskView)
-//        loading = false
-////        println("page:$page")
-////        println("perPage:$perPage")
-////        println("totalCount:$totalCount")
-////        println("totalPage:$totalPage")
-//    }
-
     override fun generateItems(): ArrayList<Item> {
         if (mysTable != null) {
             for (row in mysTable!!.rows) {
@@ -224,14 +159,6 @@ class CourseFragment : TabFragment() {
         mainActivity!!.toShowCourse(table.token)
     }
 
-//    fun layerSubmit() {
-//        prepareParams()
-//        page = 1
-//        theFirstTime = true
-//        refresh()
-//    }
-
-
     override fun remove(indexPath: IndexPath) {
         var row: HashMap<String, String>? = null
         if (searchRows.size >= indexPath.row) {
@@ -247,39 +174,6 @@ class CourseFragment : TabFragment() {
             replaceRows(key!!, row)
         }
     }
-
-//    private fun getSearchRow(key: String): HashMap<String, String>? {
-//        var row: HashMap<String, String>? = null
-//        for ((i, searchRow) in searchRows.withIndex()) {
-//            if (searchRow.containsKey("key")) {
-//                if (key == searchRow.get("key")) {
-//                    row = searchRow
-//                    break
-//                }
-//            }
-//        }
-//
-//        return row
-//    }
-//
-//    private fun updateSearchRow(idx: Int, row: HashMap<String, String>) {
-//        searchRows[idx] = row
-//    }
-
-//    private fun updateSearchRow(key: String, row: HashMap<String, String>) {
-//        var idx: Int = -1
-//        for ((i, searchRow) in searchRows.withIndex()) {
-//            if (searchRow.containsKey("key")) {
-//                if (key == searchRow.get("key")) {
-//                    idx = i
-//                    break
-//                }
-//            }
-//        }
-//        if (idx >= 0) {
-//            searchRows[idx] = row
-//        }
-//    }
 
     companion object {
         // TODO: Rename parameter arguments, choose names that match

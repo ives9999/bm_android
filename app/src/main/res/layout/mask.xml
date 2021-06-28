@@ -36,7 +36,7 @@
             android:layout_centerHorizontal="true"
             android:layout_marginTop="30dp"
             android:text="努力加載中..."
-            android:textColor="@color/WHITE"
+            android:textColor="@color/MY_WHITE"
             android:textSize="24sp" />
     </RelativeLayout>
 

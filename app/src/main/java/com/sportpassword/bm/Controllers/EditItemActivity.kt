@@ -537,7 +537,7 @@ class EditItemActivity() : BaseActivity() {
 //class ArenaItem(val context: Context, val arena: com.sportpassword.bm.Controllers.Arena, val checked: Boolean=false): Item() {
 //
 //    val checkedColor = ContextCompat.getColor(context, R.color.MY_GREEN)
-//    val uncheckedColor = ContextCompat.getColor(context, R.color.WHITE)
+//    val uncheckedColor = ContextCompat.getColor(context, R.color.MY_WHITE)
 //
 //    override fun getLayout() = R.layout.activity_edit_team_item_adapter
 //
@@ -573,7 +573,7 @@ class EditItemActivity() : BaseActivity() {
 class AreaItem(val context: Context, val area: Area, val checked: Boolean=false): Item() {
 
     val checkedColor = ContextCompat.getColor(context, R.color.MY_GREEN)
-    val uncheckedColor = ContextCompat.getColor(context, R.color.WHITE)
+    val uncheckedColor = ContextCompat.getColor(context, R.color.MY_WHITE)
 
     override fun getLayout() = R.layout.activity_edit_team_item_adapter
 

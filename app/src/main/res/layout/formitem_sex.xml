@@ -27,7 +27,7 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_marginStart="12dp"
-            android:textColor="@color/WHITE"
+            android:textColor="@color/MY_WHITE"
             android:textSize="21sp"
             tools:text="性別" />
 
@@ -49,7 +49,7 @@
                 android:tag="M"
                 android:text="男"
                 android:textColor="#FFFFFF"
-                app:buttonTint="@color/WHITE" />
+                app:buttonTint="@color/MY_WHITE" />
 
             <RadioButton
                 android:id="@+id/female"
@@ -59,7 +59,7 @@
                 android:tag="F"
                 android:text="女"
                 android:textColor="#FFFFFF"
-                app:buttonTint="@color/WHITE" />
+                app:buttonTint="@color/MY_WHITE" />
         </RadioGroup>
 
 

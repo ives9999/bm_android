@@ -33,8 +33,8 @@ class MainActivity : BaseActivity() {
     //private var mSectionPagerAdapter: SectionsPagerAdapter? = null
     //private val apiClient = VimeoClient.getInstance()
 
-    val tabsTextArr: Array<String> = arrayOf<String>("臨打", "課程", "會員", "球隊", "更多")
-    val tabsIconArr: Array<String> = arrayOf<String>("tempplay", "course", "member", "team", "more")
+    val tabsTextArr: Array<String> = arrayOf<String>("球隊", "課程", "會員", "球館", "更多")
+    val tabsIconArr: Array<String> = arrayOf<String>("team", "course", "member", "arena", "more")
 
 //    lateinit var menuTeamListAdapter: MenuTeamListAdapter
 
@@ -250,7 +250,7 @@ class MainActivity : BaseActivity() {
 
     @RequiresApi(Build.VERSION_CODES.M)
     fun setTabIconUnSelected(tab: TabLayout.Tab) {
-        val color = ContextCompat.getColor(this, R.color.WHITE)
+        val color = ContextCompat.getColor(this, R.color.MY_WHITE)
         tab.icon!!.setColorFilter(color, PorterDuff.Mode.SRC_IN)
     }
 }

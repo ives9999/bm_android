@@ -19,7 +19,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
-            android:textColor="@color/WHITE"
+            android:textColor="@color/MY_WHITE"
             android:textSize="18sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -79,7 +79,7 @@
             android:layout_marginTop="8dp"
             android:background="@drawable/button_rc"
             android:text="取消"
-            android:textColor="@color/WHITE"
+            android:textColor="@color/MY_WHITE"
             android:textSize="18sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/teamName" />

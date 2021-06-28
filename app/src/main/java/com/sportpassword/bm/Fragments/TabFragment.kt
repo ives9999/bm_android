@@ -336,7 +336,7 @@ open class TabFragment : Fragment(), SearchItemDelegate, List1CellDelegate, Seri
 
             params[key] = value
         }
-        println(params)
+//        println(params)
     }
 
     fun getDefinedRow(key: String): HashMap<String, String> {

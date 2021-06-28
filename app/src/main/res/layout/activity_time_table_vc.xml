@@ -44,7 +44,7 @@
                     android:gravity="center_vertical|center_horizontal"
                     android:text="一"
                     android:textAlignment="center"
-                    android:textColor="@color/WHITE"
+                    android:textColor="@color/MY_WHITE"
                     android:textSize="18sp" />
 
                 <TextView
@@ -55,7 +55,7 @@
                     android:gravity="center_vertical|center_horizontal"
                     android:text="二"
                     android:textAlignment="center"
-                    android:textColor="@color/WHITE"
+                    android:textColor="@color/MY_WHITE"
                     android:textSize="18sp" />
 
                 <TextView
@@ -66,7 +66,7 @@
                     android:gravity="center_vertical|center_horizontal"
                     android:text="三"
                     android:textAlignment="center"
-                    android:textColor="@color/WHITE"
+                    android:textColor="@color/MY_WHITE"
                     android:textSize="18sp" />
 
                 <TextView
@@ -77,7 +77,7 @@
                     android:gravity="center_vertical|center_horizontal"
                     android:text="四"
                     android:textAlignment="center"
-                    android:textColor="@color/WHITE"
+                    android:textColor="@color/MY_WHITE"
                     android:textSize="18sp" />
 
                 <TextView
@@ -88,7 +88,7 @@
                     android:gravity="center_vertical|center_horizontal"
                     android:text="五"
                     android:textAlignment="center"
-                    android:textColor="@color/WHITE"
+                    android:textColor="@color/MY_WHITE"
                     android:textSize="18sp" />
 
                 <TextView
@@ -99,7 +99,7 @@
                     android:gravity="center_vertical|center_horizontal"
                     android:text="六"
                     android:textAlignment="center"
-                    android:textColor="@color/WHITE"
+                    android:textColor="@color/MY_WHITE"
                     android:textSize="18sp" />
 
                 <TextView
@@ -110,7 +110,7 @@
                     android:gravity="center_vertical|center_horizontal"
                     android:text="日"
                     android:textAlignment="center"
-                    android:textColor="@color/WHITE"
+                    android:textColor="@color/MY_WHITE"
                     android:textSize="18sp" />
             </LinearLayout>
 

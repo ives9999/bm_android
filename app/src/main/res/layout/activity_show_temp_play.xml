@@ -66,7 +66,7 @@
                         android:layout_marginLeft="8dp"
                         android:layout_marginTop="12dp"
                         android:text="下次臨打日期："
-                        android:textColor="@color/WHITE"
+                        android:textColor="@color/MY_WHITE"
                         android:textSize="21dp"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/show_temp_play_arena_btn" />
@@ -79,7 +79,7 @@
                         android:layout_marginLeft="8dp"
                         android:layout_marginTop="12dp"
                         android:text="臨打時段："
-                        android:textColor="@color/WHITE"
+                        android:textColor="@color/MY_WHITE"
                         android:textSize="21dp"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/show_date" />
@@ -92,7 +92,7 @@
                         android:layout_marginLeft="8dp"
                         android:layout_marginTop="12dp"
                         android:text="臨打人數缺額："
-                        android:textColor="@color/WHITE"
+                        android:textColor="@color/MY_WHITE"
                         android:textSize="21dp"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/show_interval" />
@@ -105,7 +105,7 @@
                         android:layout_marginLeft="8dp"
                         android:layout_marginTop="12dp"
                         android:text="已報名人數："
-                        android:textColor="@color/WHITE"
+                        android:textColor="@color/MY_WHITE"
                         android:textSize="21dp" />
 
                     <TextView
@@ -116,7 +116,7 @@
                         android:layout_marginLeft="8dp"
                         android:layout_marginTop="12dp"
                         android:text="臨打費用：男："
-                        android:textColor="@color/WHITE"
+                        android:textColor="@color/MY_WHITE"
                         android:textSize="21dp" />
 
                     <TextView
@@ -127,7 +127,7 @@
                         android:layout_marginLeft="8dp"
                         android:layout_marginTop="12dp"
                         android:text="臨打費用：女："
-                        android:textColor="@color/WHITE"
+                        android:textColor="@color/MY_WHITE"
                         android:textSize="21dp" />
 
                     <TextView
@@ -138,7 +138,7 @@
                         android:layout_marginLeft="8dp"
                         android:layout_marginTop="12dp"
                         android:text="使用球種："
-                        android:textColor="@color/WHITE"
+                        android:textColor="@color/MY_WHITE"
                         android:textSize="21dp" />
 
                     <TextView
@@ -149,7 +149,7 @@
                         android:layout_marginLeft="8dp"
                         android:layout_marginTop="12dp"
                         android:text="聯絡人："
-                        android:textColor="@color/WHITE"
+                        android:textColor="@color/MY_WHITE"
                         android:textSize="21dp" />
 
                     <TextView
@@ -160,7 +160,7 @@
                         android:layout_marginLeft="8dp"
                         android:layout_marginTop="12dp"
                         android:text="電話："
-                        android:textColor="@color/WHITE"
+                        android:textColor="@color/MY_WHITE"
                         android:textSize="21dp" />
 
                     <TextView
@@ -171,7 +171,7 @@
                         android:layout_marginLeft="8dp"
                         android:layout_marginTop="12dp"
                         android:text="球隊程度："
-                        android:textColor="@color/WHITE"
+                        android:textColor="@color/MY_WHITE"
                         android:textSize="21dp" />
 
                     <androidx.constraintlayout.widget.ConstraintLayout
@@ -189,7 +189,7 @@
                             android:layout_marginStart="32dp"
                             android:layout_marginTop="8dp"
                             android:text="臨打球友"
-                            android:textColor="@color/WHITE"
+                            android:textColor="@color/MY_WHITE"
                             android:textSize="21dp"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />
@@ -201,7 +201,7 @@
                             android:layout_marginStart="64dp"
                             android:singleLine="false"
                             android:text="加入日期"
-                            android:textColor="@color/WHITE"
+                            android:textColor="@color/MY_WHITE"
                             android:textSize="21dp"
                             app:layout_constraintBottom_toBottomOf="@+id/signups_nickname_lbl"
                             app:layout_constraintStart_toEndOf="@+id/signups_nickname_lbl" />

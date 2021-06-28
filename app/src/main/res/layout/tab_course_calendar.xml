@@ -58,7 +58,7 @@
                     android:layout_weight="1"
                     android:text="2020"
                     android:textAlignment="viewEnd"
-                    android:textColor="@color/WHITE"
+                    android:textColor="@color/MY_WHITE"
                     android:textSize="24dp" />
 
                 <ImageView
@@ -75,7 +75,7 @@
                 android:layout_height="wrap_content"
                 android:text="年"
                 android:textAlignment="center"
-                android:textColor="@color/WHITE"
+                android:textColor="@color/MY_WHITE"
                 android:textSize="24dp" />
         </LinearLayout>
 
@@ -100,7 +100,7 @@
                     android:layout_weight="1"
                     android:text="3"
                     android:textAlignment="viewEnd"
-                    android:textColor="@color/WHITE"
+                    android:textColor="@color/MY_WHITE"
                     android:textSize="24dp" />
 
                 <ImageView
@@ -118,7 +118,7 @@
                 android:layout_weight="1"
                 android:text="月"
                 android:textAlignment="viewStart"
-                android:textColor="@color/WHITE"
+                android:textColor="@color/MY_WHITE"
                 android:textSize="24dp" />
         </LinearLayout>
 

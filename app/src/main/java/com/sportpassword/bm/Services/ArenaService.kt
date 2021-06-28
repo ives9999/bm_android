@@ -97,7 +97,7 @@ object ArenaService: DataService() {
                 model.data[key]!!["value"] = tmp.getInt(key)
                 model.data[key]!!["show"] = tmp.getInt(key).toString()
 
-                if (key == CITY_ID_KEY) {
+                if (key == CITY_KEY) {
                     val city_id: Int = tmp.getInt(key)
                     model.data[key]!!["show"] = Global.zoneIDToName(city_id)
                 }

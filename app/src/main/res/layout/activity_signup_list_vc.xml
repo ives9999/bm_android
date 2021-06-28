@@ -28,7 +28,7 @@
                     android:layout_marginLeft="16dp"
                     android:layout_marginTop="16dp"
                     android:text="目前尚無報名"
-                    android:textColor="@color/WHITE" />
+                    android:textColor="@color/MY_WHITE" />
 
             </LinearLayout>
 

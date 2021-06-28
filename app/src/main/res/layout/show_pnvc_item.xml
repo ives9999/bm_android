@@ -29,7 +29,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="8dp"
-                    android:textColor="@color/WHITE"
+                    android:textColor="@color/MY_WHITE"
                     android:textSize="18sp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
@@ -62,7 +62,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
                     android:text="id"
-                    android:textColor="@color/WHITE"
+                    android:textColor="@color/MY_WHITE"
                     android:textSize="10sp" />
 
                 <TextView
@@ -71,7 +71,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="16dp"
                     android:text="pnid"
-                    android:textColor="@color/WHITE"
+                    android:textColor="@color/MY_WHITE"
                     android:textSize="10sp" />
 
             </LinearLayout>

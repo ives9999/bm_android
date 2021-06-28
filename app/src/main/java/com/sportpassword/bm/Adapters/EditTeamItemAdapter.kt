@@ -24,7 +24,7 @@ import org.jetbrains.anko.textColor
 class EditTeamItemAdapter(val context: Context, val key: String, val lists: List<Map<String, String>>, val itemClick: (Int, Boolean) -> Unit): RecyclerView.Adapter<EditTeamItemAdapter.ViewHolder>() {
 
     val checkedColor = ContextCompat.getColor(context, R.color.MY_GREEN)
-    val uncheckedColor = ContextCompat.getColor(context, R.color.WHITE)
+    val uncheckedColor = ContextCompat.getColor(context, R.color.MY_WHITE)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(context).inflate(R.layout.activity_edit_team_item_adapter, parent, false)

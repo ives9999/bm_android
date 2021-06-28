@@ -126,13 +126,11 @@ val COURSE_PROVIDER_KEY: String = "provider_url"
 // General key
 val ADDRESS_KEY = "address"
 val AREA_KEY: String = "area"
-val AREA_ID_KEY: String = "area_id"
 val AREAS_KEY: String = "areas"
 val ARENA_KEY: String = "arena"
 val CAT_KEY: String = "cat_id"
 val CHARGE_KEY = "charge"
 val CITY_KEY: String = "city"
-val CITY_ID_KEY: String = "city_id"
 val CITYS_KEY: String = "citys"
 val CLOTHES_SIZE_KEY = "clothes_size"
 val COLOR_KEY: String = "color"
@@ -239,8 +237,8 @@ val MEMBER_ARRAY: Map<String, Map<String, String>> = mapOf(
         SEX_KEY to hashMapOf("text" to "性別","type" to "String", "default" to "M"),
         TEL_KEY to hashMapOf("text" to "電話","type" to "String", "default" to ""),
         MOBILE_KEY to hashMapOf("text" to "手機","type" to "String", "default" to "","icon" to "mobile"),
-        CITY_ID_KEY to hashMapOf("text" to "縣市","type" to "Int","default" to "0"),
-        AREA_ID_KEY to hashMapOf("text" to "區域","type" to "Int","default" to "0"),
+        CITY_KEY to hashMapOf("text" to "縣市","type" to "Int","default" to "0"),
+        AREA_KEY to hashMapOf("text" to "區域","type" to "Int","default" to "0"),
         ROAD_KEY to hashMapOf("text" to "路名","type" to "String", "default" to ""),
         ZIP_KEY to hashMapOf("text" to "郵遞區號","type" to "Int","default" to "0"),
         FB_KEY to hashMapOf("text" to "Facebook","type" to "String", "default" to ""),
@@ -255,7 +253,7 @@ val MEMBER_ARRAY: Map<String, Map<String, String>> = mapOf(
 )
 
 val MEMBER_MUST_ARRAY: ArrayList<String> = arrayListOf(
-    NAME_KEY, NICKNAME_KEY, EMAIL_KEY, MOBILE_KEY, SEX_KEY, CITY_ID_KEY, AREA_ID_KEY, ROAD_KEY
+    NAME_KEY, NICKNAME_KEY, EMAIL_KEY, MOBILE_KEY, SEX_KEY, CITY_KEY, AREA_KEY, ROAD_KEY
 )
 
 val MEMBER_MUST_ARRAY_WARNING: HashMap<String, String> = hashMapOf(
@@ -264,8 +262,8 @@ val MEMBER_MUST_ARRAY_WARNING: HashMap<String, String> = hashMapOf(
     EMAIL_KEY to "沒有填寫email",
     MOBILE_KEY to "沒有填寫手機",
     SEX_KEY to "沒有選擇性別",
-    CITY_ID_KEY to "沒有選擇縣市",
-    AREA_ID_KEY to "沒有選擇區域",
+    CITY_KEY to "沒有選擇縣市",
+    AREA_KEY to "沒有選擇區域",
     ROAD_KEY to "沒有填寫路名"
 )
 

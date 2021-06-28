@@ -132,8 +132,8 @@ class ListAdapter(val context: Context, val iden: String="team", val screenWidth
 //                    cityView.visibility = View.INVISIBLE
 //                }
 //            }
-            if (superData.data.containsKey(CITY_ID_KEY)) {
-                val tmp: String = superData.data[CITY_ID_KEY]!!["show"] as String
+            if (superData.data.containsKey(CITY_KEY)) {
+                val tmp: String = superData.data[CITY_KEY]!!["show"] as String
                 if (tmp.length > 0) {
                     cityView.text = tmp
                 } else {
@@ -170,8 +170,8 @@ class ListAdapter(val context: Context, val iden: String="team", val screenWidth
 //                    cityView.visibility = View.INVISIBLE
 //                }
 //            }
-            if (superData.data.containsKey(CITY_ID_KEY)) {
-                val tmp: String = superData.data[CITY_ID_KEY]!!["show"] as String
+            if (superData.data.containsKey(CITY_KEY)) {
+                val tmp: String = superData.data[CITY_KEY]!!["show"] as String
                 if (tmp.length > 0) {
                     cityView.text = tmp
                 } else {
@@ -230,8 +230,8 @@ class ListAdapter(val context: Context, val iden: String="team", val screenWidth
 //                    cityView.visibility = View.INVISIBLE
 //                }
 //            }
-            if (superData.data.containsKey(CITY_ID_KEY)) {
-                val tmp: String = superData.data[CITY_ID_KEY]!!["show"] as String
+            if (superData.data.containsKey(CITY_KEY)) {
+                val tmp: String = superData.data[CITY_KEY]!!["show"] as String
                 if (tmp.length > 0) {
                     cityView.text = tmp
                 } else {

@@ -29,7 +29,7 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_marginStart="12dp"
-            android:textColor="@color/WHITE"
+            android:textColor="@color/MY_WHITE"
             android:textSize="21sp"
             tools:text="title" />
 
@@ -54,7 +54,7 @@
                 android:background="@drawable/edittext_border"
                 android:text="–"
                 android:textAlignment="gravity"
-                android:textColor="@color/WHITE"
+                android:textColor="@color/MY_WHITE"
                 android:textSize="30dp" />
 
             <TextView
@@ -76,7 +76,7 @@
                 android:background="@drawable/edittext_border"
                 android:text="+"
                 android:textAlignment="center"
-                android:textColor="@color/WHITE"
+                android:textColor="@color/MY_WHITE"
                 android:textSize="30dp" />
         </RelativeLayout>
 

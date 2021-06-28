@@ -7,7 +7,7 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="drawerArrowStyle">@style/DrawerArrowStyle</item>
-        <item name="android:textColorHint">@color/WHITE</item>
+        <item name="android:textColorHint">@color/MY_WHITE</item>
         <item name="android:actionButtonStyle">@style/MyActionBarButtonStyle</item>
         <item name="actionButtonStyle">@style/MyActionBarButtonStyle</item>
     </style>
@@ -61,33 +61,33 @@
 
     <style name="MySwitch" parent="Theme.AppCompat.Light">
         <!-- active thumb & track color (30% transparency) -->
-        <item name="colorControlActivated">@color/WHITE</item>
+        <item name="colorControlActivated">@color/MY_WHITE</item>
 
         <!-- inactive thumb color -->
         <item name="colorSwitchThumbNormal">@color/MY_GREY</item>
 
         <!-- inactive track color (30% transparency) -->
-        <item name="android:colorForeground">@color/WHITE</item>
+        <item name="android:colorForeground">@color/MY_WHITE</item>
     </style>
 
     <style name="submit_button">
         <item name="android:background">@drawable/button_rc</item>
-        <item name="android:textColor">@color/WHITE</item>
+        <item name="android:textColor">@color/MY_WHITE</item>
     </style>
 
     <style name="cancel_button">
         <item name="android:background">@drawable/button_rc_gray</item>
-        <item name="android:textColor">@color/WHITE</item>
+        <item name="android:textColor">@color/MY_WHITE</item>
     </style>
 
     <style name="delete_button">
         <item name="android:background">@drawable/button_rc_purple</item>
-        <item name="android:textColor">@color/WHITE</item>
+        <item name="android:textColor">@color/MY_WHITE</item>
     </style>
 
     <style name="clear_button">
         <item name="android:background">@drawable/button_rc_purple</item>
-        <item name="android:textColor">@color/WHITE</item>
+        <item name="android:textColor">@color/MY_WHITE</item>
     </style>
 
     <style name="city_button">
@@ -98,7 +98,7 @@
 
     <style name="like_button">
         <item name="android:background">@drawable/button_like</item>
-        <item name="android:textColor">@color/WHITE</item>
+        <item name="android:textColor">@color/MY_WHITE</item>
     </style>
 
     <!-- Splash Screen theme -->
@@ -109,7 +109,7 @@
     </style>
 
     <style name="list_text_title">
-        <item name="android:textColor">@color/WHITE</item>
+        <item name="android:textColor">@color/MY_WHITE</item>
         <item name="android:textSize">22dp</item>
         <item name="android:fontFamily">sans-serif-medium</item>
         <item name="android:textStyle">bold</item>

@@ -29,9 +29,9 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_marginStart="12dp"
-            android:textColor="@color/WHITE"
+            android:textColor="@color/MY_WHITE"
             android:textSize="21sp"
-            app:buttonTint="@color/WHITE"
+            app:buttonTint="@color/MY_WHITE"
             tools:text="隱私權" />
 
         <CheckBox
@@ -45,7 +45,7 @@
             android:text="同意隱私權條款"
             android:textColor="#FFFFFF"
             android:textSize="18dp"
-            app:buttonTint="@color/WHITE" />
+            app:buttonTint="@color/MY_WHITE" />
 
     </RelativeLayout>
 

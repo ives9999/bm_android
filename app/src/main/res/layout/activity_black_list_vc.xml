@@ -28,7 +28,7 @@
                     android:layout_marginLeft="16dp"
                     android:layout_marginTop="12dp"
                     android:text="目前尚無資料"
-                    android:textColor="@color/WHITE"
+                    android:textColor="@color/MY_WHITE"
                     android:textSize="18sp" />
 
             </LinearLayout>

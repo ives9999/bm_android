@@ -914,7 +914,7 @@ fun TextView.selected() {
 }
 
 fun TextView.unSelected() {
-    val uncheckedColor = ContextCompat.getColor(context, R.color.WHITE)
+    val uncheckedColor = ContextCompat.getColor(context, R.color.MY_WHITE)
     this.setTextColor(uncheckedColor)
 }
 

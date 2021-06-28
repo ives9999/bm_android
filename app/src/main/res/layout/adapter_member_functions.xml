@@ -38,7 +38,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:layout_marginLeft="16dp"
-                android:textColor="@color/WHITE"
+                android:textColor="@color/MY_WHITE"
                 android:textSize="18sp" />
         </LinearLayout>
 

@@ -35,7 +35,7 @@
                         android:layout_marginEnd="8dp"
                         android:layout_marginBottom="4dp"
                         android:textAlignment="textStart"
-                        android:textColor="@color/WHITE"
+                        android:textColor="@color/MY_WHITE"
                         android:textSize="18sp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toStartOf="@+id/manager_list_greater"

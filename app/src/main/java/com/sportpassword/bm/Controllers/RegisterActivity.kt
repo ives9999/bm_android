@@ -64,9 +64,9 @@ class RegisterActivity : MyTableVC(), ImagePicker, ValueChangedDelegate {
 //        DOB_KEY to "1969-01-05",
 //        MOBILE_KEY to "0911299998",
 //        TEL_KEY to "062295888",
-//        CITY_ID_KEY to "218",
+//        CITY_KEY to "218",
 //        "city_name" to "台南市",
-//        AREA_ID_KEY to "219",
+//        AREA_KEY to "219",
 //        "area_name" to "中西區",
 //        ROAD_KEY to "南華街101號8樓",
 //        FB_KEY to "https://www.facebook.com/ives.sun",
@@ -130,8 +130,8 @@ class RegisterActivity : MyTableVC(), ImagePicker, ValueChangedDelegate {
                     val value: String = member.fetch(key)
                     val formItem = getFormItemFromKey(key)
                     if (formItem != null) {
-                        if (key == AREA_ID_KEY) {
-                            val cityFormItem: CityFormItem = getFormItemFromKey(CITY_ID_KEY) as CityFormItem
+                        if (key == AREA_KEY) {
+                            val cityFormItem: CityFormItem = getFormItemFromKey(CITY_KEY) as CityFormItem
                             val areaFormItem: AreaFormItem = formItem as AreaFormItem
                             areaFormItem.city_id = (cityFormItem.value)?.toInt()
                         }
@@ -140,7 +140,7 @@ class RegisterActivity : MyTableVC(), ImagePicker, ValueChangedDelegate {
                     }
                 }
             }
-            old_selected_city = member.fetch(CITY_ID_KEY)
+            old_selected_city = member.fetch(CITY_KEY)
             if (member.avatar.length > 0) {
                 //println(member.avatar)
                 val avatar: String = member.avatar
@@ -152,10 +152,10 @@ class RegisterActivity : MyTableVC(), ImagePicker, ValueChangedDelegate {
                 for ((key, value) in testData) {
                     val formItem = getFormItemFromKey(key)
                     if (formItem != null) {
-                        if (key == AREA_ID_KEY && testData.containsKey("area_name")) {
+                        if (key == AREA_KEY && testData.containsKey("area_name")) {
                             val _formItem = formItem as AreaFormItem
                             _formItem.selected_area_names = arrayListOf(testData["area_name"]!!)
-                        } else if (key == CITY_ID_KEY && testData.containsKey("city_name")) { // test data session has, so not implement.
+                        } else if (key == CITY_KEY && testData.containsKey("city_name")) { // test data session has, so not implement.
                             //val _formItem = formItem as CityFormItem
                             //_formItem.selected_city_names = arrayListOf(testData["city_name"]!!)
                         }
@@ -163,7 +163,7 @@ class RegisterActivity : MyTableVC(), ImagePicker, ValueChangedDelegate {
                         formItem.make()
                     }
                 }
-                old_selected_city = testData[CITY_ID_KEY]!!
+                old_selected_city = testData[CITY_KEY]!!
             }
         }
     }
@@ -249,7 +249,7 @@ class RegisterActivity : MyTableVC(), ImagePicker, ValueChangedDelegate {
 
             if (formItemAdapter != null) {
                 formItemAdapter.valueChangedDelegate = this
-                rows.add(formItemAdapter!!)
+                rows.add(formItemAdapter)
             }
 //            idx++
         }
@@ -293,9 +293,9 @@ class RegisterActivity : MyTableVC(), ImagePicker, ValueChangedDelegate {
                         item = getFormItemFromKey(key) as PriceUnitFormItem
                     } else if (key == DOB_KEY) {
                         item = getFormItemFromKey(key) as DateFormItem
-                    } else if (key == CITY_ID_KEY) {
+                    } else if (key == CITY_KEY) {
                         item = getFormItemFromKey(key) as CityFormItem
-                    } else if (key == AREA_ID_KEY) {
+                    } else if (key == AREA_KEY) {
                         item = getFormItemFromKey(key) as AreaFormItem
                     }
 
@@ -303,15 +303,15 @@ class RegisterActivity : MyTableVC(), ImagePicker, ValueChangedDelegate {
                         if (item.value != selected) {
                             item.reset()
                         }
-                        if (key == AREA_ID_KEY) {
+                        if (key == AREA_KEY) {
                             val item1: AreaFormItem = item as AreaFormItem
-                            val cityItem = getFormItemFromKey(CITY_ID_KEY)
+                            val cityItem = getFormItemFromKey(CITY_KEY)
                             item1.city_id = cityItem!!.value!!.toInt()
-                        } else if (key == CITY_ID_KEY) {
-                            val item1 = getFormItemFromKey(AREA_ID_KEY)
+                        } else if (key == CITY_KEY) {
+                            val item1 = getFormItemFromKey(AREA_KEY)
                             if (old_selected_city != selected) {
                                 if (item1 != null) {
-                                    item1!!.reset()
+                                    item1.reset()
                                 }
                                 old_selected_city = selected
                             }
@@ -363,7 +363,7 @@ class RegisterActivity : MyTableVC(), ImagePicker, ValueChangedDelegate {
                 dateSelectIntent.putExtra("selected", formItem.value)
             }
             startActivityForResult(dateSelectIntent, SELECT_REQUEST_CODE)
-        } else if (key == CITY_ID_KEY) {
+        } else if (key == CITY_KEY) {
             val citySelectIntent = Intent(this, SelectCityVC::class.java)
             citySelectIntent.putExtra("title", formItem.title)
             citySelectIntent.putExtra("key", key)
@@ -372,8 +372,8 @@ class RegisterActivity : MyTableVC(), ImagePicker, ValueChangedDelegate {
                 citySelectIntent.putExtra("selected", selected)
             }
             startActivityForResult(citySelectIntent, SELECT_REQUEST_CODE)
-        } else if (key == AREA_ID_KEY) {
-            val cityItem = getFormItemFromKey(CITY_ID_KEY)
+        } else if (key == AREA_KEY) {
+            val cityItem = getFormItemFromKey(CITY_KEY)
             val city_id = cityItem?.value
             if (city_id == null) {
                 warning("請先選擇縣市")
@@ -455,11 +455,11 @@ class RegisterActivity : MyTableVC(), ImagePicker, ValueChangedDelegate {
                     params[formItem.name!!] = value
                 }
                 if (params.containsKey(CITY_KEY)) {
-                    params[CITY_ID_KEY] = params[CITY_KEY]!!
+                    params[CITY_KEY] = params[CITY_KEY]!!
                     params.remove(CITY_KEY)
                 }
                 if (params.containsKey(AREA_KEY)) {
-                    params[AREA_ID_KEY] = params[AREA_KEY]!!
+                    params[AREA_KEY] = params[AREA_KEY]!!
                     params.remove(AREA_KEY)
                 }
                 if (member_token.length > 0) {

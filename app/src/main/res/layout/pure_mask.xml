@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:alpha="0.8"
     android:animateLayoutChanges="true"
-    android:background="@color/WHITE"
+    android:background="@color/MY_WHITE"
     android:clickable="true"
     android:focusable="true"
     android:onClick="mask_click"

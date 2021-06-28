@@ -12,5 +12,5 @@
         android:background="@drawable/button_rc"
         android:onClick="submit"
         android:text="提交"
-        android:textColor="@color/WHITE" />
+        android:textColor="@color/MY_WHITE" />
 </LinearLayout>

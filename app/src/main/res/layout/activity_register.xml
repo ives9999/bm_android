@@ -65,7 +65,7 @@
                             android:layout_alignParentBottom="true"
                             android:text="請選擇代表圖"
                             android:textAlignment="center"
-                            android:textColor="@color/WHITE" />
+                            android:textColor="@color/MY_WHITE" />
 
                     </RelativeLayout>
 

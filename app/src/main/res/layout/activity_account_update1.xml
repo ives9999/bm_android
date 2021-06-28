@@ -28,7 +28,7 @@
             android:inputType="textPersonName"
             android:paddingRight="8dp"
             android:textAlignment="viewEnd"
-            android:textColor="@color/WHITE"
+            android:textColor="@color/MY_WHITE"
             app:layout_constraintEnd_toStartOf="@+id/clearbutton_account"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -68,19 +68,19 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginRight="24dp"
-            android:buttonTint="@color/WHITE"
+            android:buttonTint="@color/MY_WHITE"
             android:text="是"
-            android:textColor="@color/WHITE"
+            android:textColor="@color/MY_WHITE"
             android:textSize="18sp" />
 
         <RadioButton
             android:id="@+id/accountRadioNo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:buttonTint="@color/WHITE"
+            android:buttonTint="@color/MY_WHITE"
             android:gravity="center"
             android:text="否"
-            android:textColor="@color/WHITE"
+            android:textColor="@color/MY_WHITE"
             android:textSize="18sp" />
 
     </RadioGroup>
@@ -106,7 +106,7 @@
         android:layout_marginTop="32dp"
         android:layout_marginEnd="16dp"
         android:background="@color/MY_GREEN"
-        android:calendarTextColor="@color/WHITE"
+        android:calendarTextColor="@color/MY_WHITE"
         android:headerBackground="@color/MY_RED"
         android:visibility="invisible"
         app:layout_constraintEnd_toEndOf="parent"
