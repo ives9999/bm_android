@@ -27,7 +27,7 @@ import org.jetbrains.anko.sdk27.coroutines.onClick
 import java.io.File
 import kotlin.reflect.full.memberProperties
 
-class EditCourseVC : MyTableVC(), ValueChangedDelegate {
+class EditCourseVC : MyTableVC(), ValueChangedDelegate, ImagePicker {
 
     override val ACTION_CAMERA_REQUEST_CODE = 100
     override val ACTION_PHOTO_REQUEST_CODE = 200
@@ -36,11 +36,12 @@ class EditCourseVC : MyTableVC(), ValueChangedDelegate {
     override var currentPhotoPath = ""
     override var filePath: String = ""
     override var file: File? = null
-    var params1: MutableMap<String, String> = mutableMapOf<String, String>()
-
     override lateinit var imagePickerLayer: AlertDialog
     override lateinit var alertView: View
     override lateinit var imageView: ImageView
+
+    var params1: MutableMap<String, String> = mutableMapOf<String, String>()
+
 
     var title: String = ""
     private var course_token: String? = null
@@ -368,7 +369,7 @@ class EditCourseVC : MyTableVC(), ValueChangedDelegate {
         layoutParams.setMargins(0, 0, 0, 0)
         imageView.layoutParams = layoutParams
         isFeaturedChange = true
-        super.setImage(newFile, url)
+        super<MyTableVC>.setImage(newFile, url)
     }
 
     override fun removeImage() {
@@ -380,7 +381,7 @@ class EditCourseVC : MyTableVC(), ValueChangedDelegate {
         imageView.layoutParams = layoutParams
         imageView.scaleType = originScaleType
         isFeaturedChange = true
-        super.removeImage()
+        super<MyTableVC>.removeImage()
         closeImagePickerLayer()
     }
 

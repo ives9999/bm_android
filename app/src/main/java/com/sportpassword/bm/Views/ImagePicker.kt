@@ -129,9 +129,16 @@ interface ImagePicker {
             }
             capturedImage.createNewFile()
 
+            //fileUri = Uri.EMPTY
             if (Build.VERSION.SDK_INT >= 24) {
                 try {
                     fileUri = FileProvider.getUriForFile(activity, "com.sportpassword.bm.fileprovider", capturedImage)
+//                    println(fileUri.toString())
+                    if (fileUri != Uri.EMPTY) {
+                        currentPhotoPath = fileUri.toString()
+                    } else {
+                        activity.warning("無法取得fileUri，請洽管理員")
+                    }
                 } catch (e: Exception) {
                     println(e.localizedMessage)
                 }
@@ -250,7 +257,8 @@ interface ImagePicker {
     fun cameraToFile() {
 
         //var path: String? = null
-        var uri: Uri = Uri.parse(currentPhotoPath)
+//        println(currentPhotoPath)
+        val uri: Uri = Uri.parse(currentPhotoPath)
         //val bitmap = BitmapFactory.decodeStream(activity.contentResolver.openInputStream(uri))
         val inputStream = activity.contentResolver.openInputStream(uri)
 

@@ -82,9 +82,9 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
     override var currentPhotoPath = ""
     override var filePath: String = ""
     override var file: File? = null
-    override var fileUri: Uri
-        get() = Uri.EMPTY
-        set(value) {}
+    override var fileUri: Uri = Uri.EMPTY
+//        get() = Uri.EMPTY
+//        set(value) {}
 
     override var mainDelegate: BaseActivity
         get() = this
@@ -370,12 +370,12 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
 
         if (res.resultCode == Activity.RESULT_OK) {
 
-            if (res.data != null) {
-                val i: Intent? = res.data
-                if (i != null) {
-                    dealCamera(ACTION_PHOTO_REQUEST_CODE, res.resultCode, res.data)
-                }
-            }
+            dealCamera(ACTION_PHOTO_REQUEST_CODE, res.resultCode, res.data)
+//            if (res.data != null) {
+//                val i: Intent? = res.data
+//                if (i != null) {
+//                }
+//            }
         }
     }
 

@@ -31,6 +31,17 @@ import org.jetbrains.anko.sdk27.coroutines.onClick
 class RegisterActivity : MyTableVC(), ValueChangedDelegate {
 
     //image picker
+//    override val ACTION_CAMERA_REQUEST_CODE = 100
+//    override val ACTION_PHOTO_REQUEST_CODE = 200
+//    override val activity = this
+//    override val context = this
+//    override var currentPhotoPath = ""
+//    override var filePath: String = ""
+//    override var file: File? = null
+//    override lateinit var imagePickerLayer: AlertDialog
+//    override lateinit var alertView: View
+//    override lateinit var imageView: ImageView
+
     private var originW: Int = 0
     private var originH: Int = 0
     private var originMarginTop = 0
@@ -250,19 +261,17 @@ class RegisterActivity : MyTableVC(), ValueChangedDelegate {
         return rows
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        //println(data)
-        when (requestCode) {
-            ACTION_PHOTO_REQUEST_CODE -> {
-                //println(data.data)
-                dealPhoto(requestCode, resultCode, data)
-            }
-            ACTION_CAMERA_REQUEST_CODE -> {
-                dealCamera(requestCode, resultCode, data)
-            }
-        }
-    }
+//    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+//        super.onActivityResult(requestCode, resultCode, data)
+//        when (requestCode) {
+//            ACTION_PHOTO_REQUEST_CODE -> {
+//                dealPhoto(requestCode, resultCode, data)
+//            }
+//            ACTION_CAMERA_REQUEST_CODE -> {
+//                dealCamera(requestCode, resultCode, data)
+//            }
+//        }
+//    }
 
     fun prepare(formItem: FormItem) {
 

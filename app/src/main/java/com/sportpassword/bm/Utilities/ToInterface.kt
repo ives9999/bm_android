@@ -281,15 +281,15 @@ interface ToInterface {
         val i = Intent("android.media.action.IMAGE_CAPTURE")
         if (i.resolveActivity(mainDelegate.packageManager) != null) {
 
-            if (mainDelegate.fileUri != Uri.EMPTY) {
-                mainDelegate.currentPhotoPath = mainDelegate.fileUri.toString()
+//            if (mainDelegate.fileUri != Uri.EMPTY) {
+                //mainDelegate.currentPhotoPath = mainDelegate.fileUri.toString()
                 //println(currentPhotoPath)
                 i.putExtra(MediaStore.EXTRA_OUTPUT, mainDelegate.fileUri)
                 //intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_GRANT_WRITE_URI_PERMISSION)
                 mainDelegate.selectDeviceCamera.launch(i)
-            } else {
-                mainDelegate.warning("設定照相暫存檔失敗，請洽管理員")
-            }
+//            } else {
+//                mainDelegate.warning("設定照相暫存檔失敗，請洽管理員")
+//            }
         }
     }
 
