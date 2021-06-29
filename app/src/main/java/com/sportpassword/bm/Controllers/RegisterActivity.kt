@@ -106,6 +106,9 @@ class RegisterActivity : MyTableVC(), ValueChangedDelegate {
 
         if (member.isLoggedIn) {
 
+            println(member.city_id)
+            println(member.area_id)
+
             //member.memberPrint()
             form.removeItems(arrayListOf(PASSWORD_KEY, REPASSWORD_KEY, PRIVACY_KEY))
 //            for (formItem in form.formItems) {
@@ -134,10 +137,32 @@ class RegisterActivity : MyTableVC(), ValueChangedDelegate {
                         if (key == AREA_KEY) {
                             val cityFormItem: CityFormItem = getFormItemFromKey(CITY_KEY) as CityFormItem
                             val areaFormItem: AreaFormItem = formItem as AreaFormItem
-                            areaFormItem.city_id = (cityFormItem.value)?.toInt()
+                            if (cityFormItem.value != null && cityFormItem.value!!.isNotEmpty()) {
+                                areaFormItem.city_id = (cityFormItem.value)?.toInt()
+                            }
                         }
                         formItem.value = value
                         formItem.make()
+                    }
+                }
+
+                if (key == CITY_KEY) {
+                    val value: String = member.fetch("city_id")
+                    val formItem = getFormItemFromKey(key)
+                    formItem!!.value = value
+                    formItem.make()
+                }
+
+                if (key == AREA_KEY) {
+                    val value: String = member.fetch("area_id")
+                    val formItem = getFormItemFromKey(key)
+                    formItem!!.value = value
+                    formItem.make()
+
+                    val cityFormItem: CityFormItem = getFormItemFromKey(CITY_KEY) as CityFormItem
+                    val areaFormItem: AreaFormItem = formItem as AreaFormItem
+                    if (cityFormItem.value != null && cityFormItem.value!!.isNotEmpty()) {
+                        areaFormItem.city_id = (cityFormItem.value)?.toInt()
                     }
                 }
             }
@@ -380,13 +405,14 @@ class RegisterActivity : MyTableVC(), ValueChangedDelegate {
                     val value: String = formItem.value!!
                     params[formItem.name!!] = value
                 }
+                //忘記這兩個程式的作用為何
                 if (params.containsKey(CITY_KEY)) {
-                    params[CITY_KEY] = params[CITY_KEY]!!
-                    params.remove(CITY_KEY)
+                    params["city_id"] = params[CITY_KEY]!!
+                    //params.remove(CITY_KEY)
                 }
                 if (params.containsKey(AREA_KEY)) {
-                    params[AREA_KEY] = params[AREA_KEY]!!
-                    params.remove(AREA_KEY)
+                    params["area_id"] = params[AREA_KEY]!!
+                    //params.remove(AREA_KEY)
                 }
                 if (member_token.length > 0) {
                     params[TOKEN_KEY] = member_token

@@ -27,20 +27,19 @@ import org.jetbrains.anko.toast
 import java.io.File
 import kotlinx.android.synthetic.main.mask.*
 
-class EditVC1 : MyTableVC(), ImagePicker {
+class EditVC1 : MyTableVC() {
 
-    override val ACTION_CAMERA_REQUEST_CODE = 100
-    override val ACTION_PHOTO_REQUEST_CODE = 200
+//    override val ACTION_PHOTO_REQUEST_CODE = 200
+//    override val activity = this
+//    override val context = this
+//    lateinit override var imagePickerLayer: AlertDialog
+//    lateinit override var alertView: View
+//    override var currentPhotoPath = ""
+//    override var filePath: String = ""
+//    override var file: File? = null
+//    lateinit override var imageView: ImageView
+
     val SELECT_REQUEST_CODE = 1
-    override val activity = this
-    override val context = this
-    lateinit override var imagePickerLayer: AlertDialog
-    lateinit override var alertView: View
-    override var currentPhotoPath = ""
-    override var filePath: String = ""
-    override var file: File? = null
-    lateinit override var imageView: ImageView
-
     var source: String = "team"
     var token: String = ""
     var title: String = ""
@@ -526,13 +525,13 @@ class EditVC1 : MyTableVC(), ImagePicker {
         super.onActivityResult(requestCode, resultCode, data)
         //println(data)
         when (requestCode) {
-            ACTION_PHOTO_REQUEST_CODE -> {
+            //ACTION_PHOTO_REQUEST_CODE -> {
                 //println(data!!.data)
-                dealPhoto(requestCode, resultCode, data)
-            }
-            ACTION_CAMERA_REQUEST_CODE -> {
-                dealCamera(requestCode, resultCode, data)
-            }
+                //dealPhoto(requestCode, resultCode, data)
+            //}
+            //ACTION_CAMERA_REQUEST_CODE -> {
+                //dealCamera(requestCode, resultCode, data)
+            //}
             SELECT_REQUEST_CODE -> {
                 if (resultCode == Activity.RESULT_OK) {
                     var key = ""

@@ -39,7 +39,6 @@ import java.lang.Exception
  */
 interface ImagePicker {
 
-    val ACTION_CAMERA_REQUEST_CODE: Int
     val ACTION_PHOTO_REQUEST_CODE: Int
     val activity: BaseActivity
     val context: Context
@@ -288,32 +287,22 @@ interface ImagePicker {
 //        }
     }
 
-    fun dealPhoto(requestCode: Int, resultCode: Int, data: Intent?) {
-        if (resultCode == Activity.RESULT_OK && data != null) {
-            //println(resultCode)
-            //println(data.data)
-
-            file = makeTempEmptyFile()
-            //if (file != null) {
-            selectToFile(data!!)
-                //println(file)
-            //}
-            setImage(file, null)
-            closeImagePickerLayer()
-        } else {
-            println(requestCode)
-        }
+    fun dealPhoto(data: Intent?) {
+        file = makeTempEmptyFile()
+        //if (file != null) {
+        selectToFile(data!!)
+        //println(file)
+        //}
+        setImage(file, null)
+        closeImagePickerLayer()
     }
 
-    fun dealCamera(requestCode: Int, resultCode: Int, data: Intent?) {
-        if (resultCode == Activity.RESULT_OK) {
-
-            file = makeTempEmptyFile()
-            cameraToFile()
-            //println(file)
-            setImage(file, null)
-            closeImagePickerLayer()
-        }
+    fun dealCamera() {
+        file = makeTempEmptyFile()
+        cameraToFile()
+        //println(file)
+        setImage(file, null)
+        closeImagePickerLayer()
     }
 
 }

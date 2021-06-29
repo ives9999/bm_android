@@ -78,7 +78,7 @@ object MemberService: DataService() {
     fun login(context: Context, email: String, password: String, playerID: String, complete: CompletionHandler) {
         val lowerCaseEmail = email.toLowerCase()
         val url = URL_LOGIN
-        //println(url)
+        println(url)
 
         val body = JSONObject()
         body.put("email", email)
@@ -86,10 +86,10 @@ object MemberService: DataService() {
         body.put("player_id", playerID)
         body.put("source", "app")
         val requestBody = body.toString()
-        //println(requestBody)
+        println(requestBody)
 
         val request = object : JsonObjectRequest(Request.Method.POST, url, null, Response.Listener { json ->
-            //println(json)
+            println(json)
             try {
                 success = json.getBoolean("success")
                 //println(success)
@@ -370,8 +370,8 @@ object MemberService: DataService() {
         body.put(TOKEN_KEY, token)
         body.put("source", "app")
         val requestBody = body.toString()
-//        println(URL_MEMBER_GETONE)
-//        println(body)
+        //println(URL_MEMBER_GETONE)
+        //println(body)
 
         val request = object : JsonObjectRequest(Request.Method.POST, URL_MEMBER_GETONE, null, Response.Listener { json ->
             //println(json)

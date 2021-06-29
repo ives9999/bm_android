@@ -72,7 +72,6 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
     protected lateinit var scrollerListenr: RecyclerView.OnScrollListener
 
     // ImagePicker Interface property
-    override val ACTION_CAMERA_REQUEST_CODE = 100
     override val ACTION_PHOTO_REQUEST_CODE = 200
     override val activity = this
     override val context = this
@@ -83,8 +82,6 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
     override var filePath: String = ""
     override var file: File? = null
     override var fileUri: Uri = Uri.EMPTY
-//        get() = Uri.EMPTY
-//        set(value) {}
 
     override var mainDelegate: BaseActivity
         get() = this
@@ -370,7 +367,7 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
 
         if (res.resultCode == Activity.RESULT_OK) {
 
-            dealCamera(ACTION_PHOTO_REQUEST_CODE, res.resultCode, res.data)
+            dealCamera()
 //            if (res.data != null) {
 //                val i: Intent? = res.data
 //                if (i != null) {
@@ -386,7 +383,7 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
             if (res.data != null) {
                 val i: Intent? = res.data
                 if (i != null) {
-                    dealPhoto(ACTION_PHOTO_REQUEST_CODE, res.resultCode, res.data)
+                    dealPhoto(res.data)
                 }
             }
         }

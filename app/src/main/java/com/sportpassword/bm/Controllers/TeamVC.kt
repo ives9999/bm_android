@@ -37,7 +37,10 @@ class TeamVC : MyTableVC() {
         setMyTitle("球隊")
 
         if (intent.hasExtra("params")) {
-            params = intent.getSerializableExtra("params") as HashMap<String, Any>
+            val t = intent.getSerializableExtra("params")
+            if (t != null) {
+                params = t as HashMap<String, Any>
+            }
         }
 
         recyclerView = list_container
