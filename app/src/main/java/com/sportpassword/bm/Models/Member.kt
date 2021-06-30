@@ -61,8 +61,8 @@ class Member(data: JSONObject): SuperModel(data){
         channel = json.getString(CHANNEL_KEY, "bm")!!
         tel = json.getString(TEL_KEY, "")!!
         mobile = json.getString(MOBILE_KEY, "")!!
-        city_id = json.getInt(CITY_KEY, 0)
-        area_id = json.getInt(AREA_KEY, 0)
+        city_id = json.getInt("city_id", 0)
+        area_id = json.getInt("area_id", 0)
         road = json.getString(ROAD_KEY, "")!!
         zip = json.getInt(ZIP_KEY, 0)
         fb = json.getString(FB_KEY, "")!!

@@ -102,12 +102,21 @@ class RegisterActivity : MyTableVC(), ValueChangedDelegate {
         setRefreshListener()
     }
 
+    override fun refresh() {
+
+        for (formItem in form.formItems) {
+            formItem.reset()
+        }
+        params.clear()
+        initData()
+        generateItems()
+        adapter.notifyDataSetChanged()
+        refreshLayout!!.isRefreshing = false
+    }
+
     private fun initData() {
 
         if (member.isLoggedIn) {
-
-            println(member.city_id)
-            println(member.area_id)
 
             //member.memberPrint()
             form.removeItems(arrayListOf(PASSWORD_KEY, REPASSWORD_KEY, PRIVACY_KEY))
@@ -199,6 +208,7 @@ class RegisterActivity : MyTableVC(), ValueChangedDelegate {
         val rows: ArrayList<Item> = arrayListOf()
 
         val clearClick = { formItem: FormItem ->
+            formItem.reset()
         }
 
         val promptClick = { formItem: FormItem ->
@@ -425,6 +435,7 @@ class RegisterActivity : MyTableVC(), ValueChangedDelegate {
             //println(params)
             //println(filePath)
 
+            //this is execute DataService update
             MemberService.update(this, params, filePath) { success ->
                 Loading.hide(mask)
                 if (success) {

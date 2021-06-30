@@ -149,7 +149,7 @@ class MemberFragment: TabFragment() {
     protected fun _loginBlock() {
         _loginAdapter()
         nicknameLbl.text = member.nickname
-        if (member.avatar.length > 0) {
+        if (member.avatar.isNotEmpty()) {
             member.avatar.image(mainActivity!!, avatarView)
         }
         loginBtn.text = "登出"

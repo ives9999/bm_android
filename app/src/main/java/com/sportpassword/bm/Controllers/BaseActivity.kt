@@ -368,11 +368,6 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
         if (res.resultCode == Activity.RESULT_OK) {
 
             dealCamera()
-//            if (res.data != null) {
-//                val i: Intent? = res.data
-//                if (i != null) {
-//                }
-//            }
         }
     }
 
