@@ -77,7 +77,9 @@ class ShowTeamVC: ShowVC(), IconCellDelegate {
             val kc = table::class
             kc.memberProperties.forEach {
                 if (key == it.name) {
-                    val value = it.getter.call(table).toString()
+                    var value = it.getter.call(table).toString()
+                    if (value == "null") value = ""
+                    if (value == "-1") value = ""
                     tableRows[key]!!["content"] = value
 
                     if (key == "arena") {

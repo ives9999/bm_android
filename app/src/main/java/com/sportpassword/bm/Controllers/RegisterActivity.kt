@@ -49,6 +49,7 @@ class RegisterActivity : MyTableVC(), ValueChangedDelegate {
     private lateinit var originScaleType: ImageView.ScaleType
 
     var section_keys: ArrayList<ArrayList<String>> = arrayListOf()
+
     private var isFeaturedChange: Boolean = false
 
     private var old_selected_city: String = ""
@@ -181,6 +182,7 @@ class RegisterActivity : MyTableVC(), ValueChangedDelegate {
                 val avatar: String = member.avatar
                 //val avatar: String = BASE_URL + member.avatar
                 setImage(null, avatar)
+                isFeaturedChange = false
             }
         } else {
             if (testData.count() > 0) {

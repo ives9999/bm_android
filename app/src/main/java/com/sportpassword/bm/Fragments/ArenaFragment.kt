@@ -151,8 +151,8 @@ class ArenaFragment : TabFragment() {
 
     override fun rowClick(item: com.xwray.groupie.Item<ViewHolder>, view: View) {
 
-        val courseItem = item as CourseItem
-        val table = courseItem.row
+        val arenaItem = item as ArenaItem
+        val table = arenaItem.row
         mainActivity!!.toShowArena(table.token)
     }
 

@@ -282,11 +282,16 @@ class TempPlayFragment : TabFragment(), inter {
 
     fun onClick(item: com.xwray.groupie.Item<ViewHolder>) {
 
-        val searchItem = item as SearchItem
-        val idx_section: Int = searchItem.section
-        val idx_row: Int = searchItem.row
-
-        prepare(idx_section, idx_row)
+        if (selectedTagIdx == 1) {
+            val searchItem = item as SearchItem
+            val idx_section: Int = searchItem.section
+            val idx_row: Int = searchItem.row
+            prepare(idx_section, idx_row)
+        } else {
+            val teamItem = item as TeamItem
+            val table = teamItem.row
+            mainActivity!!.toShowTeam(table.token)
+        }
     }
 
 //    override fun onResume() {
