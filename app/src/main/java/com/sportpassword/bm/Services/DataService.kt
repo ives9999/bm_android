@@ -612,7 +612,7 @@ open class DataService: BaseService() {
     open fun update(context: Context, _params: MutableMap<String, String>, filePath: String, complete: CompletionHandler) {
 
         val url: String = getUpdateURL()
-        println(url)
+        //println(url)
         val header: MutableList<Pair<String, String>> = mutableListOf()
         header.add(Pair("Accept","application/json"))
         header.add(Pair("Content-Type","application/json"))
@@ -622,7 +622,7 @@ open class DataService: BaseService() {
                 map1 + map2
             }
         }
-        println(_params)
+        //println(_params)
 
         val params1: MutableList<Pair<String, String>> = mutableListOf()
         var jsonString: String = "{"
