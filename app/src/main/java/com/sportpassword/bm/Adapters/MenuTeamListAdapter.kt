@@ -9,13 +9,13 @@ import android.widget.FrameLayout
 import android.widget.LinearLayout
 import android.widget.TextView
 import com.sportpassword.bm.R
-import com.sportpassword.bm.Models.SuperData
+import com.sportpassword.bm.Models.Table
 
 /**
  * Created by ives on 2018/2/14.
  */
 
-class MenuTeamListAdapter(val context: Context, val lists: ArrayList<SuperData>, val edit: (SuperData) -> Unit, val delete: (SuperData) -> Unit, val onoff: (SuperData) -> Unit): RecyclerView.Adapter<MenuTeamListAdapter.ViewHolder>() {
+class MenuTeamListAdapter(val context: Context, val lists: ArrayList<Table>, val edit: (Table) -> Unit, val delete: (Table) -> Unit, val onoff: (Table) -> Unit): RecyclerView.Adapter<MenuTeamListAdapter.ViewHolder>() {
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder?.bind(position)
     }
@@ -30,7 +30,7 @@ class MenuTeamListAdapter(val context: Context, val lists: ArrayList<SuperData>,
     }
 
 
-    inner class ViewHolder(itemView: View, val edit: (SuperData) -> Unit, val delete: (SuperData) -> Unit, val onoff: (SuperData) -> Unit): RecyclerView.ViewHolder(itemView) {
+    inner class ViewHolder(itemView: View, val edit: (Table) -> Unit, val delete: (Table) -> Unit, val onoff: (Table) -> Unit): RecyclerView.ViewHolder(itemView) {
         val frontLayout = itemView.findViewById<FrameLayout>(R.id.front_layout)
         val editView = itemView.findViewById<LinearLayout>(R.id.menu_team_list_edit)
         val deleteView = itemView.findViewById<LinearLayout>(R.id.menu_team_list_delete)

@@ -9,14 +9,14 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import com.sportpassword.bm.R
-import com.sportpassword.bm.Models.SuperData
+import com.sportpassword.bm.Models.Table
 import com.squareup.picasso.Picasso
 
 /**
  * Created by ives on 2018/2/14.
  */
 
-class ManagerAdapter(val context: Context, val lists: ArrayList<SuperData>, val itemClick: (String, String) -> Unit): RecyclerView.Adapter<ManagerAdapter.ViewHolder>() {
+class ManagerAdapter(val context: Context, val lists: ArrayList<Table>, val itemClick: (String, String) -> Unit): RecyclerView.Adapter<ManagerAdapter.ViewHolder>() {
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder?.bind(position)
     }

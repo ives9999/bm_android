@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.sportpassword.bm.Adapters.TempPlayListAdapter
 import com.sportpassword.bm.Fragments.TeamItem
-import com.sportpassword.bm.Models.Arena
+//import com.sportpassword.bm.Models.Arena
 import com.sportpassword.bm.Models.City
 import com.sportpassword.bm.Models.ProductsTable
 import com.sportpassword.bm.Models.TeamsTable
@@ -35,10 +35,10 @@ class TempPlayVC : MyTableVC() {
 
         setMyTitle("臨打")
 
-        citys = intent.getSerializableExtra("citys") as ArrayList<City>
-        arenas = intent.getSerializableExtra("arenas") as ArrayList<Arena>
-        degrees = intent.getSerializableExtra("degrees") as ArrayList<DEGREE>
-
+//        citys = intent.getSerializableExtra("citys") as ArrayList<City>
+//        arenas = intent.getSerializableExtra("arenas") as ArrayList<Arena>
+//        degrees = intent.getSerializableExtra("degrees") as ArrayList<DEGREE>
+//
         if (intent.hasExtra("weekdays")) {
             weekdays = intent.getIntegerArrayListExtra("weekdays")!!
         }
@@ -101,9 +101,9 @@ class TempPlayVC : MyTableVC() {
     }
 
     private fun arenaBtnPressed(arena_id: Int) {
-        resetParams()
-        arenas.add(Arena(arena_id, ""))
-        prepareParams()
-        refresh()
+//        resetParams()
+//        arenas.add(Arena(arena_id, ""))
+//        prepareParams()
+//        refresh()
     }
 }

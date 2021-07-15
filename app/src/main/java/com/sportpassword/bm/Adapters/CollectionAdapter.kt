@@ -10,7 +10,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import com.sportpassword.bm.Models.SuperData
+import com.sportpassword.bm.Models.Table
+//import com.sportpassword.bm.Models.SuperData
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Utilities.CREATED_AT_KEY
 import com.sportpassword.bm.Utilities.PV_KEY
@@ -19,13 +20,13 @@ import com.sportpassword.bm.Utilities.toMyString
 import com.squareup.picasso.Picasso
 import java.net.URL
 
-class CollectionAdapter(val context: Context, val iden: String="teach", val screenWidth: Int=0, val itemClick: (SuperData) -> Unit): RecyclerView.Adapter<CollectionAdapter.ViewHolder>() {
+class CollectionAdapter(val context: Context, val iden: String="teach", val screenWidth: Int=0, val itemClick: (Table) -> Unit): RecyclerView.Adapter<CollectionAdapter.ViewHolder>() {
 
-    var lists: ArrayList<SuperData> = arrayListOf()
-        get() = field
-        set(value) {
-            field = value
-        }
+//    var lists: ArrayList<SuperData> = arrayListOf()
+//        get() = field
+//        set(value) {
+//            field = value
+//        }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view: View = LayoutInflater.from(context).inflate(R.layout.collection_item, parent, false)
@@ -33,15 +34,16 @@ class CollectionAdapter(val context: Context, val iden: String="teach", val scre
     }
 
     override fun getItemCount(): Int {
-        return lists.size
+        return 1
+        //return lists.size
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(lists[position])
+        //holder.bind(lists[position])
     }
 
 
-    inner class ViewHolder(itemView: View, val iden: String="team", val screenWidth: Int=0, val itemClick: (SuperData) -> Unit): RecyclerView.ViewHolder(itemView) {
+    inner class ViewHolder(itemView: View, val iden: String="team", val screenWidth: Int=0, val itemClick: (Table) -> Unit): RecyclerView.ViewHolder(itemView) {
         val titleLbl = itemView.findViewById<TextView>(R.id.titleLbl)
         val featuredView = itemView.findViewById<ImageView>(R.id.featuredView)
         val pvView = itemView.findViewById<ImageView>(R.id.pvIcon)
@@ -52,7 +54,7 @@ class CollectionAdapter(val context: Context, val iden: String="teach", val scre
 
         private val set = ConstraintSet()
 
-        fun bind(superData: SuperData) {
+        fun bind(superData: Table) {
             titleLbl.text = superData.title
 
             if (superData.featured_path.isNotEmpty()) {
@@ -80,10 +82,10 @@ class CollectionAdapter(val context: Context, val iden: String="teach", val scre
                 //println(e.localizedMessage)
             }
 
-            pvLbl.text = "瀏覽數：" + superData.data[PV_KEY]!!["show"] as String
+            //pvLbl.text = "瀏覽數：" + superData.data[PV_KEY]!!["show"] as String
 
-            var createdAt: String = superData.data[CREATED_AT_KEY]!!["show"] as String
-            dateLbl.text = createdAt.toDateTime()!!.toMyString("yyyy-MM-dd")
+            //var createdAt: String = superData.data[CREATED_AT_KEY]!!["show"] as String
+            //dateLbl.text = createdAt.toDateTime()!!.toMyString("yyyy-MM-dd")
             itemView.setOnClickListener{itemClick(superData)}
         }
     }

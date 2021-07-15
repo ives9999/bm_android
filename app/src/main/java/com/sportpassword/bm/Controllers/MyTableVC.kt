@@ -192,14 +192,14 @@ abstract class MyTableVC : BaseActivity(), List1CellDelegate {
 
     protected open fun notifyDataSetChanged() {
         if (page == 1) {
-            superDataLists = arrayListOf()
+            //superDataLists = arrayListOf()
         }
-        superDataLists.addAll(dataService.superDataLists)
+        //superDataLists.addAll(dataService.superDataLists)
 //        for (data in superDataLists) {
 //            data.print()
 //            println("===================")
 //        }
-        listAdapter.lists = superDataLists
+        //listAdapter.lists = superDataLists
         listAdapter.notifyDataSetChanged()
     }
 

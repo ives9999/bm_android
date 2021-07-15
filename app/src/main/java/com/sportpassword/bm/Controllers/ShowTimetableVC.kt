@@ -15,7 +15,7 @@ import android.view.View
 import android.webkit.*
 import com.sportpassword.bm.Adapters.IconCell
 import com.sportpassword.bm.Adapters.IconCellDelegate
-import com.sportpassword.bm.Models.SuperCoach
+import com.sportpassword.bm.Models.CoachTable
 import com.sportpassword.bm.Models.Timetable
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.TimetableService
@@ -58,7 +58,7 @@ class ShowTimetableVC : BaseActivity(), IconCellDelegate {
         EMAIL_KEY to hashMapOf("icon" to "email","title" to "郵件","content" to "","isPressed" to "true")
     )
     var timetable: Timetable? = null
-    var superCoach: SuperCoach? = null
+    var superCoach: CoachTable? = null
 
     lateinit var timetableAdapter: GroupAdapter<ViewHolder>
     lateinit var coachAdapter: GroupAdapter<ViewHolder>
@@ -91,7 +91,7 @@ class ShowTimetableVC : BaseActivity(), IconCellDelegate {
             TimetableService.getOne(this, tt_id!!, source!!, token!!) { success ->
                 if (success) {
                     timetable = TimetableService.timetable
-                    superCoach = TimetableService.superCoach
+                    //superCoach = TimetableService.superCoach
 
                     for (key in tableRowKeys) {
                         val kc = timetable!!::class
@@ -141,15 +141,15 @@ class ShowTimetableVC : BaseActivity(), IconCellDelegate {
                     var items = generateTimetableItem()
                     timetableAdapter.update(items)
 
-                    for (key in coachTableRowKeys) {
-                        val kc = superCoach!!::class
-                        kc.memberProperties.forEach {
-                            if (key == it.name) {
-                                val value = it.getter.call(superCoach).toString()
-                                coachTableRows[key]!!["content"] = value
-                            }
-                        }
-                    }
+//                    for (key in coachTableRowKeys) {
+//                        val kc = coachTable!!::class
+//                        kc.memberProperties.forEach {
+//                            if (key == it.name) {
+//                                val value = it.getter.call(superCoach).toString()
+//                                coachTableRows[key]!!["content"] = value
+//                            }
+//                        }
+//                    }
                     //println(coachTableRows)
                     items = generateCoachItem()
                     coachAdapter.update(items)

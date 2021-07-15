@@ -1,18 +1,13 @@
 package com.sportpassword.bm.Services
 
 import android.content.Context
-import com.sportpassword.bm.Models.SuperCourse
-import com.sportpassword.bm.Models.SuperCourses
+import com.sportpassword.bm.Models.CourseTable
 import com.sportpassword.bm.Models.SuperModel
 import com.sportpassword.bm.Utilities.*
 import org.json.JSONObject
 import java.lang.Exception
 
 object CourseService: DataService() {
-
-    lateinit var superCourses: SuperCourses
-    lateinit var superCourse: SuperCourse
-
 
     override fun getListURL(): String {
         return URL_COURSE_LIST
@@ -26,12 +21,12 @@ object CourseService: DataService() {
         return URL_COURSE_LIKE.format(token)
     }
 
-    override fun parseModels(json: JSONObject): SuperModel {
-        return JSONParse.parse<SuperCourses>(json)!!
-    }
-    override fun parseModel(json: JSONObject): SuperModel {
-        return JSONParse.parse<SuperCourse>(json)!!
-    }
+//    override fun parseModels(json: JSONObject): SuperModel {
+//        return JSONParse.parse<SuperCourses>(json)!!
+//    }
+//    override fun parseModel(json: JSONObject): SuperModel {
+//        return JSONParse.parse<SuperCourse>(json)!!
+//    }
 
     override fun getSignupListURL(token: String?): String {
         var url: String = URL_SIGNUP_LIST.format("course")
@@ -54,11 +49,11 @@ object CourseService: DataService() {
         return url
     }
 
-    override fun parseAbleForSingupList(data: JSONObject): SuperModel {
-        val s: SuperCourse = JSONParse.parse<SuperCourse>(data)!!
-
-        return s
-    }
+//    override fun parseAbleForSingupList(data: JSONObject): SuperModel {
+//        val s: CourseTable = JSONParse.parse<CourseTable>(data)!!
+//
+//        return s
+//    }
 
     override fun update(context: Context, _params: MutableMap<String, String>, filePath: String, complete: CompletionHandler) {
 

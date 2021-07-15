@@ -2,7 +2,7 @@ package com.sportpassword.bm.Controllers
 
 import android.os.Bundle
 import android.view.View
-import com.sportpassword.bm.Models.SuperCourse
+import com.sportpassword.bm.Models.CourseTable
 import com.sportpassword.bm.Models.SuperSignup
 import com.sportpassword.bm.Models.SuperSignups
 import com.sportpassword.bm.R
@@ -23,7 +23,7 @@ class SignupListVC : MyTableVC() {
     var able: String = ""
     var able_token: String = ""//來源的token
     lateinit var signups: SuperSignups
-    var able_model: SuperCourse = SuperCourse(JSONObject())
+    var able_model: CourseTable = CourseTable()
 //    var signupRows: ArrayList<SuperSignup> = arrayListOf()
 
 
@@ -66,7 +66,7 @@ class SignupListVC : MyTableVC() {
             signups = dataService.superModel as SuperSignups
 
             if (page == 1) {
-                able_model = dataService.able as SuperCourse
+                able_model = dataService.able as CourseTable
                 setMyTitle(able_model.title + "報名列表")
                 rows = arrayListOf()
                 perPage = signups.perPage

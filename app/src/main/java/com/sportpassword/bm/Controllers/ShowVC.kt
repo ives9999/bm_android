@@ -2,18 +2,12 @@ package com.sportpassword.bm.Controllers
 
 import android.os.Bundle
 import android.view.View
-import android.widget.Button
 import com.sportpassword.bm.Adapters.IconCell
 import com.sportpassword.bm.Adapters.IconCellDelegate
-import com.sportpassword.bm.Models.CourseTable
-import com.sportpassword.bm.Models.CoursesTable
-import com.sportpassword.bm.Models.SuperCourse
 import com.sportpassword.bm.Models.Table
 import com.sportpassword.bm.R
-import com.sportpassword.bm.Services.CourseService
 import com.sportpassword.bm.Utilities.Loading
 import com.sportpassword.bm.Utilities.image
-import com.sportpassword.bm.Utilities.jsonToModel
 import com.sportpassword.bm.member
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.ViewHolder
@@ -22,7 +16,6 @@ import kotlinx.android.synthetic.main.activity_show_course_vc.*
 import kotlinx.android.synthetic.main.mask.*
 import kotlin.reflect.KClass
 import kotlin.reflect.full.memberProperties
-
 
 open class ShowVC: BaseActivity(), IconCellDelegate {
 

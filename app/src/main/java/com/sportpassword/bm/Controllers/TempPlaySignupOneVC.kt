@@ -143,14 +143,14 @@ class  TempPlaySignupOneVC : BaseActivity() {
     }
     fun initIsTeamManager(completion: CompletionHandler) {
         _getTeamManagerList { success ->
-            for (i in 0..superDataLists.size-1) {
-                val list = superDataLists[i]
-                if (list.id == team_id) {
-                    isTeamManager = true
-                    memberOne.add(hashMapOf("black_list" to hashMapOf("title" to "加入黑名單", "more" to true, "value" to "", "icon" to "blacklist")))
-                    break
-                }
-            }
+//            for (i in 0..superDataLists.size-1) {
+//                val list = superDataLists[i]
+//                if (list.id == team_id) {
+//                    isTeamManager = true
+//                    memberOne.add(hashMapOf("black_list" to hashMapOf("title" to "加入黑名單", "more" to true, "value" to "", "icon" to "blacklist")))
+//                    break
+//                }
+//            }
             completion(success)
         }
     }

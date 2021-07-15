@@ -5,7 +5,7 @@ import com.android.volley.Request
 import com.android.volley.Response
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
-import com.sportpassword.bm.Models.SuperCoach
+import com.sportpassword.bm.Models.CoachTable
 import com.sportpassword.bm.Models.Timetable
 import com.sportpassword.bm.Utilities.CompletionHandler
 import com.sportpassword.bm.Utilities.HEADER
@@ -16,7 +16,7 @@ import org.json.JSONObject
 
 object TimetableService: DataService() {
     lateinit var timetable: Timetable
-    lateinit var superCoach: SuperCoach
+    lateinit var coachTable: CoachTable
 
     override fun getOne(context: Context, id: Int, source: String, token: String, completion: CompletionHandler) {
         val url = "$URL_ONE".format("timetable")
@@ -39,7 +39,7 @@ object TimetableService: DataService() {
                 val model = json.getJSONObject("model")
                 this.timetable = JSONParse.parse<Timetable>(tt)!!
                 //this.timetable.print()
-                this.superCoach = JSONParse.parse<SuperCoach>(model)!!
+                this.coachTable = JSONParse.parse<CoachTable>(model)!!
 
             } catch (e: JSONException) {
                 println("parse data error: " + e.localizedMessage)

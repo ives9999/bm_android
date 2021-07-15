@@ -5,8 +5,8 @@ import android.content.DialogInterface
 import android.os.Bundle
 import android.view.View
 import com.sportpassword.bm.Models.Member
-import com.sportpassword.bm.Models.SuperCourse
-import com.sportpassword.bm.Models.SuperCourses
+import com.sportpassword.bm.Models.CourseTable
+import com.sportpassword.bm.Models.CoursesTable
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.CourseService
 import com.sportpassword.bm.Services.MemberService
@@ -30,7 +30,7 @@ import org.jetbrains.anko.sdk27.coroutines.onClick
 
 class CourseCalendarVC: MyTableVC() {
 
-    var superCourses: SuperCourses? = null
+    var superCourses: CoursesTable? = null
 
     var y: Int = Date().getY()
     var m: Int = Date().getm()
@@ -113,7 +113,7 @@ class CourseCalendarVC: MyTableVC() {
             val day: Int = i
             val date: String = "%4d-%02d-%02d".format(y, m, i)
 //            println(date)
-            var rows: ArrayList<SuperCourse> = arrayListOf()
+            var rows: ArrayList<CourseTable> = arrayListOf()
             if (superCourses != null) {
                 rows = superCourses!!.rows
             }
@@ -216,7 +216,7 @@ class CourseCalendarVC: MyTableVC() {
     }
 }
 
-class CourseCalendarItem(val context: Context, val date: String, val superCourses: ArrayList<SuperCourse>): Item() {
+class CourseCalendarItem(val context: Context, val date: String, val superCourses: ArrayList<CourseTable>): Item() {
 
     override fun bind(viewHolder: ViewHolder, position: Int) {
 

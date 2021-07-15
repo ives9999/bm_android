@@ -59,21 +59,21 @@ class ManagerVC : BaseActivity() {
         val filter: Array<Array<Any>> = arrayOf(filter1)
 
         Loading.show(mask)
-        dataService.getList(this, source, "name", hashMapOf<String, Any>(), 1, 100, filter) { success ->
-            if (success) {
-//                for (row in dataService.superDataLists) {
-//                    println(row.featured_path)
-//                }
-                managerAdapter = ManagerAdapter(this, dataService.superDataLists,
-                        { title, token ->
-                            toManagerFunction(title, token, source)
-                        }
-                )
-                manager_list.adapter = managerAdapter
-                closeRefresh()
-            }
-            Loading.hide(mask)
-        }
+//        dataService.getList(this, source, "name", hashMapOf<String, Any>(), 1, 100, filter) { success ->
+//            if (success) {
+////                for (row in dataService.superDataLists) {
+////                    println(row.featured_path)
+////                }
+//                managerAdapter = ManagerAdapter(this, dataService.superDataLists,
+//                        { title, token ->
+//                            toManagerFunction(title, token, source)
+//                        }
+//                )
+//                manager_list.adapter = managerAdapter
+//                closeRefresh()
+//            }
+//            Loading.hide(mask)
+//        }
     }
 
     fun add(view: View) {

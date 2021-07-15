@@ -100,7 +100,7 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
     var density: Float = 0f
 
     var msg: String = ""
-    var superDataLists: ArrayList<SuperData> = arrayListOf()
+//    var superDataLists: ArrayList<SuperData> = arrayListOf()
 
     val REQUEST_PHONE_CALL = 100
     var mobile: String = ""
@@ -118,7 +118,7 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
     var parking: Boolean = false
     var weekdays: ArrayList<Int> = arrayListOf()
     var times: HashMap<String, Any> = hashMapOf()
-    var arenas: ArrayList<Arena> = arrayListOf()
+    var arenas: ArrayList<ArenaTable> = arrayListOf()
     var degrees: ArrayList<DEGREE> = arrayListOf()
     var keyword: String = ""
     lateinit var searchAdapter: GroupAdapter<ViewHolder>
@@ -908,7 +908,7 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
         TeamService.getList(this, "team", "name", hashMapOf(), 1, 100, filter) { success ->
             Loading.hide(mask)
             if (success) {
-                superDataLists = TeamService.superDataLists
+                //superDataLists = TeamService.superDataLists
                 completion(true)
             } else {
                 msg = TeamService.msg
@@ -1357,81 +1357,81 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
 
     open fun prepare(idx: Int) {}
 
-    protected fun prepareSearch(idx: Int, page: String) {
-        val intent = Intent(this, EditItemActivity::class.java)
-        val row = searchRows.get(idx)
-        var key = ""
-        if (row.containsKey("key")) {
-            key = row["key"]!!
-        }
-        when (key) {
-            CITY_KEY -> {
-                intent.putExtra("key", CITY_KEY)
-                intent.putExtra("source", "search")
-                intent.putExtra("page", page)
-                intent.putExtra("type", "simple")
-                intent.putExtra("select", "multi")
-                if (page == "coach") {
-                    citys = citys_coach
-                } else if (page == "team") {
-                    citys = citys_team
-                }
-                intent.putParcelableArrayListExtra("citys", citys)
-            }
-            ARENA_KEY -> {
-                if (citys.size == 0) {
-                    Alert.warning(this, "請先選擇縣市")
-                    return
-                }
-                intent.putExtra("key", ARENA_KEY)
-                intent.putExtra("source", "search")
-                intent.putExtra("type", "simple")
-                intent.putExtra("select", "multi")
-
-                var citysForArena: ArrayList<Int> = arrayListOf()
-                for (city in citys) {
-                    citysForArena.add(city.id)
-                }
-                intent.putIntegerArrayListExtra("citys_for_arena", citysForArena)
-                //intent.putParcelableArrayListExtra("arenas", arenas)
-            }
-            TEAM_WEEKDAYS_KEY -> {
-                intent.putExtra("key", TEAM_WEEKDAYS_KEY)
-                intent.putExtra("source", "search")
-                intent.putIntegerArrayListExtra("weekdays", weekdays)
-            }
-            TEAM_PLAY_START_KEY -> {
-                intent.putExtra("key", TEAM_PLAY_START_KEY)
-                intent.putExtra("source", "search")
-//                        times["time"] = "09:00"
-                times["type"] = SELECT_TIME_TYPE.play_start
-                intent.putExtra("times", times)
-            }
-            TEAM_DEGREE_KEY -> {
-                intent.putExtra("key", TEAM_DEGREE_KEY)
-                intent.putExtra("source", "search")
-                intent.putExtra("degrees", degrees)
-            }
-            AREA_KEY -> {
-                if (citys.size == 0) {
-                    Alert.warning(this, "請先選擇縣市")
-                    return
-                }
-                intent.putExtra("key", AREA_KEY)
-                intent.putExtra("source", "search")
-                intent.putExtra("type", "simple")
-                intent.putExtra("select", "multi")
-
-                var citysForArea: ArrayList<Int> = arrayListOf()
-                for (city in citys) {
-                    citysForArea.add(city.id)
-                }
-                intent.putIntegerArrayListExtra("citys_for_area", citysForArea)
-                intent.putParcelableArrayListExtra("areas", areas)
-            }
-        }
-        startActivityForResult(intent!!, SEARCH_REQUEST_CODE)
-    }
+//    protected fun prepareSearch(idx: Int, page: String) {
+//        val intent = Intent(this, EditItemActivity::class.java)
+//        val row = searchRows.get(idx)
+//        var key = ""
+//        if (row.containsKey("key")) {
+//            key = row["key"]!!
+//        }
+//        when (key) {
+//            CITY_KEY -> {
+//                intent.putExtra("key", CITY_KEY)
+//                intent.putExtra("source", "search")
+//                intent.putExtra("page", page)
+//                intent.putExtra("type", "simple")
+//                intent.putExtra("select", "multi")
+//                if (page == "coach") {
+//                    citys = citys_coach
+//                } else if (page == "team") {
+//                    citys = citys_team
+//                }
+//                intent.putParcelableArrayListExtra("citys", citys)
+//            }
+//            ARENA_KEY -> {
+//                if (citys.size == 0) {
+//                    Alert.warning(this, "請先選擇縣市")
+//                    return
+//                }
+//                intent.putExtra("key", ARENA_KEY)
+//                intent.putExtra("source", "search")
+//                intent.putExtra("type", "simple")
+//                intent.putExtra("select", "multi")
+//
+//                var citysForArena: ArrayList<Int> = arrayListOf()
+//                for (city in citys) {
+//                    citysForArena.add(city.id)
+//                }
+//                intent.putIntegerArrayListExtra("citys_for_arena", citysForArena)
+//                intent.putParcelableArrayListExtra("arenas", arenas)
+//            }
+//            TEAM_WEEKDAYS_KEY -> {
+//                intent.putExtra("key", TEAM_WEEKDAYS_KEY)
+//                intent.putExtra("source", "search")
+//                intent.putIntegerArrayListExtra("weekdays", weekdays)
+//            }
+//            TEAM_PLAY_START_KEY -> {
+//                intent.putExtra("key", TEAM_PLAY_START_KEY)
+//                intent.putExtra("source", "search")
+////                        times["time"] = "09:00"
+//                times["type"] = SELECT_TIME_TYPE.play_start
+//                intent.putExtra("times", times)
+//            }
+//            TEAM_DEGREE_KEY -> {
+//                intent.putExtra("key", TEAM_DEGREE_KEY)
+//                intent.putExtra("source", "search")
+//                intent.putExtra("degrees", degrees)
+//            }
+//            AREA_KEY -> {
+//                if (citys.size == 0) {
+//                    Alert.warning(this, "請先選擇縣市")
+//                    return
+//                }
+//                intent.putExtra("key", AREA_KEY)
+//                intent.putExtra("source", "search")
+//                intent.putExtra("type", "simple")
+//                intent.putExtra("select", "multi")
+//
+//                var citysForArea: ArrayList<Int> = arrayListOf()
+//                for (city in citys) {
+//                    citysForArea.add(city.id)
+//                }
+//                intent.putIntegerArrayListExtra("citys_for_area", citysForArea)
+//                intent.putParcelableArrayListExtra("areas", areas)
+//            }
+//        }
+//        startActivityForResult(intent!!, SEARCH_REQUEST_CODE)
+//    }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
@@ -1710,92 +1710,92 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
     }
 
     open fun prepareParams(city_type: String = "simple") {
-        val city_ids: ArrayList<Int> = arrayListOf()
-        if (citys.size > 0) {
-            citys.forEach {
-                city_ids.add(it.id)
-            }
-        } else {
-            city_ids.clear()
-        }
-        if (city_ids.size > 0) {
-            params["city_id"] = city_ids
-            params["city_type"] = city_type
-        } else {
-            params.remove("city_id")
-            params.remove("city_type")
-        }
-
-        val area_ids: ArrayList<Int> = arrayListOf()
-        if (areas.size > 0) {
-            areas.forEach  {
-                area_ids.add(it.id)
-            }
-        } else {
-            area_ids.clear()
-        }
-        if (area_ids.size > 0) {
-            params["area_id"] = area_ids
-        } else {
-            params.remove("area_id")
-        }
-
-//        if (air_condition) { params["air_condition"] = 1 } else { params["air_condition"] = 0 }
-//        if (bathroom) { params["bathroom"] = 1 } else { params["bathroom"] = 0 }
-//        if (parking) { params["parking"] = 1 } else { params["parking"] = 0 }
-        if (air_condition) { params["air_condition"] = 1 } else { params.remove("air_condition") }
-        if (bathroom) { params["bathroom"] = 1 } else { params.remove("bathroom") }
-        if (parking) { params["parking"] = 1 } else { params.remove("parking") }
-
-        if (weekdays.size > 0) {
-            params["play_days"] = weekdays
-        } else {
-            params.remove("play_days")
-        }
-
-        if (times.size > 0) {
-            if (times.containsKey("time")) {
-                params["use_date_range"] = 1
-                val play_start = times["time"]!! as String
-                val time = play_start + ":00 - 24:00:00"
-                params["play_time"] = time
-            }
-        } else {
-            params.remove("play_time")
-        }
-
-        var arena_ids: ArrayList<Int> = arrayListOf()
-        if (arenas.size > 0) {
-            arenas.forEach {
-                arena_ids.add(it.id)
-            }
-        } else {
-            arena_ids.clear()
-        }
-        if (arena_ids.size > 0) {
-            params["arena_id"] = arena_ids
-        } else {
-            params.remove("arena_id")
-        }
-
-        var _degrees: ArrayList<String> = arrayListOf()
-        if (degrees.size > 0) {
-            degrees.forEach {
-                _degrees.add(it.toString())
-            }
-        } else {
-            _degrees.clear()
-        }
-        if (_degrees.size > 0) {
-            params["degree"] = _degrees
-        } else {
-            params.remove("degree")
-        }
-        if (keyword.length > 0) {
-            params["k"] = keyword
-        } else {
-            params.remove("k")
-        }
+//        val city_ids: ArrayList<Int> = arrayListOf()
+//        if (citys.size > 0) {
+//            citys.forEach {
+//                city_ids.add(it.id)
+//            }
+//        } else {
+//            city_ids.clear()
+//        }
+//        if (city_ids.size > 0) {
+//            params["city_id"] = city_ids
+//            params["city_type"] = city_type
+//        } else {
+//            params.remove("city_id")
+//            params.remove("city_type")
+//        }
+//
+//        val area_ids: ArrayList<Int> = arrayListOf()
+//        if (areas.size > 0) {
+//            areas.forEach  {
+//                area_ids.add(it.id)
+//            }
+//        } else {
+//            area_ids.clear()
+//        }
+//        if (area_ids.size > 0) {
+//            params["area_id"] = area_ids
+//        } else {
+//            params.remove("area_id")
+//        }
+//
+////        if (air_condition) { params["air_condition"] = 1 } else { params["air_condition"] = 0 }
+////        if (bathroom) { params["bathroom"] = 1 } else { params["bathroom"] = 0 }
+////        if (parking) { params["parking"] = 1 } else { params["parking"] = 0 }
+//        if (air_condition) { params["air_condition"] = 1 } else { params.remove("air_condition") }
+//        if (bathroom) { params["bathroom"] = 1 } else { params.remove("bathroom") }
+//        if (parking) { params["parking"] = 1 } else { params.remove("parking") }
+//
+//        if (weekdays.size > 0) {
+//            params["play_days"] = weekdays
+//        } else {
+//            params.remove("play_days")
+//        }
+//
+//        if (times.size > 0) {
+//            if (times.containsKey("time")) {
+//                params["use_date_range"] = 1
+//                val play_start = times["time"]!! as String
+//                val time = play_start + ":00 - 24:00:00"
+//                params["play_time"] = time
+//            }
+//        } else {
+//            params.remove("play_time")
+//        }
+//
+//        var arena_ids: ArrayList<Int> = arrayListOf()
+//        if (arenas.size > 0) {
+//            arenas.forEach {
+//                arena_ids.add(it.id)
+//            }
+//        } else {
+//            arena_ids.clear()
+//        }
+//        if (arena_ids.size > 0) {
+//            params["arena_id"] = arena_ids
+//        } else {
+//            params.remove("arena_id")
+//        }
+//
+//        var _degrees: ArrayList<String> = arrayListOf()
+//        if (degrees.size > 0) {
+//            degrees.forEach {
+//                _degrees.add(it.toString())
+//            }
+//        } else {
+//            _degrees.clear()
+//        }
+//        if (_degrees.size > 0) {
+//            params["degree"] = _degrees
+//        } else {
+//            params.remove("degree")
+//        }
+//        if (keyword.length > 0) {
+//            params["k"] = keyword
+//        } else {
+//            params.remove("k")
+//        }
     }
 
     fun resetParams() {

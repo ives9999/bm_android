@@ -9,7 +9,7 @@ import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
-import com.sportpassword.bm.Models.SuperData
+import com.sportpassword.bm.Models.Table
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Utilities.*
 import com.squareup.picasso.Picasso
@@ -17,9 +17,9 @@ import com.squareup.picasso.Picasso
 /**
  * Created by ives on 2018/2/23.
  */
-class ListAdapter(val context: Context, val iden: String="team", val screenWidth: Int=0, val itemClick: (SuperData)->Unit, val searchCity:(SuperData)->Unit, val showMap:(SuperData, address: String)->Unit): RecyclerView.Adapter<ListAdapter.ViewHolder>(){
+class ListAdapter(val context: Context, val iden: String="team", val screenWidth: Int=0, val itemClick: (Table)->Unit, val searchCity:(Table)->Unit, val showMap:(Table, address: String)->Unit): RecyclerView.Adapter<ListAdapter.ViewHolder>(){
 
-    var lists: ArrayList<SuperData> = arrayListOf()
+    var lists: ArrayList<Table> = arrayListOf()
         get() = field
         set(value) {
             field = value
@@ -49,7 +49,7 @@ class ListAdapter(val context: Context, val iden: String="team", val screenWidth
         //val videoView = itemView.findViewById<WebView>(R.id.listVideo)
         val markerView = itemView.findViewById<ImageButton>(R.id.marker)
 
-        fun bind(superData: SuperData) {
+        fun bind(superData: Table) {
             markerView.visibility = View.INVISIBLE
             if (iden == "team") {
                 bindTeam(superData)
@@ -61,65 +61,65 @@ class ListAdapter(val context: Context, val iden: String="team", val screenWidth
 //            else if (iden == "course") {
 //                bindCourse(superData)
 //            }
-            if (superData.vimeo.isEmpty() && superData.youtube.isEmpty()) {
-                nameView.visibility = View.VISIBLE
-                featuredView.visibility = View.VISIBLE
-                //videoView.visibility = View.INVISIBLE
-                nameView.text = superData.title
-                if (superData.featured_path.isNotEmpty()) {
-                    Picasso.with(context)
-                            .load(superData.featured_path)
-                            .placeholder(R.drawable.loading_square_120)
-                            .error(R.drawable.loading_square_120)
-                            .into(featuredView)
-                } else {
-                    featuredView.setImageResource(R.drawable.loading_square_120)
-                }
-            } else if (superData.featured_path.isEmpty() && superData.youtube.isNotEmpty()) {
-                nameView.visibility = View.INVISIBLE
-//                nameView.setPadding(0, 0, 0, 0)
-//                val p = nameView.layoutParams as ConstraintLayout.LayoutParams
-//                p.height = 0
-//                p.setMargins(0, 0, 0, 0)
-//                nameView.layoutParams = p
-                //zeroView(nameView)
-
-                featuredView.visibility = View.INVISIBLE
-//                featuredView.setPadding(0, 0, 0, 0)
-//                val p1 = featuredView.layoutParams as ConstraintLayout.LayoutParams
-//                p1.height = 0
-//                p1.setMargins(0, 0, 0, 0)
-//                featuredView.layoutParams = p1
-                //zeroView(featuredView)
-
-//                videoView.visibility = View.VISIBLE
-//                videoView.settings.javaScriptEnabled = true
-//                videoView.webChromeClient = WebChromeClient()
-                if (superData.youtube.isNotEmpty()) {
-                    var width: Int = if (screenWidth == 0) 320 else screenWidth
-                    var height: Int = height(width)
-                    width += 1
-
-                    val html =
-                            "<html><body style=\"margin:0;padding:0;\"><iframe type=\"text/html5\" width=\"" +
-                                    width +
-                                    "\" height=\"" +
-                                    height +
-                                    "\" src=\"https://www.youtube.com/embed/" +
-                                    superData.youtube +
-                                    "\" frameborder=\"0\" allow=\"autoplay; encrypted-media\" allowfullscreen></iframe></body></html>"
-                    //println(html)
-//                    videoView.loadData(html, "text/html; charset=utf-8", "UTF-8")
-                }
-
-            }
+//            if (superData.vimeo.isEmpty() && superData.youtube.isEmpty()) {
+//                nameView.visibility = View.VISIBLE
+//                featuredView.visibility = View.VISIBLE
+//                //videoView.visibility = View.INVISIBLE
+//                nameView.text = superData.title
+//                if (superData.featured_path.isNotEmpty()) {
+//                    Picasso.with(context)
+//                            .load(superData.featured_path)
+//                            .placeholder(R.drawable.loading_square_120)
+//                            .error(R.drawable.loading_square_120)
+//                            .into(featuredView)
+//                } else {
+//                    featuredView.setImageResource(R.drawable.loading_square_120)
+//                }
+//            } else if (superData.featured_path.isEmpty() && superData.youtube.isNotEmpty()) {
+//                nameView.visibility = View.INVISIBLE
+////                nameView.setPadding(0, 0, 0, 0)
+////                val p = nameView.layoutParams as ConstraintLayout.LayoutParams
+////                p.height = 0
+////                p.setMargins(0, 0, 0, 0)
+////                nameView.layoutParams = p
+//                //zeroView(nameView)
+//
+//                featuredView.visibility = View.INVISIBLE
+////                featuredView.setPadding(0, 0, 0, 0)
+////                val p1 = featuredView.layoutParams as ConstraintLayout.LayoutParams
+////                p1.height = 0
+////                p1.setMargins(0, 0, 0, 0)
+////                featuredView.layoutParams = p1
+//                //zeroView(featuredView)
+//
+////                videoView.visibility = View.VISIBLE
+////                videoView.settings.javaScriptEnabled = true
+////                videoView.webChromeClient = WebChromeClient()
+//                if (superData.youtube.isNotEmpty()) {
+//                    var width: Int = if (screenWidth == 0) 320 else screenWidth
+//                    var height: Int = height(width)
+//                    width += 1
+//
+//                    val html =
+//                            "<html><body style=\"margin:0;padding:0;\"><iframe type=\"text/html5\" width=\"" +
+//                                    width +
+//                                    "\" height=\"" +
+//                                    height +
+//                                    "\" src=\"https://www.youtube.com/embed/" +
+//                                    superData.youtube +
+//                                    "\" frameborder=\"0\" allow=\"autoplay; encrypted-media\" allowfullscreen></iframe></body></html>"
+//                    //println(html)
+////                    videoView.loadData(html, "text/html; charset=utf-8", "UTF-8")
+//                }
+//
+//            }
 //            println("${superData.title}: featured => ${superData.featured_path}")
 //            println("${superData.title}: vimeo => ${superData.vimeo}")
 //            println("${superData.title}: youbute => ${superData.youtube}")
             itemView.setOnClickListener{itemClick(superData)}
         }
 
-        private fun bindTeam(superData: SuperData) {
+        private fun bindTeam(superData: Table) {
 //            if (superData.data.containsKey(CITY_KEY)) {
 //                //println(superData.superData["city"]!!["show"])
 //                val city = superData.data[CITY_KEY]!!["show"] as String
@@ -132,32 +132,32 @@ class ListAdapter(val context: Context, val iden: String="team", val screenWidth
 //                    cityView.visibility = View.INVISIBLE
 //                }
 //            }
-            if (superData.data.containsKey(CITY_KEY)) {
-                val tmp: String = superData.data[CITY_KEY]!!["show"] as String
-                if (tmp.length > 0) {
-                    cityView.text = tmp
-                } else {
-                    cityView.visibility = View.GONE
-                }
-            }
-            if (superData.data.containsKey(ARENA_KEY)) {
-                //println(superData.superData["arena"]!!["show"])
-                arenaView.text = superData.data[ARENA_KEY]!!["show"] as String
-            }
-            if (superData.data.containsKey(TEAM_BALL_KEY)) {
-                ballView.text = superData.data[TEAM_BALL_KEY]!!["show"] as String
-            }
-            if (superData.data.containsKey(TEAM_WEEKDAYS_KEY)) {
-                //println(superData.superData["arena"]!!["show"])
-                dayView.text = superData.data[TEAM_WEEKDAYS_KEY]!!["show"] as String
-            }
-            if (superData.data.containsKey(TEAM_INTERVAL_KEY)) {
-                //println(superData.superData["arena"]!!["show"])
-                intervalView.text = superData.data[TEAM_INTERVAL_KEY]!!["show"] as String
-            }
+//            if (superData.data.containsKey(CITY_KEY)) {
+//                val tmp: String = superData.data[CITY_KEY]!!["show"] as String
+//                if (tmp.length > 0) {
+//                    cityView.text = tmp
+//                } else {
+//                    cityView.visibility = View.GONE
+//                }
+//            }
+//            if (superData.data.containsKey(ARENA_KEY)) {
+//                //println(superData.superData["arena"]!!["show"])
+//                arenaView.text = superData.data[ARENA_KEY]!!["show"] as String
+//            }
+//            if (superData.data.containsKey(TEAM_BALL_KEY)) {
+//                ballView.text = superData.data[TEAM_BALL_KEY]!!["show"] as String
+//            }
+//            if (superData.data.containsKey(TEAM_WEEKDAYS_KEY)) {
+//                //println(superData.superData["arena"]!!["show"])
+//                dayView.text = superData.data[TEAM_WEEKDAYS_KEY]!!["show"] as String
+//            }
+//            if (superData.data.containsKey(TEAM_INTERVAL_KEY)) {
+//                //println(superData.superData["arena"]!!["show"])
+//                intervalView.text = superData.data[TEAM_INTERVAL_KEY]!!["show"] as String
+//            }
         }
 
-        private fun bindCoach(superData: SuperData) {
+        private fun bindCoach(superData: Table) {
 //            if (superData.data.containsKey(CITYS_KEY)) {
 //                //println(superData.data["citys"]!!)
 //                val city = superData.data[CITYS_KEY]!!["show"] as String
@@ -170,25 +170,25 @@ class ListAdapter(val context: Context, val iden: String="team", val screenWidth
 //                    cityView.visibility = View.INVISIBLE
 //                }
 //            }
-            if (superData.data.containsKey(CITY_KEY)) {
-                val tmp: String = superData.data[CITY_KEY]!!["show"] as String
-                if (tmp.length > 0) {
-                    cityView.text = tmp
-                } else {
-                    cityView.visibility = View.GONE
-                }
-            }
-            if (superData.data.containsKey(MOBILE_KEY)) {
-                //println(superData.superData["arena"]!!["show"])
-                arenaView.text = superData.data[MOBILE_KEY]!!["show"] as String
-            }
-            if (superData.data.containsKey(COACH_SENIORITY_KEY)) {
-                ballView.text = "年資: " + superData.data[COACH_SENIORITY_KEY]!!["show"] as String
-            }
-            if (superData.data.containsKey(LINE_KEY)) {
-                //println(superData.superData["arena"]!!["show"])
-                dayView.text = "line id: " + superData.data[LINE_KEY]!!["show"] as String
-            }
+//            if (superData.data.containsKey(CITY_KEY)) {
+//                val tmp: String = superData.data[CITY_KEY]!!["show"] as String
+//                if (tmp.length > 0) {
+//                    cityView.text = tmp
+//                } else {
+//                    cityView.visibility = View.GONE
+//                }
+//            }
+//            if (superData.data.containsKey(MOBILE_KEY)) {
+//                //println(superData.superData["arena"]!!["show"])
+//                arenaView.text = superData.data[MOBILE_KEY]!!["show"] as String
+//            }
+//            if (superData.data.containsKey(COACH_SENIORITY_KEY)) {
+//                ballView.text = "年資: " + superData.data[COACH_SENIORITY_KEY]!!["show"] as String
+//            }
+//            if (superData.data.containsKey(LINE_KEY)) {
+//                //println(superData.superData["arena"]!!["show"])
+//                dayView.text = "line id: " + superData.data[LINE_KEY]!!["show"] as String
+//            }
         }
 
 //        private fun bindCourse(superData: SuperData) {
@@ -217,7 +217,7 @@ class ListAdapter(val context: Context, val iden: String="team", val screenWidth
 //            }
 //        }
 
-        private fun bindArena(superData: SuperData) {
+        private fun bindArena(superData: Table) {
 //            if (superData.data.containsKey(CITY_KEY)) {
 //                //println(superData.superData["city"]!!["show"])
 //                val city = superData.data[CITY_KEY]!!["show"] as String
@@ -230,34 +230,34 @@ class ListAdapter(val context: Context, val iden: String="team", val screenWidth
 //                    cityView.visibility = View.INVISIBLE
 //                }
 //            }
-            if (superData.data.containsKey(CITY_KEY)) {
-                val tmp: String = superData.data[CITY_KEY]!!["show"] as String
-                if (tmp.length > 0) {
-                    cityView.text = tmp
-                } else {
-                    cityView.visibility = View.GONE
-                }
-            }
-            if (superData.data.containsKey(TEL_KEY)) {
-                arenaView.text = superData.data[TEL_KEY]!!["show"] as String
-            }
-            if (superData.data.containsKey(AREA_KEY)) {
-                ballView.text = superData.data[AREA_KEY]!!["show"] as String
-            }
-
-            if (superData.data.containsKey(ARENA_INTERVAL_KEY)) {
-                dayView.text = superData.data[ARENA_INTERVAL_KEY]!!["show"] as String
-            }
-            if (superData.data.containsKey(ARENA_AIR_CONDITION_KEY)) {
-                intervalView.text = "空調: " + superData.data[ARENA_AIR_CONDITION_KEY]!!["show"] as String
-            }
-            if (superData.data.containsKey(ADDRESS_KEY)) {
-                val address = superData.data[ADDRESS_KEY]!!["show"] as String
-                markerView.visibility = View.VISIBLE
-                markerView.setOnClickListener {
-                    showMap(superData, address)
-                }
-            }
+//            if (superData.data.containsKey(CITY_KEY)) {
+//                val tmp: String = superData.data[CITY_KEY]!!["show"] as String
+//                if (tmp.length > 0) {
+//                    cityView.text = tmp
+//                } else {
+//                    cityView.visibility = View.GONE
+//                }
+//            }
+//            if (superData.data.containsKey(TEL_KEY)) {
+//                arenaView.text = superData.data[TEL_KEY]!!["show"] as String
+//            }
+//            if (superData.data.containsKey(AREA_KEY)) {
+//                ballView.text = superData.data[AREA_KEY]!!["show"] as String
+//            }
+//
+//            if (superData.data.containsKey(ARENA_INTERVAL_KEY)) {
+//                dayView.text = superData.data[ARENA_INTERVAL_KEY]!!["show"] as String
+//            }
+//            if (superData.data.containsKey(ARENA_AIR_CONDITION_KEY)) {
+//                intervalView.text = "空調: " + superData.data[ARENA_AIR_CONDITION_KEY]!!["show"] as String
+//            }
+//            if (superData.data.containsKey(ADDRESS_KEY)) {
+//                val address = superData.data[ADDRESS_KEY]!!["show"] as String
+//                markerView.visibility = View.VISIBLE
+//                markerView.setOnClickListener {
+//                    showMap(superData, address)
+//                }
+//            }
         }
 
         private fun height(width: Int): Int {

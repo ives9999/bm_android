@@ -130,28 +130,28 @@ open class MoreVC : MyTableVC() {
 //        setRecyclerViewRefreshListener()
 //    }
 
-    override fun setRecyclerViewScrollListener() {
-
-        var pos: Int = 0
-
-        scrollerListenr = object: RecyclerView.OnScrollListener() {
-            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                super.onScrolled(recyclerView, dx, dy)
-                val layoutManager = recyclerView!!.layoutManager as GridLayoutManager
-                if (this@MoreVC.superDataLists.size < this@MoreVC.totalCount) {
-                    pos = layoutManager.findLastVisibleItemPosition()
-                }
-            }
-            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
-                super.onScrollStateChanged(recyclerView, newState)
-
-                if (this@MoreVC.superDataLists.size == pos + 1 && newState == RecyclerView.SCROLL_STATE_IDLE && this@MoreVC.superDataLists.size < this@MoreVC.totalCount) {
-                    this@MoreVC.getDataStart(this@MoreVC.page, this@MoreVC.perPage)
-                }
-            }
-        }
-        recyclerView.addOnScrollListener(scrollerListenr)
-    }
+//    override fun setRecyclerViewScrollListener() {
+//
+//        var pos: Int = 0
+//
+//        scrollerListenr = object: RecyclerView.OnScrollListener() {
+//            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+//                super.onScrolled(recyclerView, dx, dy)
+//                val layoutManager = recyclerView.layoutManager as GridLayoutManager
+////                if (this@MoreVC.superDataLists.size < this@MoreVC.totalCount) {
+////                    pos = layoutManager.findLastVisibleItemPosition()
+////                }
+//            }
+//            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+//                super.onScrollStateChanged(recyclerView, newState)
+//
+////                if (this@MoreVC.superDataLists.size == pos + 1 && newState == RecyclerView.SCROLL_STATE_IDLE && this@MoreVC.superDataLists.size < this@MoreVC.totalCount) {
+////                    this@MoreVC.getDataStart(this@MoreVC.page, this@MoreVC.perPage)
+////                }
+//            }
+//        }
+//        recyclerView.addOnScrollListener(scrollerListenr)
+//    }
 
 //    override fun setRecyclerViewRefreshListener() {
 //        refreshListener = SwipeRefreshLayout.OnRefreshListener {

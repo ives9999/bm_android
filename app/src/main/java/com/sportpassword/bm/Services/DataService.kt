@@ -30,8 +30,8 @@ open class DataService: BaseService() {
     var totalCount: Int = 0
     var page: Int = 0
     var perPage: Int = 0
-    var superDataLists: ArrayList<SuperData> = arrayListOf()
-    open val model: SuperData = SuperData(-1, "", "", "")
+//    var superDataLists: ArrayList<SuperData> = arrayListOf()
+//    open val model: SuperData = SuperData(-1, "", "", "")
     lateinit var data: MutableMap<String, MutableMap<String, Any>>
     var citys: ArrayList<City> = arrayListOf()
     var arenas: ArrayList<ArenaTable> = arrayListOf()
@@ -286,7 +286,7 @@ open class DataService: BaseService() {
         //println(params1)
         MyHttpClient.instance.post(context, url, body.toString()) { success ->
             if (success) {
-                superDataLists.clear()
+//                superDataLists.clear()
                 val response = MyHttpClient.instance.response
                 if (response != null) {
 //                    println(response.toString())
@@ -314,11 +314,11 @@ open class DataService: BaseService() {
                             }
 
                             //val dataList: SuperData = Coach(id, title, featured_path)
-                            val data = setData(id, title, token, featured_path, vimeo, youtube)
-                            val map = setData1(obj)
+//                            val data = setData(id, title, token, featured_path, vimeo, youtube)
+//                            val map = setData1(obj)
                             //println(map)
-                            data.data = map
-                            superDataLists.add(data)
+//                            data.data = map
+//                            superDataLists.add(data)
                         }
                     } catch (e: Exception) {
                         this.success = false
@@ -444,10 +444,10 @@ open class DataService: BaseService() {
                 try {
                     this.success = true
                     //println(json)
-                    model.dataReset()
+//                    model.dataReset()
                     data = mutableMapOf()
-                    dealOne(json)
-                    data = model.data
+//                    dealOne(json)
+//                    data = model.data
 //                println(data)
                 } catch (e: JSONException) {
                     println("parse data error: " + e.localizedMessage)
@@ -585,7 +585,6 @@ open class DataService: BaseService() {
                 if (response != null) {
                     try {
                         val j = response.toString()
-                        val m = Gson().fromJson<SuperStore>(j, SuperStore::class.java)
 
                         val json = JSONObject(response.toString())
 //                        //println(json)
@@ -770,20 +769,20 @@ open class DataService: BaseService() {
                 valueStr += """${value}"""
                 params1.add(Pair(_key, valueStr))
             } else {
-                val vtype: String = model.data[key]!!["vtype"] as String
-                if (vtype == "String") {
-                    params.put(key, row.toString())
-                    params1.add(Pair(key, row.toString()))
-                } else if (vtype == "Int") {
-                    val value: Int = row as Int
-                    params.put(key, value.toString())
-                    params1.add(Pair(key, value.toString()))
-                } else if (vtype == "Bool") {
-                    val value: Boolean = row as Boolean
-                    params.put(key, value.toString())
-                    params1.add(Pair(key, value.toString()))
-                }
-                valueStr += """"${row}""""
+//                val vtype: String = model.data[key]!!["vtype"] as String
+//                if (vtype == "String") {
+//                    params.put(key, row.toString())
+//                    params1.add(Pair(key, row.toString()))
+//                } else if (vtype == "Int") {
+//                    val value: Int = row as Int
+//                    params.put(key, value.toString())
+//                    params1.add(Pair(key, value.toString()))
+//                } else if (vtype == "Bool") {
+//                    val value: Boolean = row as Boolean
+//                    params.put(key, value.toString())
+//                    params1.add(Pair(key, value.toString()))
+//                }
+//                valueStr += """"${row}""""
             }
             postString += """"${_key}":${valueStr},
 """
@@ -1795,20 +1794,20 @@ open class DataService: BaseService() {
 //        Volley.newRequestQueue(context).add(request)
 //    }
 
-    open fun setData(id: Int, title: String, token: String, featured_path: String, vimeo: String, youtube: String): SuperData {
-        val data = SuperData(id, title, token, featured_path, vimeo, youtube)
-
-        return data
-    }
-
-    open fun setData1(row: JSONObject): MutableMap<String, MutableMap<String, Any>> {
-        val data: MutableMap<String, MutableMap<String, Any>> = mutableMapOf()
-        return data
-    }
-
-    open fun dealOne(json: JSONObject) {}
-
-    open fun _jsonToData(tmp: JSONObject, key: String, item: Map<String, Any>){}
+//    open fun setData(id: Int, title: String, token: String, featured_path: String, vimeo: String, youtube: String): SuperData {
+//        val data = SuperData(id, title, token, featured_path, vimeo, youtube)
+//
+//        return data
+//    }
+//
+//    open fun setData1(row: JSONObject): MutableMap<String, MutableMap<String, Any>> {
+//        val data: MutableMap<String, MutableMap<String, Any>> = mutableMapOf()
+//        return data
+//    }
+//
+//    open fun dealOne(json: JSONObject) {}
+//
+//    open fun _jsonToData(tmp: JSONObject, key: String, item: Map<String, Any>){}
 }
 
 

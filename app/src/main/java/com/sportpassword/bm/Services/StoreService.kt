@@ -8,10 +8,6 @@ import java.lang.Exception
 
 object StoreService: DataService() {
 
-    lateinit var superStores: SuperStores
-    lateinit var superStore: SuperStore
-
-
     override fun getListURL(): String {
         return URL_STORE_LIST
     }
@@ -24,12 +20,12 @@ object StoreService: DataService() {
         return URL_STORE_LIKE.format(token)
     }
 
-    override fun parseModels(json: JSONObject): SuperModel {
-        return JSONParse.parse<SuperStores>(json)!!
-    }
-    override fun parseModel(json: JSONObject): SuperModel {
-        return JSONParse.parse<SuperStore>(json)!!
-    }
+//    override fun parseModels(json: JSONObject): SuperModel {
+//        return JSONParse.parse<SuperStores>(json)!!
+//    }
+//    override fun parseModel(json: JSONObject): SuperModel {
+//        return JSONParse.parse<SuperStore>(json)!!
+//    }
 
     override fun update(context: Context, _params: MutableMap<String, String>, filePath: String, complete: CompletionHandler) {
 

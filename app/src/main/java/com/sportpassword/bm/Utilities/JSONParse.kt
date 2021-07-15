@@ -129,14 +129,14 @@ class JSONParse {
                     }
                     is JSONObject -> {
                         if (key == "city") {
-                            val city = JSONParse.parse<SuperCity>(value)!!
-                            _setter(it, res, city)
+//                            val city = JSONParse.parse<SuperCity>(value)!!
+//                            _setter(it, res, city)
                         } else if (key == "citys") {
-                            val citys = JSONParse.parse<SuperCitys>(value)!!
-                            _setter(it, res, citys)
+//                            val citys = JSONParse.parse<SuperCitys>(value)!!
+//                            _setter(it, res, citys)
                         } else if (key == "coach") {
-                            val coach = JSONParse.parse<SuperCoach>(value)!!
-                            _setter(it, res, coach)
+//                            val coach = JSONParse.parse<SuperCoach>(value)!!
+//                            _setter(it, res, coach)
                         } else if (key == "nextCourseTime") {
                             val d: HashMap<String, String> = hashMapOf()
                             val date = value.get("date").toString()
@@ -147,20 +147,20 @@ class JSONParse {
                             //println(deadline)
                             _setter(it, res, d)
                         } else if (key == "date_model") {
-                            val date_model = JSONParse.parse<SuperDate>(value)!!
-                            _setter(it, res, date_model)
+//                            val date_model = JSONParse.parse<SuperDate>(value)!!
+//                            _setter(it, res, date_model)
                         } else if (key == "prices") {
-                            val productPrice = JSONParse.parse<SuperProductPrice>(value)!!
-                            _setter(it, res, productPrice)
+//                            val productPrice = JSONParse.parse<SuperProductPrice>(value)!!
+//                            _setter(it, res, productPrice)
                         } else if (key == "payment") {
-                            val model = JSONParse.parse<SuperPayment>(value)!!
-                            _setter(it, res, model)
+//                            val model = JSONParse.parse<SuperPayment>(value)!!
+//                            _setter(it, res, model)
                         } else if (key == "shipping") {
-                            val model = JSONParse.parse<SuperShipping>(value)!!
-                            _setter(it, res, model)
+//                            val model = JSONParse.parse<SuperShipping>(value)!!
+//                            _setter(it, res, model)
                         } else if (key == "product") {
-                            val model = JSONParse.parse<SuperProduct>(value)!!
-                            _setter(it, res, model)
+//                            val model = JSONParse.parse<SuperProduct>(value)!!
+//                            _setter(it, res, model)
                         }
 //                        else if (key == "colors") {
 //                            val d: HashMap<String, String> = hashMapOf()

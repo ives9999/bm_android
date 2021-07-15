@@ -65,7 +65,7 @@ open class TabFragment : Fragment(), SearchItemDelegate, List1CellDelegate, Seri
     protected var loading: Boolean = false
     protected lateinit var maskView: View
 
-    protected var superDataLists: ArrayList<SuperData> = arrayListOf()
+//    protected var superDataLists: ArrayList<SuperData> = arrayListOf()
 
     protected lateinit var recyclerView: RecyclerView
     protected lateinit var refreshLayout: SwipeRefreshLayout

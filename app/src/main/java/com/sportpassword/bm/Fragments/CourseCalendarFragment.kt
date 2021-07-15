@@ -5,8 +5,8 @@ import android.os.Bundle
 import android.view.*
 import android.widget.ImageButton
 import com.sportpassword.bm.Adapters.GroupSection
-import com.sportpassword.bm.Models.SuperCourse
-import com.sportpassword.bm.Models.SuperCourses
+import com.sportpassword.bm.Models.CourseTable
+import com.sportpassword.bm.Models.CoursesTable
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.CourseService
 import com.sportpassword.bm.Utilities.*
@@ -25,7 +25,7 @@ import kotlin.collections.HashMap
 
 class CourseCalendarFragment : TabFragment() {
 
-    var superCourses: SuperCourses? = null
+    var superCourses: CoursesTable? = null
 
     var year: Int = Date().getY()
     var month: Int = Date().getm()
@@ -117,11 +117,11 @@ class CourseCalendarFragment : TabFragment() {
             val day: Int = i
             val date: String = "%4d-%02d-%02d".format(year, month, i)
             //println(date)
-            var rows: ArrayList<SuperCourse> = arrayListOf()
+            var rows: ArrayList<CourseTable> = arrayListOf()
             if (superCourses != null) {
                 rows = superCourses!!.rows
             }
-            items.add(CalendarItem(context!!, date, rows))
+            items.add(CalendarItem(requireContext(), date, rows))
 
         }
 
@@ -131,7 +131,7 @@ class CourseCalendarFragment : TabFragment() {
         return arrayListOf()
     }
 
-    class CalendarItem(val context: Context, val date: String, val superCourses: ArrayList<SuperCourse>): Item() {
+    class CalendarItem(val context: Context, val date: String, val superCourses: ArrayList<CourseTable>): Item() {
 
         override fun bind(viewHolder: com.xwray.groupie.kotlinandroidextensions.ViewHolder, position: Int) {
 

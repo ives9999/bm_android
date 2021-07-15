@@ -13,7 +13,7 @@ import androidx.appcompat.app.AlertDialog
 import android.view.View
 import android.widget.*
 import com.sportpassword.bm.Models.*
-import com.sportpassword.bm.Models.Arena
+//import com.sportpassword.bm.Models.Arena
 import com.sportpassword.bm.Services.ArenaService
 import com.sportpassword.bm.Services.CoachService
 import com.sportpassword.bm.Utilities.*
@@ -52,7 +52,7 @@ class EditVC1 : MyTableVC() {
     private lateinit var inputV: List<View>
     private var isFeaturedChange: Boolean = false
 
-    var model: SuperData = Team(0, "", "", "")
+//    var model: SuperData = Team(0, "", "", "")
     var action: String = "INSERT"
     val editTexts: HashMap<String, Int> = hashMapOf()
 
@@ -64,25 +64,25 @@ class EditVC1 : MyTableVC() {
         token = intent.getStringExtra("token")!!
         val tmp = intent.getStringExtra("title")!!
 
-        if (source == "coach") {
-            title = "新增教練"
-            dataService = CoachService
-            model = Coach(0, ", ", "")
-        } else if (source == "team") {
-            title = "新增球隊"
-            dataService = TeamService
-            model = Team(0, "", "", "")
-        } else if (source == "arena") {
-            title = "新增球館"
-            dataService = ArenaService
-            model = Arena(0, "")
-        }
+//        if (source == "coach") {
+//            title = "新增教練"
+//            dataService = CoachService
+//            model = Coach(0, ", ", "")
+//        } else if (source == "team") {
+//            title = "新增球隊"
+//            dataService = TeamService
+//            model = Team(0, "", "", "")
+//        } else if (source == "arena") {
+//            title = "新增球館"
+//            dataService = ArenaService
+//            model = Arena(0, "")
+//        }
 
         if (tmp.length > 0) {
             title = tmp
         }
         setMyTitle(title)
-        model.dataReset()
+//        model.dataReset()
         //println(model.data)
 
         imageView = edit_featured
@@ -92,7 +92,7 @@ class EditVC1 : MyTableVC() {
             showImagePickerLayer()
         }
 
-        sections = model.sections
+//        sections = model.sections
         recyclerView = edit_list
         initAdapter(true)
 
@@ -107,58 +107,58 @@ class EditVC1 : MyTableVC() {
         refresh()
     }
 
-    override fun generateItems(section: Int): ArrayList<Item> {
+//    override fun generateItems(section: Int): ArrayList<Item> {
+//
+//        val items: ArrayList<Item> = arrayListOf()
+//        val rows = model.rows[section]
+//        for ((idx, key) in rows.withIndex()) {
+//            val indexPath = IndexPath(section, idx)
+//            val dataRow = model.getDataRowWithKey(key)
+//            items.add(EditItem(source, indexPath, dataRow, { key, id ->
+//                editTexts[key] = id
+//            }, {
+//                clear(it)
+//            }))
+//        }
+//
+//        return items
+//    }
 
-        val items: ArrayList<Item> = arrayListOf()
-        val rows = model.rows[section]
-        for ((idx, key) in rows.withIndex()) {
-            val indexPath = IndexPath(section, idx)
-            val dataRow = model.getDataRowWithKey(key)
-            items.add(EditItem(source, indexPath, dataRow, { key, id ->
-                editTexts[key] = id
-            }, {
-                clear(it)
-            }))
-        }
-
-        return items
-    }
-
-    override fun rowClick(item: com.xwray.groupie.Item<ViewHolder>, view: View) {
-
-        val editItem = item as EditItem
-        val dataRow = editItem.row
-        if (dataRow.containsKey("key")) {
-            val key = dataRow.get("key")!! as String
-            if (dataRow.containsKey("atype")) {
-                val aType = dataRow.get("atype")!! as String
-                if (aType == "more") {
-                    prepare(key)
-                }
-            }
-        }
-    }
-
-    fun clear(key: String) {
-        if (key == CITY_KEY) {
-            updateCity()
-            updateArena()
-            notifyChanged(true)
-        } else if (key == ARENA_KEY) {
-            updateArena()
-        } else if (key == TEAM_WEEKDAYS_KEY) {
-            updateDays()
-        } else if (key == TEAM_PLAY_START_KEY || key == TEAM_PLAY_END_KEY) {
-            updateTime(key)
-        } else if (key == TEAM_DEGREE_KEY) {
-            updateDegree()
-        } else if (key == TEAM_TEMP_CONTENT_KEY || key == CHARGE_KEY || key == CONTENT_KEY || key == COACH_EXP_KEY || key == COACH_FEAT_KEY || key == COACH_LICENSE_KEY) {
-            val type = model.contentKey2Type(key)
-            updateText(key)
-        }
-        model.data[key]!!["change"] = true
-        notifyChanged(true)
-    }
+//    override fun rowClick(item: com.xwray.groupie.Item<ViewHolder>, view: View) {
+//
+//        val editItem = item as EditItem
+//        val dataRow = editItem.row
+//        if (dataRow.containsKey("key")) {
+//            val key = dataRow.get("key")!! as String
+//            if (dataRow.containsKey("atype")) {
+//                val aType = dataRow.get("atype")!! as String
+//                if (aType == "more") {
+//                    prepare(key)
+//                }
+//            }
+//        }
+//    }
+//
+//    fun clear(key: String) {
+//        if (key == CITY_KEY) {
+//            updateCity()
+//            updateArena()
+//            notifyChanged(true)
+//        } else if (key == ARENA_KEY) {
+//            updateArena()
+//        } else if (key == TEAM_WEEKDAYS_KEY) {
+//            updateDays()
+//        } else if (key == TEAM_PLAY_START_KEY || key == TEAM_PLAY_END_KEY) {
+//            updateTime(key)
+//        } else if (key == TEAM_DEGREE_KEY) {
+//            updateDegree()
+//        } else if (key == TEAM_TEMP_CONTENT_KEY || key == CHARGE_KEY || key == CONTENT_KEY || key == COACH_EXP_KEY || key == COACH_FEAT_KEY || key == COACH_LICENSE_KEY) {
+//            val type = model.contentKey2Type(key)
+//            updateText(key)
+//        }
+//        model.data[key]!!["change"] = true
+//        notifyChanged(true)
+//    }
 
 //    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
 //        menuInflater.inflate(R.menu.button, menu)
@@ -168,25 +168,25 @@ class EditVC1 : MyTableVC() {
         if (token.length > 0) {
             Loading.show(mask)
             action = "UPDATE"
-            dataService.getOne(this, source, "name", token) { success ->
-                if (success) {
-                    model.data = dataService.data
-                    //setTeamData()
-                    //dataToField(inputV)
-                    if (model.data.containsKey(FEATURED_KEY)) {
-                        val featured: String = model.data[FEATURED_KEY]!!["value"] as String
-//                        println(featured)
-                        if (featured.length > 0) {
-                            setImage(null, featured)
-                        }
-                    }
-                    notifyChanged(true)
-
-                    //teamedit_name.setSelection(teamedit_name.length())
-                    closeRefresh()
-                }
-                Loading.hide(mask)
-            }
+//            dataService.getOne(this, source, "name", token) { success ->
+//                if (success) {
+//                    model.data = dataService.data
+//                    //setTeamData()
+//                    //dataToField(inputV)
+//                    if (model.data.containsKey(FEATURED_KEY)) {
+//                        val featured: String = model.data[FEATURED_KEY]!!["value"] as String
+////                        println(featured)
+//                        if (featured.length > 0) {
+//                            setImage(null, featured)
+//                        }
+//                    }
+//                    notifyChanged(true)
+//
+//                    //teamedit_name.setSelection(teamedit_name.length())
+//                    closeRefresh()
+//                }
+//                Loading.hide(mask)
+//            }
         }
     }
 
@@ -226,68 +226,68 @@ class EditVC1 : MyTableVC() {
 
     fun submit(view: View) {
 
-        hideKeyboard()
-        var params: MutableMap<String, Any> = mutableMapOf()
-        var isPass: Boolean = true
-        fieldToData()
-
-        val name: String = model.data[NAME_KEY]!!["value"] as String
-        if (name.length == 0) {
-            isPass = false
-            Alert.show(context, "提示", "請填寫隊名")
-        }
-        val mobile: String = model.data[MOBILE_KEY]!!["value"] as String
-        if (mobile.length == 0) {
-            isPass = false
-            Alert.show(context, "警告", "請填寫電話")
-        }
-
-        if (isPass) {
-            params = model.makeSubmitArr()
-//            println(params);
-            if (params.count() == 0 && !isFeaturedChange) {
-                Alert.show(context, "提示", "沒有修改任何資料或圖片")
-            } else {
-                Loading.show(mask)
-                if (params.count() == 0) {
-                    if (model.data[ID_KEY]!!["value"] as Int > 0) {
-                        val id: Int = model.data[ID_KEY]!!["value"] as Int
-                        params[ID_KEY] = id
-                    } else {
-                        params[CREATED_ID_KEY] = member.id
-                    }
-                }
-                val created_id = model.data[CREATED_ID_KEY]!!["value"] as Int
-                if (created_id < 0) {
-                    params[CREATED_ID_KEY] = member.id
-                }
-
-                dataService.update(context, source, params, filePath) { success ->
-                    Loading.hide(mask)
-                    if (success) {
-                        if (dataService.success) {
-                            val id: Int = dataService.id
-                            model.data[ID_KEY]!!["value"] = id
-                            model.data[ID_KEY]!!["show"] = id
-                            Alert.update(this, this.action, {
-                                if (file != null) {
-                                    file!!.delete()
-                                }
-                                val update = Intent(NOTIF_TEAM_UPDATE)
-                                LocalBroadcastManager.getInstance(this).sendBroadcast(update)
-                                finish()
-                            })
-                        } else {
-                            Alert.show(context, "錯誤", dataService.msg)
-                        }
-                    } else {
-                        Alert.show(context, "錯誤", dataService.msg)
-                    }
-
-                }
-
-            }
-        }
+//        hideKeyboard()
+//        var params: MutableMap<String, Any> = mutableMapOf()
+//        var isPass: Boolean = true
+//        fieldToData()
+//
+//        val name: String = model.data[NAME_KEY]!!["value"] as String
+//        if (name.length == 0) {
+//            isPass = false
+//            Alert.show(context, "提示", "請填寫隊名")
+//        }
+//        val mobile: String = model.data[MOBILE_KEY]!!["value"] as String
+//        if (mobile.length == 0) {
+//            isPass = false
+//            Alert.show(context, "警告", "請填寫電話")
+//        }
+//
+//        if (isPass) {
+//            params = model.makeSubmitArr()
+////            println(params);
+//            if (params.count() == 0 && !isFeaturedChange) {
+//                Alert.show(context, "提示", "沒有修改任何資料或圖片")
+//            } else {
+//                Loading.show(mask)
+//                if (params.count() == 0) {
+//                    if (model.data[ID_KEY]!!["value"] as Int > 0) {
+//                        val id: Int = model.data[ID_KEY]!!["value"] as Int
+//                        params[ID_KEY] = id
+//                    } else {
+//                        params[CREATED_ID_KEY] = member.id
+//                    }
+//                }
+//                val created_id = model.data[CREATED_ID_KEY]!!["value"] as Int
+//                if (created_id < 0) {
+//                    params[CREATED_ID_KEY] = member.id
+//                }
+//
+//                dataService.update(context, source, params, filePath) { success ->
+//                    Loading.hide(mask)
+//                    if (success) {
+//                        if (dataService.success) {
+//                            val id: Int = dataService.id
+//                            model.data[ID_KEY]!!["value"] = id
+//                            model.data[ID_KEY]!!["show"] = id
+//                            Alert.update(this, this.action, {
+//                                if (file != null) {
+//                                    file!!.delete()
+//                                }
+//                                val update = Intent(NOTIF_TEAM_UPDATE)
+//                                LocalBroadcastManager.getInstance(this).sendBroadcast(update)
+//                                finish()
+//                            })
+//                        } else {
+//                            Alert.show(context, "錯誤", dataService.msg)
+//                        }
+//                    } else {
+//                        Alert.show(context, "錯誤", dataService.msg)
+//                    }
+//
+//                }
+//
+//            }
+//        }
 
     }
 
@@ -296,52 +296,52 @@ class EditVC1 : MyTableVC() {
     }
 
     private fun fieldToData() {
-        for ((key, idx) in editTexts) {
-            if (model.data.containsKey(key)) {
-                val it = edit_list.findViewHolderForAdapterPosition(idx) as com.xwray.groupie.kotlinandroidextensions.ViewHolder
-                val newValue: String = it.edit_text.text.toString()
-//                println("key: $key")
-//                println("newValue: $newValue")
-                val dataRow = model.data[key]!!
-                //if (newValue.length > 0) {
-                val oldValue: Any = dataRow["value"] as Any
-                val vtype = dataRow["vtype"] as String
-                _fieldToData(oldValue, newValue, vtype, key)
-            }
-        }
+//        for ((key, idx) in editTexts) {
+//            if (model.data.containsKey(key)) {
+//                val it = edit_list.findViewHolderForAdapterPosition(idx) as com.xwray.groupie.kotlinandroidextensions.ViewHolder
+//                val newValue: String = it.edit_text.text.toString()
+////                println("key: $key")
+////                println("newValue: $newValue")
+//                val dataRow = model.data[key]!!
+//                //if (newValue.length > 0) {
+//                val oldValue: Any = dataRow["value"] as Any
+//                val vtype = dataRow["vtype"] as String
+//                _fieldToData(oldValue, newValue, vtype, key)
+//            }
+//        }
     }
     private fun _fieldToData(_oldValue: Any, _newValue: String, vtype: String, key: String) {
-        var oldValue: Any = _oldValue
-        if (vtype == "String") {
-            oldValue = oldValue as String
-            val newValue = _newValue
-            if (oldValue != newValue) {
-//                println("oldValue: $oldValue")
-//                println("newValue: $newValue")
-                model.data[key]!!["value"] = newValue
-                model.data[key]!!["change"] = true
-            }
-        } else if (vtype == "Int") {
-            oldValue = oldValue as Int
-            var newValue: Int = -1
-            if (_newValue.length > 0) {
-                newValue = _newValue.toInt()
-            }
-            if (oldValue != newValue) {
-                model.data[key]!!["value"] = newValue
-                model.data[key]!!["change"] = true
-            }
-        } else if (vtype == "Bool") {
-            oldValue = oldValue as Boolean
-            var newValue: Boolean = true
-            if (_newValue.length > 0) {
-                newValue = _newValue.toBoolean()
-            }
-            if (oldValue != newValue) {
-                model.data[key]!!["value"] = newValue
-                model.data[key]!!["change"] = true
-            }
-        }
+//        var oldValue: Any = _oldValue
+//        if (vtype == "String") {
+//            oldValue = oldValue as String
+//            val newValue = _newValue
+//            if (oldValue != newValue) {
+////                println("oldValue: $oldValue")
+////                println("newValue: $newValue")
+//                model.data[key]!!["value"] = newValue
+//                model.data[key]!!["change"] = true
+//            }
+//        } else if (vtype == "Int") {
+//            oldValue = oldValue as Int
+//            var newValue: Int = -1
+//            if (_newValue.length > 0) {
+//                newValue = _newValue.toInt()
+//            }
+//            if (oldValue != newValue) {
+//                model.data[key]!!["value"] = newValue
+//                model.data[key]!!["change"] = true
+//            }
+//        } else if (vtype == "Bool") {
+//            oldValue = oldValue as Boolean
+//            var newValue: Boolean = true
+//            if (_newValue.length > 0) {
+//                newValue = _newValue.toBoolean()
+//            }
+//            if (oldValue != newValue) {
+//                model.data[key]!!["value"] = newValue
+//                model.data[key]!!["change"] = true
+//            }
+//        }
     }
 
     // filter the not text input field
@@ -460,166 +460,166 @@ class EditVC1 : MyTableVC() {
 //    }
 
 
-    private fun prepare(key: String) {
-
-//        println(key)
-        hideKeyboard()
-        val intent = Intent(this@EditVC1, EditItemActivity::class.java)
-        intent.putExtra("key", key)
-        if (key == TEAM_WEEKDAYS_KEY) {
-            val value: MutableList<Int> = model.data[key]!!["value"] as MutableList<Int>
-            val days: ArrayList<Int> = arrayListOf()
-            if (value.size > 0) {
-                value.forEach {
-                    days.add(it)
-                }
-            }
-            intent.putIntegerArrayListExtra("weekdays", days)
-            intent.putExtra("select", "multi")
-        } else if (key == TEAM_PLAY_START_KEY || key == TEAM_PLAY_END_KEY) {
-            val row: MutableMap<String, Any> = model.data[key]!!["sender"] as MutableMap<String, Any>
-            var times: HashMap<String, Any> = hashMapOf()
-            times["type"] = if (key == TEAM_PLAY_START_KEY) SELECT_TIME_TYPE.play_start else SELECT_TIME_TYPE.play_end
-            var value = ""
-            if (row.isNotEmpty()) {
-                value = row["time"] as String
-                times["time"] = value
-            }
-            intent.putExtra("times", times)
-        } else if (key == TEAM_DEGREE_KEY) {
-            val degrees: ArrayList<DEGREE> = model.data[key]!!["sender"] as ArrayList<DEGREE>
-            intent.putExtra("degrees", degrees)
-        } else if (key == CITY_KEY || key == CITYS_KEY) {
-            val value: Int = model.data[key]!!["sender"] as Int
-            val city = City(value, "")
-            val citys: ArrayList<City> = arrayListOf(city)
-            intent.putParcelableArrayListExtra("citys", citys)
-        } else if (key == ARENA_KEY) {
-            val city_id: Int = model.data[CITY_KEY]!!["value"] as Int
-            if (city_id == 0) {
-                Alert.show(this, "警告", "請先選擇區域")
-            } else {
-                val tmp: MutableMap<String, Int> = model.data[key]!!["sender"] as MutableMap<String, Int>
-                if (tmp.containsKey("city_id")) {
-                    val city_id: Int = tmp["city_id"]!!
-                    val citysForArena: ArrayList<Int> = arrayListOf(city_id)
-                    intent.putIntegerArrayListExtra("citys_for_arena", citysForArena)
-                }
-                if (tmp.containsKey("arena_id")) {
-                    val arena_id: Int = tmp["arena_id"]!!
-                    val arenas: ArrayList<Arena> = arrayListOf(Arena(arena_id, ""))
-                    //intent.putParcelableArrayListExtra("arenas", arenas)
-                }
-//                intent.putExtra("city_id", city_id)
-//                intent.putExtra("arena_id", arena_id)
-            }
-        } else {
-            val value: String = model.data[key]!!["value"] as String
-            intent.putExtra("value", value)
-        }
-        fieldToData()
-        startActivityForResult(intent, SELECT_REQUEST_CODE)
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        //println(data)
-        when (requestCode) {
-            //ACTION_PHOTO_REQUEST_CODE -> {
-                //println(data!!.data)
-                //dealPhoto(requestCode, resultCode, data)
-            //}
-            //ACTION_CAMERA_REQUEST_CODE -> {
-                //dealCamera(requestCode, resultCode, data)
-            //}
-            SELECT_REQUEST_CODE -> {
-                if (resultCode == Activity.RESULT_OK) {
-                    var key = ""
-                    if (data != null && data!!.hasExtra("key")) {
-                        key = data!!.getStringExtra("key")!!
-                    }
-                    if (key == TEAM_WEEKDAYS_KEY) {
-                        val days: ArrayList<Int> = data!!.getIntegerArrayListExtra("weekdays")!!
-                        updateDays(days)
-                    } else if (key == TEAM_PLAY_START_KEY || key == TEAM_PLAY_END_KEY) {
-                        val times: HashMap<String, Any> = data!!.getSerializableExtra("times") as HashMap<String, Any>
-                        var time: String = ""
-                        if (times.containsKey("time")) {
-                            time = times.get("time") as String + ":00"
-                        }
-                        updateTime(key, time)
-                    } else if (key == TEAM_DEGREE_KEY) {
-                        val degrees: ArrayList<DEGREE> = data!!.getSerializableExtra("degrees") as ArrayList<DEGREE>
-                        updateDegree(degrees)
-                    } else if (key == CITY_KEY || key == CITYS_KEY) {
-                        val citys: ArrayList<City> = data!!.getSerializableExtra("citys") as ArrayList<City>
-                        updateCity(citys)
-                    } else if (key == ARENA_KEY) {
-                        val arenas:ArrayList<Arena> = data!!.getSerializableExtra("arenas") as ArrayList<Arena>
-//                        val id: Int = data!!.getIntExtra("id", model.data[TEAM_ARENA_KEY]!!["value"] as Int)
-//                        val name: String = data!!.getStringExtra("name")
-                        updateArena(arenas)
-                    } else {
-                        var content = ""
-                        if (data != null && data.hasExtra("res")) {
-                            content = data.getStringExtra("res")!!
-                            val type = model.contentKey2Type(key)
-                            updateText(key, content)
-                        }
-                    }
-                    if (key.length > 0) {
-                        model.data[key]!!["change"] = true
-                        notifyChanged(true)
-//                    dataToField(inputV)
-                    }
-                }
-            }
-            else -> {
-                activity.toast("請重新選擇")
-            }
-        }
-    }
-
-    fun updateCity(citys: ArrayList<City>?=null) {
-        if (citys != null && citys.size > 0) {
-            val city = citys[0]
-            model.updateCity(city)
-        } else {
-            model.updateCity()
-        }
-    }
-
-    fun updateArena(arenas: ArrayList<Arena>?=null) {
-        if (arenas != null && arenas.size > 0) {
-            model.updateArena(arenas[0])
-        } else {
-            model.updateArena()
-        }
-    }
-
-    fun updateDays(days: ArrayList<Int>? = null) {
-        if (days != null && days.size > 0) {
-            model.updateWeekdays(days)
-        } else {
-            model.updateWeekdays()
-        }
-    }
-
-    fun updateTime(key: String, time: String?=null) {
-        model.updateTime(key, time)
-    }
-
-    fun updateDegree(degrees: ArrayList<DEGREE>?=null) {
-        if (degrees != null && degrees.size > 0) {
-            model.updateDegree(degrees)
-        } else {
-            model.updateDegree()
-        }
-    }
-
-    fun updateText(key: String, content: String?=null) {
-        model.updateText(key, content)
-    }
+//    private fun prepare(key: String) {
+//
+////        println(key)
+//        hideKeyboard()
+//        val intent = Intent(this@EditVC1, EditItemActivity::class.java)
+//        intent.putExtra("key", key)
+//        if (key == TEAM_WEEKDAYS_KEY) {
+//            val value: MutableList<Int> = model.data[key]!!["value"] as MutableList<Int>
+//            val days: ArrayList<Int> = arrayListOf()
+//            if (value.size > 0) {
+//                value.forEach {
+//                    days.add(it)
+//                }
+//            }
+//            intent.putIntegerArrayListExtra("weekdays", days)
+//            intent.putExtra("select", "multi")
+//        } else if (key == TEAM_PLAY_START_KEY || key == TEAM_PLAY_END_KEY) {
+//            val row: MutableMap<String, Any> = model.data[key]!!["sender"] as MutableMap<String, Any>
+//            var times: HashMap<String, Any> = hashMapOf()
+//            times["type"] = if (key == TEAM_PLAY_START_KEY) SELECT_TIME_TYPE.play_start else SELECT_TIME_TYPE.play_end
+//            var value = ""
+//            if (row.isNotEmpty()) {
+//                value = row["time"] as String
+//                times["time"] = value
+//            }
+//            intent.putExtra("times", times)
+//        } else if (key == TEAM_DEGREE_KEY) {
+//            val degrees: ArrayList<DEGREE> = model.data[key]!!["sender"] as ArrayList<DEGREE>
+//            intent.putExtra("degrees", degrees)
+//        } else if (key == CITY_KEY || key == CITYS_KEY) {
+//            val value: Int = model.data[key]!!["sender"] as Int
+//            val city = City(value, "")
+//            val citys: ArrayList<City> = arrayListOf(city)
+//            intent.putParcelableArrayListExtra("citys", citys)
+//        } else if (key == ARENA_KEY) {
+//            val city_id: Int = model.data[CITY_KEY]!!["value"] as Int
+//            if (city_id == 0) {
+//                Alert.show(this, "警告", "請先選擇區域")
+//            } else {
+//                val tmp: MutableMap<String, Int> = model.data[key]!!["sender"] as MutableMap<String, Int>
+//                if (tmp.containsKey("city_id")) {
+//                    val city_id: Int = tmp["city_id"]!!
+//                    val citysForArena: ArrayList<Int> = arrayListOf(city_id)
+//                    intent.putIntegerArrayListExtra("citys_for_arena", citysForArena)
+//                }
+//                if (tmp.containsKey("arena_id")) {
+//                    val arena_id: Int = tmp["arena_id"]!!
+//                    val arenas: ArrayList<Arena> = arrayListOf(Arena(arena_id, ""))
+//                    //intent.putParcelableArrayListExtra("arenas", arenas)
+//                }
+////                intent.putExtra("city_id", city_id)
+////                intent.putExtra("arena_id", arena_id)
+//            }
+//        } else {
+//            val value: String = model.data[key]!!["value"] as String
+//            intent.putExtra("value", value)
+//        }
+//        fieldToData()
+//        startActivityForResult(intent, SELECT_REQUEST_CODE)
+//    }
+//
+//    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+//        super.onActivityResult(requestCode, resultCode, data)
+//        //println(data)
+//        when (requestCode) {
+//            //ACTION_PHOTO_REQUEST_CODE -> {
+//                //println(data!!.data)
+//                //dealPhoto(requestCode, resultCode, data)
+//            //}
+//            //ACTION_CAMERA_REQUEST_CODE -> {
+//                //dealCamera(requestCode, resultCode, data)
+//            //}
+//            SELECT_REQUEST_CODE -> {
+//                if (resultCode == Activity.RESULT_OK) {
+//                    var key = ""
+//                    if (data != null && data!!.hasExtra("key")) {
+//                        key = data!!.getStringExtra("key")!!
+//                    }
+//                    if (key == TEAM_WEEKDAYS_KEY) {
+//                        val days: ArrayList<Int> = data!!.getIntegerArrayListExtra("weekdays")!!
+//                        updateDays(days)
+//                    } else if (key == TEAM_PLAY_START_KEY || key == TEAM_PLAY_END_KEY) {
+//                        val times: HashMap<String, Any> = data!!.getSerializableExtra("times") as HashMap<String, Any>
+//                        var time: String = ""
+//                        if (times.containsKey("time")) {
+//                            time = times.get("time") as String + ":00"
+//                        }
+//                        updateTime(key, time)
+//                    } else if (key == TEAM_DEGREE_KEY) {
+//                        val degrees: ArrayList<DEGREE> = data!!.getSerializableExtra("degrees") as ArrayList<DEGREE>
+//                        updateDegree(degrees)
+//                    } else if (key == CITY_KEY || key == CITYS_KEY) {
+//                        val citys: ArrayList<City> = data!!.getSerializableExtra("citys") as ArrayList<City>
+//                        updateCity(citys)
+//                    } else if (key == ARENA_KEY) {
+//                        val arenas:ArrayList<Arena> = data!!.getSerializableExtra("arenas") as ArrayList<Arena>
+////                        val id: Int = data!!.getIntExtra("id", model.data[TEAM_ARENA_KEY]!!["value"] as Int)
+////                        val name: String = data!!.getStringExtra("name")
+//                        updateArena(arenas)
+//                    } else {
+//                        var content = ""
+//                        if (data != null && data.hasExtra("res")) {
+//                            content = data.getStringExtra("res")!!
+//                            val type = model.contentKey2Type(key)
+//                            updateText(key, content)
+//                        }
+//                    }
+//                    if (key.length > 0) {
+//                        model.data[key]!!["change"] = true
+//                        notifyChanged(true)
+////                    dataToField(inputV)
+//                    }
+//                }
+//            }
+//            else -> {
+//                activity.toast("請重新選擇")
+//            }
+//        }
+//    }
+//
+//    fun updateCity(citys: ArrayList<City>?=null) {
+//        if (citys != null && citys.size > 0) {
+//            val city = citys[0]
+//            model.updateCity(city)
+//        } else {
+//            model.updateCity()
+//        }
+//    }
+//
+//    fun updateArena(arenas: ArrayList<Arena>?=null) {
+//        if (arenas != null && arenas.size > 0) {
+//            model.updateArena(arenas[0])
+//        } else {
+//            model.updateArena()
+//        }
+//    }
+//
+//    fun updateDays(days: ArrayList<Int>? = null) {
+//        if (days != null && days.size > 0) {
+//            model.updateWeekdays(days)
+//        } else {
+//            model.updateWeekdays()
+//        }
+//    }
+//
+//    fun updateTime(key: String, time: String?=null) {
+//        model.updateTime(key, time)
+//    }
+//
+//    fun updateDegree(degrees: ArrayList<DEGREE>?=null) {
+//        if (degrees != null && degrees.size > 0) {
+//            model.updateDegree(degrees)
+//        } else {
+//            model.updateDegree()
+//        }
+//    }
+//
+//    fun updateText(key: String, content: String?=null) {
+//        model.updateText(key, content)
+//    }
 }
 
 class EditItem(val source: String, val indexPath: IndexPath, val row: HashMap<String, Any>, val addEditText:(String, Int)->Unit, val clearClick:(key:String)->Unit): Item() {
