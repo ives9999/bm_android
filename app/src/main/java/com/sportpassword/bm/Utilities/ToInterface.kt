@@ -419,6 +419,12 @@ interface ToInterface {
         mainDelegate.startActivity(i)
     }
 
+    fun toShowTeach(token: String) {
+        val i = Intent(mainDelegate, ShowTeachVC::class.java)
+        i.putExtra("token", token)
+        mainDelegate.startActivity(i)
+    }
+
     fun toShowTeam(token: String) {
         val i = Intent(mainDelegate, ShowTeamVC::class.java)
         i.putExtra("token", token)

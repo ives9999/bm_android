@@ -1,9 +1,23 @@
 package com.sportpassword.bm.Services
 
+import com.sportpassword.bm.Utilities.*
+
 /**
  * Created by ivessun on 2018/3/1.
  */
 object TeachService: DataService() {
+
+    override fun getListURL(): String {
+        return URL_TEACH_LIST
+    }
+
+    override fun getOneURL(): String {
+        return URL_ONE.format("teach")
+    }
+
+    override fun getLikeURL(token: String): String {
+        return URL_TEACH_LIKE.format(token)
+    }
 
 //    override val model: Teach = Teach(-1, "", "")
 

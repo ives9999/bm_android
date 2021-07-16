@@ -52,7 +52,7 @@ class TeamVC : MyTableVC() {
     }
 
     override fun genericTable() {
-        mysTable = jsonToModels<TeamsTable>(jsonString!!)
+        mysTable = jsonToModels(jsonString!!)
         if (mysTable != null) {
             tables = mysTable
         }
@@ -85,9 +85,9 @@ class TeamVC : MyTableVC() {
         if (myTable != null) {
             val key: String = ARENA_KEY
             val arena_id: Int = myTable.arena_id
-            val row = getDefinedRow(key)
-            row["value"] = arena_id.toString()
-            replaceRows(key, row)
+            val row1 = getDefinedRow(key)
+            row1["value"] = arena_id.toString()
+            replaceRows(key, row1)
             prepareParams()
             refresh()
         } else {

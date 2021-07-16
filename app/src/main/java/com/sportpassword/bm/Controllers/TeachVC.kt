@@ -1,20 +1,23 @@
 package com.sportpassword.bm.Controllers
 
-import android.content.Intent
+import android.content.Context
 import android.os.Bundle
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-import androidx.recyclerview.widget.GridLayoutManager
-import com.sportpassword.bm.Adapters.CollectionAdapter
+import android.view.View
+import com.sportpassword.bm.Fragments.ListItem
+import com.sportpassword.bm.Models.*
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.TeachService
-import com.sportpassword.bm.Services.TeamService
 import kotlinx.android.synthetic.main.activity_teach_vc.*
 import com.sportpassword.bm.Utilities.*
-import kotlinx.android.synthetic.main.mask.*
+import com.xwray.groupie.kotlinandroidextensions.Item
+import com.xwray.groupie.kotlinandroidextensions.ViewHolder
+import kotlinx.android.synthetic.main.activity_store_vc.*
+import kotlinx.android.synthetic.main.teach_list_cell.*
 
 class TeachVC : MyTableVC() {
 
     //lateinit var collectionAdapter: CollectionAdapter
+    var mysTable: TeachesTable? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -26,7 +29,7 @@ class TeachVC : MyTableVC() {
         )
 
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_teach_vc)
+        setContentView(R.layout.activity_store_vc)
 
         setMyTitle("教學")
 
@@ -37,10 +40,65 @@ class TeachVC : MyTableVC() {
             }
         }
 
-        recyclerView = teach_list
-        refreshLayout = teach_refresh
+        recyclerView = list_container
+        refreshLayout = refresh
         initAdapter()
 
         refresh()
     }
+
+    override fun genericTable() {
+        mysTable = jsonToModels(jsonString!!)
+        if (mysTable != null) {
+            tables = mysTable
+        }
+    }
+
+    override fun generateItems(): ArrayList<Item> {
+        val items: ArrayList<Item> = arrayListOf()
+        if (mysTable != null) {
+            for (row in mysTable!!.rows) {
+                //row.print()
+                row.filterRow()
+                val myItem = TeachItem(this, row)
+                myItem.list1CellDelegate = this
+                items.add(myItem)
+            }
+        }
+
+        return items
+    }
+
+    override fun rowClick(item: com.xwray.groupie.Item<com.xwray.groupie.ViewHolder>, view: View) {
+
+        val teachItem = item as TeachItem
+        val table = teachItem.row
+        toShowTeach(table.token)
+    }
+}
+
+class TeachItem(override var context: Context, var _row: TeachTable): ListItem<Table>(context, _row) {
+
+    override fun bind(viewHolder: ViewHolder, position: Int) {
+
+        super.bind(viewHolder, position)
+
+        val row: TeachTable = _row
+
+        //is bind in ListItem
+        //viewHolder.titleLbl.text = row.title
+
+        viewHolder.pvLbl.text = row.pv.toString()
+        viewHolder.dateLbl.text = row.created_at_show
+
+//
+//        if (row.tel_show.isNotEmpty()) {
+//            viewHolder.telLbl.text = row.tel_show
+//        } else {
+//            viewHolder.telLbl.text = "電話：未提供"
+//        }
+
+    }
+
+    override fun getLayout() = R.layout.teach_list_cell
 }

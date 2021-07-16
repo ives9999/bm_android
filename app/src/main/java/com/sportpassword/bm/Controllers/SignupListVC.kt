@@ -3,8 +3,6 @@ package com.sportpassword.bm.Controllers
 import android.os.Bundle
 import android.view.View
 import com.sportpassword.bm.Models.CourseTable
-import com.sportpassword.bm.Models.SuperSignup
-import com.sportpassword.bm.Models.SuperSignups
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.CourseService
 import com.sportpassword.bm.Utilities.Loading
@@ -22,7 +20,6 @@ class SignupListVC : MyTableVC() {
     var memberToken: String = ""
     var able: String = ""
     var able_token: String = ""//來源的token
-    lateinit var signups: SuperSignups
     var able_model: CourseTable = CourseTable()
 //    var signupRows: ArrayList<SuperSignup> = arrayListOf()
 
@@ -63,14 +60,14 @@ class SignupListVC : MyTableVC() {
 
     override protected fun getDataEnd(success: Boolean) {
         if (success) {
-            signups = dataService.superModel as SuperSignups
+            //signups = dataService.superModel as SuperSignups
 
             if (page == 1) {
                 able_model = dataService.able as CourseTable
                 setMyTitle(able_model.title + "報名列表")
                 rows = arrayListOf()
-                perPage = signups.perPage
-                totalCount = signups.totalCount
+                //perPage = signups.perPage
+                //totalCount = signups.totalCount
                 if (totalCount > 0) {
                     list_empty.visibility = View.INVISIBLE
                 }
@@ -86,7 +83,7 @@ class SignupListVC : MyTableVC() {
             } else {
                 list_empty.visibility = View.GONE
             }
-            page = signups.page
+            //page = signups.page
 
             closeRefresh()
 
@@ -107,10 +104,10 @@ class SignupListVC : MyTableVC() {
             items.add(item)
         //}
         for (i in 0..rows.size-1) {
-            val row = rows[i] as SuperSignup
-            //val no: Int = (page - 1) * perPage + i + 1
-            val no: Int = i + 1
-            items.add(SignupItem(no, row.member_name, row.created_at.noSec().noYear(), row.able_date))
+//            val row = rows[i] as SuperSignup
+//            //val no: Int = (page - 1) * perPage + i + 1
+//            val no: Int = i + 1
+//            items.add(SignupItem(no, row.member_name, row.created_at.noSec().noYear(), row.able_date))
         }
 
         return items

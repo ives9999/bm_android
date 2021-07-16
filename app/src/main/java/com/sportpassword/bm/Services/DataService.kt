@@ -61,7 +61,7 @@ open class DataService: BaseService() {
         if (token != null) {
             url = url + "/" + token
         }
-        //println(url)
+        println(url)
 
         val header: MutableList<Pair<String, String>> = mutableListOf()
         header.add(Pair("Accept","application/json"))
@@ -84,7 +84,7 @@ open class DataService: BaseService() {
         }
 
         val body = filter.toJSONString()
-        //println(body)
+        println(body)
 
         MyHttpClient.instance.post(context, url, body) { success ->
             if (success) {
@@ -1655,12 +1655,12 @@ open class DataService: BaseService() {
                             able = parseAbleForSingupList(json.getJSONObject("able"))
                             //able.print()
                         }
-                        val s: SuperSignups = JSONParse.parse<SuperSignups>(json)!!
+                        //val s: SuperSignups = JSONParse.parse<SuperSignups>(json)!!
 //                        for (i in 0..s.rows.size-1) {
 //                            val row = s.rows[i]
 //                            row.print()
 //                        }
-                        superModel = s
+                        //superModel = s
                         complete(true)
                     } catch (e: Exception) {
                         this.success = false

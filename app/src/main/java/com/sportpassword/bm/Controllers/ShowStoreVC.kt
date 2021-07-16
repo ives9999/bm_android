@@ -81,7 +81,6 @@ class ShowStoreVC : ShowVC() {
 
         val items = generateMainItem()
         adapter.update(items)
-
     }
 
 //    fun initAdapter() {
