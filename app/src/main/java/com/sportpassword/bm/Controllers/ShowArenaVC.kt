@@ -9,7 +9,7 @@ import com.sportpassword.bm.Models.Table
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.ArenaService
 import com.sportpassword.bm.Utilities.jsonToModel
-import kotlinx.android.synthetic.main.activity_show_team_vc.*
+import kotlinx.android.synthetic.main.activity_show_arena_vc.*
 import kotlin.reflect.full.memberProperties
 
 class ShowArenaVC: ShowVC(), IconCellDelegate {

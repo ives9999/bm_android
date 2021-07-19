@@ -1,9 +1,109 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/background"
     tools:context=".Controllers.ShowTeachVC">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/refresh"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        android:clickable="true"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        >
+
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+
+                <ImageView
+                    android:id="@+id/featured"
+                    android:layout_width="match_parent"
+                    android:layout_height="180dp"
+                    android:layout_marginTop="20dp"
+                    android:scaleType="fitCenter"
+                    app:srcCompat="@drawable/loading_square" />
+
+                <TextView
+                    android:id="@+id/teachDetailLbl"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/featured"
+                    android:layout_marginLeft="12dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginBottom="8dp"
+                    android:text="基本資料"
+                    style="@style/list_text_title"
+                    />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/tableView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/teachDetailLbl"
+                    android:layout_marginBottom="12dp"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager">
+
+                </androidx.recyclerview.widget.RecyclerView>
+
+                <TextView
+                    android:id="@+id/contentLbl"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/tableView"
+                    android:layout_marginLeft="12dp"
+                    android:layout_marginBottom="8dp"
+                    android:text="課程說明"
+                    style="@style/list_text_title"
+                    />
+
+                <WebView
+                    android:id="@+id/contentView"
+                    style="@android:style/Widget.WebView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/contentLbl"
+                    android:layout_marginLeft="12dp"
+                    android:layout_marginRight="12dp"
+                    android:layout_marginBottom="50dp"
+                    android:background="@android:color/transparent"
+                    android:padding="12dp" />
+
+
+            </RelativeLayout>
+        </ScrollView>
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+    <LinearLayout
+        android:id="@+id/footer"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_alignParentBottom="true"
+        android:background="@color/MY_GREEN"
+        android:gravity="center|center_vertical"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/likeButton"
+            style="@style/like_button"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:drawableStart="@drawable/like_show"
+            android:onClick="likeButtonPressed"
+            android:text="100人"
+            android:textSize="16dp" />
+
+    </LinearLayout>
+    <include layout="@layout/mask" />
+</RelativeLayout>
