@@ -11,6 +11,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.core.content.pm.PackageInfoCompat
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.sportpassword.bm.Controllers.*
 
 import com.sportpassword.bm.R
@@ -19,6 +20,8 @@ import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.kotlinandroidextensions.Item
 import com.xwray.groupie.kotlinandroidextensions.ViewHolder
 import kotlinx.android.synthetic.main.function_item.*
+import kotlinx.android.synthetic.main.function_item.text
+import kotlinx.android.synthetic.main.mask.*
 import kotlinx.android.synthetic.main.tab_course.*
 
 
@@ -59,7 +62,19 @@ class MoreFragment : TabFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
         recyclerView = list_container
+        refreshLayout = tab_refresh
+        maskView = mask
+        recyclerView.setHasFixedSize(true)
+        setRecyclerViewScrollListener()
+        setRecyclerViewRefreshListener()
+
         recyclerView.adapter = adapter
+        refresh()
+    }
+
+    override fun refresh() {
+        adapter.clear()
+        items.clear()
         generateItems()
         adapter.addAll(items)
     }

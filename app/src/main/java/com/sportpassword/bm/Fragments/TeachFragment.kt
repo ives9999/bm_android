@@ -38,13 +38,13 @@ class TeachFragment : TabFragment() {
         return view
     }
 
-    override fun getDataStart(_page: Int, _perPage: Int) {
-        super.getDataStart(_page, _perPage)
-        //println("page: $_page")
-        TeachService.getList(context!!, "teach", "title", mainActivity!!.params, _page, _perPage, null) { success ->
-            getDataEnd(success)
-        }
-    }
+//    override fun getDataStart(_page: Int, _perPage: Int) {
+//        super.getDataStart(_page, _perPage)
+//        //println("page: $_page")
+//        TeachService.getList(context!!, "teach", "title", mainActivity!!.params, _page, _perPage, null) { success ->
+//            getDataEnd(success)
+//        }
+//    }
 
     companion object {
         // TODO: Rename parameter arguments, choose names that match

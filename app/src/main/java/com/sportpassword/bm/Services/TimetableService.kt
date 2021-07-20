@@ -18,7 +18,7 @@ object TimetableService: DataService() {
     lateinit var timetable: Timetable
     lateinit var coachTable: CoachTable
 
-    override fun getOne(context: Context, id: Int, source: String, token: String, completion: CompletionHandler) {
+    fun getOne(context: Context, id: Int, source: String, token: String, completion: CompletionHandler) {
         val url = "$URL_ONE".format("timetable")
         //println(url)
 

@@ -121,11 +121,13 @@ open class ShowVC: BaseActivity(), IconCellDelegate {
     }
 
     fun setFeatured() {
-        if (table != null && table!!.featured_path.isNotEmpty()) {
-            val featured_path = table!!.featured_path
-            featured_path.image(this, featured)
-        } else {
-            featured.setImageResource(R.drawable.loading_square_120)
+        if (featured != null) {
+            if (table != null && table!!.featured_path.isNotEmpty()) {
+                val featured_path = table!!.featured_path
+                featured_path.image(this, featured)
+            } else {
+                featured.setImageResource(R.drawable.loading_square_120)
+            }
         }
     }
 

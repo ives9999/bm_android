@@ -47,32 +47,32 @@ class ShowTempPlayActivity : BaseActivity() {
 
     override fun refresh() {
         super.refresh()
-        Loading.show(mask)
-        TeamService.getOne(this, "team", "name", teamToken) { success ->
-            if (success) {
-                data = TeamService.data
-                //println(data)
-                val name: String = data[NAME_KEY]!!["value"] as String
-                val id: Int = data[ID_KEY]!!["value"] as Int
-                setTeamData(featuredView)
-                signupsAdapter = SignupsAdapter(this, {token, near_date, status, off_at ->
-                    toTempPlaySignupOne(id, teamToken, name, near_date, token, status, off_at)
-                })
-                val layoutManager = LinearLayoutManager(this)
-                show_signups_container.adapter = signupsAdapter
-                show_signups_container.layoutManager = layoutManager
-                if (data.containsKey("signups") && data["signups"]!!.containsKey("value")) {
-                    val signups = data["signups"]!!["value"] as ArrayList<Map<String, String>>
-                    //println(signups)
-                    if (signups.size > 0) {
-                        signupsAdapter.lists = signups
-                        signupsAdapter.notifyDataSetChanged()
-                    }
-                }
-                closeRefresh()
-                setMyTitle(name)
-            }
-        }
+//        Loading.show(mask)
+//        TeamService.getOne(this, "team", "name", teamToken) { success ->
+//            if (success) {
+//                data = TeamService.data
+//                //println(data)
+//                val name: String = data[NAME_KEY]!!["value"] as String
+//                val id: Int = data[ID_KEY]!!["value"] as Int
+//                setTeamData(featuredView)
+//                signupsAdapter = SignupsAdapter(this, {token, near_date, status, off_at ->
+//                    toTempPlaySignupOne(id, teamToken, name, near_date, token, status, off_at)
+//                })
+//                val layoutManager = LinearLayoutManager(this)
+//                show_signups_container.adapter = signupsAdapter
+//                show_signups_container.layoutManager = layoutManager
+//                if (data.containsKey("signups") && data["signups"]!!.containsKey("value")) {
+//                    val signups = data["signups"]!!["value"] as ArrayList<Map<String, String>>
+//                    //println(signups)
+//                    if (signups.size > 0) {
+//                        signupsAdapter.lists = signups
+//                        signupsAdapter.notifyDataSetChanged()
+//                    }
+//                }
+//                closeRefresh()
+//                setMyTitle(name)
+//            }
+//        }
         Loading.hide(mask)
     }
 

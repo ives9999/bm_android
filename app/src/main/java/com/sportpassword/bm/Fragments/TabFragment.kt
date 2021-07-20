@@ -440,7 +440,7 @@ open class TabFragment : Fragment(), SearchItemDelegate, List1CellDelegate, Seri
         refresh()
     }
 
-    open protected fun setRecyclerViewScrollListener() {
+    protected open fun setRecyclerViewScrollListener() {
 
         var pos: Int = 0
 
@@ -470,7 +470,7 @@ open class TabFragment : Fragment(), SearchItemDelegate, List1CellDelegate, Seri
         recyclerView.addOnScrollListener(scrollerListenr)
     }
 
-    open protected fun setRecyclerViewRefreshListener() {
+    protected open fun setRecyclerViewRefreshListener() {
         refreshListener = SwipeRefreshLayout.OnRefreshListener {
             refresh()
 

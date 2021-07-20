@@ -71,14 +71,14 @@ class CoachFragment : TabFragment() {
         //isCourseShow = isVisibleToUser
     }
 
-    override fun getDataStart(_page: Int, _perPage: Int) {
-        super.getDataStart(_page, _perPage)
-        Loading.show(maskView)
-        //println("page: $_page")
-        CoachService.getList(context!!, "coach", "name", mainActivity!!.params, _page, _perPage, null) { success ->
-            getDataEnd(success)
-        }
-    }
+//    override fun getDataStart(_page: Int, _perPage: Int) {
+//        super.getDataStart(_page, _perPage)
+//        Loading.show(maskView)
+//        //println("page: $_page")
+//        CoachService.getList(context!!, "coach", "name", mainActivity!!.params, _page, _perPage, null) { success ->
+//            getDataEnd(success)
+//        }
+//    }
 
 
     companion object {

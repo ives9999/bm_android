@@ -61,7 +61,7 @@ open class DataService: BaseService() {
         if (token != null) {
             url = url + "/" + token
         }
-        println(url)
+        //println(url)
 
         val header: MutableList<Pair<String, String>> = mutableListOf()
         header.add(Pair("Accept","application/json"))
@@ -84,7 +84,7 @@ open class DataService: BaseService() {
         }
 
         val body = filter.toJSONString()
-        println(body)
+        //println(body)
 
         MyHttpClient.instance.post(context, url, body) { success ->
             if (success) {
@@ -117,298 +117,192 @@ open class DataService: BaseService() {
         }
     }
 
-    open fun getList(context: Context, token: String?, _filter: HashMap<String, Any>?, page: Int, perPage: Int, complete: CompletionHandler) {
-
-        var url = getListURL()
-        if (token != null) {
-            url = url + "/" + token
-        }
-        //println(url)
-
-        val header: MutableList<Pair<String, String>> = mutableListOf()
-        header.add(Pair("Accept","application/json"))
-        header.add(Pair("Content-Type","application/json; charset=utf-8"))
-
-        val filter: HashMap<String, Any>?
-        if (_filter == null) {
-            filter = hashMapOf()
-        } else {
-            filter = _filter
-        }
-        filter.put("source", "app")
-        filter.put("channel", "bm")
-        filter.put("status", "online")
-        filter.put("page", page)
-        filter.put("perPage", perPage)
-
-        val body = filter.toJSONString()
-        //println(body)
-
-        MyHttpClient.instance.post(context, url, body) { success ->
-            if (success) {
-                val response = MyHttpClient.instance.response
-                if (response != null) {
-                    try {
-
-                        //val s = Gson().fromJson<SuperCourses>(response.toString(), SuperCourses::class.java)
-
-                        val json = JSONObject(response.toString())
-                        //println(json)
-                        superModel = parseModels(json)
-                        //superCourses = JSONParse.parse<SuperCourses>(json)!!
-//                        for (row in superCourses.rows) {
-//                            val citys = row.coach.citys
-//                            for (city in citys) {
-//                                city.print()
-//                            }
-//                        }
-                        this.success = true
-                    } catch (e: Exception) {
-                        this.success = false
-                        msg = "parse json failed，請洽管理員"
-                        println(e.localizedMessage)
-                    }
-                    complete(this.success)
-                } else {
-                    println("response is null")
-                }
-            } else {
-                msg = "網路錯誤，無法跟伺服器更新資料"
-                complete(success)
-            }
-        }
-    }
-
-    fun getList(context: Context, type:String, titleField:String, params: HashMap<String,Any>, page:Int, perPage:Int, filter:Array<Array<Any>>?, complete:CompletionHandler) {
-        val url = "$URL_LIST".format(type)
-        //println(url)
-        //println(params)
-
-//        params.put("city_type", "simple")
-//        params.put("city_id", arrayListOf(11))
-        val header: MutableList<Pair<String, String>> = mutableListOf()
-        header.add(Pair("Accept","application/json"))
-        header.add(Pair("Content-Type","application/json; charset=utf-8"))
-
-//        val params1: MutableList<Pair<String, String>> = mutableListOf()
-        val body = JSONObject()
-        body.put("source", "app")
-        body.put("channel", "bm")
-        body.put("page", page.toString())
-        body.put("perPage", perPage.toString())
-//        params1.add(Pair("source", "app"))
-//        params1.add(Pair("channel", "bm"))
-//        params1.add(Pair("page", page.toString()))
-//        params1.add(Pair("perPage", perPage.toString()))
-
-        for ((key, value) in params) {
-            var valueStr: String = ""
-            when (key) {
-                "city_id" -> {
-//                    valueStr += """["""
-//                    val valueArr = value as ArrayList<Int>
-//                    var i = 1
-//                    for (id in valueArr) {
-//                        valueStr += """${id}"""
-//                        if (i < valueArr.size) {
-//                            valueStr += ""","""
-//                        }
-//                        i++
-//                    }
-//                    valueStr += """]"""
-//                    params1.add(Pair(key, valueStr))
-                    var arr: JSONArray = JSONArray(value as ArrayList<Int>)
-                    body.put(key, arr)
-                }
-                "city_type" -> {
-                    body.put(key, value)
-                }
-                "area_id" -> {
-                    var arr: JSONArray = JSONArray(value as ArrayList<Int>)
-                    body.put(key, arr)
-                }
-                "play_days" -> {
-                    var arr: JSONArray = JSONArray(value as ArrayList<Int>)
-                    body.put(key, arr)
-                }
-                "play_time" -> {
-                    body.put(key, value)
-                }
-                "use_date_range" -> {
-                    body.put(key, value)
-                }
-                "arena_id" -> {
-                    var arr: JSONArray = JSONArray(value as ArrayList<Int>)
-                    body.put(key, arr)
-                }
-                "degree" -> {
-                    var arr: JSONArray = JSONArray(value as ArrayList<String>)
-                    body.put(key, arr)
-                }
-                "k" -> {
-                    body.put(key, value)
-                }
-                ARENA_AIR_CONDITION_KEY -> {
-                    body.put(key, value)
-                }
-                ARENA_BATHROOM_KEY -> {
-                    body.put(key, value)
-                }
-                ARENA_PARKING_KEY -> {
-                    body.put(key, value)
-                }
-            }
-        }
-        if (filter != null) {
-            val whereArr = JSONArray()
-            for (i in filter.indices) {
-                val operateArr = JSONArray()
-                for (item in filter[i]) {
-                    operateArr.put(item)
-                }
-                whereArr.put(operateArr)
-            }
-            body.put("where", whereArr)
-        }
-        //println(params1)
-        //println(body.toString())
-//        val requestBody = MyHttpClient.instance.toJsonString(body, filter)
-        //println(requestBody)
-        //println("coach getList refresh: $refresh")
-
-//        val params1: MutableList<Pair<String, String>> = mutableListOf()
-//        val keys = body.keys()
-//        while (keys.hasNext()) {
-//            val key = keys.next()
-//            val value = body.getString(key)
-//            params1.add(Pair(key, value))
+//    open fun getList(context: Context, token: String?, _filter: HashMap<String, Any>?, page: Int, perPage: Int, complete: CompletionHandler) {
+//
+//        var url = getListURL()
+//        if (token != null) {
+//            url = url + "/" + token
 //        }
-        //println(params1)
-        MyHttpClient.instance.post(context, url, body.toString()) { success ->
-            if (success) {
-//                superDataLists.clear()
-                val response = MyHttpClient.instance.response
-                if (response != null) {
-//                    println(response.toString())
-                    try {
-                        val json = JSONObject(response.toString())
-                        this.success = true
-                        this.totalCount = json.getInt("totalCount")
-                        this.page = json.getInt("page")
-                        this.perPage = json.getInt("perPage")
-                        val rows = json.getJSONArray("rows")
-//                        println(rows)
-                        for (i in 0..rows.length() - 1) {
-                            val obj = rows.getJSONObject(i)
-                            val title = obj.getString(titleField)
-                            val token = obj.getString("token")
-                            var vimeo = if (obj.has("vimeo")) obj.getString("vimeo") else ""
-                            var youtube = if (obj.has("youtube")) obj.getString("youtube").toString() else ""
-                            val id = obj.getInt("id")
-                            var featured_path = if (obj.has("featured_path")) obj.get("featured_path").toString() else ""
-                            //println(featured_path)
-                            if (featured_path.isNotEmpty()) {
-                                if (!featured_path.startsWith("http://") && !featured_path.startsWith("https://")) {
-                                    featured_path = BASE_URL + featured_path
-                                }
-                            }
+//        //println(url)
+//
+//        val header: MutableList<Pair<String, String>> = mutableListOf()
+//        header.add(Pair("Accept","application/json"))
+//        header.add(Pair("Content-Type","application/json; charset=utf-8"))
+//
+//        val filter: HashMap<String, Any>?
+//        if (_filter == null) {
+//            filter = hashMapOf()
+//        } else {
+//            filter = _filter
+//        }
+//        filter.put("source", "app")
+//        filter.put("channel", "bm")
+//        filter.put("status", "online")
+//        filter.put("page", page)
+//        filter.put("perPage", perPage)
+//
+//        val body = filter.toJSONString()
+//        //println(body)
+//
+//        MyHttpClient.instance.post(context, url, body) { success ->
+//            if (success) {
+//                val response = MyHttpClient.instance.response
+//                if (response != null) {
+//                    try {
+//
+//                        //val s = Gson().fromJson<SuperCourses>(response.toString(), SuperCourses::class.java)
+//
+//                        val json = JSONObject(response.toString())
+//                        //println(json)
+//                        superModel = parseModels(json)
+//                        //superCourses = JSONParse.parse<SuperCourses>(json)!!
+////                        for (row in superCourses.rows) {
+////                            val citys = row.coach.citys
+////                            for (city in citys) {
+////                                city.print()
+////                            }
+////                        }
+//                        this.success = true
+//                    } catch (e: Exception) {
+//                        this.success = false
+//                        msg = "parse json failed，請洽管理員"
+//                        println(e.localizedMessage)
+//                    }
+//                    complete(this.success)
+//                } else {
+//                    println("response is null")
+//                }
+//            } else {
+//                msg = "網路錯誤，無法跟伺服器更新資料"
+//                complete(success)
+//            }
+//        }
+//    }
 
-                            //val dataList: SuperData = Coach(id, title, featured_path)
-//                            val data = setData(id, title, token, featured_path, vimeo, youtube)
-//                            val map = setData1(obj)
-                            //println(map)
-//                            data.data = map
-//                            superDataLists.add(data)
-                        }
-                    } catch (e: Exception) {
-                        this.success = false
-                        msg = "parse json failed，請洽管理員"
-                    }
-                    complete(this.success)
-                } else {
-                    println("response is null")
-                }
-            } else {
-                msg = "網路錯誤，無法跟伺服器更新資料"
-                complete(success)
-            }
-        }
-
-        /*
-
-
-        superDataLists = arrayListOf()
-
-        val request = object : JsonObjectRequest(Request.Method.POST, url, null, Response.Listener { json ->
-            //println(json)
-            try {
-                success = true
-                this.totalCount = json.getInt("totalCount")
-                this.page = json.getInt("page")
-                this.perPage = json.getInt("perPage")
-                val rows = json.getJSONArray("rows")
-                for (i in 0..rows.length()-1) {
-                    val obj = rows.getJSONObject(i)
-                    val title = obj.getString(titleField)
-                    val token = obj.getString("token")
-                    var vimeo = if (obj.has("vimeo")) obj.getString("vimeo") else ""
-                    var youtube = if (obj.has("youtube")) obj.getString("youtube").toString() else ""
-                    val id = obj.getInt("id")
-                    var featured_path = if (obj.has("featured_path")) obj.get("featured_path").toString() else ""
-                    //println(featured_path)
-                    if (featured_path.isNotEmpty()) {
-                        if (!featured_path.startsWith("http://") && !featured_path.startsWith("https://")) {
-                            featured_path = BASE_URL + featured_path
-                        }
-                    }
-
-                    //val dataList: SuperData = Coach(id, title, featured_path)
-                    val data = setData(id, title, token, featured_path, vimeo, youtube)
-                    val map = setData1(obj)
-                    data.data = map
-                    superDataLists.add(data)
-                }
-            } catch (e: JSONException) {
-                println(e.localizedMessage)
-                success = false
-                msg = "無法getList，沒有傳回成功值 " + e.localizedMessage
-            }
-            if (this.success) {
-                //jsonToMember(json)
-            } else {
-                //DataService.makeErrorMsg(json)
-            }
-            complete(true)
-        }, Response.ErrorListener { error ->
-            //Log.d("ERROR", "Could not register user: $error")
-            println(error.localizedMessage)
-            this.msg = "取得失敗，網站或網路錯誤"
-            complete(false)
-        }) {
-            override fun getBodyContentType(): String {
-                return HEADER
-            }
-
-            override fun getBody(): ByteArray {
-                return requestBody.toByteArray()
-            }
-        }
-
-        Volley.newRequestQueue(context).add(request)
-        */
-
-    }
+//    fun getList(context: Context, type:String, titleField:String, params: HashMap<String,Any>, page:Int, perPage:Int, filter:Array<Array<Any>>?, complete:CompletionHandler) {
+//        val url = "$URL_LIST".format(type)
+//        val header: MutableList<Pair<String, String>> = mutableListOf()
+//        header.add(Pair("Accept","application/json"))
+//        header.add(Pair("Content-Type","application/json; charset=utf-8"))
+//
+//        val body = JSONObject()
+//        body.put("source", "app")
+//        body.put("channel", "bm")
+//        body.put("page", page.toString())
+//        body.put("perPage", perPage.toString())
+//
+//        for ((key, value) in params) {
+//            var valueStr: String = ""
+//            when (key) {
+//                "city_id" -> {
+//                    var arr: JSONArray = JSONArray(value as ArrayList<Int>)
+//                    body.put(key, arr)
+//                }
+//                "city_type" -> {
+//                    body.put(key, value)
+//                }
+//                "area_id" -> {
+//                    var arr: JSONArray = JSONArray(value as ArrayList<Int>)
+//                    body.put(key, arr)
+//                }
+//                "play_days" -> {
+//                    var arr: JSONArray = JSONArray(value as ArrayList<Int>)
+//                    body.put(key, arr)
+//                }
+//                "play_time" -> {
+//                    body.put(key, value)
+//                }
+//                "use_date_range" -> {
+//                    body.put(key, value)
+//                }
+//                "arena_id" -> {
+//                    var arr: JSONArray = JSONArray(value as ArrayList<Int>)
+//                    body.put(key, arr)
+//                }
+//                "degree" -> {
+//                    var arr: JSONArray = JSONArray(value as ArrayList<String>)
+//                    body.put(key, arr)
+//                }
+//                "k" -> {
+//                    body.put(key, value)
+//                }
+//                ARENA_AIR_CONDITION_KEY -> {
+//                    body.put(key, value)
+//                }
+//                ARENA_BATHROOM_KEY -> {
+//                    body.put(key, value)
+//                }
+//                ARENA_PARKING_KEY -> {
+//                    body.put(key, value)
+//                }
+//            }
+//        }
+//        if (filter != null) {
+//            val whereArr = JSONArray()
+//            for (i in filter.indices) {
+//                val operateArr = JSONArray()
+//                for (item in filter[i]) {
+//                    operateArr.put(item)
+//                }
+//                whereArr.put(operateArr)
+//            }
+//            body.put("where", whereArr)
+//        }
+//        MyHttpClient.instance.post(context, url, body.toString()) { success ->
+//            if (success) {
+////                superDataLists.clear()
+//                val response = MyHttpClient.instance.response
+//                if (response != null) {
+////                    println(response.toString())
+//                    try {
+//                        val json = JSONObject(response.toString())
+//                        this.success = true
+//                        this.totalCount = json.getInt("totalCount")
+//                        this.page = json.getInt("page")
+//                        this.perPage = json.getInt("perPage")
+//                        val rows = json.getJSONArray("rows")
+////                        println(rows)
+//                        for (i in 0..rows.length() - 1) {
+//                            val obj = rows.getJSONObject(i)
+//                            val title = obj.getString(titleField)
+//                            val token = obj.getString("token")
+//                            var vimeo = if (obj.has("vimeo")) obj.getString("vimeo") else ""
+//                            var youtube = if (obj.has("youtube")) obj.getString("youtube").toString() else ""
+//                            val id = obj.getInt("id")
+//                            var featured_path = if (obj.has("featured_path")) obj.get("featured_path").toString() else ""
+//                            //println(featured_path)
+//                            if (featured_path.isNotEmpty()) {
+//                                if (!featured_path.startsWith("http://") && !featured_path.startsWith("https://")) {
+//                                    featured_path = BASE_URL + featured_path
+//                                }
+//                            }
+//
+//                        }
+//                    } catch (e: Exception) {
+//                        this.success = false
+//                        msg = "parse json failed，請洽管理員"
+//                    }
+//                    complete(this.success)
+//                } else {
+//                    println("response is null")
+//                }
+//            } else {
+//                msg = "網路錯誤，無法跟伺服器更新資料"
+//                complete(success)
+//            }
+//        }
+//    }
 
     fun like(context: Context, token: String, able_id: Int) {
 
         val likeUrl: String = getLikeURL(token)
-        println(likeUrl)
+        //println(likeUrl)
 
         val params = mapOf("member_token" to member.token, "able_id" to able_id, "device" to "app")
         val objectMapper = ObjectMapper()
         val body: String = objectMapper.writeValueAsString(params)
 
-        println(body)
+        //println(body)
 
         val header: MutableList<Pair<String, String>> = mutableListOf()
         header.add(Pair("Accept","application/json"))
@@ -426,96 +320,50 @@ open class DataService: BaseService() {
     open fun parseModels(json: JSONObject): SuperModel {return SuperModel(JSONObject())}
     open fun jsonToMember(json: JSONObject, context: Context){}
 
-    open fun getOne(context: Context, type:String, titleField:String, token:String, complete: CompletionHandler) {
-        val url = "$URL_ONE".format(type)
-        val params: MutableList<Pair<String, String>> = mutableListOf()
-        params.add(Pair("source", "app"))
-        params.add(Pair("token", token))
-        params.add(Pair("strip_html", true.toString()))
-//        println(url)
-//        println(params)
+//    open fun getOne(context: Context, type:String, titleField:String, token:String, complete: CompletionHandler) {
+//        val url = "$URL_ONE".format(type)
+//        val params: MutableList<Pair<String, String>> = mutableListOf()
+//        params.add(Pair("source", "app"))
+//        params.add(Pair("token", token))
+//        params.add(Pair("strip_html", true.toString()))
+////        println(url)
+////        println(params)
+//
+//        MyHttpClient.instance.post(context, url, params, null) { success ->
+//            val response = MyHttpClient.instance.response
+//            if (response != null) {
+//                val responseStr = response.toString()
+//                //println(responseStr)
+//                val json = JSONObject(responseStr)
+//                try {
+//                    this.success = true
+//                    //println(json)
+////                    model.dataReset()
+//                    data = mutableMapOf()
+////                    dealOne(json)
+////                    data = model.data
+////                println(data)
+//                } catch (e: JSONException) {
+//                    println("parse data error: " + e.localizedMessage)
+//                    this.success = false
+//                    msg = "無法getOne，沒有傳回成功值 " + e.localizedMessage
+//                }
+//                if (this.success) {
+//                    //jsonToMember(json)
+//                } else {
+//                    //DataService.makeErrorMsg(json)
+//                }
+//                complete(true)
+//            }
+//        }
+//    }
 
-        MyHttpClient.instance.post(context, url, params, null) { success ->
-            val response = MyHttpClient.instance.response
-            if (response != null) {
-                val responseStr = response.toString()
-                //println(responseStr)
-                val json = JSONObject(responseStr)
-                try {
-                    this.success = true
-                    //println(json)
-//                    model.dataReset()
-                    data = mutableMapOf()
-//                    dealOne(json)
-//                    data = model.data
-//                println(data)
-                } catch (e: JSONException) {
-                    println("parse data error: " + e.localizedMessage)
-                    this.success = false
-                    msg = "無法getOne，沒有傳回成功值 " + e.localizedMessage
-                }
-                if (this.success) {
-                    //jsonToMember(json)
-                } else {
-                    //DataService.makeErrorMsg(json)
-                }
-                complete(true)
-            }
-        }
-
-        /*
-        val body = JSONObject()
-        body.put("source", "app")
-        body.put("token", token)
-        body.put("strip_html", true)
-        val requestBody = body.toString()
-        //println(requestBody)
-
-        val request = object : JsonObjectRequest(Request.Method.POST, url, null, Response.Listener { json ->
-            //println("json: " + json)
-            try {
-                success = true
-                //println(json)
-                model.dataReset()
-                data = mutableMapOf()
-                dealOne(json)
-                data = model.data
-//                println(data)
-            } catch (e: JSONException) {
-                println("parse data error: " + e.localizedMessage)
-                success = false
-                msg = "無法getOne，沒有傳回成功值 " + e.localizedMessage
-            }
-            if (this.success) {
-                //jsonToMember(json)
-            } else {
-                //DataService.makeErrorMsg(json)
-            }
-            complete(true)
-        }, Response.ErrorListener { error ->
-            //Log.d("ERROR", "Could not register user: $error")
-            println(error.localizedMessage)
-            this.msg = "取得失敗，網站或網路錯誤"
-            complete(false)
-        }) {
-            override fun getBodyContentType(): String {
-                return HEADER
-            }
-
-            override fun getBody(): ByteArray {
-                return requestBody.toByteArray()
-            }
-        }
-        Volley.newRequestQueue(context).add(request)
-        */
-    }
-
-    open fun getOne(context: Context, id: Int, source: String, token: String, completion: CompletionHandler) {}
+    //open fun getOne(context: Context, id: Int, source: String, token: String, completion: CompletionHandler) {}
 
     open fun getOne1(context: Context, params: HashMap<String, String>, complete: CompletionHandler) {
 
         val url = getOneURL()
-        println(url)
+        //println(url)
 
         val header: MutableList<Pair<String, String>> = mutableListOf()
         header.add(Pair("Accept","application/json"))
@@ -525,7 +373,7 @@ open class DataService: BaseService() {
         val objectMapper = ObjectMapper()
         val body: String = objectMapper.writeValueAsString(params)
 
-        println(body)
+        //println(body)
 
         MyHttpClient.instance.post(context, url, body) { success ->
 

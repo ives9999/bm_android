@@ -907,16 +907,16 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
         val filter1: Array<Any> = arrayOf("channel", "=", CHANNEL)
         val filter2: Array<Any> = arrayOf("manager_id", "=", member.id)
         val filter: Array<Array<Any>> = arrayOf(filter1, filter2)
-        TeamService.getList(this, "team", "name", hashMapOf(), 1, 100, filter) { success ->
-            Loading.hide(mask)
-            if (success) {
-                //superDataLists = TeamService.superDataLists
-                completion(true)
-            } else {
-                msg = TeamService.msg
-                completion(false)
-            }
-        }
+//        TeamService.getList(this, "team", "name", hashMapOf(), 1, 100, filter) { success ->
+//            Loading.hide(mask)
+//            if (success) {
+//                //superDataLists = TeamService.superDataLists
+//                completion(true)
+//            } else {
+//                msg = TeamService.msg
+//                completion(false)
+//            }
+//        }
     }
 
     protected fun addBlackList(memberName: String, memberToken: String, teamToken: String) {

@@ -73,7 +73,30 @@ class ShowTeachVC : ShowVC() {
             }
         }
 
+        youtube.settings.javaScriptEnabled = true
+        youtube.loadUrl("https://www.youtube.com/embed/" + myTable!!.youtube)
+
         val items = generateMainItem()
         adapter.update(items)
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
