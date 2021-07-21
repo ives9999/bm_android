@@ -36,8 +36,8 @@ class MoreFragment : TabFragment() {
 
     val rows: ArrayList<HashMap<String, Any>> = arrayListOf(
         hashMapOf("key" to "product", "text" to "商品","icon" to "product","color" to R.color.MY_LIGHT_RED),
-        hashMapOf("key" to "coach", "text" to "教練","icon" to "coach","color" to R.color.MY_WHITE),
         hashMapOf("key" to "teach", "text" to "教學","icon" to "teach","color" to R.color.MY_WHITE),
+        hashMapOf("key" to "coach", "text" to "教練","icon" to "coach","color" to R.color.MY_WHITE),
         hashMapOf("key" to "store", "text" to "體育用品店","icon" to "store","color" to R.color.MY_WHITE),
         hashMapOf("key" to "pn", "text" to "推播訊息","icon" to "bell","color" to R.color.MY_WHITE),
         hashMapOf("key" to "version", "text" to "版本","icon" to "version","color" to R.color.MY_WHITE)

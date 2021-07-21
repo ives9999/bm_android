@@ -38,6 +38,7 @@ class MemberFragment: TabFragment() {
     var likeRows: ArrayList<Map<String, String>> = arrayListOf(
         mapOf("text" to "球隊", "icon" to "team", "segue" to "toLike", "able_type" to "team"),
         mapOf("text" to "球館", "icon" to "arena", "segue" to "toLike", "able_type" to "arena"),
+        mapOf("text" to "教學", "icon" to "teach", "segue" to "toLike", "able_type" to "teach"),
         mapOf("text" to "教練", "icon" to "coach", "segue" to "toLike", "able_type" to "coach"),
         mapOf("text" to "課程", "icon" to "course", "segue" to "toLike", "able_type" to "course"),
         mapOf("text" to "商品", "icon" to "product", "segue" to "toLike", "able_type" to "product"),
@@ -252,6 +253,7 @@ class MemberFragment: TabFragment() {
                     when(able_type) {
                         "team" -> mainActivity!!.toTeam(null, true)
                         "arena" -> mainActivity!!.toArena(true)
+                        "teach" -> mainActivity!!.toTeach(true)
                         "coach" -> mainActivity!!.toCoach(true)
                         "course" -> mainActivity!!.toCourse(true)
                         "product" -> mainActivity!!.toProduct(true)

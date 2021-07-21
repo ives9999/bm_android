@@ -437,10 +437,9 @@ interface ToInterface {
         mainDelegate.startActivity(i)
     }
 
-    fun toTeach() {
+    fun toTeach(member_like: Boolean = false) {
         val i = Intent(mainDelegate, TeachVC::class.java)
-        i.putExtra("type", "teach")
-        i.putExtra("titleField", "title")
+        i.putExtra("member_like", member_like)
         mainDelegate.startActivity(i)
     }
 
