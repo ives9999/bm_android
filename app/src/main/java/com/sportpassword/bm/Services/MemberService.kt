@@ -89,7 +89,7 @@ object MemberService: DataService() {
 //        println(requestBody)
 
         val request = object : JsonObjectRequest(Request.Method.POST, url, null, Response.Listener { json ->
-            println(json)
+            //println(json)
             try {
                 success = json.getBoolean("success")
                 //println(success)

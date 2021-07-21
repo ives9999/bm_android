@@ -29,10 +29,11 @@ class Member(data: JSONObject): SuperModel(data){
     var tel: String = ""
     var mobile: String = ""
     var email: String = ""
-    var city_id: Int = 0
-    var area_id: Int = 0
+    var city: Int = 0
+    var area: Int = 0
     var road: String = ""
     var zip: Int = 0
+    var address: String = ""
     var fb: String = ""
     var line: String = ""
     var pid: String = ""
@@ -61,8 +62,8 @@ class Member(data: JSONObject): SuperModel(data){
         channel = json.getString(CHANNEL_KEY, "bm")!!
         tel = json.getString(TEL_KEY, "")!!
         mobile = json.getString(MOBILE_KEY, "")!!
-        city_id = json.getInt("city_id", 0)
-        area_id = json.getInt("area_id", 0)
+        city = json.getInt("city_id", 0)
+        area = json.getInt("area_id", 0)
         road = json.getString(ROAD_KEY, "")!!
         zip = json.getInt(ZIP_KEY, 0)
         fb = json.getString(FB_KEY, "")!!
@@ -75,6 +76,11 @@ class Member(data: JSONObject): SuperModel(data){
         val roleString = json.getString(MEMBER_ROLE_KEY, "member")!!
         role = roleString
         //role = MEMBER_ROLE.valueOf(roleString)
+
+        val city_name = Global.zoneIDToName(member.city)
+        val area_name = Global.zoneIDToName(member.area)
+        address = "${city_name}${area_name}${zip}${road}"
+        
         isLoggedIn = json.getBoolean(ISLOGGEDIN_KEY, false)
         val value: Int = type and TEAM_TYPE
         if (value > 0) isTeamManager = true else isTeamManager= false

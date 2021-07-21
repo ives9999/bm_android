@@ -1,5 +1,6 @@
 package com.sportpassword.bm.Models
 
+import com.google.gson.annotations.SerializedName
 import com.sportpassword.bm.Utilities.BASE_URL
 
 class ProductsTable: Tables() {
@@ -21,6 +22,7 @@ class ProductTable: Table() {
 
     var images: ArrayList<String> = arrayListOf()
     var prices: ArrayList<ProductPriceTable> = arrayListOf()
+    @SerializedName("product_attributes") var attributes: ArrayList<ProductAttributeTable> = arrayListOf()
     var colors: ArrayList<String> = arrayListOf()
     var sizes: ArrayList<String> = arrayListOf()
     var weights: ArrayList<String> = arrayListOf()
@@ -60,3 +62,41 @@ class ProductPriceTable: Table() {
         super.filterRow()
     }
 }
+
+class ProductAttributeTable: Table() {
+
+    var product_id: Int = -1
+    var attribute: String = ""
+    var alias: String = ""
+    var placeholder: String = ""
+
+    override fun filterRow() {
+
+        super.filterRow()
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

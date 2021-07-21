@@ -35,6 +35,9 @@ abstract class MyTableVC : BaseActivity(), List1CellDelegate {
     var sections: ArrayList<String> = arrayListOf()
     var rows: ArrayList<HashMap<String, String>> = arrayListOf()
 
+    var mySections: ArrayList<HashMap<String, Any>> = arrayListOf()
+    var myRows: ArrayList<HashMap<String, Any>> = arrayListOf()
+
     var adapter: GroupAdapter<ViewHolder> = GroupAdapter<ViewHolder>()
     protected val adapterSections: ArrayList<Section> = arrayListOf()
     protected lateinit var recyclerView: RecyclerView
@@ -352,6 +355,81 @@ abstract class MyTableVC : BaseActivity(), List1CellDelegate {
                 searchRows[idx] = row
                 break
             }
+        }
+    }
+
+    fun getRowRowsFromMyRowsByKey1(key: String): HashMap<String, String> {
+
+        for (sectionRow in myRows) {
+            if (sectionRow.containsKey("rows")) {
+                val rowRows = sectionRow["rows"] as ArrayList<HashMap<String, String>>
+                for (rowRow in rowRows) {
+                    if (rowRow["key"] == key) {
+                        return rowRow
+                    }
+                }
+            }
+        }
+
+        return hashMapOf()
+    }
+
+    fun replaceRowByKey(rowKey: String, _row: HashMap<String, String>) {
+
+//        var tmp: [String: String] = [String: String]()
+//        for (key, value) in _row {
+//            if let _value: String = value as? String {
+//                tmp[key] = _value
+//            }
+//        }
+
+        //var sectionIdx: Int = -1
+        var sectionKey: String = ""
+        for ((idx, row) in myRows.withIndex()) {
+
+            // row is  ["key":"product", "rows": productRows]
+            if (row.containsKey("rows")) {
+                val rows: ArrayList<HashMap<String, String>> = row["rows"] as ArrayList<HashMap<String, String>>
+                for (row1 in rows) {
+                    val key1: String? = row1["key"]
+                    if (key1 != null) {
+                        if (rowKey == key1) {
+                            //sectionIdx = idx
+                            //找出 section row 的 key
+                            sectionKey = myRows[idx]["key"] as String
+                        }
+                    }
+                }
+            }
+        }
+
+        replaceRowByKey(sectionKey, rowKey, _row)
+    }
+
+    fun replaceRowByKey(sectionKey: String, rowKey: String, _row: HashMap<String, String>) {
+
+        var tmpRows: ArrayList<HashMap<String, String>> = arrayListOf()
+
+
+        for ((sectionIdx, sectionRow) in myRows.withIndex()) {
+
+            tmpRows = sectionRow["rows"] as ArrayList<HashMap<String, String>>
+            val sectionKey1: String = sectionRow["key"] as String
+            if (sectionKey1 == sectionKey) {
+
+                val sectionRows: ArrayList<HashMap<String, Any>> = sectionRow["rows"] as ArrayList<HashMap<String, Any>>
+                for ((rowIdx, rowRow) in sectionRows.withIndex()) {
+                    val rowKey1: String? = rowRow["key"] as? String
+                    if (rowKey1 != null) {
+
+                        //2.用row key找出 row row
+                        if (rowKey1 == rowKey) {
+                            tmpRows[rowIdx] = _row
+                        }
+                    }
+                }
+            }
+            myRows[sectionIdx]["rows"] = tmpRows
         }
     }
 

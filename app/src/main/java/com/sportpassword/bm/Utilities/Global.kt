@@ -12,6 +12,7 @@ import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
 import android.net.Uri
+import android.text.InputType
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
@@ -431,6 +432,33 @@ enum class SHIPPING_PROCESS(val englishName: String, val chineseName: String) {
 
         fun getRawValueFromString(value: String): String {
             return SHIPPING_PROCESS.valueOf(value).toChineseString()
+        }
+    }
+}
+
+enum class KEYBOARD(val type: String) {
+
+    default("default"),
+    emailAddress("emailAddress"),
+    numberPad("numberPad"),
+    URL("URL");
+
+    override fun toString(): String {
+        return type
+    }
+
+    companion object: MYENUM<KEYBOARD>() {
+
+        fun stringToSwift(str: String): Int {
+
+            when(str) {
+
+                "default"-> return InputType.TYPE_CLASS_TEXT
+                "emailAddress"-> return InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS
+                "numberPad"-> return InputType.TYPE_CLASS_NUMBER
+                "URL"-> return InputType.TYPE_TEXT_VARIATION_URI
+            }
+            return InputType.TYPE_CLASS_TEXT
         }
     }
 }

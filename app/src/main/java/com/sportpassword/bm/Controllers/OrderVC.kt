@@ -2,16 +2,16 @@ package com.sportpassword.bm.Controllers
 
 import android.os.Bundle
 import android.view.View
+import com.google.gson.JsonParseException
 import com.sportpassword.bm.Adapters.Form.*
 import com.sportpassword.bm.Form.FormItem.FormItem
 import com.sportpassword.bm.Form.FormItem.NumberFormItem
 import com.sportpassword.bm.Form.FormItem.TagFormItem
 import com.sportpassword.bm.Form.FormItemCellType
 import com.sportpassword.bm.Form.OrderForm
-import com.sportpassword.bm.Form.RegisterForm
 import com.sportpassword.bm.Form.ValueChangedDelegate
-import com.sportpassword.bm.Models.SuperOrder
-import com.sportpassword.bm.Models.SuperProduct
+import com.sportpassword.bm.Models.ProductTable
+import com.sportpassword.bm.Models.Table
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.OrderService
 import com.sportpassword.bm.Services.ProductService
@@ -24,7 +24,9 @@ import kotlinx.android.synthetic.main.mask.*
 class OrderVC : MyTableVC(), ValueChangedDelegate {
 
     var product_token: String? = null
-    var superProduct: SuperProduct? = null
+    var table: Table? = null
+    var myTable: ProductTable? = null
+    //var superProduct: SuperProduct? = null
     var section_keys: ArrayList<ArrayList<String>> = arrayListOf()
 
     var sub_total: Int = 0
@@ -35,7 +37,42 @@ class OrderVC : MyTableVC(), ValueChangedDelegate {
     var selected_price: Int = 0
     var selected_idx: Int = 0
 
+    val productRows: ArrayList<HashMap<String, String>> =  arrayListOf(
+        hashMapOf("title" to "商品","key" to PRODUCT_KEY,"value" to "","show" to "","cell" to "text")
+    )
+
+    var attributeRows: ArrayList<HashMap<String, String>> = arrayListOf()
+
+    val amountRows: ArrayList<HashMap<String, String>> =  arrayListOf(
+        hashMapOf("title" to "數量","key" to QUANTITY_KEY,"value" to "","show" to "","cell" to "number"),
+        hashMapOf("title" to "小計","key" to SUBTOTAL_KEY,"value" to "","show" to "","cell" to "text"),
+        hashMapOf("title" to "運費","key" to SHIPPING_FEE_KEY,"value" to "","show" to "","cell" to "text"),
+        hashMapOf("title" to "總計","key" to TOTAL_KEY,"value" to "","show" to "","cell" to "text")
+    )
+
+    val contactRows: ArrayList<HashMap<String, String>> =  arrayListOf(
+        hashMapOf("title" to "姓名","key" to NAME_KEY,"value" to "","show" to "","cell" to "textField","keyboard" to KEYBOARD.default.toString()),
+        hashMapOf("title" to "行動電話","key" to MOBILE_KEY,"value" to "","show" to "","cell" to "textField","keyboard" to KEYBOARD.numberPad.toString()),
+        hashMapOf("title" to "EMail","key" to EMAIL_KEY,"value" to "","show" to "","cell" to "textField","keyboard" to KEYBOARD.emailAddress.toString()),
+        hashMapOf("title" to "住址","key" to ADDRESS_KEY,"value" to "","show" to "","cell" to "textField","keyboard" to KEYBOARD.default.toString())
+    )
+
     override fun onCreate(savedInstanceState: Bundle?) {
+
+        mySections = arrayListOf(
+            hashMapOf("name" to "商品名稱", "isExpanded" to true, "key" to PRODUCT_KEY),
+            hashMapOf("name" to "商品選項", "isExpanded" to true, "key" to ATTRIBUTE_KEY),
+            hashMapOf("name" to "款項", "isExpanded" to true, "key" to AMOUNT_KEY),
+            hashMapOf("name" to "寄件資料", "isExpanded" to true, "key" to CONTACT_KEY)
+        )
+
+        myRows = arrayListOf(
+            hashMapOf("key" to PRODUCT_KEY, "rows" to productRows),
+            hashMapOf("key" to ATTRIBUTE_KEY, "rows" to attributeRows),
+            hashMapOf("key" to AMOUNT_KEY, "rows" to amountRows),
+            hashMapOf("key" to CONTACT_KEY, "rows" to contactRows),
+        )
+
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_order_vc)
 
@@ -62,20 +99,20 @@ class OrderVC : MyTableVC(), ValueChangedDelegate {
         if (product_token != null) {
             Loading.show(mask)
             val params: HashMap<String, String> = hashMapOf("token" to product_token!!, "member_token" to member.token!!)
-            dataService.getOne(this, params) { success ->
+            dataService.getOne1(this, params) { success ->
                 if (success) {
-                    superProduct = dataService.superModel as SuperProduct
-                    if (superProduct != null) {
-                        superProduct!!.filter()
-                        setMyTitle(superProduct!!.name)
-                        //superCourse!!.print()
-                        //setMyTitle(superProduct!!.name)
+                    try {
+                        table = jsonToModel<ProductTable>(dataService.jsonString)
+                    } catch (e: JsonParseException) {
+                        warning(e.localizedMessage!!)
+                        //println(e.localizedMessage)
+                    }
+                    if (table != null) {
+                        myTable = table as ProductTable
+                        myTable!!.filterRow()
                         initData()
-                        notifyChanged(true)
-                        //val items = generateItems(sections.size)
-//                    println(items)
-                        //adapter.update(items)
-                        //adapter.notifyDataSetChanged()
+                    } else {
+                        warning("解析伺服器所傳的字串失敗，請洽管理員")
                     }
                 }
                 closeRefresh()
@@ -88,106 +125,159 @@ class OrderVC : MyTableVC(), ValueChangedDelegate {
 
     private fun initData() {
 
-        form = OrderForm(superProduct!!.type, this)
+        form = OrderForm(myTable!!.type, this)
         sections = form.getSections()
         section_keys = form.getSectionKeys()
         initAdapter(true)
 
-        val productNameItem = getFormItemFromKey("Product_Name")
-        if (productNameItem != null) {
-            productNameItem.value = superProduct!!.name
-            productNameItem.make()
-        }
+        var row = getRowRowsFromMyRowsByKey1(PRODUCT_KEY)
+        row["value"] = myTable!!.name
+        row["show"] = myTable!!.name
+        replaceRowByKey(PRODUCT_KEY, row)
 
-        val nameItem = getFormItemFromKey(NAME_KEY)
-        if (nameItem != null) {
-            nameItem.value = member.name
-            nameItem.make()
-        }
+        row = getRowRowsFromMyRowsByKey1(NAME_KEY)
+        row["value"] = member.name
+        row["show"] = member.name
+        replaceRowByKey(NAME_KEY, row)
 
-        val mobileItem = getFormItemFromKey(MOBILE_KEY)
-        if (mobileItem != null) {
-            mobileItem.value = member.mobile
-            mobileItem.make()
-        }
+        row = getRowRowsFromMyRowsByKey1(MOBILE_KEY)
+        row["value"] = member.mobile
+        row["show"] = member.mobile
+        replaceRowByKey(MOBILE_KEY, row)
 
-        val emailItem = getFormItemFromKey(EMAIL_KEY)
-        if (emailItem != null) {
-            emailItem.value = member.email
-            emailItem.make()
-        }
+        row = getRowRowsFromMyRowsByKey1(EMAIL_KEY)
+        row["value"] = member.email
+        row["show"] = member.email
+        replaceRowByKey(EMAIL_KEY, row)
 
-        val addressItem = getFormItemFromKey(ADDRESS_KEY)
-        if (addressItem != null) {
-            addressItem.value = member.road
-            addressItem.make()
-        }
+        row = getRowRowsFromMyRowsByKey1(ADDRESS_KEY)
+        row["value"] = member.address
+        row["show"] = member.address
+        replaceRowByKey(ADDRESS_KEY, row)
 
-        val colorItem = getFormItemFromKey(COLOR_KEY)
-        if (colorItem != null) {
-            val item = colorItem as TagFormItem
-            val res: ArrayList<HashMap<String, String>> = arrayListOf()
-            for (color in superProduct!!.colors) {
-                val dict: HashMap<String, String> = hashMapOf(color to color)
-                res.add(dict)
-            }
-            item.tags = res
-        }
+        for (attribute in myTable!!.attributes) {
+            var tmp: String = attribute.attribute
+            tmp = tmp.replace("{", "")
+            tmp = tmp.replace("}", "")
+            tmp = tmp.replace("\"", "")
 
-        val clothesSizeItem = getFormItemFromKey(CLOTHES_SIZE_KEY)
-        if (clothesSizeItem != null) {
-            val item = clothesSizeItem as TagFormItem
-            val res: ArrayList<HashMap<String, String>> = arrayListOf()
-            for (size in superProduct!!.sizes) {
-                val dict: HashMap<String, String> = hashMapOf(size to size)
-                res.add(dict)
-            }
-            item.tags = res
+            //print(arr)
+            val row = hashMapOf("title" to attribute.name,"key" to attribute.alias,"value" to "","show" to tmp,"cell" to "tag")
+            attributeRows.add(row)
         }
+        //print(attributeRows)
+        myRows[1]["rows"] = attributeRows
 
-        val weightItem = getFormItemFromKey(WEIGHT_KEY)
-        if (weightItem != null) {
-            val item = weightItem as TagFormItem
-            val res: ArrayList<HashMap<String, String>> = arrayListOf()
-            for (weight in superProduct!!.weights) {
-                val dict: HashMap<String, String> = hashMapOf(weight to weight)
-                res.add(dict)
-            }
-            item.tags = res
-        }
+        row = getRowRowsFromMyRowsByKey1(QUANTITY_KEY)
+        val min: String = myTable!!.order_min.toString()
+        val max: String = myTable!!.order_max.toString()
+        row["show"] = "${min},${max}"
+        row["value"] = "1"
+        replaceRowByKey(QUANTITY_KEY, row)
 
-        if (superProduct!!.type == "mejump") {
-            val typeItem = getFormItemFromKey("type")
-            if (typeItem != null) {
-                val item = typeItem as TagFormItem
-                val res: ArrayList<HashMap<String, String>> = arrayListOf()
-                for (value in superProduct!!.prices) {
-                    val type: String = value.price_title
-                    val typePrice: String = value.price_member.toString()
-                    val str: String = type + " " + typePrice
-                    val dict: HashMap<String, String> = hashMapOf(value.id.toString() to str)
-                    res.add(dict)
-                }
-                item.tags = res
-            }
-        }
+        row = getRowRowsFromMyRowsByKey1(SHIPPING_FEE_KEY)
+        row["value"] = myTable!!.prices[selected_idx].shipping_fee.toString()
+        row["show"] = "NT$ " + myTable!!.prices[selected_idx].shipping_fee.toString() + "元"
+        replaceRowByKey(SHIPPING_FEE_KEY, row)
 
-        val numberItem = getFormItemFromKey(NUMBER_KEY)
-        if (numberItem != null) {
-            val item = numberItem as NumberFormItem
-            item.min = superProduct!!.order_min
-            item.max = superProduct!!.order_max
-        }
+        selected_price = myTable!!.prices[selected_idx].price_member
+        updateSubTotal()
 
-        if (getFormItemFromKey(SUBTOTAL_KEY) != null) {
-            selected_price = superProduct!!.prices[selected_idx].price_member
-            updateSubTotal()
-        }
-
-        if (getFormItemFromKey(SHIPPING_FEE_KEY) != null) {
-            shippingFee = superProduct!!.prices[selected_idx].shipping_fee
-            updateShippingFee()
-        }
+//        val productNameItem = getFormItemFromKey("Product_Name")
+//        if (productNameItem != null) {
+//            productNameItem.value = superProduct!!.name
+//            productNameItem.make()
+//        }
+//
+//        val nameItem = getFormItemFromKey(NAME_KEY)
+//        if (nameItem != null) {
+//            nameItem.value = member.name
+//            nameItem.make()
+//        }
+//
+//        val mobileItem = getFormItemFromKey(MOBILE_KEY)
+//        if (mobileItem != null) {
+//            mobileItem.value = member.mobile
+//            mobileItem.make()
+//        }
+//
+//        val emailItem = getFormItemFromKey(EMAIL_KEY)
+//        if (emailItem != null) {
+//            emailItem.value = member.email
+//            emailItem.make()
+//        }
+//
+//        val addressItem = getFormItemFromKey(ADDRESS_KEY)
+//        if (addressItem != null) {
+//            addressItem.value = member.road
+//            addressItem.make()
+//        }
+//
+//        val colorItem = getFormItemFromKey(COLOR_KEY)
+//        if (colorItem != null) {
+//            val item = colorItem as TagFormItem
+//            val res: ArrayList<HashMap<String, String>> = arrayListOf()
+//            for (color in superProduct!!.colors) {
+//                val dict: HashMap<String, String> = hashMapOf(color to color)
+//                res.add(dict)
+//            }
+//            item.tags = res
+//        }
+//
+//        val clothesSizeItem = getFormItemFromKey(CLOTHES_SIZE_KEY)
+//        if (clothesSizeItem != null) {
+//            val item = clothesSizeItem as TagFormItem
+//            val res: ArrayList<HashMap<String, String>> = arrayListOf()
+//            for (size in superProduct!!.sizes) {
+//                val dict: HashMap<String, String> = hashMapOf(size to size)
+//                res.add(dict)
+//            }
+//            item.tags = res
+//        }
+//
+//        val weightItem = getFormItemFromKey(WEIGHT_KEY)
+//        if (weightItem != null) {
+//            val item = weightItem as TagFormItem
+//            val res: ArrayList<HashMap<String, String>> = arrayListOf()
+//            for (weight in superProduct!!.weights) {
+//                val dict: HashMap<String, String> = hashMapOf(weight to weight)
+//                res.add(dict)
+//            }
+//            item.tags = res
+//        }
+//
+//        if (superProduct!!.type == "mejump") {
+//            val typeItem = getFormItemFromKey("type")
+//            if (typeItem != null) {
+//                val item = typeItem as TagFormItem
+//                val res: ArrayList<HashMap<String, String>> = arrayListOf()
+//                for (value in superProduct!!.prices) {
+//                    val type: String = value.price_title
+//                    val typePrice: String = value.price_member.toString()
+//                    val str: String = type + " " + typePrice
+//                    val dict: HashMap<String, String> = hashMapOf(value.id.toString() to str)
+//                    res.add(dict)
+//                }
+//                item.tags = res
+//            }
+//        }
+//
+//        val numberItem = getFormItemFromKey(NUMBER_KEY)
+//        if (numberItem != null) {
+//            val item = numberItem as NumberFormItem
+//            item.min = superProduct!!.order_min
+//            item.max = superProduct!!.order_max
+//        }
+//
+//        if (getFormItemFromKey(SUBTOTAL_KEY) != null) {
+//            selected_price = superProduct!!.prices[selected_idx].price_member
+//            updateSubTotal()
+//        }
+//
+//        if (getFormItemFromKey(SHIPPING_FEE_KEY) != null) {
+//            shippingFee = superProduct!!.prices[selected_idx].shipping_fee
+//            updateShippingFee()
+//        }
     }
 
     override fun generateItems(section: Int): ArrayList<Item> {
@@ -266,7 +356,7 @@ class OrderVC : MyTableVC(), ValueChangedDelegate {
     }
 
     fun updateShippingFee() {
-        shippingFee = superProduct!!.prices[selected_idx].shipping_fee
+        shippingFee = myTable!!.prices[selected_idx].shipping_fee
         val priceItem = getFormItemFromKey(SHIPPING_FEE_KEY)
         if (priceItem != null) {
             //shippingFee = price
@@ -293,7 +383,7 @@ class OrderVC : MyTableVC(), ValueChangedDelegate {
         if (name == "type") {
             val id: Int = key.toInt()
             var idx: Int = 0
-            for (price in superProduct!!.prices) {
+            for (price in myTable!!.prices) {
                 if (price.id == id) {
                     selected_price = price.price_member
                     this.selected_idx = idx
@@ -324,9 +414,9 @@ class OrderVC : MyTableVC(), ValueChangedDelegate {
         val params: HashMap<String, String> = hashMapOf()
 
         params["device"] = "app"
-        params["product_id"] = superProduct!!.id.toString()
-        params["type"] = superProduct!!.type
-        params["price_id"] = superProduct!!.prices[selected_idx].id.toString()
+        params["product_id"] = myTable!!.id.toString()
+        params["type"] = myTable!!.type
+        params["price_id"] = myTable!!.prices[selected_idx].id.toString()
 
         params["member_id"] = member.id.toString()
         params["order_name"] = member.name
@@ -334,11 +424,11 @@ class OrderVC : MyTableVC(), ValueChangedDelegate {
         params["order_email"] = member.email
         params["gateway"] = "credit_card"
 
-        val city_name = Global.zoneIDToName(member.city_id)
-        val area_name = Global.zoneIDToName(member.area_id)
+        val city_name = Global.zoneIDToName(member.city)
+        val area_name = Global.zoneIDToName(member.area)
         params["order_city"] = city_name
         params["order_area"] = area_name
-        params["order_road"] = member.road
+        params["order_road"] = member.address
 
         val numberFormItem = getFormItemFromKey(NUMBER_KEY)
         params["quantity"] = numberFormItem!!.value!!
