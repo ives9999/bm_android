@@ -1,16 +1,27 @@
 package com.sportpassword.bm.Adapters.Form
 
 import android.graphics.Color
-import android.view.View
-import com.sportpassword.bm.Form.BaseForm
-import com.sportpassword.bm.Form.FormItem.ColorFormItem
 import com.sportpassword.bm.Form.FormItem.FormItem
-import com.sportpassword.bm.Form.FormItemCellType
 import com.sportpassword.bm.R
-import com.sportpassword.bm.Utilities.IndexPath
 import com.xwray.groupie.kotlinandroidextensions.ViewHolder
 import kotlinx.android.synthetic.main.formitem_more.*
+import kotlinx.android.synthetic.main.formitem_plain.*
+import kotlinx.android.synthetic.main.formitem_plain.detail
+import kotlinx.android.synthetic.main.formitem_plain.title
 import org.jetbrains.anko.backgroundColor
+
+class PlainAdapter1(title: String, show: String): FormItemAdapter1("", "", title, "", show) {
+
+    override fun getLayout(): Int {
+        return R.layout.formitem_plain
+    }
+
+    override fun bind(viewHolder: ViewHolder, position: Int) {
+
+        super.bind(viewHolder, position)
+        viewHolder.detail.text = show
+    }
+}
 
 class PlainAdapter(formItem: FormItem): FormItemAdapter(formItem) {
 

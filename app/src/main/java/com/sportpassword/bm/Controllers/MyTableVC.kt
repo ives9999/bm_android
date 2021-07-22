@@ -39,7 +39,7 @@ abstract class MyTableVC : BaseActivity(), List1CellDelegate {
     var myRows: ArrayList<HashMap<String, Any>> = arrayListOf()
 
     var adapter: GroupAdapter<ViewHolder> = GroupAdapter<ViewHolder>()
-    protected val adapterSections: ArrayList<Section> = arrayListOf()
+    val adapterSections: ArrayList<Section> = arrayListOf()
     protected lateinit var recyclerView: RecyclerView
     protected lateinit var listAdapter: ListAdapter
 
@@ -356,6 +356,50 @@ abstract class MyTableVC : BaseActivity(), List1CellDelegate {
                 break
             }
         }
+    }
+
+    //    myRows = [
+    //        ["key":"data", "rows": fixedRows],
+    //        ["key":"order", "rows": orderRows],
+    //        ["key":"like", "rows": likeRows],
+    //        ["key":"manager", "rows": courseRows],
+    //    ]
+
+    fun getSectionRowFromMyRowsByKey(key: String): HashMap<String, Any> {
+
+        for (row in myRows) {
+            val key1: String? = row["key"] as? String
+            if (key1 != null) {
+                if (key == key1) {
+                    return row
+                }
+            }
+        }
+
+        return hashMapOf()
+    }
+
+    fun getSectionRowFromMyRowsByIdx(idx: Int): HashMap<String, Any> {
+
+        return myRows[idx]
+    }
+
+    //    let fixedRows: [[String: String]] = [
+    //        ["text": "帳戶資料", "icon": "account", "segue": TO_PROFILE],
+    //        ["text": "更改密碼", "icon": "password", "segue": TO_PASSWORD]
+    //    ]
+    fun getRowRowsFromMyRowsByKey(key: String): ArrayList<HashMap<String, String>> {
+
+        val sectionRow: HashMap<String, Any> = getSectionRowFromMyRowsByKey(key)
+        if (sectionRow.containsKey("rows")) {
+            @Suppress("UNCHECKED_CAST")
+            val tmp: ArrayList<HashMap<String, String>> = sectionRow["rows"] as ArrayList<HashMap<String, String>>
+            if (tmp != null) {
+            return tmp
+        }
+        }
+
+        return arrayListOf()
     }
 
     fun getRowRowsFromMyRowsByKey1(key: String): HashMap<String, String> {

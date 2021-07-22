@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.View
 import com.google.gson.JsonParseException
 import com.sportpassword.bm.Adapters.Form.*
+import com.sportpassword.bm.Adapters.GroupSection
 import com.sportpassword.bm.Form.FormItem.FormItem
 import com.sportpassword.bm.Form.FormItem.NumberFormItem
 import com.sportpassword.bm.Form.FormItem.TagFormItem
@@ -17,6 +18,8 @@ import com.sportpassword.bm.Services.OrderService
 import com.sportpassword.bm.Services.ProductService
 import com.sportpassword.bm.Utilities.*
 import com.sportpassword.bm.member
+import com.xwray.groupie.ExpandableGroup
+import com.xwray.groupie.Section
 import com.xwray.groupie.kotlinandroidextensions.Item
 import kotlinx.android.synthetic.main.activity_order_vc.*
 import kotlinx.android.synthetic.main.mask.*
@@ -46,31 +49,31 @@ class OrderVC : MyTableVC(), ValueChangedDelegate {
     val amountRows: ArrayList<HashMap<String, String>> =  arrayListOf(
         hashMapOf("title" to "數量","key" to QUANTITY_KEY,"value" to "","show" to "","cell" to "number"),
         hashMapOf("title" to "小計","key" to SUBTOTAL_KEY,"value" to "","show" to "","cell" to "text"),
-        hashMapOf("title" to "運費","key" to SHIPPING_FEE_KEY,"value" to "","show" to "","cell" to "text"),
+        //hashMapOf("title" to "運費","key" to SHIPPING_FEE_KEY,"value" to "","show" to "","cell" to "text"),
         hashMapOf("title" to "總計","key" to TOTAL_KEY,"value" to "","show" to "","cell" to "text")
     )
 
-    val contactRows: ArrayList<HashMap<String, String>> =  arrayListOf(
-        hashMapOf("title" to "姓名","key" to NAME_KEY,"value" to "","show" to "","cell" to "textField","keyboard" to KEYBOARD.default.toString()),
-        hashMapOf("title" to "行動電話","key" to MOBILE_KEY,"value" to "","show" to "","cell" to "textField","keyboard" to KEYBOARD.numberPad.toString()),
-        hashMapOf("title" to "EMail","key" to EMAIL_KEY,"value" to "","show" to "","cell" to "textField","keyboard" to KEYBOARD.emailAddress.toString()),
-        hashMapOf("title" to "住址","key" to ADDRESS_KEY,"value" to "","show" to "","cell" to "textField","keyboard" to KEYBOARD.default.toString())
-    )
+//    val contactRows: ArrayList<HashMap<String, String>> =  arrayListOf(
+//        hashMapOf("title" to "姓名","key" to NAME_KEY,"value" to "","show" to "","cell" to "textField","keyboard" to KEYBOARD.default.toString()),
+//        hashMapOf("title" to "行動電話","key" to MOBILE_KEY,"value" to "","show" to "","cell" to "textField","keyboard" to KEYBOARD.numberPad.toString()),
+//        hashMapOf("title" to "EMail","key" to EMAIL_KEY,"value" to "","show" to "","cell" to "textField","keyboard" to KEYBOARD.emailAddress.toString()),
+//        hashMapOf("title" to "住址","key" to ADDRESS_KEY,"value" to "","show" to "","cell" to "textField","keyboard" to KEYBOARD.default.toString())
+//    )
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
         mySections = arrayListOf(
             hashMapOf("name" to "商品名稱", "isExpanded" to true, "key" to PRODUCT_KEY),
             hashMapOf("name" to "商品選項", "isExpanded" to true, "key" to ATTRIBUTE_KEY),
-            hashMapOf("name" to "款項", "isExpanded" to true, "key" to AMOUNT_KEY),
-            hashMapOf("name" to "寄件資料", "isExpanded" to true, "key" to CONTACT_KEY)
+            hashMapOf("name" to "款項", "isExpanded" to true, "key" to AMOUNT_KEY)
+            //hashMapOf("name" to "寄件資料", "isExpanded" to true, "key" to CONTACT_KEY)
         )
 
         myRows = arrayListOf(
             hashMapOf("key" to PRODUCT_KEY, "rows" to productRows),
             hashMapOf("key" to ATTRIBUTE_KEY, "rows" to attributeRows),
-            hashMapOf("key" to AMOUNT_KEY, "rows" to amountRows),
-            hashMapOf("key" to CONTACT_KEY, "rows" to contactRows),
+            hashMapOf("key" to AMOUNT_KEY, "rows" to amountRows)
+            //hashMapOf("key" to CONTACT_KEY, "rows" to contactRows),
         )
 
         super.onCreate(savedInstanceState)
@@ -93,6 +96,37 @@ class OrderVC : MyTableVC(), ValueChangedDelegate {
         } else {
             warning("傳送商品資料錯誤，請洽管理員，或稍後再試")
         }
+    }
+
+    override fun initAdapter(include_section: Boolean) {
+//        adapter = GroupAdapter()
+        adapter.setOnItemClickListener { item, view ->
+            rowClick(item, view)
+        }
+
+        // for member register and member update personal data
+        if (include_section) {
+            for (section in mySections) {
+                adapterSections.add(Section())
+            }
+            for ((idx, mySection) in mySections.withIndex()) {
+                val title: String = mySection["name"] as String
+                val isExpanded: Boolean = mySection["isExpanded"] as Boolean
+                val expandableGroup = ExpandableGroup(GroupSection(title), isExpanded)
+                val items = generateItems(idx)
+                adapterSections[idx].addAll(items)
+                expandableGroup.add(adapterSections[idx])
+                adapter.add(expandableGroup)
+            }
+        }
+
+
+        recyclerView.adapter = adapter
+//        recyclerView.setHasFixedSize(true)
+        if (refreshLayout != null) {
+            setRefreshListener()
+        }
+        setRecyclerViewScrollListener()
     }
 
     override fun refresh() {
@@ -125,9 +159,9 @@ class OrderVC : MyTableVC(), ValueChangedDelegate {
 
     private fun initData() {
 
-        form = OrderForm(myTable!!.type, this)
-        sections = form.getSections()
-        section_keys = form.getSectionKeys()
+//        form = OrderForm(myTable!!.type, this)
+//        sections = form.getSections()
+//        section_keys = form.getSectionKeys()
         initAdapter(true)
 
         var row = getRowRowsFromMyRowsByKey1(PRODUCT_KEY)
@@ -135,25 +169,25 @@ class OrderVC : MyTableVC(), ValueChangedDelegate {
         row["show"] = myTable!!.name
         replaceRowByKey(PRODUCT_KEY, row)
 
-        row = getRowRowsFromMyRowsByKey1(NAME_KEY)
-        row["value"] = member.name
-        row["show"] = member.name
-        replaceRowByKey(NAME_KEY, row)
-
-        row = getRowRowsFromMyRowsByKey1(MOBILE_KEY)
-        row["value"] = member.mobile
-        row["show"] = member.mobile
-        replaceRowByKey(MOBILE_KEY, row)
-
-        row = getRowRowsFromMyRowsByKey1(EMAIL_KEY)
-        row["value"] = member.email
-        row["show"] = member.email
-        replaceRowByKey(EMAIL_KEY, row)
-
-        row = getRowRowsFromMyRowsByKey1(ADDRESS_KEY)
-        row["value"] = member.address
-        row["show"] = member.address
-        replaceRowByKey(ADDRESS_KEY, row)
+//        row = getRowRowsFromMyRowsByKey1(NAME_KEY)
+//        row["value"] = member.name
+//        row["show"] = member.name
+//        replaceRowByKey(NAME_KEY, row)
+//
+//        row = getRowRowsFromMyRowsByKey1(MOBILE_KEY)
+//        row["value"] = member.mobile
+//        row["show"] = member.mobile
+//        replaceRowByKey(MOBILE_KEY, row)
+//
+//        row = getRowRowsFromMyRowsByKey1(EMAIL_KEY)
+//        row["value"] = member.email
+//        row["show"] = member.email
+//        replaceRowByKey(EMAIL_KEY, row)
+//
+//        row = getRowRowsFromMyRowsByKey1(ADDRESS_KEY)
+//        row["value"] = member.address
+//        row["show"] = member.address
+//        replaceRowByKey(ADDRESS_KEY, row)
 
         for (attribute in myTable!!.attributes) {
             var tmp: String = attribute.attribute
@@ -175,10 +209,10 @@ class OrderVC : MyTableVC(), ValueChangedDelegate {
         row["value"] = "1"
         replaceRowByKey(QUANTITY_KEY, row)
 
-        row = getRowRowsFromMyRowsByKey1(SHIPPING_FEE_KEY)
-        row["value"] = myTable!!.prices[selected_idx].shipping_fee.toString()
-        row["show"] = "NT$ " + myTable!!.prices[selected_idx].shipping_fee.toString() + "元"
-        replaceRowByKey(SHIPPING_FEE_KEY, row)
+//        row = getRowRowsFromMyRowsByKey1(SHIPPING_FEE_KEY)
+//        row["value"] = myTable!!.prices[selected_idx].shipping_fee.toString()
+//        row["show"] = "NT$ " + myTable!!.prices[selected_idx].shipping_fee.toString() + "元"
+//        replaceRowByKey(SHIPPING_FEE_KEY, row)
 
         selected_price = myTable!!.prices[selected_idx].price_member
         updateSubTotal()
@@ -282,7 +316,12 @@ class OrderVC : MyTableVC(), ValueChangedDelegate {
 
     override fun generateItems(section: Int): ArrayList<Item> {
 
-        val rows: ArrayList<Item> = arrayListOf()
+        var sectionKey: String = ""
+        val section: HashMap<String, Any> = myRows[section]
+        val tmp: String? = section["key"] as? String
+        if (tmp != null) {
+            sectionKey = tmp
+        }
 
         val clearClick = { formItem: FormItem ->
         }
@@ -290,15 +329,44 @@ class OrderVC : MyTableVC(), ValueChangedDelegate {
         val promptClick = { formItem: FormItem ->
         }
 
-        val arr: ArrayList<FormItem> = arrayListOf()
-        for (key in section_keys[section]) {
-            for (formItem in form.formItems) {
-                if (key == formItem.name) {
-                    arr.add(formItem)
-                    break
-                }
+        if (!section.containsKey("rows")) {
+            return arrayListOf()
+        }
+
+        @Suppress("UNCHECKED_CAST")
+        val rows: ArrayList<HashMap<String, String>> = section["rows"] as ArrayList<HashMap<String, String>>
+
+        val adapterRows: ArrayList<Item> = arrayListOf()
+        for (row in rows) {
+
+            val rowKey: String? = row["key"]
+            val title: String? = row["title"]
+            val value: String? = row["value"]
+            val show: String? = row["show"]
+            val cell_type: String? = row["cell"]
+
+            var formItemAdapter: FormItemAdapter1? = null
+            if (cell_type == "text") {
+                formItemAdapter = PlainAdapter1(title!!, show!!)
+            } else if (cell_type == "tag") {
+                formItemAdapter = TagAdapter1(sectionKey, rowKey!!, title!!, value!!, show!!, this)
+            } else if (cell_type == "number") {
+
+            }
+            if (formItemAdapter != null) {
+                adapterRows.add(formItemAdapter)
             }
         }
+
+//        val arr: ArrayList<FormItem> = arrayListOf()
+//        for (key in section_keys[section]) {
+//            for (formItem in form.formItems) {
+//                if (key == formItem.name) {
+//                    arr.add(formItem)
+//                    break
+//                }
+//            }
+//        }
 
 //        println(arr)
 
@@ -307,76 +375,125 @@ class OrderVC : MyTableVC(), ValueChangedDelegate {
 //            idx += section_keys[i].size
 //        }
 
-        for ((i,formItem) in arr.withIndex()) {
+//        for ((i,formItem) in arr.withIndex()) {
+//
+//            val indexPath: IndexPath = IndexPath(section, i)
+//            var idx: Int = 0
+//            for ((j, _forItem) in form.formItems.withIndex()) {
+//                if (formItem.name == _forItem.name) {
+//                    idx = j
+//                    break
+//                }
+//            }
+//
+//            var formItemAdapter: FormItemAdapter? = null
+//            if (formItem.uiProperties.cellType == FormItemCellType.textField) {
+//                formItemAdapter = TextFieldAdapter(formItem, clearClick, promptClick)
+//            } else if (formItem.uiProperties.cellType == FormItemCellType.plain) {
+//                formItemAdapter = PlainAdapter(formItem)
+//            } else if (formItem.uiProperties.cellType == FormItemCellType.tag) {
+//                formItemAdapter = TagAdapter(formItem)
+//            } else if (formItem.uiProperties.cellType == FormItemCellType.number) {
+//                val _formItem = formItem as NumberFormItem
+//                var number: Int = 1
+//                if (_formItem.value != null) {
+//                    number = _formItem.value!!.toInt()
+//                }
+//                formItemAdapter = NumberAdapter(formItem, number, _formItem.min, _formItem.max)
+//            }
+//
+//            if (formItemAdapter != null) {
+//                formItemAdapter!!.valueChangedDelegate = this
+//                rows.add(formItemAdapter!!)
+//            }
+////            idx++
+//        }
 
-            val indexPath: IndexPath = IndexPath(section, i)
-            var idx: Int = 0
-            for ((j, _forItem) in form.formItems.withIndex()) {
-                if (formItem.name == _forItem.name) {
-                    idx = j
-                    break
-                }
-            }
-
-            var formItemAdapter: FormItemAdapter? = null
-            if (formItem.uiProperties.cellType == FormItemCellType.textField) {
-                formItemAdapter = TextFieldAdapter(formItem, clearClick, promptClick)
-            } else if (formItem.uiProperties.cellType == FormItemCellType.plain) {
-                formItemAdapter = PlainAdapter(formItem)
-            } else if (formItem.uiProperties.cellType == FormItemCellType.tag) {
-                formItemAdapter = TagAdapter(formItem)
-            } else if (formItem.uiProperties.cellType == FormItemCellType.number) {
-                val _formItem = formItem as NumberFormItem
-                var number: Int = 1
-                if (_formItem.value != null) {
-                    number = _formItem.value!!.toInt()
-                }
-                formItemAdapter = NumberAdapter(formItem, number, _formItem.min, _formItem.max)
-            }
-
-            if (formItemAdapter != null) {
-                formItemAdapter!!.valueChangedDelegate = this
-                rows.add(formItemAdapter!!)
-            }
-//            idx++
-        }
-
-        return rows
+        return adapterRows
     }
 
     fun updateSubTotal() {
-        val priceItem = getFormItemFromKey(SUBTOTAL_KEY)
-        if (priceItem != null) {
-            sub_total = selected_price * selected_number
-            priceItem.value = sub_total.toString()
-            priceItem.make()
-            updateShippingFee()
-            //updateTotal()
-        }
+
+        sub_total = selected_price * selected_number
+        var row = getRowRowsFromMyRowsByKey1(SUBTOTAL_KEY)
+        row["value"] = sub_total.toString()
+        row["show"] = "NT$ " + sub_total.toString() + "元"
+        replaceRowByKey(SUBTOTAL_KEY, row)
+        updateTotal()
+
+//        val priceItem = getFormItemFromKey(SUBTOTAL_KEY)
+//        if (priceItem != null) {
+//            sub_total = selected_price * selected_number
+//            priceItem.value = sub_total.toString()
+//            priceItem.make()
+//            //updateShippingFee()
+//            updateTotal()
+//        }
     }
 
-    fun updateShippingFee() {
-        shippingFee = myTable!!.prices[selected_idx].shipping_fee
-        val priceItem = getFormItemFromKey(SHIPPING_FEE_KEY)
-        if (priceItem != null) {
-            //shippingFee = price
-            priceItem.value = shippingFee.toString()
-            priceItem.make()
-            updateTotal()
-        }
-    }
+//    fun updateShippingFee() {
+//        shippingFee = myTable!!.prices[selected_idx].shipping_fee
+//        val priceItem = getFormItemFromKey(SHIPPING_FEE_KEY)
+//        if (priceItem != null) {
+//            //shippingFee = price
+//            priceItem.value = shippingFee.toString()
+//            priceItem.make()
+//            updateTotal()
+//        }
+//    }
 
     fun updateTotal() {
-        val priceItem = getFormItemFromKey(TOTAL_KEY)
-        if (priceItem != null) {
-            total = sub_total + shippingFee
-            priceItem.value = total.toString()
-            priceItem.make()
-            //adapter.notifyDataSetChanged()
-            notifyChanged(true)
-        }
+
+        total = sub_total + shippingFee
+
+        val row = getRowRowsFromMyRowsByKey1(TOTAL_KEY)
+        row["value"] = total.toString()
+        row["show"] = "NT$ " + total.toString() + "元"
+        replaceRowByKey(TOTAL_KEY, row)
+        notifyChanged(true)
+
+//        val priceItem = getFormItemFromKey(TOTAL_KEY)
+//        if (priceItem != null) {
+//            total = sub_total + shippingFee
+//            priceItem.value = total.toString()
+//            priceItem.make()
+//            //adapter.notifyDataSetChanged()
+//            notifyChanged(true)
+//        }
     }
 
+    override fun notifyChanged(include_section: Boolean) {
+        if (include_section) {
+            for ((idx, _) in mySections.withIndex()) {
+                val items = generateItems(idx)
+                adapterSections[idx].update(items)
+            }
+        } else {
+            val items = generateItems()
+            adapter.update(items)
+        }
+        adapter.notifyDataSetChanged()
+    }
+
+    override fun setTag(sectionKey: String, rowKey: String, attribute: String, selected: Boolean) {
+
+//        println(sectionKey)
+//        println(rowKey)
+//        println(attribute)
+//        println(selected)
+
+        val rows = getRowRowsFromMyRowsByKey(sectionKey)
+        for (row in rows) {
+            if (row.containsKey("key")) {
+                val key: String = row["key"]!!
+                if (key == rowKey) {
+                    val _row = row
+                    _row["value"] = attribute
+                    replaceRowByKey(sectionKey, rowKey, _row)
+                }
+            }
+        }
+    }
 
     override fun tagChecked(checked: Boolean, name: String, key: String, value: String) {
         //println(value)

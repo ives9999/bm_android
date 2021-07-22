@@ -5,15 +5,18 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
 import androidx.constraintlayout.widget.ConstraintSet
+import com.sportpassword.bm.Controllers.BaseActivity
 import com.sportpassword.bm.Form.BaseForm
 import com.sportpassword.bm.Form.FormItem.ColorFormItem
 import com.sportpassword.bm.Form.FormItem.FormItem
 import com.sportpassword.bm.Form.FormItemCellType
 import com.sportpassword.bm.Form.ValueChangedDelegate
+import com.sportpassword.bm.R
 import com.sportpassword.bm.Utilities.IndexPath
 import com.xwray.groupie.kotlinandroidextensions.Item
 import com.xwray.groupie.kotlinandroidextensions.ViewHolder
 import kotlinx.android.synthetic.main.formitem_more.*
+import kotlinx.android.synthetic.main.formitem_plain.*
 import kotlinx.android.synthetic.main.formitem_textfield.*
 import org.jetbrains.anko.backgroundColor
 import kotlinx.android.synthetic.main.formitem_more.title as title
@@ -35,6 +38,34 @@ import kotlinx.android.synthetic.main.formitem_more.container as container
 //interface PrivacyChangeDelegate {
 //    fun privateChanged(checked: Boolean) {}
 //}
+
+open class FormItemAdapter1(sectionKey: String, rowKey: String, title: String, value: String, show: String, delegate: BaseActivity?=null): Item() {
+
+    var sectionKey: String = ""
+    var rowKey: String = ""
+    var title: String = ""
+    var value: String = ""
+    var show: String = ""
+    var baseActivityDelegate: BaseActivity? = null
+
+    init {
+        this.sectionKey = sectionKey
+        this.rowKey = rowKey
+        this.title = title
+        this.value = value
+        this.show = show
+        this.baseActivityDelegate = delegate
+    }
+
+    override fun getLayout(): Int {
+        return R.layout.formitem_plain
+    }
+
+    override fun bind(viewHolder: ViewHolder, position: Int) {
+
+        viewHolder.title.text = title
+    }
+}
 
 open class FormItemAdapter(formItem: FormItem, val clearClick:(formItem: FormItem)->Unit = {}, val promptClick:(formItem: FormItem)->Unit = {}): Item() {
 

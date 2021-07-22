@@ -163,6 +163,9 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
     open fun degreeSelected(selected: String, show: String) {}
     open fun contentEdit(key: String, content: String) {}
 
+    //for tag delegate
+    open fun setTag(sectionKey: String, rowKey: String, attribute: String, selected: Boolean){}
+
     open var editCourseResult: ActivityResultLauncher<Intent>? = null
 
     val editContentVC = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { res ->
