@@ -106,7 +106,6 @@ abstract class MyTableVC : BaseActivity(), List1CellDelegate {
             }
         }
 
-
         recyclerView.adapter = adapter
 //        recyclerView.setHasFixedSize(true)
         if (refreshLayout != null) {

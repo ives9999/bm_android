@@ -19,6 +19,7 @@ import com.sportpassword.bm.Services.ProductService
 import com.sportpassword.bm.Utilities.*
 import com.sportpassword.bm.member
 import com.xwray.groupie.ExpandableGroup
+import com.xwray.groupie.ExpandableItem
 import com.xwray.groupie.Section
 import com.xwray.groupie.kotlinandroidextensions.Item
 import kotlinx.android.synthetic.main.activity_order_vc.*
@@ -100,24 +101,36 @@ class OrderVC : MyTableVC(), ValueChangedDelegate {
 
     override fun initAdapter(include_section: Boolean) {
 //        adapter = GroupAdapter()
+
         adapter.setOnItemClickListener { item, view ->
             rowClick(item, view)
         }
 
         // for member register and member update personal data
         if (include_section) {
-            for (section in mySections) {
-                adapterSections.add(Section())
-            }
             for ((idx, mySection) in mySections.withIndex()) {
+                val section = Section()
+                adapterSections.add(section)
                 val title: String = mySection["name"] as String
                 val isExpanded: Boolean = mySection["isExpanded"] as Boolean
                 val expandableGroup = ExpandableGroup(GroupSection(title), isExpanded)
                 val items = generateItems(idx)
-                adapterSections[idx].addAll(items)
-                expandableGroup.add(adapterSections[idx])
+                section.addAll(items)
+                expandableGroup.add(section)
+
                 adapter.add(expandableGroup)
             }
+//            for ((idx, mySection) in mySections.withIndex()) {
+//                val title: String = mySection["name"] as String
+//                val isExpanded: Boolean = mySection["isExpanded"] as Boolean
+//
+//                val expandableGroup = ExpandableGroup(GroupSection(title), isExpanded)
+//                val items = generateItems(idx)
+//                adapterSections[idx].addAll(items)
+//                expandableGroup.add(adapterSections[idx])
+//
+//                adapter.add(expandableGroup)
+//            }
         }
 
 
@@ -131,6 +144,10 @@ class OrderVC : MyTableVC(), ValueChangedDelegate {
 
     override fun refresh() {
         if (product_token != null) {
+            adapter.clear()
+            adapterSections.clear()
+            attributeRows.clear()
+
             Loading.show(mask)
             val params: HashMap<String, String> = hashMapOf("token" to product_token!!, "member_token" to member.token!!)
             dataService.getOne1(this, params) { success ->
@@ -163,6 +180,7 @@ class OrderVC : MyTableVC(), ValueChangedDelegate {
 //        sections = form.getSections()
 //        section_keys = form.getSectionKeys()
         initAdapter(true)
+        setMyTitle(myTable!!.name)
 
         var row = getRowRowsFromMyRowsByKey1(PRODUCT_KEY)
         row["value"] = myTable!!.name
@@ -351,7 +369,15 @@ class OrderVC : MyTableVC(), ValueChangedDelegate {
             } else if (cell_type == "tag") {
                 formItemAdapter = TagAdapter1(sectionKey, rowKey!!, title!!, value!!, show!!, this)
             } else if (cell_type == "number") {
+                val tmp1: Array<String> = show!!.split(",").toTypedArray()
+                var min: Int = 1
+                var max: Int = 1
+                if (tmp1.size == 2) {
+                    min = tmp1[0].toInt()
+                    max = tmp1[1].toInt()
+                }
 
+                formItemAdapter = NumberAdapter1(sectionKey, rowKey!!, title!!, value!!, min, max, this)
             }
             if (formItemAdapter != null) {
                 adapterRows.add(formItemAdapter)
@@ -490,6 +516,26 @@ class OrderVC : MyTableVC(), ValueChangedDelegate {
                     val _row = row
                     _row["value"] = attribute
                     replaceRowByKey(sectionKey, rowKey, _row)
+                    notifyChanged(true)
+                }
+            }
+        }
+    }
+
+    override fun stepperValueChanged(sectionKey: String, rowKey: String, number: Int) {
+
+        val rows = getRowRowsFromMyRowsByKey(sectionKey)
+        for (row in rows) {
+            if (row.containsKey("key")) {
+                val key: String = row["key"]!!
+                if (key == rowKey) {
+                    val _row = row
+                    _row["value"] = number.toString()
+                    replaceRowByKey(sectionKey, rowKey, _row)
+                    selected_number = number
+                    updateSubTotal()
+                    
+                    notifyChanged(true)
                 }
             }
         }
@@ -596,5 +642,14 @@ class OrderVC : MyTableVC(), ValueChangedDelegate {
 
     fun cancelBtnPressed(view: View) {
         prev()
+    }
+}
+
+class ExpandableHeaderItem: ExpandableItem {
+
+
+
+    override fun setExpandableGroup(onToggleListener: ExpandableGroup) {
+
     }
 }

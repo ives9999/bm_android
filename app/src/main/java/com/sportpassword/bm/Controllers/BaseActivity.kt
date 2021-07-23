@@ -165,6 +165,7 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
 
     //for tag delegate
     open fun setTag(sectionKey: String, rowKey: String, attribute: String, selected: Boolean){}
+    open fun stepperValueChanged(sectionKey: String, rowKey: String, number: Int){}
 
     open var editCourseResult: ActivityResultLauncher<Intent>? = null
 
