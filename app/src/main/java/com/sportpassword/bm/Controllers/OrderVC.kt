@@ -534,7 +534,7 @@ class OrderVC : MyTableVC(), ValueChangedDelegate {
                     replaceRowByKey(sectionKey, rowKey, _row)
                     selected_number = number
                     updateSubTotal()
-                    
+
                     notifyChanged(true)
                 }
             }
