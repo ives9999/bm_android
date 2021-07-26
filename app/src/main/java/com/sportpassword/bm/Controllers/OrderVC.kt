@@ -7,14 +7,11 @@ import com.sportpassword.bm.Adapters.Form.*
 import com.sportpassword.bm.Adapters.GroupSection
 import com.sportpassword.bm.Form.FormItem.FormItem
 import com.sportpassword.bm.Form.FormItem.NumberFormItem
-import com.sportpassword.bm.Form.FormItem.TagFormItem
-import com.sportpassword.bm.Form.FormItemCellType
-import com.sportpassword.bm.Form.OrderForm
 import com.sportpassword.bm.Form.ValueChangedDelegate
 import com.sportpassword.bm.Models.ProductTable
 import com.sportpassword.bm.Models.Table
 import com.sportpassword.bm.R
-import com.sportpassword.bm.Services.OrderService
+import com.sportpassword.bm.Services.CartService
 import com.sportpassword.bm.Services.ProductService
 import com.sportpassword.bm.Utilities.*
 import com.sportpassword.bm.member
@@ -441,7 +438,7 @@ class OrderVC : MyTableVC(), ValueChangedDelegate {
     fun updateSubTotal() {
 
         sub_total = selected_price * selected_number
-        var row = getRowRowsFromMyRowsByKey1(SUBTOTAL_KEY)
+        val row = getRowRowsFromMyRowsByKey1(SUBTOTAL_KEY)
         row["value"] = sub_total.toString()
         row["show"] = "NT$ " + sub_total.toString() + "元"
         replaceRowByKey(SUBTOTAL_KEY, row)
@@ -573,69 +570,111 @@ class OrderVC : MyTableVC(), ValueChangedDelegate {
 
     fun submitBtnPressed(view: View) {
 
-        Loading.show(mask)
         val params: HashMap<String, String> = hashMapOf()
 
         params["device"] = "app"
+        params["do"] = "update"
+        params["member_token"] = member.token
         params["product_id"] = myTable!!.id.toString()
-        params["type"] = myTable!!.type
         params["price_id"] = myTable!!.prices[selected_idx].id.toString()
 
         params["member_id"] = member.id.toString()
-        params["order_name"] = member.name
-        params["order_tel"] = member.mobile
-        params["order_email"] = member.email
-        params["gateway"] = "credit_card"
+//        params["order_name"] = member.name
+//        params["order_tel"] = member.mobile
+//        params["order_email"] = member.email
+//        params["gateway"] = "credit_card"
 
-        val city_name = Global.zoneIDToName(member.city)
-        val area_name = Global.zoneIDToName(member.area)
-        params["order_city"] = city_name
-        params["order_area"] = area_name
-        params["order_road"] = member.address
+//        val city_name = Global.zoneIDToName(member.city)
+//        val area_name = Global.zoneIDToName(member.area)
+//        params["order_city"] = city_name
+//        params["order_area"] = area_name
+//        params["order_road"] = member.address
 
-        val numberFormItem = getFormItemFromKey(NUMBER_KEY)
-        params["quantity"] = numberFormItem!!.value!!
+//        val numberFormItem = getFormItemFromKey(NUMBER_KEY)
+//        params[QUANTITY_KEY] = numberFormItem!!.value!!
+        params[QUANTITY_KEY] = getRowValue(QUANTITY_KEY)
 
-        val totalFormItem = getFormItemFromKey(TOTAL_KEY)
-        params["amount"] = totalFormItem!!.value!!
+//        val totalFormItem = getFormItemFromKey(TOTAL_KEY)
+//        params[AMOUNT_KEY] = totalFormItem!!.value!!
+        params[AMOUNT_KEY] = getRowValue(TOTAL_KEY)
 
-        val shippingFeeFormItem = getFormItemFromKey(SHIPPING_FEE_KEY)
-        params["shipping_fee"] = shippingFeeFormItem!!.value!!
+        //是否有選擇商品屬性
+        var isAttribute: Boolean = true
 
-        var item = getFormItemFromKey(COLOR_KEY)
-        if (item != null) {
-            params["color"] = item.value!!
+        var selected_attributes: ArrayList<String> = arrayListOf()
+        @Suppress("UNCHECKED_CAST")
+        val attributes: ArrayList<HashMap<String, String>> = myRows[1]["rows"] as ArrayList<HashMap<String, String>>
+        for (attribute in attributes) {
+
+            var value: String = ""
+            var alias: String = ""
+            var name: String = ""
+            var tmp: String? = attribute["value"]
+            if (tmp != null) {
+                value = tmp
+            }
+            tmp = attribute["key"]
+            if (tmp != null) {
+                alias = tmp
+            }
+            tmp = attribute["title"]
+            if (tmp != null) {
+                name = tmp
+            }
+
+            if (value.length == 0) {
+                isAttribute = false
+                warning("請先選擇${name}")
+            } else {
+                value = "{name:${name},alias:${alias},value:${value}}"
+                selected_attributes.add(value)
+            }
         }
 
-        item = getFormItemFromKey(CLOTHES_SIZE_KEY)
-        if (item != null) {
-            params["size"] = item.value!!
-        }
+//        val shippingFeeFormItem = getFormItemFromKey(SHIPPING_FEE_KEY)
+//        params["shipping_fee"] = shippingFeeFormItem!!.value!!
 
-        item = getFormItemFromKey(WEIGHT_KEY)
-        if (item != null) {
-            params["weight"] = item.value!!
-        }
+//        var item = getFormItemFromKey(COLOR_KEY)
+//        if (item != null) {
+//            params["color"] = item.value!!
+//        }
+//
+//        item = getFormItemFromKey(CLOTHES_SIZE_KEY)
+//        if (item != null) {
+//            params["size"] = item.value!!
+//        }
+//
+//        item = getFormItemFromKey(WEIGHT_KEY)
+//        if (item != null) {
+//            params["weight"] = item.value!!
+//        }
         //println(params)
 
-        OrderService.update(this, "", params) { success ->
-            Loading.hide(mask)
-            if (success) {
-                val order_token: String = OrderService.order_token
-                if (total > 0) {
-                    val ecpay_token: String = OrderService.token
-                    val tokenExpireDate: String = OrderService.tokenExpireDate
-                    info("訂單已經成立，是否前往結帳？", "取消", "結帳") {
-                        //println("aaa");
-                        toPayment(order_token, ecpay_token, tokenExpireDate)
-                    }
+        if (isAttribute) {
+            Loading.show(mask)
+
+            params["attribute"] = selected_attributes.joinToString(",")
+
+            CartService.update(this, "", params) { success ->
+                Loading.hide(mask)
+                if (success) {
+                    info("成功加入購物車了")
+//                    val order_token: String = CartService.order_token
+//                    if (total > 0) {
+//                        val ecpay_token: String = OrderService.token
+//                        val tokenExpireDate: String = OrderService.tokenExpireDate
+//                        info("訂單已經成立，是否前往結帳？", "取消", "結帳") {
+//                            //println("aaa");
+//                            toPayment(order_token, ecpay_token, tokenExpireDate)
+//                        }
+//                    } else {
+//                        info("訂單已經成立，結帳金額為零，我們會儘速處理您的訂單", "", "關閉") {
+//                            toPayment(order_token)
+//                        }
+//                    }
                 } else {
-                    info("訂單已經成立，結帳金額為零，我們會儘速處理您的訂單", "", "關閉") {
-                        toPayment(order_token)
-                    }
+                    warning("訂單失敗，或接收失敗，請洽管理員")
                 }
-            } else {
-                info("訂單失敗，或接收失敗，請洽管理員")
             }
         }
     }

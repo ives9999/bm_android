@@ -532,6 +532,66 @@ open class DataService: BaseService() {
         }
     }
 
+    fun update(context: Context, token: String = "", params: HashMap<String, String>, complete: CompletionHandler) {
+
+        val url: String = getUpdateURL()
+
+        println(url)
+
+        val header: MutableList<Pair<String, String>> = mutableListOf()
+        header.add(Pair("Accept","application/json"))
+        header.add(Pair("Content-Type","application/json; charset=utf-8"))
+
+        val body = JSONObject()
+        for ((key, value) in params) {
+            body.put(key, value)
+        }
+        println(body)
+
+        MyHttpClient.instance.post(context, url, body.toString()) { success ->
+
+            if (success) {
+                val response = MyHttpClient.instance.response
+                if (response != null) {
+                    try {
+                        jsonString = response.toString()
+                        this.success = true
+                        //println(response.toString())
+//                        val json = JSONObject(response.toString())
+////                        //println(json)
+//                        //val obj = json.getJSONObject("order")
+//                        this.success = json.getBoolean("success")
+//                        if (this.success) {
+//                            if (json.has("token")) {
+//                                this.token = json.getString("token")
+//                            }
+//                            if (json.has("order_token")) {
+//                                this.order_token = json.getString("order_token")
+//                            }
+//                            if (json.has("tokenExpireDate")) {
+//                                this.tokenExpireDate = json.getString("tokenExpireDate")
+//                            }
+//                        } else {
+//                            this.msg = json.getString("msg")
+//                            complete(false)
+//                        }
+                    } catch (e: Exception) {
+                        this.success = false
+                        msg = "parse json failed，請洽管理員"
+                        println(e.localizedMessage)
+                    }
+                    complete(this.success)
+                } else {
+                    println("response is null")
+                }
+            } else {
+                msg = "網路錯誤，無法跟伺服器更新資料"
+                complete(success)
+            }
+        }
+    }
+
+    //漸漸不要使用了
     open fun update(context: Context, type: String, _params: MutableMap<String, Any>, filePath: String, complete: CompletionHandler) {
 
 //        println(_params)

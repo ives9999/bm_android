@@ -476,6 +476,30 @@ abstract class MyTableVC : BaseActivity(), List1CellDelegate {
         }
     }
 
+    fun getRowValue(rowKey: String): String {
+
+        val row = getRowRowsFromMyRowsByKey1(rowKey)
+        var value: String = ""
+        val tmp: String? = row["value"]
+        if (tmp != null)  {
+            value = tmp
+        }
+
+        return value
+    }
+
+    fun getRowShow(rowKey: String): String {
+
+        val row = getRowRowsFromMyRowsByKey1(rowKey)
+        var show: String = ""
+        val tmp: String? = row["show"]
+        if (tmp != null)  {
+            show = tmp
+        }
+
+        return show
+    }
+
     private fun updateAdapter() {
         val rows = generateSearchItems(able_type)
         searchPanel.searchAdapter.update(rows)
