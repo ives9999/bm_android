@@ -1016,26 +1016,22 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
             able_type = view.tag as String
         }
         when (able_type) {
-            "coach" -> {
-                containerID = "constraintLayout"
-            }
             "team" -> {
                 containerID = "course_container"
                 val frag = getFragment() as TeamFragment
                 searchRows = frag.searchRows
-            }
-            "arena" -> {
-                containerID = "constraintLayout"
-            }
-            "teach" -> {
-                containerID = "constraintLayout"
             }
             "course" -> {
                 containerID = "course_container"
                 val frag = getFragment() as CourseFragment
                 searchRows = frag.searchRows
             }
-            "store" -> {
+            "arena" -> {
+                containerID = "course_container"
+                val frag = getFragment() as ArenaFragment
+                searchRows = frag.searchRows
+            }
+            "coach", "teach", "store" -> {
                 containerID = "constraintLayout"
             }
         }
@@ -1697,10 +1693,6 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
         val frags = supportFragmentManager.fragments
         var _frag: TabFragment? = null
         for (frag in frags) {
-            if (able_type == "coach" && frag::class == CoachFragment::class) {
-                _frag = frag as CoachFragment
-                break
-            }
             if (able_type == "team" && frag::class == TeamFragment::class) {
                 _frag = frag as TeamFragment
                 break
@@ -1711,6 +1703,10 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
             }
             if (able_type == "team" && frag::class == TempPlayFragment::class) {
                 _frag = frag as TempPlayFragment
+                break
+            }
+            if (able_type == "arena" && frag::class == ArenaFragment::class) {
+                _frag = frag as ArenaFragment
                 break
             }
         }
