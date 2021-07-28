@@ -19,10 +19,10 @@ import com.xwray.groupie.ExpandableGroup
 import com.xwray.groupie.ExpandableItem
 import com.xwray.groupie.Section
 import com.xwray.groupie.kotlinandroidextensions.Item
-import kotlinx.android.synthetic.main.activity_order_vc.*
+import kotlinx.android.synthetic.main.activity_addcart_vc.*
 import kotlinx.android.synthetic.main.mask.*
 
-class OrderVC : MyTableVC(), ValueChangedDelegate {
+class AddCartVC : MyTableVC(), ValueChangedDelegate {
 
     var product_token: String? = null
     var table: Table? = null
@@ -75,7 +75,7 @@ class OrderVC : MyTableVC(), ValueChangedDelegate {
         )
 
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_order_vc)
+        setContentView(R.layout.activity_addcart_vc)
 
         if (intent.hasExtra("product_token")) {
             product_token = intent.getStringExtra("product_token")
@@ -681,14 +681,5 @@ class OrderVC : MyTableVC(), ValueChangedDelegate {
 
     fun cancelBtnPressed(view: View) {
         prev()
-    }
-}
-
-class ExpandableHeaderItem: ExpandableItem {
-
-
-
-    override fun setExpandableGroup(onToggleListener: ExpandableGroup) {
-
     }
 }

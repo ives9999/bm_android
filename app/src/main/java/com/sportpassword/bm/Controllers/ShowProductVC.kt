@@ -105,7 +105,7 @@ class ShowProductVC: ShowVC() {
 
     fun submitBtnPressed(view: View) {
         //print("purchase")
-        toOrder(myTable!!.token)
+        toAddCart(myTable!!.token)
     }
 
     fun cancelBtnPressed(view: View) {

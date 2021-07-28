@@ -86,7 +86,7 @@ class ProductItem(override var context: Context, var _row: ProductTable): ListIt
         val row: ProductTable = _row
         viewHolder.buyBtn.setOnClickListener {
             val a: ProductVC = context as ProductVC
-            a.toOrder(row.token)
+            a.toAddCart(row.token)
         }
 
         if (row.prices.size > 0) {

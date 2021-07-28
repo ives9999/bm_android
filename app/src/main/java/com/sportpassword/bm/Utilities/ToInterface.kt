@@ -112,6 +112,11 @@ interface ToInterface {
         mainDelegate.startActivity(intent)
     }
 
+    fun toMemberCartList() {
+        val i = Intent(mainDelegate, MemberCartListVC::class.java)
+        mainDelegate.startActivity(i)
+    }
+
     fun toMemberOrderList() {
         val i = Intent(mainDelegate, MemberOrderListVC::class.java)
         mainDelegate.startActivity(i)
@@ -122,7 +127,7 @@ interface ToInterface {
         mainDelegate.startActivity(loginIntent)
     }
 
-    fun toOrder(product_token: String) {
+    fun toAddCart(product_token: String) {
         var msg: String = ""
         if (!member.isLoggedIn) {
             mainDelegate.warning("必須先登入會員，才能進行購買", true, "登入") {
@@ -144,7 +149,7 @@ interface ToInterface {
                 }
             } else {
 
-                val i = Intent(mainDelegate, OrderVC::class.java)
+                val i = Intent(mainDelegate, AddCartVC::class.java)
                 i.putExtra("product_token", product_token)
                 //i.putExtra("title", title)
                 mainDelegate.startActivity(i)

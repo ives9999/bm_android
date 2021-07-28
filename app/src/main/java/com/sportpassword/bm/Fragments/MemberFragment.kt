@@ -26,14 +26,15 @@ import kotlinx.android.synthetic.main.tab_member.*
 class MemberFragment: TabFragment() {
 
     val fixedRows: ArrayList<Map<String, String>> = arrayListOf(
-            mapOf("text" to "帳戶資料", "icon" to "account", "segue" to "account"),
-            mapOf("text" to "更改密碼", "icon" to "password", "segue" to "password")
+            mapOf("text" to "帳戶資料", "icon" to "account", "segue" to TO_PROFILE),
+            mapOf("text" to "更改密碼", "icon" to "password", "segue" to TO_PASSWORD)
     )
 
     var memberRows: ArrayList<Map<String, String>> = arrayListOf()
 
     var orderRows: ArrayList<Map<String, String>> = arrayListOf(
-            mapOf("text" to "訂單查詢", "icon" to "order", "segue" to "member_order_list")
+        mapOf("text" to "購物車", "icon" to "cart", "segue" to TO_MEMBER_CART_LIST),
+        mapOf("text" to "訂單查詢", "icon" to "order", "segue" to TO_MEMBER_ORDER_LIST)
     )
     var likeRows: ArrayList<Map<String, String>> = arrayListOf(
         mapOf("text" to "球隊", "icon" to "team", "segue" to "toLike", "able_type" to "team"),
@@ -235,16 +236,17 @@ class MemberFragment: TabFragment() {
         }
 
         when(segue) {
-            "account" -> mainActivity!!.toRegister()
-            "password" -> toUpdatePassword()
+            TO_PROFILE -> mainActivity!!.toRegister()
+            TO_PASSWORD -> toUpdatePassword()
             "email" -> mainActivity!!.toValidate("email")
             "mobile" -> mainActivity!!.toValidate("mobile")
 //            "blacklist" -> goBlackList()
             "calendar_course_signup" -> toCalendarCourseSignup()
             "refresh" -> refresh()
-            "member_order_list" -> mainActivity!!.toMemberOrderList()
+            TO_MEMBER_ORDER_LIST -> mainActivity!!.toMemberOrderList()
+            TO_MEMBER_CART_LIST -> mainActivity!!.toMemberCartList()
             "manager_course" -> mainActivity!!.toManager("course")
-            "toLike" -> {
+            TO_LIKE -> {
                 var able_type: String? = null
                 if (row.containsKey("able_type")) {
                     able_type = row["able_type"]
