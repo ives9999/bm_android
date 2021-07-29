@@ -563,11 +563,13 @@ open class ListItem<T: Table>(open var context: Context, open var row: T): Item(
             viewHolder.titleLbl.text = row.name
         }
 
-        Picasso.with(context)
-            .load(row.featured_path)
-            .placeholder(R.drawable.loading_square_120)
-            .error(R.drawable.loading_square_120)
-            .into(viewHolder.listFeatured)
+        if (row.featured_path.isNotEmpty()) {
+            Picasso.with(context)
+                .load(row.featured_path)
+                .placeholder(R.drawable.loading_square_120)
+                .error(R.drawable.loading_square_120)
+                .into(viewHolder.listFeatured)
+        }
 
         viewHolder.refreshIcon.setOnClickListener {
             if (list1CellDelegate != null) {
@@ -610,17 +612,18 @@ open class ListItem<T: Table>(open var context: Context, open var row: T): Item(
             }
         }
 
-        viewHolder.likeIcon.setOnClickListener {
-            if (list1CellDelegate != null) {
-                list1CellDelegate!!.cellLike(row)
-                if (member.isLoggedIn) {
-                    setLike(viewHolder)
+        if (viewHolder.likeIcon != null) {
+            viewHolder.likeIcon.setOnClickListener {
+                if (list1CellDelegate != null) {
+                    list1CellDelegate!!.cellLike(row)
+                    if (member.isLoggedIn) {
+                        setLike(viewHolder)
+                    }
                 }
             }
+            isLike = !row.like
+            setLike(viewHolder)
         }
-
-        isLike = !row.like
-        setLike(viewHolder)
     }
 
     override fun getLayout() = R.layout.course_list_cell

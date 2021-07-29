@@ -597,7 +597,7 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
         URL_ARENA_LIKE = URL_HOME + "arena/like/%s"
         URL_ARENA_LIST = URL_HOME + "arena/list"
         URL_CANCEL_SIGNUP = URL_HOME + "%s/cancelSignup/%d"
-        URL_CART_LIST = URL_HOME + "cart/list/%s"
+        URL_CART_LIST = URL_HOME + "cart/list"
         URL_CART_UPDATE = "${URL_HOME}cart/update"
         URL_CHANGE_PASSWORD = "$BASE_URL/member/change_password"
         URL_CITYS = URL_HOME + "citys"
