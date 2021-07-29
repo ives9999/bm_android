@@ -94,7 +94,7 @@
             android:layout_height="30dp"
             android:layout_marginRight="16dp"
             android:onClick="submitBtnPressed"
-            android:text="購買" />
+            android:text="加入購物車" />
 
         <Button
             android:id="@+id/likeButton"
