@@ -1,10 +1,8 @@
 package com.sportpassword.bm.Controllers
 
 import android.content.Context
-import android.content.DialogInterface
 import android.os.Bundle
 import android.view.View
-import com.sportpassword.bm.Models.Member
 import com.sportpassword.bm.Models.CourseTable
 import com.sportpassword.bm.Models.CoursesTable
 import com.sportpassword.bm.R
@@ -23,10 +21,8 @@ import com.xwray.groupie.kotlinandroidextensions.ViewHolder
 import kotlinx.android.synthetic.main.tab_course.list_container
 import kotlinx.android.synthetic.main.tab_course.tab_refresh
 import kotlinx.android.synthetic.main.tab_course_calendar.*
-import org.jetbrains.anko.alert
 import kotlin.collections.HashMap
 import org.jetbrains.anko.*
-import org.jetbrains.anko.sdk27.coroutines.onClick
 
 class CourseCalendarVC: MyTableVC() {
 
@@ -69,7 +65,7 @@ class CourseCalendarVC: MyTableVC() {
         recyclerView.adapter = adapter
     }
 
-    override fun getDataStart(_page: Int, _perPage: Int) {
+    override fun getDataStart(_page: Int, _perPage: Int, token: String?) {
         Loading.show(maskView)
         loading = true
 
@@ -94,7 +90,7 @@ class CourseCalendarVC: MyTableVC() {
                 theFirstTime = false
             }
 
-            notifyDataSetChanged()
+            //notifyDataSetChanged()
             page++
         }
 //        mask?.let { mask?.dismiss() }

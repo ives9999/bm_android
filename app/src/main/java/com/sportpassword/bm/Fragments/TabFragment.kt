@@ -182,10 +182,10 @@ open class TabFragment : Fragment(), SearchItemDelegate, List1CellDelegate, Seri
         adapter.clear()
         items.clear()
         //println(perPage)
-        getDataStart1(page, perPage)
+        getDataStart(page, perPage)
     }
 
-    open fun getDataStart1(_page: Int, _perPage: Int) {
+    open fun getDataStart(_page: Int, _perPage: Int) {
         Loading.show(maskView)
         //println("page: $_page")
         //println(mainActivity!!.params)
@@ -196,17 +196,17 @@ open class TabFragment : Fragment(), SearchItemDelegate, List1CellDelegate, Seri
             //if (able_type == "temp_play") _able_type = "team"
             MemberService.likelist(requireContext(), able_type, "喜歡", _page, _perPage) { success ->
                 jsonString = MemberService.jsonString
-                getDataEnd1(success)
+                getDataEnd(success)
             }
         } else {
-            dataService.getList1(requireContext(), null, params, _page, _perPage) { success ->
+            dataService.getList(requireContext(), null, params, _page, _perPage) { success ->
                 jsonString = dataService.jsonString
-                getDataEnd1(success)
+                getDataEnd(success)
             }
         }
     }
 
-    fun getDataEnd1(success: Boolean) {
+    open fun getDataEnd(success: Boolean) {
         if (success) {
             //if (theFirstTime) {
 
@@ -250,36 +250,36 @@ open class TabFragment : Fragment(), SearchItemDelegate, List1CellDelegate, Seri
 
     open fun genericTable() {}
 
-    open fun getDataStart(_page: Int, _perPage: Int) {
-        if (isCourseShow || isTeamShow) {
-            Loading.show(maskView)
-        }
-        loading = true
-    }
-
-    open fun getDataEnd(success: Boolean) {
-        if (success) {
-            if (theFirstTime) {
-                page = dataService.page
-                perPage = dataService.perPage
-                totalCount = dataService.totalCount
-                val _totalPage: Int = totalCount / perPage
-                totalPage = if (totalCount % perPage > 0) _totalPage+1 else _totalPage
-                theFirstTime = false
-            }
-
-            adapter.notifyDataSetChanged()
-            //notifyDataSetChanged()
-            page++
-        }
-//        mask?.let { mask?.dismiss() }
-        Loading.hide(maskView)
-        loading = false
-//        println("page:$page")
-//        println("perPage:$perPage")
-//        println("totalCount:$totalCount")
-//        println("totalPage:$totalPage")
-    }
+//    open fun getDataStart(_page: Int, _perPage: Int) {
+//        if (isCourseShow || isTeamShow) {
+//            Loading.show(maskView)
+//        }
+//        loading = true
+//    }
+//
+//    open fun getDataEnd(success: Boolean) {
+//        if (success) {
+//            if (theFirstTime) {
+//                page = dataService.page
+//                perPage = dataService.perPage
+//                totalCount = dataService.totalCount
+//                val _totalPage: Int = totalCount / perPage
+//                totalPage = if (totalCount % perPage > 0) _totalPage+1 else _totalPage
+//                theFirstTime = false
+//            }
+//
+//            adapter.notifyDataSetChanged()
+//            //notifyDataSetChanged()
+//            page++
+//        }
+////        mask?.let { mask?.dismiss() }
+//        Loading.hide(maskView)
+//        loading = false
+////        println("page:$page")
+////        println("perPage:$perPage")
+////        println("totalCount:$totalCount")
+////        println("totalPage:$totalPage")
+//    }
 
     open fun generateItems(): ArrayList<Item> {
         val items: ArrayList<Item> = arrayListOf()
@@ -463,7 +463,7 @@ open class TabFragment : Fragment(), SearchItemDelegate, List1CellDelegate, Seri
 
                 //println("items.size:${items.size}")
                 if (items.size == pos + 1 && newState == RecyclerView.SCROLL_STATE_IDLE && items.size < totalCount && !loading) {
-                    that.getDataStart1(page, perPage)
+                    that.getDataStart(page, perPage)
                 }
             }
         }

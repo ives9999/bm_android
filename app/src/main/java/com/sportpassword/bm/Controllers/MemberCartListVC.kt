@@ -18,15 +18,13 @@ import com.xwray.groupie.kotlinandroidextensions.ViewHolder
 import kotlinx.android.synthetic.main.activity_member_cart_list_vc.*
 import kotlinx.android.synthetic.main.mask.*
 import kotlinx.android.synthetic.main.cart_list_cell.*
-import kotlinx.android.synthetic.main.cart_list_cell.listFeatured
-import kotlinx.android.synthetic.main.cart_list_cell.titleLbl
 
 class MemberCartListVC : MyTableVC() {
 
     var mysTable: CartsTable? = null
 
     var myTable: CartTable? = null
-    var cartItemTable: ArrayList<CartTable> = arrayListOf()
+    var cartItemsTable: ArrayList<CartItemTable> = arrayListOf()
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -55,35 +53,32 @@ class MemberCartListVC : MyTableVC() {
         theFirstTime = true
         adapter.clear()
         items.clear()
-        getDataStart1(page, perPage, member.token)
+        getDataStart(page, perPage, member.token)
     }
 
     override fun genericTable() {
         mysTable = jsonToModels<CartsTable>(dataService.jsonString)
+        tables = mysTable
         if (mysTable != null) {
-            tables = mysTable
+            myTable = mysTable!!.rows[0]
+            cartItemsTable = myTable!!.items
         }
     }
 
     override fun generateItems(): ArrayList<Item> {
         val items: ArrayList<Item> = arrayListOf()
-        if (mysTable != null) {
-            if (mysTable!!.rows.size > 0) {
-                val cartTable: CartTable = mysTable!!.rows[0]
-                val rows: ArrayList<CartItemTable> = cartTable.items
-                for (row in rows) {
-                    val cartItemItem = CartItemItem(this, row)
-                    cartItemItem.list1CellDelegate = this
-                    items.add(cartItemItem)
-                }
-            }
+        for (row in cartItemsTable) {
+            row.filterRow()
+            val cartItemItem = CartItemItem(this, row)
+            //cartItemItem.list1CellDelegate = this
+            items.add(cartItemItem)
         }
 
         return items
     }
 
     override fun cellEdit(row: Table) {
-        toAddCart(row.token)
+        toAddCart(null, row.token)
     }
 
     override fun cellDelete(row: Table) {
@@ -99,15 +94,14 @@ class MemberCartListVC : MyTableVC() {
     }
 }
 
-class CartItemItem(override var context: Context, var _row: CartItemTable): ListItem<Table>(context, _row) {
+class CartItemItem(val context: Context, val row: CartItemTable): Item() {
 
 
     override fun bind(viewHolder: ViewHolder, position: Int) {
 
-        super.bind(viewHolder, position)
+        //super.bind(viewHolder, position)
 
-        val row: CartItemTable = _row
-        row.filterRow()
+        //val row: CartItemTable = _row
 
         if (row.product != null && row.product!!.featured_path.isNotEmpty()) {
             Picasso.with(context)
@@ -135,20 +129,20 @@ class CartItemItem(override var context: Context, var _row: CartItemTable): List
         viewHolder.amountLbl.text = row.amount_show
         viewHolder.quantityLbl.text = "數量：${row.quantity}"
 
-        viewHolder.editIcon.setOnClickListener {
-
-            if (list1CellDelegate != null) {
-
-                list1CellDelegate!!.cellEdit(row)
-            }
-        }
-
-        viewHolder.deleteIcon.setOnClickListener {
-
-            if (list1CellDelegate != null) {
-                list1CellDelegate!!.cellDelete(row)
-            }
-        }
+//        viewHolder.editIcon.setOnClickListener {
+//
+//            if (list1CellDelegate != null) {
+//
+//                list1CellDelegate!!.cellEdit(row)
+//            }
+//        }
+//
+//        viewHolder.deleteIcon.setOnClickListener {
+//
+//            if (list1CellDelegate != null) {
+//                list1CellDelegate!!.cellDelete(row)
+//            }
+//        }
     }
 
     override fun getLayout() = R.layout.cart_list_cell

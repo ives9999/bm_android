@@ -57,7 +57,7 @@ class MemberOrderListVC : MyTableVC() {
         theFirstTime = true
         adapter.clear()
         items.clear()
-        getDataStart1(page, perPage, member.token)
+        getDataStart(page, perPage, member.token)
         params.clear()
     }
 

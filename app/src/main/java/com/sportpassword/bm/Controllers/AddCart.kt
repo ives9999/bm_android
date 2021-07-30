@@ -8,6 +8,8 @@ import com.sportpassword.bm.Adapters.GroupSection
 import com.sportpassword.bm.Form.FormItem.FormItem
 import com.sportpassword.bm.Form.FormItem.NumberFormItem
 import com.sportpassword.bm.Form.ValueChangedDelegate
+import com.sportpassword.bm.Models.CartItemTable
+import com.sportpassword.bm.Models.CartTable
 import com.sportpassword.bm.Models.ProductTable
 import com.sportpassword.bm.Models.Table
 import com.sportpassword.bm.R
@@ -25,9 +27,11 @@ import kotlinx.android.synthetic.main.mask.*
 class AddCartVC : MyTableVC(), ValueChangedDelegate {
 
     var product_token: String? = null
-    var table: Table? = null
-    var myTable: ProductTable? = null
-    //var superProduct: SuperProduct? = null
+    var cartItem_token: String? = null
+    var productTable: ProductTable? = null
+    var cartTable: CartTable? = null
+    var cartItemTable: CartItemTable? = null
+
     var section_keys: ArrayList<ArrayList<String>> = arrayListOf()
 
     var sub_total: Int = 0
@@ -79,29 +83,30 @@ class AddCartVC : MyTableVC(), ValueChangedDelegate {
 
         if (intent.hasExtra("product_token")) {
             product_token = intent.getStringExtra("product_token")
-            //superProduct = intent.getSerializableExtra("superProduct") as? SuperProduct
-
-            hidekeyboard(order_layout)
-
-            dataService = ProductService
-            recyclerView = editTableView
-
-            refreshLayout = refresh
-            setRefreshListener()
-
-            //initData()
-            refresh()
-        } else {
-            warning("傳送商品資料錯誤，請洽管理員，或稍後再試")
         }
+        if (intent.hasExtra("cartItem_token")) {
+            cartItem_token = intent.getStringExtra(("cartItem_token"))
+        }
+
+        hidekeyboard(order_layout)
+
+        dataService = ProductService
+        recyclerView = editTableView
+
+        refreshLayout = refresh
+        setRefreshListener()
+
+        //initData()
+        refresh()
+
     }
 
     override fun initAdapter(include_section: Boolean) {
 //        adapter = GroupAdapter()
 
-        adapter.setOnItemClickListener { item, view ->
-            rowClick(item, view)
-        }
+//        adapter.setOnItemClickListener { item, view ->
+//            rowClick(item, view)
+//        }
 
         // for member register and member update personal data
         if (include_section) {
@@ -140,35 +145,57 @@ class AddCartVC : MyTableVC(), ValueChangedDelegate {
     }
 
     override fun refresh() {
+        Loading.show(mask)
         if (product_token != null) {
             adapter.clear()
             adapterSections.clear()
             attributeRows.clear()
 
-            Loading.show(mask)
             val params: HashMap<String, String> = hashMapOf("token" to product_token!!, "member_token" to member.token!!)
-            dataService.getOne1(this, params) { success ->
+            dataService.getOne(this, params) { success ->
                 if (success) {
                     try {
-                        table = jsonToModel<ProductTable>(dataService.jsonString)
+                        productTable = jsonToModel<ProductTable>(dataService.jsonString)
                     } catch (e: JsonParseException) {
                         warning(e.localizedMessage!!)
                         //println(e.localizedMessage)
                     }
-                    if (table != null) {
-                        myTable = table as ProductTable
-                        myTable!!.filterRow()
+                    if (productTable != null) {
+                        //myTable = table as ProductTable
+                        productTable!!.filterRow()
                         initData()
                     } else {
                         warning("解析伺服器所傳的字串失敗，請洽管理員")
                     }
                 }
-                closeRefresh()
-                Loading.hide(mask)
             }
-        } else {
-            warning("沒有接收到商品token，所以無法顯示商品內頁，請洽管理員")
         }
+
+        if (cartItem_token != null) {
+
+            submitBtn.text = "更新購物車"
+            val params: HashMap<String, String> = hashMapOf("cart_item_token" to cartItem_token!!, "member_token" to member.token)
+            CartService.getOne(this, params) { success ->
+                if (success) {
+                    try {
+                        cartTable = jsonToModel<CartTable>(CartService.jsonString)
+                    } catch (e: JsonParseException) {
+                        warning(e.localizedMessage!!)
+                    }
+                    if (cartTable != null) {
+                        if (cartTable!!.items.size > 0) {
+                            cartItemTable = cartTable!!.items[0]
+                            cartItemTable?.filterRow()
+                            productTable = cartItemTable!!.product
+                            productTable?.filterRow()
+                            initData()
+                        }
+                    }
+                }
+            }
+        }
+        closeRefresh()
+        Loading.hide(mask)
     }
 
     private fun initData() {
@@ -176,13 +203,14 @@ class AddCartVC : MyTableVC(), ValueChangedDelegate {
 //        form = OrderForm(myTable!!.type, this)
 //        sections = form.getSections()
 //        section_keys = form.getSectionKeys()
-        initAdapter(true)
-        setMyTitle(myTable!!.name)
+        if (productTable != null) {
+            initAdapter(true)
+            setMyTitle(productTable!!.name)
 
-        var row = getRowRowsFromMyRowsByKey1(PRODUCT_KEY)
-        row["value"] = myTable!!.name
-        row["show"] = myTable!!.name
-        replaceRowByKey(PRODUCT_KEY, row)
+            var row = getRowRowsFromMyRowsByKey1(PRODUCT_KEY)
+            row["value"] = productTable!!.name
+            row["show"] = productTable!!.name
+            replaceRowByKey(PRODUCT_KEY, row)
 
 //        row = getRowRowsFromMyRowsByKey1(NAME_KEY)
 //        row["value"] = member.name
@@ -204,33 +232,60 @@ class AddCartVC : MyTableVC(), ValueChangedDelegate {
 //        row["show"] = member.address
 //        replaceRowByKey(ADDRESS_KEY, row)
 
-        for (attribute in myTable!!.attributes) {
-            var tmp: String = attribute.attribute
-            tmp = tmp.replace("{", "")
-            tmp = tmp.replace("}", "")
-            tmp = tmp.replace("\"", "")
+            for (attribute in productTable!!.attributes) {
+                var tmp: String = attribute.attribute
+                tmp = tmp.replace("{", "")
+                tmp = tmp.replace("}", "")
+                tmp = tmp.replace("\"", "")
 
-            //print(arr)
-            val row = hashMapOf("title" to attribute.name,"key" to attribute.alias,"value" to "","show" to tmp,"cell" to "tag")
-            attributeRows.add(row)
-        }
-        //print(attributeRows)
-        myRows[1]["rows"] = attributeRows
+                //show is 湖水綠,極致黑,經典白,太空灰
+                //name is 顏色
+                //key is color
+                var value: String = ""
+                val alias: String = attribute.alias
+                if (cartItemTable != null) {
+                    for (item_attriubtes in cartItemTable!!.attributes) {
+                        for ((idx, value1) in item_attriubtes) {
+                            if (value1 == alias) {
+                                value = item_attriubtes["value"]!!
+                                break
+                            }
+                        }
+                    }
+                }
 
-        row = getRowRowsFromMyRowsByKey1(QUANTITY_KEY)
-        val min: String = myTable!!.order_min.toString()
-        val max: String = myTable!!.order_max.toString()
-        row["show"] = "${min},${max}"
-        row["value"] = "1"
-        replaceRowByKey(QUANTITY_KEY, row)
+                //print(arr)
+                row = hashMapOf(
+                    "title" to attribute.name,
+                    "key" to alias,
+                    "value" to value,
+                    "show" to tmp,
+                    "cell" to "tag"
+                )
+                attributeRows.add(row)
+            }
+            //print(attributeRows)
+            myRows[1]["rows"] = attributeRows
+
+            row = getRowRowsFromMyRowsByKey1(QUANTITY_KEY)
+            val min: String = productTable!!.order_min.toString()
+            val max: String = productTable!!.order_max.toString()
+            row["show"] = "${min},${max}"
+            row["value"] = "1"
+
+            if (cartItemTable != null) {
+                selected_number = cartItemTable!!.quantity
+                row["value"] = selected_number.toString()
+            }
+            replaceRowByKey(QUANTITY_KEY, row)
 
 //        row = getRowRowsFromMyRowsByKey1(SHIPPING_FEE_KEY)
 //        row["value"] = myTable!!.prices[selected_idx].shipping_fee.toString()
 //        row["show"] = "NT$ " + myTable!!.prices[selected_idx].shipping_fee.toString() + "元"
 //        replaceRowByKey(SHIPPING_FEE_KEY, row)
 
-        selected_price = myTable!!.prices[selected_idx].price_member
-        updateSubTotal()
+            selected_price = productTable!!.prices[selected_idx].price_member
+            updateSubTotal()
 
 //        val productNameItem = getFormItemFromKey("Product_Name")
 //        if (productNameItem != null) {
@@ -327,6 +382,7 @@ class AddCartVC : MyTableVC(), ValueChangedDelegate {
 //            shippingFee = superProduct!!.prices[selected_idx].shipping_fee
 //            updateShippingFee()
 //        }
+        }
     }
 
     override fun generateItems(section: Int): ArrayList<Item> {
@@ -543,7 +599,7 @@ class AddCartVC : MyTableVC(), ValueChangedDelegate {
         if (name == "type") {
             val id: Int = key.toInt()
             var idx: Int = 0
-            for (price in myTable!!.prices) {
+            for (price in productTable!!.prices) {
                 if (price.id == id) {
                     selected_price = price.price_member
                     this.selected_idx = idx
@@ -575,8 +631,15 @@ class AddCartVC : MyTableVC(), ValueChangedDelegate {
         params["device"] = "app"
         params["do"] = "update"
         params["member_token"] = member.token
-        params["product_id"] = myTable!!.id.toString()
-        params["price_id"] = myTable!!.prices[selected_idx].id.toString()
+
+        if (cartItem_token != null) {
+            params["cartItem_token"] = cartItem_token!!
+        }
+        if (productTable != null) {
+            params["product_id"] = productTable!!.id.toString()
+            params["cart_token"] = productTable!!.cart_token
+        }
+        params["price_id"] = productTable!!.prices[selected_idx].id.toString()
 
         params["member_id"] = member.id.toString()
 //        params["order_name"] = member.name
@@ -601,7 +664,7 @@ class AddCartVC : MyTableVC(), ValueChangedDelegate {
         //是否有選擇商品屬性
         var isAttribute: Boolean = true
 
-        var selected_attributes: ArrayList<String> = arrayListOf()
+        val selected_attributes: ArrayList<String> = arrayListOf()
         @Suppress("UNCHECKED_CAST")
         val attributes: ArrayList<HashMap<String, String>> = myRows[1]["rows"] as ArrayList<HashMap<String, String>>
         for (attribute in attributes) {
@@ -653,12 +716,16 @@ class AddCartVC : MyTableVC(), ValueChangedDelegate {
         if (isAttribute) {
             Loading.show(mask)
 
-            params["attribute"] = selected_attributes.joinToString(",")
+            params["attribute"] = selected_attributes.joinToString("|")
 
             CartService.update(this, "", params) { success ->
                 Loading.hide(mask)
                 if (success) {
-                    info("成功加入購物車了")
+                    if (cartItem_token == null) {
+                        info("成功加入購物車了")
+                    } else {
+                        info("已經更新購物車了")
+                    }
 //                    val order_token: String = CartService.order_token
 //                    if (total > 0) {
 //                        val ecpay_token: String = OrderService.token

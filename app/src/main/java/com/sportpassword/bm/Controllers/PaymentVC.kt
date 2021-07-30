@@ -101,26 +101,24 @@ class PaymentVC : MyTableVC() {
     }
 
     override fun refresh() {
-        if (order_token != null) {
-            Loading.show(mask)
-            val params: HashMap<String, String> = hashMapOf("token" to order_token!!, "member_token" to member.token!!)
-            dataService.getOne(this, params) { success ->
-                if (success) {
-                    superOrder = dataService.superModel as SuperOrder
-                    if (superOrder != null) {
-                        superOrder!!.filter()
-                        //superOrder!!.print()
+        Loading.show(mask)
+        val params: HashMap<String, String> = hashMapOf("token" to order_token!!, "member_token" to member.token!!)
+        dataService.getOne(this, params) { success ->
+            if (success) {
+                superOrder = dataService.superModel as SuperOrder
+                if (superOrder != null) {
+                    superOrder!!.filter()
+                    //superOrder!!.print()
 
-                        setMyTitle(superOrder!!.product.name)
-                        setupOrderData()
-                        setData()
+                    setMyTitle(superOrder!!.product.name)
+                    setupOrderData()
+                    setData()
 //                    println(items);
-                        adapter.notifyDataSetChanged()
-                    }
+                    adapter.notifyDataSetChanged()
                 }
-                closeRefresh()
-                Loading.hide(mask)
             }
+            closeRefresh()
+            Loading.hide(mask)
         }
     }
 

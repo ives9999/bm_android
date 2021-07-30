@@ -248,7 +248,7 @@ class ShowCoachVC: ShowVC() {
         if (myTable != null) {
             filter = hashMapOf("coach_id" to myTable!!.id)
         }
-        CourseService.getList1(this, token, filter, 1, 100) { success ->
+        CourseService.getList(this, token, filter, 1, 100) { success ->
 
             if (success) {
                 //println(CourseService.jsonString)

@@ -114,7 +114,7 @@ class EditCourseVC : MyTableVC(), ValueChangedDelegate {
     override fun refresh() {
         Loading.show(mask)
         val params: HashMap<String, String> = hashMapOf("token" to course_token!!)
-        dataService.getOne1(this, params) { success ->
+        dataService.getOne(this, params) { success ->
             if (success) {
                 genericTable()
                 putValue()

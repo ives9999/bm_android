@@ -58,7 +58,7 @@ open class ShowVC: BaseActivity(), IconCellDelegate {
         if (token != null) {
             Loading.show(mask)
             val params: HashMap<String, String> = hashMapOf("token" to token!!, "member_token" to member.token)
-            dataService.getOne1(this, params) { success ->
+            dataService.getOne(this, params) { success ->
                 if (success) {
                     genericTable()
                     if (table != null) {

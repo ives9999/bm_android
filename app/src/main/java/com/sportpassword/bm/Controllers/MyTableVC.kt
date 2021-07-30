@@ -123,28 +123,28 @@ abstract class MyTableVC : BaseActivity(), List1CellDelegate {
         theFirstTime = true
         adapter.clear()
         items.clear()
-        getDataStart1(page, perPage)
+        getDataStart(page, perPage)
         params.clear()
     }
 
-    open fun getDataStart1(_page: Int, _perPage: Int, token: String? = null) {
+    open fun getDataStart(_page: Int, _perPage: Int, token: String? = null) {
         Loading.show(mask)
         loading = true
 
         if (member_like) {
             MemberService.likelist(this, able_type) { success ->
                 jsonString = MemberService.jsonString
-                getDataEnd1(success)
+                getDataEnd(success)
             }
         } else {
-            dataService.getList1(this, token, params, _page, _perPage) { success ->
+            dataService.getList(this, token, params, _page, _perPage) { success ->
                 jsonString = dataService.jsonString
-                getDataEnd1(success)
+                getDataEnd(success)
             }
         }
     }
 
-    open fun getDataEnd1(success: Boolean) {
+    open fun getDataEnd(success: Boolean) {
         if (success) {
             //if (theFirstTime) {
 
@@ -188,22 +188,22 @@ abstract class MyTableVC : BaseActivity(), List1CellDelegate {
 //        println("totalPage:$totalPage")
     }
 
-    protected open fun getDataStart(_page: Int, _perPage: Int) {}
+//    protected open fun getDataStart(_page: Int, _perPage: Int) {}
+//
+//    protected open fun getDataEnd(success: Boolean) {}
 
-    protected open fun getDataEnd(success: Boolean) {}
-
-    protected open fun notifyDataSetChanged() {
-        if (page == 1) {
+    //protected open fun notifyDataSetChanged() {
+        //if (page == 1) {
             //superDataLists = arrayListOf()
-        }
+        //}
         //superDataLists.addAll(dataService.superDataLists)
 //        for (data in superDataLists) {
 //            data.print()
 //            println("===================")
 //        }
         //listAdapter.lists = superDataLists
-        listAdapter.notifyDataSetChanged()
-    }
+        //listAdapter.notifyDataSetChanged()
+    //}
 
     open fun notifyChanged(include_section: Boolean=false) {
         if (include_section) {
@@ -295,7 +295,7 @@ abstract class MyTableVC : BaseActivity(), List1CellDelegate {
 
 //                println("items.size:${items.size}")
                 if (items.size == pos + 1 && newState == RecyclerView.SCROLL_STATE_IDLE && items.size < totalCount && !loading) {
-                    getDataStart1(page, perPage)
+                    getDataStart(page, perPage)
                 }
             }
         }

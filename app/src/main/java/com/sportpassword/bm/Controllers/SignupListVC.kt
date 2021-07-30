@@ -50,7 +50,7 @@ class SignupListVC : MyTableVC() {
         refresh()
     }
 
-    override protected fun getDataStart(_page: Int, _perPage: Int) {
+    override fun getDataStart(_page: Int, _perPage: Int, token: String?) {
         //println("page: $_page")
         Loading.show(mask)
         dataService.signup_list(this, able_token, _page, _perPage) { success ->
@@ -58,7 +58,7 @@ class SignupListVC : MyTableVC() {
         }
     }
 
-    override protected fun getDataEnd(success: Boolean) {
+    override fun getDataEnd(success: Boolean) {
         if (success) {
             //signups = dataService.superModel as SuperSignups
 
