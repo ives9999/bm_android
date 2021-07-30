@@ -119,7 +119,7 @@ class RegisterActivity : MyTableVC(), ValueChangedDelegate {
 
         if (member.isLoggedIn) {
 
-            //member.memberPrint()
+            member.memberPrint()
             form.removeItems(arrayListOf(PASSWORD_KEY, REPASSWORD_KEY, PRIVACY_KEY))
 //            for (formItem in form.formItems) {
 //                println(formItem.name)
@@ -137,6 +137,7 @@ class RegisterActivity : MyTableVC(), ValueChangedDelegate {
                     keys.add(formItem.name!!)
                 }
             }
+            //println(keys)
 
             member_token = member.token
             for (key in keys) {
@@ -156,25 +157,25 @@ class RegisterActivity : MyTableVC(), ValueChangedDelegate {
                     }
                 }
 
-                if (key == CITY_KEY) {
-                    val value: String = member.fetch("city_id")
-                    val formItem = getFormItemFromKey(key)
-                    formItem!!.value = value
-                    formItem.make()
-                }
+//                if (key == CITY_KEY) {
+//                    val value: String = member.fetch(CITY_KEY)
+//                    val formItem = getFormItemFromKey(key)
+//                    formItem!!.value = value
+//                    formItem.make()
+//                }
 
-                if (key == AREA_KEY) {
-                    val value: String = member.fetch("area_id")
-                    val formItem = getFormItemFromKey(key)
-                    formItem!!.value = value
-                    formItem.make()
-
-                    val cityFormItem: CityFormItem = getFormItemFromKey(CITY_KEY) as CityFormItem
-                    val areaFormItem: AreaFormItem = formItem as AreaFormItem
-                    if (cityFormItem.value != null && cityFormItem.value!!.isNotEmpty()) {
-                        areaFormItem.city_id = (cityFormItem.value)?.toInt()
-                    }
-                }
+//                if (key == AREA_KEY) {
+//                    val value: String = member.fetch(AREA_KEY)
+//                    val formItem = getFormItemFromKey(key)
+//                    formItem!!.value = value
+//                    formItem.make()
+//
+//                    val cityFormItem: CityFormItem = getFormItemFromKey(CITY_KEY) as CityFormItem
+//                    val areaFormItem: AreaFormItem = formItem as AreaFormItem
+//                    if (cityFormItem.value != null && cityFormItem.value!!.isNotEmpty()) {
+//                        areaFormItem.city_id = (cityFormItem.value)?.toInt()
+//                    }
+//                }
             }
             old_selected_city = member.fetch(CITY_KEY)
             if (member.avatar.length > 0) {

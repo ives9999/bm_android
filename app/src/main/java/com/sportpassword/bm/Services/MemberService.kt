@@ -693,6 +693,11 @@ object MemberService: DataService() {
                     session.edit().putBoolean(name, value).apply()
             }
         }
+        val city: Int = json.getInt("city_id")
+        session.edit().putInt("city", city).apply()
+
+        val area: Int = json.getInt("area_id")
+        session.edit().putInt("area", area).apply()
         //session.dump()
         member.setMemberData(session)
 //        member.memberPrint()

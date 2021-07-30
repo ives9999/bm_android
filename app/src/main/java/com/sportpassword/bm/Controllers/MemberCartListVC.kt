@@ -36,19 +36,14 @@ class MemberCartListVC : MyTableVC() {
         setMyTitle("購物車")
 
         recyclerView = cart_list
-        refreshLayout = cart_list_refresh
-        maskView = mask
-        setRefreshListener()
-        setRecyclerViewScrollListener()
+        refreshLayout = cart_refresh
 
         initAdapter()
-        perPage = 10
         refresh()
     }
 
     override fun refresh() {
 
-        page = 1
         page = 1
         theFirstTime = true
         adapter.clear()
@@ -70,7 +65,7 @@ class MemberCartListVC : MyTableVC() {
         for (row in cartItemsTable) {
             row.filterRow()
             val cartItemItem = CartItemItem(this, row)
-            //cartItemItem.list1CellDelegate = this
+            cartItemItem.list1CellDelegate = this
             items.add(cartItemItem)
         }
 
@@ -94,14 +89,15 @@ class MemberCartListVC : MyTableVC() {
     }
 }
 
-class CartItemItem(val context: Context, val row: CartItemTable): Item() {
+class CartItemItem(override var context: Context, var _row: CartItemTable): ListItem<Table>(context, _row) {
 
 
     override fun bind(viewHolder: ViewHolder, position: Int) {
 
-        //super.bind(viewHolder, position)
+        super.bind(viewHolder, position)
 
-        //val row: CartItemTable = _row
+        val row: CartItemTable = _row
+        row.filterRow()
 
         if (row.product != null && row.product!!.featured_path.isNotEmpty()) {
             Picasso.with(context)
@@ -129,20 +125,20 @@ class CartItemItem(val context: Context, val row: CartItemTable): Item() {
         viewHolder.amountLbl.text = row.amount_show
         viewHolder.quantityLbl.text = "數量：${row.quantity}"
 
-//        viewHolder.editIcon.setOnClickListener {
-//
-//            if (list1CellDelegate != null) {
-//
-//                list1CellDelegate!!.cellEdit(row)
-//            }
-//        }
-//
-//        viewHolder.deleteIcon.setOnClickListener {
-//
-//            if (list1CellDelegate != null) {
-//                list1CellDelegate!!.cellDelete(row)
-//            }
-//        }
+        viewHolder.editIcon.setOnClickListener {
+
+            if (list1CellDelegate != null) {
+
+                list1CellDelegate!!.cellEdit(row)
+            }
+        }
+
+        viewHolder.deleteIcon.setOnClickListener {
+
+            if (list1CellDelegate != null) {
+                list1CellDelegate!!.cellDelete(row)
+            }
+        }
     }
 
     override fun getLayout() = R.layout.cart_list_cell
