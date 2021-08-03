@@ -89,7 +89,7 @@ class MemberCartListVC : MyTableVC() {
     }
 
     fun submitBtnPressed(view: View) {
-
+        toOrder()
     }
 
     fun cancelBtnPressed(view: View) {

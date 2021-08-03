@@ -156,6 +156,37 @@ interface ToInterface {
         mainDelegate.startActivity(loginIntent)
     }
 
+    fun toOrder() {
+        var msg: String = ""
+        if (!member.isLoggedIn) {
+            mainDelegate.warning("必須先登入會員，才能進行購買", true, "登入") {
+                toLogin()
+            }
+        } else {
+            //val _member: Member = Member(JSONObject())
+            for (key in MEMBER_MUST_ARRAY) {
+                val type: String = MEMBER_ARRAY[key]!!["type"]!!
+                val value: String = member.fetch(key)
+                if (value.isEmpty() || value == "0") {
+                    msg += MEMBER_MUST_ARRAY_WARNING[key]!! + "\n"
+                }
+            }
+
+            if (msg.isNotEmpty()) {
+                mainDelegate.warning(msg, true, "填寫") {
+                    toRegister()
+                }
+            } else {
+
+                val i = Intent(mainDelegate, OrderVC::class.java)
+                //i.putExtra("product_token", product_token)
+                //i.putExtra("title", title)
+                mainDelegate.startActivity(i)
+            }
+        }
+    }
+
+
     fun toPayment(order_token: String, ecpay_token: String?=null, tokenExpireDate: String?=null) {
         val i = Intent(mainDelegate, PaymentVC::class.java)
         i.putExtra("order_token", order_token)

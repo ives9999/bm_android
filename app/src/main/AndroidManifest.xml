@@ -28,7 +28,8 @@
         android:usesCleartextTraffic="true"
         tools:replace="android:allowBackup"
         tools:targetApi="m">
-        <activity android:name=".Controllers.MemberCartListVC"></activity>
+        <activity android:name=".Controllers.OrderVC"></activity>
+        <activity android:name=".Controllers.MemberCartListVC" />
         <activity android:name=".Controllers.ShowTeachVC" />
         <activity android:name=".Controllers.SelectCycleUnitVC" />
         <activity android:name=".Controllers.SelectCourseKindVC" />
