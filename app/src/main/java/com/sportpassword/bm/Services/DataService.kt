@@ -61,7 +61,7 @@ open class DataService: BaseService() {
         if (token != null) {
             url = url + "/" + token
         }
-        println(url)
+        //println(url)
 
         val header: MutableList<Pair<String, String>> = mutableListOf()
         header.add(Pair("Accept","application/json"))
@@ -84,7 +84,7 @@ open class DataService: BaseService() {
         }
 
         val body = filter.toJSONString()
-        println(body)
+        //println(body)
 
         MyHttpClient.instance.post(context, url, body) { success ->
             if (success) {
@@ -316,6 +316,7 @@ open class DataService: BaseService() {
     open fun getListURL(): String {return URL_LIST}
     open fun getLikeURL(token: String): String {return URL_LIST}
     open fun getOneURL(): String {return URL_ONE}
+    open fun getDeleteURL(): String {return URL_DELETE}
     open fun parseModel(json: JSONObject): SuperModel {return SuperModel(JSONObject())}
     open fun parseModels(json: JSONObject): SuperModel {return SuperModel(JSONObject())}
     open fun jsonToMember(json: JSONObject, context: Context){}
@@ -536,7 +537,7 @@ open class DataService: BaseService() {
 
         val url: String = getUpdateURL()
 
-        println(url)
+        //println(url)
 
         val header: MutableList<Pair<String, String>> = mutableListOf()
         header.add(Pair("Accept","application/json"))
@@ -546,7 +547,7 @@ open class DataService: BaseService() {
         for ((key, value) in params) {
             body.put(key, value)
         }
-        println(body)
+        //println(body)
 
         MyHttpClient.instance.post(context, url, body.toString()) { success ->
 
@@ -995,12 +996,13 @@ open class DataService: BaseService() {
     }
 
     open fun delete(context: Context, type: String, token: String, complete: CompletionHandler) {
-        val url = URL_DELETE.format(type)
+        val url = getDeleteURL()
         //println(url)
         val body = JSONObject()
         body.put("source", "app")
         body.put("channel", "bm")
         body.put("token", token)
+        body.put("type", type)
         val requestBody = body.toString()
         //println(requestBody)
 

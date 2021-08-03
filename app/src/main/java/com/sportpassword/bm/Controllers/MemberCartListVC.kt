@@ -77,7 +77,15 @@ class MemberCartListVC : MyTableVC() {
     }
 
     override fun cellDelete(row: Table) {
-
+        warning("是否確定要刪除呢？", "取消", "刪除") {
+            dataService.delete(this, "cart_item", row.token) { success ->
+                if (success) {
+                    refresh()
+                } else {
+                    warning(dataService.msg)
+                }
+            }
+        }
     }
 
     fun submitBtnPressed(view: View) {

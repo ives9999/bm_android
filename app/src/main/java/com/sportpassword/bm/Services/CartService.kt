@@ -15,4 +15,8 @@ object CartService: DataService() {
     override fun getUpdateURL(): String {
         return URL_CART_UPDATE
     }
+
+    override fun getDeleteURL(): String {
+        return URL_CART_DELETE
+    }
 }
