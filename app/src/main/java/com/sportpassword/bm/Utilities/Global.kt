@@ -413,6 +413,77 @@ enum class PAYMENT_PROCESS(val englishName: String, val chineseName: String) {
     }
 }
 
+enum class GATEWAY(val englishName: String, val chineseName: String) {
+
+    credit_card("direct", "信用卡"),
+    store_cvs("store_cvs", "超商代碼"),
+    store_barcode("store_barcode", "超商條碼"),
+    store_pay_711("store_pay_711", "7-11超商取貨付款"),
+    store_pay_family("store_pay_family", "全家超商取貨付款"),
+    remit("remit", "匯款"),
+    cash("cash", "現金");
+
+    fun toChineseString(): String {
+        return chineseName
+    }
+
+    fun toEnglishString(): String {
+        return englishName
+    }
+
+    companion object: MYENUM<SHIPPING_PROCESS>() {
+
+        fun getRawValueFromString(value: String): String {
+            return GATEWAY.valueOf(value).toChineseString()
+        }
+    }
+}
+
+enum class GATEWAY_PROCESS(val englishName: String, val chineseName: String) {
+
+    normal("direct", "信用卡"),
+    code("store_cvs", "超商代碼"),
+    complete("store_barcode", "超商條碼");
+
+    fun toChineseString(): String {
+        return chineseName
+    }
+
+    fun toEnglishString(): String {
+        return englishName
+    }
+
+    companion object: MYENUM<SHIPPING_PROCESS>() {
+
+        fun getRawValueFromString(value: String): String {
+            return GATEWAY_PROCESS.valueOf(value).toChineseString()
+        }
+    }
+}
+
+enum class SHIPPING_WAY(val englishName: String, val chineseName: String) {
+
+    direct("direct", "宅配"),
+    store_711("store_711", "7-11超商取貨"),
+    store_family("store_family", "全家超商取貨"),
+    cash("cash", "面交");
+
+    fun toChineseString(): String {
+        return chineseName
+    }
+
+    fun toEnglishString(): String {
+        return englishName
+    }
+
+    companion object: MYENUM<SHIPPING_PROCESS>() {
+
+        fun getRawValueFromString(value: String): String {
+            return SHIPPING_WAY.valueOf(value).toChineseString()
+        }
+    }
+}
+
 enum class SHIPPING_PROCESS(val englishName: String, val chineseName: String) {
     normal("normal", "準備中"),
     shipping("shipping", "出貨中"),

@@ -1,6 +1,7 @@
 package com.sportpassword.bm.Models
 
 import com.sportpassword.bm.Utilities.*
+import java.util.*
 
 class OrdersTable: Tables() {
     var rows: ArrayList<OrderTable> = arrayListOf()
@@ -11,10 +12,21 @@ class OrderTable: Table() {
     var order_no: String = ""
     var product_id: Int = 0
     var member_id: Int = 0
+
     var quantity: Int = 0
     var amount: Int = 0
     var shipping_fee: Int = 0
     var tax: Int = 0
+    var total: Int = 0
+    var promo: String = ""
+    var discount: Int = 0
+    var grand_total: Int = 0
+    var handle_fee: Int = 0
+
+    var invoice_type: String = ""
+    var invoice_email: String = ""
+    var invoice_company_name: String = ""
+    var invoice_company_tax: String = ""
 
     var order_name: String = ""
     var order_tel: String = ""
@@ -22,26 +34,33 @@ class OrderTable: Table() {
     var order_city: String = ""
     var order_area: String = ""
     var order_road: String = ""
+    var order_address: String = ""
 
     var memo: String = ""
     var process: String = ""
 
-    var shipping_at: String = ""
-    var payment_at: String = ""
+    var ecpay_token: String = ""
+    var ecpay_token_ExpireDate: String = ""
+
+    //var shipping_at: String = ""
+    //var payment_at: String = ""
     var complete_at: String = ""
     var cancel_at: String = ""
 
     var product_type: String = ""
-    var gateway_ch: String = ""
-    var method_ch: String = ""
+    //var gateway_ch: String = ""
+    //var method_ch: String = ""
 
     var payment: PaymentTable? = null
+    var gateway: GatewayTable? = null
     var shipping: ShippingTable? = null
     var product: ProductTable? = null
 
-    var order_clothes: ArrayList<OrderClothesTable> = arrayListOf()
-    var order_racket: ArrayList<OrderRacketTable> = arrayListOf()
-    var order_mejump: ArrayList<OrderMeJumpTable> = arrayListOf()
+    var items: ArrayList<OrderItemTable> = arrayListOf()
+
+//    var order_clothes: ArrayList<OrderClothesTable> = arrayListOf()
+//    var order_racket: ArrayList<OrderRacketTable> = arrayListOf()
+//    var order_mejump: ArrayList<OrderMeJumpTable> = arrayListOf()
 
     var attribute: String = ""
     var unit: String = "件"
@@ -52,18 +71,26 @@ class OrderTable: Table() {
     var shipping_fee_show: String = ""
     var tax_show: String = ""
     var amount_show: String = ""
+    var total_show: String = ""
+    var discount_show: String = ""
+    var grand_total_show: String = ""
+    var order_tel_show: String = ""
 
     var order_process_show: String = ""
 
-    var payment_process_show: String = ""
-    var payment_at_show: String = "未付款"
+//    var payment_process_show: String = ""
+//    var payment_at_show: String = "未付款"
 
-    var shipping_process_show: String = ""
-    var shipping_at_show: String = "準備中"
+//    var shipping_process_show: String = ""
+//    var shipping_at_show: String = "準備中"
+
+    var invoice_type_show: String = ""
 
     override fun filterRow() {
 
         super.filterRow()
+        gateway?.filterRow()
+        shipping?.filterRow()
 
         if (product != null) {
             product_name = product!!.name
@@ -78,6 +105,10 @@ class OrderTable: Table() {
         product_price_show = thousandNumber(product_price) + "元"
         shipping_fee_show = thousandNumber(shipping_fee) + "元"
         amount_show = thousandNumber(amount) + "元"
+        tax_show = thousandNumber(tax) + "元"
+        total_show = thousandNumber(total) + "元"
+        discount_show = thousandNumber(discount) + "元"
+        grand_total_show = thousandNumber(grand_total) + "元"
 
         created_at_show = created_at.noSec()
         
@@ -85,72 +116,80 @@ class OrderTable: Table() {
             order_process_show = ORDER_PROCESS.getRawValueFromString(process)
         }
 
-        if (payment_at.length > 0) {
-            payment_at_show = payment_at.noSec()
-        }
-        if (payment != null) {
-            payment_process_show = PAYMENT_PROCESS.getRawValueFromString(payment!!.process)
+//        if (payment_at.length > 0) {
+//            payment_at_show = payment_at.noSec()
+//        }
+//        if (payment != null) {
+//            payment_process_show = PAYMENT_PROCESS.getRawValueFromString(payment!!.process)
+//        } else {
+//            payment_process_show = "沒有取得 process table 錯誤"
+//        }
+//
+//        if (shipping_at.length > 0) {
+//            shipping_at_show = shipping_at.noSec()
+//        }
+//        if (shipping != null) {
+//            shipping_process_show = SHIPPING_PROCESS.getRawValueFromString(shipping!!.process)
+//        } else {
+//            payment_process_show = "沒有取得 shipping table 錯誤"
+//        }
+
+        if (invoice_type == "company") {
+            invoice_type_show = "公司行號"
         } else {
-            payment_process_show = "沒有取得 process table 錯誤"
+            invoice_type_show = "個人"
         }
 
-        if (shipping_at.length > 0) {
-            shipping_at_show = shipping_at.noSec()
-        }
-        if (shipping != null) {
-            shipping_process_show = SHIPPING_PROCESS.getRawValueFromString(shipping!!.process)
-        } else {
-            payment_process_show = "沒有取得 shipping table 錯誤"
-        }
+        order_tel_show = order_tel.mobileShow()
     }
 
     private fun makeAttributes(): String {
-
-        var attributes: ArrayList<String> = arrayListOf()
-        if (product_type == "clothes") {
-            for (item in order_clothes) {
-                val color: String = item.color
-                val size: String = item.size
-                unit = item.unit
-                val quantity: String = item.quantity.toString() + unit
-                val price: String = item.price.toString()
-                val attribute =
-                "顏色：" + color + "," +
-                        "尺寸：" + size + "," +
-                        "數量：" + quantity + "," +
-                        "價格：" + price
-                attributes.add(attribute)
-            }
-        } else if (product_type == "racket") {
-            for (item in order_racket) {
-                val color: String = item.color
-                val weight: String = item.weight
-                unit = item.unit
-                val quantity: String = item.quantity.toString() + unit
-                val price: String = item.price.toString()
-                val attribute =
-                "顏色：" + color + "," +
-                        "重量：" + weight + "," +
-                        "數量：" + quantity + "," +
-                        "價格：" + price
-                attributes.add(attribute)
-            }
-        } else if (product_type == "mejump") {
-            for (item in order_mejump) {
-                val title: String = item.title
-                unit = item.unit
-                val quantity: String = item.quantity.toString() + unit
-                val price: String = item.price.toString()
-                val attribute =
-                "種類：" + title + "," +
-                        "數量：" + quantity + "," +
-                        "價格：" + price
-                attributes.add(attribute)
-            }
-        }
-        val attribute: String = attributes.joinToString("\n")
-
-        return attribute
+//
+//        var attributes: ArrayList<String> = arrayListOf()
+//        if (product_type == "clothes") {
+//            for (item in order_clothes) {
+//                val color: String = item.color
+//                val size: String = item.size
+//                unit = item.unit
+//                val quantity: String = item.quantity.toString() + unit
+//                val price: String = item.price.toString()
+//                val attribute =
+//                "顏色：" + color + "," +
+//                        "尺寸：" + size + "," +
+//                        "數量：" + quantity + "," +
+//                        "價格：" + price
+//                attributes.add(attribute)
+//            }
+//        } else if (product_type == "racket") {
+//            for (item in order_racket) {
+//                val color: String = item.color
+//                val weight: String = item.weight
+//                unit = item.unit
+//                val quantity: String = item.quantity.toString() + unit
+//                val price: String = item.price.toString()
+//                val attribute =
+//                "顏色：" + color + "," +
+//                        "重量：" + weight + "," +
+//                        "數量：" + quantity + "," +
+//                        "價格：" + price
+//                attributes.add(attribute)
+//            }
+//        } else if (product_type == "mejump") {
+//            for (item in order_mejump) {
+//                val title: String = item.title
+//                unit = item.unit
+//                val quantity: String = item.quantity.toString() + unit
+//                val price: String = item.price.toString()
+//                val attribute =
+//                "種類：" + title + "," +
+//                        "數量：" + quantity + "," +
+//                        "價格：" + price
+//                attributes.add(attribute)
+//            }
+//        }
+//        val attribute: String = attributes.joinToString("\n")
+//
+        return ""
     }
 
     private fun thousandNumber(m: Int): String {
@@ -160,73 +199,199 @@ class OrderTable: Table() {
         return price
     }
 
-    private fun getProductPriceID(): Int {
-
-        var price_id: Int = 0
-        if (product_type == "clothes") {
-            for (tmp in order_clothes) {
-                price_id = tmp.price_id
-            }
-        } else if (product_type == "racket") {
-            for (tmp in order_racket) {
-                price_id = tmp.price_id
-            }
-        } else if (product_type == "mejump") {
-            for (tmp in order_mejump) {
-                price_id = tmp.price_id
-            }
-        }
-        return price_id
-    }
+//    private fun getProductPriceID(): Int {
+//
+//        var price_id: Int = 0
+//        if (product_type == "clothes") {
+//            for (tmp in order_clothes) {
+//                price_id = tmp.price_id
+//            }
+//        } else if (product_type == "racket") {
+//            for (tmp in order_racket) {
+//                price_id = tmp.price_id
+//            }
+//        } else if (product_type == "mejump") {
+//            for (tmp in order_mejump) {
+//                price_id = tmp.price_id
+//            }
+//        }
+//        return price_id
+//    }
 
     private fun getProductPrice(): Int {
         //val price_id: Int = getProductPriceID()
 
         var product_price: Int = 9999999
-        if (product != null && product!!.prices.size > 0) {
-            val prices: ArrayList<ProductPriceTable> = product!!.prices
-            product_price = prices[0].price_member
-//            for price in prices {
-//                if price.id == price_id {
-//                    product_price = price.price_member
-//                    break
-//                }
-//            }
-        }
+//        if (product != null && product!!.prices.size > 0) {
+//            val prices: ArrayList<ProductPriceTable> = product!!.prices
+//            product_price = prices[0].price_member
+////            for price in prices {
+////                if price.id == price_id {
+////                    product_price = price.price_member
+////                    break
+////                }
+////            }
+//        }
         return product_price
     }
 }
 
-class OrderClothesTable: Table() {
+class OrderItemTable: Table() {
 
-    var order_id: Int = -1
-    var product_id: Int = -1
-    var price_id: Int = -1
-    var color: String = ""
-    var size: String = ""
-    var quantity: Int = -1
-    var price: Int = -1
-    var unit: String = "件"
+    var order_id: Int = 0
+    var product_id: Int = 0
+    var attribute: String = ""
+    var amount: Int = 0
+    var discount: Int = 0
+    var quantity: Int = 0
+    var product: ProductTable? = null
+
+    //[name: 尺寸]
+    //[alias: size]
+    //[value: M]
+    var attributes: ArrayList<HashMap<String, String>> = arrayListOf()
+
+    var amount_show: String = ""
+
+    override fun filterRow() {
+        super.filterRow()
+
+        product?.filterRow()
+
+        //{name:尺寸,alias:size,value:M}|{name:顏色,alias:color,value:藍色}
+        val tmps: Array<String> = attribute.split("|").toTypedArray()
+
+        for (tmp in tmps) {
+
+            //{name:尺寸,alias:size,value:M}
+            var _tmp = tmp.replace("{", "")
+            _tmp = _tmp.replace("}", "")
+
+            //name:尺寸,alias:size,value:M
+            val arr: Array<String> = _tmp.split(",").toTypedArray()
+
+            //name:尺寸
+            //alias:size
+            //value:M
+            val a: HashMap<String, String> = hashMapOf()
+            for (str in arr) {
+                val b: Array<String> = str.split(":").toTypedArray()
+                a[b[0]] = b[1]
+            }
+
+            attributes.add(a)
+        }
+
+        if (amount > 0) {
+            amount_show = "NT$ ${amount.formattedWithSeparator()} 元"
+        } else {
+            amount_show = "未提供"
+        }
+    }
 }
 
-class OrderRacketTable: Table() {
+class GatewayTable: Table() {
 
-    var order_id: Int = -1
-    var product_id: Int = -1
-    var price_id: Int = -1
-    var color: String = ""
-    var weight: String = ""
-    var quantity: Int = -1
-    var price: Int = -1
-    var unit: String = "隻"
+    var order_id: Int = 0
+    var method: String = ""
+    var process: String = ""
+    var card6No: String = ""
+    var card4No: String = ""
+    var pay_from: String = ""
+    var payment_no: String = ""
+    var gateway_at: String = ""
+    var expire_at: String = ""
+
+    var method_show: String = ""
+    var process_show: String = ""
+    var gateway_at_show: String = ""
+    var expire_at_show: String = ""
+
+    override fun filterRow() {
+        super.filterRow()
+
+        gateway_at_show = gateway_at.noSec()
+        expire_at_show = expire_at.noSec()
+        method_show = GATEWAY.getRawValueFromString(method)
+        process_show = GATEWAY_PROCESS.getRawValueFromString(process)
+    }
 }
 
-class OrderMeJumpTable: Table() {
+class ShippingTable: Table() {
 
     var order_id: Int = -1
-    var product_id: Int = -1
-    var price_id: Int = -1
-    var quantity: Int = -1
-    var price: Int = -1
-    var unit: String = "組"
+    var method: String = ""
+    var store_id: Int = 0
+    var store_name: String = ""
+    var store_address: String = ""
+    var store_tel: String = ""
+    var outside: Int = 0
+    var process: String = ""
+    var RtnCode: Int = 0
+    var RtnMsg: String = ""
+    var AllPayLogisticsID: String = ""
+    var amount: Int = 0
+
+    var shipping_at: String = ""
+    var store_at: String = ""
+    var complete_at: String = ""
+    var back_at: String = ""
+
+    var UpdateStatusDate: String = ""
+    var CVSPaymentNo: String = ""
+    var CVSValidationNo: String = ""
+    var BookingNote: String = ""
+
+    var method_show: String = ""
+    var process_show: String = ""
+    var shipping_at_show: String = ""
+    var store_at_show: String = ""
+    var complete_at_show: String = ""
+    var back_at_show: String = ""
+
+    override fun filterRow() {
+        super.filterRow()
+
+        method_show = SHIPPING_WAY.getRawValueFromString(method)
+        process_show = SHIPPING_PROCESS.getRawValueFromString(process)
+
+        shipping_at_show = shipping_at.noSec()
+        store_at_show = store_at.noSec()
+        complete_at_show = complete_at.noSec()
+        back_at_show = back_at.noSec()
+    }
 }
+
+//class OrderClothesTable: Table() {
+//
+//    var order_id: Int = -1
+//    var product_id: Int = -1
+//    var price_id: Int = -1
+//    var color: String = ""
+//    var size: String = ""
+//    var quantity: Int = -1
+//    var price: Int = -1
+//    var unit: String = "件"
+//}
+//
+//class OrderRacketTable: Table() {
+//
+//    var order_id: Int = -1
+//    var product_id: Int = -1
+//    var price_id: Int = -1
+//    var color: String = ""
+//    var weight: String = ""
+//    var quantity: Int = -1
+//    var price: Int = -1
+//    var unit: String = "隻"
+//}
+//
+//class OrderMeJumpTable: Table() {
+//
+//    var order_id: Int = -1
+//    var product_id: Int = -1
+//    var price_id: Int = -1
+//    var quantity: Int = -1
+//    var price: Int = -1
+//    var unit: String = "組"
+//}
