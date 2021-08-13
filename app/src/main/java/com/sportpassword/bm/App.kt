@@ -7,7 +7,7 @@ import android.content.pm.PackageManager
 import android.os.Build
 import android.preference.PreferenceManager
 import android.util.Log
-import com.onesignal.OSNotificationOpenResult
+//import com.onesignal.OSNotificationOpenResult
 import com.onesignal.OneSignal
 import com.sportpassword.bm.Models.Member
 import com.sportpassword.bm.Utilities.*
@@ -67,13 +67,15 @@ class App: Application() {
         }
 
         // OneSignal Initialization
-        OneSignal.startInit(this)
-                //.inFocusDisplaying()
-                //.unsubscribeWhenNotificationsAreDisabled(true)
-                .setNotificationReceivedHandler(MyNotificationReceivedHandler())
-                .setNotificationOpenedHandler(MyNotificationOpenedHandler())
-                .autoPromptLocation(true)
-                .init()
+        OneSignal.setLogLevel(OneSignal.LOG_LEVEL.VERBOSE, OneSignal.LOG_LEVEL.NONE)
+        OneSignal.initWithContext(this)
+        OneSignal.setAppId("856c8fdb-79fb-418d-a397-d58b9c6b880b")
+
+//        OneSignal.startInit(this)
+//                .setNotificationReceivedHandler(MyNotificationReceivedHandler())
+//                .setNotificationOpenedHandler(MyNotificationOpenedHandler())
+//                .autoPromptLocation(true)
+//                .init()
 
 //        AccountPreferenceManager.initializeInstance(this)
 //        val configBuilder: Configuration.Builder

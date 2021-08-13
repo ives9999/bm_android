@@ -15,7 +15,7 @@ import com.sportpassword.bm.Services.CourseService
 import com.sportpassword.bm.Utilities.*
 import com.sportpassword.bm.member
 import com.xwray.groupie.GroupAdapter
-import com.xwray.groupie.ViewHolder
+import com.xwray.groupie.GroupieViewHolder
 import com.xwray.groupie.kotlinandroidextensions.Item
 import kotlinx.android.synthetic.main.activity_show_course_vc.*
 import kotlinx.android.synthetic.main.mask.*
@@ -48,8 +48,8 @@ class ShowCourseVC : ShowVC() {
     var coachTable: CoachTable? = null
     var dateTable: DateTable? = null
 
-    lateinit var signupAdapter: GroupAdapter<ViewHolder>
-    lateinit var coachAdapter: GroupAdapter<ViewHolder>
+    lateinit var signupAdapter: GroupAdapter<GroupieViewHolder>
+    lateinit var coachAdapter: GroupAdapter<GroupieViewHolder>
 
     var signup_date: JSONObject = JSONObject()
     var isSignup: Boolean = false

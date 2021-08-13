@@ -104,7 +104,7 @@ open class SingleSelectVC : SelectVC() {
 
 class SingleSelectItem(val title: String, val value: String, val isSelected: Boolean, val rowClick:(idx: Int)->Unit): Item() {
 
-    override fun bind(viewHolder: com.xwray.groupie.kotlinandroidextensions.ViewHolder, position: Int) {
+    override fun bind(viewHolder: com.xwray.groupie.kotlinandroidextensions.GroupieViewHolder, position: Int) {
 
         viewHolder.title.text = title
         viewHolder.container.setOnClickListener {

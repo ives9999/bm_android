@@ -14,7 +14,7 @@ import com.squareup.picasso.Picasso
 import com.xwray.groupie.ExpandableGroup
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.Section
-import com.xwray.groupie.ViewHolder
+import com.xwray.groupie.GroupieViewHolder
 import com.xwray.groupie.kotlinandroidextensions.Item
 import kotlinx.android.synthetic.main.course_calendar_item.*
 import kotlinx.android.synthetic.main.mask.*
@@ -133,7 +133,7 @@ class CourseCalendarFragment : TabFragment() {
 
     class CalendarItem(val context: Context, val date: String, val superCourses: ArrayList<CourseTable>): Item() {
 
-        override fun bind(viewHolder: com.xwray.groupie.kotlinandroidextensions.ViewHolder, position: Int) {
+        override fun bind(viewHolder: com.xwray.groupie.kotlinandroidextensions.GroupieViewHolder, position: Int) {
 
             val d: Date = date.toDate()!!
             val weekday_i = d.dateToWeekday()

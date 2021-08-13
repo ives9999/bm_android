@@ -17,7 +17,7 @@ import kotlinx.android.synthetic.main.tab_course.*
 import java.util.*
 import kotlin.collections.ArrayList
 import com.xwray.groupie.kotlinandroidextensions.Item
-import com.xwray.groupie.kotlinandroidextensions.ViewHolder
+import com.xwray.groupie.kotlinandroidextensions.GroupieViewHolder
 import kotlinx.android.synthetic.main.tab_course.list_container
 import kotlinx.android.synthetic.main.tab_course.tab_refresh
 import kotlinx.android.synthetic.main.tab_course_calendar.*
@@ -214,7 +214,7 @@ class CourseCalendarVC: MyTableVC() {
 
 class CourseCalendarItem(val context: Context, val date: String, val superCourses: ArrayList<CourseTable>): Item() {
 
-    override fun bind(viewHolder: ViewHolder, position: Int) {
+    override fun bind(viewHolder: GroupieViewHolder, position: Int) {
 
         val d: Date = date.toDate()!!
         val weekday_i = d.dateToWeekday()

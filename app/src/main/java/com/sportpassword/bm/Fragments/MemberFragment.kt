@@ -14,7 +14,7 @@ import com.sportpassword.bm.member
 import com.xwray.groupie.ExpandableGroup
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.Section
-import com.xwray.groupie.ViewHolder
+import com.xwray.groupie.GroupieViewHolder
 import com.xwray.groupie.kotlinandroidextensions.Item
 import kotlinx.android.synthetic.main.adapter_member_functions.*
 import kotlinx.android.synthetic.main.login_out.*
@@ -226,7 +226,7 @@ class MemberFragment: TabFragment() {
         return items
     }
 
-    override fun rowClick(item: com.xwray.groupie.Item<ViewHolder>, view: View) {
+    override fun rowClick(item: com.xwray.groupie.Item<GroupieViewHolder>, view: View) {
 
         val memberItem = item as MemberItem
         val row = memberItem.row
@@ -356,7 +356,7 @@ class MemberFragment: TabFragment() {
     }
 
     class MemberItem(val context: Context, val row: Map<String, String>): Item() {
-        override fun bind(viewHolder: com.xwray.groupie.kotlinandroidextensions.ViewHolder, position: Int) {
+        override fun bind(viewHolder: com.xwray.groupie.kotlinandroidextensions.GroupieViewHolder, position: Int) {
 
             if (row.containsKey("text")) {
                 val text: String = row["text"]!!

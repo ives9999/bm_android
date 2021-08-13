@@ -12,9 +12,9 @@ import com.sportpassword.bm.Form.FormItem.FormItem
 import com.sportpassword.bm.Form.FormItemCellType
 import com.sportpassword.bm.Form.ValueChangedDelegate
 import com.sportpassword.bm.R
-import com.sportpassword.bm.Utilities.IndexPath
 import com.xwray.groupie.kotlinandroidextensions.Item
-import com.xwray.groupie.kotlinandroidextensions.ViewHolder
+import com.xwray.groupie.kotlinandroidextensions.GroupieViewHolder
+
 import kotlinx.android.synthetic.main.formitem_more.*
 import kotlinx.android.synthetic.main.formitem_plain.*
 import kotlinx.android.synthetic.main.formitem_textfield.*
@@ -61,7 +61,7 @@ open class FormItemAdapter1(sectionKey: String, rowKey: String, title: String, v
         return R.layout.formitem_plain
     }
 
-    override fun bind(viewHolder: ViewHolder, position: Int) {
+    override fun bind(viewHolder: GroupieViewHolder, position: Int) {
 
         viewHolder.title.text = title
     }
@@ -83,7 +83,7 @@ open class FormItemAdapter(formItem: FormItem, val clearClick:(formItem: FormIte
         return formItem.uiProperties.cellType!!.registerCell()
     }
 
-    override fun bind(viewHolder: ViewHolder, position: Int) {
+    override fun bind(viewHolder: GroupieViewHolder, position: Int) {
         viewHolder.title.text = formItem.title
         if (formItem.value != null) {
             viewHolder.clear.visibility = View.VISIBLE

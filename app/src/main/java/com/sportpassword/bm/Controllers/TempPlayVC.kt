@@ -80,7 +80,7 @@ class TempPlayVC : MyTableVC() {
         return items
     }
 
-    override fun rowClick(item: com.xwray.groupie.Item<com.xwray.groupie.ViewHolder>, view: View) {
+    override fun rowClick(item: com.xwray.groupie.Item<com.xwray.groupie.GroupieViewHolder>, view: View) {
 
         val myItem = item as TeamItem
         val table = myItem.row

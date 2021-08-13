@@ -6,7 +6,7 @@ import com.sportpassword.bm.Form.BaseForm
 import com.sportpassword.bm.Form.FormItem.FormItem
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Utilities.IndexPath
-import com.xwray.groupie.kotlinandroidextensions.ViewHolder
+import com.xwray.groupie.kotlinandroidextensions.GroupieViewHolder
 import kotlinx.android.synthetic.main.formitem_sex.*
 
 class SexAdapter(formItem: FormItem): FormItemAdapter(formItem) {
@@ -22,7 +22,7 @@ class SexAdapter(formItem: FormItem): FormItemAdapter(formItem) {
         return R.layout.formitem_sex
     }
 
-    override fun bind(viewHolder: ViewHolder, position: Int) {
+    override fun bind(viewHolder: GroupieViewHolder, position: Int) {
 
         viewHolder.title.text = formItem.title
 

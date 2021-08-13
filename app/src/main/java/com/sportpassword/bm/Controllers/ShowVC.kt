@@ -10,7 +10,7 @@ import com.sportpassword.bm.Utilities.Loading
 import com.sportpassword.bm.Utilities.image
 import com.sportpassword.bm.member
 import com.xwray.groupie.GroupAdapter
-import com.xwray.groupie.ViewHolder
+import com.xwray.groupie.GroupieViewHolder
 import com.xwray.groupie.kotlinandroidextensions.Item
 import kotlinx.android.synthetic.main.activity_show_course_vc.*
 import kotlinx.android.synthetic.main.mask.*
@@ -28,7 +28,7 @@ open class ShowVC: BaseActivity(), IconCellDelegate {
     var isLike: Boolean = false
     var likeCount: Int = 0
 
-    lateinit var adapter: GroupAdapter<ViewHolder>
+    lateinit var adapter: GroupAdapter<GroupieViewHolder>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

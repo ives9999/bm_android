@@ -20,7 +20,7 @@ import com.sportpassword.bm.Utilities.*
 import com.squareup.picasso.Picasso
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.kotlinandroidextensions.Item
-import com.xwray.groupie.kotlinandroidextensions.ViewHolder
+import com.xwray.groupie.kotlinandroidextensions.GroupieViewHolder
 import kotlinx.android.synthetic.main.activity_show_coach_vc.*
 import kotlinx.android.synthetic.main.activity_show_coach_vc.featured
 import kotlinx.android.synthetic.main.manager_course_item.*
@@ -47,7 +47,7 @@ class ShowCoachVC: ShowVC() {
     val eventViews: ArrayList<ViewGroup> = arrayListOf()
     var eventTag: Int = 0
 
-    lateinit var courseAdapter: GroupAdapter<ViewHolder>
+    lateinit var courseAdapter: GroupAdapter<GroupieViewHolder>
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -425,7 +425,7 @@ class ShowCoachVC: ShowVC() {
 }
 
 class CoachCourseItem(val context: Context, val courseTable: CourseTable): Item() {
-    override fun bind(viewHolder: com.xwray.groupie.kotlinandroidextensions.ViewHolder, position: Int) {
+    override fun bind(viewHolder: com.xwray.groupie.kotlinandroidextensions.GroupieViewHolder, position: Int) {
         viewHolder.title.text = courseTable.title
         Picasso.with(context)
             .load(BASE_URL + courseTable.featured_path)

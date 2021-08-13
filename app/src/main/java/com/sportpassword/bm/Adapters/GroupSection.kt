@@ -13,7 +13,7 @@ class GroupSection(val title: String, val show: Boolean=true): Item(), Expandabl
 
     override fun getLayout() = R.layout.search_section_item
 
-    override fun bind(viewHolder: com.xwray.groupie.kotlinandroidextensions.ViewHolder, position: Int) {
+    override fun bind(viewHolder: com.xwray.groupie.kotlinandroidextensions.GroupieViewHolder, position: Int) {
         viewHolder.section_title.text = title
         viewHolder.collapse.setImageResource(getExpandIcon())
 

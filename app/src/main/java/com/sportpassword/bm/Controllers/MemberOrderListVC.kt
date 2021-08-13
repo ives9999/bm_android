@@ -16,7 +16,7 @@ import com.sportpassword.bm.member
 import com.squareup.picasso.Picasso
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.kotlinandroidextensions.Item
-import com.xwray.groupie.kotlinandroidextensions.ViewHolder
+import com.xwray.groupie.kotlinandroidextensions.GroupieViewHolder
 import kotlinx.android.synthetic.main.activity_member_order_list_vc.*
 import kotlinx.android.synthetic.main.mask.*
 import kotlinx.android.synthetic.main.order_list_cell.*
@@ -83,7 +83,7 @@ class MemberOrderListVC : MyTableVC() {
         return items
     }
 
-    override fun rowClick(item: com.xwray.groupie.Item<com.xwray.groupie.ViewHolder>, view: View) {
+    override fun rowClick(item: com.xwray.groupie.Item<com.xwray.groupie.GroupieViewHolder>, view: View) {
 
         val orderItem = item as OrderItem
         val table = orderItem.row
@@ -130,7 +130,7 @@ class OrderItem(val context: Context, val row: OrderTable): Item() {
 
     //var list1CellDelegate: List1CellDelegate? = null
 
-    override fun bind(viewHolder: ViewHolder, position: Int) {
+    override fun bind(viewHolder: GroupieViewHolder, position: Int) {
 
         viewHolder.nameLbl.text = row.product!!.name
         viewHolder.dateLbl.text = row.created_at_show

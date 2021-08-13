@@ -6,7 +6,7 @@ import androidx.core.content.ContextCompat
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Utilities.setImage
 import com.xwray.groupie.kotlinandroidextensions.Item
-import com.xwray.groupie.kotlinandroidextensions.ViewHolder
+import com.xwray.groupie.kotlinandroidextensions.GroupieViewHolder
 import kotlinx.android.synthetic.main.olcell.*
 import org.jetbrains.anko.textColor
 
@@ -14,7 +14,7 @@ class OlCell(val context: Context, val number: String, val name: String="", val 
 
     var delegate: IconCellDelegate? = null
 
-    override fun bind(viewHolder: ViewHolder, position: Int) {
+    override fun bind(viewHolder: GroupieViewHolder, position: Int) {
         viewHolder.number.text = number + "."
         viewHolder.name.text = name
         viewHolder.itemView.setOnClickListener {

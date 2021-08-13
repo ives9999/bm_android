@@ -6,7 +6,7 @@ import android.os.Bundle
 import android.view.View
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Utilities.MYCOLOR
-import com.xwray.groupie.ViewHolder
+import com.xwray.groupie.GroupieViewHolder
 import com.xwray.groupie.kotlinandroidextensions.Item
 import kotlinx.android.synthetic.main.color_select_item.*
 import kotlinx.android.synthetic.main.mytablevc.*
@@ -65,7 +65,7 @@ class ColorSelectVC: MyTableVC() {
         return items
     }
 
-    override fun rowClick(item: com.xwray.groupie.Item<ViewHolder>, view: View) {
+    override fun rowClick(item: com.xwray.groupie.Item<GroupieViewHolder>, view: View) {
         val colorItem = item as ColorItem
         val key = colorItem.key
         val colorType = MYCOLOR.from(key)
@@ -108,7 +108,7 @@ class ColorSelectVC: MyTableVC() {
 }
 
 class ColorItem(val color: Int, val key: String, val isSelected: Boolean): Item() {
-    override fun bind(viewHolder: com.xwray.groupie.kotlinandroidextensions.ViewHolder, position: Int) {
+    override fun bind(viewHolder: com.xwray.groupie.kotlinandroidextensions.GroupieViewHolder, position: Int) {
         viewHolder.color.backgroundColor = color
         if (isSelected) {
             viewHolder.isSelected.visibility = View.VISIBLE

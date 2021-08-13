@@ -117,7 +117,7 @@ open class MultiSelectVC : SelectVC() {
 class MultiSelectItem(val title: String, val value: String, val isSelected: Boolean, val delegate: MultiSelectVC): Item() {
 
 
-    override fun bind(viewHolder: com.xwray.groupie.kotlinandroidextensions.ViewHolder, position: Int) {
+    override fun bind(viewHolder: com.xwray.groupie.kotlinandroidextensions.GroupieViewHolder, position: Int) {
 
         viewHolder.title.text = title
         viewHolder.container.setOnClickListener {

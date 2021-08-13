@@ -17,7 +17,7 @@ import kotlinx.android.synthetic.main.activity_arena_vc.*
 import com.sportpassword.bm.Utilities.*
 import com.squareup.picasso.Picasso
 import com.xwray.groupie.kotlinandroidextensions.Item
-import com.xwray.groupie.kotlinandroidextensions.ViewHolder
+import com.xwray.groupie.kotlinandroidextensions.GroupieViewHolder
 import kotlinx.android.synthetic.main.activity_store_vc.*
 import kotlinx.android.synthetic.main.arena_list_cell.*
 import kotlinx.android.synthetic.main.arena_list_cell.cityBtn
@@ -112,7 +112,7 @@ class ArenaVC : MyTableVC() {
         }
     }
 
-    override fun rowClick(item: com.xwray.groupie.Item<com.xwray.groupie.ViewHolder>, view: View) {
+    override fun rowClick(item: com.xwray.groupie.Item<com.xwray.groupie.GroupieViewHolder>, view: View) {
 
         val arenaItem = item as ArenaItem
         val table = arenaItem.row
@@ -156,7 +156,7 @@ class ArenaVC : MyTableVC() {
 
 class ArenaItem(override var context: Context, var _row: ArenaTable): ListItem<Table>(context, _row) {
 
-    override fun bind(viewHolder: ViewHolder, position: Int) {
+    override fun bind(viewHolder: GroupieViewHolder, position: Int) {
 
         //println(superStore);
 

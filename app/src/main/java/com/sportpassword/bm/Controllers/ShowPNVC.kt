@@ -47,10 +47,10 @@ class ShowPNVC : MyTableVC(), OSPermissionObserver {
 //
 //        }
 
-        val status = OneSignal.getPermissionSubscriptionState()
-        isReceive = status.permissionStatus.enabled
-        //println("hasPrompt status is $hasPrompt")
-        setupSwitch.isChecked = isReceive
+//        val status = OneSignal.getPermissionSubscriptionState()
+//        isReceive = status.permissionStatus.enabled
+//        //println("hasPrompt status is $hasPrompt")
+//        setupSwitch.isChecked = isReceive
 
         setupSwitch.setOnCheckedChangeListener { compoundButton, b ->
             //println(b)
@@ -123,9 +123,9 @@ class ShowPNVC : MyTableVC(), OSPermissionObserver {
 
     override fun onOSPermissionChanged(stateChanges: OSPermissionStateChanges?) {
         if (stateChanges != null) {
-            isReceive = stateChanges!!.from.enabled
+            //isReceive = stateChanges.from.enabled
             //switch change status
-            setupSwitch.isChecked = isReceive
+            //setupSwitch.isChecked = isReceive
         }
     }
 
@@ -147,7 +147,7 @@ class ShowPNVC : MyTableVC(), OSPermissionObserver {
 
 class PNItem(val id: String, val title: String, val content: String, val pnID: String, val removeClick:(String)->Unit): Item() {
 
-    override fun bind(viewHolder: com.xwray.groupie.kotlinandroidextensions.ViewHolder, position: Int) {
+    override fun bind(viewHolder: com.xwray.groupie.kotlinandroidextensions.GroupieViewHolder, position: Int) {
         viewHolder.idLbl.setText(id)
         viewHolder.pnidLbl.setText(pnID)
         if (title.length > 0) {

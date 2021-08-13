@@ -5,7 +5,7 @@ import android.view.View
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Utilities.setImage
 import com.xwray.groupie.kotlinandroidextensions.Item
-import com.xwray.groupie.ViewHolder
+import com.xwray.groupie.GroupieViewHolder
 import kotlinx.android.synthetic.main.function_item.*
 import kotlinx.android.synthetic.main.manager_function_vc.*
 
@@ -75,7 +75,7 @@ class ManagerFunctionVC1 : MyTableVC() {
         return items
     }
 
-    override fun rowClick(item: com.xwray.groupie.Item<ViewHolder>, view: View) {
+    override fun rowClick(item: com.xwray.groupie.Item<GroupieViewHolder>, view: View) {
         val functionItem = item as FunctionItem
         val source = functionItem.source
         val key = functionItem.key
@@ -111,7 +111,7 @@ class ManagerFunctionVC1 : MyTableVC() {
 }
 
 class FunctionItem(val source: String, val icon: String, val text: String, val key: String): Item() {
-    override fun bind(viewHolder: com.xwray.groupie.kotlinandroidextensions.ViewHolder, position: Int) {
+    override fun bind(viewHolder: com.xwray.groupie.kotlinandroidextensions.GroupieViewHolder, position: Int) {
         viewHolder.icon.setImage(icon)
         viewHolder.text.text = text
     }

@@ -47,7 +47,7 @@ import com.sportpassword.bm.Views.ImagePicker
 import com.sportpassword.bm.Views.SearchPanel
 import com.sportpassword.bm.member
 import com.xwray.groupie.GroupAdapter
-import com.xwray.groupie.ViewHolder
+import com.xwray.groupie.GroupieViewHolder
 import kotlinx.android.synthetic.main.mask.*
 import org.jetbrains.anko.*
 import org.json.JSONArray
@@ -121,7 +121,7 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
     var arenas: ArrayList<ArenaTable> = arrayListOf()
     var degrees: ArrayList<DEGREE> = arrayListOf()
     var keyword: String = ""
-    lateinit var searchAdapter: GroupAdapter<ViewHolder>
+    lateinit var searchAdapter: GroupAdapter<GroupieViewHolder>
     var params: HashMap<String, Any> = hashMapOf()
 
     var searchPanel: SearchPanel = SearchPanel()
@@ -847,9 +847,14 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
 
     protected fun _getPlayerID(): String {
         var playerID = ""
-        OneSignal.idsAvailable { userId, registrationId ->
-            playerID = userId
+        val deviceState = OneSignal.getDeviceState()
+        if (deviceState != null) {
+            playerID = deviceState.userId
         }
+
+//        OneSignal.idsAvailable { userId, registrationId ->
+//            playerID = userId
+//        }
         return playerID
     }
 
@@ -1222,7 +1227,7 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
         searchTableView.layoutManager = LinearLayoutManager(this)
         //searchTableView.backgroundColor = Color.RED
         searchTableView.backgroundColor = Color.TRANSPARENT
-        searchAdapter = GroupAdapter<ViewHolder>()
+        searchAdapter = GroupAdapter<GroupieViewHolder>()
         searchAdapter.setOnItemClickListener { item, view ->
             val searchItem = item as SearchItem
             val row = searchItem.row

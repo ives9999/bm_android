@@ -18,7 +18,7 @@ import com.sportpassword.bm.R
 import com.sportpassword.bm.Utilities.setImage
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.kotlinandroidextensions.Item
-import com.xwray.groupie.kotlinandroidextensions.ViewHolder
+import com.xwray.groupie.kotlinandroidextensions.GroupieViewHolder
 import kotlinx.android.synthetic.main.function_item.*
 import kotlinx.android.synthetic.main.function_item.text
 import kotlinx.android.synthetic.main.mask.*
@@ -91,7 +91,7 @@ class MoreFragment : TabFragment() {
         return items
     }
 
-    override fun rowClick(item: com.xwray.groupie.Item<com.xwray.groupie.ViewHolder>, view: View) {
+    override fun rowClick(item: com.xwray.groupie.Item<com.xwray.groupie.GroupieViewHolder>, view: View) {
 
         val row = (item as MoreItem).row
         if (row.containsKey("key") && row["key"] != null) {
@@ -153,7 +153,7 @@ class MoreItem(val context: Context, val row: HashMap<String, Any>): Item() {
 
     var list1CellDelegate: List1CellDelegate? = null
 
-    override fun bind(viewHolder: ViewHolder, position: Int) {
+    override fun bind(viewHolder: GroupieViewHolder, position: Int) {
 
         if (row.containsKey("icon") && row["icon"] != null) {
             viewHolder.icon.setImage(row["icon"]!! as String)

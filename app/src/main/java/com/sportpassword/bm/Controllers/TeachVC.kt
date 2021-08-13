@@ -10,7 +10,7 @@ import com.sportpassword.bm.Services.TeachService
 import kotlinx.android.synthetic.main.activity_teach_vc.*
 import com.sportpassword.bm.Utilities.*
 import com.xwray.groupie.kotlinandroidextensions.Item
-import com.xwray.groupie.kotlinandroidextensions.ViewHolder
+import com.xwray.groupie.kotlinandroidextensions.GroupieViewHolder
 import kotlinx.android.synthetic.main.activity_store_vc.*
 import kotlinx.android.synthetic.main.teach_list_cell.*
 
@@ -69,7 +69,7 @@ class TeachVC : MyTableVC() {
         return items
     }
 
-    override fun rowClick(item: com.xwray.groupie.Item<com.xwray.groupie.ViewHolder>, view: View) {
+    override fun rowClick(item: com.xwray.groupie.Item<com.xwray.groupie.GroupieViewHolder>, view: View) {
 
         val teachItem = item as TeachItem
         val table = teachItem.row
@@ -79,7 +79,7 @@ class TeachVC : MyTableVC() {
 
 class TeachItem(override var context: Context, var _row: TeachTable): ListItem<Table>(context, _row) {
 
-    override fun bind(viewHolder: ViewHolder, position: Int) {
+    override fun bind(viewHolder: GroupieViewHolder, position: Int) {
 
         super.bind(viewHolder, position)
 

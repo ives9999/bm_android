@@ -22,7 +22,7 @@ class SearchItem(val title: String, val detail: String, val keyword: String, val
 
     override fun getLayout() = R.layout.search_row_item
 
-    override fun bind(viewHolder: com.xwray.groupie.kotlinandroidextensions.ViewHolder, position: Int) {
+    override fun bind(viewHolder: com.xwray.groupie.kotlinandroidextensions.GroupieViewHolder, position: Int) {
 
         viewHolder.row_title.text = title
         viewHolder.row_detail.text = detail

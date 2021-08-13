@@ -15,7 +15,7 @@ import com.sportpassword.bm.Utilities.jsonToModel
 //import com.sportpassword.bm.Services.StoreService
 import com.squareup.picasso.Picasso
 import com.xwray.groupie.kotlinandroidextensions.Item
-import com.xwray.groupie.kotlinandroidextensions.ViewHolder
+import com.xwray.groupie.kotlinandroidextensions.GroupieViewHolder
 import kotlinx.android.synthetic.main.activity_store_vc.*
 import kotlinx.android.synthetic.main.coach_list_cell.*
 import kotlinx.android.synthetic.main.coach_list_cell.cityBtn
@@ -87,7 +87,7 @@ class CoachVC : MyTableVC() {
         return items
     }
 
-    override fun rowClick(item: com.xwray.groupie.Item<com.xwray.groupie.ViewHolder>, view: View) {
+    override fun rowClick(item: com.xwray.groupie.Item<com.xwray.groupie.GroupieViewHolder>, view: View) {
 
         val coachItem = item as CoachItem
         val myTable = coachItem.row
@@ -131,7 +131,7 @@ class CoachVC : MyTableVC() {
 
 class CoachItem(override var context: Context, var _row: CoachTable): ListItem<Table>(context, _row) {
 
-    override fun bind(viewHolder: ViewHolder, position: Int) {
+    override fun bind(viewHolder: GroupieViewHolder, position: Int) {
 
         super.bind(viewHolder, position)
 

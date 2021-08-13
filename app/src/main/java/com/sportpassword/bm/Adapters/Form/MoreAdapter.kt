@@ -10,7 +10,7 @@ import com.sportpassword.bm.Form.FormItem.FormItem
 import com.sportpassword.bm.Form.FormItemCellType
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Utilities.IndexPath
-import com.xwray.groupie.kotlinandroidextensions.ViewHolder
+import com.xwray.groupie.kotlinandroidextensions.GroupieViewHolder
 import kotlinx.android.synthetic.main.formitem_more.*
 import kotlinx.android.synthetic.main.formitem_more.clear
 import kotlinx.android.synthetic.main.formitem_more.container
@@ -27,7 +27,7 @@ class MoreAdapter(formItem: FormItem, clearClick:(formItem: FormItem)->Unit, val
         return R.layout.formitem_more
     }
 
-    override fun bind(viewHolder: ViewHolder, position: Int) {
+    override fun bind(viewHolder: GroupieViewHolder, position: Int) {
 
         viewHolder.title.text = formItem.title
         if (formItem.value != null) {

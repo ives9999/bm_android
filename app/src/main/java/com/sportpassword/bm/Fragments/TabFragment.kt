@@ -29,7 +29,7 @@ import com.squareup.picasso.Picasso
 import com.xwray.groupie.ExpandableGroup
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.Section
-import com.xwray.groupie.ViewHolder
+import com.xwray.groupie.GroupieViewHolder
 import com.xwray.groupie.kotlinandroidextensions.Item
 import kotlinx.android.synthetic.main.course_list_cell.*
 import kotlinx.android.synthetic.main.course_list_cell.likeIcon
@@ -70,7 +70,7 @@ open class TabFragment : Fragment(), SearchItemDelegate, List1CellDelegate, Seri
     protected lateinit var recyclerView: RecyclerView
     protected lateinit var refreshLayout: SwipeRefreshLayout
     //protected lateinit var listAdapter: ListAdapter
-    protected lateinit var adapter: GroupAdapter<ViewHolder>
+    protected lateinit var adapter: GroupAdapter<GroupieViewHolder>
     var sections: ArrayList<String> = arrayListOf()
     protected val adapterSections: ArrayList<Section> = arrayListOf()
 
@@ -291,7 +291,7 @@ open class TabFragment : Fragment(), SearchItemDelegate, List1CellDelegate, Seri
         return arrayListOf()
     }
 
-    open fun rowClick(item: com.xwray.groupie.Item<ViewHolder>, view: View) {}
+    open fun rowClick(item: com.xwray.groupie.Item<GroupieViewHolder>, view: View) {}
 
 //    open protected fun notifyDataSetChanged() {
 //        if (page == 1) {
@@ -552,7 +552,7 @@ open class ListItem<T: Table>(open var context: Context, open var row: T): Item(
     var isLike: Boolean = false
 
     override fun bind(
-        viewHolder: com.xwray.groupie.kotlinandroidextensions.ViewHolder,
+        viewHolder: com.xwray.groupie.kotlinandroidextensions.GroupieViewHolder,
         position: Int
     ) {
         val v = viewHolder.containerView
@@ -628,7 +628,7 @@ open class ListItem<T: Table>(open var context: Context, open var row: T): Item(
 
     override fun getLayout() = R.layout.course_list_cell
 
-    fun setLike(viewHolder: com.xwray.groupie.kotlinandroidextensions.ViewHolder) {
+    fun setLike(viewHolder: com.xwray.groupie.kotlinandroidextensions.GroupieViewHolder) {
         isLike = !isLike
         if (isLike) {
             viewHolder.likeIcon.setImage("like1")

@@ -18,7 +18,7 @@ import com.sportpassword.bm.R
 import com.sportpassword.bm.Utilities.IndexPath
 import com.sportpassword.bm.Utilities.quotientAndRemainder
 import com.sportpassword.bm.Views.Tag
-import com.xwray.groupie.kotlinandroidextensions.ViewHolder
+import com.xwray.groupie.kotlinandroidextensions.GroupieViewHolder
 import kotlinx.android.synthetic.main.formitem_tag.*
 import kotlinx.android.synthetic.main.tag.view.*
 import org.jetbrains.anko.Orientation
@@ -37,7 +37,7 @@ class TagAdapter1(sectionKey: String, rowKey: String, title: String, value: Stri
 
     override fun getLayout() = R.layout.formitem_tag
 
-    override fun bind(viewHolder: ViewHolder, position: Int) {
+    override fun bind(viewHolder: GroupieViewHolder, position: Int) {
 
         super.bind(viewHolder, position)
         val context: Context = viewHolder.title.context
@@ -124,7 +124,7 @@ class TagAdapter(formItem: FormItem): FormItemAdapter(formItem) {
         return R.layout.formitem_tag
     }
 
-    override fun bind(viewHolder: ViewHolder, position: Int) {
+    override fun bind(viewHolder: GroupieViewHolder, position: Int) {
         viewHolder.title.text = formItem.title
         val context: Context = viewHolder.title.context
 

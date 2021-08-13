@@ -24,7 +24,7 @@ import kotlinx.android.parcel.Parcelize
 import kotlinx.android.synthetic.main.activity_edit_team_item.*
 import kotlinx.android.synthetic.main.activity_edit_team_item_adapter.view.*
 import com.xwray.groupie.kotlinandroidextensions.Item
-import com.xwray.groupie.kotlinandroidextensions.ViewHolder
+import com.xwray.groupie.kotlinandroidextensions.GroupieViewHolder
 import kotlinx.android.synthetic.main.activity_edit_team_item_adapter.*
 import kotlinx.android.synthetic.main.mask.*
 import java.util.*
@@ -33,8 +33,8 @@ class EditItemActivity() : BaseActivity() {
 
     lateinit var key: String
     lateinit var editTeamItemAdapter: EditTeamItemAdapter
-    lateinit var arenaAdapter: GroupAdapter<ViewHolder>
-    lateinit var areaAdapter: GroupAdapter<ViewHolder>
+    lateinit var arenaAdapter: GroupAdapter<GroupieViewHolder>
+    lateinit var areaAdapter: GroupAdapter<GroupieViewHolder>
 
     var allCitys: ArrayList<City> = arrayListOf()
     var citysandarenas: HashMap<Int, HashMap<String, Any>> = hashMapOf()
@@ -541,7 +541,7 @@ class EditItemActivity() : BaseActivity() {
 //
 //    override fun getLayout() = R.layout.activity_edit_team_item_adapter
 //
-//    override fun bind(viewHolder: ViewHolder, position: Int) {
+//    override fun bind(viewHolder: GroupieViewHolder, position: Int) {
 //
 //        viewHolder.item1.text = arena.name
 //        toggleClick(viewHolder.itemView, checked)
@@ -577,7 +577,7 @@ class AreaItem(val context: Context, val area: Area, val checked: Boolean=false)
 
     override fun getLayout() = R.layout.activity_edit_team_item_adapter
 
-    override fun bind(viewHolder: ViewHolder, position: Int) {
+    override fun bind(viewHolder: GroupieViewHolder, position: Int) {
 
         viewHolder.item1.text = area.name
         toggleClick(viewHolder.itemView, checked)

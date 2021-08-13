@@ -5,7 +5,7 @@ import android.text.TextWatcher
 import android.view.View
 import com.sportpassword.bm.Form.FormItem.FormItem
 import com.sportpassword.bm.R
-import com.xwray.groupie.kotlinandroidextensions.ViewHolder
+import com.xwray.groupie.kotlinandroidextensions.GroupieViewHolder
 import kotlinx.android.synthetic.main.formitem_textfield.*
 
 open class TextFieldAdapter(formItem: FormItem, clearClick:(formItem: FormItem)->Unit, promptClick:(formItem: FormItem)->Unit): FormItemAdapter(formItem, clearClick, promptClick) {
@@ -16,7 +16,7 @@ open class TextFieldAdapter(formItem: FormItem, clearClick:(formItem: FormItem)-
         return R.layout.formitem_textfield
     }
 
-    override fun bind(viewHolder: ViewHolder, position: Int) {
+    override fun bind(viewHolder: GroupieViewHolder, position: Int) {
 
         //val formItem: TextFieldFormItem = form.formItems[position] as TextFieldFormItem
 //        if (formItem.name == MOBILE_KEY) {

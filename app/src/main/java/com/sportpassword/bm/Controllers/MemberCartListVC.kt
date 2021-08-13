@@ -14,7 +14,7 @@ import com.sportpassword.bm.Utilities.jsonToModels
 import com.sportpassword.bm.member
 import com.squareup.picasso.Picasso
 import com.xwray.groupie.kotlinandroidextensions.Item
-import com.xwray.groupie.kotlinandroidextensions.ViewHolder
+import com.xwray.groupie.kotlinandroidextensions.GroupieViewHolder
 import kotlinx.android.synthetic.main.activity_member_cart_list_vc.*
 import kotlinx.android.synthetic.main.mask.*
 import kotlinx.android.synthetic.main.cart_list_cell.*
@@ -100,7 +100,7 @@ class MemberCartListVC : MyTableVC() {
 class CartItemItem(override var context: Context, var _row: CartItemTable): ListItem<Table>(context, _row) {
 
 
-    override fun bind(viewHolder: ViewHolder, position: Int) {
+    override fun bind(viewHolder: GroupieViewHolder, position: Int) {
 
         super.bind(viewHolder, position)
 

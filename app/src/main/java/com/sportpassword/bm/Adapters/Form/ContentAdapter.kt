@@ -5,7 +5,8 @@ import android.view.View
 import com.sportpassword.bm.Form.BaseForm
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Utilities.IndexPath
-import com.xwray.groupie.kotlinandroidextensions.ViewHolder
+//import com.xwray.groupie.kotlinandroidextensions.GroupieViewHolder
+import com.xwray.groupie.kotlinandroidextensions.GroupieViewHolder
 import kotlinx.android.synthetic.main.formitem_content.*
 import org.jetbrains.anko.backgroundColor
 import com.sportpassword.bm.Form.FormItem.FormItem
@@ -17,7 +18,7 @@ class ContentAdapter(formItem: FormItem, clearClick:(formItem: FormItem)->Unit, 
         return R.layout.formitem_content
     }
 
-    override fun bind(viewHolder: ViewHolder, position: Int) {
+    override fun bind(viewHolder: GroupieViewHolder, position: Int) {
 
         viewHolder.title.text = formItem.title
         if (formItem.value != null) {

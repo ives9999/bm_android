@@ -23,7 +23,7 @@ import com.sportpassword.bm.Utilities.*
 import com.sportpassword.bm.member
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.kotlinandroidextensions.Item
-import com.xwray.groupie.kotlinandroidextensions.ViewHolder
+import com.xwray.groupie.kotlinandroidextensions.GroupieViewHolder
 import kotlinx.android.synthetic.main.activity_show_timetable_vc.*
 import kotlinx.android.synthetic.main.iconcell.*
 import kotlinx.android.synthetic.main.mask.*
@@ -60,8 +60,8 @@ class ShowTimetableVC : BaseActivity(), IconCellDelegate {
     var timetable: Timetable? = null
     var superCoach: CoachTable? = null
 
-    lateinit var timetableAdapter: GroupAdapter<ViewHolder>
-    lateinit var coachAdapter: GroupAdapter<ViewHolder>
+    lateinit var timetableAdapter: GroupAdapter<GroupieViewHolder>
+    lateinit var coachAdapter: GroupAdapter<GroupieViewHolder>
 
     var isSignup: Boolean = false
 

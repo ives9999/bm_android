@@ -117,7 +117,7 @@ class SignupListVC : MyTableVC() {
 
 class SignupItem(val no: Int, val signuper: String, val signupTime: String, val courseDate: String): Item() {
 
-    override fun bind(viewHolder: com.xwray.groupie.kotlinandroidextensions.ViewHolder, position: Int) {
+    override fun bind(viewHolder: com.xwray.groupie.kotlinandroidextensions.GroupieViewHolder, position: Int) {
         var _no = no.toString()
         if (no == 0) {
             _no = "序號"

@@ -10,7 +10,7 @@ import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.ArenaService
 import com.sportpassword.bm.Utilities.* import com.squareup.picasso.Picasso
 import com.xwray.groupie.GroupAdapter
-import com.xwray.groupie.ViewHolder
+import com.xwray.groupie.GroupieViewHolder
 import com.xwray.groupie.kotlinandroidextensions.Item
 import kotlinx.android.synthetic.main.mask.*
 import kotlinx.android.synthetic.main.tab_course.*
@@ -149,7 +149,7 @@ class ArenaFragment : TabFragment() {
         return items
     }
 
-    override fun rowClick(item: com.xwray.groupie.Item<ViewHolder>, view: View) {
+    override fun rowClick(item: com.xwray.groupie.Item<GroupieViewHolder>, view: View) {
 
         val arenaItem = item as ArenaItem
         val table = arenaItem.row

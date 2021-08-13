@@ -15,7 +15,7 @@ import com.sportpassword.bm.Utilities.ARENA_KEY
 import com.sportpassword.bm.Utilities.Global
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.kotlinandroidextensions.Item
-import com.xwray.groupie.ViewHolder
+import com.xwray.groupie.GroupieViewHolder
 import kotlinx.android.synthetic.main.activity_single_select_vc.*
 import kotlinx.android.synthetic.main.select_item.*
 import kotlinx.android.synthetic.main.select_item.view.*
@@ -25,7 +25,7 @@ class SelectArenaVC : SingleSelectVC() {
     var arenas1: ArrayList<ArenaTable>? = null
 
 //    val mAdapter: MyAdapter = MyAdapter()
-    val adapter1 = GroupAdapter<ViewHolder>()
+    val adapter1 = GroupAdapter<GroupieViewHolder>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -144,7 +144,7 @@ class MyItem(var title: String): Item() {
     constructor(title: String, name: String) : this(title) {}
 
     override fun bind(
-        viewHolder: com.xwray.groupie.kotlinandroidextensions.ViewHolder,
+        viewHolder: com.xwray.groupie.kotlinandroidextensions.GroupieViewHolder,
         position: Int
     ) {
         title = "aaa"

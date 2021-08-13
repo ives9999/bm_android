@@ -20,7 +20,7 @@ import com.xwray.groupie.kotlinandroidextensions.Item
 import kotlinx.android.synthetic.main.manager_course_item.*
 import kotlinx.android.synthetic.main.manager_course_vc.*
 import kotlinx.android.synthetic.main.mask.*
-import com.xwray.groupie.ViewHolder
+import com.xwray.groupie.GroupieViewHolder
 import kotlinx.android.synthetic.main.activity_store_vc.*
 import kotlinx.android.synthetic.main.manager_course_vc.refresh
 import org.jetbrains.anko.*
@@ -171,7 +171,7 @@ class ManagerCourseVC: MyTableVC() {
 //        return items
 //    }
 
-    override fun rowClick(item: com.xwray.groupie.Item<ViewHolder>, view: View) {
+    override fun rowClick(item: com.xwray.groupie.Item<GroupieViewHolder>, view: View) {
         val managerCourseItem = item as ManagerCourseItem
         val row = managerCourseItem.courseTable
         dialog = alert {
@@ -218,7 +218,7 @@ class ManagerCourseVC: MyTableVC() {
 }
 
 class ManagerCourseItem(val context: Context, val courseTable: CourseTable): Item() {
-    override fun bind(viewHolder: com.xwray.groupie.kotlinandroidextensions.ViewHolder, position: Int) {
+    override fun bind(viewHolder: com.xwray.groupie.kotlinandroidextensions.GroupieViewHolder, position: Int) {
         viewHolder.title.text = courseTable.title
         Picasso.with(context)
                 .load(courseTable.featured_path)

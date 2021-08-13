@@ -6,7 +6,7 @@ import android.os.Bundle
 import android.view.View
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Utilities.STATUS
-import com.xwray.groupie.ViewHolder
+import com.xwray.groupie.GroupieViewHolder
 import com.xwray.groupie.kotlinandroidextensions.Item
 import kotlinx.android.synthetic.main.mytablevc.*
 import kotlinx.android.synthetic.main.status_select_item.*
@@ -56,7 +56,7 @@ class StatusSelectVC1 : MyTableVC() {
         return items
     }
 
-    override fun rowClick(item: com.xwray.groupie.Item<ViewHolder>, view: View) {
+    override fun rowClick(item: com.xwray.groupie.Item<GroupieViewHolder>, view: View) {
 
         val StatusItem = item as StatusItem
         val key = StatusItem.key
@@ -85,7 +85,7 @@ class StatusSelectVC1 : MyTableVC() {
 }
 
 class StatusItem(val ch: String, val key: String, val isSelected: Boolean): Item() {
-    override fun bind(viewHolder: com.xwray.groupie.kotlinandroidextensions.ViewHolder, position: Int) {
+    override fun bind(viewHolder: com.xwray.groupie.kotlinandroidextensions.GroupieViewHolder, position: Int) {
         viewHolder.status.text = ch
         if (isSelected) {
             viewHolder.isSelected.visibility = View.VISIBLE

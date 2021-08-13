@@ -24,7 +24,7 @@ import com.sportpassword.bm.member
 import com.xwray.groupie.ExpandableGroup
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.Section
-import com.xwray.groupie.ViewHolder
+import com.xwray.groupie.GroupieViewHolder
 import com.xwray.groupie.kotlinandroidextensions.Item
 import kotlinx.android.synthetic.main.mask.*
 
@@ -38,7 +38,7 @@ abstract class MyTableVC : BaseActivity(), List1CellDelegate {
     var mySections: ArrayList<HashMap<String, Any>> = arrayListOf()
     var myRows: ArrayList<HashMap<String, Any>> = arrayListOf()
 
-    var adapter: GroupAdapter<ViewHolder> = GroupAdapter<ViewHolder>()
+    var adapter: GroupAdapter<GroupieViewHolder> = GroupAdapter<GroupieViewHolder>()
     val adapterSections: ArrayList<Section> = arrayListOf()
     protected lateinit var recyclerView: RecyclerView
     protected lateinit var listAdapter: ListAdapter
@@ -227,7 +227,7 @@ abstract class MyTableVC : BaseActivity(), List1CellDelegate {
     }
 
     open fun genericTable() {}
-    open fun rowClick(item: com.xwray.groupie.Item<ViewHolder>, view: View) {}
+    open fun rowClick(item: com.xwray.groupie.Item<GroupieViewHolder>, view: View) {}
 
     override fun prepareParams(city_type: String) {
         params.clear()

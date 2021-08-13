@@ -298,7 +298,7 @@ class EditVC1 : MyTableVC() {
     private fun fieldToData() {
 //        for ((key, idx) in editTexts) {
 //            if (model.data.containsKey(key)) {
-//                val it = edit_list.findViewHolderForAdapterPosition(idx) as com.xwray.groupie.kotlinandroidextensions.ViewHolder
+//                val it = edit_list.findViewHolderForAdapterPosition(idx) as com.xwray.groupie.kotlinandroidextensions.GroupieViewHolder
 //                val newValue: String = it.edit_text.text.toString()
 ////                println("key: $key")
 ////                println("newValue: $newValue")
@@ -623,7 +623,7 @@ class EditVC1 : MyTableVC() {
 }
 
 class EditItem(val source: String, val indexPath: IndexPath, val row: HashMap<String, Any>, val addEditText:(String, Int)->Unit, val clearClick:(key:String)->Unit): Item() {
-    override fun bind(viewHolder: com.xwray.groupie.kotlinandroidextensions.ViewHolder, position: Int) {
+    override fun bind(viewHolder: com.xwray.groupie.kotlinandroidextensions.GroupieViewHolder, position: Int) {
 
         val editText = viewHolder.edit_text
         val detailView = viewHolder.detail

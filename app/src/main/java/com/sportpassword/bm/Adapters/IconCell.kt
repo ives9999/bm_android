@@ -6,7 +6,7 @@ import android.view.View
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Utilities.setImage
 import com.xwray.groupie.kotlinandroidextensions.Item
-import com.xwray.groupie.kotlinandroidextensions.ViewHolder
+import com.xwray.groupie.kotlinandroidextensions.GroupieViewHolder
 import kotlinx.android.synthetic.main.iconcell.*
 import org.jetbrains.anko.textColor
 
@@ -14,7 +14,7 @@ class IconCell(val context: Context, val icon: String, val title: String, val co
 
     var delegate: IconCellDelegate? = null
 
-    override fun bind(viewHolder: ViewHolder, position: Int) {
+    override fun bind(viewHolder: GroupieViewHolder, position: Int) {
         viewHolder.icon.setImage(icon)
         viewHolder.title.text = title + "："
         viewHolder.content.text = content

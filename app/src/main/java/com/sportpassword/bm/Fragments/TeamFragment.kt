@@ -19,7 +19,7 @@ import com.sportpassword.bm.Utilities.*
 import com.sportpassword.bm.member
 import com.squareup.picasso.Picasso
 import com.xwray.groupie.GroupAdapter
-import com.xwray.groupie.ViewHolder
+import com.xwray.groupie.GroupieViewHolder
 import com.xwray.groupie.kotlinandroidextensions.Item
 import kotlinx.android.synthetic.main.team_list_cell.*
 import kotlinx.android.synthetic.main.tab_course.*
@@ -149,7 +149,7 @@ class TeamFragment: TabFragment() {
         }
     }
 
-    override fun rowClick(item: com.xwray.groupie.Item<ViewHolder>, view: View) {
+    override fun rowClick(item: com.xwray.groupie.Item<GroupieViewHolder>, view: View) {
 
         val teamItem = item as TeamItem
         val table = teamItem.row
@@ -217,7 +217,7 @@ class TeamFragment: TabFragment() {
 
 class TeamItem(override var context: Context, var _row: TeamTable): ListItem<Table>(context, _row) {
 
-    override fun bind(viewHolder: com.xwray.groupie.kotlinandroidextensions.ViewHolder, position: Int) {
+    override fun bind(viewHolder: com.xwray.groupie.kotlinandroidextensions.GroupieViewHolder, position: Int) {
 
         super.bind(viewHolder, position)
 

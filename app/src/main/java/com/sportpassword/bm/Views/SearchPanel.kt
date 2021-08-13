@@ -20,7 +20,7 @@ import com.sportpassword.bm.R
 import com.sportpassword.bm.Utilities.getFragment
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.Item
-import com.xwray.groupie.ViewHolder
+import com.xwray.groupie.GroupieViewHolder
 import org.jetbrains.anko.backgroundColor
 
 open class SearchPanel {
@@ -36,7 +36,7 @@ open class SearchPanel {
 
     var able_type: String? = null
 
-    lateinit var searchAdapter: GroupAdapter<ViewHolder>
+    lateinit var searchAdapter: GroupAdapter<GroupieViewHolder>
     var searchRows: ArrayList<HashMap<String, String>> = arrayListOf()
 
     var layerRightLeftPadding: Int = 40
@@ -93,7 +93,7 @@ open class SearchPanel {
         searchTableView.layoutManager = LinearLayoutManager(context)
         //searchTableView.backgroundColor = Color.RED
         searchTableView.backgroundColor = Color.TRANSPARENT
-        searchAdapter = GroupAdapter<ViewHolder>()
+        searchAdapter = GroupAdapter<GroupieViewHolder>()
         searchAdapter.setOnItemClickListener { item, view ->
             onClick(item)
         }
@@ -156,7 +156,7 @@ open class SearchPanel {
         }
     }
 
-    fun onClick(item: Item<ViewHolder>) {
+    fun onClick(item: Item<GroupieViewHolder>) {
 
         val activity: BaseActivity = context!! as BaseActivity
         val searchItem = item as SearchItem

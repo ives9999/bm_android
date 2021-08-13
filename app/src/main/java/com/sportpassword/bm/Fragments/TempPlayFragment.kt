@@ -20,7 +20,7 @@ import com.sportpassword.bm.Adapters.GroupSection
 import com.xwray.groupie.ExpandableGroup
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.Section
-import com.xwray.groupie.ViewHolder
+import com.xwray.groupie.GroupieViewHolder
 import com.sportpassword.bm.Adapters.SearchItem
 import com.sportpassword.bm.Controllers.HomeTotalAdVC
 import com.sportpassword.bm.Models.TeamsTable
@@ -280,7 +280,7 @@ class TempPlayFragment : TabFragment(), inter {
         }
     }
 
-    fun onClick(item: com.xwray.groupie.Item<ViewHolder>) {
+    fun onClick(item: com.xwray.groupie.Item<GroupieViewHolder>) {
 
         if (selectedTagIdx == 1) {
             val searchItem = item as SearchItem

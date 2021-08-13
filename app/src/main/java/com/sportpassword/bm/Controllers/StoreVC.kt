@@ -10,7 +10,7 @@ import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.StoreService
 import com.sportpassword.bm.Utilities.*
 import com.xwray.groupie.kotlinandroidextensions.Item
-import com.xwray.groupie.kotlinandroidextensions.ViewHolder
+import com.xwray.groupie.kotlinandroidextensions.GroupieViewHolder
 import kotlinx.android.synthetic.main.activity_store_vc.*
 import kotlinx.android.synthetic.main.arena_list_cell.*
 import kotlinx.android.synthetic.main.mask.*
@@ -94,7 +94,7 @@ class StoreVC : MyTableVC() {
     }
 
 
-    override fun rowClick(item: com.xwray.groupie.Item<com.xwray.groupie.ViewHolder>, view: View) {
+    override fun rowClick(item: com.xwray.groupie.Item<com.xwray.groupie.GroupieViewHolder>, view: View) {
 
         val storeItem = item as StoreItem
         val table = storeItem.row
@@ -117,7 +117,7 @@ class StoreVC : MyTableVC() {
 
 class StoreItem(override var context: Context, var _row: StoreTable): ListItem<Table>(context, _row) {
 
-    override fun bind(viewHolder: ViewHolder, position: Int) {
+    override fun bind(viewHolder: GroupieViewHolder, position: Int) {
 
         super.bind(viewHolder, position)
 
