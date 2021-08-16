@@ -1,11 +1,9 @@
 package com.sportpassword.bm.Utilities
 
+import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
-import com.onesignal.OSNotification
-import com.onesignal.OSNotificationAction
-import com.onesignal.OSNotificationOpenResult
-import com.onesignal.OneSignal
+import com.onesignal.*
 import com.sportpassword.bm.App
 import com.sportpassword.bm.Controllers.MainActivity
 import com.sportpassword.bm.Controllers.ShowPNVC
@@ -14,15 +12,15 @@ import org.json.JSONArray
 import org.json.JSONObject
 
 
-class MyNotificationOpenedHandler: OneSignal.NotificationOpenedHandler {
+class MyNotificationOpenedHandler: OneSignal.OSNotificationOpenedHandler {
 
-    override fun notificationOpened(result: OSNotificationOpenResult) {
+    override fun notificationOpened(result: OSNotificationOpenedResult) {
 //        println("receive PN")
         val actionType = result.action.type
-        val data = result.notification.payload.additionalData
-        val id = result.notification.payload.notificationID
-        val title = result.notification.payload.title
-        val content = result.notification.payload.body
+        val data = result.notification.additionalData
+        val id = result.notification.notificationId
+        val title = result.notification.title
+        val content = result.notification.body
 
 //        println("OpenedHandler title: $title")
 //        println("OpenedHandler id: $id")
@@ -51,24 +49,30 @@ class MyNotificationOpenedHandler: OneSignal.NotificationOpenedHandler {
     }
 }
 
-class MyNotificationReceivedHandler: OneSignal.NotificationReceivedHandler {
+class MyNotificationReceivedHandler: OneSignal.OSRemoteNotificationReceivedHandler {
 
-    override fun notificationReceived(notification: OSNotification) {
-        val data = notification.payload.additionalData
-        val id = notification.payload.notificationID
-        val title = notification.payload.title
-        val body = notification.payload.body
-        val smallIcon = notification.payload.smallIcon
-        val largeIcon = notification.payload.largeIcon
-        val bigPicture = notification.payload.bigPicture
-        val smallIconAccentColor = notification.payload.smallIconAccentColor
-        val sound = notification.payload.sound
-        val ledColor = notification.payload.ledColor
-        val lockScreenVisibility = notification.payload.lockScreenVisibility
-        val groupKey = notification.payload.groupKey
-        val groupMessage = notification.payload.groupMessage
-        val fromProjectNumber = notification.payload.fromProjectNumber
-        val rawPayload = notification.payload.rawPayload
+    override fun remoteNotificationReceived(
+        context: Context?,
+        notificationReceivedEvent: OSNotificationReceivedEvent?
+    ) {
+
+    }
+    fun remoteNotificationReceived(notification: OSNotification) {
+        val data = notification.additionalData
+        val id = notification.androidNotificationId
+        val title = notification.title
+        val body = notification.body
+        val smallIcon = notification.smallIcon
+        val largeIcon = notification.largeIcon
+        val bigPicture = notification.bigPicture
+        val smallIconAccentColor = notification.smallIconAccentColor
+        val sound = notification.sound
+        val ledColor = notification.ledColor
+        val lockScreenVisibility = notification.lockScreenVisibility
+        val groupKey = notification.groupKey
+        val groupMessage = notification.groupMessage
+        val fromProjectNumber = notification.fromProjectNumber
+        val rawPayload = notification.rawPayload
 
 //        println("ReceivedHandler title: $title")
 //        println("ReceivedHandler id: $id")
@@ -83,7 +87,7 @@ class MyNotificationReceivedHandler: OneSignal.NotificationReceivedHandler {
 //                println("ReceivedHandler customKey set with value: $customKey")
 //            }
         }
-        MyOneSignal.save(id, title, body, pnID)
+        MyOneSignal.save(id.toString(), title, body, pnID)
     }
 }
 

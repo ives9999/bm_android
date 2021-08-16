@@ -299,6 +299,12 @@ class GatewayTable: Table() {
     var card4No: String = ""
     var pay_from: String = ""
     var payment_no: String = ""
+    var payment_url: String = ""
+    var barcode1: String = ""
+    var barcode2: String = ""
+    var barcode3: String = ""
+    var bank_code: String = ""
+    var bank_account: String = ""
     var gateway_at: String = ""
     var expire_at: String = ""
 

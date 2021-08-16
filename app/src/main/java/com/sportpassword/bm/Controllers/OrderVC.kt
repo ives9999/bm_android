@@ -2,13 +2,24 @@ package com.sportpassword.bm.Controllers
 
 import android.os.Bundle
 import android.view.View
+import com.sportpassword.bm.Adapters.Form.FormItemAdapter1
+import com.sportpassword.bm.Adapters.Form.NumberAdapter1
+import com.sportpassword.bm.Adapters.Form.PlainAdapter1
+import com.sportpassword.bm.Adapters.Form.TagAdapter1
+import com.sportpassword.bm.Adapters.GroupSection
+import com.sportpassword.bm.Form.FormItem.FormItem
 import com.sportpassword.bm.Models.*
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.CartService
+import com.sportpassword.bm.Services.MemberService
 import com.sportpassword.bm.Services.OrderService
 import com.sportpassword.bm.Utilities.*
 import com.sportpassword.bm.member
+import com.xwray.groupie.ExpandableGroup
+import com.xwray.groupie.Section
+import com.xwray.groupie.kotlinandroidextensions.Item
 import kotlinx.android.synthetic.main.activity_order_vc.*
+import kotlinx.android.synthetic.main.mask.*
 import java.util.*
 
 class OrderVC : MyTableVC() {
@@ -82,8 +93,80 @@ class OrderVC : MyTableVC() {
         getDataStart(page, perPage, member.token)
     }
 
+    override fun getDataStart(_page: Int, _perPage: Int, token: String?) {
+        Loading.show(mask)
+        loading = true
+
+        CartService.getList(this, token, params, _page, _perPage) { success ->
+            jsonString = CartService.jsonString
+            getDataEnd(success)
+        }
+    }
+
+
+    override fun getDataEnd(success: Boolean) {
+        if (success) {
+            //if (theFirstTime) {
+
+            if (jsonString != null && jsonString!!.isNotEmpty()) {
+                //println(dataService.jsonString)
+                genericTable()
+                initData()
+                for ((idx, mySection) in mySections.withIndex()) {
+                    val section = Section()
+                    adapterSections.add(section)
+                    val title: String = mySection["name"] as String
+                    val isExpanded: Boolean = mySection["isExpanded"] as Boolean
+                    val expandableGroup = ExpandableGroup(GroupSection(title), isExpanded)
+                    val items = generateItems(idx)
+                    section.addAll(items)
+                    expandableGroup.add(section)
+
+                    adapter.add(expandableGroup)
+                }
+//                val items = generateItems(mySections.size)
+//                adapter.update(items)
+//                adapter.notifyDataSetChanged()
+//                page++
+
+                //superCourses = dataService.superModel as SuperCourses
+//                if (tables != null) {
+//                    page = tables!!.page
+//                    perPage = tables!!.perPage
+//                    totalCount = tables!!.totalCount
+//                    val _totalPage: Int = totalCount / perPage
+//                    totalPage = if (totalCount % perPage > 0) _totalPage + 1 else _totalPage
+//                    theFirstTime = false
+//
+//                    val items = generateItems()
+//                    adapter.update(items)
+//                    adapter.notifyDataSetChanged()
+//                    page++
+//                } else {
+//                    warning(Global.message)
+//                    Global.message = ""
+//                }
+            } else {
+                warning("沒有取得回傳的json字串，請洽管理員")
+            }
+
+            //}
+
+            //notifyDataSetChanged()
+            page++
+        }
+//        mask?.let { mask?.dismiss() }
+        Loading.hide(mask)
+        loading = false
+        refreshLayout!!.isRefreshing = false
+//        println("page:$page")
+//        println("perPage:$perPage")
+//        println("totalCount:$totalCount")
+//        println("totalPage:$totalPage")
+    }
+
     override fun genericTable() {
-        cartsTable = jsonToModels<CartsTable>(dataService.jsonString)
+        cartsTable = jsonToModels<CartsTable>(CartService.jsonString)
         if (cartsTable == null) {
             warning("購物車中無商品，或購物車超過一個錯誤，請洽管理員")
         } else {
@@ -113,15 +196,93 @@ class OrderVC : MyTableVC() {
 
                     val row:HashMap<String, String> = hashMapOf("title" to productTable!!.name,"key" to PRODUCT_KEY,"value" to "","show" to "","cell" to "cart","featured_path" to productTable!!.featured_path,"attribute" to attribute_text,"amount" to cartItemTable.amount_show,"quantity" to cartItemTable.quantity.toString())
                     productRows.add(row)
-
-                    initData()
                 }
             }
         }
     }
 
     fun initData() {
-        
+
+        mySections = arrayListOf(
+            hashMapOf("name" to "商品", "isExpanded" to true, "key" to PRODUCT_KEY),
+            hashMapOf("name" to "金額", "isExpanded" to true, "key" to AMOUNT_KEY),
+            hashMapOf("name" to "付款方式", "isExpanded" to true, "key" to GATEWAY_KEY),
+            hashMapOf("name" to "寄送方式", "isExpanded" to true, "key" to SHIPPING_KEY),
+            hashMapOf("name" to "電子發票", "isExpanded" to true, "key" to INVOICE_KEY),
+            hashMapOf("name" to "收件人資料", "isExpanded" to true, "key" to MEMBER_KEY),
+            hashMapOf("name" to "其他留言", "isExpanded" to true, "key" to MEMO_KEY)
+        )
+
+        memberRows = arrayListOf(
+            hashMapOf("title" to "姓名","key" to NAME_KEY,"value" to member.name,"show" to member.name,"cell" to "textField"),
+            hashMapOf("title" to "電話","key" to MOBILE_KEY,"value" to member.mobile,"show" to member.mobile,"cell" to "textField"),
+            hashMapOf("title" to "EMail","key" to EMAIL_KEY,"value" to member.email,"show" to member.email,"cell" to "textField"),
+            hashMapOf("title" to "住址","key" to ADDRESS_KEY,"value" to member.address,"show" to member.address,"cell" to "textField")
+        )
+
+        for (invoiceFixedRow in invoiceFixedRows) {
+
+            invoiceRows.add(invoiceFixedRow)
+        }
+
+        for (invoicePersonalRow in invoicePersonalRows) {
+
+            invoiceRows.add(invoicePersonalRow)
+        }
+
+        myRows = arrayListOf(
+            hashMapOf("key" to PRODUCT_KEY, "rows" to productRows),
+            hashMapOf("key" to AMOUNT_KEY, "rows" to amountRows),
+            hashMapOf("key" to GATEWAY_KEY, "rows" to gatewayRows),
+            hashMapOf("key" to SHIPPING_KEY, "rows" to shippingRows),
+            hashMapOf("key" to INVOICE_KEY, "rows" to invoiceRows),
+            hashMapOf("key" to MEMBER_KEY, "rows" to memberRows),
+            hashMapOf("key" to MEMO_KEY, "rows" to memoRows)
+        )
+
+        //generateItems(mySections.size)
+    }
+
+    override fun generateItems(section: Int): ArrayList<Item> {
+
+        var sectionKey: String = ""
+        val mySection: HashMap<String, Any> = myRows[section]
+        val tmp: String? = mySection["key"] as? String
+        if (tmp != null) {
+            sectionKey = tmp
+        }
+
+        if (!mySection.containsKey("rows")) {
+            return arrayListOf()
+        }
+
+        @Suppress("UNCHECKED_CAST")
+        val rows: ArrayList<HashMap<String, String>> = mySection["rows"] as ArrayList<HashMap<String, String>>
+
+        //val adapterRows: ArrayList<Item> = arrayListOf()
+        for ((idx, row) in rows.withIndex()) {
+
+            val rowKey: String? = row["key"]
+            val title: String? = row["title"]
+            val value: String? = row["value"]
+            val show: String? = row["show"]
+            val cell_type: String? = row["cell"]
+
+            //var formItemAdapter: FormItemAdapter1? = null
+            if (cell_type == "cart") {
+                val cartItemTable: CartItemTable = cartitemsTable[idx]
+                val cartItemItem = CartItemItem(this, cartItemTable)
+                cartItemItem.list1CellDelegate = this
+                items.add(cartItemItem)
+            } else if (cell_type == "text") {
+                //formItemAdapter = PlainAdapter1(title!!, show!!)
+            }
+//            if (formItemAdapter != null) {
+//                adapterRows.add(formItemAdapter)
+//            }
+        }
+
+        return items
     }
 
     fun submitBtnPressed(view: View) {

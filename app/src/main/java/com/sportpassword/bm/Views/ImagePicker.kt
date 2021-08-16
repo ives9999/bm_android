@@ -18,12 +18,12 @@ import android.widget.Button
 import android.widget.ImageView
 import android.widget.LinearLayout
 import androidx.core.content.FileProvider
-import com.github.babedev.dexter.dsl.runtimePermission
+//import com.github.babedev.dexter.dsl.runtimePermission
 import com.sportpassword.bm.R
 import org.jetbrains.anko.layoutInflater
 import org.jetbrains.anko.sdk27.coroutines.onClick
 import org.jetbrains.anko.toast
-import com.github.babedev.dexter.dsl.runtimePermission
+//import com.github.babedev.dexter.dsl.runtimePermission
 import com.sportpassword.bm.Controllers.BaseActivity
 import com.sportpassword.bm.Utilities.makeCall
 import com.squareup.picasso.MemoryPolicy
