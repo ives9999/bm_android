@@ -1,6 +1,7 @@
 package com.sportpassword.bm.Controllers
 
 import android.content.Context
+import android.opengl.Visibility
 import android.os.Bundle
 import android.view.View
 import com.sportpassword.bm.Fragments.ListItem
@@ -97,55 +98,81 @@ class MemberCartListVC : MyTableVC() {
     }
 }
 
+
 class CartItemItem(override var context: Context, var _row: CartItemTable): ListItem<Table>(context, _row) {
 
+    constructor(context: Context, sectionKey: String, rowKey: String, title: String, featured_path: String, attribute: String, amount: String, quantity: String, list1CellDelegate: List1CellDelegate?=null): this(context, CartItemTable()) {
+        this.sectionKey = sectionKey
+        this.rowKey = rowKey
+        this.title = title
+        this.featured_path = featured_path
+        this.attribute = attribute
+        this.amount = amount
+        this.quantity = quantity
+    }
+    var sectionKey: String = ""
+    var rowKey: String = ""
+    var title: String = ""
+    var featured_path: String = ""
+    var attribute: String = ""
+    var amount: String = ""
+    var quantity: String = ""
+
+    init {
+        if (_row.cart_id > 0) {
+            val row: CartItemTable = _row
+            row.filterRow()
+
+            if (row.product != null && row.product!!.featured_path.isNotEmpty()) {
+                featured_path = row.product!!.featured_path
+            }
+
+            if (row.product != null) {
+                title = row.product!!.name
+            }
+
+            var attribute_text: String = ""
+            if (row.attributes.size > 0) {
+
+                for ((idx, attribute) in row.attributes.withIndex()) {
+                    attribute_text += attribute["name"]!! + ":" + attribute["value"]!!
+                    if (idx < row.attributes.size - 1) {
+                        attribute_text += " | "
+                    }
+                }
+            }
+            attribute = attribute_text
+        }
+    }
 
     override fun bind(viewHolder: GroupieViewHolder, position: Int) {
 
-        super.bind(viewHolder, position)
+        //super.bind(viewHolder, position)
 
-        val row: CartItemTable = _row
-        row.filterRow()
+        Picasso.with(context)
+            .load(featured_path)
+            .placeholder(R.drawable.loading_square_120)
+            .error(R.drawable.loading_square_120)
+            .into(viewHolder.listFeatured)
 
-        if (row.product != null && row.product!!.featured_path.isNotEmpty()) {
-            Picasso.with(context)
-                .load(row.product!!.featured_path)
-                .placeholder(R.drawable.loading_square_120)
-                .error(R.drawable.loading_square_120)
-                .into(viewHolder.listFeatured)
-        }
-        if (row.product != null) {
-            viewHolder.titleLbl.text = row.product!!.name
-        }
+        viewHolder.titleLbl.text = title
+        viewHolder.attributeLbl.text = attribute
 
-        var attribute_text: String = ""
-        if (row.attributes.size > 0) {
+        viewHolder.amountLbl.text = amount
+        viewHolder.quantityLbl.text = "數量：${quantity}"
 
-            for ((idx, attribute) in row.attributes.withIndex()) {
-                attribute_text += attribute["name"]!! + ":" + attribute["value"]!!
-                if (idx < row.attributes.size - 1) {
-                    attribute_text += " | "
-                }
-            }
-        }
-        viewHolder.attributeLbl.text = attribute_text
-
-        viewHolder.amountLbl.text = row.amount_show
-        viewHolder.quantityLbl.text = "數量：${row.quantity}"
-
-        viewHolder.editIcon.setOnClickListener {
-
-            if (list1CellDelegate != null) {
+        if (list1CellDelegate != null) {
+            viewHolder.editIcon.setOnClickListener {
 
                 list1CellDelegate!!.cellEdit(row)
             }
-        }
 
-        viewHolder.deleteIcon.setOnClickListener {
+            viewHolder.deleteIcon.setOnClickListener {
 
-            if (list1CellDelegate != null) {
                 list1CellDelegate!!.cellDelete(row)
             }
+        } else {
+            viewHolder.iconView.visibility = View.GONE
         }
     }
 

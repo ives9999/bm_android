@@ -21,6 +21,7 @@ import com.xwray.groupie.kotlinandroidextensions.Item
 import kotlinx.android.synthetic.main.activity_order_vc.*
 import kotlinx.android.synthetic.main.mask.*
 import java.util.*
+import kotlin.collections.HashMap
 
 class OrderVC : MyTableVC() {
 
@@ -70,7 +71,7 @@ class OrderVC : MyTableVC() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
-        dataService = OrderService
+        dataService = CartService
 
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_order_vc)
@@ -93,17 +94,6 @@ class OrderVC : MyTableVC() {
         getDataStart(page, perPage, member.token)
     }
 
-    override fun getDataStart(_page: Int, _perPage: Int, token: String?) {
-        Loading.show(mask)
-        loading = true
-
-        CartService.getList(this, token, params, _page, _perPage) { success ->
-            jsonString = CartService.jsonString
-            getDataEnd(success)
-        }
-    }
-
-
     override fun getDataEnd(success: Boolean) {
         if (success) {
             //if (theFirstTime) {
@@ -112,40 +102,6 @@ class OrderVC : MyTableVC() {
                 //println(dataService.jsonString)
                 genericTable()
                 initData()
-                for ((idx, mySection) in mySections.withIndex()) {
-                    val section = Section()
-                    adapterSections.add(section)
-                    val title: String = mySection["name"] as String
-                    val isExpanded: Boolean = mySection["isExpanded"] as Boolean
-                    val expandableGroup = ExpandableGroup(GroupSection(title), isExpanded)
-                    val items = generateItems(idx)
-                    section.addAll(items)
-                    expandableGroup.add(section)
-
-                    adapter.add(expandableGroup)
-                }
-//                val items = generateItems(mySections.size)
-//                adapter.update(items)
-//                adapter.notifyDataSetChanged()
-//                page++
-
-                //superCourses = dataService.superModel as SuperCourses
-//                if (tables != null) {
-//                    page = tables!!.page
-//                    perPage = tables!!.perPage
-//                    totalCount = tables!!.totalCount
-//                    val _totalPage: Int = totalCount / perPage
-//                    totalPage = if (totalCount % perPage > 0) _totalPage + 1 else _totalPage
-//                    theFirstTime = false
-//
-//                    val items = generateItems()
-//                    adapter.update(items)
-//                    adapter.notifyDataSetChanged()
-//                    page++
-//                } else {
-//                    warning(Global.message)
-//                    Global.message = ""
-//                }
             } else {
                 warning("沒有取得回傳的json字串，請洽管理員")
             }
@@ -197,6 +153,28 @@ class OrderVC : MyTableVC() {
                     val row:HashMap<String, String> = hashMapOf("title" to productTable!!.name,"key" to PRODUCT_KEY,"value" to "","show" to "","cell" to "cart","featured_path" to productTable!!.featured_path,"attribute" to attribute_text,"amount" to cartItemTable.amount_show,"quantity" to cartItemTable.quantity.toString())
                     productRows.add(row)
                 }
+
+                //price
+                val amount_show: String = amount.formattedWithSeparator()
+                var row: HashMap<String, String> = hashMapOf("title" to "商品金額","key" to "amount","value" to amount.toString(),"show" to "NT$ ${amount_show}","cell" to "text")
+                amountRows.add(row)
+
+                var shipping_fee: Int = 60
+                if (amount > 1000) { shipping_fee = 0}
+                val shipping_fee_show: String = shipping_fee.formattedWithSeparator()
+
+                row = ["title":"運費","key":SHIPPING_FEE_KEY,"value":String(shipping_fee),"show":"NT$ \(shipping_fee_show)","cell":"text"]
+                amountRows.append(row)
+
+                let tax: Int = Int(Double(amount) * 0.05)
+                let tax_show: String = tax.formattedWithSeparator
+                        row = ["title":"稅","key":TAX_KEY,"value":String(tax),"show":"NT$ \(tax_show)","cell":"text"]
+                amountRows.append(row)
+
+                let total: Int = amount + shipping_fee + tax
+                let total_show: String = total.formattedWithSeparator
+                        row = ["title":"總金額","key":TOTAL_KEY,"value":String(total),"show":"NT$ \(total_show)","cell":"text"]
+                amountRows.append(row)
             }
         }
     }
@@ -240,11 +218,23 @@ class OrderVC : MyTableVC() {
             hashMapOf("key" to MEMO_KEY, "rows" to memoRows)
         )
 
-        //generateItems(mySections.size)
+        for ((idx, mySection) in mySections.withIndex()) {
+            val section = Section()
+            adapterSections.add(section)
+            val title: String = mySection["name"] as String
+            val isExpanded: Boolean = mySection["isExpanded"] as Boolean
+            val expandableGroup = ExpandableGroup(GroupSection(title), isExpanded)
+            val items = generateItems(idx)
+            section.addAll(items)
+            expandableGroup.add(section)
+
+            adapter.add(expandableGroup)
+        }
     }
 
     override fun generateItems(section: Int): ArrayList<Item> {
 
+        items.clear()
         var sectionKey: String = ""
         val mySection: HashMap<String, Any> = myRows[section]
         val tmp: String? = mySection["key"] as? String
@@ -262,20 +252,48 @@ class OrderVC : MyTableVC() {
         //val adapterRows: ArrayList<Item> = arrayListOf()
         for ((idx, row) in rows.withIndex()) {
 
-            val rowKey: String? = row["key"]
-            val title: String? = row["title"]
-            val value: String? = row["value"]
-            val show: String? = row["show"]
+            var rowKey: String = ""
+            if (row.containsKey("key")) {
+                rowKey = row["key"]!!
+            }
+            var title: String = ""
+            if (row.containsKey("title")) {
+                title = row["title"]!!
+            }
+            var value: String = ""
+            if (row.containsKey("value")) {
+                value = row["value"]!!
+            }
+            var show: String = ""
+            if (row.containsKey("show")) {
+                show = row["show"]!!
+            }
+
             val cell_type: String? = row["cell"]
 
             //var formItemAdapter: FormItemAdapter1? = null
             if (cell_type == "cart") {
-                val cartItemTable: CartItemTable = cartitemsTable[idx]
-                val cartItemItem = CartItemItem(this, cartItemTable)
-                cartItemItem.list1CellDelegate = this
+                var featured_path = FEATURED_PATH
+                if (row.containsKey("featured_path") && row["featured_path"]!!.length > 0) {
+                    featured_path = row["featured_path"]!!
+                }
+                var attribute = ""
+                if (row.containsKey("attribute")) {
+                    attribute = row["attribute"]!!
+                }
+                var amount = ""
+                if (row.containsKey("amount")) {
+                    amount = row["amount"]!!
+                }
+                var quantity = ""
+                if (row.containsKey("quantity")) {
+                    quantity = row["quantity"]!!
+                }
+                val cartItemItem = CartItemItem(this, sectionKey, rowKey, title, featured_path, attribute, amount, quantity)
                 items.add(cartItemItem)
             } else if (cell_type == "text") {
-                //formItemAdapter = PlainAdapter1(title!!, show!!)
+                val item = PlainAdapter1(title, show)
+                items.add(item)
             }
 //            if (formItemAdapter != null) {
 //                adapterRows.add(formItemAdapter)

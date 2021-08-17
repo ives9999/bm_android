@@ -649,6 +649,8 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
         URL_TT_DELETE = URL_HOME + "%s/tt/delete"
         URL_TT_UPDATE = URL_HOME + "%s/tt/update"
         URL_UPDATE = URL_HOME + "%s/update"
+
+        FEATURED_PATH = BASE_URL + FEATURED_PATH
     }
 
     protected fun setMyTitle(title: String) {

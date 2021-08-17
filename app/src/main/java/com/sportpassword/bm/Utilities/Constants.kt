@@ -420,4 +420,6 @@ val SESSION_FILENAME: String = "com.sportpassword.bm.session"
 //request code
 val GENERAL_REQUEST_CODE: Int = 100
 
+var FEATURED_PATH: String = "/imgs/nophoto.png"
+
 
