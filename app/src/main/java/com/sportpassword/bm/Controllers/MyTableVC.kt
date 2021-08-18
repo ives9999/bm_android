@@ -417,6 +417,19 @@ abstract class MyTableVC : BaseActivity(), List1CellDelegate {
         return hashMapOf()
     }
 
+    fun replaceRowsByKey(sectionKey: String, rows: ArrayList<HashMap<String, String>>) {
+
+        for ((sectionIdx, sectionRow) in myRows.withIndex()) {
+
+            var sectionKey1: String? = sectionRow["key"] as? String
+            if (sectionKey1 != null) {
+                if (sectionKey1 == sectionKey) {
+                    myRows[sectionIdx]["rows"] = rows
+                }
+            }
+        }
+    }
+
     fun replaceRowByKey(rowKey: String, _row: HashMap<String, String>) {
 
 //        var tmp: [String: String] = [String: String]()

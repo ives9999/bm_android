@@ -167,6 +167,8 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
     open fun setTag(sectionKey: String, rowKey: String, attribute: String, selected: Boolean){}
     open fun stepperValueChanged(sectionKey: String, rowKey: String, number: Int){}
 
+    open fun radioDidChange(sectionKey: String, rowKey: String, checked: Boolean){}
+
     open var editCourseResult: ActivityResultLauncher<Intent>? = null
 
     val editContentVC = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { res ->

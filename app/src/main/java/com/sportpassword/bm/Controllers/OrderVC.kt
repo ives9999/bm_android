@@ -2,10 +2,7 @@ package com.sportpassword.bm.Controllers
 
 import android.os.Bundle
 import android.view.View
-import com.sportpassword.bm.Adapters.Form.FormItemAdapter1
-import com.sportpassword.bm.Adapters.Form.NumberAdapter1
-import com.sportpassword.bm.Adapters.Form.PlainAdapter1
-import com.sportpassword.bm.Adapters.Form.TagAdapter1
+import com.sportpassword.bm.Adapters.Form.*
 import com.sportpassword.bm.Adapters.GroupSection
 import com.sportpassword.bm.Form.FormItem.FormItem
 import com.sportpassword.bm.Models.*
@@ -21,6 +18,7 @@ import com.xwray.groupie.kotlinandroidextensions.Item
 import kotlinx.android.synthetic.main.activity_order_vc.*
 import kotlinx.android.synthetic.main.mask.*
 import java.util.*
+import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
 
 class OrderVC : MyTableVC() {
@@ -81,8 +79,50 @@ class OrderVC : MyTableVC() {
         recyclerView = order_list
         refreshLayout = order_refresh
 
-        initAdapter()
+        mySections = arrayListOf(
+            hashMapOf("name" to "商品", "isExpanded" to true, "key" to PRODUCT_KEY),
+            hashMapOf("name" to "金額", "isExpanded" to true, "key" to AMOUNT_KEY),
+            hashMapOf("name" to "付款方式", "isExpanded" to true, "key" to GATEWAY_KEY),
+            hashMapOf("name" to "寄送方式", "isExpanded" to true, "key" to SHIPPING_KEY),
+            hashMapOf("name" to "電子發票", "isExpanded" to true, "key" to INVOICE_KEY),
+            hashMapOf("name" to "收件人資料", "isExpanded" to true, "key" to MEMBER_KEY),
+            hashMapOf("name" to "其他留言", "isExpanded" to true, "key" to MEMO_KEY)
+        )
+
+        //initAdapter(true)
         refresh()
+    }
+
+    override fun initAdapter(include_section: Boolean) {
+//        adapter = GroupAdapter()
+
+//        adapter.setOnItemClickListener { item, view ->
+//            rowClick(item, view)
+//        }
+
+        // for member register and member update personal data
+        if (include_section) {
+            for ((idx, mySection) in mySections.withIndex()) {
+                val section = Section()
+                adapterSections.add(section)
+                val title: String = mySection["name"] as String
+                val isExpanded: Boolean = mySection["isExpanded"] as Boolean
+                val expandableGroup = ExpandableGroup(GroupSection(title), isExpanded)
+                val items = generateItems(idx)
+                section.addAll(items)
+                expandableGroup.add(section)
+
+                adapter.add(expandableGroup)
+            }
+        }
+
+
+        recyclerView.adapter = adapter
+//        recyclerView.setHasFixedSize(true)
+        if (refreshLayout != null) {
+            setRefreshListener()
+        }
+        setRecyclerViewScrollListener()
     }
 
     override fun refresh() {
@@ -163,7 +203,7 @@ class OrderVC : MyTableVC() {
                 if (amount > 1000) { shipping_fee = 0}
                 val shipping_fee_show: String = shipping_fee.formattedWithSeparator()
 
-                hashMapOf("title" to "運費","key" to SHIPPING_FEE_KEY,"value" to shipping_fee.toString(),"show" to "NT$ ${shipping_fee_show}","cell" to "text")
+                row = hashMapOf("title" to "運費","key" to SHIPPING_FEE_KEY,"value" to shipping_fee.toString(),"show" to "NT$ ${shipping_fee_show}","cell" to "text")
 
                 amountRows.add(row)
 
@@ -178,21 +218,36 @@ class OrderVC : MyTableVC() {
                 row = hashMapOf("title" to "總金額","key" to TOTAL_KEY,"value" to total.toString(),"show" to "NT$ ${total_show}","cell" to "text")
 
                 amountRows.add(row)
+
+                //gateway
+                val gateway: String = productTable!!.gateway
+                var arr: Array<String> = gateway.split(",").toTypedArray()
+                for (tmp in arr) {
+                    val title: String = GATEWAY.getRawValueFromString(tmp)
+                    var value: String = "false"
+                    if (tmp == "credit_card") {
+                        value = "true"
+                    }
+                    val row: HashMap<String, String> = hashMapOf("title" to title,"key" to tmp,"value" to value,"show" to title,"cell" to "radio")
+                    gatewayRows.add(row)
+                }
+
+                val shipping: String = productTable!!.shipping
+                arr = shipping.split(",").toTypedArray()
+                for (tmp in arr) {
+                    val title: String = SHIPPING_WAY.getRawValueFromString(tmp)
+                    var value: String = "false"
+                    if (tmp == "direct") {
+                        value = "true"
+                    }
+                    val row1: HashMap<String, String> = hashMapOf("title" to title,"key" to tmp,"value" to value,"show" to title,"cell" to "radio")
+                    shippingRows.add(row1)
+                }
             }
         }
     }
 
     fun initData() {
-
-        mySections = arrayListOf(
-            hashMapOf("name" to "商品", "isExpanded" to true, "key" to PRODUCT_KEY),
-            hashMapOf("name" to "金額", "isExpanded" to true, "key" to AMOUNT_KEY),
-            hashMapOf("name" to "付款方式", "isExpanded" to true, "key" to GATEWAY_KEY),
-            hashMapOf("name" to "寄送方式", "isExpanded" to true, "key" to SHIPPING_KEY),
-            hashMapOf("name" to "電子發票", "isExpanded" to true, "key" to INVOICE_KEY),
-            hashMapOf("name" to "收件人資料", "isExpanded" to true, "key" to MEMBER_KEY),
-            hashMapOf("name" to "其他留言", "isExpanded" to true, "key" to MEMO_KEY)
-        )
 
         memberRows = arrayListOf(
             hashMapOf("title" to "姓名","key" to NAME_KEY,"value" to member.name,"show" to member.name,"cell" to "textField"),
@@ -221,22 +276,45 @@ class OrderVC : MyTableVC() {
             hashMapOf("key" to MEMO_KEY, "rows" to memoRows)
         )
 
-        for ((idx, mySection) in mySections.withIndex()) {
-            val section = Section()
-            adapterSections.add(section)
-            val title: String = mySection["name"] as String
-            val isExpanded: Boolean = mySection["isExpanded"] as Boolean
-            val expandableGroup = ExpandableGroup(GroupSection(title), isExpanded)
-            val items = generateItems(idx)
-            section.addAll(items)
-            expandableGroup.add(section)
+        initAdapter(true)
+        //reloadData()
 
-            adapter.add(expandableGroup)
-        }
+//        for ((idx, mySection) in mySections.withIndex()) {
+//            val title: String = mySection["name"] as String
+//            val groupSection = GroupSection(title)
+//            val isExpanded: Boolean = mySection["isExpanded"] as Boolean
+//            val expandableGroup = ExpandableGroup(groupSection, isExpanded)
+//            expandableGroup.add(groupSection)
+//
+//            val section = Section()
+//            val items = generateItems(idx)
+//            section.addAll(items)
+//            adapterSections.add(section)
+//            //a.add(expandableGroup)
+//            // adapterSections.add(expandableGroup)
+//        }
+//        adapter.update(adapterSections)
+//        adapter.notifyDataSetChanged()
+
+//        for ((idx, mySection) in mySections.withIndex()) {
+//            val section = Section()
+//            adapterSections.add(section)
+//            val title: String = mySection["name"] as String
+//            val isExpanded: Boolean = mySection["isExpanded"] as Boolean
+//            val expandableGroup = ExpandableGroup(GroupSection(title), isExpanded)
+//            val items = generateItems(idx)
+//            section.addAll(items)
+//            expandableGroup.add(section)
+//
+//            adapter.add(expandableGroup)
+//        }
     }
 
     override fun generateItems(section: Int): ArrayList<Item> {
 
+        if (myRows.size == 0) {
+            return arrayListOf()
+        }
         items.clear()
         var sectionKey: String = ""
         val mySection: HashMap<String, Any> = myRows[section]
@@ -297,13 +375,81 @@ class OrderVC : MyTableVC() {
             } else if (cell_type == "text") {
                 val item = PlainAdapter1(title, show)
                 items.add(item)
+            } else if (cell_type == "radio") {
+                val checked: Boolean = value.toBoolean()
+                val item = RadioAdapter(sectionKey, rowKey, title, checked, this)
+                items.add(item)
             }
-//            if (formItemAdapter != null) {
-//                adapterRows.add(formItemAdapter)
-//            }
         }
 
         return items
+    }
+
+    fun reloadData() {
+
+        for ((idx, _) in mySections.withIndex()) {
+            val items = generateItems(idx)
+            adapterSections[idx].update(items)
+        }
+        adapter.notifyDataSetChanged()
+    }
+
+    override fun radioDidChange(sectionKey: String, rowKey: String, checked: Boolean) {
+
+        invoiceRows.clear()
+        if (sectionKey == INVOICE_KEY) {
+            for (invoiceFixRow in invoiceFixedRows) {
+                invoiceRows.add(invoiceFixRow)
+            }
+
+            for ((idx, _row) in invoiceOptionRows.withIndex()) {
+                var row = _row
+                if (row["key"] == rowKey) {
+                    row["value"] = checked.toString()
+                } else {
+                    row["value"] = (!checked).toString()
+                }
+                invoiceOptionRows[idx] = row
+            }
+
+            var selectedRow: HashMap<String, String> = hashMapOf()
+            for (row in invoiceOptionRows) {
+                if (row["value"] == "true") {
+                    selectedRow = row
+                }
+            }
+
+            val selectedKey: String = selectedRow["key"]!!
+            if (selectedKey == PERSONAL_KEY) {
+                for (invoicePresonalRow in invoicePersonalRows) {
+                    invoiceRows.add(invoicePresonalRow)
+                }
+            } else {
+                for (invoiceCompanyRow in invoiceCompanyRows) {
+                    invoiceRows.add(invoiceCompanyRow)
+                }
+            }
+
+            replaceRowsByKey(INVOICE_KEY, invoiceRows)
+        } else {
+            val rows = getRowRowsFromMyRowsByKey(sectionKey)
+            for (row in rows) {
+
+                if (row.containsKey("key")) {
+                    val key: String = row["key"] as String
+                    var _row = row
+                    var a: Boolean = false
+                    if (key == rowKey) {
+                        a = checked
+                    } else {
+                        a = !checked
+                    }
+                    _row["value"] = a.toString()
+                    replaceRowByKey(sectionKey, key, _row)
+                }
+            }
+        }
+        reloadData()
     }
 
     fun submitBtnPressed(view: View) {
@@ -314,3 +460,22 @@ class OrderVC : MyTableVC() {
         prev()
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -415,11 +415,12 @@ enum class PAYMENT_PROCESS(val englishName: String, val chineseName: String) {
 
 enum class GATEWAY(val englishName: String, val chineseName: String) {
 
-    credit_card("direct", "信用卡"),
+    credit_card("credit_card", "信用卡"),
     store_cvs("store_cvs", "超商代碼"),
     store_barcode("store_barcode", "超商條碼"),
     store_pay_711("store_pay_711", "7-11超商取貨付款"),
     store_pay_family("store_pay_family", "全家超商取貨付款"),
+    ATM("ATM", "虛擬帳戶"),
     remit("remit", "匯款"),
     cash("cash", "現金");
 
@@ -441,9 +442,9 @@ enum class GATEWAY(val englishName: String, val chineseName: String) {
 
 enum class GATEWAY_PROCESS(val englishName: String, val chineseName: String) {
 
-    normal("direct", "信用卡"),
-    code("store_cvs", "超商代碼"),
-    complete("store_barcode", "超商條碼");
+    normal("normal", "未付款"),
+    code("code", "取得付款代碼"),
+    complete("complete", "完成付款");
 
     fun toChineseString(): String {
         return chineseName
