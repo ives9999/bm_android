@@ -163,18 +163,21 @@ class OrderVC : MyTableVC() {
                 if (amount > 1000) { shipping_fee = 0}
                 val shipping_fee_show: String = shipping_fee.formattedWithSeparator()
 
-                row = ["title":"運費","key":SHIPPING_FEE_KEY,"value":String(shipping_fee),"show":"NT$ \(shipping_fee_show)","cell":"text"]
-                amountRows.append(row)
+                hashMapOf("title" to "運費","key" to SHIPPING_FEE_KEY,"value" to shipping_fee.toString(),"show" to "NT$ ${shipping_fee_show}","cell" to "text")
 
-                let tax: Int = Int(Double(amount) * 0.05)
-                let tax_show: String = tax.formattedWithSeparator
-                        row = ["title":"稅","key":TAX_KEY,"value":String(tax),"show":"NT$ \(tax_show)","cell":"text"]
-                amountRows.append(row)
+                amountRows.add(row)
 
-                let total: Int = amount + shipping_fee + tax
-                let total_show: String = total.formattedWithSeparator
-                        row = ["title":"總金額","key":TOTAL_KEY,"value":String(total),"show":"NT$ \(total_show)","cell":"text"]
-                amountRows.append(row)
+                val tax: Int = (amount.toDouble() * 0.05).toInt()
+                val tax_show: String = tax.formattedWithSeparator()
+                row = hashMapOf("title" to "稅","key" to TAX_KEY,"value" to tax.toString(),"show" to "NT$ ${tax_show}","cell" to "text")
+
+                amountRows.add(row)
+
+                val total: Int = amount + shipping_fee + tax
+                val total_show: String = total.formattedWithSeparator()
+                row = hashMapOf("title" to "總金額","key" to TOTAL_KEY,"value" to total.toString(),"show" to "NT$ ${total_show}","cell" to "text")
+
+                amountRows.add(row)
             }
         }
     }
