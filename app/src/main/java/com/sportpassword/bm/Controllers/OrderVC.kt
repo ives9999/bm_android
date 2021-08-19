@@ -80,7 +80,7 @@ class OrderVC : MyTableVC() {
         refreshLayout = order_refresh
 
         mySections = arrayListOf(
-            hashMapOf("name" to "商品", "isExpanded" to true, "key" to PRODUCT_KEY),
+//            hashMapOf("name" to "商品", "isExpanded" to true, "key" to PRODUCT_KEY),
             hashMapOf("name" to "金額", "isExpanded" to true, "key" to AMOUNT_KEY),
             hashMapOf("name" to "付款方式", "isExpanded" to true, "key" to GATEWAY_KEY),
             hashMapOf("name" to "寄送方式", "isExpanded" to true, "key" to SHIPPING_KEY),
@@ -221,28 +221,28 @@ class OrderVC : MyTableVC() {
 
                 //gateway
                 val gateway: String = productTable!!.gateway
-                var arr: Array<String> = gateway.split(",").toTypedArray()
+                val arr: Array<String> = gateway.split(",").toTypedArray()
                 for (tmp in arr) {
                     val title: String = GATEWAY.getRawValueFromString(tmp)
                     var value: String = "false"
                     if (tmp == "credit_card") {
                         value = "true"
                     }
-                    val row: HashMap<String, String> = hashMapOf("title" to title,"key" to tmp,"value" to value,"show" to title,"cell" to "radio")
-                    gatewayRows.add(row)
+                    val _row: HashMap<String, String> = hashMapOf("title" to title,"key" to tmp,"value" to value,"show" to title,"cell" to "radio")
+                    gatewayRows.add(_row)
                 }
 
-                val shipping: String = productTable!!.shipping
-                arr = shipping.split(",").toTypedArray()
-                for (tmp in arr) {
-                    val title: String = SHIPPING_WAY.getRawValueFromString(tmp)
-                    var value: String = "false"
-                    if (tmp == "direct") {
-                        value = "true"
-                    }
-                    val row1: HashMap<String, String> = hashMapOf("title" to title,"key" to tmp,"value" to value,"show" to title,"cell" to "radio")
-                    shippingRows.add(row1)
-                }
+//                val shipping: String = productTable!!.shipping
+//                arr = shipping.split(",").toTypedArray()
+//                for (tmp in arr) {
+//                    val title: String = SHIPPING_WAY.getRawValueFromString(tmp)
+//                    var value: String = "false"
+//                    if (tmp == "direct") {
+//                        value = "true"
+//                    }
+//                    val row1: HashMap<String, String> = hashMapOf("title" to title,"key" to tmp,"value" to value,"show" to title,"cell" to "radio")
+//                    shippingRows.add(row1)
+//                }
             }
         }
     }
@@ -267,7 +267,7 @@ class OrderVC : MyTableVC() {
         }
 
         myRows = arrayListOf(
-            hashMapOf("key" to PRODUCT_KEY, "rows" to productRows),
+//            hashMapOf("key" to PRODUCT_KEY, "rows" to productRows),
             hashMapOf("key" to AMOUNT_KEY, "rows" to amountRows),
             hashMapOf("key" to GATEWAY_KEY, "rows" to gatewayRows),
             hashMapOf("key" to SHIPPING_KEY, "rows" to shippingRows),
@@ -317,68 +317,85 @@ class OrderVC : MyTableVC() {
         }
         items.clear()
         var sectionKey: String = ""
-        val mySection: HashMap<String, Any> = myRows[section]
-        val tmp: String? = mySection["key"] as? String
+        val sectionRow: HashMap<String, Any> = myRows[section]
+        val tmp: String? = sectionRow["key"] as? String
         if (tmp != null) {
             sectionKey = tmp
         }
 
-        if (!mySection.containsKey("rows")) {
+        if (!sectionRow.containsKey("rows")) {
             return arrayListOf()
         }
 
         @Suppress("UNCHECKED_CAST")
-        val rows: ArrayList<HashMap<String, String>> = mySection["rows"] as ArrayList<HashMap<String, String>>
+        val rows: ArrayList<HashMap<String, String>> =
+            sectionRow["rows"] as ArrayList<HashMap<String, String>>
 
-        //val adapterRows: ArrayList<Item> = arrayListOf()
-        for ((idx, row) in rows.withIndex()) {
+        if (sectionKey == GATEWAY_KEY) {
+            val item = RadioAdapter(this, sectionKey, rows, this)
+            items.add(item)
 
-            var rowKey: String = ""
-            if (row.containsKey("key")) {
-                rowKey = row["key"]!!
-            }
-            var title: String = ""
-            if (row.containsKey("title")) {
-                title = row["title"]!!
-            }
-            var value: String = ""
-            if (row.containsKey("value")) {
-                value = row["value"]!!
-            }
-            var show: String = ""
-            if (row.containsKey("show")) {
-                show = row["show"]!!
-            }
+        } else {
 
-            val cell_type: String? = row["cell"]
+            //val adapterRows: ArrayList<Item> = arrayListOf()
+            for ((idx, row) in rows.withIndex()) {
 
-            //var formItemAdapter: FormItemAdapter1? = null
-            if (cell_type == "cart") {
-                var featured_path = FEATURED_PATH
-                if (row.containsKey("featured_path") && row["featured_path"]!!.length > 0) {
-                    featured_path = row["featured_path"]!!
+                var rowKey: String = ""
+                if (row.containsKey("key")) {
+                    rowKey = row["key"]!!
                 }
-                var attribute = ""
-                if (row.containsKey("attribute")) {
-                    attribute = row["attribute"]!!
+                var title: String = ""
+                if (row.containsKey("title")) {
+                    title = row["title"]!!
                 }
-                var amount = ""
-                if (row.containsKey("amount")) {
-                    amount = row["amount"]!!
+                var value: String = ""
+                if (row.containsKey("value")) {
+                    value = row["value"]!!
                 }
-                var quantity = ""
-                if (row.containsKey("quantity")) {
-                    quantity = row["quantity"]!!
+                var show: String = ""
+                if (row.containsKey("show")) {
+                    show = row["show"]!!
                 }
-                val cartItemItem = CartItemItem(this, sectionKey, rowKey, title, featured_path, attribute, amount, quantity)
-                items.add(cartItemItem)
-            } else if (cell_type == "text") {
-                val item = PlainAdapter1(title, show)
-                items.add(item)
-            } else if (cell_type == "radio") {
-                val checked: Boolean = value.toBoolean()
-                val item = RadioAdapter(sectionKey, rowKey, title, checked, this)
-                items.add(item)
+
+                val cell_type: String? = row["cell"]
+
+                //var formItemAdapter: FormItemAdapter1? = null
+                if (cell_type == "cart") {
+                    var featured_path = FEATURED_PATH
+                    if (row.containsKey("featured_path") && row["featured_path"]!!.length > 0) {
+                        featured_path = row["featured_path"]!!
+                    }
+                    var attribute = ""
+                    if (row.containsKey("attribute")) {
+                        attribute = row["attribute"]!!
+                    }
+                    var amount = ""
+                    if (row.containsKey("amount")) {
+                        amount = row["amount"]!!
+                    }
+                    var quantity = ""
+                    if (row.containsKey("quantity")) {
+                        quantity = row["quantity"]!!
+                    }
+                    val cartItemItem = CartItemItem(
+                        this,
+                        sectionKey,
+                        rowKey,
+                        title,
+                        featured_path,
+                        attribute,
+                        amount,
+                        quantity
+                    )
+                    items.add(cartItemItem)
+                } else if (cell_type == "text") {
+                    val item = PlainAdapter1(title, show)
+                    items.add(item)
+                } else if (cell_type == "radio") {
+//                    val checked: Boolean = value.toBoolean()
+//                    val item = RadioAdapter(this, sectionKey, rowKey, title, checked, this)
+//                    items.add(item)
+                }
             }
         }
 
