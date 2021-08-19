@@ -164,10 +164,11 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
     open fun contentEdit(key: String, content: String) {}
 
     //for tag delegate
+    open fun textFieldTextChanged(sectionKey: String, rowKey: String, value: String){}
     open fun setTag(sectionKey: String, rowKey: String, attribute: String, selected: Boolean){}
     open fun stepperValueChanged(sectionKey: String, rowKey: String, number: Int){}
 
-    open fun radioDidChange(sectionKey: String, rowKey: String, checked: Boolean){}
+    open fun radioDidChange(sectionKey: String, idx: Int){}
 
     open var editCourseResult: ActivityResultLauncher<Intent>? = null
 

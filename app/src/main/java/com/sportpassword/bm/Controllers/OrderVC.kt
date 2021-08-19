@@ -52,19 +52,19 @@ class OrderVC : MyTableVC() {
     )
 
     val invoicePersonalRows: ArrayList<HashMap<String, String>> = arrayListOf(
-        hashMapOf("title" to "EMail","key" to INVOICE_EMAIL_KEY,"value" to "${member.email}","show" to "${member.email}","cell" to "textField")
+        hashMapOf("title" to "EMail","key" to INVOICE_EMAIL_KEY,"value" to "${member.email}","show" to "${member.email}","cell" to "textField","keyboard" to KEYBOARD.emailAddress.toString())
     )
 
     val invoiceCompanyRows: ArrayList<HashMap<String, String>> = arrayListOf(
-        hashMapOf("title" to "統一編編","key" to INVOICE_COMPANY_TAX_KEY,"value" to "","show" to "","cell" to "textField"),
-        hashMapOf("title" to "公司行號抬頭","key" to INVOICE_COMPANY_NAME_KEY,"value" to "","show" to "","cell" to "textField"),
-        hashMapOf("title" to "EMail","key" to INVOICE_EMAIL_KEY,"value" to "${member.email}","show" to "${member.email}","cell" to "textField")
+        hashMapOf("title" to "統一編編","key" to INVOICE_COMPANY_TAX_KEY,"value" to "","show" to "","cell" to "textField","keyboard" to KEYBOARD.default.toString()),
+        hashMapOf("title" to "公司行號抬頭","key" to INVOICE_COMPANY_NAME_KEY,"value" to "","show" to "","cell" to "textField","keyboard" to KEYBOARD.default.toString()),
+        hashMapOf("title" to "EMail","key" to INVOICE_EMAIL_KEY,"value" to "${member.email}","show" to "${member.email}","cell" to "textField","keyboard" to KEYBOARD.emailAddress.toString())
     )
 
     var memberRows: ArrayList<HashMap<String, String>> = arrayListOf()
 
     val memoRows: ArrayList<HashMap<String, String>> = arrayListOf(
-        hashMapOf("title" to "留言","key" to MEMO_KEY,"value" to "","show" to "","cell" to "memo")
+        hashMapOf("title" to "留言","key" to MEMO_KEY,"value" to "","show" to "","cell" to "memo","keyboard" to KEYBOARD.default.toString())
     )
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -80,7 +80,7 @@ class OrderVC : MyTableVC() {
         refreshLayout = order_refresh
 
         mySections = arrayListOf(
-//            hashMapOf("name" to "商品", "isExpanded" to true, "key" to PRODUCT_KEY),
+            hashMapOf("name" to "商品", "isExpanded" to true, "key" to PRODUCT_KEY),
             hashMapOf("name" to "金額", "isExpanded" to true, "key" to AMOUNT_KEY),
             hashMapOf("name" to "付款方式", "isExpanded" to true, "key" to GATEWAY_KEY),
             hashMapOf("name" to "寄送方式", "isExpanded" to true, "key" to SHIPPING_KEY),
@@ -221,7 +221,7 @@ class OrderVC : MyTableVC() {
 
                 //gateway
                 val gateway: String = productTable!!.gateway
-                val arr: Array<String> = gateway.split(",").toTypedArray()
+                var arr: Array<String> = gateway.split(",").toTypedArray()
                 for (tmp in arr) {
                     val title: String = GATEWAY.getRawValueFromString(tmp)
                     var value: String = "false"
@@ -232,17 +232,17 @@ class OrderVC : MyTableVC() {
                     gatewayRows.add(_row)
                 }
 
-//                val shipping: String = productTable!!.shipping
-//                arr = shipping.split(",").toTypedArray()
-//                for (tmp in arr) {
-//                    val title: String = SHIPPING_WAY.getRawValueFromString(tmp)
-//                    var value: String = "false"
-//                    if (tmp == "direct") {
-//                        value = "true"
-//                    }
-//                    val row1: HashMap<String, String> = hashMapOf("title" to title,"key" to tmp,"value" to value,"show" to title,"cell" to "radio")
-//                    shippingRows.add(row1)
-//                }
+                val shipping: String = productTable!!.shipping
+                arr = shipping.split(",").toTypedArray()
+                for (tmp in arr) {
+                    val title: String = SHIPPING_WAY.getRawValueFromString(tmp)
+                    var value: String = "false"
+                    if (tmp == "direct") {
+                        value = "true"
+                    }
+                    val row1: HashMap<String, String> = hashMapOf("title" to title,"key" to tmp,"value" to value,"show" to title,"cell" to "radio")
+                    shippingRows.add(row1)
+                }
             }
         }
     }
@@ -250,10 +250,10 @@ class OrderVC : MyTableVC() {
     fun initData() {
 
         memberRows = arrayListOf(
-            hashMapOf("title" to "姓名","key" to NAME_KEY,"value" to member.name,"show" to member.name,"cell" to "textField"),
-            hashMapOf("title" to "電話","key" to MOBILE_KEY,"value" to member.mobile,"show" to member.mobile,"cell" to "textField"),
-            hashMapOf("title" to "EMail","key" to EMAIL_KEY,"value" to member.email,"show" to member.email,"cell" to "textField"),
-            hashMapOf("title" to "住址","key" to ADDRESS_KEY,"value" to member.address,"show" to member.address,"cell" to "textField")
+            hashMapOf("title" to "姓名","key" to NAME_KEY,"value" to member.name,"show" to member.name,"cell" to "textField","keyboard" to KEYBOARD.default.toString()),
+            hashMapOf("title" to "電話","key" to MOBILE_KEY,"value" to member.mobile,"show" to member.mobile,"cell" to "textField","keyboard" to KEYBOARD.numberPad.toString()),
+            hashMapOf("title" to "EMail","key" to EMAIL_KEY,"value" to member.email,"show" to member.email,"cell" to "textField","keyboard" to KEYBOARD.emailAddress.toString()),
+            hashMapOf("title" to "住址","key" to ADDRESS_KEY,"value" to member.address,"show" to member.address,"cell" to "textField","keyboard" to KEYBOARD.default.toString())
         )
 
         for (invoiceFixedRow in invoiceFixedRows) {
@@ -267,7 +267,7 @@ class OrderVC : MyTableVC() {
         }
 
         myRows = arrayListOf(
-//            hashMapOf("key" to PRODUCT_KEY, "rows" to productRows),
+            hashMapOf("key" to PRODUCT_KEY, "rows" to productRows),
             hashMapOf("key" to AMOUNT_KEY, "rows" to amountRows),
             hashMapOf("key" to GATEWAY_KEY, "rows" to gatewayRows),
             hashMapOf("key" to SHIPPING_KEY, "rows" to shippingRows),
@@ -334,7 +334,9 @@ class OrderVC : MyTableVC() {
         if (sectionKey == GATEWAY_KEY) {
             val item = RadioAdapter(this, sectionKey, rows, this)
             items.add(item)
-
+        } else if (sectionKey == SHIPPING_KEY) {
+            val item = RadioAdapter(this, sectionKey, rows, this)
+            items.add(item)
         } else {
 
             //val adapterRows: ArrayList<Item> = arrayListOf()
@@ -391,10 +393,10 @@ class OrderVC : MyTableVC() {
                 } else if (cell_type == "text") {
                     val item = PlainAdapter1(title, show)
                     items.add(item)
-                } else if (cell_type == "radio") {
-//                    val checked: Boolean = value.toBoolean()
-//                    val item = RadioAdapter(this, sectionKey, rowKey, title, checked, this)
-//                    items.add(item)
+                } else if (cell_type == "textField") {
+                    val keyboard: String = row["keyboard"] ?: run { "default" }
+                    val item = TextFieldAdapter1(sectionKey, rowKey, title, value, keyboard, this)
+                    items.add(item)
                 }
             }
         }
@@ -411,7 +413,15 @@ class OrderVC : MyTableVC() {
         adapter.notifyDataSetChanged()
     }
 
-    override fun radioDidChange(sectionKey: String, rowKey: String, checked: Boolean) {
+    override fun textFieldTextChanged(sectionKey: String, rowKey: String, value: String) {
+
+        val row: HashMap<String, String> = getRowRowsFromMyRowsByKey1(rowKey)
+        row["value"] = value
+        row["show"] = value
+        replaceRowByKey(sectionKey, rowKey, row)
+    }
+
+    override fun radioDidChange(sectionKey: String, idx: Int) {
 
         invoiceRows.clear()
         if (sectionKey == INVOICE_KEY) {
@@ -419,14 +429,14 @@ class OrderVC : MyTableVC() {
                 invoiceRows.add(invoiceFixRow)
             }
 
-            for ((idx, _row) in invoiceOptionRows.withIndex()) {
-                var row = _row
-                if (row["key"] == rowKey) {
-                    row["value"] = checked.toString()
+            for ((i, row) in invoiceOptionRows.withIndex()) {
+                val _row = row
+                if (i == idx) {
+                    _row["value"] = "true"
                 } else {
-                    row["value"] = (!checked).toString()
+                    _row["value"] = "false"
                 }
-                invoiceOptionRows[idx] = row
+                invoiceOptionRows[i] = _row
             }
 
             var selectedRow: HashMap<String, String> = hashMapOf()
@@ -447,26 +457,22 @@ class OrderVC : MyTableVC() {
                 }
             }
 
-            replaceRowsByKey(INVOICE_KEY, invoiceRows)
+            replaceRowsByKey(sectionKey, invoiceRows)
         } else {
             val rows = getRowRowsFromMyRowsByKey(sectionKey)
-            for (row in rows) {
+            for ((i, row) in rows.withIndex()) {
 
-                if (row.containsKey("key")) {
-                    val key: String = row["key"] as String
-                    var _row = row
-                    var a: Boolean = false
-                    if (key == rowKey) {
-                        a = checked
-                    } else {
-                        a = !checked
-                    }
-                    _row["value"] = a.toString()
-                    replaceRowByKey(sectionKey, key, _row)
+                val _row = row
+                if (i == idx) {
+                    _row["value"] = "true"
+                } else {
+                    _row["value"] = "false"
                 }
+                rows[i] = _row
             }
+            replaceRowsByKey(sectionKey, rows)
         }
-        reloadData()
+        //reloadData()
     }
 
     fun submitBtnPressed(view: View) {

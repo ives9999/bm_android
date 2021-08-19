@@ -4,6 +4,7 @@ import android.graphics.Color
 import android.view.Gravity
 import android.view.View
 import androidx.constraintlayout.widget.ConstraintSet
+import com.sportpassword.bm.Controllers.BaseActivity
 import com.sportpassword.bm.Form.BaseForm
 import com.sportpassword.bm.Form.FormItem.ColorFormItem
 import com.sportpassword.bm.Form.FormItem.FormItem
@@ -19,6 +20,11 @@ import kotlinx.android.synthetic.main.formitem_more.required
 import kotlinx.android.synthetic.main.formitem_more.title
 import kotlinx.android.synthetic.main.formitem_textfield.*
 import org.jetbrains.anko.backgroundColor
+
+class  MoreAdapter1(sectionKey: String, rowKey: String, title: String, value: String, keyboard: String = "default", delegate: BaseActivity?=null): FormItemAdapter1(sectionKey, rowKey, title, value,"", delegate) {
+
+}
+
 
 class MoreAdapter(formItem: FormItem, clearClick:(formItem: FormItem)->Unit, val rowClick:(formItem: FormItem)->Unit): FormItemAdapter(formItem, clearClick) {
 

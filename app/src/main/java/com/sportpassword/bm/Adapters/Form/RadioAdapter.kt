@@ -57,37 +57,42 @@ class RadioAdapter(context: Context, sectionKey: String, rows: ArrayList<HashMap
 
         val group = RadioGroup(context)
 
+        val radioButtons: ArrayList<RadioButton> = arrayListOf()
         for (row in rows) {
+
             val radioButton: RadioButton = RadioButton(context)
-            radioButton.text = row["title"]
+            var title = ""
+            if (row.containsKey("title")) {
+                title = row["title"]!!
+            }
+            radioButton.text = title
             radioButton.buttonTintList = colorStateList
             radioButton.setTextColor(textColor)
             radioButton.layoutParams = lp
+
+            val isChecked: Boolean = row["value"].toBoolean() ?: run {
+                false
+            }
+
+            radioButton.isChecked = false
             group.addView(radioButton)
+
+            radioButtons.add(radioButton)
         }
 
-//        val programmer = RadioButton(context)
-//        programmer.text = "信用卡"
-//        programmer.buttonTintList = colorStateList
-//        programmer.setTextColor(color)
-//
-//        val designer = RadioButton(context)
-//        designer.text = "超商條碼"
-//
-//        group.addView(programmer)
-//        group.addView(designer)
+        for ((idx, row) in rows.withIndex()) {
+            if (row["value"].toBoolean()) {
+                radioButtons[idx].isChecked = true
+            }
+        }
 
         viewHolder.radioContainer.addView(group)
 
-//        viewHolder.radioContainer.addView(programmer)
-//        viewHolder.radioContainer.addView(designer)
-
-//        if (baseActivityDelegate != null) {
-//            viewHolder.radio.setOnCheckedChangeListener { buttonView, isChecked ->
-//                //println(isChecked)
-//                baseActivityDelegate!!.radioDidChange(sectionKey, rowKey, isChecked)
-//            }
-//        }
+        if (baseActivityDelegate != null) {
+            group.setOnCheckedChangeListener { radioGroup, i ->
+                baseActivityDelegate!!.radioDidChange(sectionKey, i-1)
+            }
+        }
     }
 }
 
