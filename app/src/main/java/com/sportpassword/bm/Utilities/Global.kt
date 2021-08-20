@@ -1,6 +1,7 @@
 package com.sportpassword.bm.Utilities
 
 import android.animation.Animator
+import android.app.ActionBar
 import android.app.Activity
 import android.app.AlertDialog
 import android.content.ActivityNotFoundException
@@ -17,6 +18,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.*
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.google.gson.Gson
@@ -38,6 +40,7 @@ import com.sportpassword.bm.Models.Tables
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.DataService
 import com.squareup.picasso.Picasso
+import org.jetbrains.anko.backgroundColor
 import org.jetbrains.anko.makeCall
 import java.text.NumberFormat
 import java.text.ParseException
@@ -1006,6 +1009,37 @@ fun ImageView.setImage(name: String) {
 
 fun View.getIDString(): String {
     return this.resources.getResourceName(this.id)
+}
+
+fun ViewGroup.mask(context: Context): LinearLayout {
+
+    val mask = LinearLayout(context)
+    mask.id = R.id.MyMask
+    mask.layoutParams = LinearLayout.LayoutParams(this.width, this.height)
+    mask.backgroundColor = Color.parseColor("#888888")
+    //0是完全透明
+    mask.alpha = 0.9f
+//    layerMask!!.setOnClickListener {
+//        unmask()
+//    }
+    this.addView(mask)
+
+    return mask
+}
+
+fun ViewGroup.blackView(context: Context, left: Int, top: Int, width: Int, height: Int): LinearLayout {
+
+    val blackView = LinearLayout(context)
+//    println(width)
+//    println(height)
+    val lp: LinearLayout.LayoutParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT)
+    //val lp: LinearLayout.LayoutParams = LinearLayout.LayoutParams(width, height)
+    lp.setMargins(100, 100, 100, 100)
+    blackView.layoutParams = lp
+    blackView.backgroundColor = Color.RED
+    this.addView(blackView)
+
+    return blackView
 }
 
 fun TextView.selected() {

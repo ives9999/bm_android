@@ -2,6 +2,8 @@ package com.sportpassword.bm.Controllers
 
 import android.os.Bundle
 import android.view.View
+import android.view.ViewTreeObserver
+import android.widget.LinearLayout
 import com.sportpassword.bm.Adapters.Form.*
 import com.sportpassword.bm.Adapters.GroupSection
 import com.sportpassword.bm.Form.FormItem.FormItem
@@ -20,6 +22,13 @@ import kotlinx.android.synthetic.main.mask.*
 import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
+import android.R.attr.height
+import android.content.res.Resources
+import android.os.Build
+import android.util.DisplayMetrics
+import android.view.WindowMetrics
+import androidx.annotation.RequiresApi
+
 
 class OrderVC : MyTableVC() {
 
@@ -36,6 +45,10 @@ class OrderVC : MyTableVC() {
     var selected_price: Int = 0
     var selected_idx: Int = 0
 
+    val blackViewHeight: Int = 250
+    val blackViewPaddingLeft: Int = 20
+    var blackView: LinearLayout? = null
+
     var productRows: ArrayList<HashMap<String, String>> = arrayListOf()
     var amountRows: ArrayList<HashMap<String, String>> = arrayListOf()
     var gatewayRows: ArrayList<HashMap<String, String>> = arrayListOf()
@@ -43,7 +56,7 @@ class OrderVC : MyTableVC() {
     var invoiceRows: ArrayList<HashMap<String, String>> = arrayListOf()
 
     var invoiceFixedRows: ArrayList<HashMap<String, String>> = arrayListOf(
-        hashMapOf("title" to "發片(本商城目前僅提供電子發票)","key" to INVOICE_KEY,"value" to "","show" to "","cell" to "more")
+        hashMapOf("title" to "發票(目前僅提供電子發票)","key" to INVOICE_KEY,"value" to "","show" to "","cell" to "more")
     )
 
     var invoiceOptionRows: ArrayList<HashMap<String, String>> = arrayListOf(
@@ -397,6 +410,9 @@ class OrderVC : MyTableVC() {
                     val keyboard: String = row["keyboard"] ?: run { "default" }
                     val item = TextFieldAdapter1(sectionKey, rowKey, title, value, keyboard, this)
                     items.add(item)
+                } else if (cell_type == "more") {
+                    val item = MoreAdapter1(sectionKey, rowKey, title, value, show, this)
+                    items.add(item)
                 }
             }
         }
@@ -473,6 +489,18 @@ class OrderVC : MyTableVC() {
             replaceRowsByKey(sectionKey, rows)
         }
         //reloadData()
+    }
+
+    override fun moreClick(sectionKey: String, rowKey: String) {
+        //println("more")
+        layerMask = top.mask(this)
+
+        val frame_width = Resources.getSystem().displayMetrics.widthPixels
+        val frame_height = Resources.getSystem().displayMetrics.heightPixels
+
+
+
+        this.blackView = layerMask!!.blackView(this, blackViewPaddingLeft, (frame_height-blackViewHeight)/2, frame_width-2*100, blackViewHeight)
     }
 
     fun submitBtnPressed(view: View) {

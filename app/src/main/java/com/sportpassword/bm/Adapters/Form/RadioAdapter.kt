@@ -53,7 +53,7 @@ class RadioAdapter(context: Context, sectionKey: String, rows: ArrayList<HashMap
         )
 
         val lp = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT)
-        lp.setMargins(18, 16, 0, 16)
+        lp.setMargins(18, 24, 0, 24)
 
         val group = RadioGroup(context)
 
@@ -68,6 +68,7 @@ class RadioAdapter(context: Context, sectionKey: String, rows: ArrayList<HashMap
             radioButton.text = title
             radioButton.buttonTintList = colorStateList
             radioButton.setTextColor(textColor)
+            radioButton.textSize = 18F
             radioButton.layoutParams = lp
 
             val isChecked: Boolean = row["value"].toBoolean() ?: run {

@@ -21,8 +21,32 @@ import kotlinx.android.synthetic.main.formitem_more.title
 import kotlinx.android.synthetic.main.formitem_textfield.*
 import org.jetbrains.anko.backgroundColor
 
-class  MoreAdapter1(sectionKey: String, rowKey: String, title: String, value: String, keyboard: String = "default", delegate: BaseActivity?=null): FormItemAdapter1(sectionKey, rowKey, title, value,"", delegate) {
+class  MoreAdapter1(sectionKey: String, rowKey: String, title: String, value: String, show: String, delegate: BaseActivity?=null): FormItemAdapter1(sectionKey, rowKey, title, value, show, delegate) {
+    override fun getLayout(): Int {
 
+        return R.layout.formitem_more
+    }
+
+    override fun bind(viewHolder: GroupieViewHolder, position: Int) {
+
+        viewHolder.title.text = title
+
+        if (show.length > 0) {
+            viewHolder.detail.visibility = View.VISIBLE
+            viewHolder.detail.text = show
+        } else {
+            viewHolder.clear.visibility = View.INVISIBLE
+            viewHolder.detail.visibility = View.INVISIBLE
+        }
+
+        viewHolder.promptBtn.visibility = View.INVISIBLE
+
+        viewHolder.container.setOnClickListener {
+            if (baseActivityDelegate != null) {
+                baseActivityDelegate!!.moreClick(sectionKey, rowKey)
+            }
+        }
+    }
 }
 
 

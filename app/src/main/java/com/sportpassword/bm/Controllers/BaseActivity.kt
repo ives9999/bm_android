@@ -169,6 +169,7 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
     open fun stepperValueChanged(sectionKey: String, rowKey: String, number: Int){}
 
     open fun radioDidChange(sectionKey: String, idx: Int){}
+    open fun moreClick(sectionKey: String, rowKey: String){}
 
     open var editCourseResult: ActivityResultLauncher<Intent>? = null
 

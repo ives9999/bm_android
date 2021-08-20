@@ -62,6 +62,14 @@ class  TextFieldAdapter1(sectionKey: String, rowKey: String, title: String, valu
                 }
             }
         })
+
+        viewHolder.clear.setOnClickListener {
+            //clearClick(row)
+            textField.setText("")
+            if (baseActivityDelegate != null) {
+                baseActivityDelegate!!.textFieldTextChanged(sectionKey, rowKey, "")
+            }
+        }
     }
 
 }
