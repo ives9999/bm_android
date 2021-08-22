@@ -3,13 +3,16 @@ package com.sportpassword.bm.Controllers
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import com.google.gson.Gson
+import com.sportpassword.bm.Adapters.Form.MoreAdapter1
+import com.sportpassword.bm.Adapters.Form.PlainAdapter1
+import com.sportpassword.bm.Adapters.Form.TextFieldAdapter1
 import com.sportpassword.bm.Adapters.GroupSection
 import com.sportpassword.bm.Models.*
 import com.sportpassword.bm.R
+import com.sportpassword.bm.Services.CartService
 import com.sportpassword.bm.Services.OrderService
-import com.sportpassword.bm.Utilities.JSONParse
-import com.sportpassword.bm.Utilities.Loading
-import com.sportpassword.bm.Utilities.getField
+import com.sportpassword.bm.Utilities.*
 import com.sportpassword.bm.member
 import com.xwray.groupie.ExpandableGroup
 import com.xwray.groupie.GroupAdapter
@@ -27,48 +30,66 @@ class PaymentVC : MyTableVC() {
 
     var ecpay_token: String = ""
     var order_token: String = ""
-    var tokenExpireDate: String = ""
-    var superOrder: SuperOrder? = null
+    var ecpay_token_ExpireDate: String = ""
+    var orderTable: OrderTable? = null
 
-    val rows1: ArrayList<ArrayList<HashMap<String, String>>> = arrayListOf(
-            arrayListOf(
-                    hashMapOf("name" to "商品名稱", "value" to "", "key" to "product_name"),
-                    hashMapOf("name" to "商品屬性", "value" to "", "key" to "attribute")
-            ),
-            arrayListOf(
-                    hashMapOf("name" to "訂單編號", "value" to "", "key" to "order_no"),
-                    hashMapOf("name" to "商品數量", "value" to "", "key" to "quantity_show"),
-                    hashMapOf("name" to "商品金額", "value" to "product_price", "key" to "product_price_show"),
-                    hashMapOf("name" to "運費", "value" to "shipping_fee", "key" to "shipping_fee_show"),
-                    hashMapOf("name" to "訂單總金額", "value" to "", "key" to "amount_show"),
-                    hashMapOf("name" to "訂單建立時間", "value" to "", "key" to "created_at_show"),
-                    hashMapOf("name" to "訂單狀態", "value" to "", "key" to "order_process_show")
-            ),
-            arrayListOf(
-                    hashMapOf("name" to "付款方式", "value" to "", "key" to "gateway_ch"),
-                    hashMapOf("name" to "付款時間", "value" to "", "key" to "payment_at_show"),
-                    hashMapOf("name" to "付款狀態", "value" to "", "key" to "payment_process_show")
-            ),
-            arrayListOf(
-                    hashMapOf("name" to "到貨方式", "value" to "", "key" to "method_ch"),
-                    hashMapOf("name" to "到貨時間", "value" to "", "key" to "shipping_at_show"),
-                    hashMapOf("name" to "到貨狀態", "value" to "", "key" to "shipping_process_show")
-            ),
-            arrayListOf(
-                    hashMapOf("name" to "訂購人姓名", "value" to "", "key" to "order_name"),
-                    hashMapOf("name" to "訂購人電話", "value" to "", "key" to "order_tel"),
-                    hashMapOf("name" to "訂購人EMail", "value" to "", "key" to "order_email"),
-                    hashMapOf("name" to "訂購人住址", "value" to "", "key" to "address")
-            )
+    var productRows: ArrayList<HashMap<String, String>> = arrayListOf()
+
+    var orderRows: ArrayList<HashMap<String, String>> = arrayListOf(
+        hashMapOf(TITLE_KEY to "訂單編號", KEY_KEY to ORDER_NO_KEY, VALUE_KEY to "", SHOW_KEY to "", CELL_KEY to "text"),
+        hashMapOf(TITLE_KEY to "商品金額", KEY_KEY to AMOUNT_KEY, VALUE_KEY to "", SHOW_KEY to "", CELL_KEY to "text"),
+        hashMapOf(TITLE_KEY to "運費", KEY_KEY to SHIPPING_FEE_KEY, VALUE_KEY to "", SHOW_KEY to "", CELL_KEY to "text"),
+        hashMapOf(TITLE_KEY to "稅", KEY_KEY to TAX_KEY, VALUE_KEY to "", SHOW_KEY to "", CELL_KEY to "text"),
+        hashMapOf(TITLE_KEY to "訂單金額", KEY_KEY to TOTAL_KEY, VALUE_KEY to "", SHOW_KEY to "", CELL_KEY to "text"),
+        hashMapOf(TITLE_KEY to "訂單建立時間", KEY_KEY to CREATED_AT_KEY, VALUE_KEY to "", SHOW_KEY to "", CELL_KEY to "text"),
+        hashMapOf(TITLE_KEY to "訂單狀態", KEY_KEY to ORDER_PROCESS_KEY, VALUE_KEY to "", SHOW_KEY to "", CELL_KEY to "text")
     )
 
-    var paymentSections: ArrayList<Section> = arrayListOf(Section(), Section(), Section(), Section(), Section())
+    var gatewayRows: ArrayList<HashMap<String, String>> = arrayListOf(
+        hashMapOf(TITLE_KEY to "付款方式", KEY_KEY to GATEWAY_METHOD_KEY, VALUE_KEY to "", SHOW_KEY to "", CELL_KEY to "more"),
+        hashMapOf(TITLE_KEY to "付款狀態", KEY_KEY to GATEWAY_PROCESS_KEY, VALUE_KEY to "", SHOW_KEY to "", CELL_KEY to "text"),
+        hashMapOf(TITLE_KEY to "付款時間", KEY_KEY to GATEWAY_AT_KEY, VALUE_KEY to "", SHOW_KEY to "", CELL_KEY to "text")
+    )
+
+    var shippingRows: ArrayList<HashMap<String, String>> = arrayListOf(
+        hashMapOf(TITLE_KEY to "到貨方式", KEY_KEY to SHIPPING_METHOD_KEY, VALUE_KEY to "", SHOW_KEY to "", CELL_KEY to "text"),
+        hashMapOf(TITLE_KEY to "到貨狀態", KEY_KEY to SHIPPING_PROCESS_KEY, VALUE_KEY to "", SHOW_KEY to "", CELL_KEY to "text"),
+        hashMapOf(TITLE_KEY to "出貨時間", KEY_KEY to SHIPPING_AT_KEY, VALUE_KEY to "", SHOW_KEY to "", CELL_KEY to "text")
+    )
+
+    var invoiceRows: ArrayList<HashMap<String, String>> = arrayListOf(
+        hashMapOf(TITLE_KEY to "發票種類", KEY_KEY to INVOICE_TYPE_KEY, VALUE_KEY to "", SHOW_KEY to "", CELL_KEY to "text"),
+        hashMapOf(TITLE_KEY to "寄送EMail", KEY_KEY to INVOICE_EMAIL_KEY, VALUE_KEY to "", SHOW_KEY to "", CELL_KEY to "text")
+    )
+
+    var memberRows: ArrayList<HashMap<String, String>> = arrayListOf(
+        hashMapOf(TITLE_KEY to "姓名",KEY_KEY to NAME_KEY,VALUE_KEY to "",SHOW_KEY to "",CELL_KEY to "text"),
+        hashMapOf(TITLE_KEY to "電話",KEY_KEY to MOBILE_KEY,VALUE_KEY to "",SHOW_KEY to "",CELL_KEY to "text"),
+        hashMapOf(TITLE_KEY to "EMail",KEY_KEY to EMAIL_KEY,VALUE_KEY to "",SHOW_KEY to "",CELL_KEY to "text"),
+        hashMapOf(TITLE_KEY to "住址",KEY_KEY to ADDRESS_KEY,VALUE_KEY to "",SHOW_KEY to "",CELL_KEY to "text")
+    )
+
+    val memoRows: ArrayList<HashMap<String, String>> = arrayListOf(
+        hashMapOf(TITLE_KEY to "留言",KEY_KEY to MEMO_KEY,VALUE_KEY to "",SHOW_KEY to "",CELL_KEY to "text")
+    )
+
+    var gateway: GATEWAY = GATEWAY.credit_card
+    var payment_no: String = ""
+    var expire_at: String = ""
+    var payment_url: String = ""
+    var barcode1: String = ""
+    var barcode2: String = ""
+    var barcode3: String = ""
+    var bank_code: String = ""
+    var bank_account: String = ""
+
+    var trade_no: String = ""
+
+    var popupRows: ArrayList<HashMap<String, String>> = arrayListOf()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_payment_vc)
-
-        sections = arrayListOf("商品", "訂單", "付款", "物流", "訂購人")
 
         if (intent.hasExtra("ecpay_token")) {
             ecpay_token = intent.getStringExtra("ecpay_token")!!
@@ -77,7 +98,7 @@ class PaymentVC : MyTableVC() {
             order_token = intent.getStringExtra("order_token")!!
         }
         if (intent.hasExtra("tokenExpireDate")) {
-            tokenExpireDate = intent.getStringExtra("tokenExpireDate")!!
+            ecpay_token_ExpireDate = intent.getStringExtra("ecpay_token_ExpireDate")!!
         }
 
         val title: String = getString(R.string.app_name)
@@ -93,7 +114,8 @@ class PaymentVC : MyTableVC() {
         //refresh()
 
         if (ecpay_token.length > 0) {
-            PaymentkitManager.initialize(this, ServerType.Prod)
+            PaymentkitManager.initialize(this, ServerType.Stage)
+            //PaymentkitManager.initialize(this, ServerType.Prod)
             PaymentkitManager.createPayment(this, ecpay_token, LanguageCode.zhTW, false, title, PaymentkitManager.RequestCode_CreatePayment)
         } else {
             refresh()
@@ -102,19 +124,12 @@ class PaymentVC : MyTableVC() {
 
     override fun refresh() {
         Loading.show(mask)
-        val params: HashMap<String, String> = hashMapOf("token" to order_token!!, "member_token" to member.token!!)
+        val params: HashMap<String, String> = hashMapOf("token" to order_token, "member_token" to member.token)
         dataService.getOne(this, params) { success ->
             if (success) {
-                superOrder = dataService.superModel as SuperOrder
-                if (superOrder != null) {
-                    superOrder!!.filter()
-                    //superOrder!!.print()
-
-                    setMyTitle(superOrder!!.product.name)
-                    setupOrderData()
-                    setData()
-//                    println(items);
-                    adapter.notifyDataSetChanged()
+                jsonString = dataService.jsonString
+                if (jsonString != null && jsonString!!.isNotEmpty()) {
+                    genericTable()
                 }
             }
             closeRefresh()
@@ -122,68 +137,309 @@ class PaymentVC : MyTableVC() {
         }
     }
 
-    private fun setupOrderData() {
+    override fun genericTable() {
+        try {
+            orderTable = Gson().fromJson(jsonString, OrderTable::class.java)
+        } catch (e: java.lang.Exception) {
+            warning(e.localizedMessage)
+        }
+        if (orderTable == null) {
+            warning("購物車中無商品，或購物車超過一個錯誤，請洽管理員")
+        } else {
+            initData()
+        }
+    }
 
-        if (superOrder != null) {
-            val mirror = SuperOrder::class
-            mirror.memberProperties.forEach { property->
-                val label = property.name
-                for ((idx, row) in rows1.withIndex()) {
-                    for ((idx1, row1) in row.withIndex()) {
-                        val key: String = row1["key"]!!
-                        if (key == label) {
-                            val type1 = getClassType(property)
-                            when (type1) {
-                                "String" -> {
-                                    val t: String? = superOrder!!.getField<String>(label)
-                                    if (t != null) {
-                                        rows1[idx][idx1]["value"] = t
-                                    }
-                                }
-                                "int" -> {
-                                    val t: Int? = superOrder!!.getField<Int>(label)
-                                    if (t != null) {
-                                        rows1[idx][idx1]["value"] = t.toString()
-                                    }
-                                }
-                            }
-                        }
+    fun initData() {
+
+        setMyTitle(orderTable!!.order_no)
+
+        mySections = arrayListOf(
+            hashMapOf("name" to "商品", "isExpanded" to true, KEY_KEY to PRODUCT_KEY),
+            hashMapOf("name" to "訂單", "isExpanded" to true, KEY_KEY to ORDER_KEY),
+            hashMapOf("name" to "付款方式", "isExpanded" to true, KEY_KEY to GATEWAY_KEY),
+            hashMapOf("name" to "寄送方式", "isExpanded" to true, KEY_KEY to SHIPPING_KEY),
+            hashMapOf("name" to "電子發票", "isExpanded" to true, KEY_KEY to INVOICE_KEY),
+            hashMapOf("name" to "訂購人資料", "isExpanded" to true, KEY_KEY to MEMBER_KEY),
+            hashMapOf("name" to "其他留言", "isExpanded" to true, KEY_KEY to MEMO_KEY)
+        )
+
+
+        orderTable!!.filterRow()
+        val orderItemsTable = orderTable!!.items
+        for (orderItemTable in orderItemsTable) {
+
+            orderItemTable.filterRow()
+            val productTable = orderItemTable.product
+
+            var attribute_text: String = ""
+            if (orderItemTable.attributes.size > 0) {
+
+                for ((idx, attribute) in orderItemTable.attributes.withIndex()) {
+                    attribute_text += attribute["name"]!! + ":" + attribute[VALUE_KEY]!!
+                    if (idx < orderItemTable.attributes.size - 1) {
+                        attribute_text += " | "
                     }
                 }
             }
 
-            //println(rows1)
+            val row: HashMap<String, String> = hashMapOf(TITLE_KEY to productTable!!.name,KEY_KEY to PRODUCT_KEY,VALUE_KEY to "",SHOW_KEY to "",CELL_KEY to "cart","featured_path" to productTable!!.featured_path,"attribute" to attribute_text,"amount" to orderItemTable.amount_show,"quantity" to orderItemTable.quantity.toString())
+            productRows.add(row)
         }
+
+        myRows = arrayListOf(
+            hashMapOf(KEY_KEY to PRODUCT_KEY, "rows" to productRows),
+            hashMapOf(KEY_KEY to ORDER_KEY, "rows" to orderRows),
+            hashMapOf(KEY_KEY to GATEWAY_KEY, "rows" to gatewayRows),
+            hashMapOf(KEY_KEY to SHIPPING_KEY, "rows" to shippingRows),
+            hashMapOf(KEY_KEY to INVOICE_KEY, "rows" to invoiceRows),
+            hashMapOf(KEY_KEY to MEMBER_KEY, "rows" to memberRows),
+            hashMapOf(KEY_KEY to MEMO_KEY, "rows" to memoRows)
+        )
+
+        //order
+        var row: HashMap<String, String> = getRowRowsFromMyRowsByKey1(ORDER_NO_KEY)
+        row[VALUE_KEY] = orderTable!!.order_no
+        row[SHOW_KEY] = orderTable!!.order_no
+        replaceRowByKey(ORDER_KEY, ORDER_NO_KEY,row)
+
+        row = getRowRowsFromMyRowsByKey1(AMOUNT_KEY)
+        row[VALUE_KEY] = orderTable!!.amount.toString()
+        row[SHOW_KEY] = orderTable!!.amount_show
+        replaceRowByKey(ORDER_KEY, AMOUNT_KEY,row)
+
+        row = getRowRowsFromMyRowsByKey1(SHIPPING_FEE_KEY)
+        row[VALUE_KEY] = orderTable!!.shipping_fee.toString()
+        row[SHOW_KEY] = orderTable!!.shipping_fee_show
+        replaceRowByKey(ORDER_KEY, SHIPPING_FEE_KEY,row)
+
+        row = getRowRowsFromMyRowsByKey1(TAX_KEY)
+        row[VALUE_KEY] = orderTable!!.tax.toString()
+        row[SHOW_KEY] = orderTable!!.tax_show
+        replaceRowByKey(ORDER_KEY, TAX_KEY,row)
+
+        row = getRowRowsFromMyRowsByKey1(TOTAL_KEY)
+        row[VALUE_KEY] = orderTable!!.total.toString()
+        row[SHOW_KEY] = orderTable!!.total_show
+        replaceRowByKey(ORDER_KEY, TOTAL_KEY,row)
+
+        row = getRowRowsFromMyRowsByKey1(CREATED_AT_KEY)
+        row[VALUE_KEY] = orderTable!!.created_at
+        row[SHOW_KEY] = orderTable!!.created_at_show
+        replaceRowByKey(ORDER_KEY, CREATED_AT_KEY,row)
+
+        row = getRowRowsFromMyRowsByKey1(ORDER_PROCESS_KEY)
+        row[VALUE_KEY] = orderTable!!.process
+        row[SHOW_KEY] = orderTable!!.order_process_show
+        replaceRowByKey(ORDER_KEY, ORDER_PROCESS_KEY,row)
+
+        //gateway
+        row = getRowRowsFromMyRowsByKey1(GATEWAY_METHOD_KEY)
+        row[VALUE_KEY] = orderTable!!.gateway!!.method
+        row[SHOW_KEY] = orderTable!!.gateway!!.method_show
+        replaceRowByKey(GATEWAY_KEY, GATEWAY_METHOD_KEY,row)
+
+        row = getRowRowsFromMyRowsByKey1(GATEWAY_AT_KEY)
+        row[VALUE_KEY] = orderTable!!.gateway!!.gateway_at
+        row[SHOW_KEY] = orderTable!!.gateway!!.gateway_at_show
+        replaceRowByKey(GATEWAY_KEY, GATEWAY_AT_KEY,row)
+
+        row = getRowRowsFromMyRowsByKey1(GATEWAY_PROCESS_KEY)
+        row[VALUE_KEY] = orderTable!!.gateway!!.process
+        row[SHOW_KEY] = orderTable!!.gateway!!.process_show
+        replaceRowByKey(GATEWAY_KEY, GATEWAY_PROCESS_KEY,row)
+
+        //shipping
+        row = getRowRowsFromMyRowsByKey1(SHIPPING_METHOD_KEY)
+        row[VALUE_KEY] = orderTable!!.shipping!!.method
+        row[SHOW_KEY] = orderTable!!.shipping!!.method_show
+        shippingRows = replaceRowByKey(shippingRows, SHIPPING_METHOD_KEY, row)
+        //replaceRowByKey(sectionSHIPPING_KEY, rowSHIPPING_METHOD_KEY,row)
+
+        row = getRowRowsFromMyRowsByKey1(SHIPPING_AT_KEY)
+        row[VALUE_KEY] = orderTable!!.shipping!!.shipping_at
+        row[SHOW_KEY] = orderTable!!.shipping!!.shipping_at_show
+        shippingRows = replaceRowByKey(shippingRows, SHIPPING_AT_KEY, row)
+        //replaceRowByKey(sectionSHIPPING_KEY, rowSHIPPING_AT_KEY,row)
+
+        row = getRowRowsFromMyRowsByKey1(SHIPPING_PROCESS_KEY)
+        row[VALUE_KEY] = orderTable!!.shipping!!.process
+        row[SHOW_KEY] = orderTable!!.shipping!!.process_show
+        shippingRows = replaceRowByKey(shippingRows, SHIPPING_PROCESS_KEY, row)
+        //replaceRowByKey(sectionSHIPPING_KEY, rowSHIPPING_PROCESS_KEY,row)
+
+        if (orderTable!!.shipping!!.method == "store_711" || orderTable!!.shipping?.method == "store_family") {
+            row = hashMapOf(TITLE_KEY to "到達商店時間", KEY_KEY to SHIPPING_STORE_AT_KEY, VALUE_KEY to orderTable!!.shipping!!.store_at, SHOW_KEY to orderTable!!.shipping!!.store_at_show, CELL_KEY to "text")
+            shippingRows.add(row)
+        }
+
+        row = hashMapOf(TITLE_KEY to "到貨時間", KEY_KEY to SHIPPING_COMPLETE_AT_KEY, VALUE_KEY to orderTable!!.shipping!!.complete_at, SHOW_KEY to orderTable!!.shipping!!.complete_at_show, CELL_KEY to "text")
+        shippingRows.add(row)
+
+        if (orderTable!!.shipping!!.back_at.length > 0) {
+            row = hashMapOf(TITLE_KEY to "退貨時間", KEY_KEY to SHIPPING_BACK_AT_KEY, VALUE_KEY to orderTable!!.shipping!!.back_at, SHOW_KEY to orderTable!!.shipping!!.back_at_show, CELL_KEY to "text")
+            shippingRows.add(row)
+        }
+        replaceRowsByKey(SHIPPING_KEY, shippingRows)
+
+        //invoice
+        val invoice_type: String = orderTable!!.invoice_type
+        row = getRowFromKey(invoiceRows, INVOICE_TYPE_KEY)
+        row[VALUE_KEY] = invoice_type
+        row[SHOW_KEY] = orderTable!!.invoice_type_show
+        invoiceRows = replaceRowByKey(invoiceRows, INVOICE_TYPE_KEY, row)
+
+        if (invoice_type == "company") {
+            row = hashMapOf(TITLE_KEY to "公司或行號名稱", KEY_KEY to INVOICE_COMPANY_NAME_KEY, VALUE_KEY to orderTable!!.invoice_company_name, SHOW_KEY to orderTable!!.invoice_company_name, CELL_KEY to "text")
+            invoiceRows.add(row)
+            row = hashMapOf(TITLE_KEY to "統一編號", KEY_KEY to INVOICE_COMPANY_TAX_KEY, VALUE_KEY to orderTable!!.invoice_company_tax, SHOW_KEY to orderTable!!.invoice_company_tax, CELL_KEY to "text")
+            invoiceRows.add(row)
+        }
+
+        row = getRowFromKey(invoiceRows, INVOICE_EMAIL_KEY)
+        row[VALUE_KEY] = orderTable!!.invoice_email
+        row[SHOW_KEY] = orderTable!!.invoice_email
+        invoiceRows = replaceRowByKey(invoiceRows, INVOICE_EMAIL_KEY, row)
+
+        replaceRowsByKey(INVOICE_KEY, invoiceRows)
+        //myRows[4]["rows"] = invoiceRows
+
+        //member
+        row = getRowRowsFromMyRowsByKey1(NAME_KEY)
+        row[VALUE_KEY] = orderTable!!.order_name
+        row[SHOW_KEY] = orderTable!!.order_name
+        replaceRowByKey(MEMBER_KEY, NAME_KEY,row)
+
+        row = getRowRowsFromMyRowsByKey1(MOBILE_KEY)
+        row[VALUE_KEY] = orderTable!!.order_tel
+        row[SHOW_KEY] = orderTable!!.order_tel_show
+        replaceRowByKey(MEMBER_KEY, MOBILE_KEY,row)
+
+        row = getRowRowsFromMyRowsByKey1(EMAIL_KEY)
+        row[VALUE_KEY] = orderTable!!.order_email
+        row[SHOW_KEY] = orderTable!!.order_email
+        replaceRowByKey(MEMBER_KEY, EMAIL_KEY,row)
+
+        row = getRowRowsFromMyRowsByKey1(ADDRESS_KEY)
+        row[VALUE_KEY] = orderTable!!.order_address
+        row[SHOW_KEY] = orderTable!!.order_address
+        replaceRowByKey(MEMBER_KEY, ADDRESS_KEY,row)
+
+        //memo
+        row = getRowRowsFromMyRowsByKey1(MEMO_KEY)
+        row[VALUE_KEY] = orderTable!!.memo
+        row[SHOW_KEY] = orderTable!!.memo
+        replaceRowByKey(MEMO_KEY, MEMO_KEY,row)
+
+        initAdapter(true)
+        //        recyclerView.setHasFixedSize(true)
+        if (refreshLayout != null) {
+            setRefreshListener()
+        }
+        setRecyclerViewScrollListener()
     }
 
     override fun initAdapter(include_section: Boolean) {
-        adapter = GroupAdapter()
-        setData()
+        adapter.clear()
+        if (include_section) {
+            for ((idx, mySection) in mySections.withIndex()) {
+                val section = Section()
+                adapterSections.add(section)
+                val title: String = mySection["name"] as String
+                val isExpanded: Boolean = mySection["isExpanded"] as Boolean
+                val expandableGroup = ExpandableGroup(GroupSection(title), isExpanded)
+                val items = generateItems(idx)
+                section.addAll(items)
+                expandableGroup.add(section)
+
+                adapter.add(expandableGroup)
+            }
+        }
 
         recyclerView.adapter = adapter
     }
 
-    private fun setData() {
-        adapter.clear()
-        for ((idx, section) in sections.withIndex()) {
-            val expandableGroup: ExpandableGroup = ExpandableGroup(GroupSection(section), true)
-            val items: ArrayList<Item> = generateItems(idx)
-            paymentSections[idx].update(items)
-            //paymentSections[idx].addAll(items)
-            expandableGroup.add(paymentSections[idx])
-            adapter.add(expandableGroup)
-        }
-    }
-
     override fun generateItems(section: Int): ArrayList<Item> {
-        val res: ArrayList<Item> = arrayListOf()
-        val _rows1: ArrayList<HashMap<String, String>> = rows1[section]
-        for ((idx, _rows) in _rows1.withIndex()) {
-            val paymentItem: PaymentItem = PaymentItem(this, _rows);
-            res.add(paymentItem)
+
+        if (myRows.size == 0) {
+            return arrayListOf()
+        }
+        items.clear()
+        var sectionKey: String = ""
+        val sectionRow: HashMap<String, Any> = myRows[section]
+        val tmp: String? = sectionRow["key"] as? String
+        if (tmp != null) {
+            sectionKey = tmp
         }
 
-        return res
+        if (!sectionRow.containsKey("rows")) {
+            return arrayListOf()
+        }
+
+        @Suppress("UNCHECKED_CAST")
+        val rows: ArrayList<HashMap<String, String>> =
+            sectionRow["rows"] as ArrayList<HashMap<String, String>>
+
+        for ((idx, row) in rows.withIndex()) {
+
+            var rowKey: String = ""
+            if (row.containsKey("key")) {
+                rowKey = row["key"]!!
+            }
+            var title: String = ""
+            if (row.containsKey("title")) {
+                title = row["title"]!!
+            }
+            var value: String = ""
+            if (row.containsKey("value")) {
+                value = row["value"]!!
+            }
+            var show: String = ""
+            if (row.containsKey("show")) {
+                show = row["show"]!!
+            }
+
+            val cell_type: String? = row["cell"]
+
+            //var formItemAdapter: FormItemAdapter1? = null
+            if (cell_type == "cart") {
+                var featured_path = FEATURED_PATH
+                if (row.containsKey("featured_path") && row["featured_path"]!!.length > 0) {
+                    featured_path = row["featured_path"]!!
+                }
+                var attribute = ""
+                if (row.containsKey("attribute")) {
+                    attribute = row["attribute"]!!
+                }
+                var amount = ""
+                if (row.containsKey("amount")) {
+                    amount = row["amount"]!!
+                }
+                var quantity = ""
+                if (row.containsKey("quantity")) {
+                    quantity = row["quantity"]!!
+                }
+                val cartItemItem = CartItemItem(
+                    this,
+                    sectionKey,
+                    rowKey,
+                    title,
+                    featured_path,
+                    attribute,
+                    amount,
+                    quantity
+                )
+                items.add(cartItemItem)
+            } else if (cell_type == "text") {
+                val item = PlainAdapter1(title, show)
+                items.add(item)
+            } else if (cell_type == "more") {
+                val item = MoreAdapter1(sectionKey, rowKey, title, value, show, this)
+                items.add(item)
+            }
+        }
+
+        return items
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

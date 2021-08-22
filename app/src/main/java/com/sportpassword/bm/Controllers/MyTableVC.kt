@@ -489,6 +489,32 @@ abstract class MyTableVC : BaseActivity(), List1CellDelegate {
         }
     }
 
+    fun replaceRowByKey(rows: ArrayList<HashMap<String, String>>, key: String, newRow: HashMap<String, String>): ArrayList<HashMap<String, String>> {
+
+        val _rows = rows
+        for ((idx, row) in rows.withIndex()) {
+
+            val key1: String = row["key"] ?: run {""}
+            if (key1 == key) {
+                _rows[idx] = newRow
+                break
+            }
+        }
+        return _rows
+    }
+
+    fun getRowFromKey(rows: ArrayList<HashMap<String, String>>, key: String): HashMap<String, String> {
+
+        for (row in rows) {
+
+            val key1: String = row["key"] ?: run {""}
+            if (key1 == key) {
+                return row
+            }
+        }
+        return hashMapOf()
+    }
+
     fun getRowValue(rowKey: String): String {
 
         val row = getRowRowsFromMyRowsByKey1(rowKey)

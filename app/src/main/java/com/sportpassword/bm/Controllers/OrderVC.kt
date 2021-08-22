@@ -1,8 +1,6 @@
 package com.sportpassword.bm.Controllers
 
 import android.os.Bundle
-import android.view.View
-import android.view.ViewTreeObserver
 import android.widget.LinearLayout
 import com.sportpassword.bm.Adapters.Form.*
 import com.sportpassword.bm.Adapters.GroupSection
@@ -24,10 +22,21 @@ import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
 import android.R.attr.height
 import android.content.res.Resources
+import android.graphics.Color
 import android.os.Build
 import android.util.DisplayMetrics
-import android.view.WindowMetrics
+import android.view.*
+import android.widget.Button
+import android.widget.RelativeLayout
 import androidx.annotation.RequiresApi
+import androidx.core.content.ContextCompat
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.google.gson.Gson
+import com.xwray.groupie.GroupAdapter
+import com.xwray.groupie.GroupieViewHolder
+import org.jetbrains.anko.backgroundColor
+import org.jetbrains.anko.sdk27.coroutines.onClick
 
 
 class OrderVC : MyTableVC() {
@@ -45,9 +54,11 @@ class OrderVC : MyTableVC() {
     var selected_price: Int = 0
     var selected_idx: Int = 0
 
-    val blackViewHeight: Int = 250
-    val blackViewPaddingLeft: Int = 20
-    var blackView: LinearLayout? = null
+    var blackViewHeight: Int = 500
+    val blackViewPaddingLeft: Int = 80
+    var blackView: RelativeLayout? = null
+    var tableView: RecyclerView? = null
+
 
     var productRows: ArrayList<HashMap<String, String>> = arrayListOf()
     var amountRows: ArrayList<HashMap<String, String>> = arrayListOf()
@@ -69,7 +80,7 @@ class OrderVC : MyTableVC() {
     )
 
     val invoiceCompanyRows: ArrayList<HashMap<String, String>> = arrayListOf(
-        hashMapOf("title" to "統一編編","key" to INVOICE_COMPANY_TAX_KEY,"value" to "","show" to "","cell" to "textField","keyboard" to KEYBOARD.default.toString()),
+        hashMapOf("title" to "統一編號","key" to INVOICE_COMPANY_TAX_KEY,"value" to "","show" to "","cell" to "textField","keyboard" to KEYBOARD.default.toString()),
         hashMapOf("title" to "公司行號抬頭","key" to INVOICE_COMPANY_NAME_KEY,"value" to "","show" to "","cell" to "textField","keyboard" to KEYBOARD.default.toString()),
         hashMapOf("title" to "EMail","key" to INVOICE_EMAIL_KEY,"value" to "${member.email}","show" to "${member.email}","cell" to "textField","keyboard" to KEYBOARD.emailAddress.toString())
     )
@@ -114,6 +125,7 @@ class OrderVC : MyTableVC() {
 //        }
 
         // for member register and member update personal data
+        adapter.clear()
         if (include_section) {
             for ((idx, mySection) in mySections.withIndex()) {
                 val section = Section()
@@ -131,11 +143,6 @@ class OrderVC : MyTableVC() {
 
 
         recyclerView.adapter = adapter
-//        recyclerView.setHasFixedSize(true)
-        if (refreshLayout != null) {
-            setRefreshListener()
-        }
-        setRecyclerViewScrollListener()
     }
 
     override fun refresh() {
@@ -185,6 +192,7 @@ class OrderVC : MyTableVC() {
                 var amount: Int = 0
                 cartTable = cartsTable!!.rows[0]
                 cartitemsTable = cartTable!!.items
+                productRows.clear()
                 for (cartItemTable in cartitemsTable) {
 
                     cartItemTable.filterRow()
@@ -208,6 +216,7 @@ class OrderVC : MyTableVC() {
                 }
 
                 //price
+                amountRows.clear()
                 val amount_show: String = amount.formattedWithSeparator()
                 var row: HashMap<String, String> = hashMapOf("title" to "商品金額","key" to "amount","value" to amount.toString(),"show" to "NT$ ${amount_show}","cell" to "text")
                 amountRows.add(row)
@@ -233,6 +242,7 @@ class OrderVC : MyTableVC() {
                 amountRows.add(row)
 
                 //gateway
+                gatewayRows.clear()
                 val gateway: String = productTable!!.gateway
                 var arr: Array<String> = gateway.split(",").toTypedArray()
                 for (tmp in arr) {
@@ -245,6 +255,8 @@ class OrderVC : MyTableVC() {
                     gatewayRows.add(_row)
                 }
 
+                //shipping
+                shippingRows.clear()
                 val shipping: String = productTable!!.shipping
                 arr = shipping.split(",").toTypedArray()
                 for (tmp in arr) {
@@ -269,6 +281,7 @@ class OrderVC : MyTableVC() {
             hashMapOf("title" to "住址","key" to ADDRESS_KEY,"value" to member.address,"show" to member.address,"cell" to "textField","keyboard" to KEYBOARD.default.toString())
         )
 
+        invoiceRows.clear()
         for (invoiceFixedRow in invoiceFixedRows) {
 
             invoiceRows.add(invoiceFixedRow)
@@ -290,6 +303,12 @@ class OrderVC : MyTableVC() {
         )
 
         initAdapter(true)
+        //        recyclerView.setHasFixedSize(true)
+        if (refreshLayout != null) {
+            setRefreshListener()
+        }
+        setRecyclerViewScrollListener()
+
         //reloadData()
 
 //        for ((idx, mySection) in mySections.withIndex()) {
@@ -426,7 +445,6 @@ class OrderVC : MyTableVC() {
             val items = generateItems(idx)
             adapterSections[idx].update(items)
         }
-        adapter.notifyDataSetChanged()
     }
 
     override fun textFieldTextChanged(sectionKey: String, rowKey: String, value: String) {
@@ -437,7 +455,7 @@ class OrderVC : MyTableVC() {
         replaceRowByKey(sectionKey, rowKey, row)
     }
 
-    override fun radioDidChange(sectionKey: String, idx: Int) {
+    override fun radioDidChange(sectionKey: String, rows: ArrayList<HashMap<String, String>>) {
 
         invoiceRows.clear()
         if (sectionKey == INVOICE_KEY) {
@@ -445,15 +463,7 @@ class OrderVC : MyTableVC() {
                 invoiceRows.add(invoiceFixRow)
             }
 
-            for ((i, row) in invoiceOptionRows.withIndex()) {
-                val _row = row
-                if (i == idx) {
-                    _row["value"] = "true"
-                } else {
-                    _row["value"] = "false"
-                }
-                invoiceOptionRows[i] = _row
-            }
+            invoiceOptionRows = rows
 
             var selectedRow: HashMap<String, String> = hashMapOf()
             for (row in invoiceOptionRows) {
@@ -474,42 +484,174 @@ class OrderVC : MyTableVC() {
             }
 
             replaceRowsByKey(sectionKey, invoiceRows)
-        } else {
-            val rows = getRowRowsFromMyRowsByKey(sectionKey)
-            for ((i, row) in rows.withIndex()) {
+            top.unmask()
+            reloadData()
+        } else if (sectionKey == GATEWAY_KEY || sectionKey == SHIPPING_KEY){
 
-                val _row = row
-                if (i == idx) {
-                    _row["value"] = "true"
-                } else {
-                    _row["value"] = "false"
-                }
-                rows[i] = _row
-            }
             replaceRowsByKey(sectionKey, rows)
         }
-        //reloadData()
     }
 
     override fun moreClick(sectionKey: String, rowKey: String) {
         //println("more")
         layerMask = top.mask(this)
+        layerMask!!.setOnClickListener {
+            top.unmask()
+        }
 
+        val rowHeight: Int = 200
+        val tableViewHeight: Int = rowHeight * invoiceOptionRows.size
+        val buttonViewHeight: Int = 150
+        blackViewHeight = tableViewHeight + buttonViewHeight
+
+        val statusBarHeight: Int = getStatusBarHeight()
+//        val appBarHeight: Int = 64
         val frame_width = Resources.getSystem().displayMetrics.widthPixels
-        val frame_height = Resources.getSystem().displayMetrics.heightPixels
+        val frame_height = Resources.getSystem().displayMetrics.heightPixels - statusBarHeight - 400
+        val width: Int = frame_width - 2*blackViewPaddingLeft
+        val topX: Int = (frame_height-blackViewHeight)/2;
 
+        blackView = layerMask!!.blackView(
+            this,
+            blackViewPaddingLeft,
+            topX,
+            width,
+            blackViewHeight)
 
+        tableView = blackView!!.tableView(this, 0, buttonViewHeight)
+        val panelAdapter = GroupAdapter<GroupieViewHolder>()
+        tableView!!.adapter = panelAdapter
 
-        this.blackView = layerMask!!.blackView(this, blackViewPaddingLeft, (frame_height-blackViewHeight)/2, frame_width-2*100, blackViewHeight)
+        items.clear()
+        val item = RadioAdapter(this, INVOICE_KEY, invoiceOptionRows, this)
+        items.add(item)
+        panelAdapter.addAll(items)
+
+        layerButtonLayout = blackView!!.buttonPanel(this, buttonViewHeight)
+        layerCancelBtn = layerButtonLayout.cancelButton(this) {
+            top.unmask()
+        }
+    }
+
+    fun getStatusBarHeight(): Int {
+        var result = 0
+        val resourceId = resources.getIdentifier("status_bar_height", "dimen", "android")
+        if (resourceId > 0) {
+            result = resources.getDimensionPixelSize(resourceId)
+        }
+        return result
     }
 
     fun submitBtnPressed(view: View) {
-        toOrder()
+
+        Loading.show(mask)
+        val params: HashMap<String, String> = hashMapOf()
+        params["device"] = "app"
+        params["do"] = "update"
+        params["cart_id"] = cartTable!!.id.toString()
+
+        params[AMOUNT_KEY] = getRowValue(AMOUNT_KEY)
+        params[SHIPPING_FEE_KEY] = getRowValue(SHIPPING_FEE_KEY)
+        params[TAX_KEY] = getRowValue(TAX_KEY)
+        params[TOTAL_KEY] = getRowValue(TOTAL_KEY)
+        params[DISCOUNT_KEY] = "0"
+
+
+        val discount: Int = params[DISCOUNT_KEY]!!.toInt()
+        val total: Int = params[TOTAL_KEY]!!.toInt()
+        params[GRAND_TOTAL_KEY] = (discount + total).toString()
+
+        val gateways = getRowRowsFromMyRowsByKey(GATEWAY_KEY)
+        var key: String = "credit_card"
+        for (gateway in gateways) {
+            if (gateway["value"] == "true") {
+                key = gateway["key"]!!
+            }
+        }
+        params[GATEWAY_KEY] = key
+
+        val shippings = getRowRowsFromMyRowsByKey(SHIPPING_KEY)
+        key = "direct"
+        for (shipping in shippings) {
+            if (shipping["value"] == "true") {
+                key = shipping["key"]!!
+            }
+        }
+        params[SHIPPING_KEY] = key
+
+        //invoice
+        for (invoice_option in invoiceOptionRows) {
+            if (invoice_option["value"] == "true") {
+                key = invoice_option["key"]!!
+            }
+        }
+        params[INVOICE_TYPE_KEY] = key
+
+        val invoices = getRowRowsFromMyRowsByKey(INVOICE_KEY)
+        for (invoice in invoices) {
+            for ((key1, value) in invoice) {
+                if (key1 == "key" && value == INVOICE_EMAIL_KEY) {
+                    params[INVOICE_EMAIL_KEY] = invoice["value"]!!
+                    break
+                } else if (key1 == "key" && value == INVOICE_COMPANY_NAME_KEY) {
+                    params[INVOICE_COMPANY_TAX_KEY] = invoice["value"]!!
+                    break
+                } else if (key1 == "key" && value == INVOICE_COMPANY_TAX_KEY) {
+                    params[INVOICE_COMPANY_NAME_KEY] = invoice["value"]!!
+                    break
+                }
+            }
+        }
+
+        params["member_id"] = member.id.toString()
+        params["order_name"] = getRowValue(NAME_KEY)
+        params["order_tel"] = getRowValue(MOBILE_KEY)
+        params["order_email"] = getRowValue(EMAIL_KEY)
+        params["order_address"] = getRowValue(ADDRESS_KEY)
+
+        params[MEMO_KEY] = getRowValue(MEMO_KEY)
+
+        //println(params)
+
+        OrderService.update(this, params) { success ->
+            Loading.hide(mask)
+            if (success) {
+                if (OrderService.jsonString.isNotEmpty()) {
+                    try {
+                        val table: OrderUpdateResTable = Gson().fromJson(
+                            OrderService.jsonString,
+                            OrderUpdateResTable::class.java
+                        )
+                        val orderTable: OrderTable? = table.model
+                        if (orderTable != null) {
+                            val ecpay_token: String = orderTable.ecpay_token
+                            val ecpay_token_ExpireDate: String = orderTable.ecpay_token_ExpireDate
+                            info("訂單已經成立，是否前往結帳？", "關閉", "結帳") {
+                                toPayment(orderTable.token, ecpay_token, ecpay_token_ExpireDate)
+                            }
+                        }
+                    } catch (e: java.lang.Exception) {
+                        warning(e.localizedMessage!!)
+                    }
+                }
+            } else {
+                warning(OrderService.msg)
+            }
+        }
+
     }
 
     fun cancelBtnPressed(view: View) {
         prev()
     }
+}
+
+class OrderUpdateResTable {
+
+    var success: Boolean = false
+    var id: Int = 0
+    var update: String = "INSERT"
+    var model: OrderTable? = null
 }
 
 

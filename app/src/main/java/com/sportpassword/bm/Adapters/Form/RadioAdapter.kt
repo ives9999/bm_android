@@ -52,19 +52,22 @@ class RadioAdapter(context: Context, sectionKey: String, rows: ArrayList<HashMap
             )
         )
 
+        viewHolder.radioContainer.removeAllViews()
+
         val lp = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT)
         lp.setMargins(18, 24, 0, 24)
 
         val group = RadioGroup(context)
 
         val radioButtons: ArrayList<RadioButton> = arrayListOf()
-        for (row in rows) {
+        for ((idx, row) in rows.withIndex()) {
 
             val radioButton: RadioButton = RadioButton(context)
             var title = ""
             if (row.containsKey("title")) {
                 title = row["title"]!!
             }
+            radioButton.id = idx
             radioButton.text = title
             radioButton.buttonTintList = colorStateList
             radioButton.setTextColor(textColor)
@@ -91,7 +94,15 @@ class RadioAdapter(context: Context, sectionKey: String, rows: ArrayList<HashMap
 
         if (baseActivityDelegate != null) {
             group.setOnCheckedChangeListener { radioGroup, i ->
-                baseActivityDelegate!!.radioDidChange(sectionKey, i-1)
+                for ((idx, row) in rows.withIndex()) {
+                    if (idx == i) {
+                        row["value"] = "true"
+                    } else {
+                        row["value"] = "false"
+                    }
+                    rows[idx] = row
+                }
+                baseActivityDelegate!!.radioDidChange(sectionKey, rows)
             }
         }
     }

@@ -14,6 +14,7 @@ import android.graphics.Color
 import android.graphics.Paint
 import android.net.Uri
 import android.text.InputType
+import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
@@ -21,6 +22,8 @@ import android.widget.*
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.google.gson.Gson
 import com.google.gson.JsonArray
 import com.google.gson.JsonObject
@@ -42,6 +45,7 @@ import com.sportpassword.bm.Services.DataService
 import com.squareup.picasso.Picasso
 import org.jetbrains.anko.backgroundColor
 import org.jetbrains.anko.makeCall
+import org.jetbrains.anko.sdk27.coroutines.onClick
 import java.text.NumberFormat
 import java.text.ParseException
 import java.text.SimpleDateFormat
@@ -1019,27 +1023,80 @@ fun ViewGroup.mask(context: Context): LinearLayout {
     mask.backgroundColor = Color.parseColor("#888888")
     //0是完全透明
     mask.alpha = 0.9f
-//    layerMask!!.setOnClickListener {
-//        unmask()
-//    }
+    mask.setOnClickListener {
+        this.unmask()
+    }
     this.addView(mask)
 
     return mask
 }
 
-fun ViewGroup.blackView(context: Context, left: Int, top: Int, width: Int, height: Int): LinearLayout {
+fun ViewGroup.unmask() {
 
-    val blackView = LinearLayout(context)
+    val mask = this.findViewById<ViewGroup>(R.id.MyMask)
+    mask.removeAllViews()
+    this.removeView(mask)
+}
+
+fun ViewGroup.blackView(context: Context, left: Int, top: Int, width: Int, height: Int): RelativeLayout {
+
+    val blackView = RelativeLayout(context)
 //    println(width)
 //    println(height)
-    val lp: LinearLayout.LayoutParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT)
-    //val lp: LinearLayout.LayoutParams = LinearLayout.LayoutParams(width, height)
-    lp.setMargins(100, 100, 100, 100)
+//    val lp: LinearLayout.LayoutParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT)
+    val lp: LinearLayout.LayoutParams = LinearLayout.LayoutParams(width, height)
+    lp.setMargins(left, top, 0, 0)
     blackView.layoutParams = lp
-    blackView.backgroundColor = Color.RED
+//    blackView.orientation = LinearLayout.VERTICAL
+    blackView.backgroundColor = Color.BLACK
+    blackView.alpha = 1f
     this.addView(blackView)
 
     return blackView
+}
+
+fun ViewGroup.tableView(context: Context, top: Int = 0, bottom: Int = 0): RecyclerView {
+
+    val tableView = RecyclerView(context)
+    tableView.id = R.id.SearchRecycleItem
+    val lp1 = RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
+//        val lp1 = RecyclerView.LayoutParams(w - (2 * padding), 1000)
+    lp1.setMargins(top, 0, 0, bottom)
+    tableView.layoutParams = lp1
+    tableView.layoutManager = LinearLayoutManager(context)
+    tableView.backgroundColor = Color.TRANSPARENT
+    this.addView(tableView)
+
+    return tableView
+}
+
+fun ViewGroup.buttonPanel(context: Context, height: Int): LinearLayout {
+    val view = LinearLayout(context)
+    val lp = RelativeLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, height)
+    lp.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM)
+    view.layoutParams = lp
+    val color = ContextCompat.getColor(context, R.color.MY_GREEN)
+    view.backgroundColor = color
+    view.gravity = Gravity.CENTER
+    view.orientation = LinearLayout.HORIZONTAL
+    this.addView(view)
+
+    return view
+}
+
+fun ViewGroup.cancelButton(context: Context, click: ()->Unit): Button {
+
+    val a = context as BaseActivity
+    val view = a.layoutInflater.inflate(R.layout.cancel_button, null) as Button
+    val lp = LinearLayout.LayoutParams(300, 90)
+    lp.setMargins(16, 0, 0, 0)
+    view.layoutParams = lp
+    view.onClick {
+        click()
+    }
+    this.addView(view)
+
+    return view
 }
 
 fun TextView.selected() {

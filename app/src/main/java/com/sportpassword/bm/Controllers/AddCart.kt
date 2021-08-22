@@ -718,7 +718,7 @@ class AddCartVC : MyTableVC(), ValueChangedDelegate {
 
             params["attribute"] = selected_attributes.joinToString("|")
 
-            CartService.update(this, "", params) { success ->
+            CartService.update(this, params) { success ->
                 Loading.hide(mask)
                 if (success) {
                     if (cartItem_token == null) {

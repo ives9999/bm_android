@@ -21,6 +21,7 @@ import kotlinx.android.synthetic.main.activity_member_order_list_vc.*
 import kotlinx.android.synthetic.main.mask.*
 import kotlinx.android.synthetic.main.order_list_cell.*
 import java.util.*
+import kotlin.collections.ArrayList
 
 class MemberOrderListVC : MyTableVC() {
 
@@ -89,41 +90,6 @@ class MemberOrderListVC : MyTableVC() {
         val table = orderItem.row
         toPayment(table.token)
     }
-
-    //分頁時使用，當往下移動到第n-1筆時，就向server取得下一頁的筆數
-//    override fun setRecyclerViewScrollListener() {
-//
-//        var pos: Int = 0
-//
-//        scrollerListenr = object: RecyclerView.OnScrollListener() {
-//
-//        }
-//
-//        scrollerListenr = object: RecyclerView.OnScrollListener() {
-//            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-//                super.onScrolled(recyclerView, dx, dy)
-//                val layoutManager = recyclerView.layoutManager as GridLayoutManager
-//                if (allSuperModels.size < totalCount) {
-//                    pos = layoutManager.findLastVisibleItemPosition()
-//                    //println("pos:${pos}")
-//                }
-//            }
-//
-//            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
-//                super.onScrollStateChanged(recyclerView, newState)
-//
-//                //println("allSuperModels.size:${allSuperModels.size}")
-//                //pos表示目前顯示到第幾筆
-//                if (allSuperModels.size == pos + 1 &&
-//                        newState == RecyclerView.SCROLL_STATE_IDLE &&
-//                        allSuperModels.size < totalCount &&
-//                        !loading) {
-//                    getDataStart(page, perPage)
-//                }
-//            }
-//        }
-//        recyclerView.addOnScrollListener(scrollerListenr)
-//    }
 }
 
 class OrderItem(val context: Context, val row: OrderTable): Item() {
@@ -132,7 +98,20 @@ class OrderItem(val context: Context, val row: OrderTable): Item() {
 
     override fun bind(viewHolder: GroupieViewHolder, position: Int) {
 
-        viewHolder.nameLbl.text = row.product!!.name
+        val items: ArrayList<OrderItemTable> = row.items
+        var name: String = ""
+        if (items.size > 0) {
+            val productTable = items[0].product
+            if (productTable != null) {
+                name = productTable.name
+            }
+            if (items.size > 1) {
+                name += "..."
+            }
+        } else {
+            name = "無法取得商品名稱，請洽管理員"
+        }
+        viewHolder.nameLbl.text = name
         viewHolder.dateLbl.text = row.created_at_show
         viewHolder.priceLbl.text = row.amount_show
         viewHolder.orderNoLbl.text = row.order_no

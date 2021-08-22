@@ -316,8 +316,8 @@ class GatewayTable: Table() {
     override fun filterRow() {
         super.filterRow()
 
-        gateway_at_show = gateway_at.noSec()
-        expire_at_show = expire_at.noSec()
+        gateway_at_show = if (gateway_at == null) { GATEWAY_PROCESS.getRawValueFromString("normal")} else { gateway_at.noSec()}
+        expire_at_show = if (expire_at == null) { "" } else { expire_at.noSec() }
         method_show = GATEWAY.getRawValueFromString(method)
         process_show = GATEWAY_PROCESS.getRawValueFromString(process)
     }
@@ -361,10 +361,10 @@ class ShippingTable: Table() {
         method_show = SHIPPING_WAY.getRawValueFromString(method)
         process_show = SHIPPING_PROCESS.getRawValueFromString(process)
 
-        shipping_at_show = shipping_at.noSec()
-        store_at_show = store_at.noSec()
-        complete_at_show = complete_at.noSec()
-        back_at_show = back_at.noSec()
+        shipping_at_show = if (shipping_at == null) { SHIPPING_WAY.getRawValueFromString("direct")} else { shipping_at.noSec()}
+        store_at_show = if (shipping_at == null) { "" } else { store_at.noSec()}
+        complete_at_show = if (complete_at == null) { "" } else { complete_at.noSec()}
+        back_at_show = if (back_at == null) { "" } else { back_at.noSec()}
     }
 }
 
