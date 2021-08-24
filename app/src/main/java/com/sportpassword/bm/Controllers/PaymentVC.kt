@@ -2,15 +2,17 @@ package com.sportpassword.bm.Controllers
 
 import android.content.Context
 import android.content.Intent
+import android.content.res.Resources
 import android.os.Bundle
+import android.widget.RelativeLayout
+import androidx.recyclerview.widget.RecyclerView
 import com.google.gson.Gson
 import com.sportpassword.bm.Adapters.Form.MoreAdapter1
 import com.sportpassword.bm.Adapters.Form.PlainAdapter1
-import com.sportpassword.bm.Adapters.Form.TextFieldAdapter1
+import com.sportpassword.bm.Adapters.Form.RadioAdapter
 import com.sportpassword.bm.Adapters.GroupSection
 import com.sportpassword.bm.Models.*
 import com.sportpassword.bm.R
-import com.sportpassword.bm.Services.CartService
 import com.sportpassword.bm.Services.OrderService
 import com.sportpassword.bm.Utilities.*
 import com.sportpassword.bm.member
@@ -19,12 +21,12 @@ import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.Section
 import com.xwray.groupie.kotlinandroidextensions.Item
 import com.xwray.groupie.kotlinandroidextensions.GroupieViewHolder
+import kotlinx.android.synthetic.main.activity_order_vc.*
 import kotlinx.android.synthetic.main.activity_payment_vc.*
 import kotlinx.android.synthetic.main.mask.*
 import kotlinx.android.synthetic.main.payment_cell.*
 import tw.com.ecpay.paymentgatewaykit.manager.*
 import kotlin.reflect.KProperty1
-import kotlin.reflect.full.memberProperties
 
 class PaymentVC : MyTableVC() {
 
@@ -87,6 +89,11 @@ class PaymentVC : MyTableVC() {
 
     var popupRows: ArrayList<HashMap<String, String>> = arrayListOf()
 
+    var blackViewHeight: Int = 500
+    val blackViewPaddingLeft: Int = 80
+    var blackView: RelativeLayout? = null
+    var tableView: RecyclerView? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_payment_vc)
@@ -106,7 +113,7 @@ class PaymentVC : MyTableVC() {
 
         dataService = OrderService
         recyclerView = payment_list
-        refreshLayout = refresh
+//        refreshLayout = refresh
         maskView = mask
         setRefreshListener()
 
@@ -116,7 +123,7 @@ class PaymentVC : MyTableVC() {
         if (ecpay_token.length > 0) {
             PaymentkitManager.initialize(this, ServerType.Stage)
             //PaymentkitManager.initialize(this, ServerType.Prod)
-            PaymentkitManager.createPayment(this, ecpay_token, LanguageCode.zhTW, false, title, PaymentkitManager.RequestCode_CreatePayment)
+            PaymentkitManager.createPayment(this, ecpay_token, LanguageCode.zhTW, true, title, PaymentkitManager.RequestCode_CreatePayment)
         } else {
             refresh()
         }
@@ -333,10 +340,10 @@ class PaymentVC : MyTableVC() {
 
         initAdapter(true)
         //        recyclerView.setHasFixedSize(true)
-        if (refreshLayout != null) {
-            setRefreshListener()
-        }
-        setRecyclerViewScrollListener()
+//        if (refreshLayout != null) {
+//            setRefreshListener()
+//        }
+//        setRecyclerViewScrollListener()
     }
 
     override fun initAdapter(include_section: Boolean) {
@@ -383,19 +390,19 @@ class PaymentVC : MyTableVC() {
         for ((idx, row) in rows.withIndex()) {
 
             var rowKey: String = ""
-            if (row.containsKey("key")) {
+            if (row.containsKey("key") && row["key"] != null) {
                 rowKey = row["key"]!!
             }
             var title: String = ""
-            if (row.containsKey("title")) {
+            if (row.containsKey("title") && row["title"] != null) {
                 title = row["title"]!!
             }
             var value: String = ""
-            if (row.containsKey("value")) {
+            if (row.containsKey("value") && row["value"] != null) {
                 value = row["value"]!!
             }
             var show: String = ""
-            if (row.containsKey("show")) {
+            if (row.containsKey("show") && row["show"] != null) {
                 show = row["show"]!!
             }
 
@@ -404,19 +411,19 @@ class PaymentVC : MyTableVC() {
             //var formItemAdapter: FormItemAdapter1? = null
             if (cell_type == "cart") {
                 var featured_path = FEATURED_PATH
-                if (row.containsKey("featured_path") && row["featured_path"]!!.length > 0) {
+                if (row.containsKey("featured_path") && row["featured_path"] != null && row["featured_path"]!!.length > 0) {
                     featured_path = row["featured_path"]!!
                 }
                 var attribute = ""
-                if (row.containsKey("attribute")) {
+                if (row.containsKey("attribute") && row["attribute"] != null) {
                     attribute = row["attribute"]!!
                 }
                 var amount = ""
-                if (row.containsKey("amount")) {
+                if (row.containsKey("amount") && row["amount"] != null) {
                     amount = row["amount"]!!
                 }
                 var quantity = ""
-                if (row.containsKey("quantity")) {
+                if (row.containsKey("quantity") && row["quantity"] != null) {
                     quantity = row["quantity"]!!
                 }
                 val cartItemItem = CartItemItem(
@@ -442,6 +449,89 @@ class PaymentVC : MyTableVC() {
         return items
     }
 
+    override fun moreClick(sectionKey: String, rowKey: String) {
+        //println("more")
+        layerMask = top.mask(this)
+        layerMask!!.setOnClickListener {
+            top.unmask()
+        }
+
+        val rowHeight: Int = 200
+        var rowNumber: Int = 3
+        if (gateway == GATEWAY.store_cvs || gateway == GATEWAY.ATM) {
+            rowNumber = 3
+        } else if (gateway == GATEWAY.store_barcode) {
+            rowNumber = 4
+        }
+        val tableViewHeight: Int = rowHeight * rowNumber
+        val buttonViewHeight: Int = 150
+        blackViewHeight = tableViewHeight + buttonViewHeight
+
+        val statusBarHeight: Int = getStatusBarHeight()
+//        val appBarHeight: Int = 64
+        val frame_width = Resources.getSystem().displayMetrics.widthPixels
+        val frame_height = Resources.getSystem().displayMetrics.heightPixels - statusBarHeight - 400
+        val width: Int = frame_width - 2*blackViewPaddingLeft
+        val topX: Int = (frame_height-blackViewHeight)/2;
+
+        blackView = layerMask!!.blackView(
+            this,
+            blackViewPaddingLeft,
+            topX,
+            width,
+            blackViewHeight)
+
+        tableView = blackView!!.tableView(this, 0, buttonViewHeight)
+        val panelAdapter = GroupAdapter<com.xwray.groupie.GroupieViewHolder>()
+        tableView!!.adapter = panelAdapter
+
+        items.clear()
+
+        //text and plain cell
+//        val item = RadioAdapter(this, "", rowNumber, this)
+//        items.add(item)
+//        panelAdapter.addAll(items)
+
+        layerButtonLayout = blackView!!.buttonPanel(this, buttonViewHeight)
+        layerCancelBtn = layerButtonLayout.cancelButton(this) {
+            top.unmask()
+        }
+    }
+
+    fun getStatusBarHeight(): Int {
+        var result = 0
+        val resourceId = resources.getIdentifier("status_bar_height", "dimen", "android")
+        if (resourceId > 0) {
+            result = resources.getDimensionPixelSize(resourceId)
+        }
+        return result
+    }
+
+    fun updateOrder() {
+        val params: HashMap<String, String> = hashMapOf("token" to order_token, "member_token" to member.token,"do" to "update")
+        params["expire_at"] = expire_at
+        params["trade_no"] = trade_no
+        if (gateway == GATEWAY.store_cvs) {
+            params["payment_no"] = payment_no
+            params["payment_url"] = payment_url
+        } else if (gateway == GATEWAY.store_barcode) {
+            params["barcode1"] = barcode1
+            params["barcode2"] = barcode2
+            params["barcode3"] = barcode3
+        } else if (gateway == GATEWAY.ATM) {
+            params["bank_code"] = bank_code
+            params["bank_account"] = bank_account
+        }
+
+        OrderService.update(this, params) { success ->
+            if (success) {
+                refresh()
+            } else {
+                warning(OrderService.msg)
+            }
+        }
+    }
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         //println("onActivityResult(), requestCode:" + requestCode + ", resultCode" + resultCode)
@@ -449,9 +539,49 @@ class PaymentVC : MyTableVC() {
             PaymentkitManager.createPaymentResult(this, resultCode, data, CallbackFunction {
                 when (it.callbackStatus) {
                     CallbackStatus.Success -> if (it.getRtnCode() == 1) {
-                        info("完成付款，我們將儘速將商品運送給您，謝謝您的光顧!!", "", "關閉") {
-                            refresh()
-                            //goProduct()
+
+                        val order = it.orderInfo
+                        if (order != null) {
+                            trade_no = order.tradeNo
+                        }
+
+                        val cvs = it.cvsInfo
+                        if (cvs != null) {
+                            payment_no = cvs.paymentNo
+                            payment_url = cvs.paymentURL
+                            if (payment_no.length > 0) {
+                                gateway = GATEWAY.store_cvs
+                                expire_at = cvs.expireDate
+                            }
+                        }
+
+                        val barcode = it.barcodeInfo
+                        if (barcode != null) {
+                            barcode1 = barcode.barcode1
+                            barcode2 = barcode.barcode2
+                            barcode3 = barcode.barcode3
+                            if (barcode1.length > 0 && barcode2.length > 0 && barcode3.length > 0) {
+                                gateway = GATEWAY.store_barcode
+                                expire_at = barcode.expireDate
+                            }
+                        }
+
+                        val ATM = it.atmInfo
+                        if (ATM != null) {
+                            bank_code = ATM.bankCode
+                            bank_account = ATM.vAccount
+                            if (bank_account.length > 0) {
+                                gateway = GATEWAY.ATM
+                                expire_at = ATM.expireDate
+                            }
+                        }
+
+                        if (gateway == GATEWAY.credit_card) {
+                            info("完成付款，我們將儘速將商品運送給您，謝謝您的光顧!!", "", "關閉") {
+                                refresh()
+                            }
+                        } else {
+                            updateOrder()
                         }
                     } else {
                         val sb = StringBuffer()

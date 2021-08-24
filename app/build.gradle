@@ -75,12 +75,15 @@ android {
     }
     productFlavors {
     }
-//    dataBinding {
-//        enabled = true
-//    }
-//    buildFeatures {
-//        viewBinding = true
-//    }
+
+    // is use by ecpay
+    dataBinding {
+        enabled = true
+    }
+    buildFeatures {
+        viewBinding = true
+    }
+    //////////////////////
 
     //this is for groupie view binding
     androidExtensions {
@@ -144,8 +147,9 @@ dependencies {
     //implementation "com.squareup.retrofit2:retrofit:2.8.1"
     implementation "com.squareup.retrofit2:converter-gson:2.8.1"
 
-    implementation "tw.com.ecpay.paymentgatewaykit:ECPayPaymentGatewayKit:1.0.2"
-    //implementation "com.github.zhpanvip:BannerViewPager:3.5.0"
+    //for ecpay
+    implementation "tw.com.ecpay.paymentgatewaykit:ECPayPaymentGatewayKit:1.0.3"
+    implementation "com.github.zhpanvip:BannerViewPager:3.5.0"
     implementation "com.fasterxml.jackson.module:jackson-module-kotlin:2.12.1"
 }
 
