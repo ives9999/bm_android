@@ -378,8 +378,8 @@ enum class WEEKDAY(val value: Int) {
 
 enum class ORDER_PROCESS(val englishName: String, val chineseName: String) {
     normal("normal", "訂單成立"),
+    gateway("gateway", "完成付款"),
     shipping("shipping", "出貨中"),
-    payment("payment", "完成付款"),
     complete("complete", "訂單完成"),
     cancel("cancel", "訂單取消");
 
