@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.widget.RelativeLayout
 import androidx.recyclerview.widget.RecyclerView
 import com.google.gson.Gson
+import com.sportpassword.bm.Adapters.Form.BarcodeAdapter
 import com.sportpassword.bm.Adapters.Form.MoreAdapter1
 import com.sportpassword.bm.Adapters.Form.PlainAdapter1
 import com.sportpassword.bm.Adapters.Form.RadioAdapter
@@ -21,7 +22,6 @@ import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.Section
 import com.xwray.groupie.kotlinandroidextensions.Item
 import com.xwray.groupie.kotlinandroidextensions.GroupieViewHolder
-import kotlinx.android.synthetic.main.activity_order_vc.*
 import kotlinx.android.synthetic.main.activity_payment_vc.*
 import kotlinx.android.synthetic.main.mask.*
 import kotlinx.android.synthetic.main.payment_cell.*
@@ -441,7 +441,7 @@ class PaymentVC : MyTableVC() {
                 val item = PlainAdapter1(title, show)
                 items.add(item)
             } else if (cell_type == "more") {
-                val item = MoreAdapter1(sectionKey, rowKey, title, value, show, this)
+                val item = MoreAdapter1(sectionKey, rowKey, title, value, show, this, false)
                 items.add(item)
             }
         }
@@ -450,27 +450,25 @@ class PaymentVC : MyTableVC() {
     }
 
     override fun moreClick(sectionKey: String, rowKey: String) {
-        //println("more")
+
+        fillPopupRows()
+
         layerMask = top.mask(this)
         layerMask!!.setOnClickListener {
             top.unmask()
         }
 
         val rowHeight: Int = 200
-        var rowNumber: Int = 3
-        if (gateway == GATEWAY.store_cvs || gateway == GATEWAY.ATM) {
-            rowNumber = 3
-        } else if (gateway == GATEWAY.store_barcode) {
-            rowNumber = 4
-        }
+        val rowNumber: Int = popupRows.size
+
         val tableViewHeight: Int = rowHeight * rowNumber
         val buttonViewHeight: Int = 150
-        blackViewHeight = tableViewHeight + buttonViewHeight
+        blackViewHeight = tableViewHeight + buttonViewHeight + 200
 
         val statusBarHeight: Int = getStatusBarHeight()
 //        val appBarHeight: Int = 64
         val frame_width = Resources.getSystem().displayMetrics.widthPixels
-        val frame_height = Resources.getSystem().displayMetrics.heightPixels - statusBarHeight - 400
+        val frame_height = Resources.getSystem().displayMetrics.heightPixels - statusBarHeight - 200
         val width: Int = frame_width - 2*blackViewPaddingLeft
         val topX: Int = (frame_height-blackViewHeight)/2;
 
@@ -482,19 +480,71 @@ class PaymentVC : MyTableVC() {
             blackViewHeight)
 
         tableView = blackView!!.tableView(this, 0, buttonViewHeight)
+        layerButtonLayout = blackView!!.buttonPanel(this, buttonViewHeight)
+        layerCancelBtn = layerButtonLayout.cancelButton(this) {
+            top.unmask()
+        }
+
         val panelAdapter = GroupAdapter<com.xwray.groupie.GroupieViewHolder>()
         tableView!!.adapter = panelAdapter
 
         items.clear()
+        for (row in popupRows) {
+            val title: String = row[TITLE_KEY] ?: run { "" }
+            val show: String = row[SHOW_KEY] ?: run { "" }
+            val cell_type: String = row[CELL_KEY] ?: run { "text" }
 
-        //text and plain cell
-//        val item = RadioAdapter(this, "", rowNumber, this)
-//        items.add(item)
-//        panelAdapter.addAll(items)
+            //text and barcode cell
+            if (cell_type == "text") {
+                val item = PlainAdapter1(title, show)
+                items.add(item)
+            } else if (cell_type == "barcode") {
+                val item = BarcodeAdapter(title, show)
+                items.add(item)
+            }
+        }
+        panelAdapter.addAll(items)
+    }
 
-        layerButtonLayout = blackView!!.buttonPanel(this, buttonViewHeight)
-        layerCancelBtn = layerButtonLayout.cancelButton(this) {
-            top.unmask()
+    private fun fillPopupRows() {
+        val method: GATEWAY = GATEWAY.stringToEnum(orderTable!!.gateway!!.method)
+        if (method == GATEWAY.ATM) {
+            val bank_code: String = orderTable!!.gateway!!.bank_code
+            val bank_account: String = orderTable!!.gateway!!.bank_account
+            val expire_at: String = orderTable!!.gateway!!.expire_at_show
+            popupRows = arrayListOf(
+                hashMapOf(TITLE_KEY to "銀行代號", KEY_KEY to BANK_CODE_KEY, VALUE_KEY to bank_code, SHOW_KEY to bank_code, CELL_KEY to "text"),
+                hashMapOf(TITLE_KEY to "銀行帳號", KEY_KEY to BANK_ACCOUNT_KEY, VALUE_KEY to bank_account, SHOW_KEY to bank_account, CELL_KEY to "text"),
+                hashMapOf(TITLE_KEY to "到期日", KEY_KEY to EXPIRE_AT_KEY, VALUE_KEY to expire_at, SHOW_KEY to expire_at, CELL_KEY to "text")
+            )
+
+        } else if (method == GATEWAY.store_cvs) {
+            val payment_no: String = orderTable!!.gateway!!.payment_no
+            val expire_at: String = orderTable!!.gateway!!.expire_at_show
+            popupRows = arrayListOf(
+                hashMapOf(TITLE_KEY to "繳款代碼",KEY_KEY to PAYMENT_NO_KEY,VALUE_KEY to payment_no,SHOW_KEY to payment_no,CELL_KEY to "barcode"),
+                hashMapOf(TITLE_KEY to "到期日",KEY_KEY to EXPIRE_AT_KEY,VALUE_KEY to expire_at,SHOW_KEY to expire_at,CELL_KEY to "text")
+            )
+
+        } else if (method == GATEWAY.store_barcode) {
+            val barcode1: String = orderTable!!.gateway!!.barcode1
+            val barcode2: String = orderTable!!.gateway!!.barcode2
+            val barcode3: String = orderTable!!.gateway!!.barcode3
+            val expire_at: String = orderTable!!.gateway!!.expire_at_show
+            popupRows = arrayListOf(
+                hashMapOf(TITLE_KEY to "繳款條碼1",KEY_KEY to BARCODE1_KEY,VALUE_KEY to barcode1,SHOW_KEY to barcode1,CELL_KEY to "barcode"),
+                hashMapOf(TITLE_KEY to "繳款條碼2",KEY_KEY to BARCODE2_KEY,VALUE_KEY to barcode2,SHOW_KEY to barcode2,CELL_KEY to "barcode"),
+                hashMapOf(TITLE_KEY to "繳款條碼3",KEY_KEY to BARCODE3_KEY,VALUE_KEY to barcode3,SHOW_KEY to barcode3,CELL_KEY to "barcode"),
+                hashMapOf(TITLE_KEY to "到期日",KEY_KEY to EXPIRE_AT_KEY,VALUE_KEY to expire_at,SHOW_KEY to expire_at,CELL_KEY to "text")
+            )
+
+        } else if (method == GATEWAY.credit_card) {
+            val card6No: String = orderTable!!.gateway!!.card6No
+            val card4No: String = orderTable!!.gateway!!.card4No
+            popupRows = arrayListOf(
+                hashMapOf(TITLE_KEY to "信用卡前6碼",KEY_KEY to PAYMENT_NO_KEY,VALUE_KEY to card6No,SHOW_KEY to card6No,CELL_KEY to "text"),
+                hashMapOf(TITLE_KEY to "信用卡後4碼",KEY_KEY to EXPIRE_AT_KEY,VALUE_KEY to card4No,SHOW_KEY to card4No,CELL_KEY to "text")
+            )
         }
     }
 

@@ -151,6 +151,9 @@ dependencies {
     implementation "tw.com.ecpay.paymentgatewaykit:ECPayPaymentGatewayKit:1.0.3"
     implementation "com.github.zhpanvip:BannerViewPager:3.5.0"
     implementation "com.fasterxml.jackson.module:jackson-module-kotlin:2.12.1"
+
+    //barcode
+    implementation 'com.google.zxing:core:3.4.0'
 }
 
 //configurations.all {

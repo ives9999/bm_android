@@ -21,7 +21,14 @@ import kotlinx.android.synthetic.main.formitem_more.title
 import kotlinx.android.synthetic.main.formitem_textfield.*
 import org.jetbrains.anko.backgroundColor
 
-class  MoreAdapter1(sectionKey: String, rowKey: String, title: String, value: String, show: String, delegate: BaseActivity?=null): FormItemAdapter1(sectionKey, rowKey, title, value, show, delegate) {
+class  MoreAdapter1(sectionKey: String, rowKey: String, title: String, value: String, show: String, delegate: BaseActivity?=null, isClear: Boolean=true): FormItemAdapter1(sectionKey, rowKey, title, value, show, delegate) {
+
+    var isClear: Boolean = true
+
+    init {
+        this.isClear = isClear
+    }
+
     override fun getLayout(): Int {
 
         return R.layout.formitem_more
@@ -35,9 +42,10 @@ class  MoreAdapter1(sectionKey: String, rowKey: String, title: String, value: St
             viewHolder.detail.visibility = View.VISIBLE
             viewHolder.detail.text = show
         } else {
-            viewHolder.clear.visibility = View.INVISIBLE
             viewHolder.detail.visibility = View.INVISIBLE
         }
+
+        viewHolder.clear.visibility = if (isClear) {View.VISIBLE} else {View.GONE}
 
         viewHolder.promptBtn.visibility = View.INVISIBLE
 

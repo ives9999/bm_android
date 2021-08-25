@@ -439,10 +439,26 @@ enum class GATEWAY(val englishName: String, val chineseName: String) {
         return englishName
     }
 
-    companion object: MYENUM<SHIPPING_PROCESS>() {
+    companion object: MYENUM<GATEWAY>() {
 
         fun getRawValueFromString(value: String): String {
             return GATEWAY.valueOf(value).toChineseString()
+        }
+
+        fun stringToEnum(str: String): GATEWAY {
+
+            when(str) {
+
+                "credit_card"-> return credit_card
+                "store_cvs"-> return store_cvs
+                "store_barcode"-> return store_barcode
+                "store_pay_711"-> return store_pay_711
+                "store_pay_family"-> return store_pay_family
+                "ATM"-> return ATM
+                "remit"-> return remit
+                "cash"-> return cash
+            }
+            return credit_card
         }
     }
 }
