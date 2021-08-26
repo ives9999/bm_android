@@ -7,11 +7,17 @@ import android.content.pm.PackageManager
 import android.os.Build
 import android.preference.PreferenceManager
 import android.util.Log
+import com.onesignal.OSNotificationOpenedResult
 //import com.onesignal.OSNotificationOpenResult
 import com.onesignal.OneSignal
+import com.onesignal.OneSignal.OSNotificationOpenedHandler
 import com.sportpassword.bm.Models.Member
 import com.sportpassword.bm.Utilities.*
 import org.json.JSONObject
+import com.onesignal.OSNotification
+import com.onesignal.OSNotificationReceivedEvent
+import com.onesignal.OneSignal.OSNotificationWillShowInForegroundHandler
+
 
 /**
  * Created by ives on 2018/2/6.
@@ -67,9 +73,30 @@ class App: Application() {
         }
 
         // OneSignal Initialization
-        OneSignal.setLogLevel(OneSignal.LOG_LEVEL.VERBOSE, OneSignal.LOG_LEVEL.NONE)
+        //OneSignal.setLogLevel(OneSignal.LOG_LEVEL.VERBOSE, OneSignal.LOG_LEVEL.NONE)
         OneSignal.initWithContext(this)
         OneSignal.setAppId("856c8fdb-79fb-418d-a397-d58b9c6b880b")
+
+        OneSignal.setNotificationOpenedHandler { result: OSNotificationOpenedResult ->
+            OneSignal.onesignalLog(
+                OneSignal.LOG_LEVEL.VERBOSE,
+                "OSNotificationOpenedResult result: $result"
+            )
+        }
+
+        OneSignal.setNotificationWillShowInForegroundHandler { notificationReceivedEvent: OSNotificationReceivedEvent ->
+            OneSignal.onesignalLog(
+                OneSignal.LOG_LEVEL.VERBOSE, "NotificationWillShowInForegroundHandler fired!" +
+                        " with notification event: " + notificationReceivedEvent.toString()
+            )
+            val notification = notificationReceivedEvent.notification
+            val data = notification.additionalData
+            notificationReceivedEvent.complete(notification)
+        }
+
+        OneSignal.unsubscribeWhenNotificationsAreDisabled(true)
+        OneSignal.pauseInAppMessages(true)
+        OneSignal.setLocationShared(false)
 
 //        OneSignal.startInit(this)
 //                .setNotificationReceivedHandler(MyNotificationReceivedHandler())

@@ -115,7 +115,6 @@ dependencies {
     implementation 'com.squareup.picasso:picasso:2.5.2'
     //implementation 'com.github.franmontiel:PersistentCookieJar:v1.0.1'
     //implementation 'com.ohmerhe.kolley:kolley:0.3.1'
-    implementation 'com.onesignal:OneSignal:[4.0.0, 4.99.99]'
     implementation 'com.chauthai.swipereveallayout:swipe-reveal-layout:1.4.1'
     implementation('org.apache.httpcomponents:httpmime:4.5.6') {
         exclude module: 'httpclient'
@@ -134,7 +133,6 @@ dependencies {
 
     //implementation 'com.xwray:groupie:2.1.0'
     //implementation 'com.xwray:groupie-kotlin-android-extensions:2.1.0'
-    implementation 'com.google.android.gms:play-services-maps:17.0.1'
     testImplementation 'junit:junit:4.13.1'
     androidTestImplementation 'androidx.test:runner:1.4.0'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
@@ -154,6 +152,10 @@ dependencies {
 
     //barcode
     implementation 'com.google.zxing:core:3.4.0'
+
+    //onesignal
+    implementation 'com.onesignal:OneSignal:[4.0.0, 4.99.99]'
+    implementation 'com.google.android.gms:play-services-maps:[17.0.0, 17.99.99]'
 }
 
 //configurations.all {
@@ -161,6 +163,22 @@ dependencies {
 //        force 'com.android.support:support-v4:28.0.0'
 //    }
 //}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

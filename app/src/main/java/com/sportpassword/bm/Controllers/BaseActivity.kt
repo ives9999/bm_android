@@ -773,10 +773,6 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
         startActivity(intent)
     }
 
-
-
-
-
     protected fun getAllChildrenBFS(v: View): List<View> {
         val visited: ArrayList<View> = arrayListOf()
         val unvisited: ArrayList<View> = arrayListOf()
