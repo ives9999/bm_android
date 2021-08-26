@@ -77,20 +77,34 @@ class App: Application() {
         OneSignal.initWithContext(this)
         OneSignal.setAppId("856c8fdb-79fb-418d-a397-d58b9c6b880b")
 
+        //當app不在工作狀態時，會呼叫這個函式
         OneSignal.setNotificationOpenedHandler { result: OSNotificationOpenedResult ->
-            OneSignal.onesignalLog(
-                OneSignal.LOG_LEVEL.VERBOSE,
-                "OSNotificationOpenedResult result: $result"
-            )
+//            OneSignal.onesignalLog(
+//                OneSignal.LOG_LEVEL.VERBOSE,
+//                "OSNotificationOpenedResult result: $result"
+//            )
+
+            val actionType = result.action.type
+            val data = result.notification.additionalData
+            val id = result.notification.notificationId
+            val title = result.notification.title
+            val content = result.notification.body
         }
 
+        //當app在工作狀態時，會呼叫這個函式
         OneSignal.setNotificationWillShowInForegroundHandler { notificationReceivedEvent: OSNotificationReceivedEvent ->
-            OneSignal.onesignalLog(
-                OneSignal.LOG_LEVEL.VERBOSE, "NotificationWillShowInForegroundHandler fired!" +
-                        " with notification event: " + notificationReceivedEvent.toString()
-            )
+//            OneSignal.onesignalLog(
+//                OneSignal.LOG_LEVEL.VERBOSE, "NotificationWillShowInForegroundHandler fired!" +
+//                        " with notification event: " + notificationReceivedEvent.toString()
+//            )
+
             val notification = notificationReceivedEvent.notification
             val data = notification.additionalData
+
+            val id = notification.androidNotificationId
+            val title = notification.title
+            val body = notification.body
+
             notificationReceivedEvent.complete(notification)
         }
 
