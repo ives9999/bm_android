@@ -157,7 +157,7 @@ class MyOneSignal {
             val pnObj = JSONObject()
             pnObj.put("id", id)
             if (title != null) {
-                pnObj.put("title", title!!)
+                pnObj.put("title", title)
             }
             pnObj.put("content", content)
             pnObj.put("pnid", pnID)

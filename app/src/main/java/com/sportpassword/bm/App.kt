@@ -103,7 +103,26 @@ class App: Application() {
 
             val id = notification.androidNotificationId
             val title = notification.title
-            val body = notification.body
+            val content = notification.body
+
+            val smallIcon = notification.smallIcon
+            val largeIcon = notification.largeIcon
+            val bigPicture = notification.bigPicture
+            val smallIconAccentColor = notification.smallIconAccentColor
+            val sound = notification.sound
+            val ledColor = notification.ledColor
+            val lockScreenVisibility = notification.lockScreenVisibility
+            val groupKey = notification.groupKey
+            val groupMessage = notification.groupMessage
+            val fromProjectNumber = notification.fromProjectNumber
+            val rawPayload = notification.rawPayload
+
+            var pnID = "0"
+            if (data != null) {
+                pnID = MyOneSignal.getServerPNID(data)
+            }
+
+            MyOneSignal.save(id.toString(), title, content, pnID)
 
             notificationReceivedEvent.complete(notification)
         }
