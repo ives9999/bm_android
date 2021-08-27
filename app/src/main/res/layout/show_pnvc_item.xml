@@ -33,7 +33,7 @@
                     android:textSize="18sp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    tools:text="@string/com_facebook_internet_permission_error_title" />
+                 />
             </LinearLayout>
 
             <LinearLayout
@@ -89,7 +89,7 @@
                 android:layout_marginLeft="12dp"
                 android:layout_marginRight="18dp"
                 android:textAlignment="center"
-                app:srcCompat="@drawable/clear" />
+                app:srcCompat="@drawable/delete" />
         </LinearLayout>
     </LinearLayout>
     <LinearLayout

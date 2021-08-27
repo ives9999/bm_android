@@ -89,6 +89,13 @@ class App: Application() {
             val id = result.notification.notificationId
             val title = result.notification.title
             val content = result.notification.body
+
+            var pnID = "0"
+            if (data != null) {
+                pnID = MyOneSignal.getServerPNID(data)
+            }
+
+            //MyOneSignal.save(id.toString(), title, content, pnID)
         }
 
         //當app在工作狀態時，會呼叫這個函式

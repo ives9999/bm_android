@@ -20,7 +20,7 @@ import java.lang.Exception
 
 class ShowPNVC : MyTableVC(), OSPermissionObserver {
 
-    var pnArr: JSONArray? = null
+    var pnArr: JSONArray = JSONArray()
     var isReceive: Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -74,22 +74,23 @@ class ShowPNVC : MyTableVC(), OSPermissionObserver {
 
     override fun refresh() {
         getArr()
-        if (pnArr == null || pnArr!!.length() == 0 ) {
+        var items = arrayListOf<Item>()
+        if (pnArr.length() == 0 ) {
             pn_empty.visibility = View.VISIBLE
         } else {
             pn_empty.visibility = View.GONE
-            val items = generateItems()
-            adapter.update(items)
-            adapter.notifyDataSetChanged()
+            items = generateItems()
         }
+        adapter.update(items)
+        //adapter.notifyDataSetChanged()
         closeRefresh()
     }
 
     override fun generateItems(): ArrayList<Item> {
-        var items: ArrayList<Item> = arrayListOf()
-        for (i in 0..pnArr!!.length()-1) {
-            val j = pnArr!!.length()-1-i
-            val obj = pnArr!![j] as JSONObject
+        val items: ArrayList<Item> = arrayListOf()
+        for (i in 0..pnArr.length()-1) {
+            val j = pnArr.length()-1-i
+            val obj = pnArr[j] as JSONObject
             var id = ""
             if (obj.has("id")) {
                 id = obj.getString("id")
@@ -117,8 +118,10 @@ class ShowPNVC : MyTableVC(), OSPermissionObserver {
 
     fun clear(view: View) {
         //println("clear")
-        MyOneSignal.clear()
-        refresh()
+        warning("是否確定要刪除全部訊息？", "關閉", "刪除") {
+            MyOneSignal.clear()
+            refresh()
+        }
     }
 
     override fun onOSPermissionChanged(stateChanges: OSPermissionStateChanges?) {
@@ -141,6 +144,8 @@ class ShowPNVC : MyTableVC(), OSPermissionObserver {
             } catch (e: Exception) {
                 //println(e.localizedMessage)
             }
+        } else {
+            pnArr = JSONArray()
         }
     }
 }
