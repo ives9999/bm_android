@@ -150,7 +150,7 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
 
     val body_css = "<style>body{background-color:#000;padding-left:8px;padding-right:8px;margin-top:0;padding-top:0;color:#888888;font-size:18px;}a{color:#a6d903;}</style>"
 
-    val session: SharedPreferences = App.instance.getSharedPreferences(SESSION_FILENAME, 0)
+    val session: SharedPreferences = App.ctx!!.getSharedPreferences(SESSION_FILENAME, 0)
 
     var delegate: BaseActivity? = null
 

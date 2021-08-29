@@ -559,6 +559,7 @@ class PaymentVC : MyTableVC() {
 
     fun updateOrder() {
         val params: HashMap<String, String> = hashMapOf("token" to order_token, "member_token" to member.token,"do" to "update")
+        params["process"] = GATEWAY_PROCESS.getRawValueFromString("code")
         params["expire_at"] = expire_at
         params["trade_no"] = trade_no
         if (gateway == GATEWAY.store_cvs) {

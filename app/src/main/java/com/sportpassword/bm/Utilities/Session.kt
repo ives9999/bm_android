@@ -4,7 +4,7 @@ import android.content.SharedPreferences
 import com.sportpassword.bm.App
 
 object Session {
-    private val UD: SharedPreferences = App.instance.getSharedPreferences(SESSION_FILENAME, 0)
+    private val UD: SharedPreferences = App.ctx!!.getSharedPreferences(SESSION_FILENAME, 0)
 
 //    val loginResetKey = "login_reset"
 

@@ -67,91 +67,75 @@ class NotificationServiceExtension : OSRemoteNotificationReceivedHandler {
     }
 }
 
-
-class MyNotificationOpenedHandler: OneSignal.OSNotificationOpenedHandler {
-
-    override fun notificationOpened(result: OSNotificationOpenedResult) {
-//        println("receive PN")
-        val actionType = result.action.type
-        val data = result.notification.additionalData
-        val id = result.notification.notificationId
-        val title = result.notification.title
-        val content = result.notification.body
-
-//        println("OpenedHandler title: $title")
-//        println("OpenedHandler id: $id")
-
-//        val customKey = data?.optString("customkey", null)
-//        if (customKey != null) {
-//            println("OpenedHandler customkey set with value: $customKey")
-//        }
-
-        if (actionType == OSNotificationAction.ActionType.ActionTaken) {
-//            println("OpenedHandler Button pressed with id: ${result.action.actionID}")
-        }
-        var pnID = "0"
-        if (data != null) {
-            pnID = MyOneSignal.getServerPNID(data)
-        }
-
-        MyOneSignal.save(id, title, content, pnID)
-        val intent = Intent(App.instance, ShowPNVC::class.java)
-        intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-//        intent.putExtra("id", id)
-//        intent.putExtra("title", title)
-//        intent.putExtra("content", content)
-        App.instance.startActivity(intent)
-    }
-}
-
-class MyNotificationReceivedHandler: OneSignal.OSRemoteNotificationReceivedHandler {
-
-    override fun remoteNotificationReceived(
-        context: Context?,
-        notificationReceivedEvent: OSNotificationReceivedEvent?
-    ) {
-
-    }
-    fun remoteNotificationReceived(notification: OSNotification) {
-        val data = notification.additionalData
-        val id = notification.androidNotificationId
-        val title = notification.title
-        val body = notification.body
-        val smallIcon = notification.smallIcon
-        val largeIcon = notification.largeIcon
-        val bigPicture = notification.bigPicture
-        val smallIconAccentColor = notification.smallIconAccentColor
-        val sound = notification.sound
-        val ledColor = notification.ledColor
-        val lockScreenVisibility = notification.lockScreenVisibility
-        val groupKey = notification.groupKey
-        val groupMessage = notification.groupMessage
-        val fromProjectNumber = notification.fromProjectNumber
-        val rawPayload = notification.rawPayload
-
-//        println("ReceivedHandler title: $title")
-//        println("ReceivedHandler id: $id")
-
-        var customKey: String? = null
-//        println("ReceivedHandler NotificationID received: $id")
-        var pnID = "0"
-        if (data != null) {
-            pnID = MyOneSignal.getServerPNID(data)
-//            customKey = data.optString("customKey", null)
-//            if (customKey != null) {
-//                println("ReceivedHandler customKey set with value: $customKey")
-//            }
-        }
-        MyOneSignal.save(id.toString(), title, body, pnID)
-    }
-}
-
 class MyOneSignal {
 
     companion object {
 
-        val session: SharedPreferences = App.instance.getSharedPreferences(SESSION_FILENAME, 0)
+        val session: SharedPreferences = App.ctx!!.getSharedPreferences(SESSION_FILENAME, 0)
+        //var context: Context? = null
+
+        fun openHandler(context: Context, result: OSNotificationOpenedResult) {
+
+            //this.context = context
+            val actionType = result.action.type
+
+            val data = result.notification.additionalData
+            val id = result.notification.notificationId
+            val title = result.notification.title
+            val content = result.notification.body
+
+            var pnID = "0"
+            if (data != null) {
+                pnID = getServerPNID(data)
+            }
+
+            save(id.toString(), title, content, pnID)
+
+            toShowPNVC(context)
+        }
+
+        fun showInForegroundHandler(context: Context, notificationReceivedEvent: OSNotificationReceivedEvent) {
+
+            val notification = notificationReceivedEvent.notification
+
+            val data = notification.additionalData
+
+            val id = notification.androidNotificationId
+            val title = notification.title
+            val content = notification.body
+
+            val smallIcon = notification.smallIcon
+            val largeIcon = notification.largeIcon
+            val bigPicture = notification.bigPicture
+            val smallIconAccentColor = notification.smallIconAccentColor
+            val sound = notification.sound
+            val ledColor = notification.ledColor
+            val lockScreenVisibility = notification.lockScreenVisibility
+            val groupKey = notification.groupKey
+            val groupMessage = notification.groupMessage
+            val fromProjectNumber = notification.fromProjectNumber
+            val rawPayload = notification.rawPayload
+
+            var pnID = "0"
+            if (data != null) {
+                pnID = getServerPNID(data)
+            }
+
+            save(id.toString(), title, content, pnID)
+
+            notificationReceivedEvent.complete(notification)
+            toShowPNVC(context)
+        }
+
+        fun toShowPNVC(context: Context) {
+            //val launchUrl = result.notification.launchURL
+            //if (launchUrl != null) {
+            val intent = Intent(context, ShowPNVC::class.java)
+            intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT or Intent.FLAG_ACTIVITY_NEW_TASK)
+            //intent.putExtra("openURL", launchUrl)
+            context.startActivity(intent)
+            //}
+        }
 
         fun save(id: String, title: String?, content: String, pnID: String) {
             val pnObj = JSONObject()

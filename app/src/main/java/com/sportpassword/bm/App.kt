@@ -1,23 +1,17 @@
 package com.sportpassword.bm
 
+import android.app.AlertDialog
 import android.app.Application
 import android.content.Context
+import android.content.Intent
 import android.content.SharedPreferences
-import android.content.pm.PackageManager
-import android.os.Build
-import android.preference.PreferenceManager
-import android.util.Log
 import com.onesignal.OSNotificationOpenedResult
-//import com.onesignal.OSNotificationOpenResult
 import com.onesignal.OneSignal
-import com.onesignal.OneSignal.OSNotificationOpenedHandler
 import com.sportpassword.bm.Models.Member
 import com.sportpassword.bm.Utilities.*
 import org.json.JSONObject
-import com.onesignal.OSNotification
 import com.onesignal.OSNotificationReceivedEvent
-import com.onesignal.OneSignal.OSNotificationWillShowInForegroundHandler
-
+import com.sportpassword.bm.Controllers.ShowPNVC
 
 /**
  * Created by ives on 2018/2/6.
@@ -30,39 +24,39 @@ val member: Member by lazy {
 class App: Application() {
 
     companion object {
-        lateinit var instance: Context private set
+        var ctx: Context? = null
         var member: Member? = null
 
-        private val SCOPE = "private public create edit delete interact"
-        private val IS_DEBUG_BUILD = false
-        private val ACCESS_TOKEN_PROVIDED = false
+//        private val SCOPE = "private public create edit delete interact"
+//        private val IS_DEBUG_BUILD = false
+//        private val ACCESS_TOKEN_PROVIDED = false
 
-        fun getUserAgentString(context: Context): String {
-            val packageName = context.packageName
-
-            var version = "unknown"
-            try {
-                val pInfo = context.packageManager.getPackageInfo(packageName, 0)
-                version = pInfo.versionName
-            } catch (e: PackageManager.NameNotFoundException) {
-                println("Unable to get packageInfo: " + e.message)
-            }
-
-            val deviceManufacturer = Build.MANUFACTURER
-            val deviceModel = Build.MODEL
-            val deviceBrand = Build.BRAND
-
-            val versionString = Build.VERSION.RELEASE
-            val versionSDKString = Build.VERSION.SDK_INT.toString()
-
-            return packageName + " (" + deviceManufacturer + ", " + deviceBrand + ", " + "Android " + versionString + "/" + versionSDKString + " Version " + version + ")"
-        }
+//        fun getUserAgentString(context: Context): String {
+//            val packageName = context.packageName
+//
+//            var version = "unknown"
+//            try {
+//                val pInfo = context.packageManager.getPackageInfo(packageName, 0)
+//                version = pInfo.versionName
+//            } catch (e: PackageManager.NameNotFoundException) {
+//                println("Unable to get packageInfo: " + e.message)
+//            }
+//
+//            val deviceManufacturer = Build.MANUFACTURER
+//            val deviceModel = Build.MODEL
+//            val deviceBrand = Build.BRAND
+//
+//            val versionString = Build.VERSION.RELEASE
+//            val versionSDKString = Build.VERSION.SDK_INT.toString()
+//
+//            return packageName + " (" + deviceManufacturer + ", " + deviceBrand + ", " + "Android " + versionString + "/" + versionSDKString + " Version " + version + ")"
+//        }
     }
 
     override fun onCreate() {
         member = Member(JSONObject())
         super.onCreate()
-        instance = this
+        ctx = applicationContext
         val session: SharedPreferences = this.getSharedPreferences(SESSION_FILENAME, 0)
         //session.dump()
         if (session.has(ISLOGGEDIN_KEY)) {
@@ -84,18 +78,17 @@ class App: Application() {
 //                "OSNotificationOpenedResult result: $result"
 //            )
 
-            val actionType = result.action.type
-            val data = result.notification.additionalData
-            val id = result.notification.notificationId
-            val title = result.notification.title
-            val content = result.notification.body
+            MyOneSignal.openHandler(applicationContext, result)
+            //val no = NotificationServiceExtension()
+            //no.remoteNotificationReceived(this, result.notification)
+            //val launchUrl = result.notification.launchURL
+            //if (launchUrl != null) {
+                //val intent: Intent = Intent(applicationContext, ShowPNVC::class.java)
+                //intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT or Intent.FLAG_ACTIVITY_NEW_TASK)
+                //intent.putExtra("openURL", launchUrl)
+                //startActivity(intent)
+            //}
 
-            var pnID = "0"
-            if (data != null) {
-                pnID = MyOneSignal.getServerPNID(data)
-            }
-
-            //MyOneSignal.save(id.toString(), title, content, pnID)
         }
 
         //當app在工作狀態時，會呼叫這個函式
@@ -104,39 +97,21 @@ class App: Application() {
 //                OneSignal.LOG_LEVEL.VERBOSE, "NotificationWillShowInForegroundHandler fired!" +
 //                        " with notification event: " + notificationReceivedEvent.toString()
 //            )
+            MyOneSignal.showInForegroundHandler(applicationContext, notificationReceivedEvent)
+            //val no = NotificationServiceExtension()
+            //no.remoteNotificationReceived(this, notificationReceivedEvent)
+            //Alert.show(this, "訊息", "您有一則新訊息")
+//            val alert = AlertDialog.Builder(applicationContext).create()
+//            alert.setTitle("訊息")
+//            alert.setMessage("您有一則新訊息")
+//            alert.show()
 
-            val notification = notificationReceivedEvent.notification
-            val data = notification.additionalData
-
-            val id = notification.androidNotificationId
-            val title = notification.title
-            val content = notification.body
-
-            val smallIcon = notification.smallIcon
-            val largeIcon = notification.largeIcon
-            val bigPicture = notification.bigPicture
-            val smallIconAccentColor = notification.smallIconAccentColor
-            val sound = notification.sound
-            val ledColor = notification.ledColor
-            val lockScreenVisibility = notification.lockScreenVisibility
-            val groupKey = notification.groupKey
-            val groupMessage = notification.groupMessage
-            val fromProjectNumber = notification.fromProjectNumber
-            val rawPayload = notification.rawPayload
-
-            var pnID = "0"
-            if (data != null) {
-                pnID = MyOneSignal.getServerPNID(data)
-            }
-
-            MyOneSignal.save(id.toString(), title, content, pnID)
-
-            notificationReceivedEvent.complete(notification)
         }
 
         OneSignal.unsubscribeWhenNotificationsAreDisabled(true)
         OneSignal.pauseInAppMessages(true)
         OneSignal.setLocationShared(false)
+
 
 //        OneSignal.startInit(this)
 //                .setNotificationReceivedHandler(MyNotificationReceivedHandler())
@@ -179,129 +154,3 @@ class App: Application() {
 //            return configBuilder
 //        }
 }
-
-/**
- * Class for persisting the the auth access token (and possibly the user)
- *
- * Created by anthonyr on 5/8/17.
- */
-//object AccountPreferenceManager {
-//
-//    private lateinit var sharedPreferences: SharedPreferences
-//
-//    @Synchronized fun initializeInstance(context: Context) {
-//        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
-//    }
-//
-//    // <editor-fold desc="Account">
-//
-//    val CLIENT_ACCOUNT_JSON = "CLIENT_ACCOUNT_JSON"
-//    val CACHED_CLIENT_CREDENTIALS_ACCOUNT_JSON = "CACHED_CLIENT_CREDENTIALS_ACCOUNT_JSON"
-//
-//    fun removeClientAccount() {
-//        sharedPreferences.edit().remove(CLIENT_ACCOUNT_JSON).apply()
-//    }
-//
-//    // NOTE: This happens on the main thread, don't do this
-//    // NOTE: This happens on the main thread, don't do this
-//    var clientAccount: VimeoAccount?
-//        get() {
-//            val accountJSON = sharedPreferences.getString(CLIENT_ACCOUNT_JSON, null) ?: return null
-//
-//            return VimeoNetworkUtil.getGson().fromJson(accountJSON, VimeoAccount::class.java)
-//        }
-//        set(vimeoAccount) {
-//            if (vimeoAccount != null) {
-//                val accountJSON = VimeoNetworkUtil.getGson().toJson(vimeoAccount)
-//                if (accountJSON == null) {
-//                    removeClientAccount()
-//                    return
-//                }
-//                sharedPreferences.edit().putString(CLIENT_ACCOUNT_JSON, accountJSON).apply()
-//            }
-//        }
-//
-//    val currentUser: User?
-//        get() {
-//            return AccountPreferenceManager.clientAccount?.user
-//        }
-//
-//    fun cacheClientCredentialsAccount(vimeoAccount: VimeoAccount?) {
-//        if (vimeoAccount != null) {
-//            val accountJSON = VimeoNetworkUtil.getGson().toJson(vimeoAccount) ?: return
-//            sharedPreferences.edit().putString(CACHED_CLIENT_CREDENTIALS_ACCOUNT_JSON, accountJSON).apply()
-//        }
-//    }
-//
-//    val cachedClientCredentialsAccount: VimeoAccount?
-//        get() {
-//            val accountJSON = sharedPreferences.getString(CACHED_CLIENT_CREDENTIALS_ACCOUNT_JSON, null) ?: return null
-//
-//            return VimeoNetworkUtil.getGson().fromJson(accountJSON, VimeoAccount::class.java)
-//        }
-//
-//    // </editor-fold>
-//
-//}
-
-/**
- * An account store that is backed by [SharedPreferences].
- *
- * Note: This class can be used with Android's [AccountManager] to tie into the Android device Accounts
- *
- * Created by anthonyr on 5/8/17.
- */
-//class TestAccountStore(context: Context?) : AccountStore {
-//    override fun saveAccount(vimeoAccount: VimeoAccount?, email: String?, password: String?) {
-//        //TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-//    }
-//
-//    // NOTE: You can use the account manager in the below methods to hook into the Android Accounts
-//    // @RequiresPermission(Manifest.permission.GET_ACCOUNTS)
-//    // val mAccountManager: AccountManager? = AccountManager.get(context!!)
-//
-//    override fun loadAccount(): VimeoAccount? {
-//        return AccountPreferenceManager.clientAccount
-//    }
-//
-//    override fun saveAccount(vimeoAccount: VimeoAccount, email: String) {
-//        AccountPreferenceManager.clientAccount = vimeoAccount
-//    }
-//
-//    override fun deleteAccount(vimeoAccount: VimeoAccount) {
-//        AccountPreferenceManager.removeClientAccount()
-//        // NOTE: You'll now need a client credentials grant (without an authenticated user)
-//    }
-//
-//    fun updateAccount(vimeoAccount: VimeoAccount) {
-//        AccountPreferenceManager.clientAccount = vimeoAccount
-//        VimeoClient.getInstance().vimeoAccount = vimeoAccount
-//    }
-//
-//}
-/**
- * Logger delegate for handling logs coming from the Networking library
- *
- * Created by anthonyr on 5/8/17.
- */
-//class NetworkingLogger : LogProvider {
-//
-//    private val TEST_APP = "~NET TEST APP~"
-//
-//    override fun e(error: String) {
-//        Log.e(TEST_APP, error)
-//    }
-//
-//    override fun e(error: String, exception: Exception) {
-//        Log.e(TEST_APP, error, exception)
-//    }
-//
-//    override fun d(debug: String) {
-//        Log.d(TEST_APP, debug)
-//    }
-//
-//    override fun v(verbose: String) {
-//        Log.v(TEST_APP, verbose)
-//    }
-//
-//}

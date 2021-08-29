@@ -28,7 +28,27 @@
         android:usesCleartextTraffic="true"
         tools:replace="android:allowBackup"
         tools:targetApi="m">
-        <activity android:name=".Controllers.OrderVC"></activity>
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="com.sportpassword.bm.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/providerfile" />
+        </provider>
+
+        <activity
+            android:name=".Controllers.MainActivity"
+            android:label="@string/app_name"
+            android:theme="@style/SplashTheme"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".Controllers.OrderVC" />
         <activity android:name=".Controllers.MemberCartListVC" />
         <activity android:name=".Controllers.ShowTeachVC" />
         <activity android:name=".Controllers.SelectCycleUnitVC" />
@@ -41,17 +61,6 @@
         <activity android:name=".Controllers.SelectWeekdayVC" />
         <activity android:name=".Controllers.CourseVC" />
         <activity android:name=".Controllers.TeamVC" />
-
-        <provider
-            android:name="androidx.core.content.FileProvider"
-            android:authorities="com.sportpassword.bm.fileprovider"
-            android:exported="false"
-            android:grantUriPermissions="true">
-            <meta-data
-                android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/providerfile" />
-        </provider>
-
         <activity android:name=".Controllers.HomeTotalAdVC" />
         <activity android:name=".Controllers.MemberOrderListVC" />
         <activity android:name=".Controllers.PaymentVC" />
@@ -66,19 +75,25 @@
         <activity android:name=".Controllers.MultiSelectVC" />
         <activity android:name=".Controllers.SingleSelectVC" />
         <activity android:name=".Controllers.EditCourseVC" />
+        <activity android:name=".Controllers.ShowPNVC" />
 
         <uses-library
             android:name="org.apache.http.legacy"
             android:required="false" />
 
-        <activity android:name=".Controllers.ShowPNVC" />
 
         <meta-data
             android:name="com.onesignal.NotificationOpened.DEFAULT"
-            android:value="DISABLE" />
+            android:value="ENABLE" />
+        <!-- name doesn't change, value = your class fully name spaced-->
+        <meta-data
+            android:name="com.onesignal.NotificationServiceExtension"
+            android:value="com.sportpassword.bm.Utilities.NotificationServiceExtension" />
+        <!--
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
-            android:value="@string/facebook_app_id" /> <!-- Google Map API key -->
+            android:value="@string/facebook_app_id" />
+        -->
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
@@ -99,16 +114,6 @@
             android:name=".Controllers.ShowTimetableVC"
             android:exported="true" />
         <activity android:name=".Controllers.DateSelectVC" />
-        <activity
-            android:name=".Controllers.MainActivity"
-            android:label="@string/app_name"
-            android:theme="@style/SplashTheme">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
         <activity android:name=".Controllers.LoginActivity" />
         <activity android:name=".Controllers.RegisterActivity" />
         <activity android:name=".Controllers.BaseActivity" />
@@ -137,7 +142,6 @@
         <activity android:name=".Controllers.TeachVC" />
         <activity android:name=".Controllers.MoreVC" />
         <activity android:name=".Controllers.TempPlayVC" />
-        <activity android:name=".Controllers.ColorSelectVC1" />
         <activity
             android:name=".Controllers.MyMapVC"
             android:label="@string/title_activity_my_map_vc" />
