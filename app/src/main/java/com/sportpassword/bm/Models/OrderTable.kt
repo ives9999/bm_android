@@ -38,6 +38,7 @@ class OrderTable: Table() {
 
     var memo: String = ""
     var process: String = ""
+    var all_process: Int = 0
 
     var ecpay_token: String = ""
     var ecpay_token_ExpireDate: String = ""
@@ -77,6 +78,7 @@ class OrderTable: Table() {
     var order_tel_show: String = ""
 
     var order_process_show: String = ""
+    var all_process_show: String = ""
 
 //    var payment_process_show: String = ""
 //    var payment_at_show: String = "未付款"
@@ -114,6 +116,7 @@ class OrderTable: Table() {
         
         if (process.length > 0) {
             order_process_show = ORDER_PROCESS.getRawValueFromString(process)
+            all_process_show = ALL_PROCESS.intToEnum(all_process).chineseName
         }
 
 //        if (payment_at.length > 0) {

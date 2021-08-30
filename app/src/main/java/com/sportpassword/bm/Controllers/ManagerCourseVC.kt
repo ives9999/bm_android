@@ -88,10 +88,16 @@ class ManagerCourseVC: MyTableVC() {
         refresh()
     }
 
-//    override fun onResume() {
-//        super.onResume()
-//        refresh()
-//    }
+    override fun refresh() {
+        page = 1
+        theFirstTime = true
+        adapter.clear()
+        items.clear()
+        getDataStart(page, perPage)
+
+        params.clear()
+        params["manager_token"] = manager_token!!
+    }
 
 //    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
 //

@@ -71,7 +71,6 @@ class MemberOrderListVC : MyTableVC() {
     }
 
     override fun generateItems(): ArrayList<Item> {
-        val items: ArrayList<Item> = arrayListOf()
         if (mysTable != null) {
             for (row in mysTable!!.rows) {
                 row.filterRow()
@@ -116,6 +115,12 @@ class OrderItem(val context: Context, val row: OrderTable): Item() {
         viewHolder.priceLbl.text = row.amount_show
         viewHolder.orderNoLbl.text = row.order_no
         viewHolder.noLbl.text = (position+1).toString()
+
+        viewHolder.orderAllProcessLbl.text = row.all_process_show
+        viewHolder.gatewayProcessLbl.text = row.gateway!!.process_show
+        viewHolder.shippingProcessLbl.text = row.shipping!!.process_show
+        viewHolder.gatewayMethodLbl.text = row.gateway!!.method_show
+        viewHolder.shippingMethodLbl.text = row.shipping!!.method_show
     }
 
     override fun getLayout() = R.layout.order_list_cell

@@ -99,7 +99,7 @@ open class DataService: BaseService() {
 //                            tables = s as T2
 //                        }
                         this.jsonString = response.toString()
-                        //println(jsonString)
+//                        println(jsonString)
                         this.success = true
                     } catch (e: Exception) {
                         this.success = false

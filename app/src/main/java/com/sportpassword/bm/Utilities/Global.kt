@@ -399,6 +399,46 @@ enum class ORDER_PROCESS(val englishName: String, val chineseName: String) {
     }
 }
 
+enum class ALL_PROCESS(val englishName: String, val chineseName: String) {
+    notexist("notexist", "沒有"),
+    normal("normal", "訂單成立"),
+    gateway_on("gateway_on", "付款中"),
+    gateway_off("gateway_off", "完成付款，準備出貨"),
+    shipping("shipping", "已經出貨中"),
+    store("store", "商品到達便利商店"),
+    complete("complete", "完成取貨"),
+    cancel("cancel", "退貨");
+
+    fun toChineseString(): String {
+        return chineseName
+    }
+
+    fun toEnglishString(): String {
+        return englishName
+    }
+
+    companion object: MYENUM<ALL_PROCESS>() {
+
+        fun intToEnum(enumInt: Int): ALL_PROCESS {
+            when (enumInt) {
+                0-> return notexist
+                1-> return normal
+                2-> return gateway_on
+                3-> return gateway_off
+                4-> return shipping
+                5-> return store
+                6-> return complete
+                7-> return cancel
+            }
+            return normal
+        }
+
+        fun getRawValueFromString(value: String): String {
+            return ALL_PROCESS.valueOf(value).toChineseString()
+        }
+    }
+}
+
 enum class PAYMENT_PROCESS(val englishName: String, val chineseName: String) {
     normal("normal", "未付款"),
     code("code", "取得付款代碼"),
