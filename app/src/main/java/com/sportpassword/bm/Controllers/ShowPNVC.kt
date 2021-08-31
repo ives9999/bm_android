@@ -8,6 +8,7 @@ import com.onesignal.OSPermissionStateChanges
 import com.onesignal.OneSignal
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Utilities.MyOneSignal
+import com.sportpassword.bm.Utilities.NotificationServiceExtension
 import com.sportpassword.bm.Utilities.SESSION_FILENAME
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.kotlinandroidextensions.Item
@@ -27,6 +28,8 @@ class ShowPNVC : MyTableVC(), OSPermissionObserver {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_show_pnvc)
         setMyTitle("推播訊息")
+
+        //val notificationServiceExtension = NotificationServiceExtension()
 
         //OneSignal.clearOneSignalNotifications()
 

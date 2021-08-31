@@ -97,7 +97,11 @@ class App: Application() {
 //                OneSignal.LOG_LEVEL.VERBOSE, "NotificationWillShowInForegroundHandler fired!" +
 //                        " with notification event: " + notificationReceivedEvent.toString()
 //            )
+//            val notificationServiceExtension = NotificationServiceExtension()
+//            notificationServiceExtension.remoteNotificationReceived(applicationContext, notificationReceivedEvent)
+
             MyOneSignal.showInForegroundHandler(applicationContext, notificationReceivedEvent)
+
             //val no = NotificationServiceExtension()
             //no.remoteNotificationReceived(this, notificationReceivedEvent)
             //Alert.show(this, "訊息", "您有一則新訊息")
