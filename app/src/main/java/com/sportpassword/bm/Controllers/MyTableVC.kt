@@ -287,13 +287,13 @@ abstract class MyTableVC : BaseActivity(), List1CellDelegate {
                 val layoutManager = recyclerView.layoutManager as LinearLayoutManager
                 if (items.size < totalCount) {
                     pos = layoutManager.findLastVisibleItemPosition()
-                    println("pos:${pos}")
+                    //println("pos:${pos}")
                 }
             }
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
                 super.onScrollStateChanged(recyclerView, newState)
 
-                println("items.size:${items.size}")
+                //println("items.size:${items.size}")
                 if (items.size == pos + 1 && newState == RecyclerView.SCROLL_STATE_IDLE && items.size < totalCount && !loading) {
                     getDataStart(page, perPage)
                 }

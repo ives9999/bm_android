@@ -56,8 +56,13 @@ class MemberCartListVC : MyTableVC() {
         mysTable = jsonToModels<CartsTable>(dataService.jsonString)
         tables = mysTable
         if (mysTable != null) {
-            myTable = mysTable!!.rows[0]
-            cartItemsTable = myTable!!.items
+            if (mysTable!!.rows.size > 0) {
+                myTable = mysTable!!.rows[0]
+                cartItemsTable = myTable!!.items
+                submitBtn.visibility = View.VISIBLE
+            } else {
+                submitBtn.visibility = View.GONE
+            }
         }
     }
 

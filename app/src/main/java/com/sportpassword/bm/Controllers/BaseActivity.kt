@@ -589,7 +589,7 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
 
     private fun _setURLConstants() {
         gSimulate = isEmulator()
-        //gSimulate = true
+        gSimulate = true
         BASE_URL = if (gSimulate) LOCALHOST_BASE_URL else REMOTE_BASE_URL
         //println("os: " + BASE_URL)
 

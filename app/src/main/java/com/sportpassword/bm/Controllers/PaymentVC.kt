@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.res.Resources
 import android.os.Bundle
+import android.view.View
 import android.widget.RelativeLayout
 import androidx.recyclerview.widget.RecyclerView
 import com.google.gson.Gson
@@ -94,6 +95,8 @@ class PaymentVC : MyTableVC() {
     var blackView: RelativeLayout? = null
     var tableView: RecyclerView? = null
 
+    var title: String = ""
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_payment_vc)
@@ -108,7 +111,8 @@ class PaymentVC : MyTableVC() {
             ecpay_token_ExpireDate = intent.getStringExtra("ecpay_token_ExpireDate")!!
         }
 
-        val title: String = getString(R.string.app_name)
+        title = getString(R.string.app_name)
+
         setMyTitle(title)
 
         dataService = OrderService
@@ -121,12 +125,16 @@ class PaymentVC : MyTableVC() {
         //refresh()
 
         if (ecpay_token.length > 0) {
-            PaymentkitManager.initialize(this, ServerType.Stage)
-            //PaymentkitManager.initialize(this, ServerType.Prod)
-            PaymentkitManager.createPayment(this, ecpay_token, LanguageCode.zhTW, true, title, PaymentkitManager.RequestCode_CreatePayment)
+            toECPay()
         } else {
             refresh()
         }
+    }
+
+    fun toECPay() {
+        PaymentkitManager.initialize(this, ServerType.Stage)
+        //PaymentkitManager.initialize(this, ServerType.Prod)
+        PaymentkitManager.createPayment(this, ecpay_token, LanguageCode.zhTW, true, title, PaymentkitManager.RequestCode_CreatePayment)
     }
 
     override fun refresh() {
@@ -173,6 +181,11 @@ class PaymentVC : MyTableVC() {
 
 
         orderTable!!.filterRow()
+        if (orderTable!!.all_process > 1) {//已經付費了
+            footer.visibility = View.GONE
+        } else {
+            footer.visibility = View.VISIBLE
+        }
         val orderItemsTable = orderTable!!.items
         for (orderItemTable in orderItemsTable) {
 
@@ -499,8 +512,12 @@ class PaymentVC : MyTableVC() {
                 val item = PlainAdapter1(title, show)
                 items.add(item)
             } else if (cell_type == "barcode") {
-                val item = BarcodeAdapter(title, show)
-                items.add(item)
+                if (show.length == 0) {
+                    warning("沒有取得條碼，代碼或帳號，請重新下單")
+                } else {
+                    val item = BarcodeAdapter(title, show)
+                    items.add(item)
+                }
             }
         }
         panelAdapter.addAll(items)
@@ -672,6 +689,15 @@ class PaymentVC : MyTableVC() {
         }
     }
 
+    fun submitBtnPressed(view: View) {
+        ecpay_token = orderTable!!.ecpay_token
+        toECPay()
+    }
+
+    fun cancelBtnPressed(view: View) {
+        prev()
+    }
+
     fun successMsg(it: CreatePaymentCallbackData): String {
         val sb = StringBuffer()
         sb.append("PaymentType:")
@@ -804,14 +830,6 @@ class PaymentVC : MyTableVC() {
         }
 
         return sb.toString()
-    }
-
-    fun getClassType(it: KProperty1<out SuperModel, Any?>): String {
-        val type = it.returnType.toString()
-        val tmps = JSONParse.getSubType(type)
-        val subType = tmps.get("type")!!
-
-        return subType
     }
 }
 

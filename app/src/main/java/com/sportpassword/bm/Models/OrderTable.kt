@@ -115,6 +115,7 @@ class OrderTable: Table() {
         created_at_show = created_at.noSec()
         
         if (process.length > 0) {
+
             order_process_show = ORDER_PROCESS.getRawValueFromString(process)
             all_process_show = ALL_PROCESS.intToEnum(all_process).chineseName
         }

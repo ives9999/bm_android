@@ -2,7 +2,9 @@ package com.sportpassword.bm.Controllers
 
 import android.content.Context
 import android.os.Bundle
+import android.view.Menu
 import android.view.View
+import android.widget.ImageButton
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.sportpassword.bm.Models.*
@@ -48,6 +50,17 @@ class MemberOrderListVC : MyTableVC() {
         initAdapter()
         perPage = 10
         refresh()
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.all, menu)
+//        val memuView = menu!!.findItem(R.id.menu_search_manager).actionView
+//
+//        val searchBtn = memuView.findViewById<ImageButton>(R.id.search)
+//
+//        searchBtn.tag = "store"
+
+        return true
     }
 
     override fun refresh() {
