@@ -579,7 +579,16 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
         //member.print()
     }
 
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.all, menu)
 
+//        val memuView = menu!!.findItem(R.id.menu_search_manager).actionView
+//        val searchBtn = memuView.findViewById<ImageButton>(R.id.search)
+
+//        searchBtn.tag = "store"
+
+        return true
+    }
 
 //    protected fun printMember() {
 //        for (a in Member::class.memberProperties) {
@@ -1064,6 +1073,12 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
 
         //second add search view in mask
        // addSearchLayer(tag)
+    }
+
+    ////////// for top bar cart icon pressed ///////////////////////////////////
+    fun cartPressed(view: View) {
+
+        toMemberCartList()
     }
 
     protected fun mask() {

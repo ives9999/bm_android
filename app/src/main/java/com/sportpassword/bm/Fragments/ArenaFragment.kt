@@ -36,7 +36,6 @@ class ArenaFragment : TabFragment() {
         super.onCreate(savedInstanceState)
 
         dataService = ArenaService
-        setHasOptionsMenu(true)
 
         //initAdapter(false)
         adapter = GroupAdapter()
@@ -46,25 +45,15 @@ class ArenaFragment : TabFragment() {
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.search_manager, menu)
-        super.onCreateOptionsMenu(menu, inflater)
-        val memuView = menu.findItem(R.id.menu_search_manager).actionView
-
+        val memuView = menu.findItem(R.id.menu_all).actionView
         val searchBtn = memuView.findViewById<ImageButton>(R.id.search)
         searchBtn.tag = able_type
-        //val ManagerBtn = memuView.findViewById<ImageButton>(R.id.manager)
-
-        searchBtn.tag = type
-        //ManagerBtn.tag = type
-
-        //android:onClick="showSearchPanel" define in layout/menu_search_manager.xml
-
-        //function showSearchPanel is defined in BaseActivity
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         val rootView = inflater.inflate(R.layout.tab_course, container, false)
+        setHasOptionsMenu(true)//出現上方的menu
 
         return rootView
     }

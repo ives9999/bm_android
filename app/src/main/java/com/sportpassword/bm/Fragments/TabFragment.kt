@@ -5,13 +5,11 @@ import android.app.Dialog
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import android.widget.ImageButton
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.sportpassword.bm.Adapters.GroupSection
@@ -106,8 +104,16 @@ open class TabFragment : Fragment(), SearchItemDelegate, List1CellDelegate, Seri
 
     }
 
+//    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+//        val memuView = menu.findItem(R.id.menu_all).actionView
+//        val searchBtn = memuView.findViewById<ImageButton>(R.id.search)
+//        searchBtn.visibility = View.GONE
+//    }
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.tab, container, false)
+
+        setHasOptionsMenu(true)
 
         return view
     }

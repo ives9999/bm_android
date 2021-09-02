@@ -4,11 +4,9 @@ package com.sportpassword.bm.Fragments
 import android.content.Intent
 import androidx.fragment.app.Fragment
 import android.os.Bundle
-import android.view.Gravity
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.Button
+import android.widget.ImageButton
 import android.widget.LinearLayout
 import android.widget.RelativeLayout
 import androidx.core.content.ContextCompat
@@ -114,9 +112,17 @@ class TempPlayFragment : TabFragment(), inter {
 //        generateSections()
     }
 
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        val memuView = menu.findItem(R.id.menu_all).actionView
+        val searchBtn = memuView.findViewById<ImageButton>(R.id.search)
+        searchBtn.visibility = View.GONE
+    }
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.tab_tempplay_search, container, false)
+
+        setHasOptionsMenu(true)
 
         return view
     }

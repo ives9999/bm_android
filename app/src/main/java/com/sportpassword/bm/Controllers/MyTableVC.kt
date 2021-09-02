@@ -72,19 +72,6 @@ abstract class MyTableVC : BaseActivity(), List1CellDelegate {
         }
     }
 
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.search_manager, menu)
-        val memuView = menu!!.findItem(R.id.menu_search_manager).actionView
-
-        val searchBtn = memuView.findViewById<ImageButton>(R.id.search)
-//        val ManagerBtn = memuView.findViewById<ImageButton>(R.id.manager)
-//        ManagerBtn.visibility = View.GONE
-
-        searchBtn.tag = "store"
-
-        return true
-    }
-
     open fun initAdapter(include_section: Boolean=false) {
 //        adapter = GroupAdapter()
         adapter.setOnItemClickListener { item, view ->
