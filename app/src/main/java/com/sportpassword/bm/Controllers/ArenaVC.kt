@@ -58,6 +58,13 @@ class ArenaVC : MyTableVC() {
         refresh()
     }
 
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        isSearchIconShow = true
+        super.onCreateOptionsMenu(menu)
+
+        return true
+    }
+
     override fun genericTable() {
         //storesTable = jsonToModel<StoresTable>(dataService.jsonString)
         arenasTable = jsonToModels<ArenasTable>(jsonString!!)

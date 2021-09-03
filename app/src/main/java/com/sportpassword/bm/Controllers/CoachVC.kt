@@ -49,16 +49,8 @@ class CoachVC : MyTableVC() {
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.search_manager, menu)
-        val memuView = menu!!.findItem(R.id.menu_search_manager).actionView
-
-        val searchBtn = memuView.findViewById<ImageButton>(R.id.search)
-        //val ManagerBtn = memuView.findViewById<ImageButton>(R.id.manager)
-
-        searchBtn.tag = "coach"
-//        ManagerBtn.tag = type
-
-        // searchBtn onClick action is showSearchPanel, defined in menu_search_manager.xml layount
+        isSearchIconShow = true
+        super.onCreateOptionsMenu(menu)
 
         return true
     }

@@ -2,6 +2,7 @@ package com.sportpassword.bm.Controllers
 
 import android.content.Context
 import android.os.Bundle
+import android.view.Menu
 import android.view.View
 import com.sportpassword.bm.Fragments.ListItem
 import com.sportpassword.bm.Models.*
@@ -44,6 +45,13 @@ class ProductVC : MyTableVC() {
 
         initAdapter()
         refresh()
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        isSearchIconShow = true
+        super.onCreateOptionsMenu(menu)
+
+        return true
     }
 
     override fun genericTable() {

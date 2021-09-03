@@ -1,6 +1,7 @@
 package com.sportpassword.bm.Controllers
 
 import android.os.Bundle
+import android.view.Menu
 import android.view.View
 import com.sportpassword.bm.Fragments.CourseItem
 import com.sportpassword.bm.Fragments.TeamItem
@@ -34,6 +35,13 @@ class CourseVC : MyTableVC() {
 
         initAdapter()
         refresh()
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        isSearchIconShow = true
+        super.onCreateOptionsMenu(menu)
+
+        return true
     }
 
     override fun genericTable() {

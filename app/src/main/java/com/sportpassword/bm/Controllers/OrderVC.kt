@@ -626,6 +626,8 @@ class OrderVC : MyTableVC() {
                         if (orderTable != null) {
                             val ecpay_token: String = orderTable.ecpay_token
                             val ecpay_token_ExpireDate: String = orderTable.ecpay_token_ExpireDate
+                            cartItemCount = 0
+                            session.edit().putInt("cartItemCount", cartItemCount).apply()
                             info("訂單已經成立，是否前往結帳？", "關閉", "結帳") {
                                 toPayment(orderTable.token, ecpay_token, ecpay_token_ExpireDate)
                             }

@@ -53,12 +53,8 @@ class MemberOrderListVC : MyTableVC() {
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.all, menu)
-//        val memuView = menu!!.findItem(R.id.menu_search_manager).actionView
-//
-//        val searchBtn = memuView.findViewById<ImageButton>(R.id.search)
-//
-//        searchBtn.tag = "store"
+        isSearchIconShow = false
+        super.onCreateOptionsMenu(menu)
 
         return true
     }

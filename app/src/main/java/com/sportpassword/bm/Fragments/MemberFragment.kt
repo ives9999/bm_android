@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.*
 import android.widget.Button
+import android.widget.ImageButton
 import com.sportpassword.bm.Adapters.GroupSection
 import com.sportpassword.bm.Controllers.*
 import com.sportpassword.bm.R
@@ -72,6 +73,12 @@ class MemberFragment: TabFragment() {
             hashMapOf("isExpanded" to false,"title" to "喜歡"),
             hashMapOf("isExpanded" to true,"title" to "管理")
         )
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        val memuView = menu.findItem(R.id.menu_all).actionView
+        val searchBtn = memuView.findViewById<ImageButton>(R.id.search)
+        searchBtn.visibility = View.GONE
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,

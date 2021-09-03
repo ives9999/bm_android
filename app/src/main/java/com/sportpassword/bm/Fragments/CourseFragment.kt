@@ -117,6 +117,7 @@ class CourseFragment : TabFragment() {
     //當fragment啟動時，第一個被執行的韓式，甚至還在OnCreate函式之前
     override fun setUserVisibleHint(isVisibleToUser: Boolean) {
         super.setUserVisibleHint(isVisibleToUser)
+        mainActivity?.isSearchIconShow = true
         if (isVisibleToUser && !bInit) {
             refresh()
         }

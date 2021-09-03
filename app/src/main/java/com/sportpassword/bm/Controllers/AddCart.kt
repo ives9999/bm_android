@@ -723,6 +723,8 @@ class AddCartVC : MyTableVC(), ValueChangedDelegate {
                 if (success) {
                     if (cartItem_token == null) {
                         info("成功加入購物車了")
+                        cartItemCount += 1
+                        session.edit().putInt("cartItemCount", cartItemCount).apply()
                     } else {
                         info("已經更新購物車了")
                     }

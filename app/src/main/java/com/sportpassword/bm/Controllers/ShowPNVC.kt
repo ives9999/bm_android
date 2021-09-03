@@ -2,6 +2,7 @@ package com.sportpassword.bm.Controllers
 
 import android.content.SharedPreferences
 import android.os.Bundle
+import android.view.Menu
 import android.view.View
 import com.onesignal.OSPermissionObserver
 import com.onesignal.OSPermissionStateChanges
@@ -67,6 +68,13 @@ class ShowPNVC : MyTableVC(), OSPermissionObserver {
 
         initAdapter()
         ShortcutBadger.applyCount(this, 0)
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        isSearchIconShow = false
+        super.onCreateOptionsMenu(menu)
+
+        return true
     }
 
     override fun initAdapter(include_section: Boolean) {

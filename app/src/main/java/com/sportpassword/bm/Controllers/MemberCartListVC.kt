@@ -3,6 +3,7 @@ package com.sportpassword.bm.Controllers
 import android.content.Context
 import android.opengl.Visibility
 import android.os.Bundle
+import android.view.Menu
 import android.view.View
 import com.sportpassword.bm.Fragments.ListItem
 import com.sportpassword.bm.Models.CartItemTable
@@ -43,6 +44,12 @@ class MemberCartListVC : MyTableVC() {
         refresh()
     }
 
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        isSearchIconShow = false
+        super.onCreateOptionsMenu(menu)
+        return true
+    }
+
     override fun refresh() {
 
         page = 1
@@ -59,7 +66,11 @@ class MemberCartListVC : MyTableVC() {
             if (mysTable!!.rows.size > 0) {
                 myTable = mysTable!!.rows[0]
                 cartItemsTable = myTable!!.items
-                submitBtn.visibility = View.VISIBLE
+                if (cartItemsTable.size > 0) {
+                    submitBtn.visibility = View.VISIBLE
+                } else {
+                    submitBtn.visibility = View.GONE
+                }
             } else {
                 submitBtn.visibility = View.GONE
             }
@@ -87,11 +98,22 @@ class MemberCartListVC : MyTableVC() {
             dataService.delete(this, "cart_item", row.token) { success ->
                 if (success) {
                     refresh()
+                    cartItemCount -= 1
+                    session.edit().putInt("cartItemCount", cartItemCount).apply()
                 } else {
                     warning(dataService.msg)
                 }
             }
         }
+    }
+
+    override fun rowClick(
+        item: com.xwray.groupie.Item<com.xwray.groupie.GroupieViewHolder>,
+        view: View
+    ) {
+        val cartItemItem = item as CartItemItem
+        val row: CartItemTable = cartItemItem._row
+        toShowProduct(row.product!!.token)
     }
 
     fun submitBtnPressed(view: View) {
