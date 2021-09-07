@@ -153,6 +153,7 @@ class AddCartVC : MyTableVC(), ValueChangedDelegate {
 
             val params: HashMap<String, String> = hashMapOf("token" to product_token!!, "member_token" to member.token!!)
             dataService.getOne(this, params) { success ->
+                Loading.hide(mask)
                 if (success) {
                     try {
                         productTable = jsonToModel<ProductTable>(dataService.jsonString)
@@ -176,6 +177,7 @@ class AddCartVC : MyTableVC(), ValueChangedDelegate {
             submitBtn.text = "更新購物車"
             val params: HashMap<String, String> = hashMapOf("cart_item_token" to cartItem_token!!, "member_token" to member.token)
             CartService.getOne(this, params) { success ->
+                Loading.hide(mask)
                 if (success) {
                     try {
                         cartTable = jsonToModel<CartTable>(CartService.jsonString)
@@ -195,7 +197,6 @@ class AddCartVC : MyTableVC(), ValueChangedDelegate {
             }
         }
         closeRefresh()
-        Loading.hide(mask)
     }
 
     private fun initData() {

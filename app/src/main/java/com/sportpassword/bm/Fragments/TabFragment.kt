@@ -415,14 +415,26 @@ open class TabFragment : Fragment(), SearchItemDelegate, List1CellDelegate, Seri
     }
 
     override fun cellShowMap(row: Table) {
-        println(row.address)
+//        println(row.address)
+        val intent = Intent(mainActivity!!, MyMapVC::class.java)
+        var name: String = ""
+        if (row.name.isNotEmpty()) {
+            name = row.name
+        } else if (row.title.isNotEmpty()) {
+            name = row.title
+        }
+        intent.putExtra("title", name)
+        intent.putExtra("address", row.address)
+        startActivity(intent)
     }
 
     override fun cellMobile(row: Table) {
         if (row.tel_show.isNotEmpty()) {
-            println(row.tel)
+            //println(row.tel)
+            row.tel.makeCall(mainActivity!!)
         } else if (row.mobile_show.isNotEmpty()) {
-            println(row.mobile)
+            //println(row.mobile)
+            row.mobile.makeCall(mainActivity!!)
         }
     }
 

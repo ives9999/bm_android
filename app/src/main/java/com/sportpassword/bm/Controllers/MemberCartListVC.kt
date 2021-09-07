@@ -98,6 +98,8 @@ class MemberCartListVC : MyTableVC() {
             dataService.delete(this, "cart_item", row.token) { success ->
                 if (success) {
                     refresh()
+
+                    //是否要顯示購物車的圖示在top
                     cartItemCount -= 1
                     session.edit().putInt("cartItemCount", cartItemCount).apply()
                 } else {
@@ -148,7 +150,6 @@ class CartItemItem(override var context: Context, var _row: CartItemTable): List
     init {
         if (_row.cart_id > 0) {
             val row: CartItemTable = _row
-            row.filterRow()
 
             if (row.product != null && row.product!!.featured_path.isNotEmpty()) {
                 featured_path = row.product!!.featured_path
@@ -169,6 +170,8 @@ class CartItemItem(override var context: Context, var _row: CartItemTable): List
                 }
             }
             attribute = attribute_text
+            amount = row.amount_show
+            quantity = row.quantity.toString()
         }
     }
 

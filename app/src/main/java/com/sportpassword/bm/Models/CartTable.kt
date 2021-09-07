@@ -39,6 +39,7 @@ class CartItemTable: Table() {
         super.filterRow()
 
         product?.filterRow()
+        attributes.clear()
 
         //{name:尺寸,alias:size,value:M}|{name:尺寸,alias:size,value:M}
         val tmps: Array<String> = attribute.split("|").toTypedArray()
