@@ -132,7 +132,7 @@ class PaymentVC : MyTableVC() {
     }
 
     fun toECPay() {
-        
+
         //PaymentkitManager.initialize(this, ServerType.Stage)
         PaymentkitManager.initialize(this, ServerType.Prod)
         PaymentkitManager.createPayment(this, ecpay_token, LanguageCode.zhTW, true, title, PaymentkitManager.RequestCode_CreatePayment)
