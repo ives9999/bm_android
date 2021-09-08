@@ -449,9 +449,21 @@ open class TabFragment : Fragment(), SearchItemDelegate, List1CellDelegate, Seri
     override fun cellCity(row: Table) {
         val key: String = CITY_KEY
         val city_id: Int = row.city_id
-        val row = getDefinedRow(key)
-        row["value"] = city_id.toString()
-        replaceRows(key, row)
+        val row1 = getDefinedRow(key)
+        row1["value"] = city_id.toString()
+        replaceRows(key, row1)
+        prepareParams()
+        refresh()
+    }
+
+    override fun cellArea(row: Table) {
+
+        val key: String = AREA_KEY
+        val _row: ArenaTable = row as ArenaTable
+        val area_id: Int = _row.area_id
+        val row1 = getDefinedRow(key)
+        row1["value"] = area_id.toString()
+        replaceRows(key, row1)
         prepareParams()
         refresh()
     }
@@ -532,7 +544,12 @@ open class TabFragment : Fragment(), SearchItemDelegate, List1CellDelegate, Seri
         row["value"] = str
     }
 
-    override fun switchChanged(pos: Int, b: Boolean) {}
+    override fun switchChanged(pos: Int, b: Boolean) {
+        val row = searchRows[pos]
+        val key = row["key"]!!
+        if (b) { row["value"] = "1" } else { row["value"] = "0" }
+        replaceRows(key, row)
+    }
 
 
     companion object {

@@ -9,6 +9,7 @@ import android.view.View
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.sportpassword.bm.Adapters.SearchItemDelegate
+import com.sportpassword.bm.Fragments.ArenaItem
 import com.sportpassword.bm.Fragments.ListItem
 import com.sportpassword.bm.Models.*
 import com.sportpassword.bm.R
@@ -159,56 +160,4 @@ class ArenaVC : MyTableVC() {
             warning("轉為ArenaTable失敗，請洽管理員")
         }
     }
-}
-
-class ArenaItem(override var context: Context, var _row: ArenaTable): ListItem<Table>(context, _row) {
-
-    override fun bind(viewHolder: GroupieViewHolder, position: Int) {
-
-        //println(superStore);
-
-        super.bind(viewHolder, position)
-
-        val row: ArenaTable = _row
-
-        if (row.city_show.isNotEmpty()) {
-            viewHolder.cityBtn.text = row.city_show
-            viewHolder.cityBtn.setOnClickListener {
-                if (list1CellDelegate != null) {
-                    list1CellDelegate!!.cellCity(row)
-                }
-            }
-        } else {
-            viewHolder.cityBtn.visibility = View.GONE
-        }
-
-        if (row.area_show.isNotEmpty()) {
-            viewHolder.areaBtn.text = row.area_show
-            viewHolder.areaBtn.setOnClickListener {
-                if (list1CellDelegate != null) {
-                    list1CellDelegate!!.cellArea(row)
-                }
-            }
-        } else {
-            viewHolder.cityBtn.visibility = View.GONE
-        }
-
-        if (row.tel_show.isNotEmpty()) {
-            viewHolder.telLbl.text = row.tel_show
-        } else {
-            viewHolder.telLbl.text = "電話：未提供"
-        }
-
-        viewHolder.parkingLbl.text = "停車場:${row.parking_show}"
-
-        if (row.interval_show.isNotEmpty()) {
-            viewHolder.intervalLbl.text = row.interval_show
-        } else {
-            viewHolder.intervalLbl.text = "未提供"
-        }
-
-        viewHolder.air_conditionLbl.text = "空調:${row.air_condition_show}"
-    }
-
-    override fun getLayout() = R.layout.arena_list_cell
 }

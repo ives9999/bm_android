@@ -1,6 +1,7 @@
 package com.sportpassword.bm.Fragments
 
 
+import android.content.Context
 import android.content.Intent
 import androidx.fragment.app.Fragment
 import android.os.Bundle
@@ -21,13 +22,20 @@ import com.xwray.groupie.Section
 import com.xwray.groupie.GroupieViewHolder
 import com.sportpassword.bm.Adapters.SearchItem
 import com.sportpassword.bm.Controllers.HomeTotalAdVC
+import com.sportpassword.bm.Controllers.MyMapVC
+import com.sportpassword.bm.Models.ArenaTable
+import com.sportpassword.bm.Models.Table
+import com.sportpassword.bm.Models.TeamTable
 import com.sportpassword.bm.Models.TeamsTable
 import com.sportpassword.bm.Services.TeamService
 import com.sportpassword.bm.Views.Tag
 import com.xwray.groupie.kotlinandroidextensions.Item
+import kotlinx.android.synthetic.main.list1_cell.*
 import kotlinx.android.synthetic.main.mask.*
 import kotlinx.android.synthetic.main.tab_tempplay_search.*
 import kotlinx.android.synthetic.main.tag.view.*
+import kotlinx.android.synthetic.main.team_list_cell.*
+import kotlinx.android.synthetic.main.team_list_cell.mapIcon
 import org.jetbrains.anko.backgroundColor
 
 /**
@@ -85,12 +93,12 @@ class TempPlayFragment : TabFragment(), inter {
         able_type = "team"
 
         searchRows = arrayListOf(
-            hashMapOf("title" to "關鍵字","show" to "全部","key" to KEYWORD_KEY,"value" to ""),
-            hashMapOf("title" to "縣市","show" to "全部","key" to CITY_KEY,"value" to ""),
-            hashMapOf("title" to "星期幾","show" to "全部","key" to WEEKDAY_KEY,"value" to ""),
-            hashMapOf("title" to "時段","show" to "全部","key" to START_TIME_KEY,"value" to ""),
-            hashMapOf("title" to "球館","show" to "全部","key" to ARENA_KEY,"value" to ""),
-            hashMapOf("title" to "程度","show" to "全部","key" to DEGREE_KEY,"value" to "")
+            hashMapOf("title" to "關鍵字","show" to "全部","key" to KEYWORD_KEY,"value" to "","cell" to "textField"),
+            hashMapOf("title" to "縣市","show" to "全部","key" to CITY_KEY,"value" to "","cell" to "more"),
+            hashMapOf("title" to "星期幾","show" to "全部","key" to WEEKDAY_KEY,"value" to "","cell" to "more"),
+            hashMapOf("title" to "時段","show" to "全部","key" to START_TIME_KEY,"value" to "","cell" to "more"),
+            hashMapOf("title" to "球館","show" to "全部","key" to ARENA_KEY,"value" to "","cell" to "more"),
+            hashMapOf("title" to "程度","show" to "全部","key" to DEGREE_KEY,"value" to "","cell" to "more")
         )
 
         mySections = arrayListOf(
@@ -286,6 +294,7 @@ class TempPlayFragment : TabFragment(), inter {
         }
     }
 
+    //row click
     fun onClick(item: com.xwray.groupie.Item<GroupieViewHolder>) {
 
         if (selectedTagIdx == 1) {
@@ -510,6 +519,49 @@ class TempPlayFragment : TabFragment(), inter {
         replaceRows(key, row)
         generateSections()
         adapter.notifyDataSetChanged()
+    }
+
+    override fun cellCity(row: Table) {
+
+        val _row: TeamTable = row as TeamTable
+        val arenaTable: ArenaTable = _row.arena!!
+
+        val key: String = CITY_KEY
+        val city_id: Int = arenaTable.city_id
+        val row1 = getDefinedRow(key)
+        row1[VALUE_KEY] = city_id.toString()
+        replaceRows(key, row1)
+        prepareParams()
+        refresh()
+    }
+
+    override fun cellArena(row: Table) {
+
+        val _row: TeamTable = row as TeamTable
+        val arenaTable: ArenaTable = _row.arena!!
+
+        val key: String = ARENA_KEY
+        val arena_id: Int = arenaTable.id
+        val row1 = getDefinedRow(key)
+        row1[VALUE_KEY] = arena_id.toString()
+        replaceRows(key, row1)
+        prepareParams()
+        refresh()
+    }
+
+    override fun cellShowMap(row: Table) {
+
+        val _row: TeamTable = row as TeamTable
+        val arenaTable: ArenaTable = _row.arena!!
+
+        val intent = Intent(mainActivity!!, MyMapVC::class.java)
+        var name: String = ""
+        if (arenaTable.name.isNotEmpty()) {
+            name = arenaTable.name
+        }
+        intent.putExtra("title", name)
+        intent.putExtra("address", arenaTable.address)
+        startActivity(intent)
     }
 
 //    private fun getIdxFromKey(key: String): Int {
@@ -758,3 +810,77 @@ class TempPlayFragment : TabFragment(), inter {
     }
 
 }// Required empty public constructor
+
+class TeamItem(override var context: Context, var _row: TeamTable): ListItem<Table>(context, _row) {
+
+    override fun bind(viewHolder: com.xwray.groupie.kotlinandroidextensions.GroupieViewHolder, position: Int) {
+
+        super.bind(viewHolder, position)
+
+        val row: TeamTable = _row
+
+//        if (row.city_show.length > 0) {
+//            viewHolder.cityBtn.text = row.city_show
+//            viewHolder.cityBtn.setOnClickListener {
+//                if (list1CellDelegate != null) {
+//                    list1CellDelegate!!.cellCity(row)
+//                }
+//            }
+//        } else {
+//            viewHolder.cityBtn.visibility = View.GONE
+//        }
+
+        if (row.arena?.name != null && row.arena!!.name.length > 0) {
+            viewHolder.cityBtn.text = row.arena!!.city_show
+            viewHolder.cityBtn.setOnClickListener {
+                if (list1CellDelegate != null) {
+                    list1CellDelegate!!.cellCity(row)
+                }
+            }
+
+            viewHolder.arenaBtn.text = row.arena!!.name
+            viewHolder.arenaBtn.setOnClickListener {
+                if (list1CellDelegate != null) {
+                    list1CellDelegate!!.cellArena(row)
+                }
+            }
+        } else {
+            viewHolder.cityBtn.visibility = View.GONE
+            viewHolder.arenaBtn.visibility = View.GONE
+        }
+
+        if (row.weekdays_show.isNotEmpty()) {
+            viewHolder.weekdayLbl.text = row.weekdays_show
+        } else {
+            viewHolder.weekdayLbl.text = "臨打日期:未提供"
+        }
+
+        if (row.interval_show.isNotEmpty()) {
+            viewHolder.intervalLbl.text = row.interval_show
+        } else {
+            viewHolder.weekdayLbl.text = "臨打時段:未提供"
+        }
+
+        val v = viewHolder.containerView
+        val a = v.findViewById<ImageButton>(R.id.mapIcon)
+        if (a != null) {
+
+            if (row.arena!!.address == null || row.arena!!.address.isEmpty()) {
+                viewHolder.mapIcon.visibility = View.GONE
+            } else {
+                viewHolder.mapIcon.visibility = View.VISIBLE
+                viewHolder.mapIcon.setOnClickListener {
+                    if (list1CellDelegate != null) {
+                        list1CellDelegate!!.cellShowMap(row)
+                    }
+                }
+            }
+        }
+
+        viewHolder.temp_quantityLbl.text = row.temp_quantity_show
+        viewHolder.signup_countLbl.text = row.temp_signup_count_show
+    }
+
+    override fun getLayout() = R.layout.team_list_cell
+
+}

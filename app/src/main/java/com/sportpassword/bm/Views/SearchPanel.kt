@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.sportpassword.bm.Adapters.SearchItem
 import com.sportpassword.bm.Controllers.BaseActivity
+import com.sportpassword.bm.Fragments.ArenaFragment
 import com.sportpassword.bm.Fragments.CourseFragment
 import com.sportpassword.bm.Fragments.TabFragment
 import com.sportpassword.bm.Fragments.TeamFragment
@@ -161,7 +162,7 @@ open class SearchPanel {
         val activity: BaseActivity = context!! as BaseActivity
         val searchItem = item as SearchItem
         val row = searchItem.row
-        if (able_type == "course" || able_type == "team") {
+        if (able_type == "course" || able_type == "team" || able_type == "arena") {
 
             //val tag = parent.tag as String
             var frag: TabFragment? = null
@@ -169,6 +170,8 @@ open class SearchPanel {
                 frag = activity.getFragment() as CourseFragment
             } else if (able_type == "team") {
                 frag = activity.getFragment() as TeamFragment
+            } else if (able_type == "arena") {
+                frag = activity.getFragment() as ArenaFragment
             }
             frag?.prepare(row)
             //prepareSearch1(row, page)
@@ -185,7 +188,7 @@ open class SearchPanel {
         unmask()
         val activity: BaseActivity = context!! as BaseActivity
 
-        if (able_type == "coach" || able_type == "arena" || able_type == "product" || able_type == "store") {
+        if (able_type == "coach" || able_type == "product" || able_type == "store") {
             activity.prepareParams()
             activity.refresh()
         } else if (able_type == "team") {
@@ -196,8 +199,14 @@ open class SearchPanel {
             val frag = getFragment(activity, able_type!!) as CourseFragment
             frag.prepareParams()
             frag.refresh()
+        } else if (able_type == "arena") {
+            val frag = getFragment(activity, able_type!!) as ArenaFragment
+            frag.prepareParams()
+            frag.refresh()
         } else {
-            activity.warning("沒有傳送頁面類型參數，請洽管理員")
+            //activity.warning("沒有傳送頁面類型參數，請洽管理員")
+            activity.prepareParams()
+            activity.refresh()
         }
     }
 
@@ -287,7 +296,7 @@ open class SearchPanel {
                 bSwitch = row.get("switch")!!.toBoolean()
             }
             val searchItem = SearchItem(title, detail, "", bSwitch, -1, i)
-            if (able_type == "team" || able_type == "course") {
+            if (able_type == "team" || able_type == "course" || able_type == "arena") {
                 searchItem.delegate = activity.getFragment()
             } else {
                 searchItem.delegate = activity

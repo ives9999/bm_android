@@ -119,7 +119,7 @@ class RegisterActivity : MyTableVC(), ValueChangedDelegate {
 
         if (member.isLoggedIn) {
 
-            member.memberPrint()
+            //member.memberPrint()
             form.removeItems(arrayListOf(PASSWORD_KEY, REPASSWORD_KEY, PRIVACY_KEY))
 //            for (formItem in form.formItems) {
 //                println(formItem.name)
