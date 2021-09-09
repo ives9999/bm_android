@@ -30,6 +30,8 @@ class  NumberAdapter1(sectionKey: String, rowKey: String, title: String, value: 
     override fun bind(viewHolder: GroupieViewHolder, position: Int) {
 
         super.bind(viewHolder, position)
+
+        viewHolder.numberLbl.text = value
         viewHolder.plus.setOnClickListener {
             if (!viewHolder.minus.isEnabled) {
                 viewHolder.minus.isEnabled = true

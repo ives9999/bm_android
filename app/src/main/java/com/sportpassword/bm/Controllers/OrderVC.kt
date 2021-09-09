@@ -221,7 +221,8 @@ class OrderVC : MyTableVC() {
                 var row: HashMap<String, String> = hashMapOf("title" to "商品金額","key" to "amount","value" to amount.toString(),"show" to "NT$ ${amount_show}","cell" to "text")
                 amountRows.add(row)
 
-                var shipping_fee: Int = 60
+                //var shipping_fee: Int = 60
+                var shipping_fee: Int = 0
                 if (amount > 1000) { shipping_fee = 0}
                 val shipping_fee_show: String = shipping_fee.formattedWithSeparator()
 
@@ -229,7 +230,8 @@ class OrderVC : MyTableVC() {
 
                 amountRows.add(row)
 
-                val tax: Int = (amount.toDouble() * 0.05).toInt()
+                //val tax: Int = (amount.toDouble() * 0.05).toInt()
+                val tax: Int = 0
                 val tax_show: String = tax.formattedWithSeparator()
                 row = hashMapOf("title" to "稅","key" to TAX_KEY,"value" to tax.toString(),"show" to "NT$ ${tax_show}","cell" to "text")
 

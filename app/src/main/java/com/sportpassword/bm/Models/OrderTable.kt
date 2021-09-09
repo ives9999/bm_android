@@ -278,12 +278,14 @@ class OrderItemTable: Table() {
             //alias:size
             //value:M
             val a: HashMap<String, String> = hashMapOf()
-            for (str in arr) {
-                val b: Array<String> = str.split(":").toTypedArray()
-                a[b[0]] = b[1]
-            }
+            if (a.size > 0) {
+                for (str in arr) {
+                    val b: Array<String> = str.split(":").toTypedArray()
+                    a[b[0]] = b[1]
+                }
 
-            attributes.add(a)
+                attributes.add(a)
+            }
         }
 
         if (amount > 0) {

@@ -212,7 +212,7 @@ class TempPlayFragment : TabFragment(), inter {
     }
 
     override fun genericTable() {
-        //println(dataService.jsonString)
+//        println(dataService.jsonString)
         try {
             mysTable = jsonToModels<TeamsTable>(jsonString)
         } catch (e: JsonParseException) {

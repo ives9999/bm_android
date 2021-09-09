@@ -186,6 +186,7 @@ open class TabFragment : Fragment(), SearchItemDelegate, List1CellDelegate, Seri
         adapter.clear()
         items.clear()
         //println(perPage)
+        params.clear()
         getDataStart(page, perPage)
     }
 
