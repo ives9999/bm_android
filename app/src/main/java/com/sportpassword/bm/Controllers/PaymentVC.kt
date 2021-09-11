@@ -540,7 +540,7 @@ class PaymentVC : MyTableVC() {
             val payment_no: String = orderTable!!.gateway!!.payment_no
             val expire_at: String = orderTable!!.gateway!!.expire_at_show
             popupRows = arrayListOf(
-                hashMapOf(TITLE_KEY to "繳款代碼",KEY_KEY to PAYMENT_NO_KEY,VALUE_KEY to payment_no,SHOW_KEY to payment_no,CELL_KEY to "barcode"),
+                hashMapOf(TITLE_KEY to "繳款代碼",KEY_KEY to PAYMENT_NO_KEY,VALUE_KEY to payment_no,SHOW_KEY to payment_no,CELL_KEY to "text"),
                 hashMapOf(TITLE_KEY to "到期日",KEY_KEY to EXPIRE_AT_KEY,VALUE_KEY to expire_at,SHOW_KEY to expire_at,CELL_KEY to "text")
             )
 

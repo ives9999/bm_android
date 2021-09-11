@@ -1,7 +1,9 @@
 package com.sportpassword.bm.Controllers
 
 import android.os.Bundle
+import android.view.Menu
 import android.view.View
+import android.widget.ImageButton
 import com.google.gson.JsonParseException
 import com.sportpassword.bm.Adapters.Form.*
 import com.sportpassword.bm.Adapters.GroupSection
@@ -98,7 +100,16 @@ class AddCartVC : MyTableVC(), ValueChangedDelegate {
 
         //initData()
         refresh()
+    }
 
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+
+        super.onCreateOptionsMenu(menu)
+
+        val menuView = menu!!.findItem(R.id.menu_all).actionView
+        val shoppingCartBtn = menuView.findViewById<ImageButton>(R.id.cart)
+        shoppingCartBtn.visibility = View.VISIBLE
+        return true
     }
 
     override fun initAdapter(include_section: Boolean) {
