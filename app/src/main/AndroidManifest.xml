@@ -50,7 +50,9 @@
         </activity>
         <activity android:name=".Controllers.OrderVC" />
         <activity android:name=".Controllers.MemberCartListVC" />
-        <activity android:name=".Controllers.ShowTeachVC" />
+        <activity android:name=".Controllers.ShowTeachVC"
+            android:configChanges="orientation|screenSize"
+            />
         <activity android:name=".Controllers.SelectCycleUnitVC" />
         <activity android:name=".Controllers.SelectCourseKindVC" />
         <activity android:name=".Controllers.SelectPriceUnitVC" />
