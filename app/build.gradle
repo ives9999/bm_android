@@ -44,8 +44,8 @@ android {
         applicationId "com.sportpassword.bm"
         minSdkVersion 21
         targetSdkVersion 30
-        versionCode 41
-        versionName "1.7.0"
+        versionCode 42
+        versionName "1.7.1"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
         manifestPlaceholders = [
@@ -156,6 +156,9 @@ dependencies {
     //onesignal
     implementation 'com.onesignal:OneSignal:[4.0.0, 4.99.99]'
     implementation 'com.google.android.gms:play-services-maps:[17.0.0, 17.99.99]'
+
+    //youtube
+    implementation files('libs/YouTubeAndroidPlayerApi.jar')
 }
 
 //configurations.all {
