@@ -1044,53 +1044,41 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
     }
 
     ////// search panel start //////////////////////////////////////
-    fun showSearchPanel(view: View) {
-
-        if (view.tag != null) {
-            able_type = view.tag as String
-        }
-        when (able_type) {
-            "team" -> {
-                containerID = "course_container"
-                val frag = getFragment() as TeamFragment
-                searchRows = frag.searchRows
-            }
-            "course" -> {
-                containerID = "course_container"
-                val frag = getFragment() as CourseFragment
-                searchRows = frag.searchRows
-            }
-            "arena" -> {
-                containerID = "course_container"
-                val frag = getFragment() as ArenaFragment
-                searchRows = frag.searchRows
-            }
-            "coach", "teach", "store" -> {
-                containerID = "constraintLayout"
-            }
-        }
-
-//        val parent = getMyParent()
-//        val params: LinearLayout.LayoutParams = LinearLayout.LayoutParams(300, 400)
-//        params.leftMargin = 200
-//        params.topMargin = 200
-//        val v = LinearLayout(this)
-//        v.translationX = 200f
-//        v.translationY = 200f
-//        v.backgroundColor = Color.RED
-//        parent.addView(v, params)
-
-        //removeLayerChildViews()
-
-        //first add a mask
-        val p: ConstraintLayout = getMyParent()
-        //searchPanel.mask(this, p)
-        searchPanel.addSearchLayer(this, p, able_type, searchRows)
-        //mask()
-
-        //second add search view in mask
-       // addSearchLayer(tag)
-    }
+//    fun showSearchPanel(view: View) {
+//
+//        if (view.tag != null) {
+//            able_type = view.tag as String
+//        }
+//        when (able_type) {
+//            "team" -> {
+//                containerID = "course_container"
+//                val frag = getFragment() as TeamFragment
+//                searchRows = frag.searchRows
+//            }
+//            "course" -> {
+//                containerID = "course_container"
+//                val frag = getFragment() as CourseFragment
+//                searchRows = frag.searchRows
+//            }
+//            "arena" -> {
+//                containerID = "course_container"
+//                val frag = getFragment() as ArenaFragment
+//                searchRows = frag.searchRows
+//            }
+//            "coach", "teach", "store" -> {
+//                containerID = "constraintLayout"
+//            }
+//        }
+//
+//        //first add a mask
+//        val p: ConstraintLayout = getMyParent()
+//        //searchPanel.mask(this, p)
+//        searchPanel.addSearchLayer(this, p, able_type, searchRows)
+//        //mask()
+//
+//        //second add search view in mask
+//       // addSearchLayer(tag)
+//    }
 
     ////////// for top bar cart icon pressed ///////////////////////////////////
     fun cartPressed(view: View) {
@@ -1167,223 +1155,223 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
         layerMask = null
     }
 
-    protected fun addSearchLayer(page: String) {
-
-        val parent = getMyParent()
-        val w = parent.measuredWidth
-        val h = parent.measuredHeight
-        if (layerBlackView == null) {
-
-            //container layer for search
-            val lp = RelativeLayout.LayoutParams(w - (2 * layerRightLeftPadding), h - layerTopPadding)
-            //val lp = RelativeLayout.LayoutParams(w - (2 * layerRightLeftPadding), 1000)
-            //lp.setMargins(layerRightLeftPadding, layerTopPadding, layerRightLeftPadding, 0)
-            layerBlackView = RelativeLayout(this)
-            layerBlackView!!.layoutParams = lp
-            layerBlackView!!.translationX = layerRightLeftPadding.toFloat()
-            layerBlackView!!.translationY = layerTopPadding.toFloat()
-            layerBlackView!!.backgroundColor = Color.BLACK
-            layerMask!!.addView(layerBlackView)
-
-//            val lp1 = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 2000)
-//            lp.setMargins(0, 0, 0, 60)
-//            layerScrollView = ScrollView(this)
-//            layerScrollView!!.layoutParams = lp1
-//            layerScrollView!!.backgroundColor = Color.RED
-//            layerScrollView!!.setOnScrollChangeListener(object : NestedScrollView.OnScrollChangeListener {
-//                override fun onScrollChange(p0: NestedScrollView?, p1: Int, p2: Int, p3: Int, p4: Int) {
-//                    currentFocus?.clearFocus()
-//                }
+//    protected fun addSearchLayer(page: String) {
 //
-//            })
-//            layerScrollView!!.layoutParams = lp
-//            layerScrollView!!.backgroundColor = Color.GREEN
-
-//            val mask = getMask()
-            //layerBlackView!!.addView(layerScrollView)
-
-//            val lp2 = LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT)
-//            lp2.setMargins(0, 0, 0, 0)
-//            layerContainerView = LinearLayout(this)
-//            layerContainerView!!.orientation = LinearLayout.VERTICAL
-//            layerContainerView!!.layoutParams = lp2
-//            layerContainerView!!.backgroundColor = Color.BLUE
-            //layerScrollView!!.addView(layerContainerView)
-
-            _addLayer(page)
-//            val l = LinearLayout(this)
-//            l.orientation = LinearLayout.VERTICAL
-//            l.addView(layerButtonLayout)
-//            layerContainerView!!.addView(l)
-
-            //append bottom space
-//            val bottomLayout = LinearLayout(this)
-//            val lpx = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 200)
-//            bottomLayout.layoutParams = lpx
-//            layerContainerView!!.addView(bottomLayout)
-        }
-
-
-        val animate = TranslateAnimation(layerRightLeftPadding.toFloat(), layerRightLeftPadding.toFloat(), h.toFloat(), layerTopPadding.toFloat())
-        animate.setAnimationListener(object : Animation.AnimationListener {
-            override fun onAnimationRepeat(p0: Animation?) {}
-            override fun onAnimationEnd(p0: Animation?) {
-            }
-
-            override fun onAnimationStart(p0: Animation?) {
-            }
-        })
-        animate.duration = 500
-        animate.fillAfter = true
-        //layerScrollView!!.startAnimation(animate)
-        layerVisibility = true
-    }
-
-    open fun _addLayer(page: String) {
-        addSearchTableView(page)
-        layerAddButtonLayout()
-        layerBtnCount = 2
-        layerAddSubmitBtn(page)
-        layerAddCancelBtn()
-    }
-
-    protected fun addSearchTableView(page: String) {
-        val parent = getMyParent()
-        val w = parent.measuredWidth
-        val searchTableView = RecyclerView(this)
-        searchTableView.id = R.id.SearchRecycleItem
-//        val padding: Int = 80
-        //val lp1 = RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 800)
-        val lp1 = RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
-//        val lp1 = RecyclerView.LayoutParams(w - (2 * padding), 1000)
-        lp1.setMargins(0, 0, 0, 150)
-        searchTableView.layoutParams = lp1
-        searchTableView.layoutManager = LinearLayoutManager(this)
-        //searchTableView.backgroundColor = Color.RED
-        searchTableView.backgroundColor = Color.TRANSPARENT
-        searchAdapter = GroupAdapter<GroupieViewHolder>()
-        searchAdapter.setOnItemClickListener { item, view ->
-            val searchItem = item as SearchItem
-            val row = searchItem.row
-            if (page == "course" || page == "team") {
-
-                //val tag = parent.tag as String
-                var frag: TabFragment? = null
-                if (page == "course") {
-                    frag = getFragment() as CourseFragment
-                } else if (page == "team") {
-                    frag = getFragment() as TeamFragment
-                }
-                if (frag != null) {
-                    frag.prepare(row)
-                }
-                //prepareSearch1(row, page)
-            } else {
-                prepare(row)
-//                if (searchItem.switch == false) {
-//                    prepareSearch(row, page)
-//                }
-            }
-        }
-        val rows = generateSearchItems(page)
-        searchAdapter.addAll(rows)
-
-        searchTableView.adapter = searchAdapter
-        //layerContainerView!!.addView(searchTableView)
-        layerBlackView!!.addView(searchTableView)
-    }
-
-    protected fun layerAddButtonLayout() {
-        layerButtonLayout = LinearLayout(this)
-        val lp = RelativeLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 150)
-        lp.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM)
-        layerButtonLayout.layoutParams = lp
-        val color = ContextCompat.getColor(this, R.color.MY_GREEN)
-        layerButtonLayout.backgroundColor = color
-        layerButtonLayout.gravity = Gravity.CENTER
-        layerButtonLayout.orientation = LinearLayout.HORIZONTAL
-        layerBlackView!!.addView(layerButtonLayout)
-    }
-
-    protected fun layerAddSubmitBtn(page: String) {
-        layerSubmitBtn = layoutInflater.inflate(R.layout.submit_button, null) as Button
-        //layerSubmitBtn = Button(this, null, R.style.submit_button)
-//        val submitBtnWidth = 260
-        val lp2 = LinearLayout.LayoutParams(300, 90)
-//        lp2.setMargins(16, 0, 0, 0)
-        layerSubmitBtn!!.layoutParams = lp2
-        //layerSubmitBtn!!.text = "送出"
-//        layerSubmitBtn!!.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 14f)
-//        val myRed = ContextCompat.getColor(this, R.color.MY_RED)
-//        val shape = GradientDrawable()
-//        shape.shape = GradientDrawable.RECTANGLE
-//        shape.setColor(myRed)
-//        shape.cornerRadius = 62f
-        layerSubmitBtn!!.setOnClickListener {
-            layerSubmit(page)
-        }
-
-//        layerSubmitBtn!!.backgroundDrawable = shape
-//        layerSubmitBtn!!.setTextColor(Color.WHITE)
-
-        layerButtonLayout.addView(layerSubmitBtn)
-    }
-
-    protected fun layerAddCancelBtn() {
-        layerCancelBtn = layoutInflater.inflate(R.layout.cancel_button, null) as Button
-//        layerCancelBtn = Button(this)
-//        val cancelBtnWidth = 260
-        val lp2 = LinearLayout.LayoutParams(300, 90)
-        lp2.setMargins(16, 0, 0, 0)
-//        val center = (w-(2*padding)-cancelBtnWidth)/2
-//        var x = center
-//        when (layerBtnCount) {
-//            2 -> x = center + 60
+//        val parent = getMyParent()
+//        val w = parent.measuredWidth
+//        val h = parent.measuredHeight
+//        if (layerBlackView == null) {
+//
+//            //container layer for search
+//            val lp = RelativeLayout.LayoutParams(w - (2 * layerRightLeftPadding), h - layerTopPadding)
+//            //val lp = RelativeLayout.LayoutParams(w - (2 * layerRightLeftPadding), 1000)
+//            //lp.setMargins(layerRightLeftPadding, layerTopPadding, layerRightLeftPadding, 0)
+//            layerBlackView = RelativeLayout(this)
+//            layerBlackView!!.layoutParams = lp
+//            layerBlackView!!.translationX = layerRightLeftPadding.toFloat()
+//            layerBlackView!!.translationY = layerTopPadding.toFloat()
+//            layerBlackView!!.backgroundColor = Color.BLACK
+//            layerMask!!.addView(layerBlackView)
+//
+////            val lp1 = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 2000)
+////            lp.setMargins(0, 0, 0, 60)
+////            layerScrollView = ScrollView(this)
+////            layerScrollView!!.layoutParams = lp1
+////            layerScrollView!!.backgroundColor = Color.RED
+////            layerScrollView!!.setOnScrollChangeListener(object : NestedScrollView.OnScrollChangeListener {
+////                override fun onScrollChange(p0: NestedScrollView?, p1: Int, p2: Int, p3: Int, p4: Int) {
+////                    currentFocus?.clearFocus()
+////                }
+////
+////            })
+////            layerScrollView!!.layoutParams = lp
+////            layerScrollView!!.backgroundColor = Color.GREEN
+//
+////            val mask = getMask()
+//            //layerBlackView!!.addView(layerScrollView)
+//
+////            val lp2 = LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT)
+////            lp2.setMargins(0, 0, 0, 0)
+////            layerContainerView = LinearLayout(this)
+////            layerContainerView!!.orientation = LinearLayout.VERTICAL
+////            layerContainerView!!.layoutParams = lp2
+////            layerContainerView!!.backgroundColor = Color.BLUE
+//            //layerScrollView!!.addView(layerContainerView)
+//
+//            _addLayer(page)
+////            val l = LinearLayout(this)
+////            l.orientation = LinearLayout.VERTICAL
+////            l.addView(layerButtonLayout)
+////            layerContainerView!!.addView(l)
+//
+//            //append bottom space
+////            val bottomLayout = LinearLayout(this)
+////            val lpx = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 200)
+////            bottomLayout.layoutParams = lpx
+////            layerContainerView!!.addView(bottomLayout)
 //        }
-//        println(center)
-//        println(x)
-//        lp2.setMargins(16, 0, 16, 0)
-        layerCancelBtn!!.layoutParams = lp2
-//        layerCancelBtn!!.text = "取消"
-//        layerCancelBtn!!.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 20f)
-//        val myRed = ContextCompat.getColor(this, R.color.MY_RED)
-//        val shape = GradientDrawable()
-//        shape.shape = GradientDrawable.RECTANGLE
-//        shape.setColor(myRed)
-//        shape.cornerRadius = 82f
-        layerCancelBtn!!.setOnClickListener {
-            layerCancel()
-        }
+//
+//
+//        val animate = TranslateAnimation(layerRightLeftPadding.toFloat(), layerRightLeftPadding.toFloat(), h.toFloat(), layerTopPadding.toFloat())
+//        animate.setAnimationListener(object : Animation.AnimationListener {
+//            override fun onAnimationRepeat(p0: Animation?) {}
+//            override fun onAnimationEnd(p0: Animation?) {
+//            }
+//
+//            override fun onAnimationStart(p0: Animation?) {
+//            }
+//        })
+//        animate.duration = 500
+//        animate.fillAfter = true
+//        //layerScrollView!!.startAnimation(animate)
+//        layerVisibility = true
+//    }
 
-//        layerCancelBtn!!.backgroundDrawable = shape
-//        layerCancelBtn!!.setTextColor(Color.WHITE)
-
-        layerButtonLayout.addView(layerCancelBtn)
-    }
-
-    protected fun layerAddDeleteBtn() {
-        layerDeleteBtn = layoutInflater.inflate(R.layout.delete_button, null) as Button
-        //layerDeleteBtn = Button(this)
-//        val deleteBtnWidth = 260
-        val lp2 = LinearLayout.LayoutParams(300, 90)
-        lp2.setMargins(16, 0, 0, 0)
-        layerDeleteBtn!!.layoutParams = lp2
-//        layerDeleteBtn!!.text = "刪除"
-//        layerDeleteBtn!!.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 20f)
-//        val myRed = ContextCompat.getColor(this, R.color.MY_RED)
-//        val shape = GradientDrawable()
-//        shape.shape = GradientDrawable.RECTANGLE
-//        shape.setColor(myRed)
-//        shape.cornerRadius = 82f
-        layerDeleteBtn!!.setOnClickListener {
-            layerDelete()
-        }
-
-//        layerDeleteBtn!!.backgroundDrawable = shape
-//        layerDeleteBtn!!.setTextColor(Color.WHITE)
-
-        layerButtonLayout.addView(layerDeleteBtn)
-    }
+//    open fun _addLayer(page: String) {
+//        addSearchTableView(page)
+//        layerAddButtonLayout()
+//        layerBtnCount = 2
+//        layerAddSubmitBtn(page)
+//        layerAddCancelBtn()
+//    }
+//
+//    protected fun addSearchTableView(page: String) {
+//        val parent = getMyParent()
+//        val w = parent.measuredWidth
+//        val searchTableView = RecyclerView(this)
+//        searchTableView.id = R.id.SearchRecycleItem
+////        val padding: Int = 80
+//        //val lp1 = RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 800)
+//        val lp1 = RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
+////        val lp1 = RecyclerView.LayoutParams(w - (2 * padding), 1000)
+//        lp1.setMargins(0, 0, 0, 150)
+//        searchTableView.layoutParams = lp1
+//        searchTableView.layoutManager = LinearLayoutManager(this)
+//        //searchTableView.backgroundColor = Color.RED
+//        searchTableView.backgroundColor = Color.TRANSPARENT
+//        searchAdapter = GroupAdapter<GroupieViewHolder>()
+//        searchAdapter.setOnItemClickListener { item, view ->
+//            val searchItem = item as SearchItem
+//            val row = searchItem.row
+//            if (page == "course" || page == "team") {
+//
+//                //val tag = parent.tag as String
+//                var frag: TabFragment? = null
+//                if (page == "course") {
+//                    frag = getFragment() as CourseFragment
+//                } else if (page == "team") {
+//                    frag = getFragment() as TeamFragment
+//                }
+//                if (frag != null) {
+//                    frag.prepare(row)
+//                }
+//                //prepareSearch1(row, page)
+//            } else {
+//                prepare(row)
+////                if (searchItem.switch == false) {
+////                    prepareSearch(row, page)
+////                }
+//            }
+//        }
+//        val rows = generateSearchItems(page)
+//        searchAdapter.addAll(rows)
+//
+//        searchTableView.adapter = searchAdapter
+//        //layerContainerView!!.addView(searchTableView)
+//        layerBlackView!!.addView(searchTableView)
+//    }
+//
+//    protected fun layerAddButtonLayout() {
+//        layerButtonLayout = LinearLayout(this)
+//        val lp = RelativeLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 150)
+//        lp.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM)
+//        layerButtonLayout.layoutParams = lp
+//        val color = ContextCompat.getColor(this, R.color.MY_GREEN)
+//        layerButtonLayout.backgroundColor = color
+//        layerButtonLayout.gravity = Gravity.CENTER
+//        layerButtonLayout.orientation = LinearLayout.HORIZONTAL
+//        layerBlackView!!.addView(layerButtonLayout)
+//    }
+//
+//    protected fun layerAddSubmitBtn(page: String) {
+//        layerSubmitBtn = layoutInflater.inflate(R.layout.submit_button, null) as Button
+//        //layerSubmitBtn = Button(this, null, R.style.submit_button)
+////        val submitBtnWidth = 260
+//        val lp2 = LinearLayout.LayoutParams(300, 90)
+////        lp2.setMargins(16, 0, 0, 0)
+//        layerSubmitBtn!!.layoutParams = lp2
+//        //layerSubmitBtn!!.text = "送出"
+////        layerSubmitBtn!!.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 14f)
+////        val myRed = ContextCompat.getColor(this, R.color.MY_RED)
+////        val shape = GradientDrawable()
+////        shape.shape = GradientDrawable.RECTANGLE
+////        shape.setColor(myRed)
+////        shape.cornerRadius = 62f
+//        layerSubmitBtn!!.setOnClickListener {
+//            layerSubmit(page)
+//        }
+//
+////        layerSubmitBtn!!.backgroundDrawable = shape
+////        layerSubmitBtn!!.setTextColor(Color.WHITE)
+//
+//        layerButtonLayout.addView(layerSubmitBtn)
+//    }
+//
+//    protected fun layerAddCancelBtn() {
+//        layerCancelBtn = layoutInflater.inflate(R.layout.cancel_button, null) as Button
+////        layerCancelBtn = Button(this)
+////        val cancelBtnWidth = 260
+//        val lp2 = LinearLayout.LayoutParams(300, 90)
+//        lp2.setMargins(16, 0, 0, 0)
+////        val center = (w-(2*padding)-cancelBtnWidth)/2
+////        var x = center
+////        when (layerBtnCount) {
+////            2 -> x = center + 60
+////        }
+////        println(center)
+////        println(x)
+////        lp2.setMargins(16, 0, 16, 0)
+//        layerCancelBtn!!.layoutParams = lp2
+////        layerCancelBtn!!.text = "取消"
+////        layerCancelBtn!!.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 20f)
+////        val myRed = ContextCompat.getColor(this, R.color.MY_RED)
+////        val shape = GradientDrawable()
+////        shape.shape = GradientDrawable.RECTANGLE
+////        shape.setColor(myRed)
+////        shape.cornerRadius = 82f
+//        layerCancelBtn!!.setOnClickListener {
+//            layerCancel()
+//        }
+//
+////        layerCancelBtn!!.backgroundDrawable = shape
+////        layerCancelBtn!!.setTextColor(Color.WHITE)
+//
+//        layerButtonLayout.addView(layerCancelBtn)
+//    }
+//
+//    protected fun layerAddDeleteBtn() {
+//        layerDeleteBtn = layoutInflater.inflate(R.layout.delete_button, null) as Button
+//        //layerDeleteBtn = Button(this)
+////        val deleteBtnWidth = 260
+//        val lp2 = LinearLayout.LayoutParams(300, 90)
+//        lp2.setMargins(16, 0, 0, 0)
+//        layerDeleteBtn!!.layoutParams = lp2
+////        layerDeleteBtn!!.text = "刪除"
+////        layerDeleteBtn!!.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 20f)
+////        val myRed = ContextCompat.getColor(this, R.color.MY_RED)
+////        val shape = GradientDrawable()
+////        shape.shape = GradientDrawable.RECTANGLE
+////        shape.setColor(myRed)
+////        shape.cornerRadius = 82f
+//        layerDeleteBtn!!.setOnClickListener {
+//            layerDelete()
+//        }
+//
+////        layerDeleteBtn!!.backgroundDrawable = shape
+////        layerDeleteBtn!!.setTextColor(Color.WHITE)
+//
+//        layerButtonLayout.addView(layerDeleteBtn)
+//    }
 
 //    fun getMask(): LinearLayout {
 //        val parent = getMyParent()
@@ -1586,8 +1574,8 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
                         }
                     }
                     searchRows[idx]["detail"] = value
-                    val rows = generateSearchItems(page)
-                    searchAdapter.update(rows)
+                    //val rows = generateSearchItems(page)
+                    //searchAdapter.update(rows)
                 }
             }
             SEARCH_REQUEST_CODE1 -> {
@@ -1692,8 +1680,8 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
                         }
 
                     }
-                    val rows = generateSearchItems(able_type)
-                    searchAdapter.update(rows)
+                    //val rows = generateSearchItems(able_type)
+                    //searchAdapter.update(rows)
                 }
             }
         }
@@ -1854,26 +1842,26 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
     }
 
 
-    open protected fun layerSubmit(page: String) {
-        unmask()
-        if (page == "coach") {
-            prepareParams()
-            refresh()
-        } else if (page == "team") {
-            val frag = getFragment() as TeamFragment
-            frag.prepareParams()
-            frag.refresh()
-        } else if (page == "course") {
-            val frag = getFragment() as CourseFragment
-            frag.prepareParams()
-            frag.refresh()
-            //frag.layerSubmit()
-
-        } else {
-            prepareParams()
-            refresh()
-        }
-    }
+//    open protected fun layerSubmit(page: String) {
+//        unmask()
+//        if (page == "coach") {
+//            prepareParams()
+//            refresh()
+//        } else if (page == "team") {
+//            val frag = getFragment() as TeamFragment
+//            frag.prepareParams()
+//            frag.refresh()
+//        } else if (page == "course") {
+//            val frag = getFragment() as CourseFragment
+//            frag.prepareParams()
+//            frag.refresh()
+//            //frag.layerSubmit()
+//
+//        } else {
+//            prepareParams()
+//            refresh()
+//        }
+//    }
 
     open fun cityBtnPressed(city_id: Int, page: String) {
         resetParams()
@@ -1949,11 +1937,11 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
         webView.setBackgroundColor(Color.TRANSPARENT)
     }
 
-    open protected fun layerCancel() {
-        unmask()
-    }
-
-    open protected fun layerDelete() {}
+//    open protected fun layerCancel() {
+//        unmask()
+//    }
+//
+//    open protected fun layerDelete() {}
 
     fun getCitys(complete: (rows: ArrayList<HashMap<String, String>>)-> Unit): ArrayList<HashMap<String, String>> {
         var rows: ArrayList<HashMap<String, String>> = session.getAllCitys()
@@ -2044,9 +2032,9 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
         val alert = AlertDialog.Builder(this).create()
         alert.setTitle("警告")
         alert.setMessage(msg)
-        alert.setButton(AlertDialog.BUTTON_POSITIVE, "回上一頁", { Interface, j ->
+        alert.setButton(AlertDialog.BUTTON_POSITIVE, "回上一頁") { Interface, j ->
             finish()
-        })
+        }
         alert.show()
     }
 

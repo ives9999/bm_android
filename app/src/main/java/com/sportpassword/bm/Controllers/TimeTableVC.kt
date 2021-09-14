@@ -362,20 +362,20 @@ class TimeTableVC : BaseActivity(), ValueChangedDelegate {
     fun showEditEvent(buttonCount: Int = 2) {
         mask()
         layerBtnCount = buttonCount
-        addSearchLayer("")
+        //addSearchLayer("")
     }
 
-    override fun _addLayer(page: String) {
-        val parent = getMyParent()
-        val w = parent.measuredWidth
-        addEditTableView(page, w, 0)
-        layerAddButtonLayout()
-        layerAddSubmitBtn(page)
-        layerAddCancelBtn()
-        if (layerBtnCount > 2) {
-            layerAddDeleteBtn()
-        }
-    }
+//    override fun _addLayer(page: String) {
+//        val parent = getMyParent()
+//        val w = parent.measuredWidth
+//        addEditTableView(page, w, 0)
+//        layerAddButtonLayout()
+//        layerAddSubmitBtn(page)
+//        layerAddCancelBtn()
+//        if (layerBtnCount > 2) {
+//            layerAddDeleteBtn()
+//        }
+//    }
 
     protected fun addEditTableView(page: String, w: Int, padding: Int) {
 
@@ -422,7 +422,7 @@ class TimeTableVC : BaseActivity(), ValueChangedDelegate {
                     //0 is title
                     //weekday
                     WEEKDAY_KEY -> {
-                        layerCancel()
+                        //layerCancel()
                         removeLayerChildViews()
                         intent.putExtra("key", TEAM_WEEKDAYS_KEY)
                         intent.putExtra("source", "search")
@@ -431,7 +431,7 @@ class TimeTableVC : BaseActivity(), ValueChangedDelegate {
                     }
                     //start_date
                     TT_START_DATE-> {
-                        layerCancel()
+                        //layerCancel()
                         removeLayerChildViews()
                         val intent1 = Intent(this, DateSelectVC::class.java)
                         val sender: HashMap<String, Any> = formItem.sender as HashMap<String, Any>
@@ -444,7 +444,7 @@ class TimeTableVC : BaseActivity(), ValueChangedDelegate {
                     }
                     //end_date
                     TT_END_DATE-> {
-                        layerCancel()
+                        //layerCancel()
                         removeLayerChildViews()
                         val intent1 = Intent(this, DateSelectVC::class.java)
                         val sender: HashMap<String, Any> = formItem.sender as HashMap<String, Any>
@@ -457,7 +457,7 @@ class TimeTableVC : BaseActivity(), ValueChangedDelegate {
                     }
                     //start_time
                     START_TIME_KEY-> {
-                        layerCancel()
+                        //layerCancel()
                         removeLayerChildViews()
                         intent.putExtra("key", TEAM_PLAY_START_KEY)
                         intent.putExtra("source", "search")
@@ -468,7 +468,7 @@ class TimeTableVC : BaseActivity(), ValueChangedDelegate {
                     }
                     //end_time
                     END_TIME_KEY-> {
-                        layerCancel()
+                        //layerCancel()
                         removeLayerChildViews()
                         intent.putExtra("key", TEAM_PLAY_END_KEY)
                         intent.putExtra("source", "search")
@@ -481,7 +481,7 @@ class TimeTableVC : BaseActivity(), ValueChangedDelegate {
                     //7 is limit
                     //color
                     TT_COLOR-> {
-                        layerCancel()
+                        //layerCancel()
                         removeLayerChildViews()
                         val intent1 = Intent(this, ColorSelectVC::class.java)
                         intent1.putExtra("key", COLOR_SELECT_KEY)
@@ -492,7 +492,7 @@ class TimeTableVC : BaseActivity(), ValueChangedDelegate {
                     }
                     //status
                     TT_STATUS-> {
-                        layerCancel()
+                        //layerCancel()
                         removeLayerChildViews()
                         val intent1 = Intent(this, StatusSelectVC1::class.java)
                         intent1.putExtra("key", STATUS_SELECT_KEY)
@@ -501,7 +501,7 @@ class TimeTableVC : BaseActivity(), ValueChangedDelegate {
                     }
                     //content
                     TT_CONTENT-> {
-                        layerCancel()
+                        //layerCancel()
                         removeLayerChildViews()
                         intent.putExtra("key", CONTENT_KEY)
                         intent.putExtra("value", formItem.sender as String)
@@ -518,7 +518,7 @@ class TimeTableVC : BaseActivity(), ValueChangedDelegate {
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-//        super.onActivityResult(requestCode, resultCode, data)
+        super.onActivityResult(requestCode, resultCode, data)
 
         var value = "全部"
         var idx = 0
@@ -671,7 +671,7 @@ class TimeTableVC : BaseActivity(), ValueChangedDelegate {
         }
     }
 
-    override fun layerSubmit(page: String) {
+    fun layerSubmit(page: String) {
         if (TTEditAction == "UPDATE") {
             val (isChange, msg) = form.isChanged()
             if (!isChange) {
@@ -693,7 +693,7 @@ class TimeTableVC : BaseActivity(), ValueChangedDelegate {
         prepareParams()
     }
 
-    override fun layerDelete() {
+    fun layerDelete() {
         warning("是否真的要刪除此事件？", "取消", "確定", {_layerDelete()})
     }
 
