@@ -62,6 +62,7 @@ class TeachVC : MyTableVC() {
         }
     }
 
+
     override fun generateItems(): ArrayList<Item> {
         val items: ArrayList<Item> = arrayListOf()
         if (mysTable != null) {
@@ -80,8 +81,9 @@ class TeachVC : MyTableVC() {
     override fun rowClick(item: com.xwray.groupie.Item<com.xwray.groupie.GroupieViewHolder>, view: View) {
 
         val teachItem = item as TeachItem
-        val table = teachItem.row
-        toShowTeach(table.token)
+        val table = teachItem.row as TeachTable
+        //toShowTeach(table.token)
+        toYoutubePlayer(table.youtube)
     }
 }
 

@@ -160,6 +160,7 @@ val TO_TEMP_PLAY_SIGNUP_ONE: String = "toTempPlaySignupOne"
 val TO_TEXT_INPUT: String = "toTextInput"
 val TO_TIMETABLE: String = "toTimeTable"
 val TO_VALIDATE: String = "toValidate"
+val TO_YOUTUBE_PLAYER: String = "toYoutubePlayer"
 
 // spinner
 val LOADING: String = "努力加載中..."

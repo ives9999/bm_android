@@ -546,6 +546,12 @@ interface ToInterface {
         mainDelegate.startActivityForResult(intent, mainDelegate.VALIDATE_REQUEST_CODE)
     }
 
+    fun toYoutubePlayer(token: String) {
+        val i = Intent(mainDelegate, YoutubePlayerVC::class.java)
+        i.putExtra("token", token)
+        mainDelegate.startActivity(i)
+    }
+
     fun toTimeTable(source: String, token: String) {
         val i = Intent(mainDelegate, TimeTableVC::class.java)
         i.putExtra("source", source)
