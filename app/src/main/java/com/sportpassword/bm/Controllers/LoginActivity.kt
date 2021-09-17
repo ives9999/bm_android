@@ -53,6 +53,7 @@ class LoginActivity : BaseActivity() {
             //println(success)
             if (success) {
                 try {
+                    //println(MemberService.jsonString)
                     table = jsonToModel<MemberTable>(MemberService.jsonString)
                 } catch (e: JsonParseException) {
                     warning(e.localizedMessage!!)
@@ -60,8 +61,11 @@ class LoginActivity : BaseActivity() {
                 if (table != null) {
                     table!!.filterRow()
                     table!!.isLoggedIn = true
-                    table!!.printRow()
-                    //table!.toSession()
+                    //table!!.printRow()
+                    table!!.toSession(this)
+
+                    val keys = session.all.map { it.key }
+                    println(keys)
                 }
                 if (MemberService.success) {
                     //LocalBroadcastManager.getInstance(this).sendBroadcast(memberDidChangeIntent)

@@ -2,6 +2,9 @@ package com.sportpassword.bm.Models
 
 import com.google.gson.annotations.SerializedName
 import com.sportpassword.bm.Utilities.*
+import android.content.Context
+import android.content.SharedPreferences
+import kotlin.reflect.full.memberProperties
 
 class MemberTable: Table() {
 
@@ -59,13 +62,13 @@ class MemberTable: Table() {
         super.printRow()
     }
 
-    fun toSession() {
+    fun toSession(context: Context) {
 
         val session: SharedPreferences = context.getSharedPreferences(SESSION_FILENAME, 0)
-        Member::class.memberProperties.forEach {
+        MemberTable::class.memberProperties.forEach {
             val name = it.name
             //val type = it.returnType
-            var value = it.getter.call(_member1)
+            var value = it.getter.call(this)
             when (value) {
                 is Int ->
                     session.edit().putInt(name, value).apply()
