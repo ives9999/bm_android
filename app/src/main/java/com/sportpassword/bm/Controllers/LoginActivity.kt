@@ -6,6 +6,9 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.TextView
+import com.google.gson.JsonParseException
+import com.sportpassword.bm.Models.ArenaTable
+import com.sportpassword.bm.Models.MemberTable
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.MemberService
 import com.sportpassword.bm.Utilities.*
@@ -17,6 +20,8 @@ import java.util.*
 
 class LoginActivity : BaseActivity() {
 
+    var table: MemberTable? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
@@ -24,8 +29,8 @@ class LoginActivity : BaseActivity() {
         hidekeyboard(login_layout)
         //loginEmailTxt.requestFocus()
 
-        //loginEmailTxt.setText("ives@housetube.tw")
-        //loginPasswordTxt.setText("K5SD23r6")
+        loginEmailTxt.setText("ives@housetube.tw")
+        loginPasswordTxt.setText("K5SD23r6")
 
     }
 
@@ -47,7 +52,17 @@ class LoginActivity : BaseActivity() {
             Loading.hide(mask)
             //println(success)
             if (success) {
-                //Session.loginReset = true
+                try {
+                    table = jsonToModel<MemberTable>(MemberService.jsonString)
+                } catch (e: JsonParseException) {
+                    warning(e.localizedMessage!!)
+                }
+                if (table != null) {
+                    table!!.filterRow()
+                    table!!.isLoggedIn = true
+                    table!!.printRow()
+                    //table!.toSession()
+                }
                 if (MemberService.success) {
                     //LocalBroadcastManager.getInstance(this).sendBroadcast(memberDidChangeIntent)
                     //finish()

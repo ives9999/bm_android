@@ -2,6 +2,7 @@ package com.sportpassword.bm.Models
 
 import com.sportpassword.bm.Utilities.*
 import com.sportpassword.bm.Utilities.mobileShow
+import kotlin.reflect.full.memberProperties
 
 //因為 data class 不太適用於繼承，所以這邊就不用 data class的宣告
 //class Tables<T: Table> {
@@ -75,10 +76,10 @@ open class Table {
         }
     }
 
-//    public fun printRow() {
-//        let mirror: Mirror? = Mirror(reflecting: self)
-//        for property in mirror!.children {
-//            print("\(property.label ?? "")=>\(property.value)")
-//        }
-//    }
+    open fun printRow() {
+        val kc = this::class
+        kc.memberProperties.forEach {
+            println("${it.name}: ${it.getter.call(this).toString()}")
+        }
+    }
 }

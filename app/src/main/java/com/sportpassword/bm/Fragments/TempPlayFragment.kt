@@ -863,7 +863,7 @@ class TeamItem(override var context: Context, var _row: TeamTable): ListItem<Tab
 
         val v = viewHolder.containerView
         val a = v.findViewById<ImageButton>(R.id.mapIcon)
-        if (a != null) {
+        if (a != null && row.arena != null) {
 
             if (row.arena!!.address == null || row.arena!!.address.isEmpty()) {
                 viewHolder.mapIcon.visibility = View.GONE

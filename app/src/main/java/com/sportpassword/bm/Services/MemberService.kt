@@ -78,53 +78,89 @@ object MemberService: DataService() {
     fun login(context: Context, email: String, password: String, playerID: String, complete: CompletionHandler) {
         val lowerCaseEmail = email.toLowerCase()
         val url = URL_LOGIN
-//        println(url)
+        println(url)
 
-        val body = JSONObject()
-        body.put("email", email)
-        body.put("password", password)
-        body.put("player_id", playerID)
-        body.put("source", "app")
-        val requestBody = body.toString()
+        val header: MutableList<Pair<String, String>> = mutableListOf()
+        header.add(Pair("Accept","application/json"))
+        header.add(Pair("Content-Type","application/json; charset=utf-8"))
+
+        val filter: HashMap<String, Any> = hashMapOf()
+        filter.put("device", "app")
+        filter.put("email", email)
+        filter.put("password", password)
+        filter.put("player_id", playerID)
+        val body = filter.toJSONString()
+        println(body)
+
+//        val body = JSONObject()
+//        body.put("email", email)
+//        body.put("password", password)
+//        body.put("player_id", playerID)
+//        body.put("source", "app")
+//        val requestBody = body.toString()
 //        println(requestBody)
 
-        val request = object : JsonObjectRequest(Request.Method.POST, url, null, Response.Listener { json ->
-            //println(json)
-            try {
-                success = json.getBoolean("success")
-                //println(success)
-            } catch (e: JSONException) {
-                success = false
-                msg = "無法登入，沒有傳回成功值 " + e.localizedMessage
-            }
+        MyHttpClient.instance.post(context, url, body) { success ->
             if (success) {
-                //print(json)
-                jsonToMember(json, context)
-                //member.memberPrint()
-                if (json.has("msg")) {
-                    Alert.show(context, "警告", json.getString("msg"), {
-                        complete(true)
-                    })
+                val response = MyHttpClient.instance.response
+                if (response != null) {
+                    try {
+
+                        this.jsonString = response.toString()
+//                        println(jsonString)
+                        this.success = true
+                    } catch (e: Exception) {
+                        this.success = false
+                        msg = "parse json failed，請洽管理員"
+                        println(e.localizedMessage)
+                    }
+                    complete(this.success)
                 } else {
-                    complete(true)
+                    println("response is null")
                 }
             } else {
-                makeErrorMsg(json)
-                complete(true)
-            }
-        }, Response.ErrorListener { error ->
-            println(error.localizedMessage)
-            msg = "登入失敗，網站或網路錯誤"
-            complete(false)
-        }) {
-            override fun getBodyContentType(): String {
-                return HEADER
-            }
-
-            override fun getBody(): ByteArray {
-                return requestBody.toByteArray()
+                msg = "網路錯誤，無法跟伺服器更新資料"
+                complete(success)
             }
         }
+
+//        val request = object : JsonObjectRequest(Request.Method.POST, url, null, Response.Listener { json ->
+//            //println(json)
+//            try {
+//                success = json.getBoolean("success")
+//                //println(success)
+//            } catch (e: JSONException) {
+//                success = false
+//                msg = "無法登入，沒有傳回成功值 " + e.localizedMessage
+//            }
+//            if (success) {
+//                //print(json)
+//                jsonToMember(json, context)
+//                //member.memberPrint()
+//                if (json.has("msg")) {
+//                    Alert.show(context, "警告", json.getString("msg"), {
+//                        complete(true)
+//                    })
+//                } else {
+//                    complete(true)
+//                }
+//            } else {
+//                makeErrorMsg(json)
+//                complete(true)
+//            }
+//        }, Response.ErrorListener { error ->
+//            println(error.localizedMessage)
+//            msg = "登入失敗，網站或網路錯誤"
+//            complete(false)
+//        }) {
+//            override fun getBodyContentType(): String {
+//                return HEADER
+//            }
+//
+//            override fun getBody(): ByteArray {
+//                return requestBody.toByteArray()
+//            }
+//        }
 
 
         // Request a string response from the provided URL.
@@ -143,7 +179,7 @@ object MemberService: DataService() {
 //                return requestBody.toByteArray()
 //            }
 //        }
-        Volley.newRequestQueue(context).add(request)
+        //Volley.newRequestQueue(context).add(request)
     }
 
     fun forgetPassword(context: Context, email: String, complete: CompletionHandler) {

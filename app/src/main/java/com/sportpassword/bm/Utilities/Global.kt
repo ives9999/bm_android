@@ -1584,6 +1584,7 @@ inline fun <reified T: Table> jsonToModel(jsonString: String): T? {
         t = Gson().fromJson<T>(jsonString, T::class.java)
     } catch (e: java.lang.Exception) {
         Global.message = e.localizedMessage
+        println(e.localizedMessage)
     }
 
     return t
