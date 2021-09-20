@@ -62,6 +62,7 @@ import java.net.URL
 import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
+import kotlin.reflect.full.createType
 import kotlin.system.exitProcess
 
 open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, SearchItemDelegate,
@@ -200,6 +201,27 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
         }
     }
 
+    val loginVC = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { res ->
+        if (res.resultCode == Activity.RESULT_OK) {
+
+            if (res.data != null) {
+                val i: Intent? = res.data
+
+                if (i != null) {
+
+                    val frags = supportFragmentManager.fragments
+                    for (frag in frags) {
+                        val memberFragment = frag as? MemberFragment
+                        if (memberFragment != null) {
+                            memberFragment.loginout()
+                        }
+                    }
+
+                }
+            }
+        }
+    }
+
     val selectAreaVC = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { res ->
         if (res.resultCode == Activity.RESULT_OK) {
 
@@ -207,14 +229,14 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
                 val i: Intent? = res.data
 
                 if (i != null) {
-                    var key: String = AREA_KEY
+                    val key: String = AREA_KEY
                     var selected: String = ""
                     if (i.hasExtra("selected")) {
                         selected = i.getStringExtra("selected")!!
                     }
 
                     var show: String = ""
-                    if (i.hasExtra("show")) {
+                        if (i.hasExtra("show")) {
                         show = i.getStringExtra("show")!!
                     }
 
@@ -886,62 +908,62 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
         return playerID
     }
 
-    public fun _getMemberOne(token: String, completion: CompletionHandler) {
-        if (member.isLoggedIn) {
-            Loading.show(mask)
-            MemberService.getOne(this, token) { success ->
-                Loading.hide(mask)
-                if (success) {
-                    completion(true)
-                } else {
-                    Alert.show(this, "錯誤", MemberService.msg)
-                    completion(false)
-                }
-            }
-        } else {
-            warning("沒有登入")
-        }
-    }
+//    public fun _getMemberOne(token: String, completion: CompletionHandler) {
+//        if (member.isLoggedIn) {
+//            Loading.show(mask)
+//            MemberService.getOne(this, token) { success ->
+//                Loading.hide(mask)
+//                if (success) {
+//                    completion(true)
+//                } else {
+//                    Alert.show(this, "錯誤", MemberService.msg)
+//                    completion(false)
+//                }
+//            }
+//        } else {
+//            warning("沒有登入")
+//        }
+//    }
 
 //    protected fun memberDidChange() {
 //        val memberDidChange = Intent(NOTIF_MEMBER_DID_CHANGE)
 //        LocalBroadcastManager.getInstance(this).sendBroadcast(memberDidChange)
 //    }
 
-    protected val memberDidChange = object : BroadcastReceiver() {
-        override fun onReceive(context: Context?, intent: Intent?) {
-            refreshMember() { success ->
+//    protected val memberDidChange = object : BroadcastReceiver() {
+//        override fun onReceive(context: Context?, intent: Intent?) {
+//            refreshMember() { success ->
+//
+//            }
+//        }
+//    }
 
-            }
-        }
-    }
+//    fun refreshMember(completion: CompletionHandler) {
+//        member.token?.let { _getMemberOne(it, completion) }
+//    }
 
-    fun refreshMember(completion: CompletionHandler) {
-        member.token?.let { _getMemberOne(it, completion) }
-    }
-
-    protected fun _updatePlayerIDWhenIsNull() {
-        val token = member.token
-        if (token != null) {
-            _getMemberOne(token) { success ->
-                if (success) {
-                    member.justGetMemberOne = true
-                    if (member.player_id?.length == 0) {
-                        _updatePlayerID()
-                    }
-                }
-            }
-        }
-    }
-
-    protected fun _updatePlayerID() {
-        val player_id = _getPlayerID()
-        MemberService.update(this, member.id, PLAYERID_KEY, player_id) { success ->
-            if (success) {
-                member.player_id = player_id
-            }
-        }
-    }
+//    protected fun _updatePlayerIDWhenIsNull() {
+//        val token = member.token
+//        if (token != null) {
+//            _getMemberOne(token) { success ->
+//                if (success) {
+//                    member.justGetMemberOne = true
+//                    if (member.player_id?.length == 0) {
+//                        _updatePlayerID()
+//                    }
+//                }
+//            }
+//        }
+//    }
+//
+//    protected fun _updatePlayerID() {
+//        val player_id = _getPlayerID()
+//        MemberService.update(this, member.id, PLAYERID_KEY, player_id) { success ->
+//            if (success) {
+//                member.player_id = player_id
+//            }
+//        }
+//    }
 
     protected fun _getTeamManagerList(completion: CompletionHandler) {
         Loading.show(mask)

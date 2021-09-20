@@ -57,12 +57,12 @@ class AccountActivity : BaseActivity() {
     }
 
     override fun refresh() {
-        member.token?.let {
-            _getMemberOne(it) {
-            setData()
-            closeRefresh()
-        }
-        }
+//        member.token?.let {
+//            _getMemberOne(it) {
+//            setData()
+//            closeRefresh()
+//        }
+//        }
     }
 
     override fun onResume() {
@@ -80,36 +80,36 @@ class AccountActivity : BaseActivity() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        when (requestCode) {
-            ACCOUNT_REQUEST_CODE -> {
-                member.token?.let {
-                    _getMemberOne(it) {
-                        setData()
-                    }
-                }
-            }
-        }
+//        when (requestCode) {
+//            ACCOUNT_REQUEST_CODE -> {
+//                member.token?.let {
+//                    _getMemberOne(it) {
+//                        setData()
+//                    }
+//                }
+//            }
+//        }
     }
 
     private fun setData() {
-        member.nickname?.let { accountNicknameLbl.setMyText(it, default) }
-        member.nickname?.let { accountNickname.setMyText(it, default) }
-        val sex = member.sex?.let { MEMBER_SEX.valueOf(it) }
-        if (sex != null) {
-            accountSexLbl.setMyText(sex.value, default)
-        }
-        if (sex != null) {
-            accountSex.setMyText(sex.value, default)
-        }
-        member.name?.let { accountName.setMyText(it, default) }
-        member.email?.let { accountEmail.setMyText(it, default) }
-        member.dob?.let { accountDob.setMyText(it, default) }
-        member.mobile?.let { accountMobile.setMyText(it, default) }
-        println("tel:" + member.tel)
-        member.tel?.let { accountTel.setMyText(it, default) }
-        val res = member.validateShow(member.validate)
-        accountValidate.text = res.joinToString(",")
-        accountType.text = member.typeShow(member.type)
+//        member.nickname?.let { accountNicknameLbl.setMyText(it, default) }
+//        member.nickname?.let { accountNickname.setMyText(it, default) }
+//        val sex = member.sex?.let { MEMBER_SEX.valueOf(it) }
+//        if (sex != null) {
+//            accountSexLbl.setMyText(sex.value, default)
+//        }
+//        if (sex != null) {
+//            accountSex.setMyText(sex.value, default)
+//        }
+//        member.name?.let { accountName.setMyText(it, default) }
+//        member.email?.let { accountEmail.setMyText(it, default) }
+//        member.dob?.let { accountDob.setMyText(it, default) }
+//        member.mobile?.let { accountMobile.setMyText(it, default) }
+//        println("tel:" + member.tel)
+//        member.tel?.let { accountTel.setMyText(it, default) }
+//        val res = member.validateShow(member.validate)
+//        accountValidate.text = res.joinToString(",")
+//        accountType.text = member.typeShow(member.type)
     }
 
 }

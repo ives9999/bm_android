@@ -101,26 +101,26 @@ class MemberFragment: TabFragment() {
         forgetPasswordBtn.setOnClickListener { forgetpasswordBtnPressed(view) }
 
         setRecyclerViewRefreshListener()
-        _loginout()
+        loginout()
         //refresh()
     }
 
     override fun refresh() {
-        if (member.isLoggedIn) {
-            //initTeamList()
-                // member.memberPrint()
-            Loading.show(mask)
-            mainActivity!!.refreshMember() { success ->
-                Loading.hide(mask)
-                if (success) {
-                    _loginout()
-                } else {
-                    mainActivity!!.warning("伺服器錯誤，請稍後再試或聯絡管理員")
-                }
-            }
-        } else {
-            _logoutBlock()
-        }
+//        if (member.isLoggedIn) {
+//            //initTeamList()
+//                // member.memberPrint()
+//            Loading.show(mask)
+//            mainActivity!!.refreshMember() { success ->
+//                Loading.hide(mask)
+//                if (success) {
+//                    _loginout()
+//                } else {
+//                    mainActivity!!.warning("伺服器錯誤，請稍後再試或聯絡管理員")
+//                }
+//            }
+//        } else {
+//            _logoutBlock()
+//        }
     }
 
 
@@ -148,7 +148,8 @@ class MemberFragment: TabFragment() {
 //        }
 //    }
 
-    protected fun _loginout() {
+    fun loginout() {
+        //println(member.isLoggedIn)
         if (member.isLoggedIn) {
             _loginBlock()
         } else {
@@ -158,8 +159,8 @@ class MemberFragment: TabFragment() {
     protected fun _loginBlock() {
         _loginAdapter()
         nicknameLbl.text = member.nickname
-        if (member.avatar.isNotEmpty()) {
-            member.avatar.image(mainActivity!!, avatarView)
+        if (member.avatar!!.isNotEmpty()) {
+            member.avatar!!.image(mainActivity!!, avatarView)
         }
         loginBtn.text = "登出"
         registerBtn.visibility = View.INVISIBLE
@@ -275,21 +276,13 @@ class MemberFragment: TabFragment() {
 
     fun loginBtnPressed(view: View) {
         if (member.isLoggedIn) {
-//            if (member.uid!!.length > 0 && member.social == "fb") {
-////                FacebookSdk.sdkInitialize(getApplicationContext());
-////                AppEventsLogger.activateApp(this);
-//                LoginManager.getInstance().logOut()
-//            }
-            MemberService.logout(mainActivity!!)
-            refresh()
-//            val memberDidChange = Intent(NOTIF_MEMBER_DID_CHANGE)
-//            LocalBroadcastManager.getInstance(this).sendBroadcast(memberDidChange)
+            member.isLoggedIn = false
+            member.reset()
+            loginout()
+            //MemberService.logout(mainActivity!!)
+            //refresh()
         } else {
-            //goLogin()
-            val loginIntent: Intent = Intent(activity, LoginActivity::class.java)
-            //startActivity(loginIntent)
-            startActivityForResult(loginIntent, mainActivity!!.LOGIN_REQUEST_CODE)
-
+            mainActivity!!.toLogin()
         }
     }
 
@@ -319,10 +312,10 @@ class MemberFragment: TabFragment() {
         super.onActivityResult(requestCode, resultCode, data)
         when (requestCode) {
             mainActivity!!.LOGIN_REQUEST_CODE -> {
-                _loginout()
+                loginout()
             }
             mainActivity!!.REGISTER_REQUEST_CODE -> {
-                _loginout()
+                loginout()
             }
             mainActivity!!.VALIDATE_REQUEST_CODE -> {
                 mainActivity!!.hideKeyboard()

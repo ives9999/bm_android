@@ -1,17 +1,12 @@
 package com.sportpassword.bm
 
-import android.app.AlertDialog
 import android.app.Application
 import android.content.Context
-import android.content.Intent
-import android.content.SharedPreferences
 import com.onesignal.OSNotificationOpenedResult
 import com.onesignal.OneSignal
-import com.sportpassword.bm.Models.Member
 import com.sportpassword.bm.Utilities.*
-import org.json.JSONObject
 import com.onesignal.OSNotificationReceivedEvent
-import com.sportpassword.bm.Controllers.ShowPNVC
+import com.sportpassword.bm.Models.Member
 
 /**
  * Created by ives on 2018/2/6.
@@ -54,17 +49,17 @@ class App: Application() {
     }
 
     override fun onCreate() {
-        member = Member(JSONObject())
+        member = Member(applicationContext)
         super.onCreate()
         ctx = applicationContext
-        val session: SharedPreferences = this.getSharedPreferences(SESSION_FILENAME, 0)
+//        val session: SharedPreferences = this.getSharedPreferences(SESSION_FILENAME, 0)
         //session.dump()
-        if (session.has(ISLOGGEDIN_KEY)) {
-            val isLoggedIn = session.getBoolean(ISLOGGEDIN_KEY, false)
-            if (isLoggedIn) {
-                member!!.setMemberData(session)
-            }
-        }
+//        if (session.has(ISLOGGEDIN_KEY)) {
+//            val isLoggedIn = session.getBoolean(ISLOGGEDIN_KEY, false)
+//            if (isLoggedIn) {
+//                member!!.setMemberData(session)
+//            }
+//        }
 
         // OneSignal Initialization
         //OneSignal.setLogLevel(OneSignal.LOG_LEVEL.VERBOSE, OneSignal.LOG_LEVEL.NONE)

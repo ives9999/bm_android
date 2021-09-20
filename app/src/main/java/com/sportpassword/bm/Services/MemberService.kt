@@ -701,81 +701,42 @@ object MemberService: DataService() {
         return Pair(res, "")
     }
 
-    override fun jsonToMember(json: JSONObject, context: Context) {
-
-        json.put(ISLOGGEDIN_KEY, true)
-        val _member: SuperModel = JSONParse.parse<Member>(json)!!
-        val _member1: Member = _member as Member
-        _member1.isLoggedIn = true
-        //_member1.memberPrint()
-
-        val session: SharedPreferences = context.getSharedPreferences(SESSION_FILENAME, 0)
-        Member::class.memberProperties.forEach {
-            val name = it.name
-            //val type = it.returnType
-            var value = it.getter.call(_member1)
-            if (name == "avatar") {
-                val a: String = value.toString()
-                if (a.length > 0) {
-                    value = BASE_URL + a
-                }
-            }
-            when (value) {
-                is Int ->
-                    session.edit().putInt(name, value).apply()
-                is String ->
-                    session.edit().putString(name, value).apply()
-                is Boolean ->
-                    session.edit().putBoolean(name, value).apply()
-            }
-        }
-        val city: Int = json.getInt("city_id")
-        session.edit().putInt("city", city).apply()
-
-        val area: Int = json.getInt("area_id")
-        session.edit().putInt("area", area).apply()
-        //session.dump()
-        member.setMemberData(session)
-//        member.memberPrint()
-
-//        val kClass = member::class
-//        val instance = kClass.objectInstance
-//        kClass.memberProperties.forEach {
-//            val name = it.name
-//            //val value = it.getter.call(member)
-//            //println("${name}=>${value}")
+//    override fun jsonToMember(json: JSONObject, context: Context) {
 //
-//            val hashMap: HashMap<String, String> = MEMBER_ARRAY[name] as HashMap<String, String>
-//            val type: String = hashMap["type"] as String
-//            if (type == "Int") {
-//                val value: Int = session.getInt(name, 0)
-//                val field = it.javaField
-//                if (field != null ) {
-//                    field.isAccessible = true
-//                    field.set(instance, value)
-//                }
-//            } else if (type == "String") {
-//                val value: String = session.getString(name, "")!!
-//            } else if (type == "Boolean") {
-//                val value: Boolean = session.getBoolean(name, false)
-//            }
-//        }
-
-        //val res = JSONParse.newInstance()
-//        member::class.memberProperties.forEach{
+//        json.put(ISLOGGEDIN_KEY, true)
+//        val _member: SuperModel = JSONParse.parse<Member>(json)!!
+//        val _member1: Member = _member as Member
+//        _member1.isLoggedIn = true
+//        //_member1.memberPrint()
+//
+//        val session: SharedPreferences = context.getSharedPreferences(SESSION_FILENAME, 0)
+//        Member::class.memberProperties.forEach {
 //            val name = it.name
-//            //val value = _member1.g
-//            val field = it.javaField
-//            if (field != null) {
-//                field.isAccessible = true
-//                //field.set
+//            //val type = it.returnType
+//            var value = it.getter.call(_member1)
+//            if (name == "avatar") {
+//                val a: String = value.toString()
+//                if (a.length > 0) {
+//                    value = BASE_URL + a
+//                }
+//            }
+//            when (value) {
+//                is Int ->
+//                    session.edit().putInt(name, value).apply()
+//                is String ->
+//                    session.edit().putString(name, value).apply()
+//                is Boolean ->
+//                    session.edit().putBoolean(name, value).apply()
 //            }
 //        }
-//        member.isLoggedIn = true
-
-        //JSONParse._parse(Member::class, json)
-        //member.setMemberData(json)
-    }
+//        val city: Int = json.getInt("city_id")
+//        session.edit().putInt("city", city).apply()
+//
+//        val area: Int = json.getInt("area_id")
+//        session.edit().putInt("area", area).apply()
+//        //session.dump()
+//        member.setMemberData(session)
+//    }
 }
 
 

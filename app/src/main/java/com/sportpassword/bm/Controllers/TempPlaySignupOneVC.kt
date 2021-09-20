@@ -115,31 +115,31 @@ class  TempPlaySignupOneVC : BaseActivity() {
     }
 
     fun initGetMemberValue(completion: CompletionHandler) {
-        _getMemberOne(memberToken) { success ->
-            if (success) {
-                val one = MemberService.one
-                if (one == null) {
-                    warning("無法取得該會員資訊，請稍後再試")
-                } else {
-                    for ((idx, key) in keys.withIndex()) {
-                        val keys1: Iterator<String> = one.keys()
-                        while (keys1.hasNext()) {
-                            val key1: String = keys1.next().toString()
-                            if (key == key1) {
-                                memberOne[idx][key]!!["value"] = one[key].toString()
-                                break
-                            }
-                        }
-                    }
-                    //println(memberOne)
-                    memberName = one[NAME_KEY].toString()
-                    setMyTitle(memberName)
-                }
-            } else {
-                warning(MemberService.msg)
-            }
-            completion(success)
-        }
+//        _getMemberOne(memberToken) { success ->
+//            if (success) {
+//                val one = MemberService.one
+//                if (one == null) {
+//                    warning("無法取得該會員資訊，請稍後再試")
+//                } else {
+//                    for ((idx, key) in keys.withIndex()) {
+//                        val keys1: Iterator<String> = one.keys()
+//                        while (keys1.hasNext()) {
+//                            val key1: String = keys1.next().toString()
+//                            if (key == key1) {
+//                                memberOne[idx][key]!!["value"] = one[key].toString()
+//                                break
+//                            }
+//                        }
+//                    }
+//                    //println(memberOne)
+//                    memberName = one[NAME_KEY].toString()
+//                    setMyTitle(memberName)
+//                }
+//            } else {
+//                warning(MemberService.msg)
+//            }
+//            completion(success)
+//        }
     }
     fun initIsTeamManager(completion: CompletionHandler) {
         _getTeamManagerList { success ->

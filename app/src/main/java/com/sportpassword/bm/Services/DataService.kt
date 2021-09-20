@@ -80,7 +80,7 @@ open class DataService: BaseService() {
         filter.put("perPage", perPage)
 
         if (member.isLoggedIn) {
-            filter.put("member_token", member.token)
+            filter.put("member_token", member.token!!)
         }
 
         val body = filter.toJSONString()

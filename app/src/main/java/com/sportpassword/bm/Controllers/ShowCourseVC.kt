@@ -522,7 +522,7 @@ class ShowCourseVC : ShowVC() {
             return
         }
         Loading.show(mask)
-        CourseService.signup_date(this, token!!, member.token, myTable!!.dateTable!!.token) { success ->
+        CourseService.signup_date(this, token!!, member.token!!, myTable!!.dateTable!!.token) { success ->
             Loading.hide(mask)
             if (success) {
                 signup_date = CourseService.signup_date

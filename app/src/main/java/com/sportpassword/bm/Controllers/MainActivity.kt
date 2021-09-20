@@ -214,12 +214,12 @@ class MainActivity : BaseActivity() {
 
     override fun onResume() {
         super.onResume()
-        LocalBroadcastManager.getInstance(this).registerReceiver(memberDidChange, IntentFilter(NOTIF_MEMBER_DID_CHANGE))
+        //LocalBroadcastManager.getInstance(this).registerReceiver(memberDidChange, IntentFilter(NOTIF_MEMBER_DID_CHANGE))
 //        LocalBroadcastManager.getInstance(this).registerReceiver(teamUpdate, IntentFilter(NOTIF_TEAM_UPDATE))
     }
 
     override fun onDestroy() {
-        LocalBroadcastManager.getInstance(this).unregisterReceiver(memberDidChange)
+        //LocalBroadcastManager.getInstance(this).unregisterReceiver(memberDidChange)
         super.onDestroy()
     }
 

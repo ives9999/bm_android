@@ -135,13 +135,13 @@ class ShowTempPlayActivity : BaseActivity() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        when (requestCode) {
-            VALIDATE_REQUEST_CODE -> {
-                _getMemberOne(member.token!!) {
-
-                }
-            }
-        }
+//        when (requestCode) {
+//            VALIDATE_REQUEST_CODE -> {
+//                _getMemberOne(member.token!!) {
+//
+//                }
+//            }
+//        }
     }
 
     override fun setTeamData(imageView: ImageView?) {

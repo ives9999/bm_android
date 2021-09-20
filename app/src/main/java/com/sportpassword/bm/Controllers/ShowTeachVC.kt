@@ -88,7 +88,7 @@ class ShowTeachVC : YouTubeBaseActivity(), YouTubePlayer.OnInitializedListener {
     fun refresh() {
         if (token != null) {
             Loading.show(mask)
-            val params: HashMap<String, String> = hashMapOf("token" to token!!, "member_token" to member.token)
+            val params: HashMap<String, String> = hashMapOf("token" to token!!, "member_token" to member.token!!)
             dataService.getOne(this, params) { success ->
                 if (success) {
                     genericTable()

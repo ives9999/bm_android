@@ -1597,6 +1597,15 @@ inline fun <reified T: Table> refreshOne(): T? {
     return t
 }
 
+inline fun <reified T : Any> Any.getThroughReflection(propertyName: String): T? {
+    val getterName = "get" + propertyName.capitalize()
+    return try {
+        javaClass.getMethod(getterName).invoke(this) as? T
+    } catch (e: NoSuchMethodException) {
+        null
+    }
+}
+
 fun getFragment(activity: BaseActivity, able_type: String): TabFragment? {
     val frags = activity.supportFragmentManager.fragments
     var _frag: TabFragment? = null

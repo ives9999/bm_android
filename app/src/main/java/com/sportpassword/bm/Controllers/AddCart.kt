@@ -186,7 +186,7 @@ class AddCartVC : MyTableVC(), ValueChangedDelegate {
         if (cartItem_token != null) {
 
             submitBtn.text = "更新購物車"
-            val params: HashMap<String, String> = hashMapOf("cart_item_token" to cartItem_token!!, "member_token" to member.token)
+            val params: HashMap<String, String> = hashMapOf("cart_item_token" to cartItem_token!!, "member_token" to member.token!!)
             CartService.getOne(this, params) { success ->
                 Loading.hide(mask)
                 if (success) {
@@ -642,7 +642,7 @@ class AddCartVC : MyTableVC(), ValueChangedDelegate {
 
         params["device"] = "app"
         params["do"] = "update"
-        params["member_token"] = member.token
+        params["member_token"] = member.token!!
 
         if (cartItem_token != null) {
             params["cartItem_token"] = cartItem_token!!

@@ -33,7 +33,8 @@ interface ToInterface {
             //val _member: Member = Member(JSONObject())
             for (key in MEMBER_MUST_ARRAY) {
                 val type: String = MEMBER_ARRAY[key]!!["type"]!!
-                val value: String = member.fetch(key)
+                val value = ""
+                //val value: String = member.fetch(key)
                 if (value.isEmpty() || value == "0") {
                     msg += MEMBER_MUST_ARRAY_WARNING[key]!! + "\n"
                 }
@@ -117,6 +118,11 @@ interface ToInterface {
         mainDelegate.startActivity(forgetPasswordIntent)
     }
 
+    fun toLogin() {
+        val i: Intent = Intent(mainDelegate, LoginActivity::class.java)
+        mainDelegate.loginVC.launch(i)
+    }
+
     fun toManager(page: String) {
         if (!member.isLoggedIn) {
             Alert.show(mainDelegate, "警告", "請先登入會員")
@@ -151,11 +157,6 @@ interface ToInterface {
         mainDelegate.startActivity(i)
     }
 
-    fun toLogin() {
-        val loginIntent: Intent = Intent(mainDelegate, LoginActivity::class.java)
-        mainDelegate.startActivity(loginIntent)
-    }
-
     fun toOrder() {
         var msg: String = ""
         if (!member.isLoggedIn) {
@@ -166,7 +167,8 @@ interface ToInterface {
             //val _member: Member = Member(JSONObject())
             for (key in MEMBER_MUST_ARRAY) {
                 val type: String = MEMBER_ARRAY[key]!!["type"]!!
-                val value: String = member.fetch(key)
+                val value: String = ""
+                //val value: String = member.fetch(key)
                 if (value.isEmpty() || value == "0") {
                     msg += MEMBER_MUST_ARRAY_WARNING[key]!! + "\n"
                 }

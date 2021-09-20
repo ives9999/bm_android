@@ -277,10 +277,10 @@ class OrderVC : MyTableVC() {
     fun initData() {
 
         memberRows = arrayListOf(
-            hashMapOf("title" to "姓名","key" to NAME_KEY,"value" to member.name,"show" to member.name,"cell" to "textField","keyboard" to KEYBOARD.default.toString()),
-            hashMapOf("title" to "電話","key" to MOBILE_KEY,"value" to member.mobile,"show" to member.mobile,"cell" to "textField","keyboard" to KEYBOARD.numberPad.toString()),
-            hashMapOf("title" to "EMail","key" to EMAIL_KEY,"value" to member.email,"show" to member.email,"cell" to "textField","keyboard" to KEYBOARD.emailAddress.toString()),
-            hashMapOf("title" to "住址","key" to ADDRESS_KEY,"value" to member.address,"show" to member.address,"cell" to "textField","keyboard" to KEYBOARD.default.toString())
+            hashMapOf("title" to "姓名","key" to NAME_KEY,"value" to member.name!!,"show" to member.name!!,"cell" to "textField","keyboard" to KEYBOARD.default.toString()),
+            hashMapOf("title" to "電話","key" to MOBILE_KEY,"value" to member.mobile!!,"show" to member.mobile!!,"cell" to "textField","keyboard" to KEYBOARD.numberPad.toString()),
+            hashMapOf("title" to "EMail","key" to EMAIL_KEY,"value" to member.email!!,"show" to member.email!!,"cell" to "textField","keyboard" to KEYBOARD.emailAddress.toString()),
+            hashMapOf("title" to "住址","key" to ADDRESS_KEY,"value" to member.address!!,"show" to member.address!!,"cell" to "textField","keyboard" to KEYBOARD.default.toString())
         )
 
         invoiceRows.clear()

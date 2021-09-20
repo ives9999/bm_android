@@ -24,9 +24,13 @@ import kotlinx.android.synthetic.main.activity_register.refresh
 import kotlinx.android.synthetic.main.mask.*
 import java.io.File
 import com.sportpassword.bm.Form.ValueChangedDelegate
+import com.sportpassword.bm.Models.MemberTable
 import com.sportpassword.bm.member
 import kotlinx.android.synthetic.main.activity_register.edit_featured_container
 import org.jetbrains.anko.sdk27.coroutines.onClick
+import kotlin.reflect.KClass
+import kotlin.reflect.full.createType
+import kotlin.reflect.full.memberProperties
 
 class RegisterActivity : MyTableVC(), ValueChangedDelegate {
 
@@ -139,23 +143,61 @@ class RegisterActivity : MyTableVC(), ValueChangedDelegate {
             }
             //println(keys)
 
-            member_token = member.token
+            member_token = member.token!!
             for (key in keys) {
-                if (MEMBER_ARRAY.containsKey(key)) {
-                    val value: String = member.fetch(key)
-                    val formItem = getFormItemFromKey(key)
-                    if (formItem != null) {
-                        if (key == AREA_KEY) {
-                            val cityFormItem: CityFormItem = getFormItemFromKey(CITY_KEY) as CityFormItem
-                            val areaFormItem: AreaFormItem = formItem as AreaFormItem
-                            if (cityFormItem.value != null && cityFormItem.value!!.isNotEmpty()) {
-                                areaFormItem.city_id = (cityFormItem.value)?.toInt()
+
+                if (key == "section") { continue }
+
+                val formItem = getFormItemFromKey(key)
+                var value: String = ""
+                val items = MemberTable::class.memberProperties.iterator()
+                for (it in items) {
+//                    break
+//                }
+//                MemberTable::class.memberProperties.forEach {
+
+                    val name = it.name
+                    if (key == name) {
+                        val t = it.returnType
+                        if (t == String::class.createType()) {
+                            value = session.getString(name, "")!!
+                        } else if (t == Int::class.createType()) {
+                            val tmp = session.getInt(name, 0)
+                            value = tmp.toString()
+                            if (key == AREA_KEY) {
+                                val cityFormItem: CityFormItem = getFormItemFromKey(CITY_KEY) as CityFormItem
+                                val areaFormItem: AreaFormItem = formItem as AreaFormItem
+                                if (cityFormItem.value != null && cityFormItem.value!!.isNotEmpty()) {
+                                    areaFormItem.city_id = (cityFormItem.value)?.toInt()
                             }
                         }
-                        formItem.value = value
-                        formItem.make()
+
+                        } else if (t == Boolean::class.createType()) {
+                            val tmp = session.getBoolean(name, false)
+                            value = tmp.toString()
+                        }
+                        break
                     }
                 }
+
+                formItem?.value = value
+                formItem?.make()
+
+//                if (MEMBER_ARRAY.containsKey(key)) {
+//                    val value: String = member.fetch(key)
+//                    val formItem = getFormItemFromKey(key)
+//                    if (formItem != null) {
+//                        if (key == AREA_KEY) {
+//                            val cityFormItem: CityFormItem = getFormItemFromKey(CITY_KEY) as CityFormItem
+//                            val areaFormItem: AreaFormItem = formItem as AreaFormItem
+//                            if (cityFormItem.value != null && cityFormItem.value!!.isNotEmpty()) {
+//                                areaFormItem.city_id = (cityFormItem.value)?.toInt()
+//                            }
+//                        }
+//                        formItem.value = value
+//                        formItem.make()
+//                    }
+//                }
 
 //                if (key == CITY_KEY) {
 //                    val value: String = member.fetch(CITY_KEY)
@@ -177,10 +219,10 @@ class RegisterActivity : MyTableVC(), ValueChangedDelegate {
 //                    }
 //                }
             }
-            old_selected_city = member.fetch(CITY_KEY)
-            if (member.avatar.length > 0) {
+            old_selected_city = member.city.toString()
+            if (member.avatar!!.length > 0) {
                 //println(member.avatar)
-                val avatar: String = member.avatar
+                val avatar: String = member.avatar!!
                 //val avatar: String = BASE_URL + member.avatar
                 setImage(null, avatar)
                 isFeaturedChange = false
