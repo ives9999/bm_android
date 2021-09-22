@@ -14,6 +14,11 @@ open class Tables {
     //var rows: ArrayList<Table> = arrayListOf()
 }
 
+open class ReturnJson {
+    val success: Boolean = false
+    val msg: String = ""
+}
+
 open class Table {
 
     var id: Int = -1

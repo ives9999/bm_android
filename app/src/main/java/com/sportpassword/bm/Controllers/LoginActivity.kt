@@ -3,24 +3,21 @@ package com.sportpassword.bm.Controllers
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
-import androidx.localbroadcastmanager.content.LocalBroadcastManager
-import android.view.LayoutInflater
+import android.os.Parcelable
 import android.view.View
-import android.widget.TextView
+import com.google.gson.Gson
 import com.google.gson.JsonParseException
 import com.sportpassword.bm.Fragments.MemberFragment
-import com.sportpassword.bm.Models.ArenaTable
 import com.sportpassword.bm.Models.MemberTable
 import com.sportpassword.bm.R
+import com.sportpassword.bm.Models.ReturnJson
 import com.sportpassword.bm.Services.MemberService
 import com.sportpassword.bm.Utilities.*
 import com.sportpassword.bm.member
 import kotlinx.android.synthetic.main.activity_login.*
 import kotlinx.android.synthetic.main.mask.*
-import org.json.JSONObject
-import java.util.*
-import kotlin.reflect.full.createType
 import kotlin.reflect.full.memberProperties
+
 
 class LoginActivity : BaseActivity() {
 
@@ -58,22 +55,35 @@ class LoginActivity : BaseActivity() {
             Loading.hide(mask)
             //println(success)
             if (success) {
+//                println(MemberService.jsonString)
+                var t: ReturnJson? = null
                 try {
-                    //println(MemberService.jsonString)
-                    table = jsonToModel<MemberTable>(MemberService.jsonString)
+                    t = Gson().fromJson<ReturnJson>(MemberService.jsonString, ReturnJson::class.java)
                 } catch (e: JsonParseException) {
                     warning(e.localizedMessage!!)
                 }
-                if (table != null) {
-                    table!!.filterRow()
-                    table!!.isLoggedIn = true
-                    //table!!.printRow()
-                    table!!.toSession(this)
-                    val intent = Intent()
-                    setResult(Activity.RESULT_OK, intent)
-                    finish()
+                var t_success: Boolean = false
+                var t_msg: String = ""
+                if (t != null) {
+                    t_success = t.success
+                    t_msg = t.msg
+                }
+                if (!t_success) {
+                    warning(t_msg)
                 } else {
-                    warning(MemberService.msg)
+                    table = jsonToModel<MemberTable>(MemberService.jsonString)
+                    if (table != null) {
+                        table!!.toSession(this, true)
+
+                        session.dump()
+                        val a = member.isLoggedIn
+                        val b = member.name
+                        val intent = Intent()
+                        setResult(Activity.RESULT_OK, intent)
+                        finish()
+                    } else {
+                        warning(MemberService.msg)
+                    }
                 }
                 //if (MemberService.success) {
                     //LocalBroadcastManager.getInstance(this).sendBroadcast(memberDidChangeIntent)
@@ -112,3 +122,5 @@ class LoginActivity : BaseActivity() {
         toRegister()
     }
 }
+
+

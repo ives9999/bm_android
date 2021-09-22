@@ -68,27 +68,27 @@ class MemberTable: Table() {
         super.printRow()
     }
 
-    fun toSession(context: Context) {
+    fun toSession(context: Context, isLoggedIn: Boolean = false) {
 
+        filterRow()
+        this.isLoggedIn = isLoggedIn
         val session: SharedPreferences = context.getSharedPreferences(SESSION_FILENAME, 0)
-        val keys = session.all.map { it.key }
-        //val memberTable: MemberTable = MemberTable()
-        for (key in keys) {
-            MemberTable::class.memberProperties.forEach {
-                val name: String = it.name
-                if (name == key) {
-                    val value = it.getter.call(this)
-                    when (value) {
-                        is Int ->
-                            session.edit().putInt(name, value).apply()
-                        is String ->
-                            session.edit().putString(name, value).apply()
-                        is Boolean ->
-                            session.edit().putBoolean(name, value).apply()
-                    }
-                }
-            }
+        this::class.memberProperties.forEach {
+            val name: String = it.name
+            val value = it.getter.call(this)
+            when (value) {
+                is Int ->
+                    session.edit().putInt(name, value).apply()
+                is String ->
+                    session.edit().putString(name, value).apply()
+                is Boolean ->
+                    session.edit().putBoolean(name, value).apply()
+            }            
         }
+        // val keys = session.all.map { it.key }
+        // for (key in keys) {
+            
+        // }
     }
 
     fun validateShow(rawValue: Int): ArrayList<String> {

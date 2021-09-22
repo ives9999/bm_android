@@ -457,32 +457,38 @@ open class DataService: BaseService() {
 //        }
 //    }
 
-    open fun update(context: Context, _params: MutableMap<String, String>, filePath: String, complete: CompletionHandler) {
+    open fun update(context: Context, params: MutableMap<String, String>, filePath: String, complete: CompletionHandler) {
 
         val url: String = getUpdateURL()
-        println(url)
+        //println(url)
+
         val header: MutableList<Pair<String, String>> = mutableListOf()
         header.add(Pair("Accept","application/json"))
         header.add(Pair("Content-Type","application/json"))
 
-        val params = _params.let { map1 ->
-            PARAMS.let { map2 ->
-                map1 + map2
-            }
-        }
+        params += PARAMS
+//        val params = _params.let { map1 ->
+//            PARAMS.let { map2 ->
+//                map1 + map2
+//            }
+//        }
         //println(_params)
 
-        val params1: MutableList<Pair<String, String>> = mutableListOf()
-        var jsonString: String = "{"
-        val tmps: ArrayList<String> = arrayListOf()
-        for ((key, value) in params) {
+        //val params1: MutableList<Pair<String, String>> = mutableListOf()
+        //var jsonString: String = "{"
+        //val tmps: ArrayList<String> = arrayListOf()
+        //for ((key, value) in params) {
 
-            params1.add(Pair(key, value))
-            tmps.add("\"$key\":\"$value\"")
-        }
-        jsonString += tmps.joinToString(",")
-        jsonString += "}"
+            //params1.add(Pair(key, value))
+            //tmps.add("\"$key\":\"$value\"")
+        //}
+        //jsonString += tmps.joinToString(",")
+        //jsonString += "}"
         //println(jsonString)
+
+        val objectMapper = ObjectMapper()
+        val body: String = objectMapper.writeValueAsString(params)
+        //println(body)
 
         var filePaths: ArrayList<String>? = null
         if (filePath.isNotEmpty()) {
@@ -490,36 +496,45 @@ open class DataService: BaseService() {
             filePaths.add(filePath)
         }
 
-        MyHttpClient.instance.uploadFile(context, url, null, filePaths, params1, header) { success ->
+        MyHttpClient.instance.uploadFile(context, url, body, filePaths, null, header) { success ->
+
             if (success) {
                 val response = MyHttpClient.instance.response
                 if (response != null) {
-                    val responseStr = response.toString()
-                    //println(responseStr)
+
                     try {
-                        val json = JSONObject(responseStr)
-                        //println(json)
-                        this.success = json.getBoolean("success")
-                        if (this.success) {
-                            this.id = json.getInt("id")
-                            val obj = json.getJSONObject("model")
-                            jsonToMember(obj, context)
-                        } else {
-                            if (json.has("msg")) {
-                                msg = json.getString("msg")
-                            }
-                            if (json.has("errors")) {
-                                msg = ""
-                                val errors = json.getJSONArray("errors")
-                                for (i in 0..errors.length()-1) {
-                                    msg += errors.getString(i) + "\n"
-                                }
-                            }
-                        }
+                        jsonString = response.toString()
+                        this.success = true
                     } catch (e: Exception) {
                         this.success = false
-                        msg = "parse json failed，請洽管理員"
+                        msg = "update parse json failed，請洽管理員"
                     }
+//                    val responseStr = response.toString()
+//                    //println(responseStr)
+//                    try {
+//                        val json = JSONObject(responseStr)
+//                        //println(json)
+//                        this.success = json.getBoolean("success")
+//                        if (this.success) {
+//                            this.id = json.getInt("id")
+//                            val obj = json.getJSONObject("model")
+//                            jsonToMember(obj, context)
+//                        } else {
+//                            if (json.has("msg")) {
+//                                msg = json.getString("msg")
+//                            }
+//                            if (json.has("errors")) {
+//                                msg = ""
+//                                val errors = json.getJSONArray("errors")
+//                                for (i in 0..errors.length()-1) {
+//                                    msg += errors.getString(i) + "\n"
+//                                }
+//                            }
+//                        }
+//                    } catch (e: Exception) {
+//                        this.success = false
+//                        msg = "parse json failed，請洽管理員"
+//                    }
                     complete(true)
                 } else {
                     msg = "伺服器沒有傳回任何值，更新失敗，請洽管理員"
@@ -536,8 +551,7 @@ open class DataService: BaseService() {
     fun update(context: Context, token: String = "", params: HashMap<String, String>, complete: CompletionHandler) {
 
         val url: String = getUpdateURL()
-
-        //println(url)
+        println(url)
 
         val header: MutableList<Pair<String, String>> = mutableListOf()
         header.add(Pair("Accept","application/json"))
@@ -547,7 +561,7 @@ open class DataService: BaseService() {
         for ((key, value) in params) {
             body.put(key, value)
         }
-        //println(body)
+        println(body)
 
         MyHttpClient.instance.post(context, url, body.toString()) { success ->
 
@@ -596,7 +610,7 @@ open class DataService: BaseService() {
         update(context, "", params, complete)
     }
 
-        fun getImage(url: String, completion: CompletionHandler) {
+    fun getImage(url: String, completion: CompletionHandler) {
         try {
             val inStream: InputStream = URL(url).openStream()
             image = BitmapFactory.decodeStream(inStream)

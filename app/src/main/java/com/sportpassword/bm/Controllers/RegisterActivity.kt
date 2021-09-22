@@ -7,6 +7,8 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.RelativeLayout
 import androidx.appcompat.app.AlertDialog
+import com.google.gson.Gson
+import com.google.gson.JsonParseException
 import com.sportpassword.bm.Adapters.Form.*
 import com.sportpassword.bm.Form.FormItem.*
 import com.sportpassword.bm.Form.FormItemCellType
@@ -491,6 +493,16 @@ class RegisterActivity : MyTableVC(), ValueChangedDelegate {
                         } else {
                             msg = "註冊成功，已經寄出email與手機的認證訊息，請繼續完成認證程序"
                         }
+                        try {
+                            //println(MemberService.jsonString)
+                            val table = Gson().fromJson<RegisterResTable>(MemberService.jsonString, RegisterResTable::class.java)
+                            if (table != null) {
+                                val memberTable: MemberTable = table.model!!
+                                memberTable.toSession(this, true)
+                            }
+                        } catch (e: JsonParseException) {
+                            warning(e.localizedMessage!!)
+                        }
                         Alert.show(this, "成功", msg) {
                             prev()
                         }
@@ -678,4 +690,11 @@ class RegisterActivity : MyTableVC(), ValueChangedDelegate {
         }
         //println(checked)
     }
+}
+
+class RegisterResTable {
+    var success: Boolean = false
+    var id: Int = 0
+    var update: String = ""
+    var model: MemberTable? = null
 }

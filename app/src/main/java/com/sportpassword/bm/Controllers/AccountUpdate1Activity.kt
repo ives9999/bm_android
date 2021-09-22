@@ -144,19 +144,19 @@ class AccountUpdate1Activity : BaseActivity() {
             value = accountTxt.text.toString()
             //println(value)
         }
-        MemberService.update(this, member.id, field, value) { success ->
-            //println(success)
-            if (success) {
-                if (MemberService.success) {
-                    LocalBroadcastManager.getInstance(this).sendBroadcast(memberDidChangeIntent)
-                    finish()
-                } else {
-                    Alert.show(this, "警告", MemberService.msg)
-                }
-            } else {
-                Alert.show(this, "警告", MemberService.msg)
-            }
-        }
+//        MemberService.update(this, member.id, field, value) { success ->
+//            //println(success)
+//            if (success) {
+//                if (MemberService.success) {
+//                    LocalBroadcastManager.getInstance(this).sendBroadcast(memberDidChangeIntent)
+//                    finish()
+//                } else {
+//                    Alert.show(this, "警告", MemberService.msg)
+//                }
+//            } else {
+//                Alert.show(this, "警告", MemberService.msg)
+//            }
+//        }
     }
 
     fun clear(view: View) {

@@ -266,50 +266,50 @@ object MemberService: DataService() {
         Volley.newRequestQueue(context).add(request)
     }
 
-    fun update(context: Context, id: Int, field: String, _value: String, complete: CompletionHandler) {
-        var value = _value
-        if (field == EMAIL_KEY) {
-            value = value.toLowerCase()
-        }
-        val url = URL_MEMBER_UPDATE
-        //println(url)
-
-        val body = JSONObject()
-        body.put(field, value)
-        body.put(ID_KEY, id)
-        body.put("source", "app")
-        val requestBody = body.toString()
-        //println(requestBody)
-
-        val request = object : JsonObjectRequest(Request.Method.POST, url, null, Response.Listener { json ->
-            //println(json)
-            try {
-                success = json.getBoolean("success")
-            } catch (e: JSONException) {
-                success = false
-                msg = "無法執行，沒有傳回成功值 " + e.localizedMessage
-            }
-            if (success) {
-                jsonToMember(json, context)
-            } else {
-                makeErrorMsg(json)
-            }
-            complete(true)
-        }, Response.ErrorListener { error ->
-            println(error.localizedMessage)
-            msg = "失敗，網站或網路錯誤"
-            complete(false)
-        }) {
-            override fun getBodyContentType(): String {
-                return HEADER
-            }
-
-            override fun getBody(): ByteArray {
-                return requestBody.toByteArray()
-            }
-        }
-        Volley.newRequestQueue(context).add(request)
-    }
+//    fun update(context: Context, id: Int, field: String, _value: String, complete: CompletionHandler) {
+//        var value = _value
+//        if (field == EMAIL_KEY) {
+//            value = value.toLowerCase()
+//        }
+//        val url = URL_MEMBER_UPDATE
+//        //println(url)
+//
+//        val body = JSONObject()
+//        body.put(field, value)
+//        body.put(ID_KEY, id)
+//        body.put("source", "app")
+//        val requestBody = body.toString()
+//        //println(requestBody)
+//
+//        val request = object : JsonObjectRequest(Request.Method.POST, url, null, Response.Listener { json ->
+//            //println(json)
+//            try {
+//                success = json.getBoolean("success")
+//            } catch (e: JSONException) {
+//                success = false
+//                msg = "無法執行，沒有傳回成功值 " + e.localizedMessage
+//            }
+//            if (success) {
+//                jsonToMember(json, context)
+//            } else {
+//                makeErrorMsg(json)
+//            }
+//            complete(true)
+//        }, Response.ErrorListener { error ->
+//            println(error.localizedMessage)
+//            msg = "失敗，網站或網路錯誤"
+//            complete(false)
+//        }) {
+//            override fun getBodyContentType(): String {
+//                return HEADER
+//            }
+//
+//            override fun getBody(): ByteArray {
+//                return requestBody.toByteArray()
+//            }
+//        }
+//        Volley.newRequestQueue(context).add(request)
+//    }
 
     fun sendVaildateCode(context: Context, type: String, value: String, token: String, complete: CompletionHandler) {
         var url: String = ""
