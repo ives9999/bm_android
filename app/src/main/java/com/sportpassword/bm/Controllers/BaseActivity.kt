@@ -212,9 +212,7 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
                     val frags = supportFragmentManager.fragments
                     for (frag in frags) {
                         val memberFragment = frag as? MemberFragment
-                        if (memberFragment != null) {
-                            memberFragment.loginout()
-                        }
+                        memberFragment?.loginout()
                     }
 
                 }
@@ -549,6 +547,25 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
                         val f = getFragment()
                         f?.degreeSelected(selected, show)
                     }
+                }
+            }
+        }
+    }
+
+    val validateVC = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { res ->
+        if (res.resultCode == Activity.RESULT_OK) {
+
+            if (res.data != null) {
+                val i: Intent? = res.data
+
+                if (i != null) {
+
+                    val frags = supportFragmentManager.fragments
+                    for (frag in frags) {
+                        val memberFragment = frag as? MemberFragment
+                        memberFragment?.refresh()
+                    }
+
                 }
             }
         }

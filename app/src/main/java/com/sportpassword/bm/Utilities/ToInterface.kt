@@ -108,10 +108,10 @@ interface ToInterface {
         mainDelegate.editCourseResult?.launch(intent)
     }
 
-    fun toEditMember() {
-        val accountIntent = Intent(mainDelegate, AccountActivity::class.java)
-        mainDelegate.startActivity(accountIntent)
-    }
+//    fun toEditMember() {
+//        val accountIntent = Intent(mainDelegate, AccountActivity::class.java)
+//        mainDelegate.startActivity(accountIntent)
+//    }
 
     fun toForgetPassword() {
         val forgetPasswordIntent: Intent = Intent(mainDelegate, ForgetPasswordActivity::class.java)
@@ -542,10 +542,20 @@ interface ToInterface {
 //        })
 //    }
 
+    fun toUpdatePassword() {
+        val i = Intent(mainDelegate, UpdatePasswordActivity::class.java)
+        mainDelegate.startActivity(i)
+    }
+
     fun toValidate(type: String) {
-        val intent = Intent(mainDelegate, ValidateActivity::class.java)
-        intent.putExtra("type", type)
-        mainDelegate.startActivityForResult(intent, mainDelegate.VALIDATE_REQUEST_CODE)
+//        val intent = Intent(mainDelegate, ValidateActivity::class.java)
+//        intent.putExtra("type", type)
+//        mainDelegate.startActivityForResult(intent, mainDelegate.VALIDATE_REQUEST_CODE)
+
+        val i: Intent = Intent(mainDelegate, ValidateActivity::class.java)
+        i.putExtra("type", type)
+        mainDelegate.validateVC.launch(i)
+
     }
 
     fun toYoutubePlayer(token: String) {

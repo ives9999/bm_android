@@ -75,9 +75,9 @@ class LoginActivity : BaseActivity() {
                     if (table != null) {
                         table!!.toSession(this, true)
 
-                        session.dump()
-                        val a = member.isLoggedIn
-                        val b = member.name
+                        //session.dump()
+                        //val a = member.isLoggedIn
+                        //val b = member.name
                         val intent = Intent()
                         setResult(Activity.RESULT_OK, intent)
                         finish()

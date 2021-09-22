@@ -8,6 +8,7 @@ import android.widget.Button
 import android.widget.ImageButton
 import com.sportpassword.bm.Adapters.GroupSection
 import com.sportpassword.bm.Controllers.*
+import com.sportpassword.bm.Models.MemberTable
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.MemberService
 import com.sportpassword.bm.Utilities.*
@@ -106,10 +107,18 @@ class MemberFragment: TabFragment() {
     }
 
     override fun refresh() {
-//        if (member.isLoggedIn) {
-//            //initTeamList()
-//                // member.memberPrint()
-//            Loading.show(mask)
+        if (member.isLoggedIn) {
+            Loading.show(mask)
+            dataService.getOne(mainActivity!!, hashMapOf("token" to member.token!!)) { success ->
+                Loading.hide(mask)
+                if (success) {
+                    val table = jsonToModel<MemberTable>(MemberService.jsonString)
+                    table?.toSession(mainActivity!!, true)
+                    loginout()
+                } else {
+                    mainActivity!!.warning("無法從伺服器取得會員資料，請稍後再試或聯絡管理員")
+                }
+            }
 //            mainActivity!!.refreshMember() { success ->
 //                Loading.hide(mask)
 //                if (success) {
@@ -118,9 +127,9 @@ class MemberFragment: TabFragment() {
 //                    mainActivity!!.warning("伺服器錯誤，請稍後再試或聯絡管理員")
 //                }
 //            }
-//        } else {
-//            _logoutBlock()
-//        }
+        } else {
+            _logoutBlock()
+        }
     }
 
 
@@ -287,19 +296,20 @@ class MemberFragment: TabFragment() {
     }
 
     fun registerBtnPressed(view: View){
-        //goRegister()
-        val registerIntent: Intent = Intent(activity, RegisterActivity::class.java)
-        startActivityForResult(registerIntent, mainActivity!!.REGISTER_REQUEST_CODE)
+        mainActivity!!.toRegister()
+//        val registerIntent: Intent = Intent(activity, RegisterActivity::class.java)
+//        startActivityForResult(registerIntent, mainActivity!!.REGISTER_REQUEST_CODE)
     }
-
     fun forgetpasswordBtnPressed(view: View) {
-        val forgetPasswordIntent = Intent(activity, ForgetPasswordActivity::class.java)
-        startActivity(forgetPasswordIntent)
+        mainActivity!!.toForgetPassword()
+//        val forgetPasswordIntent = Intent(activity, ForgetPasswordActivity::class.java)
+//        startActivity(forgetPasswordIntent)
     }
 
     fun toUpdatePassword() {
-        val updatePasswordIntent = Intent(activity, UpdatePasswordActivity::class.java)
-        startActivity(updatePasswordIntent)
+        mainActivity!!.toUpdatePassword()
+//        val updatePasswordIntent = Intent(activity, UpdatePasswordActivity::class.java)
+//        startActivity(updatePasswordIntent)
     }
 
     fun toCalendarCourseSignup() {
@@ -308,21 +318,21 @@ class MemberFragment: TabFragment() {
     }
 
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        when (requestCode) {
-            mainActivity!!.LOGIN_REQUEST_CODE -> {
-                loginout()
-            }
-            mainActivity!!.REGISTER_REQUEST_CODE -> {
-                loginout()
-            }
-            mainActivity!!.VALIDATE_REQUEST_CODE -> {
-                mainActivity!!.hideKeyboard()
-                refresh()
-            }
-        }
-    }
+//    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+//        super.onActivityResult(requestCode, resultCode, data)
+//        when (requestCode) {
+//            mainActivity!!.LOGIN_REQUEST_CODE -> {
+//                loginout()
+//            }
+//            mainActivity!!.REGISTER_REQUEST_CODE -> {
+//                loginout()
+//            }
+//            mainActivity!!.VALIDATE_REQUEST_CODE -> {
+//                mainActivity!!.hideKeyboard()
+//                refresh()
+//            }
+//        }
+//    }
 
 
     override fun setUserVisibleHint(isVisibleToUser: Boolean) {

@@ -82,27 +82,27 @@ class ShowTempPlayActivity : BaseActivity() {
             return
         }
         if ((member.validate and MOBILE_VALIDATE) == 0) {
-            warning("要使用臨打功能，須先通過手機認證", true, "手機認證", {
+            warning("要使用臨打功能，須先通過手機認證", true, "手機認證") {
                 toValidate("mobile")
-            })
+            }
             return
         }
         if (member.name!!.length == 0) {
-            warning("要使用臨打功能，請先輸入真實姓名", true, "輸入姓名", {
-                toEditMember()
-            })
+            warning("要使用臨打功能，請先輸入真實姓名", true, "輸入姓名") {
+                toRegister()
+            }
             return
         }
-        warning("報名臨打後，將會公開您的姓名與手機號碼給球隊管理員，方便球隊管理員跟您連絡\n是否真的要參加此球隊的臨打？", "取消報名", "確定臨打", {
+        warning("報名臨打後，將會公開您的姓名與手機號碼給球隊管理員，方便球隊管理員跟您連絡\n是否真的要參加此球隊的臨打？", "取消報名", "確定臨打") {
             _plusOne()
-        })
+        }
     }
 
     private fun _plusOne() {
         Loading.show(mask)
         TeamService.plusOne(this, name, nearDate, memberToken) { success ->
             Loading.hide(mask)
-            var msg: String = "報名臨打成功"
+            val msg: String = "報名臨打成功"
             if (success) {
                 Alert.show(this, "成功", msg)
                 refresh()

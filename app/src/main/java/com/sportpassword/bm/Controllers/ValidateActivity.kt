@@ -1,5 +1,7 @@
 package com.sportpassword.bm.Controllers
 
+import android.app.Activity
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
@@ -52,10 +54,12 @@ class ValidateActivity : BaseActivity() {
             MemberService.validate(this, type, code, member.token!!) { success ->
                 Loading.hide(mask)
                 if (success) {
-                    Alert.show(this, "訊息", "認證成功", {
+                    Alert.show(this, "訊息", "認證成功") {
                         //LocalBroadcastManager.getInstance(this).sendBroadcast(memberDidChangeIntent)
+                        val intent = Intent()
+                        setResult(Activity.RESULT_OK, intent)
                         finish()
-                    })
+                    }
                 } else {
                     Alert.show(this, "警告",  MemberService.msg)
                 }

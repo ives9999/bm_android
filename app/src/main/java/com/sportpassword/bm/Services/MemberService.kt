@@ -27,6 +27,10 @@ object MemberService: DataService() {
     var one: JSONObject? = null
     lateinit var blackLists: BlackLists
 
+    override fun getOneURL(): String {
+        return "$URL_ONE".format("member")
+    }
+
     override fun getUpdateURL(): String {
         return URL_MEMBER_UPDATE
     }
@@ -401,47 +405,47 @@ object MemberService: DataService() {
         Volley.newRequestQueue(context).add(request)
     }
 
-    fun getOne(context: Context, token: String, complete: CompletionHandler) {
-        val body = JSONObject()
-        body.put(TOKEN_KEY, token)
-        body.put("source", "app")
-        val requestBody = body.toString()
-        //println(URL_MEMBER_GETONE)
-        //println(body)
-
-        val request = object : JsonObjectRequest(Request.Method.POST, URL_MEMBER_GETONE, null, Response.Listener { json ->
-            //println(json)
-            try {
-                one = json
-                success = json.getBoolean("success")
-            } catch (e: JSONException) {
-                success = false
-                msg = "無法執行，沒有傳回成功值 " + e.localizedMessage
-            }
-            if (success) {
-                jsonToMember(json, context)
-                complete(true)
-            } else {
-                if (json.has("msg")) {
-                    msg = json.getString("msg")
-                }
-                complete(false)
-            }
-        }, Response.ErrorListener { error ->
-            println(error.localizedMessage)
-            msg = "失敗，網站或網路錯誤"
-            complete(false)
-        }) {
-            override fun getBodyContentType(): String {
-                return HEADER
-            }
-
-            override fun getBody(): ByteArray {
-                return requestBody.toByteArray()
-            }
-        }
-        Volley.newRequestQueue(context).add(request)
-    }
+//    fun getOne(context: Context, token: String, complete: CompletionHandler) {
+//        val body = JSONObject()
+//        body.put(TOKEN_KEY, token)
+//        body.put("source", "app")
+//        val requestBody = body.toString()
+//        //println(URL_MEMBER_GETONE)
+//        //println(body)
+//
+//        val request = object : JsonObjectRequest(Request.Method.POST, URL_MEMBER_GETONE, null, Response.Listener { json ->
+//            //println(json)
+//            try {
+//                one = json
+//                success = json.getBoolean("success")
+//            } catch (e: JSONException) {
+//                success = false
+//                msg = "無法執行，沒有傳回成功值 " + e.localizedMessage
+//            }
+//            if (success) {
+//                jsonToMember(json, context)
+//                complete(true)
+//            } else {
+//                if (json.has("msg")) {
+//                    msg = json.getString("msg")
+//                }
+//                complete(false)
+//            }
+//        }, Response.ErrorListener { error ->
+//            println(error.localizedMessage)
+//            msg = "失敗，網站或網路錯誤"
+//            complete(false)
+//        }) {
+//            override fun getBodyContentType(): String {
+//                return HEADER
+//            }
+//
+//            override fun getBody(): ByteArray {
+//                return requestBody.toByteArray()
+//            }
+//        }
+//        Volley.newRequestQueue(context).add(request)
+//    }
 
     /*
     fun FBLogin(context: Context, playerID: String, complete: (Boolean) -> Unit) {
