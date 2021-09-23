@@ -191,23 +191,35 @@ open class TabFragment : Fragment(), SearchItemDelegate, List1CellDelegate, Seri
     }
 
     open fun getDataStart(_page: Int, _perPage: Int) {
-        Loading.show(maskView)
-        //println("page: $_page")
-        //println(mainActivity!!.params)
-        loading = true
-
         if (member_like) {
             //var _able_type: String = able_type
             //if (able_type == "temp_play") _able_type = "team"
-            MemberService.likelist(requireContext(), able_type, "喜歡", _page, _perPage) { success ->
-                jsonString = MemberService.jsonString
-                getDataEnd(success)
+            if (member.isLoggedIn) {
+                Loading.show(maskView)
+                loading = true
+
+                MemberService.likelist(
+                    requireContext(),
+                    able_type,
+                    "喜歡",
+                    _page,
+                    _perPage
+                ) { success ->
+                    jsonString = MemberService.jsonString
+                    getDataEnd(success)
+                }
             }
         } else {
+            Loading.show(maskView)
+            loading = true
             dataService.getList(requireContext(), null, params, _page, _perPage) { success ->
                 jsonString = dataService.jsonString
                 getDataEnd(success)
             }
+        }
+        if (member.isLoggedIn) {
+
+
         }
     }
 

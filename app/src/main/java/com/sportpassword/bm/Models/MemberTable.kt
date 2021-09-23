@@ -322,16 +322,16 @@ class Member(val context: Context) {
     // }
     fun reset() {
 
-        this::class.memberProperties.forEach {
+        MemberTable::class.memberProperties.forEach {
 
             val name = it.name
-            val t = it.returnType.classifier as KClass<*>
+            val t = it.returnType
             if (t == String::class.createType()) {
-                session.edit().putString(name, "")
+                session.edit().putString(name, "").apply()
             } else if (t == Int::class.createType()) {
-                session.edit().putInt(name, 0)
+                session.edit().putInt(name, 0).apply()
             } else if (t == Boolean::class.createType()) {
-                session.edit().putBoolean(name, false)
+                session.edit().putBoolean(name, false).apply()
             }
             // if (it.returnType == String::class.createType()) {
             //     session.edit().putString(name, "")

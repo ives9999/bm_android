@@ -10,7 +10,7 @@ import com.google.gson.JsonParseException
 import com.sportpassword.bm.Fragments.MemberFragment
 import com.sportpassword.bm.Models.MemberTable
 import com.sportpassword.bm.R
-import com.sportpassword.bm.Models.ReturnJson
+import com.sportpassword.bm.Models.SuccessTable
 import com.sportpassword.bm.Services.MemberService
 import com.sportpassword.bm.Utilities.*
 import com.sportpassword.bm.member
@@ -56,9 +56,9 @@ class LoginActivity : BaseActivity() {
             //println(success)
             if (success) {
 //                println(MemberService.jsonString)
-                var t: ReturnJson? = null
+                var t: SuccessTable? = null
                 try {
-                    t = Gson().fromJson<ReturnJson>(MemberService.jsonString, ReturnJson::class.java)
+                    t = Gson().fromJson<SuccessTable>(MemberService.jsonString, SuccessTable::class.java)
                 } catch (e: JsonParseException) {
                     warning(e.localizedMessage!!)
                 }

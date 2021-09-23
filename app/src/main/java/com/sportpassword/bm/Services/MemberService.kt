@@ -82,7 +82,7 @@ object MemberService: DataService() {
     fun login(context: Context, email: String, password: String, playerID: String, complete: CompletionHandler) {
         val lowerCaseEmail = email.toLowerCase()
         val url = URL_LOGIN
-        println(url)
+        //println(url)
 
         val header: MutableList<Pair<String, String>> = mutableListOf()
         header.add(Pair("Accept","application/json"))
@@ -94,7 +94,7 @@ object MemberService: DataService() {
         filter.put("password", password)
         filter.put("player_id", playerID)
         val body = filter.toJSONString()
-        println(body)
+        //println(body)
 
 //        val body = JSONObject()
 //        body.put("email", email)

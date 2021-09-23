@@ -61,7 +61,7 @@ open class DataService: BaseService() {
         if (token != null) {
             url = url + "/" + token
         }
-        println(url)
+        //println(url)
 
         val header: MutableList<Pair<String, String>> = mutableListOf()
         header.add(Pair("Accept","application/json"))
@@ -84,7 +84,7 @@ open class DataService: BaseService() {
         }
 
         val body = filter.toJSONString()
-        println(body)
+        //println(body)
 
         MyHttpClient.instance.post(context, url, body) { success ->
             if (success) {
@@ -364,7 +364,7 @@ open class DataService: BaseService() {
     open fun getOne(context: Context, params: HashMap<String, String>, complete: CompletionHandler) {
 
         val url = getOneURL()
-        println(url)
+        //println(url)
 
         val header: MutableList<Pair<String, String>> = mutableListOf()
         header.add(Pair("Accept","application/json"))
@@ -375,7 +375,7 @@ open class DataService: BaseService() {
         val objectMapper = ObjectMapper()
         val body: String = objectMapper.writeValueAsString(params)
 
-        println(body)
+        //println(body)
 
         MyHttpClient.instance.post(context, url, body) { success ->
 
@@ -458,38 +458,32 @@ open class DataService: BaseService() {
 //        }
 //    }
 
-    open fun update(context: Context, params: MutableMap<String, String>, filePath: String, complete: CompletionHandler) {
+    open fun update(context: Context, _params: MutableMap<String, String>, filePath: String, complete: CompletionHandler) {
 
         val url: String = getUpdateURL()
-        //println(url)
-
+        println(url)
         val header: MutableList<Pair<String, String>> = mutableListOf()
         header.add(Pair("Accept","application/json"))
         header.add(Pair("Content-Type","application/json"))
 
-        params += PARAMS
-//        val params = _params.let { map1 ->
-//            PARAMS.let { map2 ->
-//                map1 + map2
-//            }
-//        }
+        val params = _params.let { map1 ->
+            PARAMS.let { map2 ->
+                map1 + map2
+            }
+        }
         //println(_params)
 
-        //val params1: MutableList<Pair<String, String>> = mutableListOf()
-        //var jsonString: String = "{"
-        //val tmps: ArrayList<String> = arrayListOf()
-        //for ((key, value) in params) {
+        val params1: MutableList<Pair<String, String>> = mutableListOf()
+        var jsonString: String = "{"
+        val tmps: ArrayList<String> = arrayListOf()
+        for ((key, value) in params) {
 
-            //params1.add(Pair(key, value))
-            //tmps.add("\"$key\":\"$value\"")
-        //}
-        //jsonString += tmps.joinToString(",")
-        //jsonString += "}"
+            params1.add(Pair(key, value))
+            tmps.add("\"$key\":\"$value\"")
+        }
+        jsonString += tmps.joinToString(",")
+        jsonString += "}"
         //println(jsonString)
-
-        val objectMapper = ObjectMapper()
-        val body: String = objectMapper.writeValueAsString(params)
-        //println(body)
 
         var filePaths: ArrayList<String>? = null
         if (filePath.isNotEmpty()) {
@@ -497,7 +491,7 @@ open class DataService: BaseService() {
             filePaths.add(filePath)
         }
 
-        MyHttpClient.instance.uploadFile(context, url, body, filePaths, null, header) { success ->
+        MyHttpClient.instance.uploadFile(context, url, null, filePaths, params1, header) { success ->
 
             if (success) {
                 val response = MyHttpClient.instance.response
@@ -505,6 +499,7 @@ open class DataService: BaseService() {
 
                     try {
                         jsonString = response.toString()
+//                        println(jsonString)
                         this.success = true
                     } catch (e: Exception) {
                         this.success = false

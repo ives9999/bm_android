@@ -117,7 +117,6 @@ class TempPlayFragment : TabFragment(), inter {
         }
 
         adapter = GroupAdapter()
-        mainActivity!!.session.dump()
 
 //        generateSections()
     }

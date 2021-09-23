@@ -14,7 +14,7 @@ open class Tables {
     //var rows: ArrayList<Table> = arrayListOf()
 }
 
-open class ReturnJson {
+open class SuccessTable {
     val success: Boolean = false
     val msg: String = ""
 }
