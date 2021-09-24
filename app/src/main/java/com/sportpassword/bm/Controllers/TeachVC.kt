@@ -37,7 +37,7 @@ class TeachVC : MyTableVC() {
         if (intent.hasExtra("params")) {
             val t = intent.getSerializableExtra("params")
             if (t != null) {
-                params = t as HashMap<String, Any>
+                params = t as HashMap<String, String>
             }
         }
 

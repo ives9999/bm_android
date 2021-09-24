@@ -8,7 +8,6 @@ import com.android.volley.Response
 import com.android.volley.toolbox.JsonArrayRequest
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
-import com.google.gson.Gson
 import com.sportpassword.bm.Models.*
 import com.sportpassword.bm.Utilities.*
 import com.sportpassword.bm.member
@@ -19,6 +18,11 @@ import java.io.InputStream
 import java.lang.Exception
 import java.net.URL
 import com.fasterxml.jackson.databind.ObjectMapper
+import com.google.gson.Gson
+import okhttp3.*
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.RequestBody.Companion.toRequestBody
+import java.io.IOException
 
 /**
  * Created by ives on 2018/2/14.
@@ -48,6 +52,8 @@ open class DataService: BaseService() {
     var able: SuperModel = SuperModel(JSONObject()) // for signup list able model
     var signup_date: JSONObject = JSONObject()//signup_date use
 
+    val okHttpClient = OkHttpClient()
+
     //open fun <T1: Table, T2: Tables<T1>> getList1(context: Context, token: String?, _filter: HashMap<String, Any>?, page: Int, perPage: Int, complete: CompletionHandler) {
 
 //    inline fun <reified T: Tables> list(context: Context, token: String?, _filter: HashMap<String, Any>?, page: Int, perPage: Int, complete: CompletionHandler) = getList2(T, context, token, _filter, page, perPage)
@@ -56,7 +62,7 @@ open class DataService: BaseService() {
 //
 //    }
 
-    open fun getList(context: Context, token: String?, _filter: HashMap<String, Any>?, page: Int, perPage: Int, complete: CompletionHandler) {
+    open fun getList(context: Context, token: String?, _params: HashMap<String, String>?, page: Int, perPage: Int, complete: CompletionHandler) {
         var url = getListURL()
         if (token != null) {
             url = url + "/" + token
@@ -67,54 +73,93 @@ open class DataService: BaseService() {
         header.add(Pair("Accept","application/json"))
         header.add(Pair("Content-Type","application/json; charset=utf-8"))
 
-        val filter: HashMap<String, Any>?
-        if (_filter == null) {
-            filter = hashMapOf()
-        } else {
-            filter = _filter
+        var params: HashMap<String, String>? = _params
+        if (params == null) {
+            params = hashMapOf()
         }
-        filter.put("source", "app")
-        filter.put("channel", "bm")
-        filter.put("status", "online")
-        filter.put("page", page)
-        filter.put("perPage", perPage)
+        params.put("device", "app")
+        params.put("channel", "bm")
+        params.put("status", "online")
+        params.put("page", page.toString())
+        params.put("perPage", perPage.toString())
 
         if (member.isLoggedIn) {
-            filter.put("member_token", member.token!!)
+            params.put("member_token", member.token!!)
         }
 
-        val body = filter.toJSONString()
+        val j: JSONObject = JSONObject(params as Map<*, *>)
+        val body = j.toString().toRequestBody("application/json; charset=utf-8".toMediaTypeOrNull())
+        //val body = filter.toJSONString()
         //println(body)
 
-        MyHttpClient.instance.post(context, url, body) { success ->
-            if (success) {
-                val response = MyHttpClient.instance.response
-                if (response != null) {
-                    try {
-                        //val sType = object : TypeToken<T2>() {}.type
-                        //val s = Gson().fromJson<T2>(response.toString(), sType)
-                        //val sType = object : TypeToken<T2>() {}.type
-                        //val s = Gson().fromJson<T2>(response.toString(), T2::class.java)
-//                        if (s != null) {
-//                            tables = s as T2
-//                        }
-                        this.jsonString = response.toString()
-//                        println(jsonString)
-                        this.success = true
-                    } catch (e: Exception) {
-                        this.success = false
-                        msg = "parse json failed，請洽管理員"
-                        println(e.localizedMessage)
-                    }
-                    complete(this.success)
-                } else {
-                    println("response is null")
-                }
-            } else {
+        //val objectMapper = ObjectMapper()
+        //val body_string: String = objectMapper.writeValueAsString(params)
+        //val body = body_string.toRequestBody()
+//        var body = FormBody.Builder().build()
+//        for ((key, value1) in params) {
+//            var value = ""
+//            when (value1) {
+//                is Int -> value = value1.toString()
+//                is Boolean -> value = value1.toString()
+//                is String -> value = value1
+//            }
+//            body.add(key, value)
+//        }
+        //body = body.build()
+        //val bodyJson = Gson().toJson(params)
+        //val body: RequestBody = RequestBody.create(JSON, bodyJson)
+
+        val request = okhttp3.Request.Builder().url(url).post(body).build()
+        okHttpClient.newCall(request).enqueue(object : Callback {
+            override fun onFailure(call: Call, e: IOException) {
                 msg = "網路錯誤，無法跟伺服器更新資料"
                 complete(success)
             }
-        }
+
+            override fun onResponse(call: Call, response: okhttp3.Response) {
+
+                try {
+                    //val sType = object : TypeToken<T2>() {}.type
+                    //val s = Gson().fromJson<T2>(response.toString(), sType)
+                    //val sType = object : TypeToken<T2>() {}.type
+                    //val s = Gson().fromJson<T2>(response.toString(), T2::class.java)
+//                        if (s != null) {
+//                            tables = s as T2
+//                        }
+                    jsonString = response.body!!.string()
+//                        println(jsonString)
+                    success = true
+                } catch (e: Exception) {
+                    success = false
+                    msg = "parse json failed，請洽管理員"
+                    println(e.localizedMessage)
+                }
+                complete(success)
+            }
+
+        })
+
+//        MyHttpClient.instance.post(context, url, body) { success ->
+//            if (success) {
+//                val response = MyHttpClient.instance.response
+//                if (response != null) {
+//                    try {
+//                        this.jsonString = response.toString()
+//                        this.success = true
+//                    } catch (e: Exception) {
+//                        this.success = false
+//                        msg = "parse json failed，請洽管理員"
+//                        println(e.localizedMessage)
+//                    }
+//                    complete(this.success)
+//                } else {
+//                    println("response is null")
+//                }
+//            } else {
+//                msg = "網路錯誤，無法跟伺服器更新資料"
+//                complete(success)
+//            }
+//        }
     }
 
 //    open fun getList(context: Context, token: String?, _filter: HashMap<String, Any>?, page: Int, perPage: Int, complete: CompletionHandler) {
@@ -459,7 +504,7 @@ open class DataService: BaseService() {
 //    }
 
     open fun update(context: Context, _params: MutableMap<String, String>, filePath: String, complete: CompletionHandler) {
-
+        jsonString = ""
         val url: String = getUpdateURL()
         println(url)
         val header: MutableList<Pair<String, String>> = mutableListOf()
@@ -474,16 +519,16 @@ open class DataService: BaseService() {
         //println(_params)
 
         val params1: MutableList<Pair<String, String>> = mutableListOf()
-        var jsonString: String = "{"
+        var jsonString1: String = "{"
         val tmps: ArrayList<String> = arrayListOf()
         for ((key, value) in params) {
 
             params1.add(Pair(key, value))
             tmps.add("\"$key\":\"$value\"")
         }
-        jsonString += tmps.joinToString(",")
-        jsonString += "}"
-        //println(jsonString)
+        jsonString1 += tmps.joinToString(",")
+        jsonString1 += "}"
+        println(jsonString1)
 
         var filePaths: ArrayList<String>? = null
         if (filePath.isNotEmpty()) {
@@ -499,7 +544,7 @@ open class DataService: BaseService() {
 
                     try {
                         jsonString = response.toString()
-//                        println(jsonString)
+                        println(jsonString)
                         this.success = true
                     } catch (e: Exception) {
                         this.success = false
@@ -546,8 +591,9 @@ open class DataService: BaseService() {
 
     fun update(context: Context, token: String = "", params: HashMap<String, String>, complete: CompletionHandler) {
 
+        jsonString = ""
         val url: String = getUpdateURL()
-        println(url)
+        //println(url)
 
         val header: MutableList<Pair<String, String>> = mutableListOf()
         header.add(Pair("Accept","application/json"))
@@ -557,7 +603,7 @@ open class DataService: BaseService() {
         for ((key, value) in params) {
             body.put(key, value)
         }
-        println(body)
+        //println(body)
 
         MyHttpClient.instance.post(context, url, body.toString()) { success ->
 
@@ -567,7 +613,6 @@ open class DataService: BaseService() {
                     try {
                         jsonString = response.toString()
                         this.success = true
-                        //println(response.toString())
 //                        val json = JSONObject(response.toString())
 ////                        //println(json)
 //                        //val obj = json.getJSONObject("order")
@@ -637,7 +682,7 @@ open class DataService: BaseService() {
                 msg = "無法刪除，請稍後再試 " + e.localizedMessage
             }
             if (!success) {
-                makeErrorMsg(json)
+                //makeErrorMsg(json)
             }
             complete(success)
         }, Response.ErrorListener { error ->
@@ -971,7 +1016,7 @@ open class DataService: BaseService() {
         Volley.newRequestQueue(context).add(request)
     }
 
-    fun updateTT(context: Context, type: String, params:HashMap<String, Any>, completion: CompletionHandler) {
+    fun updateTT(context: Context, type: String, params:HashMap<String, String>, completion: CompletionHandler) {
         val body = JSONObject()
         body.put("source", "app")
         body.put("channel", CHANNEL)
@@ -1021,7 +1066,7 @@ open class DataService: BaseService() {
         Volley.newRequestQueue(context).add(request)
     }
 
-    fun deleteTT(context: Context, type: String, params:HashMap<String, Any>, completion: CompletionHandler) {
+    fun deleteTT(context: Context, type: String, params:HashMap<String, String>, completion: CompletionHandler) {
         val body = JSONObject()
         body.put("source", "app")
         body.put("channel", CHANNEL)

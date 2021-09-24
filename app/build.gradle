@@ -95,8 +95,8 @@ android {
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     //implementation "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
-    implementation "org.jetbrains.kotlin:kotlin-stdlib:1.5.21"
-    implementation "org.jetbrains.kotlin:kotlin-reflect:1.5.21"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:1.5.31"
+    implementation "org.jetbrains.kotlin:kotlin-reflect:1.5.31"
     //implementation "org.jetbrains.kotlin:kotlin-stdlib:1.5.10"
     implementation "org.jetbrains.anko:anko:0.10.8"
     implementation "org.jetbrains.anko:anko-commons:0.10.8"
@@ -116,10 +116,10 @@ dependencies {
     //implementation 'com.github.franmontiel:PersistentCookieJar:v1.0.1'
     //implementation 'com.ohmerhe.kolley:kolley:0.3.1'
     implementation 'com.chauthai.swipereveallayout:swipe-reveal-layout:1.4.1'
-    implementation('org.apache.httpcomponents:httpmime:4.5.6') {
-        exclude module: 'httpclient'
-    }
-    implementation 'org.apache.httpcomponents:httpclient-android:4.3.5'
+//    implementation('org.apache.httpcomponents:httpmime:4.5.6') {
+//        exclude module: 'httpclient'
+//    }
+//    implementation 'org.apache.httpcomponents:httpclient-android:4.3.5'
     //implementation 'dev.dworks.libs:volleyplus:+'
     //    implementation('com.vimeo.networking:vimeo-networking:1.1.0') {
     //        exclude group: 'com.intellij', module: 'annotations'
@@ -132,7 +132,7 @@ dependencies {
 
     //implementation 'com.xwray:groupie:2.1.0'
     //implementation 'com.xwray:groupie-kotlin-android-extensions:2.1.0'
-    testImplementation 'junit:junit:4.13.1'
+    testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test:runner:1.4.0'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
     implementation 'androidx.gridlayout:gridlayout:1.0.0'

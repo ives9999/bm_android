@@ -84,7 +84,7 @@ open class TabFragment : Fragment(), SearchItemDelegate, List1CellDelegate, Seri
     protected var isCourseShow: Boolean = false
     protected var isTeamShow: Boolean = false
 
-    var params: HashMap<String, Any> = hashMapOf()
+    var params: HashMap<String, String> = hashMapOf()
     var tables: Tables? = null
     var able_type: String = "course"
     var member_like: Boolean = false

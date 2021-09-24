@@ -494,9 +494,9 @@ class RegisterActivity : MyTableVC(), ValueChangedDelegate {
                             msg = "註冊成功，已經寄出email與手機的認證訊息，請繼續完成認證程序"
                         }
                         try {
-                            println(MemberService.jsonString)
+                            //println(MemberService.jsonString)
                             val table = Gson().fromJson<RegisterResTable>(MemberService.jsonString, RegisterResTable::class.java)
-                            if (table != null) {
+                            if (table?.model != null) {
                                 val memberTable: MemberTable = table.model!!
                                 memberTable.toSession(this, true)
                             }

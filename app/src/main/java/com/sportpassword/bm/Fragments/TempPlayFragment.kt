@@ -228,6 +228,7 @@ class TempPlayFragment : TabFragment(), inter {
         if (mysTable != null) {
             for (row in mysTable!!.rows) {
                 row.filterRow()
+                println("vvv")
                 val myItem = TeamItem(requireContext(), row)
                 myItem.list1CellDelegate = this
                 items.add(myItem)

@@ -81,7 +81,7 @@ open class Table {
         }
     }
 
-    open fun printRow() {
+    open fun dump() {
         val kc = this::class
         kc.memberProperties.forEach {
             println("${it.name}: ${it.getter.call(this).toString()}")

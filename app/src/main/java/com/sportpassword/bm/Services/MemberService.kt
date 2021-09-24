@@ -59,7 +59,7 @@ object MemberService: DataService() {
             if (success) {
                 //jsonToMember(json)
             } else {
-                makeErrorMsg(json)
+                //makeErrorMsg(json)
             }
             complete(true)
         }, Response.ErrorListener { error ->
@@ -208,7 +208,7 @@ object MemberService: DataService() {
             if (success) {
                 msg = json.getString("msg")
             } else {
-                makeErrorMsg(json)
+                //makeErrorMsg(json)
             }
             complete(true)
         }, Response.ErrorListener { error ->
@@ -251,7 +251,7 @@ object MemberService: DataService() {
             if (success) {
                 msg = "修改密碼成功，之後請用新密碼登入"
             } else {
-                makeErrorMsg(json)
+                //makeErrorMsg(json)
             }
             complete(true)
         }, Response.ErrorListener { error ->

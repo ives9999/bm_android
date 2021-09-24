@@ -480,7 +480,7 @@ interface ToInterface {
         mainDelegate.startActivity(i)
     }
 
-    fun toTeam(params: HashMap<String, Any>?, member_like: Boolean = false) {
+    fun toTeam(params: HashMap<String, String>?, member_like: Boolean = false) {
         val i = Intent(mainDelegate, TeamVC::class.java)
         i.putExtra("member_like", member_like)
         i.putExtra("params", params)

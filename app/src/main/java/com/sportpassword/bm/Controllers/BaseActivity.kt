@@ -127,7 +127,7 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
     var degrees: ArrayList<DEGREE> = arrayListOf()
     var keyword: String = ""
     lateinit var searchAdapter: GroupAdapter<GroupieViewHolder>
-    var params: HashMap<String, Any> = hashMapOf()
+    var params: HashMap<String, String> = hashMapOf()
 
     var searchPanel: SearchPanel = SearchPanel()
 

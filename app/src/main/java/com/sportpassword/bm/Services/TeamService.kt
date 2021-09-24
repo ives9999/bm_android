@@ -277,7 +277,7 @@ object TeamService: DataService() {
                 msg = "無法報名臨打，沒有傳回成功值 " + e.localizedMessage
             }
             if (!success) {
-                makeErrorMsg(json)
+                //makeErrorMsg(json)
             }
             complete(success)
         }, Response.ErrorListener { error ->
@@ -304,7 +304,7 @@ object TeamService: DataService() {
                 msg = "無法取消報名臨打，沒有傳回成功值 " + e.localizedMessage
             }
             if (!success) {
-                makeErrorMsg(json)
+                //makeErrorMsg(json)
             }
             complete(success)
         }, Response.ErrorListener { error ->

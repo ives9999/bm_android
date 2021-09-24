@@ -211,7 +211,7 @@ class ShowCoachVC: ShowVC() {
         if (myTable != null) {
             if (myTable!!.citys.size > 0) {
                 for (city in myTable!!.citys) {
-                    params["city_id"] = arrayListOf(city.id)
+                    params["city_id"] = arrayListOf(city.id).toString()
                     params["city_type"] = "all"
                     cityBtn.setText(city.name)
                 }
@@ -244,9 +244,9 @@ class ShowCoachVC: ShowVC() {
     }
 
     fun setCourse() {
-        var filter: HashMap<String, Any>? = null
+        var filter: HashMap<String, String>? = null
         if (myTable != null) {
-            filter = hashMapOf("coach_id" to myTable!!.id)
+            filter = hashMapOf("coach_id" to myTable!!.id.toString())
         }
         CourseService.getList(this, token, filter, 1, 100) { success ->
 

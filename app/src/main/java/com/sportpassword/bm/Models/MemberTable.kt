@@ -44,7 +44,7 @@ class MemberTable: Table() {
         super.filterRow()
 
         city = city_id
-        if (avatar.isNotEmpty()) {
+        if (avatar != null && avatar.length > 0) {
             if (!avatar.startsWith("http://") && !avatar.startsWith("https://")) {
                 avatar = BASE_URL + avatar
                 //print(featured_path)
@@ -62,10 +62,6 @@ class MemberTable: Table() {
         if (area_show.length > 0 && city_show.length > 0) {
             address = "${city_show}${area_show}${zip}${road}"
         }
-    }
-
-    override fun printRow() {
-        super.printRow()
     }
 
     fun toSession(context: Context, isLoggedIn: Boolean = false) {
