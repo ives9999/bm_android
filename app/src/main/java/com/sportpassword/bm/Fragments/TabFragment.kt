@@ -244,8 +244,7 @@ open class TabFragment : Fragment(), SearchItemDelegate, List1CellDelegate, Seri
                         adapter.update(items)
                         adapter.notifyDataSetChanged()
                     } else {
-                        mainActivity!!.warning(Global.message)
-                        Global.message = ""
+                        mainActivity!!.warning("table is null, 請洽管理員")
                     }
                 } else {
                     mainActivity!!.warning("沒有取得回傳的json字串，請洽管理員")
