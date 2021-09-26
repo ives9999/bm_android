@@ -571,7 +571,7 @@ open class DataService {
 
         jsonString = ""
         val url: String = getUpdateURL()
-        println(url)
+        //println(url)
 
         val header: MutableList<Pair<String, String>> = mutableListOf()
         header.add(Pair("Accept","application/json"))
@@ -581,7 +581,7 @@ open class DataService {
         for ((key, value) in params) {
             body.put(key, value)
         }
-        println(body)
+        //println(body)
 
         MyHttpClient.instance.post(context, url, body.toString()) { success ->
 

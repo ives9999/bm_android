@@ -584,16 +584,16 @@ class PaymentVC : MyTableVC() {
         params["expire_at"] = expire_at
         params["trade_no"] = trade_no
         if (gateway == GATEWAY.store_cvs) {
-            params["process"] = GATEWAY_PROCESS.getRawValueFromString("code")
+            params["gateway_process"] = GATEWAY_PROCESS.code.toEnglishString()
             params["payment_no"] = payment_no
             params["payment_url"] = payment_url
         } else if (gateway == GATEWAY.store_barcode) {
-            params["process"] = GATEWAY_PROCESS.getRawValueFromString("code")
+            params["gateway_process"] = GATEWAY_PROCESS.code.toEnglishString()
             params["barcode1"] = barcode1
             params["barcode2"] = barcode2
             params["barcode3"] = barcode3
         } else if (gateway == GATEWAY.ATM) {
-            params["process"] = GATEWAY_PROCESS.getRawValueFromString("code")
+            params["gateway_process"] = GATEWAY_PROCESS.code.toEnglishString()
             params["bank_code"] = bank_code
             params["bank_account"] = bank_account
         } else if (gateway == GATEWAY.credit_card) {
