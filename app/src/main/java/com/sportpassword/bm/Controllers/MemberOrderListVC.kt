@@ -31,7 +31,7 @@ class MemberOrderListVC : MyTableVC() {
     //protected lateinit var superModels: SuperModel
 
     //取代superDataLists(define in BaseActivity)，放置所有拿到的SuperModel，分頁時會使用到
-    var allSuperModels: ArrayList<SuperOrder> = arrayListOf()
+    //var allSuperModels: ArrayList<SuperOrder> = arrayListOf()
 
 
     override fun onCreate(savedInstanceState: Bundle?) {

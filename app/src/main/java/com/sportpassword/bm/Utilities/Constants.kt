@@ -386,14 +386,14 @@ val MEMBER_MUST_ARRAY: ArrayList<String> = arrayListOf(
 )
 
 val MEMBER_MUST_ARRAY_WARNING: HashMap<String, String> = hashMapOf(
-    NAME_KEY to "沒有填寫姓名",
-    NICKNAME_KEY to "沒有填寫暱稱",
-    EMAIL_KEY to "沒有填寫email",
-    MOBILE_KEY to "沒有填寫手機",
-    SEX_KEY to "沒有選擇性別",
-    CITY_KEY to "沒有選擇縣市",
-    AREA_KEY to "沒有選擇區域",
-    ROAD_KEY to "沒有填寫路名"
+    NAME_KEY to "會員資料沒有填寫姓名",
+    NICKNAME_KEY to "會員資料沒有填寫暱稱",
+    EMAIL_KEY to "會員資料沒有填寫email",
+    MOBILE_KEY to "會員資料沒有填寫手機",
+    SEX_KEY to "會員資料沒有選擇性別",
+    CITY_KEY to "會員資料沒有選擇縣市",
+    AREA_KEY to "會員資料沒有選擇區域",
+    ROAD_KEY to "會員資料沒有填寫路名"
 )
 
 // Notification Constants

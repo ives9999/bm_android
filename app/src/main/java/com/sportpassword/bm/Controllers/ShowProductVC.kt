@@ -1,30 +1,15 @@
 package com.sportpassword.bm.Controllers
 
-import android.graphics.Bitmap
-import android.graphics.Color
 import android.os.Bundle
 import android.view.View
-import android.widget.ImageView
-import android.widget.LinearLayout
 import com.google.gson.JsonParseException
 import com.sportpassword.bm.Models.ProductTable
-import com.sportpassword.bm.Models.SuperProduct
-import com.sportpassword.bm.Models.TeamTable
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.ProductService
-import com.sportpassword.bm.Services.StoreService
 import com.sportpassword.bm.Utilities.*
-import com.sportpassword.bm.member
-import com.squareup.picasso.Picasso
-import com.xwray.groupie.GroupAdapter
-import kotlinx.android.synthetic.main.activity_show_course_vc.*
 import kotlinx.android.synthetic.main.activity_show_product_vc.*
 import kotlinx.android.synthetic.main.activity_show_product_vc.contentView
-import kotlinx.android.synthetic.main.activity_show_product_vc.featured
 import kotlinx.android.synthetic.main.activity_show_product_vc.refresh
-import kotlinx.android.synthetic.main.activity_show_team_vc.*
-import kotlinx.android.synthetic.main.activity_show_team_vc.tableView
-import kotlinx.android.synthetic.main.mask.*
 
 class ShowProductVC: ShowVC() {
 

@@ -3,7 +3,7 @@ package com.sportpassword.bm.Models
 import com.sportpassword.bm.Utilities.toDateTime
 import org.json.JSONObject
 
-class TempPlayDatePlayer(data: JSONObject): SuperModel(data) {
+class TempPlayDatePlayer(data: JSONObject) {
     var id: Int = -1
     var member_id: Int = -1
     var team_id: Int = -1
@@ -25,7 +25,7 @@ class TempPlayDatePlayer(data: JSONObject): SuperModel(data) {
     }
 }
 
-class TempPlayDatePlayers(data: JSONObject): SuperModel(data) {
+class TempPlayDatePlayers(data: JSONObject) {
     var success: Boolean = true
     var rows: ArrayList<TempPlayDatePlayer> = arrayListOf()
 }

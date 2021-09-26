@@ -1,15 +1,21 @@
 package com.sportpassword.bm.Utilities
 
 import android.content.Intent
+import android.content.SharedPreferences
 import android.net.Uri
 import android.os.Build
 import android.provider.MediaStore
 import android.view.View
 import androidx.core.content.FileProvider
 import com.sportpassword.bm.Controllers.*
+import com.sportpassword.bm.Form.FormItem.AreaFormItem
+import com.sportpassword.bm.Form.FormItem.CityFormItem
+import com.sportpassword.bm.Models.MemberTable
 import com.sportpassword.bm.member
 import kotlinx.android.synthetic.main.mask.*
 import java.lang.Exception
+import kotlin.reflect.full.createType
+import kotlin.reflect.full.memberProperties
 
 interface ToInterface {
 
@@ -30,15 +36,7 @@ interface ToInterface {
                 toLogin()
             }
         } else {
-            //val _member: Member = Member(JSONObject())
-            for (key in MEMBER_MUST_ARRAY) {
-                val type: String = MEMBER_ARRAY[key]!!["type"]!!
-                val value = ""
-                //val value: String = member.fetch(key)
-                if (value.isEmpty() || value == "0") {
-                    msg += MEMBER_MUST_ARRAY_WARNING[key]!! + "\n"
-                }
-            }
+            msg = member.checkMust()
 
             if (msg.isNotEmpty()) {
                 mainDelegate.warning(msg, true, "填寫") {
@@ -164,15 +162,7 @@ interface ToInterface {
                 toLogin()
             }
         } else {
-            //val _member: Member = Member(JSONObject())
-            for (key in MEMBER_MUST_ARRAY) {
-                val type: String = MEMBER_ARRAY[key]!!["type"]!!
-                val value: String = ""
-                //val value: String = member.fetch(key)
-                if (value.isEmpty() || value == "0") {
-                    msg += MEMBER_MUST_ARRAY_WARNING[key]!! + "\n"
-                }
-            }
+            msg = member.checkMust()
 
             if (msg.isNotEmpty()) {
                 mainDelegate.warning(msg, true, "填寫") {

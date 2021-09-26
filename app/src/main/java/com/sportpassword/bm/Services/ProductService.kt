@@ -7,8 +7,8 @@ import org.json.JSONObject
 
 object ProductService: DataService() {
 
-    lateinit var superProducts: SuperProducts
-    lateinit var superProduct: SuperProduct
+//    lateinit var superProducts: SuperProducts
+//    lateinit var superProduct: SuperProduct
 
     override fun getListURL(): String {
         return URL_PRODUCT_LIST
@@ -20,13 +20,5 @@ object ProductService: DataService() {
 
     override fun getLikeURL(token: String): String {
         return URL_PRODUCT_LIKE.format(token)
-    }
-
-    override fun parseModels(json: JSONObject): SuperModel {
-        return JSONParse.parse<SuperProducts>(json)!!
-    }
-
-    override fun parseModel(json: JSONObject): SuperModel {
-        return JSONParse.parse<SuperProduct>(json)!!
     }
 }

@@ -86,7 +86,11 @@ class PaymentVC : MyTableVC() {
     var bank_code: String = ""
     var bank_account: String = ""
 
+    var handle_fee: String = ""
     var trade_no: String = ""
+    var card6No: String = ""
+    var card4No: String = ""
+    var gateway_at: String = ""
 
     var popupRows: ArrayList<HashMap<String, String>> = arrayListOf()
 
@@ -133,8 +137,8 @@ class PaymentVC : MyTableVC() {
 
     fun toECPay() {
 
-        //PaymentkitManager.initialize(this, ServerType.Stage)
-        PaymentkitManager.initialize(this, ServerType.Prod)
+        PaymentkitManager.initialize(this, ServerType.Stage)
+        //PaymentkitManager.initialize(this, ServerType.Prod)
         PaymentkitManager.createPayment(this, ecpay_token, LanguageCode.zhTW, true, title, PaymentkitManager.RequestCode_CreatePayment)
     }
 
@@ -577,19 +581,27 @@ class PaymentVC : MyTableVC() {
 
     fun updateOrder() {
         val params: HashMap<String, String> = hashMapOf("token" to order_token, "member_token" to member.token!!,"do" to "update")
-        params["process"] = GATEWAY_PROCESS.getRawValueFromString("code")
         params["expire_at"] = expire_at
         params["trade_no"] = trade_no
         if (gateway == GATEWAY.store_cvs) {
+            params["process"] = GATEWAY_PROCESS.getRawValueFromString("code")
             params["payment_no"] = payment_no
             params["payment_url"] = payment_url
         } else if (gateway == GATEWAY.store_barcode) {
+            params["process"] = GATEWAY_PROCESS.getRawValueFromString("code")
             params["barcode1"] = barcode1
             params["barcode2"] = barcode2
             params["barcode3"] = barcode3
         } else if (gateway == GATEWAY.ATM) {
+            params["process"] = GATEWAY_PROCESS.getRawValueFromString("code")
             params["bank_code"] = bank_code
             params["bank_account"] = bank_account
+        } else if (gateway == GATEWAY.credit_card) {
+            params["gateway_process"] = GATEWAY_PROCESS.complete.toEnglishString()
+            params["gateway_at"] = gateway_at
+            params["handle_fee"] = handle_fee
+            params["card4No"] = card4No
+            params["card6No"] = card6No
         }
 
         OrderService.update(this, params) { success ->
@@ -612,6 +624,14 @@ class PaymentVC : MyTableVC() {
                         val order = it.orderInfo
                         if (order != null) {
                             trade_no = order.tradeNo
+                            handle_fee = order.chargeFee.toString()
+                            gateway_at = order.paymentDate
+                        }
+
+                        val card = it.cardInfo
+                        if (card != null) {
+                            card4No = card.card4No
+                            card6No = card.card6No
                         }
 
                         val cvs = it.cvsInfo
@@ -647,7 +667,8 @@ class PaymentVC : MyTableVC() {
 
                         if (gateway == GATEWAY.credit_card) {
                             info("完成付款，我們將儘速將商品運送給您，謝謝您的光顧!!", "", "關閉") {
-                                refresh()
+                                //refresh()
+                                updateOrder()
                             }
                         } else {
                             updateOrder()
@@ -672,7 +693,6 @@ class PaymentVC : MyTableVC() {
                         warning("回傳值無法解析，請洽管理員")
                     }
                 }
-
             })
         }
     }

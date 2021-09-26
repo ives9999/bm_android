@@ -9,7 +9,6 @@ import com.sportpassword.bm.Models.CoachTable
 import com.sportpassword.bm.Models.Timetable
 import com.sportpassword.bm.Utilities.CompletionHandler
 import com.sportpassword.bm.Utilities.HEADER
-import com.sportpassword.bm.Utilities.JSONParse
 import com.sportpassword.bm.Utilities.URL_ONE
 import org.json.JSONException
 import org.json.JSONObject
@@ -35,11 +34,11 @@ object TimetableService: DataService() {
             try {
                 success = true
                 //println(json)
-                val tt = json.getJSONObject("tt")
-                val model = json.getJSONObject("model")
-                this.timetable = JSONParse.parse<Timetable>(tt)!!
-                //this.timetable.print()
-                this.coachTable = JSONParse.parse<CoachTable>(model)!!
+//                val tt = json.getJSONObject("tt")
+//                val model = json.getJSONObject("model")
+//                this.timetable = JSONParse.parse<Timetable>(tt)!!
+//                //this.timetable.print()
+//                this.coachTable = JSONParse.parse<CoachTable>(model)!!
 
             } catch (e: JSONException) {
                 println("parse data error: " + e.localizedMessage)

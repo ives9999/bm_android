@@ -333,6 +333,7 @@ class Member(val context: Context) {
             //     session.edit().putString(name, "")
             // }
         }
+
         // var json: JSONObject = JSONObject()
         // for ((k1, v1) in MEMBER_ARRAY) {
         //     //println("${k1} default is ${v1["default"]}")
@@ -353,6 +354,37 @@ class Member(val context: Context) {
         //justGetMemberOne = false
     }
 
+    fun checkMust(): String {
+
+        var msg: String = ""
+        for (key in MEMBER_MUST_ARRAY) {
+
+            val items = MemberTable::class.memberProperties.iterator()
+            var isFilled: Boolean = false
+            for (it in items) {
+                val name = it.name
+                if (key == name) {
+                    val t = it.returnType
+                    if (t == String::class.createType()) {
+                        val value = session.getString(name, "")!!
+                        if (value.isNotEmpty()) {
+                            isFilled = true
+                        }
+                    } else if (t == Int::class.createType()) {
+                        val value = session.getInt(name, 0)
+                        if (value > 0) {
+                            isFilled = true
+                        }
+                    }
+                    break
+                }
+            }
+            if (!isFilled) {
+                msg += MEMBER_MUST_ARRAY_WARNING[key]!! + "\n"
+            }
+        }
+        return msg
+    }
     
 //    private fun setField(fieldName: String): Any {
 //        val a: Field = javaClass.getDeclaredField(fieldName)

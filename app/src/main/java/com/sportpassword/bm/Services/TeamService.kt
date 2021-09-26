@@ -374,14 +374,14 @@ object TeamService: DataService() {
 //            val s = json.toString()
             //println(s)
             try {
-                tempPlayDatePlayers = JSONParse.parse<TempPlayDatePlayers>(json)!!
-                for (row in tempPlayDatePlayers.rows) {
-                    row.filterRow()
-                }
-//                timetables.print()
-                if (!tempPlayDatePlayers.success) {
-                    msg = json.getString("msg")
-                }
+//                tempPlayDatePlayers = JSONParse.parse<TempPlayDatePlayers>(json)!!
+//                for (row in tempPlayDatePlayers.rows) {
+//                    row.filterRow()
+//                }
+////                timetables.print()
+//                if (!tempPlayDatePlayers.success) {
+//                    msg = json.getString("msg")
+//                }
 
 
 

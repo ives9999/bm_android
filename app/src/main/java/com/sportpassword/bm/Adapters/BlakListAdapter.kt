@@ -37,7 +37,7 @@ class BlakListAdapter(val context: Context, val lists: ArrayList<BlackList>, val
 
         fun bind(position: Int) {
             val row: BlackList = lists[position]
-            row.print()
+            //row.print()
             val memberName = row.name
             val mobile = row.mobile
             val date = row.created_at.noSec()

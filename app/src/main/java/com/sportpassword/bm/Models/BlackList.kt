@@ -3,7 +3,7 @@ package com.sportpassword.bm.Models
 import org.json.JSONObject
 
 
-class BlackList(data: JSONObject): SuperModel(data) {
+class BlackList(data: JSONObject) {
 
     var id: Int = -1
     var name: String = ""
@@ -13,7 +13,7 @@ class BlackList(data: JSONObject): SuperModel(data) {
     var team: MutableMap<String, Any> = mutableMapOf()
 
 }
-class BlackLists(data: JSONObject): SuperModel(data) {
+class BlackLists(data: JSONObject) {
     var success: Boolean = true
     var rows: ArrayList<BlackList> = arrayListOf()
 

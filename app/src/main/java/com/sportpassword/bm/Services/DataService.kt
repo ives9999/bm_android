@@ -27,9 +27,10 @@ import java.io.IOException
 /**
  * Created by ives on 2018/2/14.
  */
-open class DataService: BaseService() {
+open class DataService {
     
     var success: Boolean = false
+    var msg: String = ""
     var id: Int = 0
     var totalCount: Int = 0
     var page: Int = 0
@@ -43,13 +44,13 @@ open class DataService: BaseService() {
     var citysandareas: HashMap<Int, HashMap<String, Any>> = hashMapOf()
     lateinit var timetables: Timetables
 
-    var superModel: SuperModel = SuperModel(JSONObject())
+    //var superModel: SuperModel = SuperModel(JSONObject())
 
     var jsonString: String = ""
 
     var image: Bitmap? = null
 
-    var able: SuperModel = SuperModel(JSONObject()) // for signup list able model
+    var able: CourseTable = CourseTable() // for signup list able model
     var signup_date: JSONObject = JSONObject()//signup_date use
 
     val okHttpClient = OkHttpClient()
@@ -338,9 +339,9 @@ open class DataService: BaseService() {
     open fun getLikeURL(token: String): String {return URL_LIST}
     open fun getOneURL(): String {return URL_ONE}
     open fun getDeleteURL(): String {return URL_DELETE}
-    open fun parseModel(json: JSONObject): SuperModel {return SuperModel(JSONObject())}
-    open fun parseModels(json: JSONObject): SuperModel {return SuperModel(JSONObject())}
-    open fun jsonToMember(json: JSONObject, context: Context){}
+//    open fun parseModel(json: JSONObject): SuperModel {return SuperModel(JSONObject())}
+//    open fun parseModels(json: JSONObject): SuperModel {return SuperModel(JSONObject())}
+//    open fun jsonToMember(json: JSONObject, context: Context){}
 
 //    open fun getOne(context: Context, type:String, titleField:String, token:String, complete: CompletionHandler) {
 //        val url = "$URL_ONE".format(type)
@@ -405,6 +406,7 @@ open class DataService: BaseService() {
                 if (response != null) {
                     try {
                         jsonString = response.toString()
+                        //println(jsonString)
 
 //                        val n = context.getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS)
 //                        println(n)
@@ -569,7 +571,7 @@ open class DataService: BaseService() {
 
         jsonString = ""
         val url: String = getUpdateURL()
-        //println(url)
+        println(url)
 
         val header: MutableList<Pair<String, String>> = mutableListOf()
         header.add(Pair("Accept","application/json"))
@@ -579,7 +581,7 @@ open class DataService: BaseService() {
         for ((key, value) in params) {
             body.put(key, value)
         }
-        //println(body)
+        println(body)
 
         MyHttpClient.instance.post(context, url, body.toString()) { success ->
 
@@ -955,14 +957,14 @@ open class DataService: BaseService() {
         val request = object : JsonObjectRequest(Request.Method.POST, url, null, Response.Listener { json ->
 //            println("json: " + json)
             try {
-                timetables = JSONParse.parse<Timetables>(json)!!
-                for (row in timetables.rows) {
-                    row.filterRow()
-                }
-//                timetables.print()
-                if (!timetables.success) {
-                    msg = json.getString("msg")
-                }
+//                timetables = JSONParse.parse<Timetables>(json)!!
+//                for (row in timetables.rows) {
+//                    row.filterRow()
+//                }
+////                timetables.print()
+//                if (!timetables.success) {
+//                    msg = json.getString("msg")
+//                }
                 complete(timetables.success)
             } catch (e: JSONException) {
                 println("parse data error: " + e.localizedMessage)
@@ -1011,10 +1013,10 @@ open class DataService: BaseService() {
                 if (!success) {
                     msg = json.getString("msg")
                 } else {
-                    timetables = JSONParse.parse<Timetables>(json)!!
-                    for (row in timetables.rows) {
-                        row.filterRow()
-                    }
+//                    timetables = JSONParse.parse<Timetables>(json)!!
+//                    for (row in timetables.rows) {
+//                        row.filterRow()
+//                    }
                 }
                 //println(json)
 //                println(data)
@@ -1061,10 +1063,10 @@ open class DataService: BaseService() {
                 if (!success) {
                     msg = json.getString("msg")
                 } else {
-                    timetables = JSONParse.parse<Timetables>(json)!!
-                    for (row in timetables.rows) {
-                        row.filterRow()
-                    }
+//                    timetables = JSONParse.parse<Timetables>(json)!!
+//                    for (row in timetables.rows) {
+//                        row.filterRow()
+//                    }
                 }
                 //println(json)
 //                println(data)
@@ -1096,7 +1098,7 @@ open class DataService: BaseService() {
     open fun getSignupURL(token: String): String { return ""}
     open fun getSignupDateURL(token: String): String { return ""}
     open fun getSignupListURL(token: String? = null): String { return ""}
-    open fun parseAbleForSingupList(data: JSONObject): SuperModel { return SuperModel(data) }
+//    open fun parseAbleForSingupList(data: JSONObject): SuperModel { return SuperModel(data) }
 
 
 //    {
@@ -1188,48 +1190,48 @@ open class DataService: BaseService() {
         }
     }
 
-    fun signup_list(context: Context, token: String? = null, page: Int = 1, perPage: Int = 8, complete: CompletionHandler) {
-        val url: String = getSignupListURL(token)
-        //print(url)
-        val jsonString: String = "{\"device\": \"app\", \"channel\": \"bm\", \"page\": " + page.toString() + ", \"perPage\": " + perPage + "}"
-        val body: JSONObject = JSONObject(jsonString)
-        //print(body)
-
-        MyHttpClient.instance.post(context, url, body.toString()) { success ->
-
-            if (success) {
-                val response = MyHttpClient.instance.response
-                if (response != null) {
-                    try {
-                        val json = JSONObject(response.toString())
-//                        println(json)
-                        if (json.has("able")) {
-                            able = parseAbleForSingupList(json.getJSONObject("able"))
-                            //able.print()
-                        }
-                        //val s: SuperSignups = JSONParse.parse<SuperSignups>(json)!!
-//                        for (i in 0..s.rows.size-1) {
-//                            val row = s.rows[i]
-//                            row.print()
+//    fun signup_list(context: Context, token: String? = null, page: Int = 1, perPage: Int = 8, complete: CompletionHandler) {
+//        val url: String = getSignupListURL(token)
+//        //print(url)
+//        val jsonString: String = "{\"device\": \"app\", \"channel\": \"bm\", \"page\": " + page.toString() + ", \"perPage\": " + perPage + "}"
+//        val body: JSONObject = JSONObject(jsonString)
+//        //print(body)
+//
+//        MyHttpClient.instance.post(context, url, body.toString()) { success ->
+//
+//            if (success) {
+//                val response = MyHttpClient.instance.response
+//                if (response != null) {
+//                    try {
+//                        val json = JSONObject(response.toString())
+////                        println(json)
+//                        if (json.has("able")) {
+//                            able = parseAbleForSingupList(json.getJSONObject("able"))
+//                            //able.print()
 //                        }
-                        //superModel = s
-                        complete(true)
-                    } catch (e: Exception) {
-                        this.success = false
-                        msg = "parse json failed，請洽管理員"
-                        println(e.localizedMessage)
-                        complete(false)
-                    }
-                } else {
-                    println("response is null")
-                    complete(false)
-                }
-            } else {
-                msg = "網路錯誤，無法跟伺服器更新資料"
-                complete(success)
-            }
-        }
-    }
+//                        //val s: SuperSignups = JSONParse.parse<SuperSignups>(json)!!
+////                        for (i in 0..s.rows.size-1) {
+////                            val row = s.rows[i]
+////                            row.print()
+////                        }
+//                        //superModel = s
+//                        complete(true)
+//                    } catch (e: Exception) {
+//                        this.success = false
+//                        msg = "parse json failed，請洽管理員"
+//                        println(e.localizedMessage)
+//                        complete(false)
+//                    }
+//                } else {
+//                    println("response is null")
+//                    complete(false)
+//                }
+//            } else {
+//                msg = "網路錯誤，無法跟伺服器更新資料"
+//                complete(success)
+//            }
+//        }
+//    }
 
 //    fun signup(context: Context, type: String, token: String, member_token: String, tt_id: Int, complete: CompletionHandler) {
 //        val url = "$URL_SIGNUP".format(type, token)

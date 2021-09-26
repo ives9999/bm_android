@@ -6,12 +6,12 @@ import com.sportpassword.bm.Utilities.geti
 import com.sportpassword.bm.Utilities.toDateTime
 import org.json.JSONObject
 
-class Timetables(data: JSONObject): SuperModel(data) {
+class Timetables(data: JSONObject) {
     var success: Boolean = true
     var rows: ArrayList<Timetable> = arrayListOf()
 }
 
-class Timetable(data: JSONObject): SuperModel(data) {
+class Timetable(data: JSONObject) {
     var id: Int = -1
     var title: String = ""
     var weekday: Int = -1

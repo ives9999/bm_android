@@ -603,7 +603,7 @@ object MemberService: DataService() {
                     if (!this.success) {
                         this.msg = json.getString("msg")
                     } else {
-                        this.blackLists = JSONParse.parse<BlackLists>(json)!!
+                        //this.blackLists = JSONParse.parse<BlackLists>(json)!!
                     }
                     complete(this.success)
                 } else {

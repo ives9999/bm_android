@@ -1,8 +1,6 @@
 package com.sportpassword.bm.Services
 
 import android.content.Context
-import com.sportpassword.bm.Models.CourseTable
-import com.sportpassword.bm.Models.SuperModel
 import com.sportpassword.bm.Utilities.*
 import org.json.JSONObject
 import java.lang.Exception

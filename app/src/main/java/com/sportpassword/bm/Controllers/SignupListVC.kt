@@ -53,9 +53,9 @@ class SignupListVC : MyTableVC() {
     override fun getDataStart(_page: Int, _perPage: Int, token: String?) {
         //println("page: $_page")
         Loading.show(mask)
-        dataService.signup_list(this, able_token, _page, _perPage) { success ->
-            getDataEnd(success)
-        }
+//        dataService.signup_list(this, able_token, _page, _perPage) { success ->
+//            getDataEnd(success)
+//        }
     }
 
     override fun getDataEnd(success: Boolean) {
