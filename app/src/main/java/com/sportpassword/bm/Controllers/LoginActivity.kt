@@ -32,8 +32,8 @@ class LoginActivity : BaseActivity() {
         hidekeyboard(login_layout)
         //loginEmailTxt.requestFocus()
 
-        loginEmailTxt.setText("ives@housetube.tw")
-        loginPasswordTxt.setText("K5SD23r6")
+//        loginEmailTxt.setText("ives@housetube.tw")
+//        loginPasswordTxt.setText("K5SD23r6")
 
     }
 
@@ -108,11 +108,11 @@ class LoginActivity : BaseActivity() {
 //        loginFB()
 //    }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-
-        //callbackManager?.onActivityResult(requestCode, resultCode, data)
-    }
+//    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+//        super.onActivityResult(requestCode, resultCode, data)
+//
+//        //callbackManager?.onActivityResult(requestCode, resultCode, data)
+//    }
 
     fun loginForgetPassword(view: View) {
         toForgetPassword()

@@ -11,6 +11,7 @@ import android.widget.ImageButton
 import android.widget.LinearLayout
 import android.widget.RelativeLayout
 import androidx.core.content.ContextCompat
+import androidx.recyclerview.widget.RecyclerView
 import com.google.gson.JsonParseException
 import com.sportpassword.bm.Adapters.inter
 import com.sportpassword.bm.R
@@ -31,6 +32,7 @@ import com.sportpassword.bm.Services.TeamService
 import com.sportpassword.bm.Views.Tag
 import com.xwray.groupie.kotlinandroidextensions.Item
 import kotlinx.android.synthetic.main.list1_cell.*
+import kotlinx.android.synthetic.main.list1_cell.view.*
 import kotlinx.android.synthetic.main.mask.*
 import kotlinx.android.synthetic.main.tab_tempplay_search.*
 import kotlinx.android.synthetic.main.tag.view.*
@@ -222,6 +224,17 @@ class TempPlayFragment : TabFragment(), inter {
         if (mysTable != null) {
             tables = mysTable
         }
+    }
+
+    override fun generateItems1(): List<Table> {
+        val lists: ArrayList<Table> = arrayListOf()
+        if (mysTable != null) {
+            for (row in mysTable!!.rows) {
+                row.filterRow()
+                lists.add(row)
+            }
+        }
+        return lists
     }
 
     override fun generateItems(): ArrayList<Item> {

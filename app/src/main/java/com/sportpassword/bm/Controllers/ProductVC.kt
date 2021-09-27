@@ -10,6 +10,7 @@ import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.ProductService
 import com.sportpassword.bm.Utilities.*
 import com.squareup.picasso.Picasso
+import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.kotlinandroidextensions.Item
 import com.xwray.groupie.kotlinandroidextensions.GroupieViewHolder
 import kotlinx.android.synthetic.main.activity_product_vc.*
@@ -19,6 +20,7 @@ import kotlinx.android.synthetic.main.product_list_cell.buyBtn
 import kotlinx.android.synthetic.main.product_list_cell.listFeatured
 import kotlinx.android.synthetic.main.product_list_cell.priceLbl
 import kotlinx.android.synthetic.main.product_list_cell.refreshIcon
+import kotlinx.android.synthetic.main.tab_course.*
 
 class ProductVC : MyTableVC() {
 
@@ -43,7 +45,13 @@ class ProductVC : MyTableVC() {
         refreshLayout = product_refresh
         maskView = mask
 
-        initAdapter()
+        //initAdapter()
+        adapter = GroupAdapter()
+        recyclerView.setHasFixedSize(true)
+        setRecyclerViewScrollListener()
+        setRecyclerViewRefreshListener()
+        recyclerView.adapter = adapter
+
         refresh()
     }
 

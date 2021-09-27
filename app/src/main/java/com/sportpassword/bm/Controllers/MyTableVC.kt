@@ -38,7 +38,7 @@ abstract class MyTableVC : BaseActivity(), List1CellDelegate {
     var mySections: ArrayList<HashMap<String, Any>> = arrayListOf()
     var myRows: ArrayList<HashMap<String, Any>> = arrayListOf()
 
-    var adapter: GroupAdapter<GroupieViewHolder> = GroupAdapter<GroupieViewHolder>()
+    protected lateinit var adapter: GroupAdapter<GroupieViewHolder>
     val adapterSections: ArrayList<Section> = arrayListOf()
     protected lateinit var recyclerView: RecyclerView
     protected lateinit var listAdapter: ListAdapter
@@ -73,7 +73,7 @@ abstract class MyTableVC : BaseActivity(), List1CellDelegate {
     }
 
     open fun initAdapter(include_section: Boolean=false) {
-//        adapter = GroupAdapter()
+        adapter = GroupAdapter()
         adapter.setOnItemClickListener { item, view ->
             rowClick(item, view)
         }
@@ -91,14 +91,17 @@ abstract class MyTableVC : BaseActivity(), List1CellDelegate {
                 expandableGroup.add(adapterSections[idx])
                 adapter.add(expandableGroup)
             }
+        } else {
+            val items = generateItems()
+            adapter.addAll(items)
         }
 
         recyclerView.adapter = adapter
 //        recyclerView.setHasFixedSize(true)
-        if (refreshLayout != null) {
-            setRefreshListener()
-        }
-        setRecyclerViewScrollListener()
+//        if (refreshLayout != null) {
+//            setRefreshListener()
+//        }
+//        setRecyclerViewScrollListener()
     }
 
     override fun refresh() {
@@ -110,8 +113,8 @@ abstract class MyTableVC : BaseActivity(), List1CellDelegate {
         theFirstTime = true
         adapter.clear()
         items.clear()
-        getDataStart(page, perPage)
         params.clear()
+        getDataStart(page, perPage)
     }
 
     open fun getDataStart(_page: Int, _perPage: Int, token: String? = null) {
@@ -136,7 +139,7 @@ abstract class MyTableVC : BaseActivity(), List1CellDelegate {
             //if (theFirstTime) {
 
                 if (jsonString != null && jsonString!!.isNotEmpty()) {
-                    //println(dataService.jsonString)
+                    println(dataService.jsonString)
                     genericTable()
 
                     //superCourses = dataService.superModel as SuperCourses

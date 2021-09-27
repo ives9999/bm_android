@@ -89,54 +89,54 @@ open class DataService {
         }
         //println(params)
 
-//        val j: JSONObject = JSONObject(params as Map<*, *>)
-//        val body = j.toString().toRequestBody("application/json; charset=utf-8".toMediaTypeOrNull())
-//
-//        val request = okhttp3.Request.Builder().url(url).post(body).build()
-//        okHttpClient.newCall(request).enqueue(object : Callback {
-//            override fun onFailure(call: Call, e: IOException) {
-//                msg = "網路錯誤，無法跟伺服器更新資料"
-//                complete(success)
-//            }
-//
-//            override fun onResponse(call: Call, response: okhttp3.Response) {
-//
-//                try {
-//                    jsonString = response.body!!.string()
-////                        println(jsonString)
-//                    success = true
-//                } catch (e: Exception) {
-//                    success = false
-//                    msg = "parse json failed，請洽管理員"
-//                    println(e.localizedMessage)
-//                }
-//                complete(success)
-//            }
-//        })
+        val j: JSONObject = JSONObject(params as Map<*, *>)
+        val body = j.toString().toRequestBody("application/json; charset=utf-8".toMediaTypeOrNull())
+        val request = okhttp3.Request.Builder().url(url).post(body).build()
 
-        val objectMapper = ObjectMapper()
-        val body: String = objectMapper.writeValueAsString(params)
-        MyHttpClient.instance.post(context, url, body) { success ->
-            if (success) {
-                val response = MyHttpClient.instance.response
-                if (response != null) {
-                    try {
-                        this.jsonString = response.toString()
-                        this.success = true
-                    } catch (e: Exception) {
-                        this.success = false
-                        msg = "parse json failed，請洽管理員"
-                        println(e.localizedMessage)
-                    }
-                    complete(this.success)
-                } else {
-                    println("response is null")
-                }
-            } else {
+        okHttpClient.newCall(request).enqueue(object : Callback {
+            override fun onFailure(call: Call, e: IOException) {
                 msg = "網路錯誤，無法跟伺服器更新資料"
                 complete(success)
             }
-        }
+
+            override fun onResponse(call: Call, response: okhttp3.Response) {
+
+                try {
+                    jsonString = response.body!!.string()
+//                        println(jsonString)
+                    success = true
+                } catch (e: Exception) {
+                    success = false
+                    msg = "parse json failed，請洽管理員"
+                    println(e.localizedMessage)
+                }
+                complete(success)
+            }
+        })
+
+//        val objectMapper = ObjectMapper()
+//        val body: String = objectMapper.writeValueAsString(params)
+//        MyHttpClient.instance.post(context, url, body) { success ->
+//            if (success) {
+//                val response = MyHttpClient.instance.response
+//                if (response != null) {
+//                    try {
+//                        this.jsonString = response.toString()
+//                        this.success = true
+//                    } catch (e: Exception) {
+//                        this.success = false
+//                        msg = "parse json failed，請洽管理員"
+//                        println(e.localizedMessage)
+//                    }
+//                    complete(this.success)
+//                } else {
+//                    println("response is null")
+//                }
+//            } else {
+//                msg = "網路錯誤，無法跟伺服器更新資料"
+//                complete(success)
+//            }
+//        }
     }
 
 //    open fun getList(context: Context, token: String?, _filter: HashMap<String, Any>?, page: Int, perPage: Int, complete: CompletionHandler) {

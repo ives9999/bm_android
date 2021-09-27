@@ -75,8 +75,8 @@ class CourseFragment : TabFragment() {
         setRecyclerViewRefreshListener()
         recyclerView.adapter = adapter
 
-        refresh()
-        bInit = true
+        //refresh()
+        //bInit = true
     }
 
     override fun genericTable() {

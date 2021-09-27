@@ -37,7 +37,7 @@ import kotlinx.android.synthetic.main.course_list_cell.telIcon
 import kotlinx.android.synthetic.main.course_list_cell.titleLbl
 import kotlinx.android.synthetic.main.list1_cell.*
 import kotlinx.android.synthetic.main.list1_cell.mapIcon
-import kotlinx.android.synthetic.main.team_list_cell.*
+import kotlinx.android.synthetic.main.list1_cell.view.*
 import java.io.Serializable
 
 
@@ -59,6 +59,9 @@ open class TabFragment : Fragment(), SearchItemDelegate, List1CellDelegate, Seri
     protected var totalCount: Int = 0
     protected var totalPage: Int = 0
     var items: ArrayList<Item> = arrayListOf()
+
+    lateinit var tableAdapter: MyAdapter
+    var tableLists: ArrayList<Table> = arrayListOf()
 
     protected var loading: Boolean = false
     protected lateinit var maskView: View
@@ -217,10 +220,6 @@ open class TabFragment : Fragment(), SearchItemDelegate, List1CellDelegate, Seri
                 getDataEnd(success)
             }
         }
-        if (member.isLoggedIn) {
-
-
-        }
     }
 
     open fun getDataEnd(success: Boolean) {
@@ -240,9 +239,14 @@ open class TabFragment : Fragment(), SearchItemDelegate, List1CellDelegate, Seri
                         totalPage = if (totalCount % perPage > 0) _totalPage + 1 else _totalPage
                         theFirstTime = false
 
-                        val items = generateItems()
-                        adapter.update(items)
-                        adapter.notifyDataSetChanged()
+                        tableLists += generateItems1()
+                        tableAdapter = MyAdapter(tableLists)
+                        recyclerView.adapter = tableAdapter
+
+
+                        //val items = generateItems()
+                        //adapter.update(items)
+                        //adapter.notifyDataSetChanged()
                     } else {
                         mainActivity!!.warning("table is null, 請洽管理員")
                     }
@@ -296,6 +300,12 @@ open class TabFragment : Fragment(), SearchItemDelegate, List1CellDelegate, Seri
 ////        println("totalCount:$totalCount")
 ////        println("totalPage:$totalPage")
 //    }
+
+    open fun generateItems1(): List<Table> {
+        val items: List<Table> = listOf()
+
+        return items
+    }
 
     open fun generateItems(): ArrayList<Item> {
         val items: ArrayList<Item> = arrayListOf()
@@ -590,6 +600,113 @@ open class TabFragment : Fragment(), SearchItemDelegate, List1CellDelegate, Seri
     }
 
 }// Required empty public constructor
+
+class MyAdapter(val tableList: ArrayList<Table>): RecyclerView.Adapter<MyViewHolder>() {
+
+    var list1CellDelegate: List1CellDelegate? = null
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
+        val inflater = LayoutInflater.from(parent.context)
+        val layout = inflater.inflate(R.layout.team_list_cell, parent, false)
+
+        return MyViewHolder(parent.context, layout)
+    }
+
+    override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
+        holder.bind(tableList[position])
+    }
+
+    override fun getItemCount(): Int {
+        return tableList.size
+    }
+
+}
+
+class MyViewHolder(val context: Context, val viewHolder: View, val list1CellDelegate: List1CellDelegate? = null): RecyclerView.ViewHolder(viewHolder) {
+
+    var isLike: Boolean = false
+
+    fun bind(row: Table) {
+
+        if (row.title.isNotEmpty()) {
+            viewHolder.titleLbl.text = row.title
+        } else {
+            viewHolder.titleLbl.text = row.name
+        }
+
+        if (row.featured_path.isNotEmpty()) {
+            Picasso.with(context)
+                .load(row.featured_path)
+                .placeholder(R.drawable.loading_square_120)
+                .error(R.drawable.loading_square_120)
+                .into(viewHolder.listFeatured)
+        }
+
+        viewHolder.refreshIcon.setOnClickListener {
+            if (list1CellDelegate != null) {
+                list1CellDelegate.cellRefresh()
+            }
+        }
+
+        val v = viewHolder.iconView
+        var a = v.findViewById<ImageButton>(R.id.telIcon)
+        if (a != null) {
+            if (row.mobile_show.isNotEmpty()) {
+                if (list1CellDelegate != null) {
+                    viewHolder.telIcon.setOnClickListener {
+                        list1CellDelegate.cellMobile(row)
+                    }
+                    viewHolder.telIcon.visibility = View.VISIBLE
+                }
+            } else if (row.tel_show.isNotEmpty()) {
+                if (list1CellDelegate != null) {
+                    viewHolder.telIcon.setOnClickListener {
+                        list1CellDelegate.cellMobile(row)
+                    }
+                    viewHolder.telIcon.visibility = View.VISIBLE
+                }
+            } else {
+                viewHolder.telIcon.visibility = View.GONE
+            }
+        }
+
+        a = v.findViewById<ImageButton>(R.id.mapIcon)
+        if (a != null) {
+
+            if (row.address == null || row.address.isEmpty()) {
+                viewHolder.mapIcon.visibility = View.GONE
+            } else {
+                viewHolder.mapIcon.setOnClickListener {
+                    if (list1CellDelegate != null) {
+                        list1CellDelegate!!.cellShowMap(row)
+                    }
+                }
+            }
+        }
+
+        if (viewHolder.likeIcon != null) {
+            viewHolder.likeIcon.setOnClickListener {
+                if (list1CellDelegate != null) {
+                    list1CellDelegate!!.cellLike(row)
+                    if (member.isLoggedIn) {
+                        setLike()
+                    }
+                }
+            }
+            isLike = !row.like
+            setLike()
+        }
+    }
+
+    fun setLike() {
+        isLike = !isLike
+        if (isLike) {
+            viewHolder.likeIcon.setImage("like1")
+        } else {
+            viewHolder.likeIcon.setImage("like")
+        }
+    }
+}
 
 open class ListItem<T: Table>(open var context: Context, open var row: T): Item() {
 
