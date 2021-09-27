@@ -227,14 +227,13 @@ class TempPlayFragment : TabFragment(), inter {
     }
 
     override fun generateItems1(): List<Table> {
-        val lists: ArrayList<Table> = arrayListOf()
         if (mysTable != null) {
             for (row in mysTable!!.rows) {
                 row.filterRow()
-                lists.add(row)
+                tableLists.add(row)
             }
         }
-        return lists
+        return tableLists
     }
 
     override fun generateItems(): ArrayList<Item> {

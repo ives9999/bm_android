@@ -60,7 +60,7 @@ open class TabFragment : Fragment(), SearchItemDelegate, List1CellDelegate, Seri
     protected var totalPage: Int = 0
     var items: ArrayList<Item> = arrayListOf()
 
-    lateinit var tableAdapter: MyAdapter
+    lateinit var tableAdapter: MyAdapter<Table>
     var tableLists: ArrayList<Table> = arrayListOf()
 
     protected var loading: Boolean = false
@@ -601,7 +601,7 @@ open class TabFragment : Fragment(), SearchItemDelegate, List1CellDelegate, Seri
 
 }// Required empty public constructor
 
-class MyAdapter(val tableList: ArrayList<Table>): RecyclerView.Adapter<MyViewHolder>() {
+class MyAdapter<T: Table>(val tableList: ArrayList<T>): RecyclerView.Adapter<MyViewHolder>() {
 
     var list1CellDelegate: List1CellDelegate? = null
 
