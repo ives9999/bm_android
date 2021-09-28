@@ -39,6 +39,7 @@ import kotlinx.android.synthetic.main.list1_cell.*
 import kotlinx.android.synthetic.main.list1_cell.mapIcon
 import kotlinx.android.synthetic.main.list1_cell.view.*
 import java.io.Serializable
+import kotlin.reflect.KFunction3
 
 
 /**
@@ -60,7 +61,7 @@ open class TabFragment : Fragment(), SearchItemDelegate, List1CellDelegate, Seri
     protected var totalPage: Int = 0
     var items: ArrayList<Item> = arrayListOf()
 
-    lateinit var tableAdapter: MyAdapter
+    //open lateinit var tableAdapter: MyAdapter<MyViewHolder>
     var tableLists: ArrayList<Table> = arrayListOf()
 
     protected var loading: Boolean = false
@@ -228,26 +229,6 @@ open class TabFragment : Fragment(), SearchItemDelegate, List1CellDelegate, Seri
                 if (jsonString.isNotEmpty()) {
                     //println(jsonString)
                     genericTable()
-
-                    //superCourses = dataService.superModel as SuperCourses
-                    if (tables != null) {
-                        page = tables!!.page
-                        perPage = tables!!.perPage
-                        totalCount = tables!!.totalCount
-                        val _totalPage: Int = totalCount / perPage
-                        totalPage = if (totalCount % perPage > 0) _totalPage + 1 else _totalPage
-                        theFirstTime = false
-
-                        tableLists += generateItems1()
-                        tableAdapter.setMyTableList(tableLists)
-                        tableAdapter.notifyDataSetChanged()
-
-                        //val items = generateItems()
-                        //adapter.update(items)
-                        //adapter.notifyDataSetChanged()
-                    } else {
-                        mainActivity!!.warning("table is null, 請洽管理員")
-                    }
                 } else {
                     mainActivity!!.warning("沒有取得回傳的json字串，請洽管理員")
                 }
@@ -264,6 +245,15 @@ open class TabFragment : Fragment(), SearchItemDelegate, List1CellDelegate, Seri
 //        println("perPage:$perPage")
 //        println("totalCount:$totalCount")
 //        println("totalPage:$totalPage")
+    }
+
+    fun getPage() {
+        page = tables!!.page
+        perPage = tables!!.perPage
+        totalCount = tables!!.totalCount
+        val _totalPage: Int = totalCount / perPage
+        totalPage = if (totalCount % perPage > 0) _totalPage + 1 else _totalPage
+        theFirstTime = false
     }
 
     open fun genericTable() {}
@@ -599,26 +589,10 @@ open class TabFragment : Fragment(), SearchItemDelegate, List1CellDelegate, Seri
 
 }// Required empty public constructor
 
-open class MyAdapter(resource: Int): RecyclerView.Adapter<MyViewHolder>() {
+abstract class MyAdapter<T: MyViewHolder>(private val resource: Int, private val viewHolderConstructor: (Context, View, List1CellDelegate?)-> T): RecyclerView.Adapter<T>() {
 
     var list1CellDelegate: List1CellDelegate? = null
     var tableList: ArrayList<Table> = arrayListOf()
-    var resource: Int = 0
-
-    init {
-        this.resource = resource
-    }
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
-        val inflater = LayoutInflater.from(parent.context)
-        val layout = inflater.inflate(resource, parent, false)
-
-        return MyViewHolder(parent.context, layout)
-    }
-
-    override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
-        holder.bind(tableList[position])
-    }
 
     override fun getItemCount(): Int {
         val count = tableList.size
@@ -627,6 +601,19 @@ open class MyAdapter(resource: Int): RecyclerView.Adapter<MyViewHolder>() {
 
     fun setMyTableList(tableList: ArrayList<Table>) {
         this.tableList = tableList
+    }
+
+    override fun onBindViewHolder(holder: T, position: Int) {
+        holder.bind(tableList[position])
+    }
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): T {
+        val inflater = LayoutInflater.from(parent.context)
+        val layout = inflater.inflate(resource, parent, false)
+
+        val viewHolder = viewHolderConstructor(parent.context, layout, null)
+
+        return viewHolder
     }
 }
 
@@ -695,7 +682,7 @@ open class MyViewHolder(val context: Context, val viewHolder: View, val list1Cel
         if (viewHolder.likeIcon != null) {
             viewHolder.likeIcon.setOnClickListener {
                 if (list1CellDelegate != null) {
-                    list1CellDelegate!!.cellLike(row)
+                    list1CellDelegate.cellLike(row)
                     if (member.isLoggedIn) {
                         setLike()
                     }
@@ -715,6 +702,7 @@ open class MyViewHolder(val context: Context, val viewHolder: View, val list1Cel
         }
     }
 }
+
 
 open class ListItem<T: Table>(open var context: Context, open var row: T): Item() {
 

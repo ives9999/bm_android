@@ -10,7 +10,6 @@ import android.widget.ImageButton
 import android.widget.LinearLayout
 import android.widget.RelativeLayout
 import androidx.core.content.ContextCompat
-import androidx.recyclerview.widget.RecyclerView
 import com.google.gson.JsonParseException
 import com.sportpassword.bm.Adapters.inter
 import com.sportpassword.bm.R
@@ -72,6 +71,7 @@ class TempPlayFragment : TabFragment(), inter {
 //    var keyword: String = ""
 
     var mysTable: TeamsTable? = null
+    lateinit var tableAdapter: TeamAdapter
 
     var searchSections: ArrayList<Section> = arrayListOf()
     var mySections: ArrayList<HashMap<String, Any>> = arrayListOf()
@@ -225,6 +225,14 @@ class TempPlayFragment : TabFragment(), inter {
         }
         if (mysTable != null) {
             tables = mysTable
+            getPage()
+            tableLists += generateItems1()
+            tableAdapter.setMyTableList(tableLists)
+            tableAdapter.notifyDataSetChanged()
+
+            //val items = generateItems()
+            //adapter.update(items)
+            //adapter.notifyDataSetChanged()
         }
     }
 
@@ -826,13 +834,15 @@ class TempPlayFragment : TabFragment(), inter {
 
 }// Required empty public constructor
 
-class TeamAdapter(resource: Int): MyAdapter(resource) {
+class TeamAdapter(resource: Int): MyAdapter<TeamViewHolder>(resource, ::TeamViewHolder) {}
 
-    override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
-        val viewHolder = holder as TeamViewHolder
-        viewHolder.bind(tableList[position])
-    }
-}
+//class TeamAdapter<>(resource: Int): MyAdapter(resource) {
+//
+//    override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
+//        //val viewHolder = holder as TeamViewHolder
+//        //viewHolder.bind(tableList[position])
+//    }
+//}
 //class TeamAdapter(resource: Int): RecyclerView.Adapter<TeamViewHolder>() {
 //    var list1CellDelegate: List1CellDelegate? = null
 //    var tableList: ArrayList<Table> = arrayListOf()
