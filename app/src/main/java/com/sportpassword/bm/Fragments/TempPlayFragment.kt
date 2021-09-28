@@ -1,6 +1,5 @@
 package com.sportpassword.bm.Fragments
 
-
 import android.content.Context
 import android.content.Intent
 import androidx.fragment.app.Fragment
@@ -23,6 +22,7 @@ import com.xwray.groupie.Section
 import com.xwray.groupie.GroupieViewHolder
 import com.sportpassword.bm.Adapters.SearchItem
 import com.sportpassword.bm.Controllers.HomeTotalAdVC
+import com.sportpassword.bm.Controllers.List1CellDelegate
 import com.sportpassword.bm.Controllers.MyMapVC
 import com.sportpassword.bm.Models.ArenaTable
 import com.sportpassword.bm.Models.Table
@@ -31,13 +31,12 @@ import com.sportpassword.bm.Models.TeamsTable
 import com.sportpassword.bm.Services.TeamService
 import com.sportpassword.bm.Views.Tag
 import com.xwray.groupie.kotlinandroidextensions.Item
-import kotlinx.android.synthetic.main.list1_cell.*
-import kotlinx.android.synthetic.main.list1_cell.view.*
 import kotlinx.android.synthetic.main.mask.*
 import kotlinx.android.synthetic.main.tab_tempplay_search.*
 import kotlinx.android.synthetic.main.tag.view.*
 import kotlinx.android.synthetic.main.team_list_cell.*
 import kotlinx.android.synthetic.main.team_list_cell.mapIcon
+import kotlinx.android.synthetic.main.team_list_cell.view.*
 import org.jetbrains.anko.backgroundColor
 
 /**
@@ -119,6 +118,7 @@ class TempPlayFragment : TabFragment(), inter {
         }
 
         adapter = GroupAdapter()
+        //tableAdapter = TeamAdapter(tableLists, R.layout.team_list_cell)
 
 //        generateSections()
     }
@@ -209,7 +209,9 @@ class TempPlayFragment : TabFragment(), inter {
         setRecyclerViewScrollListener()
 //        refreshLayout = tab_refresh
 //        setRecyclerViewRefreshListener()
-        recyclerView.adapter = adapter
+        //recyclerView.adapter = adapter
+        tableAdapter = TeamAdapter(R.layout.team_list_cell)
+        recyclerView.adapter = tableAdapter
         member_like = true
         refresh()
     }
@@ -823,6 +825,102 @@ class TempPlayFragment : TabFragment(), inter {
     }
 
 }// Required empty public constructor
+
+class TeamAdapter(resource: Int): MyAdapter(resource) {
+
+    override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
+        val viewHolder = holder as TeamViewHolder
+        viewHolder.bind(tableList[position])
+    }
+}
+//class TeamAdapter(resource: Int): RecyclerView.Adapter<TeamViewHolder>() {
+//    var list1CellDelegate: List1CellDelegate? = null
+//    var tableList: ArrayList<Table> = arrayListOf()
+//    var resource: Int = 0
+//
+//    init {
+//        this.resource = resource
+//    }
+//
+//    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TeamViewHolder {
+//        val inflater = LayoutInflater.from(parent.context)
+//        val layout = inflater.inflate(resource, parent, false)
+//
+//        return TeamViewHolder(parent.context, layout)
+//    }
+//
+//    override fun onBindViewHolder(holder: TeamViewHolder, position: Int) {
+//        holder.bind(tableList[position])
+//    }
+//
+//    override fun getItemCount(): Int {
+//        val count = tableList.size
+//        return count
+//    }
+//
+//    fun setMyTableList(tableList: ArrayList<Table>) {
+//        this.tableList = tableList
+//    }
+//
+//}
+
+class TeamViewHolder(context: Context, viewHolder: View, list1CellDelegate: List1CellDelegate? = null): MyViewHolder(context, viewHolder, list1CellDelegate) {
+
+    override fun bind(_row: Table) {
+        super.bind(_row)
+
+        val row: TeamTable = _row as TeamTable
+        if (row.arena?.name != null && row.arena!!.name.length > 0) {
+            viewHolder.cityBtn.text = row.arena!!.city_show
+            viewHolder.cityBtn.setOnClickListener {
+                if (list1CellDelegate != null) {
+                    list1CellDelegate.cellCity(row)
+                }
+            }
+
+            viewHolder.arenaBtn.text = row.arena!!.name
+            viewHolder.arenaBtn.setOnClickListener {
+                if (list1CellDelegate != null) {
+                    list1CellDelegate.cellArena(row)
+                }
+            }
+        } else {
+            viewHolder.cityBtn.visibility = View.GONE
+            viewHolder.arenaBtn.visibility = View.GONE
+        }
+
+        if (row.weekdays_show.isNotEmpty()) {
+            viewHolder.weekdayLbl.text = row.weekdays_show
+        } else {
+            viewHolder.weekdayLbl.text = "臨打日期:未提供"
+        }
+
+        if (row.interval_show.isNotEmpty()) {
+            viewHolder.intervalLbl.text = row.interval_show
+        } else {
+            viewHolder.weekdayLbl.text = "臨打時段:未提供"
+        }
+
+        val v = viewHolder.iconView
+        val a = v.findViewById<ImageButton>(R.id.mapIcon)
+        if (a != null && row.arena != null) {
+
+            if (row.arena!!.address == null || row.arena!!.address.isEmpty()) {
+                viewHolder.mapIcon.visibility = View.GONE
+            } else {
+                viewHolder.mapIcon.visibility = View.VISIBLE
+                viewHolder.mapIcon.setOnClickListener {
+                    if (list1CellDelegate != null) {
+                        list1CellDelegate!!.cellShowMap(row)
+                    }
+                }
+            }
+        }
+
+        viewHolder.temp_quantityLbl.text = row.temp_quantity_show
+        viewHolder.signup_countLbl.text = row.temp_signup_count_show
+    }
+}
 
 class TeamItem(override var context: Context, var _row: TeamTable): ListItem<Table>(context, _row) {
 

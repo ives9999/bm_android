@@ -60,7 +60,7 @@ open class TabFragment : Fragment(), SearchItemDelegate, List1CellDelegate, Seri
     protected var totalPage: Int = 0
     var items: ArrayList<Item> = arrayListOf()
 
-    lateinit var tableAdapter: MyAdapter<Table>
+    lateinit var tableAdapter: MyAdapter
     var tableLists: ArrayList<Table> = arrayListOf()
 
     protected var loading: Boolean = false
@@ -104,7 +104,6 @@ open class TabFragment : Fragment(), SearchItemDelegate, List1CellDelegate, Seri
         that = this
         mainActivity = activity as MainActivity
         mainActivity!!.able_type = able_type
-
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -240,9 +239,8 @@ open class TabFragment : Fragment(), SearchItemDelegate, List1CellDelegate, Seri
                         theFirstTime = false
 
                         tableLists += generateItems1()
-                        tableAdapter = MyAdapter(tableLists)
-                        recyclerView.adapter = tableAdapter
-
+                        tableAdapter.setMyTableList(tableLists)
+                        tableAdapter.notifyDataSetChanged()
 
                         //val items = generateItems()
                         //adapter.update(items)
@@ -601,13 +599,19 @@ open class TabFragment : Fragment(), SearchItemDelegate, List1CellDelegate, Seri
 
 }// Required empty public constructor
 
-class MyAdapter<T: Table>(val tableList: ArrayList<T>): RecyclerView.Adapter<MyViewHolder>() {
+open class MyAdapter(resource: Int): RecyclerView.Adapter<MyViewHolder>() {
 
     var list1CellDelegate: List1CellDelegate? = null
+    var tableList: ArrayList<Table> = arrayListOf()
+    var resource: Int = 0
+
+    init {
+        this.resource = resource
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
         val inflater = LayoutInflater.from(parent.context)
-        val layout = inflater.inflate(R.layout.team_list_cell, parent, false)
+        val layout = inflater.inflate(resource, parent, false)
 
         return MyViewHolder(parent.context, layout)
     }
@@ -617,16 +621,20 @@ class MyAdapter<T: Table>(val tableList: ArrayList<T>): RecyclerView.Adapter<MyV
     }
 
     override fun getItemCount(): Int {
-        return tableList.size
+        val count = tableList.size
+        return count
     }
 
+    fun setMyTableList(tableList: ArrayList<Table>) {
+        this.tableList = tableList
+    }
 }
 
-class MyViewHolder(val context: Context, val viewHolder: View, val list1CellDelegate: List1CellDelegate? = null): RecyclerView.ViewHolder(viewHolder) {
+open class MyViewHolder(val context: Context, val viewHolder: View, val list1CellDelegate: List1CellDelegate? = null): RecyclerView.ViewHolder(viewHolder) {
 
     var isLike: Boolean = false
 
-    fun bind(row: Table) {
+    open fun bind(row: Table) {
 
         if (row.title.isNotEmpty()) {
             viewHolder.titleLbl.text = row.title
