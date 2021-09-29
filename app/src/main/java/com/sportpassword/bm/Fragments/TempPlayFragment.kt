@@ -37,6 +37,7 @@ import kotlinx.android.synthetic.main.team_list_cell.*
 import kotlinx.android.synthetic.main.team_list_cell.mapIcon
 import kotlinx.android.synthetic.main.team_list_cell.view.*
 import org.jetbrains.anko.backgroundColor
+import org.jetbrains.anko.support.v4.runOnUiThread
 
 /**
  * A simple [Fragment] subclass.
@@ -76,7 +77,7 @@ class TempPlayFragment : TabFragment(), inter {
     var searchSections: ArrayList<Section> = arrayListOf()
     var mySections: ArrayList<HashMap<String, Any>> = arrayListOf()
 
-    var searchTags: ArrayList<HashMap<String, Any>> = arrayListOf(
+    var searchTags: ArrayList<HashMap<String, Any>> = arrayListOf (
         hashMapOf("key" to "like", "selected" to true, "tag" to 0, "name" to "喜歡", "class" to ""),
         hashMapOf("key" to "search", "selected" to false, "tag" to 1, "name" to "搜尋", "class" to ""),
         hashMapOf("key" to "like", "selected" to false, "tag" to 2, "name" to "全部", "class" to "")
@@ -209,8 +210,7 @@ class TempPlayFragment : TabFragment(), inter {
         setRecyclerViewScrollListener()
 //        refreshLayout = tab_refresh
 //        setRecyclerViewRefreshListener()
-        //recyclerView.adapter = adapter
-        tableAdapter = TeamAdapter(R.layout.team_list_cell)
+        tableAdapter = TeamAdapter(R.layout.team_list_cell, list1CellDelegate)
         recyclerView.adapter = tableAdapter
         member_like = true
         refresh()
@@ -228,7 +228,9 @@ class TempPlayFragment : TabFragment(), inter {
             getPage()
             tableLists += generateItems1()
             tableAdapter.setMyTableList(tableLists)
-            tableAdapter.notifyDataSetChanged()
+            runOnUiThread {
+                tableAdapter.notifyDataSetChanged()
+            }
 
             //val items = generateItems()
             //adapter.update(items)
@@ -237,13 +239,14 @@ class TempPlayFragment : TabFragment(), inter {
     }
 
     override fun generateItems1(): List<Table> {
+        val temp: ArrayList<TeamTable> = arrayListOf()
         if (mysTable != null) {
             for (row in mysTable!!.rows) {
                 row.filterRow()
-                tableLists.add(row)
+                temp.add(row)
             }
         }
-        return tableLists
+        return temp
     }
 
     override fun generateItems(): ArrayList<Item> {
@@ -275,18 +278,21 @@ class TempPlayFragment : TabFragment(), inter {
                     1-> {
                         footer.visibility = View.VISIBLE
                         remain.visibility = View.VISIBLE
+                        recyclerView.adapter = adapter
                         generateSections()
                     }
                     0-> {
                         footer.visibility = View.GONE
                         remain.visibility = View.GONE
                         member_like = true
+                        recyclerView.adapter = tableAdapter
                         refresh()
                     }
                     2-> {
                         footer.visibility = View.GONE
                         remain.visibility = View.GONE
                         member_like = false
+                        recyclerView.adapter = tableAdapter
                         refresh()
                     }
                 }
@@ -834,7 +840,7 @@ class TempPlayFragment : TabFragment(), inter {
 
 }// Required empty public constructor
 
-class TeamAdapter(resource: Int): MyAdapter<TeamViewHolder>(resource, ::TeamViewHolder) {}
+class TeamAdapter(resource: Int, list1CellDelegate: List1CellDelegate?): MyAdapter<TeamViewHolder>(resource, ::TeamViewHolder, list1CellDelegate) {}
 
 //class TeamAdapter<>(resource: Int): MyAdapter(resource) {
 //

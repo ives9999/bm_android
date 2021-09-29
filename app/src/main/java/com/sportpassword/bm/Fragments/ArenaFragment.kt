@@ -5,20 +5,24 @@ import android.os.Bundle
 import android.view.*
 import android.widget.ImageButton
 import com.google.gson.JsonParseException
+import com.sportpassword.bm.Controllers.List1CellDelegate
 import com.sportpassword.bm.Models.*
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.ArenaService
-import com.sportpassword.bm.Utilities.* import com.squareup.picasso.Picasso
+import com.sportpassword.bm.Utilities.*
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.GroupieViewHolder
 import com.xwray.groupie.kotlinandroidextensions.Item
 import kotlinx.android.synthetic.main.arena_list_cell.*
+import kotlinx.android.synthetic.main.arena_list_cell.view.*
 import kotlinx.android.synthetic.main.mask.*
 import kotlinx.android.synthetic.main.tab_course.*
+import org.jetbrains.anko.support.v4.runOnUiThread
 
 class ArenaFragment : TabFragment() {
 
     var mysTable: ArenasTable? = null
+    lateinit var tableAdapter: ArenaAdapter
 
     var bInit: Boolean = false
 
@@ -68,7 +72,9 @@ class ArenaFragment : TabFragment() {
         recyclerView.setHasFixedSize(true)
         setRecyclerViewScrollListener()
         setRecyclerViewRefreshListener()
-        recyclerView.adapter = adapter
+
+        tableAdapter = ArenaAdapter(R.layout.arena_list_cell)
+        recyclerView.adapter = tableAdapter
 
         refresh()
         bInit = true
@@ -83,7 +89,24 @@ class ArenaFragment : TabFragment() {
         }
         if (mysTable != null) {
             tables = mysTable
+            getPage()
+            tableLists += generateItems1()
+            tableAdapter.setMyTableList(tableLists)
+            runOnUiThread {
+                tableAdapter.notifyDataSetChanged()
+            }
+
         }
+    }
+
+    override fun generateItems1(): List<Table> {
+        if (mysTable != null) {
+            for (row in mysTable!!.rows) {
+                row.filterRow()
+                tableLists.add(row)
+            }
+        }
+        return tableLists
     }
 
     override fun prepare(idx: Int) {
@@ -186,6 +209,55 @@ class ArenaFragment : TabFragment() {
             fragment.arguments = args
             return fragment
         }
+    }
+}
+
+class ArenaAdapter(resource: Int): MyAdapter<ArenaViewHolder>(resource, ::ArenaViewHolder) {}
+
+class ArenaViewHolder(context: Context, viewHolder: View, list1CellDelegate: List1CellDelegate? = null): MyViewHolder(context, viewHolder, list1CellDelegate) {
+
+    override fun bind(_row: Table) {
+        super.bind(_row)
+
+        val row: ArenaTable = _row as ArenaTable
+
+        if (row.city_show.isNotEmpty()) {
+            viewHolder.cityBtn.text = row.city_show
+            viewHolder.cityBtn.setOnClickListener {
+                if (list1CellDelegate != null) {
+                    list1CellDelegate!!.cellCity(row)
+                }
+            }
+        } else {
+            viewHolder.cityBtn.visibility = View.GONE
+        }
+
+        if (row.area_show.isNotEmpty()) {
+            viewHolder.areaBtn.text = row.area_show
+            viewHolder.areaBtn.setOnClickListener {
+                if (list1CellDelegate != null) {
+                    list1CellDelegate!!.cellArea(row)
+                }
+            }
+        } else {
+            viewHolder.cityBtn.visibility = View.GONE
+        }
+
+        if (row.tel_show.isNotEmpty()) {
+            viewHolder.telLbl.text = row.tel_show
+        } else {
+            viewHolder.telLbl.text = "電話：未提供"
+        }
+
+        viewHolder.parkingLbl.text = "停車場:${row.parking_show}"
+
+        if (row.interval_show.isNotEmpty()) {
+            viewHolder.intervalLbl.text = row.interval_show
+        } else {
+            viewHolder.intervalLbl.text = "未提供"
+        }
+
+        viewHolder.air_conditionLbl.text = "空調:${row.air_condition_show}"
     }
 }
 

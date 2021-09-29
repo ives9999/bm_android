@@ -21,6 +21,7 @@ import kotlinx.android.synthetic.main.course_list_cell.intervalLbl
 import kotlinx.android.synthetic.main.course_list_cell.signup_countLbl
 import kotlinx.android.synthetic.main.course_list_cell.view.*
 import kotlinx.android.synthetic.main.course_list_cell.weekdayLbl
+import org.jetbrains.anko.support.v4.runOnUiThread
 
 class CourseFragment : TabFragment() {
 
@@ -70,7 +71,7 @@ class CourseFragment : TabFragment() {
         tableAdapter = CourseAdapter(R.layout.course_list_cell)
         recyclerView.adapter = tableAdapter
 
-        //refresh()
+        refresh()
         bInit = true
     }
 
@@ -86,7 +87,9 @@ class CourseFragment : TabFragment() {
             getPage()
             tableLists += generateItems1()
             tableAdapter.setMyTableList(tableLists)
-            tableAdapter.notifyDataSetChanged()
+            runOnUiThread {
+                tableAdapter.notifyDataSetChanged()
+            }
         }
     }
 

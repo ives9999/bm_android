@@ -190,6 +190,7 @@ open class TabFragment : Fragment(), SearchItemDelegate, List1CellDelegate, Seri
         items.clear()
         //println(perPage)
         params.clear()
+        tableLists.clear()
         getDataStart(page, perPage)
     }
 
@@ -198,7 +199,7 @@ open class TabFragment : Fragment(), SearchItemDelegate, List1CellDelegate, Seri
             //var _able_type: String = able_type
             //if (able_type == "temp_play") _able_type = "team"
             if (member.isLoggedIn) {
-                Loading.show(maskView)
+                //Loading.show(maskView)
                 loading = true
 
                 MemberService.likelist(
@@ -213,7 +214,7 @@ open class TabFragment : Fragment(), SearchItemDelegate, List1CellDelegate, Seri
                 }
             }
         } else {
-            Loading.show(maskView)
+            //Loading.show(maskView)
             loading = true
             dataService.getList(requireContext(), null, params, _page, _perPage) { success ->
                 jsonString = dataService.jsonString
@@ -239,7 +240,7 @@ open class TabFragment : Fragment(), SearchItemDelegate, List1CellDelegate, Seri
             page++
         }
 //        mask?.let { mask?.dismiss() }
-        Loading.hide(maskView)
+        //Loading.hide(maskView)
         loading = false
 //        println("page:$page")
 //        println("perPage:$perPage")
@@ -490,7 +491,7 @@ open class TabFragment : Fragment(), SearchItemDelegate, List1CellDelegate, Seri
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
                 val layoutManager = recyclerView.layoutManager as LinearLayoutManager
-                if (items.size < that.totalCount) {
+                if (tableLists.size < that.totalCount) {
                     pos = layoutManager.findLastVisibleItemPosition()
                     //println("pos:${pos}")
                 }
@@ -500,7 +501,7 @@ open class TabFragment : Fragment(), SearchItemDelegate, List1CellDelegate, Seri
                 super.onScrollStateChanged(recyclerView, newState)
 
                 //println("items.size:${items.size}")
-                if (items.size == pos + 1 && newState == RecyclerView.SCROLL_STATE_IDLE && items.size < totalCount && !loading) {
+                if (tableLists.size == pos + 1 && newState == RecyclerView.SCROLL_STATE_IDLE && tableLists.size < totalCount && !loading) {
                     that.getDataStart(page, perPage)
                 }
             }
@@ -589,9 +590,8 @@ open class TabFragment : Fragment(), SearchItemDelegate, List1CellDelegate, Seri
 
 }// Required empty public constructor
 
-abstract class MyAdapter<T: MyViewHolder>(private val resource: Int, private val viewHolderConstructor: (Context, View, List1CellDelegate?)-> T): RecyclerView.Adapter<T>() {
+abstract class MyAdapter<T: MyViewHolder>(private val resource: Int, private val viewHolderConstructor: (Context, View, List1CellDelegate?)-> T, val list1CellDelegate: List1CellDelegate?=null): RecyclerView.Adapter<T>() {
 
-    var list1CellDelegate: List1CellDelegate? = null
     var tableList: ArrayList<Table> = arrayListOf()
 
     override fun getItemCount(): Int {
@@ -611,7 +611,7 @@ abstract class MyAdapter<T: MyViewHolder>(private val resource: Int, private val
         val inflater = LayoutInflater.from(parent.context)
         val layout = inflater.inflate(resource, parent, false)
 
-        val viewHolder = viewHolderConstructor(parent.context, layout, null)
+        val viewHolder = viewHolderConstructor(parent.context, layout, list1CellDelegate)
 
         return viewHolder
     }

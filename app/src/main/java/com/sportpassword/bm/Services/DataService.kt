@@ -68,7 +68,7 @@ open class DataService {
         if (token != null) {
             url = url + "/" + token
         }
-        //println(url)
+        println(url)
 
         val header: MutableList<Pair<String, String>> = mutableListOf()
         header.add(Pair("Accept","application/json"))
@@ -87,7 +87,7 @@ open class DataService {
         if (member.isLoggedIn) {
             params.put("member_token", member.token!!)
         }
-        //println(params)
+        println(params)
 
         val j: JSONObject = JSONObject(params as Map<*, *>)
         val body = j.toString().toRequestBody("application/json; charset=utf-8".toMediaTypeOrNull())
