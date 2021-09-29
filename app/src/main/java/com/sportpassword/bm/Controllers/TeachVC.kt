@@ -19,6 +19,7 @@ class TeachVC : MyTableVC() {
 
     //lateinit var collectionAdapter: CollectionAdapter
     var mysTable: TeachesTable? = null
+    lateinit var tableAdapter: TeachAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -43,7 +44,9 @@ class TeachVC : MyTableVC() {
 
         recyclerView = list_container
         refreshLayout = refresh
-        initAdapter()
+        //initAdapter()
+        tableAdapter = TeachAdapter(R.layout.teach_list_cell, this)
+        recyclerView.adapter = tableAdapter
 
         refresh()
     }

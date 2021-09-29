@@ -594,6 +594,19 @@ abstract class MyTableVC : BaseActivity(), List1CellDelegate {
         replaceRows(key, row)
     }
 
+    override fun cellClick(row: Table) {
+        val t = row::class
+        if (t == ProductTable::class) {
+            toShowProduct(row.token)
+        } else if (t == TeachTable::class) {
+            toShowTeach(row.token)
+        } else if (t == CoachTable::class) {
+            toShowCoach(row.token)
+        } else if (t == StoreTable::class) {
+            toShowStore(row.token)
+        }
+    }
+
     override fun cellRefresh() {
         refresh()
     }
@@ -651,7 +664,9 @@ abstract class MyTableVC : BaseActivity(), List1CellDelegate {
         row["value"] = city_id.toString()
         replaceRows(key, row)
         prepareParams()
-        refresh()
+        page = 1
+        tableLists.clear()
+        getDataStart(page, perPage)
     }
 }
 

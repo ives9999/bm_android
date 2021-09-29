@@ -24,7 +24,7 @@ import kotlinx.android.synthetic.main.team_list_cell.*
 class CoachVC : MyTableVC() {
 
     var mysTable: CoachesTable? = null
-    //var storesTable: StoresTable? = null
+    lateinit var coachAdapter: CoachAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -43,7 +43,9 @@ class CoachVC : MyTableVC() {
         dataService = CoachService
         recyclerView = list_container
         refreshLayout = refresh
-        initAdapter()
+        //initAdapter()
+        tableAdapter = CoachAdapter(R.layout.coach_list_cell, this)
+        recyclerView.adapter = tableAdapter
 
         refresh()
     }

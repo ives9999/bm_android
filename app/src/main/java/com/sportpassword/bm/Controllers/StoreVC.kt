@@ -26,6 +26,8 @@ import kotlin.collections.HashMap
 class StoreVC : MyTableVC() {
 
     var mysTable: StoresTable? = null
+    lateinit var tableAdapter: StoreAdapter
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -47,7 +49,10 @@ class StoreVC : MyTableVC() {
         refreshLayout = refresh
         maskView = mask
 
-        initAdapter()
+        //initAdapter()
+        tableAdapter = StoreAdapter(R.layout.store_list_cell, this)
+        recyclerView.adapter = tableAdapter
+
         refresh()
     }
 
