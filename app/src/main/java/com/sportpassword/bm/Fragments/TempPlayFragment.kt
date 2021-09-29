@@ -859,8 +859,8 @@ class TeamAdapter(resource: Int, list1CellDelegate: List1CellDelegate?): MyAdapt
 
 class TeamViewHolder(context: Context, viewHolder: View, list1CellDelegate: List1CellDelegate? = null): MyViewHolder(context, viewHolder, list1CellDelegate) {
 
-    override fun bind(_row: Table) {
-        super.bind(_row)
+    override fun bind(_row: Table, idx: Int) {
+        super.bind(_row, idx)
 
         val row: TeamTable = _row as TeamTable
 

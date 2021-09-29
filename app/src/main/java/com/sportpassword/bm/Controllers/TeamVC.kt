@@ -2,6 +2,7 @@ package com.sportpassword.bm.Controllers
 
 import android.os.Bundle
 import android.view.View
+import com.sportpassword.bm.Fragments.TeamAdapter
 import com.sportpassword.bm.Fragments.TeamItem
 import com.sportpassword.bm.Models.Table
 import com.sportpassword.bm.Models.TeamTable
@@ -12,10 +13,12 @@ import com.sportpassword.bm.Utilities.*
 import com.xwray.groupie.kotlinandroidextensions.Item
 import kotlinx.android.synthetic.main.activity_store_vc.*
 import kotlinx.android.synthetic.main.mask.*
+import org.jetbrains.anko.support.v4.runOnUiThread
 
 class TeamVC : MyTableVC() {
 
     var mysTable: TeamsTable? = null
+    lateinit var tableAdapter: TeamAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -47,7 +50,10 @@ class TeamVC : MyTableVC() {
         refreshLayout = refresh
         maskView = mask
 
-        initAdapter()
+        //initAdapter()
+        tableAdapter = TeamAdapter(R.layout.team_list_cell, this)
+        recyclerView.adapter = tableAdapter
+
         refresh()
     }
 
@@ -55,7 +61,24 @@ class TeamVC : MyTableVC() {
         mysTable = jsonToModels(jsonString!!)
         if (mysTable != null) {
             tables = mysTable
+            getPage()
+            tableLists += generateItems1()
+            tableAdapter.setMyTableList(tableLists)
+            runOnUiThread {
+                tableAdapter.notifyDataSetChanged()
+            }
         }
+    }
+
+    override fun generateItems1(): List<Table> {
+        val temp: ArrayList<TeamTable> = arrayListOf()
+        if (mysTable != null) {
+            for (row in mysTable!!.rows) {
+                row.filterRow()
+                temp.add(row)
+            }
+        }
+        return temp
     }
 
     override fun generateItems(): ArrayList<Item> {

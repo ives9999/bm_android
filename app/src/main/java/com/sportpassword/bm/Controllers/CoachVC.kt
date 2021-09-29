@@ -7,6 +7,8 @@ import android.view.Menu
 import android.view.View
 import android.widget.ImageButton
 import com.sportpassword.bm.Fragments.ListItem
+import com.sportpassword.bm.Fragments.MyAdapter
+import com.sportpassword.bm.Fragments.MyViewHolder
 import com.sportpassword.bm.Models.*
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.CoachService
@@ -19,12 +21,13 @@ import com.xwray.groupie.kotlinandroidextensions.GroupieViewHolder
 import kotlinx.android.synthetic.main.activity_store_vc.*
 import kotlinx.android.synthetic.main.coach_list_cell.*
 import kotlinx.android.synthetic.main.coach_list_cell.cityBtn
+import kotlinx.android.synthetic.main.coach_list_cell.view.*
 import kotlinx.android.synthetic.main.team_list_cell.*
 
 class CoachVC : MyTableVC() {
 
     var mysTable: CoachesTable? = null
-    lateinit var coachAdapter: CoachAdapter
+    lateinit var tableAdapter: CoachAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -63,7 +66,24 @@ class CoachVC : MyTableVC() {
         mysTable = jsonToModels<CoachesTable>(jsonString!!)
         if (mysTable != null) {
             tables = mysTable
+            getPage()
+            tableLists += generateItems1()
+            tableAdapter.setMyTableList(tableLists)
+            runOnUiThread {
+                tableAdapter.notifyDataSetChanged()
+            }
         }
+    }
+
+    override fun generateItems1(): List<Table> {
+        val temp: ArrayList<CoachTable> = arrayListOf()
+        if (mysTable != null) {
+            for (row in mysTable!!.rows) {
+                row.filterRow()
+                temp.add(row)
+            }
+        }
+        return temp
     }
 
     override fun generateItems(): ArrayList<Item> {
@@ -119,6 +139,44 @@ class CoachVC : MyTableVC() {
             CITY_KEY -> {
                 toSelectCity(value, this)
             }
+        }
+    }
+}
+
+class CoachAdapter(resource: Int, list1CellDelegate: List1CellDelegate?): MyAdapter<CoachViewHolder>(resource, ::CoachViewHolder, list1CellDelegate) {}
+
+class CoachViewHolder(context: Context, viewHolder: View, list1CellDelegate: List1CellDelegate? = null): MyViewHolder(context, viewHolder, list1CellDelegate) {
+
+    override fun bind(_row: Table, idx: Int) {
+        super.bind(_row, idx)
+
+        val row: CoachTable = _row as CoachTable
+        if (row.city_show.isNotEmpty()) {
+            viewHolder.cityBtn.text = row.city_show
+            viewHolder.cityBtn.setOnClickListener {
+                if (list1CellDelegate != null) {
+                    list1CellDelegate!!.cellCity(row)
+                }
+            }
+
+        } else {
+            viewHolder.cityBtn.visibility = View.GONE
+        }
+
+        if (row.mobile_show.isNotEmpty()) {
+            viewHolder.mobileLbl.text = row.mobile_show
+        }
+
+        if (row.seniority >= 0) {
+            viewHolder.seniorityLbl.text = "年資:${row.seniority_show}"
+        } else {
+            viewHolder.seniorityLbl.text = "年資:未提供"
+        }
+
+        if (row.line != null && row.line.isNotEmpty()) {
+            viewHolder.line.text = "Line:${row.line}"
+        } else {
+            viewHolder.line.text = "Line:未提供"
         }
     }
 }

@@ -1,15 +1,13 @@
 package com.sportpassword.bm.Controllers
 
 import android.content.Context
-import android.opengl.Visibility
 import android.os.Bundle
 import android.view.Menu
 import android.view.View
 import com.sportpassword.bm.Fragments.ListItem
-import com.sportpassword.bm.Models.CartItemTable
-import com.sportpassword.bm.Models.CartTable
-import com.sportpassword.bm.Models.CartsTable
-import com.sportpassword.bm.Models.Table
+import com.sportpassword.bm.Fragments.MyAdapter
+import com.sportpassword.bm.Fragments.MyViewHolder
+import com.sportpassword.bm.Models.*
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.CartService
 import com.sportpassword.bm.Utilities.jsonToModels
@@ -18,12 +16,12 @@ import com.squareup.picasso.Picasso
 import com.xwray.groupie.kotlinandroidextensions.Item
 import com.xwray.groupie.kotlinandroidextensions.GroupieViewHolder
 import kotlinx.android.synthetic.main.activity_member_cart_list_vc.*
-import kotlinx.android.synthetic.main.mask.*
 import kotlinx.android.synthetic.main.cart_list_cell.*
 
 class MemberCartListVC : MyTableVC() {
 
     var mysTable: CartsTable? = null
+    lateinit var tableAdapter: MemberCartAdapter
 
     var myTable: CartTable? = null
     var cartItemsTable: ArrayList<CartItemTable> = arrayListOf()
@@ -40,7 +38,10 @@ class MemberCartListVC : MyTableVC() {
         recyclerView = cart_list
         refreshLayout = cart_refresh
 
-        initAdapter()
+//        initAdapter()
+        tableAdapter = MemberCartAdapter(R.layout.cart_list_cell, this)
+        recyclerView.adapter = tableAdapter
+
         refresh()
     }
 
@@ -54,8 +55,9 @@ class MemberCartListVC : MyTableVC() {
 
         page = 1
         theFirstTime = true
-        adapter.clear()
+        //adapter.clear()
         items.clear()
+        tableLists.clear()
         getDataStart(page, perPage, member.token)
     }
 
@@ -71,10 +73,29 @@ class MemberCartListVC : MyTableVC() {
                 } else {
                     submitBtn.visibility = View.GONE
                 }
+                getPage()
+                tableLists += generateItems1()
+                tableAdapter.setMyTableList(tableLists)
+                runOnUiThread {
+                    tableAdapter.notifyDataSetChanged()
+                }
             } else {
-                submitBtn.visibility = View.GONE
+                runOnUiThread {
+                    submitBtn.visibility = View.GONE
+                }
             }
         }
+    }
+
+    override fun generateItems1(): List<Table> {
+        val temp: ArrayList<CartTable> = arrayListOf()
+        if (mysTable != null) {
+            for (row in mysTable!!.rows) {
+                row.filterRow()
+                temp.add(row)
+            }
+        }
+        return temp
     }
 
     override fun generateItems(): ArrayList<Item> {
@@ -127,7 +148,16 @@ class MemberCartListVC : MyTableVC() {
     }
 }
 
+class MemberCartAdapter(resource: Int, list1CellDelegate: List1CellDelegate?): MyAdapter<MemberCartViewHolder>(resource, ::MemberCartViewHolder, list1CellDelegate) {}
 
+class MemberCartViewHolder(context: Context, viewHolder: View, list1CellDelegate: List1CellDelegate? = null): MyViewHolder(context, viewHolder, list1CellDelegate) {
+
+    override fun bind(_row: Table, idx: Int) {
+        super.bind(_row, idx)
+
+        val row: ProductTable = _row as ProductTable
+    }
+}
 class CartItemItem(override var context: Context, var _row: CartItemTable): ListItem<Table>(context, _row) {
 
     constructor(context: Context, sectionKey: String, rowKey: String, title: String, featured_path: String, attribute: String, amount: String, quantity: String, list1CellDelegate: List1CellDelegate?=null): this(context, CartItemTable()) {

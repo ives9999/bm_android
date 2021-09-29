@@ -4,34 +4,25 @@ import android.content.Context
 import android.os.Bundle
 import android.view.Menu
 import android.view.View
-import android.widget.ImageButton
-import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.RecyclerView
+import com.sportpassword.bm.Fragments.MyAdapter
+import com.sportpassword.bm.Fragments.MyViewHolder
 import com.sportpassword.bm.Models.*
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.OrderService
-import com.sportpassword.bm.Utilities.BASE_URL
-import com.sportpassword.bm.Utilities.Loading
-import com.sportpassword.bm.Utilities.jsonToModel
 import com.sportpassword.bm.Utilities.jsonToModels
 import com.sportpassword.bm.member
-import com.squareup.picasso.Picasso
-import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.kotlinandroidextensions.Item
 import com.xwray.groupie.kotlinandroidextensions.GroupieViewHolder
 import kotlinx.android.synthetic.main.activity_member_order_list_vc.*
 import kotlinx.android.synthetic.main.mask.*
 import kotlinx.android.synthetic.main.order_list_cell.*
-import java.util.*
+import kotlinx.android.synthetic.main.order_list_cell.view.*
 import kotlin.collections.ArrayList
 
 class MemberOrderListVC : MyTableVC() {
 
     var mysTable: OrdersTable? = null
-    //protected lateinit var superModels: SuperModel
-
-    //取代superDataLists(define in BaseActivity)，放置所有拿到的SuperModel，分頁時會使用到
-    //var allSuperModels: ArrayList<SuperOrder> = arrayListOf()
+    lateinit var tableAdapter: MemberOrderAdapter
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -47,7 +38,10 @@ class MemberOrderListVC : MyTableVC() {
         setRefreshListener()
         setRecyclerViewScrollListener()
 
-        initAdapter()
+//        initAdapter()
+        tableAdapter = MemberOrderAdapter(R.layout.order_list_cell, this)
+        recyclerView.adapter = tableAdapter
+
         perPage = 10
         refresh()
     }
@@ -66,17 +60,36 @@ class MemberOrderListVC : MyTableVC() {
 
         page = 1
         theFirstTime = true
-        adapter.clear()
+        //adapter.clear()
         items.clear()
-        getDataStart(page, perPage, member.token)
+        tableLists.clear()
         params.clear()
+        getDataStart(page, perPage, member.token)
     }
 
     override fun genericTable() {
         mysTable = jsonToModels<OrdersTable>(dataService.jsonString)
         if (mysTable != null) {
             tables = mysTable
+            getPage()
+            tableLists += generateItems1()
+            tableAdapter.setMyTableList(tableLists)
+            runOnUiThread {
+                tableAdapter.notifyDataSetChanged()
+            }
+
         }
+    }
+
+    override fun generateItems1(): List<Table> {
+        val temp: ArrayList<OrderTable> = arrayListOf()
+        if (mysTable != null) {
+            for (row in mysTable!!.rows) {
+                row.filterRow()
+                temp.add(row)
+            }
+        }
+        return temp
     }
 
     override fun generateItems(): ArrayList<Item> {
@@ -97,6 +110,41 @@ class MemberOrderListVC : MyTableVC() {
         val orderItem = item as OrderItem
         val table = orderItem.row
         toPayment(table.token)
+    }
+}
+
+class MemberOrderAdapter(resource: Int, list1CellDelegate: List1CellDelegate?): MyAdapter<MemberOrderViewHolder>(resource, ::MemberOrderViewHolder, list1CellDelegate) {}
+
+class MemberOrderViewHolder(context: Context, viewHolder: View, list1CellDelegate: List1CellDelegate? = null): MyViewHolder(context, viewHolder, list1CellDelegate) {
+
+    override fun bind(_row: Table, idx: Int) {
+        super.bind(_row, idx)
+
+        val row: OrderTable = _row as OrderTable
+        val items: ArrayList<OrderItemTable> = row.items
+        var name: String = ""
+        if (items.size > 0) {
+            val productTable = items[0].product
+            if (productTable != null) {
+                name = productTable.name
+            }
+            if (items.size > 1) {
+                name += "..."
+            }
+        } else {
+            name = "無法取得商品名稱，請洽管理員"
+        }
+        viewHolder.nameLbl.text = name
+        viewHolder.dateLbl.text = row.created_at_show
+        viewHolder.priceLbl.text = row.amount_show
+        viewHolder.orderNoLbl.text = row.order_no
+        viewHolder.noLbl.text = (idx+1).toString()
+
+        viewHolder.orderAllProcessLbl.text = row.all_process_show
+        viewHolder.gatewayProcessLbl.text = row.gateway!!.process_show
+        viewHolder.shippingProcessLbl.text = row.shipping!!.process_show
+        viewHolder.gatewayMethodLbl.text = row.gateway!!.method_show
+        viewHolder.shippingMethodLbl.text = row.shipping!!.method_show
     }
 }
 

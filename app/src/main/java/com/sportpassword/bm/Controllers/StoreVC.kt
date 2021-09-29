@@ -6,6 +6,8 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.View
 import com.sportpassword.bm.Fragments.ListItem
+import com.sportpassword.bm.Fragments.MyAdapter
+import com.sportpassword.bm.Fragments.MyViewHolder
 import com.sportpassword.bm.Models.*
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.StoreService
@@ -19,6 +21,7 @@ import kotlinx.android.synthetic.main.store_list_cell.*
 import kotlinx.android.synthetic.main.store_list_cell.cityBtn
 import kotlinx.android.synthetic.main.store_list_cell.telLbl
 import kotlinx.android.synthetic.main.store_list_cell.titleLbl
+import kotlinx.android.synthetic.main.store_list_cell.view.*
 import kotlinx.android.synthetic.main.team_list_cell.*
 import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
@@ -63,10 +66,27 @@ class StoreVC : MyTableVC() {
         return true
     }
 
+    override fun generateItems1(): List<Table> {
+        val temp: ArrayList<StoreTable> = arrayListOf()
+        if (mysTable != null) {
+            for (row in mysTable!!.rows) {
+                row.filterRow()
+                temp.add(row)
+            }
+        }
+        return temp
+    }
+
     override fun genericTable() {
         mysTable = jsonToModels<StoresTable>(jsonString!!)
         if (mysTable != null) {
             tables = mysTable
+            getPage()
+            tableLists += generateItems1()
+            tableAdapter.setMyTableList(tableLists)
+            runOnUiThread {
+                tableAdapter.notifyDataSetChanged()
+            }
         }
     }
 
@@ -125,7 +145,35 @@ class StoreVC : MyTableVC() {
         }
         row["value"] = ""
     }
+}
 
+class StoreAdapter(resource: Int, list1CellDelegate: List1CellDelegate?): MyAdapter<StoreViewHolder>(resource, ::StoreViewHolder, list1CellDelegate) {}
+
+class StoreViewHolder(context: Context, viewHolder: View, list1CellDelegate: List1CellDelegate? = null): MyViewHolder(context, viewHolder, list1CellDelegate) {
+
+    override fun bind(_row: Table, idx: Int) {
+        super.bind(_row, idx)
+
+        val row: StoreTable = _row as StoreTable
+        viewHolder.cityBtn.text = row.city_show
+        viewHolder.cityBtn.setOnClickListener {
+            if (list1CellDelegate != null) {
+                list1CellDelegate!!.cellCity(row)
+            }
+        }
+
+        viewHolder.titleLbl.text = row.name
+
+        viewHolder.business_timeTxt.text = "${row.open_time_show}~${row.close_time_show}"
+
+        viewHolder.addressTxt.text = row.address
+
+        if (row.tel_show.isNotEmpty()) {
+            viewHolder.telLbl.text = row.tel_show
+        } else {
+            viewHolder.telLbl.text = "電話：未提供"
+        }
+    }
 }
 
 class StoreItem(override var context: Context, var _row: StoreTable): ListItem<Table>(context, _row) {

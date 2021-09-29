@@ -5,6 +5,8 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.View
 import com.sportpassword.bm.Fragments.ListItem
+import com.sportpassword.bm.Fragments.MyAdapter
+import com.sportpassword.bm.Fragments.MyViewHolder
 import com.sportpassword.bm.Models.*
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.TeachService
@@ -14,6 +16,7 @@ import com.xwray.groupie.kotlinandroidextensions.Item
 import com.xwray.groupie.kotlinandroidextensions.GroupieViewHolder
 import kotlinx.android.synthetic.main.activity_store_vc.*
 import kotlinx.android.synthetic.main.teach_list_cell.*
+import kotlinx.android.synthetic.main.teach_list_cell.view.*
 
 class TeachVC : MyTableVC() {
 
@@ -58,10 +61,27 @@ class TeachVC : MyTableVC() {
         return true
     }
 
+    override fun generateItems1(): List<Table> {
+        val temp: ArrayList<TeachTable> = arrayListOf()
+        if (mysTable != null) {
+            for (row in mysTable!!.rows) {
+                row.filterRow()
+                temp.add(row)
+            }
+        }
+        return temp
+    }
+
     override fun genericTable() {
         mysTable = jsonToModels(jsonString!!)
         if (mysTable != null) {
             tables = mysTable
+            getPage()
+            tableLists += generateItems1()
+            tableAdapter.setMyTableList(tableLists)
+            runOnUiThread {
+                tableAdapter.notifyDataSetChanged()
+            }
         }
     }
 
@@ -87,6 +107,19 @@ class TeachVC : MyTableVC() {
         val table = teachItem.row as TeachTable
         //toShowTeach(table.token)
         toYoutubePlayer(table.youtube)
+    }
+}
+
+class TeachAdapter(resource: Int, list1CellDelegate: List1CellDelegate?): MyAdapter<TeachViewHolder>(resource, ::TeachViewHolder, list1CellDelegate) {}
+
+class TeachViewHolder(context: Context, viewHolder: View, list1CellDelegate: List1CellDelegate? = null): MyViewHolder(context, viewHolder, list1CellDelegate) {
+
+    override fun bind(_row: Table, idx: Int) {
+        super.bind(_row, idx)
+
+        val row: TeachTable = _row as TeachTable
+        viewHolder.pvLbl.text = row.pv.toString()
+        viewHolder.dateLbl.text = row.created_at_show
     }
 }
 

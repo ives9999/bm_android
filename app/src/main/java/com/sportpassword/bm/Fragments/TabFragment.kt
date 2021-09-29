@@ -32,6 +32,7 @@ import kotlinx.android.synthetic.main.course_list_cell.listFeatured
 import kotlinx.android.synthetic.main.course_list_cell.refreshIcon
 import kotlinx.android.synthetic.main.course_list_cell.telIcon
 import kotlinx.android.synthetic.main.course_list_cell.titleLbl
+import kotlinx.android.synthetic.main.formitem_fb.*
 import kotlinx.android.synthetic.main.list1_cell.mapIcon
 import kotlinx.android.synthetic.main.list1_cell.view.*
 import org.jetbrains.anko.support.v4.runOnUiThread
@@ -99,6 +100,7 @@ open class TabFragment : Fragment(), SearchItemDelegate, List1CellDelegate, Seri
         that = this
         mainActivity = activity as MainActivity
         mainActivity!!.able_type = able_type
+        adapter = GroupAdapter()
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -208,7 +210,9 @@ open class TabFragment : Fragment(), SearchItemDelegate, List1CellDelegate, Seri
                 }
             }
         } else {
-            Loading.show(maskView)
+            if (maskView != null) {
+                Loading.show(maskView)
+            }
             loading = true
             dataService.getList(requireContext(), null, params, _page, _perPage) { success ->
                 jsonString = dataService.jsonString
@@ -234,8 +238,10 @@ open class TabFragment : Fragment(), SearchItemDelegate, List1CellDelegate, Seri
             page++
         }
 //        mask?.let { mask?.dismiss() }
-        runOnUiThread {
-            Loading.hide(maskView)
+        if (maskView != null) {
+            runOnUiThread {
+                Loading.hide(maskView)
+            }
         }
         loading = false
 //        println("page:$page")
@@ -613,7 +619,7 @@ abstract class MyAdapter<T: MyViewHolder>(private val resource: Int, private val
     }
 
     override fun onBindViewHolder(holder: T, position: Int) {
-        holder.bind(tableList[position])
+        holder.bind(tableList[position], position)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): T {
@@ -630,7 +636,7 @@ open class MyViewHolder(val context: Context, val viewHolder: View, val list1Cel
 
     var isLike: Boolean = false
 
-    open fun bind(row: Table) {
+    open fun bind(row: Table, idx: Int) {
 
         viewHolder.setOnClickListener {
             list1CellDelegate?.cellClick(row)
@@ -638,7 +644,8 @@ open class MyViewHolder(val context: Context, val viewHolder: View, val list1Cel
 
         if (row.title.isNotEmpty()) {
             viewHolder.titleLbl.text = row.title
-        } else {
+        }
+        if (row.name.isNotEmpty()) {
             viewHolder.titleLbl.text = row.name
         }
 
@@ -650,41 +657,42 @@ open class MyViewHolder(val context: Context, val viewHolder: View, val list1Cel
                 .into(viewHolder.listFeatured)
         }
 
-        viewHolder.refreshIcon.setOnClickListener {
-            list1CellDelegate?.cellRefresh()
-        }
-
         val v = viewHolder.iconView
-        var a = v.findViewById<ImageButton>(R.id.telIcon)
-        if (a != null) {
-            if (row.mobile_show.isNotEmpty()) {
-                if (list1CellDelegate != null) {
-                    viewHolder.telIcon.setOnClickListener {
-                        list1CellDelegate.cellMobile(row)
-                    }
-                    viewHolder.telIcon.visibility = View.VISIBLE
+        if (v != null) {
+            var a = v.findViewById<ImageButton>(R.id.telIcon)
+            if (a != null) {
+                viewHolder.refreshIcon.setOnClickListener {
+                    list1CellDelegate?.cellRefresh()
                 }
-            } else if (row.tel_show.isNotEmpty()) {
-                if (list1CellDelegate != null) {
-                    viewHolder.telIcon.setOnClickListener {
-                        list1CellDelegate.cellMobile(row)
-                    }
-                    viewHolder.telIcon.visibility = View.VISIBLE
-                }
-            } else {
-                viewHolder.telIcon.visibility = View.GONE
-            }
-        }
 
-        a = v.findViewById<ImageButton>(R.id.mapIcon)
-        if (a != null) {
-
-            if (row.address == null || row.address.isEmpty()) {
-                viewHolder.mapIcon.visibility = View.GONE
-            } else {
-                viewHolder.mapIcon.setOnClickListener {
+                if (row.mobile_show.isNotEmpty()) {
                     if (list1CellDelegate != null) {
-                        list1CellDelegate!!.cellShowMap(row)
+                        viewHolder.telIcon.setOnClickListener {
+                            list1CellDelegate.cellMobile(row)
+                        }
+                        viewHolder.telIcon.visibility = View.VISIBLE
+                    }
+                } else if (row.tel_show.isNotEmpty()) {
+                    if (list1CellDelegate != null) {
+                        viewHolder.telIcon.setOnClickListener {
+                            list1CellDelegate.cellMobile(row)
+                        }
+                        viewHolder.telIcon.visibility = View.VISIBLE
+                    }
+                } else {
+                    viewHolder.telIcon.visibility = View.GONE
+                }
+            }
+            a = v.findViewById<ImageButton>(R.id.mapIcon)
+            if (a != null) {
+
+                if (row.address == null || row.address.isEmpty()) {
+                    viewHolder.mapIcon.visibility = View.GONE
+                } else {
+                    viewHolder.mapIcon.setOnClickListener {
+                        if (list1CellDelegate != null) {
+                            list1CellDelegate!!.cellShowMap(row)
+                        }
                     }
                 }
             }

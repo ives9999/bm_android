@@ -75,13 +75,14 @@ class ProductVC : MyTableVC() {
     }
 
     override fun generateItems1(): List<Table> {
+        val temp: ArrayList<ProductTable> = arrayListOf()
         if (mysTable != null) {
             for (row in mysTable!!.rows) {
                 row.filterRow()
-                tableLists.add(row)
+                temp.add(row)
             }
         }
-        return tableLists
+        return temp
     }
 
     override fun generateItems(): ArrayList<Item> {
@@ -111,8 +112,8 @@ class ProductAdapter(resource: Int, list1CellDelegate: List1CellDelegate?): MyAd
 
 class ProductViewHolder(context: Context, viewHolder: View, list1CellDelegate: List1CellDelegate? = null): MyViewHolder(context, viewHolder, list1CellDelegate) {
 
-    override fun bind(_row: Table) {
-        super.bind(_row)
+    override fun bind(_row: Table, idx: Int) {
+        super.bind(_row, idx)
 
         val row: ProductTable = _row as ProductTable
 

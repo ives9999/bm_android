@@ -45,10 +45,10 @@ class CourseFragment : TabFragment() {
         dataService = CourseService
 
         //initAdapter(false)
-        adapter = GroupAdapter()
-        adapter.setOnItemClickListener { item, view ->
-            rowClick(item, view)
-        }
+//        adapter = GroupAdapter()
+//        adapter.setOnItemClickListener { item, view ->
+//            rowClick(item, view)
+//        }
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -94,13 +94,14 @@ class CourseFragment : TabFragment() {
     }
 
     override fun generateItems1(): List<Table> {
+        val temp: ArrayList<CourseTable> = arrayListOf()
         if (mysTable != null) {
             for (row in mysTable!!.rows) {
                 row.filterRow()
-                tableLists.add(row)
+                temp.add(row)
             }
         }
-        return tableLists
+        return temp
     }
 
     override fun prepare(idx: Int) {
@@ -206,8 +207,8 @@ class CourseAdapter(resource: Int, list1CellDelegate: List1CellDelegate?): MyAda
 
 class CourseViewHolder(context: Context, viewHolder: View, list1CellDelegate: List1CellDelegate? = null): MyViewHolder(context, viewHolder, list1CellDelegate) {
 
-    override fun bind(_row: Table) {
-        super.bind(_row)
+    override fun bind(_row: Table, idx: Int) {
+        super.bind(_row, idx)
 
         val row: CourseTable = _row as CourseTable
 

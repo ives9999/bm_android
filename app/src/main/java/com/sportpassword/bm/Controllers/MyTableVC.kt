@@ -171,7 +171,9 @@ abstract class MyTableVC : BaseActivity(), List1CellDelegate {
             page++
         }
 //        mask?.let { mask?.dismiss() }
-        Loading.hide(mask)
+        runOnUiThread {
+            Loading.hide(mask)
+        }
         loading = false
         refreshLayout!!.isRefreshing = false
 //        println("page:$page")
@@ -604,6 +606,8 @@ abstract class MyTableVC : BaseActivity(), List1CellDelegate {
             toShowCoach(row.token)
         } else if (t == StoreTable::class) {
             toShowStore(row.token)
+        } else if (t == TeamTable::class) {
+            toShowTeam(row.token)
         }
     }
 

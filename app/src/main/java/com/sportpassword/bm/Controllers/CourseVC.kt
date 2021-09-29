@@ -3,9 +3,12 @@ package com.sportpassword.bm.Controllers
 import android.os.Bundle
 import android.view.Menu
 import android.view.View
+import com.sportpassword.bm.Fragments.CourseAdapter
 import com.sportpassword.bm.Fragments.CourseItem
 import com.sportpassword.bm.Fragments.TeamItem
+import com.sportpassword.bm.Models.CourseTable
 import com.sportpassword.bm.Models.CoursesTable
+import com.sportpassword.bm.Models.Table
 import com.sportpassword.bm.Models.TeamsTable
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.CourseService
@@ -14,10 +17,12 @@ import com.sportpassword.bm.Utilities.jsonToModels
 import com.xwray.groupie.kotlinandroidextensions.Item
 import kotlinx.android.synthetic.main.activity_store_vc.*
 import kotlinx.android.synthetic.main.mask.*
+import org.jetbrains.anko.support.v4.runOnUiThread
 
 class CourseVC : MyTableVC() {
 
     var mysTable: CoursesTable? = null
+    lateinit var tableAdapter: CourseAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,7 +38,10 @@ class CourseVC : MyTableVC() {
         maskView = mask
         setRefreshListener()
 
-        initAdapter()
+//        initAdapter()
+        tableAdapter = CourseAdapter(R.layout.course_list_cell, this)
+        recyclerView.adapter = tableAdapter
+
         refresh()
     }
 
@@ -48,7 +56,24 @@ class CourseVC : MyTableVC() {
         mysTable = jsonToModels<CoursesTable>(jsonString!!)
         if (mysTable != null) {
             tables = mysTable
+            getPage()
+            tableLists += generateItems1()
+            tableAdapter.setMyTableList(tableLists)
+            runOnUiThread {
+                tableAdapter.notifyDataSetChanged()
+            }
         }
+    }
+
+    override fun generateItems1(): List<Table> {
+        val temp: ArrayList<CourseTable> = arrayListOf()
+        if (mysTable != null) {
+            for (row in mysTable!!.rows) {
+                row.filterRow()
+                temp.add(row)
+            }
+        }
+        return temp
     }
 
     override fun generateItems(): ArrayList<Item> {
