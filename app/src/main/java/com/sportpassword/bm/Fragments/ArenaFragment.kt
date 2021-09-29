@@ -73,7 +73,7 @@ class ArenaFragment : TabFragment() {
         setRecyclerViewScrollListener()
         setRecyclerViewRefreshListener()
 
-        tableAdapter = ArenaAdapter(R.layout.arena_list_cell)
+        tableAdapter = ArenaAdapter(R.layout.arena_list_cell, this)
         recyclerView.adapter = tableAdapter
 
         refresh()
@@ -212,7 +212,7 @@ class ArenaFragment : TabFragment() {
     }
 }
 
-class ArenaAdapter(resource: Int): MyAdapter<ArenaViewHolder>(resource, ::ArenaViewHolder) {}
+class ArenaAdapter(resource: Int, list1CellDelegate: List1CellDelegate?): MyAdapter<ArenaViewHolder>(resource, ::ArenaViewHolder, list1CellDelegate) {}
 
 class ArenaViewHolder(context: Context, viewHolder: View, list1CellDelegate: List1CellDelegate? = null): MyViewHolder(context, viewHolder, list1CellDelegate) {
 
@@ -224,9 +224,7 @@ class ArenaViewHolder(context: Context, viewHolder: View, list1CellDelegate: Lis
         if (row.city_show.isNotEmpty()) {
             viewHolder.cityBtn.text = row.city_show
             viewHolder.cityBtn.setOnClickListener {
-                if (list1CellDelegate != null) {
-                    list1CellDelegate!!.cellCity(row)
-                }
+                list1CellDelegate?.cellCity(row)
             }
         } else {
             viewHolder.cityBtn.visibility = View.GONE
@@ -235,9 +233,7 @@ class ArenaViewHolder(context: Context, viewHolder: View, list1CellDelegate: Lis
         if (row.area_show.isNotEmpty()) {
             viewHolder.areaBtn.text = row.area_show
             viewHolder.areaBtn.setOnClickListener {
-                if (list1CellDelegate != null) {
-                    list1CellDelegate!!.cellArea(row)
-                }
+                list1CellDelegate?.cellArea(row)
             }
         } else {
             viewHolder.cityBtn.visibility = View.GONE

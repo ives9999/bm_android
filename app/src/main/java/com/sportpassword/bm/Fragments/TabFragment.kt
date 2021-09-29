@@ -8,12 +8,10 @@ import android.os.Bundle
 import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import android.widget.ImageButton
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.sportpassword.bm.Adapters.GroupSection
-import com.sportpassword.bm.Adapters.ListAdapter
 import com.sportpassword.bm.Adapters.SearchItemDelegate
 import com.sportpassword.bm.Controllers.*
 import com.sportpassword.bm.Models.*
@@ -29,18 +27,15 @@ import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.Section
 import com.xwray.groupie.GroupieViewHolder
 import com.xwray.groupie.kotlinandroidextensions.Item
-import kotlinx.android.synthetic.main.course_list_cell.*
 import kotlinx.android.synthetic.main.course_list_cell.likeIcon
 import kotlinx.android.synthetic.main.course_list_cell.listFeatured
 import kotlinx.android.synthetic.main.course_list_cell.refreshIcon
 import kotlinx.android.synthetic.main.course_list_cell.telIcon
 import kotlinx.android.synthetic.main.course_list_cell.titleLbl
-import kotlinx.android.synthetic.main.list1_cell.*
 import kotlinx.android.synthetic.main.list1_cell.mapIcon
 import kotlinx.android.synthetic.main.list1_cell.view.*
+import org.jetbrains.anko.support.v4.runOnUiThread
 import java.io.Serializable
-import kotlin.reflect.KFunction3
-
 
 /**
  * A simple [Fragment] subclass.
@@ -61,7 +56,6 @@ open class TabFragment : Fragment(), SearchItemDelegate, List1CellDelegate, Seri
     protected var totalPage: Int = 0
     var items: ArrayList<Item> = arrayListOf()
 
-    //open lateinit var tableAdapter: MyAdapter<MyViewHolder>
     var tableLists: ArrayList<Table> = arrayListOf()
 
     protected var loading: Boolean = false
@@ -199,7 +193,7 @@ open class TabFragment : Fragment(), SearchItemDelegate, List1CellDelegate, Seri
             //var _able_type: String = able_type
             //if (able_type == "temp_play") _able_type = "team"
             if (member.isLoggedIn) {
-                //Loading.show(maskView)
+                Loading.show(maskView)
                 loading = true
 
                 MemberService.likelist(
@@ -214,7 +208,7 @@ open class TabFragment : Fragment(), SearchItemDelegate, List1CellDelegate, Seri
                 }
             }
         } else {
-            //Loading.show(maskView)
+            Loading.show(maskView)
             loading = true
             dataService.getList(requireContext(), null, params, _page, _perPage) { success ->
                 jsonString = dataService.jsonString
@@ -240,7 +234,9 @@ open class TabFragment : Fragment(), SearchItemDelegate, List1CellDelegate, Seri
             page++
         }
 //        mask?.let { mask?.dismiss() }
-        //Loading.hide(maskView)
+        runOnUiThread {
+            Loading.hide(maskView)
+        }
         loading = false
 //        println("page:$page")
 //        println("perPage:$perPage")
@@ -420,6 +416,15 @@ open class TabFragment : Fragment(), SearchItemDelegate, List1CellDelegate, Seri
         mainActivity!!.searchPanel.searchAdapter.update(rows)
     }
 
+    override fun cellClick(row: Table) {
+        val t = row::class
+        if (t == CourseTable::class) {
+            mainActivity!!.toShowCourse(row.token)
+        } else if (t == ArenaTable::class) {
+            mainActivity!!.toShowArena(row.token)
+        }
+    }
+
     override fun cellRefresh() {
         params.clear()
         refresh()
@@ -464,7 +469,9 @@ open class TabFragment : Fragment(), SearchItemDelegate, List1CellDelegate, Seri
         row1["value"] = city_id.toString()
         replaceRows(key, row1)
         prepareParams()
-        refresh()
+        page = 1
+        tableLists.clear()
+        getDataStart(page, perPage)
     }
 
     override fun cellArea(row: Table) {
@@ -476,7 +483,9 @@ open class TabFragment : Fragment(), SearchItemDelegate, List1CellDelegate, Seri
         row1["value"] = area_id.toString()
         replaceRows(key, row1)
         prepareParams()
-        refresh()
+        page = 1
+        tableLists.clear()
+        getDataStart(page, perPage)
     }
 
     protected open fun setRecyclerViewScrollListener() {
@@ -623,6 +632,10 @@ open class MyViewHolder(val context: Context, val viewHolder: View, val list1Cel
 
     open fun bind(row: Table) {
 
+        viewHolder.setOnClickListener {
+            list1CellDelegate?.cellClick(row)
+        }
+
         if (row.title.isNotEmpty()) {
             viewHolder.titleLbl.text = row.title
         } else {
@@ -638,9 +651,7 @@ open class MyViewHolder(val context: Context, val viewHolder: View, val list1Cel
         }
 
         viewHolder.refreshIcon.setOnClickListener {
-            if (list1CellDelegate != null) {
-                list1CellDelegate.cellRefresh()
-            }
+            list1CellDelegate?.cellRefresh()
         }
 
         val v = viewHolder.iconView

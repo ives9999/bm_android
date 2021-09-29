@@ -68,7 +68,7 @@ class CourseFragment : TabFragment() {
         setRecyclerViewScrollListener()
         setRecyclerViewRefreshListener()
 
-        tableAdapter = CourseAdapter(R.layout.course_list_cell)
+        tableAdapter = CourseAdapter(R.layout.course_list_cell, this)
         recyclerView.adapter = tableAdapter
 
         refresh()
@@ -155,6 +155,11 @@ class CourseFragment : TabFragment() {
         mainActivity!!.toShowCourse(table.token)
     }
 
+    override fun cellCity(row: Table) {
+        println(row::class)
+        mainActivity!!.toShowCourse(row.token)
+    }
+
     override fun remove(indexPath: IndexPath) {
         var row: HashMap<String, String>? = null
         if (searchRows.size >= indexPath.row) {
@@ -197,7 +202,7 @@ class CourseFragment : TabFragment() {
     }
 }
 
-class CourseAdapter(resource: Int): MyAdapter<CourseViewHolder>(resource, ::CourseViewHolder) {}
+class CourseAdapter(resource: Int, list1CellDelegate: List1CellDelegate?): MyAdapter<CourseViewHolder>(resource, ::CourseViewHolder, list1CellDelegate) {}
 
 class CourseViewHolder(context: Context, viewHolder: View, list1CellDelegate: List1CellDelegate? = null): MyViewHolder(context, viewHolder, list1CellDelegate) {
 

@@ -4,27 +4,24 @@ import android.content.Context
 import android.os.Bundle
 import android.view.Menu
 import android.view.View
-import com.sportpassword.bm.Fragments.ListItem
+import com.sportpassword.bm.Fragments.*
+import com.sportpassword.bm.Fragments.MyAdapter
 import com.sportpassword.bm.Models.*
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.ProductService
 import com.sportpassword.bm.Utilities.*
-import com.squareup.picasso.Picasso
-import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.kotlinandroidextensions.Item
 import com.xwray.groupie.kotlinandroidextensions.GroupieViewHolder
 import kotlinx.android.synthetic.main.activity_product_vc.*
 import kotlinx.android.synthetic.main.mask.*
-import kotlinx.android.synthetic.main.product_list_cell.*
 import kotlinx.android.synthetic.main.product_list_cell.buyBtn
-import kotlinx.android.synthetic.main.product_list_cell.listFeatured
 import kotlinx.android.synthetic.main.product_list_cell.priceLbl
-import kotlinx.android.synthetic.main.product_list_cell.refreshIcon
-import kotlinx.android.synthetic.main.tab_course.*
+import kotlinx.android.synthetic.main.product_list_cell.view.*
 
 class ProductVC : MyTableVC() {
 
     var mysTable: ProductsTable? = null
+    lateinit var tableAdapter: ProductAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -46,11 +43,13 @@ class ProductVC : MyTableVC() {
         maskView = mask
 
         //initAdapter()
-        adapter = GroupAdapter()
+//        adapter = GroupAdapter()
         recyclerView.setHasFixedSize(true)
         setRecyclerViewScrollListener()
         setRecyclerViewRefreshListener()
-        recyclerView.adapter = adapter
+//        recyclerView.adapter = adapter
+        tableAdapter = ProductAdapter(R.layout.product_list_cell, this)
+        recyclerView.adapter = tableAdapter
 
         refresh()
     }
@@ -66,7 +65,23 @@ class ProductVC : MyTableVC() {
         mysTable = jsonToModels<ProductsTable>(jsonString!!)
         if (mysTable != null) {
             tables = mysTable
+            getPage()
+            tableLists += generateItems1()
+            tableAdapter.setMyTableList(tableLists)
+            runOnUiThread {
+                tableAdapter.notifyDataSetChanged()
+            }
         }
+    }
+
+    override fun generateItems1(): List<Table> {
+        if (mysTable != null) {
+            for (row in mysTable!!.rows) {
+                row.filterRow()
+                tableLists.add(row)
+            }
+        }
+        return tableLists
     }
 
     override fun generateItems(): ArrayList<Item> {
@@ -89,6 +104,30 @@ class ProductVC : MyTableVC() {
         val myTable = productItem.row
         //superCourse.print()
         toShowProduct(myTable.token)
+    }
+}
+
+class ProductAdapter(resource: Int, list1CellDelegate: List1CellDelegate?): MyAdapter<ProductViewHolder>(resource, ::ProductViewHolder, list1CellDelegate) {}
+
+class ProductViewHolder(context: Context, viewHolder: View, list1CellDelegate: List1CellDelegate? = null): MyViewHolder(context, viewHolder, list1CellDelegate) {
+
+    override fun bind(_row: Table) {
+        super.bind(_row)
+
+        val row: ProductTable = _row as ProductTable
+
+        viewHolder.buyBtn.setOnClickListener {
+            val a: ProductVC = context as ProductVC
+            a.toAddCart(row.token)
+        }
+
+        if (row.prices.size > 0) {
+            val tmp: String = (row.prices[0].price_member).formattedWithSeparator()
+            val price: String = "NT$ ${tmp}"
+            viewHolder.priceLbl.text = price
+        } else {
+            viewHolder.priceLbl.text = "未提供"
+        }
     }
 }
 

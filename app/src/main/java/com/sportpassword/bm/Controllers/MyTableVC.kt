@@ -54,6 +54,7 @@ abstract class MyTableVC : BaseActivity(), List1CellDelegate {
     protected var totalCount: Int = 0
     protected var totalPage: Int = 0
     val items: ArrayList<Item> = arrayListOf()
+    var tableLists: ArrayList<Table> = arrayListOf()
 
     var jsonString: String? = null
 
@@ -111,9 +112,10 @@ abstract class MyTableVC : BaseActivity(), List1CellDelegate {
 
         page = 1
         theFirstTime = true
-        adapter.clear()
+//        adapter.clear()
         items.clear()
         params.clear()
+        tableLists.clear()
         getDataStart(page, perPage)
     }
 
@@ -139,26 +141,26 @@ abstract class MyTableVC : BaseActivity(), List1CellDelegate {
             //if (theFirstTime) {
 
                 if (jsonString != null && jsonString!!.isNotEmpty()) {
-                    println(dataService.jsonString)
+//                    println(dataService.jsonString)
                     genericTable()
 
                     //superCourses = dataService.superModel as SuperCourses
-                    if (tables != null) {
-                        page = tables!!.page
-                        perPage = tables!!.perPage
-                        totalCount = tables!!.totalCount
-                        val _totalPage: Int = totalCount / perPage
-                        totalPage = if (totalCount % perPage > 0) _totalPage + 1 else _totalPage
-                        theFirstTime = false
-
-                        val items = generateItems()
-                        adapter.update(items)
-                        adapter.notifyDataSetChanged()
-                        page++
-                    } else {
-                        warning(Global.message)
-                        Global.message = ""
-                    }
+//                    if (tables != null) {
+//                        page = tables!!.page
+//                        perPage = tables!!.perPage
+//                        totalCount = tables!!.totalCount
+//                        val _totalPage: Int = totalCount / perPage
+//                        totalPage = if (totalCount % perPage > 0) _totalPage + 1 else _totalPage
+//                        theFirstTime = false
+//
+//                        val items = generateItems()
+//                        adapter.update(items)
+//                        adapter.notifyDataSetChanged()
+//                        page++
+//                    } else {
+//                        warning(Global.message)
+//                        Global.message = ""
+//                    }
                 } else {
                     warning("沒有取得回傳的json字串，請洽管理員")
                 }
@@ -176,6 +178,15 @@ abstract class MyTableVC : BaseActivity(), List1CellDelegate {
 //        println("perPage:$perPage")
 //        println("totalCount:$totalCount")
 //        println("totalPage:$totalPage")
+    }
+
+    fun getPage() {
+        page = tables!!.page
+        perPage = tables!!.perPage
+        totalCount = tables!!.totalCount
+        val _totalPage: Int = totalCount / perPage
+        totalPage = if (totalCount % perPage > 0) _totalPage + 1 else _totalPage
+        theFirstTime = false
     }
 
 //    protected open fun getDataStart(_page: Int, _perPage: Int) {}
@@ -206,6 +217,12 @@ abstract class MyTableVC : BaseActivity(), List1CellDelegate {
             adapter.update(items)
         }
         adapter.notifyDataSetChanged()
+    }
+
+    open fun generateItems1(): List<Table> {
+        val items: List<Table> = listOf()
+
+        return items
     }
 
     open fun generateItems(): ArrayList<Item> {
@@ -639,6 +656,7 @@ abstract class MyTableVC : BaseActivity(), List1CellDelegate {
 }
 
 interface List1CellDelegate {
+    fun cellClick(row: Table) {}
     fun cellRefresh(){}
     fun cellLike(row: Table){}
     fun cellShowMap(row: Table){}
