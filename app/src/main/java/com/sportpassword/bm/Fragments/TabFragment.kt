@@ -37,6 +37,7 @@ import kotlinx.android.synthetic.main.list1_cell.mapIcon
 import kotlinx.android.synthetic.main.list1_cell.view.*
 import org.jetbrains.anko.support.v4.runOnUiThread
 import java.io.Serializable
+import kotlin.reflect.KClass
 
 /**
  * A simple [Fragment] subclass.
@@ -261,41 +262,13 @@ open class TabFragment : Fragment(), SearchItemDelegate, List1CellDelegate, Seri
 
     open fun genericTable() {}
 
-//    open fun getDataStart(_page: Int, _perPage: Int) {
-//        if (isCourseShow || isTeamShow) {
-//            Loading.show(maskView)
-//        }
-//        loading = true
-//    }
-//
-//    open fun getDataEnd(success: Boolean) {
-//        if (success) {
-//            if (theFirstTime) {
-//                page = dataService.page
-//                perPage = dataService.perPage
-//                totalCount = dataService.totalCount
-//                val _totalPage: Int = totalCount / perPage
-//                totalPage = if (totalCount % perPage > 0) _totalPage+1 else _totalPage
-//                theFirstTime = false
-//            }
-//
-//            adapter.notifyDataSetChanged()
-//            //notifyDataSetChanged()
-//            page++
-//        }
-////        mask?.let { mask?.dismiss() }
-//        Loading.hide(maskView)
-//        loading = false
-////        println("page:$page")
-////        println("perPage:$perPage")
-////        println("totalCount:$totalCount")
-////        println("totalPage:$totalPage")
-//    }
-
-    open fun generateItems1(): List<Table> {
-        val items: List<Table> = listOf()
-
-        return items
+    open fun <T: Table> generateItems1(t: KClass<T>, rows: ArrayList<T>): ArrayList<T> {
+        val temp: ArrayList<T> = arrayListOf()
+        for (row in rows) {
+            row.filterRow()
+            temp.add(row)
+        }
+        return temp
     }
 
     open fun generateItems(): ArrayList<Item> {
@@ -604,6 +577,9 @@ open class TabFragment : Fragment(), SearchItemDelegate, List1CellDelegate, Seri
     }
 
 }// Required empty public constructor
+class MyArrayList<T: Table>(): ArrayList<T>() {
+
+}
 
 abstract class MyAdapter<T: MyViewHolder>(private val resource: Int, private val viewHolderConstructor: (Context, View, List1CellDelegate?)-> T, val list1CellDelegate: List1CellDelegate?=null): RecyclerView.Adapter<T>() {
 

@@ -23,10 +23,7 @@ import com.sportpassword.bm.Adapters.SearchItem
 import com.sportpassword.bm.Controllers.HomeTotalAdVC
 import com.sportpassword.bm.Controllers.List1CellDelegate
 import com.sportpassword.bm.Controllers.MyMapVC
-import com.sportpassword.bm.Models.ArenaTable
-import com.sportpassword.bm.Models.Table
-import com.sportpassword.bm.Models.TeamTable
-import com.sportpassword.bm.Models.TeamsTable
+import com.sportpassword.bm.Models.*
 import com.sportpassword.bm.Services.TeamService
 import com.sportpassword.bm.Views.Tag
 import com.xwray.groupie.kotlinandroidextensions.Item
@@ -226,7 +223,7 @@ class TempPlayFragment : TabFragment(), inter {
         if (mysTable != null) {
             tables = mysTable
             getPage()
-            tableLists += generateItems1()
+            tableLists += generateItems1(TeamTable::class, mysTable!!.rows)
             tableAdapter.setMyTableList(tableLists)
             runOnUiThread {
                 tableAdapter.notifyDataSetChanged()
@@ -236,17 +233,6 @@ class TempPlayFragment : TabFragment(), inter {
             //adapter.update(items)
             //adapter.notifyDataSetChanged()
         }
-    }
-
-    override fun generateItems1(): List<Table> {
-        val temp: ArrayList<TeamTable> = arrayListOf()
-        if (mysTable != null) {
-            for (row in mysTable!!.rows) {
-                row.filterRow()
-                temp.add(row)
-            }
-        }
-        return temp
     }
 
     override fun generateItems(): ArrayList<Item> {

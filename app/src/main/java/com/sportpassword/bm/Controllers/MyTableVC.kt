@@ -27,6 +27,7 @@ import com.xwray.groupie.Section
 import com.xwray.groupie.GroupieViewHolder
 import com.xwray.groupie.kotlinandroidextensions.Item
 import kotlinx.android.synthetic.main.mask.*
+import kotlin.reflect.KClass
 
 abstract class MyTableVC : BaseActivity(), List1CellDelegate {
 
@@ -221,10 +222,13 @@ abstract class MyTableVC : BaseActivity(), List1CellDelegate {
         adapter.notifyDataSetChanged()
     }
 
-    open fun generateItems1(): List<Table> {
-        val items: List<Table> = listOf()
-
-        return items
+    open fun <T: Table> generateItems1(t: KClass<T>, rows: ArrayList<T>): ArrayList<T> {
+        val temp: ArrayList<T> = arrayListOf()
+        for (row in rows) {
+            row.filterRow()
+            temp.add(row)
+        }
+        return temp
     }
 
     open fun generateItems(): ArrayList<Item> {

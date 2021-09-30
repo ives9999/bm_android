@@ -6,7 +6,7 @@ import kotlin.reflect.full.memberProperties
 
 //因為 data class 不太適用於繼承，所以這邊就不用 data class的宣告
 //class Tables<T: Table> {
-open class Tables {
+abstract class Tables {
     var success: Boolean = true
     var page: Int = 0
     var totalCount: Int = 0
@@ -19,7 +19,7 @@ open class SuccessTable {
     val msg: String = ""
 }
 
-open class Table {
+abstract class Table {
 
     var id: Int = -1
     var name: String = ""

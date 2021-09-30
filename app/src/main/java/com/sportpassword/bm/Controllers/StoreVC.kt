@@ -66,23 +66,12 @@ class StoreVC : MyTableVC() {
         return true
     }
 
-    override fun generateItems1(): List<Table> {
-        val temp: ArrayList<StoreTable> = arrayListOf()
-        if (mysTable != null) {
-            for (row in mysTable!!.rows) {
-                row.filterRow()
-                temp.add(row)
-            }
-        }
-        return temp
-    }
-
     override fun genericTable() {
         mysTable = jsonToModels<StoresTable>(jsonString!!)
         if (mysTable != null) {
             tables = mysTable
             getPage()
-            tableLists += generateItems1()
+            tableLists += generateItems1(StoreTable::class, mysTable!!.rows)
             tableAdapter.setMyTableList(tableLists)
             runOnUiThread {
                 tableAdapter.notifyDataSetChanged()

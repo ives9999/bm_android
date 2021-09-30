@@ -72,24 +72,13 @@ class MemberOrderListVC : MyTableVC() {
         if (mysTable != null) {
             tables = mysTable
             getPage()
-            tableLists += generateItems1()
+            tableLists += generateItems1(OrderTable::class, mysTable!!.rows)
             tableAdapter.setMyTableList(tableLists)
             runOnUiThread {
                 tableAdapter.notifyDataSetChanged()
             }
 
         }
-    }
-
-    override fun generateItems1(): List<Table> {
-        val temp: ArrayList<OrderTable> = arrayListOf()
-        if (mysTable != null) {
-            for (row in mysTable!!.rows) {
-                row.filterRow()
-                temp.add(row)
-            }
-        }
-        return temp
     }
 
     override fun generateItems(): ArrayList<Item> {

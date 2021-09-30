@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.View
 import com.sportpassword.bm.Fragments.TeamAdapter
 import com.sportpassword.bm.Fragments.TeamItem
+import com.sportpassword.bm.Models.CourseTable
 import com.sportpassword.bm.Models.Table
 import com.sportpassword.bm.Models.TeamTable
 import com.sportpassword.bm.Models.TeamsTable
@@ -62,23 +63,12 @@ class TeamVC : MyTableVC() {
         if (mysTable != null) {
             tables = mysTable
             getPage()
-            tableLists += generateItems1()
+            tableLists += generateItems1(TeamTable::class, mysTable!!.rows)
             tableAdapter.setMyTableList(tableLists)
             runOnUiThread {
                 tableAdapter.notifyDataSetChanged()
             }
         }
-    }
-
-    override fun generateItems1(): List<Table> {
-        val temp: ArrayList<TeamTable> = arrayListOf()
-        if (mysTable != null) {
-            for (row in mysTable!!.rows) {
-                row.filterRow()
-                temp.add(row)
-            }
-        }
-        return temp
     }
 
     override fun generateItems(): ArrayList<Item> {
