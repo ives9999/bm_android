@@ -1,7 +1,6 @@
 package com.sportpassword.bm.Fragments
 
 
-import android.app.Dialog
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
@@ -10,6 +9,8 @@ import androidx.fragment.app.Fragment
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import androidx.recyclerview.widget.RecyclerView
 import android.widget.ImageButton
+import android.widget.ImageView
+import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.sportpassword.bm.Adapters.GroupSection
 import com.sportpassword.bm.Adapters.SearchItemDelegate
@@ -32,7 +33,6 @@ import kotlinx.android.synthetic.main.course_list_cell.listFeatured
 import kotlinx.android.synthetic.main.course_list_cell.refreshIcon
 import kotlinx.android.synthetic.main.course_list_cell.telIcon
 import kotlinx.android.synthetic.main.course_list_cell.titleLbl
-import kotlinx.android.synthetic.main.formitem_fb.*
 import kotlinx.android.synthetic.main.list1_cell.mapIcon
 import kotlinx.android.synthetic.main.list1_cell.view.*
 import org.jetbrains.anko.support.v4.runOnUiThread
@@ -595,22 +595,29 @@ abstract class MyAdapter<T: MyViewHolder>(private val resource: Int, private val
     }
 
     override fun onBindViewHolder(holder: T, position: Int) {
-        holder.bind(tableList[position], position)
+        val row: Table = tableList[position]
+        holder.bind(row, position)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): T {
         val inflater = LayoutInflater.from(parent.context)
-        val layout = inflater.inflate(resource, parent, false)
+        val viewHolder = inflater.inflate(resource, parent, false)
 
-        val viewHolder = viewHolderConstructor(parent.context, layout, list1CellDelegate)
-
-        return viewHolder
+        return viewHolderConstructor(parent.context, viewHolder, list1CellDelegate)
     }
 }
 
 open class MyViewHolder(val context: Context, val viewHolder: View, val list1CellDelegate: List1CellDelegate? = null): RecyclerView.ViewHolder(viewHolder) {
 
     var isLike: Boolean = false
+
+    var titleLbl: TextView = viewHolder.findViewById(R.id.titleLbl)
+    var listFeatured: ImageView = viewHolder.findViewById(R.id.listFeatured)
+    var v: View? = viewHolder.findViewById(R.id.iconView)
+    var refreshIcon: ImageButton? = viewHolder.findViewById(R.id.refreshIcon)
+    var telIcon: ImageButton? = viewHolder.findViewById(R.id.telIcon)
+    var mapIcon: ImageButton? = viewHolder.findViewById(R.id.mapIcon)
+    var likeIcon: ImageButton? = viewHolder.findViewById(R.id.likeIcon)
 
     open fun bind(row: Table, idx: Int) {
 
@@ -619,10 +626,10 @@ open class MyViewHolder(val context: Context, val viewHolder: View, val list1Cel
         }
 
         if (row.title.isNotEmpty()) {
-            viewHolder.titleLbl.text = row.title
+            titleLbl.text = row.title
         }
         if (row.name.isNotEmpty()) {
-            viewHolder.titleLbl.text = row.name
+            titleLbl.text = row.name
         }
 
         if (row.featured_path.isNotEmpty()) {
@@ -630,27 +637,25 @@ open class MyViewHolder(val context: Context, val viewHolder: View, val list1Cel
                 .load(row.featured_path)
                 .placeholder(R.drawable.loading_square_120)
                 .error(R.drawable.loading_square_120)
-                .into(viewHolder.listFeatured)
+                .into(listFeatured)
         }
 
-        val v = viewHolder.iconView
         if (v != null) {
-            var a = v.findViewById<ImageButton>(R.id.telIcon)
-            if (a != null) {
-                viewHolder.refreshIcon.setOnClickListener {
-                    list1CellDelegate?.cellRefresh()
-                }
+            refreshIcon?.setOnClickListener {
+                list1CellDelegate?.cellRefresh()
+            }
+            if (telIcon != null) {
 
                 if (row.mobile_show.isNotEmpty()) {
                     if (list1CellDelegate != null) {
-                        viewHolder.telIcon.setOnClickListener {
+                        telIcon!!.setOnClickListener {
                             list1CellDelegate.cellMobile(row)
                         }
                         viewHolder.telIcon.visibility = View.VISIBLE
                     }
                 } else if (row.tel_show.isNotEmpty()) {
                     if (list1CellDelegate != null) {
-                        viewHolder.telIcon.setOnClickListener {
+                        telIcon!!.setOnClickListener {
                             list1CellDelegate.cellMobile(row)
                         }
                         viewHolder.telIcon.visibility = View.VISIBLE
@@ -659,13 +664,12 @@ open class MyViewHolder(val context: Context, val viewHolder: View, val list1Cel
                     viewHolder.telIcon.visibility = View.GONE
                 }
             }
-            a = v.findViewById<ImageButton>(R.id.mapIcon)
-            if (a != null) {
+            if (mapIcon != null) {
 
                 if (row.address == null || row.address.isEmpty()) {
-                    viewHolder.mapIcon.visibility = View.GONE
+                    mapIcon!!.visibility = View.GONE
                 } else {
-                    viewHolder.mapIcon.setOnClickListener {
+                    mapIcon!!.setOnClickListener {
                         if (list1CellDelegate != null) {
                             list1CellDelegate!!.cellShowMap(row)
                         }
@@ -674,8 +678,8 @@ open class MyViewHolder(val context: Context, val viewHolder: View, val list1Cel
             }
         }
 
-        if (viewHolder.likeIcon != null) {
-            viewHolder.likeIcon.setOnClickListener {
+        if (likeIcon != null) {
+            likeIcon!!.setOnClickListener {
                 if (list1CellDelegate != null) {
                     list1CellDelegate.cellLike(row)
                     if (member.isLoggedIn) {
