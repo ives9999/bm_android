@@ -61,7 +61,6 @@ open class MemberFragment: TabFragment() {
     )
 
     var rows: ArrayList<ArrayList<String>> = arrayListOf()
-    //var rows1: ArrayList<ArrayList<Map<String, String>>> = arrayListOf()
     var memberSections: ArrayList<MemberSection> = arrayListOf()
 
     //lateinit var memberFunctionsAdapter: MemberFunctionsAdapter
@@ -83,23 +82,125 @@ open class MemberFragment: TabFragment() {
 //            hashMapOf("isExpanded" to true,"title" to "管理")
         )
 
-        memberSections = makeSectionRow()
+        memberSections = initSectionRow()
     }
 
-    fun makeSectionRow(): ArrayList<MemberSection> {
+    private fun initSectionRow(): ArrayList<MemberSection> {
         val sections: ArrayList<MemberSection> = arrayListOf()
-        val rows: ArrayList<MemberRow> = arrayListOf()
 
-        val r1: MemberRow = MemberRow("帳戶資料", "account")
-        rows.add(r1)
-        val r2: MemberRow = MemberRow("更改密碼", "password")
-        rows.add(r2)
-
-        val s1: MemberSection = MemberSection("會員資料")
-        s1.items.addAll(rows)
-        sections.add(s1)
+        sections.add(makeSection0Row())
+        sections.add(makeSection1Row())
+        sections.add(makeSection2Row())
+        sections.add(makeSection3Row())
 
         return sections
+    }
+
+    private fun updateSectionRow(): ArrayList<MemberSection> {
+        val sections: ArrayList<MemberSection> = arrayListOf()
+        for ((idx, memberSection) in memberSections.withIndex()) {
+            val isExpanded: Boolean = memberSection.isExpanded
+            if (idx == 0) {
+                sections.add(makeSection0Row(isExpanded))
+            } else if (idx == 1) {
+                sections.add(makeSection1Row(isExpanded))
+            } else if (idx == 2) {
+                sections.add(makeSection2Row(isExpanded))
+            } else if (idx == 3) {
+                sections.add(makeSection3Row(isExpanded))
+            }
+        }
+        return sections
+    }
+
+    private fun makeSection0Row(isExpanded: Boolean=true): MemberSection {
+        val rows: ArrayList<MemberRow> = arrayListOf()
+
+        if (isExpanded) {
+            val r1: MemberRow = MemberRow("帳戶資料", "account")
+            rows.add(r1)
+            val r2: MemberRow = MemberRow("更改密碼", "password")
+            rows.add(r2)
+        }
+
+        val s: MemberSection = MemberSection("會員資料", isExpanded)
+        s.items.addAll(rows)
+
+        return s
+    }
+
+    private fun makeSection1Row(isExpanded: Boolean=true): MemberSection {
+        val rows: ArrayList<MemberRow> = arrayListOf()
+
+        if (isExpanded) {
+
+            val r1: MemberRow = MemberRow("購物車", "cart")
+            rows.add(r1)
+            val r2: MemberRow = MemberRow("訂單查詢", "order")
+            rows.add(r2)
+        }
+
+        val s: MemberSection = MemberSection("訂單查詢", isExpanded)
+        s.items.addAll(rows)
+
+        return s
+    }
+
+
+    private fun makeSection2Row(isExpanded: Boolean=true): MemberSection {
+        val rows: ArrayList<MemberRow> = arrayListOf()
+
+        if (isExpanded) {
+            val r1: MemberRow = MemberRow("球隊", "team")
+            rows.add(r1)
+            val r2: MemberRow = MemberRow("球館", "arena")
+            rows.add(r2)
+            val r3: MemberRow = MemberRow("教學", "teach")
+            rows.add(r3)
+            val r4: MemberRow = MemberRow("教練", "coach")
+            rows.add(r4)
+            val r5: MemberRow = MemberRow("課程", "course")
+            rows.add(r5)
+            val r6: MemberRow = MemberRow("商品", "product")
+            rows.add(r6)
+            val r7: MemberRow = MemberRow("體育用品店", "store")
+            rows.add(r7)
+        }
+
+        val s: MemberSection = MemberSection("喜歡", isExpanded)
+        s.items.addAll(rows)
+
+        return s
+    }
+
+    private fun makeSection3Row(isExpanded: Boolean=true): MemberSection {
+        val rows: ArrayList<MemberRow> = arrayListOf()
+
+        if (isExpanded) {
+            val r1: MemberRow = MemberRow("課程", "course")
+            rows.add(r1)
+        }
+
+        val s: MemberSection = MemberSection("管理", isExpanded)
+        s.items.addAll(rows)
+
+        return s
+    }
+
+
+    fun handleSectionExpanded(idx: Int) {
+        //println(idx)
+        val memberSection = memberSections[idx]
+        var isExpanded: Boolean = memberSection.isExpanded
+        isExpanded = !isExpanded
+        memberSections[idx].isExpanded = isExpanded
+        toggleSectionOnOff()
+    }
+
+    private fun toggleSectionOnOff() {
+        memberSections = updateSectionRow()
+        tableSectionAdapter.setMyTableSection(memberSections)
+        tableSectionAdapter.notifyDataSetChanged()
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -129,7 +230,7 @@ open class MemberFragment: TabFragment() {
 
         setRecyclerViewRefreshListener()
 
-        tableSectionAdapter = MySectionAdapter(mainActivity!!, R.layout.cell_section)
+        tableSectionAdapter = MySectionAdapter(mainActivity!!, R.layout.cell_section, this)
         tableSectionAdapter.setMyTableSection(memberSections)
         recyclerView.adapter = tableSectionAdapter
         loginout()
@@ -195,7 +296,7 @@ open class MemberFragment: TabFragment() {
             _logoutBlock()
         }
     }
-    protected fun _loginBlock() {
+    private fun _loginBlock() {
         //_loginAdapter()
         nicknameLbl.text = member.nickname
         if (member.avatar!!.isNotEmpty()) {
@@ -209,7 +310,7 @@ open class MemberFragment: TabFragment() {
         refreshLayout = member_refresh
 //        initMemberFunction()
     }
-    protected fun _logoutBlock() {
+    private fun _logoutBlock() {
         nicknameLbl.text = "未登入"
         loginBtn.text = "登入"
         registerBtn.visibility = View.VISIBLE
@@ -347,7 +448,6 @@ open class MemberFragment: TabFragment() {
         startActivity(intent)
     }
 
-
 //    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
 //        super.onActivityResult(requestCode, resultCode, data)
 //        when (requestCode) {
@@ -395,9 +495,9 @@ open class MemberFragment: TabFragment() {
         }
     }
 
-    class MySectionAdapter(val context: Context, private val resource: Int): RecyclerView.Adapter<MySectionViewHolder>() {
+    class MySectionAdapter(val context: Context, private val resource: Int, var delegate: MemberFragment): RecyclerView.Adapter<MySectionViewHolder>() {
 
-        var tableSections: ArrayList<MemberSection> = arrayListOf()
+        private var tableSections: ArrayList<MemberSection> = arrayListOf()
 
         fun setMyTableSection(tableSections: ArrayList<MemberSection>) {
             this.tableSections = tableSections
@@ -415,11 +515,24 @@ open class MemberFragment: TabFragment() {
             val section: MemberSection = tableSections[position]
             holder.titleLbl.text = section.title
 
+            val tableSection: MemberSection = tableSections[position]
+            var iconID: Int = 0
+            if (tableSection.isExpanded) {
+                iconID = context.resources.getIdentifier("to_down", "drawable", context.packageName)
+            } else {
+                iconID = context.resources.getIdentifier("to_right", "drawable", context.packageName)
+            }
+            holder.greater.setImageResource(iconID)
+
             val items: ArrayList<MemberRow> = tableSections[position].items
-            val adapter: MemberItemAdapter = MemberItemAdapter(items)
+            val adapter: MemberItemAdapter = MemberItemAdapter(context, items)
 //            holder.recyclerView.setHasFixedSize(true)
             holder.recyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
             holder.recyclerView.adapter = adapter
+
+            holder.greater.setOnClickListener {
+                delegate.handleSectionExpanded(position)
+            }
         }
 
         override fun getItemCount(): Int {
@@ -432,10 +545,11 @@ open class MemberFragment: TabFragment() {
     class MySectionViewHolder(val viewHolder: View): RecyclerView.ViewHolder(viewHolder) {
 
         var titleLbl: TextView = viewHolder.findViewById(R.id.titleLbl)
+        var greater: ImageView = viewHolder.findViewById(R.id.greater)
         var recyclerView: RecyclerView = viewHolder.findViewById(R.id.recyclerView)
     }
 
-    class MemberItemAdapter(private val tableRows: ArrayList<MemberRow>): RecyclerView.Adapter<MemberItemViewHolder>() {
+    class MemberItemAdapter(val context: Context, private val tableRows: ArrayList<MemberRow>): RecyclerView.Adapter<MemberItemViewHolder>() {
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MemberItemViewHolder {
             val inflater = LayoutInflater.from(parent.context)
@@ -448,9 +562,9 @@ open class MemberFragment: TabFragment() {
             val row: MemberRow = tableRows[position]
             holder.titleLbl.text = row.title
 
-            //val icon: String = row["icon"]!!
-            //val iconID =
-            //holder.iconView =
+            val icon: String = row.icon
+            val iconID = context.resources.getIdentifier(icon, "drawable", context.packageName)
+            holder.iconView.setImageResource(iconID)
         }
 
         override fun getItemCount(): Int {
