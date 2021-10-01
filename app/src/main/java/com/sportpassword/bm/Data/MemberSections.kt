@@ -9,6 +9,8 @@ data class MemberSection (
 
 data class MemberRow (
     var title: String = "",
-    var icon: String = ""
+    var icon: String = "",
+    var segue: String = "",
+    var able_type: String = ""
         )
 {}

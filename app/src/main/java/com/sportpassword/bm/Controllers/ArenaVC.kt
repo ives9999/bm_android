@@ -9,7 +9,9 @@ import android.view.View
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.sportpassword.bm.Adapters.SearchItemDelegate
+import com.sportpassword.bm.Fragments.ArenaAdapter
 import com.sportpassword.bm.Fragments.ArenaItem
+import com.sportpassword.bm.Fragments.CourseAdapter
 import com.sportpassword.bm.Fragments.ListItem
 import com.sportpassword.bm.Models.*
 import com.sportpassword.bm.R
@@ -31,8 +33,8 @@ import org.jetbrains.anko.makeCall
 
 class ArenaVC : MyTableVC() {
 
-    var arenasTable: ArenasTable? = null
-
+    var mysTable: ArenasTable? = null
+    lateinit var tableAdapter: ArenaAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -54,7 +56,9 @@ class ArenaVC : MyTableVC() {
         dataService = ArenaService
         recyclerView = list_container
         refreshLayout = refresh
-        initAdapter()
+//        initAdapter()
+        tableAdapter = ArenaAdapter(R.layout.arena_list_cell, this)
+        recyclerView.adapter = tableAdapter
 
         refresh()
     }
@@ -68,15 +72,21 @@ class ArenaVC : MyTableVC() {
 
     override fun genericTable() {
         //storesTable = jsonToModel<StoresTable>(dataService.jsonString)
-        arenasTable = jsonToModels<ArenasTable>(jsonString!!)
-        if (arenasTable != null) {
-            tables = arenasTable
+        mysTable = jsonToModels<ArenasTable>(jsonString!!)
+        if (mysTable != null) {
+            tables = mysTable
+            getPage()
+            tableLists += generateItems1(ArenaTable::class, mysTable!!.rows)
+            tableAdapter.setMyTableList(tableLists)
+            runOnUiThread {
+                tableAdapter.notifyDataSetChanged()
+            }
         }
     }
 
     override fun generateItems(): ArrayList<Item> {
-        if (arenasTable != null) {
-            for (row in arenasTable!!.rows) {
+        if (mysTable != null) {
+            for (row in mysTable!!.rows) {
                 //row.print()
                 row.filterRow()
                 val myItem = ArenaItem(this, row)

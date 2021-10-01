@@ -667,7 +667,7 @@ open class MyViewHolder(val context: Context, val viewHolder: View, val list1Cel
                 } else {
                     mapIcon!!.setOnClickListener {
                         if (list1CellDelegate != null) {
-                            list1CellDelegate!!.cellShowMap(row)
+                            list1CellDelegate.cellShowMap(row)
                         }
                     }
                 }

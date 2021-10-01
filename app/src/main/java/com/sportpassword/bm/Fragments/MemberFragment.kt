@@ -117,9 +117,9 @@ open class MemberFragment: TabFragment() {
         val rows: ArrayList<MemberRow> = arrayListOf()
 
         if (isExpanded) {
-            val r1: MemberRow = MemberRow("帳戶資料", "account")
+            val r1: MemberRow = MemberRow("帳戶資料", "account", TO_PROFILE)
             rows.add(r1)
-            val r2: MemberRow = MemberRow("更改密碼", "password")
+            val r2: MemberRow = MemberRow("更改密碼", "password", TO_PASSWORD)
             rows.add(r2)
         }
 
@@ -134,9 +134,9 @@ open class MemberFragment: TabFragment() {
 
         if (isExpanded) {
 
-            val r1: MemberRow = MemberRow("購物車", "cart")
+            val r1: MemberRow = MemberRow("購物車", "cart", TO_MEMBER_CART_LIST)
             rows.add(r1)
-            val r2: MemberRow = MemberRow("訂單查詢", "order")
+            val r2: MemberRow = MemberRow("訂單查詢", "order", TO_MEMBER_ORDER_LIST)
             rows.add(r2)
         }
 
@@ -151,19 +151,19 @@ open class MemberFragment: TabFragment() {
         val rows: ArrayList<MemberRow> = arrayListOf()
 
         if (isExpanded) {
-            val r1: MemberRow = MemberRow("球隊", "team")
+            val r1: MemberRow = MemberRow("球隊", "team", TO_LIKE, "team")
             rows.add(r1)
-            val r2: MemberRow = MemberRow("球館", "arena")
+            val r2: MemberRow = MemberRow("球館", "arena", TO_LIKE, "arena")
             rows.add(r2)
-            val r3: MemberRow = MemberRow("教學", "teach")
+            val r3: MemberRow = MemberRow("教學", "teach", TO_LIKE, "teach")
             rows.add(r3)
-            val r4: MemberRow = MemberRow("教練", "coach")
+            val r4: MemberRow = MemberRow("教練", "coach", TO_LIKE, "coach")
             rows.add(r4)
-            val r5: MemberRow = MemberRow("課程", "course")
+            val r5: MemberRow = MemberRow("課程", "course", TO_LIKE, "course")
             rows.add(r5)
-            val r6: MemberRow = MemberRow("商品", "product")
+            val r6: MemberRow = MemberRow("商品", "product", TO_LIKE, "product")
             rows.add(r6)
-            val r7: MemberRow = MemberRow("體育用品店", "store")
+            val r7: MemberRow = MemberRow("體育用品店", "store", TO_LIKE, "store")
             rows.add(r7)
         }
 
@@ -177,7 +177,7 @@ open class MemberFragment: TabFragment() {
         val rows: ArrayList<MemberRow> = arrayListOf()
 
         if (isExpanded) {
-            val r1: MemberRow = MemberRow("課程", "course")
+            val r1: MemberRow = MemberRow("課程", "course", "manager_course")
             rows.add(r1)
         }
 
@@ -374,6 +374,38 @@ open class MemberFragment: TabFragment() {
         return items
     }
 
+    fun cellClick1(sectionIdx: Int, rowIdx: Int) {
+//        println(sectionIdx)
+//        println(rowIdx)
+        val memberSection = memberSections[sectionIdx]
+        val row = memberSection.items[rowIdx]
+        val segue = row.segue
+        when(segue) {
+            TO_PROFILE -> mainActivity!!.toRegister()
+            TO_PASSWORD -> toUpdatePassword()
+            "email" -> mainActivity!!.toValidate("email")
+            "mobile" -> mainActivity!!.toValidate("mobile")
+//            "blacklist" -> goBlackList()
+            "calendar_course_signup" -> toCalendarCourseSignup()
+            "refresh" -> refresh()
+            TO_MEMBER_ORDER_LIST -> mainActivity!!.toMemberOrderList()
+            TO_MEMBER_CART_LIST -> mainActivity!!.toMemberCartList()
+            "manager_course" -> mainActivity!!.toManager("course")
+            TO_LIKE -> {
+                val able_type: String = row.able_type
+                when(able_type) {
+                    "team" -> mainActivity!!.toTeam(null, true)
+                    "arena" -> mainActivity!!.toArena(true)
+                    "teach" -> mainActivity!!.toTeach(true)
+                    "coach" -> mainActivity!!.toCoach(true)
+                    "course" -> mainActivity!!.toCourse(true)
+                    "product" -> mainActivity!!.toProduct(true)
+                    "store" -> mainActivity!!.toStore(true)
+                }
+            }
+        }
+    }
+
     override fun rowClick(item: com.xwray.groupie.Item<GroupieViewHolder>, view: View) {
 
         val memberItem = item as MemberItem
@@ -525,7 +557,7 @@ open class MemberFragment: TabFragment() {
             holder.greater.setImageResource(iconID)
 
             val items: ArrayList<MemberRow> = tableSections[position].items
-            val adapter: MemberItemAdapter = MemberItemAdapter(context, items)
+            val adapter: MemberItemAdapter = MemberItemAdapter(context, position, items, delegate)
 //            holder.recyclerView.setHasFixedSize(true)
             holder.recyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
             holder.recyclerView.adapter = adapter
@@ -536,7 +568,6 @@ open class MemberFragment: TabFragment() {
         }
 
         override fun getItemCount(): Int {
-
             return tableSections.size
         }
 
@@ -549,7 +580,7 @@ open class MemberFragment: TabFragment() {
         var recyclerView: RecyclerView = viewHolder.findViewById(R.id.recyclerView)
     }
 
-    class MemberItemAdapter(val context: Context, private val tableRows: ArrayList<MemberRow>): RecyclerView.Adapter<MemberItemViewHolder>() {
+    class MemberItemAdapter(val context: Context, private val sectionIdx: Int, private val tableRows: ArrayList<MemberRow>, var delegate: MemberFragment): RecyclerView.Adapter<MemberItemViewHolder>() {
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MemberItemViewHolder {
             val inflater = LayoutInflater.from(parent.context)
@@ -565,6 +596,10 @@ open class MemberFragment: TabFragment() {
             val icon: String = row.icon
             val iconID = context.resources.getIdentifier(icon, "drawable", context.packageName)
             holder.iconView.setImageResource(iconID)
+
+            holder.viewHolder.setOnClickListener {
+                delegate.cellClick1(sectionIdx, position)
+            }
         }
 
         override fun getItemCount(): Int {
