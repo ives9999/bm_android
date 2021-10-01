@@ -9,6 +9,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.sportpassword.bm.Adapters.GroupSection
 import com.sportpassword.bm.Controllers.*
+import com.sportpassword.bm.Data.MemberRow
+import com.sportpassword.bm.Data.MemberSection
 import com.sportpassword.bm.Models.MemberTable
 import com.sportpassword.bm.Models.Table
 import com.sportpassword.bm.R
@@ -59,7 +61,8 @@ open class MemberFragment: TabFragment() {
     )
 
     var rows: ArrayList<ArrayList<String>> = arrayListOf()
-    var rows1: ArrayList<ArrayList<Map<String, String>>> = arrayListOf()
+    //var rows1: ArrayList<ArrayList<Map<String, String>>> = arrayListOf()
+    var memberSections: ArrayList<MemberSection> = arrayListOf()
 
     //lateinit var memberFunctionsAdapter: MemberFunctionsAdapter
     var mySections: ArrayList<HashMap<String, Any>> = arrayListOf()
@@ -79,6 +82,24 @@ open class MemberFragment: TabFragment() {
 //            hashMapOf("isExpanded" to false,"title" to "喜歡"),
 //            hashMapOf("isExpanded" to true,"title" to "管理")
         )
+
+        memberSections = makeSectionRow()
+    }
+
+    fun makeSectionRow(): ArrayList<MemberSection> {
+        val sections: ArrayList<MemberSection> = arrayListOf()
+        val rows: ArrayList<MemberRow> = arrayListOf()
+
+        val r1: MemberRow = MemberRow("帳戶資料", "account")
+        rows.add(r1)
+        val r2: MemberRow = MemberRow("更改密碼", "password")
+        rows.add(r2)
+
+        val s1: MemberSection = MemberSection("會員資料")
+        s1.items.addAll(rows)
+        sections.add(s1)
+
+        return sections
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -108,11 +129,8 @@ open class MemberFragment: TabFragment() {
 
         setRecyclerViewRefreshListener()
 
-        rows1.add(fixedRows)
-//        rows1.add(orderRows)
         tableSectionAdapter = MySectionAdapter(mainActivity!!, R.layout.cell_section)
-        tableSectionAdapter.setMyTableSection(mySections)
-        tableSectionAdapter.setMyTableSectionRows(rows1)
+        tableSectionAdapter.setMyTableSection(memberSections)
         recyclerView.adapter = tableSectionAdapter
         loginout()
         //refresh()
@@ -379,15 +397,10 @@ open class MemberFragment: TabFragment() {
 
     class MySectionAdapter(val context: Context, private val resource: Int): RecyclerView.Adapter<MySectionViewHolder>() {
 
-        var tableSection: ArrayList<HashMap<String, Any>> = arrayListOf()
-        var tableSectionRows: ArrayList<ArrayList<Map<String, String>>> = arrayListOf()
+        var tableSections: ArrayList<MemberSection> = arrayListOf()
 
-        fun setMyTableSection(tableSection: ArrayList<HashMap<String, Any>>) {
-            this.tableSection = tableSection
-        }
-
-        fun setMyTableSectionRows(tableSectionRows: ArrayList<ArrayList<Map<String, String>>>) {
-            this.tableSectionRows = tableSectionRows
+        fun setMyTableSection(tableSections: ArrayList<MemberSection>) {
+            this.tableSections = tableSections
         }
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MySectionViewHolder {
@@ -399,11 +412,11 @@ open class MemberFragment: TabFragment() {
         }
 
         override fun onBindViewHolder(holder: MySectionViewHolder, position: Int) {
-            val row: HashMap<String, Any> = tableSection[position]
-            holder.titleLbl.text = row["title"] as String
+            val section: MemberSection = tableSections[position]
+            holder.titleLbl.text = section.title
 
-            val rows: ArrayList<Map<String, String>> = tableSectionRows[position]
-            val adapter: MemberItemAdapter = MemberItemAdapter(rows)
+            val items: ArrayList<MemberRow> = tableSections[position].items
+            val adapter: MemberItemAdapter = MemberItemAdapter(items)
 //            holder.recyclerView.setHasFixedSize(true)
             holder.recyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
             holder.recyclerView.adapter = adapter
@@ -411,8 +424,7 @@ open class MemberFragment: TabFragment() {
 
         override fun getItemCount(): Int {
 
-            val a = tableSection.size
-            return tableSection.size
+            return tableSections.size
         }
 
     }
@@ -423,7 +435,7 @@ open class MemberFragment: TabFragment() {
         var recyclerView: RecyclerView = viewHolder.findViewById(R.id.recyclerView)
     }
 
-    class MemberItemAdapter(private val tableRows: ArrayList<Map<String, String>>): RecyclerView.Adapter<MemberItemViewHolder>() {
+    class MemberItemAdapter(private val tableRows: ArrayList<MemberRow>): RecyclerView.Adapter<MemberItemViewHolder>() {
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MemberItemViewHolder {
             val inflater = LayoutInflater.from(parent.context)
@@ -433,8 +445,8 @@ open class MemberFragment: TabFragment() {
         }
 
         override fun onBindViewHolder(holder: MemberItemViewHolder, position: Int) {
-            val row: Map<String, String> = tableRows[position]
-            holder.titleLbl.text = row["text"]
+            val row: MemberRow = tableRows[position]
+            holder.titleLbl.text = row.title
 
             //val icon: String = row["icon"]!!
             //val iconID =
@@ -442,7 +454,6 @@ open class MemberFragment: TabFragment() {
         }
 
         override fun getItemCount(): Int {
-            val n = tableRows.size
             return tableRows.size
         }
 
