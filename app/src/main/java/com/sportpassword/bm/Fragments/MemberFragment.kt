@@ -404,8 +404,8 @@ open class MemberFragment: TabFragment() {
 
             val rows: ArrayList<Map<String, String>> = tableSectionRows[position]
             val adapter: MemberItemAdapter = MemberItemAdapter(rows)
-            holder.recyclerView.setHasFixedSize(true)
-            holder.recyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+//            holder.recyclerView.setHasFixedSize(true)
+            holder.recyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
             holder.recyclerView.adapter = adapter
         }
 
