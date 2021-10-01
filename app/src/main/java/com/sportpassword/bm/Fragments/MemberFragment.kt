@@ -74,10 +74,10 @@ open class MemberFragment: TabFragment() {
         //sections = arrayListOf("會員資料", "訂單", "喜歡", "課程")
 
         mySections = arrayListOf(
-            hashMapOf("isExpanded" to true,"title" to "會員資料"),
-            hashMapOf("isExpanded" to true,"title" to "訂單"),
-            hashMapOf("isExpanded" to false,"title" to "喜歡"),
-            hashMapOf("isExpanded" to true,"title" to "管理")
+            hashMapOf("isExpanded" to true,"title" to "會員資料")
+//            hashMapOf("isExpanded" to true,"title" to "訂單"),
+//            hashMapOf("isExpanded" to false,"title" to "喜歡"),
+//            hashMapOf("isExpanded" to true,"title" to "管理")
         )
     }
 
@@ -402,14 +402,11 @@ open class MemberFragment: TabFragment() {
             val row: HashMap<String, Any> = tableSection[position]
             holder.titleLbl.text = row["title"] as String
 
-            if (position == 0) {
-                val rows: ArrayList<Map<String, String>> = tableSectionRows[position]
-                println(rows)
-                val adapter: MemberItemAdapter = MemberItemAdapter(rows)
-                holder.recyclerView.setHasFixedSize(true)
-                holder.recyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-                holder.recyclerView.adapter = adapter
-            }
+            val rows: ArrayList<Map<String, String>> = tableSectionRows[position]
+            val adapter: MemberItemAdapter = MemberItemAdapter(rows)
+            holder.recyclerView.setHasFixedSize(true)
+            holder.recyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+            holder.recyclerView.adapter = adapter
         }
 
         override fun getItemCount(): Int {
@@ -437,7 +434,7 @@ open class MemberFragment: TabFragment() {
 
         override fun onBindViewHolder(holder: MemberItemViewHolder, position: Int) {
             val row: Map<String, String> = tableRows[position]
-            holder.titleLbl.text = row["title"]
+            holder.titleLbl.text = row["text"]
 
             //val icon: String = row["icon"]!!
             //val iconID =
@@ -445,6 +442,7 @@ open class MemberFragment: TabFragment() {
         }
 
         override fun getItemCount(): Int {
+            val n = tableRows.size
             return tableRows.size
         }
 
