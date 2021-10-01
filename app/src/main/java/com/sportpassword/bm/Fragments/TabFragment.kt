@@ -577,17 +577,13 @@ open class TabFragment : Fragment(), SearchItemDelegate, List1CellDelegate, Seri
     }
 
 }// Required empty public constructor
-class MyArrayList<T: Table>(): ArrayList<T>() {
-
-}
 
 abstract class MyAdapter<T: MyViewHolder>(private val resource: Int, private val viewHolderConstructor: (Context, View, List1CellDelegate?)-> T, val list1CellDelegate: List1CellDelegate?=null): RecyclerView.Adapter<T>() {
 
     var tableList: ArrayList<Table> = arrayListOf()
 
     override fun getItemCount(): Int {
-        val count = tableList.size
-        return count
+        return tableList.size
     }
 
     fun setMyTableList(tableList: ArrayList<Table>) {

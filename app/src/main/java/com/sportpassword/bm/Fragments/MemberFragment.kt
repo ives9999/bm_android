@@ -4,11 +4,13 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.*
-import android.widget.Button
-import android.widget.ImageButton
+import android.widget.*
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.sportpassword.bm.Adapters.GroupSection
 import com.sportpassword.bm.Controllers.*
 import com.sportpassword.bm.Models.MemberTable
+import com.sportpassword.bm.Models.Table
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.MemberService
 import com.sportpassword.bm.Utilities.*
@@ -25,7 +27,7 @@ import kotlinx.android.synthetic.main.mask.text
 import kotlinx.android.synthetic.main.nav_header_main.*
 import kotlinx.android.synthetic.main.tab_member.*
 
-class MemberFragment: TabFragment() {
+open class MemberFragment: TabFragment() {
 
     val fixedRows: ArrayList<Map<String, String>> = arrayListOf(
             mapOf("text" to "帳戶資料", "icon" to "account", "segue" to TO_PROFILE),
@@ -57,9 +59,12 @@ class MemberFragment: TabFragment() {
     )
 
     var rows: ArrayList<ArrayList<String>> = arrayListOf()
+    var rows1: ArrayList<ArrayList<Map<String, String>>> = arrayListOf()
 
     //lateinit var memberFunctionsAdapter: MemberFunctionsAdapter
     var mySections: ArrayList<HashMap<String, Any>> = arrayListOf()
+
+    lateinit var tableSectionAdapter: MySectionAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -102,6 +107,13 @@ class MemberFragment: TabFragment() {
         forgetPasswordBtn.setOnClickListener { forgetpasswordBtnPressed(view) }
 
         setRecyclerViewRefreshListener()
+
+        rows1.add(fixedRows)
+//        rows1.add(orderRows)
+        tableSectionAdapter = MySectionAdapter(mainActivity!!, R.layout.cell_section)
+        tableSectionAdapter.setMyTableSection(mySections)
+        tableSectionAdapter.setMyTableSectionRows(rows1)
+        recyclerView.adapter = tableSectionAdapter
         loginout()
         //refresh()
     }
@@ -166,7 +178,7 @@ class MemberFragment: TabFragment() {
         }
     }
     protected fun _loginBlock() {
-        _loginAdapter()
+        //_loginAdapter()
         nicknameLbl.text = member.nickname
         if (member.avatar!!.isNotEmpty()) {
             member.avatar!!.image(mainActivity!!, avatarView)
@@ -365,6 +377,85 @@ class MemberFragment: TabFragment() {
         }
     }
 
+    class MySectionAdapter(val context: Context, private val resource: Int): RecyclerView.Adapter<MySectionViewHolder>() {
+
+        var tableSection: ArrayList<HashMap<String, Any>> = arrayListOf()
+        var tableSectionRows: ArrayList<ArrayList<Map<String, String>>> = arrayListOf()
+
+        fun setMyTableSection(tableSection: ArrayList<HashMap<String, Any>>) {
+            this.tableSection = tableSection
+        }
+
+        fun setMyTableSectionRows(tableSectionRows: ArrayList<ArrayList<Map<String, String>>>) {
+            this.tableSectionRows = tableSectionRows
+        }
+
+        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MySectionViewHolder {
+            val inflater = LayoutInflater.from(parent.context)
+            val viewHolder = inflater.inflate(resource, parent, false)
+
+            return MySectionViewHolder(viewHolder)
+
+        }
+
+        override fun onBindViewHolder(holder: MySectionViewHolder, position: Int) {
+            val row: HashMap<String, Any> = tableSection[position]
+            holder.titleLbl.text = row["title"] as String
+
+            if (position == 0) {
+                val rows: ArrayList<Map<String, String>> = tableSectionRows[position]
+                println(rows)
+                val adapter: MemberItemAdapter = MemberItemAdapter(rows)
+                holder.recyclerView.setHasFixedSize(true)
+                holder.recyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+                holder.recyclerView.adapter = adapter
+            }
+        }
+
+        override fun getItemCount(): Int {
+
+            val a = tableSection.size
+            return tableSection.size
+        }
+
+    }
+
+    class MySectionViewHolder(val viewHolder: View): RecyclerView.ViewHolder(viewHolder) {
+
+        var titleLbl: TextView = viewHolder.findViewById(R.id.titleLbl)
+        var recyclerView: RecyclerView = viewHolder.findViewById(R.id.recyclerView)
+    }
+
+    class MemberItemAdapter(private val tableRows: ArrayList<Map<String, String>>): RecyclerView.Adapter<MemberItemViewHolder>() {
+
+        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MemberItemViewHolder {
+            val inflater = LayoutInflater.from(parent.context)
+            val viewHolder = inflater.inflate(R.layout.adapter_member_functions, parent, false)
+
+            return MemberItemViewHolder(viewHolder)
+        }
+
+        override fun onBindViewHolder(holder: MemberItemViewHolder, position: Int) {
+            val row: Map<String, String> = tableRows[position]
+            holder.titleLbl.text = row["title"]
+
+            //val icon: String = row["icon"]!!
+            //val iconID =
+            //holder.iconView =
+        }
+
+        override fun getItemCount(): Int {
+            return tableRows.size
+        }
+
+    }
+
+    class MemberItemViewHolder(val viewHolder: View): RecyclerView.ViewHolder(viewHolder) {
+
+        var iconView: ImageView = viewHolder.findViewById(R.id.icon)
+        var titleLbl: TextView = viewHolder.findViewById(R.id.text)
+    }
+
     class MemberItem(val context: Context, val row: Map<String, String>): Item() {
         override fun bind(viewHolder: com.xwray.groupie.kotlinandroidextensions.GroupieViewHolder, position: Int) {
 
@@ -382,7 +473,5 @@ class MemberFragment: TabFragment() {
         }
 
         override fun getLayout() = R.layout.adapter_member_functions
-
     }
-
 }
