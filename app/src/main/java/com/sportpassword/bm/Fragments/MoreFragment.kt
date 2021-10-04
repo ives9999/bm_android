@@ -1,28 +1,23 @@
 package com.sportpassword.bm.Fragments
 
-
 import android.app.AlertDialog
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.*
 import android.widget.ImageButton
-import androidx.fragment.app.Fragment
+import android.widget.ImageView
+import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.core.content.pm.PackageInfoCompat
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-import com.sportpassword.bm.Controllers.*
-
+import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.RecyclerView
+import com.sportpassword.bm.Controllers.List1CellDelegate
+import com.sportpassword.bm.Controllers.ShowPNVC
+import com.sportpassword.bm.Data.MoreRow
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Utilities.setImage
-import com.xwray.groupie.GroupAdapter
-import com.xwray.groupie.kotlinandroidextensions.Item
-import com.xwray.groupie.kotlinandroidextensions.GroupieViewHolder
-import kotlinx.android.synthetic.main.function_item.*
-import kotlinx.android.synthetic.main.function_item.text
 import kotlinx.android.synthetic.main.mask.*
 import kotlinx.android.synthetic.main.tab_course.*
-
 
 /**
  * A simple [Fragment] subclass.
@@ -32,23 +27,29 @@ import kotlinx.android.synthetic.main.tab_course.*
 class MoreFragment : TabFragment() {
 
     //protected lateinit var listAdapter: ListAdapter
+    lateinit var tableAdapter: MoreAdapter
+    var moreRows: ArrayList<MoreRow> = arrayListOf()
 
-    val rows: ArrayList<HashMap<String, Any>> = arrayListOf(
-        hashMapOf("key" to "product", "text" to "商品","icon" to "product","color" to R.color.MY_LIGHT_RED),
-        hashMapOf("key" to "teach", "text" to "教學","icon" to "teach","color" to R.color.MY_WHITE),
-        hashMapOf("key" to "coach", "text" to "教練","icon" to "coach","color" to R.color.MY_WHITE),
-        hashMapOf("key" to "store", "text" to "體育用品店","icon" to "store","color" to R.color.MY_WHITE),
-        hashMapOf("key" to "pn", "text" to "推播訊息","icon" to "bell","color" to R.color.MY_WHITE),
-        hashMapOf("key" to "version", "text" to "版本","icon" to "version","color" to R.color.MY_WHITE)
-    )
+    private fun initRows(): ArrayList<MoreRow> {
+        val rows: ArrayList<MoreRow> = arrayListOf()
+        val r1: MoreRow = MoreRow("商品", "product", "product", R.color.MY_LIGHT_RED)
+        rows.add(r1)
+        val r2: MoreRow = MoreRow("教學", "teach", "teach", R.color.MY_WHITE)
+        rows.add(r2)
+        val r3: MoreRow = MoreRow("教練", "coach", "coach", R.color.MY_WHITE)
+        rows.add(r3)
+        val r4: MoreRow = MoreRow("體育用品店", "store", "store", R.color.MY_WHITE)
+        rows.add(r4)
+        val r5: MoreRow = MoreRow("推播訊息", "pn", "bell", R.color.MY_WHITE)
+        rows.add(r5)
+        val r6: MoreRow = MoreRow("版本", "version", "version", R.color.MY_WHITE)
+        rows.add(r6)
+
+        return rows
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        adapter = GroupAdapter()
-        adapter.setOnItemClickListener { item, view ->
-            rowClick(item, view)
-        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -74,59 +75,42 @@ class MoreFragment : TabFragment() {
         setRecyclerViewScrollListener()
         setRecyclerViewRefreshListener()
 
-        recyclerView.adapter = adapter
+        //recyclerView.adapter = adapter
+        tableAdapter = MoreAdapter(this)
+        moreRows = initRows()
+        tableAdapter.moreRow = moreRows
+        recyclerView.adapter = tableAdapter
+
         refresh()
     }
 
-    override fun refresh() {
-        adapter.clear()
-        items.clear()
-        generateItems()
-        adapter.addAll(items)
-    }
-
-    override fun generateItems(): ArrayList<Item> {
-
-        for (row in rows) {
-
-            val myItem = MoreItem(requireContext(), row)
-            myItem.list1CellDelegate = this
-            items.add(myItem)
-        }
-
-        return items
-    }
-
-    override fun rowClick(item: com.xwray.groupie.Item<com.xwray.groupie.GroupieViewHolder>, view: View) {
-
-        val row = (item as MoreItem).row
-        if (row.containsKey("key") && row["key"] != null) {
-
-            val key: String = row["key"]!! as String
-            when (key) {
-                "product"-> mainActivity!!.toProduct()
-                "coach"-> mainActivity!!.toCoach()
-                "teach"-> mainActivity!!.toTeach()
-                "store"-> mainActivity!!.toStore()
-                "pn"-> {
-                    val intent = Intent(activity, ShowPNVC::class.java)
-                    startActivity(intent)
-                }
-                "version"-> {
-                    val p = requireContext().applicationContext.packageManager.getPackageInfo(
-                        requireContext().packageName,
-                        0
-                    )
-                    val v = PackageInfoCompat.getLongVersionCode(p).toInt()
-                    val n = p.versionName
-                    val builder = AlertDialog.Builder(requireContext())
-                    builder.setMessage(n + "#" + v)
-                    val dialog = builder.create()
-                    dialog.show()
-                }
+    override fun cellClick(idx: Int) {
+        val row: MoreRow = moreRows[idx]
+        val key: String = row.key
+        when (key) {
+            "product"-> mainActivity!!.toProduct()
+            "coach"-> mainActivity!!.toCoach()
+            "teach"-> mainActivity!!.toTeach()
+            "store"-> mainActivity!!.toStore()
+            "pn"-> {
+                val intent = Intent(activity, ShowPNVC::class.java)
+                startActivity(intent)
+            }
+            "version"-> {
+                val p = requireContext().applicationContext.packageManager.getPackageInfo(
+                    requireContext().packageName,
+                    0
+                )
+                val v = PackageInfoCompat.getLongVersionCode(p).toInt()
+                val n = p.versionName
+                val builder = AlertDialog.Builder(requireContext())
+                builder.setMessage(n + "#" + v)
+                val dialog = builder.create()
+                dialog.show()
             }
         }
     }
+    override fun refresh() {}
 
     companion object {
         // TODO: Rename parameter arguments, choose names that match
@@ -155,23 +139,35 @@ class MoreFragment : TabFragment() {
 
 }// Required empty public constructor
 
-class MoreItem(val context: Context, val row: HashMap<String, Any>): Item() {
+class MoreAdapter(val list1CellDelegate: List1CellDelegate?): RecyclerView.Adapter<MoreViewHolder>() {
 
-    var list1CellDelegate: List1CellDelegate? = null
+    var moreRow: ArrayList<MoreRow> = arrayListOf()
 
-    override fun bind(viewHolder: GroupieViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: MoreViewHolder, position: Int) {
+        val row: MoreRow = moreRow[position]
+        holder.title.text = row.title
+        holder.icon.setImage(row.icon)
+        holder.title.setTextColor(ContextCompat.getColor(holder.title.context, row.color))
 
-        if (row.containsKey("icon") && row["icon"] != null) {
-            viewHolder.icon.setImage(row["icon"]!! as String)
-        }
-        if (row.containsKey("text") && row["text"] != null) {
-            viewHolder.text.text = row["text"]!! as String
-        }
-
-        if (row.containsKey("color") && row["color"] != null) {
-            viewHolder.text.setTextColor(ContextCompat.getColor(context, row["color"]!! as Int))
+        holder.viewHolder.setOnClickListener {
+            list1CellDelegate?.cellClick(position)
         }
     }
 
-    override fun getLayout() = R.layout.function_item
+    override fun getItemCount(): Int {
+        return moreRow.size
+    }
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MoreViewHolder {
+        val inflater = LayoutInflater.from(parent.context)
+        val viewHolder = inflater.inflate(R.layout.function_item, parent, false)
+
+        return MoreViewHolder(viewHolder)
+    }
+}
+
+class MoreViewHolder(val viewHolder: View): RecyclerView.ViewHolder(viewHolder) {
+
+    var title: TextView = viewHolder.findViewById(R.id.text)
+    var icon: ImageView = viewHolder.findViewById(R.id.icon)
 }

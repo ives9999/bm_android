@@ -1,23 +1,14 @@
 package com.sportpassword.bm.Fragments
 
-import android.content.Context
-import android.content.Intent
-import android.os.Build
 import android.os.Bundle
 import android.view.*
 import android.widget.ImageButton
-import androidx.annotation.RequiresApi
-import com.sportpassword.bm.Controllers.List1CellDelegate
 import com.sportpassword.bm.Controllers.SelectCityVC
-import com.sportpassword.bm.Controllers.ShowCourseVC
 import com.sportpassword.bm.Models.*
 import com.sportpassword.bm.R
-import com.sportpassword.bm.Services.CourseService
 import com.sportpassword.bm.Services.TeamService
 import kotlinx.android.synthetic.main.mask.*
 import com.sportpassword.bm.Utilities.*
-import com.sportpassword.bm.member
-import com.squareup.picasso.Picasso
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.GroupieViewHolder
 import com.xwray.groupie.kotlinandroidextensions.Item
@@ -51,11 +42,10 @@ class TeamFragment: TabFragment() {
         this.dataService = TeamService
         setHasOptionsMenu(true)
 
-        adapter = GroupAdapter()
-        adapter.setOnItemClickListener { item, view ->
-            rowClick(item, view)
-        }
-
+//        adapter = GroupAdapter()
+//        adapter.setOnItemClickListener { item, view ->
+//            rowClick(item, view)
+//        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -87,7 +77,7 @@ class TeamFragment: TabFragment() {
         setRecyclerViewScrollListener()
         setRecyclerViewRefreshListener()
 
-        recyclerView.adapter = adapter
+//        recyclerView.adapter = adapter
 
         refresh()
         bInit = true
@@ -100,20 +90,20 @@ class TeamFragment: TabFragment() {
         }
     }
 
-    override fun generateItems(): ArrayList<Item> {
-        if (mysTable != null) {
-            for (row in mysTable!!.rows) {
-                row.filterRow()
-                val myItem = TeamItem(requireContext(), row)
-                myItem.list1CellDelegate = this
-                items.add(myItem)
-            }
-        }
+//    override fun generateItems(): ArrayList<Item> {
+//        if (mysTable != null) {
+//            for (row in mysTable!!.rows) {
+//                row.filterRow()
+//                val myItem = TeamItem(requireContext(), row)
+//                myItem.list1CellDelegate = this
+//                items.add(myItem)
+//            }
+//        }
+//
+//        return items
+//    }
 
-        return items
-    }
-
-    override fun prepare(idx: Int) {
+    fun prepare(idx: Int) {
 
         var row = searchRows.get(idx)
         var key: String = ""
@@ -149,12 +139,12 @@ class TeamFragment: TabFragment() {
         }
     }
 
-    override fun rowClick(item: com.xwray.groupie.Item<GroupieViewHolder>, view: View) {
-
-        val teamItem = item as TeamItem
-        val table = teamItem.row
-        mainActivity!!.toShowTeam(table.token)
-    }
+//    override fun rowClick(item: com.xwray.groupie.Item<GroupieViewHolder>, view: View) {
+//
+//        val teamItem = item as TeamItem
+//        val table = teamItem.row
+//        mainActivity!!.toShowTeam(table.token)
+//    }
 
     override fun cellArena(row: Table) {
 

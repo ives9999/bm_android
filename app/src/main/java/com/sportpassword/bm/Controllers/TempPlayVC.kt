@@ -4,20 +4,10 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.View
-import android.widget.ImageButton
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import com.sportpassword.bm.Adapters.TempPlayListAdapter
-import com.sportpassword.bm.Fragments.TeamItem
-//import com.sportpassword.bm.Models.Arena
-import com.sportpassword.bm.Models.City
-import com.sportpassword.bm.Models.ProductsTable
 import com.sportpassword.bm.Models.TeamsTable
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.TeamService
 import com.sportpassword.bm.Utilities.*
-import com.sportpassword.bm.Utilities.jsonToModel
 import com.xwray.groupie.kotlinandroidextensions.Item
 import kotlinx.android.synthetic.main.activity_temp_play_vc.*
 import kotlinx.android.synthetic.main.mask.*
@@ -66,29 +56,29 @@ class TempPlayVC : MyTableVC() {
         }
     }
 
-    override fun generateItems(): ArrayList<Item> {
-        val items: ArrayList<Item> = arrayListOf()
-        if (mysTable != null) {
-            for (row in mysTable!!.rows) {
-                row.filterRow()
-                val myItem = TeamItem(this, row)
-                myItem.list1CellDelegate = this
-                items.add(myItem)
-            }
-        }
-
-        return items
-    }
-
-    override fun rowClick(item: com.xwray.groupie.Item<com.xwray.groupie.GroupieViewHolder>, view: View) {
-
-        val myItem = item as TeamItem
-        val table = myItem.row
-        val intent = Intent(this, ShowTempPlayActivity::class.java)
-        //intent.putExtra("position", position)
-        intent.putExtra(TOKEN_KEY, table.token)
-        startActivity(intent)
-    }
+//    override fun generateItems(): ArrayList<Item> {
+//        val items: ArrayList<Item> = arrayListOf()
+//        if (mysTable != null) {
+//            for (row in mysTable!!.rows) {
+//                row.filterRow()
+//                val myItem = TeamItem(this, row)
+//                myItem.list1CellDelegate = this
+//                items.add(myItem)
+//            }
+//        }
+//
+//        return items
+//    }
+//
+//    override fun rowClick(item: com.xwray.groupie.Item<com.xwray.groupie.GroupieViewHolder>, view: View) {
+//
+//        val myItem = item as TeamItem
+//        val table = myItem.row
+//        val intent = Intent(this, ShowTempPlayActivity::class.java)
+//        //intent.putExtra("position", position)
+//        intent.putExtra(TOKEN_KEY, table.token)
+//        startActivity(intent)
+//    }
 
     private fun show(data: Map<String, Map<String, Any>>) {
         val position = data["position"]!!["value"] as Int

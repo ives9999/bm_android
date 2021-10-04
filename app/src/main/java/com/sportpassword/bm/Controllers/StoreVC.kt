@@ -1,11 +1,9 @@
 package com.sportpassword.bm.Controllers
 
 import android.content.Context
-import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.View
-import com.sportpassword.bm.Fragments.ListItem
 import com.sportpassword.bm.Fragments.MyAdapter
 import com.sportpassword.bm.Fragments.MyViewHolder
 import com.sportpassword.bm.Models.*
@@ -79,20 +77,20 @@ class StoreVC : MyTableVC() {
         }
     }
 
-    override fun generateItems(): ArrayList<Item> {
-        val items: ArrayList<Item> = arrayListOf()
-        if (mysTable != null) {
-            for (row in mysTable!!.rows) {
-                //row.print()
-                row.filterRow()
-                val myItem = StoreItem(this, row)
-                myItem.list1CellDelegate = this
-                items.add(myItem)
-            }
-        }
-
-        return items
-    }
+//    override fun generateItems(): ArrayList<Item> {
+//        val items: ArrayList<Item> = arrayListOf()
+//        if (mysTable != null) {
+//            for (row in mysTable!!.rows) {
+//                //row.print()
+//                row.filterRow()
+//                val myItem = StoreItem(this, row)
+//                myItem.list1CellDelegate = this
+//                items.add(myItem)
+//            }
+//        }
+//
+//        return items
+//    }
 
     override fun prepare(idx: Int) {
 
@@ -116,12 +114,12 @@ class StoreVC : MyTableVC() {
     }
 
 
-    override fun rowClick(item: com.xwray.groupie.Item<com.xwray.groupie.GroupieViewHolder>, view: View) {
-
-        val storeItem = item as StoreItem
-        val table = storeItem.row
-        toShowStore(table.token)
-    }
+//    override fun rowClick(item: com.xwray.groupie.Item<com.xwray.groupie.GroupieViewHolder>, view: View) {
+//
+//        val storeItem = item as StoreItem
+//        val table = storeItem.row
+//        toShowStore(table.token)
+//    }
 
     override fun remove(indexPath: IndexPath) {
         val row = searchRows[indexPath.row]
@@ -165,32 +163,32 @@ class StoreViewHolder(context: Context, viewHolder: View, list1CellDelegate: Lis
     }
 }
 
-class StoreItem(override var context: Context, var _row: StoreTable): ListItem<Table>(context, _row) {
-
-    override fun bind(viewHolder: GroupieViewHolder, position: Int) {
-
-        super.bind(viewHolder, position)
-
-        val row: StoreTable = _row
-        //println(superStore);
-        viewHolder.cityBtn.text = row.city_show
-        viewHolder.cityBtn.setOnClickListener {
-            if (list1CellDelegate != null) {
-                list1CellDelegate!!.cellCity(row)
-            }
-        }
-
-        viewHolder.titleLbl.text = row.name
-
-        viewHolder.business_timeTxt.text = "${row.open_time_show}~${row.close_time_show}"
-
-        viewHolder.addressTxt.text = row.address
-
-        if (row.tel_show.isNotEmpty()) {
-            viewHolder.telLbl.text = row.tel_show
-        } else {
-            viewHolder.telLbl.text = "電話：未提供"
-        }
+//class StoreItem(override var context: Context, var _row: StoreTable): ListItem<Table>(context, _row) {
+//
+//    override fun bind(viewHolder: GroupieViewHolder, position: Int) {
+//
+//        super.bind(viewHolder, position)
+//
+//        val row: StoreTable = _row
+//        //println(superStore);
+//        viewHolder.cityBtn.text = row.city_show
+//        viewHolder.cityBtn.setOnClickListener {
+//            if (list1CellDelegate != null) {
+//                list1CellDelegate!!.cellCity(row)
+//            }
+//        }
+//
+//        viewHolder.titleLbl.text = row.name
+//
+//        viewHolder.business_timeTxt.text = "${row.open_time_show}~${row.close_time_show}"
+//
+//        viewHolder.addressTxt.text = row.address
+//
+//        if (row.tel_show.isNotEmpty()) {
+//            viewHolder.telLbl.text = row.tel_show
+//        } else {
+//            viewHolder.telLbl.text = "電話：未提供"
+//        }
 
 //如果要啟動管理功能，請打開這個註解
 //        var showManager = false
@@ -222,10 +220,10 @@ class StoreItem(override var context: Context, var _row: StoreTable): ListItem<T
 //            viewHolder.deleteIcon.visibility = View.INVISIBLE
 //        }
 
-    }
-
-    override fun getLayout() = R.layout.store_list_cell
-}
+//    }
+//
+//    override fun getLayout() = R.layout.store_list_cell
+//}
 
 
 

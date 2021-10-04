@@ -612,6 +612,10 @@ abstract class MyTableVC : BaseActivity(), List1CellDelegate {
             toShowStore(row.token)
         } else if (t == TeamTable::class) {
             toShowTeam(row.token)
+        } else if (t == ArenaTable::class) {
+            toShowArena(row.token)
+        } else if (t == CourseTable::class) {
+            toShowCourse(row.token)
         }
     }
 
@@ -680,6 +684,8 @@ abstract class MyTableVC : BaseActivity(), List1CellDelegate {
 
 interface List1CellDelegate {
     fun cellClick(row: Table) {}
+    fun cellClick(idx: Int) {}
+    fun cellClick(sectionIdx: Int, rowIdx: Int) {}
     fun cellRefresh(){}
     fun cellLike(row: Table){}
     fun cellShowMap(row: Table){}
@@ -689,4 +695,9 @@ interface List1CellDelegate {
     fun cellCity(row: Table){}
     fun cellArea(row: Table){}
     fun cellArena(row: Table){}
+
+    fun cellTextChanged(sectionIdx: Int, rowIdx: Int, str: String) {}
+    fun cellClear(sectionIdx: Int, rowIdx: Int) {}
+
+    fun handleSectionExpanded(idx: Int) {}
 }

@@ -74,27 +74,27 @@ class ProductVC : MyTableVC() {
         }
     }
 
-    override fun generateItems(): ArrayList<Item> {
-        val items: ArrayList<Item> = arrayListOf()
-        if (mysTable != null) {
-            for (row in mysTable!!.rows) {
-                row.filterRow()
-                val productItem = ProductItem(this, row)
-                productItem.list1CellDelegate = this
-                items.add(productItem)
-            }
-        }
-
-        return items
-    }
-
-    override fun rowClick(item: com.xwray.groupie.Item<com.xwray.groupie.GroupieViewHolder>, view: View) {
-
-        val productItem = item as ProductItem
-        val myTable = productItem.row
-        //superCourse.print()
-        toShowProduct(myTable.token)
-    }
+//    override fun generateItems(): ArrayList<Item> {
+//        val items: ArrayList<Item> = arrayListOf()
+//        if (mysTable != null) {
+//            for (row in mysTable!!.rows) {
+//                row.filterRow()
+//                val productItem = ProductItem(this, row)
+//                productItem.list1CellDelegate = this
+//                items.add(productItem)
+//            }
+//        }
+//
+//        return items
+//    }
+//
+//    override fun rowClick(item: com.xwray.groupie.Item<com.xwray.groupie.GroupieViewHolder>, view: View) {
+//
+//        val productItem = item as ProductItem
+//        val myTable = productItem.row
+//        //superCourse.print()
+//        toShowProduct(myTable.token)
+//    }
 }
 
 class ProductAdapter(resource: Int, list1CellDelegate: List1CellDelegate?): MyAdapter<ProductViewHolder>(resource, ::ProductViewHolder, list1CellDelegate) {}
@@ -121,27 +121,27 @@ class ProductViewHolder(context: Context, viewHolder: View, list1CellDelegate: L
     }
 }
 
-class ProductItem(override var context: Context, var _row: ProductTable): ListItem<Table>(context, _row) {
-
-    override fun bind(viewHolder: GroupieViewHolder, position: Int) {
-
-
-        super.bind(viewHolder, position)
-
-        val row: ProductTable = _row
-        viewHolder.buyBtn.setOnClickListener {
-            val a: ProductVC = context as ProductVC
-            a.toAddCart(row.token)
-        }
-
-        if (row.prices.size > 0) {
-            val tmp: String = (row.prices[0].price_member).formattedWithSeparator()
-            val price: String = "NT$ ${tmp}"
-            viewHolder.priceLbl.text = price
-        } else {
-            viewHolder.priceLbl.text = "未提供"
-        }
-    }
-
-    override fun getLayout() = R.layout.product_list_cell
-}
+//class ProductItem(override var context: Context, var _row: ProductTable): ListItem<Table>(context, _row) {
+//
+//    override fun bind(viewHolder: GroupieViewHolder, position: Int) {
+//
+//
+//        super.bind(viewHolder, position)
+//
+//        val row: ProductTable = _row
+//        viewHolder.buyBtn.setOnClickListener {
+//            val a: ProductVC = context as ProductVC
+//            a.toAddCart(row.token)
+//        }
+//
+//        if (row.prices.size > 0) {
+//            val tmp: String = (row.prices[0].price_member).formattedWithSeparator()
+//            val price: String = "NT$ ${tmp}"
+//            viewHolder.priceLbl.text = price
+//        } else {
+//            viewHolder.priceLbl.text = "未提供"
+//        }
+//    }
+//
+//    override fun getLayout() = R.layout.product_list_cell
+//}

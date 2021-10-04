@@ -1,9 +1,16 @@
 package com.sportpassword.bm.Controllers
 
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import android.widget.ImageView
+import android.widget.TextView
+import com.sportpassword.bm.Fragments.MyAdapter
+import com.sportpassword.bm.Fragments.MyViewHolder
+import com.sportpassword.bm.Models.CoachTable
+import com.sportpassword.bm.Models.Table
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Utilities.selected
 import com.sportpassword.bm.Utilities.unSelected
@@ -18,6 +25,7 @@ interface SingleSelectDelegate {
 open class SingleSelectVC : SelectVC() {
 
     var selected: String? = null
+    lateinit var tableAdapter: SingleSelectAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,37 +40,39 @@ open class SingleSelectVC : SelectVC() {
         }
 
         recyclerView = tableView
-        recyclerView.adapter = adapter
-        initAdapter()
+        tableAdapter = SingleSelectAdapter(R.layout.select_item, this)
+        recyclerView.adapter = tableAdapter
+//        recyclerView.adapter = adapter
+//        initAdapter()
 //
 //        init()
     }
 
-    override fun generateItems(): ArrayList<Item> {
-
-        val items: ArrayList<Item> = arrayListOf()
-        val rowClick = { i: Int ->
-            submit(i)
-        }
-        for (row in rows) {
-            var title: String? = null
-            if (row.containsKey("title")) {
-                title = row.get("title")!!
-            }
-            var value: String? = null
-            if (row.containsKey("value")) {
-                value = row.get("value")!!
-            }
-            val isSelected = if(value == selected) true else false
-
-            if (title != null && value != null) {
-                val item = SingleSelectItem(title, value, isSelected, rowClick)
-                items.add(item)
-            }
-        }
-
-        return items
-    }
+//    override fun generateItems(): ArrayList<Item> {
+//
+//        val items: ArrayList<Item> = arrayListOf()
+//        val rowClick = { i: Int ->
+//            submit(i)
+//        }
+//        for (row in rows) {
+//            var title: String? = null
+//            if (row.containsKey("title")) {
+//                title = row.get("title")!!
+//            }
+//            var value: String? = null
+//            if (row.containsKey("value")) {
+//                value = row.get("value")!!
+//            }
+//            val isSelected = if(value == selected) true else false
+//
+//            if (title != null && value != null) {
+//                val item = SingleSelectItem(title, value, isSelected, rowClick)
+//                items.add(item)
+//            }
+//        }
+//
+//        return items
+//    }
 
     open fun submit(idx: Int) {
 
@@ -93,13 +103,27 @@ open class SingleSelectVC : SelectVC() {
             finish()
         } else { //取消原來的選擇
             selected = ""
-            generateItems()
-            notifyChanged()
+//            generateItems()
+//            notifyChanged()
         }
     }
 
     //selected 有時候是56.0要把它處理成56
     open fun dealSelected() {}
+}
+
+class SingleSelectAdapter(resource: Int, list1CellDelegate: List1CellDelegate?): MyAdapter<SingleSelectViewHolder>(resource, ::SingleSelectViewHolder, list1CellDelegate) {
+
+    var rows: ArrayList<HashMap<String, String>> = arrayListOf()
+
+    override fun onBindViewHolder(holder: SingleSelectViewHolder, position: Int) {
+
+    }
+}
+
+class SingleSelectViewHolder(context: Context, viewHolder: View, list1CellDelegate: List1CellDelegate? = null): MyViewHolder(context, viewHolder, list1CellDelegate) {
+    val title: TextView = viewHolder.findViewById(R.id.title)
+    val selected: ImageView = viewHolder.findViewById(R.id.selected)
 }
 
 class SingleSelectItem(val title: String, val value: String, val isSelected: Boolean, val rowClick:(idx: Int)->Unit): Item() {

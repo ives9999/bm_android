@@ -173,7 +173,7 @@ open class SearchPanel {
             } else if (able_type == "arena") {
                 frag = activity.getFragment() as ArenaFragment
             }
-            frag?.prepare(row)
+            //frag?.prepare(row)
             //prepareSearch1(row, page)
         } else {
             activity.prepare(row)
@@ -297,7 +297,7 @@ open class SearchPanel {
             }
             val searchItem = SearchItem(title, detail, "", bSwitch, -1, i)
             if (able_type == "team" || able_type == "course" || able_type == "arena") {
-                searchItem.delegate = activity.getFragment()
+                //searchItem.delegate = activity.getFragment()
             } else {
                 searchItem.delegate = activity
             }

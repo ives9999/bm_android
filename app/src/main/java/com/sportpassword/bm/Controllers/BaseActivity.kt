@@ -654,7 +654,7 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
 
     private fun _setURLConstants() {
         gSimulate = isEmulator()
-        gSimulate = false
+//        gSimulate = false
         BASE_URL = if (gSimulate) LOCALHOST_BASE_URL else REMOTE_BASE_URL
         //println("os: " + BASE_URL)
 
@@ -1744,7 +1744,7 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
             }
             val searchItem = SearchItem(title, detail, keyword, bSwitch, -1, i)
             if (page == "team" || page == "course") {
-                searchItem.delegate = getFragment()
+                //searchItem.delegate = getFragment()
             } else {
                 searchItem.delegate = this@BaseActivity
             }

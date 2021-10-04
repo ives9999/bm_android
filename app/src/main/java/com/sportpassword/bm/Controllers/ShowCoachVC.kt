@@ -255,7 +255,9 @@ class ShowCoachVC: ShowVC() {
                 coursesTable = jsonToModels<CoursesTable>(CourseService.jsonString)
                 val items = generateCourseItems()
                 courseAdapter.update(items)
-                courseAdapter.notifyDataSetChanged()
+                runOnUiThread {
+                    courseAdapter.notifyDataSetChanged()
+                }
             }
         }
     }

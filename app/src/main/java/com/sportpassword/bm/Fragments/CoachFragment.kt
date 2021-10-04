@@ -48,7 +48,7 @@ class CoachFragment : TabFragment() {
         refreshLayout = tab_refresh
         maskView = mask
 
-        initAdapter(false)
+        //initAdapter(false)
         recyclerView.setHasFixedSize(true)
         setRecyclerViewScrollListener()
         setRecyclerViewRefreshListener()

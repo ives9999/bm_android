@@ -4,7 +4,6 @@ import android.content.Context
 import android.os.Bundle
 import android.view.Menu
 import android.view.View
-import com.sportpassword.bm.Fragments.ListItem
 import com.sportpassword.bm.Fragments.MyAdapter
 import com.sportpassword.bm.Fragments.MyViewHolder
 import com.sportpassword.bm.Models.*
@@ -87,17 +86,17 @@ class MemberCartListVC : MyTableVC() {
         }
     }
 
-    override fun generateItems(): ArrayList<Item> {
-        val items: ArrayList<Item> = arrayListOf()
-        for (row in cartItemsTable) {
-            row.filterRow()
-            val cartItemItem = CartItemItem(this, row)
-            cartItemItem.list1CellDelegate = this
-            items.add(cartItemItem)
-        }
-
-        return items
-    }
+//    override fun generateItems(): ArrayList<Item> {
+//        val items: ArrayList<Item> = arrayListOf()
+//        for (row in cartItemsTable) {
+//            row.filterRow()
+//            val cartItemItem = CartItemItem(this, row)
+//            cartItemItem.list1CellDelegate = this
+//            items.add(cartItemItem)
+//        }
+//
+//        return items
+//    }
 
     override fun cellEdit(row: Table) {
         toAddCart(null, row.token)
@@ -119,14 +118,14 @@ class MemberCartListVC : MyTableVC() {
         }
     }
 
-    override fun rowClick(
-        item: com.xwray.groupie.Item<com.xwray.groupie.GroupieViewHolder>,
-        view: View
-    ) {
-        val cartItemItem = item as CartItemItem
-        val row: CartItemTable = cartItemItem._row
-        toShowProduct(row.product!!.token)
-    }
+//    override fun rowClick(
+//        item: com.xwray.groupie.Item<com.xwray.groupie.GroupieViewHolder>,
+//        view: View
+//    ) {
+//        val cartItemItem = item as CartItemItem
+//        val row: CartItemTable = cartItemItem._row
+//        toShowProduct(row.product!!.token)
+//    }
 
     fun submitBtnPressed(view: View) {
         toOrder()
@@ -147,83 +146,84 @@ class MemberCartViewHolder(context: Context, viewHolder: View, list1CellDelegate
         val row: ProductTable = _row as ProductTable
     }
 }
-class CartItemItem(override var context: Context, var _row: CartItemTable): ListItem<Table>(context, _row) {
 
-    constructor(context: Context, sectionKey: String, rowKey: String, title: String, featured_path: String, attribute: String, amount: String, quantity: String, list1CellDelegate: List1CellDelegate?=null): this(context, CartItemTable()) {
-        this.sectionKey = sectionKey
-        this.rowKey = rowKey
-        this.title = title
-        this.featured_path = featured_path
-        this.attribute = attribute
-        this.amount = amount
-        this.quantity = quantity
-    }
-    var sectionKey: String = ""
-    var rowKey: String = ""
-    var title: String = ""
-    var featured_path: String = ""
-    var attribute: String = ""
-    var amount: String = ""
-    var quantity: String = ""
-
-    init {
-        if (_row.cart_id > 0) {
-            val row: CartItemTable = _row
-
-            if (row.product != null && row.product!!.featured_path.isNotEmpty()) {
-                featured_path = row.product!!.featured_path
-            }
-
-            if (row.product != null) {
-                title = row.product!!.name
-            }
-
-            var attribute_text: String = ""
-            if (row.attributes.size > 0) {
-
-                for ((idx, attribute) in row.attributes.withIndex()) {
-                    attribute_text += attribute["name"]!! + ":" + attribute["value"]!!
-                    if (idx < row.attributes.size - 1) {
-                        attribute_text += " | "
-                    }
-                }
-            }
-            attribute = attribute_text
-            amount = row.amount_show
-            quantity = row.quantity.toString()
-        }
-    }
-
-    override fun bind(viewHolder: GroupieViewHolder, position: Int) {
-
-        //super.bind(viewHolder, position)
-
-        Picasso.with(context)
-            .load(featured_path)
-            .placeholder(R.drawable.loading_square_120)
-            .error(R.drawable.loading_square_120)
-            .into(viewHolder.listFeatured)
-
-        viewHolder.titleLbl.text = title
-        viewHolder.attributeLbl.text = attribute
-
-        viewHolder.amountLbl.text = amount
-        viewHolder.quantityLbl.text = "數量：${quantity}"
-
-        if (list1CellDelegate != null) {
-            viewHolder.editIcon.setOnClickListener {
-
-                list1CellDelegate!!.cellEdit(row)
-            }
-
-            viewHolder.deleteIcon.setOnClickListener {
-
-                list1CellDelegate!!.cellDelete(row)
-            }
-        } else {
-            viewHolder.iconView.visibility = View.GONE
-        }
-    }
-
-    override fun getLayout() = R.layout.cart_list_cell
-}
+//class CartItemItem(override var context: Context, var _row: CartItemTable): ListItem<Table>(context, _row) {
+//
+//    constructor(context: Context, sectionKey: String, rowKey: String, title: String, featured_path: String, attribute: String, amount: String, quantity: String, list1CellDelegate: List1CellDelegate?=null): this(context, CartItemTable()) {
+//        this.sectionKey = sectionKey
+//        this.rowKey = rowKey
+//        this.title = title
+//        this.featured_path = featured_path
+//        this.attribute = attribute
+//        this.amount = amount
+//        this.quantity = quantity
+//    }
+//    var sectionKey: String = ""
+//    var rowKey: String = ""
+//    var title: String = ""
+//    var featured_path: String = ""
+//    var attribute: String = ""
+//    var amount: String = ""
+//    var quantity: String = ""
+//
+//    init {
+//        if (_row.cart_id > 0) {
+//            val row: CartItemTable = _row
+//
+//            if (row.product != null && row.product!!.featured_path.isNotEmpty()) {
+//                featured_path = row.product!!.featured_path
+//            }
+//
+//            if (row.product != null) {
+//                title = row.product!!.name
+//            }
+//
+//            var attribute_text: String = ""
+//            if (row.attributes.size > 0) {
+//
+//                for ((idx, attribute) in row.attributes.withIndex()) {
+//                    attribute_text += attribute["name"]!! + ":" + attribute["value"]!!
+//                    if (idx < row.attributes.size - 1) {
+//                        attribute_text += " | "
+//                    }
+//                }
+//            }
+//            attribute = attribute_text
+//            amount = row.amount_show
+//            quantity = row.quantity.toString()
+//        }
+//    }
+//
+//    override fun bind(viewHolder: GroupieViewHolder, position: Int) {
+//
+//        //super.bind(viewHolder, position)
+//
+//        Picasso.with(context)
+//            .load(featured_path)
+//            .placeholder(R.drawable.loading_square_120)
+//            .error(R.drawable.loading_square_120)
+//            .into(viewHolder.listFeatured)
+//
+//        viewHolder.titleLbl.text = title
+//        viewHolder.attributeLbl.text = attribute
+//
+//        viewHolder.amountLbl.text = amount
+//        viewHolder.quantityLbl.text = "數量：${quantity}"
+//
+//        if (list1CellDelegate != null) {
+//            viewHolder.editIcon.setOnClickListener {
+//
+//                list1CellDelegate!!.cellEdit(row)
+//            }
+//
+//            viewHolder.deleteIcon.setOnClickListener {
+//
+//                list1CellDelegate!!.cellDelete(row)
+//            }
+//        } else {
+//            viewHolder.iconView.visibility = View.GONE
+//        }
+//    }
+//
+//    override fun getLayout() = R.layout.cart_list_cell
+//}

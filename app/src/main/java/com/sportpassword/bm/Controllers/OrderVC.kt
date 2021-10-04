@@ -1,14 +1,11 @@
 package com.sportpassword.bm.Controllers
 
 import android.os.Bundle
-import android.widget.LinearLayout
 import com.sportpassword.bm.Adapters.Form.*
 import com.sportpassword.bm.Adapters.GroupSection
-import com.sportpassword.bm.Form.FormItem.FormItem
 import com.sportpassword.bm.Models.*
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.CartService
-import com.sportpassword.bm.Services.MemberService
 import com.sportpassword.bm.Services.OrderService
 import com.sportpassword.bm.Utilities.*
 import com.sportpassword.bm.member
@@ -20,24 +17,13 @@ import kotlinx.android.synthetic.main.mask.*
 import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
-import android.R.attr.height
 import android.content.res.Resources
-import android.graphics.Color
-import android.os.Build
-import android.util.DisplayMetrics
 import android.view.*
-import android.widget.Button
 import android.widget.RelativeLayout
-import androidx.annotation.RequiresApi
-import androidx.core.content.ContextCompat
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.gson.Gson
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.GroupieViewHolder
-import org.jetbrains.anko.backgroundColor
-import org.jetbrains.anko.sdk27.coroutines.onClick
-
 
 class OrderVC : MyTableVC() {
 
@@ -344,110 +330,110 @@ class OrderVC : MyTableVC() {
 //        }
     }
 
-    override fun generateItems(section: Int): ArrayList<Item> {
-
-        if (myRows.size == 0) {
-            return arrayListOf()
-        }
-        items.clear()
-        var sectionKey: String = ""
-        val sectionRow: HashMap<String, Any> = myRows[section]
-        val tmp: String? = sectionRow["key"] as? String
-        if (tmp != null) {
-            sectionKey = tmp
-        }
-
-        if (!sectionRow.containsKey("rows")) {
-            return arrayListOf()
-        }
-
-        @Suppress("UNCHECKED_CAST")
-        val rows: ArrayList<HashMap<String, String>> =
-            sectionRow["rows"] as ArrayList<HashMap<String, String>>
-
-        if (sectionKey == GATEWAY_KEY) {
-            val item = RadioAdapter(this, sectionKey, rows, this)
-            items.add(item)
-        } else if (sectionKey == SHIPPING_KEY) {
-            val item = RadioAdapter(this, sectionKey, rows, this)
-            items.add(item)
-        } else {
-
-            //val adapterRows: ArrayList<Item> = arrayListOf()
-            for ((idx, row) in rows.withIndex()) {
-
-                var rowKey: String = ""
-                if (row.containsKey("key")) {
-                    rowKey = row["key"]!!
-                }
-                var title: String = ""
-                if (row.containsKey("title")) {
-                    title = row["title"]!!
-                }
-                var value: String = ""
-                if (row.containsKey("value")) {
-                    value = row["value"]!!
-                }
-                var show: String = ""
-                if (row.containsKey("show")) {
-                    show = row["show"]!!
-                }
-
-                val cell_type: String? = row["cell"]
-
-                //var formItemAdapter: FormItemAdapter1? = null
-                if (cell_type == "cart") {
-                    var featured_path = FEATURED_PATH
-                    if (row.containsKey("featured_path") && row["featured_path"]!!.length > 0) {
-                        featured_path = row["featured_path"]!!
-                    }
-                    var attribute = ""
-                    if (row.containsKey("attribute")) {
-                        attribute = row["attribute"]!!
-                    }
-                    var amount = ""
-                    if (row.containsKey("amount")) {
-                        amount = row["amount"]!!
-                    }
-                    var quantity = ""
-                    if (row.containsKey("quantity")) {
-                        quantity = row["quantity"]!!
-                    }
-                    val cartItemItem = CartItemItem(
-                        this,
-                        sectionKey,
-                        rowKey,
-                        title,
-                        featured_path,
-                        attribute,
-                        amount,
-                        quantity
-                    )
-                    items.add(cartItemItem)
-                } else if (cell_type == "text") {
-                    val item = PlainAdapter1(title, show)
-                    items.add(item)
-                } else if (cell_type == "textField") {
-                    val keyboard: String = row["keyboard"] ?: run { "default" }
-                    val item = TextFieldAdapter1(sectionKey, rowKey, title, value, keyboard, this)
-                    items.add(item)
-                } else if (cell_type == "more") {
-                    val item = MoreAdapter1(sectionKey, rowKey, title, value, show, this)
-                    items.add(item)
-                }
-            }
-        }
-
-        return items
-    }
-
-    fun reloadData() {
-
-        for ((idx, _) in mySections.withIndex()) {
-            val items = generateItems(idx)
-            adapterSections[idx].update(items)
-        }
-    }
+//    override fun generateItems(section: Int): ArrayList<Item> {
+//
+//        if (myRows.size == 0) {
+//            return arrayListOf()
+//        }
+//        items.clear()
+//        var sectionKey: String = ""
+//        val sectionRow: HashMap<String, Any> = myRows[section]
+//        val tmp: String? = sectionRow["key"] as? String
+//        if (tmp != null) {
+//            sectionKey = tmp
+//        }
+//
+//        if (!sectionRow.containsKey("rows")) {
+//            return arrayListOf()
+//        }
+//
+//        @Suppress("UNCHECKED_CAST")
+//        val rows: ArrayList<HashMap<String, String>> =
+//            sectionRow["rows"] as ArrayList<HashMap<String, String>>
+//
+//        if (sectionKey == GATEWAY_KEY) {
+//            val item = RadioAdapter(this, sectionKey, rows, this)
+//            items.add(item)
+//        } else if (sectionKey == SHIPPING_KEY) {
+//            val item = RadioAdapter(this, sectionKey, rows, this)
+//            items.add(item)
+//        } else {
+//
+//            //val adapterRows: ArrayList<Item> = arrayListOf()
+//            for ((idx, row) in rows.withIndex()) {
+//
+//                var rowKey: String = ""
+//                if (row.containsKey("key")) {
+//                    rowKey = row["key"]!!
+//                }
+//                var title: String = ""
+//                if (row.containsKey("title")) {
+//                    title = row["title"]!!
+//                }
+//                var value: String = ""
+//                if (row.containsKey("value")) {
+//                    value = row["value"]!!
+//                }
+//                var show: String = ""
+//                if (row.containsKey("show")) {
+//                    show = row["show"]!!
+//                }
+//
+//                val cell_type: String? = row["cell"]
+//
+//                //var formItemAdapter: FormItemAdapter1? = null
+//                if (cell_type == "cart") {
+//                    var featured_path = FEATURED_PATH
+//                    if (row.containsKey("featured_path") && row["featured_path"]!!.length > 0) {
+//                        featured_path = row["featured_path"]!!
+//                    }
+//                    var attribute = ""
+//                    if (row.containsKey("attribute")) {
+//                        attribute = row["attribute"]!!
+//                    }
+//                    var amount = ""
+//                    if (row.containsKey("amount")) {
+//                        amount = row["amount"]!!
+//                    }
+//                    var quantity = ""
+//                    if (row.containsKey("quantity")) {
+//                        quantity = row["quantity"]!!
+//                    }
+//                    val cartItemItem = CartItemItem(
+//                        this,
+//                        sectionKey,
+//                        rowKey,
+//                        title,
+//                        featured_path,
+//                        attribute,
+//                        amount,
+//                        quantity
+//                    )
+//                    items.add(cartItemItem)
+//                } else if (cell_type == "text") {
+//                    val item = PlainAdapter1(title, show)
+//                    items.add(item)
+//                } else if (cell_type == "textField") {
+//                    val keyboard: String = row["keyboard"] ?: run { "default" }
+//                    val item = TextFieldAdapter1(sectionKey, rowKey, title, value, keyboard, this)
+//                    items.add(item)
+//                } else if (cell_type == "more") {
+//                    val item = MoreAdapter1(sectionKey, rowKey, title, value, show, this)
+//                    items.add(item)
+//                }
+//            }
+//        }
+//
+//        return items
+//    }
+//
+//    fun reloadData() {
+//
+//        for ((idx, _) in mySections.withIndex()) {
+//            val items = generateItems(idx)
+//            adapterSections[idx].update(items)
+//        }
+//    }
 
     override fun textFieldTextChanged(sectionKey: String, rowKey: String, value: String) {
 
@@ -487,7 +473,7 @@ class OrderVC : MyTableVC() {
 
             replaceRowsByKey(sectionKey, invoiceRows)
             top.unmask()
-            reloadData()
+            //reloadData()
         } else if (sectionKey == GATEWAY_KEY || sectionKey == SHIPPING_KEY){
 
             replaceRowsByKey(sectionKey, rows)

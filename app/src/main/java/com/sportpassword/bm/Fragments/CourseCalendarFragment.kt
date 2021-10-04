@@ -74,7 +74,7 @@ class CourseCalendarFragment : TabFragment() {
         refreshLayout = tab_refresh
         maskView = mask
 
-        initAdapter(false)
+        //initAdapter(false)
         recyclerView.setHasFixedSize(true)
         setRecyclerViewScrollListener()
         setRecyclerViewRefreshListener()
@@ -82,70 +82,70 @@ class CourseCalendarFragment : TabFragment() {
 
     }
 
-    override fun initAdapter(include_section: Boolean) {
-        adapter = GroupAdapter()
-        adapter.setOnItemClickListener { item, view ->
-            //rowClick(item, view)
-        }
-        if (include_section) {
-            for (section in sections) {
-                adapterSections.add(Section())
-            }
-            for ((idx, title) in sections.withIndex()) {
-                val expandableGroup = ExpandableGroup(GroupSection(title), true)
-                val items = generateItems(idx)
-                adapterSections[idx].addAll(items)
-                expandableGroup.add(adapterSections[idx])
-                adapter.add(expandableGroup)
-            }
-        } else {
-            val items = generateItems()
-            adapter.addAll(items)
-        }
-        recyclerView.adapter = adapter
-    }
+//    override fun initAdapter(include_section: Boolean) {
+//        adapter = GroupAdapter()
+//        adapter.setOnItemClickListener { item, view ->
+//            //rowClick(item, view)
+//        }
+//        if (include_section) {
+//            for (section in sections) {
+//                adapterSections.add(Section())
+//            }
+//            for ((idx, title) in sections.withIndex()) {
+//                val expandableGroup = ExpandableGroup(GroupSection(title), true)
+//                val items = generateItems(idx)
+//                adapterSections[idx].addAll(items)
+//                expandableGroup.add(adapterSections[idx])
+//                adapter.add(expandableGroup)
+//            }
+//        } else {
+//            val items = generateItems()
+//            adapter.addAll(items)
+//        }
+//        recyclerView.adapter = adapter
+//    }
 
     override fun setUserVisibleHint(isVisibleToUser: Boolean) {
         super.setUserVisibleHint(isVisibleToUser)
         isCourseShow = isVisibleToUser
     }
 
-    override fun generateItems(): ArrayList<Item> {
-        val items: ArrayList<Item> = arrayListOf()
-        for (i in 1..monthLastDay) {
+//    override fun generateItems(): ArrayList<Item> {
+//        val items: ArrayList<Item> = arrayListOf()
+//        for (i in 1..monthLastDay) {
+//
+//            val day: Int = i
+//            val date: String = "%4d-%02d-%02d".format(year, month, i)
+//            //println(date)
+//            var rows: ArrayList<CourseTable> = arrayListOf()
+//            if (superCourses != null) {
+//                rows = superCourses!!.rows
+//            }
+//            items.add(CalendarItem(requireContext(), date, rows))
+//
+//        }
+//
+//        return items
+//    }
+//    override fun generateItems(section: Int): ArrayList<Item> {
+//        return arrayListOf()
+//    }
 
-            val day: Int = i
-            val date: String = "%4d-%02d-%02d".format(year, month, i)
-            //println(date)
-            var rows: ArrayList<CourseTable> = arrayListOf()
-            if (superCourses != null) {
-                rows = superCourses!!.rows
-            }
-            items.add(CalendarItem(requireContext(), date, rows))
-
-        }
-
-        return items
-    }
-    override fun generateItems(section: Int): ArrayList<Item> {
-        return arrayListOf()
-    }
-
-    class CalendarItem(val context: Context, val date: String, val superCourses: ArrayList<CourseTable>): Item() {
-
-        override fun bind(viewHolder: com.xwray.groupie.kotlinandroidextensions.GroupieViewHolder, position: Int) {
-
-            val d: Date = date.toDate()!!
-            val weekday_i = d.dateToWeekday()
-            //println(weekday_i)
-            val weekday_c: String = d.dateToWeekdayForChinese()
-
-            viewHolder.date.text = "%s(%s)".format(date, weekday_c)
-        }
-
-        override fun getLayout() = R.layout.course_calendar_item
-
-    }
+//    class CalendarItem(val context: Context, val date: String, val superCourses: ArrayList<CourseTable>): Item() {
+//
+//        override fun bind(viewHolder: com.xwray.groupie.kotlinandroidextensions.GroupieViewHolder, position: Int) {
+//
+//            val d: Date = date.toDate()!!
+//            val weekday_i = d.dateToWeekday()
+//            //println(weekday_i)
+//            val weekday_c: String = d.dateToWeekdayForChinese()
+//
+//            viewHolder.date.text = "%s(%s)".format(date, weekday_c)
+//        }
+//
+//        override fun getLayout() = R.layout.course_calendar_item
+//
+//    }
 
 
     companion object {

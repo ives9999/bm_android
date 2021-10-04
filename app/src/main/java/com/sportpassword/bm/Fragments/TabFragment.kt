@@ -12,28 +12,16 @@ import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.sportpassword.bm.Adapters.GroupSection
 import com.sportpassword.bm.Adapters.SearchItemDelegate
 import com.sportpassword.bm.Controllers.*
 import com.sportpassword.bm.Models.*
-
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.DataService
 import com.sportpassword.bm.Services.MemberService
 import com.sportpassword.bm.Utilities.*
 import com.sportpassword.bm.member
 import com.squareup.picasso.Picasso
-import com.xwray.groupie.ExpandableGroup
-import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.Section
-import com.xwray.groupie.GroupieViewHolder
-import com.xwray.groupie.kotlinandroidextensions.Item
-import kotlinx.android.synthetic.main.course_list_cell.likeIcon
-import kotlinx.android.synthetic.main.course_list_cell.listFeatured
-import kotlinx.android.synthetic.main.course_list_cell.refreshIcon
-import kotlinx.android.synthetic.main.course_list_cell.telIcon
-import kotlinx.android.synthetic.main.course_list_cell.titleLbl
-import kotlinx.android.synthetic.main.list1_cell.mapIcon
 import kotlinx.android.synthetic.main.list1_cell.view.*
 import org.jetbrains.anko.support.v4.runOnUiThread
 import java.io.Serializable
@@ -45,7 +33,7 @@ import kotlin.reflect.KClass
  * create an instance of this fragment.
  */
 
-open class TabFragment : Fragment(), SearchItemDelegate, List1CellDelegate, Serializable {
+open class TabFragment : Fragment(), List1CellDelegate, Serializable {
 
     // TODO: Rename and change types of parameters
     protected var type: String? = null
@@ -56,7 +44,7 @@ open class TabFragment : Fragment(), SearchItemDelegate, List1CellDelegate, Seri
     protected var perPage: Int = PERPAGE
     protected var totalCount: Int = 0
     protected var totalPage: Int = 0
-    var items: ArrayList<Item> = arrayListOf()
+//    var items: ArrayList<Item> = arrayListOf()
 
     var tableLists: ArrayList<Table> = arrayListOf()
 
@@ -68,7 +56,7 @@ open class TabFragment : Fragment(), SearchItemDelegate, List1CellDelegate, Seri
     protected lateinit var recyclerView: RecyclerView
     protected lateinit var refreshLayout: SwipeRefreshLayout
     //protected lateinit var listAdapter: ListAdapter
-    protected lateinit var adapter: GroupAdapter<GroupieViewHolder>
+//    protected lateinit var adapter: GroupAdapter<GroupieViewHolder>
     var sections: ArrayList<String> = arrayListOf()
     protected val adapterSections: ArrayList<Section> = arrayListOf()
 
@@ -101,7 +89,7 @@ open class TabFragment : Fragment(), SearchItemDelegate, List1CellDelegate, Seri
         that = this
         mainActivity = activity as MainActivity
         mainActivity!!.able_type = able_type
-        adapter = GroupAdapter()
+//        adapter = GroupAdapter()
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -126,28 +114,28 @@ open class TabFragment : Fragment(), SearchItemDelegate, List1CellDelegate, Seri
 //
 //    }
 
-    open fun initAdapter(include_section: Boolean=false) {
-        adapter = GroupAdapter()
-        adapter.setOnItemClickListener { item, view ->
-            rowClick(item, view)
-        }
-        if (include_section) {
-            for (section in sections) {
-                adapterSections.add(Section())
-            }
-            for ((idx, title) in sections.withIndex()) {
-                val expandableGroup = ExpandableGroup(GroupSection(title), true)
-                val items = generateItems(idx)
-                adapterSections[idx].addAll(items)
-                expandableGroup.add(adapterSections[idx])
-                adapter.add(expandableGroup)
-            }
-        } else {
-            val items = generateItems()
-            adapter.addAll(items)
-        }
-        recyclerView.adapter = adapter
-    }
+//    open fun initAdapter(include_section: Boolean=false) {
+//        adapter = GroupAdapter()
+//        adapter.setOnItemClickListener { item, view ->
+//            rowClick(item, view)
+//        }
+//        if (include_section) {
+//            for (section in sections) {
+//                adapterSections.add(Section())
+//            }
+//            for ((idx, title) in sections.withIndex()) {
+//                val expandableGroup = ExpandableGroup(GroupSection(title), true)
+//                val items = generateItems(idx)
+//                adapterSections[idx].addAll(items)
+//                expandableGroup.add(adapterSections[idx])
+//                adapter.add(expandableGroup)
+//            }
+//        } else {
+//            val items = generateItems()
+//            adapter.addAll(items)
+//        }
+//        recyclerView.adapter = adapter
+//    }
 
 //    open protected fun initAdapter() {
 //        listAdapter = ListAdapter(context!!, type!!, screenWidth, { data ->
@@ -183,8 +171,8 @@ open class TabFragment : Fragment(), SearchItemDelegate, List1CellDelegate, Seri
     open fun refresh() {
         page = 1
         theFirstTime = true
-        adapter.clear()
-        items.clear()
+//        adapter.clear()
+//        items.clear()
         //println(perPage)
         params.clear()
         tableLists.clear()
@@ -271,17 +259,17 @@ open class TabFragment : Fragment(), SearchItemDelegate, List1CellDelegate, Seri
         return temp
     }
 
-    open fun generateItems(): ArrayList<Item> {
-        val items: ArrayList<Item> = arrayListOf()
-
-        return items
-    }
-
-    open fun generateItems(section: Int): ArrayList<Item> {
-        return arrayListOf()
-    }
-
-    open fun rowClick(item: com.xwray.groupie.Item<GroupieViewHolder>, view: View) {}
+//    open fun generateItems(): ArrayList<Item> {
+//        val items: ArrayList<Item> = arrayListOf()
+//
+//        return items
+//    }
+//
+//    open fun generateItems(section: Int): ArrayList<Item> {
+//        return arrayListOf()
+//    }
+//
+//    open fun rowClick(item: com.xwray.groupie.Item<GroupieViewHolder>, view: View) {}
 
 //    open protected fun notifyDataSetChanged() {
 //        if (page == 1) {
@@ -296,7 +284,7 @@ open class TabFragment : Fragment(), SearchItemDelegate, List1CellDelegate, Seri
 //        listAdapter.notifyDataSetChanged()
 //    }
 
-    open fun prepare(idx: Int) {}
+    //open fun prepare(idx: Int) {}
 
     open fun prepareParams() {
         params.clear()
@@ -506,49 +494,50 @@ open class TabFragment : Fragment(), SearchItemDelegate, List1CellDelegate, Seri
         refreshLayout.setOnRefreshListener(refreshListener)
     }
 
-    override fun remove(indexPath: IndexPath) {
-        val row = searchRows[indexPath.row]
-        val key = row["key"]!!
-        when (key) {
-            CITY_KEY -> {
-                mainActivity!!.citys.clear()
-                row["show"] = "全部"
-            }
-            ARENA_KEY -> {
-                mainActivity!!.arenas.clear()
-                row["show"] = "全部"
-            }
-            WEEKDAY_KEY -> {
-                mainActivity!!.weekdays.clear()
-                row["show"] = "全部"
-            }
-            START_TIME_KEY -> {
-                mainActivity!!.times.clear()
-                row["show"] = "全部"
-            }
-            END_TIME_KEY -> {
-                mainActivity!!.times.clear()
-                row["show"] = "全部"
-            }
-            DEGREE_KEY -> {
-                mainActivity!!.degrees.clear()
-                row["show"] = "全部"
-            }
-        }
-        row["value"] = ""
-    }
-    override fun textChanged(str: String) {
-        val key: String = KEYWORD_KEY
-        val row = getDefinedRow(key)
-        row["value"] = str
-    }
+//    override fun remove(indexPath: IndexPath) {
+//        val row = searchRows[indexPath.row]
+//        val key = row["key"]!!
+//        when (key) {
+//            CITY_KEY -> {
+//                mainActivity!!.citys.clear()
+//                row["show"] = "全部"
+//            }
+//            ARENA_KEY -> {
+//                mainActivity!!.arenas.clear()
+//                row["show"] = "全部"
+//            }
+//            WEEKDAY_KEY -> {
+//                mainActivity!!.weekdays.clear()
+//                row["show"] = "全部"
+//            }
+//            START_TIME_KEY -> {
+//                mainActivity!!.times.clear()
+//                row["show"] = "全部"
+//            }
+//            END_TIME_KEY -> {
+//                mainActivity!!.times.clear()
+//                row["show"] = "全部"
+//            }
+//            DEGREE_KEY -> {
+//                mainActivity!!.degrees.clear()
+//                row["show"] = "全部"
+//            }
+//        }
+//        row["value"] = ""
+//    }
 
-    override fun switchChanged(pos: Int, b: Boolean) {
-        val row = searchRows[pos]
-        val key = row["key"]!!
-        if (b) { row["value"] = "1" } else { row["value"] = "0" }
-        replaceRows(key, row)
-    }
+//    override fun textChanged(str: String) {
+//        val key: String = KEYWORD_KEY
+//        val row = getDefinedRow(key)
+//        row["value"] = str
+//    }
+
+//    override fun switchChanged(pos: Int, b: Boolean) {
+//        val row = searchRows[pos]
+//        val key = row["key"]!!
+//        if (b) { row["value"] = "1" } else { row["value"] = "0" }
+//        replaceRows(key, row)
+//    }
 
 
     companion object {
@@ -698,96 +687,95 @@ open class MyViewHolder(val context: Context, val viewHolder: View, val list1Cel
     }
 }
 
-
-open class ListItem<T: Table>(open var context: Context, open var row: T): Item() {
-
-    var list1CellDelegate: List1CellDelegate? = null
-    var isLike: Boolean = false
-
-    override fun bind(
-        viewHolder: com.xwray.groupie.kotlinandroidextensions.GroupieViewHolder,
-        position: Int
-    ) {
-        val v = viewHolder.containerView
-
-        if (row.title.isNotEmpty()) {
-            viewHolder.titleLbl.text = row.title
-        } else {
-            viewHolder.titleLbl.text = row.name
-        }
-
-        if (row.featured_path.isNotEmpty()) {
-            Picasso.with(context)
-                .load(row.featured_path)
-                .placeholder(R.drawable.loading_square_120)
-                .error(R.drawable.loading_square_120)
-                .into(viewHolder.listFeatured)
-        }
-
-        viewHolder.refreshIcon.setOnClickListener {
-            if (list1CellDelegate != null) {
-                list1CellDelegate!!.cellRefresh()
-            }
-        }
-
-        var a = v.findViewById<ImageButton>(R.id.telIcon)
-        if (a != null) {
-            if (row.mobile_show.isNotEmpty()) {
-                if (list1CellDelegate != null) {
-                    viewHolder.telIcon.setOnClickListener {
-                        list1CellDelegate!!.cellMobile(row)
-                    }
-                    viewHolder.telIcon.visibility = View.VISIBLE
-                }
-            } else if (row.tel_show.isNotEmpty()) {
-                if (list1CellDelegate != null) {
-                    viewHolder.telIcon.setOnClickListener {
-                        list1CellDelegate!!.cellMobile(row)
-                    }
-                    viewHolder.telIcon.visibility = View.VISIBLE
-                }
-            } else {
-                viewHolder.telIcon.visibility = View.GONE
-            }
-        }
-
-        a = v.findViewById<ImageButton>(R.id.mapIcon)
-        if (a != null) {
-
-            if (row.address == null || row.address.isEmpty()) {
-                viewHolder.mapIcon.visibility = View.GONE
-            } else {
-                viewHolder.mapIcon.setOnClickListener {
-                    if (list1CellDelegate != null) {
-                        list1CellDelegate!!.cellShowMap(row)
-                    }
-                }
-            }
-        }
-
-        if (viewHolder.likeIcon != null) {
-            viewHolder.likeIcon.setOnClickListener {
-                if (list1CellDelegate != null) {
-                    list1CellDelegate!!.cellLike(row)
-                    if (member.isLoggedIn) {
-                        setLike(viewHolder)
-                    }
-                }
-            }
-            isLike = !row.like
-            setLike(viewHolder)
-        }
-    }
-
-    override fun getLayout() = R.layout.course_list_cell
-
-    fun setLike(viewHolder: com.xwray.groupie.kotlinandroidextensions.GroupieViewHolder) {
-        isLike = !isLike
-        if (isLike) {
-            viewHolder.likeIcon.setImage("like1")
-        } else {
-            viewHolder.likeIcon.setImage("like")
-        }
-    }
-}
+//open class ListItem<T: Table>(open var context: Context, open var row: T): Item() {
+//
+//    var list1CellDelegate: List1CellDelegate? = null
+//    var isLike: Boolean = false
+//
+//    override fun bind(
+//        viewHolder: com.xwray.groupie.kotlinandroidextensions.GroupieViewHolder,
+//        position: Int
+//    ) {
+//        val v = viewHolder.containerView
+//
+//        if (row.title.isNotEmpty()) {
+//            viewHolder.titleLbl.text = row.title
+//        } else {
+//            viewHolder.titleLbl.text = row.name
+//        }
+//
+//        if (row.featured_path.isNotEmpty()) {
+//            Picasso.with(context)
+//                .load(row.featured_path)
+//                .placeholder(R.drawable.loading_square_120)
+//                .error(R.drawable.loading_square_120)
+//                .into(viewHolder.listFeatured)
+//        }
+//
+//        viewHolder.refreshIcon.setOnClickListener {
+//            if (list1CellDelegate != null) {
+//                list1CellDelegate!!.cellRefresh()
+//            }
+//        }
+//
+//        var a = v.findViewById<ImageButton>(R.id.telIcon)
+//        if (a != null) {
+//            if (row.mobile_show.isNotEmpty()) {
+//                if (list1CellDelegate != null) {
+//                    viewHolder.telIcon.setOnClickListener {
+//                        list1CellDelegate!!.cellMobile(row)
+//                    }
+//                    viewHolder.telIcon.visibility = View.VISIBLE
+//                }
+//            } else if (row.tel_show.isNotEmpty()) {
+//                if (list1CellDelegate != null) {
+//                    viewHolder.telIcon.setOnClickListener {
+//                        list1CellDelegate!!.cellMobile(row)
+//                    }
+//                    viewHolder.telIcon.visibility = View.VISIBLE
+//                }
+//            } else {
+//                viewHolder.telIcon.visibility = View.GONE
+//            }
+//        }
+//
+//        a = v.findViewById<ImageButton>(R.id.mapIcon)
+//        if (a != null) {
+//
+//            if (row.address == null || row.address.isEmpty()) {
+//                viewHolder.mapIcon.visibility = View.GONE
+//            } else {
+//                viewHolder.mapIcon.setOnClickListener {
+//                    if (list1CellDelegate != null) {
+//                        list1CellDelegate!!.cellShowMap(row)
+//                    }
+//                }
+//            }
+//        }
+//
+//        if (viewHolder.likeIcon != null) {
+//            viewHolder.likeIcon.setOnClickListener {
+//                if (list1CellDelegate != null) {
+//                    list1CellDelegate!!.cellLike(row)
+//                    if (member.isLoggedIn) {
+//                        setLike(viewHolder)
+//                    }
+//                }
+//            }
+//            isLike = !row.like
+//            setLike(viewHolder)
+//        }
+//    }
+//
+//    override fun getLayout() = R.layout.course_list_cell
+//
+//    fun setLike(viewHolder: com.xwray.groupie.kotlinandroidextensions.GroupieViewHolder) {
+//        isLike = !isLike
+//        if (isLike) {
+//            viewHolder.likeIcon.setImage("like1")
+//        } else {
+//            viewHolder.likeIcon.setImage("like")
+//        }
+//    }
+//}
 

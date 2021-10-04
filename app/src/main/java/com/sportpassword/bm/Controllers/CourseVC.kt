@@ -4,20 +4,13 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.View
 import com.sportpassword.bm.Fragments.CourseAdapter
-import com.sportpassword.bm.Fragments.CourseItem
-import com.sportpassword.bm.Fragments.TeamItem
 import com.sportpassword.bm.Models.CourseTable
 import com.sportpassword.bm.Models.CoursesTable
-import com.sportpassword.bm.Models.Table
-import com.sportpassword.bm.Models.TeamsTable
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.CourseService
-import com.sportpassword.bm.Services.TeamService
 import com.sportpassword.bm.Utilities.jsonToModels
-import com.xwray.groupie.kotlinandroidextensions.Item
 import kotlinx.android.synthetic.main.activity_store_vc.*
 import kotlinx.android.synthetic.main.mask.*
-import org.jetbrains.anko.support.v4.runOnUiThread
 
 class CourseVC : MyTableVC() {
 
@@ -65,25 +58,25 @@ class CourseVC : MyTableVC() {
         }
     }
 
-    override fun generateItems(): ArrayList<Item> {
-        val items: ArrayList<Item> = arrayListOf()
-        if (mysTable != null) {
-            for (row in mysTable!!.rows) {
-                //row.print()
-                row.filterRow()
-                val myItem = CourseItem(this, row)
-                myItem.list1CellDelegate = this
-                items.add(myItem)
-            }
-        }
-
-        return items
-    }
-
-    override fun rowClick(item: com.xwray.groupie.Item<com.xwray.groupie.GroupieViewHolder>, view: View) {
-
-        val myItem = item as CourseItem
-        val table = myItem.row
-        toShowCourse(table.token)
-    }
+//    override fun generateItems(): ArrayList<Item> {
+//        val items: ArrayList<Item> = arrayListOf()
+//        if (mysTable != null) {
+//            for (row in mysTable!!.rows) {
+//                //row.print()
+//                row.filterRow()
+//                val myItem = CourseItem(this, row)
+//                myItem.list1CellDelegate = this
+//                items.add(myItem)
+//            }
+//        }
+//
+//        return items
+//    }
+//
+//    override fun rowClick(item: com.xwray.groupie.Item<com.xwray.groupie.GroupieViewHolder>, view: View) {
+//
+//        val myItem = item as CourseItem
+//        val table = myItem.row
+//        toShowCourse(table.token)
+//    }
 }

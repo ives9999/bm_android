@@ -1,35 +1,13 @@
 package com.sportpassword.bm.Controllers
 
-import android.content.Context
-import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
-import android.view.MenuInflater
-import android.view.View
-import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import com.sportpassword.bm.Adapters.SearchItemDelegate
 import com.sportpassword.bm.Fragments.ArenaAdapter
-import com.sportpassword.bm.Fragments.ArenaItem
-import com.sportpassword.bm.Fragments.CourseAdapter
-import com.sportpassword.bm.Fragments.ListItem
 import com.sportpassword.bm.Models.*
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.ArenaService
-import kotlinx.android.synthetic.main.activity_arena_vc.*
 import com.sportpassword.bm.Utilities.*
-import com.squareup.picasso.Picasso
-import com.xwray.groupie.kotlinandroidextensions.Item
-import com.xwray.groupie.kotlinandroidextensions.GroupieViewHolder
 import kotlinx.android.synthetic.main.activity_store_vc.*
-import kotlinx.android.synthetic.main.arena_list_cell.*
-import kotlinx.android.synthetic.main.arena_list_cell.cityBtn
-import kotlinx.android.synthetic.main.arena_list_cell.intervalLbl
-import kotlinx.android.synthetic.main.arena_list_cell.telIcon
-import kotlinx.android.synthetic.main.course_list_cell.*
-import kotlinx.android.synthetic.main.team_list_cell.*
-import org.jetbrains.anko.makeCall
-
 
 class ArenaVC : MyTableVC() {
 
@@ -84,20 +62,20 @@ class ArenaVC : MyTableVC() {
         }
     }
 
-    override fun generateItems(): ArrayList<Item> {
-        if (mysTable != null) {
-            for (row in mysTable!!.rows) {
-                //row.print()
-                row.filterRow()
-                val myItem = ArenaItem(this, row)
-                //val coachItem = CoachItem(this, row)
-                myItem.list1CellDelegate = this
-                items.add(myItem)
-            }
-        }
-
-        return items
-    }
+//    override fun generateItems(): ArrayList<Item> {
+//        if (mysTable != null) {
+//            for (row in mysTable!!.rows) {
+//                //row.print()
+//                row.filterRow()
+//                val myItem = ArenaItem(this, row)
+//                //val coachItem = CoachItem(this, row)
+//                myItem.list1CellDelegate = this
+//                items.add(myItem)
+//            }
+//        }
+//
+//        return items
+//    }
 
     override fun prepare(idx: Int) {
 
@@ -130,13 +108,13 @@ class ArenaVC : MyTableVC() {
         }
     }
 
-    override fun rowClick(item: com.xwray.groupie.Item<com.xwray.groupie.GroupieViewHolder>, view: View) {
-
-        val arenaItem = item as ArenaItem
-        val table = arenaItem.row
-        //superCourse.print()
-        toShowArena(table.token)
-    }
+//    override fun rowClick(item: com.xwray.groupie.Item<com.xwray.groupie.GroupieViewHolder>, view: View) {
+//
+//        val arenaItem = item as ArenaItem
+//        val table = arenaItem.row
+//        //superCourse.print()
+//        toShowArena(table.token)
+//    }
 
     override fun remove(indexPath: IndexPath) {
         val row = searchRows[indexPath.row]

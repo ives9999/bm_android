@@ -1,6 +1,5 @@
 package com.sportpassword.bm.Fragments
 
-
 import android.content.Context
 import android.os.Bundle
 import android.view.*
@@ -10,17 +9,9 @@ import com.sportpassword.bm.Models.*
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.CourseService
 import com.sportpassword.bm.Utilities.*
-import com.xwray.groupie.GroupAdapter
-import com.xwray.groupie.GroupieViewHolder
-import com.xwray.groupie.kotlinandroidextensions.Item
 import kotlinx.android.synthetic.main.mask.*
 import kotlinx.android.synthetic.main.tab_course.*
-import kotlinx.android.synthetic.main.course_list_cell.*
-import kotlinx.android.synthetic.main.course_list_cell.cityBtn
-import kotlinx.android.synthetic.main.course_list_cell.intervalLbl
-import kotlinx.android.synthetic.main.course_list_cell.signup_countLbl
 import kotlinx.android.synthetic.main.course_list_cell.view.*
-import kotlinx.android.synthetic.main.course_list_cell.weekdayLbl
 import org.jetbrains.anko.support.v4.runOnUiThread
 
 class CourseFragment : TabFragment() {
@@ -93,7 +84,7 @@ class CourseFragment : TabFragment() {
         }
     }
 
-    override fun prepare(idx: Int) {
+    fun prepare(idx: Int) {
 
         val row = searchRows.get(idx)
         var key: String = ""
@@ -125,32 +116,32 @@ class CourseFragment : TabFragment() {
         }
     }
 
-    override fun generateItems(): ArrayList<Item> {
-        if (mysTable != null) {
-            for (row in mysTable!!.rows) {
-                row.filterRow()
-                val myItem = CourseItem(requireContext(), row)
-                myItem.list1CellDelegate = this
-                items.add(myItem)
-            }
-        }
-
-        return items
-    }
-
-    override fun rowClick(item: com.xwray.groupie.Item<GroupieViewHolder>, view: View) {
-
-        val courseItem = item as CourseItem
-        val table = courseItem.row
-        mainActivity!!.toShowCourse(table.token)
-    }
+//    override fun generateItems(): ArrayList<Item> {
+//        if (mysTable != null) {
+//            for (row in mysTable!!.rows) {
+//                row.filterRow()
+//                val myItem = CourseItem(requireContext(), row)
+//                myItem.list1CellDelegate = this
+//                items.add(myItem)
+//            }
+//        }
+//
+//        return items
+//    }
+//
+//    override fun rowClick(item: com.xwray.groupie.Item<GroupieViewHolder>, view: View) {
+//
+//        val courseItem = item as CourseItem
+//        val table = courseItem.row
+//        mainActivity!!.toShowCourse(table.token)
+//    }
 
     override fun cellCity(row: Table) {
         println(row::class)
         mainActivity!!.toShowCourse(row.token)
     }
 
-    override fun remove(indexPath: IndexPath) {
+    fun remove(indexPath: IndexPath) {
         var row: HashMap<String, String>? = null
         if (searchRows.size >= indexPath.row) {
             row = searchRows[indexPath.row]
@@ -240,52 +231,52 @@ class CourseViewHolder(context: Context, viewHolder: View, list1CellDelegate: Li
     }
 }
 
-class CourseItem(override var context: Context, var _row: CourseTable): ListItem<Table>(context, _row) {
-
-    override fun bind(viewHolder: com.xwray.groupie.kotlinandroidextensions.GroupieViewHolder, position: Int) {
-
-        super.bind(viewHolder, position)
-
-        val row: CourseTable = _row
-
-        if (row.city_show.length > 0) {
-            viewHolder.cityBtn.text = row.city_show
-            viewHolder.cityBtn.setOnClickListener {
-                if (list1CellDelegate != null) {
-                    list1CellDelegate!!.cellCity(row)
-                }
-            }
-        } else {
-            viewHolder.cityBtn.visibility = View.GONE
-        }
-
-        if (row.price_text_short != null && row.price_text_short.isNotEmpty()) {
-            viewHolder.priceLbl.text = row.price_text_short
-        } else {
-            viewHolder.priceLbl.text = "價格:未提供"
-        }
-
-        if (row.weekdays_show.length > 0) {
-            viewHolder.weekdayLbl.text = row.weekdays_show
-        } else {
-            viewHolder.weekdayLbl.text = "未提供"
-        }
-
-        if (row.interval_show.length > 0) {
-            viewHolder.intervalLbl.text = row.interval_show
-        } else {
-            viewHolder.intervalLbl.text = "未提供"
-        }
-
-        viewHolder.people_limitLbl.text = row.people_limit_show
-
-        if (row.signup_count_show.length > 0 && row.people_limit > 0) {
-            viewHolder.signup_countLbl.text = "已報名:${row.signup_count_show}"
-        } else {
-            viewHolder.signup_countLbl.visibility = View.INVISIBLE
-        }
-    }
-
-    override fun getLayout() = R.layout.course_list_cell
-
-}
+//class CourseItem(override var context: Context, var _row: CourseTable): ListItem<Table>(context, _row) {
+//
+//    override fun bind(viewHolder: com.xwray.groupie.kotlinandroidextensions.GroupieViewHolder, position: Int) {
+//
+//        super.bind(viewHolder, position)
+//
+//        val row: CourseTable = _row
+//
+//        if (row.city_show.length > 0) {
+//            viewHolder.cityBtn.text = row.city_show
+//            viewHolder.cityBtn.setOnClickListener {
+//                if (list1CellDelegate != null) {
+//                    list1CellDelegate!!.cellCity(row)
+//                }
+//            }
+//        } else {
+//            viewHolder.cityBtn.visibility = View.GONE
+//        }
+//
+//        if (row.price_text_short != null && row.price_text_short.isNotEmpty()) {
+//            viewHolder.priceLbl.text = row.price_text_short
+//        } else {
+//            viewHolder.priceLbl.text = "價格:未提供"
+//        }
+//
+//        if (row.weekdays_show.length > 0) {
+//            viewHolder.weekdayLbl.text = row.weekdays_show
+//        } else {
+//            viewHolder.weekdayLbl.text = "未提供"
+//        }
+//
+//        if (row.interval_show.length > 0) {
+//            viewHolder.intervalLbl.text = row.interval_show
+//        } else {
+//            viewHolder.intervalLbl.text = "未提供"
+//        }
+//
+//        viewHolder.people_limitLbl.text = row.people_limit_show
+//
+//        if (row.signup_count_show.length > 0 && row.people_limit > 0) {
+//            viewHolder.signup_countLbl.text = "已報名:${row.signup_count_show}"
+//        } else {
+//            viewHolder.signup_countLbl.visibility = View.INVISIBLE
+//        }
+//    }
+//
+//    override fun getLayout() = R.layout.course_list_cell
+//
+//}

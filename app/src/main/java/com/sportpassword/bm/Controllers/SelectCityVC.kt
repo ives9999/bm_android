@@ -14,7 +14,7 @@ class SelectCityVC: SingleSelectVC() {
 
         val citys: ArrayList<City> = Global.getCitys()
         rowsBridge(citys)
-        notifyChanged()
+        //notifyChanged()
     }
 
     fun rowsBridge(citys: ArrayList<City>) {

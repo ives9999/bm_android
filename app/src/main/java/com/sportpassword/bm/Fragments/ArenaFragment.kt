@@ -10,9 +10,6 @@ import com.sportpassword.bm.Models.*
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.ArenaService
 import com.sportpassword.bm.Utilities.*
-import com.xwray.groupie.GroupAdapter
-import com.xwray.groupie.GroupieViewHolder
-import com.xwray.groupie.kotlinandroidextensions.Item
 import kotlinx.android.synthetic.main.arena_list_cell.*
 import kotlinx.android.synthetic.main.arena_list_cell.view.*
 import kotlinx.android.synthetic.main.mask.*
@@ -43,10 +40,10 @@ class ArenaFragment : TabFragment() {
         dataService = ArenaService
 
         //initAdapter(false)
-        adapter = GroupAdapter()
-        adapter.setOnItemClickListener { item, view ->
-            rowClick(item, view)
-        }
+//        adapter = GroupAdapter()
+//        adapter.setOnItemClickListener { item, view ->
+//            rowClick(item, view)
+//        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -99,7 +96,7 @@ class ArenaFragment : TabFragment() {
         }
     }
 
-    override fun prepare(idx: Int) {
+    fun prepare(idx: Int) {
 
         var row = searchRows.get(idx)
         var key: String = ""
@@ -140,27 +137,27 @@ class ArenaFragment : TabFragment() {
         }
     }
 
-    override fun generateItems(): ArrayList<Item> {
-        if (mysTable != null) {
-            for (row in mysTable!!.rows) {
-                row.filterRow()
-                val myItem = ArenaItem(requireContext(), row)
-                myItem.list1CellDelegate = this
-                items.add(myItem)
-            }
-        }
+//    override fun generateItems(): ArrayList<Item> {
+//        if (mysTable != null) {
+//            for (row in mysTable!!.rows) {
+//                row.filterRow()
+//                val myItem = ArenaItem(requireContext(), row)
+//                myItem.list1CellDelegate = this
+//                items.add(myItem)
+//            }
+//        }
+//
+//        return items
+//    }
+//
+//    override fun rowClick(item: com.xwray.groupie.Item<GroupieViewHolder>, view: View) {
+//
+//        val arenaItem = item as ArenaItem
+//        val table = arenaItem.row
+//        mainActivity!!.toShowArena(table.token)
+//    }
 
-        return items
-    }
-
-    override fun rowClick(item: com.xwray.groupie.Item<GroupieViewHolder>, view: View) {
-
-        val arenaItem = item as ArenaItem
-        val table = arenaItem.row
-        mainActivity!!.toShowArena(table.token)
-    }
-
-    override fun remove(indexPath: IndexPath) {
+    fun remove(indexPath: IndexPath) {
         var row: HashMap<String, String>? = null
         if (searchRows.size >= indexPath.row) {
             row = searchRows[indexPath.row]
@@ -247,55 +244,55 @@ class ArenaViewHolder(context: Context, viewHolder: View, list1CellDelegate: Lis
     }
 }
 
-class ArenaItem(override var context: Context, var _row: ArenaTable): ListItem<Table>(context, _row) {
-
-    override fun bind(viewHolder: com.xwray.groupie.kotlinandroidextensions.GroupieViewHolder, position: Int) {
-
-        //println(superStore);
-
-        super.bind(viewHolder, position)
-
-        val row: ArenaTable = _row
-
-        if (row.city_show.isNotEmpty()) {
-            viewHolder.cityBtn.text = row.city_show
-            viewHolder.cityBtn.setOnClickListener {
-                if (list1CellDelegate != null) {
-                    list1CellDelegate!!.cellCity(row)
-                }
-            }
-        } else {
-            viewHolder.cityBtn.visibility = View.GONE
-        }
-
-        if (row.area_show.isNotEmpty()) {
-            viewHolder.areaBtn.text = row.area_show
-            viewHolder.areaBtn.setOnClickListener {
-                if (list1CellDelegate != null) {
-                    list1CellDelegate!!.cellArea(row)
-                }
-            }
-        } else {
-            viewHolder.cityBtn.visibility = View.GONE
-        }
-
-        if (row.tel_show.isNotEmpty()) {
-            viewHolder.telLbl.text = row.tel_show
-        } else {
-            viewHolder.telLbl.text = "電話：未提供"
-        }
-
-        viewHolder.parkingLbl.text = "停車場:${row.parking_show}"
-
-        if (row.interval_show.isNotEmpty()) {
-            viewHolder.intervalLbl.text = row.interval_show
-        } else {
-            viewHolder.intervalLbl.text = "未提供"
-        }
-
-        viewHolder.air_conditionLbl.text = "空調:${row.air_condition_show}"
-    }
-
-    override fun getLayout() = R.layout.arena_list_cell
-}
+//class ArenaItem(override var context: Context, var _row: ArenaTable): ListItem<Table>(context, _row) {
+//
+//    override fun bind(viewHolder: com.xwray.groupie.kotlinandroidextensions.GroupieViewHolder, position: Int) {
+//
+//        //println(superStore);
+//
+//        super.bind(viewHolder, position)
+//
+//        val row: ArenaTable = _row
+//
+//        if (row.city_show.isNotEmpty()) {
+//            viewHolder.cityBtn.text = row.city_show
+//            viewHolder.cityBtn.setOnClickListener {
+//                if (list1CellDelegate != null) {
+//                    list1CellDelegate!!.cellCity(row)
+//                }
+//            }
+//        } else {
+//            viewHolder.cityBtn.visibility = View.GONE
+//        }
+//
+//        if (row.area_show.isNotEmpty()) {
+//            viewHolder.areaBtn.text = row.area_show
+//            viewHolder.areaBtn.setOnClickListener {
+//                if (list1CellDelegate != null) {
+//                    list1CellDelegate!!.cellArea(row)
+//                }
+//            }
+//        } else {
+//            viewHolder.cityBtn.visibility = View.GONE
+//        }
+//
+//        if (row.tel_show.isNotEmpty()) {
+//            viewHolder.telLbl.text = row.tel_show
+//        } else {
+//            viewHolder.telLbl.text = "電話：未提供"
+//        }
+//
+//        viewHolder.parkingLbl.text = "停車場:${row.parking_show}"
+//
+//        if (row.interval_show.isNotEmpty()) {
+//            viewHolder.intervalLbl.text = row.interval_show
+//        } else {
+//            viewHolder.intervalLbl.text = "未提供"
+//        }
+//
+//        viewHolder.air_conditionLbl.text = "空調:${row.air_condition_show}"
+//    }
+//
+//    override fun getLayout() = R.layout.arena_list_cell
+//}
 

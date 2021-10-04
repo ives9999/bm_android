@@ -4,7 +4,6 @@ import android.content.Context
 import android.os.Bundle
 import android.view.Menu
 import android.view.View
-import com.sportpassword.bm.Fragments.ListItem
 import com.sportpassword.bm.Fragments.MyAdapter
 import com.sportpassword.bm.Fragments.MyViewHolder
 import com.sportpassword.bm.Models.*
@@ -75,28 +74,28 @@ class TeachVC : MyTableVC() {
     }
 
 
-    override fun generateItems(): ArrayList<Item> {
-        val items: ArrayList<Item> = arrayListOf()
-        if (mysTable != null) {
-            for (row in mysTable!!.rows) {
-                //row.print()
-                row.filterRow()
-                val myItem = TeachItem(this, row)
-                myItem.list1CellDelegate = this
-                items.add(myItem)
-            }
-        }
-
-        return items
-    }
-
-    override fun rowClick(item: com.xwray.groupie.Item<com.xwray.groupie.GroupieViewHolder>, view: View) {
-
-        val teachItem = item as TeachItem
-        val table = teachItem.row as TeachTable
-        //toShowTeach(table.token)
-        toYoutubePlayer(table.youtube)
-    }
+//    override fun generateItems(): ArrayList<Item> {
+//        val items: ArrayList<Item> = arrayListOf()
+//        if (mysTable != null) {
+//            for (row in mysTable!!.rows) {
+//                //row.print()
+//                row.filterRow()
+//                val myItem = TeachItem(this, row)
+//                myItem.list1CellDelegate = this
+//                items.add(myItem)
+//            }
+//        }
+//
+//        return items
+//    }
+//
+//    override fun rowClick(item: com.xwray.groupie.Item<com.xwray.groupie.GroupieViewHolder>, view: View) {
+//
+//        val teachItem = item as TeachItem
+//        val table = teachItem.row as TeachTable
+//        //toShowTeach(table.token)
+//        toYoutubePlayer(table.youtube)
+//    }
 }
 
 class TeachAdapter(resource: Int, list1CellDelegate: List1CellDelegate?): MyAdapter<TeachViewHolder>(resource, ::TeachViewHolder, list1CellDelegate) {}
@@ -112,28 +111,28 @@ class TeachViewHolder(context: Context, viewHolder: View, list1CellDelegate: Lis
     }
 }
 
-class TeachItem(override var context: Context, var _row: TeachTable): ListItem<Table>(context, _row) {
-
-    override fun bind(viewHolder: GroupieViewHolder, position: Int) {
-
-        super.bind(viewHolder, position)
-
-        val row: TeachTable = _row
-
-        //is bind in ListItem
-        //viewHolder.titleLbl.text = row.title
-
-        viewHolder.pvLbl.text = row.pv.toString()
-        viewHolder.dateLbl.text = row.created_at_show
-
+//class TeachItem(override var context: Context, var _row: TeachTable): ListItem<Table>(context, _row) {
 //
-//        if (row.tel_show.isNotEmpty()) {
-//            viewHolder.telLbl.text = row.tel_show
-//        } else {
-//            viewHolder.telLbl.text = "電話：未提供"
-//        }
-
-    }
-
-    override fun getLayout() = R.layout.teach_list_cell
-}
+//    override fun bind(viewHolder: GroupieViewHolder, position: Int) {
+//
+//        super.bind(viewHolder, position)
+//
+//        val row: TeachTable = _row
+//
+//        //is bind in ListItem
+//        //viewHolder.titleLbl.text = row.title
+//
+//        viewHolder.pvLbl.text = row.pv.toString()
+//        viewHolder.dateLbl.text = row.created_at_show
+//
+////
+////        if (row.tel_show.isNotEmpty()) {
+////            viewHolder.telLbl.text = row.tel_show
+////        } else {
+////            viewHolder.telLbl.text = "電話：未提供"
+////        }
+//
+//    }
+//
+//    override fun getLayout() = R.layout.teach_list_cell
+//}

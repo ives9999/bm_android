@@ -444,17 +444,17 @@ class PaymentVC : MyTableVC() {
                 if (row.containsKey("quantity") && row["quantity"] != null) {
                     quantity = row["quantity"]!!
                 }
-                val cartItemItem = CartItemItem(
-                    this,
-                    sectionKey,
-                    rowKey,
-                    title,
-                    featured_path,
-                    attribute,
-                    amount,
-                    quantity
-                )
-                items.add(cartItemItem)
+//                val cartItemItem = CartItemItem(
+//                    this,
+//                    sectionKey,
+//                    rowKey,
+//                    title,
+//                    featured_path,
+//                    attribute,
+//                    amount,
+//                    quantity
+//                )
+//                items.add(cartItemItem)
             } else if (cell_type == "text") {
                 val item = PlainAdapter1(title, show)
                 items.add(item)

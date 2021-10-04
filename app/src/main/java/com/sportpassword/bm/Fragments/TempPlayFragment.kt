@@ -4,34 +4,27 @@ import android.content.Context
 import android.content.Intent
 import androidx.fragment.app.Fragment
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.*
-import android.widget.Button
-import android.widget.ImageButton
-import android.widget.LinearLayout
-import android.widget.RelativeLayout
+import android.widget.*
 import androidx.core.content.ContextCompat
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.google.gson.JsonParseException
 import com.sportpassword.bm.Adapters.inter
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Utilities.*
-import com.sportpassword.bm.Adapters.GroupSection
-import com.xwray.groupie.ExpandableGroup
-import com.xwray.groupie.GroupAdapter
-import com.xwray.groupie.Section
-import com.xwray.groupie.GroupieViewHolder
-import com.sportpassword.bm.Adapters.SearchItem
 import com.sportpassword.bm.Controllers.HomeTotalAdVC
 import com.sportpassword.bm.Controllers.List1CellDelegate
 import com.sportpassword.bm.Controllers.MyMapVC
+import com.sportpassword.bm.Data.*
 import com.sportpassword.bm.Models.*
 import com.sportpassword.bm.Services.TeamService
 import com.sportpassword.bm.Views.Tag
-import com.xwray.groupie.kotlinandroidextensions.Item
 import kotlinx.android.synthetic.main.mask.*
 import kotlinx.android.synthetic.main.tab_tempplay_search.*
 import kotlinx.android.synthetic.main.tag.view.*
-import kotlinx.android.synthetic.main.team_list_cell.*
-import kotlinx.android.synthetic.main.team_list_cell.mapIcon
 import kotlinx.android.synthetic.main.team_list_cell.view.*
 import org.jetbrains.anko.backgroundColor
 import org.jetbrains.anko.support.v4.runOnUiThread
@@ -42,7 +35,7 @@ import org.jetbrains.anko.support.v4.runOnUiThread
  * create an instance of this fragment.
  */
 @Suppress("UNCHECKED_CAST")
-class TempPlayFragment : TabFragment(), inter {
+class TempPlayFragment : TabFragment() {
 
 //    protected lateinit var searchAdapter: SearchAdapter
 //    protected val rows: ArrayList<ArrayList<HashMap<String, String>>> = arrayListOf(
@@ -70,8 +63,11 @@ class TempPlayFragment : TabFragment(), inter {
 
     var mysTable: TeamsTable? = null
     lateinit var tableAdapter: TeamAdapter
+    lateinit var searchAdapter: TeamSearchAdapter
 
-    var searchSections: ArrayList<Section> = arrayListOf()
+    var teamSearchSections: ArrayList<TeamSearchSection> = arrayListOf()
+
+//    var searchSections: ArrayList<Section> = arrayListOf()
     var mySections: ArrayList<HashMap<String, Any>> = arrayListOf()
 
     var searchTags: ArrayList<HashMap<String, Any>> = arrayListOf (
@@ -115,7 +111,7 @@ class TempPlayFragment : TabFragment(), inter {
             firstTimeLoading = false
         }
 
-        adapter = GroupAdapter()
+//        adapter = GroupAdapter()
         //tableAdapter = TeamAdapter(tableLists, R.layout.team_list_cell)
 
 //        generateSections()
@@ -143,9 +139,9 @@ class TempPlayFragment : TabFragment(), inter {
 //        recyclerView = search_container
 //        recyclerView.adapter = adapter
 
-        adapter.setOnItemClickListener { item, _ ->
-            onClick(item)
-        }
+//        adapter.setOnItemClickListener { item, _ ->
+//            onClick(item)
+//        }
 //        initAdapter(true)
 
         val btn = view.findViewById<Button>(R.id.submit_btn)
@@ -209,6 +205,11 @@ class TempPlayFragment : TabFragment(), inter {
 //        setRecyclerViewRefreshListener()
         tableAdapter = TeamAdapter(R.layout.team_list_cell, this)
         recyclerView.adapter = tableAdapter
+
+        searchAdapter = TeamSearchAdapter(mainActivity!!, R.layout.cell_section, this)
+        teamSearchSections = initRows()
+        searchAdapter.setMyTableSection(teamSearchSections)
+
         member_like = true
         refresh()
     }
@@ -235,18 +236,18 @@ class TempPlayFragment : TabFragment(), inter {
         }
     }
 
-    override fun generateItems(): ArrayList<Item> {
-        if (mysTable != null) {
-            for (row in mysTable!!.rows) {
-                row.filterRow()
-                val myItem = TeamItem(requireContext(), row)
-                myItem.list1CellDelegate = this
-                items.add(myItem)
-            }
-        }
-
-        return items
-    }
+//    override fun generateItems(): ArrayList<Item> {
+//        if (mysTable != null) {
+//            for (row in mysTable!!.rows) {
+//                row.filterRow()
+//                val myItem = TeamItem(requireContext(), row)
+//                myItem.list1CellDelegate = this
+//                items.add(myItem)
+//            }
+//        }
+//
+//        return items
+//    }
 
     fun tabPressed(view: View) {
 
@@ -264,8 +265,8 @@ class TempPlayFragment : TabFragment(), inter {
                     1-> {
                         footer.visibility = View.VISIBLE
                         remain.visibility = View.VISIBLE
-                        recyclerView.adapter = adapter
-                        generateSections()
+                        recyclerView.adapter = searchAdapter
+                        //generateSections()
                     }
                     0-> {
                         footer.visibility = View.GONE
@@ -310,19 +311,19 @@ class TempPlayFragment : TabFragment(), inter {
     }
 
     //row click
-    fun onClick(item: com.xwray.groupie.Item<GroupieViewHolder>) {
-
-        if (selectedTagIdx == 1) {
-            val searchItem = item as SearchItem
-            val idx_section: Int = searchItem.section
-            val idx_row: Int = searchItem.row
-            prepare(idx_section, idx_row)
-        } else {
-            val teamItem = item as TeamItem
-            val table = teamItem.row
-            mainActivity!!.toShowTeam(table.token)
-        }
-    }
+//    fun onClick(item: com.xwray.groupie.Item<GroupieViewHolder>) {
+//
+//        if (selectedTagIdx == 1) {
+//            val searchItem = item as SearchItem
+//            val idx_section: Int = searchItem.section
+//            val idx_row: Int = searchItem.row
+//            prepare(idx_section, idx_row)
+//        } else {
+//            val teamItem = item as TeamItem
+//            val table = teamItem.row
+//            mainActivity!!.toShowTeam(table.token)
+//        }
+//    }
 
 //    override fun onResume() {
 //        gReset = Session.loginReset
@@ -370,64 +371,64 @@ class TempPlayFragment : TabFragment(), inter {
 //        }
 //    }
 
-    fun generateSections() {
-
-        adapterSections.clear()
-        adapter.clear()
-        for ((idx, section) in mySections.withIndex()) {
-            adapterSections.add(Section())
-
-            if (section.containsKey("title") && section.containsKey("isExpanded") && section.containsKey("key")) {
-                val title: String = section["title"] as String
-                val isExpanded: Boolean = section["isExpanded"] as Boolean
-                val expandableGroup = ExpandableGroup(GroupSection(title), isExpanded)
-
-                items = generateItems(idx)
-                adapterSections[idx].addAll(items)
-                expandableGroup.add(adapterSections[idx])
-                adapter.add(expandableGroup)
-            }
-        }
-    }
-
-    override fun generateItems(section_idx: Int): ArrayList<Item> {
-
-        val res: ArrayList<Item> = arrayListOf()
-
-        val keys: ArrayList<String>? = mySections[section_idx]["key"] as? ArrayList<String>
-        val rows: ArrayList<HashMap<String, String>> = arrayListOf()
-        if (keys != null) {
-            for (key in keys) {
-                for (searchRow in searchRows) {
-                    if (searchRow.containsKey("key")) {
-                        if (searchRow["key"] == key) {
-                            rows.add(searchRow)
-                        }
-                    }
-                }
-            }
-        }
-
-        for ((row_idx, row) in rows.withIndex()) {
-            val title = row.get("title")!!
-            var detail: String = ""
-            if (row.containsKey("detail")) {
-                detail = row.get("detail")!!
-            } else if (row.containsKey("show")) {
-                detail = row.get("show")!!
-            }
-            var bSwitch = false
-            if (row.containsKey("switch")) {
-                bSwitch = row.get("switch")!!.toBoolean()
-            }
-            val searchItem = SearchItem(title, detail, "", bSwitch, section_idx, row_idx)
-            searchItem.delegate = this
-
-            res.add(searchItem)
-        }
-
-        return res
-    }
+//    fun generateSections() {
+//
+//        adapterSections.clear()
+//        adapter.clear()
+//        for ((idx, section) in mySections.withIndex()) {
+//            adapterSections.add(Section())
+//
+//            if (section.containsKey("title") && section.containsKey("isExpanded") && section.containsKey("key")) {
+//                val title: String = section["title"] as String
+//                val isExpanded: Boolean = section["isExpanded"] as Boolean
+//                val expandableGroup = ExpandableGroup(GroupSection(title), isExpanded)
+//
+//                items = generateItems(idx)
+//                adapterSections[idx].addAll(items)
+//                expandableGroup.add(adapterSections[idx])
+//                adapter.add(expandableGroup)
+//            }
+//        }
+//    }
+//
+//    override fun generateItems(section_idx: Int): ArrayList<Item> {
+//
+//        val res: ArrayList<Item> = arrayListOf()
+//
+//        val keys: ArrayList<String>? = mySections[section_idx]["key"] as? ArrayList<String>
+//        val rows: ArrayList<HashMap<String, String>> = arrayListOf()
+//        if (keys != null) {
+//            for (key in keys) {
+//                for (searchRow in searchRows) {
+//                    if (searchRow.containsKey("key")) {
+//                        if (searchRow["key"] == key) {
+//                            rows.add(searchRow)
+//                        }
+//                    }
+//                }
+//            }
+//        }
+//
+//        for ((row_idx, row) in rows.withIndex()) {
+//            val title = row.get("title")!!
+//            var detail: String = ""
+//            if (row.containsKey("detail")) {
+//                detail = row.get("detail")!!
+//            } else if (row.containsKey("show")) {
+//                detail = row.get("show")!!
+//            }
+//            var bSwitch = false
+//            if (row.containsKey("switch")) {
+//                bSwitch = row.get("switch")!!.toBoolean()
+//            }
+//            val searchItem = SearchItem(title, detail, "", bSwitch, section_idx, row_idx)
+//            searchItem.delegate = this
+//
+//            res.add(searchItem)
+//        }
+//
+//        return res
+//    }
 
 //    fun generateItems1(section: Int): ArrayList<SearchItem> {
 //        val _rows: ArrayList<SearchItem> = arrayListOf()
@@ -446,29 +447,33 @@ class TempPlayFragment : TabFragment(), inter {
 //        return _rows
 //    }
 
-    override fun prepare(section: Int, row: Int) {
+        fun prepare(sectionIdx: Int, rowIdx: Int) {
 
-        var idx = 0
-        if (section == 0) {
-            idx = row
-        } else {
-            for (i in 0..section-1) {
-                val tmps: ArrayList<String> = mySections[i]["key"] as ArrayList<String>
-                idx += tmps.size
-            }
-            idx += row
-        }
+//        var idx = 0
+//        if (section == 0) {
+//            idx = row
+//        } else {
+//            for (i in 0..section-1) {
+//                val tmps: ArrayList<String> = mySections[i]["key"] as ArrayList<String>
+//                idx += tmps.size
+//            }
+//            idx += row
+//        }
 
-        var row = searchRows.get(idx)
-        var key: String = ""
-        if (row.containsKey("key")) {
-            key = row["key"]!!
-        }
+        val section = teamSearchSections[sectionIdx]
+        var row = section.items[rowIdx]
 
-        var value: String = ""
-        if (row.containsKey("value")) {
-            value = row["value"]!!
-        }
+//        var row = searchRows.get(idx)
+//        var key: String = ""
+//        if (row.containsKey("key")) {
+//            key = row["key"]!!
+//        }
+
+        val key: String = row.key
+        val value: String = row.value
+//        if (row.containsKey("value")) {
+//            value = row["value"]!!
+//        }
         if (key == CITY_KEY) {
             mainActivity!!.toSelectCity(value, null, able_type)
         } else if (key == WEEKDAY_KEY) {
@@ -476,11 +481,19 @@ class TempPlayFragment : TabFragment(), inter {
         } else if (key == START_TIME_KEY || key == END_TIME_KEY) {
             mainActivity!!.toSelectTime(key, value, null, able_type)
         } else if (key == ARENA_KEY) {
-            row = getDefinedRow(CITY_KEY)
-            var city_id: Int? = null
-            if (row.containsKey("value") && row["value"] != null && row["value"]!!.length > 0) {
-                city_id = row["value"]!!.toInt()
+            for (teamSearchSection in teamSearchSections) {
+                for (teamSearchRow in teamSearchSection.items) {
+                    if (teamSearchRow.key == CITY_KEY) {
+                        row = teamSearchRow
+                        break
+                    }
+                }
             }
+//            row = getDefinedRow(CITY_KEY)
+            val city_id: Int = row.value.toInt()
+//            if (row.containsKey("value") && row["value"] != null && row["value"]!!.length > 0) {
+//                city_id = row["value"]!!.toInt()
+//            }
             if (city_id != null && city_id > 0) {
                 mainActivity!!.toSelectArena(value, city_id, null, able_type)
             } else {
@@ -511,8 +524,8 @@ class TempPlayFragment : TabFragment(), inter {
         row["show"] = show
         replaceRows(key, row)
 
-        generateSections()
-        adapter.notifyDataSetChanged()
+//        generateSections()
+//        adapter.notifyDataSetChanged()
     }
 
     override fun arenaSelected(selected: String, show: String) {
@@ -522,8 +535,8 @@ class TempPlayFragment : TabFragment(), inter {
         row["value"] = selected
         row["show"] = show
         replaceRows(key, row)
-        generateSections()
-        adapter.notifyDataSetChanged()
+//        generateSections()
+//        adapter.notifyDataSetChanged()
     }
 
     override fun degreeSelected(selected: String, show: String) {
@@ -532,8 +545,8 @@ class TempPlayFragment : TabFragment(), inter {
         row["value"] = selected
         row["show"] = show
         replaceRows(key, row)
-        generateSections()
-        adapter.notifyDataSetChanged()
+//        generateSections()
+//        adapter.notifyDataSetChanged()
     }
 
     override fun cellClick(row: Table) {
@@ -592,6 +605,95 @@ class TempPlayFragment : TabFragment(), inter {
         intent.putExtra("title", name)
         intent.putExtra("address", arenaTable.address)
         startActivity(intent)
+    }
+
+    private fun initRows(): ArrayList<TeamSearchSection> {
+
+        val sections: ArrayList<TeamSearchSection> = arrayListOf()
+
+        sections.add(makeSection0Row())
+        sections.add(makeSection1Row(false))
+
+        return sections
+    }
+
+    private fun updateSectionRow(): ArrayList<TeamSearchSection> {
+        val sections: ArrayList<TeamSearchSection> = arrayListOf()
+        for ((idx, teamSearchSection) in teamSearchSections.withIndex()) {
+            val isExpanded: Boolean = teamSearchSection.isExpanded
+            if (idx == 0) {
+                sections.add(makeSection0Row(isExpanded))
+            } else if (idx == 1) {
+                sections.add(makeSection1Row(isExpanded))
+            }
+        }
+        return sections
+    }
+
+    private fun makeSection0Row(isExpanded: Boolean=true): TeamSearchSection {
+        val rows: ArrayList<TeamSearchRow> = arrayListOf()
+        if (isExpanded) {
+            val r1: TeamSearchRow = TeamSearchRow("關鍵字", "", "", KEYWORD_KEY, "textField")
+            rows.add(r1)
+            val r2: TeamSearchRow = TeamSearchRow("縣市", "", "全部", CITY_KEY, "more")
+            rows.add(r2)
+            val r3: TeamSearchRow = TeamSearchRow("星期幾", "", "全部", WEEKDAY_KEY, "more")
+            rows.add(r3)
+            val r4: TeamSearchRow = TeamSearchRow("時段", "", "全部", START_TIME_KEY, "more")
+            rows.add(r4)
+        }
+
+        val s: TeamSearchSection = TeamSearchSection("一般", isExpanded)
+        s.items.addAll(rows)
+        return s
+    }
+
+    private fun makeSection1Row(isExpanded: Boolean=true): TeamSearchSection {
+        val rows: ArrayList<TeamSearchRow> = arrayListOf()
+        if (isExpanded) {
+            val r1: TeamSearchRow = TeamSearchRow("球館", "", "全部", ARENA_KEY, "more")
+            rows.add(r1)
+            val r2: TeamSearchRow = TeamSearchRow("程度", "", "全部", DEGREE_KEY, "more")
+            rows.add(r2)
+        }
+
+        val s: TeamSearchSection = TeamSearchSection("更多", isExpanded)
+        s.items.addAll(rows)
+        return s
+    }
+
+    override fun handleSectionExpanded(idx: Int) {
+        //println(idx)
+        val teamSearchSection = teamSearchSections[idx]
+        var isExpanded: Boolean = teamSearchSection.isExpanded
+        isExpanded = !isExpanded
+        teamSearchSections[idx].isExpanded = isExpanded
+        toggleSectionOnOff()
+    }
+
+    private fun toggleSectionOnOff() {
+        teamSearchSections = updateSectionRow()
+        searchAdapter.setMyTableSection(teamSearchSections)
+        searchAdapter.notifyDataSetChanged()
+    }
+
+    override fun cellClick(sectionIdx: Int, rowIdx: Int) {
+        prepare(sectionIdx, rowIdx)
+    }
+
+    override fun cellTextChanged(sectionIdx: Int, rowIdx: Int, str: String) {
+        val section = teamSearchSections[sectionIdx]
+        val row = section.items[rowIdx]
+        teamSearchSections[sectionIdx].items[rowIdx].value = str
+        teamSearchSections[sectionIdx].items[rowIdx].show = str
+    }
+
+    override fun cellClear(sectionIdx: Int, rowIdx: Int) {
+        teamSearchSections[sectionIdx].items[rowIdx].value = ""
+        teamSearchSections[sectionIdx].items[rowIdx].show = ""
+        teamSearchSections = updateSectionRow()
+        searchAdapter.setMyTableSection(teamSearchSections)
+        searchAdapter.notifyDataSetChanged()
     }
 
 //    private fun getIdxFromKey(key: String): Int {
@@ -796,23 +898,23 @@ class TempPlayFragment : TabFragment(), inter {
 //        startActivity(intent)
     }
 
-    override fun remove(indexPath: IndexPath) {
-        var row: HashMap<String, String>? = null
-        if (searchRows.size >= indexPath.row) {
-            row = searchRows[indexPath.row]
-        }
-        var key: String? = null
-        if (row != null && row.containsKey("key") && row.get("key")!!.length > 0) {
-            key = row.get("key")
-        }
-        if (row != null) {
-            row["value"] = ""
-            row["show"] = "全部"
-            replaceRows(key!!, row)
-            generateSections()
-            adapter.notifyDataSetChanged()
-        }
-    }
+//    override fun remove(indexPath: IndexPath) {
+//        var row: HashMap<String, String>? = null
+//        if (searchRows.size >= indexPath.row) {
+//            row = searchRows[indexPath.row]
+//        }
+//        var key: String? = null
+//        if (row != null && row.containsKey("key") && row.get("key")!!.length > 0) {
+//            key = row.get("key")
+//        }
+//        if (row != null) {
+//            row["value"] = ""
+//            row["show"] = "全部"
+//            replaceRows(key!!, row)
+////            generateSections()
+////            adapter.notifyDataSetChanged()
+//        }
+//    }
 
     companion object {
         // TODO: Rename parameter arguments, choose names that match
@@ -896,76 +998,188 @@ class TeamViewHolder(context: Context, viewHolder: View, list1CellDelegate: List
     }
 }
 
-class TeamItem(override var context: Context, var _row: TeamTable): ListItem<Table>(context, _row) {
+class TeamSearchAdapter(val context: Context, private val resource: Int, var delegate: List1CellDelegate): RecyclerView.Adapter<TeamSearchSectionViewHolder>() {
+    private var tableSections: ArrayList<TeamSearchSection> = arrayListOf()
 
-    override fun bind(viewHolder: com.xwray.groupie.kotlinandroidextensions.GroupieViewHolder, position: Int) {
+    fun setMyTableSection(tableSections: ArrayList<TeamSearchSection>) {
+        this.tableSections = tableSections
+    }
 
-        super.bind(viewHolder, position)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TeamSearchSectionViewHolder {
+        val inflater = LayoutInflater.from(parent.context)
+        val viewHolder = inflater.inflate(resource, parent, false)
 
-        val row: TeamTable = _row
+        return TeamSearchSectionViewHolder(viewHolder)
 
-//        if (row.city_show.length > 0) {
-//            viewHolder.cityBtn.text = row.city_show
+    }
+
+    override fun onBindViewHolder(holder: TeamSearchSectionViewHolder, position: Int) {
+        val section: TeamSearchSection = tableSections[position]
+        holder.titleLbl.text = section.title
+
+        val tableSection: TeamSearchSection = tableSections[position]
+        var iconID: Int = 0
+        if (tableSection.isExpanded) {
+            iconID = context.resources.getIdentifier("to_down", "drawable", context.packageName)
+        } else {
+            iconID = context.resources.getIdentifier("to_right", "drawable", context.packageName)
+        }
+        holder.greater.setImageResource(iconID)
+
+        val items: ArrayList<TeamSearchRow> = tableSections[position].items
+        val adapter: TeamSearchItemAdapter =
+            TeamSearchItemAdapter(context, position, items, delegate)
+//            holder.recyclerView.setHasFixedSize(true)
+        holder.recyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+        holder.recyclerView.adapter = adapter
+
+        holder.greater.setOnClickListener {
+            delegate.handleSectionExpanded(position)
+        }
+    }
+
+    override fun getItemCount(): Int {
+        return tableSections.size
+    }
+}
+
+class TeamSearchSectionViewHolder(val viewHolder: View): RecyclerView.ViewHolder(viewHolder) {
+
+    var titleLbl: TextView = viewHolder.findViewById(R.id.titleLbl)
+    var greater: ImageView = viewHolder.findViewById(R.id.greater)
+    var recyclerView: RecyclerView = viewHolder.findViewById(R.id.recyclerView)
+}
+
+class TeamSearchItemAdapter(val context: Context, private val sectionIdx: Int, private val tableRows: ArrayList<TeamSearchRow>, var delegate: List1CellDelegate): RecyclerView.Adapter<TeamSearchItemViewHolder>() {
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TeamSearchItemViewHolder {
+        val inflater = LayoutInflater.from(parent.context)
+        val viewHolder = inflater.inflate(R.layout.search_row_item, parent, false)
+
+        return TeamSearchItemViewHolder(viewHolder)
+    }
+
+    override fun onBindViewHolder(holder: TeamSearchItemViewHolder, position: Int) {
+        val row: TeamSearchRow = tableRows[position]
+        holder.title.text = row.title
+        holder.show.text = row.show
+
+        val cell = row.cell
+        if (cell == "textField") {
+            holder.show.visibility = View.INVISIBLE
+            holder.greater.visibility = View.INVISIBLE
+            holder.keyword.visibility = View.VISIBLE
+            if (row.show.length > 0) {
+                holder.keyword.setText(row.show)
+            }
+            holder.keyword.addTextChangedListener(object: TextWatcher {
+                override fun afterTextChanged(p0: Editable?) {
+                }
+
+                override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                }
+
+                override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                    delegate.cellTextChanged(sectionIdx, position, p0.toString())
+                }
+
+            })
+        }
+
+        holder.viewHolder.setOnClickListener {
+            delegate.cellClick(sectionIdx, position)
+        }
+
+        holder.clear.setOnClickListener {
+            delegate.cellClear(sectionIdx, position)
+        }
+    }
+
+    override fun getItemCount(): Int {
+        return tableRows.size
+    }
+
+}
+
+class TeamSearchItemViewHolder(val viewHolder: View): RecyclerView.ViewHolder(viewHolder) {
+
+    var title: TextView = viewHolder.findViewById(R.id.row_title)
+    var show: TextView = viewHolder.findViewById(R.id.row_detail)
+    var clear: ImageView = viewHolder.findViewById(R.id.clearBtn)
+    var greater: ImageView = viewHolder.findViewById(R.id.greater)
+    var keyword: EditText = viewHolder.findViewById(R.id.keywordTxt)
+}
+
+//class TeamItem(override var context: Context, var _row: TeamTable): ListItem<Table>(context, _row) {
+//
+//    override fun bind(viewHolder: com.xwray.groupie.kotlinandroidextensions.GroupieViewHolder, position: Int) {
+//
+//        super.bind(viewHolder, position)
+//
+//        val row: TeamTable = _row
+//
+////        if (row.city_show.length > 0) {
+////            viewHolder.cityBtn.text = row.city_show
+////            viewHolder.cityBtn.setOnClickListener {
+////                if (list1CellDelegate != null) {
+////                    list1CellDelegate!!.cellCity(row)
+////                }
+////            }
+////        } else {
+////            viewHolder.cityBtn.visibility = View.GONE
+////        }
+//
+//        if (row.arena?.name != null && row.arena!!.name.length > 0) {
+//            viewHolder.cityBtn.text = row.arena!!.city_show
 //            viewHolder.cityBtn.setOnClickListener {
 //                if (list1CellDelegate != null) {
 //                    list1CellDelegate!!.cellCity(row)
 //                }
 //            }
+//
+//            viewHolder.arenaBtn.text = row.arena!!.name
+//            viewHolder.arenaBtn.setOnClickListener {
+//                if (list1CellDelegate != null) {
+//                    list1CellDelegate!!.cellArena(row)
+//                }
+//            }
 //        } else {
 //            viewHolder.cityBtn.visibility = View.GONE
+//            viewHolder.arenaBtn.visibility = View.GONE
 //        }
-
-        if (row.arena?.name != null && row.arena!!.name.length > 0) {
-            viewHolder.cityBtn.text = row.arena!!.city_show
-            viewHolder.cityBtn.setOnClickListener {
-                if (list1CellDelegate != null) {
-                    list1CellDelegate!!.cellCity(row)
-                }
-            }
-
-            viewHolder.arenaBtn.text = row.arena!!.name
-            viewHolder.arenaBtn.setOnClickListener {
-                if (list1CellDelegate != null) {
-                    list1CellDelegate!!.cellArena(row)
-                }
-            }
-        } else {
-            viewHolder.cityBtn.visibility = View.GONE
-            viewHolder.arenaBtn.visibility = View.GONE
-        }
-
-        if (row.weekdays_show.isNotEmpty()) {
-            viewHolder.weekdayLbl.text = row.weekdays_show
-        } else {
-            viewHolder.weekdayLbl.text = "臨打日期:未提供"
-        }
-
-        if (row.interval_show.isNotEmpty()) {
-            viewHolder.intervalLbl.text = row.interval_show
-        } else {
-            viewHolder.weekdayLbl.text = "臨打時段:未提供"
-        }
-
-        val v = viewHolder.containerView
-        val a = v.findViewById<ImageButton>(R.id.mapIcon)
-        if (a != null && row.arena != null) {
-
-            if (row.arena!!.address == null || row.arena!!.address.isEmpty()) {
-                viewHolder.mapIcon.visibility = View.GONE
-            } else {
-                viewHolder.mapIcon.visibility = View.VISIBLE
-                viewHolder.mapIcon.setOnClickListener {
-                    if (list1CellDelegate != null) {
-                        list1CellDelegate!!.cellShowMap(row)
-                    }
-                }
-            }
-        }
-
-        viewHolder.temp_quantityLbl.text = row.temp_quantity_show
-        viewHolder.signup_countLbl.text = row.temp_signup_count_show
-    }
-
-    override fun getLayout() = R.layout.team_list_cell
-
-}
+//
+//        if (row.weekdays_show.isNotEmpty()) {
+//            viewHolder.weekdayLbl.text = row.weekdays_show
+//        } else {
+//            viewHolder.weekdayLbl.text = "臨打日期:未提供"
+//        }
+//
+//        if (row.interval_show.isNotEmpty()) {
+//            viewHolder.intervalLbl.text = row.interval_show
+//        } else {
+//            viewHolder.weekdayLbl.text = "臨打時段:未提供"
+//        }
+//
+//        val v = viewHolder.containerView
+//        val a = v.findViewById<ImageButton>(R.id.mapIcon)
+//        if (a != null && row.arena != null) {
+//
+//            if (row.arena!!.address == null || row.arena!!.address.isEmpty()) {
+//                viewHolder.mapIcon.visibility = View.GONE
+//            } else {
+//                viewHolder.mapIcon.visibility = View.VISIBLE
+//                viewHolder.mapIcon.setOnClickListener {
+//                    if (list1CellDelegate != null) {
+//                        list1CellDelegate!!.cellShowMap(row)
+//                    }
+//                }
+//            }
+//        }
+//
+//        viewHolder.temp_quantityLbl.text = row.temp_quantity_show
+//        viewHolder.signup_countLbl.text = row.temp_signup_count_show
+//    }
+//
+//    override fun getLayout() = R.layout.team_list_cell
+//
+//}

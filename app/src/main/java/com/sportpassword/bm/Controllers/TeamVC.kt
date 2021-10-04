@@ -3,8 +3,6 @@ package com.sportpassword.bm.Controllers
 import android.os.Bundle
 import android.view.View
 import com.sportpassword.bm.Fragments.TeamAdapter
-import com.sportpassword.bm.Fragments.TeamItem
-import com.sportpassword.bm.Models.CourseTable
 import com.sportpassword.bm.Models.Table
 import com.sportpassword.bm.Models.TeamTable
 import com.sportpassword.bm.Models.TeamsTable
@@ -71,26 +69,26 @@ class TeamVC : MyTableVC() {
         }
     }
 
-    override fun generateItems(): ArrayList<Item> {
-        if (mysTable != null) {
-            for (row in mysTable!!.rows) {
-                //row.print()
-                row.filterRow()
-                val myItem = TeamItem(this, row)
-                myItem.list1CellDelegate = this
-                items.add(myItem)
-            }
-        }
-
-        return items
-    }
-
-    override fun rowClick(item: com.xwray.groupie.Item<com.xwray.groupie.GroupieViewHolder>, view: View) {
-
-        val myItem = item as TeamItem
-        val table = myItem.row
-        toShowTeam(table.token)
-    }
+//    override fun generateItems(): ArrayList<Item> {
+//        if (mysTable != null) {
+//            for (row in mysTable!!.rows) {
+//                //row.print()
+//                row.filterRow()
+//                val myItem = TeamItem(this, row)
+//                myItem.list1CellDelegate = this
+//                items.add(myItem)
+//            }
+//        }
+//
+//        return items
+//    }
+//
+//    override fun rowClick(item: com.xwray.groupie.Item<com.xwray.groupie.GroupieViewHolder>, view: View) {
+//
+//        val myItem = item as TeamItem
+//        val table = myItem.row
+//        toShowTeam(table.token)
+//    }
 
     override fun cellArena(row: Table) {
 
