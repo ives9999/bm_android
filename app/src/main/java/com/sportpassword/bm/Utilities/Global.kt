@@ -1614,8 +1614,8 @@ fun getFragment(activity: BaseActivity, able_type: String): TabFragment? {
             _frag = frag as ArenaFragment
             break
         }
-        if (able_type == "team" && frag::class == TeamFragment::class) {
-            _frag = frag as TeamFragment
+        if (able_type == "team" && frag::class == TempPlayFragment::class) {
+            _frag = frag as TempPlayFragment
             break
         }
         if (able_type == "course" && frag::class == CourseFragment::class) {

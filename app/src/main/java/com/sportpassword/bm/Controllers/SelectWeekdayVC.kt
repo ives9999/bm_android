@@ -1,6 +1,8 @@
 package com.sportpassword.bm.Controllers
 
 import android.os.Bundle
+import com.sportpassword.bm.Data.SelectRow
+import com.sportpassword.bm.Models.City
 import com.sportpassword.bm.Utilities.WEEKDAY
 import com.sportpassword.bm.Utilities.WEEKDAY_KEY
 
@@ -14,21 +16,36 @@ class SelectWeekdayVC : SingleSelectVC() {
 
         key = WEEKDAY_KEY
 
-        rowsBridge(weekdays)
-        notifyChanged()
+        tableRows = rowsBridge(weekdays)
+        tableAdapter.rows = tableRows
+
+//        notifyChanged()
     }
 
-    fun rowsBridge(weekdays: ArrayList<WEEKDAY>) {
+    fun rowsBridge(weekdays: ArrayList<WEEKDAY>): ArrayList<SelectRow> {
 
-        if (rows.count() > 0) {
-            rows.clear()
-        } else {
-            rows = arrayListOf()
-        }
+        val selectRows: ArrayList<SelectRow> = arrayListOf()
+
         for(weekday in weekdays) {
-            val name = WEEKDAY.intToString(weekday.value)
+            val title = WEEKDAY.intToString(weekday.value)
             val id = weekday.value
-            rows.add(hashMapOf("title" to name, "value" to id.toString()))
+            selectRows.add(SelectRow(title, id.toString()))
         }
+
+        return selectRows
     }
+
+//    fun rowsBridge(weekdays: ArrayList<WEEKDAY>) {
+//
+//        if (rows.count() > 0) {
+//            rows.clear()
+//        } else {
+//            rows = arrayListOf()
+//        }
+//        for(weekday in weekdays) {
+//            val name = WEEKDAY.intToString(weekday.value)
+//            val id = weekday.value
+//            rows.add(hashMapOf("title" to name, "value" to id.toString()))
+//        }
+//    }
 }

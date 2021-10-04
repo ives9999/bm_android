@@ -1760,8 +1760,8 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
         val frags = supportFragmentManager.fragments
         var _frag: TabFragment? = null
         for (frag in frags) {
-            if (able_type == "team" && frag::class == TeamFragment::class) {
-                _frag = frag as TeamFragment
+            if (able_type == "team" && frag::class == TempPlayFragment::class) {
+                _frag = frag as TempPlayFragment
                 break
             }
             if (able_type == "course" && frag::class == CourseFragment::class) {
@@ -1910,7 +1910,7 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
         if (page == "coach") {
             refresh()
         } else if (page == "team") {
-            val frag = getFragment() as TeamFragment
+            val frag = getFragment() as TempPlayFragment
             frag.refresh()
         } else {
             refresh()

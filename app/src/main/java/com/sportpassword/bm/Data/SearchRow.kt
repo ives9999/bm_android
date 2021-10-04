@@ -1,12 +1,12 @@
 package com.sportpassword.bm.Data
 
-data class TeamSearchSection (
+data class SearchSection (
     var title: String = "",
     var isExpanded: Boolean = true,
-    var items: ArrayList<TeamSearchRow> = arrayListOf()
+    var items: ArrayList<SearchRow> = arrayListOf()
 )
 
-data class TeamSearchRow (
+data class SearchRow (
     var title: String = "",
     var value: String = "",
     var show: String = "",

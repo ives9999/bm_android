@@ -64,9 +64,7 @@ class TempPlayFragment : TabFragment() {
     var mysTable: TeamsTable? = null
     lateinit var tableAdapter: TeamAdapter
     lateinit var searchAdapter: TeamSearchAdapter
-
-    var teamSearchSections: ArrayList<TeamSearchSection> = arrayListOf()
-
+    
 //    var searchSections: ArrayList<Section> = arrayListOf()
     var mySections: ArrayList<HashMap<String, Any>> = arrayListOf()
 
@@ -207,8 +205,8 @@ class TempPlayFragment : TabFragment() {
         recyclerView.adapter = tableAdapter
 
         searchAdapter = TeamSearchAdapter(mainActivity!!, R.layout.cell_section, this)
-        teamSearchSections = initRows()
-        searchAdapter.setMyTableSection(teamSearchSections)
+        searchSections = initRows()
+        searchAdapter.setMyTableSection(searchSections)
 
         member_like = true
         refresh()
@@ -460,7 +458,7 @@ class TempPlayFragment : TabFragment() {
 //            idx += row
 //        }
 
-        val section = teamSearchSections[sectionIdx]
+        val section = searchSections[sectionIdx]
         var row = section.items[rowIdx]
 
 //        var row = searchRows.get(idx)
@@ -481,7 +479,7 @@ class TempPlayFragment : TabFragment() {
         } else if (key == START_TIME_KEY || key == END_TIME_KEY) {
             mainActivity!!.toSelectTime(key, value, null, able_type)
         } else if (key == ARENA_KEY) {
-            for (teamSearchSection in teamSearchSections) {
+            for (teamSearchSection in searchSections) {
                 for (teamSearchRow in teamSearchSection.items) {
                     if (teamSearchRow.key == CITY_KEY) {
                         row = teamSearchRow
@@ -506,24 +504,23 @@ class TempPlayFragment : TabFragment() {
 
     override fun singleSelected(key: String, selected: String) {
 
-        val row = getDefinedRow(key)
+        val row = getDefinedRow1(key)
         var show = ""
-//        val idx = getIdxFromKey(key)
 
         if (key == START_TIME_KEY || key == END_TIME_KEY) {
-            row["value"] = selected
+            row.value = selected
             show = selected.noSec()
         } else if (key == CITY_KEY || key == AREA_KEY) {
-            row["value"] = selected
+            row.value = selected
             show = Global.zoneIDToName(selected.toInt())
         } else if (key == WEEKDAY_KEY) {
-            row["value"] = selected
+            row.value = selected
             show = WEEKDAY.intToString(selected.toInt())
         }
 
-        row["show"] = show
-        replaceRows(key, row)
-
+        row.show = show
+        //searchAdapter.notifyItemChanged(0)
+        searchAdapter.notifyDataSetChanged()
 //        generateSections()
 //        adapter.notifyDataSetChanged()
     }
@@ -607,9 +604,9 @@ class TempPlayFragment : TabFragment() {
         startActivity(intent)
     }
 
-    private fun initRows(): ArrayList<TeamSearchSection> {
+    private fun initRows(): ArrayList<SearchSection> {
 
-        val sections: ArrayList<TeamSearchSection> = arrayListOf()
+        val sections: ArrayList<SearchSection> = arrayListOf()
 
         sections.add(makeSection0Row())
         sections.add(makeSection1Row(false))
@@ -617,9 +614,9 @@ class TempPlayFragment : TabFragment() {
         return sections
     }
 
-    private fun updateSectionRow(): ArrayList<TeamSearchSection> {
-        val sections: ArrayList<TeamSearchSection> = arrayListOf()
-        for ((idx, teamSearchSection) in teamSearchSections.withIndex()) {
+    private fun updateSectionRow(): ArrayList<SearchSection> {
+        val sections: ArrayList<SearchSection> = arrayListOf()
+        for ((idx, teamSearchSection) in searchSections.withIndex()) {
             val isExpanded: Boolean = teamSearchSection.isExpanded
             if (idx == 0) {
                 sections.add(makeSection0Row(isExpanded))
@@ -630,50 +627,50 @@ class TempPlayFragment : TabFragment() {
         return sections
     }
 
-    private fun makeSection0Row(isExpanded: Boolean=true): TeamSearchSection {
-        val rows: ArrayList<TeamSearchRow> = arrayListOf()
+    private fun makeSection0Row(isExpanded: Boolean=true): SearchSection {
+        val rows: ArrayList<SearchRow> = arrayListOf()
         if (isExpanded) {
-            val r1: TeamSearchRow = TeamSearchRow("關鍵字", "", "", KEYWORD_KEY, "textField")
+            val r1: SearchRow = SearchRow("關鍵字", "", "", KEYWORD_KEY, "textField")
             rows.add(r1)
-            val r2: TeamSearchRow = TeamSearchRow("縣市", "", "全部", CITY_KEY, "more")
+            val r2: SearchRow = SearchRow("縣市", "", "全部", CITY_KEY, "more")
             rows.add(r2)
-            val r3: TeamSearchRow = TeamSearchRow("星期幾", "", "全部", WEEKDAY_KEY, "more")
+            val r3: SearchRow = SearchRow("星期幾", "", "全部", WEEKDAY_KEY, "more")
             rows.add(r3)
-            val r4: TeamSearchRow = TeamSearchRow("時段", "", "全部", START_TIME_KEY, "more")
+            val r4: SearchRow = SearchRow("時段", "", "全部", START_TIME_KEY, "more")
             rows.add(r4)
         }
 
-        val s: TeamSearchSection = TeamSearchSection("一般", isExpanded)
+        val s: SearchSection = SearchSection("一般", isExpanded)
         s.items.addAll(rows)
         return s
     }
 
-    private fun makeSection1Row(isExpanded: Boolean=true): TeamSearchSection {
-        val rows: ArrayList<TeamSearchRow> = arrayListOf()
+    private fun makeSection1Row(isExpanded: Boolean=true): SearchSection {
+        val rows: ArrayList<SearchRow> = arrayListOf()
         if (isExpanded) {
-            val r1: TeamSearchRow = TeamSearchRow("球館", "", "全部", ARENA_KEY, "more")
+            val r1: SearchRow = SearchRow("球館", "", "全部", ARENA_KEY, "more")
             rows.add(r1)
-            val r2: TeamSearchRow = TeamSearchRow("程度", "", "全部", DEGREE_KEY, "more")
+            val r2: SearchRow = SearchRow("程度", "", "全部", DEGREE_KEY, "more")
             rows.add(r2)
         }
 
-        val s: TeamSearchSection = TeamSearchSection("更多", isExpanded)
+        val s: SearchSection = SearchSection("更多", isExpanded)
         s.items.addAll(rows)
         return s
     }
 
     override fun handleSectionExpanded(idx: Int) {
         //println(idx)
-        val teamSearchSection = teamSearchSections[idx]
+        val teamSearchSection = searchSections[idx]
         var isExpanded: Boolean = teamSearchSection.isExpanded
         isExpanded = !isExpanded
-        teamSearchSections[idx].isExpanded = isExpanded
+        searchSections[idx].isExpanded = isExpanded
         toggleSectionOnOff()
     }
 
     private fun toggleSectionOnOff() {
-        teamSearchSections = updateSectionRow()
-        searchAdapter.setMyTableSection(teamSearchSections)
+        searchSections = updateSectionRow()
+        searchAdapter.setMyTableSection(searchSections)
         searchAdapter.notifyDataSetChanged()
     }
 
@@ -682,17 +679,17 @@ class TempPlayFragment : TabFragment() {
     }
 
     override fun cellTextChanged(sectionIdx: Int, rowIdx: Int, str: String) {
-        val section = teamSearchSections[sectionIdx]
+        val section = searchSections[sectionIdx]
         val row = section.items[rowIdx]
-        teamSearchSections[sectionIdx].items[rowIdx].value = str
-        teamSearchSections[sectionIdx].items[rowIdx].show = str
+        searchSections[sectionIdx].items[rowIdx].value = str
+        searchSections[sectionIdx].items[rowIdx].show = str
     }
 
     override fun cellClear(sectionIdx: Int, rowIdx: Int) {
-        teamSearchSections[sectionIdx].items[rowIdx].value = ""
-        teamSearchSections[sectionIdx].items[rowIdx].show = ""
-        teamSearchSections = updateSectionRow()
-        searchAdapter.setMyTableSection(teamSearchSections)
+        searchSections[sectionIdx].items[rowIdx].value = ""
+        searchSections[sectionIdx].items[rowIdx].show = ""
+        searchSections = updateSectionRow()
+        searchAdapter.setMyTableSection(searchSections)
         searchAdapter.notifyDataSetChanged()
     }
 
@@ -998,26 +995,27 @@ class TeamViewHolder(context: Context, viewHolder: View, list1CellDelegate: List
     }
 }
 
-class TeamSearchAdapter(val context: Context, private val resource: Int, var delegate: List1CellDelegate): RecyclerView.Adapter<TeamSearchSectionViewHolder>() {
-    private var tableSections: ArrayList<TeamSearchSection> = arrayListOf()
+class TeamSearchAdapter(val context: Context, private val resource: Int, var delegate: List1CellDelegate): RecyclerView.Adapter<SearchSectionViewHolder>() {
+    private var tableSections: ArrayList<SearchSection> = arrayListOf()
+    //lateinit var adapter: TeamSearchItemAdapter
 
-    fun setMyTableSection(tableSections: ArrayList<TeamSearchSection>) {
+    fun setMyTableSection(tableSections: ArrayList<SearchSection>) {
         this.tableSections = tableSections
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TeamSearchSectionViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SearchSectionViewHolder {
         val inflater = LayoutInflater.from(parent.context)
         val viewHolder = inflater.inflate(resource, parent, false)
 
-        return TeamSearchSectionViewHolder(viewHolder)
+        return SearchSectionViewHolder(viewHolder)
 
     }
 
-    override fun onBindViewHolder(holder: TeamSearchSectionViewHolder, position: Int) {
-        val section: TeamSearchSection = tableSections[position]
+    override fun onBindViewHolder(holder: SearchSectionViewHolder, position: Int) {
+        val section: SearchSection = tableSections[position]
         holder.titleLbl.text = section.title
 
-        val tableSection: TeamSearchSection = tableSections[position]
+        val tableSection: SearchSection = tableSections[position]
         var iconID: Int = 0
         if (tableSection.isExpanded) {
             iconID = context.resources.getIdentifier("to_down", "drawable", context.packageName)
@@ -1026,8 +1024,8 @@ class TeamSearchAdapter(val context: Context, private val resource: Int, var del
         }
         holder.greater.setImageResource(iconID)
 
-        val items: ArrayList<TeamSearchRow> = tableSections[position].items
-        val adapter: TeamSearchItemAdapter =
+        val items: ArrayList<SearchRow> = tableSections[position].items
+        val adapter =
             TeamSearchItemAdapter(context, position, items, delegate)
 //            holder.recyclerView.setHasFixedSize(true)
         holder.recyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
@@ -1043,14 +1041,14 @@ class TeamSearchAdapter(val context: Context, private val resource: Int, var del
     }
 }
 
-class TeamSearchSectionViewHolder(val viewHolder: View): RecyclerView.ViewHolder(viewHolder) {
+class SearchSectionViewHolder(val viewHolder: View): RecyclerView.ViewHolder(viewHolder) {
 
     var titleLbl: TextView = viewHolder.findViewById(R.id.titleLbl)
     var greater: ImageView = viewHolder.findViewById(R.id.greater)
     var recyclerView: RecyclerView = viewHolder.findViewById(R.id.recyclerView)
 }
 
-class TeamSearchItemAdapter(val context: Context, private val sectionIdx: Int, private val tableRows: ArrayList<TeamSearchRow>, var delegate: List1CellDelegate): RecyclerView.Adapter<TeamSearchItemViewHolder>() {
+class TeamSearchItemAdapter(val context: Context, private val sectionIdx: Int, private val tableRows: ArrayList<SearchRow>, var delegate: List1CellDelegate): RecyclerView.Adapter<TeamSearchItemViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TeamSearchItemViewHolder {
         val inflater = LayoutInflater.from(parent.context)
@@ -1060,7 +1058,7 @@ class TeamSearchItemAdapter(val context: Context, private val sectionIdx: Int, p
     }
 
     override fun onBindViewHolder(holder: TeamSearchItemViewHolder, position: Int) {
-        val row: TeamSearchRow = tableRows[position]
+        val row: SearchRow = tableRows[position]
         holder.title.text = row.title
         holder.show.text = row.show
 

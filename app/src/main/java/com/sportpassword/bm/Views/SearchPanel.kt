@@ -16,7 +16,7 @@ import com.sportpassword.bm.Controllers.BaseActivity
 import com.sportpassword.bm.Fragments.ArenaFragment
 import com.sportpassword.bm.Fragments.CourseFragment
 import com.sportpassword.bm.Fragments.TabFragment
-import com.sportpassword.bm.Fragments.TeamFragment
+import com.sportpassword.bm.Fragments.TempPlayFragment
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Utilities.getFragment
 import com.xwray.groupie.GroupAdapter
@@ -169,7 +169,7 @@ open class SearchPanel {
             if (able_type == "course") {
                 frag = activity.getFragment() as CourseFragment
             } else if (able_type == "team") {
-                frag = activity.getFragment() as TeamFragment
+                frag = activity.getFragment() as TempPlayFragment
             } else if (able_type == "arena") {
                 frag = activity.getFragment() as ArenaFragment
             }
@@ -192,7 +192,7 @@ open class SearchPanel {
             activity.prepareParams()
             activity.refresh()
         } else if (able_type == "team") {
-            val frag = getFragment(activity, able_type!!) as TeamFragment
+            val frag = getFragment(activity, able_type!!) as TempPlayFragment
             frag.prepareParams()
             frag.refresh()
         } else if (able_type == "course") {

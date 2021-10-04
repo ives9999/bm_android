@@ -4,9 +4,14 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.recyclerview.widget.RecyclerView
+import com.sportpassword.bm.Data.SelectRow
+import com.sportpassword.bm.Fragments.MoreViewHolder
 import com.sportpassword.bm.Fragments.MyAdapter
 import com.sportpassword.bm.Fragments.MyViewHolder
 import com.sportpassword.bm.Models.CoachTable
@@ -40,7 +45,7 @@ open class SingleSelectVC : SelectVC() {
         }
 
         recyclerView = tableView
-        tableAdapter = SingleSelectAdapter(R.layout.select_item, this)
+        tableAdapter = SingleSelectAdapter(selected, this)
         recyclerView.adapter = tableAdapter
 //        recyclerView.adapter = adapter
 //        initAdapter()
@@ -74,27 +79,29 @@ open class SingleSelectVC : SelectVC() {
 //        return items
 //    }
 
-    open fun submit(idx: Int) {
+    override fun cellClick(idx: Int) {
+        submit(idx)
+    }
 
-        if (idx >= rows.size) {
+    open fun submit(idx: Int) {
+        if (idx >= tableRows.size) {
             warningWithPrev("由於傳遞參數不正確，無法做選擇，請回上一頁重新進入")
         }
-        val row = rows[idx]
-        if (!row.containsKey("value")) {
+        val row = tableRows[idx]
+        if (row.value.length == 0) {
             warningWithPrev("由於傳遞參數不正確，無法做選擇，請回上一頁重新進入")
         }
 
         var cancel: Boolean = false
         if (selected != null && selected!!.isNotEmpty()) {
-            if (selected == row["value"]) {
+            if (selected == row.value) {
                 cancel = true
             }
         }
 
         //選擇其他的
         if (!cancel) {
-            selected = row["value"]
-            //dealSelected()
+            selected = row.value
             val intent = Intent()
             intent.putExtra("key", key)
             intent.putExtra("selected", selected)
@@ -103,46 +110,108 @@ open class SingleSelectVC : SelectVC() {
             finish()
         } else { //取消原來的選擇
             selected = ""
-//            generateItems()
-//            notifyChanged()
+            tableAdapter.notifyDataSetChanged()
         }
     }
+
+//    open fun submit(idx: Int) {
+//
+//        if (idx >= rows.size) {
+//            warningWithPrev("由於傳遞參數不正確，無法做選擇，請回上一頁重新進入")
+//        }
+//        val row = rows[idx]
+//        if (!row.containsKey("value")) {
+//            warningWithPrev("由於傳遞參數不正確，無法做選擇，請回上一頁重新進入")
+//        }
+//
+//        var cancel: Boolean = false
+//        if (selected != null && selected!!.isNotEmpty()) {
+//            if (selected == row["value"]) {
+//                cancel = true
+//            }
+//        }
+//
+//        //選擇其他的
+//        if (!cancel) {
+//            selected = row["value"]
+//            //dealSelected()
+//            val intent = Intent()
+//            intent.putExtra("key", key)
+//            intent.putExtra("selected", selected)
+//            intent.putExtra("able_type", able_type)
+//            setResult(Activity.RESULT_OK, intent)
+//            finish()
+//        } else { //取消原來的選擇
+//            selected = ""
+////            generateItems()
+////            notifyChanged()
+//        }
+//    }
 
     //selected 有時候是56.0要把它處理成56
     open fun dealSelected() {}
 }
 
-class SingleSelectAdapter(resource: Int, list1CellDelegate: List1CellDelegate?): MyAdapter<SingleSelectViewHolder>(resource, ::SingleSelectViewHolder, list1CellDelegate) {
+class SingleSelectAdapter(var selected: String?, val list1CellDelegate: List1CellDelegate?): RecyclerView.Adapter<SingleSelectViewHolder>() {
 
-    var rows: ArrayList<HashMap<String, String>> = arrayListOf()
+    var rows: ArrayList<SelectRow> = arrayListOf()
+
+//    fun setSelected(selected: String) {
+//        this.selected = selected
+//    }
 
     override fun onBindViewHolder(holder: SingleSelectViewHolder, position: Int) {
 
+        val row: SelectRow = rows[position]
+        holder.title.text = row.title
+
+        if (selected == row.value) {
+            holder.selected.visibility = View.VISIBLE
+            holder.title.selected()
+        } else {
+            holder.selected.visibility = View.INVISIBLE
+            holder.title.unSelected()
+        }
+
+        holder.viewHolder.setOnClickListener {
+            list1CellDelegate?.cellClick(position)
+        }
+    }
+
+    override fun getItemCount(): Int {
+        return rows.size
+    }
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SingleSelectViewHolder {
+        val inflater = LayoutInflater.from(parent.context)
+        val viewHolder = inflater.inflate(R.layout.select_item, parent, false)
+
+        return SingleSelectViewHolder(viewHolder)
     }
 }
 
-class SingleSelectViewHolder(context: Context, viewHolder: View, list1CellDelegate: List1CellDelegate? = null): MyViewHolder(context, viewHolder, list1CellDelegate) {
+class SingleSelectViewHolder(val viewHolder: View): RecyclerView.ViewHolder(viewHolder) {
     val title: TextView = viewHolder.findViewById(R.id.title)
     val selected: ImageView = viewHolder.findViewById(R.id.selected)
 }
 
-class SingleSelectItem(val title: String, val value: String, val isSelected: Boolean, val rowClick:(idx: Int)->Unit): Item() {
-
-    override fun bind(viewHolder: com.xwray.groupie.kotlinandroidextensions.GroupieViewHolder, position: Int) {
-
-        viewHolder.title.text = title
-        viewHolder.container.setOnClickListener {
-            rowClick(position)
-        }
-
-        if (isSelected) {
-            viewHolder.selected.visibility = View.VISIBLE
-            viewHolder.title.selected()
-        } else {
-            viewHolder.selected.visibility = View.INVISIBLE
-            viewHolder.title.unSelected()
-        }
-    }
-
-    override fun getLayout() = R.layout.select_item
-}
+//class SingleSelectItem(val title: String, val value: String, val isSelected: Boolean, val rowClick:(idx: Int)->Unit): Item() {
+//
+//    override fun bind(viewHolder: com.xwray.groupie.kotlinandroidextensions.GroupieViewHolder, position: Int) {
+//
+//        viewHolder.title.text = title
+//        viewHolder.container.setOnClickListener {
+//            rowClick(position)
+//        }
+//
+//        if (isSelected) {
+//            viewHolder.selected.visibility = View.VISIBLE
+//            viewHolder.title.selected()
+//        } else {
+//            viewHolder.selected.visibility = View.INVISIBLE
+//            viewHolder.title.unSelected()
+//        }
+//    }
+//
+//    override fun getLayout() = R.layout.select_item
+//}

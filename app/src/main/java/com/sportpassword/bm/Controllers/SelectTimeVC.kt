@@ -1,7 +1,9 @@
 package com.sportpassword.bm.Controllers
 
 import android.os.Bundle
+import com.sportpassword.bm.Data.SelectRow
 import com.sportpassword.bm.Utilities.Global
+import com.sportpassword.bm.Utilities.noSec
 import kotlin.collections.ArrayList
 
 class SelectTimeVC : SingleSelectVC() {
@@ -16,20 +18,26 @@ class SelectTimeVC : SingleSelectVC() {
         super.onCreate(savedInstanceState)
 
         allTimes = Global.makeTimes(start, end, interval)
+        if (selected != null && selected!!.isNotEmpty()) {
+            selected = selected!!.noSec()
+            tableAdapter.selected = selected
+        }
 
-        rowsBridge()
-        notifyChanged()
+        tableRows = rowsBridge()
+        tableAdapter.rows = tableRows
+
+//        rowsBridge()
+//        notifyChanged()
     }
 
-    fun rowsBridge() {
+    fun rowsBridge(): ArrayList<SelectRow> {
 
-        if (rows.count() > 0) {
-            rows.clear()
-        } else {
-            rows = arrayListOf()
-        }
+        val selectRows: ArrayList<SelectRow> = arrayListOf()
+
         for(time in allTimes) {
-            rows.add(hashMapOf("title" to time, "value" to time))
+            selectRows.add(SelectRow(time, time))
         }
+
+        return selectRows
     }
 }

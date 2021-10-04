@@ -1,7 +1,9 @@
 package com.sportpassword.bm.Controllers
 
 import android.os.Bundle
+import com.sportpassword.bm.Data.SelectRow
 import com.sportpassword.bm.Models.Area
+import com.sportpassword.bm.Models.City
 import com.sportpassword.bm.Utilities.Global
 
 class SelectAreaVC: SingleSelectVC() {
@@ -23,24 +25,38 @@ class SelectAreaVC: SingleSelectVC() {
 //                notifyChanged()
 //            }
             val areas: ArrayList<Area> = Global.getAreasByCityID(city_id!!)
-            rowsBridge(areas)
-            notifyChanged()
+            tableRows = rowsBridge(areas)
+            tableAdapter.rows = tableRows
+//            notifyChanged()
         }
     }
 
-    fun rowsBridge(areas: ArrayList<Area>) {
+    fun rowsBridge(areas: ArrayList<Area>): ArrayList<SelectRow> {
 
-        if (rows.count() > 0) {
-            rows.clear()
-        } else {
-            rows = arrayListOf()
-        }
+        val selectRows: ArrayList<SelectRow> = arrayListOf()
+
         for(area in areas) {
-            val name = area.name
+            val title = area.name
             val id = area.id
-            rows!!.add(hashMapOf("title" to name, "value" to id.toString()))
+            selectRows.add(SelectRow(title, id.toString()))
         }
+
+        return selectRows
     }
+
+//    fun rowsBridge(areas: ArrayList<Area>) {
+//
+//        if (rows.count() > 0) {
+//            rows.clear()
+//        } else {
+//            rows = arrayListOf()
+//        }
+//        for(area in areas) {
+//            val name = area.name
+//            val id = area.id
+//            rows!!.add(hashMapOf("title" to name, "value" to id.toString()))
+//        }
+//    }
 
 
 //    override fun dealSelected() {

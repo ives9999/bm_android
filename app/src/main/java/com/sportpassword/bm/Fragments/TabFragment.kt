@@ -14,6 +14,8 @@ import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.sportpassword.bm.Adapters.SearchItemDelegate
 import com.sportpassword.bm.Controllers.*
+import com.sportpassword.bm.Data.SearchRow
+import com.sportpassword.bm.Data.SearchSection
 import com.sportpassword.bm.Models.*
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.DataService
@@ -78,6 +80,7 @@ open class TabFragment : Fragment(), List1CellDelegate, Serializable {
     var member_like: Boolean = false
 
     var searchRows: ArrayList<HashMap<String, String>> = arrayListOf()
+    var searchSections: ArrayList<SearchSection> = arrayListOf()
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -317,6 +320,18 @@ open class TabFragment : Fragment(), List1CellDelegate, Serializable {
 //        println(params)
     }
 
+    fun getDefinedRow1(key: String): SearchRow {
+        for (searchSection in searchSections) {
+            for (searchRow in searchSection.items) {
+                if (key == searchRow.key) {
+                    return searchRow
+                }
+            }
+        }
+
+        return SearchRow()
+    }
+
     fun getDefinedRow(key: String): HashMap<String, String> {
 
         for (row in searchRows) {
@@ -327,6 +342,16 @@ open class TabFragment : Fragment(), List1CellDelegate, Serializable {
 
         return hashMapOf()
     }
+
+//    fun replaceRows1(key: String, row: SearchRow) {
+//        for ((sectionIdx, searchSection) in searchSections.withIndex()) {
+//            for ((rowIdx, searchRow) in searchSection.items.withIndex()) {
+//                if (key == searchRow.key) {
+//                    searchSections[sectionIdx].items[rowIdx] = row
+//                }
+//            }
+//        }
+//    }
 
     fun replaceRows(key: String, row: HashMap<String, String>) {
         for ((idx, _row) in searchRows.withIndex()) {
