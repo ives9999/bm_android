@@ -1,15 +1,9 @@
 package com.sportpassword.bm.Controllers
 
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.util.AttributeSet
-import android.view.Menu
 import androidx.recyclerview.widget.RecyclerView
 import android.view.View
-import android.widget.ImageButton
-import android.widget.LinearLayout
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.sportpassword.bm.Adapters.GroupSection
@@ -17,7 +11,6 @@ import com.sportpassword.bm.Adapters.ListAdapter
 import com.sportpassword.bm.Form.BaseForm
 import com.sportpassword.bm.Form.FormItem.FormItem
 import com.sportpassword.bm.Models.*
-import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.MemberService
 import com.sportpassword.bm.Utilities.*
 import com.sportpassword.bm.member

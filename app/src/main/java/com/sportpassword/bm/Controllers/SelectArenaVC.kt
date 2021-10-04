@@ -3,29 +3,20 @@ package com.sportpassword.bm.Controllers
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import android.widget.TextView
-import androidx.recyclerview.widget.RecyclerView
+import com.sportpassword.bm.Data.SelectRow
 import com.sportpassword.bm.Models.ArenaTable
-import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.TeamService
 import com.sportpassword.bm.Utilities.ARENA_KEY
 import com.sportpassword.bm.Utilities.Global
-import com.xwray.groupie.GroupAdapter
-import com.xwray.groupie.kotlinandroidextensions.Item
-import com.xwray.groupie.GroupieViewHolder
-import kotlinx.android.synthetic.main.activity_single_select_vc.*
-import kotlinx.android.synthetic.main.select_item.*
-import kotlinx.android.synthetic.main.select_item.view.*
+import com.sportpassword.bm.Utilities.Loading
+import kotlinx.android.synthetic.main.mask.*
 
 class SelectArenaVC : SingleSelectVC() {
 
     var arenas1: ArrayList<ArenaTable>? = null
 
 //    val mAdapter: MyAdapter = MyAdapter()
-    val adapter1 = GroupAdapter<GroupieViewHolder>()
+//    val adapter1 = GroupAdapter<GroupieViewHolder>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -49,11 +40,13 @@ class SelectArenaVC : SingleSelectVC() {
 //            adapter.add(item)
 //        }
 
-        tableView.adapter = adapter
+//        tableView.adapter = adapter
 
         if (city_id != null) {
+            Loading.show(mask)
             TeamService.getArenaByCityID(this, city_id) { success ->
 
+                Loading.hide(mask)
                 if (success) {
                     arenas1 = TeamService.arenas
                     if (arenas1 != null) {
@@ -61,8 +54,11 @@ class SelectArenaVC : SingleSelectVC() {
 //                        mAdapter.updateList(rows)
 //                        mAdapter.notifyDataSetChanged()
 
-                        rowsBridge(arenas1!!)
-                        notifyChanged()
+                        tableRows = rowsBridge(arenas1!!)
+                        tableAdapter.rows = tableRows
+                        tableAdapter.notifyDataSetChanged()
+//                        tableView.adapter = tableAdapter
+//                        notifyChanged()
 
 //                        for (row in rows) {
 //                            val item = SingleSelectItem(row["title"]!!, row["value"]!!, false, {})
@@ -89,44 +85,43 @@ class SelectArenaVC : SingleSelectVC() {
         }
     }
 
-    fun rowsBridge(arenas: ArrayList<ArenaTable>) {
+    fun rowsBridge(arenas: ArrayList<ArenaTable>): ArrayList<SelectRow> {
 
-        if (rows.count() > 0) {
-            rows.clear()
-        } else {
-            rows = arrayListOf()
-        }
+        val selectRows: ArrayList<SelectRow> = arrayListOf()
+
         for(arena in arenas) {
-            val name = arena.name
+            val title = arena.name
             val id = arena.id
-            rows.add(hashMapOf("title" to name, "value" to id.toString()))
+            selectRows.add(SelectRow(title, id.toString()))
         }
+
+        return selectRows
     }
 
     override fun submit(idx: Int) {
 
-        if (idx >= rows.size) {
+        if (idx >= tableRows.size) {
             warningWithPrev("由於傳遞參數不正確，無法做選擇，請回上一頁重新進入")
         }
-        val row = rows[idx]
-        if (!row.containsKey("value")) {
+        val row = tableRows[idx]
+        if (row.value.isEmpty()) {
             warningWithPrev("由於傳遞參數不正確，無法做選擇，請回上一頁重新進入")
         }
 
         var cancel: Boolean = false
         if (selected != null && selected!!.isNotEmpty()) {
-            if (selected == row["value"]) {
+            if (selected == row.value) {
                 cancel = true
             }
         }
 
         //選擇其他的
         if (!cancel) {
-            selected = row["value"]
+            selected = row.value
             //dealSelected()
             val intent = Intent()
             intent.putExtra("key", key)
-            intent.putExtra("show", row["title"])
+            intent.putExtra("show", row.title)
             intent.putExtra("selected", selected)
             intent.putExtra("able_type", able_type)
             setResult(Activity.RESULT_OK, intent)
@@ -139,60 +134,60 @@ class SelectArenaVC : SingleSelectVC() {
     }
 }
 
-class MyItem(var title: String): Item() {
-
-    constructor(title: String, name: String) : this(title) {}
-
-    override fun bind(
-        viewHolder: com.xwray.groupie.kotlinandroidextensions.GroupieViewHolder,
-        position: Int
-    ) {
-        title = "aaa"
-        viewHolder.title.text = title
-    }
-
-    override fun getLayout(): Int {
-        return R.layout.select_item
-    }
-
-}
-
-class MyAdapter: RecyclerView.Adapter<MyAdapter.mViewHolder>() {
-
-    var unAssignList: ArrayList<HashMap<String, String>> = arrayListOf()
-
-    inner class mViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
-
-        val title: TextView = itemView.title
-
-        fun bind(item: HashMap<String, String>) {
-            title.text = item["title"]
-        }
-    }
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): mViewHolder {
-
-        val inflater = LayoutInflater.from(parent.context)
-        val layout = inflater.inflate(R.layout.select_item, parent, false)
-
-        return mViewHolder(layout)
-    }
-
-    override fun getItemCount(): Int {
-
-        return unAssignList.size
-    }
-
-    override fun onBindViewHolder(holder: mViewHolder, position: Int) {
-
-        holder.bind(unAssignList[position])
-    }
-
-    fun updateList(list: ArrayList<HashMap<String, String>>) {
-
-        unAssignList = list
-    }
-}
+//class MyItem(var title: String): Item() {
+//
+//    constructor(title: String, name: String) : this(title) {}
+//
+//    override fun bind(
+//        viewHolder: com.xwray.groupie.kotlinandroidextensions.GroupieViewHolder,
+//        position: Int
+//    ) {
+//        title = "aaa"
+//        viewHolder.title.text = title
+//    }
+//
+//    override fun getLayout(): Int {
+//        return R.layout.select_item
+//    }
+//
+//}
+//
+//class MyAdapter: RecyclerView.Adapter<MyAdapter.mViewHolder>() {
+//
+//    var unAssignList: ArrayList<HashMap<String, String>> = arrayListOf()
+//
+//    inner class mViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
+//
+//        val title: TextView = itemView.title
+//
+//        fun bind(item: HashMap<String, String>) {
+//            title.text = item["title"]
+//        }
+//    }
+//
+//    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): mViewHolder {
+//
+//        val inflater = LayoutInflater.from(parent.context)
+//        val layout = inflater.inflate(R.layout.select_item, parent, false)
+//
+//        return mViewHolder(layout)
+//    }
+//
+//    override fun getItemCount(): Int {
+//
+//        return unAssignList.size
+//    }
+//
+//    override fun onBindViewHolder(holder: mViewHolder, position: Int) {
+//
+//        holder.bind(unAssignList[position])
+//    }
+//
+//    fun updateList(list: ArrayList<HashMap<String, String>>) {
+//
+//        unAssignList = list
+//    }
+//}
 
 
 

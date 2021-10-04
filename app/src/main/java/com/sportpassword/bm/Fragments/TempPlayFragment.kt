@@ -479,23 +479,12 @@ class TempPlayFragment : TabFragment() {
         } else if (key == START_TIME_KEY || key == END_TIME_KEY) {
             mainActivity!!.toSelectTime(key, value, null, able_type)
         } else if (key == ARENA_KEY) {
-            for (teamSearchSection in searchSections) {
-                for (teamSearchRow in teamSearchSection.items) {
-                    if (teamSearchRow.key == CITY_KEY) {
-                        row = teamSearchRow
-                        break
-                    }
-                }
-            }
-//            row = getDefinedRow(CITY_KEY)
-            val city_id: Int = row.value.toInt()
-//            if (row.containsKey("value") && row["value"] != null && row["value"]!!.length > 0) {
-//                city_id = row["value"]!!.toInt()
-//            }
-            if (city_id != null && city_id > 0) {
+            row = getDefinedRow1(CITY_KEY)
+            if (row.value.isNotEmpty()) {
+                val city_id: Int = row.value.toInt()
                 mainActivity!!.toSelectArena(value, city_id, null, able_type)
             } else {
-                mainActivity!!.warning("請先選擇縣市")
+                mainActivity!!.warning("纖纖選擇縣市")
             }
         } else if (key == DEGREE_KEY) {
             mainActivity!!.toSelectDegree(value, null, able_type)
@@ -528,10 +517,10 @@ class TempPlayFragment : TabFragment() {
     override fun arenaSelected(selected: String, show: String) {
 
         val key: String = ARENA_KEY
-        val row = getDefinedRow(key)
-        row["value"] = selected
-        row["show"] = show
-        replaceRows(key, row)
+        val row = getDefinedRow1(key)
+        row.value = selected
+        row.show = show
+        searchAdapter.notifyDataSetChanged()
 //        generateSections()
 //        adapter.notifyDataSetChanged()
     }

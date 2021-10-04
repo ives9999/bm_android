@@ -1,7 +1,6 @@
 package com.sportpassword.bm.Controllers
 
 import android.app.Activity
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -11,17 +10,10 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.sportpassword.bm.Data.SelectRow
-import com.sportpassword.bm.Fragments.MoreViewHolder
-import com.sportpassword.bm.Fragments.MyAdapter
-import com.sportpassword.bm.Fragments.MyViewHolder
-import com.sportpassword.bm.Models.CoachTable
-import com.sportpassword.bm.Models.Table
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Utilities.selected
 import com.sportpassword.bm.Utilities.unSelected
-import com.xwray.groupie.kotlinandroidextensions.Item
 import kotlinx.android.synthetic.main.activity_single_select_vc.*
-import kotlinx.android.synthetic.main.select_item.*
 
 interface SingleSelectDelegate {
     fun singleSelected(key: String, selected: String)
@@ -88,7 +80,7 @@ open class SingleSelectVC : SelectVC() {
             warningWithPrev("由於傳遞參數不正確，無法做選擇，請回上一頁重新進入")
         }
         val row = tableRows[idx]
-        if (row.value.length == 0) {
+        if (row.value.isEmpty()) {
             warningWithPrev("由於傳遞參數不正確，無法做選擇，請回上一頁重新進入")
         }
 
