@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import com.sportpassword.bm.Data.SelectRow
 import com.sportpassword.bm.Utilities.DEGREE
 import com.sportpassword.bm.Utilities.DEGREE_KEY
 import com.sportpassword.bm.Utilities.Global
@@ -19,20 +20,20 @@ class SelectDegreeVC : MultiSelectVC() {
 
         setMyTitle("選擇程度")
 
-        rowsBridge()
-        notifyChanged()
+        tableRows = rowsBridge()
+        tableAdapter.rows = tableRows
+//        notifyChanged()
     }
 
-    fun rowsBridge() {
+    fun rowsBridge(): ArrayList<SelectRow> {
 
-        if (rows.count() > 0) {
-            rows.clear()
-        } else {
-            rows = arrayListOf()
-        }
+        val selectRows: ArrayList<SelectRow> = arrayListOf()
+
         for(degree in rows1) {
-            rows.add(hashMapOf("title" to degree.value, "value" to degree.toString()))
+            selectRows.add(SelectRow(degree.value, degree.toString()))
         }
+
+        return selectRows
     }
 
     override fun submit(view: View) {

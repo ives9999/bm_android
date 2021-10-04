@@ -13,10 +13,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.sportpassword.bm.Adapters.SearchItem
 import com.sportpassword.bm.Controllers.BaseActivity
-import com.sportpassword.bm.Fragments.ArenaFragment
-import com.sportpassword.bm.Fragments.CourseFragment
-import com.sportpassword.bm.Fragments.TabFragment
-import com.sportpassword.bm.Fragments.TempPlayFragment
+import com.sportpassword.bm.Data.SearchSection
+import com.sportpassword.bm.Fragments.*
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Utilities.getFragment
 import com.xwray.groupie.GroupAdapter
@@ -37,18 +35,20 @@ open class SearchPanel {
 
     var able_type: String? = null
 
-    lateinit var searchAdapter: GroupAdapter<GroupieViewHolder>
-    var searchRows: ArrayList<HashMap<String, String>> = arrayListOf()
+//    lateinit var searchAdapter: GroupAdapter<GroupieViewHolder>
+//    var searchRows: ArrayList<HashMap<String, String>> = arrayListOf()
+    lateinit var searchAdapter: SearchAdapter
+    var searchSections: ArrayList<SearchSection> = arrayListOf()
 
     var layerRightLeftPadding: Int = 40
     var layerTopPadding: Int = 100
     var layerBtnCount: Int = 2
 
-    fun addSearchLayer(context: Context, p: ViewGroup, able_type: String, searchRows: ArrayList<HashMap<String, String>>) {
+    fun addSearchLayer(context: Context, p: ViewGroup, able_type: String, searchSections: ArrayList<SearchSection>) {
         parent = p
         this.context = context
         this.able_type = able_type
-        this.searchRows = searchRows
+        this.searchSections = searchSections
 
         if (layerMask != null) {
             unmask()
@@ -94,14 +94,19 @@ open class SearchPanel {
         searchTableView.layoutManager = LinearLayoutManager(context)
         //searchTableView.backgroundColor = Color.RED
         searchTableView.backgroundColor = Color.TRANSPARENT
-        searchAdapter = GroupAdapter<GroupieViewHolder>()
-        searchAdapter.setOnItemClickListener { item, view ->
-            onClick(item)
-        }
-        val rows = generateSearchItems()
-        searchAdapter.addAll(rows)
 
+        val activity: BaseActivity = context!! as BaseActivity
+        searchAdapter = SearchAdapter(activity, R.layout.cell_section, activity)
         searchTableView.adapter = searchAdapter
+        searchAdapter
+//        searchAdapter = GroupAdapter<GroupieViewHolder>()
+//        searchAdapter.setOnItemClickListener { item, view ->
+//            onClick(item)
+//        }
+//        val rows = generateSearchItems()
+//        searchAdapter.addAll(rows)
+//
+//        searchTableView.adapter = searchAdapter
         layerBlackView!!.addView(searchTableView)
     }
 
@@ -277,33 +282,33 @@ open class SearchPanel {
         layerMask = null
     }
 
-    fun generateSearchItems(): ArrayList<SearchItem> {
-
-        val activity: BaseActivity = context!! as BaseActivity
-
-        val rows: ArrayList<SearchItem> = arrayListOf()
-        for (i in 0..searchRows.size-1) {
-            val row = searchRows[i] as HashMap<String, String>
-            val title = row.get("title")!!
-            var detail: String = ""
-            if (row.containsKey("detail")) {
-                detail = row.get("detail")!!
-            } else if (row.containsKey("show")) {
-                detail = row.get("show")!!
-            }
-            var bSwitch = false
-            if (row.containsKey("switch")) {
-                bSwitch = row.get("switch")!!.toBoolean()
-            }
-            val searchItem = SearchItem(title, detail, "", bSwitch, -1, i)
-            if (able_type == "team" || able_type == "course" || able_type == "arena") {
-                //searchItem.delegate = activity.getFragment()
-            } else {
-                searchItem.delegate = activity
-            }
-            rows.add(searchItem)
-        }
-
-        return rows
-    }
+//    fun generateSearchItems(): ArrayList<SearchItem> {
+//
+//        val activity: BaseActivity = context!! as BaseActivity
+//
+//        val rows: ArrayList<SearchItem> = arrayListOf()
+//        for (i in 0..searchRows.size-1) {
+//            val row = searchRows[i] as HashMap<String, String>
+//            val title = row.get("title")!!
+//            var detail: String = ""
+//            if (row.containsKey("detail")) {
+//                detail = row.get("detail")!!
+//            } else if (row.containsKey("show")) {
+//                detail = row.get("show")!!
+//            }
+//            var bSwitch = false
+//            if (row.containsKey("switch")) {
+//                bSwitch = row.get("switch")!!.toBoolean()
+//            }
+//            val searchItem = SearchItem(title, detail, "", bSwitch, -1, i)
+//            if (able_type == "team" || able_type == "course" || able_type == "arena") {
+//                //searchItem.delegate = activity.getFragment()
+//            } else {
+//                searchItem.delegate = activity
+//            }
+//            rows.add(searchItem)
+//        }
+//
+//        return rows
+//    }
 }

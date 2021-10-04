@@ -38,6 +38,7 @@ import com.sportpassword.bm.Adapters.SearchItem
 import com.sportpassword.bm.Adapters.SearchItemDelegate
 import com.sportpassword.bm.App
 import com.sportpassword.bm.*
+import com.sportpassword.bm.Data.SearchSection
 import com.sportpassword.bm.Fragments.*
 import com.sportpassword.bm.Models.*
 import com.sportpassword.bm.R
@@ -66,7 +67,7 @@ import kotlin.reflect.full.createType
 import kotlin.system.exitProcess
 
 open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, SearchItemDelegate,
-    SingleSelectDelegate, ToInterface, ImagePicker {
+    SingleSelectDelegate, ToInterface, ImagePicker, List1CellDelegate {
 
     var refreshLayout: SwipeRefreshLayout? = null
     protected lateinit var refreshListener: SwipeRefreshLayout.OnRefreshListener
@@ -112,6 +113,8 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
 
     //for search
     var searchRows: ArrayList<HashMap<String, String>> = arrayListOf()
+    var searchSections: ArrayList<SearchSection> = arrayListOf()
+
     var containerID: String = "constraintLayout"
     var citys: ArrayList<City> = arrayListOf()
     var citys_coach: ArrayList<City> = arrayListOf()
@@ -1083,41 +1086,41 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
     }
 
     ////// search panel start //////////////////////////////////////
-//    fun showSearchPanel(view: View) {
-//
-//        if (view.tag != null) {
-//            able_type = view.tag as String
-//        }
-//        when (able_type) {
-//            "team" -> {
-//                containerID = "course_container"
-//                val frag = getFragment() as TeamFragment
-//                searchRows = frag.searchRows
-//            }
-//            "course" -> {
-//                containerID = "course_container"
-//                val frag = getFragment() as CourseFragment
-//                searchRows = frag.searchRows
-//            }
-//            "arena" -> {
-//                containerID = "course_container"
-//                val frag = getFragment() as ArenaFragment
-//                searchRows = frag.searchRows
-//            }
-//            "coach", "teach", "store" -> {
-//                containerID = "constraintLayout"
-//            }
-//        }
-//
-//        //first add a mask
-//        val p: ConstraintLayout = getMyParent()
-//        //searchPanel.mask(this, p)
-//        searchPanel.addSearchLayer(this, p, able_type, searchRows)
-//        //mask()
-//
-//        //second add search view in mask
-//       // addSearchLayer(tag)
-//    }
+    fun showSearchPanel(view: View) {
+
+        if (view.tag != null) {
+            able_type = view.tag as String
+        }
+        when (able_type) {
+            "team" -> {
+                containerID = "course_container"
+                val frag = getFragment() as TempPlayFragment
+                searchSections = frag.searchSections
+            }
+            "course" -> {
+                containerID = "course_container"
+                val frag = getFragment() as CourseFragment
+                searchSections = frag.searchSections
+            }
+            "arena" -> {
+                containerID = "course_container"
+                val frag = getFragment() as ArenaFragment
+                searchSections = frag.searchSections
+            }
+            "coach", "teach", "store" -> {
+                containerID = "constraintLayout"
+            }
+        }
+
+        //first add a mask
+        val p: ConstraintLayout = getMyParent()
+        //searchPanel.mask(this, p)
+        searchPanel.addSearchLayer(this, p, able_type, searchSections)
+        //mask()
+
+        //second add search view in mask
+       // addSearchLayer(tag)
+    }
 
     ////////// for top bar cart icon pressed ///////////////////////////////////
     fun cartPressed(view: View) {

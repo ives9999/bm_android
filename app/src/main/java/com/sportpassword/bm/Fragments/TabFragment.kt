@@ -292,31 +292,35 @@ open class TabFragment : Fragment(), List1CellDelegate, Serializable {
     open fun prepareParams() {
         params.clear()
 
-        for (searchRow in searchRows) {
-//            var value_type: String? = null
-//            if (searchRow.containsKey("value_type")) {
-//                value_type = searchRow.get("value_type")
-//            }
-
-            var key: String? = null
-            if (searchRow.containsKey("key")) {
-                key = searchRow.get("key")!!
+        for (searchSection in searchSections) {
+            for (searchRow in searchSection.items) {
+                val key = searchRow.key
+                val value = searchRow.value
+                params[key] = value
             }
-
-            if (key == null) {
-                 continue
-            }
-
-            var value: String = ""
-            if (searchRow.containsKey("value")) {
-                value = searchRow.get("value")!!
-            }
-            if (value.isEmpty()) {
-                continue
-            }
-
-            params[key] = value
         }
+
+//        for (searchRow in searchRows) {
+//
+//            var key: String? = null
+//            if (searchRow.containsKey("key")) {
+//                key = searchRow.get("key")!!
+//            }
+//
+//            if (key == null) {
+//                 continue
+//            }
+//
+//            var value: String = ""
+//            if (searchRow.containsKey("value")) {
+//                value = searchRow.get("value")!!
+//            }
+//            if (value.isEmpty()) {
+//                continue
+//            }
+//
+//            params[key] = value
+//        }
 //        println(params)
     }
 
@@ -380,8 +384,8 @@ open class TabFragment : Fragment(), List1CellDelegate, Serializable {
         row["show"] = show
         replaceRows(key, row)
 
-        val rows = mainActivity!!.searchPanel.generateSearchItems()
-        mainActivity!!.searchPanel.searchAdapter.update(rows)
+//        val rows = mainActivity!!.searchPanel.generateSearchItems()
+//        mainActivity!!.searchPanel.searchAdapter.update(rows)
     }
 
     open fun arenaSelected(selected: String, show: String) {
@@ -391,7 +395,7 @@ open class TabFragment : Fragment(), List1CellDelegate, Serializable {
         row["value"] = selected
         row["show"] = show
         replaceRows(key, row)
-        updateAdapter()
+//        updateAdapter()
     }
 
     open fun degreeSelected(selected: String, show: String) {
@@ -400,13 +404,13 @@ open class TabFragment : Fragment(), List1CellDelegate, Serializable {
         row["value"] = selected
         row["show"] = show
         replaceRows(key, row)
-        updateAdapter()
+//        updateAdapter()
     }
 
-    protected fun updateAdapter() {
-        val rows =  mainActivity!!.generateSearchItems(able_type)
-        mainActivity!!.searchPanel.searchAdapter.update(rows)
-    }
+//    protected fun updateAdapter() {
+//        val rows =  mainActivity!!.generateSearchItems(able_type)
+//        mainActivity!!.searchPanel.searchAdapter.update(rows)
+//    }
 
     override fun cellClick(row: Table) {
         val t = row::class

@@ -22,7 +22,7 @@ import com.xwray.groupie.kotlinandroidextensions.Item
 import kotlinx.android.synthetic.main.mask.*
 import kotlin.reflect.KClass
 
-abstract class MyTableVC : BaseActivity(), List1CellDelegate {
+abstract class MyTableVC : BaseActivity() {
 
     var tables: Tables? = null
 
@@ -545,11 +545,11 @@ abstract class MyTableVC : BaseActivity(), List1CellDelegate {
         return show
     }
 
-    private fun updateAdapter() {
-        val rows = generateSearchItems(able_type)
-        searchPanel.searchAdapter.update(rows)
-
-    }
+//    private fun updateAdapter() {
+//        val rows = generateSearchItems(able_type)
+//        searchPanel.searchAdapter.update(rows)
+//
+//    }
 
     override fun singleSelected(key: String, selected: String) {
 
@@ -565,7 +565,7 @@ abstract class MyTableVC : BaseActivity(), List1CellDelegate {
         row["show"] = show
         replaceRows(key, row)
 
-        updateAdapter()
+        //updateAdapter()
     }
 
     override fun arenaSelected(selected: String, show: String) {
@@ -576,7 +576,7 @@ abstract class MyTableVC : BaseActivity(), List1CellDelegate {
         row["show"] = show
         replaceRows(key, row)
 
-        updateAdapter()
+        //updateAdapter()
     }
 
     override fun textChanged(str: String) {

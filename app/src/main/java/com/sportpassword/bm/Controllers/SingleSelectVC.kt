@@ -148,10 +148,6 @@ class SingleSelectAdapter(var selected: String?, val list1CellDelegate: List1Cel
 
     var rows: ArrayList<SelectRow> = arrayListOf()
 
-//    fun setSelected(selected: String) {
-//        this.selected = selected
-//    }
-
     override fun onBindViewHolder(holder: SingleSelectViewHolder, position: Int) {
 
         val row: SelectRow = rows[position]

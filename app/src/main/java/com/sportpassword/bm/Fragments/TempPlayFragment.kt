@@ -63,7 +63,7 @@ class TempPlayFragment : TabFragment() {
 
     var mysTable: TeamsTable? = null
     lateinit var tableAdapter: TeamAdapter
-    lateinit var searchAdapter: TeamSearchAdapter
+    lateinit var searchAdapter: SearchAdapter
     
 //    var searchSections: ArrayList<Section> = arrayListOf()
     var mySections: ArrayList<HashMap<String, Any>> = arrayListOf()
@@ -204,7 +204,7 @@ class TempPlayFragment : TabFragment() {
         tableAdapter = TeamAdapter(R.layout.team_list_cell, this)
         recyclerView.adapter = tableAdapter
 
-        searchAdapter = TeamSearchAdapter(mainActivity!!, R.layout.cell_section, this)
+        searchAdapter = SearchAdapter(mainActivity!!, R.layout.cell_section, this)
         searchSections = initRows()
         searchAdapter.setMyTableSection(searchSections)
 
@@ -527,10 +527,10 @@ class TempPlayFragment : TabFragment() {
 
     override fun degreeSelected(selected: String, show: String) {
         val key: String = DEGREE_KEY
-        val row = getDefinedRow(key)
-        row["value"] = selected
-        row["show"] = show
-        replaceRows(key, row)
+        val row = getDefinedRow1(key)
+        row.value = selected
+        row.show = show
+        searchAdapter.notifyDataSetChanged()
 //        generateSections()
 //        adapter.notifyDataSetChanged()
     }
@@ -984,7 +984,7 @@ class TeamViewHolder(context: Context, viewHolder: View, list1CellDelegate: List
     }
 }
 
-class TeamSearchAdapter(val context: Context, private val resource: Int, var delegate: List1CellDelegate): RecyclerView.Adapter<SearchSectionViewHolder>() {
+class SearchAdapter(val context: Context, private val resource: Int, var delegate: List1CellDelegate): RecyclerView.Adapter<SearchSectionViewHolder>() {
     private var tableSections: ArrayList<SearchSection> = arrayListOf()
     //lateinit var adapter: TeamSearchItemAdapter
 

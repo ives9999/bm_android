@@ -3,7 +3,13 @@ package com.sportpassword.bm.Controllers
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.TextView
+import androidx.recyclerview.widget.RecyclerView
+import com.sportpassword.bm.Data.SelectRow
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Utilities.selected
 import com.sportpassword.bm.Utilities.unSelected
@@ -14,6 +20,7 @@ import kotlinx.android.synthetic.main.select_item.*
 open class MultiSelectVC : SelectVC() {
 
     var selecteds: ArrayList<String> = arrayListOf()
+    lateinit var tableAdapter: MultiSelectAdapter
 
     /*
     rows is [
@@ -47,58 +54,65 @@ open class MultiSelectVC : SelectVC() {
 
 
         recyclerView = tableView
-        initAdapter()
+        tableAdapter = MultiSelectAdapter(selecteds, this)
+        recyclerView.adapter = tableAdapter
+//        initAdapter()
 
-        init()
+//        init()
     }
 
-    fun rowClick(i: Int) {
-        val row = rows[i]
+    override fun cellClick(idx: Int) {
+        val row = tableRows[idx]
         var isExist = false
         var at = 0
-        for ((idx, str) in selecteds.withIndex()) {
-            if (row["value"] == str) {
+        for ((i, str) in selecteds.withIndex()) {
+            if (row.value == str) {
                 isExist = true
-                at = idx
+                at = i
                 break
             }
         }
         if (isExist) {
             selecteds.removeAt(at)
+            row.isSelected = false
         } else {
-            selecteds.add(row["value"]!!)
+            selecteds.add(row.value)
+            row.isSelected = true
         }
+        tableAdapter.rows = tableRows
+        tableAdapter.selecteds = selecteds
+        tableAdapter.notifyDataSetChanged()
     }
 
-    override fun generateItems(): ArrayList<Item> {
-
-        val items: ArrayList<Item> = arrayListOf()
-
-        for (row in rows) {
-            var title: String? = null
-            if (row.containsKey("title")) {
-                title = row.get("title")!!
-            }
-            var value: String? = null
-            if (row.containsKey("value")) {
-                value = row.get("value")!!
-            }
-            var isSelected = false
-            for (selected in selecteds) {
-                if (value == selected) {
-                    isSelected = true
-                    break
-                }
-            }
-
-            if (title != null && value != null) {
-                val item = MultiSelectItem(title, value, isSelected, this)
-                items.add(item)
-            }
-        }
-
-        return items
-    }
+//    override fun generateItems(): ArrayList<Item> {
+//
+//        val items: ArrayList<Item> = arrayListOf()
+//
+//        for (row in rows) {
+//            var title: String? = null
+//            if (row.containsKey("title")) {
+//                title = row.get("title")!!
+//            }
+//            var value: String? = null
+//            if (row.containsKey("value")) {
+//                value = row.get("value")!!
+//            }
+//            var isSelected = false
+//            for (selected in selecteds) {
+//                if (value == selected) {
+//                    isSelected = true
+//                    break
+//                }
+//            }
+//
+//            if (title != null && value != null) {
+//                val item = MultiSelectItem(title, value, isSelected, this)
+//                items.add(item)
+//            }
+//        }
+//
+//        return items
+//    }
 
 
 
@@ -114,31 +128,70 @@ open class MultiSelectVC : SelectVC() {
     }
 }
 
-class MultiSelectItem(val title: String, val value: String, val isSelected: Boolean, val delegate: MultiSelectVC): Item() {
+class MultiSelectAdapter(var selecteds: ArrayList<String>?, val list1CellDelegate: List1CellDelegate?): RecyclerView.Adapter<MulitSelectViewHolder>() {
 
+    var rows: ArrayList<SelectRow> = arrayListOf()
 
-    override fun bind(viewHolder: com.xwray.groupie.kotlinandroidextensions.GroupieViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: MulitSelectViewHolder, position: Int) {
 
-        viewHolder.title.text = title
-        viewHolder.container.setOnClickListener {
-            if (viewHolder.selected.visibility == View.VISIBLE) {
-                viewHolder.selected.visibility = View.INVISIBLE
-                viewHolder.title.unSelected()
-            } else {
-                viewHolder.selected.visibility = View.VISIBLE
-                viewHolder.title.selected()
-            }
-            delegate.rowClick(position)
+        val row: SelectRow = rows[position]
+        holder.title.text = row.title
+
+        if (row.isSelected) {
+            holder.selected.visibility = View.VISIBLE
+            holder.title.selected()
+        } else {
+            holder.selected.visibility = View.INVISIBLE
+            holder.title.unSelected()
         }
 
-        if (isSelected) {
-            viewHolder.selected.visibility = View.VISIBLE
-            viewHolder.title.selected()
-        } else {
-            viewHolder.selected.visibility = View.INVISIBLE
-            viewHolder.title.unSelected()
+        holder.viewHolder.setOnClickListener {
+            list1CellDelegate?.cellClick(position)
         }
     }
 
-    override fun getLayout() = R.layout.select_item
+    override fun getItemCount(): Int {
+        return rows.size
+    }
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MulitSelectViewHolder {
+        val inflater = LayoutInflater.from(parent.context)
+        val viewHolder = inflater.inflate(R.layout.select_item, parent, false)
+
+        return MulitSelectViewHolder(viewHolder)
+    }
 }
+
+class MulitSelectViewHolder(val viewHolder: View): RecyclerView.ViewHolder(viewHolder) {
+    val title: TextView = viewHolder.findViewById(R.id.title)
+    val selected: ImageView = viewHolder.findViewById(R.id.selected)
+}
+
+//class MultiSelectItem(val title: String, val value: String, val isSelected: Boolean, val delegate: MultiSelectVC): Item() {
+//
+//
+//    override fun bind(viewHolder: com.xwray.groupie.kotlinandroidextensions.GroupieViewHolder, position: Int) {
+//
+//        viewHolder.title.text = title
+//        viewHolder.container.setOnClickListener {
+//            if (viewHolder.selected.visibility == View.VISIBLE) {
+//                viewHolder.selected.visibility = View.INVISIBLE
+//                viewHolder.title.unSelected()
+//            } else {
+//                viewHolder.selected.visibility = View.VISIBLE
+//                viewHolder.title.selected()
+//            }
+//            delegate.rowClick(position)
+//        }
+//
+//        if (isSelected) {
+//            viewHolder.selected.visibility = View.VISIBLE
+//            viewHolder.title.selected()
+//        } else {
+//            viewHolder.selected.visibility = View.INVISIBLE
+//            viewHolder.title.unSelected()
+//        }
+//    }
+//
+//    override fun getLayout() = R.layout.select_item
+//}
