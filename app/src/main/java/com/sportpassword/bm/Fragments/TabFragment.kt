@@ -84,7 +84,7 @@ open class TabFragment : Fragment(), List1CellDelegate, Serializable {
     var member_like: Boolean = false
 
     var searchPanel: SearchPanel = SearchPanel()
-    lateinit var searchAdapter: SearchAdapter
+    lateinit var searchSectionAdapter: SearchSectionAdapter
     var searchRows: ArrayList<HashMap<String, String>> = arrayListOf()
     var searchSections: ArrayList<SearchSection> = arrayListOf()
 
@@ -293,9 +293,13 @@ open class TabFragment : Fragment(), List1CellDelegate, Serializable {
 //        listAdapter.notifyDataSetChanged()
 //    }
 
-    fun showSearchPanel() {
+    open fun showSearchPanel() {
+        searchSectionAdapter = SearchSectionAdapter(mainActivity!!, R.layout.cell_section, this)
+        searchSections = initSectionRows()
+        searchSectionAdapter.setMyTableSection(searchSections)
+
         val p: ConstraintLayout = mainActivity!!.getMyParent()
-        searchPanel.addSearchLayer(mainActivity!!, p, able_type, searchSections)
+        searchPanel.addSearchLayer(mainActivity!!, p, able_type, searchSectionAdapter)
     }
 
     open fun prepare(sectionIdx: Int, rowIdx: Int) {
@@ -440,8 +444,8 @@ open class TabFragment : Fragment(), List1CellDelegate, Serializable {
 
     private fun toggleSectionOnOff() {
         searchSections = updateSectionRow()
-        searchAdapter.setMyTableSection(searchSections)
-        searchAdapter.notifyDataSetChanged()
+        searchSectionAdapter.setMyTableSection(searchSections)
+        searchSectionAdapter.notifyDataSetChanged()
     }
 
     fun singleSelected(key: String, selected: String) {
@@ -462,8 +466,8 @@ open class TabFragment : Fragment(), List1CellDelegate, Serializable {
 
         row.show = show
         //searchAdapter.notifyItemChanged(0)
-        if (searchAdapter != null) {
-            searchAdapter.notifyDataSetChanged()
+        if (searchSectionAdapter != null) {
+            searchSectionAdapter.notifyDataSetChanged()
         } else {
             val i = 6
         }
@@ -801,6 +805,51 @@ open class MyViewHolder(val context: Context, val viewHolder: View, val list1Cel
     }
 }
 
+class SearchSectionAdapter(val context: Context, private val resource: Int, var delegate: List1CellDelegate): RecyclerView.Adapter<SearchSectionViewHolder>() {
+    private var tableSections: ArrayList<SearchSection> = arrayListOf()
+    //lateinit var adapter: TeamSearchItemAdapter
+
+    fun setMyTableSection(tableSections: ArrayList<SearchSection>) {
+        this.tableSections = tableSections
+    }
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SearchSectionViewHolder {
+        val inflater = LayoutInflater.from(parent.context)
+        val viewHolder = inflater.inflate(resource, parent, false)
+
+        return SearchSectionViewHolder(viewHolder)
+
+    }
+
+    override fun onBindViewHolder(holder: SearchSectionViewHolder, position: Int) {
+        val section: SearchSection = tableSections[position]
+        holder.titleLbl.text = section.title
+
+        val tableSection: SearchSection = tableSections[position]
+        var iconID: Int = 0
+        if (tableSection.isExpanded) {
+            iconID = context.resources.getIdentifier("to_down", "drawable", context.packageName)
+        } else {
+            iconID = context.resources.getIdentifier("to_right", "drawable", context.packageName)
+        }
+        holder.greater.setImageResource(iconID)
+
+        val items: ArrayList<SearchRow> = tableSections[position].items
+        val adapter =
+            SearchItemAdapter(context, position, items, delegate)
+//            holder.recyclerView.setHasFixedSize(true)
+        holder.recyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+        holder.recyclerView.adapter = adapter
+
+        holder.greater.setOnClickListener {
+            delegate.handleSectionExpanded(position)
+        }
+    }
+
+    override fun getItemCount(): Int {
+        return tableSections.size
+    }
+}
 
 class SearchSectionViewHolder(val viewHolder: View): RecyclerView.ViewHolder(viewHolder) {
 

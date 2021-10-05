@@ -37,18 +37,18 @@ open class SearchPanel {
 
 //    lateinit var searchAdapter: GroupAdapter<GroupieViewHolder>
 //    var searchRows: ArrayList<HashMap<String, String>> = arrayListOf()
-    lateinit var searchAdapter: SearchAdapter
-    var searchSections: ArrayList<SearchSection> = arrayListOf()
+    lateinit var searchSectionAdapter: SearchSectionAdapter
+//    var searchSections: ArrayList<SearchSection> = arrayListOf()
 
     var layerRightLeftPadding: Int = 40
     var layerTopPadding: Int = 100
     var layerBtnCount: Int = 2
 
-    fun addSearchLayer(context: Context, p: ViewGroup, able_type: String, searchSections: ArrayList<SearchSection>) {
+    fun addSearchLayer(context: Context, p: ViewGroup, able_type: String, searchSectionAdapter: SearchSectionAdapter) {
         parent = p
         this.context = context
         this.able_type = able_type
-        this.searchSections = searchSections
+        this.searchSectionAdapter = searchSectionAdapter
 
         if (layerMask != null) {
             unmask()
@@ -96,9 +96,7 @@ open class SearchPanel {
         searchTableView.backgroundColor = Color.TRANSPARENT
 
         val activity: BaseActivity = context!! as BaseActivity
-        searchAdapter = SearchAdapter(activity, R.layout.cell_section, activity)
-        searchAdapter.setMyTableSection(searchSections)
-        searchTableView.adapter = searchAdapter
+        searchTableView.adapter = searchSectionAdapter
 
 //        searchAdapter = GroupAdapter<GroupieViewHolder>()
 //        searchAdapter.setOnItemClickListener { item, view ->

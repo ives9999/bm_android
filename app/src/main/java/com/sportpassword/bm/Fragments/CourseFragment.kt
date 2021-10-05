@@ -37,8 +37,6 @@ class CourseFragment : TabFragment() {
 
         dataService = CourseService
 
-        searchSections = initSectionRows()
-
         //initAdapter(false)
 //        adapter = GroupAdapter()
 //        adapter.setOnItemClickListener { item, view ->

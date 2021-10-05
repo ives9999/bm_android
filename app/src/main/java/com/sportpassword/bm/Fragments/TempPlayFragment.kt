@@ -203,9 +203,9 @@ class TempPlayFragment : TabFragment() {
         tableAdapter = TeamAdapter(R.layout.team_list_cell, this)
         recyclerView.adapter = tableAdapter
 
-        searchAdapter = SearchAdapter(mainActivity!!, R.layout.cell_section, this)
+        searchSectionAdapter = SearchSectionAdapter(mainActivity!!, R.layout.cell_section, this)
         searchSections = initSectionRows()
-        searchAdapter.setMyTableSection(searchSections)
+        searchSectionAdapter.setMyTableSection(searchSections)
 
         member_like = true
         refresh()
@@ -262,7 +262,7 @@ class TempPlayFragment : TabFragment() {
                     1-> {
                         footer.visibility = View.VISIBLE
                         remain.visibility = View.VISIBLE
-                        recyclerView.adapter = searchAdapter
+                        recyclerView.adapter = searchSectionAdapter
                         //generateSections()
                     }
                     0-> {
@@ -450,7 +450,7 @@ class TempPlayFragment : TabFragment() {
         val row = getDefinedRow1(key)
         row.value = selected
         row.show = show
-        searchAdapter.notifyDataSetChanged()
+        searchSectionAdapter.notifyDataSetChanged()
 //        generateSections()
 //        adapter.notifyDataSetChanged()
     }
@@ -460,7 +460,7 @@ class TempPlayFragment : TabFragment() {
         val row = getDefinedRow1(key)
         row.value = selected
         row.show = show
-        searchAdapter.notifyDataSetChanged()
+        searchSectionAdapter.notifyDataSetChanged()
 //        generateSections()
 //        adapter.notifyDataSetChanged()
     }
@@ -589,8 +589,8 @@ class TempPlayFragment : TabFragment() {
         searchSections[sectionIdx].items[rowIdx].value = ""
         searchSections[sectionIdx].items[rowIdx].show = ""
         searchSections = updateSectionRow()
-        searchAdapter.setMyTableSection(searchSections)
-        searchAdapter.notifyDataSetChanged()
+        searchSectionAdapter.setMyTableSection(searchSections)
+        searchSectionAdapter.notifyDataSetChanged()
     }
 
 //    private fun getIdxFromKey(key: String): Int {
@@ -892,52 +892,6 @@ class TeamViewHolder(context: Context, viewHolder: View, list1CellDelegate: List
 
         viewHolder.temp_quantityLbl.text = row.temp_quantity_show
         viewHolder.signup_countLbl.text = row.temp_signup_count_show
-    }
-}
-
-class SearchAdapter(val context: Context, private val resource: Int, var delegate: List1CellDelegate): RecyclerView.Adapter<SearchSectionViewHolder>() {
-    private var tableSections: ArrayList<SearchSection> = arrayListOf()
-    //lateinit var adapter: TeamSearchItemAdapter
-
-    fun setMyTableSection(tableSections: ArrayList<SearchSection>) {
-        this.tableSections = tableSections
-    }
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SearchSectionViewHolder {
-        val inflater = LayoutInflater.from(parent.context)
-        val viewHolder = inflater.inflate(resource, parent, false)
-
-        return SearchSectionViewHolder(viewHolder)
-
-    }
-
-    override fun onBindViewHolder(holder: SearchSectionViewHolder, position: Int) {
-        val section: SearchSection = tableSections[position]
-        holder.titleLbl.text = section.title
-
-        val tableSection: SearchSection = tableSections[position]
-        var iconID: Int = 0
-        if (tableSection.isExpanded) {
-            iconID = context.resources.getIdentifier("to_down", "drawable", context.packageName)
-        } else {
-            iconID = context.resources.getIdentifier("to_right", "drawable", context.packageName)
-        }
-        holder.greater.setImageResource(iconID)
-
-        val items: ArrayList<SearchRow> = tableSections[position].items
-        val adapter =
-            SearchItemAdapter(context, position, items, delegate)
-//            holder.recyclerView.setHasFixedSize(true)
-        holder.recyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
-        holder.recyclerView.adapter = adapter
-
-        holder.greater.setOnClickListener {
-            delegate.handleSectionExpanded(position)
-        }
-    }
-
-    override fun getItemCount(): Int {
-        return tableSections.size
     }
 }
 
