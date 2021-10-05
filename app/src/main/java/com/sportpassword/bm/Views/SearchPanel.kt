@@ -97,8 +97,9 @@ open class SearchPanel {
 
         val activity: BaseActivity = context!! as BaseActivity
         searchAdapter = SearchAdapter(activity, R.layout.cell_section, activity)
+        searchAdapter.setMyTableSection(searchSections)
         searchTableView.adapter = searchAdapter
-        searchAdapter
+
 //        searchAdapter = GroupAdapter<GroupieViewHolder>()
 //        searchAdapter.setOnItemClickListener { item, view ->
 //            onClick(item)

@@ -86,7 +86,7 @@ open class MemberFragment: TabFragment() {
     }
 
     private fun toggleSectionOnOff() {
-        memberSections = updateSectionRow()
+        memberSections = updateSectionRow1()
         tableSectionAdapter.setMyTableSection(memberSections)
         tableSectionAdapter.notifyDataSetChanged()
     }
@@ -133,7 +133,7 @@ open class MemberFragment: TabFragment() {
                 if (success) {
                     val table = jsonToModel<MemberTable>(MemberService.jsonString)
                     table?.toSession(mainActivity!!, true)
-                    memberSections = updateSectionRow()
+                    memberSections = updateSectionRow1()
                     tableSectionAdapter.setMyTableSection(memberSections)
                     tableSectionAdapter.notifyDataSetChanged()
                     loginout()
@@ -300,7 +300,7 @@ open class MemberFragment: TabFragment() {
         return sections
     }
 
-    private fun updateSectionRow(): ArrayList<MemberSection> {
+    private fun updateSectionRow1(): ArrayList<MemberSection> {
         val sections: ArrayList<MemberSection> = arrayListOf()
         for ((idx, memberSection) in memberSections.withIndex()) {
             val isExpanded: Boolean = memberSection.isExpanded

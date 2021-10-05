@@ -4,15 +4,18 @@ package com.sportpassword.bm.Fragments
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.*
+import android.widget.EditText
 import androidx.fragment.app.Fragment
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import androidx.recyclerview.widget.RecyclerView
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.sportpassword.bm.Adapters.SearchItemDelegate
 import com.sportpassword.bm.Controllers.*
 import com.sportpassword.bm.Data.SearchRow
 import com.sportpassword.bm.Data.SearchSection
@@ -21,6 +24,7 @@ import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.DataService
 import com.sportpassword.bm.Services.MemberService
 import com.sportpassword.bm.Utilities.*
+import com.sportpassword.bm.Views.SearchPanel
 import com.sportpassword.bm.member
 import com.squareup.picasso.Picasso
 import com.xwray.groupie.Section
@@ -79,6 +83,8 @@ open class TabFragment : Fragment(), List1CellDelegate, Serializable {
     var able_type: String = "course"
     var member_like: Boolean = false
 
+    var searchPanel: SearchPanel = SearchPanel()
+    lateinit var searchAdapter: SearchAdapter
     var searchRows: ArrayList<HashMap<String, String>> = arrayListOf()
     var searchSections: ArrayList<SearchSection> = arrayListOf()
 
@@ -287,7 +293,55 @@ open class TabFragment : Fragment(), List1CellDelegate, Serializable {
 //        listAdapter.notifyDataSetChanged()
 //    }
 
-    //open fun prepare(idx: Int) {}
+    fun showSearchPanel() {
+        val p: ConstraintLayout = mainActivity!!.getMyParent()
+        searchPanel.addSearchLayer(mainActivity!!, p, able_type, searchSections)
+    }
+
+    open fun prepare(sectionIdx: Int, rowIdx: Int) {
+        //        var idx = 0
+//        if (section == 0) {
+//            idx = row
+//        } else {
+//            for (i in 0..section-1) {
+//                val tmps: ArrayList<String> = mySections[i]["key"] as ArrayList<String>
+//                idx += tmps.size
+//            }
+//            idx += row
+//        }
+
+        val section = searchSections[sectionIdx]
+        var row = section.items[rowIdx]
+
+//        var row = searchRows.get(idx)
+//        var key: String = ""
+//        if (row.containsKey("key")) {
+//            key = row["key"]!!
+//        }
+
+        val key: String = row.key
+        val value: String = row.value
+//        if (row.containsKey("value")) {
+//            value = row["value"]!!
+//        }
+        if (key == CITY_KEY) {
+            mainActivity!!.toSelectCity(value, null, able_type)
+        } else if (key == WEEKDAY_KEY) {
+            mainActivity!!.toSelectWeekday(value, null, able_type)
+        } else if (key == START_TIME_KEY || key == END_TIME_KEY) {
+            mainActivity!!.toSelectTime(key, value, null, able_type)
+        } else if (key == ARENA_KEY) {
+            row = getDefinedRow1(CITY_KEY)
+            if (row.value.isNotEmpty()) {
+                val city_id: Int = row.value.toInt()
+                mainActivity!!.toSelectArena(value, city_id, null, able_type)
+            } else {
+                mainActivity!!.warning("纖纖選擇縣市")
+            }
+        } else if (key == DEGREE_KEY) {
+            mainActivity!!.toSelectDegree(value, null, able_type)
+        }
+    }
 
     open fun prepareParams() {
         params.clear()
@@ -366,26 +420,53 @@ open class TabFragment : Fragment(), List1CellDelegate, Serializable {
         }
     }
 
-    open fun singleSelected(key: String, selected: String) {
+    open fun initSectionRows(): ArrayList<SearchSection> {
 
-        val row = getDefinedRow(key)
+        return arrayListOf()
+    }
+
+    open fun updateSectionRow(): ArrayList<SearchSection> {
+        return arrayListOf()
+    }
+
+    override fun handleSectionExpanded(idx: Int) {
+        //println(idx)
+        val teamSearchSection = searchSections[idx]
+        var isExpanded: Boolean = teamSearchSection.isExpanded
+        isExpanded = !isExpanded
+        searchSections[idx].isExpanded = isExpanded
+        toggleSectionOnOff()
+    }
+
+    private fun toggleSectionOnOff() {
+        searchSections = updateSectionRow()
+        searchAdapter.setMyTableSection(searchSections)
+        searchAdapter.notifyDataSetChanged()
+    }
+
+    fun singleSelected(key: String, selected: String) {
+
+        val row = getDefinedRow1(key)
         var show = ""
+
         if (key == START_TIME_KEY || key == END_TIME_KEY) {
-            row["value"] = selected
+            row.value = selected
             show = selected.noSec()
         } else if (key == CITY_KEY || key == AREA_KEY) {
-            row["value"] = selected
+            row.value = selected
             show = Global.zoneIDToName(selected.toInt())
         } else if (key == WEEKDAY_KEY) {
-            row["value"] = selected
+            row.value = selected
             show = WEEKDAY.intToString(selected.toInt())
         }
 
-        row["show"] = show
-        replaceRows(key, row)
-
-//        val rows = mainActivity!!.searchPanel.generateSearchItems()
-//        mainActivity!!.searchPanel.searchAdapter.update(rows)
+        row.show = show
+        //searchAdapter.notifyItemChanged(0)
+        if (searchAdapter != null) {
+            searchAdapter.notifyDataSetChanged()
+        } else {
+            val i = 6
+        }
     }
 
     open fun arenaSelected(selected: String, show: String) {
@@ -419,6 +500,10 @@ open class TabFragment : Fragment(), List1CellDelegate, Serializable {
         } else if (t == ArenaTable::class) {
             mainActivity!!.toShowArena(row.token)
         }
+    }
+
+    override fun cellClick(sectionIdx: Int, rowIdx: Int) {
+        prepare(sectionIdx, rowIdx)
     }
 
     override fun cellRefresh() {
@@ -714,6 +799,74 @@ open class MyViewHolder(val context: Context, val viewHolder: View, val list1Cel
             viewHolder.likeIcon.setImage("like")
         }
     }
+}
+
+
+class SearchSectionViewHolder(val viewHolder: View): RecyclerView.ViewHolder(viewHolder) {
+
+    var titleLbl: TextView = viewHolder.findViewById(R.id.titleLbl)
+    var greater: ImageView = viewHolder.findViewById(R.id.greater)
+    var recyclerView: RecyclerView = viewHolder.findViewById(R.id.recyclerView)
+}
+
+class SearchItemAdapter(val context: Context, private val sectionIdx: Int, private val tableRows: ArrayList<SearchRow>, var delegate: List1CellDelegate): RecyclerView.Adapter<SearchItemViewHolder>() {
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SearchItemViewHolder {
+        val inflater = LayoutInflater.from(parent.context)
+        val viewHolder = inflater.inflate(R.layout.search_row_item, parent, false)
+
+        return SearchItemViewHolder(viewHolder)
+    }
+
+    override fun onBindViewHolder(holder: SearchItemViewHolder, position: Int) {
+        val row: SearchRow = tableRows[position]
+        holder.title.text = row.title
+        holder.show.text = row.show
+
+        val cell = row.cell
+        if (cell == "textField") {
+            holder.show.visibility = View.INVISIBLE
+            holder.greater.visibility = View.INVISIBLE
+            holder.keyword.visibility = View.VISIBLE
+            if (row.show.length > 0) {
+                holder.keyword.setText(row.show)
+            }
+            holder.keyword.addTextChangedListener(object: TextWatcher {
+                override fun afterTextChanged(p0: Editable?) {
+                }
+
+                override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                }
+
+                override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                    delegate.cellTextChanged(sectionIdx, position, p0.toString())
+                }
+
+            })
+        }
+
+        holder.viewHolder.setOnClickListener {
+            delegate.cellClick(sectionIdx, position)
+        }
+
+        holder.clear.setOnClickListener {
+            delegate.cellClear(sectionIdx, position)
+        }
+    }
+
+    override fun getItemCount(): Int {
+        return tableRows.size
+    }
+
+}
+
+class SearchItemViewHolder(val viewHolder: View): RecyclerView.ViewHolder(viewHolder) {
+
+    var title: TextView = viewHolder.findViewById(R.id.row_title)
+    var show: TextView = viewHolder.findViewById(R.id.row_detail)
+    var clear: ImageView = viewHolder.findViewById(R.id.clearBtn)
+    var greater: ImageView = viewHolder.findViewById(R.id.greater)
+    var keyword: EditText = viewHolder.findViewById(R.id.keywordTxt)
 }
 
 //open class ListItem<T: Table>(open var context: Context, open var row: T): Item() {

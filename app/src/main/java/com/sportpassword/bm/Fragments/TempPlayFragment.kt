@@ -63,8 +63,7 @@ class TempPlayFragment : TabFragment() {
 
     var mysTable: TeamsTable? = null
     lateinit var tableAdapter: TeamAdapter
-    lateinit var searchAdapter: SearchAdapter
-    
+
 //    var searchSections: ArrayList<Section> = arrayListOf()
     var mySections: ArrayList<HashMap<String, Any>> = arrayListOf()
 
@@ -205,7 +204,7 @@ class TempPlayFragment : TabFragment() {
         recyclerView.adapter = tableAdapter
 
         searchAdapter = SearchAdapter(mainActivity!!, R.layout.cell_section, this)
-        searchSections = initRows()
+        searchSections = initSectionRows()
         searchAdapter.setMyTableSection(searchSections)
 
         member_like = true
@@ -445,75 +444,6 @@ class TempPlayFragment : TabFragment() {
 //        return _rows
 //    }
 
-        fun prepare(sectionIdx: Int, rowIdx: Int) {
-
-//        var idx = 0
-//        if (section == 0) {
-//            idx = row
-//        } else {
-//            for (i in 0..section-1) {
-//                val tmps: ArrayList<String> = mySections[i]["key"] as ArrayList<String>
-//                idx += tmps.size
-//            }
-//            idx += row
-//        }
-
-        val section = searchSections[sectionIdx]
-        var row = section.items[rowIdx]
-
-//        var row = searchRows.get(idx)
-//        var key: String = ""
-//        if (row.containsKey("key")) {
-//            key = row["key"]!!
-//        }
-
-        val key: String = row.key
-        val value: String = row.value
-//        if (row.containsKey("value")) {
-//            value = row["value"]!!
-//        }
-        if (key == CITY_KEY) {
-            mainActivity!!.toSelectCity(value, null, able_type)
-        } else if (key == WEEKDAY_KEY) {
-            mainActivity!!.toSelectWeekday(value, null, able_type)
-        } else if (key == START_TIME_KEY || key == END_TIME_KEY) {
-            mainActivity!!.toSelectTime(key, value, null, able_type)
-        } else if (key == ARENA_KEY) {
-            row = getDefinedRow1(CITY_KEY)
-            if (row.value.isNotEmpty()) {
-                val city_id: Int = row.value.toInt()
-                mainActivity!!.toSelectArena(value, city_id, null, able_type)
-            } else {
-                mainActivity!!.warning("纖纖選擇縣市")
-            }
-        } else if (key == DEGREE_KEY) {
-            mainActivity!!.toSelectDegree(value, null, able_type)
-        }
-    }
-
-    override fun singleSelected(key: String, selected: String) {
-
-        val row = getDefinedRow1(key)
-        var show = ""
-
-        if (key == START_TIME_KEY || key == END_TIME_KEY) {
-            row.value = selected
-            show = selected.noSec()
-        } else if (key == CITY_KEY || key == AREA_KEY) {
-            row.value = selected
-            show = Global.zoneIDToName(selected.toInt())
-        } else if (key == WEEKDAY_KEY) {
-            row.value = selected
-            show = WEEKDAY.intToString(selected.toInt())
-        }
-
-        row.show = show
-        //searchAdapter.notifyItemChanged(0)
-        searchAdapter.notifyDataSetChanged()
-//        generateSections()
-//        adapter.notifyDataSetChanged()
-    }
-
     override fun arenaSelected(selected: String, show: String) {
 
         val key: String = ARENA_KEY
@@ -546,37 +476,37 @@ class TempPlayFragment : TabFragment() {
         }
     }
 
-    override fun cellCity(row: Table) {
-
-        val _row: TeamTable = row as TeamTable
-        val arenaTable: ArenaTable = _row.arena!!
-
-        val key: String = CITY_KEY
-        val city_id: Int = arenaTable.city_id
-        val row1 = getDefinedRow(key)
-        row1[VALUE_KEY] = city_id.toString()
-        replaceRows(key, row1)
-        prepareParams()
-        page = 1
-        tableLists.clear()
-        getDataStart(page, perPage)
-    }
-
-    override fun cellArena(row: Table) {
-
-        val _row: TeamTable = row as TeamTable
-        val arenaTable: ArenaTable = _row.arena!!
-
-        val key: String = ARENA_KEY
-        val arena_id: Int = arenaTable.id
-        val row1 = getDefinedRow(key)
-        row1[VALUE_KEY] = arena_id.toString()
-        replaceRows(key, row1)
-        prepareParams()
-        page = 1
-        tableLists.clear()
-        getDataStart(page, perPage)
-    }
+//    override fun cellCity(row: Table) {
+//
+//        val _row: TeamTable = row as TeamTable
+//        val arenaTable: ArenaTable = _row.arena!!
+//
+//        val key: String = CITY_KEY
+//        val city_id: Int = arenaTable.city_id
+//        val row1 = getDefinedRow(key)
+//        row1[VALUE_KEY] = city_id.toString()
+//        replaceRows(key, row1)
+//        prepareParams()
+//        page = 1
+//        tableLists.clear()
+//        getDataStart(page, perPage)
+//    }
+//
+//    override fun cellArena(row: Table) {
+//
+//        val _row: TeamTable = row as TeamTable
+//        val arenaTable: ArenaTable = _row.arena!!
+//
+//        val key: String = ARENA_KEY
+//        val arena_id: Int = arenaTable.id
+//        val row1 = getDefinedRow(key)
+//        row1[VALUE_KEY] = arena_id.toString()
+//        replaceRows(key, row1)
+//        prepareParams()
+//        page = 1
+//        tableLists.clear()
+//        getDataStart(page, perPage)
+//    }
 
     override fun cellShowMap(row: Table) {
 
@@ -593,7 +523,7 @@ class TempPlayFragment : TabFragment() {
         startActivity(intent)
     }
 
-    private fun initRows(): ArrayList<SearchSection> {
+    override fun initSectionRows(): ArrayList<SearchSection> {
 
         val sections: ArrayList<SearchSection> = arrayListOf()
 
@@ -603,7 +533,7 @@ class TempPlayFragment : TabFragment() {
         return sections
     }
 
-    private fun updateSectionRow(): ArrayList<SearchSection> {
+    override fun updateSectionRow(): ArrayList<SearchSection> {
         val sections: ArrayList<SearchSection> = arrayListOf()
         for ((idx, teamSearchSection) in searchSections.withIndex()) {
             val isExpanded: Boolean = teamSearchSection.isExpanded
@@ -646,25 +576,6 @@ class TempPlayFragment : TabFragment() {
         val s: SearchSection = SearchSection("更多", isExpanded)
         s.items.addAll(rows)
         return s
-    }
-
-    override fun handleSectionExpanded(idx: Int) {
-        //println(idx)
-        val teamSearchSection = searchSections[idx]
-        var isExpanded: Boolean = teamSearchSection.isExpanded
-        isExpanded = !isExpanded
-        searchSections[idx].isExpanded = isExpanded
-        toggleSectionOnOff()
-    }
-
-    private fun toggleSectionOnOff() {
-        searchSections = updateSectionRow()
-        searchAdapter.setMyTableSection(searchSections)
-        searchAdapter.notifyDataSetChanged()
-    }
-
-    override fun cellClick(sectionIdx: Int, rowIdx: Int) {
-        prepare(sectionIdx, rowIdx)
     }
 
     override fun cellTextChanged(sectionIdx: Int, rowIdx: Int, str: String) {
@@ -1015,7 +926,7 @@ class SearchAdapter(val context: Context, private val resource: Int, var delegat
 
         val items: ArrayList<SearchRow> = tableSections[position].items
         val adapter =
-            TeamSearchItemAdapter(context, position, items, delegate)
+            SearchItemAdapter(context, position, items, delegate)
 //            holder.recyclerView.setHasFixedSize(true)
         holder.recyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         holder.recyclerView.adapter = adapter
@@ -1028,73 +939,6 @@ class SearchAdapter(val context: Context, private val resource: Int, var delegat
     override fun getItemCount(): Int {
         return tableSections.size
     }
-}
-
-class SearchSectionViewHolder(val viewHolder: View): RecyclerView.ViewHolder(viewHolder) {
-
-    var titleLbl: TextView = viewHolder.findViewById(R.id.titleLbl)
-    var greater: ImageView = viewHolder.findViewById(R.id.greater)
-    var recyclerView: RecyclerView = viewHolder.findViewById(R.id.recyclerView)
-}
-
-class TeamSearchItemAdapter(val context: Context, private val sectionIdx: Int, private val tableRows: ArrayList<SearchRow>, var delegate: List1CellDelegate): RecyclerView.Adapter<TeamSearchItemViewHolder>() {
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TeamSearchItemViewHolder {
-        val inflater = LayoutInflater.from(parent.context)
-        val viewHolder = inflater.inflate(R.layout.search_row_item, parent, false)
-
-        return TeamSearchItemViewHolder(viewHolder)
-    }
-
-    override fun onBindViewHolder(holder: TeamSearchItemViewHolder, position: Int) {
-        val row: SearchRow = tableRows[position]
-        holder.title.text = row.title
-        holder.show.text = row.show
-
-        val cell = row.cell
-        if (cell == "textField") {
-            holder.show.visibility = View.INVISIBLE
-            holder.greater.visibility = View.INVISIBLE
-            holder.keyword.visibility = View.VISIBLE
-            if (row.show.length > 0) {
-                holder.keyword.setText(row.show)
-            }
-            holder.keyword.addTextChangedListener(object: TextWatcher {
-                override fun afterTextChanged(p0: Editable?) {
-                }
-
-                override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                }
-
-                override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                    delegate.cellTextChanged(sectionIdx, position, p0.toString())
-                }
-
-            })
-        }
-
-        holder.viewHolder.setOnClickListener {
-            delegate.cellClick(sectionIdx, position)
-        }
-
-        holder.clear.setOnClickListener {
-            delegate.cellClear(sectionIdx, position)
-        }
-    }
-
-    override fun getItemCount(): Int {
-        return tableRows.size
-    }
-
-}
-
-class TeamSearchItemViewHolder(val viewHolder: View): RecyclerView.ViewHolder(viewHolder) {
-
-    var title: TextView = viewHolder.findViewById(R.id.row_title)
-    var show: TextView = viewHolder.findViewById(R.id.row_detail)
-    var clear: ImageView = viewHolder.findViewById(R.id.clearBtn)
-    var greater: ImageView = viewHolder.findViewById(R.id.greater)
-    var keyword: EditText = viewHolder.findViewById(R.id.keywordTxt)
 }
 
 //class TeamItem(override var context: Context, var _row: TeamTable): ListItem<Table>(context, _row) {

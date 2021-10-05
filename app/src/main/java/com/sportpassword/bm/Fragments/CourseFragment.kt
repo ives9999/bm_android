@@ -5,6 +5,8 @@ import android.os.Bundle
 import android.view.*
 import com.google.gson.JsonParseException
 import com.sportpassword.bm.Controllers.List1CellDelegate
+import com.sportpassword.bm.Data.SearchRow
+import com.sportpassword.bm.Data.SearchSection
 import com.sportpassword.bm.Models.*
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.CourseService
@@ -35,6 +37,8 @@ class CourseFragment : TabFragment() {
 
         dataService = CourseService
 
+        searchSections = initSectionRows()
+
         //initAdapter(false)
 //        adapter = GroupAdapter()
 //        adapter.setOnItemClickListener { item, view ->
@@ -45,7 +49,7 @@ class CourseFragment : TabFragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         val rootView = inflater.inflate(R.layout.tab_course, container, false)
-        setHasOptionsMenu(true)
+        //setHasOptionsMenu(true)
 
         return rootView
     }
@@ -106,6 +110,45 @@ class CourseFragment : TabFragment() {
         }
     }
 
+    override fun initSectionRows(): ArrayList<SearchSection> {
+
+        val sections: ArrayList<SearchSection> = arrayListOf()
+
+        sections.add(makeSection0Row())
+
+        return sections
+    }
+
+    override fun updateSectionRow(): ArrayList<SearchSection> {
+        val sections: ArrayList<SearchSection> = arrayListOf()
+        for ((idx, teamSearchSection) in searchSections.withIndex()) {
+            val isExpanded: Boolean = teamSearchSection.isExpanded
+            if (idx == 0) {
+                sections.add(makeSection0Row(isExpanded))
+            }
+        }
+        return sections
+    }
+
+    private fun makeSection0Row(isExpanded: Boolean=true): SearchSection {
+        val rows: ArrayList<SearchRow> = arrayListOf()
+        if (isExpanded) {
+            val r1: SearchRow = SearchRow("關鍵字", "", "", KEYWORD_KEY, "textField")
+            rows.add(r1)
+            val r2: SearchRow = SearchRow("縣市", "", "全部", CITY_KEY, "more")
+            rows.add(r2)
+            val r3: SearchRow = SearchRow("星期幾", "", "全部", WEEKDAY_KEY, "more")
+            rows.add(r3)
+            val r4: SearchRow = SearchRow("開始時間", "", "全部", START_TIME_KEY, "more")
+            rows.add(r4)
+            val r5: SearchRow = SearchRow("結束時間", "", "全部", START_TIME_KEY, "more")
+            rows.add(r5)
+        }
+
+        val s: SearchSection = SearchSection("一般", isExpanded)
+        s.items.addAll(rows)
+        return s
+    }
 
     //當fragment啟動時，第一個被執行的韓式，甚至還在OnCreate函式之前
     override fun setUserVisibleHint(isVisibleToUser: Boolean) {

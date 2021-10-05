@@ -1100,7 +1100,8 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
             "course" -> {
                 containerID = "course_container"
                 val frag = getFragment() as CourseFragment
-                searchSections = frag.searchSections
+                frag.showSearchPanel()
+                //searchSections = frag.searchSections
             }
             "arena" -> {
                 containerID = "course_container"
@@ -1113,13 +1114,32 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
         }
 
         //first add a mask
-        val p: ConstraintLayout = getMyParent()
+        //val p: ConstraintLayout = getMyParent()
         //searchPanel.mask(this, p)
-        searchPanel.addSearchLayer(this, p, able_type, searchSections)
+        //searchPanel.addSearchLayer(this, p, able_type, searchSections)
         //mask()
 
         //second add search view in mask
        // addSearchLayer(tag)
+    }
+
+    override fun cellClick(sectionIdx: Int, rowIdx: Int) {
+        val frag: TabFragment?
+        when (able_type) {
+            "team" -> {
+                frag = getFragment() as TempPlayFragment
+            }
+            "course" -> {
+                frag = getFragment() as CourseFragment
+            }
+            "arena" -> {
+                frag = getFragment() as ArenaFragment
+            }
+            else -> {
+                frag = TabFragment()
+            }
+        }
+        frag.prepare(sectionIdx, rowIdx)
     }
 
     ////////// for top bar cart icon pressed ///////////////////////////////////

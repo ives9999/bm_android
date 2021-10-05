@@ -30,7 +30,7 @@ class MoreFragment : TabFragment() {
     lateinit var tableAdapter: MoreAdapter
     var moreRows: ArrayList<MoreRow> = arrayListOf()
 
-    private fun initRows(): ArrayList<MoreRow> {
+    private fun initMoreRows(): ArrayList<MoreRow> {
         val rows: ArrayList<MoreRow> = arrayListOf()
         val r1: MoreRow = MoreRow("商品", "product", "product", R.color.MY_LIGHT_RED)
         rows.add(r1)
@@ -77,7 +77,7 @@ class MoreFragment : TabFragment() {
 
         //recyclerView.adapter = adapter
         tableAdapter = MoreAdapter(this)
-        moreRows = initRows()
+        moreRows = initMoreRows()
         tableAdapter.moreRow = moreRows
         recyclerView.adapter = tableAdapter
 
