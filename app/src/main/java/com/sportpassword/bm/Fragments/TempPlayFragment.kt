@@ -65,7 +65,7 @@ class TempPlayFragment : TabFragment() {
     lateinit var tableAdapter: TeamAdapter
 
 //    var searchSections: ArrayList<Section> = arrayListOf()
-    var mySections: ArrayList<HashMap<String, Any>> = arrayListOf()
+//    var mySections: ArrayList<HashMap<String, Any>> = arrayListOf()
 
     var searchTags: ArrayList<HashMap<String, Any>> = arrayListOf (
         hashMapOf("key" to "like", "selected" to true, "tag" to 0, "name" to "喜歡", "class" to ""),
@@ -84,20 +84,20 @@ class TempPlayFragment : TabFragment() {
 
         able_type = "team"
 
-        searchRows = arrayListOf(
-            hashMapOf("title" to "關鍵字","show" to "全部","key" to KEYWORD_KEY,"value" to "","cell" to "textField"),
-            hashMapOf("title" to "縣市","show" to "全部","key" to CITY_KEY,"value" to "","cell" to "more"),
-            hashMapOf("title" to "星期幾","show" to "全部","key" to WEEKDAY_KEY,"value" to "","cell" to "more"),
-            hashMapOf("title" to "時段","show" to "全部","key" to START_TIME_KEY,"value" to "","cell" to "more"),
-            hashMapOf("title" to "球館","show" to "全部","key" to ARENA_KEY,"value" to "","cell" to "more"),
-            hashMapOf("title" to "程度","show" to "全部","key" to DEGREE_KEY,"value" to "","cell" to "more")
-        )
+//        searchRows = arrayListOf(
+//            hashMapOf("title" to "關鍵字","show" to "全部","key" to KEYWORD_KEY,"value" to "","cell" to "textField"),
+//            hashMapOf("title" to "縣市","show" to "全部","key" to CITY_KEY,"value" to "","cell" to "more"),
+//            hashMapOf("title" to "星期幾","show" to "全部","key" to WEEKDAY_KEY,"value" to "","cell" to "more"),
+//            hashMapOf("title" to "時段","show" to "全部","key" to START_TIME_KEY,"value" to "","cell" to "more"),
+//            hashMapOf("title" to "球館","show" to "全部","key" to ARENA_KEY,"value" to "","cell" to "more"),
+//            hashMapOf("title" to "程度","show" to "全部","key" to DEGREE_KEY,"value" to "","cell" to "more")
+//        )
 
-        mySections = arrayListOf(
-            hashMapOf("isExpanded" to true,"title" to "一般","key" to arrayListOf(KEYWORD_KEY,CITY_KEY,WEEKDAY_KEY,
-                START_TIME_KEY)),
-            hashMapOf("isExpanded" to false,"title" to "更多","key" to arrayListOf(ARENA_KEY, DEGREE_KEY))
-        )
+//        mySections = arrayListOf(
+//            hashMapOf("isExpanded" to true,"title" to "一般","key" to arrayListOf(KEYWORD_KEY,CITY_KEY,WEEKDAY_KEY,
+//                START_TIME_KEY)),
+//            hashMapOf("isExpanded" to false,"title" to "更多","key" to arrayListOf(ARENA_KEY, DEGREE_KEY))
+//        )
 
         super.onCreate(savedInstanceState)
         dataService = TeamService
@@ -205,7 +205,7 @@ class TempPlayFragment : TabFragment() {
 
         searchSectionAdapter = SearchSectionAdapter(mainActivity!!, R.layout.cell_section, this)
         searchSections = initSectionRows()
-        searchSectionAdapter.setMyTableSection(searchSections)
+        searchSectionAdapter.setSearchSection(searchSections)
 
         member_like = true
         refresh()
@@ -270,6 +270,7 @@ class TempPlayFragment : TabFragment() {
                         remain.visibility = View.GONE
                         member_like = true
                         recyclerView.adapter = tableAdapter
+                        params.clear()
                         refresh()
                     }
                     2-> {
@@ -277,6 +278,7 @@ class TempPlayFragment : TabFragment() {
                         remain.visibility = View.GONE
                         member_like = false
                         recyclerView.adapter = tableAdapter
+                        params.clear()
                         refresh()
                     }
                 }
@@ -444,27 +446,6 @@ class TempPlayFragment : TabFragment() {
 //        return _rows
 //    }
 
-    override fun arenaSelected(selected: String, show: String) {
-
-        val key: String = ARENA_KEY
-        val row = getDefinedRow1(key)
-        row.value = selected
-        row.show = show
-        searchSectionAdapter.notifyDataSetChanged()
-//        generateSections()
-//        adapter.notifyDataSetChanged()
-    }
-
-    override fun degreeSelected(selected: String, show: String) {
-        val key: String = DEGREE_KEY
-        val row = getDefinedRow1(key)
-        row.value = selected
-        row.show = show
-        searchSectionAdapter.notifyDataSetChanged()
-//        generateSections()
-//        adapter.notifyDataSetChanged()
-    }
-
     override fun cellClick(row: Table) {
         if (selectedTagIdx == 1) {
 //            val searchItem = item as SearchItem
@@ -535,8 +516,8 @@ class TempPlayFragment : TabFragment() {
 
     override fun updateSectionRow(): ArrayList<SearchSection> {
         val sections: ArrayList<SearchSection> = arrayListOf()
-        for ((idx, teamSearchSection) in searchSections.withIndex()) {
-            val isExpanded: Boolean = teamSearchSection.isExpanded
+        for ((idx, searchSection) in searchSections.withIndex()) {
+            val isExpanded: Boolean = searchSection.isExpanded
             if (idx == 0) {
                 sections.add(makeSection0Row(isExpanded))
             } else if (idx == 1) {
@@ -576,21 +557,6 @@ class TempPlayFragment : TabFragment() {
         val s: SearchSection = SearchSection("更多", isExpanded)
         s.items.addAll(rows)
         return s
-    }
-
-    override fun cellTextChanged(sectionIdx: Int, rowIdx: Int, str: String) {
-        val section = searchSections[sectionIdx]
-        val row = section.items[rowIdx]
-        searchSections[sectionIdx].items[rowIdx].value = str
-        searchSections[sectionIdx].items[rowIdx].show = str
-    }
-
-    override fun cellClear(sectionIdx: Int, rowIdx: Int) {
-        searchSections[sectionIdx].items[rowIdx].value = ""
-        searchSections[sectionIdx].items[rowIdx].show = ""
-        searchSections = updateSectionRow()
-        searchSectionAdapter.setMyTableSection(searchSections)
-        searchSectionAdapter.notifyDataSetChanged()
     }
 
 //    private fun getIdxFromKey(key: String): Int {

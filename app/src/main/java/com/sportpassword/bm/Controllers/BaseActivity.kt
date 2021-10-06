@@ -169,6 +169,7 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
     override fun singleSelected(key: String, selected: String) {}
     open fun arenaSelected(selected: String, show: String) {}
     open fun degreeSelected(selected: String, show: String) {}
+    open fun weekendSelected(selected: String, show: String) {}
     open fun contentEdit(key: String, content: String) {}
 
     //for tag delegate
@@ -316,9 +317,7 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
                             able_type = i.getStringExtra("able_type")!!
                         }
                         val f = getFragment()
-                        if (f != null) {
-                            f.singleSelected(key, selected)
-                        }
+                        f?.singleSelected(key, selected)
                     }
                 }
             }
@@ -446,9 +445,7 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
                             able_type = i.getStringExtra("able_type")!!
                         }
                         val f = getFragment()
-                        if (f != null) {
-                            f.singleSelected(key, selected)
-                        }
+                        f?.singleSelected(key, selected)
                     }
                 }
             }
@@ -540,7 +537,7 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
 
                     //activity
                     if (delegate != null) {
-                        delegate!!.degreeSelected(selected, show)
+                        delegate!!.weekendSelected(selected, show)
                     } else {
                         //fragment
                         able_type = "course"
@@ -548,7 +545,7 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
                             able_type = i.getStringExtra("able_type")!!
                         }
                         val f = getFragment()
-                        f?.degreeSelected(selected, show)
+                        f?.weekendSelected(selected, show)
                     }
                 }
             }
@@ -1091,27 +1088,31 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
         if (view.tag != null) {
             able_type = view.tag as String
         }
-        when (able_type) {
+        val frag = getFragment()
+
+        if (frag != null) {
+            when (frag::class) {
 //            "team" -> {
 //                containerID = "course_container"
 //                val frag = getFragment() as TempPlayFragment
 //                searchSections = frag.searchSections
 //            }
-            "course" -> {
-                containerID = "course_container"
-                val frag = getFragment() as CourseFragment
-                frag.showSearchPanel()
-                //searchSections = frag.searchSections
-            }
-            "arena" -> {
-                containerID = "course_container"
-                val frag = getFragment() as ArenaFragment
-                frag.showSearchPanel()
+                CourseFragment::class -> {
+                    containerID = "course_container"
+//                val frag = getFragment() as CourseFragment
+                    frag.showSearchPanel()
+                    //searchSections = frag.searchSections
+                }
+                ArenaFragment::class -> {
+                    containerID = "course_container"
+//                val frag = getFragment() as ArenaFragment
+                    frag.showSearchPanel()
 //                searchSections = frag.searchSections
-            }
+                }
 //            "coach", "teach", "store" -> {
 //                containerID = "constraintLayout"
 //            }
+            }
         }
 
         //first add a mask
@@ -1122,25 +1123,6 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
 
         //second add search view in mask
        // addSearchLayer(tag)
-    }
-
-    override fun cellClick(sectionIdx: Int, rowIdx: Int) {
-        val frag: TabFragment?
-        when (able_type) {
-            "team" -> {
-                frag = getFragment() as TempPlayFragment
-            }
-            "course" -> {
-                frag = getFragment() as CourseFragment
-            }
-            "arena" -> {
-                frag = getFragment() as ArenaFragment
-            }
-            else -> {
-                frag = TabFragment()
-            }
-        }
-        frag.prepare(sectionIdx, rowIdx)
     }
 
     ////////// for top bar cart icon pressed ///////////////////////////////////
@@ -1782,27 +1764,41 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
     //已經移到Global成為 global function 了，以後停止使用
     fun getFragment(): TabFragment? {
         val frags = supportFragmentManager.fragments
-        var _frag: TabFragment? = null
         for (frag in frags) {
-            if (able_type == "team" && frag::class == TempPlayFragment::class) {
-                _frag = frag as TempPlayFragment
-                break
-            }
-            if (able_type == "course" && frag::class == CourseFragment::class) {
-                _frag = frag as CourseFragment
-                break
-            }
-            if (able_type == "team" && frag::class == TempPlayFragment::class) {
-                _frag = frag as TempPlayFragment
-                break
-            }
-            if (able_type == "arena" && frag::class == ArenaFragment::class) {
-                _frag = frag as ArenaFragment
-                break
+            if (frag != null && frag.isVisible) {
+                when (frag::class) {
+                    TempPlayFragment::class ->
+                        return frag as TempPlayFragment
+                    CourseFragment::class ->
+                        return frag as CourseFragment
+                    ArenaFragment::class ->
+                        return frag as ArenaFragment
+                }
             }
         }
+        return null
 
-        return _frag
+//        var _frag: TabFragment? = null
+//        for (frag in frags) {
+//            if (able_type == "team" && frag::class == TempPlayFragment::class) {
+//                _frag = frag as TempPlayFragment
+//                break
+//            }
+//            if (able_type == "course" && frag::class == CourseFragment::class) {
+//                _frag = frag as CourseFragment
+//                break
+//            }
+//            if (able_type == "team" && frag::class == TempPlayFragment::class) {
+//                _frag = frag as TempPlayFragment
+//                break
+//            }
+//            if (able_type == "arena" && frag::class == ArenaFragment::class) {
+//                _frag = frag as ArenaFragment
+//                break
+//            }
+//        }
+//
+//        return _frag
     }
 
     open fun prepareParams(city_type: String = "simple") {

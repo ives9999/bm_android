@@ -7,13 +7,10 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.*
-import android.widget.EditText
+import android.widget.*
 import androidx.fragment.app.Fragment
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import androidx.recyclerview.widget.RecyclerView
-import android.widget.ImageButton
-import android.widget.ImageView
-import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.sportpassword.bm.Controllers.*
@@ -86,7 +83,9 @@ open class TabFragment : Fragment(), List1CellDelegate, Serializable {
 
     var searchPanel: SearchPanel = SearchPanel()
     lateinit var searchSectionAdapter: SearchSectionAdapter
-    var searchRows: ArrayList<HashMap<String, String>> = arrayListOf()
+
+    //searchRows 是當初groupie所使用的變數，拿掉groupie後，就不使用了
+//    var searchRows: ArrayList<HashMap<String, String>> = arrayListOf()
     var searchSections: ArrayList<SearchSection> = arrayListOf()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -99,6 +98,8 @@ open class TabFragment : Fragment(), List1CellDelegate, Serializable {
         that = this
         mainActivity = activity as MainActivity
         mainActivity!!.able_type = able_type
+        searchSectionAdapter = SearchSectionAdapter(mainActivity!!, R.layout.cell_section, this)
+        searchSections = initSectionRows()
 //        adapter = GroupAdapter()
     }
 
@@ -295,9 +296,7 @@ open class TabFragment : Fragment(), List1CellDelegate, Serializable {
 //    }
 
     open fun showSearchPanel() {
-        searchSectionAdapter = SearchSectionAdapter(mainActivity!!, R.layout.cell_section, this)
-        searchSections = initSectionRows()
-        searchSectionAdapter.setMyTableSection(searchSections)
+        searchSectionAdapter.setSearchSection(searchSections)
 
         val p: ConstraintLayout = mainActivity!!.getMyParent()
         searchPanel.addSearchLayer(mainActivity!!, p, able_type, searchSectionAdapter)
@@ -335,6 +334,14 @@ open class TabFragment : Fragment(), List1CellDelegate, Serializable {
             mainActivity!!.toSelectWeekday(value, null, able_type)
         } else if (key == START_TIME_KEY || key == END_TIME_KEY) {
             mainActivity!!.toSelectTime(key, value, null, able_type)
+        } else if (key == AREA_KEY) {
+            row = getDefinedRow1(CITY_KEY)
+            if (row.value.isNotEmpty()) {
+                val city_id: Int = row.value.toInt()
+                mainActivity!!.toSelectArea(value, city_id, null, able_type)
+            } else {
+                mainActivity!!.warning("纖纖選擇縣市")
+            }
         } else if (key == ARENA_KEY) {
             row = getDefinedRow1(CITY_KEY)
             if (row.value.isNotEmpty()) {
@@ -420,16 +427,16 @@ open class TabFragment : Fragment(), List1CellDelegate, Serializable {
         return SearchRow()
     }
 
-    fun getDefinedRow(key: String): HashMap<String, String> {
-
-        for (row in searchRows) {
-            if (row["key"] == key) {
-                return row
-            }
-        }
-
-        return hashMapOf()
-    }
+//    fun getDefinedRow(key: String): HashMap<String, String> {
+//
+//        for (row in searchRows) {
+//            if (row["key"] == key) {
+//                return row
+//            }
+//        }
+//
+//        return hashMapOf()
+//    }
 
 //    fun replaceRows1(key: String, row: SearchRow) {
 //        for ((sectionIdx, searchSection) in searchSections.withIndex()) {
@@ -441,27 +448,27 @@ open class TabFragment : Fragment(), List1CellDelegate, Serializable {
 //        }
 //    }
 
-    fun replaceRows(key: String, row: HashMap<String, String>) {
-        for ((idx, _row) in searchRows.withIndex()) {
-            if (_row["key"] == key) {
-                searchRows[idx] = row
-                break
-            }
-        }
-    }
+//    fun replaceRows(key: String, row: HashMap<String, String>) {
+//        for ((idx, _row) in searchRows.withIndex()) {
+//            if (_row["key"] == key) {
+//                searchRows[idx] = row
+//                break
+//            }
+//        }
+//    }
 
     override fun handleSectionExpanded(idx: Int) {
         //println(idx)
-        val teamSearchSection = searchSections[idx]
-        var isExpanded: Boolean = teamSearchSection.isExpanded
+        val searchSection = searchSections[idx]
+        var isExpanded: Boolean = searchSection.isExpanded
         isExpanded = !isExpanded
         searchSections[idx].isExpanded = isExpanded
         toggleSectionOnOff()
     }
 
     private fun toggleSectionOnOff() {
-        searchSections = updateSectionRow()
-        searchSectionAdapter.setMyTableSection(searchSections)
+        //searchSections = updateSectionRow()
+        searchSectionAdapter.setSearchSection(searchSections)
         searchSectionAdapter.notifyDataSetChanged()
     }
 
@@ -493,27 +500,39 @@ open class TabFragment : Fragment(), List1CellDelegate, Serializable {
     open fun arenaSelected(selected: String, show: String) {
 
         val key: String = ARENA_KEY
-        val row = getDefinedRow(key)
-        row["value"] = selected
-        row["show"] = show
-        replaceRows(key, row)
+        val row = getDefinedRow1(key)
+        row.value = selected
+        row.show = show
+        searchSectionAdapter.notifyDataSetChanged()
+
 //        updateAdapter()
     }
 
     open fun degreeSelected(selected: String, show: String) {
         val key: String = DEGREE_KEY
-        val row = getDefinedRow(key)
-        row["value"] = selected
-        row["show"] = show
-        replaceRows(key, row)
+        val row = getDefinedRow1(key)
+        row.value = selected
+        row.show = show
+        searchSectionAdapter.notifyDataSetChanged()
 //        updateAdapter()
     }
+
+    open fun weekendSelected(selected: String, show: String) {
+        val key: String = WEEKDAY_KEY
+        val row = getDefinedRow1(key)
+        row.value = selected
+        row.show = show
+        searchSectionAdapter.notifyDataSetChanged()
+//        updateAdapter()
+    }
+
 
 //    protected fun updateAdapter() {
 //        val rows =  mainActivity!!.generateSearchItems(able_type)
 //        mainActivity!!.searchPanel.searchAdapter.update(rows)
 //    }
 
+    //cell click for list to show show
     override fun cellClick(row: Table) {
         val t = row::class
         if (t == CourseTable::class) {
@@ -523,6 +542,7 @@ open class TabFragment : Fragment(), List1CellDelegate, Serializable {
         }
     }
 
+    //cell click for search cell
     override fun cellClick(sectionIdx: Int, rowIdx: Int) {
         prepare(sectionIdx, rowIdx)
     }
@@ -530,6 +550,13 @@ open class TabFragment : Fragment(), List1CellDelegate, Serializable {
     override fun cellRefresh() {
         params.clear()
         refresh()
+    }
+
+    override fun cellTextChanged(sectionIdx: Int, rowIdx: Int, str: String) {
+        val section = searchSections[sectionIdx]
+        val row = section.items[rowIdx]
+        searchSections[sectionIdx].items[rowIdx].value = str
+        searchSections[sectionIdx].items[rowIdx].show = str
     }
 
     override fun cellShowMap(row: Table) {
@@ -564,12 +591,20 @@ open class TabFragment : Fragment(), List1CellDelegate, Serializable {
         }
     }
 
+    override fun cellClear(sectionIdx: Int, rowIdx: Int) {
+        searchSections[sectionIdx].items[rowIdx].value = ""
+        searchSections[sectionIdx].items[rowIdx].show = ""
+        searchSections = updateSectionRow()
+        searchSectionAdapter.setSearchSection(searchSections)
+        searchSectionAdapter.notifyDataSetChanged()
+    }
+
     override fun cellCity(row: Table) {
         val key: String = CITY_KEY
         val city_id: Int = row.city_id
-        val row1 = getDefinedRow(key)
-        row1["value"] = city_id.toString()
-        replaceRows(key, row1)
+//        val row1 = getDefinedRow(key)
+//        row1["value"] = city_id.toString()
+//        replaceRows(key, row1)
         prepareParams()
         page = 1
         tableLists.clear()
@@ -581,9 +616,9 @@ open class TabFragment : Fragment(), List1CellDelegate, Serializable {
         val key: String = AREA_KEY
         val _row: ArenaTable = row as ArenaTable
         val area_id: Int = _row.area_id
-        val row1 = getDefinedRow(key)
-        row1["value"] = area_id.toString()
-        replaceRows(key, row1)
+//        val row1 = getDefinedRow(key)
+//        row1["value"] = area_id.toString()
+//        replaceRows(key, row1)
         prepareParams()
         page = 1
         tableLists.clear()
@@ -622,6 +657,7 @@ open class TabFragment : Fragment(), List1CellDelegate, Serializable {
 
     protected open fun setRecyclerViewRefreshListener() {
         refreshListener = SwipeRefreshLayout.OnRefreshListener {
+            params.clear()
             refresh()
 
             refreshLayout.isRefreshing = false
@@ -823,11 +859,11 @@ open class MyViewHolder(val context: Context, val viewHolder: View, val list1Cel
 }
 
 class SearchSectionAdapter(val context: Context, private val resource: Int, var delegate: List1CellDelegate): RecyclerView.Adapter<SearchSectionViewHolder>() {
-    private var tableSections: ArrayList<SearchSection> = arrayListOf()
+    private var searchSections: ArrayList<SearchSection> = arrayListOf()
     //lateinit var adapter: TeamSearchItemAdapter
 
-    fun setMyTableSection(tableSections: ArrayList<SearchSection>) {
-        this.tableSections = tableSections
+    fun setSearchSection(searchSections: ArrayList<SearchSection>) {
+        this.searchSections = searchSections
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SearchSectionViewHolder {
@@ -839,10 +875,10 @@ class SearchSectionAdapter(val context: Context, private val resource: Int, var 
     }
 
     override fun onBindViewHolder(holder: SearchSectionViewHolder, position: Int) {
-        val section: SearchSection = tableSections[position]
+        val section: SearchSection = searchSections[position]
         holder.titleLbl.text = section.title
 
-        val tableSection: SearchSection = tableSections[position]
+        val tableSection: SearchSection = searchSections[position]
         var iconID: Int = 0
         if (tableSection.isExpanded) {
             iconID = context.resources.getIdentifier("to_down", "drawable", context.packageName)
@@ -851,9 +887,8 @@ class SearchSectionAdapter(val context: Context, private val resource: Int, var 
         }
         holder.greater.setImageResource(iconID)
 
-        val items: ArrayList<SearchRow> = tableSections[position].items
         val adapter =
-            SearchItemAdapter(context, position, items, delegate)
+            SearchItemAdapter(context, position, searchSections[position], delegate)
 //            holder.recyclerView.setHasFixedSize(true)
         holder.recyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         holder.recyclerView.adapter = adapter
@@ -864,7 +899,7 @@ class SearchSectionAdapter(val context: Context, private val resource: Int, var 
     }
 
     override fun getItemCount(): Int {
-        return tableSections.size
+        return searchSections.size
     }
 }
 
@@ -875,7 +910,9 @@ class SearchSectionViewHolder(val viewHolder: View): RecyclerView.ViewHolder(vie
     var recyclerView: RecyclerView = viewHolder.findViewById(R.id.recyclerView)
 }
 
-class SearchItemAdapter(val context: Context, private val sectionIdx: Int, private val tableRows: ArrayList<SearchRow>, var delegate: List1CellDelegate): RecyclerView.Adapter<SearchItemViewHolder>() {
+class SearchItemAdapter(val context: Context, private val sectionIdx: Int, private val searchSection: SearchSection, var delegate: List1CellDelegate): RecyclerView.Adapter<SearchItemViewHolder>() {
+
+    var searchRows: ArrayList<SearchRow> = searchSection.items
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SearchItemViewHolder {
         val inflater = LayoutInflater.from(parent.context)
@@ -885,7 +922,7 @@ class SearchItemAdapter(val context: Context, private val sectionIdx: Int, priva
     }
 
     override fun onBindViewHolder(holder: SearchItemViewHolder, position: Int) {
-        val row: SearchRow = tableRows[position]
+        val row: SearchRow = searchRows[position]
         holder.title.text = row.title
         holder.show.text = row.show
 
@@ -921,7 +958,11 @@ class SearchItemAdapter(val context: Context, private val sectionIdx: Int, priva
     }
 
     override fun getItemCount(): Int {
-        return tableRows.size
+        if (searchSection.isExpanded) {
+            return searchRows.size
+        } else {
+            return 0
+        }
     }
 
 }

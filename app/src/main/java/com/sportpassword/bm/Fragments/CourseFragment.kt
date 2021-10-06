@@ -25,13 +25,13 @@ class CourseFragment : TabFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
-        searchRows = arrayListOf(
-            hashMapOf("title" to "關鍵字","key" to KEYWORD_KEY,"value" to "","value_type" to "String","show" to ""),
-            hashMapOf("title" to "縣市","key" to CITY_KEY,"value" to "","value_type" to "Array","show" to "不限"),
-            hashMapOf("title" to "星期幾","key" to WEEKDAY_KEY,"value" to "","value_type" to "Array","show" to "不限"),
-            hashMapOf("title" to "開始時間","key" to START_TIME_KEY,"value" to "","value_type" to "String","show" to "不限"),
-            hashMapOf("title" to "結束時間","key" to END_TIME_KEY,"value" to "","value_type" to "String","show" to "不限")
-        )
+//        searchRows = arrayListOf(
+//            hashMapOf("title" to "關鍵字","key" to KEYWORD_KEY,"value" to "","value_type" to "String","show" to ""),
+//            hashMapOf("title" to "縣市","key" to CITY_KEY,"value" to "","value_type" to "Array","show" to "不限"),
+//            hashMapOf("title" to "星期幾","key" to WEEKDAY_KEY,"value" to "","value_type" to "Array","show" to "不限"),
+//            hashMapOf("title" to "開始時間","key" to START_TIME_KEY,"value" to "","value_type" to "String","show" to "不限"),
+//            hashMapOf("title" to "結束時間","key" to END_TIME_KEY,"value" to "","value_type" to "String","show" to "不限")
+//        )
         able_type = "course"
         super.onCreate(savedInstanceState)
 
@@ -86,27 +86,27 @@ class CourseFragment : TabFragment() {
         }
     }
 
-    fun prepare(idx: Int) {
-
-        val row = searchRows.get(idx)
-        var key: String = ""
-        if (row.containsKey("key")) {
-            key = row["key"]!!
-        }
-
-        var value: String = ""
-        if (row.containsKey("value")) {
-            value = row["value"]!!
-        }
-        if (key == CITY_KEY) {
-            mainActivity!!.toSelectCity(value, null, able_type)
-        } else if (key == WEEKDAY_KEY) {
-            mainActivity!!.toSelectWeekday(value, null, able_type)
-        } else if (key == START_TIME_KEY || key == END_TIME_KEY) {
-
-            mainActivity!!.toSelectTime(key, value, null, able_type)
-        }
-    }
+//    fun prepare(idx: Int) {
+//
+//        val row = searchRows.get(idx)
+//        var key: String = ""
+//        if (row.containsKey("key")) {
+//            key = row["key"]!!
+//        }
+//
+//        var value: String = ""
+//        if (row.containsKey("value")) {
+//            value = row["value"]!!
+//        }
+//        if (key == CITY_KEY) {
+//            mainActivity!!.toSelectCity(value, null, able_type)
+//        } else if (key == WEEKDAY_KEY) {
+//            mainActivity!!.toSelectWeekday(value, null, able_type)
+//        } else if (key == START_TIME_KEY || key == END_TIME_KEY) {
+//
+//            mainActivity!!.toSelectTime(key, value, null, able_type)
+//        }
+//    }
     override fun makeSection0Row(isExpanded: Boolean): SearchSection {
         val rows: ArrayList<SearchRow> = arrayListOf()
         if (isExpanded) {
@@ -118,7 +118,7 @@ class CourseFragment : TabFragment() {
             rows.add(r3)
             val r4: SearchRow = SearchRow("開始時間", "", "全部", START_TIME_KEY, "more")
             rows.add(r4)
-            val r5: SearchRow = SearchRow("結束時間", "", "全部", START_TIME_KEY, "more")
+            val r5: SearchRow = SearchRow("結束時間", "", "全部", END_TIME_KEY, "more")
             rows.add(r5)
         }
 
@@ -158,25 +158,25 @@ class CourseFragment : TabFragment() {
 //    }
 
     override fun cellCity(row: Table) {
-        println(row::class)
+        //println(row::class)
         mainActivity!!.toShowCourse(row.token)
     }
 
-    fun remove(indexPath: IndexPath) {
-        var row: HashMap<String, String>? = null
-        if (searchRows.size >= indexPath.row) {
-            row = searchRows[indexPath.row]
-        }
-        var key: String? = null
-        if (row != null && row.containsKey("key") && row.get("key")!!.length > 0) {
-            key = row.get("key")
-        }
-        if (row != null) {
-            row["value"] = ""
-            row["show"] = "不限"
-            replaceRows(key!!, row)
-        }
-    }
+//    fun remove(indexPath: IndexPath) {
+//        var row: HashMap<String, String>? = null
+//        if (searchRows.size >= indexPath.row) {
+//            row = searchRows[indexPath.row]
+//        }
+//        var key: String? = null
+//        if (row != null && row.containsKey("key") && row.get("key")!!.length > 0) {
+//            key = row.get("key")
+//        }
+//        if (row != null) {
+//            row["value"] = ""
+//            row["show"] = "不限"
+//            replaceRows(key!!, row)
+//        }
+//    }
 
     companion object {
         // TODO: Rename parameter arguments, choose names that match
