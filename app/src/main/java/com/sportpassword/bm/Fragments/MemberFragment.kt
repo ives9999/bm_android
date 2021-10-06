@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.sportpassword.bm.Controllers.*
 import com.sportpassword.bm.Data.MemberRow
 import com.sportpassword.bm.Data.MemberSection
+import com.sportpassword.bm.Data.SearchRow
 import com.sportpassword.bm.Models.MemberTable
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.MemberService
@@ -57,7 +58,7 @@ open class MemberFragment: TabFragment() {
 //    var mySections: ArrayList<HashMap<String, Any>> = arrayListOf()
 
     var memberSections: ArrayList<MemberSection> = arrayListOf()
-    lateinit var tableSectionAdapter: MySectionAdapter
+    lateinit var memberSectionAdapter: MemberSectionAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -86,9 +87,9 @@ open class MemberFragment: TabFragment() {
     }
 
     private fun toggleSectionOnOff() {
-        memberSections = updateSectionRow1()
-        tableSectionAdapter.setMyTableSection(memberSections)
-        tableSectionAdapter.notifyDataSetChanged()
+        //memberSections = updateSectionRow1()
+        memberSectionAdapter.setMyTableSection(memberSections)
+        memberSectionAdapter.notifyDataSetChanged()
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -118,9 +119,9 @@ open class MemberFragment: TabFragment() {
 
         setRecyclerViewRefreshListener()
 
-        tableSectionAdapter = MySectionAdapter(mainActivity!!, R.layout.cell_section, this)
-        tableSectionAdapter.setMyTableSection(memberSections)
-        recyclerView.adapter = tableSectionAdapter
+        memberSectionAdapter = MemberSectionAdapter(mainActivity!!, R.layout.cell_section, this)
+        memberSectionAdapter.setMyTableSection(memberSections)
+        recyclerView.adapter = memberSectionAdapter
         loginout()
         //refresh()
     }
@@ -134,8 +135,8 @@ open class MemberFragment: TabFragment() {
                     val table = jsonToModel<MemberTable>(MemberService.jsonString)
                     table?.toSession(mainActivity!!, true)
                     memberSections = updateSectionRow1()
-                    tableSectionAdapter.setMyTableSection(memberSections)
-                    tableSectionAdapter.notifyDataSetChanged()
+                    memberSectionAdapter.setMyTableSection(memberSections)
+                    memberSectionAdapter.notifyDataSetChanged()
                     loginout()
                 } else {
                     mainActivity!!.warning("無法從伺服器取得會員資料，請稍後再試或聯絡管理員")
@@ -294,7 +295,7 @@ open class MemberFragment: TabFragment() {
 
         sections.add(makeSection0Row1())
         sections.add(makeSection1Row())
-        sections.add(makeSection2Row())
+        sections.add(makeSection2Row(false))
         sections.add(makeSection3Row())
 
         return sections
@@ -320,7 +321,7 @@ open class MemberFragment: TabFragment() {
     private fun makeSection0Row1(isExpanded: Boolean=true): MemberSection {
         val rows: ArrayList<MemberRow> = arrayListOf()
 
-        if (isExpanded) {
+        //if (isExpanded) {
             val fixedRows = makeSection0FixRow()
             rows.addAll(fixedRows)
 
@@ -329,7 +330,7 @@ open class MemberFragment: TabFragment() {
 
             val refreshRows = makeSection0RefreshRow()
             rows.addAll(refreshRows)
-        }
+        //}
 
         val s: MemberSection = MemberSection("會員資料", isExpanded)
         s.items.addAll(rows)
@@ -370,13 +371,13 @@ open class MemberFragment: TabFragment() {
     private fun makeSection1Row(isExpanded: Boolean=true): MemberSection {
         val rows: ArrayList<MemberRow> = arrayListOf()
 
-        if (isExpanded) {
+        //if (isExpanded) {
 
             val r1: MemberRow = MemberRow("購物車", "cart", TO_MEMBER_CART_LIST)
             rows.add(r1)
             val r2: MemberRow = MemberRow("訂單查詢", "order", TO_MEMBER_ORDER_LIST)
             rows.add(r2)
-        }
+        //}
 
         val s: MemberSection = MemberSection("訂單查詢", isExpanded)
         s.items.addAll(rows)
@@ -387,7 +388,7 @@ open class MemberFragment: TabFragment() {
     private fun makeSection2Row(isExpanded: Boolean=true): MemberSection {
         val rows: ArrayList<MemberRow> = arrayListOf()
 
-        if (isExpanded) {
+        //if (isExpanded) {
             val r1: MemberRow = MemberRow("球隊", "team", TO_LIKE, "team")
             rows.add(r1)
             val r2: MemberRow = MemberRow("球館", "arena", TO_LIKE, "arena")
@@ -402,7 +403,7 @@ open class MemberFragment: TabFragment() {
             rows.add(r6)
             val r7: MemberRow = MemberRow("體育用品店", "store", TO_LIKE, "store")
             rows.add(r7)
-        }
+        //}
 
         val s: MemberSection = MemberSection("喜歡", isExpanded)
         s.items.addAll(rows)
@@ -413,10 +414,10 @@ open class MemberFragment: TabFragment() {
     private fun makeSection3Row(isExpanded: Boolean=true): MemberSection {
         val rows: ArrayList<MemberRow> = arrayListOf()
 
-        if (isExpanded) {
+        //if (isExpanded) {
             val r1: MemberRow = MemberRow("課程", "course", "manager_course")
             rows.add(r1)
-        }
+        //}
 
         val s: MemberSection = MemberSection("管理", isExpanded)
         s.items.addAll(rows)
@@ -545,27 +546,27 @@ open class MemberFragment: TabFragment() {
         }
     }
 
-    class MySectionAdapter(val context: Context, private val resource: Int, var delegate: MemberFragment): RecyclerView.Adapter<MySectionViewHolder>() {
+    class MemberSectionAdapter(val context: Context, private val resource: Int, var delegate: MemberFragment): RecyclerView.Adapter<MemberSectionViewHolder>() {
 
-        private var tableSections: ArrayList<MemberSection> = arrayListOf()
+        private var memberSections: ArrayList<MemberSection> = arrayListOf()
 
         fun setMyTableSection(tableSections: ArrayList<MemberSection>) {
-            this.tableSections = tableSections
+            this.memberSections = tableSections
         }
 
-        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MySectionViewHolder {
+        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MemberSectionViewHolder {
             val inflater = LayoutInflater.from(parent.context)
             val viewHolder = inflater.inflate(resource, parent, false)
 
-            return MySectionViewHolder(viewHolder)
+            return MemberSectionViewHolder(viewHolder)
 
         }
 
-        override fun onBindViewHolder(holder: MySectionViewHolder, position: Int) {
-            val section: MemberSection = tableSections[position]
+        override fun onBindViewHolder(holder: MemberSectionViewHolder, position: Int) {
+            val section: MemberSection = memberSections[position]
             holder.titleLbl.text = section.title
 
-            val tableSection: MemberSection = tableSections[position]
+            val tableSection: MemberSection = memberSections[position]
             var iconID: Int = 0
             if (tableSection.isExpanded) {
                 iconID = context.resources.getIdentifier("to_down", "drawable", context.packageName)
@@ -574,8 +575,7 @@ open class MemberFragment: TabFragment() {
             }
             holder.greater.setImageResource(iconID)
 
-            val items: ArrayList<MemberRow> = tableSections[position].items
-            val adapter: MemberItemAdapter = MemberItemAdapter(context, position, items, delegate)
+            val adapter: MemberItemAdapter = MemberItemAdapter(context, position, memberSections[position], delegate)
 //            holder.recyclerView.setHasFixedSize(true)
             holder.recyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
             holder.recyclerView.adapter = adapter
@@ -586,18 +586,20 @@ open class MemberFragment: TabFragment() {
         }
 
         override fun getItemCount(): Int {
-            return tableSections.size
+            return memberSections.size
         }
     }
 
-    class MySectionViewHolder(val viewHolder: View): RecyclerView.ViewHolder(viewHolder) {
+    class MemberSectionViewHolder(val viewHolder: View): RecyclerView.ViewHolder(viewHolder) {
 
         var titleLbl: TextView = viewHolder.findViewById(R.id.titleLbl)
         var greater: ImageView = viewHolder.findViewById(R.id.greater)
         var recyclerView: RecyclerView = viewHolder.findViewById(R.id.recyclerView)
     }
 
-    class MemberItemAdapter(val context: Context, private val sectionIdx: Int, private val tableRows: ArrayList<MemberRow>, var delegate: MemberFragment): RecyclerView.Adapter<MemberItemViewHolder>() {
+    class MemberItemAdapter(val context: Context, private val sectionIdx: Int, private val memberSection: MemberSection, var delegate: MemberFragment): RecyclerView.Adapter<MemberItemViewHolder>() {
+
+        var memberRows: ArrayList<MemberRow> = memberSection.items
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MemberItemViewHolder {
             val inflater = LayoutInflater.from(parent.context)
@@ -607,7 +609,7 @@ open class MemberFragment: TabFragment() {
         }
 
         override fun onBindViewHolder(holder: MemberItemViewHolder, position: Int) {
-            val row: MemberRow = tableRows[position]
+            val row: MemberRow = memberRows[position]
             holder.titleLbl.text = row.title
 
             val icon: String = row.icon
@@ -620,7 +622,11 @@ open class MemberFragment: TabFragment() {
         }
 
         override fun getItemCount(): Int {
-            return tableRows.size
+            if (memberSection.isExpanded) {
+                return memberRows.size
+            } else {
+                return 0
+            }
         }
 
     }

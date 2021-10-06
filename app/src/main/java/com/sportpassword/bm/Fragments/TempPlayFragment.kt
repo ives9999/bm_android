@@ -529,7 +529,7 @@ class TempPlayFragment : TabFragment() {
 
     override fun makeSection0Row(isExpanded: Boolean): SearchSection {
         val rows: ArrayList<SearchRow> = arrayListOf()
-        if (isExpanded) {
+        //if (isExpanded) {
             val r1: SearchRow = SearchRow("關鍵字", "", "", KEYWORD_KEY, "textField")
             rows.add(r1)
             val r2: SearchRow = SearchRow("縣市", "", "全部", CITY_KEY, "more")
@@ -538,7 +538,7 @@ class TempPlayFragment : TabFragment() {
             rows.add(r3)
             val r4: SearchRow = SearchRow("時段", "", "全部", START_TIME_KEY, "more")
             rows.add(r4)
-        }
+        //}
 
         val s: SearchSection = SearchSection("一般", isExpanded)
         s.items.addAll(rows)
@@ -547,12 +547,12 @@ class TempPlayFragment : TabFragment() {
 
     private fun makeSection1Row(isExpanded: Boolean=true): SearchSection {
         val rows: ArrayList<SearchRow> = arrayListOf()
-        if (isExpanded) {
+        //if (isExpanded) {
             val r1: SearchRow = SearchRow("球館", "", "全部", ARENA_KEY, "more")
             rows.add(r1)
             val r2: SearchRow = SearchRow("程度", "", "全部", DEGREE_KEY, "more")
             rows.add(r2)
-        }
+        //}
 
         val s: SearchSection = SearchSection("更多", isExpanded)
         s.items.addAll(rows)
