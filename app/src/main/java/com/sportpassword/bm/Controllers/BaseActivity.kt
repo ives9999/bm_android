@@ -1092,11 +1092,11 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
             able_type = view.tag as String
         }
         when (able_type) {
-            "team" -> {
-                containerID = "course_container"
-                val frag = getFragment() as TempPlayFragment
-                searchSections = frag.searchSections
-            }
+//            "team" -> {
+//                containerID = "course_container"
+//                val frag = getFragment() as TempPlayFragment
+//                searchSections = frag.searchSections
+//            }
             "course" -> {
                 containerID = "course_container"
                 val frag = getFragment() as CourseFragment
@@ -1106,11 +1106,12 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
             "arena" -> {
                 containerID = "course_container"
                 val frag = getFragment() as ArenaFragment
-                searchSections = frag.searchSections
+                frag.showSearchPanel()
+//                searchSections = frag.searchSections
             }
-            "coach", "teach", "store" -> {
-                containerID = "constraintLayout"
-            }
+//            "coach", "teach", "store" -> {
+//                containerID = "constraintLayout"
+//            }
         }
 
         //first add a mask

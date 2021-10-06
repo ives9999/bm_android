@@ -292,7 +292,7 @@ open class MemberFragment: TabFragment() {
     private fun initSectionRow(): ArrayList<MemberSection> {
         val sections: ArrayList<MemberSection> = arrayListOf()
 
-        sections.add(makeSection0Row())
+        sections.add(makeSection0Row1())
         sections.add(makeSection1Row())
         sections.add(makeSection2Row())
         sections.add(makeSection3Row())
@@ -305,7 +305,7 @@ open class MemberFragment: TabFragment() {
         for ((idx, memberSection) in memberSections.withIndex()) {
             val isExpanded: Boolean = memberSection.isExpanded
             if (idx == 0) {
-                sections.add(makeSection0Row(isExpanded))
+                sections.add(makeSection0Row1(isExpanded))
             } else if (idx == 1) {
                 sections.add(makeSection1Row(isExpanded))
             } else if (idx == 2) {
@@ -317,7 +317,7 @@ open class MemberFragment: TabFragment() {
         return sections
     }
 
-    private fun makeSection0Row(isExpanded: Boolean=true): MemberSection {
+    private fun makeSection0Row1(isExpanded: Boolean=true): MemberSection {
         val rows: ArrayList<MemberRow> = arrayListOf()
 
         if (isExpanded) {

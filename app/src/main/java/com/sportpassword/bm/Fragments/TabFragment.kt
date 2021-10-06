@@ -80,6 +80,7 @@ open class TabFragment : Fragment(), List1CellDelegate, Serializable {
 
     var params: HashMap<String, String> = hashMapOf()
     var tables: Tables? = null
+    var search: ImageButton? = null
     var able_type: String = "course"
     var member_like: Boolean = false
 
@@ -183,7 +184,7 @@ open class TabFragment : Fragment(), List1CellDelegate, Serializable {
 //        adapter.clear()
 //        items.clear()
         //println(perPage)
-        params.clear()
+//        params.clear()
         tableLists.clear()
         getDataStart(page, perPage)
     }
@@ -382,6 +383,31 @@ open class TabFragment : Fragment(), List1CellDelegate, Serializable {
 //        println(params)
     }
 
+    open fun initSectionRows(): ArrayList<SearchSection> {
+
+        val sections: ArrayList<SearchSection> = arrayListOf()
+
+        sections.add(makeSection0Row())
+
+        return sections
+    }
+
+    open fun updateSectionRow(): ArrayList<SearchSection> {
+        val sections: ArrayList<SearchSection> = arrayListOf()
+        for ((idx, teamSearchSection) in searchSections.withIndex()) {
+            val isExpanded: Boolean = teamSearchSection.isExpanded
+            if (idx == 0) {
+                sections.add(makeSection0Row(isExpanded))
+            }
+        }
+        return sections
+    }
+
+    open fun makeSection0Row(isExpanded: Boolean=true): SearchSection {
+        val s: SearchSection = SearchSection("一般", isExpanded)
+        return s
+    }
+
     fun getDefinedRow1(key: String): SearchRow {
         for (searchSection in searchSections) {
             for (searchRow in searchSection.items) {
@@ -422,15 +448,6 @@ open class TabFragment : Fragment(), List1CellDelegate, Serializable {
                 break
             }
         }
-    }
-
-    open fun initSectionRows(): ArrayList<SearchSection> {
-
-        return arrayListOf()
-    }
-
-    open fun updateSectionRow(): ArrayList<SearchSection> {
-        return arrayListOf()
     }
 
     override fun handleSectionExpanded(idx: Int) {

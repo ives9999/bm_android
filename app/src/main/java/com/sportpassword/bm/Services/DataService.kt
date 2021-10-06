@@ -87,9 +87,10 @@ open class DataService {
         if (member.isLoggedIn) {
             params.put("member_token", member.token!!)
         }
-        println(params)
+//        println(params)
 
         val j: JSONObject = JSONObject(params as Map<*, *>)
+        println(j.toString())
         val body = j.toString().toRequestBody("application/json; charset=utf-8".toMediaTypeOrNull())
         val request = okhttp3.Request.Builder().url(url).post(body).build()
 
@@ -103,7 +104,7 @@ open class DataService {
 
                 try {
                     jsonString = response.body!!.string()
-//                        println(jsonString)
+//                    println(jsonString)
                     success = true
                 } catch (e: Exception) {
                     success = false

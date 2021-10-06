@@ -107,28 +107,7 @@ class CourseFragment : TabFragment() {
             mainActivity!!.toSelectTime(key, value, null, able_type)
         }
     }
-
-    override fun initSectionRows(): ArrayList<SearchSection> {
-
-        val sections: ArrayList<SearchSection> = arrayListOf()
-
-        sections.add(makeSection0Row())
-
-        return sections
-    }
-
-    override fun updateSectionRow(): ArrayList<SearchSection> {
-        val sections: ArrayList<SearchSection> = arrayListOf()
-        for ((idx, teamSearchSection) in searchSections.withIndex()) {
-            val isExpanded: Boolean = teamSearchSection.isExpanded
-            if (idx == 0) {
-                sections.add(makeSection0Row(isExpanded))
-            }
-        }
-        return sections
-    }
-
-    private fun makeSection0Row(isExpanded: Boolean=true): SearchSection {
+    override fun makeSection0Row(isExpanded: Boolean): SearchSection {
         val rows: ArrayList<SearchRow> = arrayListOf()
         if (isExpanded) {
             val r1: SearchRow = SearchRow("關鍵字", "", "", KEYWORD_KEY, "textField")
@@ -151,6 +130,7 @@ class CourseFragment : TabFragment() {
     //當fragment啟動時，第一個被執行的韓式，甚至還在OnCreate函式之前
     override fun setUserVisibleHint(isVisibleToUser: Boolean) {
         super.setUserVisibleHint(isVisibleToUser)
+        able_type = "course"
         mainActivity?.isSearchIconShow = true
         if (isVisibleToUser && !bInit) {
             refresh()

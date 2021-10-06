@@ -107,8 +107,8 @@ abstract class MyTableVC : BaseActivity() {
         page = 1
         theFirstTime = true
 //        adapter.clear()
-        items.clear()
-        params.clear()
+//        items.clear()
+//        params.clear()
         tableLists.clear()
         getDataStart(page, perPage)
     }

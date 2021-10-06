@@ -546,7 +546,7 @@ class TempPlayFragment : TabFragment() {
         return sections
     }
 
-    private fun makeSection0Row(isExpanded: Boolean=true): SearchSection {
+    override fun makeSection0Row(isExpanded: Boolean): SearchSection {
         val rows: ArrayList<SearchRow> = arrayListOf()
         if (isExpanded) {
             val r1: SearchRow = SearchRow("關鍵字", "", "", KEYWORD_KEY, "textField")
