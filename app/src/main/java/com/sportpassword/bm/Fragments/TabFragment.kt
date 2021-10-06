@@ -8,6 +8,7 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.view.*
 import android.widget.*
+import androidx.appcompat.widget.SwitchCompat
 import androidx.fragment.app.Fragment
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import androidx.recyclerview.widget.RecyclerView
@@ -553,10 +554,17 @@ open class TabFragment : Fragment(), List1CellDelegate, Serializable {
     }
 
     override fun cellTextChanged(sectionIdx: Int, rowIdx: Int, str: String) {
-        val section = searchSections[sectionIdx]
-        val row = section.items[rowIdx]
         searchSections[sectionIdx].items[rowIdx].value = str
-        searchSections[sectionIdx].items[rowIdx].show = str
+    }
+
+    override fun cellSwitchChanged(sectionIdx: Int, rowIdx: Int, b: Boolean) {
+
+        val value = if (b) {
+            "1"
+        } else {
+            "0"
+        }
+        searchSections[sectionIdx].items[rowIdx].value = value
     }
 
     override fun cellShowMap(row: Table) {
@@ -594,7 +602,7 @@ open class TabFragment : Fragment(), List1CellDelegate, Serializable {
     override fun cellClear(sectionIdx: Int, rowIdx: Int) {
         searchSections[sectionIdx].items[rowIdx].value = ""
         searchSections[sectionIdx].items[rowIdx].show = ""
-        searchSections = updateSectionRow()
+        //searchSections = updateSectionRow()
         searchSectionAdapter.setSearchSection(searchSections)
         searchSectionAdapter.notifyDataSetChanged()
     }
@@ -922,6 +930,7 @@ class SearchItemAdapter(val context: Context, private val sectionIdx: Int, priva
     }
 
     override fun onBindViewHolder(holder: SearchItemViewHolder, position: Int) {
+
         val row: SearchRow = searchRows[position]
         holder.title.text = row.title
         holder.show.text = row.show
@@ -931,7 +940,7 @@ class SearchItemAdapter(val context: Context, private val sectionIdx: Int, priva
             holder.show.visibility = View.INVISIBLE
             holder.greater.visibility = View.INVISIBLE
             holder.keyword.visibility = View.VISIBLE
-            if (row.show.length > 0) {
+            if (row.show.isNotEmpty()) {
                 holder.keyword.setText(row.show)
             }
             holder.keyword.addTextChangedListener(object: TextWatcher {
@@ -944,12 +953,23 @@ class SearchItemAdapter(val context: Context, private val sectionIdx: Int, priva
                 override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
                     delegate.cellTextChanged(sectionIdx, position, p0.toString())
                 }
-
             })
+        } else if (cell == "switch") {
+            holder.show.visibility = View.INVISIBLE
+            holder.greater.visibility = View.INVISIBLE
+            holder.keyword.visibility = View.INVISIBLE
+            holder.switch.visibility = View.VISIBLE
+            holder.clear.visibility = View.INVISIBLE
+
+            holder.switch.isChecked = row.value == "1"
         }
 
         holder.viewHolder.setOnClickListener {
             delegate.cellClick(sectionIdx, position)
+        }
+
+        holder.switch.setOnCheckedChangeListener { compoundButton, b ->
+            delegate.cellSwitchChanged(sectionIdx, position, b)
         }
 
         holder.clear.setOnClickListener {
@@ -974,6 +994,7 @@ class SearchItemViewHolder(val viewHolder: View): RecyclerView.ViewHolder(viewHo
     var clear: ImageView = viewHolder.findViewById(R.id.clearBtn)
     var greater: ImageView = viewHolder.findViewById(R.id.greater)
     var keyword: EditText = viewHolder.findViewById(R.id.keywordTxt)
+    var switch: SwitchCompat = viewHolder.findViewById(R.id.search_switch)
 }
 
 //open class ListItem<T: Table>(open var context: Context, open var row: T): Item() {

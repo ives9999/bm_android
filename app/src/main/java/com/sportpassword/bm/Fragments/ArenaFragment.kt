@@ -132,7 +132,7 @@ class ArenaFragment : TabFragment() {
 
     override fun makeSection0Row(isExpanded: Boolean): SearchSection {
         val rows: ArrayList<SearchRow> = arrayListOf()
-        if (isExpanded) {
+        //if (isExpanded) {
             val r1: SearchRow = SearchRow("關鍵字", "", "", KEYWORD_KEY, "textField")
             rows.add(r1)
             val r2: SearchRow = SearchRow("縣市", "", "全部", CITY_KEY, "more")
@@ -145,7 +145,7 @@ class ArenaFragment : TabFragment() {
             rows.add(r5)
             val r6: SearchRow = SearchRow("停車場", "", "全部", ARENA_PARKING_KEY, "switch")
             rows.add(r6)
-        }
+        //}
 
         val s: SearchSection = SearchSection("一般", isExpanded)
         s.items.addAll(rows)

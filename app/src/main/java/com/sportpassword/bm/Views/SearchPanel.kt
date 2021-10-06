@@ -187,12 +187,12 @@ open class SearchPanel {
         }
     }
 
-    fun layerSubmit() {
+    private fun layerSubmit() {
 
         unmask()
         val activity: BaseActivity = context!! as BaseActivity
 
-        if (able_type == "coach" || able_type == "product" || able_type == "store") {
+        if (able_type == "coach" || able_type == "product" || able_type == "store" || able_type == "teach") {
             activity.prepareParams()
             activity.refresh()
         } else if (able_type == "team") {

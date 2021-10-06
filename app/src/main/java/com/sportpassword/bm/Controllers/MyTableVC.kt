@@ -4,15 +4,18 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.recyclerview.widget.RecyclerView
 import android.view.View
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.sportpassword.bm.Adapters.GroupSection
 import com.sportpassword.bm.Adapters.ListAdapter
 import com.sportpassword.bm.Form.BaseForm
 import com.sportpassword.bm.Form.FormItem.FormItem
+import com.sportpassword.bm.Fragments.SearchSectionAdapter
 import com.sportpassword.bm.Models.*
 import com.sportpassword.bm.Services.MemberService
 import com.sportpassword.bm.Utilities.*
+import com.sportpassword.bm.Views.SearchPanel
 import com.sportpassword.bm.member
 import com.xwray.groupie.ExpandableGroup
 import com.xwray.groupie.GroupAdapter
@@ -34,6 +37,7 @@ abstract class MyTableVC : BaseActivity() {
 
     protected lateinit var adapter: GroupAdapter<GroupieViewHolder>
     val adapterSections: ArrayList<Section> = arrayListOf()
+
     protected lateinit var recyclerView: RecyclerView
     protected lateinit var listAdapter: ListAdapter
 
@@ -48,6 +52,7 @@ abstract class MyTableVC : BaseActivity() {
     protected var totalCount: Int = 0
     protected var totalPage: Int = 0
     val items: ArrayList<Item> = arrayListOf()
+
     var tableLists: ArrayList<Table> = arrayListOf()
 
     var jsonString: String? = null
@@ -235,48 +240,37 @@ abstract class MyTableVC : BaseActivity() {
     open fun genericTable() {}
     open fun rowClick(item: com.xwray.groupie.Item<GroupieViewHolder>, view: View) {}
 
-    override fun prepareParams(city_type: String) {
-        params.clear()
-
-        for (searchRow in searchRows) {
-//            var value_type: String? = null
-//            if (searchRow.containsKey("value_type")) {
-//                value_type = searchRow.get("value_type")
+//    override fun prepareParams(city_type: String) {
+//        params.clear()
+//
+//        for (searchRow in searchRows) {
+//
+//            var key: String? = null
+//            if (searchRow.containsKey("key")) {
+//                key = searchRow.get("key")!!
 //            }
-
-            var key: String? = null
-            if (searchRow.containsKey("key")) {
-                key = searchRow.get("key")!!
-            }
-
-            if (key == null) {
-                continue
-            }
-
-            var value: String = ""
-            if (searchRow.containsKey("value")) {
-                value = searchRow.get("value")!!
-            }
-            if (value.isEmpty()) {
-                continue
-            }
-
-            params[key] = value
-//            if (value_type != null && key != null && value.length > 0) {
-//                var values: Array<String>? = null
-//                if (value_type == "String") {
-//                    params[key] = value
-//                } else if (value_type == "Array") {
-//                    value = searchRow.get("value")!!
-//                    values = value.split(",").toTypedArray()
-//                }
-//                if (values != null) {
-//                    params[key] = values
-//                }
+//
+//            if (key == null) {
+//                continue
 //            }
-        }
-//        println(params)
-//        refresh()
+//
+//            var value: String = ""
+//            if (searchRow.containsKey("value")) {
+//                value = searchRow.get("value")!!
+//            }
+//            if (value.isEmpty()) {
+//                continue
+//            }
+//
+//            params[key] = value
+//        }
+//    }
+
+    open fun showSearchPanel() {
+        searchSectionAdapter.setSearchSection(searchSections)
+
+        //val p: ConstraintLayout = mainActivity!!.getMyParent()
+        //searchPanel.addSearchLayer(mainActivity!!, p, able_type, searchSectionAdapter)
     }
 
     protected open fun setRecyclerViewScrollListener() {
@@ -310,6 +304,7 @@ abstract class MyTableVC : BaseActivity() {
 
     protected open fun setRecyclerViewRefreshListener() {
         refreshListener = SwipeRefreshLayout.OnRefreshListener {
+            params.clear()
             refresh()
 
             refreshLayout!!.isRefreshing = false
@@ -613,6 +608,7 @@ abstract class MyTableVC : BaseActivity() {
     }
 
     override fun cellRefresh() {
+        params.clear()
         refresh()
     }
 
@@ -690,6 +686,7 @@ interface List1CellDelegate {
     fun cellArena(row: Table){}
 
     fun cellTextChanged(sectionIdx: Int, rowIdx: Int, str: String) {}
+    fun cellSwitchChanged(sectionIdx: Int, rowIdx: Int, b: Boolean) {}
     fun cellClear(sectionIdx: Int, rowIdx: Int) {}
 
     fun handleSectionExpanded(idx: Int) {}

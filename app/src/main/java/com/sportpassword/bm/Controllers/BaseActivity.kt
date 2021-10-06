@@ -164,7 +164,9 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
 
     var able_type: String = "coach"
 
-    var vcResult: VCResult = VCResult()
+    lateinit var searchSectionAdapter: SearchSectionAdapter
+
+    //var vcResult: VCResult = VCResult()
 
     override fun singleSelected(key: String, selected: String) {}
     open fun arenaSelected(selected: String, show: String) {}
@@ -613,8 +615,10 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
         getScreenWidth()
         getScreenHeight()
 
-        vcResult.selectCityResult(this)
+        searchSectionAdapter = SearchSectionAdapter(this, R.layout.cell_section, this)
+        searchSections = initSectionRows()
 
+        //vcResult.selectCityResult(this)
 
         //OneSignal.setSubscription(true)
         //OneSignal.promptLocation() prompt location auth when location auth is close
@@ -1113,16 +1117,69 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
 //                containerID = "constraintLayout"
 //            }
             }
+            return
         }
 
         //first add a mask
-        //val p: ConstraintLayout = getMyParent()
+        val p: ConstraintLayout = getMyParent()
+        searchSectionAdapter.setSearchSection(searchSections)
         //searchPanel.mask(this, p)
-        //searchPanel.addSearchLayer(this, p, able_type, searchSections)
+        searchPanel.addSearchLayer(this, p, able_type, searchSectionAdapter)
         //mask()
 
         //second add search view in mask
        // addSearchLayer(tag)
+    }
+
+    open fun initSectionRows(): ArrayList<SearchSection> {
+
+        val sections: ArrayList<SearchSection> = arrayListOf()
+
+        sections.add(makeSection0Row())
+
+        return sections
+    }
+
+    open fun makeSection0Row(isExpanded: Boolean=true): SearchSection {
+        val s: SearchSection = SearchSection("一般", isExpanded)
+        return s
+    }
+
+    override fun handleSectionExpanded(idx: Int) {
+        //println(idx)
+        val searchSection = searchSections[idx]
+        var isExpanded: Boolean = searchSection.isExpanded
+        isExpanded = !isExpanded
+        searchSections[idx].isExpanded = isExpanded
+        toggleSectionOnOff()
+    }
+
+    private fun toggleSectionOnOff() {
+        //searchSections = updateSectionRow()
+        searchSectionAdapter.setSearchSection(searchSections)
+        searchSectionAdapter.notifyDataSetChanged()
+    }
+
+    override fun cellClear(sectionIdx: Int, rowIdx: Int) {
+        searchSections[sectionIdx].items[rowIdx].value = ""
+        searchSections[sectionIdx].items[rowIdx].show = ""
+        //searchSections = updateSectionRow()
+        searchSectionAdapter.setSearchSection(searchSections)
+        searchSectionAdapter.notifyDataSetChanged()
+    }
+
+    override fun cellTextChanged(sectionIdx: Int, rowIdx: Int, str: String) {
+        searchSections[sectionIdx].items[rowIdx].value = str
+    }
+
+    override fun cellSwitchChanged(sectionIdx: Int, rowIdx: Int, b: Boolean) {
+
+        val value = if (b) {
+            "1"
+        } else {
+            "0"
+        }
+        searchSections[sectionIdx].items[rowIdx].value = value
     }
 
     ////////// for top bar cart icon pressed ///////////////////////////////////
@@ -1802,6 +1859,16 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
     }
 
     open fun prepareParams(city_type: String = "simple") {
+
+        params.clear()
+
+        for (searchSection in searchSections) {
+            for (searchRow in searchSection.items) {
+                val key = searchRow.key
+                val value = searchRow.value
+                params[key] = value
+            }
+        }
 //        val city_ids: ArrayList<Int> = arrayListOf()
 //        if (citys.size > 0) {
 //            citys.forEach {

@@ -4,6 +4,8 @@ import android.content.Context
 import android.os.Bundle
 import android.view.Menu
 import android.view.View
+import com.sportpassword.bm.Data.SearchRow
+import com.sportpassword.bm.Data.SearchSection
 import com.sportpassword.bm.Fragments.MyAdapter
 import com.sportpassword.bm.Fragments.MyViewHolder
 import com.sportpassword.bm.Models.*
@@ -73,6 +75,15 @@ class TeachVC : MyTableVC() {
         }
     }
 
+    override fun makeSection0Row(isExpanded: Boolean): SearchSection {
+        val rows: ArrayList<SearchRow> = arrayListOf()
+        val r1: SearchRow = SearchRow("標題關鍵字", "", "", KEYWORD_KEY, "textField")
+        rows.add(r1)
+
+        val s: SearchSection = SearchSection("一般", isExpanded)
+        s.items.addAll(rows)
+        return s
+    }
 
 //    override fun generateItems(): ArrayList<Item> {
 //        val items: ArrayList<Item> = arrayListOf()
