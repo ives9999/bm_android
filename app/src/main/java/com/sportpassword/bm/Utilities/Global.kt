@@ -71,6 +71,23 @@ open class MYENUM<T>() {
 //    }
 }
 
+enum class CELL_TYPE(val value: String) {
+    PLAIN("plain"),
+    TEXTFIELD("textField"),
+    TAG("tag");
+
+    fun toInt(): Int {
+        when (this) {
+            PLAIN -> return 0
+            TEXTFIELD -> return 1
+            TAG -> return 2
+        }
+
+        return 0
+    }
+
+}
+
 enum class MYCOLOR(val value: Int) {
 //    danger("danger"), success("success"), primary("primary"), warning("warning"),
 //    info("info"), gray("gray")
