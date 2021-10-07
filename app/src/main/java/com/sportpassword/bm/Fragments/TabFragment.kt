@@ -886,9 +886,8 @@ class SearchSectionAdapter(val context: Context, private val resource: Int, var 
         val section: SearchSection = searchSections[position]
         holder.titleLbl.text = section.title
 
-        val tableSection: SearchSection = searchSections[position]
         var iconID: Int = 0
-        if (tableSection.isExpanded) {
+        if (section.isExpanded) {
             iconID = context.resources.getIdentifier("to_down", "drawable", context.packageName)
         } else {
             iconID = context.resources.getIdentifier("to_right", "drawable", context.packageName)

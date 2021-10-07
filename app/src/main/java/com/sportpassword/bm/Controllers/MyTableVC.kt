@@ -4,24 +4,16 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.recyclerview.widget.RecyclerView
 import android.view.View
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.sportpassword.bm.Adapters.GroupSection
 import com.sportpassword.bm.Adapters.ListAdapter
 import com.sportpassword.bm.Form.BaseForm
 import com.sportpassword.bm.Form.FormItem.FormItem
-import com.sportpassword.bm.Fragments.SearchSectionAdapter
 import com.sportpassword.bm.Models.*
 import com.sportpassword.bm.Services.MemberService
 import com.sportpassword.bm.Utilities.*
-import com.sportpassword.bm.Views.SearchPanel
 import com.sportpassword.bm.member
-import com.xwray.groupie.ExpandableGroup
-import com.xwray.groupie.GroupAdapter
-import com.xwray.groupie.Section
-import com.xwray.groupie.GroupieViewHolder
-import com.xwray.groupie.kotlinandroidextensions.Item
 import kotlinx.android.synthetic.main.mask.*
 import kotlin.reflect.KClass
 
@@ -35,8 +27,8 @@ abstract class MyTableVC : BaseActivity() {
     var mySections: ArrayList<HashMap<String, Any>> = arrayListOf()
     var myRows: ArrayList<HashMap<String, Any>> = arrayListOf()
 
-    protected lateinit var adapter: GroupAdapter<GroupieViewHolder>
-    val adapterSections: ArrayList<Section> = arrayListOf()
+//    protected lateinit var adapter: GroupAdapter<GroupieViewHolder>
+//    val adapterSections: ArrayList<Section> = arrayListOf()
 
     protected lateinit var recyclerView: RecyclerView
     protected lateinit var listAdapter: ListAdapter
@@ -51,7 +43,7 @@ abstract class MyTableVC : BaseActivity() {
     protected var perPage: Int = PERPAGE
     protected var totalCount: Int = 0
     protected var totalPage: Int = 0
-    val items: ArrayList<Item> = arrayListOf()
+//    val items: ArrayList<Item> = arrayListOf()
 
     var tableLists: ArrayList<Table> = arrayListOf()
 
@@ -72,37 +64,37 @@ abstract class MyTableVC : BaseActivity() {
         }
     }
 
-    open fun initAdapter(include_section: Boolean=false) {
-        adapter = GroupAdapter()
-        adapter.setOnItemClickListener { item, view ->
-            rowClick(item, view)
-        }
-
-
-        // for member register and member update personal data
-        if (include_section) {
-            for (section in sections) {
-                adapterSections.add(Section())
-            }
-            for ((idx, title) in sections.withIndex()) {
-                val expandableGroup = ExpandableGroup(GroupSection(title), true)
-                val items = generateItems(idx)
-                adapterSections[idx].addAll(items)
-                expandableGroup.add(adapterSections[idx])
-                adapter.add(expandableGroup)
-            }
-        } else {
-            val items = generateItems()
-            adapter.addAll(items)
-        }
-
-        recyclerView.adapter = adapter
-//        recyclerView.setHasFixedSize(true)
-//        if (refreshLayout != null) {
-//            setRefreshListener()
+//    open fun initAdapter(include_section: Boolean=false) {
+//        adapter = GroupAdapter()
+//        adapter.setOnItemClickListener { item, view ->
+//            rowClick(item, view)
 //        }
-//        setRecyclerViewScrollListener()
-    }
+//
+//
+//        // for member register and member update personal data
+//        if (include_section) {
+//            for (section in sections) {
+//                adapterSections.add(Section())
+//            }
+//            for ((idx, title) in sections.withIndex()) {
+//                val expandableGroup = ExpandableGroup(GroupSection(title), true)
+//                val items = generateItems(idx)
+//                adapterSections[idx].addAll(items)
+//                expandableGroup.add(adapterSections[idx])
+//                adapter.add(expandableGroup)
+//            }
+//        } else {
+//            val items = generateItems()
+//            adapter.addAll(items)
+//        }
+//
+//        recyclerView.adapter = adapter
+////        recyclerView.setHasFixedSize(true)
+////        if (refreshLayout != null) {
+////            setRefreshListener()
+////        }
+////        setRecyclerViewScrollListener()
+//    }
 
     override fun refresh() {
 //        page = 1
@@ -207,18 +199,18 @@ abstract class MyTableVC : BaseActivity() {
         //listAdapter.notifyDataSetChanged()
     //}
 
-    open fun notifyChanged(include_section: Boolean=false) {
-        if (include_section) {
-            for ((idx, _) in sections.withIndex()) {
-                val items = generateItems(idx)
-                adapterSections[idx].update(items)
-            }
-        } else {
-            val items = generateItems()
-            adapter.update(items)
-        }
-        adapter.notifyDataSetChanged()
-    }
+//    open fun notifyChanged(include_section: Boolean=false) {
+//        if (include_section) {
+//            for ((idx, _) in sections.withIndex()) {
+//                val items = generateItems(idx)
+//                adapterSections[idx].update(items)
+//            }
+//        } else {
+//            val items = generateItems()
+//            adapter.update(items)
+//        }
+//        adapter.notifyDataSetChanged()
+//    }
 
     open fun <T: Table> generateItems1(t: KClass<T>, rows: ArrayList<T>): ArrayList<T> {
         val temp: ArrayList<T> = arrayListOf()
@@ -229,16 +221,16 @@ abstract class MyTableVC : BaseActivity() {
         return temp
     }
 
-    open fun generateItems(): ArrayList<Item> {
-        return arrayListOf()
-    }
-
-    open fun generateItems(section: Int): ArrayList<Item> {
-        return arrayListOf()
-    }
+//    open fun generateItems(): ArrayList<Item> {
+//        return arrayListOf()
+//    }
+//
+//    open fun generateItems(section: Int): ArrayList<Item> {
+//        return arrayListOf()
+//    }
 
     open fun genericTable() {}
-    open fun rowClick(item: com.xwray.groupie.Item<GroupieViewHolder>, view: View) {}
+//    open fun rowClick(item: com.xwray.groupie.Item<GroupieViewHolder>, view: View) {}
 
 //    override fun prepareParams(city_type: String) {
 //        params.clear()
@@ -285,7 +277,7 @@ abstract class MyTableVC : BaseActivity() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
                 val layoutManager = recyclerView.layoutManager as LinearLayoutManager
-                if (items.size < totalCount) {
+                if (tableLists.size < totalCount) {
                     pos = layoutManager.findLastVisibleItemPosition()
                     //println("pos:${pos}")
                 }
@@ -294,7 +286,7 @@ abstract class MyTableVC : BaseActivity() {
                 super.onScrollStateChanged(recyclerView, newState)
 
                 //println("items.size:${items.size}")
-                if (items.size == pos + 1 && newState == RecyclerView.SCROLL_STATE_IDLE && items.size < totalCount && !loading) {
+                if (tableLists.size == pos + 1 && newState == RecyclerView.SCROLL_STATE_IDLE && tableLists.size < totalCount && !loading) {
                     getDataStart(page, perPage)
                 }
             }

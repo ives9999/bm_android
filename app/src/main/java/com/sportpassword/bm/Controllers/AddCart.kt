@@ -1,15 +1,31 @@
 package com.sportpassword.bm.Controllers
 
+import android.content.Context
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
+import android.view.LayoutInflater
 import android.view.Menu
 import android.view.View
+import android.view.ViewGroup
+import android.widget.EditText
 import android.widget.ImageButton
+import android.widget.ImageView
+import android.widget.TextView
+import androidx.appcompat.widget.SwitchCompat
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.google.gson.JsonParseException
 import com.sportpassword.bm.Adapters.Form.*
 import com.sportpassword.bm.Adapters.GroupSection
+import com.sportpassword.bm.Data.AddCartRow
+import com.sportpassword.bm.Data.AddCartSection
+import com.sportpassword.bm.Data.SearchRow
+import com.sportpassword.bm.Data.SearchSection
 import com.sportpassword.bm.Form.FormItem.FormItem
 import com.sportpassword.bm.Form.FormItem.NumberFormItem
 import com.sportpassword.bm.Form.ValueChangedDelegate
+import com.sportpassword.bm.Fragments.SearchItemAdapter
 import com.sportpassword.bm.Models.CartItemTable
 import com.sportpassword.bm.Models.CartTable
 import com.sportpassword.bm.Models.ProductTable
@@ -763,4 +779,135 @@ class AddCartVC : MyTableVC(), ValueChangedDelegate {
     fun cancelBtnPressed(view: View) {
         prev()
     }
+}
+
+class AddCartSectionAdapter(val context: Context, private val resource: Int, var delegate: List1CellDelegate): RecyclerView.Adapter<AddCartSectionViewHolder>() {
+    private var addCartSections: ArrayList<AddCartSection> = arrayListOf()
+    //lateinit var adapter: TeamSearchItemAdapter
+
+    fun setAddCartSection(addCartSections: ArrayList<AddCartSection>) {
+        this.addCartSections = addCartSections
+    }
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AddCartSectionViewHolder {
+        val inflater = LayoutInflater.from(parent.context)
+        val viewHolder = inflater.inflate(resource, parent, false)
+
+        return AddCartSectionViewHolder(viewHolder)
+
+    }
+
+    override fun onBindViewHolder(holder: AddCartSectionViewHolder, position: Int) {
+
+        val section: AddCartSection = addCartSections[position]
+        holder.titleLbl.text = section.title
+
+        var iconID: Int = 0
+        if (section.isExpanded) {
+            iconID = context.resources.getIdentifier("to_down", "drawable", context.packageName)
+        } else {
+            iconID = context.resources.getIdentifier("to_right", "drawable", context.packageName)
+        }
+        holder.greater.setImageResource(iconID)
+
+        val adapter =
+            AddCartItemAdapter(context, position, addCartSections[position], delegate)
+//            holder.recyclerView.setHasFixedSize(true)
+        holder.recyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+        holder.recyclerView.adapter = adapter
+
+        holder.greater.setOnClickListener {
+            delegate.handleSectionExpanded(position)
+        }
+    }
+
+    override fun getItemCount(): Int {
+        return addCartSections.size
+    }
+}
+
+class AddCartSectionViewHolder(val viewHolder: View): RecyclerView.ViewHolder(viewHolder) {
+
+    var titleLbl: TextView = viewHolder.findViewById(R.id.titleLbl)
+    var greater: ImageView = viewHolder.findViewById(R.id.greater)
+    var recyclerView: RecyclerView = viewHolder.findViewById(R.id.recyclerView)
+}
+
+class AddCartItemAdapter(val context: Context, private val sectionIdx: Int, private val addCartSection: AddCartSection, var delegate: List1CellDelegate): RecyclerView.Adapter<AddCartItemViewHolder>() {
+
+    var addCartRows: ArrayList<AddCartRow> = addCartSection.items
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AddCartItemViewHolder {
+        val inflater = LayoutInflater.from(parent.context)
+        val viewHolder = inflater.inflate(R.layout.search_row_item, parent, false)
+
+        return AddCartItemViewHolder(viewHolder)
+    }
+
+    override fun onBindViewHolder(holder: AddCartItemViewHolder, position: Int) {
+
+        val row: AddCartRow = addCartRows[position]
+        holder.title.text = row.title
+        holder.show.text = row.show
+
+        val cell = row.cell
+        if (cell == "textField") {
+            holder.show.visibility = View.INVISIBLE
+            holder.greater.visibility = View.INVISIBLE
+            holder.keyword.visibility = View.VISIBLE
+            if (row.show.isNotEmpty()) {
+                holder.keyword.setText(row.show)
+            }
+            holder.keyword.addTextChangedListener(object: TextWatcher {
+                override fun afterTextChanged(p0: Editable?) {
+                }
+
+                override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                }
+
+                override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                    delegate.cellTextChanged(sectionIdx, position, p0.toString())
+                }
+            })
+        } else if (cell == "switch") {
+            holder.show.visibility = View.INVISIBLE
+            holder.greater.visibility = View.INVISIBLE
+            holder.keyword.visibility = View.INVISIBLE
+            holder.switch.visibility = View.VISIBLE
+            holder.clear.visibility = View.INVISIBLE
+
+            holder.switch.isChecked = row.value == "1"
+        }
+
+        holder.viewHolder.setOnClickListener {
+            delegate.cellClick(sectionIdx, position)
+        }
+
+        holder.switch.setOnCheckedChangeListener { compoundButton, b ->
+            delegate.cellSwitchChanged(sectionIdx, position, b)
+        }
+
+        holder.clear.setOnClickListener {
+            delegate.cellClear(sectionIdx, position)
+        }
+    }
+
+    override fun getItemCount(): Int {
+        if (addCartSection.isExpanded) {
+            return addCartRows.size
+        } else {
+            return 0
+        }
+    }
+
+}
+
+class AddCartItemViewHolder(val viewHolder: View): RecyclerView.ViewHolder(viewHolder) {
+
+    var title: TextView = viewHolder.findViewById(R.id.row_title)
+    var show: TextView = viewHolder.findViewById(R.id.row_detail)
+    var clear: ImageView = viewHolder.findViewById(R.id.clearBtn)
+    var greater: ImageView = viewHolder.findViewById(R.id.greater)
+    var keyword: EditText = viewHolder.findViewById(R.id.keywordTxt)
+    var switch: SwitchCompat = viewHolder.findViewById(R.id.search_switch)
 }
