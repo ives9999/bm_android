@@ -2,6 +2,7 @@ package com.sportpassword.bm.Data
 
 data class AddCartSection (
     var title: String = "",
+    var key: String = "",
     var isExpanded: Boolean = true,
     var items: ArrayList<AddCartRow> = arrayListOf()
 )

@@ -12,6 +12,6 @@ class SelectCycleUnitVC : SingleSelectVC() {
         rows = CYCLE_UNIT.makeSelect()
         key = CYCLE_UNIT_KEY
 
-        notifyChanged()
+        //notifyChanged()
     }
 }

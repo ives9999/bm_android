@@ -14,6 +14,8 @@ import com.sportpassword.bm.Models.*
 import com.sportpassword.bm.Services.MemberService
 import com.sportpassword.bm.Utilities.*
 import com.sportpassword.bm.member
+import com.xwray.groupie.GroupieViewHolder
+import com.xwray.groupie.kotlinandroidextensions.Item
 import kotlinx.android.synthetic.main.mask.*
 import kotlin.reflect.KClass
 
@@ -64,7 +66,7 @@ abstract class MyTableVC : BaseActivity() {
         }
     }
 
-//    open fun initAdapter(include_section: Boolean=false) {
+    open fun initAdapter(include_section: Boolean=false) {
 //        adapter = GroupAdapter()
 //        adapter.setOnItemClickListener { item, view ->
 //            rowClick(item, view)
@@ -89,12 +91,12 @@ abstract class MyTableVC : BaseActivity() {
 //        }
 //
 //        recyclerView.adapter = adapter
-////        recyclerView.setHasFixedSize(true)
-////        if (refreshLayout != null) {
-////            setRefreshListener()
-////        }
-////        setRecyclerViewScrollListener()
-//    }
+//        recyclerView.setHasFixedSize(true)
+//        if (refreshLayout != null) {
+//            setRefreshListener()
+//        }
+//        setRecyclerViewScrollListener()
+    }
 
     override fun refresh() {
 //        page = 1
@@ -221,16 +223,16 @@ abstract class MyTableVC : BaseActivity() {
         return temp
     }
 
-//    open fun generateItems(): ArrayList<Item> {
-//        return arrayListOf()
-//    }
+    open fun generateItems(): ArrayList<Item> {
+        return arrayListOf()
+    }
 //
-//    open fun generateItems(section: Int): ArrayList<Item> {
-//        return arrayListOf()
-//    }
+    open fun generateItems(section: Int): ArrayList<Item> {
+        return arrayListOf()
+    }
 
     open fun genericTable() {}
-//    open fun rowClick(item: com.xwray.groupie.Item<GroupieViewHolder>, view: View) {}
+    open fun rowClick(item: com.xwray.groupie.Item<GroupieViewHolder>, view: View) {}
 
 //    override fun prepareParams(city_type: String) {
 //        params.clear()

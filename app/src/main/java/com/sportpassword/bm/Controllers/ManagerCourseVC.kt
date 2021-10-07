@@ -91,8 +91,8 @@ class ManagerCourseVC: MyTableVC() {
     override fun refresh() {
         page = 1
         theFirstTime = true
-        adapter.clear()
-        items.clear()
+//        adapter.clear()
+//        items.clear()
         getDataStart(page, perPage)
 
         params.clear()

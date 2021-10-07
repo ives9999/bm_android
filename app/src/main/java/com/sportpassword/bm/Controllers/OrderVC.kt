@@ -111,11 +111,11 @@ class OrderVC : MyTableVC() {
 //        }
 
         // for member register and member update personal data
-        adapter.clear()
+        //adapter.clear()
         if (include_section) {
             for ((idx, mySection) in mySections.withIndex()) {
                 val section = Section()
-                adapterSections.add(section)
+                //adapterSections.add(section)
                 val title: String = mySection["name"] as String
                 val isExpanded: Boolean = mySection["isExpanded"] as Boolean
                 val expandableGroup = ExpandableGroup(GroupSection(title), isExpanded)
@@ -123,20 +123,20 @@ class OrderVC : MyTableVC() {
                 section.addAll(items)
                 expandableGroup.add(section)
 
-                adapter.add(expandableGroup)
+                //adapter.add(expandableGroup)
             }
         }
 
 
-        recyclerView.adapter = adapter
+        //recyclerView.adapter = adapter
     }
 
     override fun refresh() {
 
         page = 1
         theFirstTime = true
-        adapter.clear()
-        items.clear()
+//        adapter.clear()
+//        items.clear()
         getDataStart(page, perPage, member.token)
     }
 
@@ -510,10 +510,10 @@ class OrderVC : MyTableVC() {
         val panelAdapter = GroupAdapter<GroupieViewHolder>()
         tableView!!.adapter = panelAdapter
 
-        items.clear()
+        //items.clear()
         val item = RadioAdapter(this, INVOICE_KEY, invoiceOptionRows, this)
-        items.add(item)
-        panelAdapter.addAll(items)
+        //items.add(item)
+        //panelAdapter.addAll(items)
 
         layerButtonLayout = blackView!!.buttonPanel(this, buttonViewHeight)
         layerCancelBtn = layerButtonLayout.cancelButton(this) {

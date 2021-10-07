@@ -78,8 +78,8 @@ class ShowPNVC : MyTableVC(), OSPermissionObserver {
     }
 
     override fun initAdapter(include_section: Boolean) {
-        adapter = GroupAdapter()
-        recyclerView.adapter = adapter
+        //adapter = GroupAdapter()
+        //recyclerView.adapter = adapter
         refresh()
     }
 
@@ -92,7 +92,7 @@ class ShowPNVC : MyTableVC(), OSPermissionObserver {
             pn_empty.visibility = View.GONE
             items = generateItems()
         }
-        adapter.update(items)
+        //adapter.update(items)
         //adapter.notifyDataSetChanged()
         closeRefresh()
     }

@@ -129,7 +129,7 @@ class SelectArenaVC : SingleSelectVC() {
         } else { //取消原來的選擇
             selected = ""
             generateItems()
-            notifyChanged()
+            //notifyChanged()
         }
     }
 }

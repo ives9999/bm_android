@@ -61,7 +61,7 @@ class MemberOrderListVC : MyTableVC() {
         page = 1
         theFirstTime = true
         //adapter.clear()
-        items.clear()
+        //items.clear()
         tableLists.clear()
         params.clear()
         getDataStart(page, perPage, member.token)
@@ -87,11 +87,11 @@ class MemberOrderListVC : MyTableVC() {
                 row.filterRow()
                 val orderItem = OrderItem(this, row)
                 //productItem.list1CellDelegate = this
-                items.add(orderItem)
+                //items.add(orderItem)
             }
         }
 
-        return items
+        return arrayListOf()
     }
 
     override fun rowClick(item: com.xwray.groupie.Item<com.xwray.groupie.GroupieViewHolder>, view: View) {

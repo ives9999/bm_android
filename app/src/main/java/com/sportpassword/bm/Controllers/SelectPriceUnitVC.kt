@@ -12,6 +12,6 @@ class SelectPriceUnitVC : SingleSelectVC() {
         rows = PRICE_UNIT.makeSelect()
         key = PRICE_UNIT_KEY
 
-        notifyChanged()
+        //notifyChanged()
     }
 }

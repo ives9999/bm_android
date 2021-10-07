@@ -365,11 +365,11 @@ class PaymentVC : MyTableVC() {
     }
 
     override fun initAdapter(include_section: Boolean) {
-        adapter.clear()
+        //adapter.clear()
         if (include_section) {
             for ((idx, mySection) in mySections.withIndex()) {
                 val section = Section()
-                adapterSections.add(section)
+                //adapterSections.add(section)
                 val title: String = mySection["name"] as String
                 val isExpanded: Boolean = mySection["isExpanded"] as Boolean
                 val expandableGroup = ExpandableGroup(GroupSection(title), isExpanded)
@@ -377,11 +377,11 @@ class PaymentVC : MyTableVC() {
                 section.addAll(items)
                 expandableGroup.add(section)
 
-                adapter.add(expandableGroup)
+                //adapter.add(expandableGroup)
             }
         }
 
-        recyclerView.adapter = adapter
+        //recyclerView.adapter = adapter
     }
 
     override fun generateItems(section: Int): ArrayList<Item> {
@@ -389,7 +389,7 @@ class PaymentVC : MyTableVC() {
         if (myRows.size == 0) {
             return arrayListOf()
         }
-        items.clear()
+        //items.clear()
         var sectionKey: String = ""
         val sectionRow: HashMap<String, Any> = myRows[section]
         val tmp: String? = sectionRow["key"] as? String
@@ -457,14 +457,14 @@ class PaymentVC : MyTableVC() {
 //                items.add(cartItemItem)
             } else if (cell_type == "text") {
                 val item = PlainAdapter1(title, show)
-                items.add(item)
+                //items.add(item)
             } else if (cell_type == "more") {
                 val item = MoreAdapter1(sectionKey, rowKey, title, value, show, this, false)
-                items.add(item)
+                //items.add(item)
             }
         }
 
-        return items
+        return arrayListOf()
     }
 
     override fun moreClick(sectionKey: String, rowKey: String) {
@@ -506,7 +506,7 @@ class PaymentVC : MyTableVC() {
         val panelAdapter = GroupAdapter<com.xwray.groupie.GroupieViewHolder>()
         tableView!!.adapter = panelAdapter
 
-        items.clear()
+        //items.clear()
         for (row in popupRows) {
             val title: String = row[TITLE_KEY] ?: run { "" }
             val show: String = row[SHOW_KEY] ?: run { "" }
@@ -515,17 +515,17 @@ class PaymentVC : MyTableVC() {
             //text and barcode cell
             if (cell_type == "text") {
                 val item = PlainAdapter1(title, show)
-                items.add(item)
+                //items.add(item)
             } else if (cell_type == "barcode") {
                 if (show.length == 0) {
                     warning("沒有取得條碼，代碼或帳號，請重新下單")
                 } else {
                     val item = BarcodeAdapter(title, show)
-                    items.add(item)
+                    //items.add(item)
                 }
             }
         }
-        panelAdapter.addAll(items)
+        //panelAdapter.addAll(items)
     }
 
     private fun fillPopupRows() {

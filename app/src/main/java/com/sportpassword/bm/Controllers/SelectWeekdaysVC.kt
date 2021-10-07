@@ -20,7 +20,7 @@ class SelectWeekdaysVC : MultiSelectVC() {
             WEEKDAY.mon, WEEKDAY.tue, WEEKDAY.wed, WEEKDAY.thu, WEEKDAY.fri, WEEKDAY.sat, WEEKDAY.sun
         )
         rowsBridge(weekdays)
-        notifyChanged()
+        //notifyChanged()
     }
 
     fun rowsBridge(weekdays: ArrayList<WEEKDAY>) {

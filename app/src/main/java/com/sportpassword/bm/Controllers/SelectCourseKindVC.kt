@@ -13,6 +13,6 @@ class SelectCourseKindVC : SingleSelectVC() {
         rows = COURSE_KIND.makeSelect()
         key = COURSE_KIND_KEY
 
-        notifyChanged()
+        //notifyChanged()
     }
 }

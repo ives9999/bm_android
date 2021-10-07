@@ -59,10 +59,10 @@ class CourseCalendarVC: MyTableVC() {
     }
 
     override fun initAdapter(include_section: Boolean) {
-        adapter = GroupAdapter()
-        val items = generateItems()
-        adapter.addAll(items)
-        recyclerView.adapter = adapter
+//        adapter = GroupAdapter()
+//        val items = generateItems()
+//        adapter.addAll(items)
+//        recyclerView.adapter = adapter
     }
 
     override fun getDataStart(_page: Int, _perPage: Int, token: String?) {

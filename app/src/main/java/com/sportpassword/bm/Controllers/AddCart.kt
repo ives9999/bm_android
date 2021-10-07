@@ -1,6 +1,7 @@
 package com.sportpassword.bm.Controllers
 
 import android.content.Context
+import android.graphics.Color
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -40,7 +41,11 @@ import com.xwray.groupie.ExpandableItem
 import com.xwray.groupie.Section
 import com.xwray.groupie.kotlinandroidextensions.Item
 import kotlinx.android.synthetic.main.activity_addcart_vc.*
+import kotlinx.android.synthetic.main.formitem_plain.*
+import kotlinx.android.synthetic.main.formitem_plain.view.*
 import kotlinx.android.synthetic.main.mask.*
+import org.jetbrains.anko.backgroundColor
+import java.lang.IllegalArgumentException
 
 class AddCartVC : MyTableVC(), ValueChangedDelegate {
 
@@ -80,6 +85,9 @@ class AddCartVC : MyTableVC(), ValueChangedDelegate {
 //        hashMapOf("title" to "住址","key" to ADDRESS_KEY,"value" to "","show" to "","cell" to "textField","keyboard" to KEYBOARD.default.toString())
 //    )
 
+    lateinit var addCartSectionAdapter: AddCartSectionAdapter
+    var addCartSections: ArrayList<AddCartSection> = arrayListOf()
+
     override fun onCreate(savedInstanceState: Bundle?) {
 
         mySections = arrayListOf(
@@ -110,12 +118,35 @@ class AddCartVC : MyTableVC(), ValueChangedDelegate {
 
         dataService = ProductService
         recyclerView = editTableView
+        addCartSectionAdapter = AddCartSectionAdapter(this, R.layout.cell_section, this)
+        addCartSections = initSectionRows1()
+        addCartSectionAdapter.setAddCartSection(addCartSections)
+        recyclerView.adapter = addCartSectionAdapter
 
         refreshLayout = refresh
         setRefreshListener()
 
         //initData()
         refresh()
+    }
+
+    private fun initSectionRows1(): ArrayList<AddCartSection> {
+
+        val sections: ArrayList<AddCartSection> = arrayListOf()
+
+        sections.add(makeSection0Row1())
+
+        return sections
+    }
+
+    private fun makeSection0Row1(isExpanded: Boolean=true): AddCartSection {
+        val rows: ArrayList<AddCartRow> = arrayListOf()
+        val r1: AddCartRow = AddCartRow("商品", "", "", PRODUCT_KEY, "text")
+        rows.add(r1)
+
+        val s: AddCartSection = AddCartSection("商品名稱", PRODUCT_KEY, isExpanded)
+        s.items.addAll(rows)
+        return s
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -128,54 +159,54 @@ class AddCartVC : MyTableVC(), ValueChangedDelegate {
         return true
     }
 
-    override fun initAdapter(include_section: Boolean) {
-//        adapter = GroupAdapter()
-
-//        adapter.setOnItemClickListener { item, view ->
-//            rowClick(item, view)
-//        }
-
-        // for member register and member update personal data
-        if (include_section) {
-            for ((idx, mySection) in mySections.withIndex()) {
-                val section = Section()
-                adapterSections.add(section)
-                val title: String = mySection["name"] as String
-                val isExpanded: Boolean = mySection["isExpanded"] as Boolean
-                val expandableGroup = ExpandableGroup(GroupSection(title), isExpanded)
-                val items = generateItems(idx)
-                section.addAll(items)
-                expandableGroup.add(section)
-
-                adapter.add(expandableGroup)
-            }
+//    override fun initAdapter(include_section: Boolean) {
+////        adapter = GroupAdapter()
+//
+////        adapter.setOnItemClickListener { item, view ->
+////            rowClick(item, view)
+////        }
+//
+//        // for member register and member update personal data
+//        if (include_section) {
 //            for ((idx, mySection) in mySections.withIndex()) {
+//                val section = Section()
+//                adapterSections.add(section)
 //                val title: String = mySection["name"] as String
 //                val isExpanded: Boolean = mySection["isExpanded"] as Boolean
-//
 //                val expandableGroup = ExpandableGroup(GroupSection(title), isExpanded)
 //                val items = generateItems(idx)
-//                adapterSections[idx].addAll(items)
-//                expandableGroup.add(adapterSections[idx])
+//                section.addAll(items)
+//                expandableGroup.add(section)
 //
 //                adapter.add(expandableGroup)
 //            }
-        }
-
-
-        recyclerView.adapter = adapter
-//        recyclerView.setHasFixedSize(true)
-        if (refreshLayout != null) {
-            setRefreshListener()
-        }
-        setRecyclerViewScrollListener()
-    }
+////            for ((idx, mySection) in mySections.withIndex()) {
+////                val title: String = mySection["name"] as String
+////                val isExpanded: Boolean = mySection["isExpanded"] as Boolean
+////
+////                val expandableGroup = ExpandableGroup(GroupSection(title), isExpanded)
+////                val items = generateItems(idx)
+////                adapterSections[idx].addAll(items)
+////                expandableGroup.add(adapterSections[idx])
+////
+////                adapter.add(expandableGroup)
+////            }
+//        }
+//
+//
+//        recyclerView.adapter = adapter
+////        recyclerView.setHasFixedSize(true)
+//        if (refreshLayout != null) {
+//            setRefreshListener()
+//        }
+//        setRecyclerViewScrollListener()
+//    }
 
     override fun refresh() {
         Loading.show(mask)
         if (product_token != null) {
-            adapter.clear()
-            adapterSections.clear()
+//            adapter.clear()
+//            adapterSections.clear()
             attributeRows.clear()
 
             val params: HashMap<String, String> = hashMapOf("token" to product_token!!, "member_token" to member.token!!)
@@ -232,7 +263,7 @@ class AddCartVC : MyTableVC(), ValueChangedDelegate {
 //        sections = form.getSections()
 //        section_keys = form.getSectionKeys()
         if (productTable != null) {
-            initAdapter(true)
+//            initAdapter(true)
             setMyTitle(productTable!!.name)
 
             var row = getRowRowsFromMyRowsByKey1(PRODUCT_KEY)
@@ -465,57 +496,6 @@ class AddCartVC : MyTableVC(), ValueChangedDelegate {
             }
         }
 
-//        val arr: ArrayList<FormItem> = arrayListOf()
-//        for (key in section_keys[section]) {
-//            for (formItem in form.formItems) {
-//                if (key == formItem.name) {
-//                    arr.add(formItem)
-//                    break
-//                }
-//            }
-//        }
-
-//        println(arr)
-
-//        var idx: Int = 0
-//        for (i in 0..(section-1)) {
-//            idx += section_keys[i].size
-//        }
-
-//        for ((i,formItem) in arr.withIndex()) {
-//
-//            val indexPath: IndexPath = IndexPath(section, i)
-//            var idx: Int = 0
-//            for ((j, _forItem) in form.formItems.withIndex()) {
-//                if (formItem.name == _forItem.name) {
-//                    idx = j
-//                    break
-//                }
-//            }
-//
-//            var formItemAdapter: FormItemAdapter? = null
-//            if (formItem.uiProperties.cellType == FormItemCellType.textField) {
-//                formItemAdapter = TextFieldAdapter(formItem, clearClick, promptClick)
-//            } else if (formItem.uiProperties.cellType == FormItemCellType.plain) {
-//                formItemAdapter = PlainAdapter(formItem)
-//            } else if (formItem.uiProperties.cellType == FormItemCellType.tag) {
-//                formItemAdapter = TagAdapter(formItem)
-//            } else if (formItem.uiProperties.cellType == FormItemCellType.number) {
-//                val _formItem = formItem as NumberFormItem
-//                var number: Int = 1
-//                if (_formItem.value != null) {
-//                    number = _formItem.value!!.toInt()
-//                }
-//                formItemAdapter = NumberAdapter(formItem, number, _formItem.min, _formItem.max)
-//            }
-//
-//            if (formItemAdapter != null) {
-//                formItemAdapter!!.valueChangedDelegate = this
-//                rows.add(formItemAdapter!!)
-//            }
-////            idx++
-//        }
-
         return adapterRows
     }
 
@@ -557,7 +537,7 @@ class AddCartVC : MyTableVC(), ValueChangedDelegate {
         row["value"] = total.toString()
         row["show"] = "NT$ " + total.toString() + "元"
         replaceRowByKey(TOTAL_KEY, row)
-        notifyChanged(true)
+        //notifyChanged(true)
 
 //        val priceItem = getFormItemFromKey(TOTAL_KEY)
 //        if (priceItem != null) {
@@ -569,18 +549,18 @@ class AddCartVC : MyTableVC(), ValueChangedDelegate {
 //        }
     }
 
-    override fun notifyChanged(include_section: Boolean) {
-        if (include_section) {
-            for ((idx, _) in mySections.withIndex()) {
-                val items = generateItems(idx)
-                adapterSections[idx].update(items)
-            }
-        } else {
-            val items = generateItems()
-            adapter.update(items)
-        }
-        adapter.notifyDataSetChanged()
-    }
+//    override fun notifyChanged(include_section: Boolean) {
+//        if (include_section) {
+//            for ((idx, _) in mySections.withIndex()) {
+//                val items = generateItems(idx)
+//                adapterSections[idx].update(items)
+//            }
+//        } else {
+//            val items = generateItems()
+//            adapter.update(items)
+//        }
+//        adapter.notifyDataSetChanged()
+//    }
 
     override fun setTag(sectionKey: String, rowKey: String, attribute: String, selected: Boolean) {
 
@@ -597,7 +577,7 @@ class AddCartVC : MyTableVC(), ValueChangedDelegate {
                     val _row = row
                     _row["value"] = attribute
                     replaceRowByKey(sectionKey, rowKey, _row)
-                    notifyChanged(true)
+                    //notifyChanged(true)
                 }
             }
         }
@@ -616,7 +596,7 @@ class AddCartVC : MyTableVC(), ValueChangedDelegate {
                     selected_number = number
                     updateSubTotal()
 
-                    notifyChanged(true)
+                    //notifyChanged(true)
                 }
             }
         }
@@ -808,17 +788,12 @@ class AddCartSectionAdapter(val context: Context, private val resource: Int, var
         } else {
             iconID = context.resources.getIdentifier("to_right", "drawable", context.packageName)
         }
-        holder.greater.setImageResource(iconID)
 
         val adapter =
             AddCartItemAdapter(context, position, addCartSections[position], delegate)
 //            holder.recyclerView.setHasFixedSize(true)
         holder.recyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         holder.recyclerView.adapter = adapter
-
-        holder.greater.setOnClickListener {
-            delegate.handleSectionExpanded(position)
-        }
     }
 
     override fun getItemCount(): Int {
@@ -829,67 +804,39 @@ class AddCartSectionAdapter(val context: Context, private val resource: Int, var
 class AddCartSectionViewHolder(val viewHolder: View): RecyclerView.ViewHolder(viewHolder) {
 
     var titleLbl: TextView = viewHolder.findViewById(R.id.titleLbl)
-    var greater: ImageView = viewHolder.findViewById(R.id.greater)
     var recyclerView: RecyclerView = viewHolder.findViewById(R.id.recyclerView)
 }
 
-class AddCartItemAdapter(val context: Context, private val sectionIdx: Int, private val addCartSection: AddCartSection, var delegate: List1CellDelegate): RecyclerView.Adapter<AddCartItemViewHolder>() {
+class AddCartItemAdapter(val context: Context, private val sectionIdx: Int, private val addCartSection: AddCartSection, var delegate: List1CellDelegate): RecyclerView.Adapter<FormViewHolder>() {
 
     var addCartRows: ArrayList<AddCartRow> = addCartSection.items
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AddCartItemViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FormViewHolder {
         val inflater = LayoutInflater.from(parent.context)
-        val viewHolder = inflater.inflate(R.layout.search_row_item, parent, false)
 
-        return AddCartItemViewHolder(viewHolder)
+        var viewHolder = inflater.inflate(R.layout.formitem_plain, parent, false)
+        when (viewType) {
+            0 -> {
+                viewHolder = inflater.inflate(R.layout.formitem_plain, parent, false)
+            }
+        }
+
+        return PlainViewHolder(viewHolder)
     }
 
-    override fun onBindViewHolder(holder: AddCartItemViewHolder, position: Int) {
+    override fun getItemViewType(position: Int): Int {
 
         val row: AddCartRow = addCartRows[position]
-        holder.title.text = row.title
-        holder.show.text = row.show
-
-        val cell = row.cell
-        if (cell == "textField") {
-            holder.show.visibility = View.INVISIBLE
-            holder.greater.visibility = View.INVISIBLE
-            holder.keyword.visibility = View.VISIBLE
-            if (row.show.isNotEmpty()) {
-                holder.keyword.setText(row.show)
-            }
-            holder.keyword.addTextChangedListener(object: TextWatcher {
-                override fun afterTextChanged(p0: Editable?) {
-                }
-
-                override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                }
-
-                override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                    delegate.cellTextChanged(sectionIdx, position, p0.toString())
-                }
-            })
-        } else if (cell == "switch") {
-            holder.show.visibility = View.INVISIBLE
-            holder.greater.visibility = View.INVISIBLE
-            holder.keyword.visibility = View.INVISIBLE
-            holder.switch.visibility = View.VISIBLE
-            holder.clear.visibility = View.INVISIBLE
-
-            holder.switch.isChecked = row.value == "1"
+        return when (row.cell) {
+            "text" -> 0
+            else -> throw IllegalArgumentException("錯誤的格式" + position)
         }
+    }
 
-        holder.viewHolder.setOnClickListener {
-            delegate.cellClick(sectionIdx, position)
-        }
+    override fun onBindViewHolder(holder: FormViewHolder, position: Int) {
 
-        holder.switch.setOnCheckedChangeListener { compoundButton, b ->
-            delegate.cellSwitchChanged(sectionIdx, position, b)
-        }
-
-        holder.clear.setOnClickListener {
-            delegate.cellClear(sectionIdx, position)
-        }
+        val row: AddCartRow = addCartRows[position]
+        holder.bind(row)
     }
 
     override fun getItemCount(): Int {
@@ -902,12 +849,26 @@ class AddCartItemAdapter(val context: Context, private val sectionIdx: Int, priv
 
 }
 
-class AddCartItemViewHolder(val viewHolder: View): RecyclerView.ViewHolder(viewHolder) {
-
-    var title: TextView = viewHolder.findViewById(R.id.row_title)
-    var show: TextView = viewHolder.findViewById(R.id.row_detail)
-    var clear: ImageView = viewHolder.findViewById(R.id.clearBtn)
-    var greater: ImageView = viewHolder.findViewById(R.id.greater)
-    var keyword: EditText = viewHolder.findViewById(R.id.keywordTxt)
-    var switch: SwitchCompat = viewHolder.findViewById(R.id.search_switch)
+abstract class FormViewHolder(viewHolder: View): RecyclerView.ViewHolder(viewHolder) {
+    abstract fun bind(row: AddCartRow)
 }
+
+class PlainViewHolder(val viewHolder: View): FormViewHolder(viewHolder) {
+
+    override fun bind(row: AddCartRow) {
+        viewHolder.title.text = row.title
+        viewHolder.detail.text = row.show
+        viewHolder.detail.backgroundColor = Color.TRANSPARENT
+    }
+
+}
+
+//class AddCartItemViewHolder(val viewHolder: View): RecyclerView.ViewHolder(viewHolder) {
+//
+//    var title: TextView = viewHolder.findViewById(R.id.row_title)
+//    var show: TextView = viewHolder.findViewById(R.id.row_detail)
+//    var clear: ImageView = viewHolder.findViewById(R.id.clearBtn)
+//    var greater: ImageView = viewHolder.findViewById(R.id.greater)
+//    var keyword: EditText = viewHolder.findViewById(R.id.keywordTxt)
+//    var switch: SwitchCompat = viewHolder.findViewById(R.id.search_switch)
+//}

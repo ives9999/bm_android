@@ -76,7 +76,7 @@ class SignupListVC : MyTableVC() {
             }
             //rows.addAll(signups.rows)
             if (rows.size > 0) {
-                notifyChanged()
+                //notifyChanged()
 //                var items = generateItems()
 //                adapter.update(items)
 //                adapter.notifyDataSetChanged()

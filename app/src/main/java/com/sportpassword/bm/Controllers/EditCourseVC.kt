@@ -118,7 +118,7 @@ class EditCourseVC : MyTableVC(), ValueChangedDelegate {
             if (success) {
                 genericTable()
                 putValue()
-                notifyChanged(true)
+                //notifyChanged(true)
 
                 //teamedit_name.setSelection(teamedit_name.length())
                 closeRefresh()
@@ -333,7 +333,7 @@ class EditCourseVC : MyTableVC(), ValueChangedDelegate {
             item.make()
         }
 
-        notifyChanged(true)
+        //notifyChanged(true)
     }
 
     override fun contentEdit(key: String, content: String) {
@@ -342,7 +342,7 @@ class EditCourseVC : MyTableVC(), ValueChangedDelegate {
         item.value = content
         item.make()
 
-        notifyChanged(true)
+        //notifyChanged(true)
     }
 
 

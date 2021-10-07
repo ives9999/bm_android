@@ -117,7 +117,7 @@ class RegisterActivity : MyTableVC(), ValueChangedDelegate {
         params.clear()
         initData()
         generateItems()
-        adapter.notifyDataSetChanged()
+        //adapter.notifyDataSetChanged()
         refreshLayout!!.isRefreshing = false
     }
 
@@ -648,7 +648,7 @@ class RegisterActivity : MyTableVC(), ValueChangedDelegate {
             item.value = selected
             item.make()
         }
-        notifyChanged(true)
+        //notifyChanged(true)
     }
 
     override fun textFieldTextChanged(formItem: FormItem, text: String) {

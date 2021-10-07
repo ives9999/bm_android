@@ -55,7 +55,7 @@ class MemberCartListVC : MyTableVC() {
         page = 1
         theFirstTime = true
         //adapter.clear()
-        items.clear()
+        //items.clear()
         tableLists.clear()
         getDataStart(page, perPage, member.token)
     }
