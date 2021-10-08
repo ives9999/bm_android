@@ -5,14 +5,8 @@ import android.graphics.Color
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.view.LayoutInflater
-import android.view.Menu
-import android.view.View
-import android.view.ViewGroup
-import android.widget.EditText
-import android.widget.ImageButton
-import android.widget.ImageView
-import android.widget.TextView
+import android.view.*
+import android.widget.*
 import androidx.appcompat.widget.SwitchCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -35,6 +29,7 @@ import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.CartService
 import com.sportpassword.bm.Services.ProductService
 import com.sportpassword.bm.Utilities.*
+import com.sportpassword.bm.Views.Tag
 import com.sportpassword.bm.member
 import com.xwray.groupie.ExpandableGroup
 import com.xwray.groupie.ExpandableItem
@@ -43,7 +38,11 @@ import com.xwray.groupie.kotlinandroidextensions.Item
 import kotlinx.android.synthetic.main.activity_addcart_vc.*
 import kotlinx.android.synthetic.main.formitem_plain.*
 import kotlinx.android.synthetic.main.formitem_plain.view.*
+import kotlinx.android.synthetic.main.formitem_plain.view.title
+import kotlinx.android.synthetic.main.formitem_tag.*
+import kotlinx.android.synthetic.main.formitem_tag.view.*
 import kotlinx.android.synthetic.main.mask.*
+import kotlinx.android.synthetic.main.tag.view.*
 import org.jetbrains.anko.backgroundColor
 import java.lang.IllegalArgumentException
 
@@ -119,7 +118,7 @@ class AddCartVC : MyTableVC(), ValueChangedDelegate {
         dataService = ProductService
         recyclerView = editTableView
         addCartSectionAdapter = AddCartSectionAdapter(this, R.layout.cell_section, this)
-        addCartSections = initSectionRows1()
+//        addCartSections = initSectionRows1()
         addCartSectionAdapter.setAddCartSection(addCartSections)
         recyclerView.adapter = addCartSectionAdapter
 
@@ -130,32 +129,19 @@ class AddCartVC : MyTableVC(), ValueChangedDelegate {
         refresh()
     }
 
-    private fun initSectionRows1(): ArrayList<AddCartSection> {
+//    private fun initSectionRows1(): ArrayList<AddCartSection> {
+//
+//        val sections: ArrayList<AddCartSection> = arrayListOf()
+//
+//        sections.add(makeSection0Row1())
+//        sections.add(makeSection1Row1())
+//
+//        return sections
+//    }
 
-        val sections: ArrayList<AddCartSection> = arrayListOf()
+    private fun makeSectionRow(title: String, key: String, rows: ArrayList<AddCartRow>, isExpanded: Boolean=true): AddCartSection {
 
-        sections.add(makeSection0Row1())
-        sections.add(makeSection1Row1())
-
-        return sections
-    }
-
-    private fun makeSection0Row1(isExpanded: Boolean=true): AddCartSection {
-        val rows: ArrayList<AddCartRow> = arrayListOf()
-        val r1: AddCartRow = AddCartRow("商品", "", "", PRODUCT_KEY, "text")
-        rows.add(r1)
-
-        val s: AddCartSection = AddCartSection("商品名稱", PRODUCT_KEY, isExpanded)
-        s.items.addAll(rows)
-        return s
-    }
-
-    private fun makeSection1Row1(isExpanded: Boolean=true): AddCartSection {
-        val rows: ArrayList<AddCartRow> = arrayListOf()
-        val r1: AddCartRow = AddCartRow("", "", "", "", "tag")
-        rows.add(r1)
-
-        val s: AddCartSection = AddCartSection("商品選項", PRODUCT_KEY, isExpanded)
+        val s: AddCartSection = AddCartSection(title, key, isExpanded)
         s.items.addAll(rows)
         return s
     }
@@ -280,6 +266,17 @@ class AddCartVC : MyTableVC(), ValueChangedDelegate {
         return AddCartRow()
     }
 
+    fun replaceRowFromKey(key: String, row1: AddCartRow) {
+        for ((sectionIdx, section) in addCartSections.withIndex()) {
+            for ((rowIdx, row) in section.items.withIndex()) {
+                if (key == row.key) {
+                    addCartSections[sectionIdx].items[rowIdx] = row
+                    break
+                }
+            }
+        }
+    }
+
     private fun initData() {
 
 //        form = OrderForm(myTable!!.type, this)
@@ -289,12 +286,14 @@ class AddCartVC : MyTableVC(), ValueChangedDelegate {
 //            initAdapter(true)
             setMyTitle(productTable!!.name)
 
-            //var row = getRowRowsFromMyRowsByKey1(PRODUCT_KEY)
-            var row = getRowFromKey(PRODUCT_KEY)
-            row.value = productTable!!.name
-            row.show = productTable!!.name
-            //replaceRowByKey(PRODUCT_KEY, row)
+            var rows: ArrayList<AddCartRow> = arrayListOf()
+            var row = AddCartRow("商品", productTable!!.name, productTable!!.name, PRODUCT_KEY, "text")
+            rows.add(row)
 
+            var section = makeSectionRow("商品名稱", PRODUCT_KEY, rows, true)
+            addCartSections.add(section)
+
+            rows = arrayListOf()
             for (attribute in productTable!!.attributes) {
                 var tmp: String = attribute.attribute
                 tmp = tmp.replace("{", "")
@@ -316,30 +315,22 @@ class AddCartVC : MyTableVC(), ValueChangedDelegate {
                         }
                     }
                 }
-
-                //print(arr)
-                row = getRowFromKey("attribute")
-                row.title = attribute.name
-                row.key = alias
-                row.value = value
-                row.show = tmp
-//                row = hashMapOf(
-//                    "title" to attribute.name,
-//                    "key" to alias,
-//                    "value" to value,
-//                    "show" to tmp,
-//                    "cell" to "tag"
-//                )
-//                attributeRows.add(row)
+                row = AddCartRow(attribute.name, value, tmp, alias, "tag")
+                rows.add(row)
             }
+            section = makeSectionRow("商品屬性", ATTRIBUTE_KEY, rows, true)
+            addCartSections.add(section)
+
             //print(attributeRows)
 //            myRows[1]["rows"] = attributeRows
 
 //            row = getRowRowsFromMyRowsByKey1(QUANTITY_KEY)
-//            val min: String = productTable!!.order_min.toString()
-//            val max: String = productTable!!.order_max.toString()
-//            row["show"] = "${min},${max}"
-//            row["value"] = "1"
+            rows = arrayListOf()
+            val min: String = productTable!!.order_min.toString()
+            val max: String = productTable!!.order_max.toString()
+            row = AddCartRow("數量", "1", "${min},${max}", QUANTITY_KEY, "number")
+            rows.add(row)
+
 //
 //            if (cartItemTable != null) {
 //                selected_number = cartItemTable!!.quantity
@@ -349,6 +340,7 @@ class AddCartVC : MyTableVC(), ValueChangedDelegate {
 //
 //            selected_price = productTable!!.prices[selected_idx].price_member
 //            updateSubTotal()
+            section = makeSectionRow("款項", AMOUNT_KEY, rows, true)
             addCartSectionAdapter.setAddCartSection(addCartSections)
             addCartSectionAdapter.notifyDataSetChanged()
         }
@@ -472,26 +464,26 @@ class AddCartVC : MyTableVC(), ValueChangedDelegate {
 //        adapter.notifyDataSetChanged()
 //    }
 
-    override fun setTag(sectionKey: String, rowKey: String, attribute: String, selected: Boolean) {
-
-//        println(sectionKey)
-//        println(rowKey)
-//        println(attribute)
-//        println(selected)
-
-        val rows = getRowRowsFromMyRowsByKey(sectionKey)
-        for (row in rows) {
-            if (row.containsKey("key")) {
-                val key: String = row["key"]!!
-                if (key == rowKey) {
-                    val _row = row
-                    _row["value"] = attribute
-                    replaceRowByKey(sectionKey, rowKey, _row)
-                    //notifyChanged(true)
-                }
-            }
-        }
-    }
+//    override fun setTag(sectionKey: String, rowKey: String, attribute: String, selected: Boolean) {
+//
+////        println(sectionKey)
+////        println(rowKey)
+////        println(attribute)
+////        println(selected)
+//
+//        val rows = getRowRowsFromMyRowsByKey(sectionKey)
+//        for (row in rows) {
+//            if (row.containsKey("key")) {
+//                val key: String = row["key"]!!
+//                if (key == rowKey) {
+//                    val _row = row
+//                    _row["value"] = attribute
+//                    replaceRowByKey(sectionKey, rowKey, _row)
+//                    //notifyChanged(true)
+//                }
+//            }
+//        }
+//    }
 
     override fun stepperValueChanged(sectionKey: String, rowKey: String, number: Int) {
 
@@ -534,6 +526,11 @@ class AddCartVC : MyTableVC(), ValueChangedDelegate {
         val numberFormItem: NumberFormItem = getFormItemFromKey(name) as NumberFormItem
         numberFormItem.value = number.toString()
         updateSubTotal()
+    }
+
+    override fun cellSetTag(sectionIdx: Int, rowIdx: Int, value: String, isChecked: Boolean) {
+        val row: AddCartRow = addCartSections[sectionIdx].items[rowIdx]
+        row.value = value
     }
 
     override fun textFieldTextChanged(formItem: FormItem, text: String) {}
@@ -719,24 +716,30 @@ class AddCartSectionViewHolder(val viewHolder: View): RecyclerView.ViewHolder(vi
 class AddCartItemAdapter(val context: Context, private val sectionIdx: Int, private val addCartSection: AddCartSection, var delegate: List1CellDelegate): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     var addCartRows: ArrayList<AddCartRow> = addCartSection.items
+    val tagLabels: ArrayList<Tag> = arrayListOf()
+    var rowIdx: Int = 0
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val inflater = LayoutInflater.from(parent.context)
 
-        var viewHolder = inflater.inflate(R.layout.formitem_plain, parent, false)
+        //var viewHolder = inflater.inflate(R.layout.formitem_plain, parent, false)
         when (viewType) {
             CELL_TYPE.PLAIN.toInt() -> {
-                viewHolder = inflater.inflate(R.layout.formitem_plain, parent, false)
+                return PlainViewHolder(inflater.inflate(R.layout.formitem_plain, parent, false))
             }
             CELL_TYPE.TEXTFIELD.toInt() -> {
-                viewHolder = inflater.inflate(R.layout.formitem_textfield, parent, false)
+                return TextFieldViewHolder(inflater.inflate(R.layout.formitem_textfield, parent, false))
             }
             CELL_TYPE.TAG.toInt() -> {
-                viewHolder = inflater.inflate(R.layout.formitem_tag, parent, false)
+                return TagViewHolder(inflater.inflate(R.layout.formitem_tag, parent, false))
+            }
+            CELL_TYPE.NUMBER.toInt() -> {
+                return TagViewHolder(inflater.inflate(R.layout.formitem_number, parent, false))
+            }
+            else -> {
+                return PlainViewHolder(inflater.inflate(R.layout.formitem_plain, parent, false))
             }
         }
-
-        return PlainViewHolder(viewHolder)
     }
 
     override fun getItemViewType(position: Int): Int {
@@ -746,12 +749,14 @@ class AddCartItemAdapter(val context: Context, private val sectionIdx: Int, priv
             "text" -> CELL_TYPE.PLAIN.toInt()
             "textfield" -> CELL_TYPE.TEXTFIELD.toInt()
             "tag" -> CELL_TYPE.TAG.toInt()
+            "number" -> CELL_TYPE.NUMBER.toInt()
             else -> throw IllegalArgumentException("錯誤的格式" + position)
         }
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
 
+        this.rowIdx = position
         val row: AddCartRow = addCartRows[position]
 
         if (holder is PlainViewHolder) {
@@ -762,6 +767,11 @@ class AddCartItemAdapter(val context: Context, private val sectionIdx: Int, priv
             holder.title.text = row.title
         } else if (holder is TagViewHolder) {
             holder.title.text = row.title
+
+            generateTag(holder.tag_container, row)
+        } else if (holder is NumberViewHolder) {
+            holder.title.text = row.title
+
         }
     }
 
@@ -773,6 +783,77 @@ class AddCartItemAdapter(val context: Context, private val sectionIdx: Int, priv
         }
     }
 
+    fun generateTag(tag_container: TableLayout, row: AddCartRow) {
+        val columnNum: Int = 3
+        var rowNum: Int = 0
+        val show: String = row.show
+
+        val attributes: Array<String> = show.split(",").toTypedArray()
+        val count: Int = attributes.size
+
+        val (q, r) = count.quotientAndRemainder(columnNum)
+        rowNum = if (r > 0) { q + 1 } else { q }
+        tag_container.removeAllViews()
+
+        var tableRow: LinearLayout? = null
+        for ((idx, attribute) in attributes.withIndex()) {
+            var (_, columnCount) = idx.quotientAndRemainder(columnNum)
+            columnCount++
+
+            //如果換下一行，則new 一個新的row
+            if (columnCount == 1) {
+                tableRow = LinearLayout(context)
+                tableRow.orientation = LinearLayout.HORIZONTAL
+                val lp = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 180)
+                tableRow.layoutParams = lp
+                tag_container.addView(tableRow)
+            }
+            val lp_tag = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT)
+            lp_tag.gravity = Gravity.CENTER
+            lp_tag.weight = 1F
+
+            val tag: Tag = Tag(context)
+            tag.layoutParams = lp_tag
+            tableRow!!.addView(tag)
+            tag.tag = idx
+            tag.key = attribute
+            tag.value = attribute
+            tag.tag_view.text = attribute
+
+            tag.setOnClickListener {
+                handleTap(it)
+            }
+
+            tagLabels.add(tag)
+
+            if (attribute == row.value) {
+                tag.isChecked = true
+                tag.setSelectedStyle()
+            }
+        }
+    }
+
+    fun handleTap(view: View) {
+
+        val tag: Tag = view as Tag
+        val rowIdx: Int = tag.tag as Int
+        tag.isChecked = !tag.isChecked
+        tag.setSelectedStyle()
+        clearOtherTagSelected(tag)
+
+        delegate.cellSetTag(this.sectionIdx, this.rowIdx, tag.value, tag.isChecked)
+    }
+
+    fun clearOtherTagSelected(selectedTag: Tag) {
+        if (selectedTag.isChecked) {
+            for (tagLabel in tagLabels) {
+                if (tagLabel != selectedTag) {
+                    tagLabel.isChecked = false
+                    tagLabel.unSelectedStyle()
+                }
+            }
+        }
+    }
 }
 
 //abstract class FormViewHolder(viewHolder: View): RecyclerView.ViewHolder(viewHolder) {
@@ -788,13 +869,17 @@ class PlainViewHolder(val viewHolder: View): RecyclerView.ViewHolder(viewHolder)
 class TextFieldViewHolder(val viewHolder: View): RecyclerView.ViewHolder(viewHolder) {
 
     val title: TextView = viewHolder.title
-    val show: TextView = viewHolder.detail
 }
 
 class TagViewHolder(val viewHolder: View): RecyclerView.ViewHolder(viewHolder) {
 
     val title: TextView = viewHolder.title
-    val show: TextView = viewHolder.detail
+    val tag_container: TableLayout = viewHolder.tag_container
+}
+
+class NumberViewHolder(val viewHolder: View): RecyclerView.ViewHolder(viewHolder) {
+
+    val title: TextView = viewHolder.title
 }
 
 //class AddCartItemViewHolder(val viewHolder: View): RecyclerView.ViewHolder(viewHolder) {

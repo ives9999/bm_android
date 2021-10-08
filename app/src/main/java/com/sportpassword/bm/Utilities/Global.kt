@@ -74,13 +74,15 @@ open class MYENUM<T>() {
 enum class CELL_TYPE(val value: String) {
     PLAIN("plain"),
     TEXTFIELD("textField"),
-    TAG("tag");
+    TAG("tag"),
+    NUMBER("number");
 
     fun toInt(): Int {
         when (this) {
             PLAIN -> return 0
             TEXTFIELD -> return 1
             TAG -> return 2
+            NUMBER -> return 3
         }
 
         return 0
