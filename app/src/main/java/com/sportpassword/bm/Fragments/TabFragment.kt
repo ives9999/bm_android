@@ -760,6 +760,7 @@ abstract class MyAdapter<T: MyViewHolder>(private val resource: Int, private val
 
     override fun onBindViewHolder(holder: T, position: Int) {
         val row: Table = tableList[position]
+
         holder.bind(row, position)
     }
 

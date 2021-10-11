@@ -56,7 +56,7 @@ class CartItemTable: Table() {
             //[alias:size]
             //[value:M]
             val a: HashMap<String, String> = hashMapOf()
-            if (a.size > 0) {
+            if (arr.isNotEmpty()) {
                 for (str in arr) {
                     val b: Array<String> = str.split(":").toTypedArray()
                     a[b[0]] = b[1]

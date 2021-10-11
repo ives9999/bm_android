@@ -8,6 +8,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.sportpassword.bm.Adapters.GroupSection
 import com.sportpassword.bm.Adapters.ListAdapter
+import com.sportpassword.bm.Data.OneRow
+import com.sportpassword.bm.Data.OneSection
 import com.sportpassword.bm.Form.BaseForm
 import com.sportpassword.bm.Form.FormItem.FormItem
 import com.sportpassword.bm.Models.*
@@ -57,6 +59,9 @@ abstract class MyTableVC : BaseActivity() {
 
     //取代superDataLists(define in BaseActivity)，放置所有拿到的SuperModel，分頁時會使用到
     //var <T> allSuperModels: ArrayList<T> = arrayListOf()
+
+    lateinit var oneSectionAdapter: OneSectionAdapter
+    var oneSections: ArrayList<OneSection> = arrayListOf()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -510,16 +515,23 @@ abstract class MyTableVC : BaseActivity() {
         return hashMapOf()
     }
 
-    fun getRowValue(rowKey: String): String {
+//    open fun getRowValue(rowKey: String): String {
+//
+//        val row = getRowRowsFromMyRowsByKey1(rowKey)
+//        var value: String = ""
+//        val tmp: String? = row["value"]
+//        if (tmp != null)  {
+//            value = tmp
+//        }
+//
+//        return value
+//    }
 
-        val row = getRowRowsFromMyRowsByKey1(rowKey)
-        var value: String = ""
-        val tmp: String? = row["value"]
-        if (tmp != null)  {
-            value = tmp
-        }
+    fun makeSectionRow(title: String, key: String, rows: ArrayList<OneRow>, isExpanded: Boolean=true): OneSection {
 
-        return value
+        val s: OneSection = OneSection(title, key, isExpanded)
+        s.items.addAll(rows)
+        return s
     }
 
     fun getRowShow(rowKey: String): String {
@@ -532,6 +544,47 @@ abstract class MyTableVC : BaseActivity() {
         }
 
         return show
+    }
+
+    fun getRowsFromSectionKey(key: String): ArrayList<OneRow> {
+        for (section in oneSections) {
+            if (section.key == key) {
+                return section.items
+            }
+        }
+        return arrayListOf()
+    }
+
+    fun getRowFromRowKey(key: String): OneRow {
+        for (section in oneSections) {
+            for (row in section.items) {
+                if (key == row.key) {
+                    return row
+                }
+            }
+        }
+
+        return OneRow()
+    }
+
+    open fun getRowValue(rowKey: String): String {
+        val row = getRowFromRowKey(rowKey)
+        return row.value
+    }
+
+    fun replaceRowFromKey(key: String, row1: OneRow) {
+        for ((sectionIdx, section) in oneSections.withIndex()) {
+            for ((rowIdx, row) in section.items.withIndex()) {
+                if (key == row.key) {
+                    oneSections[sectionIdx].items[rowIdx] = row
+                    break
+                }
+            }
+        }
+    }
+
+    fun replaceRowFromIdx(sectionIdx: Int, rowIdx: Int, row1: OneRow) {
+        oneSections[sectionIdx].items[rowIdx] = row1
     }
 
 //    private fun updateAdapter() {
@@ -681,6 +734,7 @@ interface List1CellDelegate {
 
     fun cellTextChanged(sectionIdx: Int, rowIdx: Int, str: String) {}
     fun cellSwitchChanged(sectionIdx: Int, rowIdx: Int, b: Boolean) {}
+    fun cellNumberChanged(sectionIdx: Int, rowIdx: Int, number: Int) {}
     fun cellClear(sectionIdx: Int, rowIdx: Int) {}
 
     fun cellSetTag(sectionIdx: Int, rowIdx: Int, value: String, isChecked: Boolean) {}

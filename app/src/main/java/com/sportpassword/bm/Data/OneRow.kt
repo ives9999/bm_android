@@ -1,12 +1,13 @@
 package com.sportpassword.bm.Data
 
-data class AddCartSection (
+data class OneSection (
     var title: String = "",
     var key: String = "",
     var isExpanded: Boolean = true,
-    var items: ArrayList<AddCartRow> = arrayListOf()
+    var items: ArrayList<OneRow> = arrayListOf()
 )
-data class AddCartRow(
+
+data class OneRow(
     var title: String = "",
     var value: String = "",
     var show: String = "",
