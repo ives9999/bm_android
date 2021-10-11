@@ -776,8 +776,8 @@ open class MyViewHolder(val context: Context, val viewHolder: View, val list1Cel
 
     var isLike: Boolean = false
 
-    var titleLbl: TextView = viewHolder.findViewById(R.id.titleLbl)
-    var listFeatured: ImageView = viewHolder.findViewById(R.id.listFeatured)
+    var titleLbl: TextView? = viewHolder.findViewById(R.id.titleLbl)
+    var listFeatured: ImageView? = viewHolder.findViewById(R.id.listFeatured)
     var v: View? = viewHolder.findViewById(R.id.iconView)
     var refreshIcon: ImageButton? = viewHolder.findViewById(R.id.refreshIcon)
     var telIcon: ImageButton? = viewHolder.findViewById(R.id.telIcon)
@@ -791,13 +791,13 @@ open class MyViewHolder(val context: Context, val viewHolder: View, val list1Cel
         }
 
         if (row.title.isNotEmpty()) {
-            titleLbl.text = row.title
+            titleLbl?.text = row.title
         }
         if (row.name.isNotEmpty()) {
-            titleLbl.text = row.name
+            titleLbl?.text = row.name
         }
 
-        if (row.featured_path.isNotEmpty()) {
+        if (listFeatured != null && row.featured_path.isNotEmpty()) {
             Picasso.with(context)
                 .load(row.featured_path)
                 .placeholder(R.drawable.loading_square_120)

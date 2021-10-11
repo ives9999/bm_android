@@ -651,6 +651,8 @@ abstract class MyTableVC : BaseActivity() {
             toShowArena(row.token)
         } else if (t == CourseTable::class) {
             toShowCourse(row.token)
+        } else if (t == OrderTable::class) {
+            toPayment(row.token)
         }
     }
 

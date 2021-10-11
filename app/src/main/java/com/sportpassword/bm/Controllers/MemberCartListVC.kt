@@ -163,7 +163,7 @@ class MemberCartViewHolder(context: Context, viewHolder: View, list1CellDelegate
         _row.filterRow()
         //super.bind(_row, idx)
         val productTable: ProductTable = _row.product!!
-        titleLbl.text = productTable.name
+        titleLbl?.text = productTable.name
         if (productTable.featured_path.isNotEmpty()) {
             Picasso.with(context)
                 .load(productTable.featured_path)
@@ -186,13 +186,15 @@ class MemberCartViewHolder(context: Context, viewHolder: View, list1CellDelegate
         quantity.text = "數量：${row.quantity}"
 
         if (list1CellDelegate != null) {
-            viewHolder.editIcon.setOnClickListener {
+            refreshIcon?.setOnClickListener {
+                list1CellDelegate.cellRefresh()
+            }
 
+            viewHolder.editIcon.setOnClickListener {
                 list1CellDelegate.cellEdit(row)
             }
 
             viewHolder.deleteIcon.setOnClickListener {
-
                 list1CellDelegate.cellDelete(row)
             }
         } else {

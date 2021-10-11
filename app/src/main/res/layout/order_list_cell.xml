@@ -47,17 +47,17 @@
 
                 <TextView
                     android:id="@+id/nameLbl"
+                    style="@style/list_text_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="商品名稱"
-                    style="@style/list_text_title" />
+                    android:text="商品名稱" />
 
                 <TextView
                     android:id="@+id/priceLbl"
+                    style="@style/highlight"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
-                    style="@style/highlight"
                     android:text="金額" />
             </RelativeLayout>
 
@@ -67,20 +67,20 @@
 
                 <TextView
                     android:id="@+id/orderNoLbl"
+                    style="@style/list_text_general"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="訂單編號"
-                    style="@style/list_text_general" />
+                    android:text="訂單編號" />
 
                 <TextView
                     android:id="@+id/dateLbl"
+                    style="@style/list_text_general"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignRight="@id/orderNoLbl"
                     android:layout_alignParentLeft="false"
                     android:layout_alignParentEnd="true"
-                    android:text="日期"
-                    style="@style/list_text_general" />
+                    android:text="日期" />
             </RelativeLayout>
 
             <LinearLayout
@@ -90,17 +90,17 @@
 
                 <TextView
                     android:id="@+id/orderProcessTitleLbl"
+                    style="@style/list_text_general"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="訂單狀態："
-                    style="@style/list_text_general" />
+                    android:text="訂單狀態：" />
 
                 <TextView
                     android:id="@+id/orderAllProcessLbl"
+                    style="@style/list_text_general"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Label"
-                    style="@style/list_text_general" />
+                    android:text="Label" />
             </LinearLayout>
 
             <LinearLayout
@@ -110,18 +110,19 @@
 
                 <TextView
                     android:id="@+id/gatewayProcessTitleLbl"
+                    style="@style/list_text_general"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="付款狀態："
-                    style="@style/list_text_general" />
+                    android:text="付款狀態：" />
 
                 <TextView
                     android:id="@+id/gatewayProcessLbl"
+                    style="@style/list_text_general"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Label"
-                    style="@style/list_text_general" />
+                    android:text="Label" />
             </LinearLayout>
+
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -145,6 +146,7 @@
             <RelativeLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content">
+
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -159,10 +161,10 @@
 
                     <TextView
                         android:id="@+id/shippingProcessLbl"
+                        style="@style/list_text_general"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Label"
-                        style="@style/list_text_general" />
+                        android:text="Label" />
                 </LinearLayout>
 
                 <LinearLayout

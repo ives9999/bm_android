@@ -100,6 +100,10 @@ class OrderVC : MyTableVC() {
         )
 
         //initAdapter(true)
+        oneSectionAdapter = OneSectionAdapter(this, R.layout.cell_section, this)
+        oneSectionAdapter.setOneSection(oneSections)
+        recyclerView.adapter = oneSectionAdapter
+
         refresh()
     }
 
@@ -290,7 +294,7 @@ class OrderVC : MyTableVC() {
             hashMapOf("key" to MEMO_KEY, "rows" to memoRows)
         )
 
-        initAdapter(true)
+//        initAdapter(true)
         //        recyclerView.setHasFixedSize(true)
         if (refreshLayout != null) {
             setRefreshListener()
