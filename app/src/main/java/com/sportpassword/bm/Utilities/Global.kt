@@ -75,7 +75,8 @@ enum class CELL_TYPE(val value: String) {
     PLAIN("plain"),
     TEXTFIELD("textField"),
     TAG("tag"),
-    NUMBER("number");
+    NUMBER("number"),
+    CART("cart");
 
     fun toInt(): Int {
         when (this) {
@@ -83,6 +84,7 @@ enum class CELL_TYPE(val value: String) {
             TEXTFIELD -> return 1
             TAG -> return 2
             NUMBER -> return 3
+            CART -> return 4
         }
 
         return 0

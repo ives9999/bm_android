@@ -706,6 +706,9 @@ class OneItemAdapter(val context: Context, private val sectionIdx: Int, private 
             CELL_TYPE.NUMBER.toInt() -> {
                 return NumberViewHolder(inflater.inflate(R.layout.formitem_number, parent, false))
             }
+            CELL_TYPE.CART.toInt() -> {
+                return CartViewHolder(inflater.inflate(R.layout.cart_list_cell, parent, false))
+            }
             else -> {
                 return PlainViewHolder(inflater.inflate(R.layout.formitem_plain, parent, false))
             }
@@ -720,6 +723,7 @@ class OneItemAdapter(val context: Context, private val sectionIdx: Int, private 
             "textfield" -> CELL_TYPE.TEXTFIELD.toInt()
             "tag" -> CELL_TYPE.TAG.toInt()
             "number" -> CELL_TYPE.NUMBER.toInt()
+            "product" -> CELL_TYPE.CART.toInt()
             else -> throw IllegalArgumentException("錯誤的格式" + position)
         }
     }
@@ -914,6 +918,10 @@ class NumberViewHolder(val viewHolder: View): RecyclerView.ViewHolder(viewHolder
 
         return number
     }
+}
+
+class CartViewHolder(val viewHolder: View): RecyclerView.ViewHolder(viewHolder) {
+
 }
 
 //class AddCartItemViewHolder(val viewHolder: View): RecyclerView.ViewHolder(viewHolder) {

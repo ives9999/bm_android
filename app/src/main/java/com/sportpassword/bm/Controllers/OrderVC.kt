@@ -22,6 +22,7 @@ import android.view.*
 import android.widget.RelativeLayout
 import androidx.recyclerview.widget.RecyclerView
 import com.google.gson.Gson
+import com.sportpassword.bm.Data.*
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.GroupieViewHolder
 
@@ -76,6 +77,7 @@ class OrderVC : MyTableVC() {
     val memoRows: ArrayList<HashMap<String, String>> = arrayListOf(
         hashMapOf("title" to "留言","key" to MEMO_KEY,"value" to "","show" to "","cell" to "memo","keyboard" to KEYBOARD.default.toString())
     )
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -183,55 +185,9 @@ class OrderVC : MyTableVC() {
                 cartTable = cartsTable!!.rows[0]
                 cartitemsTable = cartTable!!.items
                 productRows.clear()
-                for (cartItemTable in cartitemsTable) {
 
-                    cartItemTable.filterRow()
-                    amount += cartItemTable.amount
 
-                    productTable = cartItemTable.product
 
-                    var attribute_text: String = ""
-                    if (cartItemTable.attributes.size > 0) {
-
-                        for ((idx, attribute) in cartItemTable.attributes.withIndex()) {
-                            attribute_text += attribute["name"]!! + ":" + attribute["value"]!!
-                            if (idx < cartItemTable.attributes.count() - 1) {
-                                attribute_text += " | "
-                            }
-                        }
-                    }
-
-                    val row:HashMap<String, String> = hashMapOf("title" to productTable!!.name,"key" to PRODUCT_KEY,"value" to "","show" to "","cell" to "cart","featured_path" to productTable!!.featured_path,"attribute" to attribute_text,"amount" to cartItemTable.amount_show,"quantity" to cartItemTable.quantity.toString())
-                    productRows.add(row)
-                }
-
-                //price
-                amountRows.clear()
-                val amount_show: String = amount.formattedWithSeparator()
-                var row: HashMap<String, String> = hashMapOf("title" to "商品金額","key" to "amount","value" to amount.toString(),"show" to "NT$ ${amount_show}","cell" to "text")
-                amountRows.add(row)
-
-                //var shipping_fee: Int = 60
-                var shipping_fee: Int = 0
-                if (amount > 1000) { shipping_fee = 0}
-                val shipping_fee_show: String = shipping_fee.formattedWithSeparator()
-
-                row = hashMapOf("title" to "運費","key" to SHIPPING_FEE_KEY,"value" to shipping_fee.toString(),"show" to "NT$ ${shipping_fee_show}","cell" to "text")
-
-                amountRows.add(row)
-
-                //val tax: Int = (amount.toDouble() * 0.05).toInt()
-                val tax: Int = 0
-                val tax_show: String = tax.formattedWithSeparator()
-                row = hashMapOf("title" to "稅","key" to TAX_KEY,"value" to tax.toString(),"show" to "NT$ ${tax_show}","cell" to "text")
-
-                amountRows.add(row)
-
-                val total: Int = amount + shipping_fee + tax
-                val total_show: String = total.formattedWithSeparator()
-                row = hashMapOf("title" to "總金額","key" to TOTAL_KEY,"value" to total.toString(),"show" to "NT$ ${total_show}","cell" to "text")
-
-                amountRows.add(row)
 
                 //gateway
                 gatewayRows.clear()
@@ -265,6 +221,71 @@ class OrderVC : MyTableVC() {
     }
 
     fun initData() {
+
+        var amount: Int = 0
+
+        var rows: ArrayList<OneRow> = arrayListOf()
+
+        //cart
+        for (cartItemTable in cartitemsTable) {
+
+            cartItemTable.filterRow()
+            amount += cartItemTable.amount
+
+            productTable = cartItemTable.product
+
+            var attribute_text: String = ""
+            if (cartItemTable.attributes.size > 0) {
+
+                for ((idx, attribute) in cartItemTable.attributes.withIndex()) {
+                    attribute_text += attribute["name"]!! + ":" + attribute["value"]!!
+                    if (idx < cartItemTable.attributes.count() - 1) {
+                        attribute_text += " | "
+                    }
+                }
+            }
+
+//            val row:HashMap<String, String> = hashMapOf("title" to productTable!!.name,"key" to PRODUCT_KEY,"value" to "","show" to "","cell" to "cart","featured_path" to productTable!!.featured_path,"attribute" to attribute_text,"amount" to cartItemTable.amount_show,"quantity" to cartItemTable.quantity.toString())
+            val row = OneRow(productTable!!.name, "", "", PRODUCT_KEY, "cart", productTable!!.featured_path, attribute_text, cartItemTable.amount_show, cartItemTable.quantity.toString())
+            rows.add(row)
+            //productRows.add(row)
+        }
+
+        var section = makeSectionRow("商品", PRODUCT_KEY, rows, true)
+        oneSections.add(section)
+
+        //price
+//        amountRows.clear()
+        val amount_show: String = amount.formattedWithSeparator()
+        var row = OneRow("商品金額", amount.toString(), "NT$ ${amount_show}", "amount", "text")
+        rows.add(row)
+        //var row: HashMap<String, String> = hashMapOf("title" to "商品金額","key" to "amount","value" to amount.toString(),"show" to "NT$ ${amount_show}","cell" to "text")
+//        amountRows.add(row)
+
+        //var shipping_fee: Int = 60
+        var shipping_fee: Int = 0
+        if (amount > 1000) { shipping_fee = 0}
+        val shipping_fee_show: String = shipping_fee.formattedWithSeparator()
+
+        row = OneRow("運費", shipping_fee.toString(), "NT$ ${shipping_fee_show}", SHIPPING_FEE_KEY, "text")
+        rows.add(row)
+//        row = hashMapOf("title" to "運費","key" to SHIPPING_FEE_KEY,"value" to shipping_fee.toString(),"show" to "NT$ ${shipping_fee_show}","cell" to "text")
+//        amountRows.add(row)
+
+        //val tax: Int = (amount.toDouble() * 0.05).toInt()
+        val tax: Int = 0
+        val tax_show: String = tax.formattedWithSeparator()
+        row = OneRow("税", tax.toString(), "NT$ ${tax_show}", TAX_KEY, "text")
+        rows.add(row)
+//        row = hashMapOf("title" to "稅","key" to TAX_KEY,"value" to tax.toString(),"show" to "NT$ ${tax_show}","cell" to "text")
+//        amountRows.add(row)
+
+        val total: Int = amount + shipping_fee + tax
+        val total_show: String = total.formattedWithSeparator()
+        row = OneRow("總金額", total.toString(), "NT$ ${total_show}", TOTAL_KEY, "text")
+//        row = hashMapOf("title" to "總金額","key" to TOTAL_KEY,"value" to total.toString(),"show" to "NT$ ${total_show}","cell" to "text")
+//        amountRows.add(row)
+
 
         memberRows = arrayListOf(
             hashMapOf("title" to "姓名","key" to NAME_KEY,"value" to member.name!!,"show" to member.name!!,"cell" to "textField","keyboard" to KEYBOARD.default.toString()),
