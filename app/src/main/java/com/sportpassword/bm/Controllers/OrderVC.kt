@@ -185,37 +185,6 @@ class OrderVC : MyTableVC() {
                 cartTable = cartsTable!!.rows[0]
                 cartitemsTable = cartTable!!.items
                 productRows.clear()
-
-
-
-
-                //gateway
-                gatewayRows.clear()
-                val gateway: String = productTable!!.gateway
-                var arr: Array<String> = gateway.split(",").toTypedArray()
-                for (tmp in arr) {
-                    val title: String = GATEWAY.getRawValueFromString(tmp)
-                    var value: String = "false"
-                    if (tmp == "credit_card") {
-                        value = "true"
-                    }
-                    val _row: HashMap<String, String> = hashMapOf("title" to title,"key" to tmp,"value" to value,"show" to title,"cell" to "radio")
-                    gatewayRows.add(_row)
-                }
-
-                //shipping
-                shippingRows.clear()
-                val shipping: String = productTable!!.shipping
-                arr = shipping.split(",").toTypedArray()
-                for (tmp in arr) {
-                    val title: String = SHIPPING_WAY.getRawValueFromString(tmp)
-                    var value: String = "false"
-                    if (tmp == "direct") {
-                        value = "true"
-                    }
-                    val row1: HashMap<String, String> = hashMapOf("title" to title,"key" to tmp,"value" to value,"show" to title,"cell" to "radio")
-                    shippingRows.add(row1)
-                }
             }
         }
     }
@@ -256,6 +225,7 @@ class OrderVC : MyTableVC() {
 
         //price
 //        amountRows.clear()
+        rows = arrayListOf()
         val amount_show: String = amount.formattedWithSeparator()
         var row = OneRow("商品金額", amount.toString(), "NT$ ${amount_show}", "amount", "text")
         rows.add(row)
@@ -283,37 +253,100 @@ class OrderVC : MyTableVC() {
         val total: Int = amount + shipping_fee + tax
         val total_show: String = total.formattedWithSeparator()
         row = OneRow("總金額", total.toString(), "NT$ ${total_show}", TOTAL_KEY, "text")
+        rows.add(row)
 //        row = hashMapOf("title" to "總金額","key" to TOTAL_KEY,"value" to total.toString(),"show" to "NT$ ${total_show}","cell" to "text")
 //        amountRows.add(row)
+        section = makeSectionRow("金額", AMOUNT_KEY, rows, true)
+        oneSections.add(section)
 
-
-        memberRows = arrayListOf(
-            hashMapOf("title" to "姓名","key" to NAME_KEY,"value" to member.name!!,"show" to member.name!!,"cell" to "textField","keyboard" to KEYBOARD.default.toString()),
-            hashMapOf("title" to "電話","key" to MOBILE_KEY,"value" to member.mobile!!,"show" to member.mobile!!,"cell" to "textField","keyboard" to KEYBOARD.numberPad.toString()),
-            hashMapOf("title" to "EMail","key" to EMAIL_KEY,"value" to member.email!!,"show" to member.email!!,"cell" to "textField","keyboard" to KEYBOARD.emailAddress.toString()),
-            hashMapOf("title" to "住址","key" to ADDRESS_KEY,"value" to member.address!!,"show" to member.address!!,"cell" to "textField","keyboard" to KEYBOARD.default.toString())
-        )
-
-        invoiceRows.clear()
-        for (invoiceFixedRow in invoiceFixedRows) {
-
-            invoiceRows.add(invoiceFixedRow)
+        //gateway
+//        gatewayRows.clear()
+        rows = arrayListOf()
+        val gateway: String = productTable!!.gateway
+        val arr: Array<String> = gateway.split(",").toTypedArray()
+        for (tmp in arr) {
+            val title: String = GATEWAY.getRawValueFromString(tmp)
+            var value: String = "false"
+            if (tmp == "credit_card") {
+                value = "true"
+            }
+            val row: OneRow = OneRow(title, value, title, tmp, "radio")
+            rows.add(row)
+//            val _row: HashMap<String, String> = hashMapOf("title" to title,"key" to tmp,"value" to value,"show" to title,"cell" to "radio")
+//            gatewayRows.add(_row)
         }
+        section = makeSectionRow("付款方式", GATEWAY_KEY, rows, true)
 
-        for (invoicePersonalRow in invoicePersonalRows) {
-
-            invoiceRows.add(invoicePersonalRow)
+        //shipping
+//        shippingRows.clear()
+        rows = arrayListOf()
+        val shipping: String = productTable!!.shipping
+        for (tmp in arr) {
+            val title: String = SHIPPING_WAY.getRawValueFromString(tmp)
+            var value: String = "false"
+            if (tmp == "direct") {
+                value = "true"
+            }
+            val row: OneRow = OneRow(title, value, title, tmp, "radio")
+            rows.add(row)
+//            val row1: HashMap<String, String> = hashMapOf("title" to title,"key" to tmp,"value" to value,"show" to title,"cell" to "radio")
+//            shippingRows.add(row1)
         }
+        section = makeSectionRow("到貨方式", GATEWAY_KEY, rows, true)
 
-        myRows = arrayListOf(
-            hashMapOf("key" to PRODUCT_KEY, "rows" to productRows),
-            hashMapOf("key" to AMOUNT_KEY, "rows" to amountRows),
-            hashMapOf("key" to GATEWAY_KEY, "rows" to gatewayRows),
-            hashMapOf("key" to SHIPPING_KEY, "rows" to shippingRows),
-            hashMapOf("key" to INVOICE_KEY, "rows" to invoiceRows),
-            hashMapOf("key" to MEMBER_KEY, "rows" to memberRows),
-            hashMapOf("key" to MEMO_KEY, "rows" to memoRows)
-        )
+        //invoice
+//        invoiceRows.clear()
+//        for (invoiceFixedRow in invoiceFixedRows) {
+//
+//            invoiceRows.add(invoiceFixedRow)
+//        }
+//
+//        for (invoicePersonalRow in invoicePersonalRows) {
+//
+//            invoiceRows.add(invoicePersonalRow)
+//        }
+
+        rows = arrayListOf()
+        row = OneRow("發票(目前僅提供電子發票)", "", "", INVOICE_KEY, "more")
+        rows.add(row)
+        section = makeSectionRow("電子發票", INVOICE_KEY, rows, true)
+
+        //member
+
+//        memberRows = arrayListOf(
+//            hashMapOf("title" to "姓名","key" to NAME_KEY,"value" to member.name!!,"show" to member.name!!,"cell" to "textField","keyboard" to KEYBOARD.default.toString()),
+//            hashMapOf("title" to "電話","key" to MOBILE_KEY,"value" to member.mobile!!,"show" to member.mobile!!,"cell" to "textField","keyboard" to KEYBOARD.numberPad.toString()),
+//            hashMapOf("title" to "EMail","key" to EMAIL_KEY,"value" to member.email!!,"show" to member.email!!,"cell" to "textField","keyboard" to KEYBOARD.emailAddress.toString()),
+//            hashMapOf("title" to "住址","key" to ADDRESS_KEY,"value" to member.address!!,"show" to member.address!!,"cell" to "textField","keyboard" to KEYBOARD.default.toString())
+//        )
+        rows = arrayListOf()
+        row = OneRow("姓名", member.name!!, member.name!!, NAME_KEY, "textField")
+        rows.add(row)
+        row = OneRow("電話", member.mobile!!, member.mobile!!, MOBILE_KEY, "textField")
+        rows.add(row)
+        row = OneRow("EMail", member.email!!, member.email!!, EMAIL_KEY, "textField")
+        rows.add(row)
+        row = OneRow("住址", member.address!!, member.address!!, ADDRESS_KEY, "textField")
+        rows.add(row)
+        section = makeSectionRow("收件人資料", MEMBER_KEY, rows, true)
+
+        //memo
+        rows = arrayListOf()
+        row = OneRow("留言", "", "", MEMO_KEY, "textField")
+        rows.add(row)
+        section = makeSectionRow("其他留言", MEMO_KEY, rows, true)
+
+
+
+//        myRows = arrayListOf(
+//            hashMapOf("key" to PRODUCT_KEY, "rows" to productRows),
+//            hashMapOf("key" to AMOUNT_KEY, "rows" to amountRows),
+//            hashMapOf("key" to GATEWAY_KEY, "rows" to gatewayRows),
+//            hashMapOf("key" to SHIPPING_KEY, "rows" to shippingRows),
+//            hashMapOf("key" to INVOICE_KEY, "rows" to invoiceRows),
+//            hashMapOf("key" to MEMBER_KEY, "rows" to memberRows),
+//            hashMapOf("key" to MEMO_KEY, "rows" to memoRows)
+//        )
 
 //        initAdapter(true)
         //        recyclerView.setHasFixedSize(true)
