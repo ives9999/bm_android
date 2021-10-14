@@ -77,6 +77,7 @@ enum class CELL_TYPE(val value: String) {
     TAG("tag"),
     NUMBER("number"),
     CART("cart"),
+    RADIO("radio"),
     MORE("more");
 
     fun toInt(): Int {
@@ -86,7 +87,8 @@ enum class CELL_TYPE(val value: String) {
             TAG -> return 2
             NUMBER -> return 3
             CART -> return 4
-            MORE -> return 5
+            RADIO -> return 5
+            MORE -> return 6
         }
 
         return 0
@@ -545,7 +547,7 @@ enum class GATEWAY_PROCESS(val englishName: String, val chineseName: String) {
     }
 }
 
-enum class SHIPPING_WAY(val englishName: String, val chineseName: String) {
+enum class SHIPPING(val englishName: String, val chineseName: String) {
 
     direct("direct", "宅配"),
     store_711("store_711", "7-11超商取貨"),
@@ -563,7 +565,19 @@ enum class SHIPPING_WAY(val englishName: String, val chineseName: String) {
     companion object: MYENUM<SHIPPING_PROCESS>() {
 
         fun getRawValueFromString(value: String): String {
-            return SHIPPING_WAY.valueOf(value).toChineseString()
+            return SHIPPING.valueOf(value).toChineseString()
+        }
+
+        fun stringToEnum(str: String): SHIPPING {
+
+            when(str) {
+
+                "direct"-> return direct
+                "store_711"-> return store_711
+                "store_family"-> return store_family
+                "cash"-> return cash
+            }
+            return direct
         }
     }
 }
@@ -925,6 +939,10 @@ fun String.image(context: Context, imageView: ImageView) {
             .placeholder(R.drawable.loading_square_120)
             .error(R.drawable.loading_square_120)
             .into(imageView)
+}
+
+fun String.toArray(): Array<String> {
+    return this.split(",").toTypedArray()
 }
 
 fun Int.quotientAndRemainder(dividingBy: Int): Pair<Int, Int> {

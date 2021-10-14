@@ -1,13 +1,16 @@
 package com.sportpassword.bm.Controllers
 
 import android.content.Context
+import android.content.res.ColorStateList
 import android.graphics.Color
 import android.os.Bundle
 import android.view.*
 import android.widget.*
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.gson.JsonParseException
+import com.sportpassword.bm.Adapters.Form.RadioAdapter
 import com.sportpassword.bm.Data.OneSection
 import com.sportpassword.bm.Data.OneRow
 import com.sportpassword.bm.Models.CartItemTable
@@ -19,10 +22,14 @@ import com.sportpassword.bm.Services.ProductService
 import com.sportpassword.bm.Utilities.*
 import com.sportpassword.bm.Views.Tag
 import com.sportpassword.bm.member
+import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_addcart_vc.*
+import kotlinx.android.synthetic.main.cart_list_cell.view.*
 import kotlinx.android.synthetic.main.formitem_number.view.*
 import kotlinx.android.synthetic.main.formitem_plain.view.*
 import kotlinx.android.synthetic.main.formitem_plain.view.title
+import kotlinx.android.synthetic.main.formitem_radio.*
+import kotlinx.android.synthetic.main.formitem_radio.view.*
 import kotlinx.android.synthetic.main.formitem_tag.view.*
 import kotlinx.android.synthetic.main.mask.*
 import kotlinx.android.synthetic.main.tag.view.*
@@ -711,6 +718,9 @@ class OneItemAdapter(val context: Context, private val sectionIdx: Int, private 
             CELL_TYPE.CART.toInt() -> {
                 return CartViewHolder(inflater.inflate(R.layout.cart_list_cell, parent, false))
             }
+            CELL_TYPE.RADIO.toInt() -> {
+                return RadioViewHolder(inflater.inflate(R.layout.formitem_radio, parent, false))
+            }
             CELL_TYPE.MORE.toInt() -> {
                 return MoreViewHolder(inflater.inflate(R.layout.formitem_more, parent, false))
             }
@@ -729,6 +739,7 @@ class OneItemAdapter(val context: Context, private val sectionIdx: Int, private 
             "tag" -> CELL_TYPE.TAG.toInt()
             "number" -> CELL_TYPE.NUMBER.toInt()
             "cart" -> CELL_TYPE.CART.toInt()
+            "radio" -> CELL_TYPE.RADIO.toInt()
             "more" -> CELL_TYPE.MORE.toInt()
             else -> throw IllegalArgumentException("錯誤的格式" + position)
         }
@@ -769,6 +780,34 @@ class OneItemAdapter(val context: Context, private val sectionIdx: Int, private 
                 delegate.cellNumberChanged(sectionIdx, position, number)
             }
         } else if (holder is CartViewHolder) {
+            holder.title.text = row.title
+            if (row.feature_path.isNotEmpty()) {
+                Picasso.with(context)
+                    .load(row.feature_path)
+                    .placeholder(R.drawable.loading_square_120)
+                    .error(R.drawable.loading_square_120)
+                    .into(holder.featured)
+            }
+            holder.attribute.text = row.attribute
+            holder.amount.text = row.amount
+            holder.quantity.text = "數量：${row.quantity}"
+        } else if (holder is RadioViewHolder) {
+
+            val group = holder.init(context, row)
+            if (delegate != null) {
+                group.setOnCheckedChangeListener { radioGroup, i ->
+//                    for ((idx, row) in rows.withIndex()) {
+//                        if (idx == i) {
+//                            row["value"] = "true"
+//                        } else {
+//                            row["value"] = "false"
+//                        }
+//                        rows[idx] = row
+//                    }
+                    delegate.cellRadioChanged(sectionIdx, position, i)
+                }
+            }
+        } else if (holder is MoreViewHolder) {
 
         }
     }
@@ -930,6 +969,66 @@ class NumberViewHolder(val viewHolder: View): RecyclerView.ViewHolder(viewHolder
 
 class CartViewHolder(val viewHolder: View): RecyclerView.ViewHolder(viewHolder) {
 
+    val title: TextView = viewHolder.titleLbl
+    val featured: ImageView = viewHolder.listFeatured
+    val attribute: TextView = viewHolder.attributeLbl
+    val amount: TextView = viewHolder.amountLbl
+    val quantity: TextView = viewHolder.quantityLbl
+}
+
+class RadioViewHolder(val viewHolder: View): RecyclerView.ViewHolder(viewHolder) {
+
+    fun init(context: Context, row: OneRow): RadioGroup {
+
+        val textColor: Int = ContextCompat.getColor(context, R.color.MY_WHITE)
+        val checkedColor: Int = ContextCompat.getColor(context, R.color.MY_RED)
+
+        val colorStateList: ColorStateList = ColorStateList(
+            arrayOf(
+                intArrayOf(-android.R.attr.state_enabled), //disabled
+                intArrayOf(android.R.attr.state_enabled)   //enabled
+            ), intArrayOf(
+                textColor, //disabled
+                textColor  //enabled
+            )
+        )
+
+        viewHolder.radioContainer.removeAllViews()
+
+        val lp = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT)
+        lp.setMargins(18, 24, 0, 24)
+
+        val group = RadioGroup(context)
+
+        val radioButtons: ArrayList<RadioButton> = arrayListOf()
+
+        val arr: Array<String> = row.show.split(",").toTypedArray()
+        val titles: Array<String> = row.title.split(",").toTypedArray()
+        for ((idx, gateway) in arr.withIndex()) {
+            val title: String = titles[idx]
+            val radioButton: RadioButton = RadioButton(context)
+            radioButton.id = idx
+            radioButton.text = title
+            radioButton.buttonTintList = colorStateList
+            radioButton.setTextColor(textColor)
+            radioButton.textSize = 18F
+            radioButton.layoutParams = lp
+
+            val isChecked: Boolean = row.value == gateway ?: run {
+                false
+            }
+
+            radioButton.isChecked = isChecked
+            group.addView(radioButton)
+
+            radioButtons.add(radioButton)
+
+        }
+
+        viewHolder.radioContainer.addView(group)
+
+        return group
+    }
 }
 
 class MoreViewHolder(val viewHolder: View): RecyclerView.ViewHolder(viewHolder) {

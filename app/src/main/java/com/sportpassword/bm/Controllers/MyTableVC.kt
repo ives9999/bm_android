@@ -737,6 +737,7 @@ interface List1CellDelegate {
     fun cellTextChanged(sectionIdx: Int, rowIdx: Int, str: String) {}
     fun cellSwitchChanged(sectionIdx: Int, rowIdx: Int, b: Boolean) {}
     fun cellNumberChanged(sectionIdx: Int, rowIdx: Int, number: Int) {}
+    fun cellRadioChanged(sectionIdx: Int, rowIdx: Int, idx: Int) {}
     fun cellClear(sectionIdx: Int, rowIdx: Int) {}
 
     fun cellSetTag(sectionIdx: Int, rowIdx: Int, value: String, isChecked: Boolean) {}
