@@ -93,7 +93,7 @@ class AddCartVC : MyTableVC() {
             cartItem_token = intent.getStringExtra(("cartItem_token"))
         }
 
-        hidekeyboard(order_layout)
+        //hidekeyboard(order_layout)
 
         dataService = ProductService
         recyclerView = editTableView
@@ -193,6 +193,8 @@ class AddCartVC : MyTableVC() {
                         //myTable = table as ProductTable
                         productTable!!.filterRow()
                         initData()
+                        oneSectionAdapter.setOneSection(oneSections)
+                        oneSectionAdapter.notifyDataSetChanged()
                     } else {
                         warning("解析伺服器所傳的字串失敗，請洽管理員")
                     }
@@ -219,6 +221,8 @@ class AddCartVC : MyTableVC() {
                             productTable = cartItemTable!!.product
                             productTable?.filterRow()
                             initData()
+                            oneSectionAdapter.setOneSection(oneSections)
+                            oneSectionAdapter.notifyDataSetChanged()
                         }
                     }
                 }
@@ -297,8 +301,6 @@ class AddCartVC : MyTableVC() {
 //
             selected_price = productTable!!.prices[selected_idx].price_member
             updateSubTotal()
-            oneSectionAdapter.setOneSection(oneSections)
-            oneSectionAdapter.notifyDataSetChanged()
         }
     }
 
@@ -640,11 +642,11 @@ class AddCartVC : MyTableVC() {
 }
 
 class OneSectionAdapter(val context: Context, private val resource: Int, var delegate: List1CellDelegate): RecyclerView.Adapter<OneSectionViewHolder>() {
-    private var addCartSections: ArrayList<OneSection> = arrayListOf()
+    private var oneSections: ArrayList<OneSection> = arrayListOf()
     //lateinit var adapter: TeamSearchItemAdapter
 
-    fun setOneSection(addCartSections: ArrayList<OneSection>) {
-        this.addCartSections = addCartSections
+    fun setOneSection(oneSections: ArrayList<OneSection>) {
+        this.oneSections = oneSections
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): OneSectionViewHolder {
@@ -657,7 +659,7 @@ class OneSectionAdapter(val context: Context, private val resource: Int, var del
 
     override fun onBindViewHolder(holder: OneSectionViewHolder, position: Int) {
 
-        val section: OneSection = addCartSections[position]
+        val section: OneSection = oneSections[position]
         holder.titleLbl.text = section.title
 
         val iconID = if (section.isExpanded) {
@@ -667,14 +669,14 @@ class OneSectionAdapter(val context: Context, private val resource: Int, var del
         }
 
         val adapter =
-            OneItemAdapter(context, position, addCartSections[position], delegate)
+            OneItemAdapter(context, position, oneSections[position], delegate)
 //            holder.recyclerView.setHasFixedSize(true)
         holder.recyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         holder.recyclerView.adapter = adapter
     }
 
     override fun getItemCount(): Int {
-        return addCartSections.size
+        return oneSections.size
     }
 }
 
@@ -709,6 +711,9 @@ class OneItemAdapter(val context: Context, private val sectionIdx: Int, private 
             CELL_TYPE.CART.toInt() -> {
                 return CartViewHolder(inflater.inflate(R.layout.cart_list_cell, parent, false))
             }
+            CELL_TYPE.MORE.toInt() -> {
+                return MoreViewHolder(inflater.inflate(R.layout.formitem_more, parent, false))
+            }
             else -> {
                 return PlainViewHolder(inflater.inflate(R.layout.formitem_plain, parent, false))
             }
@@ -723,7 +728,8 @@ class OneItemAdapter(val context: Context, private val sectionIdx: Int, private 
             "textfield" -> CELL_TYPE.TEXTFIELD.toInt()
             "tag" -> CELL_TYPE.TAG.toInt()
             "number" -> CELL_TYPE.NUMBER.toInt()
-            "product" -> CELL_TYPE.CART.toInt()
+            "cart" -> CELL_TYPE.CART.toInt()
+            "more" -> CELL_TYPE.MORE.toInt()
             else -> throw IllegalArgumentException("錯誤的格式" + position)
         }
     }
@@ -762,6 +768,8 @@ class OneItemAdapter(val context: Context, private val sectionIdx: Int, private 
                 val number = holder.minusClick()
                 delegate.cellNumberChanged(sectionIdx, position, number)
             }
+        } else if (holder is CartViewHolder) {
+
         }
     }
 
@@ -921,6 +929,10 @@ class NumberViewHolder(val viewHolder: View): RecyclerView.ViewHolder(viewHolder
 }
 
 class CartViewHolder(val viewHolder: View): RecyclerView.ViewHolder(viewHolder) {
+
+}
+
+class MoreViewHolder(val viewHolder: View): RecyclerView.ViewHolder(viewHolder) {
 
 }
 

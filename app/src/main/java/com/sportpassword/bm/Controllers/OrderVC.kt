@@ -1,30 +1,19 @@
 package com.sportpassword.bm.Controllers
 
 import android.os.Bundle
-import com.sportpassword.bm.Adapters.Form.*
-import com.sportpassword.bm.Adapters.GroupSection
 import com.sportpassword.bm.Models.*
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.CartService
 import com.sportpassword.bm.Services.OrderService
 import com.sportpassword.bm.Utilities.*
 import com.sportpassword.bm.member
-import com.xwray.groupie.ExpandableGroup
-import com.xwray.groupie.Section
-import com.xwray.groupie.kotlinandroidextensions.Item
 import kotlinx.android.synthetic.main.activity_order_vc.*
 import kotlinx.android.synthetic.main.mask.*
-import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
-import android.content.res.Resources
 import android.view.*
-import android.widget.RelativeLayout
-import androidx.recyclerview.widget.RecyclerView
 import com.google.gson.Gson
 import com.sportpassword.bm.Data.*
-import com.xwray.groupie.GroupAdapter
-import com.xwray.groupie.GroupieViewHolder
 
 class OrderVC : MyTableVC() {
 
@@ -41,101 +30,86 @@ class OrderVC : MyTableVC() {
     var selected_price: Int = 0
     var selected_idx: Int = 0
 
-    var blackViewHeight: Int = 500
-    val blackViewPaddingLeft: Int = 80
-    var blackView: RelativeLayout? = null
-    var tableView: RecyclerView? = null
+//    var tableView: RecyclerView? = null
 
 
-    var productRows: ArrayList<HashMap<String, String>> = arrayListOf()
-    var amountRows: ArrayList<HashMap<String, String>> = arrayListOf()
-    var gatewayRows: ArrayList<HashMap<String, String>> = arrayListOf()
-    var shippingRows: ArrayList<HashMap<String, String>> = arrayListOf()
-    var invoiceRows: ArrayList<HashMap<String, String>> = arrayListOf()
-
-    var invoiceFixedRows: ArrayList<HashMap<String, String>> = arrayListOf(
-        hashMapOf("title" to "發票(目前僅提供電子發票)","key" to INVOICE_KEY,"value" to "","show" to "","cell" to "more")
-    )
-
-    var invoiceOptionRows: ArrayList<HashMap<String, String>> = arrayListOf(
-        hashMapOf("title" to "個人","key" to PERSONAL_KEY,"value" to "true","show" to "","cell" to "radio"),
-        hashMapOf("title" to "公司","key" to COMPANY_KEY,"value" to "false","show" to "","cell" to "radio")
-    )
-
-    val invoicePersonalRows: ArrayList<HashMap<String, String>> = arrayListOf(
-        hashMapOf("title" to "EMail","key" to INVOICE_EMAIL_KEY,"value" to "${member.email}","show" to "${member.email}","cell" to "textField","keyboard" to KEYBOARD.emailAddress.toString())
-    )
-
-    val invoiceCompanyRows: ArrayList<HashMap<String, String>> = arrayListOf(
-        hashMapOf("title" to "統一編號","key" to INVOICE_COMPANY_TAX_KEY,"value" to "","show" to "","cell" to "textField","keyboard" to KEYBOARD.default.toString()),
-        hashMapOf("title" to "公司行號抬頭","key" to INVOICE_COMPANY_NAME_KEY,"value" to "","show" to "","cell" to "textField","keyboard" to KEYBOARD.default.toString()),
-        hashMapOf("title" to "EMail","key" to INVOICE_EMAIL_KEY,"value" to "${member.email}","show" to "${member.email}","cell" to "textField","keyboard" to KEYBOARD.emailAddress.toString())
-    )
-
-    var memberRows: ArrayList<HashMap<String, String>> = arrayListOf()
-
-    val memoRows: ArrayList<HashMap<String, String>> = arrayListOf(
-        hashMapOf("title" to "留言","key" to MEMO_KEY,"value" to "","show" to "","cell" to "memo","keyboard" to KEYBOARD.default.toString())
-    )
+//    var productRows: ArrayList<HashMap<String, String>> = arrayListOf()
+//    var amountRows: ArrayList<HashMap<String, String>> = arrayListOf()
+//    var gatewayRows: ArrayList<HashMap<String, String>> = arrayListOf()
+//    var shippingRows: ArrayList<HashMap<String, String>> = arrayListOf()
+//    var invoiceRows: ArrayList<HashMap<String, String>> = arrayListOf()
+//
+//    var invoiceFixedRows: ArrayList<HashMap<String, String>> = arrayListOf(
+//        hashMapOf("title" to "發票(目前僅提供電子發票)","key" to INVOICE_KEY,"value" to "","show" to "","cell" to "more")
+//    )
+//
+//    var invoiceOptionRows: ArrayList<HashMap<String, String>> = arrayListOf(
+//        hashMapOf("title" to "個人","key" to PERSONAL_KEY,"value" to "true","show" to "","cell" to "radio"),
+//        hashMapOf("title" to "公司","key" to COMPANY_KEY,"value" to "false","show" to "","cell" to "radio")
+//    )
+//
+//    val invoicePersonalRows: ArrayList<HashMap<String, String>> = arrayListOf(
+//        hashMapOf("title" to "EMail","key" to INVOICE_EMAIL_KEY,"value" to "${member.email}","show" to "${member.email}","cell" to "textField","keyboard" to KEYBOARD.emailAddress.toString())
+//    )
+//
+//    val invoiceCompanyRows: ArrayList<HashMap<String, String>> = arrayListOf(
+//        hashMapOf("title" to "統一編號","key" to INVOICE_COMPANY_TAX_KEY,"value" to "","show" to "","cell" to "textField","keyboard" to KEYBOARD.default.toString()),
+//        hashMapOf("title" to "公司行號抬頭","key" to INVOICE_COMPANY_NAME_KEY,"value" to "","show" to "","cell" to "textField","keyboard" to KEYBOARD.default.toString()),
+//        hashMapOf("title" to "EMail","key" to INVOICE_EMAIL_KEY,"value" to "${member.email}","show" to "${member.email}","cell" to "textField","keyboard" to KEYBOARD.emailAddress.toString())
+//    )
+//
+//    var memberRows: ArrayList<HashMap<String, String>> = arrayListOf()
+//
+//    val memoRows: ArrayList<HashMap<String, String>> = arrayListOf(
+//        hashMapOf("title" to "留言","key" to MEMO_KEY,"value" to "","show" to "","cell" to "memo","keyboard" to KEYBOARD.default.toString())
+//    )
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
-
-        dataService = CartService
 
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_order_vc)
 
         setMyTitle("訂單")
 
-        recyclerView = order_list
-        refreshLayout = order_refresh
-
-        mySections = arrayListOf(
-            hashMapOf("name" to "商品", "isExpanded" to true, "key" to PRODUCT_KEY),
-            hashMapOf("name" to "金額", "isExpanded" to true, "key" to AMOUNT_KEY),
-            hashMapOf("name" to "付款方式", "isExpanded" to true, "key" to GATEWAY_KEY),
-            hashMapOf("name" to "寄送方式", "isExpanded" to true, "key" to SHIPPING_KEY),
-            hashMapOf("name" to "電子發票", "isExpanded" to true, "key" to INVOICE_KEY),
-            hashMapOf("name" to "收件人資料", "isExpanded" to true, "key" to MEMBER_KEY),
-            hashMapOf("name" to "其他留言", "isExpanded" to true, "key" to MEMO_KEY)
-        )
+//        mySections = arrayListOf(
+//            hashMapOf("name" to "商品", "isExpanded" to true, "key" to PRODUCT_KEY),
+//            hashMapOf("name" to "金額", "isExpanded" to true, "key" to AMOUNT_KEY),
+//            hashMapOf("name" to "付款方式", "isExpanded" to true, "key" to GATEWAY_KEY),
+//            hashMapOf("name" to "寄送方式", "isExpanded" to true, "key" to SHIPPING_KEY),
+//            hashMapOf("name" to "電子發票", "isExpanded" to true, "key" to INVOICE_KEY),
+//            hashMapOf("name" to "收件人資料", "isExpanded" to true, "key" to MEMBER_KEY),
+//            hashMapOf("name" to "其他留言", "isExpanded" to true, "key" to MEMO_KEY)
+//        )
 
         //initAdapter(true)
+        dataService = CartService
+        recyclerView = order_list
+
         oneSectionAdapter = OneSectionAdapter(this, R.layout.cell_section, this)
         oneSectionAdapter.setOneSection(oneSections)
         recyclerView.adapter = oneSectionAdapter
 
+        refreshLayout = refresh
+        setRefreshListener()
+
         refresh()
     }
 
-    override fun initAdapter(include_section: Boolean) {
-//        adapter = GroupAdapter()
-
-//        adapter.setOnItemClickListener { item, view ->
-//            rowClick(item, view)
+//    override fun initAdapter(include_section: Boolean) {
+//        if (include_section) {
+//            for ((idx, mySection) in mySections.withIndex()) {
+//                val section = Section()
+//                //adapterSections.add(section)
+//                val title: String = mySection["name"] as String
+//                val isExpanded: Boolean = mySection["isExpanded"] as Boolean
+//                val expandableGroup = ExpandableGroup(GroupSection(title), isExpanded)
+//                val items = generateItems(idx)
+//                section.addAll(items)
+//                expandableGroup.add(section)
+//            }
 //        }
-
-        // for member register and member update personal data
-        //adapter.clear()
-        if (include_section) {
-            for ((idx, mySection) in mySections.withIndex()) {
-                val section = Section()
-                //adapterSections.add(section)
-                val title: String = mySection["name"] as String
-                val isExpanded: Boolean = mySection["isExpanded"] as Boolean
-                val expandableGroup = ExpandableGroup(GroupSection(title), isExpanded)
-                val items = generateItems(idx)
-                section.addAll(items)
-                expandableGroup.add(section)
-
-                //adapter.add(expandableGroup)
-            }
-        }
-
-
-        //recyclerView.adapter = adapter
-    }
+//    }
 
     override fun refresh() {
 
@@ -154,6 +128,10 @@ class OrderVC : MyTableVC() {
                 //println(dataService.jsonString)
                 genericTable()
                 initData()
+                oneSectionAdapter.setOneSection(oneSections)
+                runOnUiThread {
+                    oneSectionAdapter.notifyDataSetChanged()
+                }
             } else {
                 warning("沒有取得回傳的json字串，請洽管理員")
             }
@@ -164,7 +142,9 @@ class OrderVC : MyTableVC() {
             page++
         }
 //        mask?.let { mask?.dismiss() }
-        Loading.hide(mask)
+        runOnUiThread {
+            Loading.hide(mask)
+        }
         loading = false
         refreshLayout!!.isRefreshing = false
 //        println("page:$page")
@@ -184,7 +164,7 @@ class OrderVC : MyTableVC() {
                 var amount: Int = 0
                 cartTable = cartsTable!!.rows[0]
                 cartitemsTable = cartTable!!.items
-                productRows.clear()
+//                productRows.clear()
             }
         }
     }
@@ -231,110 +211,111 @@ class OrderVC : MyTableVC() {
         rows.add(row)
         //var row: HashMap<String, String> = hashMapOf("title" to "商品金額","key" to "amount","value" to amount.toString(),"show" to "NT$ ${amount_show}","cell" to "text")
 //        amountRows.add(row)
-
-        //var shipping_fee: Int = 60
-        var shipping_fee: Int = 0
-        if (amount > 1000) { shipping_fee = 0}
-        val shipping_fee_show: String = shipping_fee.formattedWithSeparator()
-
-        row = OneRow("運費", shipping_fee.toString(), "NT$ ${shipping_fee_show}", SHIPPING_FEE_KEY, "text")
-        rows.add(row)
-//        row = hashMapOf("title" to "運費","key" to SHIPPING_FEE_KEY,"value" to shipping_fee.toString(),"show" to "NT$ ${shipping_fee_show}","cell" to "text")
-//        amountRows.add(row)
-
-        //val tax: Int = (amount.toDouble() * 0.05).toInt()
-        val tax: Int = 0
-        val tax_show: String = tax.formattedWithSeparator()
-        row = OneRow("税", tax.toString(), "NT$ ${tax_show}", TAX_KEY, "text")
-        rows.add(row)
-//        row = hashMapOf("title" to "稅","key" to TAX_KEY,"value" to tax.toString(),"show" to "NT$ ${tax_show}","cell" to "text")
-//        amountRows.add(row)
-
-        val total: Int = amount + shipping_fee + tax
-        val total_show: String = total.formattedWithSeparator()
-        row = OneRow("總金額", total.toString(), "NT$ ${total_show}", TOTAL_KEY, "text")
-        rows.add(row)
-//        row = hashMapOf("title" to "總金額","key" to TOTAL_KEY,"value" to total.toString(),"show" to "NT$ ${total_show}","cell" to "text")
-//        amountRows.add(row)
+//
+//        //var shipping_fee: Int = 60
+//        var shipping_fee: Int = 0
+//        if (amount > 1000) { shipping_fee = 0}
+//        val shipping_fee_show: String = shipping_fee.formattedWithSeparator()
+//
+//        row = OneRow("運費", shipping_fee.toString(), "NT$ ${shipping_fee_show}", SHIPPING_FEE_KEY, "text")
+//        rows.add(row)
+////        row = hashMapOf("title" to "運費","key" to SHIPPING_FEE_KEY,"value" to shipping_fee.toString(),"show" to "NT$ ${shipping_fee_show}","cell" to "text")
+////        amountRows.add(row)
+//
+//        //val tax: Int = (amount.toDouble() * 0.05).toInt()
+//        val tax: Int = 0
+//        val tax_show: String = tax.formattedWithSeparator()
+//        row = OneRow("税", tax.toString(), "NT$ ${tax_show}", TAX_KEY, "text")
+//        rows.add(row)
+////        row = hashMapOf("title" to "稅","key" to TAX_KEY,"value" to tax.toString(),"show" to "NT$ ${tax_show}","cell" to "text")
+////        amountRows.add(row)
+//
+//        val total: Int = amount + shipping_fee + tax
+//        val total_show: String = total.formattedWithSeparator()
+//        row = OneRow("總金額", total.toString(), "NT$ ${total_show}", TOTAL_KEY, "text")
+//        rows.add(row)
+////        row = hashMapOf("title" to "總金額","key" to TOTAL_KEY,"value" to total.toString(),"show" to "NT$ ${total_show}","cell" to "text")
+////        amountRows.add(row)
         section = makeSectionRow("金額", AMOUNT_KEY, rows, true)
         oneSections.add(section)
-
-        //gateway
-//        gatewayRows.clear()
-        rows = arrayListOf()
-        val gateway: String = productTable!!.gateway
-        val arr: Array<String> = gateway.split(",").toTypedArray()
-        for (tmp in arr) {
-            val title: String = GATEWAY.getRawValueFromString(tmp)
-            var value: String = "false"
-            if (tmp == "credit_card") {
-                value = "true"
-            }
-            val row: OneRow = OneRow(title, value, title, tmp, "radio")
-            rows.add(row)
-//            val _row: HashMap<String, String> = hashMapOf("title" to title,"key" to tmp,"value" to value,"show" to title,"cell" to "radio")
-//            gatewayRows.add(_row)
-        }
-        section = makeSectionRow("付款方式", GATEWAY_KEY, rows, true)
-
-        //shipping
-//        shippingRows.clear()
-        rows = arrayListOf()
-        val shipping: String = productTable!!.shipping
-        for (tmp in arr) {
-            val title: String = SHIPPING_WAY.getRawValueFromString(tmp)
-            var value: String = "false"
-            if (tmp == "direct") {
-                value = "true"
-            }
-            val row: OneRow = OneRow(title, value, title, tmp, "radio")
-            rows.add(row)
-//            val row1: HashMap<String, String> = hashMapOf("title" to title,"key" to tmp,"value" to value,"show" to title,"cell" to "radio")
-//            shippingRows.add(row1)
-        }
-        section = makeSectionRow("到貨方式", GATEWAY_KEY, rows, true)
-
-        //invoice
-//        invoiceRows.clear()
-//        for (invoiceFixedRow in invoiceFixedRows) {
 //
-//            invoiceRows.add(invoiceFixedRow)
+//        //gateway
+////        gatewayRows.clear()
+//        rows = arrayListOf()
+//        val gateway: String = productTable!!.gateway
+//        var arr: Array<String> = gateway.split(",").toTypedArray()
+//        for (tmp in arr) {
+//            val title: String = GATEWAY.getRawValueFromString(tmp)
+//            var value: String = "false"
+//            if (tmp == "credit_card") {
+//                value = "true"
+//            }
+//            val row: OneRow = OneRow(title, value, title, tmp, "radio")
+//            rows.add(row)
+////            val _row: HashMap<String, String> = hashMapOf("title" to title,"key" to tmp,"value" to value,"show" to title,"cell" to "radio")
+////            gatewayRows.add(_row)
 //        }
+//        section = makeSectionRow("付款方式", GATEWAY_KEY, rows, true)
 //
-//        for (invoicePersonalRow in invoicePersonalRows) {
-//
-//            invoiceRows.add(invoicePersonalRow)
+//        //shipping
+////        shippingRows.clear()
+//        rows = arrayListOf()
+//        val shipping: String = productTable!!.shipping
+//        arr = shipping.split(",").toTypedArray()
+//        for (tmp in arr) {
+//            val title: String = SHIPPING_WAY.getRawValueFromString(tmp)
+//            var value: String = "false"
+//            if (tmp == "direct") {
+//                value = "true"
+//            }
+//            val row: OneRow = OneRow(title, value, title, tmp, "radio")
+//            rows.add(row)
+////            val row1: HashMap<String, String> = hashMapOf("title" to title,"key" to tmp,"value" to value,"show" to title,"cell" to "radio")
+////            shippingRows.add(row1)
 //        }
-
-        rows = arrayListOf()
-        row = OneRow("發票(目前僅提供電子發票)", "", "", INVOICE_KEY, "more")
-        rows.add(row)
-        section = makeSectionRow("電子發票", INVOICE_KEY, rows, true)
-
-        //member
-
-//        memberRows = arrayListOf(
-//            hashMapOf("title" to "姓名","key" to NAME_KEY,"value" to member.name!!,"show" to member.name!!,"cell" to "textField","keyboard" to KEYBOARD.default.toString()),
-//            hashMapOf("title" to "電話","key" to MOBILE_KEY,"value" to member.mobile!!,"show" to member.mobile!!,"cell" to "textField","keyboard" to KEYBOARD.numberPad.toString()),
-//            hashMapOf("title" to "EMail","key" to EMAIL_KEY,"value" to member.email!!,"show" to member.email!!,"cell" to "textField","keyboard" to KEYBOARD.emailAddress.toString()),
-//            hashMapOf("title" to "住址","key" to ADDRESS_KEY,"value" to member.address!!,"show" to member.address!!,"cell" to "textField","keyboard" to KEYBOARD.default.toString())
-//        )
-        rows = arrayListOf()
-        row = OneRow("姓名", member.name!!, member.name!!, NAME_KEY, "textField")
-        rows.add(row)
-        row = OneRow("電話", member.mobile!!, member.mobile!!, MOBILE_KEY, "textField")
-        rows.add(row)
-        row = OneRow("EMail", member.email!!, member.email!!, EMAIL_KEY, "textField")
-        rows.add(row)
-        row = OneRow("住址", member.address!!, member.address!!, ADDRESS_KEY, "textField")
-        rows.add(row)
-        section = makeSectionRow("收件人資料", MEMBER_KEY, rows, true)
-
-        //memo
-        rows = arrayListOf()
-        row = OneRow("留言", "", "", MEMO_KEY, "textField")
-        rows.add(row)
-        section = makeSectionRow("其他留言", MEMO_KEY, rows, true)
+//        section = makeSectionRow("到貨方式", GATEWAY_KEY, rows, true)
+//
+//        //invoice
+////        invoiceRows.clear()
+////        for (invoiceFixedRow in invoiceFixedRows) {
+////
+////            invoiceRows.add(invoiceFixedRow)
+////        }
+////
+////        for (invoicePersonalRow in invoicePersonalRows) {
+////
+////            invoiceRows.add(invoicePersonalRow)
+////        }
+//
+//        rows = arrayListOf()
+//        row = OneRow("發票(目前僅提供電子發票)", "", "", INVOICE_KEY, "more")
+//        rows.add(row)
+//        section = makeSectionRow("電子發票", INVOICE_KEY, rows, true)
+//
+//        //member
+//
+////        memberRows = arrayListOf(
+////            hashMapOf("title" to "姓名","key" to NAME_KEY,"value" to member.name!!,"show" to member.name!!,"cell" to "textField","keyboard" to KEYBOARD.default.toString()),
+////            hashMapOf("title" to "電話","key" to MOBILE_KEY,"value" to member.mobile!!,"show" to member.mobile!!,"cell" to "textField","keyboard" to KEYBOARD.numberPad.toString()),
+////            hashMapOf("title" to "EMail","key" to EMAIL_KEY,"value" to member.email!!,"show" to member.email!!,"cell" to "textField","keyboard" to KEYBOARD.emailAddress.toString()),
+////            hashMapOf("title" to "住址","key" to ADDRESS_KEY,"value" to member.address!!,"show" to member.address!!,"cell" to "textField","keyboard" to KEYBOARD.default.toString())
+////        )
+//        rows = arrayListOf()
+//        row = OneRow("姓名", member.name!!, member.name!!, NAME_KEY, "textField")
+//        rows.add(row)
+//        row = OneRow("電話", member.mobile!!, member.mobile!!, MOBILE_KEY, "textField")
+//        rows.add(row)
+//        row = OneRow("EMail", member.email!!, member.email!!, EMAIL_KEY, "textField")
+//        rows.add(row)
+//        row = OneRow("住址", member.address!!, member.address!!, ADDRESS_KEY, "textField")
+//        rows.add(row)
+//        section = makeSectionRow("收件人資料", MEMBER_KEY, rows, true)
+//
+//        //memo
+//        rows = arrayListOf()
+//        row = OneRow("留言", "", "", MEMO_KEY, "textField")
+//        rows.add(row)
+//        section = makeSectionRow("其他留言", MEMO_KEY, rows, true)
 
 
 
@@ -350,10 +331,6 @@ class OrderVC : MyTableVC() {
 
 //        initAdapter(true)
         //        recyclerView.setHasFixedSize(true)
-        if (refreshLayout != null) {
-            setRefreshListener()
-        }
-        setRecyclerViewScrollListener()
 
         //reloadData()
 
@@ -493,91 +470,91 @@ class OrderVC : MyTableVC() {
 //        }
 //    }
 
-    override fun textFieldTextChanged(sectionKey: String, rowKey: String, value: String) {
-
-        val row: HashMap<String, String> = getRowRowsFromMyRowsByKey1(rowKey)
-        row["value"] = value
-        row["show"] = value
-        replaceRowByKey(sectionKey, rowKey, row)
-    }
-
-    override fun radioDidChange(sectionKey: String, rows: ArrayList<HashMap<String, String>>) {
-
-        invoiceRows.clear()
-        if (sectionKey == INVOICE_KEY) {
-            for (invoiceFixRow in invoiceFixedRows) {
-                invoiceRows.add(invoiceFixRow)
-            }
-
-            invoiceOptionRows = rows
-
-            var selectedRow: HashMap<String, String> = hashMapOf()
-            for (row in invoiceOptionRows) {
-                if (row["value"] == "true") {
-                    selectedRow = row
-                }
-            }
-
-            val selectedKey: String = selectedRow["key"]!!
-            if (selectedKey == PERSONAL_KEY) {
-                for (invoicePresonalRow in invoicePersonalRows) {
-                    invoiceRows.add(invoicePresonalRow)
-                }
-            } else {
-                for (invoiceCompanyRow in invoiceCompanyRows) {
-                    invoiceRows.add(invoiceCompanyRow)
-                }
-            }
-
-            replaceRowsByKey(sectionKey, invoiceRows)
-            top.unmask()
-            //reloadData()
-        } else if (sectionKey == GATEWAY_KEY || sectionKey == SHIPPING_KEY){
-
-            replaceRowsByKey(sectionKey, rows)
-        }
-    }
-
-    override fun moreClick(sectionKey: String, rowKey: String) {
-        //println("more")
-        layerMask = top.mask(this)
-        layerMask!!.setOnClickListener {
-            top.unmask()
-        }
-
-        val rowHeight: Int = 200
-        val tableViewHeight: Int = rowHeight * invoiceOptionRows.size
-        val buttonViewHeight: Int = 150
-        blackViewHeight = tableViewHeight + buttonViewHeight
-
-        val statusBarHeight: Int = getStatusBarHeight()
-//        val appBarHeight: Int = 64
-        val frame_width = Resources.getSystem().displayMetrics.widthPixels
-        val frame_height = Resources.getSystem().displayMetrics.heightPixels - statusBarHeight - 400
-        val width: Int = frame_width - 2*blackViewPaddingLeft
-        val topX: Int = (frame_height-blackViewHeight)/2;
-
-        blackView = layerMask!!.blackView(
-            this,
-            blackViewPaddingLeft,
-            topX,
-            width,
-            blackViewHeight)
-
-        tableView = blackView!!.tableView(this, 0, buttonViewHeight)
-        val panelAdapter = GroupAdapter<GroupieViewHolder>()
-        tableView!!.adapter = panelAdapter
-
-        //items.clear()
-        val item = RadioAdapter(this, INVOICE_KEY, invoiceOptionRows, this)
-        //items.add(item)
-        //panelAdapter.addAll(items)
-
-        layerButtonLayout = blackView!!.buttonPanel(this, buttonViewHeight)
-        layerCancelBtn = layerButtonLayout.cancelButton(this) {
-            top.unmask()
-        }
-    }
+//    override fun textFieldTextChanged(sectionKey: String, rowKey: String, value: String) {
+//
+//        val row: HashMap<String, String> = getRowRowsFromMyRowsByKey1(rowKey)
+//        row["value"] = value
+//        row["show"] = value
+//        replaceRowByKey(sectionKey, rowKey, row)
+//    }
+//
+//    override fun radioDidChange(sectionKey: String, rows: ArrayList<HashMap<String, String>>) {
+//
+//        invoiceRows.clear()
+//        if (sectionKey == INVOICE_KEY) {
+//            for (invoiceFixRow in invoiceFixedRows) {
+//                invoiceRows.add(invoiceFixRow)
+//            }
+//
+//            invoiceOptionRows = rows
+//
+//            var selectedRow: HashMap<String, String> = hashMapOf()
+//            for (row in invoiceOptionRows) {
+//                if (row["value"] == "true") {
+//                    selectedRow = row
+//                }
+//            }
+//
+//            val selectedKey: String = selectedRow["key"]!!
+//            if (selectedKey == PERSONAL_KEY) {
+//                for (invoicePresonalRow in invoicePersonalRows) {
+//                    invoiceRows.add(invoicePresonalRow)
+//                }
+//            } else {
+//                for (invoiceCompanyRow in invoiceCompanyRows) {
+//                    invoiceRows.add(invoiceCompanyRow)
+//                }
+//            }
+//
+//            replaceRowsByKey(sectionKey, invoiceRows)
+//            top.unmask()
+//            //reloadData()
+//        } else if (sectionKey == GATEWAY_KEY || sectionKey == SHIPPING_KEY){
+//
+//            replaceRowsByKey(sectionKey, rows)
+//        }
+//    }
+//
+//    override fun moreClick(sectionKey: String, rowKey: String) {
+//        //println("more")
+//        layerMask = top.mask(this)
+//        layerMask!!.setOnClickListener {
+//            top.unmask()
+//        }
+//
+//        val rowHeight: Int = 200
+//        val tableViewHeight: Int = rowHeight * invoiceOptionRows.size
+//        val buttonViewHeight: Int = 150
+//        blackViewHeight = tableViewHeight + buttonViewHeight
+//
+//        val statusBarHeight: Int = getStatusBarHeight()
+////        val appBarHeight: Int = 64
+//        val frame_width = Resources.getSystem().displayMetrics.widthPixels
+//        val frame_height = Resources.getSystem().displayMetrics.heightPixels - statusBarHeight - 400
+//        val width: Int = frame_width - 2*blackViewPaddingLeft
+//        val topX: Int = (frame_height-blackViewHeight)/2;
+//
+//        blackView = layerMask!!.blackView(
+//            this,
+//            blackViewPaddingLeft,
+//            topX,
+//            width,
+//            blackViewHeight)
+//
+//        tableView = blackView!!.tableView(this, 0, buttonViewHeight)
+//        val panelAdapter = GroupAdapter<GroupieViewHolder>()
+//        tableView!!.adapter = panelAdapter
+//
+//        //items.clear()
+//        val item = RadioAdapter(this, INVOICE_KEY, invoiceOptionRows, this)
+//        //items.add(item)
+//        //panelAdapter.addAll(items)
+//
+//        layerButtonLayout = blackView!!.buttonPanel(this, buttonViewHeight)
+//        layerCancelBtn = layerButtonLayout.cancelButton(this) {
+//            top.unmask()
+//        }
+//    }
 
     fun getStatusBarHeight(): Int {
         var result = 0
@@ -626,11 +603,11 @@ class OrderVC : MyTableVC() {
         params[SHIPPING_KEY] = key
 
         //invoice
-        for (invoice_option in invoiceOptionRows) {
-            if (invoice_option["value"] == "true") {
-                key = invoice_option["key"]!!
-            }
-        }
+//        for (invoice_option in invoiceOptionRows) {
+//            if (invoice_option["value"] == "true") {
+//                key = invoice_option["key"]!!
+//            }
+//        }
         params[INVOICE_TYPE_KEY] = key
 
         val invoices = getRowRowsFromMyRowsByKey(INVOICE_KEY)
