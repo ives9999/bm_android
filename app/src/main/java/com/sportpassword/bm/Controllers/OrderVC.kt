@@ -1,5 +1,7 @@
 package com.sportpassword.bm.Controllers
 
+import android.content.Context
+import android.content.res.Resources
 import android.os.Bundle
 import com.sportpassword.bm.Models.*
 import com.sportpassword.bm.R
@@ -12,8 +14,11 @@ import kotlinx.android.synthetic.main.mask.*
 import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
 import android.view.*
+import android.widget.RelativeLayout
+import androidx.recyclerview.widget.RecyclerView
 import com.google.gson.Gson
 import com.sportpassword.bm.Data.*
+import com.sportpassword.bm.Fragments.SearchSectionViewHolder
 
 class OrderVC : MyTableVC() {
 
@@ -22,6 +27,11 @@ class OrderVC : MyTableVC() {
     var cartsTable: CartsTable? = null
     var cartTable: CartTable? = null
     var cartitemsTable: ArrayList<CartItemTable> = arrayListOf()
+
+    var blackViewHeight: Int = 500
+    val blackViewPaddingLeft: Int = 80
+    var blackView: RelativeLayout? = null
+    var tableView: RecyclerView? = null
 
     var sub_total: Int = 0
     var shippingFee: Int = 0
@@ -47,16 +57,19 @@ class OrderVC : MyTableVC() {
 //        hashMapOf("title" to "個人","key" to PERSONAL_KEY,"value" to "true","show" to "","cell" to "radio"),
 //        hashMapOf("title" to "公司","key" to COMPANY_KEY,"value" to "false","show" to "","cell" to "radio")
 //    )
-//
-//    val invoicePersonalRows: ArrayList<HashMap<String, String>> = arrayListOf(
-//        hashMapOf("title" to "EMail","key" to INVOICE_EMAIL_KEY,"value" to "${member.email}","show" to "${member.email}","cell" to "textField","keyboard" to KEYBOARD.emailAddress.toString())
-//    )
-//
-//    val invoiceCompanyRows: ArrayList<HashMap<String, String>> = arrayListOf(
-//        hashMapOf("title" to "統一編號","key" to INVOICE_COMPANY_TAX_KEY,"value" to "","show" to "","cell" to "textField","keyboard" to KEYBOARD.default.toString()),
-//        hashMapOf("title" to "公司行號抬頭","key" to INVOICE_COMPANY_NAME_KEY,"value" to "","show" to "","cell" to "textField","keyboard" to KEYBOARD.default.toString()),
-//        hashMapOf("title" to "EMail","key" to INVOICE_EMAIL_KEY,"value" to "${member.email}","show" to "${member.email}","cell" to "textField","keyboard" to KEYBOARD.emailAddress.toString())
-//    )
+    val invoiceOptionRows: ArrayList<OneRow> = arrayListOf(
+        OneRow("個人,公司", "p", "p,c", PERSONAL_KEY, "radio")
+    )
+
+    val invoicePersonalRows: ArrayList<HashMap<String, String>> = arrayListOf(
+        hashMapOf("title" to "EMail","key" to INVOICE_EMAIL_KEY,"value" to "${member.email}","show" to "${member.email}","cell" to "textField","keyboard" to KEYBOARD.emailAddress.toString())
+    )
+
+    val invoiceCompanyRows: ArrayList<HashMap<String, String>> = arrayListOf(
+        hashMapOf("title" to "統一編號","key" to INVOICE_COMPANY_TAX_KEY,"value" to "","show" to "","cell" to "textField","keyboard" to KEYBOARD.default.toString()),
+        hashMapOf("title" to "公司行號抬頭","key" to INVOICE_COMPANY_NAME_KEY,"value" to "","show" to "","cell" to "textField","keyboard" to KEYBOARD.default.toString()),
+        hashMapOf("title" to "EMail","key" to INVOICE_EMAIL_KEY,"value" to "${member.email}","show" to "${member.email}","cell" to "textField","keyboard" to KEYBOARD.emailAddress.toString())
+    )
 //
 //    var memberRows: ArrayList<HashMap<String, String>> = arrayListOf()
 //
@@ -283,31 +296,33 @@ class OrderVC : MyTableVC() {
         rows.add(row)
         section = makeSectionRow("電子發票", INVOICE_KEY, rows, true)
         oneSections.add(section)
-//
-//        //member
-//
-////        memberRows = arrayListOf(
-////            hashMapOf("title" to "姓名","key" to NAME_KEY,"value" to member.name!!,"show" to member.name!!,"cell" to "textField","keyboard" to KEYBOARD.default.toString()),
-////            hashMapOf("title" to "電話","key" to MOBILE_KEY,"value" to member.mobile!!,"show" to member.mobile!!,"cell" to "textField","keyboard" to KEYBOARD.numberPad.toString()),
-////            hashMapOf("title" to "EMail","key" to EMAIL_KEY,"value" to member.email!!,"show" to member.email!!,"cell" to "textField","keyboard" to KEYBOARD.emailAddress.toString()),
-////            hashMapOf("title" to "住址","key" to ADDRESS_KEY,"value" to member.address!!,"show" to member.address!!,"cell" to "textField","keyboard" to KEYBOARD.default.toString())
-////        )
-//        rows = arrayListOf()
-//        row = OneRow("姓名", member.name!!, member.name!!, NAME_KEY, "textField")
-//        rows.add(row)
-//        row = OneRow("電話", member.mobile!!, member.mobile!!, MOBILE_KEY, "textField")
-//        rows.add(row)
-//        row = OneRow("EMail", member.email!!, member.email!!, EMAIL_KEY, "textField")
-//        rows.add(row)
-//        row = OneRow("住址", member.address!!, member.address!!, ADDRESS_KEY, "textField")
-//        rows.add(row)
-//        section = makeSectionRow("收件人資料", MEMBER_KEY, rows, true)
-//
-//        //memo
-//        rows = arrayListOf()
-//        row = OneRow("留言", "", "", MEMO_KEY, "textField")
-//        rows.add(row)
-//        section = makeSectionRow("其他留言", MEMO_KEY, rows, true)
+
+        //member
+
+//        memberRows = arrayListOf(
+//            hashMapOf("title" to "姓名","key" to NAME_KEY,"value" to member.name!!,"show" to member.name!!,"cell" to "textField","keyboard" to KEYBOARD.default.toString()),
+//            hashMapOf("title" to "電話","key" to MOBILE_KEY,"value" to member.mobile!!,"show" to member.mobile!!,"cell" to "textField","keyboard" to KEYBOARD.numberPad.toString()),
+//            hashMapOf("title" to "EMail","key" to EMAIL_KEY,"value" to member.email!!,"show" to member.email!!,"cell" to "textField","keyboard" to KEYBOARD.emailAddress.toString()),
+//            hashMapOf("title" to "住址","key" to ADDRESS_KEY,"value" to member.address!!,"show" to member.address!!,"cell" to "textField","keyboard" to KEYBOARD.default.toString())
+//        )
+        rows = arrayListOf()
+        row = OneRow("姓名", member.name!!, member.name!!, NAME_KEY, "textField")
+        rows.add(row)
+        row = OneRow("電話", member.mobile!!, member.mobile!!, MOBILE_KEY, "textField")
+        rows.add(row)
+        row = OneRow("EMail", member.email!!, member.email!!, EMAIL_KEY, "textField")
+        rows.add(row)
+        row = OneRow("住址", member.address!!, member.address!!, ADDRESS_KEY, "textField")
+        rows.add(row)
+        section = makeSectionRow("收件人資料", MEMBER_KEY, rows, true)
+        oneSections.add(section)
+
+        //memo
+        rows = arrayListOf()
+        row = OneRow("留言", "", "", MEMO_KEY, "textField")
+        rows.add(row)
+        section = makeSectionRow("其他留言", MEMO_KEY, rows, true)
+        oneSections.add(section)
 
 
 
@@ -472,6 +487,51 @@ class OrderVC : MyTableVC() {
             }
         }
     }
+
+    override fun cellMoreClick(sectionIdx: Int, rowIdx: Int) {
+        layerMask = top.mask(this)
+        layerMask!!.setOnClickListener {
+            top.unmask()
+        }
+
+        val rowHeight: Int = 200
+        //val tableViewHeight: Int = rowHeight * invoiceOptionRows.size
+        val tableViewHeight: Int = rowHeight * 2
+        val buttonViewHeight: Int = 150
+        blackViewHeight = tableViewHeight + buttonViewHeight
+
+        val statusBarHeight: Int = getStatusBarHeight()
+//        val appBarHeight: Int = 64
+        val frame_width = Resources.getSystem().displayMetrics.widthPixels
+        val frame_height = Resources.getSystem().displayMetrics.heightPixels - statusBarHeight - 400
+        val width: Int = frame_width - 2*blackViewPaddingLeft
+        val topX: Int = (frame_height-blackViewHeight)/2;
+
+        blackView = layerMask!!.blackView(
+            this,
+            blackViewPaddingLeft,
+            topX,
+            width,
+            blackViewHeight)
+
+        tableView = blackView!!.tableView(this, 0, buttonViewHeight)
+
+        val invoiceSection: OneSection = OneSection("電子發票", INVOICE_KEY, true, invoiceOptionRows)
+
+        val panelAdapter = OneItemAdapter(this, sectionIdx, invoiceSection, this)
+        //val panelAdapter = PanelAdapter(this, sectionIdx, this)
+        tableView!!.adapter = panelAdapter
+
+        //items.clear()
+//        val item = RadioAdapter(this, INVOICE_KEY, invoiceOptionRows, this)
+        //items.add(item)
+        //panelAdapter.addAll(items)
+
+        layerButtonLayout = blackView!!.buttonPanel(this, buttonViewHeight)
+        layerCancelBtn = layerButtonLayout.cancelButton(this) {
+            top.unmask()
+        }
+    }
 //    override fun textFieldTextChanged(sectionKey: String, rowKey: String, value: String) {
 //
 //        val row: HashMap<String, String> = getRowRowsFromMyRowsByKey1(rowKey)
@@ -557,6 +617,16 @@ class OrderVC : MyTableVC() {
 //            top.unmask()
 //        }
 //    }
+
+    override fun handleSectionExpanded(idx: Int) {
+        //println(idx)
+        val oneSection = oneSections[idx]
+        var isExpanded: Boolean = oneSection.isExpanded
+        isExpanded = !isExpanded
+        oneSections[idx].isExpanded = isExpanded
+        oneSectionAdapter.setOneSection(oneSections)
+        oneSectionAdapter.notifyItemChanged(idx)
+    }
 
     fun getStatusBarHeight(): Int {
         var result = 0
@@ -680,7 +750,6 @@ class OrderUpdateResTable {
     var update: String = "INSERT"
     var model: OrderTable? = null
 }
-
 
 
 

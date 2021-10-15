@@ -25,12 +25,16 @@ import com.sportpassword.bm.member
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_addcart_vc.*
 import kotlinx.android.synthetic.main.cart_list_cell.view.*
+import kotlinx.android.synthetic.main.formitem_more.view.*
+import kotlinx.android.synthetic.main.formitem_more.view.promptBtn
 import kotlinx.android.synthetic.main.formitem_number.view.*
 import kotlinx.android.synthetic.main.formitem_plain.view.*
+import kotlinx.android.synthetic.main.formitem_plain.view.detail
 import kotlinx.android.synthetic.main.formitem_plain.view.title
 import kotlinx.android.synthetic.main.formitem_radio.*
 import kotlinx.android.synthetic.main.formitem_radio.view.*
 import kotlinx.android.synthetic.main.formitem_tag.view.*
+import kotlinx.android.synthetic.main.formitem_textfield.view.*
 import kotlinx.android.synthetic.main.mask.*
 import kotlinx.android.synthetic.main.tag.view.*
 import org.jetbrains.anko.backgroundColor
@@ -669,17 +673,22 @@ class OneSectionAdapter(val context: Context, private val resource: Int, var del
         val section: OneSection = oneSections[position]
         holder.titleLbl.text = section.title
 
-        val iconID = if (section.isExpanded) {
-            context.resources.getIdentifier("to_down", "drawable", context.packageName)
-        } else {
-            context.resources.getIdentifier("to_right", "drawable", context.packageName)
-        }
-
         val adapter =
             OneItemAdapter(context, position, oneSections[position], delegate)
 //            holder.recyclerView.setHasFixedSize(true)
         holder.recyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         holder.recyclerView.adapter = adapter
+
+        var iconID: Int = 0
+        if (section.isExpanded) {
+            iconID = context.resources.getIdentifier("to_down", "drawable", context.packageName)
+        } else {
+            iconID = context.resources.getIdentifier("to_right", "drawable", context.packageName)
+        }
+        holder.greater.setImageResource(iconID)
+        holder.greater.setOnClickListener {
+            delegate.handleSectionExpanded(position)
+        }
     }
 
     override fun getItemCount(): Int {
@@ -690,6 +699,7 @@ class OneSectionAdapter(val context: Context, private val resource: Int, var del
 class OneSectionViewHolder(val viewHolder: View): RecyclerView.ViewHolder(viewHolder) {
 
     var titleLbl: TextView = viewHolder.findViewById(R.id.titleLbl)
+    var greater: ImageView = viewHolder.findViewById(R.id.greater)
     var recyclerView: RecyclerView = viewHolder.findViewById(R.id.recyclerView)
 }
 
@@ -735,7 +745,7 @@ class OneItemAdapter(val context: Context, private val sectionIdx: Int, private 
         val row: OneRow = oneRows[position]
         return when (row.cell) {
             "text" -> CELL_TYPE.PLAIN.toInt()
-            "textfield" -> CELL_TYPE.TEXTFIELD.toInt()
+            "textField" -> CELL_TYPE.TEXTFIELD.toInt()
             "tag" -> CELL_TYPE.TAG.toInt()
             "number" -> CELL_TYPE.NUMBER.toInt()
             "cart" -> CELL_TYPE.CART.toInt()
@@ -756,6 +766,8 @@ class OneItemAdapter(val context: Context, private val sectionIdx: Int, private 
             holder.show.backgroundColor = Color.TRANSPARENT
         } else if (holder is TextFieldViewHolder) {
             holder.title.text = row.title
+            holder.prompt.visibility = View.INVISIBLE
+            holder.value.text = row.value
         } else if (holder is TagViewHolder) {
             holder.title.text = row.title
 
@@ -794,21 +806,16 @@ class OneItemAdapter(val context: Context, private val sectionIdx: Int, private 
         } else if (holder is RadioViewHolder) {
 
             val group = holder.init(context, row)
-            if (delegate != null) {
-                group.setOnCheckedChangeListener { radioGroup, i ->
-//                    for ((idx, row) in rows.withIndex()) {
-//                        if (idx == i) {
-//                            row["value"] = "true"
-//                        } else {
-//                            row["value"] = "false"
-//                        }
-//                        rows[idx] = row
-//                    }
-                    delegate.cellRadioChanged(sectionIdx, position, i)
-                }
+            group.setOnCheckedChangeListener { radioGroup, i ->
+                delegate.cellRadioChanged(sectionIdx, position, i)
             }
         } else if (holder is MoreViewHolder) {
-
+            holder.title.text = row.title
+            holder.show.text = row.show
+            holder.prompt.visibility = View.INVISIBLE
+            holder.viewHolder.setOnClickListener {
+                delegate.cellMoreClick(sectionIdx, position)
+            }
         }
     }
 
@@ -834,6 +841,8 @@ class PlainViewHolder(val viewHolder: View): RecyclerView.ViewHolder(viewHolder)
 class TextFieldViewHolder(val viewHolder: View): RecyclerView.ViewHolder(viewHolder) {
 
     val title: TextView = viewHolder.title
+    val prompt: ImageView = viewHolder.promptBtn
+    val value: TextView = viewHolder.textField
 }
 
 class TagViewHolder(val viewHolder: View): RecyclerView.ViewHolder(viewHolder) {
@@ -1004,7 +1013,7 @@ class RadioViewHolder(val viewHolder: View): RecyclerView.ViewHolder(viewHolder)
 
         val arr: Array<String> = row.show.split(",").toTypedArray()
         val titles: Array<String> = row.title.split(",").toTypedArray()
-        for ((idx, gateway) in arr.withIndex()) {
+        for ((idx, value) in arr.withIndex()) {
             val title: String = titles[idx]
             val radioButton: RadioButton = RadioButton(context)
             radioButton.id = idx
@@ -1014,7 +1023,7 @@ class RadioViewHolder(val viewHolder: View): RecyclerView.ViewHolder(viewHolder)
             radioButton.textSize = 18F
             radioButton.layoutParams = lp
 
-            val isChecked: Boolean = row.value == gateway ?: run {
+            val isChecked: Boolean = row.value == value ?: run {
                 false
             }
 
@@ -1022,7 +1031,6 @@ class RadioViewHolder(val viewHolder: View): RecyclerView.ViewHolder(viewHolder)
             group.addView(radioButton)
 
             radioButtons.add(radioButton)
-
         }
 
         viewHolder.radioContainer.addView(group)
@@ -1032,7 +1040,9 @@ class RadioViewHolder(val viewHolder: View): RecyclerView.ViewHolder(viewHolder)
 }
 
 class MoreViewHolder(val viewHolder: View): RecyclerView.ViewHolder(viewHolder) {
-
+    val title: TextView = viewHolder.title
+    val show: TextView = viewHolder.detail
+    val prompt: ImageView = viewHolder.promptBtn
 }
 
 //class AddCartItemViewHolder(val viewHolder: View): RecyclerView.ViewHolder(viewHolder) {
