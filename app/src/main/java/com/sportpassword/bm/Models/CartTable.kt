@@ -42,27 +42,29 @@ class CartItemTable: Table() {
         attributes.clear()
 
         //{name:尺寸,alias:size,value:M}|{name:尺寸,alias:size,value:M}
-        val tmps: Array<String> = attribute.split("|").toTypedArray()
-        for (tmp in tmps) {
+        if (attribute.length > 0) {
+            val tmps: Array<String> = attribute.split("|").toTypedArray()
+            for (tmp in tmps) {
 
-            //{name:尺寸,alias:size,value:M}
-            var _tmp = tmp.replace("{", "")
-            _tmp = _tmp.replace("}", "")
+                //{name:尺寸,alias:size,value:M}
+                var _tmp = tmp.replace("{", "")
+                _tmp = _tmp.replace("}", "")
 
-            //name:尺寸,alias:size,value:M
-            val arr: Array<String> = _tmp.split(",").toTypedArray()
+                //name:尺寸,alias:size,value:M
+                val arr: Array<String> = _tmp.split(",").toTypedArray()
 
-            //[name:尺寸]
-            //[alias:size]
-            //[value:M]
-            val a: HashMap<String, String> = hashMapOf()
-            if (arr.isNotEmpty()) {
-                for (str in arr) {
-                    val b: Array<String> = str.split(":").toTypedArray()
-                    a[b[0]] = b[1]
+                //[name:尺寸]
+                //[alias:size]
+                //[value:M]
+                val a: HashMap<String, String> = hashMapOf()
+                if (arr.isNotEmpty()) {
+                    for (str in arr) {
+                        val b: Array<String> = str.split(":").toTypedArray()
+                        a[b[0]] = b[1]
+                    }
+
+                    attributes.add(a)
                 }
-
-                attributes.add(a)
             }
         }
 

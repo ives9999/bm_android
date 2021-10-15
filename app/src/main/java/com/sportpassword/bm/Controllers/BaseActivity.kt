@@ -22,6 +22,7 @@ import android.view.animation.TranslateAnimation
 import android.view.inputmethod.InputMethodManager
 import android.webkit.*
 import android.widget.*
+import androidx.activity.result.ActivityResult
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.ActionBar
@@ -184,6 +185,20 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
 
     open var editCourseResult: ActivityResultLauncher<Intent>? = null
 
+    val addCartVC = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { res ->
+        if (res.resultCode == Activity.RESULT_OK) {
+            val i: Intent? = res.data
+            if (i != null) {
+                if (i.hasExtra("refresh")) {
+                    val refresh = i.getBooleanExtra("refresh", false)
+                    if (delegate != null && refresh) {
+                        delegate!!.refresh()
+                    }
+                }
+            }
+        }
+    }
+
     val editContentVC = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { res ->
 
         if (res.resultCode == Activity.RESULT_OK) {
@@ -220,7 +235,6 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
                         val memberFragment = frag as? MemberFragment
                         memberFragment?.loginout()
                     }
-
                 }
             }
         }

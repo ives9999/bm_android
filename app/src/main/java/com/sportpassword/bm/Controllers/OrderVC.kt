@@ -61,15 +61,12 @@ class OrderVC : MyTableVC() {
         OneRow("個人,公司", INVOICE_PERSONAL_KEY, "${INVOICE_PERSONAL_KEY},${INVOICE_COMPANY_KEY}", INVOICE_KEY, "radio")
     )
 
-    val invoicePersonalRows: ArrayList<HashMap<String, String>> = arrayListOf(
-        hashMapOf("title" to "EMail","key" to INVOICE_EMAIL_KEY,"value" to "${member.email}","show" to "${member.email}","cell" to "textField","keyboard" to KEYBOARD.emailAddress.toString())
+    val invoicePersonalRows: ArrayList<OneRow> = arrayListOf(
+        OneRow("EMail", member.email!!, member.email!!, EMAIL_KEY, "textField")
+//        hashMapOf("title" to "EMail","key" to INVOICE_EMAIL_KEY,"value" to "${member.email}","show" to "${member.email}","cell" to "textField","keyboard" to KEYBOARD.emailAddress.toString())
     )
 
-    val invoiceCompanyRows: ArrayList<HashMap<String, String>> = arrayListOf(
-        hashMapOf("title" to "統一編號","key" to INVOICE_COMPANY_TAX_KEY,"value" to "","show" to "","cell" to "textField","keyboard" to KEYBOARD.default.toString()),
-        hashMapOf("title" to "公司行號抬頭","key" to INVOICE_COMPANY_NAME_KEY,"value" to "","show" to "","cell" to "textField","keyboard" to KEYBOARD.default.toString()),
-        hashMapOf("title" to "EMail","key" to INVOICE_EMAIL_KEY,"value" to "${member.email}","show" to "${member.email}","cell" to "textField","keyboard" to KEYBOARD.emailAddress.toString())
-    )
+    var invoiceCompanyRows: ArrayList<OneRow> = arrayListOf()
 //
 //    var memberRows: ArrayList<HashMap<String, String>> = arrayListOf()
 //
@@ -84,6 +81,13 @@ class OrderVC : MyTableVC() {
         setContentView(R.layout.activity_order_vc)
 
         setMyTitle("訂單")
+
+        invoiceCompanyRows = arrayListOf(
+            OneRow("統一編號", "", "", INVOICE_COMPANY_TAX_KEY, "textField"),
+            OneRow("公司行號抬頭", "", "", INVOICE_COMPANY_NAME_KEY, "textField"),
+            OneRow("EMail", member.email!!, member.email!!, INVOICE_EMAIL_KEY, "textField")
+        )
+
 
 //        mySections = arrayListOf(
 //            hashMapOf("name" to "商品", "isExpanded" to true, "key" to PRODUCT_KEY),
@@ -130,6 +134,7 @@ class OrderVC : MyTableVC() {
         theFirstTime = true
 //        adapter.clear()
 //        items.clear()
+        oneSections.clear()
         getDataStart(page, perPage, member.token)
     }
 
@@ -294,6 +299,7 @@ class OrderVC : MyTableVC() {
         rows = arrayListOf()
         row = OneRow("發票(目前僅提供電子發票)", "", "", INVOICE_KEY, "more")
         rows.add(row)
+        rows.addAll(invoicePersonalRows)
         section = makeSectionRow("電子發票", INVOICE_KEY, rows, true)
         oneSections.add(section)
 
@@ -480,12 +486,25 @@ class OrderVC : MyTableVC() {
     override fun cellEdit(sectionIdx: Int, rowIdx: Int) {
 
         val token: String = cartitemsTable[rowIdx].token
-        toAddCart(null, token)
+        toAddCart(null, token, this)
     }
 
     override fun cellDelete(sectionIdx: Int, rowIdx: Int) {
 
-        val row: OneRow = oneSections[sectionIdx].items[rowIdx]
+        val token: String = cartitemsTable[rowIdx].token
+        warning("是否確定要刪除呢？", "取消", "刪除") {
+            dataService.delete(this, "cart_item", token) { success ->
+                if (success) {
+                    refresh()
+
+                    //是否要顯示購物車的圖示在top
+                    cartItemCount -= 1
+                    session.edit().putInt("cartItemCount", cartItemCount).apply()
+                } else {
+                    warning(dataService.msg)
+                }
+            }
+        }
     }
 
     override fun cellRadioChanged(key: String, sectionIdx: Int, rowIdx: Int, idx: Int) {
@@ -504,7 +523,17 @@ class OrderVC : MyTableVC() {
             }
         }
         if (key == INVOICE_KEY) {
+            val section: OneSection = getSectionFromIdx(sectionIdx)
+            section.items.clear()
+            row = OneRow("發票(目前僅提供電子發票)", "", "", INVOICE_KEY, "more")
+            section.items.add(row)
+            if (idx == 0) {
+                section.items.addAll(invoicePersonalRows)
+            } else {
+                section.items.addAll(invoiceCompanyRows)
+            }
             top.unmask()
+            oneSectionAdapter.notifyItemChanged(sectionIdx)
         }
     }
 
@@ -551,6 +580,14 @@ class OrderVC : MyTableVC() {
         layerCancelBtn = layerButtonLayout.cancelButton(this) {
             top.unmask()
         }
+    }
+
+    override fun cellClear(sectionIdx: Int, rowIdx: Int) {
+        oneSections[sectionIdx].items[rowIdx].value = ""
+        oneSections[sectionIdx].items[rowIdx].show = ""
+        //searchSections = updateSectionRow()
+        oneSectionAdapter.setOneSection(oneSections)
+        oneSectionAdapter.notifyItemChanged(sectionIdx)
     }
 //    override fun textFieldTextChanged(sectionKey: String, rowKey: String, value: String) {
 //

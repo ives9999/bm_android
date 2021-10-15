@@ -1,6 +1,8 @@
 package com.sportpassword.bm.Controllers
 
+import android.app.Activity
 import android.content.Context
+import android.content.Intent
 import android.content.res.ColorStateList
 import android.graphics.Color
 import android.os.Bundle
@@ -10,7 +12,6 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.gson.JsonParseException
-import com.sportpassword.bm.Adapters.Form.RadioAdapter
 import com.sportpassword.bm.Data.OneSection
 import com.sportpassword.bm.Data.OneRow
 import com.sportpassword.bm.Models.CartItemTable
@@ -28,13 +29,12 @@ import kotlinx.android.synthetic.main.cart_list_cell.view.*
 import kotlinx.android.synthetic.main.formitem_more.view.*
 import kotlinx.android.synthetic.main.formitem_more.view.promptBtn
 import kotlinx.android.synthetic.main.formitem_number.view.*
-import kotlinx.android.synthetic.main.formitem_plain.view.*
 import kotlinx.android.synthetic.main.formitem_plain.view.detail
 import kotlinx.android.synthetic.main.formitem_plain.view.title
-import kotlinx.android.synthetic.main.formitem_radio.*
 import kotlinx.android.synthetic.main.formitem_radio.view.*
 import kotlinx.android.synthetic.main.formitem_tag.view.*
 import kotlinx.android.synthetic.main.formitem_textfield.view.*
+import kotlinx.android.synthetic.main.formitem_textfield.view.clear
 import kotlinx.android.synthetic.main.mask.*
 import kotlinx.android.synthetic.main.tag.view.*
 import org.jetbrains.anko.backgroundColor
@@ -57,6 +57,8 @@ class AddCartVC : MyTableVC() {
     var selected_number: Int = 1
     var selected_price: Int = 0
     var selected_idx: Int = 0
+
+    var update: Boolean = false
 
 //    val productRows: ArrayList<HashMap<String, String>> =  arrayListOf(
 //        hashMapOf("title" to "商品","key" to PRODUCT_KEY,"value" to "","show" to "","cell" to "text")
@@ -190,6 +192,7 @@ class AddCartVC : MyTableVC() {
 //            adapterSections.clear()
 //            attributeRows.clear()
 
+            update = false
             val params: HashMap<String, String> = hashMapOf("token" to product_token!!, "member_token" to member.token!!)
             dataService.getOne(this, params) { success ->
                 Loading.hide(mask)
@@ -215,6 +218,7 @@ class AddCartVC : MyTableVC() {
 
         if (cartItem_token != null) {
 
+            update = true
             submitBtn.text = "更新購物車"
             val params: HashMap<String, String> = hashMapOf("cart_item_token" to cartItem_token!!, "member_token" to member.token!!)
             CartService.getOne(this, params) { success ->
@@ -293,7 +297,11 @@ class AddCartVC : MyTableVC() {
             rows = arrayListOf()
             val min: String = productTable!!.order_min.toString()
             val max: String = productTable!!.order_max.toString()
-            row = OneRow("數量", "1", "${min},${max}", QUANTITY_KEY, "number")
+            var quantity: String = "1"
+            if (cartItemTable != null) {
+                quantity = cartItemTable!!.quantity.toString()
+            }
+            row = OneRow("數量", quantity, "${min},${max}", QUANTITY_KEY, "number")
             rows.add(row)
 
             row = OneRow("小計", "", "", SUBTOTAL_KEY, "text")
@@ -619,13 +627,19 @@ class AddCartVC : MyTableVC() {
 
             CartService.update(this, params) { success ->
                 Loading.hide(mask)
+                var msg: String = "成功加入購物車了"
                 if (success) {
                     if (cartItem_token == null) {
-                        info("成功加入購物車了")
                         cartItemCount += 1
                         session.edit().putInt("cartItemCount", cartItemCount).apply()
                     } else {
-                        info("已經更新購物車了")
+                        msg = "已經更新購物車了"
+                    }
+                    info(msg, "", "關閉") {
+                        val intent = Intent()
+                        intent.putExtra("refresh", true)
+                        setResult(Activity.RESULT_OK, intent)
+                        finish()
                     }
 //                    val order_token: String = CartService.order_token
 //                    if (total > 0) {
@@ -768,6 +782,10 @@ class OneItemAdapter(val context: Context, private val sectionIdx: Int, private 
             holder.title.text = row.title
             holder.prompt.visibility = View.INVISIBLE
             holder.value.text = row.value
+
+            holder.clear.setOnClickListener {
+                delegate.cellClear(sectionIdx, position)
+            }
         } else if (holder is TagViewHolder) {
             holder.title.text = row.title
 
@@ -825,8 +843,13 @@ class OneItemAdapter(val context: Context, private val sectionIdx: Int, private 
             holder.title.text = row.title
             holder.show.text = row.show
             holder.prompt.visibility = View.INVISIBLE
+
             holder.viewHolder.setOnClickListener {
                 delegate.cellMoreClick(sectionIdx, position)
+            }
+
+            holder.clear.setOnClickListener {
+                delegate.cellClear(sectionIdx, position)
             }
         }
     }
@@ -855,6 +878,8 @@ class TextFieldViewHolder(val viewHolder: View): RecyclerView.ViewHolder(viewHol
     val title: TextView = viewHolder.title
     val prompt: ImageView = viewHolder.promptBtn
     val value: TextView = viewHolder.textField
+
+    val clear: ImageView = viewHolder.clear
 }
 
 class TagViewHolder(val viewHolder: View): RecyclerView.ViewHolder(viewHolder) {
@@ -1059,6 +1084,8 @@ class MoreViewHolder(val viewHolder: View): RecyclerView.ViewHolder(viewHolder) 
     val title: TextView = viewHolder.title
     val show: TextView = viewHolder.detail
     val prompt: ImageView = viewHolder.promptBtn
+
+    val clear: ImageView = viewHolder.clear
 }
 
 //class AddCartItemViewHolder(val viewHolder: View): RecyclerView.ViewHolder(viewHolder) {

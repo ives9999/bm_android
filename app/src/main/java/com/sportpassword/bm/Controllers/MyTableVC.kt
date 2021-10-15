@@ -503,6 +503,21 @@ abstract class MyTableVC : BaseActivity() {
         return _rows
     }
 
+    fun getSectionFromKey(sectionKey: String): OneSection {
+
+        for (section in oneSections) {
+            if (section.key == sectionKey) {
+                return section
+            }
+        }
+
+        return OneSection()
+    }
+
+    fun getSectionFromIdx(sectionIdx: Int): OneSection {
+        return oneSections[sectionIdx]
+    }
+
     fun getRowFromKey(rows: ArrayList<HashMap<String, String>>, key: String): HashMap<String, String> {
 
         for (row in rows) {

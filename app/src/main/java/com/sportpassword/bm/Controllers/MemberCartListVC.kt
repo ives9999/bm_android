@@ -75,7 +75,7 @@ class MemberCartListVC : MyTableVC() {
                     submitBtn.visibility = View.GONE
                 }
                 getPage()
-                tableLists += generateItems1(CartTable::class, mysTable!!.rows)
+                tableLists += generateItems1(CartItemTable::class, myTable!!.items)
                 tableAdapter.setMyTableList(tableLists)
                 runOnUiThread {
                     tableAdapter.notifyDataSetChanged()
@@ -101,7 +101,7 @@ class MemberCartListVC : MyTableVC() {
 //    }
 
     override fun cellEdit(row: Table) {
-        toAddCart(null, row.token)
+        toAddCart(null, row.token, this)
     }
 
     override fun cellDelete(row: Table) {
@@ -142,9 +142,9 @@ class MemberCartAdapter(resource: Int, list1CellDelegate: List1CellDelegate?): M
 
     override fun onBindViewHolder(holder: MemberCartViewHolder, position: Int) {
 
-        val _row: CartTable = tableList[0] as CartTable
+        val row: CartItemTable = tableList[position] as CartItemTable
 
-        holder.bind(_row.items[position], position)
+        holder.bind(row, position)
     }
 }
 

@@ -387,7 +387,7 @@ open class DataService {
     open fun getOne(context: Context, params: HashMap<String, String>, complete: CompletionHandler) {
 
         val url = getOneURL()
-        //println(url)
+        println(url)
 
         val header: MutableList<Pair<String, String>> = mutableListOf()
         header.add(Pair("Accept","application/json"))
@@ -398,7 +398,7 @@ open class DataService {
         val objectMapper = ObjectMapper()
         val body: String = objectMapper.writeValueAsString(params)
 
-        //println(body)
+        println(body)
 
         MyHttpClient.instance.post(context, url, body) { success ->
 

@@ -29,7 +29,7 @@ interface ToInterface {
         mainDelegate.mainDelegate = mainDelegate
     }
 
-    fun toAddCart(product_token: String? = null, cartItem_token: String? = null) {
+    fun toAddCart(product_token: String? = null, cartItem_token: String? = null, delegate: BaseActivity?=null) {
         var msg: String = ""
         if (!member.isLoggedIn) {
             mainDelegate.warning("必須先登入會員，才能進行購買", true, "登入") {
@@ -44,10 +44,20 @@ interface ToInterface {
                 }
             } else {
 
+                if (delegate != null) {
+                    mainDelegate.delegate = delegate
+                }
+
                 val i = Intent(mainDelegate, AddCartVC::class.java)
                 i.putExtra("product_token", product_token)
                 i.putExtra("cartItem_token", cartItem_token)
-                mainDelegate.startActivity(i)
+                mainDelegate.addCartVC.launch(i)
+
+
+//                val i = Intent(mainDelegate, AddCartVC::class.java)
+//                i.putExtra("product_token", product_token)
+//                i.putExtra("cartItem_token", cartItem_token)
+//                mainDelegate.startActivity(i)
             }
         }
     }
