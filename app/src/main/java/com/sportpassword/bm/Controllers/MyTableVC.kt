@@ -729,7 +729,9 @@ interface List1CellDelegate {
     fun cellShowMap(row: Table){}
     fun cellMobile(row: Table){}
     fun cellEdit(row: Table){}
+    fun cellEdit(sectionIdx: Int, rowIdx: Int) {}
     fun cellDelete(row: Table){}
+    fun cellDelete(sectionIdx: Int, rowIdx: Int) {}
     fun cellCity(row: Table){}
     fun cellArea(row: Table){}
     fun cellArena(row: Table){}
@@ -737,7 +739,7 @@ interface List1CellDelegate {
     fun cellTextChanged(sectionIdx: Int, rowIdx: Int, str: String) {}
     fun cellSwitchChanged(sectionIdx: Int, rowIdx: Int, b: Boolean) {}
     fun cellNumberChanged(sectionIdx: Int, rowIdx: Int, number: Int) {}
-    fun cellRadioChanged(sectionIdx: Int, rowIdx: Int, idx: Int) {}
+    fun cellRadioChanged(key: String, sectionIdx: Int, rowIdx: Int, idx: Int) {}
     fun cellMoreClick(sectionIdx: Int, rowIdx: Int) {}
     fun cellClear(sectionIdx: Int, rowIdx: Int) {}
 

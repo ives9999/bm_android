@@ -58,7 +58,7 @@ class OrderVC : MyTableVC() {
 //        hashMapOf("title" to "公司","key" to COMPANY_KEY,"value" to "false","show" to "","cell" to "radio")
 //    )
     val invoiceOptionRows: ArrayList<OneRow> = arrayListOf(
-        OneRow("個人,公司", "p", "p,c", PERSONAL_KEY, "radio")
+        OneRow("個人,公司", INVOICE_PERSONAL_KEY, "${INVOICE_PERSONAL_KEY},${INVOICE_COMPANY_KEY}", INVOICE_KEY, "radio")
     )
 
     val invoicePersonalRows: ArrayList<HashMap<String, String>> = arrayListOf(
@@ -477,14 +477,34 @@ class OrderVC : MyTableVC() {
 //        }
 //    }
 
-    override fun cellRadioChanged(sectionIdx: Int, rowIdx: Int, idx: Int) {
+    override fun cellEdit(sectionIdx: Int, rowIdx: Int) {
+
+        val token: String = cartitemsTable[rowIdx].token
+        toAddCart(null, token)
+    }
+
+    override fun cellDelete(sectionIdx: Int, rowIdx: Int) {
+
         val row: OneRow = oneSections[sectionIdx].items[rowIdx]
+    }
+
+    override fun cellRadioChanged(key: String, sectionIdx: Int, rowIdx: Int, idx: Int) {
+        var row: OneRow = OneRow()
+        if (key == GATEWAY_KEY || key == SHIPPING_KEY) {
+            row = oneSections[sectionIdx].items[rowIdx]
+        } else if (key == INVOICE_KEY) {
+            row = invoiceOptionRows[rowIdx]
+        }
+
         val tmp: Array<String> = row.show.toArray()
         for ((idx1, value) in tmp.withIndex()) {
             if (idx1 == idx) {
                 row.value = value
                 break
             }
+        }
+        if (key == INVOICE_KEY) {
+            top.unmask()
         }
     }
 

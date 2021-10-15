@@ -803,11 +803,23 @@ class OneItemAdapter(val context: Context, private val sectionIdx: Int, private 
             holder.attribute.text = row.attribute
             holder.amount.text = row.amount
             holder.quantity.text = "數量：${row.quantity}"
+
+            holder.editIcon.setOnClickListener {
+                delegate.cellEdit(sectionIdx, rowIdx)
+            }
+
+            holder.deleteIcon.setOnClickListener {
+                delegate.cellDelete(sectionIdx, rowIdx)
+            }
+
+            holder.refreshIcon.setOnClickListener {
+                delegate.cellRefresh()
+            }
         } else if (holder is RadioViewHolder) {
 
             val group = holder.init(context, row)
             group.setOnCheckedChangeListener { radioGroup, i ->
-                delegate.cellRadioChanged(sectionIdx, position, i)
+                delegate.cellRadioChanged(row.key, sectionIdx, position, i)
             }
         } else if (holder is MoreViewHolder) {
             holder.title.text = row.title
@@ -983,6 +995,10 @@ class CartViewHolder(val viewHolder: View): RecyclerView.ViewHolder(viewHolder) 
     val attribute: TextView = viewHolder.attributeLbl
     val amount: TextView = viewHolder.amountLbl
     val quantity: TextView = viewHolder.quantityLbl
+
+    val editIcon: ImageView = viewHolder.findViewById(R.id.editIcon)
+    val deleteIcon: ImageView = viewHolder.findViewById(R.id.deleteIcon)
+    val refreshIcon: ImageView = viewHolder.findViewById(R.id.refreshIcon)
 }
 
 class RadioViewHolder(val viewHolder: View): RecyclerView.ViewHolder(viewHolder) {
