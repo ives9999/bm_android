@@ -1,6 +1,5 @@
 package com.sportpassword.bm.Controllers
 
-import android.content.Context
 import android.content.res.Resources
 import android.os.Bundle
 import com.sportpassword.bm.Models.*
@@ -18,7 +17,6 @@ import android.widget.RelativeLayout
 import androidx.recyclerview.widget.RecyclerView
 import com.google.gson.Gson
 import com.sportpassword.bm.Data.*
-import com.sportpassword.bm.Fragments.SearchSectionViewHolder
 
 class OrderVC : MyTableVC() {
 
@@ -62,11 +60,15 @@ class OrderVC : MyTableVC() {
     )
 
     val invoicePersonalRows: ArrayList<OneRow> = arrayListOf(
-        OneRow("EMail", member.email!!, member.email!!, EMAIL_KEY, "textField")
+        OneRow("EMail", member.email!!, member.email!!, INVOICE_EMAIL_KEY, "textField", "service@bm.com")
 //        hashMapOf("title" to "EMail","key" to INVOICE_EMAIL_KEY,"value" to "${member.email}","show" to "${member.email}","cell" to "textField","keyboard" to KEYBOARD.emailAddress.toString())
     )
 
-    var invoiceCompanyRows: ArrayList<OneRow> = arrayListOf()
+    var invoiceCompanyRows: ArrayList<OneRow> = arrayListOf(
+        OneRow("統一編號", "", "", INVOICE_COMPANY_TAX_KEY, "textField", "12345678"),
+        OneRow("公司行號抬頭", "", "", INVOICE_COMPANY_NAME_KEY, "textField", "羽球有限公司"),
+        OneRow("EMail", member.email!!, member.email!!, INVOICE_EMAIL_KEY, "textField", "service@bm.com")
+    )
 //
 //    var memberRows: ArrayList<HashMap<String, String>> = arrayListOf()
 //
@@ -82,13 +84,6 @@ class OrderVC : MyTableVC() {
 
         setMyTitle("訂單")
 
-        invoiceCompanyRows = arrayListOf(
-            OneRow("統一編號", "", "", INVOICE_COMPANY_TAX_KEY, "textField"),
-            OneRow("公司行號抬頭", "", "", INVOICE_COMPANY_NAME_KEY, "textField"),
-            OneRow("EMail", member.email!!, member.email!!, INVOICE_EMAIL_KEY, "textField")
-        )
-
-
 //        mySections = arrayListOf(
 //            hashMapOf("name" to "商品", "isExpanded" to true, "key" to PRODUCT_KEY),
 //            hashMapOf("name" to "金額", "isExpanded" to true, "key" to AMOUNT_KEY),
@@ -103,7 +98,7 @@ class OrderVC : MyTableVC() {
         dataService = CartService
         recyclerView = order_list
 
-        oneSectionAdapter = OneSectionAdapter(this, R.layout.cell_section, this)
+        oneSectionAdapter = OneSectionAdapter(this, R.layout.cell_section, this, hashMapOf())
         oneSectionAdapter.setOneSection(oneSections)
         recyclerView.adapter = oneSectionAdapter
 
@@ -213,7 +208,21 @@ class OrderVC : MyTableVC() {
             }
 
 //            val row:HashMap<String, String> = hashMapOf("title" to productTable!!.name,"key" to PRODUCT_KEY,"value" to "","show" to "","cell" to "cart","featured_path" to productTable!!.featured_path,"attribute" to attribute_text,"amount" to cartItemTable.amount_show,"quantity" to cartItemTable.quantity.toString())
-            val row = OneRow(productTable!!.name, "", "", PRODUCT_KEY, "cart", productTable!!.featured_path, attribute_text, cartItemTable.amount_show, cartItemTable.quantity.toString())
+            val row = OneRow(
+                productTable!!.name,
+                "",
+                "",
+                PRODUCT_KEY,
+                "cart",
+                "",
+                "",
+                false,
+                false,
+                productTable!!.featured_path,
+                attribute_text,
+                cartItemTable.amount_show,
+                cartItemTable.quantity.toString()
+            )
             rows.add(row)
             //productRows.add(row)
         }
@@ -297,7 +306,7 @@ class OrderVC : MyTableVC() {
 //        }
 
         rows = arrayListOf()
-        row = OneRow("發票(目前僅提供電子發票)", "", "", INVOICE_KEY, "more")
+        row = OneRow("發票(目前僅提供電子發票)", INVOICE_PERSONAL_KEY, "", INVOICE_KEY, "more", "", "", false, false)
         rows.add(row)
         rows.addAll(invoicePersonalRows)
         section = makeSectionRow("電子發票", INVOICE_KEY, rows, true)
@@ -312,20 +321,20 @@ class OrderVC : MyTableVC() {
 //            hashMapOf("title" to "住址","key" to ADDRESS_KEY,"value" to member.address!!,"show" to member.address!!,"cell" to "textField","keyboard" to KEYBOARD.default.toString())
 //        )
         rows = arrayListOf()
-        row = OneRow("姓名", member.name!!, member.name!!, NAME_KEY, "textField")
+        row = OneRow("姓名", member.name!!, member.name!!, NAME_KEY, "textField", "王大明")
         rows.add(row)
-        row = OneRow("電話", member.mobile!!, member.mobile!!, MOBILE_KEY, "textField")
+        row = OneRow("電話", member.mobile!!, member.mobile!!, MOBILE_KEY, "textField", "0939123456")
         rows.add(row)
-        row = OneRow("EMail", member.email!!, member.email!!, EMAIL_KEY, "textField")
+        row = OneRow("EMail", member.email!!, member.email!!, EMAIL_KEY, "textField", "service@bm.com")
         rows.add(row)
-        row = OneRow("住址", member.address!!, member.address!!, ADDRESS_KEY, "textField")
+        row = OneRow("住址", member.address!!, member.address!!, ADDRESS_KEY, "textField", "台北市信義區中山路60號")
         rows.add(row)
         section = makeSectionRow("收件人資料", MEMBER_KEY, rows, true)
         oneSections.add(section)
 
         //memo
         rows = arrayListOf()
-        row = OneRow("留言", "", "", MEMO_KEY, "textField")
+        row = OneRow("留言", "", "", MEMO_KEY, "textField","請於上班時間送達")
         rows.add(row)
         section = makeSectionRow("其他留言", MEMO_KEY, rows, true)
         oneSections.add(section)
@@ -507,6 +516,10 @@ class OrderVC : MyTableVC() {
         }
     }
 
+    override fun cellTextChanged(sectionIdx: Int, rowIdx: Int, str: String) {
+        oneSections[sectionIdx].items[rowIdx].value = str
+    }
+
     override fun cellRadioChanged(key: String, sectionIdx: Int, rowIdx: Int, idx: Int) {
         var row: OneRow = OneRow()
         if (key == GATEWAY_KEY || key == SHIPPING_KEY) {
@@ -545,7 +558,7 @@ class OrderVC : MyTableVC() {
 
         val rowHeight: Int = 200
         //val tableViewHeight: Int = rowHeight * invoiceOptionRows.size
-        val tableViewHeight: Int = rowHeight * 2
+        val tableViewHeight: Int = rowHeight * invoiceOptionRows.size
         val buttonViewHeight: Int = 150
         blackViewHeight = tableViewHeight + buttonViewHeight
 
@@ -567,7 +580,7 @@ class OrderVC : MyTableVC() {
 
         val invoiceSection: OneSection = OneSection("電子發票", INVOICE_KEY, true, invoiceOptionRows)
 
-        val panelAdapter = OneItemAdapter(this, sectionIdx, invoiceSection, this)
+        val panelAdapter = OneItemAdapter(this, sectionIdx, invoiceSection, this, hashMapOf())
         //val panelAdapter = PanelAdapter(this, sectionIdx, this)
         tableView!!.adapter = panelAdapter
 
@@ -675,16 +688,6 @@ class OrderVC : MyTableVC() {
 //        }
 //    }
 
-    override fun handleSectionExpanded(idx: Int) {
-        //println(idx)
-        val oneSection = oneSections[idx]
-        var isExpanded: Boolean = oneSection.isExpanded
-        isExpanded = !isExpanded
-        oneSections[idx].isExpanded = isExpanded
-        oneSectionAdapter.setOneSection(oneSections)
-        oneSectionAdapter.notifyItemChanged(idx)
-    }
-
     fun getStatusBarHeight(): Int {
         var result = 0
         val resourceId = resources.getIdentifier("status_bar_height", "dimen", "android")
@@ -713,23 +716,25 @@ class OrderVC : MyTableVC() {
         val total: Int = params[TOTAL_KEY]!!.toInt()
         params[GRAND_TOTAL_KEY] = (discount + total).toString()
 
-        val gateways = getRowRowsFromMyRowsByKey(GATEWAY_KEY)
-        var key: String = "credit_card"
-        for (gateway in gateways) {
-            if (gateway["value"] == "true") {
-                key = gateway["key"]!!
-            }
-        }
-        params[GATEWAY_KEY] = key
+//        val gateways = getRowRowsFromMyRowsByKey(GATEWAY_KEY)
+//        var key: String = "credit_card"
+//        for (gateway in gateways) {
+//            if (gateway["value"] == "true") {
+//                key = gateway["key"]!!
+//            }
+//        }
+//        params[GATEWAY_KEY] = key
+        params[GATEWAY_KEY] = getRowValue(GATEWAY_KEY)
 
-        val shippings = getRowRowsFromMyRowsByKey(SHIPPING_KEY)
-        key = "direct"
-        for (shipping in shippings) {
-            if (shipping["value"] == "true") {
-                key = shipping["key"]!!
-            }
-        }
-        params[SHIPPING_KEY] = key
+//        val shippings = getRowRowsFromMyRowsByKey(SHIPPING_KEY)
+//        key = "direct"
+//        for (shipping in shippings) {
+//            if (shipping["value"] == "true") {
+//                key = shipping["key"]!!
+//            }
+//        }
+//        params[SHIPPING_KEY] = key
+        params[SHIPPING_KEY] = getRowValue(SHIPPING_KEY)
 
         //invoice
 //        for (invoice_option in invoiceOptionRows) {
@@ -737,22 +742,33 @@ class OrderVC : MyTableVC() {
 //                key = invoice_option["key"]!!
 //            }
 //        }
-        params[INVOICE_TYPE_KEY] = key
+//        params[INVOICE_TYPE_KEY] = key
 
-        val invoices = getRowRowsFromMyRowsByKey(INVOICE_KEY)
-        for (invoice in invoices) {
-            for ((key1, value) in invoice) {
-                if (key1 == "key" && value == INVOICE_EMAIL_KEY) {
-                    params[INVOICE_EMAIL_KEY] = invoice["value"]!!
-                    break
-                } else if (key1 == "key" && value == INVOICE_COMPANY_NAME_KEY) {
-                    params[INVOICE_COMPANY_TAX_KEY] = invoice["value"]!!
-                    break
-                } else if (key1 == "key" && value == INVOICE_COMPANY_TAX_KEY) {
-                    params[INVOICE_COMPANY_NAME_KEY] = invoice["value"]!!
-                    break
-                }
-            }
+//        val invoices = getRowRowsFromMyRowsByKey(INVOICE_KEY)
+//        for (invoice in invoices) {
+//            for ((key1, value) in invoice) {
+//                if (key1 == "key" && value == INVOICE_EMAIL_KEY) {
+//                    params[INVOICE_EMAIL_KEY] = invoice["value"]!!
+//                    break
+//                } else if (key1 == "key" && value == INVOICE_COMPANY_NAME_KEY) {
+//                    params[INVOICE_COMPANY_TAX_KEY] = invoice["value"]!!
+//                    break
+//                } else if (key1 == "key" && value == INVOICE_COMPANY_TAX_KEY) {
+//                    params[INVOICE_COMPANY_NAME_KEY] = invoice["value"]!!
+//                    break
+//                }
+//            }
+//        }
+
+        val invoice_type = getRowValue(INVOICE_KEY)
+        params[INVOICE_TYPE_KEY] = invoice_type
+        params[INVOICE_EMAIL_KEY] = getRowValue(INVOICE_PERSONAL_KEY)
+        if (invoice_type == INVOICE_PERSONAL_KEY) {
+            params[INVOICE_EMAIL_KEY] = getRowValue(INVOICE_EMAIL_KEY)
+        } else {
+            params[INVOICE_EMAIL_KEY] = getRowValue(INVOICE_EMAIL_KEY)
+            params[INVOICE_COMPANY_NAME_KEY] = getRowValue(INVOICE_COMPANY_NAME_KEY)
+            params[INVOICE_COMPANY_TAX_KEY] = getRowValue(INVOICE_COMPANY_TAX_KEY)
         }
 
         params["member_id"] = member.id.toString()

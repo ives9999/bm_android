@@ -225,7 +225,7 @@ class OrderTable: Table() {
     private fun getProductPrice(): Int {
         //val price_id: Int = getProductPriceID()
 
-        var product_price: Int = 9999999
+        val product_price: Int = 9999999
 //        if (product != null && product!!.prices.size > 0) {
 //            val prices: ArrayList<ProductPriceTable> = product!!.prices
 //            product_price = prices[0].price_member
@@ -326,6 +326,10 @@ class GatewayTable: Table() {
         expire_at_show = if (expire_at == null) { "" } else { expire_at.noSec() }
         method_show = GATEWAY.getRawValueFromString(method)
         process_show = GATEWAY_PROCESS.getRawValueFromString(process)
+
+        if (gateway_at == null) { gateway_at = "" }
+        if (card6No == null) { card6No = "" }
+        if (card4No == null) { card4No = "" }
     }
 }
 
@@ -373,6 +377,9 @@ class ShippingTable: Table() {
         store_at_show = if (shipping_at == null) { "" } else { store_at.noSec()}
         complete_at_show = if (complete_at == null) { "" } else { complete_at.noSec()}
         back_at_show = if (back_at == null) { "" } else { back_at.noSec()}
+
+        if (shipping_at == null) { shipping_at = "" }
+        if (complete_at == null) { complete_at = "" }
     }
 }
 

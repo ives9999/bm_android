@@ -733,6 +733,16 @@ abstract class MyTableVC : BaseActivity() {
         tableLists.clear()
         getDataStart(page, perPage)
     }
+
+    override fun handleSectionExpanded(idx: Int) {
+        //println(idx)
+        val oneSection = oneSections[idx]
+        var isExpanded: Boolean = oneSection.isExpanded
+        isExpanded = !isExpanded
+        oneSections[idx].isExpanded = isExpanded
+        oneSectionAdapter.setOneSection(oneSections)
+        oneSectionAdapter.notifyItemChanged(idx)
+    }
 }
 
 interface List1CellDelegate {

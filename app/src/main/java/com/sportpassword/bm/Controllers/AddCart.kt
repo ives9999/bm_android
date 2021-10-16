@@ -6,6 +6,8 @@ import android.content.Intent
 import android.content.res.ColorStateList
 import android.graphics.Color
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.*
 import android.widget.*
 import androidx.core.content.ContextCompat
@@ -110,7 +112,7 @@ class AddCartVC : MyTableVC() {
 
         dataService = ProductService
         recyclerView = editTableView
-        oneSectionAdapter = OneSectionAdapter(this, R.layout.cell_section, this)
+        oneSectionAdapter = OneSectionAdapter(this, R.layout.cell_section, this, hashMapOf())
 //        addCartSections = initSectionRows1()
         oneSectionAdapter.setOneSection(oneSections)
         recyclerView.adapter = oneSectionAdapter
@@ -666,7 +668,7 @@ class AddCartVC : MyTableVC() {
     }
 }
 
-class OneSectionAdapter(val context: Context, private val resource: Int, var delegate: List1CellDelegate): RecyclerView.Adapter<OneSectionViewHolder>() {
+class OneSectionAdapter(val context: Context, private val resource: Int, var delegate: List1CellDelegate, val others: HashMap<String, String>): RecyclerView.Adapter<OneSectionViewHolder>() {
     private var oneSections: ArrayList<OneSection> = arrayListOf()
     //lateinit var adapter: TeamSearchItemAdapter
 
@@ -688,7 +690,7 @@ class OneSectionAdapter(val context: Context, private val resource: Int, var del
         holder.titleLbl.text = section.title
 
         val adapter =
-            OneItemAdapter(context, position, oneSections[position], delegate)
+            OneItemAdapter(context, position, oneSections[position], delegate, others)
 //            holder.recyclerView.setHasFixedSize(true)
         holder.recyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         holder.recyclerView.adapter = adapter
@@ -717,7 +719,7 @@ class OneSectionViewHolder(val viewHolder: View): RecyclerView.ViewHolder(viewHo
     var recyclerView: RecyclerView = viewHolder.findViewById(R.id.recyclerView)
 }
 
-class OneItemAdapter(val context: Context, private val sectionIdx: Int, private val oneSection: OneSection, var delegate: List1CellDelegate): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class OneItemAdapter(val context: Context, private val sectionIdx: Int, private val oneSection: OneSection, var delegate: List1CellDelegate, val others: HashMap<String, String>): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     var oneRows: ArrayList<OneRow> = oneSection.items
     var rowIdx: Int = 0
@@ -781,7 +783,20 @@ class OneItemAdapter(val context: Context, private val sectionIdx: Int, private 
         } else if (holder is TextFieldViewHolder) {
             holder.title.text = row.title
             holder.prompt.visibility = View.INVISIBLE
-            holder.value.text = row.value
+            holder.value.setText(row.value)
+            holder.value.hint = row.placeholder
+
+            holder.value.addTextChangedListener(object: TextWatcher {
+                override fun afterTextChanged(p0: Editable?) {
+                }
+
+                override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                }
+
+                override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                    delegate.cellTextChanged(sectionIdx, position, p0.toString())
+                }
+            })
 
             holder.clear.setOnClickListener {
                 delegate.cellClear(sectionIdx, position)
@@ -822,16 +837,26 @@ class OneItemAdapter(val context: Context, private val sectionIdx: Int, private 
             holder.amount.text = row.amount
             holder.quantity.text = "數量：${row.quantity}"
 
-            holder.editIcon.setOnClickListener {
-                delegate.cellEdit(sectionIdx, rowIdx)
+            if (others.containsKey("product_icon_view")) {
+                val b: Boolean = others["product_icon_view"].toBoolean()
+                if (b) {
+                    holder.iconView.visibility = View.VISIBLE
+                } else {
+                    holder.iconView.visibility = View.GONE
+                }
             }
+            if (holder.iconView.visibility == View.VISIBLE) {
+                holder.editIcon.setOnClickListener {
+                    delegate.cellEdit(sectionIdx, rowIdx)
+                }
 
-            holder.deleteIcon.setOnClickListener {
-                delegate.cellDelete(sectionIdx, rowIdx)
-            }
+                holder.deleteIcon.setOnClickListener {
+                    delegate.cellDelete(sectionIdx, rowIdx)
+                }
 
-            holder.refreshIcon.setOnClickListener {
-                delegate.cellRefresh()
+                holder.refreshIcon.setOnClickListener {
+                    delegate.cellRefresh()
+                }
             }
         } else if (holder is RadioViewHolder) {
 
@@ -842,14 +867,20 @@ class OneItemAdapter(val context: Context, private val sectionIdx: Int, private 
         } else if (holder is MoreViewHolder) {
             holder.title.text = row.title
             holder.show.text = row.show
+            holder.show.visibility = View.VISIBLE
             holder.prompt.visibility = View.INVISIBLE
 
             holder.viewHolder.setOnClickListener {
                 delegate.cellMoreClick(sectionIdx, position)
             }
 
-            holder.clear.setOnClickListener {
-                delegate.cellClear(sectionIdx, position)
+            if (row.isClear) {
+                holder.clear.visibility = View.VISIBLE
+                holder.clear.setOnClickListener {
+                    delegate.cellClear(sectionIdx, position)
+                }
+            } else {
+                holder.clear.visibility = View.GONE
             }
         }
     }
@@ -877,7 +908,7 @@ class TextFieldViewHolder(val viewHolder: View): RecyclerView.ViewHolder(viewHol
 
     val title: TextView = viewHolder.title
     val prompt: ImageView = viewHolder.promptBtn
-    val value: TextView = viewHolder.textField
+    val value: EditText = viewHolder.textField
 
     val clear: ImageView = viewHolder.clear
 }
@@ -1021,6 +1052,7 @@ class CartViewHolder(val viewHolder: View): RecyclerView.ViewHolder(viewHolder) 
     val amount: TextView = viewHolder.amountLbl
     val quantity: TextView = viewHolder.quantityLbl
 
+    val iconView: RelativeLayout = viewHolder.findViewById(R.id.iconView)
     val editIcon: ImageView = viewHolder.findViewById(R.id.editIcon)
     val deleteIcon: ImageView = viewHolder.findViewById(R.id.deleteIcon)
     val refreshIcon: ImageView = viewHolder.findViewById(R.id.refreshIcon)
