@@ -1,9 +1,11 @@
 package com.sportpassword.bm.Controllers
 
 import android.content.Intent
+import android.content.res.Resources
 import android.os.Bundle
 import androidx.recyclerview.widget.RecyclerView
 import android.view.View
+import android.widget.RelativeLayout
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.sportpassword.bm.Adapters.GroupSection
@@ -18,6 +20,7 @@ import com.sportpassword.bm.Utilities.*
 import com.sportpassword.bm.member
 import com.xwray.groupie.GroupieViewHolder
 import com.xwray.groupie.kotlinandroidextensions.Item
+import kotlinx.android.synthetic.main.activity_payment_vc.*
 import kotlinx.android.synthetic.main.mask.*
 import kotlin.reflect.KClass
 
@@ -62,6 +65,13 @@ abstract class MyTableVC : BaseActivity() {
 
     lateinit var oneSectionAdapter: OneSectionAdapter
     var oneSections: ArrayList<OneSection> = arrayListOf()
+
+    val rowHeight: Int = 200
+    var blackViewHeight: Int = 500
+    val blackViewPaddingLeft: Int = 80
+    var blackView: RelativeLayout? = null
+    var layerTableView: RecyclerView? = null
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -264,6 +274,46 @@ abstract class MyTableVC : BaseActivity() {
 //            params[key] = value
 //        }
 //    }
+
+    fun showTableLayer(tableViewHeight: Int) {
+        layerMask = top.mask(this)
+        layerMask!!.setOnClickListener {
+            top.unmask()
+        }
+
+        val buttonViewHeight: Int = 150
+        blackViewHeight = tableViewHeight + buttonViewHeight + 200
+
+        val statusBarHeight: Int = getStatusBarHeight()
+//        val appBarHeight: Int = 64
+        val frame_width = Resources.getSystem().displayMetrics.widthPixels
+        val frame_height = Resources.getSystem().displayMetrics.heightPixels - statusBarHeight - 200
+        val width: Int = frame_width - 2*blackViewPaddingLeft
+        val topX: Int = (frame_height-blackViewHeight)/2;
+
+        blackView = layerMask!!.blackView(
+            this,
+            blackViewPaddingLeft,
+            topX,
+            width,
+            blackViewHeight)
+
+        layerTableView = blackView!!.tableView(this, 0, buttonViewHeight)
+        layerButtonLayout = blackView!!.buttonPanel(this, buttonViewHeight)
+        layerCancelBtn = layerButtonLayout.cancelButton(this) {
+            top.unmask()
+        }
+    }
+
+
+    fun getStatusBarHeight(): Int {
+        var result = 0
+        val resourceId = resources.getIdentifier("status_bar_height", "dimen", "android")
+        if (resourceId > 0) {
+            result = resources.getDimensionPixelSize(resourceId)
+        }
+        return result
+    }
 
     open fun showSearchPanel() {
         searchSectionAdapter.setSearchSection(searchSections)

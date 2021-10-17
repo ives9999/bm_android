@@ -26,11 +26,6 @@ class OrderVC : MyTableVC() {
     var cartTable: CartTable? = null
     var cartitemsTable: ArrayList<CartItemTable> = arrayListOf()
 
-    var blackViewHeight: Int = 500
-    val blackViewPaddingLeft: Int = 80
-    var blackView: RelativeLayout? = null
-    var tableView: RecyclerView? = null
-
     var sub_total: Int = 0
     var shippingFee: Int = 0
     var total: Int = 0
@@ -551,48 +546,14 @@ class OrderVC : MyTableVC() {
     }
 
     override fun cellMoreClick(sectionIdx: Int, rowIdx: Int) {
-        layerMask = top.mask(this)
-        layerMask!!.setOnClickListener {
-            top.unmask()
-        }
-
-        val rowHeight: Int = 200
-        //val tableViewHeight: Int = rowHeight * invoiceOptionRows.size
-        val tableViewHeight: Int = rowHeight * invoiceOptionRows.size
-        val buttonViewHeight: Int = 150
-        blackViewHeight = tableViewHeight + buttonViewHeight
-
-        val statusBarHeight: Int = getStatusBarHeight()
-//        val appBarHeight: Int = 64
-        val frame_width = Resources.getSystem().displayMetrics.widthPixels
-        val frame_height = Resources.getSystem().displayMetrics.heightPixels - statusBarHeight - 400
-        val width: Int = frame_width - 2*blackViewPaddingLeft
-        val topX: Int = (frame_height-blackViewHeight)/2;
-
-        blackView = layerMask!!.blackView(
-            this,
-            blackViewPaddingLeft,
-            topX,
-            width,
-            blackViewHeight)
-
-        tableView = blackView!!.tableView(this, 0, buttonViewHeight)
 
         val invoiceSection: OneSection = OneSection("電子發票", INVOICE_KEY, true, invoiceOptionRows)
+        val tableViewHeight: Int = rowHeight * invoiceSection.items.size
+        showTableLayer(tableViewHeight)
 
         val panelAdapter = OneItemAdapter(this, sectionIdx, invoiceSection, this, hashMapOf())
         //val panelAdapter = PanelAdapter(this, sectionIdx, this)
-        tableView!!.adapter = panelAdapter
-
-        //items.clear()
-//        val item = RadioAdapter(this, INVOICE_KEY, invoiceOptionRows, this)
-        //items.add(item)
-        //panelAdapter.addAll(items)
-
-        layerButtonLayout = blackView!!.buttonPanel(this, buttonViewHeight)
-        layerCancelBtn = layerButtonLayout.cancelButton(this) {
-            top.unmask()
-        }
+        layerTableView!!.adapter = panelAdapter
     }
 
     override fun cellClear(sectionIdx: Int, rowIdx: Int) {
@@ -687,15 +648,6 @@ class OrderVC : MyTableVC() {
 //            top.unmask()
 //        }
 //    }
-
-    fun getStatusBarHeight(): Int {
-        var result = 0
-        val resourceId = resources.getIdentifier("status_bar_height", "dimen", "android")
-        if (resourceId > 0) {
-            result = resources.getDimensionPixelSize(resourceId)
-        }
-        return result
-    }
 
     fun submitBtnPressed(view: View) {
 

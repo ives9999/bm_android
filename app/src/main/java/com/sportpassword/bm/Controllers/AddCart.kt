@@ -4,16 +4,20 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.content.res.ColorStateList
+import android.graphics.Bitmap
 import android.graphics.Color
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.*
 import android.widget.*
+import androidx.annotation.ColorInt
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.gson.JsonParseException
+import com.google.zxing.BarcodeFormat
+import com.google.zxing.oned.Code128Writer
 import com.sportpassword.bm.Data.OneSection
 import com.sportpassword.bm.Data.OneRow
 import com.sportpassword.bm.Models.CartItemTable
@@ -28,6 +32,7 @@ import com.sportpassword.bm.member
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_addcart_vc.*
 import kotlinx.android.synthetic.main.cart_list_cell.view.*
+import kotlinx.android.synthetic.main.formitem_barcode.*
 import kotlinx.android.synthetic.main.formitem_more.view.*
 import kotlinx.android.synthetic.main.formitem_more.view.promptBtn
 import kotlinx.android.synthetic.main.formitem_number.view.*
@@ -750,6 +755,9 @@ class OneItemAdapter(val context: Context, private val sectionIdx: Int, private 
             CELL_TYPE.MORE.toInt() -> {
                 return MoreViewHolder(inflater.inflate(R.layout.formitem_more, parent, false))
             }
+            CELL_TYPE.BARCODE.toInt() -> {
+                return BarcodeViewHolder(inflater.inflate(R.layout.formitem_barcode, parent, false))
+            }
             else -> {
                 return PlainViewHolder(inflater.inflate(R.layout.formitem_plain, parent, false))
             }
@@ -767,6 +775,7 @@ class OneItemAdapter(val context: Context, private val sectionIdx: Int, private 
             "cart" -> CELL_TYPE.CART.toInt()
             "radio" -> CELL_TYPE.RADIO.toInt()
             "more" -> CELL_TYPE.MORE.toInt()
+            "barcode" -> CELL_TYPE.BARCODE.toInt()
             else -> throw IllegalArgumentException("錯誤的格式" + position)
         }
     }
@@ -882,6 +891,18 @@ class OneItemAdapter(val context: Context, private val sectionIdx: Int, private 
             } else {
                 holder.clear.visibility = View.GONE
             }
+        } else if (holder is BarcodeViewHolder) {
+
+            holder.title.text = row.title
+            holder.barcode.setImageBitmap(
+                holder.createBarcodeBitmap(
+                    value = row.value,
+                    barcodeColor = Color.BLACK,
+                    backgroundColor = Color.WHITE,
+                    width = 500,
+                    height = 150
+                )
+            )
         }
     }
 
@@ -1118,6 +1139,44 @@ class MoreViewHolder(val viewHolder: View): RecyclerView.ViewHolder(viewHolder) 
     val prompt: ImageView = viewHolder.promptBtn
 
     val clear: ImageView = viewHolder.clear
+}
+
+class BarcodeViewHolder(val viewHolder: View): RecyclerView.ViewHolder(viewHolder) {
+    val title: TextView = viewHolder.title
+    val barcode: ImageView = viewHolder.findViewById(R.id.barcode)
+
+    fun createBarcodeBitmap(value: String, @ColorInt barcodeColor: Int, @ColorInt backgroundColor: Int, width: Int, height: Int): Bitmap {
+
+        val bitMatrix = Code128Writer().encode(
+            value, BarcodeFormat.CODE_128,width,height
+        )
+        val pixels = IntArray(bitMatrix.width * bitMatrix.height)
+
+        for (y in 0 until bitMatrix.height) {
+            val offset = y * bitMatrix.width
+            for (x in 0 until bitMatrix.width) {
+                pixels[offset + x] = if (bitMatrix.get(x, y)) barcodeColor else backgroundColor
+            }
+        }
+
+        val bitmap = Bitmap.createBitmap(
+            bitMatrix.width,
+            bitMatrix.height,
+            Bitmap.Config.ARGB_8888
+        )
+
+        bitmap.setPixels(
+            pixels,
+            0,
+            bitMatrix.width,
+            0,
+            0,
+            bitMatrix.width,
+            bitMatrix.height
+        )
+
+        return bitmap
+    }
 }
 
 //class AddCartItemViewHolder(val viewHolder: View): RecyclerView.ViewHolder(viewHolder) {

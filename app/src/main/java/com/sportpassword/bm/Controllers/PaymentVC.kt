@@ -2,17 +2,9 @@ package com.sportpassword.bm.Controllers
 
 import android.content.Context
 import android.content.Intent
-import android.content.res.Resources
 import android.os.Bundle
 import android.view.View
-import android.widget.RelativeLayout
-import androidx.recyclerview.widget.RecyclerView
 import com.google.gson.Gson
-import com.sportpassword.bm.Adapters.Form.BarcodeAdapter
-import com.sportpassword.bm.Adapters.Form.MoreAdapter1
-import com.sportpassword.bm.Adapters.Form.PlainAdapter1
-import com.sportpassword.bm.Adapters.Form.RadioAdapter
-import com.sportpassword.bm.Adapters.GroupSection
 import com.sportpassword.bm.Data.OneRow
 import com.sportpassword.bm.Data.OneSection
 import com.sportpassword.bm.Models.*
@@ -20,19 +12,13 @@ import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.OrderService
 import com.sportpassword.bm.Utilities.*
 import com.sportpassword.bm.member
-import com.xwray.groupie.ExpandableGroup
-import com.xwray.groupie.GroupAdapter
-import com.xwray.groupie.Section
 import com.xwray.groupie.kotlinandroidextensions.Item
 import com.xwray.groupie.kotlinandroidextensions.GroupieViewHolder
-import kotlinx.android.synthetic.main.activity_order_vc.*
 import kotlinx.android.synthetic.main.activity_payment_vc.*
 import kotlinx.android.synthetic.main.activity_payment_vc.footer
-import kotlinx.android.synthetic.main.activity_payment_vc.top
 import kotlinx.android.synthetic.main.mask.*
 import kotlinx.android.synthetic.main.payment_cell.*
 import tw.com.ecpay.paymentgatewaykit.manager.*
-import kotlin.reflect.KProperty1
 
 class PaymentVC : MyTableVC() {
 
@@ -97,12 +83,7 @@ class PaymentVC : MyTableVC() {
     var card4No: String = ""
     var gateway_at: String = ""
 
-    var popupRows: ArrayList<HashMap<String, String>> = arrayListOf()
-
-    var blackViewHeight: Int = 500
-    val blackViewPaddingLeft: Int = 80
-    var blackView: RelativeLayout? = null
-    var tableView: RecyclerView? = null
+//    var popupRows: ArrayList<HashMap<String, String>> = arrayListOf()
 
     var title: String = ""
 
@@ -604,43 +585,15 @@ class PaymentVC : MyTableVC() {
 
 //        fillPopupRows()
         val rows: ArrayList<OneRow> = fillPopupRows()
-        val section: OneSection = OneSection("付款", INVOICE_KEY, true, rows)
-
-        layerMask = top.mask(this)
-        layerMask!!.setOnClickListener {
-            top.unmask()
-        }
-
-        val rowHeight: Int = 200
-        val rowNumber: Int = popupRows.size
+        val section: OneSection = OneSection("付款", GATEWAY_KEY, true, rows)
 
         val tableViewHeight: Int = rowHeight * rows.size
-        val buttonViewHeight: Int = 150
-        blackViewHeight = tableViewHeight + buttonViewHeight + 200
-
-        val statusBarHeight: Int = getStatusBarHeight()
-//        val appBarHeight: Int = 64
-        val frame_width = Resources.getSystem().displayMetrics.widthPixels
-        val frame_height = Resources.getSystem().displayMetrics.heightPixels - statusBarHeight - 200
-        val width: Int = frame_width - 2*blackViewPaddingLeft
-        val topX: Int = (frame_height-blackViewHeight)/2;
-
-        blackView = layerMask!!.blackView(
-            this,
-            blackViewPaddingLeft,
-            topX,
-            width,
-            blackViewHeight)
-
-        tableView = blackView!!.tableView(this, 0, buttonViewHeight)
-        layerButtonLayout = blackView!!.buttonPanel(this, buttonViewHeight)
-        layerCancelBtn = layerButtonLayout.cancelButton(this) {
-            top.unmask()
-        }
+        showTableLayer(tableViewHeight)
 
         val panelAdapter = OneItemAdapter(this, sectionIdx, section, this, hashMapOf())
         //val panelAdapter = PanelAdapter(this, sectionIdx, this)
-        tableView!!.adapter = panelAdapter
+
+        layerTableView!!.adapter = panelAdapter
 
 
 //        val panelAdapter = GroupAdapter<com.xwray.groupie.GroupieViewHolder>()
@@ -703,11 +656,11 @@ class PaymentVC : MyTableVC() {
             val barcode2: String = orderTable!!.gateway!!.barcode2
             val barcode3: String = orderTable!!.gateway!!.barcode3
             val expire_at: String = orderTable!!.gateway!!.expire_at_show
-            row = OneRow("繳款條碼1", barcode1, barcode1, BARCODE1_KEY, "text")
+            row = OneRow("繳款條碼1", barcode1, barcode1, BARCODE1_KEY, "barcode")
             rows.add(row)
-            row = OneRow("繳款條碼2", barcode2, barcode2, BARCODE2_KEY, "text")
+            row = OneRow("繳款條碼2", barcode2, barcode2, BARCODE2_KEY, "barcode")
             rows.add(row)
-            row = OneRow("繳款條碼3", barcode3, barcode3, BARCODE3_KEY, "text")
+            row = OneRow("繳款條碼3", barcode3, barcode3, BARCODE3_KEY, "barcode")
             rows.add(row)
             row = OneRow("到期日", expire_at, expire_at, EXPIRE_AT_KEY, "text")
             rows.add(row)
@@ -731,15 +684,6 @@ class PaymentVC : MyTableVC() {
         }
 
         return rows
-    }
-
-    fun getStatusBarHeight(): Int {
-        var result = 0
-        val resourceId = resources.getIdentifier("status_bar_height", "dimen", "android")
-        if (resourceId > 0) {
-            result = resources.getDimensionPixelSize(resourceId)
-        }
-        return result
     }
 
     fun updateOrder() {
