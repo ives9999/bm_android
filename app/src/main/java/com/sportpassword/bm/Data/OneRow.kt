@@ -23,7 +23,9 @@ data class OneRow(
     var attribute: String = "",
     var amount: String = "",
     var quantity: String = ""
-)
+) {
+    var msg: String = ""
+}
 
 //data class OrderSection<T: Table> (
 //    var title: String = "",

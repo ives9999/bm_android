@@ -146,6 +146,7 @@ class RegisterActivity : MyTableVC() {
 
             var rows: ArrayList<OneRow> = arrayListOf()
             var row = OneRow("EMail", member.email!!, member.email!!, EMAIL_KEY, "textField", "service@bm.com", "", true)
+            row.msg = "EMail沒有填寫"
             rows.add(row)
             var section = makeSectionRow("登入資料", "login", rows, true)
             oneSections.add(section)
@@ -474,7 +475,7 @@ class RegisterActivity : MyTableVC() {
         for (section in oneSections) {
             for (row in section.items) {
                 if (row.isRequired && row.value.isEmpty()) {
-                    msg += "" + "\n"
+                    msg += row.msg + "\n"
                 }
             }
         }
