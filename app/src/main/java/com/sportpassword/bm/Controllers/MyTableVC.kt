@@ -843,7 +843,9 @@ interface List1CellDelegate {
     fun cellNumberChanged(sectionIdx: Int, rowIdx: Int, number: Int) {}
     fun cellRadioChanged(key: String, sectionIdx: Int, rowIdx: Int, idx: Int) {}
     fun cellSexChanged(key: String, sectionIdx: Int, rowIdx: Int, sex: String) {}
+    fun cellPrivacyChanged(sectionIdx: Int, rowIdx: Int, checked: Boolean) {}
     fun cellMoreClick(sectionIdx: Int, rowIdx: Int) {}
+
     fun cellClear(sectionIdx: Int, rowIdx: Int) {}
 
     fun cellSetTag(sectionIdx: Int, rowIdx: Int, value: String, isChecked: Boolean) {}

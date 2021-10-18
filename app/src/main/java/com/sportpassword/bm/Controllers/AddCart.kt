@@ -762,6 +762,12 @@ class OneItemAdapter(val context: Context, private val sectionIdx: Int, private 
             CELL_TYPE.SEX.toInt() -> {
                 return SexViewHolder(inflater.inflate(R.layout.formitem_sex, parent, false))
             }
+            CELL_TYPE.PASSWORD.toInt() -> {
+                return PasswordViewHolder(inflater.inflate(R.layout.formitem_password, parent, false))
+            }
+            CELL_TYPE.PRIVACY.toInt() -> {
+                return PrivacyViewHolder(inflater.inflate(R.layout.formitem_privacy, parent, false))
+            }
             else -> {
                 return PlainViewHolder(inflater.inflate(R.layout.formitem_plain, parent, false))
             }
@@ -781,6 +787,8 @@ class OneItemAdapter(val context: Context, private val sectionIdx: Int, private 
             "more" -> CELL_TYPE.MORE.toInt()
             "barcode" -> CELL_TYPE.BARCODE.toInt()
             "sex" -> CELL_TYPE.SEX.toInt()
+            "password" -> CELL_TYPE.PASSWORD.toInt()
+            "privacy" -> CELL_TYPE.PRIVACY.toInt()
             else -> throw IllegalArgumentException("錯誤的格式" + position)
         }
     }
@@ -922,6 +930,36 @@ class OneItemAdapter(val context: Context, private val sectionIdx: Int, private 
                     delegate.cellSexChanged(row.key, sectionIdx, position, sex)
                 }
             }
+        } else if (holder is PasswordViewHolder) {
+            holder.title.text = row.title
+            holder.prompt.visibility = View.INVISIBLE
+            holder.value.setText(row.value)
+            holder.value.hint = row.placeholder
+
+            holder.required.visibility = if (row.isRequired) { View.VISIBLE } else { View.INVISIBLE }
+
+            holder.value.addTextChangedListener(object: TextWatcher {
+                override fun afterTextChanged(p0: Editable?) {
+                }
+
+                override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                }
+
+                override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                    delegate.cellTextChanged(sectionIdx, position, p0.toString())
+                }
+            })
+
+            holder.clear.setOnClickListener {
+                delegate.cellClear(sectionIdx, position)
+            }
+        } else if (holder is PrivacyViewHolder) {
+            holder.checkBox.setText(row.show)
+            holder.required.visibility = if (row.isRequired) { View.VISIBLE } else { View.INVISIBLE }
+
+            holder.checkBox.setOnCheckedChangeListener { buttonView, isChecked ->
+                delegate.cellPrivacyChanged(sectionIdx, position, isChecked)
+            }
         }
     }
 
@@ -946,12 +984,12 @@ class PlainViewHolder(val viewHolder: View): RecyclerView.ViewHolder(viewHolder)
 
 class TextFieldViewHolder(val viewHolder: View): RecyclerView.ViewHolder(viewHolder) {
 
-    val title: TextView = viewHolder.title
-    val prompt: ImageView = viewHolder.promptBtn
-    val value: EditText = viewHolder.textField
+    val title: TextView = viewHolder.findViewById(R.id.title)
+    val prompt: ImageView = viewHolder.findViewById(R.id.promptBtn)
+    val value: EditText = viewHolder.findViewById(R.id.textField)
 
     val required: ImageView = viewHolder.findViewById(R.id.required)
-    val clear: ImageView = viewHolder.clear
+    val clear: ImageView = viewHolder.findViewById(R.id.clear)
 }
 
 class TagViewHolder(val viewHolder: View): RecyclerView.ViewHolder(viewHolder) {
@@ -1205,6 +1243,22 @@ class SexViewHolder(val viewHolder: View): RecyclerView.ViewHolder(viewHolder) {
     val required: ImageView = viewHolder.findViewById(R.id.required)
 
     val sex: RadioGroup = viewHolder.findViewById(R.id.sex)
+}
+
+class PasswordViewHolder(val viewHolder: View): RecyclerView.ViewHolder(viewHolder) {
+    val title: TextView = viewHolder.findViewById(R.id.title)
+    val prompt: ImageView = viewHolder.findViewById(R.id.promptBtn)
+    val value: EditText = viewHolder.findViewById(R.id.textField)
+
+    val required: ImageView = viewHolder.findViewById(R.id.required)
+    val clear: ImageView = viewHolder.findViewById(R.id.clear)
+}
+
+class PrivacyViewHolder(val viewHolder: View): RecyclerView.ViewHolder(viewHolder) {
+    val title: TextView = viewHolder.findViewById(R.id.title)
+    val checkBox: CheckBox = viewHolder.findViewById(R.id.privacyBox)
+
+    val required: ImageView = viewHolder.findViewById(R.id.required)
 }
 
 //class AddCartItemViewHolder(val viewHolder: View): RecyclerView.ViewHolder(viewHolder) {

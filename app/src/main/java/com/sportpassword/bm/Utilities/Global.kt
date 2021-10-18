@@ -80,7 +80,9 @@ enum class CELL_TYPE(val value: String) {
     RADIO("radio"),
     MORE("more"),
     BARCODE("barcode"),
-    SEX("sex");
+    SEX("sex"),
+    PASSWORD("password"),
+    PRIVACY("privacy");
 
     fun toInt(): Int {
         when (this) {
@@ -93,9 +95,9 @@ enum class CELL_TYPE(val value: String) {
             MORE -> return 6
             BARCODE -> return 7
             SEX -> return 8
+            PASSWORD -> return 9
+            PRIVACY -> return 10
         }
-
-        return 0
     }
 
 }

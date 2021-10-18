@@ -57,21 +57,21 @@ class RegisterActivity : MyTableVC() {
 //    val SELECT_REQUEST_CODE = 1
 
     val testData: HashMap<String, String> = hashMapOf(
-//        EMAIL_KEY to "john@housetube.tw",
-//        PASSWORD_KEY to "1234",
-//        REPASSWORD_KEY to "1234",
-//        NAME_KEY to "孫士君",
-//        NICKNAME_KEY to "孫士君",
-//        DOB_KEY to "1969-01-05",
-//        MOBILE_KEY to "0911299998",
-//        TEL_KEY to "062295888",
-//        CITY_KEY to "218",
-//        "city_name" to "台南市",
-//        AREA_KEY to "219",
-//        "area_name" to "中西區",
-//        ROAD_KEY to "南華街101號8樓",
-//        FB_KEY to "https://www.facebook.com/ives.sun",
-//        LINE_KEY to "ives9999"
+        EMAIL_KEY to "john@housetube.tw",
+        PASSWORD_KEY to "1234",
+        REPASSWORD_KEY to "1234",
+        NAME_KEY to "孫士君",
+        NICKNAME_KEY to "孫士君",
+        DOB_KEY to "1969-01-05",
+        MOBILE_KEY to "0911299998",
+        TEL_KEY to "062295888",
+        CITY_KEY to "218",
+        "city_name" to "台南市",
+        AREA_KEY to "219",
+        "area_name" to "中西區",
+        ROAD_KEY to "南華街101號8樓",
+        FB_KEY to "https://www.facebook.com/ives.sun",
+        LINE_KEY to "ives9999"
     )
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -122,155 +122,155 @@ class RegisterActivity : MyTableVC() {
 
     private fun initData() {
 
-        if (member.isLoggedIn) {
+        val rows: ArrayList<OneRow> = arrayListOf()
+        var row = OneRow("EMail", member.email!!, member.email!!, EMAIL_KEY, "textField", "service@bm.com", "", true)
+        row.msg = "EMail沒有填寫"
+        rows.add(row)
 
-            //member.memberPrint()
-            form.removeItems(arrayListOf(PASSWORD_KEY, REPASSWORD_KEY, PRIVACY_KEY))
-//            for (formItem in form.formItems) {
-//                println(formItem.name)
-//            }
-//            println("==========")
-            form.formItems.removeAt(form.formItems.size - 1)
-//            for (formItem in form.formItems) {
-//                println(formItem.name)
-//            }
-            sections.removeAt(sections.size - 1)
+        if (!member.isLoggedIn) {
+            row = OneRow("密碼", "", "", PASSWORD_KEY, "password", "", "", true)
+            row.msg = "密碼沒有填寫"
+            rows.add(row)
+            row = OneRow("密碼確認", "", "", REPASSWORD_KEY, "password", "", "", true)
+            row.msg = "密碼確認沒有填寫"
+            rows.add(row)
+        }
+        var section = makeSectionRow("登入資料", "login", rows, true)
+        oneSections.add(section)
 
-            val keys: ArrayList<String> = arrayListOf()
-            for (formItem in form.formItems) {
-                if (formItem.name != null) {
-                    keys.add(formItem.name!!)
-                }
+        rows.clear()
+        row = OneRow("姓名", member.name!!, member.name!!, NAME_KEY, "textField", "王大明", "", true)
+        row.msg = "姓名沒有填寫"
+        rows.add(row)
+        row = OneRow("暱稱", member.nickname!!, member.nickname!!, NICKNAME_KEY, "textField", "大明哥", "", true)
+        row.msg = "暱稱沒有填寫"
+        rows.add(row)
+        row = OneRow("生日", member.dob!!, member.dob!!, DOB_KEY, "more")
+        rows.add(row)
+
+        if (member.sex!!.isEmpty()) {
+            member.sex = "M"
+        }
+        row = OneRow("性別", member.sex!!, "", SEX_KEY, "sex", "", "", true)
+        row.msg = "沒有選擇性別"
+        rows.add(row)
+        section = makeSectionRow("個人資料", "data", rows, true)
+        oneSections.add(section)
+
+        rows.clear()
+        row = OneRow("行動電話", member.mobile!!, member.mobile!!, MOBILE_KEY, "textField", "0939123456", "", true)
+        row.msg = "行動電話沒有填寫"
+        rows.add(row)
+        row = OneRow("市內電話", member.tel!!, member.tel!!, TEL_KEY, "textField", "021234567")
+        rows.add(row)
+        row = OneRow("縣市", member.city.toString(), Global.zoneIDToName(member.city), CITY_KEY, "more", "", "", true)
+        row.msg = "沒有選擇縣市"
+        rows.add(row)
+        row = OneRow("區域", member.area.toString(), Global.zoneIDToName(member.area), AREA_KEY, "more", "", "", true)
+        row.msg = "沒有選擇區域"
+        rows.add(row)
+        row = OneRow("住址", member.road!!, member.road!!, ROAD_KEY, "textField", "中山路60號", "", true)
+        row.msg = "沒有填寫住址"
+        rows.add(row)
+        section = makeSectionRow("聯絡資料", "contact", rows, true)
+        oneSections.add(section)
+
+        rows.clear()
+        row = OneRow("FB", member.fb!!, member.fb!!, FB_KEY, "textField")
+        rows.add(row)
+        row = OneRow("Line", member.line!!, member.line!!, LINE_KEY, "textField")
+        rows.add(row)
+        section = makeSectionRow("社群資料", "social", rows, true)
+        oneSections.add(section)
+
+        if (!member.isLoggedIn) {
+            rows.clear()
+            row = OneRow("隱私權", "true", "同意隱私權條款", PRIVACY_KEY, "privacy", "", "", true)
+            rows.add(row)
+            section = makeSectionRow("隱私權", PRIVACY_KEY, rows, true)
+            oneSections.add(section)
+        }
+
+        member_token = member.token!!
+        old_selected_city = member.city.toString()
+        if (member.avatar!!.length > 0) {
+            //println(member.avatar)
+            val avatar: String = member.avatar!!
+            //val avatar: String = BASE_URL + member.avatar
+            setImage(null, avatar)
+            isFeaturedChange = false
+        }
+
+        for ((key, value) in testData) {
+            val row: OneRow = getRowFromKey(key)
+            row.value = value
+            if (key == DOB_KEY) {
+                row.show = value
+            } else if (key == CITY_KEY || key == AREA_KEY) {
+                row.show = Global.zoneIDToName(value.toInt())
             }
-            //println(keys)
+        }
 
-            var rows: ArrayList<OneRow> = arrayListOf()
-            var row = OneRow("EMail", member.email!!, member.email!!, EMAIL_KEY, "textField", "service@bm.com", "", true)
-            row.msg = "EMail沒有填寫"
-            rows.add(row)
-            var section = makeSectionRow("登入資料", "login", rows, true)
-            oneSections.add(section)
+//        if (member.isLoggedIn) {
 
-            rows.clear()
-            row = OneRow("姓名", member.name!!, member.name!!, NAME_KEY, "textField", "王大明", "", true)
-            rows.add(row)
-            row = OneRow("暱稱", member.nickname!!, member.nickname!!, NICKNAME_KEY, "textField", "大明哥", "", true)
-            rows.add(row)
-            row = OneRow("生日", member.dob!!, member.dob!!, DOB_KEY, "more")
-            rows.add(row)
-            row = OneRow("性別", member.sex!!, "", SEX_KEY, "sex", "", "", true)
-            rows.add(row)
-            section = makeSectionRow("個人資料", "data", rows, true)
-            oneSections.add(section)
-
-            rows.clear()
-            row = OneRow("行動電話", member.mobile!!, member.mobile!!, MOBILE_KEY, "textField", "0939123456", "", true)
-            rows.add(row)
-            row = OneRow("市內電話", member.tel!!, member.tel!!, MOBILE_KEY, "textField", "021234567")
-            rows.add(row)
-            row = OneRow("縣市", member.city.toString(), Global.zoneIDToName(member.city), CITY_KEY, "more", "", "", true)
-            rows.add(row)
-            row = OneRow("區域", member.area.toString(), Global.zoneIDToName(member.area), AREA_KEY, "more", "", "", true)
-            rows.add(row)
-            row = OneRow("住址", member.road!!, member.road!!, ROAD_KEY, "textField", "中山路60號", "", true)
-            rows.add(row)
-            section = makeSectionRow("聯絡資料", "contact", rows, true)
-            oneSections.add(section)
-
-            rows.clear()
-            row = OneRow("FB", member.fb!!, member.fb!!, FB_KEY, "textField")
-            rows.add(row)
-            row = OneRow("Line", member.line!!, member.line!!, LINE_KEY, "textField")
-            rows.add(row)
-            section = makeSectionRow("社群資料", "social", rows, true)
-            oneSections.add(section)
-
-            member_token = member.token!!
-            for (key in keys) {
-
-                if (key == "section") { continue }
-
-                val formItem = getFormItemFromKey(key)
-                var value: String = ""
-                val items = MemberTable::class.memberProperties.iterator()
-                for (it in items) {
-//                    break
+//            form.removeItems(arrayListOf(PASSWORD_KEY, REPASSWORD_KEY, PRIVACY_KEY))
+//            form.formItems.removeAt(form.formItems.size - 1)
+//            sections.removeAt(sections.size - 1)
+//
+//            val keys: ArrayList<String> = arrayListOf()
+//            for (formItem in form.formItems) {
+//                if (formItem.name != null) {
+//                    keys.add(formItem.name!!)
 //                }
-//                MemberTable::class.memberProperties.forEach {
+//            }
 
-                    val name = it.name
-                    if (key == name) {
-                        val t = it.returnType
-                        if (t == String::class.createType()) {
-                            value = session.getString(name, "")!!
-                        } else if (t == Int::class.createType()) {
-                            val tmp = session.getInt(name, 0)
-                            value = tmp.toString()
-                            if (key == AREA_KEY) {
-                                val cityFormItem: CityFormItem = getFormItemFromKey(CITY_KEY) as CityFormItem
-                                val areaFormItem: AreaFormItem = formItem as AreaFormItem
-                                if (cityFormItem.value != null && cityFormItem.value!!.isNotEmpty()) {
-                                    areaFormItem.city_id = (cityFormItem.value)?.toInt()
-                            }
-                        }
 
-                        } else if (t == Boolean::class.createType()) {
-                            val tmp = session.getBoolean(name, false)
-                            value = tmp.toString()
-                        }
-                        break
-                    }
-                }
-
-                formItem?.value = value
-                formItem?.make()
-
-//                if (MEMBER_ARRAY.containsKey(key)) {
-//                    val value: String = member.fetch(key)
-//                    val formItem = getFormItemFromKey(key)
-//                    if (formItem != null) {
-//                        if (key == AREA_KEY) {
-//                            val cityFormItem: CityFormItem = getFormItemFromKey(CITY_KEY) as CityFormItem
-//                            val areaFormItem: AreaFormItem = formItem as AreaFormItem
-//                            if (cityFormItem.value != null && cityFormItem.value!!.isNotEmpty()) {
-//                                areaFormItem.city_id = (cityFormItem.value)?.toInt()
+//            for (key in keys) {
+//
+//                if (key == "section") { continue }
+//
+//                val formItem = getFormItemFromKey(key)
+//                var value: String = ""
+//                val items = MemberTable::class.memberProperties.iterator()
+//                for (it in items) {
+//
+//                    val name = it.name
+//                    if (key == name) {
+//                        val t = it.returnType
+//                        if (t == String::class.createType()) {
+//                            value = session.getString(name, "")!!
+//                        } else if (t == Int::class.createType()) {
+//                            val tmp = session.getInt(name, 0)
+//                            value = tmp.toString()
+//                            if (key == AREA_KEY) {
+//                                val cityFormItem: CityFormItem = getFormItemFromKey(CITY_KEY) as CityFormItem
+//                                val areaFormItem: AreaFormItem = formItem as AreaFormItem
+//                                if (cityFormItem.value != null && cityFormItem.value!!.isNotEmpty()) {
+//                                    areaFormItem.city_id = (cityFormItem.value)?.toInt()
 //                            }
 //                        }
-//                        formItem.value = value
-//                        formItem.make()
-//                    }
-//                }
-
-//                if (key == CITY_KEY) {
-//                    val value: String = member.fetch(CITY_KEY)
-//                    val formItem = getFormItemFromKey(key)
-//                    formItem!!.value = value
-//                    formItem.make()
-//                }
-
-//                if (key == AREA_KEY) {
-//                    val value: String = member.fetch(AREA_KEY)
-//                    val formItem = getFormItemFromKey(key)
-//                    formItem!!.value = value
-//                    formItem.make()
 //
-//                    val cityFormItem: CityFormItem = getFormItemFromKey(CITY_KEY) as CityFormItem
-//                    val areaFormItem: AreaFormItem = formItem as AreaFormItem
-//                    if (cityFormItem.value != null && cityFormItem.value!!.isNotEmpty()) {
-//                        areaFormItem.city_id = (cityFormItem.value)?.toInt()
+//                        } else if (t == Boolean::class.createType()) {
+//                            val tmp = session.getBoolean(name, false)
+//                            value = tmp.toString()
+//                        }
+//                        break
 //                    }
 //                }
-            }
-            old_selected_city = member.city.toString()
-            if (member.avatar!!.length > 0) {
-                //println(member.avatar)
-                val avatar: String = member.avatar!!
-                //val avatar: String = BASE_URL + member.avatar
-                setImage(null, avatar)
-                isFeaturedChange = false
-            }
-        } else {
-            if (testData.count() > 0) {
+//
+//                formItem?.value = value
+//                formItem?.make()
+//            }
+//            old_selected_city = member.city.toString()
+//            if (member.avatar!!.length > 0) {
+//                //println(member.avatar)
+//                val avatar: String = member.avatar!!
+//                //val avatar: String = BASE_URL + member.avatar
+//                setImage(null, avatar)
+//                isFeaturedChange = false
+//            }
+//        } else {
+//            if (testData.count() > 0) {
 //                for ((key, value) in testData) {
 //                    val formItem = getFormItemFromKey(key)
 //                    if (formItem != null) {
@@ -285,9 +285,9 @@ class RegisterActivity : MyTableVC() {
 //                        formItem.make()
 //                    }
 //                }
-                old_selected_city = testData[CITY_KEY]!!
-            }
-        }
+//                old_selected_city = testData[CITY_KEY]!!
+//            }
+//        }
     }
 
 //    override fun generateItems(section: Int): ArrayList<Item> {
@@ -388,50 +388,45 @@ class RegisterActivity : MyTableVC() {
 //        }
 //    }
 
-    fun prepare(formItem: FormItem) {
-
-        val key = formItem.name
-
-        val singleSelectIntent = Intent(this, SingleSelectVC::class.java)
-        singleSelectIntent.putExtra("title", formItem.title)
-        singleSelectIntent.putExtra("key", key)
-
-        val multiSelectIntent = Intent(this, MultiSelectVC::class.java)
-        multiSelectIntent.putExtra("title", formItem.title)
-        multiSelectIntent.putExtra("key", key)
-
-        if (key == DOB_KEY) {
-//            val dateSelectIntent = Intent(this, DateSelectVC::class.java)
-//            dateSelectIntent.putExtra("title", formItem.title)
-//            dateSelectIntent.putExtra("key", key)
-            var selected: String? = null
-            if (formItem.sender != null) {
-                selected = formItem.value
-//                dateSelectIntent.putExtra("selected", formItem.value)
-            }
-            toSelectDate(DOB_KEY, selected, this)
-//            startActivityForResult(dateSelectIntent, SELECT_REQUEST_CODE)
-        } else if (key == CITY_KEY) {
-            var selected: String? = null
-            if (formItem.sender != null) {
-                selected = formItem.sender as String
-            }
-            toSelectCity(selected, this, able_type)
-        } else if (key == AREA_KEY) {
-            val cityItem = getFormItemFromKey(CITY_KEY)
-            val city_id = cityItem?.value
-            if (city_id == null) {
-                warning("請先選擇縣市")
-            } else {
-                var selected: String? = null
-                if (formItem.sender != null) {
-                    selected = formItem.sender as String
-                }
-                toSelectArea(selected, city_id.toInt(), this, able_type)
-            }
-        }
-
-    }
+//    fun prepare(formItem: FormItem) {
+//
+//        val key = formItem.name
+//
+//        val singleSelectIntent = Intent(this, SingleSelectVC::class.java)
+//        singleSelectIntent.putExtra("title", formItem.title)
+//        singleSelectIntent.putExtra("key", key)
+//
+//        val multiSelectIntent = Intent(this, MultiSelectVC::class.java)
+//        multiSelectIntent.putExtra("title", formItem.title)
+//        multiSelectIntent.putExtra("key", key)
+//
+//        if (key == DOB_KEY) {
+//            var selected: String? = null
+//            if (formItem.sender != null) {
+//                selected = formItem.value
+//            }
+//            toSelectDate(DOB_KEY, selected, this)
+//        } else if (key == CITY_KEY) {
+//            var selected: String? = null
+//            if (formItem.sender != null) {
+//                selected = formItem.sender as String
+//            }
+//            toSelectCity(selected, this, able_type)
+//        } else if (key == AREA_KEY) {
+//            val cityItem = getFormItemFromKey(CITY_KEY)
+//            val city_id = cityItem?.value
+//            if (city_id == null) {
+//                warning("請先選擇縣市")
+//            } else {
+//                var selected: String? = null
+//                if (formItem.sender != null) {
+//                    selected = formItem.sender as String
+//                }
+//                toSelectArea(selected, city_id.toInt(), this, able_type)
+//            }
+//        }
+//
+//    }
 
 //    private fun putValue() {
 //        if (superCourse != null) {
@@ -470,7 +465,6 @@ class RegisterActivity : MyTableVC() {
 
     fun submit(view: View) {
 
-        var isSubmit: Boolean = true
         var msg: String = ""
         for (section in oneSections) {
             for (row in section.items) {
@@ -479,47 +473,63 @@ class RegisterActivity : MyTableVC() {
                 }
             }
         }
-        for (formItem in form.formItems) {
-            formItem.checkValidity()
-            if (!formItem.isValid) {
-                if (formItem.msg != null) {
-                    msg += formItem.msg!! + "\n"
-                } else {
-                    warning("有錯誤")
-                }
-                isSubmit = false
-            }
+        val password: String = getRowValue(PASSWORD_KEY)
+        val repassword: String = getRowValue(REPASSWORD_KEY)
+        if (password != repassword) {
+            msg += "密碼不符合" + "\n"
         }
 
-        if (!isSubmit) {
+        val privacy: Boolean = getRowValue(PRIVACY_KEY).toBoolean()
+        if (!privacy) {
+            msg += "必須同意隱私權政策才能完成註冊"
+        }
+//        for (formItem in form.formItems) {
+//            formItem.checkValidity()
+//            if (!formItem.isValid) {
+//                if (formItem.msg != null) {
+//                    msg += formItem.msg!! + "\n"
+//                } else {
+//                    warning("有錯誤")
+//                }
+//                isSubmit = false
+//            }
+//        }
+
+        if (msg.length > 0) {
             warning(msg)
         } else {
             Loading.show(mask)
             val params: HashMap<String, String> = hashMapOf()
-            for (formItem in form.formItems) {
-
-                if (formItem.value != null) {
-                    val value: String = formItem.value!!
-                    params[formItem.name!!] = value
-                }
-                //忘記這兩個程式的作用為何
-                if (params.containsKey(CITY_KEY)) {
-                    params["city_id"] = params[CITY_KEY]!!
-                    //params.remove(CITY_KEY)
-                }
-                if (params.containsKey(AREA_KEY)) {
-                    params["area_id"] = params[AREA_KEY]!!
-                    //params.remove(AREA_KEY)
-                }
-                if (member_token.length > 0) {
-                    params[TOKEN_KEY] = member_token
+            for (section in oneSections) {
+                for (row in section.items) {
+                    params[row.key] = row.value
                 }
             }
+//            for (formItem in form.formItems) {
+//
+//                if (formItem.value != null) {
+//                    val value: String = formItem.value!!
+//                    params[formItem.name!!] = value
+//                }
+//                //忘記這兩個程式的作用為何
+//                if (params.containsKey(CITY_KEY)) {
+//                    params["city_id"] = params[CITY_KEY]!!
+//                    //params.remove(CITY_KEY)
+//                }
+//                if (params.containsKey(AREA_KEY)) {
+//                    params["area_id"] = params[AREA_KEY]!!
+//                    //params.remove(AREA_KEY)
+//                }
+//                if (member_token.length > 0) {
+//                    params[TOKEN_KEY] = member_token
+//                }
+//            }
+            params["device"] = "app"
             params["do"] = "update"
             if (isFeaturedChange) {
                 params["featured"] = "1"
             }
-            //println(params)
+            println(params)
             //println(filePath)
 
             //this is execute DataService update
@@ -690,6 +700,14 @@ class RegisterActivity : MyTableVC() {
         //searchSections = updateSectionRow()
         oneSectionAdapter.setOneSection(oneSections)
         oneSectionAdapter.notifyItemChanged(sectionIdx)
+    }
+
+    override fun cellPrivacyChanged(sectionIdx: Int, rowIdx: Int, checked: Boolean) {
+        val row = getRowFromIdx(sectionIdx, rowIdx)
+        row.value = checked.toString()
+        if (!checked) {
+            warning("必須同意隱私權政策才能完成註冊")
+        }
     }
 
     override fun singleSelected(key: String, selected: String) {
