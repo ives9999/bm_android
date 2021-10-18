@@ -9,7 +9,7 @@ class SelectCycleUnitVC : SingleSelectVC() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        rows = CYCLE_UNIT.makeSelect()
+        //rows = CYCLE_UNIT.makeSelect()
         key = CYCLE_UNIT_KEY
 
         //notifyChanged()

@@ -1,27 +1,15 @@
 package com.sportpassword.bm.Fragments
 
-import android.content.Context
 import android.os.Bundle
 import android.view.*
 import android.widget.ImageButton
-import com.sportpassword.bm.Adapters.GroupSection
-import com.sportpassword.bm.Models.CourseTable
 import com.sportpassword.bm.Models.CoursesTable
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.CourseService
 import com.sportpassword.bm.Utilities.*
-import com.squareup.picasso.Picasso
-import com.xwray.groupie.ExpandableGroup
-import com.xwray.groupie.GroupAdapter
-import com.xwray.groupie.Section
-import com.xwray.groupie.GroupieViewHolder
-import com.xwray.groupie.kotlinandroidextensions.Item
-import kotlinx.android.synthetic.main.course_calendar_item.*
 import kotlinx.android.synthetic.main.mask.*
 import kotlinx.android.synthetic.main.tab_course.*
 import java.util.*
-import kotlin.collections.ArrayList
-import kotlin.collections.HashMap
 
 class CourseCalendarFragment : TabFragment() {
 

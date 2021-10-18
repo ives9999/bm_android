@@ -12,13 +12,8 @@ import com.sportpassword.bm.Models.*
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.CoachService
 import com.sportpassword.bm.Utilities.*
-import com.xwray.groupie.kotlinandroidextensions.Item
-import com.xwray.groupie.kotlinandroidextensions.GroupieViewHolder
 import kotlinx.android.synthetic.main.activity_store_vc.*
-import kotlinx.android.synthetic.main.coach_list_cell.*
-import kotlinx.android.synthetic.main.coach_list_cell.cityBtn
 import kotlinx.android.synthetic.main.coach_list_cell.view.*
-import kotlinx.android.synthetic.main.team_list_cell.*
 
 class CoachVC : MyTableVC() {
 
@@ -105,7 +100,7 @@ class CoachVC : MyTableVC() {
 //        toShowCoach(myTable.token)
 //    }
 
-    override fun remove(indexPath: IndexPath) {
+    fun remove(indexPath: IndexPath) {
         val row = searchRows[indexPath.row]
         val key = row["key"]!!
         when (key) {

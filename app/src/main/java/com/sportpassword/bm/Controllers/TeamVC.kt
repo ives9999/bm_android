@@ -1,7 +1,6 @@
 package com.sportpassword.bm.Controllers
 
 import android.os.Bundle
-import android.view.View
 import com.sportpassword.bm.Fragments.TeamAdapter
 import com.sportpassword.bm.Models.Table
 import com.sportpassword.bm.Models.TeamTable
@@ -9,10 +8,8 @@ import com.sportpassword.bm.Models.TeamsTable
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.TeamService
 import com.sportpassword.bm.Utilities.*
-import com.xwray.groupie.kotlinandroidextensions.Item
 import kotlinx.android.synthetic.main.activity_store_vc.*
 import kotlinx.android.synthetic.main.mask.*
-import org.jetbrains.anko.support.v4.runOnUiThread
 
 class TeamVC : MyTableVC() {
 
@@ -92,17 +89,17 @@ class TeamVC : MyTableVC() {
 
     override fun cellArena(row: Table) {
 
-        val myTable: TeamTable? = row as? TeamTable
-        if (myTable != null) {
-            val key: String = ARENA_KEY
-            val arena_id: Int = myTable.arena_id
-            val row1 = getDefinedRow(key)
-            row1["value"] = arena_id.toString()
-            replaceRows(key, row1)
-            prepareParams()
-            refresh()
-        } else {
-            warning("轉為TeamTable失敗，請洽管理員")
-        }
+//        val myTable: TeamTable? = row as? TeamTable
+//        if (myTable != null) {
+//            val key: String = ARENA_KEY
+//            val arena_id: Int = myTable.arena_id
+//            val row1 = getDefinedRow(key)
+//            row1["value"] = arena_id.toString()
+//            replaceRows(key, row1)
+//            prepareParams()
+//            refresh()
+//        } else {
+//            warning("轉為TeamTable失敗，請洽管理員")
+//        }
     }
 }

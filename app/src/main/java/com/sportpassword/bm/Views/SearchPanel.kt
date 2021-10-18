@@ -11,15 +11,10 @@ import android.widget.RelativeLayout
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.sportpassword.bm.Adapters.SearchItem
 import com.sportpassword.bm.Controllers.BaseActivity
-import com.sportpassword.bm.Data.SearchSection
 import com.sportpassword.bm.Fragments.*
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Utilities.getFragment
-import com.xwray.groupie.GroupAdapter
-import com.xwray.groupie.Item
-import com.xwray.groupie.GroupieViewHolder
 import org.jetbrains.anko.backgroundColor
 
 open class SearchPanel {
@@ -161,31 +156,31 @@ open class SearchPanel {
         }
     }
 
-    fun onClick(item: Item<GroupieViewHolder>) {
-
-        val activity: BaseActivity = context!! as BaseActivity
-        val searchItem = item as SearchItem
-        val row = searchItem.row
-        if (able_type == "course" || able_type == "team" || able_type == "arena") {
-
-            //val tag = parent.tag as String
-            var frag: TabFragment? = null
-            if (able_type == "course") {
-                frag = activity.getFragment() as CourseFragment
-            } else if (able_type == "team") {
-                frag = activity.getFragment() as TempPlayFragment
-            } else if (able_type == "arena") {
-                frag = activity.getFragment() as ArenaFragment
-            }
-            //frag?.prepare(row)
-            //prepareSearch1(row, page)
-        } else {
-            activity.prepare(row)
-//                if (searchItem.switch == false) {
-//                    prepareSearch(row, page)
-//                }
-        }
-    }
+//    fun onClick(item: Item<GroupieViewHolder>) {
+//
+//        val activity: BaseActivity = context!! as BaseActivity
+//        val searchItem = item as SearchItem
+//        val row = searchItem.row
+//        if (able_type == "course" || able_type == "team" || able_type == "arena") {
+//
+//            //val tag = parent.tag as String
+//            var frag: TabFragment? = null
+//            if (able_type == "course") {
+//                frag = activity.getFragment() as CourseFragment
+//            } else if (able_type == "team") {
+//                frag = activity.getFragment() as TempPlayFragment
+//            } else if (able_type == "arena") {
+//                frag = activity.getFragment() as ArenaFragment
+//            }
+//            //frag?.prepare(row)
+//            //prepareSearch1(row, page)
+//        } else {
+//            activity.prepare(row)
+////                if (searchItem.switch == false) {
+////                    prepareSearch(row, page)
+////                }
+//        }
+//    }
 
     private fun layerSubmit() {
 

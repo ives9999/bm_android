@@ -16,11 +16,9 @@ import com.sportpassword.bm.Services.CourseService
 import com.sportpassword.bm.Utilities.*
 import com.sportpassword.bm.member
 import com.squareup.picasso.Picasso
-import com.xwray.groupie.kotlinandroidextensions.Item
 import kotlinx.android.synthetic.main.manager_course_item.*
 import kotlinx.android.synthetic.main.manager_course_vc.*
 import kotlinx.android.synthetic.main.mask.*
-import com.xwray.groupie.GroupieViewHolder
 import kotlinx.android.synthetic.main.activity_store_vc.*
 import kotlinx.android.synthetic.main.manager_course_vc.refresh
 import org.jetbrains.anko.*
@@ -127,20 +125,20 @@ class ManagerCourseVC: MyTableVC() {
         }
     }
 
-    override fun generateItems(): ArrayList<Item> {
-        val items: ArrayList<Item> = arrayListOf()
-        if (mysTable != null) {
-            for (row in mysTable!!.rows) {
-                //row.print()
-                row.filterRow()
-                val myItem = ManagerCourseItem(this, row)
-                //myItem.list1CellDelegate = this
-                items.add(myItem)
-            }
-        }
-
-        return items
-    }
+//    override fun generateItems(): ArrayList<Item> {
+//        val items: ArrayList<Item> = arrayListOf()
+//        if (mysTable != null) {
+//            for (row in mysTable!!.rows) {
+//                //row.print()
+//                row.filterRow()
+//                val myItem = ManagerCourseItem(this, row)
+//                //myItem.list1CellDelegate = this
+//                items.add(myItem)
+//            }
+//        }
+//
+//        return items
+//    }
 
 //    override fun refresh() {
 //        getCourseList()
@@ -177,40 +175,40 @@ class ManagerCourseVC: MyTableVC() {
 //        return items
 //    }
 
-    override fun rowClick(item: com.xwray.groupie.Item<GroupieViewHolder>, view: View) {
-        val managerCourseItem = item as ManagerCourseItem
-        val row = managerCourseItem.courseTable
-        dialog = alert {
-            title = "選項"
-            customView {
-                verticalLayout {
-                    button("檢視") {
-                        onClick {
-                            dialog.dismiss()
-                            toShowCourse(row.token)
-                        }
-                    }
-                    button("編輯") {
-                        onClick {
-                            dialog.dismiss()
-                            //if (token != null) {
-                                toEditCourse(row.title, row.token, row.coach!!.token)
-                            //}
-                        }
-                    }
-                    button("刪除") {
-                        onClick {
-                            dialog.dismiss()
-                            //toDelete1("course", row.token)
-                        }
-                    }
-                    button("取消") {
-                        onClick {dialog.dismiss()}
-                    }
-                }
-            }
-        }.show()
-    }
+//    override fun rowClick(item: com.xwray.groupie.Item<GroupieViewHolder>, view: View) {
+//        val managerCourseItem = item as ManagerCourseItem
+//        val row = managerCourseItem.courseTable
+//        dialog = alert {
+//            title = "選項"
+//            customView {
+//                verticalLayout {
+//                    button("檢視") {
+//                        onClick {
+//                            dialog.dismiss()
+//                            toShowCourse(row.token)
+//                        }
+//                    }
+//                    button("編輯") {
+//                        onClick {
+//                            dialog.dismiss()
+//                            //if (token != null) {
+//                                toEditCourse(row.title, row.token, row.coach!!.token)
+//                            //}
+//                        }
+//                    }
+//                    button("刪除") {
+//                        onClick {
+//                            dialog.dismiss()
+//                            //toDelete1("course", row.token)
+//                        }
+//                    }
+//                    button("取消") {
+//                        onClick {dialog.dismiss()}
+//                    }
+//                }
+//            }
+//        }.show()
+//    }
 
     fun add(view: View) {
         if (member.validate < 1) {
@@ -223,16 +221,16 @@ class ManagerCourseVC: MyTableVC() {
     }
 }
 
-class ManagerCourseItem(val context: Context, val courseTable: CourseTable): Item() {
-    override fun bind(viewHolder: com.xwray.groupie.kotlinandroidextensions.GroupieViewHolder, position: Int) {
-        viewHolder.title.text = courseTable.title
-        Picasso.with(context)
-                .load(courseTable.featured_path)
-                .placeholder(R.drawable.loading_square)
-                .error(R.drawable.load_failed_square)
-                .into(viewHolder.featured)
-    }
-
-    override fun getLayout() = R.layout.manager_course_item
-
-}
+//class ManagerCourseItem(val context: Context, val courseTable: CourseTable): Item() {
+//    override fun bind(viewHolder: com.xwray.groupie.kotlinandroidextensions.GroupieViewHolder, position: Int) {
+//        viewHolder.title.text = courseTable.title
+//        Picasso.with(context)
+//                .load(courseTable.featured_path)
+//                .placeholder(R.drawable.loading_square)
+//                .error(R.drawable.load_failed_square)
+//                .into(viewHolder.featured)
+//    }
+//
+//    override fun getLayout() = R.layout.manager_course_item
+//
+//}

@@ -11,12 +11,8 @@ import com.sportpassword.bm.Fragments.MyViewHolder
 import com.sportpassword.bm.Models.*
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.TeachService
-import kotlinx.android.synthetic.main.activity_teach_vc.*
 import com.sportpassword.bm.Utilities.*
-import com.xwray.groupie.kotlinandroidextensions.Item
-import com.xwray.groupie.kotlinandroidextensions.GroupieViewHolder
 import kotlinx.android.synthetic.main.activity_store_vc.*
-import kotlinx.android.synthetic.main.teach_list_cell.*
 import kotlinx.android.synthetic.main.teach_list_cell.view.*
 
 class TeachVC : MyTableVC() {

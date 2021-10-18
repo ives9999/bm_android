@@ -1,6 +1,7 @@
 package com.sportpassword.bm.Data
 
 import com.sportpassword.bm.Models.Table
+import com.sportpassword.bm.Utilities.KEYBOARD
 
 data class OneSection (
     var title: String = "",
@@ -15,6 +16,7 @@ data class OneRow(
     var show: String = "",
     var key: String = "",
     var cell: String = "",
+    var keyboard: KEYBOARD = KEYBOARD.default,
     var placeholder: String = "",
     var prompt: String = "",
     var isRequired: Boolean = false,

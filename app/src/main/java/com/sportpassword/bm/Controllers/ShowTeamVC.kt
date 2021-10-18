@@ -3,20 +3,17 @@ package com.sportpassword.bm.Controllers
 import android.os.Bundle
 import android.view.View
 import com.google.gson.JsonParseException
-import com.sportpassword.bm.Adapters.IconCellDelegate
-import com.sportpassword.bm.Models.CourseTable
 import com.sportpassword.bm.Models.Table
 import com.sportpassword.bm.Models.TeamTable
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.TeamService
 import com.sportpassword.bm.Utilities.jsonToModel
-import com.xwray.groupie.GroupAdapter
 import kotlinx.android.synthetic.main.activity_show_course_vc.*
 import kotlinx.android.synthetic.main.activity_show_team_vc.*
 import kotlinx.android.synthetic.main.activity_show_team_vc.refresh
 import kotlin.reflect.full.memberProperties
 
-class ShowTeamVC: ShowVC(), IconCellDelegate {
+class ShowTeamVC: ShowVC() {
 
     var myTable: TeamTable? = null
 
@@ -93,13 +90,13 @@ class ShowTeamVC: ShowVC(), IconCellDelegate {
             }
         }
 
-        val items = generateMainItem()
-        adapter.update(items)
+//        val items = generateMainItem()
+//        adapter.update(items)
 
     }
 
-    override fun didSelectRowAt(view: View, position: Int) {
-
-    }
+//    override fun didSelectRowAt(view: View, position: Int) {
+//
+//    }
 
 }

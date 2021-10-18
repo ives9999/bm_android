@@ -10,14 +10,11 @@ import com.sportpassword.bm.Services.CourseService
 import com.sportpassword.bm.Services.MemberService
 import com.sportpassword.bm.Utilities.*
 import com.sportpassword.bm.member
-import com.xwray.groupie.GroupAdapter
 import kotlinx.android.synthetic.main.course_calendar_item.*
 import kotlinx.android.synthetic.main.mask.*
 import kotlinx.android.synthetic.main.tab_course.*
 import java.util.*
 import kotlin.collections.ArrayList
-import com.xwray.groupie.kotlinandroidextensions.Item
-import com.xwray.groupie.kotlinandroidextensions.GroupieViewHolder
 import kotlinx.android.synthetic.main.tab_course.list_container
 import kotlinx.android.synthetic.main.tab_course.tab_refresh
 import kotlinx.android.synthetic.main.tab_course_calendar.*
@@ -102,23 +99,23 @@ class CourseCalendarVC: MyTableVC() {
 //        println("totalPage:$totalPage")
     }
 
-    override fun generateItems(): ArrayList<Item> {
-        val items: ArrayList<Item> = arrayListOf()
-        for (i in 1..calendarParams["monthLastDay"] as Int) {
-
-            val day: Int = i
-            val date: String = "%4d-%02d-%02d".format(y, m, i)
-//            println(date)
-            var rows: ArrayList<CourseTable> = arrayListOf()
-            if (superCourses != null) {
-                rows = superCourses!!.rows
-            }
-            val item = CourseCalendarItem(this@CourseCalendarVC, date, rows)
-            items.add(item)
-        }
-
-        return items
-    }
+//    override fun generateItems(): ArrayList<Item> {
+//        val items: ArrayList<Item> = arrayListOf()
+//        for (i in 1..calendarParams["monthLastDay"] as Int) {
+//
+//            val day: Int = i
+//            val date: String = "%4d-%02d-%02d".format(y, m, i)
+////            println(date)
+//            var rows: ArrayList<CourseTable> = arrayListOf()
+//            if (superCourses != null) {
+//                rows = superCourses!!.rows
+//            }
+//            val item = CourseCalendarItem(this@CourseCalendarVC, date, rows)
+//            items.add(item)
+//        }
+//
+//        return items
+//    }
 
     fun makeCalendar(): HashMap<String, Any> {
         var res: HashMap<String, Any> = hashMapOf()
@@ -212,17 +209,17 @@ class CourseCalendarVC: MyTableVC() {
     }
 }
 
-class CourseCalendarItem(val context: Context, val date: String, val superCourses: ArrayList<CourseTable>): Item() {
-
-    override fun bind(viewHolder: GroupieViewHolder, position: Int) {
-
-        val d: Date = date.toDate()!!
-        val weekday_i = d.dateToWeekday()
-//        println(weekday_i)
-        val weekday_c: String = d.dateToWeekdayForChinese()
-
-        viewHolder.date.text = "%s(%s)".format(date, weekday_c)
-    }
-
-    override fun getLayout() = R.layout.course_calendar_item
-}
+//class CourseCalendarItem(val context: Context, val date: String, val superCourses: ArrayList<CourseTable>): Item() {
+//
+//    override fun bind(viewHolder: GroupieViewHolder, position: Int) {
+//
+//        val d: Date = date.toDate()!!
+//        val weekday_i = d.dateToWeekday()
+////        println(weekday_i)
+//        val weekday_c: String = d.dateToWeekdayForChinese()
+//
+//        viewHolder.date.text = "%s(%s)".format(date, weekday_c)
+//    }
+//
+//    override fun getLayout() = R.layout.course_calendar_item
+//}

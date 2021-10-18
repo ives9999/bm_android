@@ -126,9 +126,9 @@ dependencies {
     //    }
     //    implementation project(':vimeo-networking')
     implementation 'com.beust:klaxon:3.0.1'
-    implementation 'com.github.lisawray.groupie:groupie:2.9.0'
+//    implementation 'com.github.lisawray.groupie:groupie:2.9.0'
     //implementation 'com.github.lisawray.groupie:groupie-viewbinding:2.9.0'
-    implementation "com.github.lisawray.groupie:groupie-kotlin-android-extensions:2.9.0"
+//    implementation "com.github.lisawray.groupie:groupie-kotlin-android-extensions:2.9.0"
 
     //implementation 'com.xwray:groupie:2.1.0'
     //implementation 'com.xwray:groupie-kotlin-android-extensions:2.1.0'

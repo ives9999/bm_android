@@ -13,7 +13,6 @@ import com.sportpassword.bm.Data.SelectRow
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Utilities.selected
 import com.sportpassword.bm.Utilities.unSelected
-import com.xwray.groupie.kotlinandroidextensions.Item
 import kotlinx.android.synthetic.main.activity_multi_select_vc.*
 import kotlinx.android.synthetic.main.select_item.*
 

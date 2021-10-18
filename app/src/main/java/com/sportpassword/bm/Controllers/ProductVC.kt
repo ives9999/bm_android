@@ -12,12 +12,8 @@ import com.sportpassword.bm.Models.*
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.ProductService
 import com.sportpassword.bm.Utilities.*
-import com.xwray.groupie.kotlinandroidextensions.Item
-import com.xwray.groupie.kotlinandroidextensions.GroupieViewHolder
 import kotlinx.android.synthetic.main.activity_product_vc.*
 import kotlinx.android.synthetic.main.mask.*
-import kotlinx.android.synthetic.main.product_list_cell.buyBtn
-import kotlinx.android.synthetic.main.product_list_cell.priceLbl
 import kotlinx.android.synthetic.main.product_list_cell.view.*
 
 class ProductVC : MyTableVC() {

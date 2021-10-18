@@ -94,7 +94,7 @@ class ArenaVC : MyTableVC() {
             CITY_KEY -> {
                 toSelectCity(value, this)
             } AREA_KEY -> {
-                row = getDefinedRow(CITY_KEY)
+                //row = getDefinedRow(CITY_KEY)
                 var city_id: Int? = null
                 if (row.containsKey("value") && row["value"] != null && row["value"]!!.length > 0) {
                     city_id = row["value"]!!.toInt()
@@ -116,7 +116,7 @@ class ArenaVC : MyTableVC() {
 //        toShowArena(table.token)
 //    }
 
-    override fun remove(indexPath: IndexPath) {
+    fun remove(indexPath: IndexPath) {
         val row = searchRows[indexPath.row]
         val key = row["key"]!!
         when (key) {
@@ -139,9 +139,9 @@ class ArenaVC : MyTableVC() {
         if (myTable != null) {
             val key: String = AREA_KEY
             val area_id: Int = myTable.area_id
-            val row = getDefinedRow(key)
-            row["value"] = area_id.toString()
-            replaceRows(key, row)
+//            val row = getDefinedRow(key)
+//            row["value"] = area_id.toString()
+//            replaceRows(key, row)
             prepareParams()
             refresh()
         } else {

@@ -20,7 +20,6 @@ import com.sportpassword.bm.Services.CourseService
 import com.sportpassword.bm.Utilities.*
 import com.sportpassword.bm.Views.ImagePicker
 import com.sportpassword.bm.member
-import com.xwray.groupie.kotlinandroidextensions.Item
 import kotlinx.android.synthetic.main.activity_edit_course_vc.*
 import kotlinx.android.synthetic.main.mask.*
 import org.jetbrains.anko.sdk27.coroutines.onClick
@@ -95,8 +94,8 @@ class EditCourseVC : MyTableVC(), ValueChangedDelegate {
             showImagePickerLayer()
         }
 
-        sections = form.getSections()
-        section_keys = form.getSectionKeys()
+//        sections = form.getSections()
+//        section_keys = form.getSectionKeys()
 //        println(sections)
 //        println(section_keys)
 
@@ -167,80 +166,80 @@ class EditCourseVC : MyTableVC(), ValueChangedDelegate {
         }
     }
 
-    override fun generateItems(section: Int): ArrayList<Item> {
-
-        val rows: ArrayList<Item> = arrayListOf()
-
-        val clearClick = { formItem: FormItem ->
-            formItem.reset()
-
-        }
-
-        val promptClick = {formItem: FormItem ->
-            if (formItem.tooltip != null) {
-                Alert.show(this, "提示", formItem.tooltip!!)
-            }
-        }
-
-        val rowClick = { formItem: FormItem ->
-            prepare(formItem)
-        }
-
-        val arr: ArrayList<FormItem> = arrayListOf()
-        for (key in section_keys[section]) {
-            for (formItem in form.formItems) {
-                if (key == formItem.name) {
-                    arr.add(formItem)
-                    break
-                }
-            }
-        }
-
-//        println(arr)
-
-//        var idx: Int = 0
-//        for (i in 0..(section-1)) {
-//            idx += section_keys[i].size
+//    override fun generateItems(section: Int): ArrayList<Item> {
+//
+//        val rows: ArrayList<Item> = arrayListOf()
+//
+//        val clearClick = { formItem: FormItem ->
+//            formItem.reset()
+//
 //        }
-
-        for ((i,formItem) in arr.withIndex()) {
-
-            val indexPath: IndexPath = IndexPath(section, i)
-            var idx: Int = 0
-            for ((j, _formItem) in form.formItems.withIndex()) {
-                if (formItem.name == _formItem.name) {
-                    idx = j
-                    break
-                }
-            }
-
-
-            var formItemAdapter: FormItemAdapter? = null
-            if (formItem.uiProperties.cellType == FormItemCellType.textField) {
-                formItemAdapter = TextFieldAdapter(formItem, clearClick, promptClick)
-            } else if (formItem.uiProperties.cellType == FormItemCellType.content) {
-                formItemAdapter = ContentAdapter(formItem, clearClick, rowClick)
-            } else if (formItem.uiProperties.cellType == FormItemCellType.more) {
-                formItemAdapter = MoreAdapter(formItem, clearClick, rowClick)
-            } else if (formItem.uiProperties.cellType == FormItemCellType.section) {
-                break
-            } else if (formItem.uiProperties.cellType == FormItemCellType.weekday) {
-                formItemAdapter = MoreAdapter(formItem, clearClick, rowClick)
-            } else if (formItem.uiProperties.cellType == FormItemCellType.time) {
-                formItemAdapter = MoreAdapter(formItem, clearClick, rowClick)
-            } else if (formItem.uiProperties.cellType == FormItemCellType.date) {
-                formItemAdapter = MoreAdapter(formItem, clearClick, rowClick)
-            }
-
-            if (formItemAdapter != null) {
-                formItemAdapter.valueChangedDelegate = this
-                rows.add(formItemAdapter)
-            }
-//            idx++
-        }
-
-        return rows
-    }
+//
+//        val promptClick = {formItem: FormItem ->
+//            if (formItem.tooltip != null) {
+//                Alert.show(this, "提示", formItem.tooltip!!)
+//            }
+//        }
+//
+//        val rowClick = { formItem: FormItem ->
+//            prepare(formItem)
+//        }
+//
+//        val arr: ArrayList<FormItem> = arrayListOf()
+//        for (key in section_keys[section]) {
+//            for (formItem in form.formItems) {
+//                if (key == formItem.name) {
+//                    arr.add(formItem)
+//                    break
+//                }
+//            }
+//        }
+//
+////        println(arr)
+//
+////        var idx: Int = 0
+////        for (i in 0..(section-1)) {
+////            idx += section_keys[i].size
+////        }
+//
+//        for ((i,formItem) in arr.withIndex()) {
+//
+//            val indexPath: IndexPath = IndexPath(section, i)
+//            var idx: Int = 0
+//            for ((j, _formItem) in form.formItems.withIndex()) {
+//                if (formItem.name == _formItem.name) {
+//                    idx = j
+//                    break
+//                }
+//            }
+//
+//
+//            var formItemAdapter: FormItemAdapter? = null
+//            if (formItem.uiProperties.cellType == FormItemCellType.textField) {
+//                formItemAdapter = TextFieldAdapter(formItem, clearClick, promptClick)
+//            } else if (formItem.uiProperties.cellType == FormItemCellType.content) {
+//                formItemAdapter = ContentAdapter(formItem, clearClick, rowClick)
+//            } else if (formItem.uiProperties.cellType == FormItemCellType.more) {
+//                formItemAdapter = MoreAdapter(formItem, clearClick, rowClick)
+//            } else if (formItem.uiProperties.cellType == FormItemCellType.section) {
+//                break
+//            } else if (formItem.uiProperties.cellType == FormItemCellType.weekday) {
+//                formItemAdapter = MoreAdapter(formItem, clearClick, rowClick)
+//            } else if (formItem.uiProperties.cellType == FormItemCellType.time) {
+//                formItemAdapter = MoreAdapter(formItem, clearClick, rowClick)
+//            } else if (formItem.uiProperties.cellType == FormItemCellType.date) {
+//                formItemAdapter = MoreAdapter(formItem, clearClick, rowClick)
+//            }
+//
+//            if (formItemAdapter != null) {
+//                formItemAdapter.valueChangedDelegate = this
+//                rows.add(formItemAdapter)
+//            }
+////            idx++
+//        }
+//
+//        return rows
+//    }
 
     fun prepare(formItem: FormItem) {
 
@@ -312,35 +311,35 @@ class EditCourseVC : MyTableVC(), ValueChangedDelegate {
 
     override fun singleSelected(key: String, selected: String) {
 
-        val row = getDefinedRow(key)
-        var show = ""
-        var item: FormItem? = null
-
-        if (key == CITY_KEY || key == AREA_KEY) {
-            row["value"] = selected
-            show = Global.zoneIDToName(selected.toInt())
-        } else if (key == PRICE_UNIT_KEY) {
-            item = getFormItemFromKey(PriceUnitFormItem::class.java, key)
-        } else if (key == START_TIME_KEY || key == END_TIME_KEY) {
-            item = getFormItemFromKey(TimeFormItem::class.java, key)
-        } else if (key == COURSE_KIND_KEY) {
-            item = getFormItemFromKey(CourseKindFormItem::class.java, key)
-        } else if (key == CYCLE_UNIT_KEY) {
-            item = getFormItemFromKey(CycleUnitFormItem::class.java, key)
-        }
-        if (item != null) {
-            item.value = selected
-            item.make()
-        }
+//        val row = getDefinedRow(key)
+//        var show = ""
+//        var item: FormItem? = null
+//
+//        if (key == CITY_KEY || key == AREA_KEY) {
+//            row["value"] = selected
+//            show = Global.zoneIDToName(selected.toInt())
+//        } else if (key == PRICE_UNIT_KEY) {
+//            item = getFormItemFromKey(PriceUnitFormItem::class.java, key)
+//        } else if (key == START_TIME_KEY || key == END_TIME_KEY) {
+//            item = getFormItemFromKey(TimeFormItem::class.java, key)
+//        } else if (key == COURSE_KIND_KEY) {
+//            item = getFormItemFromKey(CourseKindFormItem::class.java, key)
+//        } else if (key == CYCLE_UNIT_KEY) {
+//            item = getFormItemFromKey(CycleUnitFormItem::class.java, key)
+//        }
+//        if (item != null) {
+//            item.value = selected
+//            item.make()
+//        }
 
         //notifyChanged(true)
     }
 
     override fun contentEdit(key: String, content: String) {
 
-        val item: ContentFormItem = getFormItemFromKey(key) as ContentFormItem
-        item.value = content
-        item.make()
+//        val item: ContentFormItem = getFormItemFromKey(key) as ContentFormItem
+//        item.value = content
+//        item.make()
 
         //notifyChanged(true)
     }

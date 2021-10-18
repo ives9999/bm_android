@@ -13,17 +13,9 @@ import androidx.appcompat.app.AlertDialog
 import android.view.View
 import android.widget.*
 import com.sportpassword.bm.Models.*
-//import com.sportpassword.bm.Models.Arena
-import com.sportpassword.bm.Services.ArenaService
-import com.sportpassword.bm.Services.CoachService
 import com.sportpassword.bm.Utilities.*
-import com.sportpassword.bm.Views.ImagePicker
-import com.sportpassword.bm.member
-import com.xwray.groupie.*
-import com.xwray.groupie.kotlinandroidextensions.Item
 import kotlinx.android.synthetic.main.edit_item.*
 import org.jetbrains.anko.contentView
-import org.jetbrains.anko.toast
 import java.io.File
 import kotlinx.android.synthetic.main.mask.*
 
@@ -622,78 +614,78 @@ class EditVC1 : MyTableVC() {
 //    }
 }
 
-class EditItem(val source: String, val indexPath: IndexPath, val row: HashMap<String, Any>, val addEditText:(String, Int)->Unit, val clearClick:(key:String)->Unit): Item() {
-    override fun bind(viewHolder: com.xwray.groupie.kotlinandroidextensions.GroupieViewHolder, position: Int) {
-
-        val editText = viewHolder.edit_text
-        val detailView = viewHolder.detail
-        val moreView = viewHolder.more
-        val onoff = viewHolder.onoff
-        val titleView = viewHolder.title
-        val clearView = viewHolder.clear
-
-        var key = ""
-        if (row.containsKey("key")) {
-            key = row.get("key")!! as String
-        }
-        var title = ""
-        if (row.containsKey("ch")) {
-            title = row.get("ch")!! as String
-            titleView.text = title
-        }
-        var aType = "none"
-        if (row.containsKey("atype")) {
-            aType = row.get("atype")!! as String
-            if (aType == "more") {
-                moreView.visibility = View.VISIBLE
-                detailView.visibility = View.VISIBLE
-                editText.visibility = View.INVISIBLE
-                onoff.visibility = View.INVISIBLE
-                if (row.containsKey("show")) {
-                    viewHolder.detail.text = row["show"]!! as String
-                }
-            } else {
-                moreView.visibility = View.INVISIBLE
-                detailView.visibility = View.INVISIBLE
-                onoff.visibility = View.INVISIBLE
-                editText.visibility = View.VISIBLE
-            }
-        }
-        if (row.containsKey("text_field")) {
-            val text_field = row.get("text_field")!! as Boolean
-            if (text_field) {
-                editText.visibility = View.VISIBLE
-                moreView.visibility = View.INVISIBLE
-                detailView.visibility = View.INVISIBLE
-                onoff.visibility = View.INVISIBLE
-                var inputType = defaultPad
-                if (row.containsKey("keyboardType")) {
-                    inputType = row["keyboardType"]!! as Int
-                    viewHolder.edit_text.inputType = inputType
-                }
-                if (row.containsKey("value")) {
-                    var value = row.get("value").toString()
-                    if (value == "-1") {
-                        value = ""
-                    }
-                    viewHolder.edit_text.setText(value)
-                }
-//                println("$key => $position")
-                addEditText(key, position)
-            }
-        }
-
-        clearView.setOnClickListener {
-            editText.setText("")
-            if (aType == "more") {
-                clearClick(key)
-            }
-        }
-    }
-
-    override fun getLayout() = R.layout.edit_item
-
-}
+//class EditItem(val source: String, val indexPath: IndexPath, val row: HashMap<String, Any>, val addEditText:(String, Int)->Unit, val clearClick:(key:String)->Unit): Item() {
+//    override fun bind(viewHolder: com.xwray.groupie.kotlinandroidextensions.GroupieViewHolder, position: Int) {
+//
+//        val editText = viewHolder.edit_text
+//        val detailView = viewHolder.detail
+//        val moreView = viewHolder.more
+//        val onoff = viewHolder.onoff
+//        val titleView = viewHolder.title
+//        val clearView = viewHolder.clear
+//
+//        var key = ""
+//        if (row.containsKey("key")) {
+//            key = row.get("key")!! as String
+//        }
+//        var title = ""
+//        if (row.containsKey("ch")) {
+//            title = row.get("ch")!! as String
+//            titleView.text = title
+//        }
+//        var aType = "none"
+//        if (row.containsKey("atype")) {
+//            aType = row.get("atype")!! as String
+//            if (aType == "more") {
+//                moreView.visibility = View.VISIBLE
+//                detailView.visibility = View.VISIBLE
+//                editText.visibility = View.INVISIBLE
+//                onoff.visibility = View.INVISIBLE
+//                if (row.containsKey("show")) {
+//                    viewHolder.detail.text = row["show"]!! as String
+//                }
+//            } else {
+//                moreView.visibility = View.INVISIBLE
+//                detailView.visibility = View.INVISIBLE
+//                onoff.visibility = View.INVISIBLE
+//                editText.visibility = View.VISIBLE
+//            }
+//        }
+//        if (row.containsKey("text_field")) {
+//            val text_field = row.get("text_field")!! as Boolean
+//            if (text_field) {
+//                editText.visibility = View.VISIBLE
+//                moreView.visibility = View.INVISIBLE
+//                detailView.visibility = View.INVISIBLE
+//                onoff.visibility = View.INVISIBLE
+//                var inputType = defaultPad
+//                if (row.containsKey("keyboardType")) {
+//                    inputType = row["keyboardType"]!! as Int
+//                    viewHolder.edit_text.inputType = inputType
+//                }
+//                if (row.containsKey("value")) {
+//                    var value = row.get("value").toString()
+//                    if (value == "-1") {
+//                        value = ""
+//                    }
+//                    viewHolder.edit_text.setText(value)
+//                }
+////                println("$key => $position")
+//                addEditText(key, position)
+//            }
+//        }
+//
+//        clearView.setOnClickListener {
+//            editText.setText("")
+//            if (aType == "more") {
+//                clearClick(key)
+//            }
+//        }
+//    }
+//
+//    override fun getLayout() = R.layout.edit_item
+//
+//}
 
 
 

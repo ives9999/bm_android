@@ -12,8 +12,6 @@ import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.OrderService
 import com.sportpassword.bm.Utilities.*
 import com.sportpassword.bm.member
-import com.xwray.groupie.kotlinandroidextensions.Item
-import com.xwray.groupie.kotlinandroidextensions.GroupieViewHolder
 import kotlinx.android.synthetic.main.activity_payment_vc.*
 import kotlinx.android.synthetic.main.activity_payment_vc.footer
 import kotlinx.android.synthetic.main.mask.*
@@ -211,6 +209,7 @@ class PaymentVC : MyTableVC() {
                 "",
                 PRODUCT_KEY,
                 "cart",
+                KEYBOARD.default,
                 "",
                 "",
                 false,
@@ -296,7 +295,7 @@ class PaymentVC : MyTableVC() {
 
         //gateway
         rows = arrayListOf()
-        row = OneRow("付款方式", orderTable!!.gateway!!.method, orderTable!!.gateway!!.method_show, GATEWAY_METHOD_KEY, "more", "", "", false, false)
+        row = OneRow("付款方式", orderTable!!.gateway!!.method, orderTable!!.gateway!!.method_show, GATEWAY_METHOD_KEY, "more", KEYBOARD.default, "", "", false, false)
         rows.add(row)
         row = OneRow("付款狀態", orderTable!!.gateway!!.process, orderTable!!.gateway!!.process_show, GATEWAY_PROCESS_KEY, "text")
         rows.add(row)
@@ -961,15 +960,15 @@ class PaymentVC : MyTableVC() {
     }
 }
 
-class PaymentItem(val context: Context, val row: HashMap<String, String>): Item() {
-
-    override fun bind(viewHolder: GroupieViewHolder, position: Int) {
-        viewHolder.titleLbl.text = row["name"]
-        viewHolder.contentLbl.text = row["value"]
-    }
-
-    override fun getLayout() = R.layout.payment_cell
-}
+//class PaymentItem(val context: Context, val row: HashMap<String, String>): Item() {
+//
+//    override fun bind(viewHolder: GroupieViewHolder, position: Int) {
+//        viewHolder.titleLbl.text = row["name"]
+//        viewHolder.contentLbl.text = row["value"]
+//    }
+//
+//    override fun getLayout() = R.layout.payment_cell
+//}
 
 
 

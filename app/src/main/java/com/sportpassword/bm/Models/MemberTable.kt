@@ -329,6 +329,8 @@ class Member(val context: Context) {
             } else if (t == Boolean::class.createType()) {
                 session.edit().putBoolean(name, false).apply()
             }
+            session.edit().putString("dob", "").apply()
+            session.edit().putInt("cartItemCount", 0).apply()
             // if (it.returnType == String::class.createType()) {
             //     session.edit().putString(name, "")
             // }

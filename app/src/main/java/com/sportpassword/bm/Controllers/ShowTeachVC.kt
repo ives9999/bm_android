@@ -20,12 +20,8 @@ import kotlinx.android.synthetic.main.activity_show_teach_vc.*
 import com.sportpassword.bm.Adapters.IconCell
 import com.sportpassword.bm.Services.DataService
 import com.sportpassword.bm.Utilities.Loading
-import com.sportpassword.bm.Utilities.ToInterface
 import com.sportpassword.bm.Utilities.hideKeyboard
 import com.sportpassword.bm.member
-import com.xwray.groupie.GroupAdapter
-import com.xwray.groupie.GroupieViewHolder
-import com.xwray.groupie.kotlinandroidextensions.Item
 import kotlinx.android.synthetic.main.activity_show_course_vc.*
 import kotlinx.android.synthetic.main.activity_show_teach_vc.likeButton
 import kotlinx.android.synthetic.main.activity_show_teach_vc.refresh
@@ -39,7 +35,7 @@ class ShowTeachVC : YouTubeBaseActivity(), YouTubePlayer.OnInitializedListener {
     lateinit var refreshListener: SwipeRefreshLayout.OnRefreshListener
     var tableRowKeys:MutableList<String> = mutableListOf()
     var tableRows: HashMap<String, HashMap<String,String>> = hashMapOf()
-    lateinit var adapter: GroupAdapter<GroupieViewHolder>
+//    lateinit var adapter: GroupAdapter<GroupieViewHolder>
 
     var token: String? = null    // course token
     var table: Table? = null
@@ -78,11 +74,11 @@ class ShowTeachVC : YouTubeBaseActivity(), YouTubePlayer.OnInitializedListener {
     }
 
     fun initAdapter() {
-        adapter = GroupAdapter()
+//        adapter = GroupAdapter()
 
-        val items = generateMainItem()
-        adapter.addAll(items)
-        tableView.adapter = adapter
+//        val items = generateMainItem()
+//        adapter.addAll(items)
+//        tableView.adapter = adapter
     }
 
     fun refresh() {
@@ -118,38 +114,38 @@ class ShowTeachVC : YouTubeBaseActivity(), YouTubePlayer.OnInitializedListener {
         }
     }
 
-    fun generateMainItem(): ArrayList<Item> {
-
-        val items: ArrayList<Item> = arrayListOf()
-        var icon = ""
-        var title = ""
-        var content = ""
-        var isPressed: Boolean = false
-        for (key in tableRowKeys) {
-            if (tableRows.containsKey(key)) {
-                val row = tableRows[key]!!
-                if (row.containsKey("icon")) {
-                    icon = row["icon"]!!
-                }
-                if (row.containsKey("title")) {
-                    title = row["title"]!!
-                }
-                if (row.containsKey("content")) {
-                    content = row["content"]!!
-                }
-                if (row.containsKey("isPressed")) {
-                    isPressed = row["isPressed"]!!.toBoolean()
-                }
-                if (icon.length > 0 && title.length > 0) {
-                    val iconCell = IconCell(this, icon, title, content, isPressed)
-                    //iconCell.delegate = this
-                    items.add(iconCell)
-                }
-            }
-        }
-
-        return items
-    }
+//    fun generateMainItem(): ArrayList<Item> {
+//
+//        val items: ArrayList<Item> = arrayListOf()
+//        var icon = ""
+//        var title = ""
+//        var content = ""
+//        var isPressed: Boolean = false
+//        for (key in tableRowKeys) {
+//            if (tableRows.containsKey(key)) {
+//                val row = tableRows[key]!!
+//                if (row.containsKey("icon")) {
+//                    icon = row["icon"]!!
+//                }
+//                if (row.containsKey("title")) {
+//                    title = row["title"]!!
+//                }
+//                if (row.containsKey("content")) {
+//                    content = row["content"]!!
+//                }
+//                if (row.containsKey("isPressed")) {
+//                    isPressed = row["isPressed"]!!.toBoolean()
+//                }
+//                if (icon.length > 0 && title.length > 0) {
+//                    val iconCell = IconCell(this, icon, title, content, isPressed)
+//                    //iconCell.delegate = this
+//                    items.add(iconCell)
+//                }
+//            }
+//        }
+//
+//        return items
+//    }
 
     fun genericTable() {
         //println(dataService.jsonString)
@@ -191,8 +187,8 @@ class ShowTeachVC : YouTubeBaseActivity(), YouTubePlayer.OnInitializedListener {
             //youTubePlayer!!.pause()
         }
 
-        val items = generateMainItem()
-        adapter.update(items)
+//        val items = generateMainItem()
+//        adapter.update(items)
     }
 
     fun setLike() {

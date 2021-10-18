@@ -3,7 +3,6 @@ package com.sportpassword.bm.Controllers
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.AlertDialog
-import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
@@ -22,7 +21,6 @@ import android.view.animation.TranslateAnimation
 import android.view.inputmethod.InputMethodManager
 import android.webkit.*
 import android.widget.*
-import androidx.activity.result.ActivityResult
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.ActionBar
@@ -30,13 +28,10 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.google.gson.internal.LinkedTreeMap
 import com.onesignal.OneSignal
-import com.sportpassword.bm.Adapters.SearchItem
-import com.sportpassword.bm.Adapters.SearchItemDelegate
 import com.sportpassword.bm.App
 import com.sportpassword.bm.*
 import com.sportpassword.bm.Data.SearchSection
@@ -48,8 +43,6 @@ import com.sportpassword.bm.Utilities.*
 import com.sportpassword.bm.Views.ImagePicker
 import com.sportpassword.bm.Views.SearchPanel
 import com.sportpassword.bm.member
-import com.xwray.groupie.GroupAdapter
-import com.xwray.groupie.GroupieViewHolder
 import kotlinx.android.synthetic.main.mask.*
 import org.jetbrains.anko.*
 import org.json.JSONArray
@@ -64,10 +57,9 @@ import java.net.URL
 import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
-import kotlin.reflect.full.createType
 import kotlin.system.exitProcess
 
-open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, SearchItemDelegate,
+open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener,
     SingleSelectDelegate, ToInterface, ImagePicker, List1CellDelegate {
 
     var refreshLayout: SwipeRefreshLayout? = null
@@ -130,7 +122,7 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
     var arenas: ArrayList<ArenaTable> = arrayListOf()
     var degrees: ArrayList<DEGREE> = arrayListOf()
     var keyword: String = ""
-    lateinit var searchAdapter: GroupAdapter<GroupieViewHolder>
+//    lateinit var searchAdapter: GroupAdapter<GroupieViewHolder>
     var params: HashMap<String, String> = hashMapOf()
 
     var searchPanel: SearchPanel = SearchPanel()
@@ -789,7 +781,7 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
         ActivityCompat.requestPermissions(this, arrayOf(android.Manifest.permission.CALL_PHONE), REQUEST_PHONE_CALL)
     }
 
-    protected fun getScreenWidth() {
+    private fun getScreenWidth() {
         val displayMetrics = resources.displayMetrics
         density = displayMetrics.density
         //println("density: " + density)
@@ -797,7 +789,7 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
         screenWidth = displayMetrics.widthPixels
     }
 
-    protected fun getScreenHeight() {
+    private fun getScreenHeight() {
         val displayMetrics = resources.displayMetrics
         density = displayMetrics.density
         screenHeight = displayMetrics.heightPixels
@@ -856,7 +848,7 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
         startActivity(intent)
     }
 
-    protected fun getAllChildrenBFS(v: View): List<View> {
+    private fun getAllChildrenBFS(v: View): List<View> {
         val visited: ArrayList<View> = arrayListOf()
         val unvisited: ArrayList<View> = arrayListOf()
         unvisited.add(v)
@@ -1023,7 +1015,7 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
         })
 
     }
-    protected fun reasonBox(memberToken: String, teamToken: String) {
+    private fun reasonBox(memberToken: String, teamToken: String) {
         var reasonTxt: EditText? = null
         alert("請輸入理由") {
             title = "訊息"
@@ -1037,7 +1029,7 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
             }
         }.show()
     }
-    protected fun _addBlackList(reason: String, memberToken: String, teamToken: String) {
+    private fun _addBlackList(reason: String, memberToken: String, teamToken: String) {
         Loading.show(mask)
         val token = member.token
         if (token != null) {
@@ -1052,7 +1044,7 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
         }
     }
 
-    fun isEmulator(): Boolean {
+    private fun isEmulator(): Boolean {
 
         val result = (Build.FINGERPRINT.startsWith("google/sdk_gphone_")
                 && Build.FINGERPRINT.endsWith(":user/release-keys")
@@ -1165,11 +1157,6 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
         var isExpanded: Boolean = searchSection.isExpanded
         isExpanded = !isExpanded
         searchSections[idx].isExpanded = isExpanded
-        toggleSectionOnOff()
-    }
-
-    private fun toggleSectionOnOff() {
-        //searchSections = updateSectionRow()
         searchSectionAdapter.setSearchSection(searchSections)
         searchSectionAdapter.notifyDataSetChanged()
     }
@@ -1803,33 +1790,33 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
         }
     }
 
-    fun generateSearchItems(page: String): ArrayList<SearchItem> {
-
-        val rows: ArrayList<SearchItem> = arrayListOf()
-        for (i in 0..searchRows.size-1) {
-            val row = searchRows[i] as HashMap<String, String>
-            val title = row.get("title")!!
-            var detail: String = ""
-            if (row.containsKey("detail")) {
-                detail = row.get("detail")!!
-            } else if (row.containsKey("show")) {
-                detail = row.get("show")!!
-            }
-            var bSwitch = false
-            if (row.containsKey("switch")) {
-                bSwitch = row.get("switch")!!.toBoolean()
-            }
-            val searchItem = SearchItem(title, detail, keyword, bSwitch, -1, i)
-            if (page == "team" || page == "course") {
-                //searchItem.delegate = getFragment()
-            } else {
-                searchItem.delegate = this@BaseActivity
-            }
-            rows.add(searchItem)
-        }
-
-        return rows
-    }
+//    fun generateSearchItems(page: String): ArrayList<SearchItem> {
+//
+//        val rows: ArrayList<SearchItem> = arrayListOf()
+//        for (i in 0..searchRows.size-1) {
+//            val row = searchRows[i] as HashMap<String, String>
+//            val title = row.get("title")!!
+//            var detail: String = ""
+//            if (row.containsKey("detail")) {
+//                detail = row.get("detail")!!
+//            } else if (row.containsKey("show")) {
+//                detail = row.get("show")!!
+//            }
+//            var bSwitch = false
+//            if (row.containsKey("switch")) {
+//                bSwitch = row.get("switch")!!.toBoolean()
+//            }
+//            val searchItem = SearchItem(title, detail, keyword, bSwitch, -1, i)
+//            if (page == "team" || page == "course") {
+//                //searchItem.delegate = getFragment()
+//            } else {
+//                searchItem.delegate = this@BaseActivity
+//            }
+//            rows.add(searchItem)
+//        }
+//
+//        return rows
+//    }
 
 
     //已經移到Global成為 global function 了，以後停止使用
@@ -2193,9 +2180,9 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener, Searc
 
     protected open fun setTeamData(imageView: ImageView? = null) {}
 
-    override fun remove(indexPath: IndexPath) {}
-    override fun textChanged(str: String) {}
-    override fun switchChanged(pos: Int, b: Boolean) {}
+//    override fun remove(indexPath: IndexPath) {}
+//    override fun textChanged(str: String) {}
+//    override fun switchChanged(pos: Int, b: Boolean) {}
 
     class ConnectTask(val context: Context) : AsyncTask<Unit, Unit, String>() {
 

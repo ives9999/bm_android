@@ -55,14 +55,14 @@ class OrderVC : MyTableVC() {
     )
 
     val invoicePersonalRows: ArrayList<OneRow> = arrayListOf(
-        OneRow("EMail", member.email!!, member.email!!, INVOICE_EMAIL_KEY, "textField", "service@bm.com")
+        OneRow("EMail", member.email!!, member.email!!, INVOICE_EMAIL_KEY, "textField", KEYBOARD.default, "service@bm.com")
 //        hashMapOf("title" to "EMail","key" to INVOICE_EMAIL_KEY,"value" to "${member.email}","show" to "${member.email}","cell" to "textField","keyboard" to KEYBOARD.emailAddress.toString())
     )
 
     var invoiceCompanyRows: ArrayList<OneRow> = arrayListOf(
-        OneRow("統一編號", "", "", INVOICE_COMPANY_TAX_KEY, "textField", "12345678"),
-        OneRow("公司行號抬頭", "", "", INVOICE_COMPANY_NAME_KEY, "textField", "羽球有限公司"),
-        OneRow("EMail", member.email!!, member.email!!, INVOICE_EMAIL_KEY, "textField", "service@bm.com")
+        OneRow("統一編號", "", "", INVOICE_COMPANY_TAX_KEY, "textField", KEYBOARD.numberPad, "12345678"),
+        OneRow("公司行號抬頭", "", "", INVOICE_COMPANY_NAME_KEY, "textField", KEYBOARD.default, "羽球有限公司"),
+        OneRow("EMail", member.email!!, member.email!!, INVOICE_EMAIL_KEY, "textField", KEYBOARD.emailAddress, "service@bm.com")
     )
 //
 //    var memberRows: ArrayList<HashMap<String, String>> = arrayListOf()
@@ -209,6 +209,7 @@ class OrderVC : MyTableVC() {
                 "",
                 PRODUCT_KEY,
                 "cart",
+                KEYBOARD.default,
                 "",
                 "",
                 false,
@@ -301,7 +302,7 @@ class OrderVC : MyTableVC() {
 //        }
 
         rows = arrayListOf()
-        row = OneRow("發票(目前僅提供電子發票)", INVOICE_PERSONAL_KEY, "", INVOICE_KEY, "more", "", "", false, false)
+        row = OneRow("發票(目前僅提供電子發票)", INVOICE_PERSONAL_KEY, "", INVOICE_KEY, "more", KEYBOARD.default, "", "", false, false)
         rows.add(row)
         rows.addAll(invoicePersonalRows)
         section = makeSectionRow("電子發票", INVOICE_KEY, rows, true)
@@ -316,20 +317,20 @@ class OrderVC : MyTableVC() {
 //            hashMapOf("title" to "住址","key" to ADDRESS_KEY,"value" to member.address!!,"show" to member.address!!,"cell" to "textField","keyboard" to KEYBOARD.default.toString())
 //        )
         rows = arrayListOf()
-        row = OneRow("姓名", member.name!!, member.name!!, NAME_KEY, "textField", "王大明")
+        row = OneRow("姓名", member.name!!, member.name!!, NAME_KEY, "textField", KEYBOARD.default, "王大明")
         rows.add(row)
-        row = OneRow("電話", member.mobile!!, member.mobile!!, MOBILE_KEY, "textField", "0939123456")
+        row = OneRow("電話", member.mobile!!, member.mobile!!, MOBILE_KEY, "textField", KEYBOARD.numberPad, "0939123456")
         rows.add(row)
-        row = OneRow("EMail", member.email!!, member.email!!, EMAIL_KEY, "textField", "service@bm.com")
+        row = OneRow("EMail", member.email!!, member.email!!, EMAIL_KEY, "textField", KEYBOARD.emailAddress, "service@bm.com")
         rows.add(row)
-        row = OneRow("住址", member.address!!, member.address!!, ADDRESS_KEY, "textField", "台北市信義區中山路60號")
+        row = OneRow("住址", member.address!!, member.address!!, ADDRESS_KEY, "textField", KEYBOARD.default, "台北市信義區中山路60號")
         rows.add(row)
         section = makeSectionRow("收件人資料", MEMBER_KEY, rows, true)
         oneSections.add(section)
 
         //memo
         rows = arrayListOf()
-        row = OneRow("留言", "", "", MEMO_KEY, "textField","請於上班時間送達")
+        row = OneRow("留言", "", "", MEMO_KEY, "textField", KEYBOARD.default,"請於上班時間送達")
         rows.add(row)
         section = makeSectionRow("其他留言", MEMO_KEY, rows, true)
         oneSections.add(section)

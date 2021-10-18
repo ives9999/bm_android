@@ -32,7 +32,7 @@ open class SelectVC : MyTableVC() {
         }
 
         if (intent.hasExtra("rows")) {
-            rows = intent.getSerializableExtra("rows") as ArrayList<HashMap<String, String>>
+            //rows = intent.getSerializableExtra("rows") as ArrayList<HashMap<String, String>>
         }
     }
 

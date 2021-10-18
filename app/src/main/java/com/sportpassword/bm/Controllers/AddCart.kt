@@ -807,6 +807,7 @@ class OneItemAdapter(val context: Context, private val sectionIdx: Int, private 
             holder.prompt.visibility = View.INVISIBLE
             holder.value.setText(row.value)
             holder.value.hint = row.placeholder
+            holder.value.inputType = row.keyboard.toSwift()
 
             holder.required.visibility = if (row.isRequired) { View.VISIBLE } else { View.INVISIBLE }
 

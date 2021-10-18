@@ -79,8 +79,8 @@ class ShowStoreVC : ShowVC() {
             }
         }
 
-        val items = generateMainItem()
-        adapter.update(items)
+//        val items = generateMainItem()
+//        adapter.update(items)
     }
 
 //    fun initAdapter() {
@@ -191,7 +191,7 @@ class ShowStoreVC : ShowVC() {
 //        return items
 //    }
 
-    override fun didSelectRowAt(view: View, position: Int) {
+    fun didSelectRowAt(view: View, position: Int) {
         val key = tableRowKeys[position]
         if (key == MOBILE_KEY) {
             val mobile = myTable!!.mobile

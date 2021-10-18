@@ -57,21 +57,21 @@ class RegisterActivity : MyTableVC() {
 //    val SELECT_REQUEST_CODE = 1
 
     val testData: HashMap<String, String> = hashMapOf(
-        EMAIL_KEY to "john@housetube.tw",
-        PASSWORD_KEY to "1234",
-        REPASSWORD_KEY to "1234",
-        NAME_KEY to "孫士君",
-        NICKNAME_KEY to "孫士君",
-        DOB_KEY to "1969-01-05",
-        MOBILE_KEY to "0911299998",
-        TEL_KEY to "062295888",
-        CITY_KEY to "218",
-        "city_name" to "台南市",
-        AREA_KEY to "219",
-        "area_name" to "中西區",
-        ROAD_KEY to "南華街101號8樓",
-        FB_KEY to "https://www.facebook.com/ives.sun",
-        LINE_KEY to "ives9999"
+//        EMAIL_KEY to "john@housetube.tw",
+//        PASSWORD_KEY to "1234",
+//        REPASSWORD_KEY to "1234",
+//        NAME_KEY to "孫士君",
+//        NICKNAME_KEY to "孫士君",
+//        DOB_KEY to "1969-01-05",
+//        MOBILE_KEY to "0911299998",
+//        TEL_KEY to "062295888",
+//        CITY_KEY to "218",
+//        "city_name" to "台南市",
+//        AREA_KEY to "219",
+//        "area_name" to "中西區",
+//        ROAD_KEY to "南華街101號8樓",
+//        FB_KEY to "https://www.facebook.com/ives.sun",
+//        LINE_KEY to "ives9999"
     )
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -122,16 +122,17 @@ class RegisterActivity : MyTableVC() {
 
     private fun initData() {
 
+        session.dump()
         val rows: ArrayList<OneRow> = arrayListOf()
-        var row = OneRow("EMail", member.email!!, member.email!!, EMAIL_KEY, "textField", "service@bm.com", "", true)
+        var row = OneRow("EMail", member.email!!, member.email!!, EMAIL_KEY, "textField", KEYBOARD.emailAddress, "service@bm.com", "", true)
         row.msg = "EMail沒有填寫"
         rows.add(row)
 
         if (!member.isLoggedIn) {
-            row = OneRow("密碼", "", "", PASSWORD_KEY, "password", "", "", true)
+            row = OneRow("密碼", "", "", PASSWORD_KEY, "password", KEYBOARD.default, "", "", true)
             row.msg = "密碼沒有填寫"
             rows.add(row)
-            row = OneRow("密碼確認", "", "", REPASSWORD_KEY, "password", "", "", true)
+            row = OneRow("密碼確認", "", "", REPASSWORD_KEY, "password", KEYBOARD.default, "", "", true)
             row.msg = "密碼確認沒有填寫"
             rows.add(row)
         }
@@ -139,10 +140,10 @@ class RegisterActivity : MyTableVC() {
         oneSections.add(section)
 
         rows.clear()
-        row = OneRow("姓名", member.name!!, member.name!!, NAME_KEY, "textField", "王大明", "", true)
+        row = OneRow("姓名", member.name!!, member.name!!, NAME_KEY, "textField", KEYBOARD.default, "王大明", "", true)
         row.msg = "姓名沒有填寫"
         rows.add(row)
-        row = OneRow("暱稱", member.nickname!!, member.nickname!!, NICKNAME_KEY, "textField", "大明哥", "", true)
+        row = OneRow("暱稱", member.nickname!!, member.nickname!!, NICKNAME_KEY, "textField", KEYBOARD.default, "大明哥", "", true)
         row.msg = "暱稱沒有填寫"
         rows.add(row)
         row = OneRow("生日", member.dob!!, member.dob!!, DOB_KEY, "more")
@@ -151,25 +152,25 @@ class RegisterActivity : MyTableVC() {
         if (member.sex!!.isEmpty()) {
             member.sex = "M"
         }
-        row = OneRow("性別", member.sex!!, "", SEX_KEY, "sex", "", "", true)
+        row = OneRow("性別", member.sex!!, "", SEX_KEY, "sex", KEYBOARD.default, "", "", true)
         row.msg = "沒有選擇性別"
         rows.add(row)
         section = makeSectionRow("個人資料", "data", rows, true)
         oneSections.add(section)
 
         rows.clear()
-        row = OneRow("行動電話", member.mobile!!, member.mobile!!, MOBILE_KEY, "textField", "0939123456", "", true)
+        row = OneRow("行動電話", member.mobile!!, member.mobile!!, MOBILE_KEY, "textField", KEYBOARD.numberPad, "0939123456", "", true)
         row.msg = "行動電話沒有填寫"
         rows.add(row)
-        row = OneRow("市內電話", member.tel!!, member.tel!!, TEL_KEY, "textField", "021234567")
+        row = OneRow("市內電話", member.tel!!, member.tel!!, TEL_KEY, "textField", KEYBOARD.numberPad, "021234567")
         rows.add(row)
-        row = OneRow("縣市", member.city.toString(), Global.zoneIDToName(member.city), CITY_KEY, "more", "", "", true)
+        row = OneRow("縣市", member.city.toString(), Global.zoneIDToName(member.city), CITY_KEY, "more", KEYBOARD.default, "", "", true)
         row.msg = "沒有選擇縣市"
         rows.add(row)
-        row = OneRow("區域", member.area.toString(), Global.zoneIDToName(member.area), AREA_KEY, "more", "", "", true)
+        row = OneRow("區域", member.area.toString(), Global.zoneIDToName(member.area), AREA_KEY, "more", KEYBOARD.default, "", "", true)
         row.msg = "沒有選擇區域"
         rows.add(row)
-        row = OneRow("住址", member.road!!, member.road!!, ROAD_KEY, "textField", "中山路60號", "", true)
+        row = OneRow("住址", member.road!!, member.road!!, ROAD_KEY, "textField", KEYBOARD.default, "中山路60號", "", true)
         row.msg = "沒有填寫住址"
         rows.add(row)
         section = makeSectionRow("聯絡資料", "contact", rows, true)
@@ -185,7 +186,7 @@ class RegisterActivity : MyTableVC() {
 
         if (!member.isLoggedIn) {
             rows.clear()
-            row = OneRow("隱私權", "true", "同意隱私權條款", PRIVACY_KEY, "privacy", "", "", true)
+            row = OneRow("隱私權", "true", "同意隱私權條款", PRIVACY_KEY, "privacy", KEYBOARD.default, "", "", true)
             rows.add(row)
             section = makeSectionRow("隱私權", PRIVACY_KEY, rows, true)
             oneSections.add(section)
@@ -529,7 +530,7 @@ class RegisterActivity : MyTableVC() {
             if (isFeaturedChange) {
                 params["featured"] = "1"
             }
-            println(params)
+//            println(params)
             //println(filePath)
 
             //this is execute DataService update
@@ -546,21 +547,36 @@ class RegisterActivity : MyTableVC() {
                         try {
                             //println(MemberService.jsonString)
                             val table = Gson().fromJson<RegisterResTable>(MemberService.jsonString, RegisterResTable::class.java)
-                            if (table?.model != null) {
-                                val memberTable: MemberTable = table.model!!
-                                memberTable.toSession(this, true)
+                            if (table != null) {
+                                if (!table.success) {
+                                    var msg: String = ""
+                                    for (error in table.errors) {
+                                        msg += error + "\n"
+                                    }
+                                    warning(msg)
+                                } else {
+                                    if (table.model != null) {
+                                        val memberTable: MemberTable = table.model!!
+                                        memberTable.toSession(this, true)
+                                        info(msg, "", "關閉") {
+                                            prev()
+                                        }
+                                    }
+                                }
+                            } else {
+                                warning("伺服器回傳錯誤，請稍後再試，或洽管理人員")
                             }
                         } catch (e: JsonParseException) {
                             warning(e.localizedMessage!!)
                         }
-                        Alert.show(this, "成功", msg) {
-                            prev()
-                        }
+//                        Alert.show(this, "成功", msg) {
+//                            prev()
+//                        }
                     } else {
-                        Alert.show(this, "警告", MemberService.msg)
+                        warning(MemberService.msg)
                     }
                 } else {
-                    Alert.show(this, "警告", "伺服器錯誤，請稍後再試，或洽管理人員")
+                    warning("伺服器錯誤，請稍後再試，或洽管理人員")
                 }
             }
         }
@@ -797,6 +813,7 @@ class RegisterActivity : MyTableVC() {
 
 class RegisterResTable {
     var success: Boolean = false
+    var errors: ArrayList<String> = arrayListOf()
     var id: Int = 0
     var update: String = ""
     var model: MemberTable? = null

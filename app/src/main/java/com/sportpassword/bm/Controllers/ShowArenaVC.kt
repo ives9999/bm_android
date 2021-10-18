@@ -3,7 +3,6 @@ package com.sportpassword.bm.Controllers
 import android.os.Bundle
 import android.view.View
 import com.google.gson.JsonParseException
-import com.sportpassword.bm.Adapters.IconCellDelegate
 import com.sportpassword.bm.Models.ArenaTable
 import com.sportpassword.bm.Models.Table
 import com.sportpassword.bm.R
@@ -12,7 +11,7 @@ import com.sportpassword.bm.Utilities.jsonToModel
 import kotlinx.android.synthetic.main.activity_show_arena_vc.*
 import kotlin.reflect.full.memberProperties
 
-class ShowArenaVC: ShowVC(), IconCellDelegate {
+class ShowArenaVC: ShowVC() {
 
     var myTable: ArenaTable? = null
 
@@ -79,12 +78,12 @@ class ShowArenaVC: ShowVC(), IconCellDelegate {
             }
         }
 
-        val items = generateMainItem()
-        adapter.update(items)
+//        val items = generateMainItem()
+//        adapter.update(items)
 
     }
 
-    override fun didSelectRowAt(view: View, position: Int) {
-
-    }
+//    override fun didSelectRowAt(view: View, position: Int) {
+//
+//    }
 }

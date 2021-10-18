@@ -19,7 +19,6 @@ import com.sportpassword.bm.Form.TimeTableForm
 import com.sportpassword.bm.Models.Timetables
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.CoachService
-import com.xwray.groupie.GroupAdapter
 import kotlinx.android.synthetic.main.activity_time_table_vc.*
 import kotlinx.android.synthetic.main.mask.*
 import com.sportpassword.bm.Utilities.*
@@ -377,145 +376,122 @@ class TimeTableVC : BaseActivity(), ValueChangedDelegate {
 //        }
 //    }
 
-    protected fun addEditTableView(page: String, w: Int, padding: Int) {
-
-        //editTableView.
-        editTableView = RecyclerView(this)
-        /*
-        editTableView.setRecyclerListener(object: RecyclerView.RecyclerListener {
-            override fun onViewRecycled(p0: RecyclerView.ViewHolder) {
-                val view = p0.itemView
-                if (view.hasFocus()) {
-                    view.clearFocus()
-                    if (p0.itemView is EditText) {
-                        val imm = view.context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-                        imm.hideSoftInputFromWindow(view.windowToken, 0)
-                    }
-                }
-
-            }
-        })
-        editTableView.addOnScrollListener(object: RecyclerView.OnScrollListener() {
-            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
-                val imm = this@TimeTableVC.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-                if (currentFocus != null) {
-                    imm.hideSoftInputFromWindow(currentFocus.windowToken, 0)
-                    currentFocus.clearFocus()
-                }
-            }
-        })
-*/
-        editTableView.id = R.id.SearchRecycleItem
-        editTableView.backgroundColor = Color.BLACK
-        val lp1 = RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
-        lp1.setMargins(0, 10, 0, 0)
-        editTableView.layoutParams = lp1
-        editTableView.layoutManager = LinearLayoutManager(this)
-
-        searchAdapter = GroupAdapter()
-        searchAdapter.setOnItemClickListener { item, view ->
-            val itemAdapter = item as FormItemAdapter
-            val formItem = itemAdapter.formItem
-            if (formItem.name != TITLE_KEY && formItem.name != TT_LIMIT) {
-                val intent = Intent(this, EditItemActivity::class.java)
-                when (formItem.name) {
-                    //0 is title
-                    //weekday
-                    WEEKDAY_KEY -> {
-                        //layerCancel()
-                        removeLayerChildViews()
-                        intent.putExtra("key", TEAM_WEEKDAYS_KEY)
-                        intent.putExtra("source", "search")
-                        intent.putIntegerArrayListExtra("weekdays", formItem.sender as java.util.ArrayList<Int>)
-                        startActivityForResult(intent, SEARCH_REQUEST_CODE)
-                    }
-                    //start_date
-                    TT_START_DATE-> {
-                        //layerCancel()
-                        removeLayerChildViews()
-                        val intent1 = Intent(this, DateSelectVC::class.java)
-                        val sender: HashMap<String, Any> = formItem.sender as HashMap<String, Any>
-                        val type: SELECT_DATE_TYPE = sender["type"] as SELECT_DATE_TYPE
-                        val value: String = sender["date"] as String
-                        intent1.putExtra("key", DATE_SELECT_KEY)
-                        intent1.putExtra("type", type)
-                        intent1.putExtra("selected", value)
-                        startActivityForResult(intent1, SEARCH_REQUEST_CODE)
-                    }
-                    //end_date
-                    TT_END_DATE-> {
-                        //layerCancel()
-                        removeLayerChildViews()
-                        val intent1 = Intent(this, DateSelectVC::class.java)
-                        val sender: HashMap<String, Any> = formItem.sender as HashMap<String, Any>
-                        val type: SELECT_DATE_TYPE = sender["type"] as SELECT_DATE_TYPE
-                        val value: String = sender["date"] as String
-                        intent1.putExtra("key", DATE_SELECT_KEY)
-                        intent1.putExtra("type", type)
-                        intent1.putExtra("selected", value)
-                        startActivityForResult(intent1, SEARCH_REQUEST_CODE)
-                    }
-                    //start_time
-                    START_TIME_KEY-> {
-                        //layerCancel()
-                        removeLayerChildViews()
-                        intent.putExtra("key", TEAM_PLAY_START_KEY)
-                        intent.putExtra("source", "search")
-                        intent.putExtra("start", "07:00")
-                        times["type"] = SELECT_TIME_TYPE.play_start
-                        intent.putExtra("times", formItem.sender as HashMap<String, Any>)
-                        startActivityForResult(intent, SEARCH_REQUEST_CODE)
-                    }
-                    //end_time
-                    END_TIME_KEY-> {
-                        //layerCancel()
-                        removeLayerChildViews()
-                        intent.putExtra("key", TEAM_PLAY_END_KEY)
-                        intent.putExtra("source", "search")
-                        intent.putExtra("start", "06:00")
-                        times["type"] = SELECT_TIME_TYPE.play_start
-                        intent.putExtra("times", formItem.sender as HashMap<String, Any>)
-                        startActivityForResult(intent, SEARCH_REQUEST_CODE)
-                    }
-                    //6 is charge
-                    //7 is limit
-                    //color
-                    TT_COLOR-> {
-                        //layerCancel()
-                        removeLayerChildViews()
-                        val intent1 = Intent(this, ColorSelectVC::class.java)
-                        intent1.putExtra("key", COLOR_SELECT_KEY)
-                        if (formItem.sender != null) {
-                            intent1.putExtra("selecteds", formItem.sender as ArrayList<MYCOLOR>)
-                        }
-                        startActivityForResult(intent1, SEARCH_REQUEST_CODE)
-                    }
-                    //status
-                    TT_STATUS-> {
-                        //layerCancel()
-                        removeLayerChildViews()
-                        val intent1 = Intent(this, StatusSelectVC1::class.java)
-                        intent1.putExtra("key", STATUS_SELECT_KEY)
-                        intent1.putExtra("selected", formItem.sender as STATUS)
-                        startActivityForResult(intent1, SEARCH_REQUEST_CODE)
-                    }
-                    //content
-                    TT_CONTENT-> {
-                        //layerCancel()
-                        removeLayerChildViews()
-                        intent.putExtra("key", CONTENT_KEY)
-                        intent.putExtra("value", formItem.sender as String)
-                        startActivityForResult(intent, SEARCH_REQUEST_CODE)
-                    }
-                }
-            }
-        }
-        val rows = generateFormItems()
-        searchAdapter.addAll(rows)
-
-        editTableView.adapter = searchAdapter
-        //layerContainerView!!.addView(editTableView)
-    }
+//    protected fun addEditTableView(page: String, w: Int, padding: Int) {
+//
+//        //editTableView.
+//        editTableView = RecyclerView(this)
+//
+//        editTableView.id = R.id.SearchRecycleItem
+//        editTableView.backgroundColor = Color.BLACK
+//        val lp1 = RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
+//        lp1.setMargins(0, 10, 0, 0)
+//        editTableView.layoutParams = lp1
+//        editTableView.layoutManager = LinearLayoutManager(this)
+//
+//        searchAdapter = GroupAdapter()
+//        searchAdapter.setOnItemClickListener { item, view ->
+//            val itemAdapter = item as FormItemAdapter
+//            val formItem = itemAdapter.formItem
+//            if (formItem.name != TITLE_KEY && formItem.name != TT_LIMIT) {
+//                val intent = Intent(this, EditItemActivity::class.java)
+//                when (formItem.name) {
+//                    //0 is title
+//                    //weekday
+//                    WEEKDAY_KEY -> {
+//                        //layerCancel()
+//                        removeLayerChildViews()
+//                        intent.putExtra("key", TEAM_WEEKDAYS_KEY)
+//                        intent.putExtra("source", "search")
+//                        intent.putIntegerArrayListExtra("weekdays", formItem.sender as java.util.ArrayList<Int>)
+//                        startActivityForResult(intent, SEARCH_REQUEST_CODE)
+//                    }
+//                    //start_date
+//                    TT_START_DATE-> {
+//                        //layerCancel()
+//                        removeLayerChildViews()
+//                        val intent1 = Intent(this, DateSelectVC::class.java)
+//                        val sender: HashMap<String, Any> = formItem.sender as HashMap<String, Any>
+//                        val type: SELECT_DATE_TYPE = sender["type"] as SELECT_DATE_TYPE
+//                        val value: String = sender["date"] as String
+//                        intent1.putExtra("key", DATE_SELECT_KEY)
+//                        intent1.putExtra("type", type)
+//                        intent1.putExtra("selected", value)
+//                        startActivityForResult(intent1, SEARCH_REQUEST_CODE)
+//                    }
+//                    //end_date
+//                    TT_END_DATE-> {
+//                        //layerCancel()
+//                        removeLayerChildViews()
+//                        val intent1 = Intent(this, DateSelectVC::class.java)
+//                        val sender: HashMap<String, Any> = formItem.sender as HashMap<String, Any>
+//                        val type: SELECT_DATE_TYPE = sender["type"] as SELECT_DATE_TYPE
+//                        val value: String = sender["date"] as String
+//                        intent1.putExtra("key", DATE_SELECT_KEY)
+//                        intent1.putExtra("type", type)
+//                        intent1.putExtra("selected", value)
+//                        startActivityForResult(intent1, SEARCH_REQUEST_CODE)
+//                    }
+//                    //start_time
+//                    START_TIME_KEY-> {
+//                        //layerCancel()
+//                        removeLayerChildViews()
+//                        intent.putExtra("key", TEAM_PLAY_START_KEY)
+//                        intent.putExtra("source", "search")
+//                        intent.putExtra("start", "07:00")
+//                        times["type"] = SELECT_TIME_TYPE.play_start
+//                        intent.putExtra("times", formItem.sender as HashMap<String, Any>)
+//                        startActivityForResult(intent, SEARCH_REQUEST_CODE)
+//                    }
+//                    //end_time
+//                    END_TIME_KEY-> {
+//                        //layerCancel()
+//                        removeLayerChildViews()
+//                        intent.putExtra("key", TEAM_PLAY_END_KEY)
+//                        intent.putExtra("source", "search")
+//                        intent.putExtra("start", "06:00")
+//                        times["type"] = SELECT_TIME_TYPE.play_start
+//                        intent.putExtra("times", formItem.sender as HashMap<String, Any>)
+//                        startActivityForResult(intent, SEARCH_REQUEST_CODE)
+//                    }
+//                    //6 is charge
+//                    //7 is limit
+//                    //color
+//                    TT_COLOR-> {
+//                        //layerCancel()
+//                        removeLayerChildViews()
+//                        val intent1 = Intent(this, ColorSelectVC::class.java)
+//                        intent1.putExtra("key", COLOR_SELECT_KEY)
+//                        if (formItem.sender != null) {
+//                            intent1.putExtra("selecteds", formItem.sender as ArrayList<MYCOLOR>)
+//                        }
+//                        startActivityForResult(intent1, SEARCH_REQUEST_CODE)
+//                    }
+//                    //status
+//                    TT_STATUS-> {
+//                        //layerCancel()
+//                        removeLayerChildViews()
+//                        val intent1 = Intent(this, StatusSelectVC1::class.java)
+//                        intent1.putExtra("key", STATUS_SELECT_KEY)
+//                        intent1.putExtra("selected", formItem.sender as STATUS)
+//                        startActivityForResult(intent1, SEARCH_REQUEST_CODE)
+//                    }
+//                    //content
+//                    TT_CONTENT-> {
+//                        //layerCancel()
+//                        removeLayerChildViews()
+//                        intent.putExtra("key", CONTENT_KEY)
+//                        intent.putExtra("value", formItem.sender as String)
+//                        startActivityForResult(intent, SEARCH_REQUEST_CODE)
+//                    }
+//                }
+//            }
+//        }
+//        val rows = generateFormItems()
+//        searchAdapter.addAll(rows)
+//
+//        editTableView.adapter = searchAdapter
+//        //layerContainerView!!.addView(editTableView)
+//    }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
@@ -599,51 +575,51 @@ class TimeTableVC : BaseActivity(), ValueChangedDelegate {
         }
     }
 
-    fun generateFormItems(): ArrayList<FormItemAdapter> {
-        val rows: ArrayList<FormItemAdapter> = arrayListOf()
-        val section: Int = 0
-//        var indexPath: HashMap<String, Int> = hashMapOf()
-//        indexPath["section"] = section
-
-        val clearClick = { formItem: FormItem ->
-            formItem.reset()
-            val rows = generateFormItems()
-            searchAdapter.update(rows)
-        }
-
-        val promptClick = {formItem: FormItem ->
-            if (formItem.tooltip != null) {
-                Alert.show(this, "提示", formItem.tooltip!!)
-            }
-        }
-
-        val rowClick = { formItem: FormItem ->
-
-        }
-
-
-        for ((idx, formItem) in form.formItems.withIndex()) {
-//            indexPath["row"] = idx
-
-            val indexPath: IndexPath = IndexPath(section, idx)
-
-            var formItemAdapter: FormItemAdapter? = null
-            if (formItem.uiProperties.cellType == FormItemCellType.textField) {
-                formItemAdapter = TextFieldAdapter(formItem, clearClick, promptClick)
-            } else if (formItem.uiProperties.cellType == FormItemCellType.content) {
-                formItemAdapter = ContentAdapter(formItem, clearClick, rowClick)
-            } else {
-                formItemAdapter = MoreAdapter(formItem, clearClick, rowClick)
-            }
-
-            if (formItemAdapter != null) {
-                formItemAdapter!!.valueChangedDelegate = this
-                rows.add(formItemAdapter!!)
-            }
-        }
-
-        return rows
-    }
+//    fun generateFormItems(): ArrayList<FormItemAdapter> {
+//        val rows: ArrayList<FormItemAdapter> = arrayListOf()
+//        val section: Int = 0
+////        var indexPath: HashMap<String, Int> = hashMapOf()
+////        indexPath["section"] = section
+//
+//        val clearClick = { formItem: FormItem ->
+//            formItem.reset()
+//            val rows = generateFormItems()
+//            searchAdapter.update(rows)
+//        }
+//
+//        val promptClick = {formItem: FormItem ->
+//            if (formItem.tooltip != null) {
+//                Alert.show(this, "提示", formItem.tooltip!!)
+//            }
+//        }
+//
+//        val rowClick = { formItem: FormItem ->
+//
+//        }
+//
+//
+//        for ((idx, formItem) in form.formItems.withIndex()) {
+////            indexPath["row"] = idx
+//
+//            val indexPath: IndexPath = IndexPath(section, idx)
+//
+//            var formItemAdapter: FormItemAdapter? = null
+//            if (formItem.uiProperties.cellType == FormItemCellType.textField) {
+//                formItemAdapter = TextFieldAdapter(formItem, clearClick, promptClick)
+//            } else if (formItem.uiProperties.cellType == FormItemCellType.content) {
+//                formItemAdapter = ContentAdapter(formItem, clearClick, rowClick)
+//            } else {
+//                formItemAdapter = MoreAdapter(formItem, clearClick, rowClick)
+//            }
+//
+//            if (formItemAdapter != null) {
+//                formItemAdapter!!.valueChangedDelegate = this
+//                rows.add(formItemAdapter!!)
+//            }
+//        }
+//
+//        return rows
+//    }
 
     fun prepareParams() {
         params.clear()

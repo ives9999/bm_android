@@ -3,14 +3,11 @@ package com.sportpassword.bm.Controllers
 import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
-import android.view.View
 import com.sportpassword.bm.Models.TeamsTable
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.TeamService
 import com.sportpassword.bm.Utilities.*
-import com.xwray.groupie.kotlinandroidextensions.Item
 import kotlinx.android.synthetic.main.activity_temp_play_vc.*
-import kotlinx.android.synthetic.main.mask.*
 
 class TempPlayVC : MyTableVC() {
 
@@ -40,7 +37,7 @@ class TempPlayVC : MyTableVC() {
         recyclerView = tempplay_list
         dataService = TeamService
         refreshLayout = tempplay_refresh
-        initAdapter()
+        //initAdapter()
 
         refresh()
     }

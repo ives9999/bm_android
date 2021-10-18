@@ -6,8 +6,6 @@ import android.os.Bundle
 import android.view.View
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Utilities.STATUS
-import com.xwray.groupie.GroupieViewHolder
-import com.xwray.groupie.kotlinandroidextensions.Item
 import kotlinx.android.synthetic.main.mytablevc.*
 import kotlinx.android.synthetic.main.status_select_item.*
 
@@ -30,46 +28,46 @@ class StatusSelectVC1 : MyTableVC() {
 
         all = STATUS.all()
         recyclerView = mytable
-        initAdapter()
+        //initAdapter()
     }
 
-    override fun generateItems(): ArrayList<Item> {
-        var items: ArrayList<Item> = arrayListOf()
-        for (row in all) {
-            var ch = ""
-            if (row.containsKey("ch")) {
-                ch = row.get("ch") as String
-            }
-            var key = "online"
-            if (row.containsKey("key")) {
-                key = row.get("key") as String
-            }
-            var value: STATUS? = null
-            if (row.containsKey("value")) {
-                value = row.get("value") as STATUS
-            }
-            var isSelected = if(value == selected) true else false
+//    override fun generateItems(): ArrayList<Item> {
+//        var items: ArrayList<Item> = arrayListOf()
+//        for (row in all) {
+//            var ch = ""
+//            if (row.containsKey("ch")) {
+//                ch = row.get("ch") as String
+//            }
+//            var key = "online"
+//            if (row.containsKey("key")) {
+//                key = row.get("key") as String
+//            }
+//            var value: STATUS? = null
+//            if (row.containsKey("value")) {
+//                value = row.get("value") as STATUS
+//            }
+//            var isSelected = if(value == selected) true else false
+//
+//            items.add(StatusItem(ch, key, isSelected))
+//        }
+//
+//        return items
+//    }
 
-            items.add(StatusItem(ch, key, isSelected))
-        }
-
-        return items
-    }
-
-    override fun rowClick(item: com.xwray.groupie.Item<GroupieViewHolder>, view: View) {
-
-        val StatusItem = item as StatusItem
-        val key = StatusItem.key
-        val statusType = STATUS.from(key)
-
-        if (statusType == selected) {
-            selected = null
-        } else {
-            selected = statusType
-        }
-
-        submit()
-    }
+//    override fun rowClick(item: com.xwray.groupie.Item<GroupieViewHolder>, view: View) {
+//
+//        val StatusItem = item as StatusItem
+//        val key = StatusItem.key
+//        val statusType = STATUS.from(key)
+//
+//        if (statusType == selected) {
+//            selected = null
+//        } else {
+//            selected = statusType
+//        }
+//
+//        submit()
+//    }
 
     fun submit() {
         val intent = Intent()
@@ -84,16 +82,16 @@ class StatusSelectVC1 : MyTableVC() {
     }
 }
 
-class StatusItem(val ch: String, val key: String, val isSelected: Boolean): Item() {
-    override fun bind(viewHolder: com.xwray.groupie.kotlinandroidextensions.GroupieViewHolder, position: Int) {
-        viewHolder.status.text = ch
-        if (isSelected) {
-            viewHolder.isSelected.visibility = View.VISIBLE
-        } else {
-            viewHolder.isSelected.visibility = View.INVISIBLE
-        }
-    }
-
-    override fun getLayout() = R.layout.status_select_item
-
-}
+//class StatusItem(val ch: String, val key: String, val isSelected: Boolean): Item() {
+//    override fun bind(viewHolder: com.xwray.groupie.kotlinandroidextensions.GroupieViewHolder, position: Int) {
+//        viewHolder.status.text = ch
+//        if (isSelected) {
+//            viewHolder.isSelected.visibility = View.VISIBLE
+//        } else {
+//            viewHolder.isSelected.visibility = View.INVISIBLE
+//        }
+//    }
+//
+//    override fun getLayout() = R.layout.status_select_item
+//
+//}

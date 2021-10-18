@@ -9,7 +9,7 @@ class SelectPriceUnitVC : SingleSelectVC() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        rows = PRICE_UNIT.makeSelect()
+        //rows = PRICE_UNIT.makeSelect()
         key = PRICE_UNIT_KEY
 
         //notifyChanged()

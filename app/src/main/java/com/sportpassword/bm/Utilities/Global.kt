@@ -622,6 +622,15 @@ enum class KEYBOARD(val type: String) {
         return type
     }
 
+    fun toSwift(): Int {
+        when(this) {
+            default -> return InputType.TYPE_CLASS_TEXT
+            emailAddress -> return InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS
+            numberPad -> return InputType.TYPE_CLASS_NUMBER
+            URL -> return InputType.TYPE_TEXT_VARIATION_URI
+        }
+    }
+
     companion object: MYENUM<KEYBOARD>() {
 
         fun stringToSwift(str: String): Int {

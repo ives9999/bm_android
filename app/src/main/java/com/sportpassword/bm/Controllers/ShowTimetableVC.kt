@@ -1,39 +1,18 @@
 package com.sportpassword.bm.Controllers
 
-import android.content.Context
-import android.content.Intent
-import android.content.pm.PackageManager
-import android.graphics.Bitmap
-import android.graphics.Color
-import android.net.Uri
-import android.os.Build
 import android.os.Bundle
-import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
-import androidx.recyclerview.widget.RecyclerView
-import android.view.View
 import android.webkit.*
-import com.sportpassword.bm.Adapters.IconCell
-import com.sportpassword.bm.Adapters.IconCellDelegate
 import com.sportpassword.bm.Models.CoachTable
 import com.sportpassword.bm.Models.Timetable
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.TimetableService
 import com.sportpassword.bm.Utilities.*
-import com.sportpassword.bm.member
-import com.xwray.groupie.GroupAdapter
-import com.xwray.groupie.kotlinandroidextensions.Item
-import com.xwray.groupie.kotlinandroidextensions.GroupieViewHolder
 import kotlinx.android.synthetic.main.activity_show_timetable_vc.*
 import kotlinx.android.synthetic.main.iconcell.*
 import kotlinx.android.synthetic.main.mask.*
-import org.jetbrains.anko.makeCall
-import org.jetbrains.anko.textColor
-import org.jetbrains.anko.toast
-import java.util.jar.Manifest
 import kotlin.reflect.full.memberProperties
 
-class ShowTimetableVC : BaseActivity(), IconCellDelegate {
+class ShowTimetableVC : BaseActivity() {
 
     var tt_id: Int? = null
     var source: String?  = null //coach or arena
@@ -60,8 +39,8 @@ class ShowTimetableVC : BaseActivity(), IconCellDelegate {
     var timetable: Timetable? = null
     var superCoach: CoachTable? = null
 
-    lateinit var timetableAdapter: GroupAdapter<GroupieViewHolder>
-    lateinit var coachAdapter: GroupAdapter<GroupieViewHolder>
+//    lateinit var timetableAdapter: GroupAdapter<GroupieViewHolder>
+//    lateinit var coachAdapter: GroupAdapter<GroupieViewHolder>
 
     var isSignup: Boolean = false
 
@@ -138,8 +117,8 @@ class ShowTimetableVC : BaseActivity(), IconCellDelegate {
                     tableRows["signup_count"]!!["content"] = timetable!!.signup_count.toString() + "人"
 
 //                    println(tableRows)
-                    var items = generateTimetableItem()
-                    timetableAdapter.update(items)
+//                    var items = generateTimetableItem()
+//                    timetableAdapter.update(items)
 
 //                    for (key in coachTableRowKeys) {
 //                        val kc = coachTable!!::class
@@ -151,8 +130,8 @@ class ShowTimetableVC : BaseActivity(), IconCellDelegate {
 //                        }
 //                    }
                     //println(coachTableRows)
-                    items = generateCoachItem()
-                    coachAdapter.update(items)
+//                    items = generateCoachItem()
+//                    coachAdapter.update(items)
                 }
                 closeRefresh()
             }
@@ -160,170 +139,170 @@ class ShowTimetableVC : BaseActivity(), IconCellDelegate {
     }
 
     fun initAdapter() {
-        timetableAdapter = GroupAdapter()
-        val timetableItems = generateTimetableItem()
-        timetableAdapter.addAll(timetableItems)
-        tableView.adapter = timetableAdapter
+//        timetableAdapter = GroupAdapter()
+//        val timetableItems = generateTimetableItem()
+//        timetableAdapter.addAll(timetableItems)
+//        tableView.adapter = timetableAdapter
 
-        coachAdapter = GroupAdapter()
-        coachAdapter.setOnItemClickListener { item, view ->
+//        coachAdapter = GroupAdapter()
+//        coachAdapter.setOnItemClickListener { item, view ->
 
-        }
-        val coachItems = generateCoachItem()
-        coachAdapter.addAll(coachItems)
-        coachTableView.adapter = coachAdapter
+//        }
+//        val coachItems = generateCoachItem()
+//        coachAdapter.addAll(coachItems)
+//        coachTableView.adapter = coachAdapter
     }
 
-    fun generateTimetableItem(): ArrayList<Item> {
-        var items: ArrayList<Item> = arrayListOf()
-        var icon = ""
-        var title = ""
-        var content = ""
-        var isPressed: Boolean = false
-        for (key in tableRowKeys) {
-            if (tableRows.containsKey(key)) {
-                val row = tableRows[key]!!
-                if (row.containsKey("icon")) {
-                    icon = row["icon"]!!
-                }
-                if (row.containsKey("title")) {
-                    title = row["title"]!!
-                }
-                if (row.containsKey("content")) {
-                    content = row["content"]!!
-                }
-                if (row.containsKey("isPressed")) {
-                    isPressed = row["isPressed"]!!.toBoolean()
-                }
-                if (icon.length > 0 && title.length > 0) {
-                    val iconCell = IconCell(this@ShowTimetableVC, icon, title, content, isPressed)
-                    iconCell.delegate = this
-                    items.add(iconCell)
-                }
-            }
-        }
+//    fun generateTimetableItem(): ArrayList<Item> {
+//        var items: ArrayList<Item> = arrayListOf()
+//        var icon = ""
+//        var title = ""
+//        var content = ""
+//        var isPressed: Boolean = false
+//        for (key in tableRowKeys) {
+//            if (tableRows.containsKey(key)) {
+//                val row = tableRows[key]!!
+//                if (row.containsKey("icon")) {
+//                    icon = row["icon"]!!
+//                }
+//                if (row.containsKey("title")) {
+//                    title = row["title"]!!
+//                }
+//                if (row.containsKey("content")) {
+//                    content = row["content"]!!
+//                }
+//                if (row.containsKey("isPressed")) {
+//                    isPressed = row["isPressed"]!!.toBoolean()
+//                }
+//                if (icon.length > 0 && title.length > 0) {
+//                    val iconCell = IconCell(this@ShowTimetableVC, icon, title, content, isPressed)
+//                    iconCell.delegate = this
+//                    items.add(iconCell)
+//                }
+//            }
+//        }
+//
+//        return items
+//    }
 
-        return items
-    }
-
-    fun generateCoachItem(): ArrayList<Item> {
-        var items: ArrayList<Item> = arrayListOf()
-        var icon = ""
-        var title = ""
-        var content = ""
-        var isPressed: Boolean = false
-        for (key in coachTableRowKeys) {
-            if (coachTableRows.containsKey(key)) {
-                val row = coachTableRows[key]!!
-                if (row.containsKey("icon")) {
-                    icon = row["icon"]!!
-                }
-                if (row.containsKey("title")) {
-                    title = row["title"]!!
-                }
-                if (row.containsKey("content")) {
-                    content = row["content"]!!
-                    if (key == MOBILE_KEY) {
-                        content = content.mobileShow()
-                    }
-                }
-                if (row.containsKey("isPressed")) {
-                    isPressed = row["isPressed"]!!.toBoolean()
-                }
-                if (icon.length > 0 && title.length > 0) {
-                    val iconCell = IconCell(this@ShowTimetableVC, icon, title, content, isPressed)
-                    iconCell.delegate = this
-                    items.add(iconCell)
-                }
-            }
-        }
-
-        return items
-    }
-
-    override fun didSelectRowAt(view: View, position: Int) {
-//        println("delegate:"+position)
-        val parent = view.parent
-        if (parent is RecyclerView) {
-            val p = parent as RecyclerView
-            //println(p.getIDString())
-            val id = p.getIDString()
-            if (id == coachTableView.getIDString()) {
-                //println(position)
-                val key = coachTableRowKeys[position]
-                if (key == NAME_KEY) {
-                    val intent = Intent(this, ShowActivity::class.java)
-                    intent.putExtra("type", source)
-                    intent.putExtra("token", token)
-                    intent.putExtra("title", superCoach!!.name)
-                    startActivity(intent)
-                } else if (key == MOBILE_KEY) {
-                    val mobile = superCoach!!.mobile
-                    this.mobile = mobile
-                    val permission: String = android.Manifest.permission.CALL_PHONE
-                    if (permissionExist(permission)) {
-                        mobile.makeCall(this)
-                    } else {
-                        val permissions = arrayOf(permission)
-                        requestPermission(permissions, REQUEST_PHONE_CALL)
-                    }
-                } else if (key == LINE_KEY) {
-                    val line = superCoach!!.line
-                    line.line(this)
-                } else if (key == FB_KEY) {
-                    val fb = superCoach!!.fb
-                    fb.fb(this)
-                } else if (key == YOUTUBE_KEY) {
-                    val youtube = superCoach!!.youtube
-                    youtube.youtube(this)
-                } else if (key == WEBSITE_KEY) {
-                    val website = superCoach!!.website
-                    website.website(this)
-                } else if (key == EMAIL_KEY) {
-                    val email = superCoach!!.email
-                    email.email(this)
-                }
-            }
-        }
-    }
-
-    fun signupSubmit(view: View) {
-        if (!member.isLoggedIn) {
-            warning("請先登入")
-        } else {
-            if (timetable != null) {
-                val tt_id = timetable!!.id
-                Loading.show(mask)
-                if (!isSignup) {//報名
-//                    dataService.signup(this, "timetable", token!!, member.token, tt_id) { success ->
-//                        Loading.hide(mask)
-//                        if (!success) {
-//                            warning(dataService.msg)
-//                        } else {
-//                            info("您已經報名成功")
-//                            refresh()
-//                        }
+//    fun generateCoachItem(): ArrayList<Item> {
+//        var items: ArrayList<Item> = arrayListOf()
+//        var icon = ""
+//        var title = ""
+//        var content = ""
+//        var isPressed: Boolean = false
+//        for (key in coachTableRowKeys) {
+//            if (coachTableRows.containsKey(key)) {
+//                val row = coachTableRows[key]!!
+//                if (row.containsKey("icon")) {
+//                    icon = row["icon"]!!
+//                }
+//                if (row.containsKey("title")) {
+//                    title = row["title"]!!
+//                }
+//                if (row.containsKey("content")) {
+//                    content = row["content"]!!
+//                    if (key == MOBILE_KEY) {
+//                        content = content.mobileShow()
 //                    }
-                } else {//取消報名
-//                    if (signup != null) {
-//                        dataService.cancelSignup(this, "timetable", member.token, signup!!.id) { success ->
-//                            unmask()
-//                            if (!success) {
-//                                warning(dataService.msg)
-//                            } else {
-//                                info("取消報名成功")
-//                                refresh()
-//                            }
-//                        }
+//                }
+//                if (row.containsKey("isPressed")) {
+//                    isPressed = row["isPressed"]!!.toBoolean()
+//                }
+//                if (icon.length > 0 && title.length > 0) {
+//                    val iconCell = IconCell(this@ShowTimetableVC, icon, title, content, isPressed)
+//                    iconCell.delegate = this
+//                    items.add(iconCell)
+//                }
+//            }
+//        }
+//
+//        return items
+//    }
+//
+//    override fun didSelectRowAt(view: View, position: Int) {
+////        println("delegate:"+position)
+//        val parent = view.parent
+//        if (parent is RecyclerView) {
+//            val p = parent as RecyclerView
+//            //println(p.getIDString())
+//            val id = p.getIDString()
+//            if (id == coachTableView.getIDString()) {
+//                //println(position)
+//                val key = coachTableRowKeys[position]
+//                if (key == NAME_KEY) {
+//                    val intent = Intent(this, ShowActivity::class.java)
+//                    intent.putExtra("type", source)
+//                    intent.putExtra("token", token)
+//                    intent.putExtra("title", superCoach!!.name)
+//                    startActivity(intent)
+//                } else if (key == MOBILE_KEY) {
+//                    val mobile = superCoach!!.mobile
+//                    this.mobile = mobile
+//                    val permission: String = android.Manifest.permission.CALL_PHONE
+//                    if (permissionExist(permission)) {
+//                        mobile.makeCall(this)
 //                    } else {
-//                        warning("沒有取得報名資料，無法取消報名，請洽管理員")
+//                        val permissions = arrayOf(permission)
+//                        requestPermission(permissions, REQUEST_PHONE_CALL)
 //                    }
-                }
-            } else {
-                warning("沒有取得課程表，請重新進入")
-            }
-        }
-    }
+//                } else if (key == LINE_KEY) {
+//                    val line = superCoach!!.line
+//                    line.line(this)
+//                } else if (key == FB_KEY) {
+//                    val fb = superCoach!!.fb
+//                    fb.fb(this)
+//                } else if (key == YOUTUBE_KEY) {
+//                    val youtube = superCoach!!.youtube
+//                    youtube.youtube(this)
+//                } else if (key == WEBSITE_KEY) {
+//                    val website = superCoach!!.website
+//                    website.website(this)
+//                } else if (key == EMAIL_KEY) {
+//                    val email = superCoach!!.email
+//                    email.email(this)
+//                }
+//            }
+//        }
+//    }
+//
+//    fun signupSubmit(view: View) {
+//        if (!member.isLoggedIn) {
+//            warning("請先登入")
+//        } else {
+//            if (timetable != null) {
+//                val tt_id = timetable!!.id
+//                Loading.show(mask)
+//                if (!isSignup) {//報名
+////                    dataService.signup(this, "timetable", token!!, member.token, tt_id) { success ->
+////                        Loading.hide(mask)
+////                        if (!success) {
+////                            warning(dataService.msg)
+////                        } else {
+////                            info("您已經報名成功")
+////                            refresh()
+////                        }
+////                    }
+//                } else {//取消報名
+////                    if (signup != null) {
+////                        dataService.cancelSignup(this, "timetable", member.token, signup!!.id) { success ->
+////                            unmask()
+////                            if (!success) {
+////                                warning(dataService.msg)
+////                            } else {
+////                                info("取消報名成功")
+////                                refresh()
+////                            }
+////                        }
+////                    } else {
+////                        warning("沒有取得報名資料，無法取消報名，請洽管理員")
+////                    }
+//                }
+//            } else {
+//                warning("沒有取得課程表，請重新進入")
+//            }
+//        }
+//    }
 }
 
 

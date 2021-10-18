@@ -12,19 +12,10 @@ import com.sportpassword.bm.Models.*
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.StoreService
 import com.sportpassword.bm.Utilities.*
-import com.xwray.groupie.kotlinandroidextensions.Item
-import com.xwray.groupie.kotlinandroidextensions.GroupieViewHolder
 import kotlinx.android.synthetic.main.activity_store_vc.*
-import kotlinx.android.synthetic.main.arena_list_cell.*
 import kotlinx.android.synthetic.main.mask.*
-import kotlinx.android.synthetic.main.store_list_cell.*
-import kotlinx.android.synthetic.main.store_list_cell.cityBtn
-import kotlinx.android.synthetic.main.store_list_cell.telLbl
-import kotlinx.android.synthetic.main.store_list_cell.titleLbl
 import kotlinx.android.synthetic.main.store_list_cell.view.*
-import kotlinx.android.synthetic.main.team_list_cell.*
 import kotlin.collections.ArrayList
-import kotlin.collections.HashMap
 
 class StoreVC : MyTableVC() {
 
@@ -135,7 +126,7 @@ class StoreVC : MyTableVC() {
 //        toShowStore(table.token)
 //    }
 
-    override fun remove(indexPath: IndexPath) {
+    fun remove(indexPath: IndexPath) {
         val row = searchRows[indexPath.row]
         val key = row["key"]!!
         when (key) {

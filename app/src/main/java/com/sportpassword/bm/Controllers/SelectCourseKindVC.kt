@@ -10,7 +10,7 @@ class SelectCourseKindVC : SingleSelectVC() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        rows = COURSE_KIND.makeSelect()
+        //rows = COURSE_KIND.makeSelect()
         key = COURSE_KIND_KEY
 
         //notifyChanged()

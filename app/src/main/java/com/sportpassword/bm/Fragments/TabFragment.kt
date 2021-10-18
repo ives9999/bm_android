@@ -25,7 +25,6 @@ import com.sportpassword.bm.Utilities.*
 import com.sportpassword.bm.Views.SearchPanel
 import com.sportpassword.bm.member
 import com.squareup.picasso.Picasso
-import com.xwray.groupie.Section
 import kotlinx.android.synthetic.main.list1_cell.view.*
 import org.jetbrains.anko.support.v4.runOnUiThread
 import java.io.Serializable
@@ -61,8 +60,8 @@ open class TabFragment : Fragment(), List1CellDelegate, Serializable {
     protected lateinit var refreshLayout: SwipeRefreshLayout
     //protected lateinit var listAdapter: ListAdapter
 //    protected lateinit var adapter: GroupAdapter<GroupieViewHolder>
-    var sections: ArrayList<String> = arrayListOf()
-    protected val adapterSections: ArrayList<Section> = arrayListOf()
+//    var sections: ArrayList<String> = arrayListOf()
+//    protected val adapterSections: ArrayList<Section> = arrayListOf()
 
     protected lateinit var dataService: DataService
     protected var jsonString: String = ""
@@ -464,11 +463,6 @@ open class TabFragment : Fragment(), List1CellDelegate, Serializable {
         var isExpanded: Boolean = searchSection.isExpanded
         isExpanded = !isExpanded
         searchSections[idx].isExpanded = isExpanded
-        toggleSectionOnOff()
-    }
-
-    private fun toggleSectionOnOff() {
-        //searchSections = updateSectionRow()
         searchSectionAdapter.setSearchSection(searchSections)
         searchSectionAdapter.notifyDataSetChanged()
     }

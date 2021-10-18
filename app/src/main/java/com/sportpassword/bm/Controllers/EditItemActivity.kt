@@ -1,30 +1,15 @@
 package com.sportpassword.bm.Controllers
 
-import android.app.Activity
 import android.content.Context
-import android.content.Intent
 import android.os.Bundle
-import android.os.Parcelable
-import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.constraintlayout.widget.ConstraintSet
 import androidx.core.content.ContextCompat
-import android.view.Menu
 import android.view.View
-import android.widget.RelativeLayout
 import com.sportpassword.bm.Adapters.EditTeamItemAdapter
 import com.sportpassword.bm.R
-import com.sportpassword.bm.Services.TeamService
 import com.sportpassword.bm.Utilities.*
-import com.sportpassword.bm.Adapters.GroupSection
 import com.sportpassword.bm.Models.*
-import com.xwray.groupie.ExpandableGroup
-import com.xwray.groupie.GroupAdapter
-import com.xwray.groupie.Section
-import kotlinx.android.parcel.Parcelize
 import kotlinx.android.synthetic.main.activity_edit_team_item.*
 import kotlinx.android.synthetic.main.activity_edit_team_item_adapter.view.*
-import com.xwray.groupie.kotlinandroidextensions.Item
-import com.xwray.groupie.kotlinandroidextensions.GroupieViewHolder
 import kotlinx.android.synthetic.main.activity_edit_team_item_adapter.*
 import kotlinx.android.synthetic.main.mask.*
 import java.util.*
@@ -33,8 +18,8 @@ class EditItemActivity() : BaseActivity() {
 
     lateinit var key: String
     lateinit var editTeamItemAdapter: EditTeamItemAdapter
-    lateinit var arenaAdapter: GroupAdapter<GroupieViewHolder>
-    lateinit var areaAdapter: GroupAdapter<GroupieViewHolder>
+//    lateinit var arenaAdapter: GroupAdapter<GroupieViewHolder>
+//    lateinit var areaAdapter: GroupAdapter<GroupieViewHolder>
 
     var allCitys: ArrayList<City> = arrayListOf()
     var citysandarenas: HashMap<Int, HashMap<String, Any>> = hashMapOf()
@@ -570,40 +555,40 @@ class EditItemActivity() : BaseActivity() {
 //    }
 //}
 
-class AreaItem(val context: Context, val area: Area, val checked: Boolean=false): Item() {
+class AreaItem(val context: Context, val area: Area, val checked: Boolean=false) {
 
-    val checkedColor = ContextCompat.getColor(context, R.color.MY_GREEN)
-    val uncheckedColor = ContextCompat.getColor(context, R.color.MY_WHITE)
-
-    override fun getLayout() = R.layout.activity_edit_team_item_adapter
-
-    override fun bind(viewHolder: GroupieViewHolder, position: Int) {
-
-        viewHolder.item1.text = area.name
-        toggleClick(viewHolder.itemView, checked)
-    }
-
-    fun toggleClick(itemView: View, checked: Boolean) {
-        if (checked) {
-            setSelectedStyle(itemView)
-        } else {
-            unSetSelectedStyle(itemView)
-        }
-    }
-
-    fun setSelectedStyle(itemView: View) {
-        val item1View = itemView.item1
-        val mark1View = itemView.mark1
-        item1View.setTextColor(checkedColor)
-        mark1View.visibility = View.VISIBLE
-        mark1View.setColorFilter(checkedColor)
-    }
-    fun unSetSelectedStyle(itemView: View) {
-        val item1View = itemView.item1
-        val mark1View = itemView.mark1
-        item1View.setTextColor(uncheckedColor)
-        mark1View.visibility = View.INVISIBLE
-    }
+//    val checkedColor = ContextCompat.getColor(context, R.color.MY_GREEN)
+//    val uncheckedColor = ContextCompat.getColor(context, R.color.MY_WHITE)
+//
+//    override fun getLayout() = R.layout.activity_edit_team_item_adapter
+//
+//    override fun bind(viewHolder: GroupieViewHolder, position: Int) {
+//
+//        viewHolder.item1.text = area.name
+//        toggleClick(viewHolder.itemView, checked)
+//    }
+//
+//    fun toggleClick(itemView: View, checked: Boolean) {
+//        if (checked) {
+//            setSelectedStyle(itemView)
+//        } else {
+//            unSetSelectedStyle(itemView)
+//        }
+//    }
+//
+//    fun setSelectedStyle(itemView: View) {
+//        val item1View = itemView.item1
+//        val mark1View = itemView.mark1
+//        item1View.setTextColor(checkedColor)
+//        mark1View.visibility = View.VISIBLE
+//        mark1View.setColorFilter(checkedColor)
+//    }
+//    fun unSetSelectedStyle(itemView: View) {
+//        val item1View = itemView.item1
+//        val mark1View = itemView.mark1
+//        item1View.setTextColor(uncheckedColor)
+//        mark1View.visibility = View.INVISIBLE
+//    }
 }
 
 //@Parcelize

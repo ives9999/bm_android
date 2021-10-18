@@ -2,17 +2,17 @@ package com.sportpassword.bm.Controllers
 
 import android.content.SharedPreferences
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.Menu
 import android.view.View
+import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.TextView
+import androidx.recyclerview.widget.RecyclerView
 import com.onesignal.OSPermissionObserver
 import com.onesignal.OSPermissionStateChanges
-import com.onesignal.OneSignal
 import com.sportpassword.bm.R
-import com.sportpassword.bm.Utilities.MyOneSignal
-import com.sportpassword.bm.Utilities.NotificationServiceExtension
-import com.sportpassword.bm.Utilities.SESSION_FILENAME
-import com.xwray.groupie.GroupAdapter
-import com.xwray.groupie.kotlinandroidextensions.Item
+import com.sportpassword.bm.Utilities.*
 import kotlinx.android.synthetic.main.activity_show_pnvc.*
 import kotlinx.android.synthetic.main.show_pnvc_item.*
 import me.leolin.shortcutbadger.ShortcutBadger
@@ -24,6 +24,7 @@ class ShowPNVC : MyTableVC(), OSPermissionObserver {
 
     var pnArr: JSONArray = JSONArray()
     var isReceive: Boolean = false
+    lateinit var thisAdapter: PNAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -66,7 +67,11 @@ class ShowPNVC : MyTableVC(), OSPermissionObserver {
         refreshLayout = showpnvc_refresh
         setRefreshListener()
 
-        initAdapter()
+        //initAdapter()
+        thisAdapter = PNAdapter(this)
+
+        refresh()
+
         ShortcutBadger.applyCount(this, 0)
     }
 
@@ -77,55 +82,64 @@ class ShowPNVC : MyTableVC(), OSPermissionObserver {
         return true
     }
 
-    override fun initAdapter(include_section: Boolean) {
+//    override fun initAdapter(include_section: Boolean) {
         //adapter = GroupAdapter()
         //recyclerView.adapter = adapter
-        refresh()
-    }
+//        refresh()
+//    }
 
     override fun refresh() {
         getArr()
-        var items = arrayListOf<Item>()
+        thisAdapter.rows = pnArr
+//        var items = arrayListOf<Item>()
         if (pnArr.length() == 0 ) {
             pn_empty.visibility = View.VISIBLE
         } else {
             pn_empty.visibility = View.GONE
-            items = generateItems()
+//            items = generateItems()
         }
         //adapter.update(items)
         //adapter.notifyDataSetChanged()
         closeRefresh()
     }
 
-    override fun generateItems(): ArrayList<Item> {
-        val items: ArrayList<Item> = arrayListOf()
-        for (i in 0..pnArr.length()-1) {
-            val j = pnArr.length()-1-i
-            val obj = pnArr[j] as JSONObject
-            var id = ""
-            if (obj.has("id")) {
-                id = obj.getString("id")
-            }
-            var pnid = ""
-            if (obj.has("pnid")) {
-                pnid = obj.getString("pnid")
-            }
-            var title = ""
-            if (obj.has("title")) {
-                title = obj.getString("title")
-            }
-            val content = obj.getString("content")
-            items.add(PNItem(id, title, content, pnid, { id ->
-//                println(id)
-                warning("是否確定要刪除此訊息？", "關閉", "刪除") {
-                    MyOneSignal.remove(id)
-                    refresh()
-                }
-            }))
+    fun cellRemove(id: String) {
+        warning("是否確定要刪除此訊息？", "關閉", "刪除") {
+            MyOneSignal.remove(id)
+            refresh()
+            thisAdapter.notifyDataSetChanged()
         }
-
-        return items
     }
+
+//    override fun generateItems(): ArrayList<Item> {
+//        val items: ArrayList<Item> = arrayListOf()
+//        for (i in 0..pnArr.length()-1) {
+//            val j = pnArr.length()-1-i
+//            val obj = pnArr[j] as JSONObject
+//            var id = ""
+//            if (obj.has("id")) {
+//                id = obj.getString("id")
+//            }
+//            var pnid = ""
+//            if (obj.has("pnid")) {
+//                pnid = obj.getString("pnid")
+//            }
+//            var title = ""
+//            if (obj.has("title")) {
+//                title = obj.getString("title")
+//            }
+//            val content = obj.getString("content")
+//            items.add(PNItem(id, title, content, pnid, { id ->
+////                println(id)
+//                warning("是否確定要刪除此訊息？", "關閉", "刪除") {
+//                    MyOneSignal.remove(id)
+//                    refresh()
+//                }
+//            }))
+//        }
+//
+//        return items
+//    }
 
     fun clear(view: View) {
         //println("clear")
@@ -161,25 +175,62 @@ class ShowPNVC : MyTableVC(), OSPermissionObserver {
     }
 }
 
-class PNItem(val id: String, val title: String, val content: String, val pnID: String, val removeClick:(String)->Unit): Item() {
+class PNAdapter(val delegate: ShowPNVC): RecyclerView.Adapter<PNViewHolder>() {
 
-    override fun bind(viewHolder: com.xwray.groupie.kotlinandroidextensions.GroupieViewHolder, position: Int) {
-        viewHolder.idLbl.setText(id)
-        viewHolder.pnidLbl.setText(pnID)
-        if (title.length > 0) {
-            viewHolder.titleLbl.visibility = View.VISIBLE
-            viewHolder.titleLbl.setText(title)
-        } else {
-            viewHolder.titleLbl.visibility = View.GONE
-        }
-        viewHolder.contentLbl.setText(content)
+    var rows = JSONArray()
 
-        viewHolder.pn_remove.setOnClickListener {
-            //println(id)
-            removeClick(id)
+    override fun onBindViewHolder(holder: PNViewHolder, position: Int) {
+
+        val row: JSONObject = rows[position] as JSONObject
+        holder.idLbl.text = row.getString("id")
+        holder.pnidLbl.text = row.getString("pnid")
+        holder.title.text = row.getString("title")
+        holder.content.text = row.getString("content")
+
+        holder.pnRemove.setOnClickListener {
+            delegate.cellRemove(row.getString("id"))
         }
     }
 
-    override fun getLayout() = R.layout.show_pnvc_item
+    override fun getItemCount(): Int {
+        return rows.length()
+    }
 
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PNViewHolder {
+        val inflater = LayoutInflater.from(parent.context)
+        val viewHolder = inflater.inflate(R.layout.show_pnvc_item, parent, false)
+
+        return PNViewHolder(viewHolder)
+    }
 }
+
+class PNViewHolder(val viewHolder: View): RecyclerView.ViewHolder(viewHolder) {
+    val idLbl: TextView = viewHolder.findViewById(R.id.idLbl)
+    val pnidLbl: TextView = viewHolder.findViewById(R.id.pnidLbl)
+    val title: TextView = viewHolder.findViewById(R.id.titleLbl)
+    val content: TextView = viewHolder.findViewById(R.id.contentLbl)
+    val pnRemove: ImageView = viewHolder.findViewById(R.id.pn_remove)
+}
+
+//class PNItem(val id: String, val title: String, val content: String, val pnID: String, val removeClick:(String)->Unit): Item() {
+//
+//    override fun bind(viewHolder: com.xwray.groupie.kotlinandroidextensions.GroupieViewHolder, position: Int) {
+//        viewHolder.idLbl.setText(id)
+//        viewHolder.pnidLbl.setText(pnID)
+//        if (title.length > 0) {
+//            viewHolder.titleLbl.visibility = View.VISIBLE
+//            viewHolder.titleLbl.setText(title)
+//        } else {
+//            viewHolder.titleLbl.visibility = View.GONE
+//        }
+//        viewHolder.contentLbl.setText(content)
+//
+//        viewHolder.pn_remove.setOnClickListener {
+//            //println(id)
+//            removeClick(id)
+//        }
+//    }
+//
+//    override fun getLayout() = R.layout.show_pnvc_item
+//
+//}

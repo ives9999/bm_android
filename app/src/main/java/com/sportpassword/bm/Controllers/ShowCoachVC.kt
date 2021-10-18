@@ -18,11 +18,7 @@ import com.sportpassword.bm.Services.CoachService
 import com.sportpassword.bm.Services.CourseService
 import com.sportpassword.bm.Utilities.*
 import com.squareup.picasso.Picasso
-import com.xwray.groupie.GroupAdapter
-import com.xwray.groupie.kotlinandroidextensions.Item
-import com.xwray.groupie.kotlinandroidextensions.GroupieViewHolder
 import kotlinx.android.synthetic.main.activity_show_coach_vc.*
-import kotlinx.android.synthetic.main.activity_show_coach_vc.featured
 import kotlinx.android.synthetic.main.manager_course_item.*
 import org.jetbrains.anko.backgroundColor
 import org.jetbrains.anko.textColor
@@ -47,7 +43,7 @@ class ShowCoachVC: ShowVC() {
     val eventViews: ArrayList<ViewGroup> = arrayListOf()
     var eventTag: Int = 0
 
-    lateinit var courseAdapter: GroupAdapter<GroupieViewHolder>
+//    lateinit var courseAdapter: GroupAdapter<GroupieViewHolder>
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -87,10 +83,10 @@ class ShowCoachVC: ShowVC() {
     }
 
     fun initCourseAdapter() {
-        courseAdapter = GroupAdapter()
-        val courseItems = generateCourseItems()
-        courseAdapter.addAll(courseItems)
-        courseTableView.adapter = courseAdapter
+        //courseAdapter = GroupAdapter()
+//        val courseItems = generateCourseItems()
+//        courseAdapter.addAll(courseItems)
+//        courseTableView.adapter = courseAdapter
     }
 
 
@@ -196,16 +192,16 @@ class ShowCoachVC: ShowVC() {
 //        return items
 //    }
 
-    fun generateCourseItems(): ArrayList<Item> {
-        val items: ArrayList<Item> = arrayListOf()
-        if (coursesTable != null) {
-            for (row in coursesTable!!.rows) {
-                items.add(CoachCourseItem(this, row))
-            }
-        }
-
-        return items
-    }
+//    fun generateCourseItems(): ArrayList<Item> {
+//        val items: ArrayList<Item> = arrayListOf()
+//        if (coursesTable != null) {
+//            for (row in coursesTable!!.rows) {
+//                items.add(CoachCourseItem(this, row))
+//            }
+//        }
+//
+//        return items
+//    }
 
     override fun setData() {
         if (myTable != null) {
@@ -253,11 +249,11 @@ class ShowCoachVC: ShowVC() {
             if (success) {
                 //println(CourseService.jsonString)
                 coursesTable = jsonToModels<CoursesTable>(CourseService.jsonString)
-                val items = generateCourseItems()
-                courseAdapter.update(items)
-                runOnUiThread {
-                    courseAdapter.notifyDataSetChanged()
-                }
+//                val items = generateCourseItems()
+//                courseAdapter.update(items)
+//                runOnUiThread {
+//                    courseAdapter.notifyDataSetChanged()
+//                }
             }
         }
     }
@@ -395,7 +391,7 @@ class ShowCoachVC: ShowVC() {
 //        }
 //    }
 
-    override fun didSelectRowAt(view: View, position: Int) {
+    fun didSelectRowAt(view: View, position: Int) {
         val key = tableRowKeys[position]
         if (key == MOBILE_KEY) {
             val mobile = myTable!!.mobile
@@ -426,16 +422,16 @@ class ShowCoachVC: ShowVC() {
     }
 }
 
-class CoachCourseItem(val context: Context, val courseTable: CourseTable): Item() {
-    override fun bind(viewHolder: com.xwray.groupie.kotlinandroidextensions.GroupieViewHolder, position: Int) {
-        viewHolder.title.text = courseTable.title
-        Picasso.with(context)
-            .load(BASE_URL + courseTable.featured_path)
-            .placeholder(R.drawable.loading_square)
-            .error(R.drawable.load_failed_square)
-            .into(viewHolder.featured)
-    }
-
-    override fun getLayout() = R.layout.manager_course_item
-
-}
+//class CoachCourseItem(val context: Context, val courseTable: CourseTable): Item() {
+//    override fun bind(viewHolder: com.xwray.groupie.kotlinandroidextensions.GroupieViewHolder, position: Int) {
+//        viewHolder.title.text = courseTable.title
+//        Picasso.with(context)
+//            .load(BASE_URL + courseTable.featured_path)
+//            .placeholder(R.drawable.loading_square)
+//            .error(R.drawable.load_failed_square)
+//            .into(viewHolder.featured)
+//    }
+//
+//    override fun getLayout() = R.layout.manager_course_item
+//
+//}

@@ -25,16 +25,16 @@ class SelectWeekdaysVC : MultiSelectVC() {
 
     fun rowsBridge(weekdays: ArrayList<WEEKDAY>) {
 
-        if (rows.count() > 0) {
-            rows.clear()
-        } else {
-            rows = arrayListOf()
-        }
-        for(weekday in weekdays) {
-            val name = WEEKDAY.intToString(weekday.value)
-            val id = weekday.value
-            rows.add(hashMapOf("title" to name, "value" to id.toString()))
-        }
+//        if (rows.count() > 0) {
+//            rows.clear()
+//        } else {
+//            rows = arrayListOf()
+//        }
+//        for(weekday in weekdays) {
+//            val name = WEEKDAY.intToString(weekday.value)
+//            val id = weekday.value
+//            rows.add(hashMapOf("title" to name, "value" to id.toString()))
+//        }
     }
 
     override fun submit(view: View) {

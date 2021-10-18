@@ -7,16 +7,11 @@ import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 import com.google.gson.JsonParseException
 import com.sportpassword.bm.Adapters.IconCell
-import com.sportpassword.bm.Adapters.IconCellDelegate
-import com.sportpassword.bm.Adapters.OlCell
 import com.sportpassword.bm.Models.*
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.CourseService
 import com.sportpassword.bm.Utilities.*
 import com.sportpassword.bm.member
-import com.xwray.groupie.GroupAdapter
-import com.xwray.groupie.GroupieViewHolder
-import com.xwray.groupie.kotlinandroidextensions.Item
 import kotlinx.android.synthetic.main.activity_show_course_vc.*
 import kotlinx.android.synthetic.main.mask.*
 import org.json.JSONObject
@@ -48,8 +43,8 @@ class ShowCourseVC : ShowVC() {
     var coachTable: CoachTable? = null
     var dateTable: DateTable? = null
 
-    lateinit var signupAdapter: GroupAdapter<GroupieViewHolder>
-    lateinit var coachAdapter: GroupAdapter<GroupieViewHolder>
+//    lateinit var signupAdapter: GroupAdapter<GroupieViewHolder>
+//    lateinit var coachAdapter: GroupAdapter<GroupieViewHolder>
 
     var signup_date: JSONObject = JSONObject()
     var isSignup: Boolean = false
@@ -89,19 +84,19 @@ class ShowCourseVC : ShowVC() {
     override fun initAdapter() {
         super.initAdapter()
 
-        signupAdapter = GroupAdapter()
-        val signupItems = generateSignupItem()
-        signupAdapter.addAll(signupItems)
-        signupTableView.adapter = signupAdapter
+//        signupAdapter = GroupAdapter()
+//        val signupItems = generateSignupItem()
+//        signupAdapter.addAll(signupItems)
+//        signupTableView.adapter = signupAdapter
 
 
-        coachAdapter = GroupAdapter()
-        coachAdapter.setOnItemClickListener { item, view ->
-
-        }
-        val coachItems = generateCoachItem()
-        coachAdapter.addAll(coachItems)
-        coachTableView.adapter = coachAdapter
+//        coachAdapter = GroupAdapter()
+//        coachAdapter.setOnItemClickListener { item, view ->
+//
+//        }
+//        val coachItems = generateCoachItem()
+//        coachAdapter.addAll(coachItems)
+//        coachTableView.adapter = coachAdapter
     }
 
     override fun genericTable() {
@@ -177,8 +172,8 @@ class ShowCourseVC : ShowVC() {
             if (myTable!!.coach != null) {
                 coachTable = myTable!!.coach
                 setCoachData()
-                val items = generateCoachItem()
-                coachAdapter.update(items)
+//                val items = generateCoachItem()
+//                coachAdapter.update(items)
             }
 
             if (myTable!!.dateTable != null) {
@@ -210,8 +205,8 @@ class ShowCourseVC : ShowVC() {
             signupDateLbl.text = "未提供報名"
             signupButton.visibility = View.GONE
         }
-        val items = generateSignupItem()
-        signupAdapter.update(items)
+//        val items = generateSignupItem()
+//        signupAdapter.update(items)
 
         isSignup = myTable!!.isSignup
         //isStandby
@@ -235,8 +230,8 @@ class ShowCourseVC : ShowVC() {
             }
         }
         //println(coachTableRows)
-        val items = generateCoachItem()
-        coachAdapter.update(items)
+//        val items = generateCoachItem()
+//        coachAdapter.update(items)
     }
 
 //    fun setNextTime() {
@@ -308,15 +303,66 @@ class ShowCourseVC : ShowVC() {
 //        return items
 //    }
 
-    fun generateSignupItem(): ArrayList<Item> {
-        val items: ArrayList<Item> = arrayListOf()
-        var icon = ""
-        var title = ""
-        var content = ""
-        if (myTable != null) {
-            for (i in 0..myTable!!.people_limit - 1) {
-//            if (signupTableRows.containsKey(key)) {
-//                val row = signupTableRows[key]!!
+//    fun generateSignupItem(): ArrayList<Item> {
+//        val items: ArrayList<Item> = arrayListOf()
+//        var icon = ""
+//        var title = ""
+//        var content = ""
+//        if (myTable != null) {
+//            for (i in 0..myTable!!.people_limit - 1) {
+////            if (signupTableRows.containsKey(key)) {
+////                val row = signupTableRows[key]!!
+////                if (row.containsKey("icon")) {
+////                    icon = row["icon"]!!
+////                }
+////                if (row.containsKey("title")) {
+////                    title = row["title"]!!
+////                }
+////                if (row.containsKey("content")) {
+////                    content = row["content"]!!
+////                    if (key == MOBILE_KEY) {
+////                        content = content.mobileShow()
+////                    }
+////                }
+//////                if (icon.length > 0 && title.length > 0) {
+//////                    val iconCell = IconCell(this@ShowCourseVC, icon, title, content, false)
+//////                    iconCell.delegate = this
+//////                    items.add(iconCell)
+//////                }
+////            }
+//                var name = ""
+//                if (myTable!!.signup_normal_models.count() > i) {
+//                    val tmp = myTable!!.signup_normal_models[i].member_name?.let {
+//                        name = it
+//                    }
+//                }
+//                val olCell = OlCell(this, (i + 1).toString(), name)
+//                items.add(olCell)
+//            }
+//            if (myTable!!.signup_standby_models.count() > 0) {
+//                for (i in 0..myTable!!.signup_standby_models.count() - 1) {
+//                    var name = ""
+//                    val tmp = myTable!!.signup_standby_models[i].member_name?.let {
+//                        name = it
+//                    }
+//                    val olCell = OlCell(this, "候補" + (i + 1).toString(), name)
+//                    items.add(olCell)
+//                }
+//            }
+//        }
+//
+//        return items
+//    }
+
+//    fun generateCoachItem(): ArrayList<Item> {
+//        val items: ArrayList<Item> = arrayListOf()
+//        var icon = ""
+//        var title = ""
+//        var content = ""
+//        var isPressed: Boolean = false
+//        for (key in coachTableRowKeys) {
+//            if (coachTableRows.containsKey(key)) {
+//                val row = coachTableRows[key]!!
 //                if (row.containsKey("icon")) {
 //                    icon = row["icon"]!!
 //                }
@@ -329,72 +375,21 @@ class ShowCourseVC : ShowVC() {
 //                        content = content.mobileShow()
 //                    }
 //                }
-////                if (icon.length > 0 && title.length > 0) {
-////                    val iconCell = IconCell(this@ShowCourseVC, icon, title, content, false)
-////                    iconCell.delegate = this
-////                    items.add(iconCell)
-////                }
+//                if (row.containsKey("isPressed")) {
+//                    isPressed = row["isPressed"]!!.toBoolean()
+//                }
+//                if (icon.length > 0 && title.length > 0) {
+//                    val iconCell = IconCell(this@ShowCourseVC, icon, title, content, isPressed)
+//                    iconCell.delegate = this
+//                    items.add(iconCell)
+//                }
 //            }
-                var name = ""
-                if (myTable!!.signup_normal_models.count() > i) {
-                    val tmp = myTable!!.signup_normal_models[i].member_name?.let {
-                        name = it
-                    }
-                }
-                val olCell = OlCell(this, (i + 1).toString(), name)
-                items.add(olCell)
-            }
-            if (myTable!!.signup_standby_models.count() > 0) {
-                for (i in 0..myTable!!.signup_standby_models.count() - 1) {
-                    var name = ""
-                    val tmp = myTable!!.signup_standby_models[i].member_name?.let {
-                        name = it
-                    }
-                    val olCell = OlCell(this, "候補" + (i + 1).toString(), name)
-                    items.add(olCell)
-                }
-            }
-        }
+//        }
+//
+//        return items
+//    }
 
-        return items
-    }
-
-    fun generateCoachItem(): ArrayList<Item> {
-        val items: ArrayList<Item> = arrayListOf()
-        var icon = ""
-        var title = ""
-        var content = ""
-        var isPressed: Boolean = false
-        for (key in coachTableRowKeys) {
-            if (coachTableRows.containsKey(key)) {
-                val row = coachTableRows[key]!!
-                if (row.containsKey("icon")) {
-                    icon = row["icon"]!!
-                }
-                if (row.containsKey("title")) {
-                    title = row["title"]!!
-                }
-                if (row.containsKey("content")) {
-                    content = row["content"]!!
-                    if (key == MOBILE_KEY) {
-                        content = content.mobileShow()
-                    }
-                }
-                if (row.containsKey("isPressed")) {
-                    isPressed = row["isPressed"]!!.toBoolean()
-                }
-                if (icon.length > 0 && title.length > 0) {
-                    val iconCell = IconCell(this@ShowCourseVC, icon, title, content, isPressed)
-                    iconCell.delegate = this
-                    items.add(iconCell)
-                }
-            }
-        }
-
-        return items
-    }
-
-    override fun didSelectRowAt(view: View, position: Int) {
+    fun didSelectRowAt(view: View, position: Int) {
         //println("delegate:"+position)
         val parent = view.parent
         if (parent is RecyclerView) {

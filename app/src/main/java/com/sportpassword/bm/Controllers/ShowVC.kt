@@ -5,21 +5,17 @@ import android.view.Menu
 import android.view.View
 import android.widget.ImageButton
 import com.sportpassword.bm.Adapters.IconCell
-import com.sportpassword.bm.Adapters.IconCellDelegate
 import com.sportpassword.bm.Models.Table
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Utilities.Loading
 import com.sportpassword.bm.Utilities.image
 import com.sportpassword.bm.member
-import com.xwray.groupie.GroupAdapter
-import com.xwray.groupie.GroupieViewHolder
-import com.xwray.groupie.kotlinandroidextensions.Item
 import kotlinx.android.synthetic.main.activity_show_course_vc.*
 import kotlinx.android.synthetic.main.mask.*
 import kotlin.reflect.KClass
 import kotlin.reflect.full.memberProperties
 
-open class ShowVC: BaseActivity(), IconCellDelegate {
+open class ShowVC: BaseActivity() {
 
     var token: String? = null    // course token
     var tableRowKeys:MutableList<String> = mutableListOf()
@@ -30,7 +26,6 @@ open class ShowVC: BaseActivity(), IconCellDelegate {
     var isLike: Boolean = false
     var likeCount: Int = 0
 
-    lateinit var adapter: GroupAdapter<GroupieViewHolder>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -47,11 +42,11 @@ open class ShowVC: BaseActivity(), IconCellDelegate {
     }
 
     open fun initAdapter() {
-        adapter = GroupAdapter()
+//        adapter = GroupAdapter()
 
-        val items = generateMainItem()
-        adapter.addAll(items)
-        tableView.adapter = adapter
+//        val items = generateMainItem()
+//        adapter.addAll(items)
+//        tableView.adapter = adapter
     }
 
     open fun genericTable() {}
@@ -89,38 +84,38 @@ open class ShowVC: BaseActivity(), IconCellDelegate {
         }
     }
 
-    fun generateMainItem(): ArrayList<Item> {
-
-        val items: ArrayList<Item> = arrayListOf()
-        var icon = ""
-        var title = ""
-        var content = ""
-        var isPressed: Boolean = false
-        for (key in tableRowKeys) {
-            if (tableRows.containsKey(key)) {
-                val row = tableRows[key]!!
-                if (row.containsKey("icon")) {
-                    icon = row["icon"]!!
-                }
-                if (row.containsKey("title")) {
-                    title = row["title"]!!
-                }
-                if (row.containsKey("content")) {
-                    content = row["content"]!!
-                }
-                if (row.containsKey("isPressed")) {
-                    isPressed = row["isPressed"]!!.toBoolean()
-                }
-                if (icon.length > 0 && title.length > 0) {
-                    val iconCell = IconCell(this, icon, title, content, isPressed)
-                    iconCell.delegate = this
-                    items.add(iconCell)
-                }
-            }
-        }
-
-        return items
-    }
+//    fun generateMainItem(): ArrayList<Item> {
+//
+//        val items: ArrayList<Item> = arrayListOf()
+//        var icon = ""
+//        var title = ""
+//        var content = ""
+//        var isPressed: Boolean = false
+//        for (key in tableRowKeys) {
+//            if (tableRows.containsKey(key)) {
+//                val row = tableRows[key]!!
+//                if (row.containsKey("icon")) {
+//                    icon = row["icon"]!!
+//                }
+//                if (row.containsKey("title")) {
+//                    title = row["title"]!!
+//                }
+//                if (row.containsKey("content")) {
+//                    content = row["content"]!!
+//                }
+//                if (row.containsKey("isPressed")) {
+//                    isPressed = row["isPressed"]!!.toBoolean()
+//                }
+//                if (icon.length > 0 && title.length > 0) {
+//                    val iconCell = IconCell(this, icon, title, content, isPressed)
+//                    iconCell.delegate = this
+//                    items.add(iconCell)
+//                }
+//            }
+//        }
+//
+//        return items
+//    }
 
     fun setFeatured() {
         if (featured != null) {
@@ -144,8 +139,8 @@ open class ShowVC: BaseActivity(), IconCellDelegate {
             }
         }
 
-        val items = generateMainItem()
-        adapter.update(items)
+//        val items = generateMainItem()
+//        adapter.update(items)
 
     }
 
@@ -211,7 +206,7 @@ open class ShowVC: BaseActivity(), IconCellDelegate {
         }
     }
 
-    override fun didSelectRowAt(view: View, position: Int) {}
+//    override fun didSelectRowAt(view: View, position: Int) {}
 
     open fun setData() {}
 }
