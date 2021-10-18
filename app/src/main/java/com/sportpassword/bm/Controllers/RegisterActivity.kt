@@ -6,18 +6,13 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.RelativeLayout
-import androidx.appcompat.app.AlertDialog
 import com.google.gson.Gson
 import com.google.gson.JsonParseException
-import com.sportpassword.bm.Adapters.Form.*
+import com.sportpassword.bm.Data.OneRow
 import com.sportpassword.bm.Form.FormItem.*
-import com.sportpassword.bm.Form.FormItemCellType
-import com.sportpassword.bm.Form.RegisterForm
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.MemberService
 import com.sportpassword.bm.Utilities.*
-import com.sportpassword.bm.Views.ImagePicker
-import com.xwray.groupie.kotlinandroidextensions.Item
 import kotlinx.android.synthetic.main.activity_register.*
 import kotlinx.android.synthetic.main.activity_register.editTableView
 import kotlinx.android.synthetic.main.activity_register.edit_featured
@@ -25,16 +20,14 @@ import kotlinx.android.synthetic.main.activity_register.featured_text
 import kotlinx.android.synthetic.main.activity_register.refresh
 import kotlinx.android.synthetic.main.mask.*
 import java.io.File
-import com.sportpassword.bm.Form.ValueChangedDelegate
 import com.sportpassword.bm.Models.MemberTable
 import com.sportpassword.bm.member
 import kotlinx.android.synthetic.main.activity_register.edit_featured_container
 import org.jetbrains.anko.sdk27.coroutines.onClick
-import kotlin.reflect.KClass
 import kotlin.reflect.full.createType
 import kotlin.reflect.full.memberProperties
 
-class RegisterActivity : MyTableVC(), ValueChangedDelegate {
+class RegisterActivity : MyTableVC() {
 
     //image picker
 //    override val ACTION_CAMERA_REQUEST_CODE = 100
@@ -54,14 +47,14 @@ class RegisterActivity : MyTableVC(), ValueChangedDelegate {
     private var originMarginBottom = 0
     private lateinit var originScaleType: ImageView.ScaleType
 
-    var section_keys: ArrayList<ArrayList<String>> = arrayListOf()
+//    var section_keys: ArrayList<ArrayList<String>> = arrayListOf()
 
     private var isFeaturedChange: Boolean = false
 
     private var old_selected_city: String = ""
     private var member_token: String = ""
 
-    val SELECT_REQUEST_CODE = 1
+//    val SELECT_REQUEST_CODE = 1
 
     val testData: HashMap<String, String> = hashMapOf(
 //        EMAIL_KEY to "john@housetube.tw",
@@ -89,9 +82,9 @@ class RegisterActivity : MyTableVC(), ValueChangedDelegate {
         setMyTitle("註冊")
         hidekeyboard(register_layout)
 
-        form = RegisterForm(this)
-        sections = form.getSections()
-        section_keys = form.getSectionKeys()
+//        form = RegisterForm(this)
+//        sections = form.getSections()
+//        section_keys = form.getSectionKeys()
 
         imageView = edit_featured
         getImageViewParams()
@@ -100,10 +93,16 @@ class RegisterActivity : MyTableVC(), ValueChangedDelegate {
             showImagePickerLayer()
         }
 
-        initData()
-
         recyclerView = editTableView
-        initAdapter(true)
+        oneSectionAdapter = OneSectionAdapter(this, R.layout.cell_section, this, hashMapOf())
+        oneSectionAdapter.setOneSection(oneSections)
+        recyclerView.adapter = oneSectionAdapter
+
+        initData()
+        oneSectionAdapter.setOneSection(oneSections)
+        oneSectionAdapter.notifyDataSetChanged()
+
+        //initAdapter(true)
 
         refreshLayout = refresh
         setRefreshListener()
@@ -116,7 +115,7 @@ class RegisterActivity : MyTableVC(), ValueChangedDelegate {
         }
         params.clear()
         initData()
-        generateItems()
+//        generateItems()
         //adapter.notifyDataSetChanged()
         refreshLayout!!.isRefreshing = false
     }
@@ -144,6 +143,46 @@ class RegisterActivity : MyTableVC(), ValueChangedDelegate {
                 }
             }
             //println(keys)
+
+            var rows: ArrayList<OneRow> = arrayListOf()
+            var row = OneRow("EMail", member.email!!, member.email!!, EMAIL_KEY, "textField", "service@bm.com", "", true)
+            rows.add(row)
+            var section = makeSectionRow("登入資料", "login", rows, true)
+            oneSections.add(section)
+
+            rows.clear()
+            row = OneRow("姓名", member.name!!, member.name!!, NAME_KEY, "textField", "王大明", "", true)
+            rows.add(row)
+            row = OneRow("暱稱", member.nickname!!, member.nickname!!, NICKNAME_KEY, "textField", "大明哥", "", true)
+            rows.add(row)
+            row = OneRow("生日", member.dob!!, member.dob!!, DOB_KEY, "more")
+            rows.add(row)
+            row = OneRow("性別", member.sex!!, "", SEX_KEY, "sex", "", "", true)
+            rows.add(row)
+            section = makeSectionRow("個人資料", "data", rows, true)
+            oneSections.add(section)
+
+            rows.clear()
+            row = OneRow("行動電話", member.mobile!!, member.mobile!!, MOBILE_KEY, "textField", "0939123456", "", true)
+            rows.add(row)
+            row = OneRow("市內電話", member.tel!!, member.tel!!, MOBILE_KEY, "textField", "021234567")
+            rows.add(row)
+            row = OneRow("縣市", member.city.toString(), Global.zoneIDToName(member.city), CITY_KEY, "more", "", "", true)
+            rows.add(row)
+            row = OneRow("區域", member.area.toString(), Global.zoneIDToName(member.area), AREA_KEY, "more", "", "", true)
+            rows.add(row)
+            row = OneRow("住址", member.road!!, member.road!!, ROAD_KEY, "textField", "中山路60號", "", true)
+            rows.add(row)
+            section = makeSectionRow("聯絡資料", "contact", rows, true)
+            oneSections.add(section)
+
+            rows.clear()
+            row = OneRow("FB", member.fb!!, member.fb!!, FB_KEY, "textField")
+            rows.add(row)
+            row = OneRow("Line", member.line!!, member.line!!, LINE_KEY, "textField")
+            rows.add(row)
+            section = makeSectionRow("社群資料", "social", rows, true)
+            oneSections.add(section)
 
             member_token = member.token!!
             for (key in keys) {
@@ -231,117 +270,110 @@ class RegisterActivity : MyTableVC(), ValueChangedDelegate {
             }
         } else {
             if (testData.count() > 0) {
-                for ((key, value) in testData) {
-                    val formItem = getFormItemFromKey(key)
-                    if (formItem != null) {
-                        if (key == AREA_KEY && testData.containsKey("area_name")) {
-                            val _formItem = formItem as AreaFormItem
-                            _formItem.selected_area_names = arrayListOf(testData["area_name"]!!)
-                        } else if (key == CITY_KEY && testData.containsKey("city_name")) { // test data session has, so not implement.
-                            //val _formItem = formItem as CityFormItem
-                            //_formItem.selected_city_names = arrayListOf(testData["city_name"]!!)
-                        }
-                        formItem.value = value
-                        formItem.make()
-                    }
-                }
+//                for ((key, value) in testData) {
+//                    val formItem = getFormItemFromKey(key)
+//                    if (formItem != null) {
+//                        if (key == AREA_KEY && testData.containsKey("area_name")) {
+//                            val _formItem = formItem as AreaFormItem
+//                            _formItem.selected_area_names = arrayListOf(testData["area_name"]!!)
+//                        } else if (key == CITY_KEY && testData.containsKey("city_name")) { // test data session has, so not implement.
+//                            //val _formItem = formItem as CityFormItem
+//                            //_formItem.selected_city_names = arrayListOf(testData["city_name"]!!)
+//                        }
+//                        formItem.value = value
+//                        formItem.make()
+//                    }
+//                }
                 old_selected_city = testData[CITY_KEY]!!
             }
         }
     }
 
-    override fun generateItems(section: Int): ArrayList<Item> {
-
-        val rows: ArrayList<Item> = arrayListOf()
-
-        val clearClick = { formItem: FormItem ->
-            formItem.reset()
-        }
-
-        val promptClick = { formItem: FormItem ->
-            if (formItem.tooltip != null) {
-                Alert.show(this, "提示", formItem.tooltip!!)
-            }
-        }
-
-        val rowClick = { formItem: FormItem ->
-            prepare(formItem)
-        }
-
-        val arr: ArrayList<FormItem> = arrayListOf()
-        for (key in section_keys[section]) {
-            for (formItem in form.formItems) {
-                if (key == formItem.name) {
-                    arr.add(formItem)
-                    break
-                }
-            }
-        }
-
-//        println(arr)
-
-//        var idx: Int = 0
-//        for (i in 0..(section-1)) {
-//            idx += section_keys[i].size
+//    override fun generateItems(section: Int): ArrayList<Item> {
+//
+//        val rows: ArrayList<Item> = arrayListOf()
+//
+//        val clearClick = { formItem: FormItem ->
+//            formItem.reset()
 //        }
-
-        for ((i,formItem) in arr.withIndex()) {
-
-            val indexPath: IndexPath = IndexPath(section, i)
-            var idx: Int = 0
-            for ((j, _forItem) in form.formItems.withIndex()) {
-                if (formItem.name == _forItem.name) {
-                    idx = j
-                    break
-                }
-            }
-
-            var formItemAdapter: FormItemAdapter? = null
-
-            if (formItem.name == MOBILE_KEY) {
-                formItemAdapter = MobileAdapter(formItem, clearClick, promptClick)
-            } else if (formItem.name == EMAIL_KEY) {
-                formItemAdapter = EmailAdapter(formItem, clearClick, promptClick)
-            } else if (formItem.name == NAME_KEY) {
-                formItemAdapter = TitleAdapter(formItem, clearClick, promptClick)
-            } else if (formItem.name == NICKNAME_KEY) {
-                formItemAdapter = NicknameAdapter(formItem, clearClick, promptClick)
-            } else if (formItem.name == TEL_KEY) {
-                formItemAdapter = TelAdapter(formItem, clearClick, promptClick)
-            } else if (formItem.name == ROAD_KEY) {
-                formItemAdapter = RoadAdapter(formItem, clearClick, promptClick)
-            } else if (formItem.name == FB_KEY) {
-                formItemAdapter = FBAdapter(formItem, clearClick, promptClick)
-            } else if (formItem.name == LINE_KEY) {
-                formItemAdapter = LineAdapter(formItem, clearClick, promptClick)
-            } else {
-                if (formItem.uiProperties.cellType == FormItemCellType.password) {
-                    formItemAdapter = TextFieldAdapter(formItem, clearClick, promptClick)
-                } else if (formItem.uiProperties.cellType == FormItemCellType.date) {
-                    formItemAdapter = MoreAdapter(formItem, clearClick, rowClick)
-                } else if (formItem.uiProperties.cellType == FormItemCellType.sex) {
-                    formItemAdapter = SexAdapter(formItem)
-                } else if (formItem.uiProperties.cellType == FormItemCellType.city) {
-                    formItemAdapter = MoreAdapter(formItem, clearClick, rowClick)
-                } else if (formItem.uiProperties.cellType == FormItemCellType.area) {
-                    formItemAdapter = MoreAdapter(formItem, clearClick, rowClick)
-                } else if (formItem.uiProperties.cellType == FormItemCellType.privacy) {
-                    formItemAdapter = PrivacyAdapter(formItem)
-                }
-            }
-
-            if (formItemAdapter != null) {
-                formItemAdapter.valueChangedDelegate = this
-                rows.add(formItemAdapter)
-            }
-//            idx++
-        }
-
-//        val formItem = getFormItemFromKey(MOBILE_KEY)
-//        println("generate:${formItem!!.name}:${formItem!!.value}")
-
-        return rows
-    }
+//
+//        val promptClick = { formItem: FormItem ->
+//            if (formItem.tooltip != null) {
+//                Alert.show(this, "提示", formItem.tooltip!!)
+//            }
+//        }
+//
+//        val rowClick = { formItem: FormItem ->
+//            prepare(formItem)
+//        }
+//
+//        val arr: ArrayList<FormItem> = arrayListOf()
+//        for (key in section_keys[section]) {
+//            for (formItem in form.formItems) {
+//                if (key == formItem.name) {
+//                    arr.add(formItem)
+//                    break
+//                }
+//            }
+//        }
+//
+//        for ((i,formItem) in arr.withIndex()) {
+//
+//            val indexPath: IndexPath = IndexPath(section, i)
+//            var idx: Int = 0
+//            for ((j, _forItem) in form.formItems.withIndex()) {
+//                if (formItem.name == _forItem.name) {
+//                    idx = j
+//                    break
+//                }
+//            }
+//
+//            var formItemAdapter: FormItemAdapter? = null
+//
+//            if (formItem.name == MOBILE_KEY) {
+//                formItemAdapter = MobileAdapter(formItem, clearClick, promptClick)
+//            } else if (formItem.name == EMAIL_KEY) {
+//                formItemAdapter = EmailAdapter(formItem, clearClick, promptClick)
+//            } else if (formItem.name == NAME_KEY) {
+//                formItemAdapter = TitleAdapter(formItem, clearClick, promptClick)
+//            } else if (formItem.name == NICKNAME_KEY) {
+//                formItemAdapter = NicknameAdapter(formItem, clearClick, promptClick)
+//            } else if (formItem.name == TEL_KEY) {
+//                formItemAdapter = TelAdapter(formItem, clearClick, promptClick)
+//            } else if (formItem.name == ROAD_KEY) {
+//                formItemAdapter = RoadAdapter(formItem, clearClick, promptClick)
+//            } else if (formItem.name == FB_KEY) {
+//                formItemAdapter = FBAdapter(formItem, clearClick, promptClick)
+//            } else if (formItem.name == LINE_KEY) {
+//                formItemAdapter = LineAdapter(formItem, clearClick, promptClick)
+//            } else {
+//                if (formItem.uiProperties.cellType == FormItemCellType.password) {
+//                    formItemAdapter = TextFieldAdapter(formItem, clearClick, promptClick)
+//                } else if (formItem.uiProperties.cellType == FormItemCellType.date) {
+//                    formItemAdapter = MoreAdapter(formItem, clearClick, rowClick)
+//                } else if (formItem.uiProperties.cellType == FormItemCellType.sex) {
+//                    formItemAdapter = SexAdapter(formItem)
+//                } else if (formItem.uiProperties.cellType == FormItemCellType.city) {
+//                    formItemAdapter = MoreAdapter(formItem, clearClick, rowClick)
+//                } else if (formItem.uiProperties.cellType == FormItemCellType.area) {
+//                    formItemAdapter = MoreAdapter(formItem, clearClick, rowClick)
+//                } else if (formItem.uiProperties.cellType == FormItemCellType.privacy) {
+//                    formItemAdapter = PrivacyAdapter(formItem)
+//                }
+//            }
+//
+//            if (formItemAdapter != null) {
+//                formItemAdapter.valueChangedDelegate = this
+//                rows.add(formItemAdapter)
+//            }
+////            idx++
+//        }
+//
+////        val formItem = getFormItemFromKey(MOBILE_KEY)
+////        println("generate:${formItem!!.name}:${formItem!!.value}")
+//
+//        return rows
+//    }
 
 //    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
 //        super.onActivityResult(requestCode, resultCode, data)
@@ -439,6 +471,13 @@ class RegisterActivity : MyTableVC(), ValueChangedDelegate {
 
         var isSubmit: Boolean = true
         var msg: String = ""
+        for (section in oneSections) {
+            for (row in section.items) {
+                if (row.isRequired && row.value.isEmpty()) {
+                    msg += "" + "\n"
+                }
+            }
+        }
         for (formItem in form.formItems) {
             formItem.checkValidity()
             if (!formItem.isValid) {
@@ -618,40 +657,85 @@ class RegisterActivity : MyTableVC(), ValueChangedDelegate {
         originMarginBottom = l.bottomMargin
     }
 
+    override fun cellTextChanged(sectionIdx: Int, rowIdx: Int, str: String) {
+        oneSections[sectionIdx].items[rowIdx].value = str
+    }
+
+    override fun cellMoreClick(sectionIdx: Int, rowIdx: Int) {
+        val row = getRowFromIdx(sectionIdx, rowIdx)
+        if (row.key == DOB_KEY) {
+            toSelectDate(row.key, row.value, this)
+        } else if (row.key == CITY_KEY) {
+            toSelectCity(row.value, this)
+        } else if (row.key == AREA_KEY) {
+            val row: OneRow = getRowFromKey(CITY_KEY)
+            if (row.value.isEmpty()) {
+                warning("請先選擇縣市")
+            } else {
+                toSelectArea(row.value, row.value.toInt(), this)
+            }
+        }
+    }
+
+    override fun cellSexChanged(key: String, sectionIdx: Int, rowIdx: Int, sex: String) {
+        val row = getRowFromIdx(sectionIdx, rowIdx)
+        row.value = sex
+        row.show = sex
+    }
+
+    override fun cellClear(sectionIdx: Int, rowIdx: Int) {
+        oneSections[sectionIdx].items[rowIdx].value = ""
+        oneSections[sectionIdx].items[rowIdx].show = ""
+        //searchSections = updateSectionRow()
+        oneSectionAdapter.setOneSection(oneSections)
+        oneSectionAdapter.notifyItemChanged(sectionIdx)
+    }
+
     override fun singleSelected(key: String, selected: String) {
 
-//        var item: FormItem? = null
-
-//        if (key == CITY_KEY) {
-//            item = getFormItemFromKey(key) as CityFormItem
-//        } else if (key == AREA_KEY) {
-//            item = getFormItemFromKey(key) as AreaFormItem
-//        }
-        val item = getFormItemFromKey(key)
-        if (item != null && selected.isNotEmpty()) {
-            if (item.value != selected) {
-                item.reset()
+        val row = getRowFromKey(key)
+        row.value = selected
+        if (key == DOB_KEY) {
+            row.show = selected
+        } else if (key == CITY_KEY) {
+            row.show = Global.zoneIDToName(selected.toInt())
+            if (selected != old_selected_city) {
+                val row1 = getRowFromKey(AREA_KEY)
+                row1.value = ""
+                row1.show = ""
             }
-            if (key == AREA_KEY) {
-                val item1: AreaFormItem = item as AreaFormItem
-                val cityItem = getFormItemFromKey(CITY_KEY)
-                item1.city_id = cityItem!!.value!!.toInt()
-            } else if (key == CITY_KEY) {
-                val item1 = getFormItemFromKey(AREA_KEY)
-                if (old_selected_city != selected) {
-                    if (item1 != null) {
-                        item1.reset()
-                    }
-                    old_selected_city = selected
-                }
-            }
-            item.value = selected
-            item.make()
+        } else if (key == AREA_KEY) {
+            row.show = Global.zoneIDToName(selected.toInt())
         }
+
+        val sectionIdx: Int = getSectionIdxFromRowKey(key)
+        oneSectionAdapter.notifyItemChanged(sectionIdx)
+
+//        val item = getFormItemFromKey(key)
+//        if (item != null && selected.isNotEmpty()) {
+//            if (item.value != selected) {
+//                item.reset()
+//            }
+//            if (key == AREA_KEY) {
+//                val item1: AreaFormItem = item as AreaFormItem
+//                val cityItem = getFormItemFromKey(CITY_KEY)
+//                item1.city_id = cityItem!!.value!!.toInt()
+//            } else if (key == CITY_KEY) {
+//                val item1 = getFormItemFromKey(AREA_KEY)
+//                if (old_selected_city != selected) {
+//                    if (item1 != null) {
+//                        item1.reset()
+//                    }
+//                    old_selected_city = selected
+//                }
+//            }
+//            item.value = selected
+//            item.make()
+//        }
         //notifyChanged(true)
     }
 
-    override fun textFieldTextChanged(formItem: FormItem, text: String) {
+//    override fun textFieldTextChanged(formItem: FormItem, text: String) {
 //        val item = getFormItemFromKey(key)
 //        if (item != null) {
         //move to adapter
@@ -659,9 +743,9 @@ class RegisterActivity : MyTableVC(), ValueChangedDelegate {
 //        formItem!!.make()
 //        }
         //println(text)
-    }
+//    }
 
-    override fun sexChanged(sex: String) {
+//    override fun sexChanged(sex: String) {
         //move to adapter
 //        val forItem = getFormItemFromKey(SEX_KEY)
 //        if (forItem != null) {
@@ -669,13 +753,13 @@ class RegisterActivity : MyTableVC(), ValueChangedDelegate {
 //        }
         //println(sex)
 
-    }
+//    }
 
-    override fun tagChecked(checked: Boolean, name: String, key: String, value: String) {}
-
-    override fun stepperValueChanged(number: Int, name: String) {}
-
-    override fun privateChanged(checked: Boolean) {
+//    override fun tagChecked(checked: Boolean, name: String, key: String, value: String) {}
+//
+//    override fun stepperValueChanged(number: Int, name: String) {}
+//
+//    override fun privateChanged(checked: Boolean) {
         //move to adapter
 //        val formItem = getFormItemFromKey(PRIVACY_KEY)
 //        if (formItem != null) {
@@ -685,11 +769,11 @@ class RegisterActivity : MyTableVC(), ValueChangedDelegate {
 //                formItem.value = null
 //            }
 //        }
-        if (!checked) {
-            warning("必須同意隱私權條款，才能完成註冊")
-        }
-        //println(checked)
-    }
+//        if (!checked) {
+//            warning("必須同意隱私權條款，才能完成註冊")
+//        }
+//        //println(checked)
+//    }
 }
 
 class RegisterResTable {

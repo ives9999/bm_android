@@ -94,7 +94,7 @@ class EditVC1 : MyTableVC() {
 
 //        sections = model.sections
         recyclerView = edit_list
-        initAdapter(true)
+        //initAdapter(true)
 
         //val allV = getAllChildrenBFS(edit_list)
         //inputV = filterInputField(allV)

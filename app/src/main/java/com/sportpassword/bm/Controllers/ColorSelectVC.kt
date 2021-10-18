@@ -32,7 +32,7 @@ class ColorSelectVC: MyTableVC() {
 
         all = MYCOLOR.all()
         recyclerView = mytable
-        initAdapter()
+        //initAdapter()
     }
 
     override fun generateItems(): ArrayList<Item> {

@@ -51,7 +51,7 @@ class ManagerFunctionVC1 : MyTableVC() {
         }
 
         recyclerView = function_list
-        initAdapter()
+        //initAdapter()
     }
 
     override fun generateItems(): ArrayList<Item> {

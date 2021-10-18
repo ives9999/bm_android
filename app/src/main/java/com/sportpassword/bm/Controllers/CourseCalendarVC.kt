@@ -51,19 +51,19 @@ class CourseCalendarVC: MyTableVC() {
         refreshLayout = tab_refresh
         maskView = mask
 
-        initAdapter()
+//        initAdapter()
         recyclerView.setHasFixedSize(true)
         setRecyclerViewScrollListener()
         setRefreshListener()
         refresh()
     }
 
-    override fun initAdapter(include_section: Boolean) {
+//    override fun initAdapter(include_section: Boolean) {
 //        adapter = GroupAdapter()
 //        val items = generateItems()
 //        adapter.addAll(items)
 //        recyclerView.adapter = adapter
-    }
+//    }
 
     override fun getDataStart(_page: Int, _perPage: Int, token: String?) {
         Loading.show(maskView)

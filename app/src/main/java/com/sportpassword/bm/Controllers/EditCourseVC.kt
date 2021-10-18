@@ -101,7 +101,7 @@ class EditCourseVC : MyTableVC(), ValueChangedDelegate {
 //        println(section_keys)
 
         recyclerView = editTableView
-        initAdapter(true)
+        //initAdapter(true)
 
         refreshLayout = refresh
         setRefreshListener()

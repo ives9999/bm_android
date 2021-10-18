@@ -83,7 +83,7 @@ class ManagerCourseVC: MyTableVC() {
         maskView = mask
         setRefreshListener()
 
-        initAdapter()
+        //initAdapter()
 
         refresh()
     }

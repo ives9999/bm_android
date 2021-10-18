@@ -564,6 +564,33 @@ abstract class MyTableVC : BaseActivity() {
         return OneSection()
     }
 
+    fun getSectionIdxFromRowKey(key: String): Int {
+        for ((idx, section) in oneSections.withIndex()) {
+            for (row in section.items) {
+                if (row.key == key) {
+                    return idx
+                }
+            }
+        }
+        return 0
+    }
+
+    fun getRowFromKey(key: String): OneRow {
+
+        for (section in oneSections) {
+            for (row in section.items) {
+                if (row.key == key) {
+                    return row
+                }
+            }
+        }
+        return OneRow()
+    }
+
+    fun getRowFromIdx(sectionIdx: Int, rowIdx: Int): OneRow {
+        return oneSections[sectionIdx].items[rowIdx]
+    }
+
     fun getSectionFromIdx(sectionIdx: Int): OneSection {
         return oneSections[sectionIdx]
     }
@@ -815,6 +842,7 @@ interface List1CellDelegate {
     fun cellSwitchChanged(sectionIdx: Int, rowIdx: Int, b: Boolean) {}
     fun cellNumberChanged(sectionIdx: Int, rowIdx: Int, number: Int) {}
     fun cellRadioChanged(key: String, sectionIdx: Int, rowIdx: Int, idx: Int) {}
+    fun cellSexChanged(key: String, sectionIdx: Int, rowIdx: Int, sex: String) {}
     fun cellMoreClick(sectionIdx: Int, rowIdx: Int) {}
     fun cellClear(sectionIdx: Int, rowIdx: Int) {}
 

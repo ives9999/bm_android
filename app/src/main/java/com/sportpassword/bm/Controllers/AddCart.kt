@@ -39,6 +39,7 @@ import kotlinx.android.synthetic.main.formitem_number.view.*
 import kotlinx.android.synthetic.main.formitem_plain.view.detail
 import kotlinx.android.synthetic.main.formitem_plain.view.title
 import kotlinx.android.synthetic.main.formitem_radio.view.*
+import kotlinx.android.synthetic.main.formitem_sex.*
 import kotlinx.android.synthetic.main.formitem_tag.view.*
 import kotlinx.android.synthetic.main.formitem_textfield.view.*
 import kotlinx.android.synthetic.main.formitem_textfield.view.clear
@@ -758,6 +759,9 @@ class OneItemAdapter(val context: Context, private val sectionIdx: Int, private 
             CELL_TYPE.BARCODE.toInt() -> {
                 return BarcodeViewHolder(inflater.inflate(R.layout.formitem_barcode, parent, false))
             }
+            CELL_TYPE.SEX.toInt() -> {
+                return SexViewHolder(inflater.inflate(R.layout.formitem_sex, parent, false))
+            }
             else -> {
                 return PlainViewHolder(inflater.inflate(R.layout.formitem_plain, parent, false))
             }
@@ -776,6 +780,7 @@ class OneItemAdapter(val context: Context, private val sectionIdx: Int, private 
             "radio" -> CELL_TYPE.RADIO.toInt()
             "more" -> CELL_TYPE.MORE.toInt()
             "barcode" -> CELL_TYPE.BARCODE.toInt()
+            "sex" -> CELL_TYPE.SEX.toInt()
             else -> throw IllegalArgumentException("錯誤的格式" + position)
         }
     }
@@ -794,6 +799,8 @@ class OneItemAdapter(val context: Context, private val sectionIdx: Int, private 
             holder.prompt.visibility = View.INVISIBLE
             holder.value.setText(row.value)
             holder.value.hint = row.placeholder
+
+            holder.required.visibility = if (row.isRequired) { View.VISIBLE } else { View.INVISIBLE }
 
             holder.value.addTextChangedListener(object: TextWatcher {
                 override fun afterTextChanged(p0: Editable?) {
@@ -879,6 +886,8 @@ class OneItemAdapter(val context: Context, private val sectionIdx: Int, private 
             holder.show.visibility = View.VISIBLE
             holder.prompt.visibility = View.INVISIBLE
 
+            holder.required.visibility = if (row.isRequired) { View.VISIBLE } else { View.INVISIBLE }
+
             holder.viewHolder.setOnClickListener {
                 delegate.cellMoreClick(sectionIdx, position)
             }
@@ -903,6 +912,16 @@ class OneItemAdapter(val context: Context, private val sectionIdx: Int, private 
                     height = 150
                 )
             )
+        } else if (holder is SexViewHolder) {
+            holder.title.text = row.title
+            holder.required.visibility = if (row.isRequired) { View.VISIBLE } else { View.INVISIBLE }
+            holder.sex.setOnCheckedChangeListener { _, i ->
+                val radio = holder.sex.findViewById<RadioButton>(i)
+                val sex = radio.tag.toString()
+                if (delegate != null) {
+                    delegate.cellSexChanged(row.key, sectionIdx, position, sex)
+                }
+            }
         }
     }
 
@@ -931,6 +950,7 @@ class TextFieldViewHolder(val viewHolder: View): RecyclerView.ViewHolder(viewHol
     val prompt: ImageView = viewHolder.promptBtn
     val value: EditText = viewHolder.textField
 
+    val required: ImageView = viewHolder.findViewById(R.id.required)
     val clear: ImageView = viewHolder.clear
 }
 
@@ -1138,6 +1158,7 @@ class MoreViewHolder(val viewHolder: View): RecyclerView.ViewHolder(viewHolder) 
     val show: TextView = viewHolder.detail
     val prompt: ImageView = viewHolder.promptBtn
 
+    val required: ImageView = viewHolder.findViewById(R.id.required)
     val clear: ImageView = viewHolder.clear
 }
 
@@ -1177,6 +1198,13 @@ class BarcodeViewHolder(val viewHolder: View): RecyclerView.ViewHolder(viewHolde
 
         return bitmap
     }
+}
+
+class SexViewHolder(val viewHolder: View): RecyclerView.ViewHolder(viewHolder) {
+    val title: TextView = viewHolder.findViewById(R.id.title)
+    val required: ImageView = viewHolder.findViewById(R.id.required)
+
+    val sex: RadioGroup = viewHolder.findViewById(R.id.sex)
 }
 
 //class AddCartItemViewHolder(val viewHolder: View): RecyclerView.ViewHolder(viewHolder) {
