@@ -1,10 +1,18 @@
 package com.sportpassword.bm.Controllers
 
+import android.content.Context
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.Menu
 import android.view.View
+import android.view.ViewGroup
 import android.widget.ImageButton
+import android.widget.ImageView
+import android.widget.TextView
+import androidx.recyclerview.widget.RecyclerView
 import com.sportpassword.bm.Adapters.IconCell
+import com.sportpassword.bm.Data.ShowRow
+import com.sportpassword.bm.Fragments.SearchItemViewHolder
 import com.sportpassword.bm.Models.Table
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Utilities.Loading
@@ -21,11 +29,14 @@ open class ShowVC: BaseActivity() {
     var tableRowKeys:MutableList<String> = mutableListOf()
     var tableRows: HashMap<String, HashMap<String,String>> = hashMapOf()
 
+    val showRows: ArrayList<ShowRow> = arrayListOf()
+
     var table: Table? = null
 
     var isLike: Boolean = false
     var likeCount: Int = 0
 
+    lateinit var showAdapter: ShowAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,17 +48,18 @@ open class ShowVC: BaseActivity() {
         refreshLayout = refresh
         setRefreshListener()
 
-        initAdapter()
+        showAdapter = ShowAdapter(this)
+        //initAdapter()
         //refresh()
     }
 
-    open fun initAdapter() {
+//    open fun initAdapter() {
 //        adapter = GroupAdapter()
 
 //        val items = generateMainItem()
 //        adapter.addAll(items)
 //        tableView.adapter = adapter
-    }
+//    }
 
     open fun genericTable() {}
 
@@ -129,16 +141,20 @@ open class ShowVC: BaseActivity() {
     }
 
     open fun setMainData(table: Table) {
-        for (key in tableRowKeys) {
+        for (showRow in showRows) {
+            val key: String = showRow.key
             val kc = table::class
             kc.memberProperties.forEach {
                 if (key == it.name) {
                     val value = it.getter.call(table).toString()
-                    tableRows[key]!!["content"] = value
+                    showRow.show = value
+                    //tableRows[key]!!["content"] = value
                 }
             }
         }
 
+        showAdapter.rows = showRows
+        showAdapter.notifyDataSetChanged()
 //        val items = generateMainItem()
 //        adapter.update(items)
 
@@ -210,3 +226,38 @@ open class ShowVC: BaseActivity() {
 
     open fun setData() {}
 }
+
+class ShowAdapter(val context: Context): RecyclerView.Adapter<ShowViewHolder>() {
+
+    var rows: ArrayList<ShowRow> = arrayListOf()
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ShowViewHolder {
+        val inflater = LayoutInflater.from(parent.context)
+        val viewHolder = inflater.inflate(R.layout.iconcell, parent, false)
+
+        return ShowViewHolder(viewHolder)
+    }
+
+    override fun onBindViewHolder(holder: ShowViewHolder, position: Int) {
+
+        val row: ShowRow = rows[position]
+        var iconID: Int = 0
+        iconID = context.resources.getIdentifier(row.icon, "drawable", context.packageName)
+        holder.icon.setImageResource(iconID)
+        holder.title.text = row.title
+        holder.show.text = row.title
+    }
+
+    override fun getItemCount(): Int {
+        return rows.size
+    }
+
+}
+
+class ShowViewHolder(val viewHolder: View): RecyclerView.ViewHolder(viewHolder) {
+
+    var icon: ImageView = viewHolder.findViewById(R.id.icon)
+    var title: TextView = viewHolder.findViewById(R.id.title)
+    var show: TextView = viewHolder.findViewById(R.id.content)
+}
+

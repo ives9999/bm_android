@@ -29,7 +29,7 @@ class ShowProductVC: ShowVC() {
         refresh()
     }
 
-    override fun initAdapter() {}
+//    override fun initAdapter() {}
 
     override fun setData() {
 

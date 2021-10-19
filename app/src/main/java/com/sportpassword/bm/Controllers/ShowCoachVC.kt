@@ -52,7 +52,7 @@ class ShowCoachVC: ShowVC() {
         dataService = CoachService
         refreshLayout = refresh
         setRefreshListener()
-        initAdapter()
+        //initAdapter()
         initCourseAdapter()
 
         super.onCreate(savedInstanceState)

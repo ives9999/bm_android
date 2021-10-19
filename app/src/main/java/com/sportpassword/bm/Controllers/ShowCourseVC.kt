@@ -62,8 +62,7 @@ class ShowCourseVC : ShowVC() {
         refreshLayout = refresh
         setRefreshListener()
 
-        initAdapter()
-        super.onCreate(savedInstanceState)
+//         super.onCreate(savedInstanceState)
 
         tableRowKeys = mutableListOf("weekday_text","interval_show","date","price_text_long","people_limit_text","kind_text","pv","created_at_show")
         tableRows = hashMapOf(
@@ -81,8 +80,8 @@ class ShowCourseVC : ShowVC() {
         refresh()
     }
 
-    override fun initAdapter() {
-        super.initAdapter()
+//    override fun initAdapter() {
+//        super.initAdapter()
 
 //        signupAdapter = GroupAdapter()
 //        val signupItems = generateSignupItem()
@@ -97,7 +96,7 @@ class ShowCourseVC : ShowVC() {
 //        val coachItems = generateCoachItem()
 //        coachAdapter.addAll(coachItems)
 //        coachTableView.adapter = coachAdapter
-    }
+//    }
 
     override fun genericTable() {
         //println(dataService.jsonString)

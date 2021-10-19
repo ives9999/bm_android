@@ -24,7 +24,7 @@ class ShowStoreVC : ShowVC() {
         refreshLayout = refresh
         setRefreshListener()
 
-        initAdapter()
+//        initAdapter()
         super.onCreate(savedInstanceState)
 
         tableRowKeys = mutableListOf("tel_show","mobile_show","address","fb","line","website","email","interval_show","pv","created_at_show")

@@ -23,7 +23,7 @@ class ShowArenaVC: ShowVC() {
         refreshLayout = refresh
         setRefreshListener()
 
-        initAdapter()
+        //initAdapter()
         super.onCreate(savedInstanceState)
 
         tableRowKeys = mutableListOf("tel_show","address","fb","interval_show","block","bathroom_show","air_condition_show","parking_show","pv","created_at_show")
