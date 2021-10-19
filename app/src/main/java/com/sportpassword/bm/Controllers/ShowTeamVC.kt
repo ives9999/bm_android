@@ -1,7 +1,6 @@
 package com.sportpassword.bm.Controllers
 
 import android.os.Bundle
-import android.view.View
 import com.google.gson.JsonParseException
 import com.sportpassword.bm.Data.ShowRow
 import com.sportpassword.bm.Models.Table
@@ -9,8 +8,6 @@ import com.sportpassword.bm.Models.TeamTable
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.TeamService
 import com.sportpassword.bm.Utilities.jsonToModel
-import kotlinx.android.synthetic.main.activity_show_course_vc.*
-import kotlinx.android.synthetic.main.activity_show_team_vc.*
 import kotlinx.android.synthetic.main.activity_show_team_vc.refresh
 import kotlin.reflect.full.memberProperties
 

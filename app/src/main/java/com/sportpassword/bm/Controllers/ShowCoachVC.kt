@@ -9,9 +9,12 @@ import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
 import android.webkit.WebView
+import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.recyclerview.widget.RecyclerView
 import com.google.gson.JsonParseException
+import com.sportpassword.bm.Data.ShowRow
 import com.sportpassword.bm.Models.*
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.CoachService
@@ -43,6 +46,9 @@ class ShowCoachVC: ShowVC() {
     val eventViews: ArrayList<ViewGroup> = arrayListOf()
     var eventTag: Int = 0
 
+    lateinit var coachCourseAdapter: ShowAdapter
+    var courseRows: ArrayList<ShowRow> = arrayListOf()
+
 //    lateinit var courseAdapter: GroupAdapter<GroupieViewHolder>
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -53,25 +59,25 @@ class ShowCoachVC: ShowVC() {
         refreshLayout = refresh
         setRefreshListener()
         //initAdapter()
-        initCourseAdapter()
+//        initCourseAdapter()
 
         super.onCreate(savedInstanceState)
 
         //timetableCellWidth = screenWidth.toFloat() / columnNum.toFloat()
         //addGrid()
 
-        tableRowKeys = arrayListOf(MOBILE_KEY,LINE_KEY,FB_KEY,YOUTUBE_KEY,WEBSITE_KEY,EMAIL_KEY,COACH_SENIORITY_KEY,CREATED_AT_KEY,PV_KEY)
-        tableRows = hashMapOf(
-            MOBILE_KEY to hashMapOf("icon" to "mobile","title" to "行動電話","content" to "","isPressed" to "true"),
-            LINE_KEY to hashMapOf("icon" to "lineicon","title" to "line id","content" to "","isPressed" to "false"),
-            FB_KEY to hashMapOf("icon" to "fb","title" to "fb","content" to "","isPressed" to "true"),
-            YOUTUBE_KEY to hashMapOf("icon" to "youtube","title" to "youtube","content" to "","isPressed" to "true"),
-            WEBSITE_KEY to hashMapOf("icon" to "website","title" to "網站","content" to "","isPressed" to "true"),
-            EMAIL_KEY to hashMapOf("icon" to "email","title" to "email","content" to "","isPressed" to "true"),
-            COACH_SENIORITY_KEY to hashMapOf("icon" to "seniority","title" to "年資","content" to "","isPressed" to "false"),
-            CREATED_AT_KEY to hashMapOf("icon" to "calendar","title" to "建立日期","content" to "","isPressed" to "false"),
-            PV_KEY to hashMapOf("icon" to "pv","title" to "瀏覽數","content" to "","isPressed" to "false")
-        )
+//        tableRowKeys = arrayListOf(MOBILE_KEY,LINE_KEY,FB_KEY,YOUTUBE_KEY,WEBSITE_KEY,EMAIL_KEY,COACH_SENIORITY_KEY,CREATED_AT_KEY,PV_KEY)
+//        tableRows = hashMapOf(
+//            MOBILE_KEY to hashMapOf("icon" to "mobile","title" to "行動電話","content" to "","isPressed" to "true"),
+//            LINE_KEY to hashMapOf("icon" to "lineicon","title" to "line id","content" to "","isPressed" to "false"),
+//            FB_KEY to hashMapOf("icon" to "fb","title" to "fb","content" to "","isPressed" to "true"),
+//            YOUTUBE_KEY to hashMapOf("icon" to "youtube","title" to "youtube","content" to "","isPressed" to "true"),
+//            WEBSITE_KEY to hashMapOf("icon" to "website","title" to "網站","content" to "","isPressed" to "true"),
+//            EMAIL_KEY to hashMapOf("icon" to "email","title" to "email","content" to "","isPressed" to "true"),
+//            COACH_SENIORITY_KEY to hashMapOf("icon" to "seniority","title" to "年資","content" to "","isPressed" to "false"),
+//            CREATED_AT_KEY to hashMapOf("icon" to "calendar","title" to "建立日期","content" to "","isPressed" to "false"),
+//            PV_KEY to hashMapOf("icon" to "pv","title" to "瀏覽數","content" to "","isPressed" to "false")
+//        )
 
         webViewSettings(this, chargeWebView)
         webViewSettings(this, expWebView)
@@ -79,15 +85,32 @@ class ShowCoachVC: ShowVC() {
         webViewSettings(this, featWebView)
         webViewSettings(this, contentView)
 
+        coachCourseAdapter = ShowAdapter(this)
+        courseTableView.adapter = coachCourseAdapter
+        init()
         refresh()
     }
 
-    fun initCourseAdapter() {
+    fun init() {
+        showRows.addAll(arrayListOf(
+            ShowRow(MOBILE_KEY, "mobile", "行動電話"),
+            ShowRow(LINE_KEY, "lineicon", "line"),
+            ShowRow(FB_KEY, "fb", "fb"),
+            ShowRow(YOUTUBE_KEY, "youtube", "youtube"),
+            ShowRow(WEBSITE_KEY, "website", "網站"),
+            ShowRow(EMAIL_KEY, "email", "EMail"),
+            ShowRow(COACH_SENIORITY_KEY, "seniority", "年資"),
+            ShowRow("pv", "pv", "瀏覽數"),
+            ShowRow("created_at_show", "calendar", "建立日期")
+        ))
+    }
+
+//    fun initCourseAdapter() {
         //courseAdapter = GroupAdapter()
 //        val courseItems = generateCourseItems()
 //        courseAdapter.addAll(courseItems)
 //        courseTableView.adapter = courseAdapter
-    }
+//    }
 
 
     override fun genericTable() {
@@ -249,6 +272,18 @@ class ShowCoachVC: ShowVC() {
             if (success) {
                 //println(CourseService.jsonString)
                 coursesTable = jsonToModels<CoursesTable>(CourseService.jsonString)
+                if (coursesTable != null) {
+                    for (row in coursesTable!!.rows) {
+                        row.filterRow()
+                        courseRows.add(ShowRow("", row.featured_path, row.title))
+                    }
+                }
+                coachCourseAdapter.rows = courseRows
+
+                runOnUiThread {
+                    coachCourseAdapter.notifyDataSetChanged()
+                }
+
 //                val items = generateCourseItems()
 //                courseAdapter.update(items)
 //                runOnUiThread {
@@ -309,6 +344,7 @@ class ShowCoachVC: ShowVC() {
         }
         return view
     }
+
     fun addTimeLabel(parent: ViewGroup, time: Int) {
         val t = TextView(this)
         t.id = View.generateViewId()
@@ -421,6 +457,13 @@ class ShowCoachVC: ShowVC() {
         }
     }
 }
+
+class CoachCourseViewHolder(val viewHolder: View): RecyclerView.ViewHolder(viewHolder) {
+
+    var icon: ImageView = viewHolder.findViewById(R.id.featured)
+    var title: TextView = viewHolder.findViewById(R.id.title)
+}
+
 
 //class CoachCourseItem(val context: Context, val courseTable: CourseTable): Item() {
 //    override fun bind(viewHolder: com.xwray.groupie.kotlinandroidextensions.GroupieViewHolder, position: Int) {

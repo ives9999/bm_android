@@ -1,7 +1,6 @@
 package com.sportpassword.bm.Controllers
 
 import android.content.Intent
-import android.content.res.Configuration
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
@@ -17,7 +16,7 @@ import com.sportpassword.bm.Services.TeachService
 import com.sportpassword.bm.Utilities.jsonToModel
 import kotlin.reflect.full.memberProperties
 import kotlinx.android.synthetic.main.activity_show_teach_vc.*
-import com.sportpassword.bm.Adapters.IconCell
+import com.sportpassword.bm.Data.ShowRow
 import com.sportpassword.bm.Services.DataService
 import com.sportpassword.bm.Utilities.Loading
 import com.sportpassword.bm.Utilities.hideKeyboard
@@ -33,9 +32,12 @@ class ShowTeachVC : YouTubeBaseActivity(), YouTubePlayer.OnInitializedListener {
     var dataService: DataService = DataService()
     var refreshLayout: SwipeRefreshLayout? = null
     lateinit var refreshListener: SwipeRefreshLayout.OnRefreshListener
-    var tableRowKeys:MutableList<String> = mutableListOf()
-    var tableRows: HashMap<String, HashMap<String,String>> = hashMapOf()
+//    var tableRowKeys:MutableList<String> = mutableListOf()
+//    var tableRows: HashMap<String, HashMap<String,String>> = hashMapOf()
 //    lateinit var adapter: GroupAdapter<GroupieViewHolder>
+    val showRows: ArrayList<ShowRow> = arrayListOf()
+
+    lateinit var showAdapter: ShowAdapter
 
     var token: String? = null    // course token
     var table: Table? = null
@@ -56,30 +58,40 @@ class ShowTeachVC : YouTubeBaseActivity(), YouTubePlayer.OnInitializedListener {
         refreshLayout = refresh
         setRefreshListener()
 
-        initAdapter()
+        showAdapter = ShowAdapter(this)
+        tableView.adapter = showAdapter
 
+//        initAdapter()
 
         if (intent.hasExtra("token")) {
             token = intent.getStringExtra("token")!!
         }
 
-        tableRowKeys = mutableListOf("pv","created_at_show")
-        tableRows = hashMapOf(
-            "pv" to hashMapOf( "icon" to "pv","title" to "瀏覽數","content" to ""),
-            "created_at_show" to hashMapOf( "icon" to "calendar","title" to "建立日期","content" to "")
-        )
+//        tableRowKeys = mutableListOf("pv","created_at_show")
+//        tableRows = hashMapOf(
+//            "pv" to hashMapOf( "icon" to "pv","title" to "瀏覽數","content" to ""),
+//            "created_at_show" to hashMapOf( "icon" to "calendar","title" to "建立日期","content" to "")
+//        )
         youtube.initialize(api_key, this)
 
+        init()
         refresh()
     }
 
-    fun initAdapter() {
+    fun init() {
+        showRows.addAll(arrayListOf(
+            ShowRow("pv", "pv", "瀏覽數"),
+            ShowRow("created_at_show", "calendar", "建立日期")
+        ))
+    }
+
+//    fun initAdapter() {
 //        adapter = GroupAdapter()
 
 //        val items = generateMainItem()
 //        adapter.addAll(items)
 //        tableView.adapter = adapter
-    }
+//    }
 
     fun refresh() {
         if (token != null) {
@@ -100,6 +112,8 @@ class ShowTeachVC : YouTubeBaseActivity(), YouTubePlayer.OnInitializedListener {
                         }
 
                         setData()
+                        showAdapter.rows = showRows
+                        showAdapter.notifyDataSetChanged()
 
                         isLike = table!!.like
                         likeCount = table!!.like_count
@@ -171,12 +185,14 @@ class ShowTeachVC : YouTubeBaseActivity(), YouTubePlayer.OnInitializedListener {
     }
 
     fun setMainData(table: Table) {
-        for (key in tableRowKeys) {
+        for (showRow in showRows) {
+            val key: String = showRow.key
             val kc = table::class
             kc.memberProperties.forEach {
                 if (key == it.name) {
                     val value = it.getter.call(table).toString()
-                    tableRows[key]!!["content"] = value
+                    showRow.show = value
+                    //tableRows[key]!!["content"] = value
                 }
             }
         }

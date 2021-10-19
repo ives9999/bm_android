@@ -3,14 +3,12 @@ package com.sportpassword.bm.Controllers
 import android.os.Bundle
 import android.view.View
 import com.google.gson.JsonParseException
+import com.sportpassword.bm.Data.ShowRow
 import com.sportpassword.bm.Models.StoreTable
-import com.sportpassword.bm.Models.Table
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.StoreService
 import com.sportpassword.bm.Utilities.*
 import kotlinx.android.synthetic.main.activity_show_course_vc.refresh
-import kotlin.reflect.full.memberProperties
-
 
 class ShowStoreVC : ShowVC() {
 
@@ -27,22 +25,36 @@ class ShowStoreVC : ShowVC() {
 //        initAdapter()
         super.onCreate(savedInstanceState)
 
-        tableRowKeys = mutableListOf("tel_show","mobile_show","address","fb","line","website","email","interval_show","pv","created_at_show")
-        tableRows = hashMapOf(
-            "tel_show" to hashMapOf("icon" to "tel","title" to "市內電話","content" to ""),
-            "mobile_show" to hashMapOf( "icon" to "mobile","title" to "行動電話","content" to ""),
-            "address" to hashMapOf( "icon" to "marker","title" to "住址","content" to ""),
-            "fb" to hashMapOf( "icon" to "fb","title" to "FB","content" to ""),
-            "line" to hashMapOf( "icon" to "lineicon","title" to "line","content" to ""),
-            "website" to hashMapOf( "icon" to "website","title" to "網站","content" to ""),
-            "email" to hashMapOf( "icon" to "email1","title" to "email","content" to ""),
-            "interval_show" to hashMapOf( "icon" to "clock","title" to "營業時間","content" to ""),
-            "pv" to hashMapOf( "icon" to "pv","title" to "瀏覽數","content" to ""),
-            "created_at_show" to hashMapOf( "icon" to "calendar","title" to "建立日期","content" to "")
-        )
-
+//        tableRowKeys = mutableListOf("tel_show","mobile_show","address","fb","line","website","email","interval_show","pv","created_at_show")
+//        tableRows = hashMapOf(
+//            "tel_show" to hashMapOf("icon" to "tel","title" to "市內電話","content" to ""),
+//            "mobile_show" to hashMapOf( "icon" to "mobile","title" to "行動電話","content" to ""),
+//            "address" to hashMapOf( "icon" to "marker","title" to "住址","content" to ""),
+//            "fb" to hashMapOf( "icon" to "fb","title" to "FB","content" to ""),
+//            "line" to hashMapOf( "icon" to "lineicon","title" to "line","content" to ""),
+//            "website" to hashMapOf( "icon" to "website","title" to "網站","content" to ""),
+//            "email" to hashMapOf( "icon" to "email1","title" to "email","content" to ""),
+//            "interval_show" to hashMapOf( "icon" to "clock","title" to "營業時間","content" to ""),
+//            "pv" to hashMapOf( "icon" to "pv","title" to "瀏覽數","content" to ""),
+//            "created_at_show" to hashMapOf( "icon" to "calendar","title" to "建立日期","content" to "")
+//        )
+        init()
         refresh()
+    }
 
+    fun init() {
+        showRows.addAll(arrayListOf(
+            ShowRow("tel_show", "tel", "市內電話"),
+            ShowRow("mobile_show", "mobile", "行動電話"),
+            ShowRow("address", "marker", "住址"),
+            ShowRow("fb", "fb", "FB"),
+            ShowRow("line", "lineicon", "FB"),
+            ShowRow("website", "website", "line"),
+            ShowRow("email", "email1", "EMail"),
+            ShowRow("interval_show", "clock", "營業時間"),
+            ShowRow("pv", "pv", "瀏覽數"),
+            ShowRow("created_at_show", "calendar", "建立日期")
+        ))
     }
 
     override fun genericTable() {
@@ -66,21 +78,6 @@ class ShowStoreVC : ShowVC() {
         if (myTable != null) {
             setMainData(myTable!!)
         }
-    }
-
-    override fun setMainData(table: Table) {
-        for (key in tableRowKeys) {
-            val kc = table::class
-            kc.memberProperties.forEach {
-                if (key == it.name) {
-                    val value = it.getter.call(table).toString()
-                    tableRows[key]!!["content"] = value
-                }
-            }
-        }
-
-//        val items = generateMainItem()
-//        adapter.update(items)
     }
 
 //    fun initAdapter() {

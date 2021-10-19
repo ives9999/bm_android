@@ -266,6 +266,18 @@ class ShowCourseVC : ShowVC() {
                 signupRows.add(signupRow)
             }
         }
+
+        if (myTable!!.signup_standby_models.count() > 0) {
+            for (i in 0..myTable!!.signup_standby_models.count() - 1) {
+                var name = ""
+                val tmp = myTable!!.signup_standby_models[i].member_name?.let {
+                    name = it
+                }
+                val signupRow: SignupRow = SignupRow("候補" + (i+1).toString()+".", name)
+                signupRows.add(signupRow)
+            }
+        }
+
         signupAdapter.rows = signupRows
         signupAdapter.notifyDataSetChanged()
 //        val items = generateSignupItem()
@@ -295,6 +307,8 @@ class ShowCourseVC : ShowVC() {
         }
         courseCoachAdapter.rows = coachRows
         courseCoachAdapter.notifyDataSetChanged()
+
+
         //println(coachTableRows)
 //        val items = generateCoachItem()
 //        coachAdapter.update(items)

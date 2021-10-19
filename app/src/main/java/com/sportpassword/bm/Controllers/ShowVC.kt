@@ -3,16 +3,12 @@ package com.sportpassword.bm.Controllers
 import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
-import android.view.Menu
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.sportpassword.bm.Adapters.IconCell
 import com.sportpassword.bm.Data.ShowRow
-import com.sportpassword.bm.Fragments.SearchItemViewHolder
 import com.sportpassword.bm.Models.Table
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Utilities.Loading
@@ -20,7 +16,6 @@ import com.sportpassword.bm.Utilities.image
 import com.sportpassword.bm.member
 import kotlinx.android.synthetic.main.activity_show_course_vc.*
 import kotlinx.android.synthetic.main.mask.*
-import kotlin.reflect.KClass
 import kotlin.reflect.full.memberProperties
 
 open class ShowVC: BaseActivity() {
@@ -49,7 +44,9 @@ open class ShowVC: BaseActivity() {
         setRefreshListener()
 
         showAdapter = ShowAdapter(this)
-        tableView.adapter = showAdapter
+        if (tableView != null) {
+            tableView.adapter = showAdapter
+        }
         //initAdapter()
         //refresh()
     }

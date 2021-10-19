@@ -87,7 +87,7 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/signupDateLbl"
                     android:layout_marginTop="7dp"
-                    android:layout_marginBottom="12dp"
+                    android:layout_marginBottom="24dp"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
                 <TextView
@@ -98,6 +98,7 @@
                     android:layout_marginLeft="12dp"
                     android:layout_marginBottom="8dp"
                     style="@style/list_text_title"
+                    android:text="教練資料"
                     android:textSize="24dp" />
 
                 <androidx.recyclerview.widget.RecyclerView
