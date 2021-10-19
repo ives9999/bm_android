@@ -49,6 +49,7 @@ open class ShowVC: BaseActivity() {
         setRefreshListener()
 
         showAdapter = ShowAdapter(this)
+        tableView.adapter = showAdapter
         //initAdapter()
         //refresh()
     }
@@ -82,6 +83,8 @@ open class ShowVC: BaseActivity() {
                         setFeatured()
                         setData()
                         setContent()
+                        showAdapter.rows = showRows
+                        showAdapter.notifyDataSetChanged()
 
                         isLike = table!!.like
                         likeCount = table!!.like_count
@@ -153,8 +156,6 @@ open class ShowVC: BaseActivity() {
             }
         }
 
-        showAdapter.rows = showRows
-        showAdapter.notifyDataSetChanged()
 //        val items = generateMainItem()
 //        adapter.update(items)
 
@@ -207,6 +208,15 @@ open class ShowVC: BaseActivity() {
         likeButton.text = "${likeCount.toString()}人"
     }
 
+    fun getRowFromKey(key: String): ShowRow {
+        for (showRow in showRows) {
+            if (showRow.key == key) {
+                return showRow
+            }
+        }
+        return ShowRow()
+    }
+
     fun likeButtonPressed(view: View) {
 
         if (!member.isLoggedIn) {
@@ -245,7 +255,7 @@ class ShowAdapter(val context: Context): RecyclerView.Adapter<ShowViewHolder>() 
         iconID = context.resources.getIdentifier(row.icon, "drawable", context.packageName)
         holder.icon.setImageResource(iconID)
         holder.title.text = row.title
-        holder.show.text = row.title
+        holder.show.text = row.show
     }
 
     override fun getItemCount(): Int {

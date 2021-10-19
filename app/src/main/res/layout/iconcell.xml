@@ -26,6 +26,16 @@
         tools:text="Title" />
 
     <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:text="："
+        android:textAlignment="viewStart"
+        android:textColor="@color/MY_WHITE"
+        android:textSize="18sp"
+        tools:text="Title" />
+
+    <TextView
         android:id="@+id/content"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

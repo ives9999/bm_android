@@ -104,8 +104,8 @@
                     android:id="@+id/coachTableView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                    android:layout_below="@+id/coachDetailLbl" />
+                    android:layout_below="@+id/coachDetailLbl"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
                 <TextView
                     android:id="@+id/contentLbl"

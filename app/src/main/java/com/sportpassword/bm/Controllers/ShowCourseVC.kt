@@ -1,12 +1,19 @@
 package com.sportpassword.bm.Controllers
 
 import android.app.AlertDialog
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.google.gson.JsonParseException
 import com.sportpassword.bm.Adapters.IconCell
+import com.sportpassword.bm.Data.ShowRow
+import com.sportpassword.bm.Data.SignupRow
 import com.sportpassword.bm.Models.*
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.CourseService
@@ -22,26 +29,32 @@ class ShowCourseVC : ShowVC() {
     //var course_id: Int? = null
     //var source: String  = "course" //course
 
-    val coachTableRowKeys:Array<String> = arrayOf(NAME_KEY,MOBILE_KEY,LINE_KEY,FB_KEY,YOUTUBE_KEY,WEBSITE_KEY,EMAIL_KEY)
-    var coachTableRows: HashMap<String, HashMap<String, String>> = hashMapOf(
-        NAME_KEY to hashMapOf("icon" to "coach","title" to "教練","content" to "","isPressed" to "true"),
-        MOBILE_KEY to hashMapOf("icon" to "mobile","title" to "行動電話","content" to "","isPressed" to "true"),
-        LINE_KEY to hashMapOf("icon" to "lineicon","title" to "line id","content" to "","isPressed" to "false"),
-        FB_KEY to hashMapOf("icon" to "fb","title" to "fb","content" to "","isPressed" to "true"),
-        YOUTUBE_KEY to hashMapOf("icon" to "youtube","title" to "youtube","content" to "","isPressed" to "true"),
-        WEBSITE_KEY to hashMapOf("icon" to "website","title" to "網站","content" to "","isPressed" to "true"),
-        EMAIL_KEY to hashMapOf("icon" to "email","title" to "郵件","content" to "","isPressed" to "true")
-    )
-
-    val signupTableRowKeys:Array<String> = arrayOf("date", "deadline")
-    var signupTableRows: HashMap<String, HashMap<String, String>> = hashMapOf(
-            "date" to hashMapOf("icon" to "calendar","title" to "報名上課日期","content" to "","isPressed" to "false"),
-            "deadline" to hashMapOf("icon" to "clock","title" to "報名截止時間","content" to "","isPressed" to "false")
-    )
+//    val coachTableRowKeys:Array<String> = arrayOf(NAME_KEY,MOBILE_KEY,LINE_KEY,FB_KEY,YOUTUBE_KEY,WEBSITE_KEY,EMAIL_KEY)
+//    var coachTableRows: HashMap<String, HashMap<String, String>> = hashMapOf(
+//        NAME_KEY to hashMapOf("icon" to "coach","title" to "教練","content" to "","isPressed" to "true"),
+//        MOBILE_KEY to hashMapOf("icon" to "mobile","title" to "行動電話","content" to "","isPressed" to "true"),
+//        LINE_KEY to hashMapOf("icon" to "lineicon","title" to "line id","content" to "","isPressed" to "false"),
+//        FB_KEY to hashMapOf("icon" to "fb","title" to "fb","content" to "","isPressed" to "true"),
+//        YOUTUBE_KEY to hashMapOf("icon" to "youtube","title" to "youtube","content" to "","isPressed" to "true"),
+//        WEBSITE_KEY to hashMapOf("icon" to "website","title" to "網站","content" to "","isPressed" to "true"),
+//        EMAIL_KEY to hashMapOf("icon" to "email","title" to "郵件","content" to "","isPressed" to "true")
+//    )
+//
+//    val signupTableRowKeys:Array<String> = arrayOf("date", "deadline")
+//    var signupTableRows: HashMap<String, HashMap<String, String>> = hashMapOf(
+//            "date" to hashMapOf("icon" to "calendar","title" to "報名上課日期","content" to "","isPressed" to "false"),
+//            "deadline" to hashMapOf("icon" to "clock","title" to "報名截止時間","content" to "","isPressed" to "false")
+//    )
 
     var myTable: CourseTable? = null
     var coachTable: CoachTable? = null
     var dateTable: DateTable? = null
+
+    lateinit var courseCoachAdapter: ShowAdapter
+    var coachRows: ArrayList<ShowRow> = arrayListOf()
+
+    lateinit var signupAdapter: SignupAdapter
+    var signupRows: ArrayList<SignupRow> = arrayListOf()
 
 //    lateinit var signupAdapter: GroupAdapter<GroupieViewHolder>
 //    lateinit var coachAdapter: GroupAdapter<GroupieViewHolder>
@@ -62,22 +75,52 @@ class ShowCourseVC : ShowVC() {
         refreshLayout = refresh
         setRefreshListener()
 
-//         super.onCreate(savedInstanceState)
+         super.onCreate(savedInstanceState)
 
-        tableRowKeys = mutableListOf("weekday_text","interval_show","date","price_text_long","people_limit_text","kind_text","pv","created_at_show")
-        tableRows = hashMapOf(
-            "weekday_text" to hashMapOf("icon" to "calendar","title" to "日期","content" to ""),
-            "interval_show" to hashMapOf( "icon" to "clock","title" to "時段","content" to ""),
-            "date" to hashMapOf( "icon" to "calendar","title" to "期間","content" to ""),
-            "price_text_long" to hashMapOf( "icon" to "money","title" to "收費","content" to ""),
-            "people_limit_text" to hashMapOf( "icon" to "group","title" to "接受報名人數","content" to ""),
-            "kind_text" to hashMapOf( "icon" to "cycle","title" to "週期","content" to ""),
-//            "signup_count" to hashMapOf( "icon" to "group","title" to "已報名人數","content" to ""),
-            "pv" to hashMapOf( "icon" to "pv","title" to "瀏覽數","content" to ""),
-            "created_at_show" to hashMapOf( "icon" to "calendar","title" to "建立日期","content" to "")
-        )
+//        tableRowKeys = mutableListOf("weekday_text","interval_show","date","price_text_long","people_limit_text","kind_text","pv","created_at_show")
+//        tableRows = hashMapOf(
+//            "weekday_text" to hashMapOf("icon" to "calendar","title" to "日期","content" to ""),
+//            "interval_show" to hashMapOf( "icon" to "clock","title" to "時段","content" to ""),
+//            "date" to hashMapOf( "icon" to "calendar","title" to "期間","content" to ""),
+//            "price_text_long" to hashMapOf( "icon" to "money","title" to "收費","content" to ""),
+//            "people_limit_text" to hashMapOf( "icon" to "group","title" to "接受報名人數","content" to ""),
+//            "kind_text" to hashMapOf( "icon" to "cycle","title" to "週期","content" to ""),
+////            "signup_count" to hashMapOf( "icon" to "group","title" to "已報名人數","content" to ""),
+//            "pv" to hashMapOf( "icon" to "pv","title" to "瀏覽數","content" to ""),
+//            "created_at_show" to hashMapOf( "icon" to "calendar","title" to "建立日期","content" to "")
+//        )
 
+        courseCoachAdapter = ShowAdapter(this)
+        coachTableView.adapter = courseCoachAdapter
+
+        signupAdapter = SignupAdapter(this)
+        signupTableView.adapter = signupAdapter
+
+        init()
         refresh()
+    }
+
+    fun init() {
+        showRows.addAll(arrayListOf(
+            ShowRow("weekday_text", "calendar", "日期"),
+            ShowRow("interval_show", "clock", "時段"),
+            ShowRow("date", "calendar", "期間"),
+            ShowRow("price_text_long", "money", "收費"),
+            ShowRow("people_limit_text", "group", "接受報名人數"),
+            ShowRow("kind_text", "cycle", "週期"),
+            ShowRow("pv", "pv", "瀏覽數"),
+            ShowRow("created_at_show", "calendar", "建立日期")
+        ))
+
+        coachRows.addAll(arrayListOf(
+            ShowRow(NAME_KEY, "coach", "教練"),
+            ShowRow(MOBILE_KEY, "mobile", "行動電話"),
+            ShowRow(LINE_KEY, "lineicon", "line"),
+            ShowRow(FB_KEY, "fb", "fb"),
+            ShowRow(YOUTUBE_KEY, "youtube", "youtube"),
+            ShowRow(WEBSITE_KEY, "website", "網站"),
+            ShowRow(EMAIL_KEY, "email", "EMail")
+        ))
     }
 
 //    override fun initAdapter() {
@@ -156,15 +199,21 @@ class ShowCourseVC : ShowVC() {
             if (myTable!!.coach != null) {
                 if (myTable!!.start_date != null && myTable!!.start_date.isNotEmpty()) {
                     val date = myTable!!.start_date + " ~ " + myTable!!.end_date
-                    tableRows["date"]!!["content"] = date
+                    val showRow: ShowRow = getRowFromKey("date")
+                    showRow.show = date
+//                    tableRows["date"]!!["content"] = date
                 } else {
-                    tableRowKeys.remove("date");
+                    val showRow: ShowRow = getRowFromKey("date")
+                    showRows.remove(showRow)
+//                    tableRowKeys.remove("date");
                     //println(tableRowKeys);
-                    tableRows.remove("date");
+//                    tableRows.remove("date");
                 }
 
                 val interval = myTable!!.interval_show
-                tableRows["interval_show"]!!["content"] = interval
+                val showRow: ShowRow = getRowFromKey("interval_show")
+                showRow.show = interval
+//                tableRows["interval_show"]!!["content"] = interval
             }
             setMainData(myTable!!)
 
@@ -204,6 +253,21 @@ class ShowCourseVC : ShowVC() {
             signupDateLbl.text = "未提供報名"
             signupButton.visibility = View.GONE
         }
+
+        if (myTable != null) {
+            for (i in 0..myTable!!.people_limit - 1) {
+                var name = ""
+                if (myTable!!.signup_normal_models.count() > i) {
+                    val tmp = myTable!!.signup_normal_models[i].member_name?.let {
+                        name = it
+                    }
+                }
+                val signupRow: SignupRow = SignupRow((i+1).toString()+".", name)
+                signupRows.add(signupRow)
+            }
+        }
+        signupAdapter.rows = signupRows
+        signupAdapter.notifyDataSetChanged()
 //        val items = generateSignupItem()
 //        signupAdapter.update(items)
 
@@ -219,15 +283,18 @@ class ShowCourseVC : ShowVC() {
     }
 
     fun setCoachData() {
-        for (key in coachTableRowKeys) {
+        for (coachRow in coachRows) {
+            val key = coachRow.key
             val kc = coachTable!!::class
             kc.memberProperties.forEach {
                 if (key == it.name) {
                     val value = it.getter.call(coachTable).toString()
-                    coachTableRows[key]!!["content"] = value
+                    coachRow.show = value
                 }
             }
         }
+        courseCoachAdapter.rows = coachRows
+        courseCoachAdapter.notifyDataSetChanged()
         //println(coachTableRows)
 //        val items = generateCoachItem()
 //        coachAdapter.update(items)
@@ -397,7 +464,7 @@ class ShowCourseVC : ShowVC() {
             val id = p.getIDString()
             if (id == coachTableView.getIDString()) {
                 //println(position)
-                val key = coachTableRowKeys[position]
+                val key = coachRows[position].key
                 if (key == NAME_KEY) {
                     val intent = Intent(this, ShowActivity::class.java)
                     //intent.putExtra("type", source)
@@ -540,4 +607,68 @@ class ShowCourseVC : ShowVC() {
 //            toLogin()
 //        }
 //    }
+}
+
+class SignupAdapter(val context: Context): RecyclerView.Adapter<SignupViewHolder>() {
+
+    var rows: ArrayList<SignupRow> = arrayListOf()
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SignupViewHolder {
+        val inflater = LayoutInflater.from(parent.context)
+        val viewHolder = inflater.inflate(R.layout.olcell, parent, false)
+
+        return SignupViewHolder(viewHolder)
+    }
+
+    override fun onBindViewHolder(holder: SignupViewHolder, position: Int) {
+
+        val row: SignupRow = rows[position]
+        holder.number.text = row.number
+        holder.name.text = row.name
+    }
+
+    override fun getItemCount(): Int {
+        return rows.size
+    }
+
+}
+
+class SignupViewHolder(val viewHolder: View): RecyclerView.ViewHolder(viewHolder) {
+
+    var number: TextView = viewHolder.findViewById(R.id.number)
+    var name: TextView = viewHolder.findViewById(R.id.name)
+}
+
+//class CourseCoachAdapter(val context: Context): RecyclerView.Adapter<CourseCoachViewHolder>() {
+//
+//    var rows: ArrayList<ShowRow> = arrayListOf()
+//
+//    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CourseCoachViewHolder {
+//        val inflater = LayoutInflater.from(parent.context)
+//        val viewHolder = inflater.inflate(R.layout.iconcell, parent, false)
+//
+//        return CourseCoachViewHolder(viewHolder)
+//    }
+//
+//    override fun onBindViewHolder(holder: CourseCoachViewHolder, position: Int) {
+//
+//        val row: ShowRow = rows[position]
+//        var iconID: Int = 0
+//        iconID = context.resources.getIdentifier(row.icon, "drawable", context.packageName)
+//        holder.icon.setImageResource(iconID)
+//        holder.title.text = row.title
+//        holder.show.text = row.show
+//    }
+//
+//    override fun getItemCount(): Int {
+//        return rows.size
+//    }
+//
+//}
+
+class CourseCoachViewHolder(val viewHolder: View): RecyclerView.ViewHolder(viewHolder) {
+
+    var icon: ImageView = viewHolder.findViewById(R.id.icon)
+    var title: TextView = viewHolder.findViewById(R.id.title)
+    var show: TextView = viewHolder.findViewById(R.id.content)
 }

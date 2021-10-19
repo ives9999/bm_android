@@ -49,7 +49,6 @@ class ShowTeamVC: ShowVC() {
     }
 
     fun init() {
-        val row: ShowRow = ShowRow("arena", "球館", "")
         showRows.addAll(arrayListOf(
             ShowRow("arena", "arena", "球館"),
             ShowRow("interval_show", "clock", "時段"),
@@ -109,8 +108,6 @@ class ShowTeamVC: ShowVC() {
                 }
             }
         }
-        showAdapter.rows = showRows
-        showAdapter.notifyDataSetChanged()
 
 //        val items = generateMainItem()
 //        adapter.update(items)
