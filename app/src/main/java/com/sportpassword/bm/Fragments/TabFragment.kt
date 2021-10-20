@@ -604,10 +604,6 @@ open class TabFragment : Fragment(), List1CellDelegate, Serializable {
         val row1 = getDefinedRow1(key)
         row1.value = row.city_id.toString()
         row1.show = row.city_show
-//        val city_id: Int = row.city_id
-//        val row1 = getDefinedRow(key)
-//        row1["value"] = city_id.toString()
-//        replaceRows(key, row1)
         prepareParams()
         page = 1
         tableLists.clear()
@@ -617,8 +613,8 @@ open class TabFragment : Fragment(), List1CellDelegate, Serializable {
     override fun cellArea(row: Table) {
 
         val key: String = AREA_KEY
-        val _row: ArenaTable = row as ArenaTable
-        val area_id: Int = _row.area_id
+        val row1 = getDefinedRow1(key)
+//        val area_id: Int = _row.area_id
 //        val row1 = getDefinedRow(key)
 //        row1["value"] = area_id.toString()
 //        replaceRows(key, row1)

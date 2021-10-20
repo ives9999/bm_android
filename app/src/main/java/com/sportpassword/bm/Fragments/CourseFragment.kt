@@ -156,8 +156,14 @@ class CourseFragment : TabFragment() {
 //    }
 
     override fun cellCity(row: Table) {
-        //println(row::class)
-        mainActivity!!.toShowCourse(row.token)
+        val key: String = CITY_KEY
+        val row2: SearchRow = getDefinedRow1(key)
+        row2.value = row.city_id.toString()
+        row2.show = row.city_show
+        prepareParams()
+        page = 1
+        tableLists.clear()
+        getDataStart(page, perPage)
     }
 
 //    fun remove(indexPath: IndexPath) {
