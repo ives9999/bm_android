@@ -208,7 +208,7 @@ interface ToInterface {
     }
 
     fun toRegister() {
-        val registerIntent: Intent = Intent(mainDelegate, RegisterActivity::class.java)
+        val registerIntent: Intent = Intent(mainDelegate, RegisterVC::class.java)
         mainDelegate.startActivity(registerIntent)
     }
 

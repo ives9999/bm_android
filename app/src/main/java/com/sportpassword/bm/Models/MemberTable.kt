@@ -157,9 +157,9 @@ class Member(val context: Context) {
             session.edit().putString(DOB_KEY, value).apply()
         }
     var sex: String?
-        get() = session.getString(DOB_KEY, "")
+        get() = session.getString(SEX_KEY, "")
         set(value) {
-            session.edit().putString(DOB_KEY, value).apply()
+            session.edit().putString(SEX_KEY, value).apply()
         }
     var tel: String?
         get() = session.getString(TEL_KEY, "")

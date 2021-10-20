@@ -120,7 +120,7 @@
             android:exported="true" />
         <activity android:name=".Controllers.DateSelectVC" />
         <activity android:name=".Controllers.LoginActivity" />
-        <activity android:name=".Controllers.RegisterActivity" />
+        <activity android:name=".Controllers.RegisterVC" />
         <activity android:name=".Controllers.BaseActivity" />
         <activity android:name=".Controllers.ForgetPasswordActivity" />
         <activity android:name=".Controllers.UpdatePasswordActivity" />

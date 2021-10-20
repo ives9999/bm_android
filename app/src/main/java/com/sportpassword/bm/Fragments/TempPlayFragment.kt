@@ -504,6 +504,31 @@ class TempPlayFragment : TabFragment() {
         startActivity(intent)
     }
 
+    override fun cellCity(row: Table) {
+        val key: String = CITY_KEY
+        val row1: TeamTable = row as TeamTable
+        val row2: SearchRow = getDefinedRow1(key)
+        row2.value = row1.arena!!.city_id.toString()
+        row2.show = row1.arena!!.city_show
+        prepareParams()
+        page = 1
+        tableLists.clear()
+        getDataStart(page, perPage)
+    }
+
+    override fun cellArena(row: Table) {
+        val key: String = ARENA_KEY
+        val row1: TeamTable = row as TeamTable
+        val row2: SearchRow = getDefinedRow1(key)
+        row2.value = row1.arena!!.id.toString()
+        row2.show = row1.arena!!.name
+        prepareParams()
+        page = 1
+        tableLists.clear()
+        getDataStart(page, perPage)
+    }
+
+
     override fun initSectionRows(): ArrayList<SearchSection> {
 
         val sections: ArrayList<SearchSection> = arrayListOf()

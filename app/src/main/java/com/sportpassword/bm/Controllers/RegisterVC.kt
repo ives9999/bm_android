@@ -27,7 +27,7 @@ import org.jetbrains.anko.sdk27.coroutines.onClick
 import kotlin.reflect.full.createType
 import kotlin.reflect.full.memberProperties
 
-class RegisterActivity : MyTableVC() {
+class RegisterVC : MyTableVC() {
 
     //image picker
 //    override val ACTION_CAMERA_REQUEST_CODE = 100
@@ -122,7 +122,7 @@ class RegisterActivity : MyTableVC() {
 
     private fun initData() {
 
-        session.dump()
+//        session.dump()
         val rows: ArrayList<OneRow> = arrayListOf()
         var row = OneRow("EMail", member.email!!, member.email!!, EMAIL_KEY, "textField", KEYBOARD.emailAddress, "service@bm.com", "", true)
         row.msg = "EMail沒有填寫"
@@ -152,6 +152,7 @@ class RegisterActivity : MyTableVC() {
         if (member.sex!!.isEmpty()) {
             member.sex = "M"
         }
+        val sex = member.sex
         row = OneRow("性別", member.sex!!, "", SEX_KEY, "sex", KEYBOARD.default, "", "", true)
         row.msg = "沒有選擇性別"
         rows.add(row)
@@ -474,15 +475,17 @@ class RegisterActivity : MyTableVC() {
                 }
             }
         }
-        val password: String = getRowValue(PASSWORD_KEY)
-        val repassword: String = getRowValue(REPASSWORD_KEY)
-        if (password != repassword) {
-            msg += "密碼不符合" + "\n"
-        }
+        if (!member.isLoggedIn) {
+            val password: String = getRowValue(PASSWORD_KEY)
+            val repassword: String = getRowValue(REPASSWORD_KEY)
+            if (password != repassword) {
+                msg += "密碼不符合" + "\n"
+            }
 
-        val privacy: Boolean = getRowValue(PRIVACY_KEY).toBoolean()
-        if (!privacy) {
-            msg += "必須同意隱私權政策才能完成註冊"
+            val privacy: Boolean = getRowValue(PRIVACY_KEY).toBoolean()
+            if (!privacy) {
+                msg += "必須同意隱私權政策才能完成註冊"
+            }
         }
 //        for (formItem in form.formItems) {
 //            formItem.checkValidity()
@@ -529,6 +532,9 @@ class RegisterActivity : MyTableVC() {
             params["do"] = "update"
             if (isFeaturedChange) {
                 params["featured"] = "1"
+            }
+            if (member_token.isNotEmpty()) {
+                params[TOKEN_KEY] = member_token
             }
 //            println(params)
             //println(filePath)

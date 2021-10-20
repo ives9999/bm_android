@@ -487,8 +487,6 @@ open class TabFragment : Fragment(), List1CellDelegate, Serializable {
         //searchAdapter.notifyItemChanged(0)
         if (searchSectionAdapter != null) {
             searchSectionAdapter.notifyDataSetChanged()
-        } else {
-            val i = 6
         }
     }
 
@@ -603,7 +601,10 @@ open class TabFragment : Fragment(), List1CellDelegate, Serializable {
 
     override fun cellCity(row: Table) {
         val key: String = CITY_KEY
-        val city_id: Int = row.city_id
+        val row1 = getDefinedRow1(key)
+        row1.value = row.city_id.toString()
+        row1.show = row.city_show
+//        val city_id: Int = row.city_id
 //        val row1 = getDefinedRow(key)
 //        row1["value"] = city_id.toString()
 //        replaceRows(key, row1)
@@ -772,6 +773,10 @@ open class MyViewHolder(val context: Context, val viewHolder: View, val list1Cel
 
     var titleLbl: TextView? = viewHolder.findViewById(R.id.titleLbl)
     var listFeatured: ImageView? = viewHolder.findViewById(R.id.listFeatured)
+
+    var city: Button? = viewHolder.findViewById(R.id.cityBtn)
+    var arena: Button? = viewHolder.findViewById(R.id.arenaBtn)
+
     var v: View? = viewHolder.findViewById(R.id.iconView)
     var refreshIcon: ImageButton? = viewHolder.findViewById(R.id.refreshIcon)
     var telIcon: ImageButton? = viewHolder.findViewById(R.id.telIcon)
@@ -797,6 +802,22 @@ open class MyViewHolder(val context: Context, val viewHolder: View, val list1Cel
                 .placeholder(R.drawable.loading_square_120)
                 .error(R.drawable.loading_square_120)
                 .into(listFeatured)
+        }
+
+        if (city != null) {
+            city!!.setOnClickListener {
+                if (list1CellDelegate != null) {
+                    list1CellDelegate.cellCity(row)
+                }
+            }
+        }
+
+        if (arena != null) {
+            arena!!.setOnClickListener {
+                if (list1CellDelegate != null) {
+                    list1CellDelegate.cellArena(row)
+                }
+            }
         }
 
         if (v != null) {
