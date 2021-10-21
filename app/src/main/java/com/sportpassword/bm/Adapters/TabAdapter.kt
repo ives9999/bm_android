@@ -1,16 +1,18 @@
 package com.sportpassword.bm.Adapters
 
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
+import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.sportpassword.bm.Fragments.*
 
 /**
  * Created by ivessun on 2018/2/23.
  */
 
-class TabAdapter(fm: FragmentManager, private val tabs: Array<String>, val screenWidth: Int=0): FragmentPagerAdapter(fm) {
-    override fun getItem(position: Int): Fragment {
+class TabAdapter(activity: FragmentActivity, private val tabs: Array<String>, val screenWidth: Int=0): FragmentStateAdapter(activity) {
+    override fun createFragment(position: Int): Fragment {
         //println("position: $position")
         when(position) {
             0 -> return TempPlayFragment.newInstance("team", screenWidth)
@@ -22,7 +24,7 @@ class TabAdapter(fm: FragmentManager, private val tabs: Array<String>, val scree
         }
     }
 
-    override fun getCount(): Int {
+    override fun getItemCount(): Int {
         return tabs.size
     }
 

@@ -610,20 +610,6 @@ open class TabFragment : Fragment(), List1CellDelegate, Serializable {
         getDataStart(page, perPage)
     }
 
-    override fun cellArea(row: Table) {
-
-        val key: String = AREA_KEY
-        val row1 = getDefinedRow1(key)
-//        val area_id: Int = _row.area_id
-//        val row1 = getDefinedRow(key)
-//        row1["value"] = area_id.toString()
-//        replaceRows(key, row1)
-        prepareParams()
-        page = 1
-        tableLists.clear()
-        getDataStart(page, perPage)
-    }
-
     protected open fun setRecyclerViewScrollListener() {
 
         var pos: Int = 0

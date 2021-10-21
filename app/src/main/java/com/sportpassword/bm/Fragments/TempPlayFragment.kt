@@ -211,6 +211,11 @@ class TempPlayFragment : TabFragment() {
         refresh()
     }
 
+    override fun setUserVisibleHint(isVisibleToUser: Boolean) {
+        super.setUserVisibleHint(isVisibleToUser)
+        able_type = "team"
+    }
+
     override fun genericTable() {
 //        println(dataService.jsonString)
         try {

@@ -156,27 +156,28 @@ class MainActivity : BaseActivity() {
 
         //把fragment放到ViewPager容器內
         val w = (screenWidth.toFloat() / density).toInt()
-        val adapter = TabAdapter(supportFragmentManager, tabsTextArr, w)
+        //val adapter = TabAdapter(supportFragmentManager, tabsTextArr, w)
+        val adapter = TabAdapter(this, tabsTextArr, w)
         fragment_container.adapter = adapter
 
         //mSectionPagerAdapter = SectionsPagerAdapter(supportFragmentManager)
         //tab_container.adapter = mSectionPagerAdapter
 
-        fragment_container.addOnPageChangeListener(TabLayout.TabLayoutOnPageChangeListener(tabs))
-        tabs.addOnTabSelectedListener(TabLayout.ViewPagerOnTabSelectedListener(fragment_container))
-        tabs.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
-            override fun onTabSelected(tab: TabLayout.Tab?) {
-                this@MainActivity.setTabIconSelected(tab!!)
-            }
-
-            override fun onTabUnselected(tab: TabLayout.Tab?) {
-                this@MainActivity.setTabIconUnSelected(tab!!)
-            }
-
-            override fun onTabReselected(tab: TabLayout.Tab?) {
-
-            }
-        })
+//        fragment_container.addOnPageChangeListener(TabLayout.TabLayoutOnPageChangeListener(tabs))
+//        tabs.addOnTabSelectedListener(TabLayout.ViewPagerOnTabSelectedListener(fragment_container))
+//        tabs.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
+//            override fun onTabSelected(tab: TabLayout.Tab?) {
+//                this@MainActivity.setTabIconSelected(tab!!)
+//            }
+//
+//            override fun onTabUnselected(tab: TabLayout.Tab?) {
+//                this@MainActivity.setTabIconUnSelected(tab!!)
+//            }
+//
+//            override fun onTabReselected(tab: TabLayout.Tab?) {
+//
+//            }
+//        })
 
         //_loginout()
 

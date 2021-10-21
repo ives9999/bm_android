@@ -162,6 +162,22 @@ class ArenaFragment : TabFragment() {
         }
     }
 
+    override fun cellArea(row: Table) {
+
+        val key: String = AREA_KEY
+        val row1: ArenaTable = row as ArenaTable
+        val row2 = getDefinedRow1(key)
+        val row3 = getDefinedRow1(CITY_KEY)
+        row2.value = row1.area_id.toString()
+        row2.show = row1.area_show
+        row3.value = row1.city_id.toString()
+        row3.show = row1.city_show
+        prepareParams()
+        page = 1
+        tableLists.clear()
+        getDataStart(page, perPage)
+    }
+
 //    override fun generateItems(): ArrayList<Item> {
 //        if (mysTable != null) {
 //            for (row in mysTable!!.rows) {

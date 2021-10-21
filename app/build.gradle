@@ -144,6 +144,10 @@ dependencies {
     //implementation "com.squareup.retrofit2:retrofit:2.8.1"
     implementation "com.squareup.retrofit2:converter-gson:2.8.1"
 
+    // view pager 2
+    implementation "androidx.viewpager2:viewpager2:1.0.0"
+    implementation 'com.google.android.material:material:1.5.0-alpha04'
+
     //for ecpay
     implementation "tw.com.ecpay.paymentgatewaykit:ECPayPaymentGatewayKit:1.0.3"
     implementation "com.github.zhpanvip:BannerViewPager:3.5.0"
