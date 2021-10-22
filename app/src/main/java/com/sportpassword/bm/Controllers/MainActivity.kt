@@ -151,6 +151,8 @@ class MainActivity : BaseActivity() {
         val tab: TabLayout.Tab? = tabs.getTabAt(0)
         setTabIconSelected(tab!!)
 
+
+
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
 
@@ -165,19 +167,22 @@ class MainActivity : BaseActivity() {
 
 //        fragment_container.addOnPageChangeListener(TabLayout.TabLayoutOnPageChangeListener(tabs))
 //        tabs.addOnTabSelectedListener(TabLayout.ViewPagerOnTabSelectedListener(fragment_container))
-//        tabs.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
-//            override fun onTabSelected(tab: TabLayout.Tab?) {
-//                this@MainActivity.setTabIconSelected(tab!!)
-//            }
-//
-//            override fun onTabUnselected(tab: TabLayout.Tab?) {
-//                this@MainActivity.setTabIconUnSelected(tab!!)
-//            }
-//
-//            override fun onTabReselected(tab: TabLayout.Tab?) {
-//
-//            }
-//        })
+        tabs.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
+            override fun onTabSelected(tab: TabLayout.Tab?) {
+                setTabIconSelected(tab!!)
+                val position = tab.position
+                fragment_container.currentItem = position
+                //adapter.createFragment(position)
+            }
+
+            override fun onTabUnselected(tab: TabLayout.Tab?) {
+                setTabIconUnSelected(tab!!)
+            }
+
+            override fun onTabReselected(tab: TabLayout.Tab?) {
+
+            }
+        })
 
         //_loginout()
 
@@ -213,16 +218,31 @@ class MainActivity : BaseActivity() {
         home_total_ad.visibility = View.GONE
     }
 
-    override fun onResume() {
-        super.onResume()
-        //LocalBroadcastManager.getInstance(this).registerReceiver(memberDidChange, IntentFilter(NOTIF_MEMBER_DID_CHANGE))
-//        LocalBroadcastManager.getInstance(this).registerReceiver(teamUpdate, IntentFilter(NOTIF_TEAM_UPDATE))
+    @RequiresApi(Build.VERSION_CODES.M)
+    fun setTabIconSelected(tab: TabLayout.Tab) {
+        val color = ContextCompat.getColor(this, R.color.MY_GREEN)
+        tab.icon!!.setColorFilter(color, PorterDuff.Mode.SRC_IN)
+        val title = tab.text!!.toString()
+        setTitle(title)
     }
 
-    override fun onDestroy() {
-        //LocalBroadcastManager.getInstance(this).unregisterReceiver(memberDidChange)
-        super.onDestroy()
+    @RequiresApi(Build.VERSION_CODES.M)
+    fun setTabIconUnSelected(tab: TabLayout.Tab) {
+        val color = ContextCompat.getColor(this, R.color.MY_WHITE)
+        tab.icon!!.setColorFilter(color, PorterDuff.Mode.SRC_IN)
     }
+
+
+//    override fun onResume() {
+//        super.onResume()
+//        //LocalBroadcastManager.getInstance(this).registerReceiver(memberDidChange, IntentFilter(NOTIF_MEMBER_DID_CHANGE))
+////        LocalBroadcastManager.getInstance(this).registerReceiver(teamUpdate, IntentFilter(NOTIF_TEAM_UPDATE))
+//    }
+
+//    override fun onDestroy() {
+//        //LocalBroadcastManager.getInstance(this).unregisterReceiver(memberDidChange)
+//        super.onDestroy()
+//    }
 
     private fun setTitle(title: String) {
         //val titleView = toolbar.findViewById<View>(R.id.toolbar_title) as TextView
@@ -241,17 +261,4 @@ class MainActivity : BaseActivity() {
 //        drawer.layoutParams = l
 //    }
 
-    @RequiresApi(Build.VERSION_CODES.M)
-    fun setTabIconSelected(tab: TabLayout.Tab) {
-        val color = ContextCompat.getColor(this, R.color.MY_GREEN)
-        tab.icon!!.setColorFilter(color, PorterDuff.Mode.SRC_IN)
-        val title = tab.text!!.toString()
-        setTitle(title)
-    }
-
-    @RequiresApi(Build.VERSION_CODES.M)
-    fun setTabIconUnSelected(tab: TabLayout.Tab) {
-        val color = ContextCompat.getColor(this, R.color.MY_WHITE)
-        tab.icon!!.setColorFilter(color, PorterDuff.Mode.SRC_IN)
-    }
 }

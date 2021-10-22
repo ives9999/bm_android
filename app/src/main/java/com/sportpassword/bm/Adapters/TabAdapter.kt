@@ -14,13 +14,13 @@ import com.sportpassword.bm.Fragments.*
 class TabAdapter(activity: FragmentActivity, private val tabs: Array<String>, val screenWidth: Int=0): FragmentStateAdapter(activity) {
     override fun createFragment(position: Int): Fragment {
         //println("position: $position")
-        when(position) {
-            0 -> return TempPlayFragment.newInstance("team", screenWidth)
-            1 -> return CourseFragment.newInstance("course", screenWidth)
-            2 -> return MemberFragment.newInstance("member", screenWidth)
-            3 -> return ArenaFragment.newInstance("arena", screenWidth)
-            4 -> return MoreFragment.newInstance("more", screenWidth)
-            else -> return TempPlayFragment.newInstance("team", screenWidth)
+        return when(position) {
+            0 -> TempPlayFragment()
+            1 -> CourseFragment()
+            2 -> MemberFragment()
+            3 -> ArenaFragment()
+            4 -> MoreFragment()
+            else -> TempPlayFragment()
         }
     }
 

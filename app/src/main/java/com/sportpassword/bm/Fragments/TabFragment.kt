@@ -239,9 +239,9 @@ open class TabFragment : Fragment(), List1CellDelegate, Serializable {
         }
 //        mask?.let { mask?.dismiss() }
         if (maskView != null) {
-            runOnUiThread {
+            //runOnUiThread {
                 Loading.hide(maskView)
-            }
+            //}
         }
         loading = false
 //        println("page:$page")
