@@ -28,6 +28,22 @@
         android:usesCleartextTraffic="true"
         tools:replace="android:allowBackup"
         tools:targetApi="m">
+
+        <activity
+            android:name=".Controllers.SplashVC"
+            android:exported="true"
+            android:theme="@style/Splash">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name=".Controllers.SearchVC"
+            android:exported="true">
+        </activity>
         <activity
             android:name=".Controllers.YoutubePlayerVC"
             android:exported="true" />
@@ -45,13 +61,15 @@
         <activity
             android:name=".Controllers.MainActivity"
             android:exported="true"
-            android:label="@string/app_name"
-            android:theme="@style/SplashTheme">
+            android:label="@string/app_name">
+
+            <!--
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+            -->
         </activity>
         <activity android:name=".Controllers.OrderVC" />
         <activity android:name=".Controllers.MemberCartListVC" />

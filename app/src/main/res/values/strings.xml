@@ -25,5 +25,8 @@
     <string name="auth_failed" translatable="false">Authentication Failure</string>
     <string name="title_activity_temp_play_vc">TempPlayVC</string>
     <string name="title_activity_my_map_vc">Map</string>
+    <string name="title_activity_splash_vc">SplashVC</string>
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
 
 </resources>
