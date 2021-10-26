@@ -1,9 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".Controllers.SearchVC">
 
-</LinearLayout>
+    <RelativeLayout
+        android:id="@+id/topView"
+        android:layout_width="match_parent"
+        android:layout_height="64dp"
+        android:layout_alignParentTop="true"
+        android:background="@color/MY_GREEN">
+
+        <include layout="@layout/top_view" />
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/bottomView"
+        android:layout_below="@id/topView"
+        android:background="@drawable/background"
+        android:orientation="vertical">
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/bottomView"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_alignParentBottom="true"
+        android:background="@color/TAB_BACKGROUND"
+        android:orientation="horizontal"
+        android:paddingTop="3dp"
+        android:paddingBottom="0dp">
+
+        <include layout="@layout/bottom_view" />
+
+    </LinearLayout>
+</RelativeLayout>
