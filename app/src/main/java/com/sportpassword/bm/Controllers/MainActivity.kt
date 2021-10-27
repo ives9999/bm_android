@@ -250,9 +250,9 @@ class MainActivity : BaseActivity() {
         toolbar_title.text = title
     }
 
-    fun search_team(view: View) {
-        toSearch("team")
-    }
+//    fun search_team(view: View) {
+//        toSearch("team")
+//    }
 
 //    private fun setMenuWidth() {
 //        val l = drawer.layoutParams

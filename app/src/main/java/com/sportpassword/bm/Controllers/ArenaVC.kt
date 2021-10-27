@@ -1,13 +1,15 @@
 package com.sportpassword.bm.Controllers
 
 import android.os.Bundle
-import android.view.Menu
 import com.sportpassword.bm.Fragments.ArenaAdapter
 import com.sportpassword.bm.Models.*
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.ArenaService
 import com.sportpassword.bm.Utilities.*
-import kotlinx.android.synthetic.main.activity_store_vc.*
+import kotlinx.android.synthetic.main.activity_arena_vc.*
+import kotlinx.android.synthetic.main.bottom_view.*
+import kotlinx.android.synthetic.main.top_view.*
+import org.jetbrains.anko.backgroundColor
 
 class ArenaVC : MyTableVC() {
 
@@ -26,14 +28,18 @@ class ArenaVC : MyTableVC() {
         )
 
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_store_vc)
+        setContentView(R.layout.activity_arena_vc)
 
-        setMyTitle("球館")
+        arenaTabLine.backgroundColor = myColorGreen
+        topTitleLbl.setText("球館")
+//        setMyTitle("球館")
         able_type = "arena"
 
         dataService = ArenaService
         recyclerView = list_container
-        refreshLayout = refresh
+        refreshLayout = page_refresh
+//        maskView = mask
+        setRefreshListener()
 //        initAdapter()
         tableAdapter = ArenaAdapter(R.layout.arena_list_cell, this)
         recyclerView.adapter = tableAdapter
@@ -41,12 +47,12 @@ class ArenaVC : MyTableVC() {
         refresh()
     }
 
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        isSearchIconShow = true
-        super.onCreateOptionsMenu(menu)
-
-        return true
-    }
+//    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+//        isSearchIconShow = true
+//        super.onCreateOptionsMenu(menu)
+//
+//        return true
+//    }
 
     override fun genericTable() {
         //storesTable = jsonToModel<StoresTable>(dataService.jsonString)

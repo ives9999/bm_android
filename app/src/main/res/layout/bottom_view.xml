@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
+    <LinearLayout
         android:id="@+id/teamTabContainer"
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="1"
         android:gravity="center"
+        android:onClick="tabToTeam"
         android:orientation="vertical">
 
         <ImageView
@@ -28,13 +28,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="球隊"
-            android:textSize="14dp" />
+            android:text="球隊" />
 
         <LinearLayout
+            android:id="@+id/teamTabLine"
             android:layout_width="match_parent"
-            android:layout_height="2dp"
-            android:background="@color/MY_GREEN"
+            android:layout_height="4dp"
+            android:layout_weight="1"
             android:orientation="vertical" />
     </LinearLayout>
 
@@ -44,6 +44,7 @@
         android:layout_height="match_parent"
         android:layout_weight="1"
         android:gravity="center"
+        android:onClick="tabToCourse"
         android:orientation="vertical">
 
         <ImageView
@@ -62,9 +63,9 @@
             android:text="課程" />
 
         <LinearLayout
+            android:id="@+id/courseTabLine"
             android:layout_width="match_parent"
-            android:layout_height="2dp"
-            android:background="@color/MY_GREEN"
+            android:layout_height="4dp"
             android:orientation="vertical" />
 
     </LinearLayout>
@@ -75,6 +76,7 @@
         android:layout_height="match_parent"
         android:layout_weight="1"
         android:gravity="center"
+        android:onClick="tabToMember"
         android:orientation="vertical">
 
         <ImageView
@@ -93,9 +95,9 @@
             android:text="會員" />
 
         <LinearLayout
+            android:id="@+id/memberTabLine"
             android:layout_width="match_parent"
-            android:layout_height="2dp"
-            android:background="@color/MY_GREEN"
+            android:layout_height="4dp"
             android:orientation="vertical" />
     </LinearLayout>
 
@@ -105,6 +107,7 @@
         android:layout_height="match_parent"
         android:layout_weight="1"
         android:gravity="center"
+        android:onClick="tabToArena"
         android:orientation="vertical">
 
         <ImageView
@@ -123,9 +126,9 @@
             android:text="球館" />
 
         <LinearLayout
+            android:id="@+id/arenaTabLine"
             android:layout_width="match_parent"
-            android:layout_height="2dp"
-            android:background="@color/MY_GREEN"
+            android:layout_height="4dp"
             android:orientation="vertical" />
     </LinearLayout>
 
@@ -135,6 +138,7 @@
         android:layout_height="match_parent"
         android:layout_weight="1"
         android:gravity="center"
+        android:onClick="tabToMore"
         android:orientation="vertical">
 
         <ImageView
@@ -153,9 +157,9 @@
             android:text="更多" />
 
         <LinearLayout
+            android:id="@+id/moreTabLine"
             android:layout_width="match_parent"
-            android:layout_height="2dp"
-            android:background="@color/MY_GREEN"
+            android:layout_height="4dp"
             android:orientation="vertical" />
     </LinearLayout>
 </LinearLayout>

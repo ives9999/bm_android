@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Controllers.ArenaVC">
+    tools:context=".Controllers.MemberVC">
 
     <RelativeLayout
         android:id="@+id/topView"
@@ -17,31 +17,48 @@
 
     </RelativeLayout>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_above="@id/bottomView"
-        android:layout_below="@id/topView"
-        android:background="@drawable/background"
-        android:orientation="vertical">
-
-        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/page_refresh"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="8dp"
+        android:layout_above="@id/loginout"
+        android:layout_below="@id/topView"
+        android:background="@drawable/background"
         >
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/member_data">
+                <include
+                    android:id="@+id/nav_drawer_header_include"
+                    layout="@layout/nav_header_main"
+                    />
+            </LinearLayout>
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/list_container"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:scrollbars="vertical">
+                android:layout_height="match_parent"
+                android:scrollbars="vertical"
+                app:layoutManager="androidx.recyclerview.widget.GridLayoutManager">
 
             </androidx.recyclerview.widget.RecyclerView>
+        </LinearLayout>
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
-        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+    <LinearLayout
+        android:id="@+id/loginout"
+        android:layout_above="@id/bottomView"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:background="@color/MY_RED"
+        android:clickable="true"
+        android:orientation="vertical">
+        <include layout="@layout/login_out"/>
     </LinearLayout>
 
     <LinearLayout
@@ -57,6 +74,5 @@
         <include layout="@layout/bottom_view" />
 
     </LinearLayout>
-
     <include layout="@layout/mask" />
 </RelativeLayout>

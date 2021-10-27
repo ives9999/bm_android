@@ -159,6 +159,8 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener,
 
     lateinit var searchSectionAdapter: SearchSectionAdapter
 
+    var myColorGreen: Int = 0
+
     //var vcResult: VCResult = VCResult()
 
     override fun singleSelected(key: String, selected: String) {}
@@ -624,6 +626,8 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener,
         searchSectionAdapter = SearchSectionAdapter(this, R.layout.cell_section, this)
         searchSections = initSectionRows()
 
+        myColorGreen = ContextCompat.getColor(context, R.color.MY_GREEN)
+
         //vcResult.selectCityResult(this)
 
         //OneSignal.setSubscription(true)
@@ -730,6 +734,26 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener,
         URL_UPDATE = URL_HOME + "%s/update"
 
         FEATURED_PATH = BASE_URL + FEATURED_PATH
+    }
+
+    fun tabToTeam(view: View) {
+        toSearch()
+    }
+
+    fun tabToCourse(view: View) {
+        toCourse(false)
+    }
+
+    fun tabToMember(view: View) {
+        toMember()
+    }
+
+    fun tabToArena(view: View) {
+        toArena(false)
+    }
+
+    fun tabToMore(view: View) {
+        toMore()
     }
 
     protected fun setMyTitle(title: String) {

@@ -155,6 +155,11 @@ interface ToInterface {
         mainDelegate.startActivity(intent)
     }
 
+    fun toMember() {
+        val i = Intent(mainDelegate, MemberVC::class.java)
+        mainDelegate.startActivity(i)
+    }
+
     fun toMemberCartList() {
         val i = Intent(mainDelegate, MemberCartListVC::class.java)
         mainDelegate.startActivity(i)
@@ -162,6 +167,11 @@ interface ToInterface {
 
     fun toMemberOrderList() {
         val i = Intent(mainDelegate, MemberOrderListVC::class.java)
+        mainDelegate.startActivity(i)
+    }
+
+    fun toMore() {
+        val i = Intent(mainDelegate, MoreVC::class.java)
         mainDelegate.startActivity(i)
     }
 
@@ -212,8 +222,9 @@ interface ToInterface {
         mainDelegate.startActivity(registerIntent)
     }
 
-    fun toSearch(type: String) {
-        //val intent = Intent(mainDelegate)
+    fun toSearch() {
+        val i = Intent(mainDelegate, SearchVC::class.java)
+        mainDelegate.startActivity(i)
     }
 
     fun toSelectArea(selected: String?=null, city_id: Int, delegate: BaseActivity?=null, able_type: String?=null) {

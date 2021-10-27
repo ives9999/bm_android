@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Controllers.ArenaVC">
+    tools:context=".Controllers.CourseVC">
 
     <RelativeLayout
         android:id="@+id/topView"
@@ -26,22 +26,21 @@
         android:orientation="vertical">
 
         <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-        android:id="@+id/page_refresh"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="8dp"
-        >
+            android:id="@+id/page_refresh"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent">
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/list_container"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:scrollbars="vertical">
+                android:layout_height="match_parent"
+                android:scrollbars="vertical"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager">
 
             </androidx.recyclerview.widget.RecyclerView>
-
         </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
     </LinearLayout>
 
     <LinearLayout
@@ -57,6 +56,5 @@
         <include layout="@layout/bottom_view" />
 
     </LinearLayout>
-
     <include layout="@layout/mask" />
 </RelativeLayout>
