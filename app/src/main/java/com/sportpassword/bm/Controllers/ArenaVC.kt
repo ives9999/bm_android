@@ -1,50 +1,49 @@
 package com.sportpassword.bm.Controllers
 
+import android.content.Context
 import android.os.Bundle
-import com.sportpassword.bm.Fragments.ArenaAdapter
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
+import androidx.recyclerview.widget.RecyclerView
+import com.sportpassword.bm.Fragments.MyViewHolder
 import com.sportpassword.bm.Models.*
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.ArenaService
 import com.sportpassword.bm.Utilities.*
 import kotlinx.android.synthetic.main.activity_arena_vc.*
+import kotlinx.android.synthetic.main.arena_list_cell.view.*
 import kotlinx.android.synthetic.main.bottom_view.*
 import kotlinx.android.synthetic.main.top_view.*
 import org.jetbrains.anko.backgroundColor
 
-class ArenaVC : MyTableVC() {
+class ArenaVC : AppCompatActivity() {
 
     var mysTable: ArenasTable? = null
     lateinit var tableAdapter: ArenaAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
-
-        searchRows = arrayListOf(
-            hashMapOf("title" to "關鍵字","show" to "全部","key" to KEYWORD_KEY,"value" to ""),
-            hashMapOf("title" to "縣市","show" to "全部","key" to CITY_KEY,"value" to ""),
-            hashMapOf("title" to "區域","show" to "全部","key" to AREA_KEY,"value" to ""),
-            hashMapOf("title" to "空調","show" to "全部","key" to ARENA_AIR_CONDITION_KEY,"switch" to "true","value" to ""),
-            hashMapOf("title" to "盥洗室","show" to "全部","key" to ARENA_BATHROOM_KEY,"switch" to "true","value" to ""),
-            hashMapOf("title" to "停車場","show" to "全部","key" to ARENA_PARKING_KEY,"switch" to "true","value" to "")
-        )
-
         super.onCreate(savedInstanceState)
+
         setContentView(R.layout.activity_arena_vc)
-
+        val myColorGreen = ContextCompat.getColor(this, R.color.MY_GREEN)
         arenaTabLine.backgroundColor = myColorGreen
-        topTitleLbl.setText("球館")
-//        setMyTitle("球館")
-        able_type = "arena"
+        topTitleLbl.setText("課程")
 
-        dataService = ArenaService
-        recyclerView = list_container
-        refreshLayout = page_refresh
-//        maskView = mask
-        setRefreshListener()
-//        initAdapter()
-        tableAdapter = ArenaAdapter(R.layout.arena_list_cell, this)
-        recyclerView.adapter = tableAdapter
+        tableAdapter = ArenaAdapter()
+        val a1: ArenaTable = ArenaTable()
+        a1.title = "aaa"
+        val a2: ArenaTable = ArenaTable()
+        a2.title = "bbb"
+        val a: ArrayList<ArenaTable> = arrayListOf(
+            a1, a2
+        )
+        tableAdapter.tableList = a
 
-        refresh()
+        //refresh()
     }
 
 //    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -54,19 +53,6 @@ class ArenaVC : MyTableVC() {
 //        return true
 //    }
 
-    override fun genericTable() {
-        //storesTable = jsonToModel<StoresTable>(dataService.jsonString)
-        mysTable = jsonToModels<ArenasTable>(jsonString!!)
-        if (mysTable != null) {
-            tables = mysTable
-            getPage()
-            tableLists += generateItems1(ArenaTable::class, mysTable!!.rows)
-            tableAdapter.setMyTableList(tableLists)
-            runOnUiThread {
-                tableAdapter.notifyDataSetChanged()
-            }
-        }
-    }
 
 //    override fun generateItems(): ArrayList<Item> {
 //        if (mysTable != null) {
@@ -83,36 +69,7 @@ class ArenaVC : MyTableVC() {
 //        return items
 //    }
 
-    override fun prepare(idx: Int) {
 
-        var row = searchRows.get(idx)
-        var key: String = ""
-        if (row.containsKey("key")) {
-            key = row["key"]!!
-        }
-
-        var value: String = ""
-        if (row.containsKey("value") && row["value"]!!.isNotEmpty()) {
-            value = row["value"]!!
-        }
-
-        when (key) {
-            CITY_KEY -> {
-                toSelectCity(value, this)
-            } AREA_KEY -> {
-                //row = getDefinedRow(CITY_KEY)
-                var city_id: Int? = null
-                if (row.containsKey("value") && row["value"] != null && row["value"]!!.length > 0) {
-                    city_id = row["value"]!!.toInt()
-                }
-                if (city_id != null && city_id > 0) {
-                    toSelectArea(value, city_id, null, able_type)
-                } else {
-                    warning("請先選擇縣市")
-                }
-            }
-        }
-    }
 
 //    override fun rowClick(item: com.xwray.groupie.Item<com.xwray.groupie.GroupieViewHolder>, view: View) {
 //
@@ -122,36 +79,39 @@ class ArenaVC : MyTableVC() {
 //        toShowArena(table.token)
 //    }
 
-    fun remove(indexPath: IndexPath) {
-        val row = searchRows[indexPath.row]
-        val key = row["key"]!!
-        when (key) {
-            CITY_KEY -> {
-                citys.clear()
-                row["show"] = "全部"
-            }
-            AREA_KEY -> {
-                areas.clear()
-                row["show"] = "全部"
-            }
-        }
-        row["value"] = ""
 
+}
+
+class ArenaAdapter(): RecyclerView.Adapter<ArenaViewHolder>() {
+
+    var tableList: ArrayList<ArenaTable> = arrayListOf()
+//class ArenaAdapter(resource: Int, list1CellDelegate: List1CellDelegate?): MyAdapter<ArenaViewHolder>(resource, ::ArenaViewHolder, list1CellDelegate) {
+
+    override fun getItemCount(): Int {
+        return tableList.size
     }
 
-    override fun cellArea(row: Table) {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ArenaViewHolder {
+        val inflater = LayoutInflater.from(parent.context)
+        val viewHolder = inflater.inflate(R.layout.arena_list_cell, parent, false)
 
-        val myTable: ArenaTable? = row as? ArenaTable
-        if (myTable != null) {
-            val key: String = AREA_KEY
-            val area_id: Int = myTable.area_id
-//            val row = getDefinedRow(key)
-//            row["value"] = area_id.toString()
-//            replaceRows(key, row)
-            prepareParams()
-            refresh()
-        } else {
-            warning("轉為ArenaTable失敗，請洽管理員")
-        }
+        return ArenaViewHolder(viewHolder)
+    }
+
+    override fun onBindViewHolder(holder: ArenaViewHolder, position: Int) {
+        holder.bind(tableList[position])
+    }
+
+
+}
+
+class ArenaViewHolder(viewHolder: View): RecyclerView.ViewHolder(viewHolder) {
+
+    var titleLbl: TextView? = viewHolder.findViewById(R.id.titleLbl)
+
+    fun bind(row: ArenaTable) {
+
+        titleLbl!!.text = row.title
+
     }
 }

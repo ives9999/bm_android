@@ -2,7 +2,6 @@ package com.sportpassword.bm.Controllers
 
 import android.content.Context
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -14,7 +13,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.sportpassword.bm.Data.MemberRow
 import com.sportpassword.bm.Data.MemberSection
-import com.sportpassword.bm.Fragments.MemberFragment
 import com.sportpassword.bm.Models.MemberTable
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.MemberService
@@ -26,7 +24,6 @@ import kotlinx.android.synthetic.main.bottom_view.*
 import kotlinx.android.synthetic.main.login_out.*
 import kotlinx.android.synthetic.main.mask.*
 import kotlinx.android.synthetic.main.nav_header_main.*
-import kotlinx.android.synthetic.main.tab_member.*
 import kotlinx.android.synthetic.main.top_view.*
 import org.jetbrains.anko.backgroundColor
 
@@ -107,9 +104,9 @@ class MemberVC : MyTableVC() {
         loginBtn.text = "登出"
         registerBtn.visibility = View.INVISIBLE
         forgetPasswordBtn.visibility = View.INVISIBLE
-        member_container.visibility = View.VISIBLE
+        list_container.visibility = View.VISIBLE
         //menu_team_container.visibility = View.VISIBLE
-        refreshLayout = member_refresh
+        refreshLayout = page_refresh
 //        initMemberFunction()
     }
     
