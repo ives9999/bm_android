@@ -1,62 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/CITY_BUTTON"
+    android:orientation="vertical"
     tools:context=".Controllers.ArenaVC">
 
-    <RelativeLayout
-        android:id="@+id/topView"
+    <TextView
         android:layout_width="match_parent"
-        android:layout_height="64dp"
-        android:layout_alignParentTop="true"
-        android:background="@color/MY_GREEN">
+        android:layout_height="wrap_content"
+        android:background="@color/LAYER"
+        android:text="test"
+        android:textAlignment="center"
+        android:textSize="26dp" />
 
-        <include layout="@layout/top_view" />
-
-    </RelativeLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_above="@id/bottomView"
-        android:layout_below="@id/topView"
-        android:background="@drawable/background"
-        android:orientation="vertical">
-
-        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/page_refresh"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="8dp"
-        >
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/list_container"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:scrollbars="vertical">
-
-            </androidx.recyclerview.widget.RecyclerView>
-
-        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/bottomView"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_alignParentBottom="true"
-        android:background="@color/TAB_BACKGROUND"
-        android:orientation="horizontal"
-        android:paddingTop="3dp"
-        android:paddingBottom="0dp">
-
-        <include layout="@layout/bottom_view" />
-
-    </LinearLayout>
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent">
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            android:background="@color/MY_GREEN" />
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
     <include layout="@layout/mask" />
-</RelativeLayout>
+</LinearLayout>
