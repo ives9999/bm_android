@@ -26,6 +26,7 @@ import kotlinx.android.synthetic.main.activity_show_teach_vc.likeButton
 import kotlinx.android.synthetic.main.activity_show_teach_vc.refresh
 import kotlinx.android.synthetic.main.activity_show_teach_vc.tableView
 import kotlinx.android.synthetic.main.mask.*
+import kotlinx.android.synthetic.main.top_view.*
 
 class ShowTeachVC : YouTubeBaseActivity(), YouTubePlayer.OnInitializedListener {
 
@@ -104,10 +105,10 @@ class ShowTeachVC : YouTubeBaseActivity(), YouTubePlayer.OnInitializedListener {
                         table!!.filterRow()
 
                         if (table!!.name.isNotEmpty()) {
-                            myTitle.text = table!!.name
+                            topTitleLbl.text = table!!.name
                             //setMyTitle(table!!.name)
                         } else if (table!!.title.isNotEmpty()) {
-                            myTitle.text = table!!.title
+                            topTitleLbl.text = table!!.title
                             //setMyTitle(table!!.title)
                         }
 

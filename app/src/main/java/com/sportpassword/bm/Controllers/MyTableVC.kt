@@ -179,7 +179,9 @@ abstract class MyTableVC : BaseActivity() {
             Loading.hide(mask)
         }
         loading = false
-        refreshLayout!!.isRefreshing = false
+        if (refreshLayout != null) {
+            refreshLayout!!.isRefreshing = false
+        }
 //        println("page:$page")
 //        println("perPage:$perPage")
 //        println("totalCount:$totalCount")

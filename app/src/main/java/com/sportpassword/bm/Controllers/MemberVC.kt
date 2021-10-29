@@ -37,7 +37,7 @@ class MemberVC : MyTableVC() {
         setContentView(R.layout.activity_member_vc)
 
         memberTabLine.backgroundColor = myColorGreen
-        topTitleLbl.setText("會員")
+        setMyTitle("會員")
 
         dataService = MemberService
 

@@ -8,10 +8,22 @@
     android:focusable="true"
     android:focusableInTouchMode="true"
     android:id="@+id/register_layout"
-    tools:context=".Controllers.RegisterActivity">
+    tools:context=".Controllers.RegisterVC">
+
+    <RelativeLayout
+        android:id="@+id/topView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:background="@color/MY_GREEN">
+
+        <include layout="@layout/top_view" />
+
+    </RelativeLayout>
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/refresh"
+        android:layout_below="@id/topView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@drawable/background"

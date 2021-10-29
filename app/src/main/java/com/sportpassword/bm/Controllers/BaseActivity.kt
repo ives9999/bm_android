@@ -44,6 +44,7 @@ import com.sportpassword.bm.Views.ImagePicker
 import com.sportpassword.bm.Views.SearchPanel
 import com.sportpassword.bm.member
 import kotlinx.android.synthetic.main.mask.*
+import kotlinx.android.synthetic.main.top_view.*
 import org.jetbrains.anko.*
 import org.json.JSONArray
 import org.json.JSONObject
@@ -757,38 +758,39 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener,
     }
 
     protected fun setMyTitle(title: String) {
-        val actionBar: ActionBar = supportActionBar!!
-        actionBar.setDisplayShowTitleEnabled(false)
-        actionBar.setDisplayHomeAsUpEnabled(true)
-        actionBar.setHomeAsUpIndicator(R.drawable.prev)
-
-        val l: LinearLayout = LayoutInflater.from(this).inflate(R.layout.title_bar, null) as LinearLayout
-        val titleView: TextView = l.findViewById<TextView>(R.id.myTitle)
-        titleView.setText(title)
-        //println(titleView)
-        val display: Display = windowManager.defaultDisplay
-        val size: Point = Point()
-        display.getSize(size)
-        val actionBarWidth: Int = size.x
-        //println(actionBarWidth)
-
-        titleView.measure(0, 0)
-        val titleViewWidth = titleView.measuredWidth
-        //println(titleViewWidth)
-
-
-//        val dimensions: BitmapFactory.Options = BitmapFactory.Options()
-//        dimensions.inJustDecodeBounds = true
-//        val prev: Bitmap = BitmapFactory.decodeResource(resources, R.drawable.prev, dimensions)
-//        val prevWidth: Int = dimensions.outWidth
-//        println(prevWidth)
-
-
-        val params: ActionBar.LayoutParams = ActionBar.LayoutParams(ActionBar.LayoutParams.WRAP_CONTENT, ActionBar.LayoutParams.WRAP_CONTENT)
-        params.leftMargin = (actionBarWidth/2) - (titleViewWidth/2) - 170
-
-        actionBar.setCustomView(l, params)
-        actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM, ActionBar.DISPLAY_SHOW_CUSTOM)
+        topTitleLbl.text = title
+//        val actionBar: ActionBar = supportActionBar!!
+//        actionBar.setDisplayShowTitleEnabled(false)
+//        actionBar.setDisplayHomeAsUpEnabled(true)
+//        actionBar.setHomeAsUpIndicator(R.drawable.prev)
+//
+//        val l: LinearLayout = LayoutInflater.from(this).inflate(R.layout.title_bar, null) as LinearLayout
+//        val titleView: TextView = l.findViewById<TextView>(R.id.myTitle)
+//        titleView.setText(title)
+//        //println(titleView)
+//        val display: Display = windowManager.defaultDisplay
+//        val size: Point = Point()
+//        display.getSize(size)
+//        val actionBarWidth: Int = size.x
+//        //println(actionBarWidth)
+//
+//        titleView.measure(0, 0)
+//        val titleViewWidth = titleView.measuredWidth
+//        //println(titleViewWidth)
+//
+//
+////        val dimensions: BitmapFactory.Options = BitmapFactory.Options()
+////        dimensions.inJustDecodeBounds = true
+////        val prev: Bitmap = BitmapFactory.decodeResource(resources, R.drawable.prev, dimensions)
+////        val prevWidth: Int = dimensions.outWidth
+////        println(prevWidth)
+//
+//
+//        val params: ActionBar.LayoutParams = ActionBar.LayoutParams(ActionBar.LayoutParams.WRAP_CONTENT, ActionBar.LayoutParams.WRAP_CONTENT)
+//        params.leftMargin = (actionBarWidth/2) - (titleViewWidth/2) - 170
+//
+//        actionBar.setCustomView(l, params)
+//        actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM, ActionBar.DISPLAY_SHOW_CUSTOM)
     }
 
     protected fun myMakeCall(_mobile: String) {
@@ -858,6 +860,11 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener,
                 return
             }
         }
+    }
+
+    //for prev image button use
+    fun prev(view: View) {
+        prev()
     }
 
     fun prev() {

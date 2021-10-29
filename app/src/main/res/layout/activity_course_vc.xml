@@ -9,7 +9,7 @@
     <RelativeLayout
         android:id="@+id/topView"
         android:layout_width="match_parent"
-        android:layout_height="64dp"
+        android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:background="@color/MY_GREEN">
 
@@ -46,7 +46,7 @@
     <LinearLayout
         android:id="@+id/bottomView"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:background="@color/TAB_BACKGROUND"
         android:orientation="horizontal"

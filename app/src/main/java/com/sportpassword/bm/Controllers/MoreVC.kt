@@ -1,5 +1,6 @@
 package com.sportpassword.bm.Controllers
 
+import android.app.AlertDialog
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -9,7 +10,11 @@ import androidx.recyclerview.widget.RecyclerView
 import android.view.Menu
 import android.view.View
 import android.widget.ImageButton
+import androidx.core.content.ContentProviderCompat.requireContext
+import androidx.core.content.pm.PackageInfoCompat
 import com.sportpassword.bm.Adapters.ListAdapter
+import com.sportpassword.bm.Data.MoreRow
+import com.sportpassword.bm.Fragments.MoreAdapter
 import com.sportpassword.bm.Models.City
 import com.sportpassword.bm.Models.Tables
 import com.sportpassword.bm.R
@@ -18,146 +23,78 @@ import com.sportpassword.bm.Utilities.CITY_KEY
 import com.sportpassword.bm.Utilities.Global
 import com.sportpassword.bm.Utilities.Loading
 import com.sportpassword.bm.Utilities.PERPAGE
+import kotlinx.android.synthetic.main.bottom_view.*
 import kotlinx.android.synthetic.main.mask.*
+import kotlinx.android.synthetic.main.tab_course.*
+import kotlinx.android.synthetic.main.top_view.*
+import org.jetbrains.anko.backgroundColor
 import java.lang.Exception
 
 open class MoreVC : MyTableVC() {
 
-//    protected var type: String = "arena"
-//    protected var titleField: String = "name"
+    lateinit var tableAdapter: MoreAdapter
+    var moreRows: ArrayList<MoreRow> = arrayListOf()
+
+    private fun initMoreRows(): ArrayList<MoreRow> {
+        val rows: ArrayList<MoreRow> = arrayListOf()
+        val r1: MoreRow = MoreRow("商品", "product", "product", R.color.MY_LIGHT_RED)
+        rows.add(r1)
+        val r2: MoreRow = MoreRow("教學", "teach", "teach", R.color.MY_WHITE)
+        rows.add(r2)
+        val r3: MoreRow = MoreRow("教練", "coach", "coach", R.color.MY_WHITE)
+        rows.add(r3)
+        val r4: MoreRow = MoreRow("體育用品店", "store", "store", R.color.MY_WHITE)
+        rows.add(r4)
+        val r5: MoreRow = MoreRow("推播訊息", "pn", "bell", R.color.MY_WHITE)
+        rows.add(r5)
+        val r6: MoreRow = MoreRow("版本", "version", "version", R.color.MY_WHITE)
+        rows.add(r6)
+
+        return rows
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-//        if (intent.hasExtra("type")) {
-//            type = intent.getStringExtra("type")
-//        }
-//        if (intent.hasExtra("titleField")) {
-//            titleField = intent.getStringExtra("titleField")
-//        }
+        setContentView(R.layout.activity_more_vc)
+
+        moreTabLine.backgroundColor = myColorGreen
+        topTitleLbl.setText("更多")
+
+        recyclerView = list_container
+        recyclerView.setHasFixedSize(true)
+        setRecyclerViewScrollListener()
+
+        //recyclerView.adapter = adapter
+        tableAdapter = MoreAdapter(this)
+        moreRows = initMoreRows()
+        tableAdapter.moreRow = moreRows
+        recyclerView.adapter = tableAdapter
     }
 
-//    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-//        menuInflater.inflate(R.menu.search, menu)
-//        val memuView = menu!!.findItem(R.id.menu_search).actionView
-//        val searchBtn = memuView.findViewById<ImageButton>(R.id.search)
-//        //searchBtn.tag = type
-//        return true
-//    }
-
-//    override fun refresh() {
-//        page = 1
-//        getDataStart(page, perPage)
-//        listAdapter.notifyDataSetChanged()
-//    }
-
-
-
-//    override fun getDataStart(_page: Int, _perPage: Int) {
-//        //println("page: $_page")
-//        Loading.show(mask)
-//        dataService.getList(this, type!!, titleField, params, _page, _perPage, null) { success ->
-//            getDataEnd(success)
-//        }
-//    }
-//
-//    override fun getDataEnd(success: Boolean) {
-//        if (success) {
-//            if (theFirstTime) {
-//                page = dataService.page
-//                perPage = dataService.perPage
-//                totalCount = dataService.totalCount
-//                var _totalPage: Int = totalCount / perPage
-//                totalPage = if (totalCount % perPage > 0) _totalPage+1 else _totalPage
-//                theFirstTime = false
-//                closeRefresh()
-//            }
-//
-//            notifyDataSetChanged()
-//            page++
-//        }
-//        Loading.hide(mask)
-//    }
-
-//    override fun notifyDataSetChanged() {
-//        if (page == 1) {
-//            superDataLists = arrayListOf()
-//        }
-//        superDataLists.addAll(dataService.superDataLists)
-////        for (data in superDataLists) {
-////            data.print()
-////            println("===================")
-////        }
-//        listAdapter.lists = superDataLists
-//        listAdapter.notifyDataSetChanged()
-//    }
-
-//    override fun initAdapter(include_section: Boolean) {
-//
-//        listAdapter = ListAdapter(this, type!!, screenWidth, { data ->
-//
-//            var intent: Intent? = null
-//            if (type == "coach") {
-//                intent = Intent(this, ShowCoachVC::class.java)
-//            } else {
-//                intent = Intent(this, ShowActivity::class.java)
-//            }
-//            intent.putExtra("type", type)
-//            intent.putExtra("token", data.token)
-//            intent.putExtra("title", data.title)
-//            startActivity(intent)
-//        }, {data ->
-//            try {
-//                val city_id = data.data[CITY_KEY]!!["value"] as Int
-//                citys.clear()
-//                citys.add(City(city_id, ""))
-//                prepareParams("all")
-//                refresh()
-//            } catch (e: Exception) {
-//                warning("沒有縣市值，無法搜尋")
-//            }
-//        }, { data, address ->
-//            val intent = Intent(this, MyMapVC::class.java)
-//            intent.putExtra("title", data.title)
-//            intent.putExtra("address", address)
-//            startActivity(intent)
-//        })
-//        recyclerView.adapter = listAdapter
-//        val layoutManager = GridLayoutManager(this, 1)
-//        recyclerView.layoutManager = layoutManager
-//        recyclerView.setHasFixedSize(true)
-//
-//        setRecyclerViewScrollListener()
-//        setRecyclerViewRefreshListener()
-//    }
-
-//    override fun setRecyclerViewScrollListener() {
-//
-//        var pos: Int = 0
-//
-//        scrollerListenr = object: RecyclerView.OnScrollListener() {
-//            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-//                super.onScrolled(recyclerView, dx, dy)
-//                val layoutManager = recyclerView.layoutManager as GridLayoutManager
-////                if (this@MoreVC.superDataLists.size < this@MoreVC.totalCount) {
-////                    pos = layoutManager.findLastVisibleItemPosition()
-////                }
-//            }
-//            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
-//                super.onScrollStateChanged(recyclerView, newState)
-//
-////                if (this@MoreVC.superDataLists.size == pos + 1 && newState == RecyclerView.SCROLL_STATE_IDLE && this@MoreVC.superDataLists.size < this@MoreVC.totalCount) {
-////                    this@MoreVC.getDataStart(this@MoreVC.page, this@MoreVC.perPage)
-////                }
-//            }
-//        }
-//        recyclerView.addOnScrollListener(scrollerListenr)
-//    }
-
-//    override fun setRecyclerViewRefreshListener() {
-//        refreshListener = SwipeRefreshLayout.OnRefreshListener {
-//            refresh()
-//            refreshLayout.isRefreshing = false
-//        }
-//        refreshLayout.setOnRefreshListener(refreshListener)
-//    }
+    override fun cellClick(idx: Int) {
+        val row: MoreRow = moreRows[idx]
+        val key: String = row.key
+        when (key) {
+            "product"-> this.toProduct()
+            "coach"-> this.toCoach()
+            "teach"-> this.toTeach()
+            "store"-> this.toStore()
+            "pn"-> {
+                val intent = Intent(activity, ShowPNVC::class.java)
+                startActivity(intent)
+            }
+            "version"-> {
+                val p = context.applicationContext.packageManager.getPackageInfo(
+                    context.packageName,
+                    0
+                )
+                val v = PackageInfoCompat.getLongVersionCode(p).toInt()
+                val n = p.versionName
+                val builder = AlertDialog.Builder(context)
+                builder.setMessage(n + "#" + v)
+                val dialog = builder.create()
+                dialog.show()
+            }
+        }
+    }
 }

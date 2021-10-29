@@ -8,10 +8,23 @@
     android:orientation="vertical"
     tools:context=".Controllers.ShowPNVC">
 
+    <RelativeLayout
+        android:id="@+id/topView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:background="@color/MY_GREEN">
+
+        <include layout="@layout/top_view" />
+
+    </RelativeLayout>
+
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/showpnvc_refresh"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@id/topView"
+        android:layout_above="@id/footer"
         android:background="@drawable/background"
         >
         <RelativeLayout

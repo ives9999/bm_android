@@ -23,6 +23,7 @@ import java.io.File
 import com.sportpassword.bm.Models.MemberTable
 import com.sportpassword.bm.member
 import kotlinx.android.synthetic.main.activity_register.edit_featured_container
+import kotlinx.android.synthetic.main.top_view.*
 import org.jetbrains.anko.sdk27.coroutines.onClick
 import kotlin.reflect.full.createType
 import kotlin.reflect.full.memberProperties
@@ -79,7 +80,12 @@ class RegisterVC : MyTableVC() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_register)
 
-        setMyTitle("註冊")
+        //setMyTitle("註冊")
+        if (member.isLoggedIn) {
+            topTitleLbl.text = member.name
+        } else {
+            topTitleLbl.text = "註冊"
+        }
         hidekeyboard(register_layout)
 
 //        form = RegisterForm(this)
