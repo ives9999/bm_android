@@ -709,7 +709,7 @@ class OneSectionAdapter(val context: Context, private val resource: Int, var del
         }
         holder.greater.setImageResource(iconID)
         holder.greater.setOnClickListener {
-            delegate.handleSectionExpanded(position)
+            delegate.handleOneSectionExpanded(position)
         }
     }
 

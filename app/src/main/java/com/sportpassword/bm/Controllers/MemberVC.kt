@@ -33,6 +33,8 @@ lateinit var memberSectionAdapter: MemberSectionAdapter
 class MemberVC : MyTableVC() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        able_type = "member"
+
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_member_vc)
 
@@ -310,18 +312,12 @@ class MemberVC : MyTableVC() {
 //        startActivity(forgetPasswordIntent)
     }
 
-    override fun toUpdatePassword() {
-        this.toUpdatePassword()
-//        val updatePasswordIntent = Intent(activity, UpdatePasswordActivity::class.java)
-//        startActivity(updatePasswordIntent)
-    }
-
     fun toCalendarCourseSignup() {
         val intent = Intent(activity, CourseCalendarVC::class.java)
         startActivity(intent)
     }
 
-    override fun handleSectionExpanded(idx: Int) {
+    override fun handleMemberSectionExpanded(idx: Int) {
         //println(idx)
         val memberSection = memberSections[idx]
         var isExpanded: Boolean = memberSection.isExpanded
@@ -367,7 +363,7 @@ class MemberSectionAdapter(val context: Context, private val resource: Int, var 
         holder.recyclerView.adapter = adapter
 
         holder.greater.setOnClickListener {
-            delegate.handleSectionExpanded(position)
+            delegate.handleMemberSectionExpanded(position)
         }
     }
 

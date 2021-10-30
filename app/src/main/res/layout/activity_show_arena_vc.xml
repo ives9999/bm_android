@@ -107,7 +107,6 @@
         android:gravity="center|center_vertical"
         android:orientation="horizontal">
 
-
         <Button
             android:id="@+id/likeButton"
             style="@style/like_button"

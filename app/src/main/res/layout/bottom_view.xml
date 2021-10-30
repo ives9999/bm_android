@@ -28,7 +28,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="球隊" />
+            android:text="球隊"
+            android:textAlignment="center" />
 
         <LinearLayout
             android:id="@+id/teamTabLine"
@@ -60,7 +61,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="課程" />
+            android:text="課程"
+            android:textAlignment="center" />
 
         <LinearLayout
             android:id="@+id/courseTabLine"
@@ -92,7 +94,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="會員" />
+            android:text="會員"
+            android:textAlignment="center" />
 
         <LinearLayout
             android:id="@+id/memberTabLine"
@@ -123,7 +126,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="球館" />
+            android:text="球館"
+            android:textAlignment="center" />
 
         <LinearLayout
             android:id="@+id/arenaTabLine"

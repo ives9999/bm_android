@@ -11,6 +11,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.sportpassword.bm.Adapters.ListAdapter
 import com.sportpassword.bm.Data.OneRow
 import com.sportpassword.bm.Data.OneSection
+import com.sportpassword.bm.Data.SearchRow
 import com.sportpassword.bm.Form.BaseForm
 import com.sportpassword.bm.Models.*
 import com.sportpassword.bm.Services.MemberService
@@ -577,6 +578,18 @@ abstract class MyTableVC : BaseActivity() {
         return OneRow()
     }
 
+    fun getSearchRowFromKey(key: String): SearchRow {
+
+        for (section in searchSections) {
+            for (row in section.items) {
+                if (row.key == key) {
+                    return row
+                }
+            }
+        }
+        return SearchRow()
+    }
+
     fun getRowFromIdx(sectionIdx: Int, rowIdx: Int): OneRow {
         return oneSections[sectionIdx].items[rowIdx]
     }
@@ -675,33 +688,37 @@ abstract class MyTableVC : BaseActivity() {
 //
 //    }
 
-//    override fun singleSelected(key: String, selected: String) {
+    override fun singleSelected(key: String, selected: String) {
 
-//        val row = getDefinedRow(key)
-//        var show = ""
-//        if (key == START_TIME_KEY || key == END_TIME_KEY) {
-//            row["value"] = selected
-//            show = selected.noSec()
-//        } else if (key == CITY_KEY || key == AREA_KEY) {
-//            row["value"] = selected
-//            show = Global.zoneIDToName(selected.toInt())
-//        }
-//        row["show"] = show
-//        replaceRows(key, row)
+        val row = getSearchRowFromKey(key)
+        var show = ""
 
-        //updateAdapter()
-//    }
+        if (key == START_TIME_KEY || key == END_TIME_KEY) {
+            row.value = selected
+            show = selected.noSec()
+        } else if (key == CITY_KEY || key == AREA_KEY) {
+            row.value = selected
+            show = Global.zoneIDToName(selected.toInt())
+        } else if (key == WEEKDAY_KEY) {
+            row.value = selected
+            show = WEEKDAY.intToString(selected.toInt())
+        }
 
-//    override fun arenaSelected(selected: String, show: String) {
+        row.show = show
+        //searchAdapter.notifyItemChanged(0)
+        if (searchSectionAdapter != null) {
+            searchSectionAdapter.notifyDataSetChanged()
+        }
+    }
 
-//        val key: String = ARENA_KEY
-//        val row = getDefinedRow(key)
-//        row["value"] = selected
-//        row["show"] = show
-//        replaceRows(key, row)
+    override fun arenaSelected(selected: String, show: String) {
 
-        //updateAdapter()
-//    }
+        val key: String = ARENA_KEY
+        val row = getSearchRowFromKey(key)
+        row.value = selected
+        row.show = show
+        searchSectionAdapter.notifyDataSetChanged()
+    }
 
 //    override fun textChanged(str: String) {
 //        val key: String = KEYWORD_KEY
@@ -716,6 +733,59 @@ abstract class MyTableVC : BaseActivity() {
 //        if (b) { row["value"] = "1" } else { row["value"] = "0" }
 //        replaceRows(key, row)
 //    }
+
+    open fun prepare(sectionIdx: Int, rowIdx: Int) {
+        //        var idx = 0
+//        if (section == 0) {
+//            idx = row
+//        } else {
+//            for (i in 0..section-1) {
+//                val tmps: ArrayList<String> = mySections[i]["key"] as ArrayList<String>
+//                idx += tmps.size
+//            }
+//            idx += row
+//        }
+
+        val section = searchSections[sectionIdx]
+        var row = section.items[rowIdx]
+
+//        var row = searchRows.get(idx)
+//        var key: String = ""
+//        if (row.containsKey("key")) {
+//            key = row["key"]!!
+//        }
+
+        val key: String = row.key
+        val value: String = row.value
+//        if (row.containsKey("value")) {
+//            value = row["value"]!!
+//        }
+        if (key == CITY_KEY) {
+            toSelectCity(value, null, able_type)
+        } else if (key == WEEKDAY_KEY) {
+            toSelectWeekday(value, null, able_type)
+        } else if (key == START_TIME_KEY || key == END_TIME_KEY) {
+            toSelectTime(key, value, null, able_type)
+        } else if (key == AREA_KEY) {
+            row = getSearchRowFromKey(CITY_KEY)
+            if (row.value.isNotEmpty()) {
+                val city_id: Int = row.value.toInt()
+                toSelectArea(value, city_id, null, able_type)
+            } else {
+                warning("纖纖選擇縣市")
+            }
+        } else if (key == ARENA_KEY) {
+            row = getSearchRowFromKey(CITY_KEY)
+            if (row.value.isNotEmpty()) {
+                val city_id: Int = row.value.toInt()
+                toSelectArena(value, city_id, null, able_type)
+            } else {
+                warning("纖纖選擇縣市")
+            }
+        } else if (key == DEGREE_KEY) {
+            toSelectDegree(value, null, able_type)
+        }
+    }
 
     override fun cellClick(row: Table) {
         val t = row::class
@@ -801,7 +871,17 @@ abstract class MyTableVC : BaseActivity() {
 //        getDataStart(page, perPage)
 //    }
 
-    override fun handleSectionExpanded(idx: Int) {
+    override fun handleSearchSectionExpanded(idx: Int) {
+        //println(idx)
+        val searchSection = searchSections[idx]
+        var isExpanded: Boolean = searchSection.isExpanded
+        isExpanded = !isExpanded
+        searchSections[idx].isExpanded = isExpanded
+        searchSectionAdapter.setSearchSection(searchSections)
+        searchSectionAdapter.notifyItemChanged(idx)
+    }
+
+    override fun handleOneSectionExpanded(idx: Int) {
         //println(idx)
         val oneSection = oneSections[idx]
         var isExpanded: Boolean = oneSection.isExpanded
@@ -840,5 +920,7 @@ interface List1CellDelegate {
 
     fun cellSetTag(sectionIdx: Int, rowIdx: Int, value: String, isChecked: Boolean) {}
 
-    fun handleSectionExpanded(idx: Int) {}
+    fun handleOneSectionExpanded(idx: Int) {}
+    fun handleSearchSectionExpanded(idx: Int) {}
+    fun handleMemberSectionExpanded(idx: Int) {}
 }

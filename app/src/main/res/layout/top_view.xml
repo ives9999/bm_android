@@ -28,4 +28,18 @@
         android:textColor="@color/BLACK"
         tools:text="標題" />
 
+    <ImageButton
+        android:id="@+id/search"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:layout_alignParentEnd="true"
+        android:layout_centerHorizontal="false"
+        android:layout_centerVertical="true"
+        android:src="@drawable/search"
+        android:onClick="search"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginEnd="12dp"
+        android:layout_marginBottom="12dp" />
+
 </RelativeLayout>

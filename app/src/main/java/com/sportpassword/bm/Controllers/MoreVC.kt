@@ -54,6 +54,8 @@ open class MoreVC : MyTableVC() {
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        able_type = "more"
+
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_more_vc)
 

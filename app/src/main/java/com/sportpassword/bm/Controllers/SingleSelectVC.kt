@@ -25,8 +25,8 @@ open class SingleSelectVC : SelectVC() {
     lateinit var tableAdapter: SingleSelectAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_single_select_vc)
+        super.onCreate(savedInstanceState)
 
         if (intent.hasExtra("selected")) {
             selected = intent.getStringExtra("selected")

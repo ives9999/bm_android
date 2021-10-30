@@ -618,6 +618,10 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener,
         super.onCreate(savedInstanceState)
 
         //ConnectTask(this).execute()
+        val btn = findViewById<Button>(R.id.submit_btn)
+        if (btn != null) {
+            btn.setOnClickListener { searchSubmit() }
+        }
 
         _setURLConstants()
 
@@ -738,27 +742,39 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener,
     }
 
     fun tabToTeam(view: View) {
-        toSearch()
+        if (able_type != "team") {
+            toSearch()
+        }
     }
 
     fun tabToCourse(view: View) {
-        toCourse(false)
+        if (able_type != "course") {
+            toCourse(false)
+        }
     }
 
     fun tabToMember(view: View) {
-        toMember()
+        if (able_type != "member") {
+            toMember()
+        }
     }
 
     fun tabToArena(view: View) {
-        toArena(false)
+        if (able_type != "arena") {
+            toArena(false)
+        }
     }
 
     fun tabToMore(view: View) {
-        toMore()
+        if (able_type != "more") {
+            toMore()
+        }
     }
 
     protected fun setMyTitle(title: String) {
-        topTitleLbl.text = title
+        if (topTitleLbl != null) {
+            topTitleLbl.text = title
+        }
 //        val actionBar: ActionBar = supportActionBar!!
 //        actionBar.setDisplayShowTitleEnabled(false)
 //        actionBar.setDisplayHomeAsUpEnabled(true)
@@ -873,6 +889,12 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener,
         setResult(Activity.RESULT_CANCELED, intent)
         finish()
     }
+
+    fun search() {
+        val i = 6
+    }
+
+    open fun searchSubmit() {}
 
     fun home(context: Context) {
         val intent : Intent = Intent(context, MainActivity::class.java)
@@ -1182,15 +1204,15 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener,
         return s
     }
 
-    override fun handleSectionExpanded(idx: Int) {
-        //println(idx)
-        val searchSection = searchSections[idx]
-        var isExpanded: Boolean = searchSection.isExpanded
-        isExpanded = !isExpanded
-        searchSections[idx].isExpanded = isExpanded
-        searchSectionAdapter.setSearchSection(searchSections)
-        searchSectionAdapter.notifyDataSetChanged()
-    }
+//    override fun handleSectionExpanded(idx: Int) {
+//        //println(idx)
+//        val searchSection = searchSections[idx]
+//        var isExpanded: Boolean = searchSection.isExpanded
+//        isExpanded = !isExpanded
+//        searchSections[idx].isExpanded = isExpanded
+//        searchSectionAdapter.setSearchSection(searchSections)
+//        searchSectionAdapter.notifyDataSetChanged()
+//    }
 
     override fun cellClear(sectionIdx: Int, rowIdx: Int) {
         searchSections[sectionIdx].items[rowIdx].value = ""

@@ -457,7 +457,7 @@ open class TabFragment : Fragment(), List1CellDelegate, Serializable {
 //        }
 //    }
 
-    override fun handleSectionExpanded(idx: Int) {
+    override fun handleSearchSectionExpanded(idx: Int) {
         //println(idx)
         val searchSection = searchSections[idx]
         var isExpanded: Boolean = searchSection.isExpanded
@@ -899,7 +899,7 @@ class SearchSectionAdapter(val context: Context, private val resource: Int, var 
         holder.recyclerView.adapter = adapter
 
         holder.greater.setOnClickListener {
-            delegate.handleSectionExpanded(position)
+            delegate.handleSearchSectionExpanded(position)
         }
     }
 

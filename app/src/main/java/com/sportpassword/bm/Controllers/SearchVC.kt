@@ -1,5 +1,6 @@
 package com.sportpassword.bm.Controllers
 
+import android.content.Intent
 import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -10,13 +11,17 @@ import android.widget.LinearLayout
 import android.widget.RelativeLayout
 import androidx.core.content.ContextCompat
 import com.google.gson.JsonParseException
+import com.sportpassword.bm.Data.SearchRow
+import com.sportpassword.bm.Data.SearchSection
 import com.sportpassword.bm.Fragments.SearchSectionAdapter
 import com.sportpassword.bm.Fragments.TeamAdapter
+import com.sportpassword.bm.Models.ArenaTable
+import com.sportpassword.bm.Models.Table
 import com.sportpassword.bm.Models.TeamTable
 import com.sportpassword.bm.Models.TeamsTable
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.TeamService
-import com.sportpassword.bm.Utilities.jsonToModels
+import com.sportpassword.bm.Utilities.*
 import com.sportpassword.bm.Views.Tag
 import kotlinx.android.synthetic.main.activity_search_vc.*
 import kotlinx.android.synthetic.main.bottom_view.*
@@ -47,6 +52,7 @@ class SearchVC : MyTableVC() {
         topTitleLbl.setText("球隊")
 
         dataService = TeamService
+        delegate = this
 
         init()
     }
@@ -60,10 +66,11 @@ class SearchVC : MyTableVC() {
 
         recyclerView = list_container
         maskView = mask
-//        recyclerView.setHasFixedSize(true)
-        setRecyclerViewScrollListener()
+        recyclerView.setHasFixedSize(true)
+//        setRecyclerViewScrollListener()
 //        refreshLayout = tab_refresh
 //        setRecyclerViewRefreshListener()
+
         tableAdapter = TeamAdapter(R.layout.team_list_cell, this)
         recyclerView.adapter = tableAdapter
 
@@ -76,9 +83,6 @@ class SearchVC : MyTableVC() {
     }
     
     private fun initTag() {
-
-        //val btn = findViewById<Button>(R.id.submit_btn)
-        //btn.setOnClickListener { submit() }
 
 //        val w = (this.screenWidth.toFloat() / this.density).toInt()
 //        val h = ((this.screenHeight.toFloat()) / (this.density)).toInt()
@@ -211,5 +215,104 @@ class SearchVC : MyTableVC() {
                 }
             }
         }
+    }
+
+    override fun initSectionRows(): ArrayList<SearchSection> {
+
+        val sections: ArrayList<SearchSection> = arrayListOf()
+
+        sections.add(makeSection0Row())
+        sections.add(makeSection1Row(false))
+
+        return sections
+    }
+
+    override fun makeSection0Row(isExpanded: Boolean): SearchSection {
+        val rows: ArrayList<SearchRow> = arrayListOf()
+        //if (isExpanded) {
+        val r1: SearchRow = SearchRow("關鍵字", "", "", KEYWORD_KEY, "textField")
+        rows.add(r1)
+        val r2: SearchRow = SearchRow("縣市", "", "全部", CITY_KEY, "more")
+        rows.add(r2)
+        val r3: SearchRow = SearchRow("星期幾", "", "全部", WEEKDAY_KEY, "more")
+        rows.add(r3)
+        val r4: SearchRow = SearchRow("時段", "", "全部", START_TIME_KEY, "more")
+        rows.add(r4)
+        //}
+
+        val s: SearchSection = SearchSection("一般", isExpanded)
+        s.items.addAll(rows)
+        return s
+    }
+
+    private fun makeSection1Row(isExpanded: Boolean=true): SearchSection {
+        val rows: ArrayList<SearchRow> = arrayListOf()
+        //if (isExpanded) {
+        val r1: SearchRow = SearchRow("球館", "", "全部", ARENA_KEY, "more")
+        rows.add(r1)
+        val r2: SearchRow = SearchRow("程度", "", "全部", DEGREE_KEY, "more")
+        rows.add(r2)
+        //}
+
+        val s: SearchSection = SearchSection("更多", isExpanded)
+        s.items.addAll(rows)
+        return s
+    }
+
+    override fun cellClick(row: Table) {
+        if (selectedTagIdx == 1) {
+        } else {
+            toShowTeam(row.token)
+        }
+    }
+
+    override fun cellClick(sectionIdx: Int, rowIdx: Int) {
+        prepare(sectionIdx, rowIdx)
+    }
+
+    override fun cellShowMap(row: Table) {
+
+        val _row: TeamTable = row as TeamTable
+        val arenaTable: ArenaTable = _row.arena!!
+
+        val intent = Intent(this, MyMapVC::class.java)
+        var name: String = ""
+        if (arenaTable.name.isNotEmpty()) {
+            name = arenaTable.name
+        }
+        intent.putExtra("title", name)
+        intent.putExtra("address", arenaTable.address)
+        startActivity(intent)
+    }
+
+    override fun cellCity(row: Table) {
+        val key: String = CITY_KEY
+        val row1: TeamTable = row as TeamTable
+        val row2: SearchRow = getSearchRowFromKey(key)
+        row2.value = row1.arena!!.city_id.toString()
+        row2.show = row1.arena!!.city_show
+        prepareParams()
+        page = 1
+        tableLists.clear()
+        getDataStart(page, perPage)
+    }
+
+    override fun cellArena(row: Table) {
+        val key: String = ARENA_KEY
+        val row1: TeamTable = row as TeamTable
+        val row2: SearchRow = getSearchRowFromKey(key)
+        row2.value = row1.arena!!.id.toString()
+        row2.show = row1.arena!!.name
+        prepareParams()
+        page = 1
+        tableLists.clear()
+        getDataStart(page, perPage)
+    }
+
+    override fun searchSubmit() {
+
+        prepareParams()
+
+        toTeam(params)
     }
 }

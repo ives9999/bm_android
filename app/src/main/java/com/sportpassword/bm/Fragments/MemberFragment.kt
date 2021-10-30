@@ -77,7 +77,7 @@ open class MemberFragment: TabFragment() {
         memberSections = initSectionRow()
     }
 
-    override fun handleSectionExpanded(idx: Int) {
+    override fun handleMemberSectionExpanded(idx: Int) {
         //println(idx)
         val memberSection = memberSections[idx]
         var isExpanded: Boolean = memberSection.isExpanded
