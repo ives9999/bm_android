@@ -91,7 +91,9 @@ class ShowCoachVC: ShowVC() {
         refresh()
     }
 
-    fun init() {
+    override fun init() {
+        super.init()
+
         showRows.addAll(arrayListOf(
             ShowRow(MOBILE_KEY, "mobile", "行動電話"),
             ShowRow(LINE_KEY, "lineicon", "line"),

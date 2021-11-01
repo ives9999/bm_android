@@ -36,11 +36,11 @@ open class SelectVC : MyTableVC() {
         }
     }
 
-    fun init() {
+//    fun init() {
 //        if (key != null && key == CITY_KEY) {
 //            getCitys()
 //        }
-    }
+//    }
 
     //已經不再使用了，直接使用session的getAllCitys
 //    fun getCitys() {

@@ -10,8 +10,7 @@
         android:id="@+id/topView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:background="@color/MY_GREEN">
+        android:layout_alignParentTop="true">
 
         <include layout="@layout/top_view" />
 

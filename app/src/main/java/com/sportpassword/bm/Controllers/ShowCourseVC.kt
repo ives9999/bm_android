@@ -100,7 +100,9 @@ class ShowCourseVC : ShowVC() {
         refresh()
     }
 
-    fun init() {
+    override fun init() {
+        super.init()
+
         showRows.addAll(arrayListOf(
             ShowRow("weekday_text", "calendar", "日期"),
             ShowRow("interval_show", "clock", "時段"),

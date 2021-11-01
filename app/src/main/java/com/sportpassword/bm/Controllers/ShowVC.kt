@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
@@ -51,13 +52,11 @@ open class ShowVC: BaseActivity() {
         //refresh()
     }
 
-//    open fun initAdapter() {
-//        adapter = GroupAdapter()
+    override fun init() {
+        super.init()
 
-//        val items = generateMainItem()
-//        adapter.addAll(items)
-//        tableView.adapter = adapter
-//    }
+        showPrevIcon()
+    }
 
     open fun genericTable() {}
 

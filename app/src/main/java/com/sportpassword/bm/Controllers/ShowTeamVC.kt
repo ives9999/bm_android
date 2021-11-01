@@ -46,7 +46,9 @@ class ShowTeamVC: ShowVC() {
         refresh()
     }
 
-    fun init() {
+    override fun init() {
+        super.init()
+
         showRows.addAll(arrayListOf(
             ShowRow("arena", "arena", "球館"),
             ShowRow("interval_show", "clock", "時段"),

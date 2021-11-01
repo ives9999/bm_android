@@ -47,7 +47,9 @@ class MemberVC : MyTableVC() {
         init()
     }
 
-    fun init() {
+    override fun init() {
+        super.init()
+
         recyclerView = list_container
         refreshLayout = page_refresh
         maskView = mask

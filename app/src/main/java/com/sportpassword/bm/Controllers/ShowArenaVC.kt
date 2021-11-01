@@ -44,7 +44,9 @@ class ShowArenaVC: ShowVC() {
         refresh()
     }
 
-    fun init() {
+    override fun init() {
+        super.init()
+
         showRows.addAll(arrayListOf(
             ShowRow("tel_show", "tel", "電話"),
             ShowRow("address", "map", "住址"),

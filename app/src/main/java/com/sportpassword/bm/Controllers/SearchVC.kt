@@ -57,7 +57,10 @@ class SearchVC : MyTableVC() {
         init()
     }
 
-    private fun init() {
+    override fun init() {
+        super.init()
+
+        showCartIcon()
 
         initTag()
 

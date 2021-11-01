@@ -295,12 +295,12 @@ open class TabFragment : Fragment(), List1CellDelegate, Serializable {
 //        listAdapter.notifyDataSetChanged()
 //    }
 
-    open fun showSearchPanel() {
-        searchSectionAdapter.setSearchSection(searchSections)
-
-        val p: ConstraintLayout = mainActivity!!.getMyParent()
-        searchPanel.addSearchLayer(mainActivity!!, p, able_type, searchSectionAdapter)
-    }
+//    open fun showSearchPanel() {
+//        searchSectionAdapter.setSearchSection(searchSections)
+//
+//        val p: ViewGroup = mainActivity!!.getMyParent()
+//        searchPanel.addSearchLayer(mainActivity!!, p, able_type, searchSectionAdapter)
+//    }
 
     open fun prepare(sectionIdx: Int, rowIdx: Int) {
         //        var idx = 0

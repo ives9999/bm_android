@@ -314,12 +314,12 @@ abstract class MyTableVC : BaseActivity() {
         return result
     }
 
-    open fun showSearchPanel() {
-        searchSectionAdapter.setSearchSection(searchSections)
+//    override fun showSearchPanel() {
+//        searchSectionAdapter.setSearchSection(searchSections)
 
         //val p: ConstraintLayout = mainActivity!!.getMyParent()
         //searchPanel.addSearchLayer(mainActivity!!, p, able_type, searchSectionAdapter)
-    }
+//    }
 
     protected open fun setRecyclerViewScrollListener() {
 

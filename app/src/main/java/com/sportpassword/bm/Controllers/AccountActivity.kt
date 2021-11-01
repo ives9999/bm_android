@@ -56,14 +56,14 @@ class AccountActivity : BaseActivity() {
         setRefreshListener()
     }
 
-    override fun refresh() {
+//    fun refresh() {
 //        member.token?.let {
 //            _getMemberOne(it) {
 //            setData()
 //            closeRefresh()
 //        }
 //        }
-    }
+//    }
 
     override fun onResume() {
         super.onResume()

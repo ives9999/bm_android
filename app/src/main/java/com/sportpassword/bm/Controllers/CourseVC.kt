@@ -4,12 +4,15 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.View
 import androidx.core.content.ContextCompat
+import com.sportpassword.bm.Data.SearchRow
+import com.sportpassword.bm.Data.SearchSection
 import com.sportpassword.bm.Fragments.CourseAdapter
+import com.sportpassword.bm.Fragments.SearchSectionAdapter
 import com.sportpassword.bm.Models.CourseTable
 import com.sportpassword.bm.Models.CoursesTable
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.CourseService
-import com.sportpassword.bm.Utilities.jsonToModels
+import com.sportpassword.bm.Utilities.*
 import kotlinx.android.synthetic.main.activity_course_vc.*
 import kotlinx.android.synthetic.main.activity_store_vc.*
 import kotlinx.android.synthetic.main.activity_store_vc.list_container
@@ -44,7 +47,15 @@ class CourseVC : MyTableVC() {
         tableAdapter = CourseAdapter(R.layout.course_list_cell, this)
         recyclerView.adapter = tableAdapter
 
+        init()
         refresh()
+    }
+
+    override fun init() {
+        super.init()
+        showSearchIcon()
+
+
     }
 
 //    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -65,6 +76,24 @@ class CourseVC : MyTableVC() {
                 tableAdapter.notifyDataSetChanged()
             }
         }
+    }
+
+    override fun makeSection0Row(isExpanded: Boolean): SearchSection {
+        val rows: ArrayList<SearchRow> = arrayListOf()
+        val r1: SearchRow = SearchRow("關鍵字", "", "", KEYWORD_KEY, "textField")
+        rows.add(r1)
+        val r2: SearchRow = SearchRow("縣市", "", "全部", CITY_KEY, "more")
+        rows.add(r2)
+        val r3: SearchRow = SearchRow("星期幾", "", "全部", WEEKDAY_KEY, "more")
+        rows.add(r3)
+        val r4: SearchRow = SearchRow("開始時間", "", "全部", START_TIME_KEY, "more")
+        rows.add(r4)
+        val r5: SearchRow = SearchRow("結束時間", "", "全部", END_TIME_KEY, "more")
+        rows.add(r5)
+
+        val s: SearchSection = SearchSection("一般", isExpanded)
+        s.items.addAll(rows)
+        return s
     }
 
 //    override fun generateItems(): ArrayList<Item> {

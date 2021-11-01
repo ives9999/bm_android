@@ -9,12 +9,9 @@ import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.Color
-import android.graphics.Point
 import android.net.Uri
-import android.os.AsyncTask
 import android.os.Build
 import android.os.Bundle
-import android.os.Handler
 import android.view.*
 import android.view.animation.Animation
 import android.view.animation.TranslateAnimation
@@ -23,7 +20,6 @@ import android.webkit.*
 import android.widget.*
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.app.ActivityCompat
@@ -33,7 +29,6 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.google.gson.internal.LinkedTreeMap
 import com.onesignal.OneSignal
 import com.sportpassword.bm.App
-import com.sportpassword.bm.*
 import com.sportpassword.bm.Data.SearchSection
 import com.sportpassword.bm.Fragments.*
 import com.sportpassword.bm.Models.*
@@ -53,12 +48,8 @@ import java.io.File
 import java.io.IOException
 import java.io.InputStreamReader
 import java.lang.reflect.Method
-import java.net.HttpURLConnection
-import java.net.URL
-import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
-import kotlin.system.exitProcess
 
 open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener,
     SingleSelectDelegate, ToInterface, ImagePicker, List1CellDelegate {
@@ -161,6 +152,9 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener,
     lateinit var searchSectionAdapter: SearchSectionAdapter
 
     var myColorGreen: Int = 0
+    var prevIcon: ImageButton? = null
+    var searchIcon: ImageButton? = null
+    var cartIcon: ImageButton? = null
 
     //var vcResult: VCResult = VCResult()
 
@@ -179,440 +173,6 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener,
     open fun moreClick(sectionKey: String, rowKey: String){}
 
     open var editCourseResult: ActivityResultLauncher<Intent>? = null
-
-    val addCartVC = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { res ->
-        if (res.resultCode == Activity.RESULT_OK) {
-            val i: Intent? = res.data
-            if (i != null) {
-                if (i.hasExtra("refresh")) {
-                    val refresh = i.getBooleanExtra("refresh", false)
-                    if (delegate != null && refresh) {
-                        delegate!!.refresh()
-                    }
-                }
-            }
-        }
-    }
-
-    val editContentVC = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { res ->
-
-        if (res.resultCode == Activity.RESULT_OK) {
-
-            val i: Intent? = res.data
-            if (i != null) {
-                var key: String = ""
-                if (i.hasExtra("key")) {
-                    key = i.getStringExtra("key")!!
-                }
-
-                var content: String = ""
-                if (i.hasExtra("content")) {
-                    content = i.getStringExtra("content")!!
-                }
-
-                if (delegate != null) {
-                    delegate!!.contentEdit(key, content)
-                }
-            }
-        }
-    }
-
-    val loginVC = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { res ->
-        if (res.resultCode == Activity.RESULT_OK) {
-
-            if (res.data != null) {
-                val i: Intent? = res.data
-
-                if (i != null) {
-
-                    val frags = supportFragmentManager.fragments
-                    for (frag in frags) {
-                        val memberFragment = frag as? MemberFragment
-                        memberFragment?.loginout()
-                    }
-                }
-            }
-        }
-    }
-
-    val selectAreaVC = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { res ->
-        if (res.resultCode == Activity.RESULT_OK) {
-
-            if (res.data != null) {
-                val i: Intent? = res.data
-
-                if (i != null) {
-                    val key: String = AREA_KEY
-                    var selected: String = ""
-                    if (i.hasExtra("selected")) {
-                        selected = i.getStringExtra("selected")!!
-                    }
-
-                    var show: String = ""
-                        if (i.hasExtra("show")) {
-                        show = i.getStringExtra("show")!!
-                    }
-
-                    //activity
-                    if (delegate != null) {
-                        delegate!!.singleSelected(key, selected)
-                    } else {
-                        //fragment
-                        able_type = "course"
-                        if (i.hasExtra("able_type")) {
-                            able_type = i.getStringExtra("able_type")!!
-                        }
-                        val f = getFragment()
-                        f?.singleSelected(key, selected)
-                    }
-                }
-            }
-        }
-    }
-
-    val selectArenaVC = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { res ->
-        if (res.resultCode == Activity.RESULT_OK) {
-
-            if (res.data != null) {
-                val i: Intent? = res.data
-
-                if (i != null) {
-                    var key: String = ARENA_KEY
-                    var selected: String = ""
-                    if (i.hasExtra("selected")) {
-                        selected = i.getStringExtra("selected")!!
-                    }
-
-                    var show: String = ""
-                    if (i.hasExtra("show")) {
-                        show = i.getStringExtra("show")!!
-                    }
-
-                    //activity
-                    if (delegate != null) {
-                        delegate!!.arenaSelected(selected, show)
-                    } else {
-                        //fragment
-                        able_type = "course"
-                        if (i.hasExtra("able_type")) {
-                            able_type = i.getStringExtra("able_type")!!
-                        }
-                        val f = getFragment()
-                        f?.arenaSelected(selected, show)
-                    }
-                }
-            }
-        }
-    }
-
-    val selectCityVC = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { res ->
-        if (res.resultCode == Activity.RESULT_OK) {
-
-            if (res.data != null) {
-                val i: Intent? = res.data
-
-                if (i != null) {
-                    val key: String = CITY_KEY
-                    var selected: String = ""
-                    if (i.hasExtra("selected")) {
-                        selected = i.getStringExtra("selected")!!
-                    }
-
-                    //activity
-                    if (delegate != null) {
-                        delegate!!.singleSelected(key, selected)
-                    } else {
-                        //fragment
-                        able_type = "course"
-                        if (i.hasExtra("able_type")) {
-                            able_type = i.getStringExtra("able_type")!!
-                        }
-                        val f = getFragment()
-                        f?.singleSelected(key, selected)
-                    }
-                }
-            }
-        }
-    }
-
-    val selectDateVC = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { res ->
-        if (res.resultCode == Activity.RESULT_OK) {
-
-            if (res.data != null) {
-                val i: Intent? = res.data
-
-                if (i != null) {
-                    var key: String = ""
-                    if (i.hasExtra("key")) {
-                        key = i.getStringExtra("key")!!
-                    }
-
-                    var selected: String = ""
-                    if (i.hasExtra("selected")) {
-                        selected = i.getStringExtra("selected")!!
-                        if (key != DOB_KEY) {
-                            selected += ":00"
-                        }
-                    }
-
-                    //activity
-                    if (delegate != null) {
-                        delegate!!.singleSelected(key, selected)
-                    } else {
-                        //fragment
-                        able_type = "course"
-                        if (i.hasExtra("able_type")) {
-                            able_type = i.getStringExtra("able_type")!!
-                        }
-                        val f = getFragment()
-                        f?.singleSelected(key, selected)
-                    }
-                }
-            }
-        }
-    }
-
-    val selectDegreeVC = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { res ->
-        if (res.resultCode == Activity.RESULT_OK) {
-
-            if (res.data != null) {
-                val i: Intent? = res.data
-
-                if (i != null) {
-                    var key: String = DEGREE_KEY
-                    var selected: String = ""
-                    if (i.hasExtra("selecteds")) {
-                        val selecteds = i.getStringArrayListExtra("selecteds")!!
-                        selected = selecteds.joinToString(",")
-                    }
-
-                    var show: String = ""
-                    if (i.hasExtra("show")) {
-                        show = i.getStringExtra("show")!!
-                    }
-
-                    //activity
-                    if (delegate != null) {
-                        delegate!!.degreeSelected(selected, show)
-                    } else {
-                        //fragment
-                        able_type = "course"
-                        if (i.hasExtra("able_type")) {
-                            able_type = i.getStringExtra("able_type")!!
-                        }
-                        val f = getFragment()
-                        f?.degreeSelected(selected, show)
-                    }
-                }
-            }
-        }
-    }
-
-    val selectDeviceCamera = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { res ->
-
-        if (res.resultCode == Activity.RESULT_OK) {
-
-            dealCamera()
-        }
-    }
-
-    val selectDevicePhoto = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { res ->
-
-        if (res.resultCode == Activity.RESULT_OK) {
-
-            if (res.data != null) {
-                val i: Intent? = res.data
-                if (i != null) {
-                    dealPhoto(res.data)
-                }
-            }
-        }
-    }
-
-    val selectSingleVC = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { res ->
-        if (res.resultCode == Activity.RESULT_OK) {
-
-            if (res.data != null) {
-                val i: Intent? = res.data
-
-                if (i != null) {
-                    var key: String = ""
-                    if (i.hasExtra("key")) {
-                        key = i.getStringExtra("key")!!
-                    }
-
-                    var selected: String = ""
-                    if (i.hasExtra("selected")) {
-                        selected = i.getStringExtra("selected")!!
-                    }
-
-                    //activity
-                    if (delegate != null) {
-                        delegate!!.singleSelected(key, selected)
-                    } else {
-                        //fragment
-                        able_type = "course"
-                        if (i.hasExtra("able_type")) {
-                            able_type = i.getStringExtra("able_type")!!
-                        }
-                        val f = getFragment()
-                        f?.singleSelected(key, selected)
-                    }
-                }
-            }
-        }
-    }
-
-    val selectTimeVC = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { res ->
-        if (res.resultCode == Activity.RESULT_OK) {
-
-            if (res.data != null) {
-                val i: Intent? = res.data
-
-                if (i != null) {
-                    var key: String = ""
-                    if (i.hasExtra("key")) {
-                        key = i.getStringExtra("key")!!
-                    }
-
-                    var selected: String = ""
-                    if (i.hasExtra("selected")) {
-                        selected = i.getStringExtra("selected")!! + ":00"
-                    }
-
-                    //activity
-                    if (delegate != null) {
-                        delegate!!.singleSelected(key, selected)
-                    } else {
-                        //fragment
-                        able_type = "course"
-                        if (i.hasExtra("able_type")) {
-                            able_type = i.getStringExtra("able_type")!!
-                        }
-                        val f = getFragment()
-                        f?.singleSelected(key, selected)
-                    }
-                }
-            }
-        }
-    }
-
-    val selectWeekdayVC = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { res ->
-        if (res.resultCode == Activity.RESULT_OK) {
-
-            if (res.data != null) {
-                val i: Intent? = res.data
-
-                if (i != null) {
-                    val key: String = WEEKDAY_KEY
-                    var selected: String = ""
-                    if (i.hasExtra("selected")) {
-                        selected = i.getStringExtra("selected")!!
-                    }
-
-                    //activity
-                    if (delegate != null) {
-                        delegate!!.singleSelected(key, selected)
-                    } else {
-                        //fragment
-                        able_type = "course"
-                        if (i.hasExtra("able_type")) {
-                            able_type = i.getStringExtra("able_type")!!
-                        }
-                        val f = getFragment()
-                        f?.singleSelected(key, selected)
-                    }
-                }
-            }
-        }
-    }
-
-    val selectWeekdaysVC = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { res ->
-        if (res.resultCode == Activity.RESULT_OK) {
-
-            if (res.data != null) {
-                val i: Intent? = res.data
-
-                if (i != null) {
-                    var key: String = DEGREE_KEY
-                    var selected: String = ""
-                    if (i.hasExtra("selecteds")) {
-                        val selecteds = i.getStringArrayListExtra("selecteds")!!
-                        selected = selecteds.joinToString(",")
-                    }
-
-                    var show: String = ""
-                    if (i.hasExtra("show")) {
-                        show = i.getStringExtra("show")!!
-                    }
-
-                    //activity
-                    if (delegate != null) {
-                        delegate!!.weekendSelected(selected, show)
-                    } else {
-                        //fragment
-                        able_type = "course"
-                        if (i.hasExtra("able_type")) {
-                            able_type = i.getStringExtra("able_type")!!
-                        }
-                        val f = getFragment()
-                        f?.weekendSelected(selected, show)
-                    }
-                }
-            }
-        }
-    }
-
-    val validateVC = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { res ->
-        if (res.resultCode == Activity.RESULT_OK) {
-
-            if (res.data != null) {
-                val i: Intent? = res.data
-
-                if (i != null) {
-
-                    val frags = supportFragmentManager.fragments
-                    for (frag in frags) {
-                        val memberFragment = frag as? MemberFragment
-                        memberFragment?.refresh()
-                    }
-
-                }
-            }
-        }
-    }
-
-//    val selectPriceUnitVC = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { res ->
-//        if (res.resultCode == Activity.RESULT_OK) {
-//
-//            if (res.data != null) {
-//                val i: Intent? = res.data
-//
-//                if (i != null) {
-//                    val key: String = PRICE_UNIT_KEY
-//                    var selected: String = ""
-//                    if (i.hasExtra("selected")) {
-//                        selected = i.getStringExtra("selected")!!
-//                    }
-//
-//                    //activity
-//                    if (delegate != null) {
-//                        delegate!!.singleSelected(key, selected)
-//                    } else {
-//                        //fragment
-//                        able_type = "course"
-//                        if (i.hasExtra("able_type")) {
-//                            able_type = i.getStringExtra("able_type")!!
-//                        }
-//                        val f = getFragment()
-//                        if (f != null) {
-//                            f.singleSelected(key, selected)
-//                        }
-//                    }
-//                }
-//            }
-//        }
-//    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -642,6 +202,45 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener,
         //member.print()
     }
 
+    open fun init() {
+        prevIcon = findViewById(R.id.prevIcon)
+        searchIcon = findViewById(R.id.searchIcon)
+        cartIcon = findViewById(R.id.cartIcon)
+
+        cartItemCount = session.getInt("cartItemCount", 0)
+        if (member.isLoggedIn && cartItemCount > 0) {
+            showCartIcon()
+        }
+
+        if (prevIcon?.visibility == View.INVISIBLE) {
+            prevIcon?.visibility = View.GONE
+        }
+
+        if (searchIcon?.visibility == View.INVISIBLE) {
+            searchIcon?.visibility = View.GONE
+        }
+
+        if (cartIcon?.visibility == View.INVISIBLE) {
+            cartIcon?.visibility = View.GONE
+        }
+
+        searchSectionAdapter = SearchSectionAdapter(this, R.layout.cell_section, this)
+        searchSections = initSectionRows()
+        searchSectionAdapter.setSearchSection(searchSections)
+    }
+
+    fun showPrevIcon(visibility: Boolean = true) {
+        if (visibility) { prevIcon?.visibility = View.VISIBLE } else { prevIcon?.visibility = View.INVISIBLE }
+    }
+
+    fun showSearchIcon(visibility: Boolean = true) {
+        if (visibility) { searchIcon?.visibility = View.VISIBLE } else { searchIcon?.visibility = View.INVISIBLE }
+    }
+
+    fun showCartIcon(visibility: Boolean = true) {
+        if (visibility) { cartIcon?.visibility = View.VISIBLE } else { cartIcon?.visibility = View.INVISIBLE }
+    }
+
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.all, menu)
 
@@ -663,82 +262,6 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener,
         searchBtn.visibility = if (isSearchIconShow) { View.VISIBLE } else { View.GONE }
 
         return true
-    }
-
-//    protected fun printMember() {
-//        for (a in Member::class.memberProperties) {
-//            println("${a.name} = ${a.get(member)}")
-//        }
-//    }
-
-    private fun _setURLConstants() {
-        gSimulate = isEmulator()
-//        gSimulate = false
-        BASE_URL = if (gSimulate) LOCALHOST_BASE_URL else REMOTE_BASE_URL
-        //println("os: " + BASE_URL)
-
-        URL_HOME = BASE_URL + "/app/"
-
-        URL_AREA_BY_CITY_IDS = URL_HOME + "area_by_citys"
-        URL_ARENA_BY_CITY_ID = URL_HOME + "arena_by_city"
-        URL_ARENA_BY_CITY_IDS = URL_HOME + "arena_by_citys"
-        URL_ARENA_LIKE = URL_HOME + "arena/like/%s"
-        URL_ARENA_LIST = URL_HOME + "arena/list"
-        URL_CANCEL_SIGNUP = URL_HOME + "%s/cancelSignup/%d"
-        URL_CART_DELETE = URL_HOME + "cart/delete"
-        URL_CART_LIST = URL_HOME + "cart/list"
-        URL_CART_UPDATE = "${URL_HOME}cart/update"
-        URL_CHANGE_PASSWORD = "$BASE_URL/member/change_password"
-        URL_CITYS = URL_HOME + "citys"
-        URL_COACH_LIKE = URL_HOME + "coach/like/%s"
-        URL_COACH_LIST = URL_HOME + "coach/list"
-        URL_COURSE_LIKE = URL_HOME + "course/like/%s"
-        URL_COURSE_LIST = URL_HOME + "course/list"
-        URL_DELETE = URL_HOME + "%s/delete"
-        URL_EMAIL_VALIDATE = URL_HOME + "member/email_validate"
-        URL_FB_LOGIN = URL_HOME + "member/fb"
-        URL_FORGETPASSWORD = "$BASE_URL/member/forget_password"
-        URL_MEMBER_LIKELIST = "${URL_HOME}member/likelist"
-        URL_LIST = "${URL_HOME}%s"
-        URL_LOGIN = URL_HOME + "login"
-        URL_MEMBER_BLACKLIST = URL_HOME + "member/blacklist"
-        URL_MEMBER_GETONE = URL_HOME + "member/getOne"
-        URL_MEMBER_UPDATE = URL_HOME + "member/update"
-        URL_MOBILE_VALIDATE = URL_HOME + "member/mobile_validate"
-        URL_ONE = "${URL_HOME}%s/one"
-        URL_ORDER = "${URL_HOME}order/payment%s"
-        URL_ORDER_LIST = URL_HOME + "order/list"
-        URL_ORDER_UPDATE = "${URL_HOME}order/update"
-        URL_PRODUCT_LIKE = URL_HOME + "product/like/%s"
-        URL_PRODUCT_LIST = URL_HOME + "product/list"
-        URL_REGISTER = URL_HOME + "register"
-        URL_SEND_EMAIL_VALIDATE = URL_HOME + "member/sendEmailValidate"
-        URL_SEND_MOBILE_VALIDATE = URL_HOME + "member/sendMobileValidate"
-        URL_SHOW = "${URL_HOME}%s/show/%s?device=app"
-        URL_SIGNUP = URL_HOME + "%s/signup/%s"
-        URL_SIGNUP_DATE = "${URL_HOME}%s/signup_date/%s"
-        URL_SIGNUP_LIST = "${URL_HOME}%s/signup_list"
-        URL_STORE_LIKE = URL_HOME + "store/like/%s"
-        URL_STORE_LIST = URL_HOME + "store/list"
-        URL_TEACH_LIKE = URL_HOME + "teach/like/%s"
-        URL_TEACH_LIST = URL_HOME + "teach/list"
-        URL_TEAM = URL_HOME + "team/"
-        URL_TEAM_LIKE = URL_HOME + "team/like/%s"
-        URL_TEAM_LIST = URL_HOME + "team/list"
-        URL_TEAM_TEMP_PLAY = URL_TEAM + "tempPlay/onoff"
-        URL_TEAM_TEMP_PLAY_LIST = URL_TEAM + "tempPlay/list"
-        URL_TEAM_TEMP_PLAY_BLACKLIST = URL_TEAM + "tempPlay/blacklist"
-        URL_TEAM_PLUSONE = BASE_URL + "/team/tempPlay/plusOne/"
-        URL_TEAM_CANCELPLUSONE = BASE_URL + "/team/tempPlay/cancelPlusOne/"
-        URL_TEAM_TEMP_PLAY_DATE = URL_TEAM + "tempPlay/date"
-        URL_TEAM_TEMP_PLAY_DATE_PLAYER = URL_TEAM + "tempPlay/datePlayer"
-        URL_TEAM_UPDATE = URL_HOME + "team/update"
-        URL_TT = URL_HOME + "%s/tt"
-        URL_TT_DELETE = URL_HOME + "%s/tt/delete"
-        URL_TT_UPDATE = URL_HOME + "%s/tt/update"
-        URL_UPDATE = URL_HOME + "%s/update"
-
-        FEATURED_PATH = BASE_URL + FEATURED_PATH
     }
 
     fun tabToTeam(view: View) {
@@ -890,8 +413,8 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener,
         finish()
     }
 
-    fun search() {
-        val i = 6
+    fun searchPressed(view: View) {
+        showSearchPanel()
     }
 
     open fun searchSubmit() {}
@@ -1146,41 +669,44 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener,
     }
 
     ////// search panel start //////////////////////////////////////
-    fun showSearchPanel(view: View) {
+    open fun showSearchPanel() {
 
-        if (view.tag != null) {
-            able_type = view.tag as String
-        }
-        val frag = getFragment()
-
-        if (frag != null) {
-            when (frag::class) {
+//        if (view.tag != null) {
+//            able_type = view.tag as String
+//        }
+//        val frag = getFragment()
+//
+//        if (frag != null) {
+//            when (frag::class) {
 //            "team" -> {
 //                containerID = "course_container"
 //                val frag = getFragment() as TempPlayFragment
 //                searchSections = frag.searchSections
 //            }
-                CourseFragment::class -> {
-                    containerID = "course_container"
+//                CourseFragment::class -> {
+//                    containerID = "course_container"
 //                val frag = getFragment() as CourseFragment
-                    frag.showSearchPanel()
+//                    frag.showSearchPanel()
                     //searchSections = frag.searchSections
-                }
-                ArenaFragment::class -> {
-                    containerID = "course_container"
+//                }
+//                ArenaFragment::class -> {
+//                    containerID = "course_container"
 //                val frag = getFragment() as ArenaFragment
-                    frag.showSearchPanel()
+//                    frag.showSearchPanel()
 //                searchSections = frag.searchSections
-                }
+//                }
 //            "coach", "teach", "store" -> {
 //                containerID = "constraintLayout"
 //            }
-            }
-            return
-        }
+//            }
+//            return
+//        }
 
         //first add a mask
-        val p: ConstraintLayout = getMyParent()
+        //val p: ConstraintLayout = getMyParent()
+        //val b = findViewById<ViewGroup>(R.id.content)
+        //val a = findViewById<RelativeLayout>(R.id.topView).getRootView() as ViewGroup
+        val p = window.decorView.rootView as ViewGroup
         searchSectionAdapter.setSearchSection(searchSections)
         //searchPanel.mask(this, p)
         searchPanel.addSearchLayer(this, p, able_type, searchSectionAdapter)
@@ -1534,11 +1060,12 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener,
 //        return parent.findViewById<LinearLayout>(R.id.MyMask)
 //    }
 
-    fun getMyParent(): ConstraintLayout {
-        val rootView = window.decorView.rootView
-        val parentID = resources.getIdentifier(containerID, "id", packageName)
-        val parent = rootView.findViewById<ConstraintLayout>(parentID)
-        return parent
+    fun getMyParent(): ViewGroup {
+//        val rootView = window.decorView.rootView
+//        val parentID = resources.getIdentifier(containerID, "id", packageName)
+//        val parent = rootView.findViewById<ConstraintLayout>(parentID)
+//        return parent
+        return window.decorView.rootView as ViewGroup
     }
 
     ////// search panel end //////////////////////////////////////
@@ -2233,37 +1760,539 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener,
 
     protected open fun setTeamData(imageView: ImageView? = null) {}
 
+    private fun _setURLConstants() {
+        gSimulate = isEmulator()
+//        gSimulate = false
+        BASE_URL = if (gSimulate) LOCALHOST_BASE_URL else REMOTE_BASE_URL
+        //println("os: " + BASE_URL)
+
+        URL_HOME = BASE_URL + "/app/"
+
+        URL_AREA_BY_CITY_IDS = URL_HOME + "area_by_citys"
+        URL_ARENA_BY_CITY_ID = URL_HOME + "arena_by_city"
+        URL_ARENA_BY_CITY_IDS = URL_HOME + "arena_by_citys"
+        URL_ARENA_LIKE = URL_HOME + "arena/like/%s"
+        URL_ARENA_LIST = URL_HOME + "arena/list"
+        URL_CANCEL_SIGNUP = URL_HOME + "%s/cancelSignup/%d"
+        URL_CART_DELETE = URL_HOME + "cart/delete"
+        URL_CART_LIST = URL_HOME + "cart/list"
+        URL_CART_UPDATE = "${URL_HOME}cart/update"
+        URL_CHANGE_PASSWORD = "$BASE_URL/member/change_password"
+        URL_CITYS = URL_HOME + "citys"
+        URL_COACH_LIKE = URL_HOME + "coach/like/%s"
+        URL_COACH_LIST = URL_HOME + "coach/list"
+        URL_COURSE_LIKE = URL_HOME + "course/like/%s"
+        URL_COURSE_LIST = URL_HOME + "course/list"
+        URL_DELETE = URL_HOME + "%s/delete"
+        URL_EMAIL_VALIDATE = URL_HOME + "member/email_validate"
+        URL_FB_LOGIN = URL_HOME + "member/fb"
+        URL_FORGETPASSWORD = "$BASE_URL/member/forget_password"
+        URL_MEMBER_LIKELIST = "${URL_HOME}member/likelist"
+        URL_LIST = "${URL_HOME}%s"
+        URL_LOGIN = URL_HOME + "login"
+        URL_MEMBER_BLACKLIST = URL_HOME + "member/blacklist"
+        URL_MEMBER_GETONE = URL_HOME + "member/getOne"
+        URL_MEMBER_UPDATE = URL_HOME + "member/update"
+        URL_MOBILE_VALIDATE = URL_HOME + "member/mobile_validate"
+        URL_ONE = "${URL_HOME}%s/one"
+        URL_ORDER = "${URL_HOME}order/payment%s"
+        URL_ORDER_LIST = URL_HOME + "order/list"
+        URL_ORDER_UPDATE = "${URL_HOME}order/update"
+        URL_PRODUCT_LIKE = URL_HOME + "product/like/%s"
+        URL_PRODUCT_LIST = URL_HOME + "product/list"
+        URL_REGISTER = URL_HOME + "register"
+        URL_SEND_EMAIL_VALIDATE = URL_HOME + "member/sendEmailValidate"
+        URL_SEND_MOBILE_VALIDATE = URL_HOME + "member/sendMobileValidate"
+        URL_SHOW = "${URL_HOME}%s/show/%s?device=app"
+        URL_SIGNUP = URL_HOME + "%s/signup/%s"
+        URL_SIGNUP_DATE = "${URL_HOME}%s/signup_date/%s"
+        URL_SIGNUP_LIST = "${URL_HOME}%s/signup_list"
+        URL_STORE_LIKE = URL_HOME + "store/like/%s"
+        URL_STORE_LIST = URL_HOME + "store/list"
+        URL_TEACH_LIKE = URL_HOME + "teach/like/%s"
+        URL_TEACH_LIST = URL_HOME + "teach/list"
+        URL_TEAM = URL_HOME + "team/"
+        URL_TEAM_LIKE = URL_HOME + "team/like/%s"
+        URL_TEAM_LIST = URL_HOME + "team/list"
+        URL_TEAM_TEMP_PLAY = URL_TEAM + "tempPlay/onoff"
+        URL_TEAM_TEMP_PLAY_LIST = URL_TEAM + "tempPlay/list"
+        URL_TEAM_TEMP_PLAY_BLACKLIST = URL_TEAM + "tempPlay/blacklist"
+        URL_TEAM_PLUSONE = BASE_URL + "/team/tempPlay/plusOne/"
+        URL_TEAM_CANCELPLUSONE = BASE_URL + "/team/tempPlay/cancelPlusOne/"
+        URL_TEAM_TEMP_PLAY_DATE = URL_TEAM + "tempPlay/date"
+        URL_TEAM_TEMP_PLAY_DATE_PLAYER = URL_TEAM + "tempPlay/datePlayer"
+        URL_TEAM_UPDATE = URL_HOME + "team/update"
+        URL_TT = URL_HOME + "%s/tt"
+        URL_TT_DELETE = URL_HOME + "%s/tt/delete"
+        URL_TT_UPDATE = URL_HOME + "%s/tt/update"
+        URL_UPDATE = URL_HOME + "%s/update"
+
+        FEATURED_PATH = BASE_URL + FEATURED_PATH
+    }
+
+    val addCartVC = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { res ->
+        if (res.resultCode == Activity.RESULT_OK) {
+            val i: Intent? = res.data
+            if (i != null) {
+                if (i.hasExtra("refresh")) {
+                    val refresh = i.getBooleanExtra("refresh", false)
+                    if (delegate != null && refresh) {
+                        delegate!!.refresh()
+                    }
+                }
+            }
+        }
+    }
+
+    val editContentVC = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { res ->
+
+        if (res.resultCode == Activity.RESULT_OK) {
+
+            val i: Intent? = res.data
+            if (i != null) {
+                var key: String = ""
+                if (i.hasExtra("key")) {
+                    key = i.getStringExtra("key")!!
+                }
+
+                var content: String = ""
+                if (i.hasExtra("content")) {
+                    content = i.getStringExtra("content")!!
+                }
+
+                if (delegate != null) {
+                    delegate!!.contentEdit(key, content)
+                }
+            }
+        }
+    }
+
+    val loginVC = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { res ->
+        if (res.resultCode == Activity.RESULT_OK) {
+
+            if (res.data != null) {
+                val i: Intent? = res.data
+
+                if (i != null) {
+
+                    val frags = supportFragmentManager.fragments
+                    for (frag in frags) {
+                        val memberFragment = frag as? MemberFragment
+                        memberFragment?.loginout()
+                    }
+                }
+            }
+        }
+    }
+
+    val selectAreaVC = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { res ->
+        if (res.resultCode == Activity.RESULT_OK) {
+
+            if (res.data != null) {
+                val i: Intent? = res.data
+
+                if (i != null) {
+                    val key: String = AREA_KEY
+                    var selected: String = ""
+                    if (i.hasExtra("selected")) {
+                        selected = i.getStringExtra("selected")!!
+                    }
+
+                    var show: String = ""
+                        if (i.hasExtra("show")) {
+                        show = i.getStringExtra("show")!!
+                    }
+
+                    //activity
+                    if (delegate != null) {
+                        delegate!!.singleSelected(key, selected)
+                    } else {
+                        //fragment
+                        able_type = "course"
+                        if (i.hasExtra("able_type")) {
+                            able_type = i.getStringExtra("able_type")!!
+                        }
+                        val f = getFragment()
+                        f?.singleSelected(key, selected)
+                    }
+                }
+            }
+        }
+    }
+
+    val selectArenaVC = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { res ->
+        if (res.resultCode == Activity.RESULT_OK) {
+
+            if (res.data != null) {
+                val i: Intent? = res.data
+
+                if (i != null) {
+                    var key: String = ARENA_KEY
+                    var selected: String = ""
+                    if (i.hasExtra("selected")) {
+                        selected = i.getStringExtra("selected")!!
+                    }
+
+                    var show: String = ""
+                    if (i.hasExtra("show")) {
+                        show = i.getStringExtra("show")!!
+                    }
+
+                    //activity
+                    if (delegate != null) {
+                        delegate!!.arenaSelected(selected, show)
+                    } else {
+                        //fragment
+                        able_type = "course"
+                        if (i.hasExtra("able_type")) {
+                            able_type = i.getStringExtra("able_type")!!
+                        }
+                        val f = getFragment()
+                        f?.arenaSelected(selected, show)
+                    }
+                }
+            }
+        }
+    }
+
+    val selectCityVC = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { res ->
+        if (res.resultCode == Activity.RESULT_OK) {
+
+            if (res.data != null) {
+                val i: Intent? = res.data
+
+                if (i != null) {
+                    val key: String = CITY_KEY
+                    var selected: String = ""
+                    if (i.hasExtra("selected")) {
+                        selected = i.getStringExtra("selected")!!
+                    }
+
+                    //activity
+                    if (delegate != null) {
+                        delegate!!.singleSelected(key, selected)
+                    } else {
+                        //fragment
+                        able_type = "course"
+                        if (i.hasExtra("able_type")) {
+                            able_type = i.getStringExtra("able_type")!!
+                        }
+                        val f = getFragment()
+                        f?.singleSelected(key, selected)
+                    }
+                }
+            }
+        }
+    }
+
+    val selectDateVC = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { res ->
+        if (res.resultCode == Activity.RESULT_OK) {
+
+            if (res.data != null) {
+                val i: Intent? = res.data
+
+                if (i != null) {
+                    var key: String = ""
+                    if (i.hasExtra("key")) {
+                        key = i.getStringExtra("key")!!
+                    }
+
+                    var selected: String = ""
+                    if (i.hasExtra("selected")) {
+                        selected = i.getStringExtra("selected")!!
+                        if (key != DOB_KEY) {
+                            selected += ":00"
+                        }
+                    }
+
+                    //activity
+                    if (delegate != null) {
+                        delegate!!.singleSelected(key, selected)
+                    } else {
+                        //fragment
+                        able_type = "course"
+                        if (i.hasExtra("able_type")) {
+                            able_type = i.getStringExtra("able_type")!!
+                        }
+                        val f = getFragment()
+                        f?.singleSelected(key, selected)
+                    }
+                }
+            }
+        }
+    }
+
+    val selectDegreeVC = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { res ->
+        if (res.resultCode == Activity.RESULT_OK) {
+
+            if (res.data != null) {
+                val i: Intent? = res.data
+
+                if (i != null) {
+                    var key: String = DEGREE_KEY
+                    var selected: String = ""
+                    if (i.hasExtra("selecteds")) {
+                        val selecteds = i.getStringArrayListExtra("selecteds")!!
+                        selected = selecteds.joinToString(",")
+                    }
+
+                    var show: String = ""
+                    if (i.hasExtra("show")) {
+                        show = i.getStringExtra("show")!!
+                    }
+
+                    //activity
+                    if (delegate != null) {
+                        delegate!!.degreeSelected(selected, show)
+                    } else {
+                        //fragment
+                        able_type = "course"
+                        if (i.hasExtra("able_type")) {
+                            able_type = i.getStringExtra("able_type")!!
+                        }
+                        val f = getFragment()
+                        f?.degreeSelected(selected, show)
+                    }
+                }
+            }
+        }
+    }
+
+    val selectDeviceCamera = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { res ->
+
+        if (res.resultCode == Activity.RESULT_OK) {
+
+            dealCamera()
+        }
+    }
+
+    val selectDevicePhoto = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { res ->
+
+        if (res.resultCode == Activity.RESULT_OK) {
+
+            if (res.data != null) {
+                val i: Intent? = res.data
+                if (i != null) {
+                    dealPhoto(res.data)
+                }
+            }
+        }
+    }
+
+    val selectSingleVC = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { res ->
+        if (res.resultCode == Activity.RESULT_OK) {
+
+            if (res.data != null) {
+                val i: Intent? = res.data
+
+                if (i != null) {
+                    var key: String = ""
+                    if (i.hasExtra("key")) {
+                        key = i.getStringExtra("key")!!
+                    }
+
+                    var selected: String = ""
+                    if (i.hasExtra("selected")) {
+                        selected = i.getStringExtra("selected")!!
+                    }
+
+                    //activity
+                    if (delegate != null) {
+                        delegate!!.singleSelected(key, selected)
+                    } else {
+                        //fragment
+                        able_type = "course"
+                        if (i.hasExtra("able_type")) {
+                            able_type = i.getStringExtra("able_type")!!
+                        }
+                        val f = getFragment()
+                        f?.singleSelected(key, selected)
+                    }
+                }
+            }
+        }
+    }
+
+    val selectTimeVC = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { res ->
+        if (res.resultCode == Activity.RESULT_OK) {
+
+            if (res.data != null) {
+                val i: Intent? = res.data
+
+                if (i != null) {
+                    var key: String = ""
+                    if (i.hasExtra("key")) {
+                        key = i.getStringExtra("key")!!
+                    }
+
+                    var selected: String = ""
+                    if (i.hasExtra("selected")) {
+                        selected = i.getStringExtra("selected")!! + ":00"
+                    }
+
+                    //activity
+                    if (delegate != null) {
+                        delegate!!.singleSelected(key, selected)
+                    } else {
+                        //fragment
+                        able_type = "course"
+                        if (i.hasExtra("able_type")) {
+                            able_type = i.getStringExtra("able_type")!!
+                        }
+                        val f = getFragment()
+                        f?.singleSelected(key, selected)
+                    }
+                }
+            }
+        }
+    }
+
+    val selectWeekdayVC = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { res ->
+        if (res.resultCode == Activity.RESULT_OK) {
+
+            if (res.data != null) {
+                val i: Intent? = res.data
+
+                if (i != null) {
+                    val key: String = WEEKDAY_KEY
+                    var selected: String = ""
+                    if (i.hasExtra("selected")) {
+                        selected = i.getStringExtra("selected")!!
+                    }
+
+                    //activity
+                    if (delegate != null) {
+                        delegate!!.singleSelected(key, selected)
+                    } else {
+                        //fragment
+                        able_type = "course"
+                        if (i.hasExtra("able_type")) {
+                            able_type = i.getStringExtra("able_type")!!
+                        }
+                        val f = getFragment()
+                        f?.singleSelected(key, selected)
+                    }
+                }
+            }
+        }
+    }
+
+    val selectWeekdaysVC = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { res ->
+        if (res.resultCode == Activity.RESULT_OK) {
+
+            if (res.data != null) {
+                val i: Intent? = res.data
+
+                if (i != null) {
+                    var key: String = DEGREE_KEY
+                    var selected: String = ""
+                    if (i.hasExtra("selecteds")) {
+                        val selecteds = i.getStringArrayListExtra("selecteds")!!
+                        selected = selecteds.joinToString(",")
+                    }
+
+                    var show: String = ""
+                    if (i.hasExtra("show")) {
+                        show = i.getStringExtra("show")!!
+                    }
+
+                    //activity
+                    if (delegate != null) {
+                        delegate!!.weekendSelected(selected, show)
+                    } else {
+                        //fragment
+                        able_type = "course"
+                        if (i.hasExtra("able_type")) {
+                            able_type = i.getStringExtra("able_type")!!
+                        }
+                        val f = getFragment()
+                        f?.weekendSelected(selected, show)
+                    }
+                }
+            }
+        }
+    }
+
+    val validateVC = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { res ->
+        if (res.resultCode == Activity.RESULT_OK) {
+
+            if (res.data != null) {
+                val i: Intent? = res.data
+
+                if (i != null) {
+
+                    val frags = supportFragmentManager.fragments
+                    for (frag in frags) {
+                        val memberFragment = frag as? MemberFragment
+                        memberFragment?.refresh()
+                    }
+
+                }
+            }
+        }
+    }
+
+//    val selectPriceUnitVC = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { res ->
+//        if (res.resultCode == Activity.RESULT_OK) {
+//
+//            if (res.data != null) {
+//                val i: Intent? = res.data
+//
+//                if (i != null) {
+//                    val key: String = PRICE_UNIT_KEY
+//                    var selected: String = ""
+//                    if (i.hasExtra("selected")) {
+//                        selected = i.getStringExtra("selected")!!
+//                    }
+//
+//                    //activity
+//                    if (delegate != null) {
+//                        delegate!!.singleSelected(key, selected)
+//                    } else {
+//                        //fragment
+//                        able_type = "course"
+//                        if (i.hasExtra("able_type")) {
+//                            able_type = i.getStringExtra("able_type")!!
+//                        }
+//                        val f = getFragment()
+//                        if (f != null) {
+//                            f.singleSelected(key, selected)
+//                        }
+//                    }
+//                }
+//            }
+//        }
+//    }
+
 //    override fun remove(indexPath: IndexPath) {}
 //    override fun textChanged(str: String) {}
 //    override fun switchChanged(pos: Int, b: Boolean) {}
 
-    class ConnectTask(val context: Context) : AsyncTask<Unit, Unit, String>() {
-
-        override fun doInBackground(vararg params: Unit?): String? {
-            val url = URL("https://google.com")
-            val httpClient = url.openConnection() as HttpURLConnection
-            httpClient.connectTimeout = 1000
-            httpClient.readTimeout = 1000
-            try {
-                if (httpClient.responseCode == HttpURLConnection.HTTP_OK) {
-                    //println("connection")
-                } else {
-                }
-            } catch (e: Exception) {
-                val handler = Handler(context.mainLooper)
-                handler.post {
-                    Alert.show(context, "警告", "沒有連接網路，所以無法使用此app") {
-                        exitProcess(-1)
-                    }
-                }
-            } finally {
-                httpClient.disconnect()
-            }
-            return null
-        }
-
-    }
-
+//    class ConnectTask(val context: Context) : AsyncTask<Unit, Unit, String>() {
+//
+//        override fun doInBackground(vararg params: Unit?): String? {
+//            val url = URL("https://google.com")
+//            val httpClient = url.openConnection() as HttpURLConnection
+//            httpClient.connectTimeout = 1000
+//            httpClient.readTimeout = 1000
+//            try {
+//                if (httpClient.responseCode == HttpURLConnection.HTTP_OK) {
+//                    //println("connection")
+//                } else {
+//                }
+//            } catch (e: Exception) {
+//                val handler = Handler(context.mainLooper)
+//                handler.post {
+//                    Alert.show(context, "警告", "沒有連接網路，所以無法使用此app") {
+//                        exitProcess(-1)
+//                    }
+//                }
+//            } finally {
+//                httpClient.disconnect()
+//            }
+//            return null
+//        }
+//    }
 }
 
 object SystemProperties {

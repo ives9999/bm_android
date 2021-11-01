@@ -72,7 +72,6 @@ open class SearchPanel {
         layerBlackView!!.translationY = layerTopPadding.toFloat()
         layerBlackView!!.backgroundColor = Color.BLACK
         layerMask!!.addView(layerBlackView)
-
     }
 
     private fun addSearchTableView() {
@@ -272,7 +271,7 @@ open class SearchPanel {
         }
 
         layerBlackView = null
-        parent!!.removeView(layerMask)
+        //parent!!.removeView(layerMask)
         layerMask = null
     }
 
