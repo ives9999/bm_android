@@ -192,6 +192,7 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener,
         searchSections = initSectionRows()
 
         myColorGreen = ContextCompat.getColor(context, R.color.MY_GREEN)
+        delegate = this
 
         //vcResult.selectCityResult(this)
 
@@ -292,6 +293,11 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener,
         if (able_type != "more") {
             toMore()
         }
+    }
+
+    override fun cellClick(sectionIdx: Int, rowIdx: Int) {
+
+        prepare(sectionIdx, rowIdx)
     }
 
     protected fun setMyTitle(title: String) {
@@ -1072,6 +1078,7 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener,
 
 
     open fun prepare(idx: Int) {}
+    open fun prepare(sectionIdx: Int, rowIdx: Int) {}
 
 //    protected fun prepareSearch(idx: Int, page: String) {
 //        val intent = Intent(this, EditItemActivity::class.java)

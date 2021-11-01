@@ -41,15 +41,22 @@ class CoachVC : MyTableVC() {
         tableAdapter = CoachAdapter(R.layout.coach_list_cell, this)
         recyclerView.adapter = tableAdapter
 
+        init()
         refresh()
     }
 
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        isSearchIconShow = true
-        super.onCreateOptionsMenu(menu)
+    override fun init() {
+        super.init()
 
-        return true
+        showSearchIcon()
     }
+
+//    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+//        isSearchIconShow = true
+//        super.onCreateOptionsMenu(menu)
+//
+//        return true
+//    }
 
     override fun genericTable() {
         //storesTable = jsonToModel<StoresTable>(dataService.jsonString)

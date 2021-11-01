@@ -734,7 +734,7 @@ abstract class MyTableVC : BaseActivity() {
 //        replaceRows(key, row)
 //    }
 
-    open fun prepare(sectionIdx: Int, rowIdx: Int) {
+    override fun prepare(sectionIdx: Int, rowIdx: Int) {
         //        var idx = 0
 //        if (section == 0) {
 //            idx = row

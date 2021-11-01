@@ -16,6 +16,7 @@ import com.sportpassword.bm.Fragments.*
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Utilities.getFragment
 import org.jetbrains.anko.backgroundColor
+import org.jetbrains.anko.margin
 
 open class SearchPanel {
 
@@ -54,7 +55,7 @@ open class SearchPanel {
             addBlackView()
             addSearchTableView()
             layerAddButtonLayout()
-            layerBtnCount = 2
+//            layerBtnCount = 2
             layerAddSubmitBtn()
             layerAddCancelBtn()
         }
@@ -62,34 +63,37 @@ open class SearchPanel {
 
     private fun addBlackView() {
 
-        val w = parent!!.measuredWidth
-        val h = parent!!.measuredHeight
+//        val w = layerMask!!.measuredWidth
+//        val h = layerMask!!.measuredHeight
 
-        val lp = RelativeLayout.LayoutParams(w - (2 * layerRightLeftPadding), h - layerTopPadding)
+        val lp = RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
+        lp.setMargins(layerRightLeftPadding, layerTopPadding, layerRightLeftPadding, 0)
+        //val lp = RelativeLayout.LayoutParams(w - (2 * layerRightLeftPadding), h - layerTopPadding)
         layerBlackView = RelativeLayout(context!!)
         layerBlackView!!.layoutParams = lp
-        layerBlackView!!.translationX = layerRightLeftPadding.toFloat()
-        layerBlackView!!.translationY = layerTopPadding.toFloat()
+//        layerBlackView!!.translationX = layerRightLeftPadding.toFloat()
+//        layerBlackView!!.translationY = layerTopPadding.toFloat()
         layerBlackView!!.backgroundColor = Color.BLACK
         layerMask!!.addView(layerBlackView)
     }
 
     private fun addSearchTableView() {
 
-        val w = parent!!.measuredWidth
+//        val w = parent!!.measuredWidth
         val searchTableView = RecyclerView(context!!)
         searchTableView.id = R.id.SearchRecycleItem
 //        val padding: Int = 80
         //val lp1 = RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 800)
-        val lp1 = RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
+        val lp = RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
+//        lp.addRule(RelativeLayout.ABOVE, R.id.SearchButtonLayer)
 //        val lp1 = RecyclerView.LayoutParams(w - (2 * padding), 1000)
-        lp1.setMargins(0, 0, 0, 150)
-        searchTableView.layoutParams = lp1
+        lp.setMargins(0, 0, 0, 150)
+        searchTableView.layoutParams = lp
         searchTableView.layoutManager = LinearLayoutManager(context)
         //searchTableView.backgroundColor = Color.RED
         searchTableView.backgroundColor = Color.TRANSPARENT
 
-        val activity: BaseActivity = context!! as BaseActivity
+//        val activity: BaseActivity = context!! as BaseActivity
         searchTableView.adapter = searchSectionAdapter
 
 //        searchAdapter = GroupAdapter<GroupieViewHolder>()
@@ -106,7 +110,8 @@ open class SearchPanel {
     private fun layerAddButtonLayout() {
 
         layerButtonLayout = LinearLayout(context)
-        val lp = RelativeLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 150)
+        layerButtonLayout!!.id = R.id.SearchButtonLayer
+        val lp = RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 150)
         lp.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM)
         if (layerButtonLayout != null) {
             layerButtonLayout!!.layoutParams = lp
@@ -123,6 +128,8 @@ open class SearchPanel {
         val activity: BaseActivity = context!! as BaseActivity
         layerSubmitBtn = activity.layoutInflater.inflate(R.layout.submit_button, null) as Button
         val lp2 = LinearLayout.LayoutParams(300, 90)
+        lp2.weight = 1F
+        lp2.setMargins(60, 0, 60, 0)
         layerSubmitBtn!!.layoutParams = lp2
         layerSubmitBtn!!.setOnClickListener {
             layerSubmit()
@@ -141,7 +148,9 @@ open class SearchPanel {
         val activity: BaseActivity = context!! as BaseActivity
         layerCancelBtn = activity.layoutInflater.inflate(R.layout.cancel_button, null) as Button
         val lp2 = LinearLayout.LayoutParams(300, 90)
-        lp2.setMargins(16, 0, 0, 0)
+        lp2.weight = 1F
+        lp2.setMargins(60, 0, 60, 0)
+//        lp2.setMargins(16, 0, 0, 0)
         layerCancelBtn!!.layoutParams = lp2
         layerCancelBtn!!.setOnClickListener {
             layerCancel()
@@ -217,9 +226,13 @@ open class SearchPanel {
         if (layerMask == null) {
             layerMask = LinearLayout(context)
             layerMask!!.id = R.id.MyMask
-            layerMask!!.layoutParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
+            val lp = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
+            lp.bottomMargin = 400
+            layerMask!!.layoutParams = lp
+
             //mask.layoutParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT)
             layerMask!!.backgroundColor = Color.parseColor("#888888")
+//            layerMask!!.backgroundColor = Color.RED
             //0是完全透明
             layerMask!!.alpha = 0.9f
             layerMask!!.setOnClickListener {
@@ -271,7 +284,7 @@ open class SearchPanel {
         }
 
         layerBlackView = null
-        //parent!!.removeView(layerMask)
+        parent!!.removeView(layerMask)
         layerMask = null
     }
 
