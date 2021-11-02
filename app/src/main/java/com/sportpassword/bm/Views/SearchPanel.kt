@@ -194,27 +194,29 @@ open class SearchPanel {
 
         unmask()
         val activity: BaseActivity = context!! as BaseActivity
+        activity.prepareParams()
+        activity.refresh()
 
-        if (able_type == "coach" || able_type == "product" || able_type == "store" || able_type == "teach") {
-            activity.prepareParams()
-            activity.refresh()
-        } else if (able_type == "team") {
-            val frag = getFragment(activity, able_type!!) as TempPlayFragment
-            frag.prepareParams()
-            frag.refresh()
-        } else if (able_type == "course") {
-            val frag = getFragment(activity, able_type!!) as CourseFragment
-            frag.prepareParams()
-            frag.refresh()
-        } else if (able_type == "arena") {
-            val frag = getFragment(activity, able_type!!) as ArenaFragment
-            frag.prepareParams()
-            frag.refresh()
-        } else {
-            //activity.warning("沒有傳送頁面類型參數，請洽管理員")
-            activity.prepareParams()
-            activity.refresh()
-        }
+//        if (able_type == "coach" || able_type == "product" || able_type == "store" || able_type == "teach") {
+//            activity.prepareParams()
+//            activity.refresh()
+//        } else if (able_type == "team") {
+//            val frag = getFragment(activity, able_type!!) as TempPlayFragment
+//            frag.prepareParams()
+//            frag.refresh()
+//        } else if (able_type == "course") {
+//            val frag = getFragment(activity, able_type!!) as CourseFragment
+//            frag.prepareParams()
+//            frag.refresh()
+//        } else if (able_type == "arena") {
+//            val frag = getFragment(activity, able_type!!) as ArenaFragment
+//            frag.prepareParams()
+//            frag.refresh()
+//        } else {
+//            //activity.warning("沒有傳送頁面類型參數，請洽管理員")
+//            activity.prepareParams()
+//            activity.refresh()
+//        }
     }
 
     private fun layerCancel() {

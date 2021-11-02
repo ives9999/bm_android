@@ -1662,6 +1662,8 @@ inline fun <reified T : Any> Any.getThroughReflection(propertyName: String): T? 
     }
 }
 
+infix fun <T: Any?> Boolean?.then(block: () -> T): T? = if (this == true) block() else null
+
 fun getFragment(activity: BaseActivity, able_type: String): TabFragment? {
     val frags = activity.supportFragmentManager.fragments
     var _frag: TabFragment? = null

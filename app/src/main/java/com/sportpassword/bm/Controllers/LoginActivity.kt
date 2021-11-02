@@ -30,11 +30,18 @@ class LoginActivity : BaseActivity() {
         setContentView(R.layout.activity_login)
         setMyTitle("登入")
         hidekeyboard(login_layout)
+
+        init()
         //loginEmailTxt.requestFocus()
 
 //        loginEmailTxt.setText("ives@housetube.tw")
 //        loginPasswordTxt.setText("K5SD23r6")
 
+    }
+
+    override fun init() {
+        isPrevIconShow = true
+        super.init()
     }
 
     fun loginSubmit(view: View) {

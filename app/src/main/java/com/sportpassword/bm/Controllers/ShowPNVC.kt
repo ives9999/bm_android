@@ -70,17 +70,23 @@ class ShowPNVC : MyTableVC(), OSPermissionObserver {
         //initAdapter()
         thisAdapter = PNAdapter(this)
 
+        init()
         refresh()
 
         ShortcutBadger.applyCount(this, 0)
     }
 
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        isSearchIconShow = false
-        super.onCreateOptionsMenu(menu)
-
-        return true
+    override fun init() {
+        isPrevIconShow = true
+        super.init()
     }
+
+//    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+//        isSearchIconShow = false
+//        super.onCreateOptionsMenu(menu)
+//
+//        return true
+//    }
 
 //    override fun initAdapter(include_section: Boolean) {
         //adapter = GroupAdapter()

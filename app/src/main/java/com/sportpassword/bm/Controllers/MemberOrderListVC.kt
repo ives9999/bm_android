@@ -38,16 +38,21 @@ class MemberOrderListVC : MyTableVC() {
         tableAdapter = MemberOrderAdapter(R.layout.order_list_cell, this)
         recyclerView.adapter = tableAdapter
 
-        perPage = 10
+        init()
         refresh()
     }
 
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        isSearchIconShow = false
-        super.onCreateOptionsMenu(menu)
-
-        return true
+    override fun init() {
+        isPrevIconShow = true
+        super.init()
     }
+
+//    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+//        isSearchIconShow = false
+//        super.onCreateOptionsMenu(menu)
+//
+//        return true
+//    }
 
     override fun refresh() {
 //        page = 1

@@ -10,6 +10,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.sportpassword.bm.Data.SearchRow
+import com.sportpassword.bm.Data.SearchSection
 import com.sportpassword.bm.Fragments.MyAdapter
 import com.sportpassword.bm.Fragments.MyViewHolder
 import com.sportpassword.bm.Models.*
@@ -72,7 +74,13 @@ class ArenaVC : MyTableVC() {
 //        tableAdapter.tableList = a
         list_container.adapter = tableAdapter
 
+        init()
         refresh()
+    }
+
+    override fun init() {
+        isSearchIconShow = true
+        super.init()
     }
 
     override fun genericTable() {
@@ -100,6 +108,55 @@ class ArenaVC : MyTableVC() {
         }
     }
 
+    override fun makeSection0Row(isExpanded: Boolean): SearchSection {
+        val rows: ArrayList<SearchRow> = arrayListOf()
+        //if (isExpanded) {
+        val r1: SearchRow = SearchRow("關鍵字", "", "", KEYWORD_KEY, "textField")
+        rows.add(r1)
+        val r2: SearchRow = SearchRow("縣市", "", "全部", CITY_KEY, "more")
+        rows.add(r2)
+        val r3: SearchRow = SearchRow("區域", "", "全部", AREA_KEY, "more")
+        rows.add(r3)
+        val r4: SearchRow = SearchRow("空調", "", "全部", ARENA_AIR_CONDITION_KEY, "switch")
+        rows.add(r4)
+        val r5: SearchRow = SearchRow("盥洗室", "", "全部", ARENA_BATHROOM_KEY, "switch")
+        rows.add(r5)
+        val r6: SearchRow = SearchRow("停車場", "", "全部", ARENA_PARKING_KEY, "switch")
+        rows.add(r6)
+        //}
+
+        val s: SearchSection = SearchSection("一般", isExpanded)
+        s.items.addAll(rows)
+        return s
+    }
+
+    override fun cellCity(row: Table) {
+        val key: String = CITY_KEY
+        val row1: ArenaTable = row as ArenaTable
+        val row2: SearchRow = getSearchRowFromKey(key)
+        row2.value = row1.city_id.toString()
+        row2.show = row1.city_show
+        prepareParams()
+        page = 1
+        tableLists.clear()
+        getDataStart(page, perPage)
+    }
+
+    override fun cellArea(row: Table) {
+
+        val key: String = AREA_KEY
+        val row1: ArenaTable = row as ArenaTable
+        val row2 = getSearchRowFromKey(key)
+        val row3 = getSearchRowFromKey(CITY_KEY)
+        row2.value = row1.area_id.toString()
+        row2.show = row1.area_show
+        row3.value = row1.city_id.toString()
+        row3.show = row1.city_show
+        prepareParams()
+        page = 1
+        tableLists.clear()
+        getDataStart(page, perPage)
+    }
 }
 
 //data class YouItem(val name: String)

@@ -116,11 +116,17 @@ class PaymentVC : MyTableVC() {
         //initAdapter()
         //refresh()
 
+        init()
         if (ecpay_token.length > 0) {
             toECPay()
         } else {
             refresh()
         }
+    }
+
+    override fun init() {
+        isPrevIconShow = true
+        super.init()
     }
 
     fun toECPay() {

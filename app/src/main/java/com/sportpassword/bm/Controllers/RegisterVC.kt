@@ -112,6 +112,13 @@ class RegisterVC : MyTableVC() {
 
         refreshLayout = refresh
         setRefreshListener()
+
+        init()
+    }
+
+    override fun init() {
+        isPrevIconShow = true
+        super.init()
     }
 
     override fun refresh() {

@@ -60,8 +60,6 @@ class SearchVC : MyTableVC() {
     override fun init() {
         super.init()
 
-        showCartIcon()
-
         initTag()
 
         footer.visibility = View.GONE

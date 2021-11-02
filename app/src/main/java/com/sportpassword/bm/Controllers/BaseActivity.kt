@@ -21,7 +21,6 @@ import android.widget.*
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
@@ -73,6 +72,7 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener,
     //control the cart item number and show or not show for cart icon
     var cartItemCount: Int = 0
     var isSearchIconShow: Boolean = false
+    var isPrevIconShow: Boolean = false
 
     override var mainDelegate: BaseActivity
         get() = this
@@ -152,9 +152,9 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener,
     lateinit var searchSectionAdapter: SearchSectionAdapter
 
     var myColorGreen: Int = 0
-    var prevIcon: ImageButton? = null
-    var searchIcon: ImageButton? = null
-    var cartIcon: ImageButton? = null
+//    var prevIcon: ImageButton? = null
+//    var searchIcon: ImageButton? = null
+//    var cartIcon: ImageButton? = null
 
     //var vcResult: VCResult = VCResult()
 
@@ -204,66 +204,60 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener,
     }
 
     open fun init() {
-        prevIcon = findViewById(R.id.prevIcon)
-        searchIcon = findViewById(R.id.searchIcon)
-        cartIcon = findViewById(R.id.cartIcon)
+        val prevIcon: ImageButton = findViewById(R.id.prevIcon)
+        val searchIcon: ImageButton = findViewById(R.id.searchIcon)
+        val cartIcon: ImageButton = findViewById(R.id.cartIcon)
 
-        cartItemCount = session.getInt("cartItemCount", 0)
-        if (member.isLoggedIn && cartItemCount > 0) {
-            showCartIcon()
-        }
+        prevIcon.visibility = isPrevIconShow then { View.VISIBLE } ?: View.GONE
 
-        if (prevIcon?.visibility == View.INVISIBLE) {
-            prevIcon?.visibility = View.GONE
-        }
-
-        if (searchIcon?.visibility == View.INVISIBLE) {
-            searchIcon?.visibility = View.GONE
-        }
-
-        if (cartIcon?.visibility == View.INVISIBLE) {
-            cartIcon?.visibility = View.GONE
-        }
-
-        searchSectionAdapter = SearchSectionAdapter(this, R.layout.cell_section, this)
-        searchSections = initSectionRows()
-        searchSectionAdapter.setSearchSection(searchSections)
-    }
-
-    fun showPrevIcon(visibility: Boolean = true) {
-        if (visibility) { prevIcon?.visibility = View.VISIBLE } else { prevIcon?.visibility = View.INVISIBLE }
-    }
-
-    fun showSearchIcon(visibility: Boolean = true) {
-        if (visibility) { searchIcon?.visibility = View.VISIBLE } else { searchIcon?.visibility = View.INVISIBLE }
-    }
-
-    fun showCartIcon(visibility: Boolean = true) {
-        if (visibility) { cartIcon?.visibility = View.VISIBLE } else { cartIcon?.visibility = View.INVISIBLE }
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.all, menu)
-
-        val menuView = menu!!.findItem(R.id.menu_all).actionView
-        val shoppingCartBtn = menuView.findViewById<ImageButton>(R.id.cart)
-        val searchBtn = menuView.findViewById<ImageButton>(R.id.search)
+        searchIcon.visibility = isSearchIconShow then { View.VISIBLE } ?: View.GONE
 
         //當購物車中有商品時，購物車的icon就會出現，如果沒有就不會出現
         //1.AddCartVC中，商品加入購物車時，+1
         //2.MemberCartListVC中，移除購物車中的商品時，-1
         //3.購物車轉成訂單時OrderVC，購物車中的商品數變0
         cartItemCount = session.getInt("cartItemCount", 0)
-        if (member.isLoggedIn && cartItemCount > 0) {
-            shoppingCartBtn.visibility = View.VISIBLE
-        } else {
-            shoppingCartBtn.visibility = View.GONE
-        }
+        cartIcon.visibility = (member.isLoggedIn && cartItemCount > 0) then { View.VISIBLE } ?: View.GONE
 
-        searchBtn.visibility = if (isSearchIconShow) { View.VISIBLE } else { View.GONE }
-
-        return true
+        searchSectionAdapter = SearchSectionAdapter(this, R.layout.cell_section, this)
+        searchSections = initSectionRows()
+        searchSectionAdapter.setSearchSection(searchSections)
     }
+
+//    fun showPrevIcon(visibility: Boolean = true) {
+//        if (visibility) { prevIcon?.visibility = View.VISIBLE } else { prevIcon?.visibility = View.INVISIBLE }
+//    }
+//
+//    fun showSearchIcon() {
+//        if (isSearchIconShow) { searchIcon?.visibility = View.VISIBLE } else { searchIcon?.visibility = View.INVISIBLE }
+//    }
+//
+//    fun showCartIcon(visibility: Boolean = true) {
+//        if (visibility) { cartIcon?.visibility = View.VISIBLE } else { cartIcon?.visibility = View.INVISIBLE }
+//    }
+
+//    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+//        menuInflater.inflate(R.menu.all, menu)
+//
+//        val menuView = menu!!.findItem(R.id.menu_all).actionView
+//        val shoppingCartBtn = menuView.findViewById<ImageButton>(R.id.cart)
+//        val searchBtn = menuView.findViewById<ImageButton>(R.id.search)
+//
+//        //當購物車中有商品時，購物車的icon就會出現，如果沒有就不會出現
+//        //1.AddCartVC中，商品加入購物車時，+1
+//        //2.MemberCartListVC中，移除購物車中的商品時，-1
+//        //3.購物車轉成訂單時OrderVC，購物車中的商品數變0
+//        cartItemCount = session.getInt("cartItemCount", 0)
+//        if (member.isLoggedIn && cartItemCount > 0) {
+//            shoppingCartBtn.visibility = View.VISIBLE
+//        } else {
+//            shoppingCartBtn.visibility = View.GONE
+//        }
+//
+//        searchBtn.visibility = if (isSearchIconShow) { View.VISIBLE } else { View.GONE }
+//
+//        return true
+//    }
 
     fun tabToTeam(view: View) {
         if (able_type != "team") {
@@ -628,12 +622,26 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener,
 
     private fun isEmulator(): Boolean {
 
+//        println(Build.FINGERPRINT.startsWith("google/sdk_gphone_")
+//                && Build.FINGERPRINT.endsWith(":user/release-keys")
+//                && Build.MANUFACTURER == "Google" && Build.PRODUCT.startsWith("sdk_gphone_") && Build.BRAND == "google"
+//                && Build.MODEL.startsWith("sdk_gphone_"))
+//
+//        println("FINGERPRINT:${Build.FINGERPRINT}\n" +
+//                "MODEL:${Build.MODEL}\n" +
+//                "MANUFACTURER:${Build.MANUFACTURER}\n" +
+//                "BRAND:${Build.BRAND}\n" +
+//                "DEVICE:${Build.DEVICE}\n" +
+//                "BOARD:${Build.BOARD}\n" +
+//                "HOST:${Build.HOST}\n" +
+//                "PRODUCT:${Build.PRODUCT}\n")
+
         val result = (Build.FINGERPRINT.startsWith("google/sdk_gphone_")
                 && Build.FINGERPRINT.endsWith(":user/release-keys")
                 && Build.MANUFACTURER == "Google" && Build.PRODUCT.startsWith("sdk_gphone_") && Build.BRAND == "google"
                 && Build.MODEL.startsWith("sdk_gphone_"))
                 //
-                || Build.FINGERPRINT.startsWith("generic")
+                || Build.FINGERPRINT.contains("generic")
                 || Build.FINGERPRINT.startsWith("unknown")
                 || Build.MODEL.contains("google_sdk")
                 || Build.MODEL.contains("Emulator")
@@ -641,7 +649,9 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener,
                 //bluestacks
                 || "QC_Reference_Phone" == Build.BOARD && !"Xiaomi".equals(Build.MANUFACTURER, ignoreCase = true) //bluestacks
                 || Build.MANUFACTURER.contains("Genymotion")
-                || Build.HOST.startsWith("Build") //MSI App Player
+
+                //Sony is true, so mark it. HOST:BuildHost
+//                || Build.HOST.startsWith("Build") //MSI App Player
                 || Build.BRAND.startsWith("generic") && Build.DEVICE.startsWith("generic")
                 || Build.PRODUCT == "google_sdk"
                 // another Android SDK emulator check

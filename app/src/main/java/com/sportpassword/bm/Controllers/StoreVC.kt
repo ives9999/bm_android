@@ -47,15 +47,22 @@ class StoreVC : MyTableVC() {
         tableAdapter = StoreAdapter(R.layout.store_list_cell, this)
         recyclerView.adapter = tableAdapter
 
+        init()
         refresh()
     }
 
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+    override fun init() {
         isSearchIconShow = true
-        super.onCreateOptionsMenu(menu)
-
-        return true
+        isPrevIconShow = true
+        super.init()
     }
+
+//    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+//        isSearchIconShow = true
+//        super.onCreateOptionsMenu(menu)
+//
+//        return true
+//    }
 
     override fun genericTable() {
         mysTable = jsonToModels<StoresTable>(jsonString!!)

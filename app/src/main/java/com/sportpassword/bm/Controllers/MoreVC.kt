@@ -71,6 +71,12 @@ open class MoreVC : MyTableVC() {
         moreRows = initMoreRows()
         tableAdapter.moreRow = moreRows
         recyclerView.adapter = tableAdapter
+
+        init()
+    }
+
+    override fun init() {
+        super.init()
     }
 
     override fun cellClick(idx: Int) {

@@ -23,6 +23,13 @@ class ForgetPasswordActivity : BaseActivity() {
         hidekeyboard(forgetPassword_layout)
         //forgetPasswordEmailTxt.setText("ives@housetube.tw")
         forgetPasswordEmailTxt.requestFocus()
+
+        init()
+    }
+
+    override fun init() {
+        isPrevIconShow = true
+        super.init()
     }
 
     fun forgetPasswordSubmit(view: View) {

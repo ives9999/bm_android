@@ -1,22 +1,22 @@
 package com.sportpassword.bm.Controllers
 
+import android.content.Context
 import android.os.Bundle
-import android.view.Menu
 import android.view.View
-import androidx.core.content.ContextCompat
 import com.sportpassword.bm.Data.SearchRow
 import com.sportpassword.bm.Data.SearchSection
-import com.sportpassword.bm.Fragments.CourseAdapter
-import com.sportpassword.bm.Fragments.SearchSectionAdapter
+import com.sportpassword.bm.Fragments.MyAdapter
+import com.sportpassword.bm.Fragments.MyViewHolder
 import com.sportpassword.bm.Models.CourseTable
 import com.sportpassword.bm.Models.CoursesTable
+import com.sportpassword.bm.Models.Table
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.CourseService
 import com.sportpassword.bm.Utilities.*
 import kotlinx.android.synthetic.main.activity_course_vc.*
-import kotlinx.android.synthetic.main.activity_store_vc.*
 import kotlinx.android.synthetic.main.activity_store_vc.list_container
 import kotlinx.android.synthetic.main.bottom_view.*
+import kotlinx.android.synthetic.main.course_list_cell.view.*
 import kotlinx.android.synthetic.main.mask.*
 import kotlinx.android.synthetic.main.top_view.*
 import org.jetbrains.anko.backgroundColor
@@ -52,10 +52,8 @@ class CourseVC : MyTableVC() {
     }
 
     override fun init() {
+        isSearchIconShow = true
         super.init()
-        showSearchIcon()
-
-
     }
 
 //    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -96,6 +94,18 @@ class CourseVC : MyTableVC() {
         return s
     }
 
+    override fun cellCity(row: Table) {
+        val key: String = CITY_KEY
+        val row1: CourseTable = row as CourseTable
+        val row2: SearchRow = getSearchRowFromKey(key)
+        row2.value = row1.city_id.toString()
+        row2.show = row1.city_show
+        prepareParams()
+        page = 1
+        tableLists.clear()
+        getDataStart(page, perPage)
+    }
+
 //    override fun generateItems(): ArrayList<Item> {
 //        val items: ArrayList<Item> = arrayListOf()
 //        if (mysTable != null) {
@@ -117,4 +127,53 @@ class CourseVC : MyTableVC() {
 //        val table = myItem.row
 //        toShowCourse(table.token)
 //    }
+}
+
+class CourseAdapter(resource: Int, list1CellDelegate: List1CellDelegate?): MyAdapter<CourseViewHolder>(resource, ::CourseViewHolder, list1CellDelegate) {}
+
+class CourseViewHolder(context: Context, viewHolder: View, list1CellDelegate: List1CellDelegate? = null): MyViewHolder(context, viewHolder, list1CellDelegate) {
+
+    override fun bind(_row: Table, idx: Int) {
+        super.bind(_row, idx)
+
+        val row: CourseTable = _row as CourseTable
+
+        if (row.city_show.length > 0) {
+            viewHolder.cityBtn.text = row.city_show
+            viewHolder.cityBtn.setOnClickListener {
+                if (list1CellDelegate != null) {
+                    list1CellDelegate.cellCity(row)
+                }
+            }
+            viewHolder.cityBtn.visibility = View.VISIBLE
+        } else {
+            viewHolder.cityBtn.visibility = View.GONE
+        }
+
+        if (row.price_text_short != null && row.price_text_short.isNotEmpty()) {
+            viewHolder.priceLbl.text = row.price_text_short
+        } else {
+            viewHolder.priceLbl.text = "價格:未提供"
+        }
+
+        if (row.weekdays_show.length > 0) {
+            viewHolder.weekdayLbl.text = row.weekdays_show
+        } else {
+            viewHolder.weekdayLbl.text = "未提供"
+        }
+
+        if (row.interval_show.length > 0) {
+            viewHolder.intervalLbl.text = row.interval_show
+        } else {
+            viewHolder.intervalLbl.text = "未提供"
+        }
+
+        viewHolder.people_limitLbl.text = row.people_limit_show
+
+        if (row.signup_count_show.length > 0 && row.people_limit > 0) {
+            viewHolder.signup_countLbl.text = "已報名:${row.signup_count_show}"
+        } else {
+            viewHolder.signup_countLbl.visibility = View.INVISIBLE
+        }
+    }
 }

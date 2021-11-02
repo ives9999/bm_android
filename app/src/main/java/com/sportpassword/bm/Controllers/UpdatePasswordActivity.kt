@@ -19,6 +19,12 @@ class UpdatePasswordActivity : BaseActivity() {
         hidekeyboard(updatePassword_layout)
         updatePasswordOldPasswordTxt.requestFocus()
 
+        init()
+    }
+
+    override fun init() {
+        isPrevIconShow = true
+        super.init()
     }
 
     fun updatePasswordSubmit(view: View) {

@@ -14,6 +14,8 @@ import com.sportpassword.bm.Services.CoachService
 import com.sportpassword.bm.Utilities.*
 import kotlinx.android.synthetic.main.activity_store_vc.*
 import kotlinx.android.synthetic.main.coach_list_cell.view.*
+import kotlinx.android.synthetic.main.coach_list_cell.view.cityBtn
+import kotlinx.android.synthetic.main.course_list_cell.view.*
 
 class CoachVC : MyTableVC() {
 
@@ -46,9 +48,9 @@ class CoachVC : MyTableVC() {
     }
 
     override fun init() {
+        isSearchIconShow = true
+        isPrevIconShow = true
         super.init()
-
-        showSearchIcon()
     }
 
 //    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -83,6 +85,18 @@ class CoachVC : MyTableVC() {
         val s: SearchSection = SearchSection("一般", isExpanded)
         s.items.addAll(rows)
         return s
+    }
+
+    override fun cellCity(row: Table) {
+        val key: String = CITY_KEY
+        val row1: CoachTable = row as CoachTable
+        val row2: SearchRow = getSearchRowFromKey(key)
+        row2.value = row1.city_id.toString()
+        row2.show = row1.city_show
+        prepareParams()
+        page = 1
+        tableLists.clear()
+        getDataStart(page, perPage)
     }
 
 //    override fun generateItems(): ArrayList<Item> {
@@ -154,10 +168,10 @@ class CoachViewHolder(context: Context, viewHolder: View, list1CellDelegate: Lis
             viewHolder.cityBtn.text = row.city_show
             viewHolder.cityBtn.setOnClickListener {
                 if (list1CellDelegate != null) {
-                    list1CellDelegate!!.cellCity(row)
+                    list1CellDelegate.cellCity(row)
                 }
             }
-
+            viewHolder.cityBtn.visibility = View.VISIBLE
         } else {
             viewHolder.cityBtn.visibility = View.GONE
         }

@@ -53,9 +53,8 @@ open class ShowVC: BaseActivity() {
     }
 
     override fun init() {
+        isPrevIconShow = true
         super.init()
-
-        showPrevIcon()
     }
 
     open fun genericTable() {}

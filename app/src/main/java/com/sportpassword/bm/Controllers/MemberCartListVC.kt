@@ -13,6 +13,7 @@ import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.CartService
 import com.sportpassword.bm.Utilities.jsonToModels
 import com.sportpassword.bm.member
+import com.sportpassword.bm.Utilities.*
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_member_cart_list_vc.*
 import kotlinx.android.synthetic.main.cart_list_cell.view.*
@@ -43,14 +44,20 @@ class MemberCartListVC : MyTableVC() {
         tableAdapter = MemberCartAdapter(R.layout.cart_list_cell, this)
         recyclerView.adapter = tableAdapter
 
+        init()
         refresh()
     }
 
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        isSearchIconShow = false
-        super.onCreateOptionsMenu(menu)
-        return true
+    override fun init() {
+        isPrevIconShow = true
+        super.init()
     }
+
+//    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+//        isSearchIconShow = false
+//        super.onCreateOptionsMenu(menu)
+//        return true
+//    }
 
     override fun refresh() {
 
@@ -69,15 +76,12 @@ class MemberCartListVC : MyTableVC() {
             if (mysTable!!.rows.size > 0) {
                 myTable = mysTable!!.rows[0]
                 cartItemsTable = myTable!!.items
-                if (cartItemsTable.size > 0) {
-                    submitBtn.visibility = View.VISIBLE
-                } else {
-                    submitBtn.visibility = View.GONE
-                }
+
                 getPage()
                 tableLists += generateItems1(CartItemTable::class, myTable!!.items)
                 tableAdapter.setMyTableList(tableLists)
                 runOnUiThread {
+                    submitBtn.visibility = (cartItemsTable.size > 0) then { View.VISIBLE } ?: View.GONE
                     tableAdapter.notifyDataSetChanged()
                 }
             } else {
