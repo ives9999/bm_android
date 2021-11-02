@@ -140,15 +140,15 @@ class AddCartVC : MyTableVC() {
 //        return sections
 //    }
 
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-
-        super.onCreateOptionsMenu(menu)
-
-        val menuView = menu!!.findItem(R.id.menu_all).actionView
-        val shoppingCartBtn = menuView.findViewById<ImageButton>(R.id.cart)
-        shoppingCartBtn.visibility = View.VISIBLE
-        return true
-    }
+//    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+//
+//        super.onCreateOptionsMenu(menu)
+//
+//        val menuView = menu!!.findItem(R.id.menu_all).actionView
+//        val shoppingCartBtn = menuView.findViewById<ImageButton>(R.id.cart)
+//        shoppingCartBtn.visibility = View.VISIBLE
+//        return true
+//    }
 
 //    override fun initAdapter(include_section: Boolean) {
 ////        adapter = GroupAdapter()

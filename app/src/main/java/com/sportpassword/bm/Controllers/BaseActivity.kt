@@ -1892,11 +1892,16 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener,
 
                 if (i != null) {
 
-                    val frags = supportFragmentManager.fragments
-                    for (frag in frags) {
-                        val memberFragment = frag as? MemberFragment
-                        memberFragment?.loginout()
+                    if (delegate != null) {
+                        val d: MemberVC = delegate as MemberVC
+                        d.loginout()
                     }
+
+//                    val frags = supportFragmentManager.fragments
+//                    for (frag in frags) {
+//                        val memberFragment = frag as? MemberFragment
+//                        memberFragment?.loginout()
+//                    }
                 }
             }
         }

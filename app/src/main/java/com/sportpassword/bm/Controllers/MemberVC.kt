@@ -299,7 +299,7 @@ class MemberVC : MyTableVC() {
             //MemberService.logout(this)
             //refresh()
         } else {
-            this.toLogin()
+            toLogin()
         }
     }
 

@@ -69,6 +69,7 @@ class ShowPNVC : MyTableVC(), OSPermissionObserver {
 
         //initAdapter()
         thisAdapter = PNAdapter(this)
+        recyclerView.adapter = thisAdapter
 
         init()
         refresh()
@@ -106,6 +107,7 @@ class ShowPNVC : MyTableVC(), OSPermissionObserver {
         }
         //adapter.update(items)
         //adapter.notifyDataSetChanged()
+        thisAdapter.notifyDataSetChanged()
         closeRefresh()
     }
 
@@ -113,7 +115,6 @@ class ShowPNVC : MyTableVC(), OSPermissionObserver {
         warning("是否確定要刪除此訊息？", "關閉", "刪除") {
             MyOneSignal.remove(id)
             refresh()
-            thisAdapter.notifyDataSetChanged()
         }
     }
 
