@@ -332,6 +332,8 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener,
 //        actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM, ActionBar.DISPLAY_SHOW_CUSTOM)
     }
 
+    
+
     protected fun myMakeCall(_mobile: String) {
         mobile = _mobile
         val p = ContextCompat.checkSelfPermission(this, android.Manifest.permission.CALL_PHONE)

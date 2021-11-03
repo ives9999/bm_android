@@ -1,5 +1,6 @@
 package com.sportpassword.bm.Utilities
 
+import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
@@ -21,6 +22,8 @@ import androidx.core.app.NotificationCompat
 import com.onesignal.OSNotification;
 import com.onesignal.OSNotificationReceivedEvent;
 import com.onesignal.OneSignal.OSRemoteNotificationReceivedHandler;
+import com.sportpassword.bm.Controllers.BaseActivity
+import org.jetbrains.anko.runOnUiThread
 import java.math.BigInteger
 
 class NotificationServiceExtension : OSRemoteNotificationReceivedHandler {
@@ -74,58 +77,83 @@ class MyOneSignal {
         val session: SharedPreferences = App.ctx!!.getSharedPreferences(SESSION_FILENAME, 0)
         //var context: Context? = null
 
-        fun openHandler(context: Context, result: OSNotificationOpenedResult) {
-
-            //this.context = context
-            val actionType = result.action.type
-
-            val data = result.notification.additionalData
-            val id = result.notification.notificationId
-            val title = result.notification.title
-            val content = result.notification.body
-
+        fun getOneSignalHandler(activity: BaseActivity?, result: OSNotification) {
+            val data = result.additionalData
             var pnID = "0"
             if (data != null) {
                 pnID = getServerPNID(data)
             }
 
+            val id = result.notificationId
+            val title = result.title
+            val content = result.body
+
             save(id.toString(), title, content, pnID)
 
-            toShowPNVC(context)
-        }
-
-        fun showInForegroundHandler(context: Context, notificationReceivedEvent: OSNotificationReceivedEvent) {
-
-            val notification = notificationReceivedEvent.notification
-
-            val data = notification.additionalData
-
-            val id = notification.androidNotificationId
-            val title = notification.title
-            val content = notification.body
-
-            val smallIcon = notification.smallIcon
-            val largeIcon = notification.largeIcon
-            val bigPicture = notification.bigPicture
-            val smallIconAccentColor = notification.smallIconAccentColor
-            val sound = notification.sound
-            val ledColor = notification.ledColor
-            val lockScreenVisibility = notification.lockScreenVisibility
-            val groupKey = notification.groupKey
-            val groupMessage = notification.groupMessage
-            val fromProjectNumber = notification.fromProjectNumber
-            val rawPayload = notification.rawPayload
-
-            var pnID = "0"
-            if (data != null) {
-                pnID = getServerPNID(data)
+            activity?.runOnUiThread {
+                activity?.info(content)
             }
-
-            save(id.toString(), title, content, pnID)
-
-            notificationReceivedEvent.complete(notification)
-            toShowPNVC(context)
         }
+
+//        fun openHandler(context: Context, result: OSNotificationOpenedResult) {
+//
+//            //this.context = context
+//            val actionType = result.action.type
+//
+//            val data = result.notification.additionalData
+//            val id = result.notification.notificationId
+//            val title = result.notification.title
+//            val content = result.notification.body
+//
+//            var pnID = "0"
+//            if (data != null) {
+//                pnID = getServerPNID(data)
+//            }
+//
+//            save(id.toString(), title, content, pnID)
+//
+//            toShowPNVC(context)
+//        }
+//
+//        fun showInForegroundHandler(context: Context, notificationReceivedEvent: OSNotificationReceivedEvent) {
+//
+//            val notification = notificationReceivedEvent.notification
+//
+//            val data = notification.additionalData
+//
+//            val id = notification.androidNotificationId
+//            val title = notification.title
+//            val content = notification.body
+//
+//            val smallIcon = notification.smallIcon
+//            val largeIcon = notification.largeIcon
+//            val bigPicture = notification.bigPicture
+//            val smallIconAccentColor = notification.smallIconAccentColor
+//            val sound = notification.sound
+//            val ledColor = notification.ledColor
+//            val lockScreenVisibility = notification.lockScreenVisibility
+//            val groupKey = notification.groupKey
+//            val groupMessage = notification.groupMessage
+//            val fromProjectNumber = notification.fromProjectNumber
+//            val rawPayload = notification.rawPayload
+//
+//            var pnID = "0"
+//            if (data != null) {
+//                pnID = getServerPNID(data)
+//            }
+//
+//            save(id.toString(), title, content, pnID)
+//
+////            notificationReceivedEvent.complete(notification)
+////            val builder = AlertDialog.Builder(context)
+////            builder.setTitle(title)
+////            builder.setMessage(content)
+////
+////            runOnUiThread {
+////                builder.show()
+////            }
+//            //toShowPNVC(context)
+//        }
 
         fun toShowPNVC(context: Context) {
             //val launchUrl = result.notification.launchURL

@@ -1,12 +1,15 @@
 package com.sportpassword.bm
 
+import android.app.Activity
 import android.app.Application
 import android.content.Context
 import com.onesignal.OSNotificationOpenedResult
 import com.onesignal.OneSignal
 import com.sportpassword.bm.Utilities.*
 import com.onesignal.OSNotificationReceivedEvent
+import com.sportpassword.bm.Controllers.BaseActivity
 import com.sportpassword.bm.Models.Member
+import org.jetbrains.anko.runOnUiThread
 
 /**
  * Created by ives on 2018/2/6.
@@ -52,6 +55,10 @@ class App: Application() {
         member = Member(applicationContext)
         super.onCreate()
         ctx = applicationContext
+
+
+
+        //registerActivityLifecycleCallbacks()
 //        val session: SharedPreferences = this.getSharedPreferences(SESSION_FILENAME, 0)
         //session.dump()
 //        if (session.has(ISLOGGEDIN_KEY)) {
@@ -73,7 +80,19 @@ class App: Application() {
 //                "OSNotificationOpenedResult result: $result"
 //            )
 
-            MyOneSignal.openHandler(applicationContext, result)
+
+            val activity: BaseActivity? = getActivity()
+            MyOneSignal.getOneSignalHandler(activity, result.notification)
+//            MyOneSignal.openHandler(applicationContext, result)
+
+
+
+//            val builder = AlertDialog.Builder(applicationContext)
+//            builder.setTitle(title)
+//            builder.setMessage(content)
+//            runOnUiThread {
+//                builder.show()
+//            }
             //val no = NotificationServiceExtension()
             //no.remoteNotificationReceived(this, result.notification)
             //val launchUrl = result.notification.launchURL
@@ -95,7 +114,14 @@ class App: Application() {
 //            val notificationServiceExtension = NotificationServiceExtension()
 //            notificationServiceExtension.remoteNotificationReceived(applicationContext, notificationReceivedEvent)
 
-            MyOneSignal.showInForegroundHandler(applicationContext, notificationReceivedEvent)
+            val activity = getActivity()
+            MyOneSignal.getOneSignalHandler(activity, notificationReceivedEvent.notification)
+//            runOnUiThread {
+//                activity.info(content)
+//            }
+
+
+//            MyOneSignal.showInForegroundHandler(applicationContext, notificationReceivedEvent)
 
             //val no = NotificationServiceExtension()
             //no.remoteNotificationReceived(this, notificationReceivedEvent)
@@ -137,6 +163,35 @@ class App: Application() {
 //        VimeoClient.initialize(configBuilder.build())
     }
 
+    fun getActivity(): BaseActivity? {
+
+        val activityThreadClass = Class.forName("android.app.ActivityThread")
+        val activityThread = activityThreadClass.getMethod("currentActivityThread").invoke(null)
+        val activytyField = activityThreadClass.getDeclaredField("mActivities")
+        activytyField.isAccessible = true
+
+        val activities = activytyField.get(activityThread) as Map<Object, Object>
+
+        if (activities == null) {
+            return null
+        }
+
+        for (activityRecord in activities.values) {
+            val activityRecordClass = activityRecord.`class`
+            val pausedField = activityRecordClass.getDeclaredField("paused");
+            pausedField.isAccessible = true
+
+            if (!pausedField.getBoolean(activityRecord)) {
+                val activityField = activityRecordClass.getDeclaredField("activity")
+                activityField.isAccessible = true
+                val activity = activityField.get(activityRecord) as BaseActivity
+                return activity
+            }
+        }
+
+        return null
+    }
+
 //    val accessTokenBuilder: Configuration.Builder
 //        get() {
 //            val accessToken = "PROVIDE AN ACCESS TOKEN"
@@ -153,3 +208,28 @@ class App: Application() {
 //            return configBuilder
 //        }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
