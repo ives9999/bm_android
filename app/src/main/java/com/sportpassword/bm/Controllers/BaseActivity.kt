@@ -194,6 +194,8 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener,
         myColorGreen = ContextCompat.getColor(context, R.color.MY_GREEN)
         delegate = this
 
+        //MyOneSignal.clear()
+
         //vcResult.selectCityResult(this)
 
         //OneSignal.setSubscription(true)
@@ -222,6 +224,40 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener,
         searchSectionAdapter = SearchSectionAdapter(this, R.layout.cell_section, this)
         searchSections = initSectionRows()
         searchSectionAdapter.setSearchSection(searchSections)
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+//        MyOneSignal.dump()
+//        val unShowPushs: JSONArray = MyOneSignal.getUnShowRows()
+//        var rows = MyOneSignal.getAllRows()
+//        val rows1: JSONArray = JSONArray()
+//        for (i in 0 until rows.length()) {
+//            val row: JSONObject = rows.getJSONObject(i)
+//            row.put("isShow", false)
+//            rows1.put(row)
+//        }
+//        MyOneSignal.updateAll(rows1)
+
+
+
+        //if has new push show the push
+        val rows = MyOneSignal.getAllRows()
+        val pnArr1 = JSONArray()
+
+        for (i in 0 until rows.length()) {
+//        for (i in 0 until unShowPushs.length()) {
+            val row: JSONObject = rows.getJSONObject(i)
+            //val row: JSONObject = unShowPushs.getJSONObject(i)
+            if (!row.getBoolean("isShow")) {
+                val content: String = row.getString("content")
+                info(content)
+                row.put("isShow", true)
+            }
+            pnArr1.put(row)
+        }
+        MyOneSignal.updateAll(pnArr1)
     }
 
 //    fun showPrevIcon(visibility: Boolean = true) {

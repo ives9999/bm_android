@@ -115,7 +115,7 @@ class App: Application() {
 //            notificationServiceExtension.remoteNotificationReceived(applicationContext, notificationReceivedEvent)
 
             val activity = getActivity()
-            MyOneSignal.getOneSignalHandler(activity, notificationReceivedEvent.notification)
+            MyOneSignal.getOneSignalHandler(activity, notificationReceivedEvent.notification, true)
 //            runOnUiThread {
 //                activity.info(content)
 //            }
@@ -171,10 +171,6 @@ class App: Application() {
         activytyField.isAccessible = true
 
         val activities = activytyField.get(activityThread) as Map<Object, Object>
-
-        if (activities == null) {
-            return null
-        }
 
         for (activityRecord in activities.values) {
             val activityRecordClass = activityRecord.`class`

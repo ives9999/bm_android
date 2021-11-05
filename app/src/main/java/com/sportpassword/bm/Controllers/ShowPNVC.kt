@@ -3,7 +3,6 @@ package com.sportpassword.bm.Controllers
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.LayoutInflater
-import android.view.Menu
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
@@ -14,7 +13,6 @@ import com.onesignal.OSPermissionStateChanges
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Utilities.*
 import kotlinx.android.synthetic.main.activity_show_pnvc.*
-import kotlinx.android.synthetic.main.show_pnvc_item.*
 import me.leolin.shortcutbadger.ShortcutBadger
 import org.json.JSONArray
 import org.json.JSONObject
@@ -97,6 +95,14 @@ class ShowPNVC : MyTableVC(), OSPermissionObserver {
 
     override fun refresh() {
         getArr()
+//        val rows: JSONArray = JSONArray()
+//        for (i in pnArr.length()-1 downTo 0) {
+//            val row: JSONObject = pnArr.getJSONObject(i)
+//            rows.put(row)
+//        }
+//        println(rows)
+
+//        thisAdapter.rows = rows
         thisAdapter.rows = pnArr
 //        var items = arrayListOf<Item>()
         if (pnArr.length() == 0 ) {
@@ -109,6 +115,14 @@ class ShowPNVC : MyTableVC(), OSPermissionObserver {
         //adapter.notifyDataSetChanged()
         thisAdapter.notifyDataSetChanged()
         closeRefresh()
+
+        val pnArr1: JSONArray = JSONArray()
+        for (i in 0 until pnArr.length()) {
+            val row: JSONObject = pnArr.getJSONObject(i)
+            row.put("isShow", true)
+            pnArr1.put(row)
+        }
+        session.edit().putString("pn", pnArr1.toString()).apply()
     }
 
     fun cellRemove(id: String) {

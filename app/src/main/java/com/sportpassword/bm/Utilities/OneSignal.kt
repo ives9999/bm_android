@@ -77,7 +77,7 @@ class MyOneSignal {
         val session: SharedPreferences = App.ctx!!.getSharedPreferences(SESSION_FILENAME, 0)
         //var context: Context? = null
 
-        fun getOneSignalHandler(activity: BaseActivity?, result: OSNotification) {
+        fun getOneSignalHandler(activity: BaseActivity?, result: OSNotification, isForeground: Boolean = false) {
             val data = result.additionalData
             var pnID = "0"
             if (data != null) {
@@ -88,10 +88,12 @@ class MyOneSignal {
             val title = result.title
             val content = result.body
 
-            save(id.toString(), title, content, pnID)
+            val isShow: Boolean = (isForeground) then { true } ?: false
+
+            save(id.toString(), title, content, pnID, isShow)
 
             activity?.runOnUiThread {
-                activity?.info(content)
+                activity.info(content)
             }
         }
 
@@ -165,7 +167,7 @@ class MyOneSignal {
             //}
         }
 
-        fun save(id: String, title: String?, content: String, pnID: String) {
+        fun save(id: String, title: String?, content: String, pnID: String, isShow: Boolean = false) {
             val pnObj = JSONObject()
             pnObj.put("id", id)
             if (title != null) {
@@ -173,6 +175,9 @@ class MyOneSignal {
             }
             pnObj.put("content", content)
             pnObj.put("pnid", pnID)
+            pnObj.put("sort_order", System.currentTimeMillis())
+            pnObj.put("isShow", isShow)
+
             var pnArr: JSONArray? = null
             if (session.contains("pn")) {
                 val pnStr = session.getString("pn", "")!!
@@ -205,6 +210,60 @@ class MyOneSignal {
 
         fun clear() {
             session.edit().remove("pn").apply()
+        }
+
+        fun getAllRows(): JSONArray {
+            val res: JSONArray = JSONArray()
+            val pnStr = session.getString("pn", "")!!
+            var pnArr: JSONArray = JSONArray()
+            if (pnStr.isNotEmpty()) {
+                pnArr = JSONArray(pnStr)
+            }
+
+            return pnArr
+        }
+
+        fun updateAll(rows: JSONArray) {
+            session.edit().putString("pn", rows.toString()).apply()
+        }
+
+        fun update(id: String, _row: JSONObject) {
+            val rows: JSONArray = getAllRows()
+            val rows1: JSONArray = JSONArray()
+            for (i in 0 until rows.length()) {
+                var row: JSONObject = rows.getJSONObject(i)
+                if (id == row.getString("id")) {
+                   row = _row
+                }
+                rows1.put(row)
+            }
+
+            updateAll(rows1)
+        }
+
+        fun getUnShowRows(): JSONArray {
+
+            val res: JSONArray = JSONArray()
+            val pnArr = getAllRows()
+            for (i in 0 until pnArr.length()) {
+                val row: JSONObject = pnArr.getJSONObject(i)
+                if (!row.getBoolean("isShow")) {
+                    res.put(row)
+                }
+            }
+
+            return res
+        }
+
+        fun dump() {
+            val pnStr = session.getString("pn", "")!!
+            if (pnStr.isNotEmpty()) {
+                val pnArr = JSONArray(pnStr)
+                for (i in 0 until pnArr.length()) {
+                    val row: JSONObject = pnArr.getJSONObject(i)
+                    println(row)
+                }
+            }
         }
 
         fun isExist(arr: JSONArray, id: String): Boolean {
