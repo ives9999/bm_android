@@ -1,23 +1,20 @@
 package com.sportpassword.bm.Services
 
 import android.content.Context
-import android.content.SharedPreferences
-import android.os.Bundle
-import android.util.Log
 import com.android.volley.Request
 import com.android.volley.Response
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
-import com.fasterxml.jackson.databind.ObjectMapper
 import org.json.JSONException
 import org.json.JSONObject
 import com.sportpassword.bm.Utilities.*
 import com.sportpassword.bm.member
 import com.sportpassword.bm.Controllers.MainActivity
 import com.sportpassword.bm.Models.*
+import okhttp3.Call
+import okhttp3.Callback
+import java.io.IOException
 import java.lang.Exception
-import kotlin.reflect.full.memberProperties
-
 
 /**
  * Created by ives on 2018/2/4.
@@ -84,49 +81,61 @@ object MemberService: DataService() {
         val url = URL_LOGIN
 //        println(url)
 
-        val header: MutableList<Pair<String, String>> = mutableListOf()
-        header.add(Pair("Accept","application/json"))
-        header.add(Pair("Content-Type","application/json; charset=utf-8"))
+//        val header: MutableList<Pair<String, String>> = mutableListOf()
+//        header.add(Pair("Accept","application/json"))
+//        header.add(Pair("Content-Type","application/json; charset=utf-8"))
 
-        val filter: HashMap<String, Any> = hashMapOf()
-        filter.put("device", "app")
-        filter.put("email", email)
-        filter.put("password", password)
-        filter.put("player_id", playerID)
-        val body = filter.toJSONString()
-//        println(body)
+        val params: HashMap<String, String> = hashMapOf()
+        params.put("device", "app")
+        params.put("email", email)
+        params.put("password", password)
+        params.put("player_id", playerID)
 
-//        val body = JSONObject()
-//        body.put("email", email)
-//        body.put("password", password)
-//        body.put("player_id", playerID)
-//        body.put("source", "app")
-//        val requestBody = body.toString()
-//        println(requestBody)
-
-        MyHttpClient.instance.post(context, url, body) { success ->
-            if (success) {
-                val response = MyHttpClient.instance.response
-                if (response != null) {
-                    try {
-
-                        this.jsonString = response.toString()
-//                        println(jsonString)
-                        this.success = true
-                    } catch (e: Exception) {
-                        this.success = false
-                        msg = "parse json failed，請洽管理員"
-                        println(e.localizedMessage)
-                    }
-                    complete(this.success)
-                } else {
-                    println("response is null")
-                }
-            } else {
+        val request: okhttp3.Request = getRequest(url, params)
+        okHttpClient.newCall(request).enqueue(object : Callback {
+            override fun onFailure(call: Call, e: IOException) {
                 msg = "網路錯誤，無法跟伺服器更新資料"
                 complete(success)
             }
-        }
+
+            override fun onResponse(call: Call, response: okhttp3.Response) {
+
+                try {
+                    jsonString = response.body!!.string()
+//                    println(jsonString)
+                    success = true
+                } catch (e: Exception) {
+                    success = false
+                    msg = "parse json failed，請洽管理員"
+                    println(e.localizedMessage)
+                }
+                complete(success)
+            }
+        })
+
+//        MyHttpClient.instance.post(context, url, body) { success ->
+//            if (success) {
+//                val response = MyHttpClient.instance.response
+//                if (response != null) {
+//                    try {
+//
+//                        this.jsonString = response.toString()
+////                        println(jsonString)
+//                        this.success = true
+//                    } catch (e: Exception) {
+//                        this.success = false
+//                        msg = "parse json failed，請洽管理員"
+//                        println(e.localizedMessage)
+//                    }
+//                    complete(this.success)
+//                } else {
+//                    println("response is null")
+//                }
+//            } else {
+//                msg = "網路錯誤，無法跟伺服器更新資料"
+//                complete(success)
+//            }
+//        }
 
 //        val request = object : JsonObjectRequest(Request.Method.POST, url, null, Response.Listener { json ->
 //            //println(json)
@@ -579,42 +588,65 @@ object MemberService: DataService() {
 //    }
 
     fun blacklist(context: Context, token: String, complete: CompletionHandler) {
-        val url = URL_MEMBER_BLACKLIST
-        val body = JSONObject()
-        body.put("source", "app")
-        body.put("channel", CHANNEL)
-        body.put("token", token)
-        val requestBody = body.toString()
 
-        val params: MutableList<Pair<String, String>> = mutableListOf()
-        val keys = body.keys()
-        while (keys.hasNext()) {
-            val key = keys.next()
-            val value = body.getString(key)
-            params.add(Pair(key, value))
-        }
-        MyHttpClient.instance.post(context, url, params, null) { success ->
-            if (success) {
-                val response = MyHttpClient.instance.response
-                if (response != null) {
-//                    println(response.toString())
-                    val json = JSONObject(response.toString())
-                    this.success = json.getBoolean("success")
-                    if (!this.success) {
-                        this.msg = json.getString("msg")
-                    } else {
-                        //this.blackLists = JSONParse.parse<BlackLists>(json)!!
-                    }
-                    complete(this.success)
-                } else {
-                    this.msg = "沒有取得伺服器的回應，請洽管理員"
-                    complete(false)
-                }
-            } else {
-                this.msg = "由伺服器取得黑名單失敗，請洽管理員"
+        val url = URL_MEMBER_BLACKLIST
+        val params = hashMapOf<String, String>()
+        params.put("source", "app")
+        params.put("channel", CHANNEL)
+        params.put("token", token)
+
+//        val params: MutableList<Pair<String, String>> = mutableListOf()
+//        val keys = body.keys()
+//        while (keys.hasNext()) {
+//            val key = keys.next()
+//            val value = body.getString(key)
+//            params.add(Pair(key, value))
+//        }
+
+        val request: okhttp3.Request = getRequest(url, params)
+        okHttpClient.newCall(request).enqueue(object : Callback {
+            override fun onFailure(call: Call, e: IOException) {
+                msg = "網路錯誤，無法跟伺服器更新資料"
                 complete(success)
             }
-        }
+
+            override fun onResponse(call: Call, response: okhttp3.Response) {
+
+                try {
+                    jsonString = response.body!!.string()
+//                    println(jsonString)
+                    success = true
+                } catch (e: Exception) {
+                    success = false
+                    msg = "parse json failed，請洽管理員"
+                    println(e.localizedMessage)
+                }
+                complete(success)
+            }
+        })
+
+//        MyHttpClient.instance.post(context, url, params, null) { success ->
+//            if (success) {
+//                val response = MyHttpClient.instance.response
+//                if (response != null) {
+////                    println(response.toString())
+//                    val json = JSONObject(response.toString())
+//                    this.success = json.getBoolean("success")
+//                    if (!this.success) {
+//                        this.msg = json.getString("msg")
+//                    } else {
+//                        //this.blackLists = JSONParse.parse<BlackLists>(json)!!
+//                    }
+//                    complete(this.success)
+//                } else {
+//                    this.msg = "沒有取得伺服器的回應，請洽管理員"
+//                    complete(false)
+//                }
+//            } else {
+//                this.msg = "由伺服器取得黑名單失敗，請洽管理員"
+//                complete(success)
+//            }
+//        }
 
         /*
 
@@ -655,47 +687,69 @@ object MemberService: DataService() {
 
     fun likelist(context: Context, able_type: String, like_list: String="喜歡", page: Int=1, perPage: Int=20, complete: CompletionHandler) {
 
-        val params = mapOf(
+        val params = hashMapOf<String, String>(
             "device" to "app",
             "channel" to CHANNEL,
-            "member_token" to member.token,
+            "member_token" to member.token!!,
             "able_type" to able_type,
             "like_list" to like_list,
-            "page" to page,
-            "perpage" to perPage
+            "page" to page.toString(),
+            "perpage" to perPage.toString()
         )
-        val objectMapper = ObjectMapper()
-        val body: String = objectMapper.writeValueAsString(params)
+//        val objectMapper = ObjectMapper()
+//        val body: String = objectMapper.writeValueAsString(params)
 //        println(body)
 
         val url: String = URL_MEMBER_LIKELIST
 //        println(url)
 
-        MyHttpClient.instance.post(context, url, body) { success ->
-            if (success) {
-                val response = MyHttpClient.instance.response
-                if (response != null) {
-                    try {
-                        jsonString = response.toString()
-//                        println(jsonString)
-                        this.success = true
-                    } catch (e: Exception) {
-                        this.success = false
-                        msg = "parse json failed，請洽管理員"
-                        println(e.localizedMessage)
-                    }
-                    complete(this.success)
-                } else {
-                    println("response is null")
-                }
-            } else {
+        val request: okhttp3.Request = getRequest(url, params)
+        okHttpClient.newCall(request).enqueue(object : Callback {
+            override fun onFailure(call: Call, e: IOException) {
                 msg = "網路錯誤，無法跟伺服器更新資料"
                 complete(success)
             }
-        }
+
+            override fun onResponse(call: Call, response: okhttp3.Response) {
+
+                try {
+                    jsonString = response.body!!.string()
+//                    println(jsonString)
+                    success = true
+                } catch (e: Exception) {
+                    success = false
+                    msg = "parse json failed，請洽管理員"
+                    println(e.localizedMessage)
+                }
+                complete(success)
+            }
+        })
+
+//        MyHttpClient.instance.post(context, url, body) { success ->
+//            if (success) {
+//                val response = MyHttpClient.instance.response
+//                if (response != null) {
+//                    try {
+//                        jsonString = response.toString()
+////                        println(jsonString)
+//                        this.success = true
+//                    } catch (e: Exception) {
+//                        this.success = false
+//                        msg = "parse json failed，請洽管理員"
+//                        println(e.localizedMessage)
+//                    }
+//                    complete(this.success)
+//                } else {
+//                    println("response is null")
+//                }
+//            } else {
+//                msg = "網路錯誤，無法跟伺服器更新資料"
+//                complete(success)
+//            }
+//        }
     }
 
-    public fun memberSignupCalendar(year: Int, month: Int, member_token: String?=null, source: String="course", complete: CompletionHandler): Pair<Boolean, String> {
+    fun memberSignupCalendar(year: Int, month: Int, member_token: String?=null, source: String="course", complete: CompletionHandler): Pair<Boolean, String> {
         var res = true
         if (member_token == null) {
             res = false

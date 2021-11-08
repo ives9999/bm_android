@@ -67,30 +67,34 @@ open class ShowVC: BaseActivity() {
                 if (success) {
                     genericTable()
                     if (table != null) {
-                        table!!.filterRow()
-
-                        if (table!!.name.isNotEmpty()) {
-                            setMyTitle(table!!.name)
-                        } else if (table!!.title.isNotEmpty()) {
-                            setMyTitle(table!!.title)
-                        }
-
-                        setFeatured()
-                        setData()
-                        setContent()
-                        showAdapter.rows = showRows
-                        showAdapter.notifyDataSetChanged()
-
-                        isLike = table!!.like
-                        likeCount = table!!.like_count
-
-                        setLike()
-
+                        tableToPage()
                     }
                 }
                 closeRefresh()
-                Loading.hide(mask)
+                runOnUiThread {
+                    Loading.hide(mask)
+                }
             }
+        }
+    }
+
+    fun tableToPage() {
+        table!!.filterRow()
+
+        isLike = table!!.like
+        likeCount = table!!.like_count
+
+        runOnUiThread {
+            if (table!!.name.isNotEmpty()) {
+                setMyTitle(table!!.name)
+            } else if (table!!.title.isNotEmpty()) {
+                setMyTitle(table!!.title)
+            }
+            setFeatured()
+            setData()
+            showAdapter.rows = showRows
+            showAdapter.notifyDataSetChanged()
+            setLike()
         }
     }
 

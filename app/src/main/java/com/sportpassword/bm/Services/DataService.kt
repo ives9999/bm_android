@@ -17,8 +17,6 @@ import org.json.JSONObject
 import java.io.InputStream
 import java.lang.Exception
 import java.net.URL
-import com.fasterxml.jackson.databind.ObjectMapper
-import com.google.gson.Gson
 import okhttp3.*
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.RequestBody.Companion.toRequestBody
@@ -63,6 +61,19 @@ open class DataService {
 //
 //    }
 
+    fun getRequest(url: String, params: HashMap<String, String>): okhttp3.Request {
+
+        val j: JSONObject = JSONObject(params as Map<*, *>)
+        val body: RequestBody = j.toString().toRequestBody(HEADER.toMediaTypeOrNull())
+
+        return okhttp3.Request.Builder()
+            .url(url)
+            .addHeader("Accept", "application/json")
+            .addHeader("Content-Type", "application/json; charset=utf-8")
+            .post(body)
+            .build()
+    }
+
     open fun getList(context: Context, token: String?, _params: HashMap<String, String>?, page: Int, perPage: Int, complete: CompletionHandler) {
         var url = getListURL()
         if (token != null) {
@@ -70,9 +81,9 @@ open class DataService {
         }
         println(url)
 
-        val header: MutableList<Pair<String, String>> = mutableListOf()
-        header.add(Pair("Accept","application/json"))
-        header.add(Pair("Content-Type","application/json; charset=utf-8"))
+//        val header: MutableList<Pair<String, String>> = mutableListOf()
+//        header.add(Pair("Accept","application/json"))
+//        header.add(Pair("Content-Type","application/json; charset=utf-8"))
 
         var params: HashMap<String, String>? = _params
         if (params == null) {
@@ -91,8 +102,14 @@ open class DataService {
 
         val j: JSONObject = JSONObject(params as Map<*, *>)
         println(j.toString())
-        val body = j.toString().toRequestBody("application/json; charset=utf-8".toMediaTypeOrNull())
-        val request = okhttp3.Request.Builder().url(url).post(body).build()
+//        val body = j.toString().toRequestBody(HEADER.toMediaTypeOrNull())
+
+        val request: okhttp3.Request = getRequest(url, params)
+//        val request = okhttp3.Request.Builder()
+//            .url(url)
+//            .headers()
+//            .post(body)
+//            .build()
 
         okHttpClient.newCall(request).enqueue(object : Callback {
             override fun onFailure(call: Call, e: IOException) {
@@ -318,22 +335,48 @@ open class DataService {
 
     fun like(context: Context, token: String, able_id: Int) {
 
-        val likeUrl: String = getLikeURL(token)
+        val url: String = getLikeURL(token)
         //println(likeUrl)
 
-        val params = mapOf("member_token" to member.token, "able_id" to able_id, "device" to "app")
-        val objectMapper = ObjectMapper()
-        val body: String = objectMapper.writeValueAsString(params)
+        val params: HashMap<String, String> = hashMapOf(
+            "member_token" to member.token!!,
+            "able_id" to able_id.toString(),
+            "device" to "app"
+        )
+//        val objectMapper = ObjectMapper()
+//        val body: String = objectMapper.writeValueAsString(params)
+//
+//        println(body)
+//
+//        val header: MutableList<Pair<String, String>> = mutableListOf()
+//        header.add(Pair("Accept","application/json"))
+//        header.add(Pair("Content-Type","application/json; charset=utf-8"))
+//
+//        MyHttpClient.instance.post(context, likeUrl, body) {
+//
+//        }
 
-        //println(body)
+        val request: okhttp3.Request = getRequest(url, params)
+        okHttpClient.newCall(request).enqueue(object : Callback {
+            override fun onFailure(call: Call, e: IOException) {
+//                msg = "網路錯誤，無法跟伺服器更新資料"
+//                complete(success)
+            }
 
-        val header: MutableList<Pair<String, String>> = mutableListOf()
-        header.add(Pair("Accept","application/json"))
-        header.add(Pair("Content-Type","application/json; charset=utf-8"))
+            override fun onResponse(call: Call, response: okhttp3.Response) {
 
-        MyHttpClient.instance.post(context, likeUrl, body) {
-
-        }
+//                try {
+//                    jsonString = response.body!!.string()
+////                    println(jsonString)
+//                    success = true
+//                } catch (e: Exception) {
+//                    success = false
+//                    msg = "parse json failed，請洽管理員"
+//                    println(e.localizedMessage)
+//                }
+//                complete(success)
+            }
+        })
     }
 
     open fun getListURL(): String {return URL_LIST}
@@ -389,47 +432,63 @@ open class DataService {
         val url = getOneURL()
         //println(url)
 
-        val header: MutableList<Pair<String, String>> = mutableListOf()
-        header.add(Pair("Accept","application/json"))
-        header.add(Pair("Content-Type","application/json; charset=utf-8"))
+//        val header: MutableList<Pair<String, String>> = mutableListOf()
+//        header.add(Pair("Accept","application/json"))
+//        header.add(Pair("Content-Type","application/json; charset=utf-8"))
 
         params.put("strip_html", "false")
         params.put("device", "app")
-        val objectMapper = ObjectMapper()
-        val body: String = objectMapper.writeValueAsString(params)
-
+//        val objectMapper = ObjectMapper()
+//        val body: String = objectMapper.writeValueAsString(params)
         //println(body)
 
-        MyHttpClient.instance.post(context, url, body) { success ->
-
-            if (success) {
-                val response = MyHttpClient.instance.response
-                if (response != null) {
-                    try {
-                        jsonString = response.toString()
-                        //println(jsonString)
-
-//                        val n = context.getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS)
-//                        println(n)
-//                        val fileName: String = "zzz.txt"
-//                        val myFile: File = File(n, fileName)
-//                        myFile.writeText(jsonString)
-                        //println(jsonString)
-                        this.success = true
-                    } catch (e: Exception) {
-                        this.success = false
-                        msg = "parse json failed，請洽管理員"
-                        println(e.localizedMessage)
-                    }
-                    complete(this.success)
-                } else {
-                    println("response is null")
-                }
-            } else {
+        val request: okhttp3.Request = getRequest(url, params)
+        okHttpClient.newCall(request).enqueue(object : Callback {
+            override fun onFailure(call: Call, e: IOException) {
                 msg = "網路錯誤，無法跟伺服器更新資料"
                 complete(success)
             }
-        }
+
+            override fun onResponse(call: Call, response: okhttp3.Response) {
+
+                try {
+                    jsonString = response.body!!.string()
+//                    println(jsonString)
+                    success = true
+                } catch (e: Exception) {
+                    success = false
+                    msg = "parse json failed，請洽管理員"
+                    println(e.localizedMessage)
+                }
+                complete(success)
+            }
+        })
+
+
+//        MyHttpClient.instance.post(context, url, body) { success ->
+//
+//            if (success) {
+//                val response = MyHttpClient.instance.response
+//                if (response != null) {
+//                    try {
+//                        jsonString = response.toString()
+//                        //println(jsonString)
+//
+//                        this.success = true
+//                    } catch (e: Exception) {
+//                        this.success = false
+//                        msg = "parse json failed，請洽管理員"
+//                        println(e.localizedMessage)
+//                    }
+//                    complete(this.success)
+//                } else {
+//                    println("response is null")
+//                }
+//            } else {
+//                msg = "網路錯誤，無法跟伺服器更新資料"
+//                complete(success)
+//            }
+//        }
     }
 
 //    open fun getOne(context: Context, params: HashMap<String, String>, complete: CompletionHandler) {
@@ -574,56 +633,60 @@ open class DataService {
         val url: String = getUpdateURL()
         //println(url)
 
-        val header: MutableList<Pair<String, String>> = mutableListOf()
-        header.add(Pair("Accept","application/json"))
-        header.add(Pair("Content-Type","application/json; charset=utf-8"))
+//        val header: MutableList<Pair<String, String>> = mutableListOf()
+//        header.add(Pair("Accept","application/json"))
+//        header.add(Pair("Content-Type","application/json; charset=utf-8"))
 
-        val body = JSONObject()
-        for ((key, value) in params) {
-            body.put(key, value)
-        }
+//        val body = JSONObject()
+//        for ((key, value) in params) {
+//            body.put(key, value)
+//        }
         //println(body)
 
-        MyHttpClient.instance.post(context, url, body.toString()) { success ->
-
-            if (success) {
-                val response = MyHttpClient.instance.response
-                if (response != null) {
-                    try {
-                        jsonString = response.toString()
-                        this.success = true
-//                        val json = JSONObject(response.toString())
-////                        //println(json)
-//                        //val obj = json.getJSONObject("order")
-//                        this.success = json.getBoolean("success")
-//                        if (this.success) {
-//                            if (json.has("token")) {
-//                                this.token = json.getString("token")
-//                            }
-//                            if (json.has("order_token")) {
-//                                this.order_token = json.getString("order_token")
-//                            }
-//                            if (json.has("tokenExpireDate")) {
-//                                this.tokenExpireDate = json.getString("tokenExpireDate")
-//                            }
-//                        } else {
-//                            this.msg = json.getString("msg")
-//                            complete(false)
-//                        }
-                    } catch (e: Exception) {
-                        this.success = false
-                        msg = "parse json failed，請洽管理員"
-                        println(e.localizedMessage)
-                    }
-                    complete(this.success)
-                } else {
-                    println("response is null")
-                }
-            } else {
+        val request: okhttp3.Request = getRequest(url, params)
+        okHttpClient.newCall(request).enqueue(object : Callback {
+            override fun onFailure(call: Call, e: IOException) {
                 msg = "網路錯誤，無法跟伺服器更新資料"
                 complete(success)
             }
-        }
+
+            override fun onResponse(call: Call, response: okhttp3.Response) {
+
+                try {
+                    jsonString = response.body!!.string()
+//                    println(jsonString)
+                    success = true
+                } catch (e: Exception) {
+                    success = false
+                    msg = "parse json failed，請洽管理員"
+                    println(e.localizedMessage)
+                }
+                complete(success)
+            }
+        })
+
+//        MyHttpClient.instance.post(context, url, body.toString()) { success ->
+//
+//            if (success) {
+//                val response = MyHttpClient.instance.response
+//                if (response != null) {
+//                    try {
+//                        jsonString = response.toString()
+//                        this.success = true
+//                    } catch (e: Exception) {
+//                        this.success = false
+//                        msg = "parse json failed，請洽管理員"
+//                        println(e.localizedMessage)
+//                    }
+//                    complete(this.success)
+//                } else {
+//                    println("response is null")
+//                }
+//            } else {
+//                msg = "網路錯誤，無法跟伺服器更新資料"
+//                complete(success)
+//            }
+//        }
     }
 
     fun update(context: Context, params: HashMap<String, String>, complete: CompletionHandler) {
@@ -1117,78 +1180,129 @@ open class DataService {
     fun signup_date(context: Context, token: String, member_token: String, date_token: String, complete: CompletionHandler) {
         val url = getSignupDateURL(token)
         //println(url)
-        val jsonString: String = "{\"device\": \"app\", \"channel\": \"bm\", \"member_token\": " + member_token + ",\"date_token\":" + date_token + "}"
-        val body: JSONObject = JSONObject(jsonString)
+        val j: String = "{\"device\": \"app\", \"channel\": \"bm\", \"member_token\": " + member_token + ",\"date_token\":" + date_token + "}"
+        //val body: JSONObject = JSONObject(jsonString)
         //println(body)
+        val body: RequestBody = j.toString().toRequestBody(HEADER.toMediaTypeOrNull())
+        val request = okhttp3.Request.Builder()
+            .url(url)
+            .addHeader("Accept", "application/json")
+            .addHeader("Content-Type", "application/json; charset=utf-8")
+            .post(body)
+            .build()
 
-        MyHttpClient.instance.post(context, url, body.toString()) { success ->
-
-            if (success) {
-                val response = MyHttpClient.instance.response
-                if (response != null) {
-                    try {
-                        val json = JSONObject(response.toString())
-                        //println(json)
-                        this.success = json.getBoolean("success")
-                        if (this.success) {
-                            this.signup_date = json
-                        } else {
-                            this.msg = json.getString("msg")
-                        }
-                    } catch (e: Exception) {
-                        this.success = false
-                        msg = "parse json failed，請洽管理員"
-                        println(e.localizedMessage)
-                    }
-                    complete(this.success)
-                } else {
-                    println("response is null")
-                }
-            } else {
-                msg = "從伺服器取得報名日期資料錯誤，請洽管理員"
+        //val request: okhttp3.Request = getRequest(url, params)
+        okHttpClient.newCall(request).enqueue(object : Callback {
+            override fun onFailure(call: Call, e: IOException) {
+                msg = "網路錯誤，無法跟伺服器更新資料"
                 complete(success)
             }
-        }
+
+            override fun onResponse(call: Call, response: okhttp3.Response) {
+
+                try {
+                    jsonString = response.body!!.string()
+//                    println(jsonString)
+                    success = true
+                } catch (e: Exception) {
+                    success = false
+                    msg = "parse json failed，請洽管理員"
+                    println(e.localizedMessage)
+                }
+                complete(success)
+            }
+        })
+
+//        MyHttpClient.instance.post(context, url, body.toString()) { success ->
+//
+//            if (success) {
+//                val response = MyHttpClient.instance.response
+//                if (response != null) {
+//                    try {
+//                        val json = JSONObject(response.toString())
+//                        //println(json)
+//                        this.success = json.getBoolean("success")
+//                        if (this.success) {
+//                            this.signup_date = json
+//                        } else {
+//                            this.msg = json.getString("msg")
+//                        }
+//                    } catch (e: Exception) {
+//                        this.success = false
+//                        msg = "parse json failed，請洽管理員"
+//                        println(e.localizedMessage)
+//                    }
+//                    complete(this.success)
+//                } else {
+//                    println("response is null")
+//                }
+//            } else {
+//                msg = "從伺服器取得報名日期資料錯誤，請洽管理員"
+//                complete(success)
+//            }
+//        }
     }
 
     fun signup(context: Context, token: String, member_token: String, date_token: String, course_deadline: String, complete: CompletionHandler) {
         val url = getSignupURL(token)
         //println(url)
 //        val jsonString: String = "{\"device\": \"app\", \"channel\": \"bm\", \"member_token\": " + member_token + ", \"signup_id\": " + signup_id.toString() + ", \"course_date\": " + course_date + ", \"course_deadline\": " + course_deadline + "}"
-        val body: JSONObject = JSONObject()
-        body.put("device", "app")
-        body.put("channel", "bm")
-        body.put("member_token", member_token)
-        body.put("able_date_token", date_token)
-        body.put("cancel_deadline", course_deadline)
+        val params: HashMap<String, String> = hashMapOf()
+        params.put("device", "app")
+        params.put("channel", "bm")
+        params.put("member_token", member_token)
+        params.put("able_date_token", date_token)
+        params.put("cancel_deadline", course_deadline)
         //println(body)
 
-        MyHttpClient.instance.post(context, url, body.toString()) { success ->
-
-            if (success) {
-                val response = MyHttpClient.instance.response
-                if (response != null) {
-                    try {
-                        val json = JSONObject(response.toString())
-//                        println(json)
-                        this.success = json.getBoolean("success")
-                        if (json.has("msg")) {
-                            this.msg = json.getString("msg")
-                        }
-                    } catch (e: Exception) {
-                        this.success = false
-                        msg = "parse json failed，請洽管理員"
-                        println(e.localizedMessage)
-                    }
-                    complete(this.success)
-                } else {
-                    println("response is null")
-                }
-            } else {
+        val request: okhttp3.Request = getRequest(url, params)
+        okHttpClient.newCall(request).enqueue(object : Callback {
+            override fun onFailure(call: Call, e: IOException) {
                 msg = "網路錯誤，無法跟伺服器更新資料"
                 complete(success)
             }
-        }
+
+            override fun onResponse(call: Call, response: okhttp3.Response) {
+
+                try {
+                    jsonString = response.body!!.string()
+//                    println(jsonString)
+                    success = true
+                } catch (e: Exception) {
+                    success = false
+                    msg = "parse json failed，請洽管理員"
+                    println(e.localizedMessage)
+                }
+                complete(success)
+            }
+        })
+
+//        MyHttpClient.instance.post(context, url, body.toString()) { success ->
+//
+//            if (success) {
+//                val response = MyHttpClient.instance.response
+//                if (response != null) {
+//                    try {
+//                        val json = JSONObject(response.toString())
+////                        println(json)
+//                        this.success = json.getBoolean("success")
+//                        if (json.has("msg")) {
+//                            this.msg = json.getString("msg")
+//                        }
+//                    } catch (e: Exception) {
+//                        this.success = false
+//                        msg = "parse json failed，請洽管理員"
+//                        println(e.localizedMessage)
+//                    }
+//                    complete(this.success)
+//                } else {
+//                    println("response is null")
+//                }
+//            } else {
+//                msg = "網路錯誤，無法跟伺服器更新資料"
+//                complete(success)
+//            }
+//        }
     }
 
 //    fun signup_list(context: Context, token: String? = null, page: Int = 1, perPage: Int = 8, complete: CompletionHandler) {
