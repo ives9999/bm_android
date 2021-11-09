@@ -18,8 +18,11 @@ import java.io.InputStream
 import java.lang.Exception
 import java.net.URL
 import okhttp3.*
+import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.RequestBody.Companion.asRequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
+import java.io.File
 import java.io.IOException
 
 /**
@@ -61,7 +64,7 @@ open class DataService {
 //
 //    }
 
-    fun getRequest(url: String, params: HashMap<String, String>): okhttp3.Request {
+    fun getRequest(url: String, params: Map<String, String>): okhttp3.Request {
 
         val j: JSONObject = JSONObject(params as Map<*, *>)
         val body: RequestBody = j.toString().toRequestBody(HEADER.toMediaTypeOrNull())
@@ -541,90 +544,129 @@ open class DataService {
 //        }
 //    }
 
+    infix fun Map<String, String>.mergeWith(anotherMap: Map<String, String>): Map<String, String> {
+        val result = this.toMutableMap()
+        anotherMap.forEach {
+            var value = result[it.key]
+            value = if (value == null || value == it.value) it.value else value + ", ${it.value}"
+            result[it.key] = value
+        }
+        return result
+    }
+
     open fun update(context: Context, _params: MutableMap<String, String>, filePath: String, complete: CompletionHandler) {
         jsonString = ""
         val url: String = getUpdateURL()
-//        println(url)
-        val header: MutableList<Pair<String, String>> = mutableListOf()
-        header.add(Pair("Accept","application/json"))
-        header.add(Pair("Content-Type","application/json"))
+        println(url)
 
-        val params = _params.let { map1 ->
-            PARAMS.let { map2 ->
-                map1 + map2
-            }
-        }
-        //println(_params)
 
-        val params1: MutableList<Pair<String, String>> = mutableListOf()
-        var jsonString1: String = "{"
-        val tmps: ArrayList<String> = arrayListOf()
-        for ((key, value) in params) {
+//        val header: MutableList<Pair<String, String>> = mutableListOf()
+//        header.add(Pair("Accept","application/json"))
+//        header.add(Pair("Content-Type","application/json"))
 
-            params1.add(Pair(key, value))
-            tmps.add("\"$key\":\"$value\"")
-        }
-        jsonString1 += tmps.joinToString(",")
-        jsonString1 += "}"
+        val params: Map<String, String> = _params.mergeWith(PARAMS)
+//        var jsonString1: String = "{"
+//        val tmps: ArrayList<String> = arrayListOf()
+//        for ((key, value) in params) {
+//            tmps.add("\"$key\":\"$value\"")
+//        }
+//        jsonString1 += tmps.joinToString(",")
+//        jsonString1 += "}"
 //        println(jsonString1)
 
-        var filePaths: ArrayList<String>? = null
-        if (filePath.isNotEmpty()) {
-            filePaths = arrayListOf()
-            filePaths.add(filePath)
-        }
 
-        MyHttpClient.instance.uploadFile(context, url, null, filePaths, params1, header) { success ->
+        val j: JSONObject = JSONObject(params as Map<*, *>)
+        println(j)
+        val formPart: RequestBody = j.toString().toRequestBody(HEADER.toMediaTypeOrNull())
 
-            if (success) {
-                val response = MyHttpClient.instance.response
-                if (response != null) {
+//        val file: File = File(filePath)
+//        val filePart: RequestBody = file.asRequestBody("image/png".toMediaType())
 
-                    try {
-                        jsonString = response.toString()
-//                        println(jsonString)
-                        this.success = true
-                    } catch (e: Exception) {
-                        this.success = false
-                        msg = "update parse json failed，請洽管理員"
-                    }
-//                    val responseStr = response.toString()
-//                    //println(responseStr)
-//                    try {
-//                        val json = JSONObject(responseStr)
-//                        //println(json)
-//                        this.success = json.getBoolean("success")
-//                        if (this.success) {
-//                            this.id = json.getInt("id")
-//                            val obj = json.getJSONObject("model")
-//                            jsonToMember(obj, context)
-//                        } else {
-//                            if (json.has("msg")) {
-//                                msg = json.getString("msg")
-//                            }
-//                            if (json.has("errors")) {
-//                                msg = ""
-//                                val errors = json.getJSONArray("errors")
-//                                for (i in 0..errors.length()-1) {
-//                                    msg += errors.getString(i) + "\n"
-//                                }
-//                            }
-//                        }
-//                    } catch (e: Exception) {
-//                        this.success = false
-//                        msg = "parse json failed，請洽管理員"
-//                    }
-                    complete(true)
-                } else {
-                    msg = "伺服器沒有傳回任何值，更新失敗，請洽管理員"
-                    complete(false)
-                }
+        val body: RequestBody = MultipartBody.Builder()
+            .setType(MultipartBody.MIXED)
+//            .addPart(filePart)
+            .addPart(formPart)
+            .build()
 
-            } else {
+        val request = okhttp3.Request.Builder()
+            .addHeader("Accept", "application/json")
+            .addHeader("Content-Type", "application/json; charset=utf-8")
+            .url(url)
+            .post(body)
+            .build()
+
+        okHttpClient.newCall(request).enqueue(object : Callback {
+            override fun onFailure(call: Call, e: IOException) {
                 msg = "網路錯誤，無法跟伺服器更新資料"
                 complete(success)
             }
-        }
+
+            override fun onResponse(call: Call, response: okhttp3.Response) {
+
+                try {
+                    jsonString = response.body!!.string()
+                    println(jsonString)
+                    success = true
+                } catch (e: Exception) {
+                    success = false
+                    msg = "parse json failed，請洽管理員"
+                    println(e.localizedMessage)
+                }
+                complete(success)
+            }
+        })
+
+
+//        val params: Map<String, String> = _params.let { map1 ->
+//            PARAMS.let { map2 ->
+//                map1 + map2
+//            }
+//        }
+        //println(_params)
+
+//        val params1: MutableList<Pair<String, String>> = mutableListOf()
+//        var jsonString1: String = "{"
+//        val tmps: ArrayList<String> = arrayListOf()
+//        for ((key, value) in params) {
+//
+//            params1.add(Pair(key, value))
+//            tmps.add("\"$key\":\"$value\"")
+//        }
+//        jsonString1 += tmps.joinToString(",")
+//        jsonString1 += "}"
+////        println(jsonString1)
+//
+//        var filePaths: ArrayList<String>? = null
+//        if (filePath.isNotEmpty()) {
+//            filePaths = arrayListOf()
+//            filePaths.add(filePath)
+//        }
+//
+//        MyHttpClient.instance.uploadFile(context, url, null, filePaths, params1, header) { success ->
+//
+//            if (success) {
+//                val response = MyHttpClient.instance.response
+//                if (response != null) {
+//
+//                    try {
+//                        jsonString = response.toString()
+////                        println(jsonString)
+//                        this.success = true
+//                    } catch (e: Exception) {
+//                        this.success = false
+//                        msg = "update parse json failed，請洽管理員"
+//                    }
+//                    complete(true)
+//                } else {
+//                    msg = "伺服器沒有傳回任何值，更新失敗，請洽管理員"
+//                    complete(false)
+//                }
+//
+//            } else {
+//                msg = "網路錯誤，無法跟伺服器更新資料"
+//                complete(success)
+//            }
+//        }
     }
 
     fun update(context: Context, token: String = "", params: HashMap<String, String>, complete: CompletionHandler) {

@@ -177,6 +177,9 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener,
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        gSimulate = isEmulator()
+        gSimulate = true
+
         //ConnectTask(this).execute()
         val btn = findViewById<Button>(R.id.submit_btn)
         if (btn != null) {
@@ -1816,8 +1819,6 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener,
     protected open fun setTeamData(imageView: ImageView? = null) {}
 
     private fun _setURLConstants() {
-        gSimulate = isEmulator()
-//        gSimulate = false
         BASE_URL = if (gSimulate) LOCALHOST_BASE_URL else REMOTE_BASE_URL
         //println("os: " + BASE_URL)
 
