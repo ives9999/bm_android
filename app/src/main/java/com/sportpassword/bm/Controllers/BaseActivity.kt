@@ -27,6 +27,7 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.google.gson.internal.LinkedTreeMap
 import com.onesignal.OneSignal
+import com.sportpassword.bm.Adapters.SearchSectionAdapter
 import com.sportpassword.bm.App
 import com.sportpassword.bm.Data.SearchSection
 import com.sportpassword.bm.Fragments.*
@@ -178,7 +179,7 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener,
         super.onCreate(savedInstanceState)
 
         gSimulate = isEmulator()
-        gSimulate = true
+//        gSimulate = true
 
         //ConnectTask(this).execute()
         val btn = findViewById<Button>(R.id.submit_btn)

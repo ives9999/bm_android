@@ -67,74 +67,74 @@ class ShowTimetableVC : BaseActivity() {
     override fun refresh() {
         //super.refresh()
         if (tt_id != null) {
-            TimetableService.getOne(this, tt_id!!, source!!, token!!) { success ->
-                if (success) {
-                    timetable = TimetableService.timetable
-                    //superCoach = TimetableService.superCoach
-
-                    for (key in tableRowKeys) {
-                        val kc = timetable!!::class
-                        kc.memberProperties.forEach {
-                            if (key == it.name) {
-                                val value = it.getter.call(timetable).toString()
-                                tableRows[key]!!["content"] = value
-                            }
-                        }
-                    }
-
-                    isSignup = false
-//                    if (timetable!!.signups.size > 0) {
-//                        for (signup in timetable!!.signups) {
-//                            //signup.printRow()
-//                            if (signup.member_id == member.id) {
-//                                this.signup = signup
-//                                if (signup.status == "normal") {
-//                                    isSignup = true
-//                                }
-//                                break
-//                            }
-//                        }
-//                    }
-                    if (isSignup) {
-                        signupBtn.text = "取消報名"
-                    } else {
-                        signupBtn.text = "報名"
-                    }
-
-                    timetableTitle.text = timetable!!.title
-                    val content: String = "<html lang=\"zh-TW\"><head><meta charset=\"UTF-8\">"+timetable!!.content_style+"</head><body><div class=\"content\">"+timetable!!.content+"</div>"+"</body></html>"
-                    //println(content)
-                    contentView.loadDataWithBaseURL(null, content, "text/html", "UTF-8", null)
-                    //contentView.loadData(content, "text/html", "UTF-8")
-                    //contentView.loadData("<html><body style='background-color:#000;'>Hello, world!</body></html>", "text/html", "UTF-8")
-
-                    val date = timetable!!.start_date + " ~ " + timetable!!.end_date
-                    tableRows["date"]!!["content"] = date
-
-                    val interval = timetable!!.start_time_text + " ~ " + timetable!!.end_time_text
-                    tableRows["interval"]!!["content"] = interval
-
-                    tableRows["signup_count"]!!["content"] = timetable!!.signup_count.toString() + "人"
-
-//                    println(tableRows)
-//                    var items = generateTimetableItem()
-//                    timetableAdapter.update(items)
-
-//                    for (key in coachTableRowKeys) {
-//                        val kc = coachTable!!::class
+//            TimetableService.getOne(this, tt_id!!, source!!, token!!) { success ->
+//                if (success) {
+//                    timetable = TimetableService.timetable
+//                    //superCoach = TimetableService.superCoach
+//
+//                    for (key in tableRowKeys) {
+//                        val kc = timetable!!::class
 //                        kc.memberProperties.forEach {
 //                            if (key == it.name) {
-//                                val value = it.getter.call(superCoach).toString()
-//                                coachTableRows[key]!!["content"] = value
+//                                val value = it.getter.call(timetable).toString()
+//                                tableRows[key]!!["content"] = value
 //                            }
 //                        }
 //                    }
-                    //println(coachTableRows)
-//                    items = generateCoachItem()
-//                    coachAdapter.update(items)
-                }
-                closeRefresh()
-            }
+//
+//                    isSignup = false
+////                    if (timetable!!.signups.size > 0) {
+////                        for (signup in timetable!!.signups) {
+////                            //signup.printRow()
+////                            if (signup.member_id == member.id) {
+////                                this.signup = signup
+////                                if (signup.status == "normal") {
+////                                    isSignup = true
+////                                }
+////                                break
+////                            }
+////                        }
+////                    }
+//                    if (isSignup) {
+//                        signupBtn.text = "取消報名"
+//                    } else {
+//                        signupBtn.text = "報名"
+//                    }
+//
+//                    timetableTitle.text = timetable!!.title
+//                    val content: String = "<html lang=\"zh-TW\"><head><meta charset=\"UTF-8\">"+timetable!!.content_style+"</head><body><div class=\"content\">"+timetable!!.content+"</div>"+"</body></html>"
+//                    //println(content)
+//                    contentView.loadDataWithBaseURL(null, content, "text/html", "UTF-8", null)
+//                    //contentView.loadData(content, "text/html", "UTF-8")
+//                    //contentView.loadData("<html><body style='background-color:#000;'>Hello, world!</body></html>", "text/html", "UTF-8")
+//
+//                    val date = timetable!!.start_date + " ~ " + timetable!!.end_date
+//                    tableRows["date"]!!["content"] = date
+//
+//                    val interval = timetable!!.start_time_text + " ~ " + timetable!!.end_time_text
+//                    tableRows["interval"]!!["content"] = interval
+//
+//                    tableRows["signup_count"]!!["content"] = timetable!!.signup_count.toString() + "人"
+//
+////                    println(tableRows)
+////                    var items = generateTimetableItem()
+////                    timetableAdapter.update(items)
+//
+////                    for (key in coachTableRowKeys) {
+////                        val kc = coachTable!!::class
+////                        kc.memberProperties.forEach {
+////                            if (key == it.name) {
+////                                val value = it.getter.call(superCoach).toString()
+////                                coachTableRows[key]!!["content"] = value
+////                            }
+////                        }
+////                    }
+//                    //println(coachTableRows)
+////                    items = generateCoachItem()
+////                    coachAdapter.update(items)
+//                }
+//                closeRefresh()
+//            }
         }
     }
 

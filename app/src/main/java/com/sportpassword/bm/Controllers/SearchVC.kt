@@ -1,20 +1,16 @@
 package com.sportpassword.bm.Controllers
 
 import android.content.Intent
-import android.graphics.Color
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Gravity
 import android.view.View
 import android.widget.Button
 import android.widget.LinearLayout
-import android.widget.RelativeLayout
-import androidx.core.content.ContextCompat
 import com.google.gson.JsonParseException
+import com.sportpassword.bm.Adapters.SearchSectionAdapter
+import com.sportpassword.bm.Adapters.TeamAdapter
 import com.sportpassword.bm.Data.SearchRow
 import com.sportpassword.bm.Data.SearchSection
-import com.sportpassword.bm.Fragments.SearchSectionAdapter
-import com.sportpassword.bm.Fragments.TeamAdapter
 import com.sportpassword.bm.Models.ArenaTable
 import com.sportpassword.bm.Models.Table
 import com.sportpassword.bm.Models.TeamTable
@@ -53,6 +49,9 @@ class SearchVC : MyTableVC() {
 
         dataService = TeamService
         delegate = this
+
+        val btn = findViewById<Button>(R.id.submit_btn)
+        btn.setOnClickListener { searchSubmit() }
 
         init()
     }

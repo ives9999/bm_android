@@ -4,7 +4,7 @@ import android.content.Context
 import android.os.Bundle
 import android.view.*
 import com.google.gson.JsonParseException
-import com.sportpassword.bm.Controllers.CourseAdapter
+import com.sportpassword.bm.Adapters.CourseAdapter
 import com.sportpassword.bm.Controllers.List1CellDelegate
 import com.sportpassword.bm.Data.SearchRow
 import com.sportpassword.bm.Data.SearchSection

@@ -1,20 +1,15 @@
 package com.sportpassword.bm.Controllers
 
-import android.content.Context
 import android.os.Bundle
-import android.view.Menu
-import android.view.View
+import com.sportpassword.bm.Adapters.ProductAdapter
 import com.sportpassword.bm.Data.SearchRow
 import com.sportpassword.bm.Data.SearchSection
-import com.sportpassword.bm.Fragments.*
-import com.sportpassword.bm.Fragments.MyAdapter
 import com.sportpassword.bm.Models.*
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.ProductService
 import com.sportpassword.bm.Utilities.*
 import kotlinx.android.synthetic.main.activity_product_vc.*
 import kotlinx.android.synthetic.main.mask.*
-import kotlinx.android.synthetic.main.product_list_cell.view.*
 
 class ProductVC : MyTableVC() {
 
@@ -110,30 +105,6 @@ class ProductVC : MyTableVC() {
 //        //superCourse.print()
 //        toShowProduct(myTable.token)
 //    }
-}
-
-class ProductAdapter(resource: Int, list1CellDelegate: List1CellDelegate?): MyAdapter<ProductViewHolder>(resource, ::ProductViewHolder, list1CellDelegate) {}
-
-class ProductViewHolder(context: Context, viewHolder: View, list1CellDelegate: List1CellDelegate? = null): MyViewHolder(context, viewHolder, list1CellDelegate) {
-
-    override fun bind(_row: Table, idx: Int) {
-        super.bind(_row, idx)
-
-        val row: ProductTable = _row as ProductTable
-
-        viewHolder.buyBtn.setOnClickListener {
-            val a: ProductVC = context as ProductVC
-            a.toAddCart(row.token)
-        }
-
-        if (row.prices.size > 0) {
-            val tmp: String = (row.prices[0].price_member).formattedWithSeparator()
-            val price: String = "NT$ ${tmp}"
-            viewHolder.priceLbl.text = price
-        } else {
-            viewHolder.priceLbl.text = "未提供"
-        }
-    }
 }
 
 //class ProductItem(override var context: Context, var _row: ProductTable): ListItem<Table>(context, _row) {

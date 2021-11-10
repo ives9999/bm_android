@@ -544,20 +544,10 @@ open class DataService {
 //        }
 //    }
 
-    infix fun Map<String, String>.mergeWith(anotherMap: Map<String, String>): Map<String, String> {
-        val result = this.toMutableMap()
-        anotherMap.forEach {
-            var value = result[it.key]
-            value = if (value == null || value == it.value) it.value else value + ", ${it.value}"
-            result[it.key] = value
-        }
-        return result
-    }
-
     open fun update(context: Context, _params: MutableMap<String, String>, filePath: String, complete: CompletionHandler) {
         jsonString = ""
         val url: String = getUpdateURL()
-        println(url)
+//        println(url)
 
 
 //        val header: MutableList<Pair<String, String>> = mutableListOf()
@@ -575,22 +565,35 @@ open class DataService {
 //        println(jsonString1)
 
 
-        val j: JSONObject = JSONObject(params as Map<*, *>)
-        println(j)
-        val formPart: RequestBody = j.toString().toRequestBody(HEADER.toMediaTypeOrNull())
+//        val j: JSONObject = JSONObject(params as Map<*, *>)
+//        println(j)
 
-//        val file: File = File(filePath)
+        val bodyBuilder: MultipartBody.Builder = MultipartBody.Builder().setType(MultipartBody.FORM)
+
+        for ((key, value) in params) {
+            bodyBuilder.addFormDataPart(key, value)
+        }
+
+        val file: File = File(filePath)
+        if (file.exists()) {
+            val filePart = file.asRequestBody("image/png".toMediaType())
+            bodyBuilder.addFormDataPart("file", file.name, filePart)
+        }
+
+        val body: RequestBody = bodyBuilder.build()
+
+//        val formPart: RequestBody = j.toString().toRequestBody(MULTIPART.toMediaTypeOrNull())
+
 //        val filePart: RequestBody = file.asRequestBody("image/png".toMediaType())
 
-        val body: RequestBody = MultipartBody.Builder()
-            .setType(MultipartBody.MIXED)
+//        val body: RequestBody = MultipartBody.Builder()
+//            .setType(MultipartBody.FORM)
 //            .addPart(filePart)
-            .addPart(formPart)
-            .build()
+//            .addPart(formPart)
+//            .build()
 
         val request = okhttp3.Request.Builder()
-            .addHeader("Accept", "application/json")
-            .addHeader("Content-Type", "application/json; charset=utf-8")
+            .addHeader("Content-Type", "multipart/form-data")
             .url(url)
             .post(body)
             .build()

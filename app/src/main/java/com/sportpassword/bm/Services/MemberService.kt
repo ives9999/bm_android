@@ -32,49 +32,49 @@ object MemberService: DataService() {
         return URL_MEMBER_UPDATE
     }
 
-    fun register(context: Context, email: String, password: String, repassword: String, complete: CompletionHandler) {
-        val url = URL_REGISTER
-        //println(url)
-
-
-        val body = JSONObject()
-        body.put("email", email)
-        body.put("password", password)
-        body.put("repassword", repassword)
-        body.put("source", "app")
-        val requestBody = body.toString()
-        //println(requestBody)
-
-        val request = object : JsonObjectRequest(Request.Method.POST, url, null, Response.Listener { json ->
-            //println(response)
-            try {
-                success = json.getBoolean("success")
-            } catch (e: JSONException) {
-                success = false
-                msg = "無法註冊，沒有傳回成功值 " + e.localizedMessage
-            }
-            if (success) {
-                //jsonToMember(json)
-            } else {
-                //makeErrorMsg(json)
-            }
-            complete(true)
-        }, Response.ErrorListener { error ->
-            //Log.d("ERROR", "Could not register user: $error")
-            msg = "註冊失敗，網站或網路錯誤"
-            complete(false)
-        }) {
-            override fun getBodyContentType(): String {
-                return HEADER
-            }
-
-            override fun getBody(): ByteArray {
-                return requestBody.toByteArray()
-            }
-        }
-
-        Volley.newRequestQueue(context).add(request)
-    }
+//    fun register(context: Context, email: String, password: String, repassword: String, complete: CompletionHandler) {
+//        val url = URL_REGISTER
+//        //println(url)
+//
+//
+//        val body = JSONObject()
+//        body.put("email", email)
+//        body.put("password", password)
+//        body.put("repassword", repassword)
+//        body.put("source", "app")
+//        val requestBody = body.toString()
+//        //println(requestBody)
+//
+//        val request = object : JsonObjectRequest(Request.Method.POST, url, null, Response.Listener { json ->
+//            //println(response)
+//            try {
+//                success = json.getBoolean("success")
+//            } catch (e: JSONException) {
+//                success = false
+//                msg = "無法註冊，沒有傳回成功值 " + e.localizedMessage
+//            }
+//            if (success) {
+//                //jsonToMember(json)
+//            } else {
+//                //makeErrorMsg(json)
+//            }
+//            complete(true)
+//        }, Response.ErrorListener { error ->
+//            //Log.d("ERROR", "Could not register user: $error")
+//            msg = "註冊失敗，網站或網路錯誤"
+//            complete(false)
+//        }) {
+//            override fun getBodyContentType(): String {
+//                return HEADER
+//            }
+//
+//            override fun getBody(): ByteArray {
+//                return requestBody.toByteArray()
+//            }
+//        }
+//
+//        Volley.newRequestQueue(context).add(request)
+//    }
 
     fun login(context: Context, email: String, password: String, playerID: String, complete: CompletionHandler) {
         val lowerCaseEmail = email.toLowerCase()

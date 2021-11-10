@@ -1664,6 +1664,16 @@ inline fun <reified T : Any> Any.getThroughReflection(propertyName: String): T? 
 
 infix fun <T: Any?> Boolean?.then(block: () -> T): T? = if (this == true) block() else null
 
+infix fun Map<String, String>.mergeWith(anotherMap: Map<String, String>): Map<String, String> {
+    val result = this.toMutableMap()
+    anotherMap.forEach {
+        var value = result[it.key]
+        value = if (value == null || value == it.value) it.value else value + ", ${it.value}"
+        result[it.key] = value
+    }
+    return result
+}
+
 fun getFragment(activity: BaseActivity, able_type: String): TabFragment? {
     val frags = activity.supportFragmentManager.fragments
     var _frag: TabFragment? = null

@@ -557,45 +557,16 @@ class RegisterVC : MyTableVC() {
                 Loading.hide(mask)
                 if (success) {
                     if (MemberService.success) {
-                        var msg: String = ""
-                        if (this.member_token.isNotEmpty()) {
-                            msg = "修改成功"
-                        } else {
-                            msg = "註冊成功，已經寄出email與手機的認證訊息，請繼續完成認證程序"
-                        }
-                        try {
-                            //println(MemberService.jsonString)
-                            val table = Gson().fromJson<RegisterResTable>(MemberService.jsonString, RegisterResTable::class.java)
-                            if (table != null) {
-                                if (!table.success) {
-                                    var msg: String = ""
-                                    for (error in table.errors) {
-                                        msg += error + "\n"
-                                    }
-                                    warning(msg)
-                                } else {
-                                    if (table.model != null) {
-                                        val memberTable: MemberTable = table.model!!
-                                        memberTable.toSession(this, true)
-                                        info(msg, "", "關閉") {
-                                            prev()
-                                        }
-                                    }
-                                }
-                            } else {
-                                warning("伺服器回傳錯誤，請稍後再試，或洽管理人員")
-                            }
-                        } catch (e: JsonParseException) {
-                            warning(e.localizedMessage!!)
-                        }
-//                        Alert.show(this, "成功", msg) {
-//                            prev()
-//                        }
+                        echoYes()
                     } else {
-                        warning(MemberService.msg)
+                        runOnUiThread {
+                            warning(MemberService.msg)
+                        }
                     }
                 } else {
-                    warning("伺服器錯誤，請稍後再試，或洽管理人員")
+                    runOnUiThread {
+                        warning("伺服器錯誤，請稍後再試，或洽管理人員")
+                    }
                 }
             }
         }
@@ -638,6 +609,46 @@ class RegisterVC : MyTableVC() {
 //    fun registerFBSubmit(view: View) {
 //        loginFB()
 //    }
+
+    fun echoYes() {
+
+        var msg: String = ""
+        if (this.member_token.isNotEmpty()) {
+            msg = "修改成功"
+        } else {
+            msg = "註冊成功，已經寄出email與手機的認證訊息，請繼續完成認證程序"
+        }
+        runOnUiThread {
+            try {
+                //println(MemberService.jsonString)
+                val table = Gson().fromJson<RegisterResTable>(
+                    MemberService.jsonString,
+                    RegisterResTable::class.java
+                )
+                if (table != null) {
+                    if (!table.success) {
+                        var msg: String = ""
+                        for (error in table.errors) {
+                            msg += error + "\n"
+                        }
+                        warning(msg)
+                    } else {
+                        if (table.model != null) {
+                            val memberTable: MemberTable = table.model!!
+                            memberTable.toSession(this, true)
+                            info(msg, "", "關閉") {
+                                prev()
+                            }
+                        }
+                    }
+                } else {
+                    warning("伺服器回傳錯誤，請稍後再試，或洽管理人員")
+                }
+            } catch (e: JsonParseException) {
+                warning(e.localizedMessage!!)
+            }
+        }
+    }
 
     override fun setImage(newFile: File?, url: String?) {
         featured_text.visibility = View.INVISIBLE

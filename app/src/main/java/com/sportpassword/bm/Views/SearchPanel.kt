@@ -11,12 +11,10 @@ import android.widget.RelativeLayout
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.sportpassword.bm.Adapters.SearchSectionAdapter
 import com.sportpassword.bm.Controllers.BaseActivity
-import com.sportpassword.bm.Fragments.*
 import com.sportpassword.bm.R
-import com.sportpassword.bm.Utilities.getFragment
 import org.jetbrains.anko.backgroundColor
-import org.jetbrains.anko.margin
 
 open class SearchPanel {
 

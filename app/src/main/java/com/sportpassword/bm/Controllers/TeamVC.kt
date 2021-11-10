@@ -1,7 +1,7 @@
 package com.sportpassword.bm.Controllers
 
 import android.os.Bundle
-import com.sportpassword.bm.Fragments.TeamAdapter
+import com.sportpassword.bm.Adapters.TeamAdapter
 import com.sportpassword.bm.Models.Table
 import com.sportpassword.bm.Models.TeamTable
 import com.sportpassword.bm.Models.TeamsTable

@@ -1,19 +1,14 @@
 package com.sportpassword.bm.Controllers
 
-import android.content.Context
 import android.os.Bundle
-import android.view.Menu
-import android.view.View
+import com.sportpassword.bm.Adapters.TeachAdapter
 import com.sportpassword.bm.Data.SearchRow
 import com.sportpassword.bm.Data.SearchSection
-import com.sportpassword.bm.Fragments.MyAdapter
-import com.sportpassword.bm.Fragments.MyViewHolder
 import com.sportpassword.bm.Models.*
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.TeachService
 import com.sportpassword.bm.Utilities.*
 import kotlinx.android.synthetic.main.activity_store_vc.*
-import kotlinx.android.synthetic.main.teach_list_cell.view.*
 
 class TeachVC : MyTableVC() {
 
@@ -110,19 +105,6 @@ class TeachVC : MyTableVC() {
 //        //toShowTeach(table.token)
 //        toYoutubePlayer(table.youtube)
 //    }
-}
-
-class TeachAdapter(resource: Int, list1CellDelegate: List1CellDelegate?): MyAdapter<TeachViewHolder>(resource, ::TeachViewHolder, list1CellDelegate) {}
-
-class TeachViewHolder(context: Context, viewHolder: View, list1CellDelegate: List1CellDelegate? = null): MyViewHolder(context, viewHolder, list1CellDelegate) {
-
-    override fun bind(_row: Table, idx: Int) {
-        super.bind(_row, idx)
-
-        val row: TeachTable = _row as TeachTable
-        viewHolder.pvLbl.text = row.pv.toString()
-        viewHolder.dateLbl.text = row.created_at_show
-    }
 }
 
 //class TeachItem(override var context: Context, var _row: TeachTable): ListItem<Table>(context, _row) {

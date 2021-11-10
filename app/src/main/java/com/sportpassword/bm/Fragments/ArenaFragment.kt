@@ -6,7 +6,7 @@ import android.view.*
 import android.widget.ImageButton
 import androidx.recyclerview.widget.RecyclerView
 import com.google.gson.JsonParseException
-import com.sportpassword.bm.Controllers.ArenaAdapter
+import com.sportpassword.bm.Adapters.ArenaAdapter
 import com.sportpassword.bm.Controllers.List1CellDelegate
 import com.sportpassword.bm.Data.SearchRow
 import com.sportpassword.bm.Data.SearchSection

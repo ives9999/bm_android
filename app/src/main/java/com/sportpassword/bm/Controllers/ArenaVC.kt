@@ -1,33 +1,17 @@
 package com.sportpassword.bm.Controllers
 
-import android.content.Context
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import android.widget.TextView
-import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
+import com.sportpassword.bm.Adapters.ArenaAdapter
 import com.sportpassword.bm.Data.SearchRow
 import com.sportpassword.bm.Data.SearchSection
-import com.sportpassword.bm.Fragments.MyAdapter
-import com.sportpassword.bm.Fragments.MyViewHolder
 import com.sportpassword.bm.Models.*
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.ArenaService
-import com.sportpassword.bm.Services.CourseService
 import com.sportpassword.bm.Utilities.*
-import kotlinx.android.synthetic.main.activity_arena_vc.*
 import kotlinx.android.synthetic.main.activity_arena_vc.list_container
 import kotlinx.android.synthetic.main.activity_arena_vc.page_refresh
-import kotlinx.android.synthetic.main.activity_course_vc.*
-import kotlinx.android.synthetic.main.activity_store_vc.*
-import kotlinx.android.synthetic.main.arena_list_cell.view.*
 import kotlinx.android.synthetic.main.bottom_view.*
 import kotlinx.android.synthetic.main.mask.*
-import kotlinx.android.synthetic.main.olcell.view.*
 import kotlinx.android.synthetic.main.top_view.*
 import org.jetbrains.anko.backgroundColor
 
@@ -187,48 +171,3 @@ class ArenaVC : MyTableVC() {
 //        return items.size
 //    }
 //}
-
-class ArenaAdapter(resource: Int, list1CellDelegate: List1CellDelegate?): MyAdapter<ArenaViewHolder>(resource, ::ArenaViewHolder, list1CellDelegate) {}
-
-class ArenaViewHolder(context: Context, viewHolder: View, list1CellDelegate: List1CellDelegate? = null): MyViewHolder(context, viewHolder, list1CellDelegate) {
-
-    override fun bind(_row: Table, idx: Int) {
-        super.bind(_row, idx)
-
-        val row: ArenaTable = _row as ArenaTable
-
-        if (row.city_show.isNotEmpty()) {
-            viewHolder.cityBtn.text = row.city_show
-            viewHolder.cityBtn.setOnClickListener {
-                list1CellDelegate?.cellCity(row)
-            }
-        } else {
-            viewHolder.cityBtn.visibility = View.GONE
-        }
-
-        if (row.area_show.isNotEmpty()) {
-            viewHolder.areaBtn.text = row.area_show
-            viewHolder.areaBtn.setOnClickListener {
-                list1CellDelegate?.cellArea(row)
-            }
-        } else {
-            viewHolder.cityBtn.visibility = View.GONE
-        }
-
-        if (row.tel_show.isNotEmpty()) {
-            viewHolder.telLbl.text = row.tel_show
-        } else {
-            viewHolder.telLbl.text = "電話：未提供"
-        }
-
-        viewHolder.parkingLbl.text = "停車場:${row.parking_show}"
-
-        if (row.interval_show.isNotEmpty()) {
-            viewHolder.intervalLbl.text = row.interval_show
-        } else {
-            viewHolder.intervalLbl.text = "未提供"
-        }
-
-        viewHolder.air_conditionLbl.text = "空調:${row.air_condition_show}"
-    }
-}

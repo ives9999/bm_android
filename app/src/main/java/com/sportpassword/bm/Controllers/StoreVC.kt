@@ -1,13 +1,9 @@
 package com.sportpassword.bm.Controllers
 
-import android.content.Context
 import android.os.Bundle
-import android.view.Menu
-import android.view.View
+import com.sportpassword.bm.Adapters.StoreAdapter
 import com.sportpassword.bm.Data.SearchRow
 import com.sportpassword.bm.Data.SearchSection
-import com.sportpassword.bm.Fragments.MyAdapter
-import com.sportpassword.bm.Fragments.MyViewHolder
 import com.sportpassword.bm.Models.*
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.StoreService
@@ -143,35 +139,6 @@ class StoreVC : MyTableVC() {
             }
         }
         row["value"] = ""
-    }
-}
-
-class StoreAdapter(resource: Int, list1CellDelegate: List1CellDelegate?): MyAdapter<StoreViewHolder>(resource, ::StoreViewHolder, list1CellDelegate) {}
-
-class StoreViewHolder(context: Context, viewHolder: View, list1CellDelegate: List1CellDelegate? = null): MyViewHolder(context, viewHolder, list1CellDelegate) {
-
-    override fun bind(_row: Table, idx: Int) {
-        super.bind(_row, idx)
-
-        val row: StoreTable = _row as StoreTable
-        viewHolder.cityBtn.text = row.city_show
-        viewHolder.cityBtn.setOnClickListener {
-            if (list1CellDelegate != null) {
-                list1CellDelegate!!.cellCity(row)
-            }
-        }
-
-        viewHolder.titleLbl.text = row.name
-
-        viewHolder.business_timeTxt.text = "${row.open_time_show}~${row.close_time_show}"
-
-        viewHolder.addressTxt.text = row.address
-
-        if (row.tel_show.isNotEmpty()) {
-            viewHolder.telLbl.text = row.tel_show
-        } else {
-            viewHolder.telLbl.text = "電話：未提供"
-        }
     }
 }
 
