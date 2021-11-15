@@ -102,7 +102,8 @@ open class SingleSelectVC : SelectVC() {
             finish()
         } else { //取消原來的選擇
             selected = ""
-            tableAdapter.notifyDataSetChanged()
+            tableAdapter.selected = selected
+            tableAdapter.notifyItemChanged(idx)
         }
     }
 

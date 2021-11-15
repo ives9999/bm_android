@@ -10,7 +10,6 @@ import com.sportpassword.bm.Form.BaseForm
 import com.sportpassword.bm.Form.FormItem.ColorFormItem
 import com.sportpassword.bm.Form.FormItem.FormItem
 import com.sportpassword.bm.Form.FormItemCellType
-import com.sportpassword.bm.Form.ValueChangedDelegate
 import com.sportpassword.bm.R
 
 import kotlinx.android.synthetic.main.formitem_more.*
@@ -67,7 +66,7 @@ open class FormItemAdapter1(sectionKey: String, rowKey: String, title: String, v
 
 open class FormItemAdapter(formItem: FormItem, val clearClick:(formItem: FormItem)->Unit = {}, val promptClick:(formItem: FormItem)->Unit = {}) {
 
-    var valueChangedDelegate: ValueChangedDelegate? = null
+//    var valueChangedDelegate: ValueChangedDelegate? = null
 //    var textFieldDelegate: TextFieldChangeDelegate? = null
 //    var sexDelegate: SexChangeDelegate? = null
 //    var privacyDelegate: PrivacyChangeDelegate? = null

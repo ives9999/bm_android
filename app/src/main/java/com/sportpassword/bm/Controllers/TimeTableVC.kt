@@ -26,9 +26,8 @@ import com.sportpassword.bm.member
 import org.jetbrains.anko.*
 import org.jetbrains.anko.sdk27.coroutines.onClick
 import kotlin.reflect.full.declaredMemberProperties
-import com.sportpassword.bm.Form.ValueChangedDelegate
 
-class TimeTableVC : BaseActivity(), ValueChangedDelegate {
+class TimeTableVC : BaseActivity() {
 
     var source: String = "coach"
     var token: String = "token"
@@ -692,21 +691,16 @@ class TimeTableVC : BaseActivity(), ValueChangedDelegate {
         }
     }
 
-    override fun textFieldTextChanged(formItem: FormItem, text: String) {
-        //println(row)
-        //println(text)
-        //val item = form.formItems[indexPath.row]
-//        formItem.value = text
-//        formItem.make()
-    }
-
-    override fun sexChanged(sex: String) {}
-
-    override fun privateChanged(checked: Boolean) {}
-
-    override fun tagChecked(checked: Boolean, name: String, key: String, value: String) {}
-
-    override fun stepperValueChanged(number: Int, name: String) {}
+//    override fun textFieldTextChanged(formItem: FormItem, text: String) {
+//    }
+//
+//    override fun sexChanged(sex: String) {}
+//
+//    override fun privateChanged(checked: Boolean) {}
+//
+//    override fun tagChecked(checked: Boolean, name: String, key: String, value: String) {}
+//
+//    override fun stepperValueChanged(number: Int, name: String) {}
 }
 
 

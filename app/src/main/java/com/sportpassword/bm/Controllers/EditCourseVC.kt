@@ -15,7 +15,6 @@ import com.sportpassword.bm.Data.OneRow
 import com.sportpassword.bm.Form.CourseForm
 import com.sportpassword.bm.Form.FormItem.*
 import com.sportpassword.bm.Form.FormItemCellType
-import com.sportpassword.bm.Form.ValueChangedDelegate
 import com.sportpassword.bm.Models.CourseTable
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.CourseService
@@ -28,7 +27,7 @@ import org.jetbrains.anko.sdk27.coroutines.onClick
 import java.io.File
 import kotlin.reflect.full.memberProperties
 
-class EditCourseVC : MyTableVC(), ValueChangedDelegate {
+class EditCourseVC : MyTableVC() {
 
 //    override val ACTION_PHOTO_REQUEST_CODE = 200
 //    override val activity = this
@@ -40,7 +39,7 @@ class EditCourseVC : MyTableVC(), ValueChangedDelegate {
 //    override lateinit var alertView: View
 //    override lateinit var imageView: ImageView
 
-    var params1: MutableMap<String, String> = mutableMapOf<String, String>()
+//    var params1: MutableMap<String, String> = mutableMapOf<String, String>()
 
 
     var title: String = ""
@@ -398,75 +397,56 @@ class EditCourseVC : MyTableVC(), ValueChangedDelegate {
 //        return rows
 //    }
 
-    fun prepare(formItem: FormItem) {
-
-        val key = formItem.name
-
-//        val singleSelectIntent = Intent(this, SingleSelectVC::class.java)
-//        singleSelectIntent.putExtra("title", formItem.title)
-//        singleSelectIntent.putExtra("key", key)
+//    fun prepare(formItem: FormItem) {
 //
-//        val multiSelectIntent = Intent(this, MultiSelectVC::class.java)
-//        multiSelectIntent.putExtra("title", formItem.title)
-//        multiSelectIntent.putExtra("key", key)
+//        val key = formItem.name
+//
+//        val dateSelectIntent = Intent(this, DateSelectVC::class.java)
+//        dateSelectIntent.putExtra("title", formItem.title)
+//        dateSelectIntent.putExtra("key", key)
+//
+//        if (key == PRICE_UNIT_KEY) {
+//
+//            val selected = formItem.sender as String
+//            toSelectSingle(SelectPriceUnitVC::class.java, key, selected, this, able_type)
+//
+//        } else if (key == COURSE_KIND_KEY) {
+//
+//            val selected = formItem.sender as String
+//            toSelectSingle(SelectCourseKindVC::class.java, key, selected, this, able_type)
+//
+//        } else if (key == CYCLE_UNIT_KEY) {
+//
+//            val selected = formItem.sender as String
+//            toSelectSingle(SelectCycleUnitVC::class.java, key, selected, this, able_type)
+//
+//        } else if (key == WEEKDAY_KEY) {
+//
+//            val tmp = formItem.sender as ArrayList<String>
+//            val selecteds: String = tmp.joinToString(",")
+//            toSelectWeekdays(selecteds, this, able_type)
+//
+//        } else if (key == START_TIME_KEY || key == END_TIME_KEY) {
+//
+//            val tmp = formItem.sender as HashMap<String, String>
+//            val selected = tmp.get("time")!!
+//            toSelectSingle(SelectTimeVC::class.java, key, selected, this, able_type)
+//
+//        } else if (key == CONTENT_KEY) {
+//
+//            val content = formItem.sender as String
+//            toEditContent(key, "詳細介紹", content, this)
+//
+//        } else if (key == START_DATE_KEY || key == END_DATE_KEY) {
+//
+//            val tmp = formItem.sender as HashMap<String, String>
+//            val selected = tmp.get("date")!!
+//            toSelectDate(key, selected, this, able_type)
+//        }
+//
+//    }
 
-        val dateSelectIntent = Intent(this, DateSelectVC::class.java)
-        dateSelectIntent.putExtra("title", formItem.title)
-        dateSelectIntent.putExtra("key", key)
-
-//        val contentIntent = Intent(this, ContentEditVC::class.java)
-//        contentIntent.putExtra("title", formItem.title)
-//        contentIntent.putExtra("key", key)
-
-        if (key == PRICE_UNIT_KEY) {
-
-            val selected = formItem.sender as String
-            toSelectSingle(SelectPriceUnitVC::class.java, key, selected, this, able_type)
-
-        } else if (key == COURSE_KIND_KEY) {
-
-            val selected = formItem.sender as String
-            toSelectSingle(SelectCourseKindVC::class.java, key, selected, this, able_type)
-
-        } else if (key == CYCLE_UNIT_KEY) {
-
-            val selected = formItem.sender as String
-            toSelectSingle(SelectCycleUnitVC::class.java, key, selected, this, able_type)
-
-        } else if (key == WEEKDAY_KEY) {
-
-            val tmp = formItem.sender as ArrayList<String>
-            val selecteds: String = tmp.joinToString(",")
-            toSelectWeekdays(selecteds, this, able_type)
-
-        } else if (key == START_TIME_KEY || key == END_TIME_KEY) {
-
-            val tmp = formItem.sender as HashMap<String, String>
-            val selected = tmp.get("time")!!
-            toSelectSingle(SelectTimeVC::class.java, key, selected, this, able_type)
-
-        } else if (key == CONTENT_KEY) {
-
-            val content = formItem.sender as String
-            toEditContent(key, "詳細介紹", content, this)
-
-        } else if (key == START_DATE_KEY || key == END_DATE_KEY) {
-
-            val tmp = formItem.sender as HashMap<String, String>
-            val selected = tmp.get("date")!!
-            toSelectDate(key, selected, this, able_type)
-
-//            if (formItem.sender != null) {
-//                val tmp = formItem.sender as HashMap<String, String>
-//                val selected = tmp.get("date")!!
-//                dateSelectIntent.putExtra("selected", selected)
-//            }
-//            startActivityForResult(dateSelectIntent, SELECT_REQUEST_CODE)
-        }
-
-    }
-
-    override fun singleSelected(key: String, selected: String) {
+//    override fun singleSelected(key: String, selected: String) {
 
 //        val row = getDefinedRow(key)
 //        var show = ""
@@ -490,16 +470,16 @@ class EditCourseVC : MyTableVC(), ValueChangedDelegate {
 //        }
 
         //notifyChanged(true)
-    }
+//    }
 
-    override fun contentEdit(key: String, content: String) {
+//    override fun contentEdit(key: String, content: String) {
 
 //        val item: ContentFormItem = getFormItemFromKey(key) as ContentFormItem
 //        item.value = content
 //        item.make()
 
         //notifyChanged(true)
-    }
+//    }
 
 
 //    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -540,22 +520,22 @@ class EditCourseVC : MyTableVC(), ValueChangedDelegate {
         closeImagePickerLayer()
     }
 
-    override fun textFieldTextChanged(formItem: FormItem, text: String) {
-        //println(row)
-        //println(text)
-        if (formItem != null) {
-            formItem.value = text
-            formItem.make()
-        }
-    }
-
-    override fun sexChanged(sex: String) {}
-
-    override fun privateChanged(checked: Boolean) {}
-
-    override fun tagChecked(checked: Boolean, name: String, key: String, value: String) {}
-
-    override fun stepperValueChanged(number: Int, name: String) {}
+//    override fun textFieldTextChanged(formItem: FormItem, text: String) {
+//        //println(row)
+//        //println(text)
+//        if (formItem != null) {
+//            formItem.value = text
+//            formItem.make()
+//        }
+//    }
+//
+//    override fun sexChanged(sex: String) {}
+//
+//    override fun privateChanged(checked: Boolean) {}
+//
+//    override fun tagChecked(checked: Boolean, name: String, key: String, value: String) {}
+//
+//    override fun stepperValueChanged(number: Int, name: String) {}
 
     private fun getImageViewParams() {
         val l = edit_featured.layoutParams as LinearLayout.LayoutParams
@@ -571,56 +551,101 @@ class EditCourseVC : MyTableVC(), ValueChangedDelegate {
 
         Loading.show(mask)
         hideKeyboard()
-        params1.clear()
-        for (formItem in form.formItems) {
-            if (formItem.name != null && formItem.value != null) {
-                var value = formItem.value!!
-                if (value.contains("\"")) {
-                    value = value.replace("\"", "\\\"")
-//                    println(value)
+
+        var msg: String = ""
+        for (section in oneSections) {
+            for (row in section.items) {
+                if (row.isRequired && row.value.isEmpty()) {
+                    msg += row.msg + "\n"
                 }
-                params1.set(formItem.name!!, value!!)
             }
         }
-        var action = "UPDATE"
-        if (course_token != null && course_token!!.length == 0) {
-            action = "INSERT"
-        }
-        if (action == "INSERT") {
-            params1[CREATED_ID_KEY] = member.id.toString()
-        }
-        if (course_token != null) {
-            params1["course_token"] = course_token!!
-        }
-        if (coach_token != null) {
-            params1["coach_token"] = coach_token!!
-        }
-//        println(params1)
-//        println(filePath)
 
-        CourseService.update(this, params1, filePath) { success ->
-            Loading.hide(mask)
-            if (success) {
-                if (CourseService.success) {
-                    Alert.update(this, action) {
-                        if (file != null) {
-                            file!!.delete()
+        if (msg.length > 0) {
+            warning(msg)
+        } else {
+            Loading.show(mask)
+            //val params: HashMap<String, String> = hashMapOf()
+            for (section in oneSections) {
+                for (row in section.items) {
+                    params[row.key] = row.value
+                }
+            }
+
+            var action = "UPDATE"
+            if (course_token != null && course_token!!.length == 0) {
+                action = "INSERT"
+            }
+            if (action == "INSERT") {
+                params[CREATED_ID_KEY] = member.id.toString()
+            }
+            if (course_token != null) {
+                params["course_token"] = course_token!!
+            }
+            if (coach_token != null) {
+                params["coach_token"] = coach_token!!
+            }
+
+            params["device"] = "app"
+            params["do"] = "update"
+
+//            println(params)
+
+            CourseService.update(this, params, filePath) { success ->
+                Loading.hide(mask)
+                if (success) {
+                    if (CourseService.success) {
+                        runOnUiThread {
+                            Alert.update(this, action) {
+                                if (file != null) {
+                                    file!!.delete()
+                                }
+                                val update = Intent(NOTIF_COURSE_UPDATE)
+                                LocalBroadcastManager.getInstance(this).sendBroadcast(update)
+                                val intent = Intent()
+                                intent.putExtra("manager_token", member.token)
+                                setResult(Activity.RESULT_OK, intent)
+                                finish()
+                            }
                         }
-                        val update = Intent(NOTIF_COURSE_UPDATE)
-                        LocalBroadcastManager.getInstance(this).sendBroadcast(update)
-                        val intent = Intent()
-                        intent.putExtra("manager_token", member.token)
-                        setResult(Activity.RESULT_OK, intent)
-                        finish()
+                    } else {
+                        runOnUiThread {
+                            Alert.show(context, "錯誤", CourseService.msg)
+                        }
                     }
                 } else {
-                    Alert.show(context, "錯誤", CourseService.msg)
+                    runOnUiThread {
+                        Alert.show(context, "錯誤", CourseService.msg)
+                    }
                 }
-            } else {
-                Alert.show(context, "錯誤", CourseService.msg)
             }
         }
-
+//        params1.clear()
+//        for (formItem in form.formItems) {
+//            if (formItem.name != null && formItem.value != null) {
+//                var value = formItem.value!!
+//                if (value.contains("\"")) {
+//                    value = value.replace("\"", "\\\"")
+////                    println(value)
+//                }
+//                params1.set(formItem.name!!, value!!)
+//            }
+//        }
+//        var action = "UPDATE"
+//        if (course_token != null && course_token!!.length == 0) {
+//            action = "INSERT"
+//        }
+//        if (action == "INSERT") {
+//            params1[CREATED_ID_KEY] = member.id.toString()
+//        }
+//        if (course_token != null) {
+//            params1["course_token"] = course_token!!
+//        }
+//        if (coach_token != null) {
+//            params1["coach_token"] = coach_token!!
+//        }
+//        println(params1)
+//        println(filePath)
     }
 
     fun cancelBtnPressed(view: View) {

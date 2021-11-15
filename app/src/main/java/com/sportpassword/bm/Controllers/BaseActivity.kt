@@ -102,6 +102,8 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener,
     val REQUEST_PHONE_CALL = 100
     var mobile: String = ""
 
+    var tableLists: ArrayList<Table> = arrayListOf()
+
     //for search
     lateinit var searchSectionAdapter: SearchSectionAdapter
     var searchSections: ArrayList<SearchSection> = arrayListOf()
@@ -167,7 +169,6 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener,
 
     //var vcResult: VCResult = VCResult()
 
-    override fun singleSelected(key: String, selected: String) {}
     open fun arenaSelected(selected: String, show: String) {}
     open fun degreeSelected(selected: String, show: String) {}
     open fun weekendSelected(selected: String, show: String) {}
@@ -337,8 +338,13 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener,
         }
     }
 
-    override fun cellClick(sectionIdx: Int, rowIdx: Int) {
+    override fun cellRefresh() {
+        params.clear()
+        tableLists.clear()
+        refresh()
+    }
 
+    override fun cellClick(sectionIdx: Int, rowIdx: Int) {
         prepare(sectionIdx, rowIdx)
     }
 
@@ -397,17 +403,15 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener,
         if (searchSections.size > sectionIdx && searchSections[sectionIdx].items.size > rowIdx) {
             searchSections[sectionIdx].items[rowIdx].value = ""
             searchSections[sectionIdx].items[rowIdx].show = ""
-            //searchSections = updateSectionRow()
             searchSectionAdapter.setSearchSection(searchSections)
-            searchSectionAdapter.notifyDataSetChanged()
+            searchSectionAdapter.notifyItemChanged(sectionIdx)
         }
 
         if (oneSections.size > sectionIdx && oneSections[sectionIdx].items.size > rowIdx) {
             oneSections[sectionIdx].items[rowIdx].value = ""
             oneSections[sectionIdx].items[rowIdx].show = ""
-            //searchSections = updateSectionRow()
             oneSectionAdapter.setOneSection(oneSections)
-            oneSectionAdapter.notifyDataSetChanged()
+            oneSectionAdapter.notifyItemChanged(sectionIdx)
         }
     }
 
@@ -430,6 +434,43 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener,
             "0"
         }
         searchSections[sectionIdx].items[rowIdx].value = value
+    }
+
+    override fun singleSelected(key: String, selected: String) {
+
+        var show: String = ""
+
+        if (key == START_TIME_KEY || key == END_TIME_KEY) {
+            show = selected.noSec()
+        } else if (key == CITY_KEY || key == AREA_KEY) {
+            show = Global.zoneIDToName(selected.toInt())
+        } else if (key == WEEKDAY_KEY) {
+            show = WEEKDAY.intToString(selected.toInt())
+        } else if (key == PRICE_UNIT_KEY) {
+            show = PRICE_UNIT.from(selected).value
+        } else if (key == COURSE_KIND_KEY) {
+            show = COURSE_KIND.from(selected).value
+        } else if (key == CYCLE_UNIT_KEY) {
+            show = CYCLE_UNIT.from(selected).value
+        } else if (key == START_DATE_KEY || key == END_DATE_KEY) {
+            show = selected
+        }
+
+        var idx: Int = 0
+        val row1 = getSearchRowFromKey(key)
+        val row2 = getOneRowFromKey(key)
+
+        if (row1.title.isNotEmpty()) {
+            idx = getSearchSectionIdxFromRowKey(key)
+            row1.value = selected
+            row1.show = show
+            searchSectionAdapter.notifyItemChanged(idx)
+        } else {
+            idx = getOneSectionIdxFromRowKey(key)
+            row2.value = selected
+            row2.show = show
+            oneSectionAdapter.notifyItemChanged(idx)
+        }
     }
 
     fun getOneSectionFromKey(sectionKey: String): OneSection {
@@ -1586,21 +1627,21 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener,
 
 
     //已經移到Global成為 global function 了，以後停止使用
-    fun getFragment(): TabFragment? {
-        val frags = supportFragmentManager.fragments
-        for (frag in frags) {
-            if (frag != null && frag.isVisible) {
-                when (frag::class) {
-                    TempPlayFragment::class ->
-                        return frag as TempPlayFragment
-                    CourseFragment::class ->
-                        return frag as CourseFragment
-                    ArenaFragment::class ->
-                        return frag as ArenaFragment
-                }
-            }
-        }
-        return null
+//    fun getFragment(): TabFragment? {
+//        val frags = supportFragmentManager.fragments
+//        for (frag in frags) {
+//            if (frag != null && frag.isVisible) {
+//                when (frag::class) {
+//                    TempPlayFragment::class ->
+//                        return frag as TempPlayFragment
+//                    CourseFragment::class ->
+//                        return frag as CourseFragment
+//                    ArenaFragment::class ->
+//                        return frag as ArenaFragment
+//                }
+//            }
+//        }
+//        return null
 
 //        var _frag: TabFragment? = null
 //        for (frag in frags) {
@@ -1623,7 +1664,7 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener,
 //        }
 //
 //        return _frag
-    }
+//    }
 
     open fun prepareParams(city_type: String = "simple") {
 
@@ -1756,20 +1797,20 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener,
 //        }
 //    }
 
-    open fun cityBtnPressed(city_id: Int, page: String) {
-        resetParams()
-        citys.add(City(city_id, ""))
-        prepareParams("all")
-//        println(city_id)
-        if (page == "coach") {
-            refresh()
-        } else if (page == "team") {
-            val frag = getFragment() as TempPlayFragment
-            frag.refresh()
-        } else {
-            refresh()
-        }
-    }
+//    open fun cityBtnPressed(city_id: Int, page: String) {
+//        resetParams()
+//        citys.add(City(city_id, ""))
+//        prepareParams("all")
+////        println(city_id)
+//        if (page == "coach") {
+//            refresh()
+//        } else if (page == "team") {
+//            val frag = getFragment() as TempPlayFragment
+//            frag.refresh()
+//        } else {
+//            refresh()
+//        }
+//    }
 
     fun webViewSettings(context: Context, webView: WebView) {
         val settings = webView.settings
@@ -1967,6 +2008,7 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener,
         URL_COACH_LIST = URL_HOME + "coach/list"
         URL_COURSE_LIKE = URL_HOME + "course/like/%s"
         URL_COURSE_LIST = URL_HOME + "course/list"
+        URL_COURSE_UPDATE = URL_HOME + "course/update"
         URL_DELETE = URL_HOME + "%s/delete"
         URL_EMAIL_VALIDATE = URL_HOME + "member/email_validate"
         URL_FB_LOGIN = URL_HOME + "member/fb"
@@ -2095,15 +2137,16 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener,
                     //activity
                     if (delegate != null) {
                         delegate!!.singleSelected(key, selected)
-                    } else {
-                        //fragment
-                        able_type = "course"
-                        if (i.hasExtra("able_type")) {
-                            able_type = i.getStringExtra("able_type")!!
-                        }
-                        val f = getFragment()
-                        f?.singleSelected(key, selected)
                     }
+//                    else {
+//                        //fragment
+//                        able_type = "course"
+//                        if (i.hasExtra("able_type")) {
+//                            able_type = i.getStringExtra("able_type")!!
+//                        }
+//                        val f = getFragment()
+//                        f?.singleSelected(key, selected)
+//                    }
                 }
             }
         }
@@ -2130,15 +2173,16 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener,
                     //activity
                     if (delegate != null) {
                         delegate!!.arenaSelected(selected, show)
-                    } else {
-                        //fragment
-                        able_type = "course"
-                        if (i.hasExtra("able_type")) {
-                            able_type = i.getStringExtra("able_type")!!
-                        }
-                        val f = getFragment()
-                        f?.arenaSelected(selected, show)
                     }
+//                    else {
+//                        //fragment
+//                        able_type = "course"
+//                        if (i.hasExtra("able_type")) {
+//                            able_type = i.getStringExtra("able_type")!!
+//                        }
+//                        val f = getFragment()
+//                        f?.arenaSelected(selected, show)
+//                    }
                 }
             }
         }
@@ -2160,15 +2204,16 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener,
                     //activity
                     if (delegate != null) {
                         delegate!!.singleSelected(key, selected)
-                    } else {
-                        //fragment
-                        able_type = "course"
-                        if (i.hasExtra("able_type")) {
-                            able_type = i.getStringExtra("able_type")!!
-                        }
-                        val f = getFragment()
-                        f?.singleSelected(key, selected)
                     }
+//                    else {
+//                        //fragment
+//                        able_type = "course"
+//                        if (i.hasExtra("able_type")) {
+//                            able_type = i.getStringExtra("able_type")!!
+//                        }
+//                        val f = getFragment()
+//                        f?.singleSelected(key, selected)
+//                    }
                 }
             }
         }
@@ -2189,7 +2234,7 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener,
                     var selected: String = ""
                     if (i.hasExtra("selected")) {
                         selected = i.getStringExtra("selected")!!
-                        if (key != DOB_KEY) {
+                        if (key != DOB_KEY && key != START_DATE_KEY && key != END_DATE_KEY) {
                             selected += ":00"
                         }
                     }
@@ -2197,15 +2242,16 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener,
                     //activity
                     if (delegate != null) {
                         delegate!!.singleSelected(key, selected)
-                    } else {
-                        //fragment
-                        able_type = "course"
-                        if (i.hasExtra("able_type")) {
-                            able_type = i.getStringExtra("able_type")!!
-                        }
-                        val f = getFragment()
-                        f?.singleSelected(key, selected)
                     }
+//                    else {
+//                        //fragment
+//                        able_type = "course"
+//                        if (i.hasExtra("able_type")) {
+//                            able_type = i.getStringExtra("able_type")!!
+//                        }
+//                        val f = getFragment()
+//                        f?.singleSelected(key, selected)
+//                    }
                 }
             }
         }
@@ -2233,15 +2279,16 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener,
                     //activity
                     if (delegate != null) {
                         delegate!!.degreeSelected(selected, show)
-                    } else {
-                        //fragment
-                        able_type = "course"
-                        if (i.hasExtra("able_type")) {
-                            able_type = i.getStringExtra("able_type")!!
-                        }
-                        val f = getFragment()
-                        f?.degreeSelected(selected, show)
                     }
+//                    else {
+//                        //fragment
+//                        able_type = "course"
+//                        if (i.hasExtra("able_type")) {
+//                            able_type = i.getStringExtra("able_type")!!
+//                        }
+//                        val f = getFragment()
+//                        f?.degreeSelected(selected, show)
+//                    }
                 }
             }
         }
@@ -2288,15 +2335,16 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener,
                     //activity
                     if (delegate != null) {
                         delegate!!.singleSelected(key, selected)
-                    } else {
-                        //fragment
-                        able_type = "course"
-                        if (i.hasExtra("able_type")) {
-                            able_type = i.getStringExtra("able_type")!!
-                        }
-                        val f = getFragment()
-                        f?.singleSelected(key, selected)
                     }
+//                    else {
+//                        //fragment
+//                        able_type = "course"
+//                        if (i.hasExtra("able_type")) {
+//                            able_type = i.getStringExtra("able_type")!!
+//                        }
+//                        val f = getFragment()
+//                        f?.singleSelected(key, selected)
+//                    }
                 }
             }
         }
@@ -2322,15 +2370,16 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener,
                     //activity
                     if (delegate != null) {
                         delegate!!.singleSelected(key, selected)
-                    } else {
-                        //fragment
-                        able_type = "course"
-                        if (i.hasExtra("able_type")) {
-                            able_type = i.getStringExtra("able_type")!!
-                        }
-                        val f = getFragment()
-                        f?.singleSelected(key, selected)
                     }
+//                    else {
+//                        //fragment
+//                        able_type = "course"
+//                        if (i.hasExtra("able_type")) {
+//                            able_type = i.getStringExtra("able_type")!!
+//                        }
+//                        val f = getFragment()
+//                        f?.singleSelected(key, selected)
+//                    }
                 }
             }
         }
@@ -2352,15 +2401,16 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener,
                     //activity
                     if (delegate != null) {
                         delegate!!.singleSelected(key, selected)
-                    } else {
-                        //fragment
-                        able_type = "course"
-                        if (i.hasExtra("able_type")) {
-                            able_type = i.getStringExtra("able_type")!!
-                        }
-                        val f = getFragment()
-                        f?.singleSelected(key, selected)
                     }
+//                    else {
+//                        //fragment
+//                        able_type = "course"
+//                        if (i.hasExtra("able_type")) {
+//                            able_type = i.getStringExtra("able_type")!!
+//                        }
+//                        val f = getFragment()
+//                        f?.singleSelected(key, selected)
+//                    }
                 }
             }
         }
@@ -2388,15 +2438,16 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener,
                     //activity
                     if (delegate != null) {
                         delegate!!.weekendSelected(selected, show)
-                    } else {
-                        //fragment
-                        able_type = "course"
-                        if (i.hasExtra("able_type")) {
-                            able_type = i.getStringExtra("able_type")!!
-                        }
-                        val f = getFragment()
-                        f?.weekendSelected(selected, show)
                     }
+//                    else {
+//                        //fragment
+//                        able_type = "course"
+//                        if (i.hasExtra("able_type")) {
+//                            able_type = i.getStringExtra("able_type")!!
+//                        }
+//                        val f = getFragment()
+//                        f?.weekendSelected(selected, show)
+//                    }
                 }
             }
         }

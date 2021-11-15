@@ -57,9 +57,16 @@ class DateSelectVC : BaseActivity() {
         datePicker.setOnDateChangeListener { calendarView, yyyy1, MM1, dd1 ->
             selected = "" + yyyy1 + "-" + (MM1+1) + "-" + dd1
         }
+
+        init()
     }
 
-    fun submit(v: View) {
+    override fun init() {
+        isPrevIconShow = true
+        super.init()
+    }
+
+    fun submitBtnPressed(v: View) {
         val intent = Intent()
         intent.putExtra("key", key)
         intent.putExtra("type", type)

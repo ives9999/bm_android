@@ -50,8 +50,6 @@ abstract class MyTableVC : BaseActivity() {
     protected var totalPage: Int = 0
 //    val items: ArrayList<Item> = arrayListOf()
 
-    var tableLists: ArrayList<Table> = arrayListOf()
-
     var jsonString: String? = null
 
     var member_like: Boolean = false
@@ -611,20 +609,20 @@ abstract class MyTableVC : BaseActivity() {
         return row.value
     }
 
-    fun replaceRowFromKey(key: String, row1: OneRow) {
-        for ((sectionIdx, section) in oneSections.withIndex()) {
-            for ((rowIdx, row) in section.items.withIndex()) {
-                if (key == row.key) {
-                    oneSections[sectionIdx].items[rowIdx] = row
-                    break
-                }
-            }
-        }
-    }
-
-    fun replaceRowFromIdx(sectionIdx: Int, rowIdx: Int, row1: OneRow) {
-        oneSections[sectionIdx].items[rowIdx] = row1
-    }
+//    fun replaceRowFromKey(key: String, row1: OneRow) {
+//        for ((sectionIdx, section) in oneSections.withIndex()) {
+//            for ((rowIdx, row) in section.items.withIndex()) {
+//                if (key == row.key) {
+//                    oneSections[sectionIdx].items[rowIdx] = row
+//                    break
+//                }
+//            }
+//        }
+//    }
+//
+//    fun replaceRowFromIdx(sectionIdx: Int, rowIdx: Int, row1: OneRow) {
+//        oneSections[sectionIdx].items[rowIdx] = row1
+//    }
 
 //    private fun updateAdapter() {
 //        val rows = generateSearchItems(able_type)
@@ -632,36 +630,14 @@ abstract class MyTableVC : BaseActivity() {
 //
 //    }
 
-    override fun singleSelected(key: String, selected: String) {
-
-        val row = getSearchRowFromKey(key)
-        var show = ""
-
-        if (key == START_TIME_KEY || key == END_TIME_KEY) {
-            row.value = selected
-            show = selected.noSec()
-        } else if (key == CITY_KEY || key == AREA_KEY) {
-            row.value = selected
-            show = Global.zoneIDToName(selected.toInt())
-        } else if (key == WEEKDAY_KEY) {
-            row.value = selected
-            show = WEEKDAY.intToString(selected.toInt())
-        }
-
-        row.show = show
-        //searchAdapter.notifyItemChanged(0)
-        if (searchSectionAdapter != null) {
-            searchSectionAdapter.notifyDataSetChanged()
-        }
-    }
-
     override fun arenaSelected(selected: String, show: String) {
 
         val key: String = ARENA_KEY
         val row = getSearchRowFromKey(key)
         row.value = selected
         row.show = show
-        searchSectionAdapter.notifyDataSetChanged()
+        val idx: Int = getSearchSectionIdxFromRowKey(key)
+        searchSectionAdapter.notifyItemChanged(idx)
     }
 
 //    override fun textChanged(str: String) {
@@ -750,11 +726,6 @@ abstract class MyTableVC : BaseActivity() {
         } else if (t == OrderTable::class) {
             toPayment(row.token)
         }
-    }
-
-    override fun cellRefresh() {
-        params.clear()
-        refresh()
     }
 
     override fun cellLike(row: Table) {

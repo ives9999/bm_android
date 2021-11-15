@@ -1674,24 +1674,24 @@ infix fun Map<String, String>.mergeWith(anotherMap: Map<String, String>): Map<St
     return result
 }
 
-fun getFragment(activity: BaseActivity, able_type: String): TabFragment? {
-    val frags = activity.supportFragmentManager.fragments
-    var _frag: TabFragment? = null
-    for (frag in frags) {
-        if (able_type == "arena" && frag::class == ArenaFragment::class) {
-            _frag = frag as ArenaFragment
-            break
-        }
-        if (able_type == "team" && frag::class == TempPlayFragment::class) {
-            _frag = frag as TempPlayFragment
-            break
-        }
-        if (able_type == "course" && frag::class == CourseFragment::class) {
-            _frag = frag as CourseFragment
-            break
-        }
-    }
-
-    return _frag
-}
+//fun getFragment(activity: BaseActivity, able_type: String): TabFragment? {
+//    val frags = activity.supportFragmentManager.fragments
+//    var _frag: TabFragment? = null
+//    for (frag in frags) {
+//        if (able_type == "arena" && frag::class == ArenaFragment::class) {
+//            _frag = frag as ArenaFragment
+//            break
+//        }
+//        if (able_type == "team" && frag::class == TempPlayFragment::class) {
+//            _frag = frag as TempPlayFragment
+//            break
+//        }
+//        if (able_type == "course" && frag::class == CourseFragment::class) {
+//            _frag = frag as CourseFragment
+//            break
+//        }
+//    }
+//
+//    return _frag
+//}
 

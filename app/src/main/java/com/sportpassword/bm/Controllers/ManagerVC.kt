@@ -50,6 +50,11 @@ class ManagerVC : BaseActivity() {
         return true
     }
 
+    override fun cellRefresh() {
+        tableLists.clear()
+        refresh()
+    }
+
     override fun refresh() {
         getManagerList()
     }

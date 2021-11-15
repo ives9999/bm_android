@@ -98,10 +98,11 @@ class ManagerCourseVC: MyTableVC() {
         theFirstTime = true
 //        adapter.clear()
 //        items.clear()
-        getDataStart(page, perPage)
 
         params.clear()
         params["manager_token"] = manager_token!!
+        tableLists.clear()
+        getDataStart(page, perPage)
     }
 
 //    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

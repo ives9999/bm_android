@@ -19,12 +19,9 @@ object CourseService: DataService() {
         return URL_COURSE_LIKE.format(token)
     }
 
-//    override fun parseModels(json: JSONObject): SuperModel {
-//        return JSONParse.parse<SuperCourses>(json)!!
-//    }
-//    override fun parseModel(json: JSONObject): SuperModel {
-//        return JSONParse.parse<SuperCourse>(json)!!
-//    }
+    override fun getUpdateURL(): String {
+        return URL_COURSE_UPDATE
+    }
 
     override fun getSignupListURL(token: String?): String {
         var url: String = URL_SIGNUP_LIST.format("course")

@@ -394,8 +394,7 @@ class AddCartVC : MyTableVC() {
 //        val row = getRowRowsFromMyRowsByKey1(SUBTOTAL_KEY)
         row.value = sub_total.toString()
         row.show = "NT$ " + sub_total.toString() + "元"
-        replaceRowFromKey(SUBTOTAL_KEY, row)
-//        replaceRowByKey(SUBTOTAL_KEY, row)
+//        replaceRowFromKey(SUBTOTAL_KEY, row)
         updateTotal()
 
 //        val priceItem = getFormItemFromKey(SUBTOTAL_KEY)
@@ -426,8 +425,7 @@ class AddCartVC : MyTableVC() {
 //        val row = getRowRowsFromMyRowsByKey1(TOTAL_KEY)
         row.value = total.toString()
         row.show = "NT$ " + total.toString() + "元"
-        replaceRowFromKey(TOTAL_KEY, row)
-//        replaceRowByKey(TOTAL_KEY, row)
+//        replaceRowFromKey(TOTAL_KEY, row)
         //notifyChanged(true)
 
 //        val priceItem = getFormItemFromKey(TOTAL_KEY)
