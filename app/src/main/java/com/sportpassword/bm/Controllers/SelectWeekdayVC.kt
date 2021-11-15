@@ -8,6 +8,7 @@ import com.sportpassword.bm.Utilities.WEEKDAY_KEY
 
 class SelectWeekdayVC : SingleSelectVC() {
     override fun onCreate(savedInstanceState: Bundle?) {
+
         super.onCreate(savedInstanceState)
 
         val weekdays: ArrayList<WEEKDAY> = arrayListOf(
@@ -16,10 +17,24 @@ class SelectWeekdayVC : SingleSelectVC() {
 
         key = WEEKDAY_KEY
 
+        val selecteds: ArrayList<Int> = arrayListOf()
+        if (selected != null && selected!!.length > 0) {
+            var i: Int = 0
+            while (i < 7) {
+                val n = (Math.pow(2.0, i.toDouble())).toInt()
+                if ((selected!!.toInt() and n) > 0) {
+                    selecteds.add(i)
+                }
+                i++
+            }
+            if (selecteds.size > 0) {
+                selected = (selecteds[0]+1).toString()
+                tableAdapter.selected = selected
+            }
+        }
+
         tableRows = rowsBridge(weekdays)
         tableAdapter.rows = tableRows
-
-//        notifyChanged()
     }
 
     fun rowsBridge(weekdays: ArrayList<WEEKDAY>): ArrayList<SelectRow> {

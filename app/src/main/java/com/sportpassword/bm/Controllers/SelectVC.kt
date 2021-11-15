@@ -36,6 +36,11 @@ open class SelectVC : MyTableVC() {
         }
     }
 
+    override fun init() {
+        isPrevIconShow = true
+        super.init()
+    }
+
 //    fun init() {
 //        if (key != null && key == CITY_KEY) {
 //            getCitys()

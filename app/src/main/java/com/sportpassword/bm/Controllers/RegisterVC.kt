@@ -218,7 +218,7 @@ class RegisterVC : MyTableVC() {
         }
 
         for ((key, value) in testData) {
-            val row: OneRow = getRowFromKey(key)
+            val row: OneRow = getOneRowFromKey(key)
             row.value = value
             if (key == DOB_KEY) {
                 row.show = value
@@ -720,13 +720,13 @@ class RegisterVC : MyTableVC() {
     }
 
     override fun cellMoreClick(sectionIdx: Int, rowIdx: Int) {
-        val row = getRowFromIdx(sectionIdx, rowIdx)
+        val row: OneRow = getOneRowFromIdx(sectionIdx, rowIdx)
         if (row.key == DOB_KEY) {
             toSelectDate(row.key, row.value, this)
         } else if (row.key == CITY_KEY) {
             toSelectCity(row.value, this)
         } else if (row.key == AREA_KEY) {
-            val row: OneRow = getRowFromKey(CITY_KEY)
+            val row: OneRow = getOneRowFromKey(CITY_KEY)
             if (row.value.isEmpty()) {
                 warning("請先選擇縣市")
             } else {
@@ -736,7 +736,7 @@ class RegisterVC : MyTableVC() {
     }
 
     override fun cellSexChanged(key: String, sectionIdx: Int, rowIdx: Int, sex: String) {
-        val row = getRowFromIdx(sectionIdx, rowIdx)
+        val row: OneRow = getOneRowFromIdx(sectionIdx, rowIdx)
         row.value = sex
         row.show = sex
     }
@@ -750,7 +750,7 @@ class RegisterVC : MyTableVC() {
     }
 
     override fun cellPrivacyChanged(sectionIdx: Int, rowIdx: Int, checked: Boolean) {
-        val row = getRowFromIdx(sectionIdx, rowIdx)
+        val row: OneRow = getOneRowFromIdx(sectionIdx, rowIdx)
         row.value = checked.toString()
         if (!checked) {
             warning("必須同意隱私權政策才能完成註冊")
@@ -759,14 +759,14 @@ class RegisterVC : MyTableVC() {
 
     override fun singleSelected(key: String, selected: String) {
 
-        val row = getRowFromKey(key)
+        val row: OneRow = getOneRowFromKey(key)
         row.value = selected
         if (key == DOB_KEY) {
             row.show = selected
         } else if (key == CITY_KEY) {
             row.show = Global.zoneIDToName(selected.toInt())
             if (selected != old_selected_city) {
-                val row1 = getRowFromKey(AREA_KEY)
+                val row1: OneRow = getOneRowFromKey(AREA_KEY)
                 row1.value = ""
                 row1.show = ""
             }
@@ -774,7 +774,7 @@ class RegisterVC : MyTableVC() {
             row.show = Global.zoneIDToName(selected.toInt())
         }
 
-        val sectionIdx: Int = getSectionIdxFromRowKey(key)
+        val sectionIdx: Int = getOneSectionIdxFromRowKey(key)
         oneSectionAdapter.notifyItemChanged(sectionIdx)
 
 //        val item = getFormItemFromKey(key)

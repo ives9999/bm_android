@@ -42,7 +42,7 @@ open class SingleSelectVC : SelectVC() {
 //        recyclerView.adapter = adapter
 //        initAdapter()
 //
-//        init()
+        init()
     }
 
 //    override fun generateItems(): ArrayList<Item> {

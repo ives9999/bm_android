@@ -542,60 +542,6 @@ abstract class MyTableVC : BaseActivity() {
 //        return _rows
 //    }
 
-    fun getSectionFromKey(sectionKey: String): OneSection {
-
-        for (section in oneSections) {
-            if (section.key == sectionKey) {
-                return section
-            }
-        }
-
-        return OneSection()
-    }
-
-    fun getSectionIdxFromRowKey(key: String): Int {
-        for ((idx, section) in oneSections.withIndex()) {
-            for (row in section.items) {
-                if (row.key == key) {
-                    return idx
-                }
-            }
-        }
-        return 0
-    }
-
-    fun getRowFromKey(key: String): OneRow {
-
-        for (section in oneSections) {
-            for (row in section.items) {
-                if (row.key == key) {
-                    return row
-                }
-            }
-        }
-        return OneRow()
-    }
-
-    fun getSearchRowFromKey(key: String): SearchRow {
-
-        for (section in searchSections) {
-            for (row in section.items) {
-                if (row.key == key) {
-                    return row
-                }
-            }
-        }
-        return SearchRow()
-    }
-
-    fun getRowFromIdx(sectionIdx: Int, rowIdx: Int): OneRow {
-        return oneSections[sectionIdx].items[rowIdx]
-    }
-
-    fun getSectionFromIdx(sectionIdx: Int): OneSection {
-        return oneSections[sectionIdx]
-    }
-
 //    fun getRowFromKey(rows: ArrayList<HashMap<String, String>>, key: String): HashMap<String, String> {
 //
 //        for (row in rows) {

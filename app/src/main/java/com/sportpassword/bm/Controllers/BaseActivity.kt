@@ -30,7 +30,9 @@ import com.onesignal.OneSignal
 import com.sportpassword.bm.Adapters.OneSectionAdapter
 import com.sportpassword.bm.Adapters.SearchSectionAdapter
 import com.sportpassword.bm.App
+import com.sportpassword.bm.Data.OneRow
 import com.sportpassword.bm.Data.OneSection
+import com.sportpassword.bm.Data.SearchRow
 import com.sportpassword.bm.Data.SearchSection
 import com.sportpassword.bm.Fragments.*
 import com.sportpassword.bm.Models.*
@@ -172,12 +174,12 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener,
     open fun contentEdit(key: String, content: String) {}
 
     //for tag delegate
-    open fun textFieldTextChanged(sectionKey: String, rowKey: String, value: String){}
-    open fun setTag(sectionKey: String, rowKey: String, attribute: String, selected: Boolean){}
-    open fun stepperValueChanged(sectionKey: String, rowKey: String, number: Int){}
+//    open fun textFieldTextChanged(sectionKey: String, rowKey: String, value: String){}
+//    open fun setTag(sectionKey: String, rowKey: String, attribute: String, selected: Boolean){}
+//    open fun stepperValueChanged(sectionKey: String, rowKey: String, number: Int){}
 
-    open fun radioDidChange(sectionKey: String, rows: ArrayList<HashMap<String, String>>){}
-    open fun moreClick(sectionKey: String, rowKey: String){}
+//    open fun radioDidChange(sectionKey: String, rows: ArrayList<HashMap<String, String>>){}
+//    open fun moreClick(sectionKey: String, rowKey: String){}
 
     open var editCourseResult: ActivityResultLauncher<Intent>? = null
 
@@ -340,6 +342,165 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener,
         prepare(sectionIdx, rowIdx)
     }
 
+    override fun cellMoreClick(sectionIdx: Int, rowIdx: Int) {
+
+        if (oneSections.size > sectionIdx && oneSections[sectionIdx].items.size > rowIdx) {
+            val row: OneRow = getOneRowFromIdx(sectionIdx, rowIdx)
+            if (row.key == DOB_KEY) {
+                toSelectDate(row.key, row.value, this)
+            } else if (row.key == CITY_KEY) {
+                toSelectCity(row.value, this)
+            } else if (row.key == AREA_KEY) {
+                val row1: OneRow = getOneRowFromKey(CITY_KEY)
+                if (row1.value.isEmpty()) {
+                    warning("請先選擇縣市")
+                } else {
+                    toSelectArea(row.value, row.value.toInt(), this)
+                }
+            } else if (row.key == PRICE_UNIT_KEY) {
+                toSelectSingle(SelectPriceUnitVC::class.java, row.key, row.value, this, able_type)
+            } else if (row.key == COURSE_KIND_KEY) {
+                toSelectSingle(SelectCourseKindVC::class.java, row.key, row.value, this, able_type)
+            } else if (row.key == CYCLE_UNIT_KEY) {
+                toSelectSingle(SelectCycleUnitVC::class.java, row.key, row.value, this, able_type)
+            } else if (row.key == WEEKDAY_KEY) {
+//                val tmp = formItem.sender as ArrayList<String>
+//                val selecteds: String = tmp.joinToString(",")
+                toSelectWeekday(row.value, this, able_type)
+            } else if (row.key == START_TIME_KEY || row.key == END_TIME_KEY) {
+//                val tmp = formItem.sender as HashMap<String, String>
+//                val selected = tmp.get("time")!!
+                toSelectSingle(SelectTimeVC::class.java, row.key, row.value, this, able_type)
+            } else if (row.key == START_DATE_KEY || row.key == END_DATE_KEY) {
+                toSelectDate(row.key, row.value, this)
+            }
+        }
+
+        if (searchSections.size > sectionIdx && searchSections[sectionIdx].items.size > rowIdx) {
+            val row: SearchRow = getSearchRowFromIdx(sectionIdx, rowIdx)
+            if (row.key == DOB_KEY) {
+                toSelectDate(row.key, row.value, this)
+            } else if (row.key == CITY_KEY) {
+                toSelectCity(row.value, this)
+            } else if (row.key == AREA_KEY) {
+                val row: OneRow = getOneRowFromKey(CITY_KEY)
+                if (row.value.isEmpty()) {
+                    warning("請先選擇縣市")
+                } else {
+                    toSelectArea(row.value, row.value.toInt(), this)
+                }
+            }
+        }
+    }
+
+    override fun cellClear(sectionIdx: Int, rowIdx: Int) {
+        if (searchSections.size > sectionIdx && searchSections[sectionIdx].items.size > rowIdx) {
+            searchSections[sectionIdx].items[rowIdx].value = ""
+            searchSections[sectionIdx].items[rowIdx].show = ""
+            //searchSections = updateSectionRow()
+            searchSectionAdapter.setSearchSection(searchSections)
+            searchSectionAdapter.notifyDataSetChanged()
+        }
+
+        if (oneSections.size > sectionIdx && oneSections[sectionIdx].items.size > rowIdx) {
+            oneSections[sectionIdx].items[rowIdx].value = ""
+            oneSections[sectionIdx].items[rowIdx].show = ""
+            //searchSections = updateSectionRow()
+            oneSectionAdapter.setOneSection(oneSections)
+            oneSectionAdapter.notifyDataSetChanged()
+        }
+    }
+
+    override fun cellTextChanged(sectionIdx: Int, rowIdx: Int, str: String) {
+
+        if (searchSections.size > sectionIdx && searchSections[sectionIdx].items.size > rowIdx) {
+            searchSections[sectionIdx].items[rowIdx].value = str
+        }
+
+        if (oneSections.size > sectionIdx && oneSections[sectionIdx].items.size > rowIdx) {
+            oneSections[sectionIdx].items[rowIdx].value = str
+        }
+    }
+
+    override fun cellSwitchChanged(sectionIdx: Int, rowIdx: Int, b: Boolean) {
+
+        val value = if (b) {
+            "1"
+        } else {
+            "0"
+        }
+        searchSections[sectionIdx].items[rowIdx].value = value
+    }
+
+    fun getOneSectionFromKey(sectionKey: String): OneSection {
+
+        for (section in oneSections) {
+            if (section.key == sectionKey) {
+                return section
+            }
+        }
+
+        return OneSection()
+    }
+
+    fun getOneSectionIdxFromRowKey(key: String): Int {
+        for ((idx, section) in oneSections.withIndex()) {
+            for (row in section.items) {
+                if (row.key == key) {
+                    return idx
+                }
+            }
+        }
+        return 0
+    }
+
+    fun getSearchSectionIdxFromRowKey(key: String): Int {
+        for ((idx, section) in searchSections.withIndex()) {
+            for (row in section.items) {
+                if (row.key == key) {
+                    return idx
+                }
+            }
+        }
+        return 0
+    }
+
+    fun getOneRowFromKey(key: String): OneRow {
+
+        for (section in oneSections) {
+            for (row in section.items) {
+                if (row.key == key) {
+                    return row
+                }
+            }
+        }
+        return OneRow()
+    }
+
+    fun getSearchRowFromKey(key: String): SearchRow {
+
+        for (section in searchSections) {
+            for (row in section.items) {
+                if (row.key == key) {
+                    return row
+                }
+            }
+        }
+        return SearchRow()
+    }
+
+    fun getSearchRowFromIdx(sectionIdx: Int, rowIdx: Int): SearchRow {
+        return searchSections[sectionIdx].items[rowIdx]
+    }
+
+    fun getOneRowFromIdx(sectionIdx: Int, rowIdx: Int): OneRow {
+        return oneSections[sectionIdx].items[rowIdx]
+    }
+
+    fun getOneSectionFromIdx(sectionIdx: Int): OneSection {
+        return oneSections[sectionIdx]
+    }
+
     protected fun setMyTitle(title: String) {
         if (topTitleLbl != null) {
             topTitleLbl.text = title
@@ -377,8 +538,6 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener,
 //        actionBar.setCustomView(l, params)
 //        actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM, ActionBar.DISPLAY_SHOW_CUSTOM)
     }
-
-    
 
     protected fun myMakeCall(_mobile: String) {
         mobile = _mobile
@@ -803,35 +962,6 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener,
 //        searchSectionAdapter.setSearchSection(searchSections)
 //        searchSectionAdapter.notifyDataSetChanged()
 //    }
-
-    override fun cellClear(sectionIdx: Int, rowIdx: Int) {
-        searchSections[sectionIdx].items[rowIdx].value = ""
-        searchSections[sectionIdx].items[rowIdx].show = ""
-        //searchSections = updateSectionRow()
-        searchSectionAdapter.setSearchSection(searchSections)
-        searchSectionAdapter.notifyDataSetChanged()
-    }
-
-    override fun cellTextChanged(sectionIdx: Int, rowIdx: Int, str: String) {
-
-        if (searchSections.size > sectionIdx && searchSections[sectionIdx].items.size > rowIdx) {
-            searchSections[sectionIdx].items[rowIdx].value = str
-        }
-
-        if (oneSections.size > sectionIdx && oneSections[sectionIdx].items.size > rowIdx) {
-            oneSections[sectionIdx].items[rowIdx].value = str
-        }
-    }
-
-    override fun cellSwitchChanged(sectionIdx: Int, rowIdx: Int, b: Boolean) {
-
-        val value = if (b) {
-            "1"
-        } else {
-            "0"
-        }
-        searchSections[sectionIdx].items[rowIdx].value = value
-    }
 
     ////////// for top bar cart icon pressed ///////////////////////////////////
     fun cartPressed(view: View) {

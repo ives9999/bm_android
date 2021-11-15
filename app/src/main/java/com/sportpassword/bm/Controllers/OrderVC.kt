@@ -534,7 +534,7 @@ class OrderVC : MyTableVC() {
             }
         }
         if (key == INVOICE_KEY) {
-            val section: OneSection = getSectionFromIdx(sectionIdx)
+            val section: OneSection = getOneSectionFromIdx(sectionIdx)
             section.items.clear()
             row = OneRow("發票(目前僅提供電子發票)", "", "", INVOICE_KEY, "more")
             section.items.add(row)

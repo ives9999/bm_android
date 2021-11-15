@@ -299,22 +299,6 @@ class EditCourseVC : MyTableVC(), ValueChangedDelegate {
         }
     }
 
-    override fun cellMoreClick(sectionIdx: Int, rowIdx: Int) {
-
-        val row = getRowFromIdx(sectionIdx, rowIdx)
-        if (row.key == PRICE_UNIT_KEY) {
-
-        } else if (row.key == COURSE_KIND_KEY) {
-
-        } else if (row.key == CYCLE_UNIT_KEY) {
-
-        } else if (row.key == START_TIME_KEY || row.key == END_TIME_KEY) {
-
-        } else if (row.key == START_DATE_KEY || row.key == END_DATE_KEY) {
-
-        }
-    }
-
     private fun putValue() {
         if (myTable != null) {
             val kc = myTable!!::class
