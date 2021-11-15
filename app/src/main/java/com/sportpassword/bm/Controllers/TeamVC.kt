@@ -21,14 +21,14 @@ class TeamVC : MyTableVC() {
         this.dataService = TeamService
         able_type = "team"
 
-        searchRows = arrayListOf(
-            hashMapOf("title" to "關鍵字","show" to "全部","key" to KEYWORD_KEY,"value" to ""),
-            hashMapOf("title" to "縣市","show" to "全部","key" to CITY_KEY,"value" to ""),
-            hashMapOf("title" to "球館","show" to "全部","key" to ARENA_KEY,"value" to ""),
-            hashMapOf("title" to "星期幾","show" to "全部","key" to WEEKDAY_KEY,"value" to ""),
-            hashMapOf("title" to "時段","show" to "全部","key" to START_TIME_KEY,"value" to ""),
-            hashMapOf("title" to "程度","show" to "全部","key" to DEGREE_KEY,"value" to "")
-        )
+//        searchRows = arrayListOf(
+//            hashMapOf("title" to "關鍵字","show" to "全部","key" to KEYWORD_KEY,"value" to ""),
+//            hashMapOf("title" to "縣市","show" to "全部","key" to CITY_KEY,"value" to ""),
+//            hashMapOf("title" to "球館","show" to "全部","key" to ARENA_KEY,"value" to ""),
+//            hashMapOf("title" to "星期幾","show" to "全部","key" to WEEKDAY_KEY,"value" to ""),
+//            hashMapOf("title" to "時段","show" to "全部","key" to START_TIME_KEY,"value" to ""),
+//            hashMapOf("title" to "程度","show" to "全部","key" to DEGREE_KEY,"value" to "")
+//        )
 
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_store_vc)
@@ -42,6 +42,14 @@ class TeamVC : MyTableVC() {
             }
         }
 
+        if (intent.hasExtra("isPrevIconShow")) {
+            isPrevIconShow = intent.getBooleanExtra("isPrevIconShow", false)
+        }
+
+        if (intent.hasExtra("isSearchIconShow")) {
+            isSearchIconShow = intent.getBooleanExtra("isSearchIconShow", false)
+        }
+
         recyclerView = list_container
         refreshLayout = refresh
         maskView = mask
@@ -50,7 +58,12 @@ class TeamVC : MyTableVC() {
         tableAdapter = TeamAdapter(R.layout.team_list_cell, this)
         recyclerView.adapter = tableAdapter
 
+        init()
         refresh()
+    }
+
+    override fun init() {
+        super.init()
     }
 
     override fun genericTable() {

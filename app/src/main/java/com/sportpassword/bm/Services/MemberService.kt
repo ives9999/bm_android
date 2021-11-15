@@ -1,11 +1,6 @@
 package com.sportpassword.bm.Services
 
 import android.content.Context
-import com.android.volley.Request
-import com.android.volley.Response
-import com.android.volley.toolbox.JsonObjectRequest
-import com.android.volley.toolbox.Volley
-import org.json.JSONException
 import org.json.JSONObject
 import com.sportpassword.bm.Utilities.*
 import com.sportpassword.bm.member
@@ -200,83 +195,132 @@ object MemberService: DataService() {
         val url = URL_FORGETPASSWORD
         //println(url)
 
-        val body = JSONObject()
-        body.put("email", email)
-        body.put("source", "app")
-        val requestBody = body.toString()
+        val params: HashMap<String, String> = hashMapOf()
+//        val body = JSONObject()
+        params.put("email", email)
+        params.put("source", "app")
+//        val requestBody = body.toString()
         //println(requestBody)
 
-        val request = object : JsonObjectRequest(Request.Method.POST, url, null, Response.Listener { json ->
-            try {
-                success = json.getBoolean("success")
-                //println(json)
-            } catch (e: JSONException) {
-                success = false
-                msg = "無法執行，沒有傳回成功值 " + e.localizedMessage
-            }
-            if (success) {
-                msg = json.getString("msg")
-            } else {
-                //makeErrorMsg(json)
-            }
-            complete(true)
-        }, Response.ErrorListener { error ->
-            println(error.localizedMessage)
-            msg = "失敗，網站或網路錯誤"
-            complete(false)
-        }) {
-            override fun getBodyContentType(): String {
-                return HEADER
+        val request: okhttp3.Request = getRequest(url, params)
+
+        okHttpClient.newCall(request).enqueue(object : Callback {
+            override fun onFailure(call: Call, e: IOException) {
+                msg = "網路錯誤，無法跟伺服器更新資料"
+                complete(success)
             }
 
-            override fun getBody(): ByteArray {
-                return requestBody.toByteArray()
+            override fun onResponse(call: Call, response: okhttp3.Response) {
+
+                try {
+                    jsonString = response.body!!.string()
+//                    println(jsonString)
+                    success = true
+                } catch (e: Exception) {
+                    success = false
+                    msg = "parse json failed，請洽管理員"
+                    println(e.localizedMessage)
+                }
+                complete(success)
             }
-        }
-        Volley.newRequestQueue(context).add(request)
+        })
+
+
+//        val request = object : JsonObjectRequest(Request.Method.POST, url, null, Response.Listener { json ->
+//            try {
+//                success = json.getBoolean("success")
+//                //println(json)
+//            } catch (e: JSONException) {
+//                success = false
+//                msg = "無法執行，沒有傳回成功值 " + e.localizedMessage
+//            }
+//            if (success) {
+//                msg = json.getString("msg")
+//            } else {
+//                //makeErrorMsg(json)
+//            }
+//            complete(true)
+//        }, Response.ErrorListener { error ->
+//            println(error.localizedMessage)
+//            msg = "失敗，網站或網路錯誤"
+//            complete(false)
+//        }) {
+//            override fun getBodyContentType(): String {
+//                return HEADER
+//            }
+//
+//            override fun getBody(): ByteArray {
+//                return requestBody.toByteArray()
+//            }
+//        }
+//        Volley.newRequestQueue(context).add(request)
     }
 
     fun changePassword(context: Context, oldPassword: String, newPassword: String, rePassword: String, complete: CompletionHandler) {
         val url = URL_CHANGE_PASSWORD
         //println(url)
 
-        val body = JSONObject()
-        body.put("password_old", oldPassword)
-        body.put("password", newPassword)
-        body.put("repassword", rePassword)
-        body.put("source", "app")
-        body.put("token", member.token)
-        val requestBody = body.toString()
+        //val body = JSONObject()
+        val params: HashMap<String, String> = hashMapOf()
+        params.put("password_old", oldPassword)
+        params.put("password", newPassword)
+        params.put("repassword", rePassword)
+        params.put("source", "app")
+        params.put("token", member.token!!)
+        //val requestBody = body.toString()
         //println(requestBody)
 
-        val request = object : JsonObjectRequest(Request.Method.POST, url, null, Response.Listener { json ->
-            //println(json)
-            try {
-                success = json.getBoolean("success")
-            } catch (e: JSONException) {
-                success = false
-                msg = "無法執行，沒有傳回成功值 " + e.localizedMessage
-            }
-            if (success) {
-                msg = "修改密碼成功，之後請用新密碼登入"
-            } else {
-                //makeErrorMsg(json)
-            }
-            complete(true)
-        }, Response.ErrorListener { error ->
-            println(error.localizedMessage)
-            msg = "失敗，網站或網路錯誤"
-            complete(false)
-        }) {
-            override fun getBodyContentType(): String {
-                return HEADER
+        val request: okhttp3.Request = getRequest(url, params)
+
+        okHttpClient.newCall(request).enqueue(object : Callback {
+            override fun onFailure(call: Call, e: IOException) {
+                msg = "網路錯誤，無法跟伺服器更新資料"
+                complete(success)
             }
 
-            override fun getBody(): ByteArray {
-                return requestBody.toByteArray()
+            override fun onResponse(call: Call, response: okhttp3.Response) {
+
+                try {
+                    jsonString = response.body!!.string()
+//                    println(jsonString)
+                    success = true
+                } catch (e: Exception) {
+                    success = false
+                    msg = "parse json failed，請洽管理員"
+                    println(e.localizedMessage)
+                }
+                complete(success)
             }
-        }
-        Volley.newRequestQueue(context).add(request)
+        })
+
+//        val request = object : JsonObjectRequest(Request.Method.POST, url, null, Response.Listener { json ->
+//            //println(json)
+//            try {
+//                success = json.getBoolean("success")
+//            } catch (e: JSONException) {
+//                success = false
+//                msg = "無法執行，沒有傳回成功值 " + e.localizedMessage
+//            }
+//            if (success) {
+//                msg = "修改密碼成功，之後請用新密碼登入"
+//            } else {
+//                //makeErrorMsg(json)
+//            }
+//            complete(true)
+//        }, Response.ErrorListener { error ->
+//            println(error.localizedMessage)
+//            msg = "失敗，網站或網路錯誤"
+//            complete(false)
+//        }) {
+//            override fun getBodyContentType(): String {
+//                return HEADER
+//            }
+//
+//            override fun getBody(): ByteArray {
+//                return requestBody.toByteArray()
+//            }
+//        }
+//        Volley.newRequestQueue(context).add(request)
     }
 
 //    fun update(context: Context, id: Int, field: String, _value: String, complete: CompletionHandler) {
@@ -331,42 +375,66 @@ object MemberService: DataService() {
         } else if (type == "mobile") {
             url = URL_SEND_MOBILE_VALIDATE
         }
-        val body = JSONObject()
-        body.put(TOKEN_KEY, token)
-        body.put("value", value)
-        body.put("source", "app")
-        val requestBody = body.toString()
+        //val body = JSONObject()
+        val params: HashMap<String, String> = hashMapOf()
+        params.put(TOKEN_KEY, token)
+        params.put("value", value)
+        params.put("source", "app")
+        //val requestBody = body.toString()
 
-        val request = object : JsonObjectRequest(Request.Method.POST, url, null, Response.Listener { json ->
-            //println(json)
-            try {
-                success = json.getBoolean("success")
-            } catch (e: JSONException) {
-                success = false
-                msg = "無法執行，沒有傳回成功值 " + e.localizedMessage
+        val request: okhttp3.Request = getRequest(url, params)
+
+        okHttpClient.newCall(request).enqueue(object : Callback {
+            override fun onFailure(call: Call, e: IOException) {
+                msg = "網路錯誤，無法跟伺服器更新資料"
+                complete(success)
             }
-            if (success) {
-                complete(true)
-            } else {
-                if (json.has("msg")) {
-                    msg = json.getString("msg")
+
+            override fun onResponse(call: Call, response: okhttp3.Response) {
+
+                try {
+                    jsonString = response.body!!.string()
+//                    println(jsonString)
+                    success = true
+                } catch (e: Exception) {
+                    success = false
+                    msg = "parse json failed，請洽管理員"
+                    println(e.localizedMessage)
                 }
-                complete(false)
+                complete(success)
             }
-        }, Response.ErrorListener { error ->
-            println(error.localizedMessage)
-            msg = "失敗，網站或網路錯誤"
-            complete(false)
-        }) {
-            override fun getBodyContentType(): String {
-                return HEADER
-            }
+        })
 
-            override fun getBody(): ByteArray {
-                return requestBody.toByteArray()
-            }
-        }
-        Volley.newRequestQueue(context).add(request)
+//        val request = object : JsonObjectRequest(Request.Method.POST, url, null, Response.Listener { json ->
+//            //println(json)
+//            try {
+//                success = json.getBoolean("success")
+//            } catch (e: JSONException) {
+//                success = false
+//                msg = "無法執行，沒有傳回成功值 " + e.localizedMessage
+//            }
+//            if (success) {
+//                complete(true)
+//            } else {
+//                if (json.has("msg")) {
+//                    msg = json.getString("msg")
+//                }
+//                complete(false)
+//            }
+//        }, Response.ErrorListener { error ->
+//            println(error.localizedMessage)
+//            msg = "失敗，網站或網路錯誤"
+//            complete(false)
+//        }) {
+//            override fun getBodyContentType(): String {
+//                return HEADER
+//            }
+//
+//            override fun getBody(): ByteArray {
+//                return requestBody.toByteArray()
+//            }
+//        }
+//        Volley.newRequestQueue(context).add(request)
     }
 
     fun validate(context: Context, type: String, code: String, token: String, complete: CompletionHandler) {
@@ -376,42 +444,66 @@ object MemberService: DataService() {
         } else if (type == "mobile") {
             url = URL_MOBILE_VALIDATE
         }
-        val body = JSONObject()
-        body.put(TOKEN_KEY, token)
-        body.put("code", code)
-        body.put("source", "app")
-        val requestBody = body.toString()
+//        val body = JSONObject()
+        val params: HashMap<String, String> = hashMapOf()
+        params.put(TOKEN_KEY, token)
+        params.put("code", code)
+        params.put("source", "app")
+//        val requestBody = body.toString()
 
-        val request = object : JsonObjectRequest(Request.Method.POST, url, null, Response.Listener { json ->
-            //println(json)
-            try {
-                success = json.getBoolean("success")
-            } catch (e: JSONException) {
-                success = false
-                msg = "無法執行，沒有傳回成功值 " + e.localizedMessage
+        val request: okhttp3.Request = getRequest(url, params)
+
+        okHttpClient.newCall(request).enqueue(object : Callback {
+            override fun onFailure(call: Call, e: IOException) {
+                msg = "網路錯誤，無法跟伺服器更新資料"
+                complete(success)
             }
-            if (success) {
-                complete(true)
-            } else {
-                if (json.has("msg")) {
-                    msg = json.getString("msg")
+
+            override fun onResponse(call: Call, response: okhttp3.Response) {
+
+                try {
+                    jsonString = response.body!!.string()
+//                    println(jsonString)
+                    success = true
+                } catch (e: Exception) {
+                    success = false
+                    msg = "parse json failed，請洽管理員"
+                    println(e.localizedMessage)
                 }
-                complete(false)
+                complete(success)
             }
-        }, Response.ErrorListener { error ->
-            println(error.localizedMessage)
-            msg = "失敗，網站或網路錯誤"
-            complete(false)
-        }) {
-            override fun getBodyContentType(): String {
-                return HEADER
-            }
+        })
 
-            override fun getBody(): ByteArray {
-                return requestBody.toByteArray()
-            }
-        }
-        Volley.newRequestQueue(context).add(request)
+//        val request = object : JsonObjectRequest(Request.Method.POST, url, null, Response.Listener { json ->
+//            //println(json)
+//            try {
+//                success = json.getBoolean("success")
+//            } catch (e: JSONException) {
+//                success = false
+//                msg = "無法執行，沒有傳回成功值 " + e.localizedMessage
+//            }
+//            if (success) {
+//                complete(true)
+//            } else {
+//                if (json.has("msg")) {
+//                    msg = json.getString("msg")
+//                }
+//                complete(false)
+//            }
+//        }, Response.ErrorListener { error ->
+//            println(error.localizedMessage)
+//            msg = "失敗，網站或網路錯誤"
+//            complete(false)
+//        }) {
+//            override fun getBodyContentType(): String {
+//                return HEADER
+//            }
+//
+//            override fun getBody(): ByteArray {
+//                return requestBody.toByteArray()
+//            }
+//        }
+//        Volley.newRequestQueue(context).add(request)
     }
 
 //    fun getOne(context: Context, token: String, complete: CompletionHandler) {

@@ -8,6 +8,7 @@ import android.widget.LinearLayout
 import android.widget.RelativeLayout
 import com.google.gson.Gson
 import com.google.gson.JsonParseException
+import com.sportpassword.bm.Adapters.OneSectionAdapter
 import com.sportpassword.bm.Data.OneRow
 import com.sportpassword.bm.Form.FormItem.*
 import com.sportpassword.bm.R
@@ -123,9 +124,9 @@ class RegisterVC : MyTableVC() {
 
     override fun refresh() {
 
-        for (formItem in form.formItems) {
-            formItem.reset()
-        }
+//        for (formItem in form.formItems) {
+//            formItem.reset()
+//        }
         params.clear()
         initData()
 //        generateItems()

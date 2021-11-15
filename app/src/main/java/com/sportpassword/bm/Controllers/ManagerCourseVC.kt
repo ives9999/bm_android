@@ -1,21 +1,20 @@
 package com.sportpassword.bm.Controllers
 
 import android.app.Activity
-import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
-import android.view.Menu
 import android.view.View
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
+import com.sportpassword.bm.Adapters.CourseAdapter
 import com.sportpassword.bm.Models.CourseTable
 import com.sportpassword.bm.Models.CoursesTable
+import com.sportpassword.bm.Models.Table
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.CourseService
 import com.sportpassword.bm.Utilities.*
 import com.sportpassword.bm.member
-import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.manager_course_item.*
 import kotlinx.android.synthetic.main.manager_course_vc.*
 import kotlinx.android.synthetic.main.mask.*
@@ -24,7 +23,6 @@ import kotlinx.android.synthetic.main.manager_course_vc.refresh
 import org.jetbrains.anko.*
 import org.jetbrains.anko.sdk27.coroutines.onClick
 
-
 class ManagerCourseVC: MyTableVC() {
     var token: String? = null //coach token
     var name: String? = null  //coach name
@@ -32,6 +30,7 @@ class ManagerCourseVC: MyTableVC() {
 
     //var superCourses: SuperCourses? = null
     var mysTable: CoursesTable? = null
+    lateinit var tableAdapter: CourseAdapter
 
     lateinit var dialog: DialogInterface
 
@@ -81,9 +80,17 @@ class ManagerCourseVC: MyTableVC() {
         maskView = mask
         setRefreshListener()
 
+        tableAdapter = CourseAdapter(R.layout.course_list_cell, this)
+        recyclerView.adapter = tableAdapter
         //initAdapter()
+        init()
 
         refresh()
+    }
+
+    override fun init() {
+        isPrevIconShow = true
+        super.init()
     }
 
     override fun refresh() {
@@ -111,18 +118,60 @@ class ManagerCourseVC: MyTableVC() {
 //        }
 //    }
 
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.add, menu)
-
-        //android:onClick="showSearchPanel" define in layout/menu_add.xml
-        return true
-    }
+//    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+//        menuInflater.inflate(R.menu.add, menu)
+//
+//        //android:onClick="showSearchPanel" define in layout/menu_add.xml
+//        return true
+//    }
 
     override fun genericTable() {
         mysTable = jsonToModels<CoursesTable>(jsonString!!)
         if (mysTable != null) {
             tables = mysTable
+            getPage()
+            tableLists += generateItems1(CourseTable::class, mysTable!!.rows)
+            tableAdapter.setMyTableList(tableLists)
+            runOnUiThread {
+                tableAdapter.notifyDataSetChanged()
+            }
         }
+    }
+
+    override fun cellClick(row: Table) {
+
+        val _row: CourseTable = row as CourseTable
+
+        dialog = alert {
+            title = "選項"
+            customView {
+                verticalLayout {
+                    button("檢視") {
+                        onClick {
+                            dialog.dismiss()
+                            toShowCourse(row.token)
+                        }
+                    }
+                    button("編輯") {
+                        onClick {
+                            dialog.dismiss()
+                            //if (token != null) {
+                            toEditCourse(row.title, row.token, row.coach!!.token)
+                            //}
+                        }
+                    }
+                    button("刪除") {
+                        onClick {
+                            dialog.dismiss()
+                            //toDelete1("course", row.token)
+                        }
+                    }
+                    button("取消") {
+                        onClick {dialog.dismiss()}
+                    }
+                }
+            }
+        }.show()
     }
 
 //    override fun generateItems(): ArrayList<Item> {

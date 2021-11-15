@@ -137,11 +137,11 @@
             android:name=".Controllers.ShowTimetableVC"
             android:exported="true" />
         <activity android:name=".Controllers.DateSelectVC" />
-        <activity android:name=".Controllers.LoginActivity" />
+        <activity android:name=".Controllers.LoginVC" />
         <activity android:name=".Controllers.RegisterVC" />
         <activity android:name=".Controllers.BaseActivity" />
-        <activity android:name=".Controllers.ForgetPasswordActivity" />
-        <activity android:name=".Controllers.UpdatePasswordActivity" />
+        <activity android:name=".Controllers.ForgetPasswordVC" />
+        <activity android:name=".Controllers.UpdatePasswordVC" />
         <activity android:name=".Controllers.AccountActivity" />
         <activity android:name=".Controllers.AccountUpdate1Activity" />
         <activity android:name=".Controllers.ShowActivity" />
@@ -154,7 +154,7 @@
         <activity android:name=".Controllers.ManagerVC" />
         <activity android:name=".Controllers.ManagerFunctionVC1" />
         <activity android:name=".Controllers.ManagerCourseVC" />
-        <activity android:name=".Controllers.ValidateActivity" />
+        <activity android:name=".Controllers.ValidateVC" />
         <activity
             android:name=".Controllers.TempPlaySignupOneVC"
             android:exported="true" />

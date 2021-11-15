@@ -10,6 +10,8 @@ import androidx.appcompat.app.AlertDialog
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.google.gson.JsonParseException
 import com.sportpassword.bm.Adapters.Form.*
+import com.sportpassword.bm.Adapters.OneSectionAdapter
+import com.sportpassword.bm.Data.OneRow
 import com.sportpassword.bm.Form.CourseForm
 import com.sportpassword.bm.Form.FormItem.*
 import com.sportpassword.bm.Form.FormItemCellType
@@ -105,9 +107,19 @@ class EditCourseVC : MyTableVC(), ValueChangedDelegate {
         refreshLayout = refresh
         setRefreshListener()
 
+        oneSectionAdapter = OneSectionAdapter(this, R.layout.cell_section, this, hashMapOf())
+        oneSectionAdapter.setOneSection(oneSections)
+        recyclerView.adapter = oneSectionAdapter
+
         if (course_token != null && course_token!!.length > 0) {
+            init()
             refresh()
         }
+    }
+
+    override fun init() {
+        isPrevIconShow = true
+        super.init()
     }
 
     override fun refresh() {
@@ -116,7 +128,11 @@ class EditCourseVC : MyTableVC(), ValueChangedDelegate {
         dataService.getOne(this, params) { success ->
             if (success) {
                 genericTable()
-                putValue()
+                runOnUiThread {
+                    initData()
+                    oneSectionAdapter.notifyDataSetChanged()
+                    //putValue()
+                }
                 //notifyChanged(true)
 
                 //teamedit_name.setSelection(teamedit_name.length())
@@ -139,6 +155,163 @@ class EditCourseVC : MyTableVC(), ValueChangedDelegate {
             myTable!!.filterRow()
         } else {
             warning("解析伺服器所傳的字串失敗，請洽管理員")
+        }
+    }
+
+    private fun initData() {
+
+        if (myTable != null) {
+            val rows: ArrayList<OneRow> = arrayListOf()
+            var row = OneRow(
+                "標題",
+                myTable!!.title,
+                myTable!!.title,
+                TITLE_KEY,
+                "textField",
+                KEYBOARD.default,
+                "兒童訓練班",
+                "",
+                true
+            )
+            row.msg = "課程標題沒有填寫"
+            rows.add(row)
+            row = OneRow(
+                "youtube代碼",
+                "",
+                "",
+                YOUTUBE_KEY,
+                "textField",
+                KEYBOARD.default,
+                "請輸入youtube影片代碼"
+            )
+            rows.add(row)
+            var section = makeSectionRow("一般", "general", rows, true)
+            oneSections.add(section)
+
+            rows.clear()
+            row = OneRow(
+                "收費標準",
+                myTable!!.price.toString(),
+                myTable!!.price.toString(),
+                PRICE_KEY,
+                "textField",
+                KEYBOARD.numberPad,
+                "請輸入收費費用"
+            )
+            rows.add(row)
+            row = OneRow(
+                "收費週期",
+                myTable!!.price_unit.toString(),
+                myTable!!.price_unit_show,
+                PRICE_UNIT_KEY,
+                "more"
+            )
+            rows.add(row)
+            row = OneRow(
+                "補充說明",
+                myTable!!.price_short_show,
+                myTable!!.price_short_show,
+                PRICE_DESC_KEY,
+                "textField",
+                KEYBOARD.default,
+                "收費標準的補充說明"
+            )
+            rows.add(row)
+            section = makeSectionRow("收費", "charge", rows, true)
+            oneSections.add(section)
+
+            rows.clear()
+            row = OneRow(
+                "課程週期",
+                myTable!!.kind,
+                myTable!!.kind_show,
+                COURSE_KIND_KEY,
+                "more"
+            )
+            rows.add(row)
+            row = OneRow(
+                "週期",
+                myTable!!.cycle_unit,
+                myTable!!.cycle_unit_show,
+                CYCLE_UNIT_KEY,
+                "more"
+            )
+            rows.add(row)
+            row = OneRow(
+                "星期幾",
+                myTable!!.weekday.toString(),
+                myTable!!.weekdays_show,
+                WEEKDAY_KEY,
+                "more"
+            )
+            rows.add(row)
+            row = OneRow(
+                "開始時間",
+                myTable!!.start_time,
+                myTable!!.start_time_show,
+                START_TIME_KEY,
+                "more"
+            )
+            rows.add(row)
+            row = OneRow(
+                "結束時間",
+                myTable!!.end_time,
+                myTable!!.end_time_show,
+                END_TIME_KEY,
+                "more"
+            )
+            rows.add(row)
+            row = OneRow(
+                "開始日期",
+                myTable!!.start_date,
+                myTable!!.start_date,
+                START_DATE_KEY,
+                "more"
+            )
+            rows.add(row)
+            row = OneRow(
+                "結束日期",
+                myTable!!.end_date,
+                myTable!!.end_date,
+                END_DATE_KEY,
+                "more"
+            )
+            rows.add(row)
+            row = OneRow(
+                "人數限制",
+                myTable!!.people_limit.toString(),
+                myTable!!.people_limit_show,
+                PEOPLE_LIMIT_KEY,
+                "textField"
+            )
+            rows.add(row)
+            row = OneRow(
+                "詳細介紹",
+                myTable!!.content,
+                myTable!!.content,
+                CONTENT_KEY,
+                "textField"
+            )
+            rows.add(row)
+
+            section = makeSectionRow("課程", "charge", rows, true)
+            oneSections.add(section)
+        }
+    }
+
+    override fun cellMoreClick(sectionIdx: Int, rowIdx: Int) {
+
+        val row = getRowFromIdx(sectionIdx, rowIdx)
+        if (row.key == PRICE_UNIT_KEY) {
+
+        } else if (row.key == COURSE_KIND_KEY) {
+
+        } else if (row.key == CYCLE_UNIT_KEY) {
+
+        } else if (row.key == START_TIME_KEY || row.key == END_TIME_KEY) {
+
+        } else if (row.key == START_DATE_KEY || row.key == END_DATE_KEY) {
+
         }
     }
 
@@ -410,7 +583,7 @@ class EditCourseVC : MyTableVC(), ValueChangedDelegate {
         originMarginBottom = l.bottomMargin
     }
 
-    fun submit(view: View) {
+    fun submitBtnPressed(view: View) {
 
         Loading.show(mask)
         hideKeyboard()
@@ -466,7 +639,7 @@ class EditCourseVC : MyTableVC(), ValueChangedDelegate {
 
     }
 
-    fun cancel(view: View) {
+    fun cancelBtnPressed(view: View) {
         prev()
     }
 }

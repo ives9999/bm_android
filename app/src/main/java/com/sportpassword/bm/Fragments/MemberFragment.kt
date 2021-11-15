@@ -7,6 +7,7 @@ import android.view.*
 import android.widget.*
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.sportpassword.bm.Adapters.MemberSectionAdapter
 import com.sportpassword.bm.Controllers.*
 import com.sportpassword.bm.Data.MemberRow
 import com.sportpassword.bm.Data.MemberSection

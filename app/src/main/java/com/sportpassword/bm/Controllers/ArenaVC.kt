@@ -31,6 +31,13 @@ class ArenaVC : MyTableVC() {
         this.dataService = ArenaService
         able_type = "arena"
 
+        if (intent.hasExtra("isPrevIconShow")) {
+            isPrevIconShow = intent.getBooleanExtra("isPrevIconShow", false)
+        }
+
+        if (intent.hasExtra("isSearchIconShow")) {
+            isSearchIconShow = intent.getBooleanExtra("isSearchIconShow", false)
+        }
 
 //        youAdapter = YouAdapter()
 //        youAdapter.items = youItems

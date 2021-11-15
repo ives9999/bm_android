@@ -21,9 +21,9 @@ class TeachVC : MyTableVC() {
         this.dataService = TeachService
         able_type = "teach"
 
-        searchRows = arrayListOf(
-            hashMapOf("title" to "標題關鍵字","show" to "全部","key" to KEYWORD_KEY,"value" to "")
-        )
+//        searchRows = arrayListOf(
+//            hashMapOf("title" to "標題關鍵字","show" to "全部","key" to KEYWORD_KEY,"value" to "")
+//        )
 
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_store_vc)

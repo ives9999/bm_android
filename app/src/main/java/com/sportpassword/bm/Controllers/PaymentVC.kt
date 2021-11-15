@@ -5,6 +5,8 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import com.google.gson.Gson
+import com.sportpassword.bm.Adapters.OneItemAdapter
+import com.sportpassword.bm.Adapters.OneSectionAdapter
 import com.sportpassword.bm.Data.OneRow
 import com.sportpassword.bm.Data.OneSection
 import com.sportpassword.bm.Models.*
@@ -147,7 +149,9 @@ class PaymentVC : MyTableVC() {
                 }
             }
             closeRefresh()
-            Loading.hide(mask)
+            runOnUiThread {
+                Loading.hide(mask)
+            }
         }
     }
 
@@ -155,16 +159,20 @@ class PaymentVC : MyTableVC() {
         try {
             orderTable = Gson().fromJson(jsonString, OrderTable::class.java)
         } catch (e: java.lang.Exception) {
-            warning(e.localizedMessage)
+            runOnUiThread {
+                warning(e.localizedMessage)
+            }
         }
         if (orderTable == null) {
             warning("購物車中無商品，或購物車超過一個錯誤，請洽管理員")
         } else {
             orderTable!!.filterRow()
-            if (orderTable!!.all_process > 1) {//已經付費了
-                footer.visibility = View.GONE
-            } else {
-                footer.visibility = View.VISIBLE
+            runOnUiThread {
+                if (orderTable!!.all_process > 1) {//已經付費了
+                    footer.visibility = View.GONE
+                } else {
+                    footer.visibility = View.VISIBLE
+                }
             }
 
             initData()

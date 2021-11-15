@@ -1,21 +1,10 @@
 package com.sportpassword.bm.Utilities
 
 import android.content.Intent
-import android.content.SharedPreferences
-import android.net.Uri
-import android.os.Build
 import android.provider.MediaStore
 import android.view.View
-import androidx.core.content.FileProvider
 import com.sportpassword.bm.Controllers.*
-import com.sportpassword.bm.Form.FormItem.AreaFormItem
-import com.sportpassword.bm.Form.FormItem.CityFormItem
-import com.sportpassword.bm.Models.MemberTable
 import com.sportpassword.bm.member
-import kotlinx.android.synthetic.main.mask.*
-import java.lang.Exception
-import kotlin.reflect.full.createType
-import kotlin.reflect.full.memberProperties
 
 interface ToInterface {
 
@@ -61,9 +50,12 @@ interface ToInterface {
             }
         }
     }
-    fun toArena(member_like: Boolean = false) {
+    fun toArena(member_like: Boolean = false, isPrevIconShow: Boolean = false, isSearchIconShow: Boolean = false) {
         val i = Intent(mainDelegate, ArenaVC::class.java)
         i.putExtra("member_like", member_like)
+        i.putExtra("isPrevIconShow", isPrevIconShow)
+        i.putExtra("isSearchIconShow", isSearchIconShow)
+
         mainDelegate.startActivity(i)
     }
 
@@ -78,9 +70,12 @@ interface ToInterface {
         mainDelegate.startActivity(i)
     }
 
-    fun toCourse(member_like: Boolean) {
+    fun toCourse(member_like: Boolean, isPrevIconShow: Boolean = false, isSearchIconShow: Boolean = false) {
         val i = Intent(mainDelegate, CourseVC::class.java)
         i.putExtra("member_like", member_like)
+        i.putExtra("isPrevIconShow", isPrevIconShow)
+        i.putExtra("isSearchIconShow", isSearchIconShow)
+
         mainDelegate.startActivity(i)
     }
 
@@ -122,12 +117,12 @@ interface ToInterface {
 //    }
 
     fun toForgetPassword() {
-        val forgetPasswordIntent: Intent = Intent(mainDelegate, ForgetPasswordActivity::class.java)
+        val forgetPasswordIntent: Intent = Intent(mainDelegate, ForgetPasswordVC::class.java)
         mainDelegate.startActivity(forgetPasswordIntent)
     }
 
     fun toLogin() {
-        val i: Intent = Intent(mainDelegate, LoginActivity::class.java)
+        val i: Intent = Intent(mainDelegate, LoginVC::class.java)
         mainDelegate.loginVC.launch(i)
     }
 
@@ -491,10 +486,12 @@ interface ToInterface {
         mainDelegate.startActivity(i)
     }
 
-    fun toTeam(params: HashMap<String, String>?, member_like: Boolean = false) {
+    fun toTeam(params: HashMap<String, String>?, member_like: Boolean = false, isPrevIconShow: Boolean = false, isSearchIconShow: Boolean = false) {
         val i = Intent(mainDelegate, TeamVC::class.java)
         i.putExtra("member_like", member_like)
         i.putExtra("params", params)
+        i.putExtra("isPrevIconShow", isPrevIconShow)
+        i.putExtra("isSearchIconShow", isSearchIconShow)
         mainDelegate.startActivity(i)
     }
 
@@ -554,8 +551,8 @@ interface ToInterface {
 //    }
 
     fun toUpdatePassword() {
-        val i = Intent(mainDelegate, UpdatePasswordActivity::class.java)
-        mainDelegate.startActivity(i)
+        val i = Intent(mainDelegate, UpdatePasswordVC::class.java)
+        mainDelegate.updatePasswordVC.launch(i)
     }
 
     fun toValidate(type: String) {
@@ -563,7 +560,7 @@ interface ToInterface {
 //        intent.putExtra("type", type)
 //        mainDelegate.startActivityForResult(intent, mainDelegate.VALIDATE_REQUEST_CODE)
 
-        val i: Intent = Intent(mainDelegate, ValidateActivity::class.java)
+        val i: Intent = Intent(mainDelegate, ValidateVC::class.java)
         i.putExtra("type", type)
         mainDelegate.validateVC.launch(i)
 

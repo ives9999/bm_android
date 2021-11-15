@@ -245,7 +245,7 @@ class ShowTeachVC : YouTubeBaseActivity(), YouTubePlayer.OnInitializedListener {
     fun likeButtonPressed(view: View) {
 
         if (!member.isLoggedIn) {
-            val loginIntent: Intent = Intent(this, LoginActivity::class.java)
+            val loginIntent: Intent = Intent(this, LoginVC::class.java)
             this.startActivity(loginIntent)
         } else {
             if (table != null) {

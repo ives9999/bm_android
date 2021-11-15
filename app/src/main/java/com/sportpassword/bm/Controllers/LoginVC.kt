@@ -19,7 +19,7 @@ import kotlinx.android.synthetic.main.mask.*
 import kotlin.reflect.full.memberProperties
 
 
-class LoginActivity : BaseActivity() {
+class LoginVC : BaseActivity() {
 
     var table: MemberTable? = null
 
@@ -59,7 +59,9 @@ class LoginActivity : BaseActivity() {
         //println(playerID)
 
         MemberService.login(this, email, password, playerID) { success ->
-            Loading.hide(mask)
+            runOnUiThread {
+                Loading.hide(mask)
+            }
             //println(success)
             if (success) {
 //                println(MemberService.jsonString)
@@ -67,7 +69,9 @@ class LoginActivity : BaseActivity() {
                 try {
                     t = Gson().fromJson<SuccessTable>(MemberService.jsonString, SuccessTable::class.java)
                 } catch (e: JsonParseException) {
-                    warning(e.localizedMessage!!)
+                    runOnUiThread {
+                        warning(e.localizedMessage!!)
+                    }
                 }
                 var t_success: Boolean = false
                 var t_msg: String = ""
@@ -76,7 +80,9 @@ class LoginActivity : BaseActivity() {
                     t_msg = t.msg
                 }
                 if (!t_success) {
-                    warning(t_msg)
+                    runOnUiThread {
+                        warning(t_msg)
+                    }
                 } else {
                     table = jsonToModel<MemberTable>(MemberService.jsonString)
                     if (table != null) {
@@ -89,7 +95,9 @@ class LoginActivity : BaseActivity() {
                         setResult(Activity.RESULT_OK, intent)
                         finish()
                     } else {
-                        warning(MemberService.msg)
+                        runOnUiThread {
+                            warning(MemberService.msg)
+                        }
                     }
                 }
                 //if (MemberService.success) {

@@ -1,16 +1,10 @@
 package com.sportpassword.bm.Controllers
 
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.widget.Button
-import android.widget.ImageView
-import android.widget.TextView
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
+import com.sportpassword.bm.Adapters.MemberSectionAdapter
 import com.sportpassword.bm.Data.MemberRow
 import com.sportpassword.bm.Data.MemberSection
 import com.sportpassword.bm.Models.MemberTable
@@ -24,7 +18,6 @@ import kotlinx.android.synthetic.main.bottom_view.*
 import kotlinx.android.synthetic.main.login_out.*
 import kotlinx.android.synthetic.main.mask.*
 import kotlinx.android.synthetic.main.nav_header_main.*
-import kotlinx.android.synthetic.main.top_view.*
 import org.jetbrains.anko.backgroundColor
 
 var memberSections: ArrayList<MemberSection> = arrayListOf()
@@ -73,14 +66,18 @@ class MemberVC : MyTableVC() {
         if (member.isLoggedIn) {
             Loading.show(mask)
             dataService.getOne(this, hashMapOf("token" to member.token!!)) { success ->
-                Loading.hide(mask)
+                runOnUiThread {
+                    Loading.hide(mask)
+                }
                 if (success) {
                     val table = jsonToModel<MemberTable>(MemberService.jsonString)
                     table?.toSession(this, true)
                     memberSections = updateSectionRow1()
                     memberSectionAdapter.setMyTableSection(memberSections)
-                    memberSectionAdapter.notifyDataSetChanged()
-                    loginout()
+                    runOnUiThread {
+                        memberSectionAdapter.notifyDataSetChanged()
+                        loginout()
+                    }
                 } else {
                     warning("無法從伺服器取得會員資料，請稍後再試或聯絡管理員")
                 }
@@ -144,11 +141,11 @@ class MemberVC : MyTableVC() {
             TO_LIKE -> {
                 val able_type: String = row.able_type
                 when(able_type) {
-                    "team" -> this.toTeam(null, true)
-                    "arena" -> this.toArena(true)
+                    "team" -> this.toTeam(null, true, true, true)
+                    "arena" -> this.toArena(true, true, true)
                     "teach" -> this.toTeach(true)
                     "coach" -> this.toCoach(true)
-                    "course" -> this.toCourse(true)
+                    "course" -> this.toCourse(true, true, true)
                     "product" -> this.toProduct(true)
                     "store" -> this.toStore(true)
                 }
@@ -328,95 +325,4 @@ class MemberVC : MyTableVC() {
         memberSectionAdapter.setMyTableSection(memberSections)
         memberSectionAdapter.notifyDataSetChanged()
     }
-}
-
-class MemberSectionAdapter(val context: Context, private val resource: Int, var delegate: MemberVC): RecyclerView.Adapter<MemberSectionViewHolder>() {
-
-    private var memberSections: ArrayList<MemberSection> = arrayListOf()
-
-    fun setMyTableSection(tableSections: ArrayList<MemberSection>) {
-        this.memberSections = tableSections
-    }
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MemberSectionViewHolder {
-        val inflater = LayoutInflater.from(parent.context)
-        val viewHolder = inflater.inflate(resource, parent, false)
-
-        return MemberSectionViewHolder(viewHolder)
-
-    }
-
-    override fun onBindViewHolder(holder: MemberSectionViewHolder, position: Int) {
-        val section: MemberSection = memberSections[position]
-        holder.titleLbl.text = section.title
-
-        val tableSection: MemberSection = memberSections[position]
-        var iconID: Int = 0
-        if (tableSection.isExpanded) {
-            iconID = context.resources.getIdentifier("to_down", "drawable", context.packageName)
-        } else {
-            iconID = context.resources.getIdentifier("to_right", "drawable", context.packageName)
-        }
-        holder.greater.setImageResource(iconID)
-
-        val adapter: MemberItemAdapter = MemberItemAdapter(context, position, memberSections[position], delegate)
-//            holder.recyclerView.setHasFixedSize(true)
-        holder.recyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
-        holder.recyclerView.adapter = adapter
-
-        holder.greater.setOnClickListener {
-            delegate.handleMemberSectionExpanded(position)
-        }
-    }
-
-    override fun getItemCount(): Int {
-        return memberSections.size
-    }
-}
-
-class MemberSectionViewHolder(val viewHolder: View): RecyclerView.ViewHolder(viewHolder) {
-
-    var titleLbl: TextView = viewHolder.findViewById(R.id.titleLbl)
-    var greater: ImageView = viewHolder.findViewById(R.id.greater)
-    var recyclerView: RecyclerView = viewHolder.findViewById(R.id.recyclerView)
-}
-
-class MemberItemAdapter(val context: Context, private val sectionIdx: Int, private val memberSection: MemberSection, var delegate: MemberVC): RecyclerView.Adapter<MemberItemViewHolder>() {
-
-    var memberRows: ArrayList<MemberRow> = memberSection.items
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MemberItemViewHolder {
-        val inflater = LayoutInflater.from(parent.context)
-        val viewHolder = inflater.inflate(R.layout.adapter_member_functions, parent, false)
-
-        return MemberItemViewHolder(viewHolder)
-    }
-
-    override fun onBindViewHolder(holder: MemberItemViewHolder, position: Int) {
-        val row: MemberRow = memberRows[position]
-        holder.titleLbl.text = row.title
-
-        val icon: String = row.icon
-        val iconID = context.resources.getIdentifier(icon, "drawable", context.packageName)
-        holder.iconView.setImageResource(iconID)
-
-        holder.viewHolder.setOnClickListener {
-            delegate.cellClick1(sectionIdx, position)
-        }
-    }
-
-    override fun getItemCount(): Int {
-        if (memberSection.isExpanded) {
-            return memberRows.size
-        } else {
-            return 0
-        }
-    }
-
-}
-
-class MemberItemViewHolder(val viewHolder: View): RecyclerView.ViewHolder(viewHolder) {
-
-    var iconView: ImageView = viewHolder.findViewById(R.id.icon)
-    var titleLbl: TextView = viewHolder.findViewById(R.id.text)
 }

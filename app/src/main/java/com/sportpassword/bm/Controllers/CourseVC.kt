@@ -33,6 +33,14 @@ class CourseVC : MyTableVC() {
         this.dataService = CourseService
         able_type = "course"
 
+        if (intent.hasExtra("isPrevIconShow")) {
+            isPrevIconShow = intent.getBooleanExtra("isPrevIconShow", false)
+        }
+
+        if (intent.hasExtra("isSearchIconShow")) {
+            isSearchIconShow = intent.getBooleanExtra("isSearchIconShow", false)
+        }
+
         courseTabLine.backgroundColor = myColorGreen
         topTitleLbl.setText("課程")
         //setMyTitle("課程")

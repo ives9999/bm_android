@@ -44,16 +44,42 @@ class CourseTable: Table() {
 
     var start_time_show: String = ""
     var end_time_show: String = ""
+    var price_unit_show: String = ""
     var price_long_show: String = ""
     var price_short_show: String = ""
     var people_limit_show: String = ""
     var kind_show: String = ""
+    var cycle_unit_show: String = ""
     var weekdays_show: String = ""
     var interval_show: String = ""
     var signup_count_show: String = ""
 
     override fun filterRow() {
         super.filterRow()
+
+        if (youtube == null) {
+            youtube = ""
+        }
+
+        if (start_date == null) {
+            start_date = ""
+        }
+
+        if (end_date == null) {
+            end_date = ""
+        }
+
+        if (price_unit != null && price_unit.length > 0) {
+            price_unit_show = PRICE_UNIT.from(price_unit).value
+        }
+
+        if (kind != null && kind.length > 0) {
+            kind_show = COURSE_KIND.from(kind).value
+        }
+
+        if (cycle_unit != null && cycle_unit.length > 0) {
+            cycle_unit_show = CYCLE_UNIT.from(cycle_unit).value
+        }
 
         if (start_time.length > 0) {
             start_time_show = start_time.noSec()

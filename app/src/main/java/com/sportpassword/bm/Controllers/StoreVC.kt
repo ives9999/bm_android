@@ -21,10 +21,10 @@ class StoreVC : MyTableVC() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
-        searchRows = arrayListOf(
-            hashMapOf("title" to "關鍵字","show" to "全部","key" to KEYWORD_KEY,"value" to ""),
-            hashMapOf("title" to "縣市","show" to "全部","key" to CITY_KEY,"value" to "")
-        )
+//        searchRows = arrayListOf(
+//            hashMapOf("title" to "關鍵字","show" to "全部","key" to KEYWORD_KEY,"value" to ""),
+//            hashMapOf("title" to "縣市","show" to "全部","key" to CITY_KEY,"value" to "")
+//        )
 
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_store_vc)
@@ -100,26 +100,26 @@ class StoreVC : MyTableVC() {
 //        return items
 //    }
 
-    override fun prepare(idx: Int) {
-
-        val row = searchRows.get(idx)
-        var key: String = ""
-        if (row.containsKey("key")) {
-            key = row["key"]!!
-        }
-
-        var value: String = ""
-        if (row.containsKey("value") && row["value"]!!.isNotEmpty()) {
-            value = row["value"]!!
-        }
-
-
-        when (key) {
-            CITY_KEY -> {
-                toSelectCity(value, this)
-            }
-        }
-    }
+//    override fun prepare(idx: Int) {
+//
+//        val row = searchRows.get(idx)
+//        var key: String = ""
+//        if (row.containsKey("key")) {
+//            key = row["key"]!!
+//        }
+//
+//        var value: String = ""
+//        if (row.containsKey("value") && row["value"]!!.isNotEmpty()) {
+//            value = row["value"]!!
+//        }
+//
+//
+//        when (key) {
+//            CITY_KEY -> {
+//                toSelectCity(value, this)
+//            }
+//        }
+//    }
 
 
 //    override fun rowClick(item: com.xwray.groupie.Item<com.xwray.groupie.GroupieViewHolder>, view: View) {
@@ -129,17 +129,17 @@ class StoreVC : MyTableVC() {
 //        toShowStore(table.token)
 //    }
 
-    fun remove(indexPath: IndexPath) {
-        val row = searchRows[indexPath.row]
-        val key = row["key"]!!
-        when (key) {
-            CITY_KEY -> {
-                citys.clear()
-                row["show"] = "全部"
-            }
-        }
-        row["value"] = ""
-    }
+//    fun remove(indexPath: IndexPath) {
+//        val row = searchRows[indexPath.row]
+//        val key = row["key"]!!
+//        when (key) {
+//            CITY_KEY -> {
+//                citys.clear()
+//                row["show"] = "全部"
+//            }
+//        }
+//        row["value"] = ""
+//    }
 }
 
 //class StoreItem(override var context: Context, var _row: StoreTable): ListItem<Table>(context, _row) {

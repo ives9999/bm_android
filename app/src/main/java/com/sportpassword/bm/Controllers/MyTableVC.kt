@@ -9,6 +9,7 @@ import android.widget.RelativeLayout
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.sportpassword.bm.Adapters.ListAdapter
+import com.sportpassword.bm.Adapters.OneSectionAdapter
 import com.sportpassword.bm.Data.OneRow
 import com.sportpassword.bm.Data.OneSection
 import com.sportpassword.bm.Data.SearchRow
@@ -59,9 +60,6 @@ abstract class MyTableVC : BaseActivity() {
 
     //取代superDataLists(define in BaseActivity)，放置所有拿到的SuperModel，分頁時會使用到
     //var <T> allSuperModels: ArrayList<T> = arrayListOf()
-
-    lateinit var oneSectionAdapter: OneSectionAdapter
-    var oneSections: ArrayList<OneSection> = arrayListOf()
 
     val rowHeight: Int = 200
     var blackViewHeight: Int = 500

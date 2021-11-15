@@ -18,9 +18,9 @@ class ProductVC : MyTableVC() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
-        searchRows = arrayListOf(
-            hashMapOf("title" to "標題關鍵字","key" to KEYWORD_KEY,"value" to "","value_type" to "String","show" to ""),
-        )
+//        searchRows = arrayListOf(
+//            hashMapOf("title" to "標題關鍵字","key" to KEYWORD_KEY,"value" to "","value_type" to "String","show" to ""),
+//        )
 
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_product_vc)

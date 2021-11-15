@@ -27,8 +27,10 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.google.gson.internal.LinkedTreeMap
 import com.onesignal.OneSignal
+import com.sportpassword.bm.Adapters.OneSectionAdapter
 import com.sportpassword.bm.Adapters.SearchSectionAdapter
 import com.sportpassword.bm.App
+import com.sportpassword.bm.Data.OneSection
 import com.sportpassword.bm.Data.SearchSection
 import com.sportpassword.bm.Fragments.*
 import com.sportpassword.bm.Models.*
@@ -93,13 +95,19 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener,
 
     var msg: String = ""
 //    var superDataLists: ArrayList<SuperData> = arrayListOf()
+    //var searchRows: ArrayList<HashMap<String, String>> = arrayListOf()
 
     val REQUEST_PHONE_CALL = 100
     var mobile: String = ""
 
     //for search
-    var searchRows: ArrayList<HashMap<String, String>> = arrayListOf()
+    lateinit var searchSectionAdapter: SearchSectionAdapter
     var searchSections: ArrayList<SearchSection> = arrayListOf()
+
+    //for one
+    lateinit var oneSectionAdapter: OneSectionAdapter
+    var oneSections: ArrayList<OneSection> = arrayListOf()
+
 
     var containerID: String = "constraintLayout"
     var citys: ArrayList<City> = arrayListOf()
@@ -149,8 +157,6 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener,
     var delegate: BaseActivity? = null
 
     var able_type: String = "coach"
-
-    lateinit var searchSectionAdapter: SearchSectionAdapter
 
     var myColorGreen: Int = 0
 //    var prevIcon: ImageButton? = null
@@ -254,7 +260,7 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener,
 //        for (i in 0 until unShowPushs.length()) {
             val row: JSONObject = rows.getJSONObject(i)
             //val row: JSONObject = unShowPushs.getJSONObject(i)
-            if (!row.getBoolean("isShow")) {
+            if (row.has("isShow") && !row.getBoolean("isShow")) {
                 val content: String = row.getString("content")
                 info(content)
                 row.put("isShow", true)
@@ -462,7 +468,7 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener,
     open fun searchSubmit() {}
 
     fun home(context: Context) {
-        val intent : Intent = Intent(context, MainActivity::class.java)
+        val intent : Intent = Intent(context, MemberVC::class.java)
         startActivity(intent)
     }
 
@@ -807,7 +813,14 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener,
     }
 
     override fun cellTextChanged(sectionIdx: Int, rowIdx: Int, str: String) {
-        searchSections[sectionIdx].items[rowIdx].value = str
+
+        if (searchSections.size > sectionIdx && searchSections[sectionIdx].items.size > rowIdx) {
+            searchSections[sectionIdx].items[rowIdx].value = str
+        }
+
+        if (oneSections.size > sectionIdx && oneSections[sectionIdx].items.size > rowIdx) {
+            oneSections[sectionIdx].items[rowIdx].value = str
+        }
     }
 
     override fun cellSwitchChanged(sectionIdx: Int, rowIdx: Int, b: Boolean) {
@@ -1208,226 +1221,210 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener,
 //        startActivityForResult(intent!!, SEARCH_REQUEST_CODE)
 //    }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-
-        var value = "全部"
-        var idx = 0
-        when (requestCode) {
-            SEARCH_REQUEST_CODE -> {
-                if (resultCode == Activity.RESULT_OK) {
-                    var key = ""
-                    if (data != null && data.hasExtra("key")) {
-                        key = data.getStringExtra("key")!!
-                    }
-                    var page = ""
-                    if (data != null && data.hasExtra("page")) {
-                        page = data.getStringExtra("page")!!
-                    }
-                    when (key) {
-                        CITY_KEY -> {
-                            idx = 1
-                            citys = data!!.getParcelableArrayListExtra("citys")!!
-                            if (citys.size > 0) {
-                                var arr: ArrayList<String> = arrayListOf()
-                                for (city in citys) {
-                                    arr.add(city.name)
-                                }
-                                value = arr.joinToString()
-                            } else {
-                                value = "全部"
-                            }
-                            if (page == "coach") {
-                                citys_coach = citys
-                            } else if (page == "team") {
-                                citys_team = citys
-                            }
-// move to SEARCH_REQUEST_CODE1 block
-//                            else if (page == "store") {
-//                                citys_store = citys
-//                            }
-                        }
-                        ARENA_KEY -> {
-                            idx = 2
-//                            arenas = data!!.getParcelableArrayListExtra("arenas")!!
-//                            if (arenas.size > 0) {
+//    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+//        super.onActivityResult(requestCode, resultCode, data)
+//
+//        var value = "全部"
+//        var idx = 0
+//        when (requestCode) {
+//            SEARCH_REQUEST_CODE -> {
+//                if (resultCode == Activity.RESULT_OK) {
+//                    var key = ""
+//                    if (data != null && data.hasExtra("key")) {
+//                        key = data.getStringExtra("key")!!
+//                    }
+//                    var page = ""
+//                    if (data != null && data.hasExtra("page")) {
+//                        page = data.getStringExtra("page")!!
+//                    }
+//                    when (key) {
+//                        CITY_KEY -> {
+//                            idx = 1
+//                            citys = data!!.getParcelableArrayListExtra("citys")!!
+//                            if (citys.size > 0) {
 //                                var arr: ArrayList<String> = arrayListOf()
-//                                for (arena in arenas) {
-//                                    arr.add(arena.name)
+//                                for (city in citys) {
+//                                    arr.add(city.name)
 //                                }
 //                                value = arr.joinToString()
 //                            } else {
 //                                value = "全部"
 //                            }
-                        }
-                        TEAM_WEEKDAYS_KEY -> {
-                            idx = 3
-                            weekdays = data!!.getIntegerArrayListExtra("weekdays")!!
-                            if (weekdays.size > 0) {
-                                var arr: ArrayList<String> = arrayListOf()
-                                val gDays = Global.weekdays
-                                for (day in weekdays) {
-                                    for (gDay in gDays) {
-                                        if (day == gDay.get("value")!! as Int) {
-                                            arr.add(gDay.get("simple_text")!! as String)
-                                            break
-                                        }
-                                    }
-                                }
-                                value = arr.joinToString()
-                            } else {
-                                value = "全部"
-                            }
-                        }
-                        TEAM_PLAY_START_KEY -> {
-                            idx = 4
-                            times = data!!.getSerializableExtra("times") as HashMap<String, Any>
-                            if (times.containsKey("time")) {
-                                value = times["time"]!! as String
-                            } else {
-                                value = "全部"
-                            }
-                        }
-                        TEAM_DEGREE_KEY -> {
-                            idx = 5
-                            degrees = data!!.getSerializableExtra("degrees") as ArrayList<DEGREE>
-                            if (degrees.size > 0) {
-                                var arr: ArrayList<String> = arrayListOf()
-                                degrees.forEach {
-                                    arr.add(it.value)
-                                }
-                                value = arr.joinToString()
-                            } else {
-                                value = "全部"
-                            }
-                        }
-                        AREA_KEY -> {
-                            idx = 2
-                            areas = data!!.getParcelableArrayListExtra("areas")!!
-                            if (areas.size > 0) {
-                                var arr: ArrayList<String> = arrayListOf()
-                                for (area in areas) {
-                                    arr.add(area.name)
-                                }
-                                value = arr.joinToString()
-                            } else {
-                                value = "全部"
-                            }
-                        }
-                    }
-                    searchRows[idx]["detail"] = value
-                    //val rows = generateSearchItems(page)
-                    //searchAdapter.update(rows)
-                }
-            }
-            SEARCH_REQUEST_CODE1 -> {
-                if (resultCode == Activity.RESULT_OK) {
-                    var key = ""
-                    if (data != null && data.hasExtra("key")) {
-                        key = data.getStringExtra("key")!!
-                    }
-                    var selecteds: ArrayList<String>? = null
-                    if (data!!.hasExtra("selecteds")) {
-                        selecteds = data.getStringArrayListExtra("selecteds")
-                    }
-                    var selected: String? = null
-                    if (data.hasExtra("selected")) {
-                        selected = data.getStringExtra("selected")
-                    }
-
-                    val getRow = fun(key: String): HashMap<String, String>? {
-                        var row: HashMap<String, String>? = null
-                        for ((i, searchRow) in searchRows.withIndex()) {
-                            if (searchRow.containsKey("key")) {
-                                if (key == searchRow.get("key")) {
-                                    row = searchRow
-                                    break
-                                }
-                            }
-                        }
-
-                        return row
-                    }
-
-                    val updateRow = fun(key: String, row: HashMap<String, String>) {
-                        var idx: Int = -1
-                        for ((i, searchRow) in searchRows.withIndex()) {
-                            if (searchRow.containsKey("key")) {
-                                if (key == searchRow.get("key")) {
-                                    idx = i
-                                    break
-                                }
-                            }
-                        }
-                        if (idx >= 0) {
-                            searchRows[idx] = row
-                        }
-                    }
-
-                    val row: HashMap<String, String>? = getRow(key)
-
-                    var show = ""
-
-                    when (key) {
-                        CITY_KEY -> {
-                            val session: SharedPreferences = this.getSharedPreferences(SESSION_FILENAME, 0)
-                            val str = session.getString("citys", "")!!
-                            var arr: JSONArray? = null
-                            if (str.length > 0) {
-                                try {
-                                    arr = JSONArray(str)
-                                } catch (e: java.lang.Exception) {
-                                    //println(e.localizedMessage)
-                                }
-                            }
-
-                            val texts: ArrayList<String> = arrayListOf()
-                            for (selected in selecteds!!) {
-                                if (arr != null) {
-                                    for (i in 0..arr!!.length() - 1) {
-                                        val obj = arr!![i] as JSONObject
-                                        if (selected == obj.getString("value")) {
-                                            texts.add(obj.getString("title"))
-                                            break
-                                        }
-                                    }
-                                }
-                            }
-                            show = texts.joinToString(",")
-                            if (row != null && row.containsKey("show")) {
-                                row["show"] = show
-                                row["value"] = selecteds.joinToString(",")
-                                updateRow(key, row)
-                            }
-                        }
-                        WEEKDAY_KEY -> {
-                            val texts: ArrayList<String> = arrayListOf()
-                            for (selected in selecteds!!) {
-                                val text = WEEKDAY.intToString(selected.toInt())
-                                texts.add(text)
-                            }
-                            show = texts.joinToString(",")
-                            if (row != null && row.containsKey("show")) {
-                                row["show"] = show
-                                row["value"] = selecteds.joinToString(",")
-                                updateRow(key, row)
-                            }
-                        }
-                        START_TIME_KEY, END_TIME_KEY -> {
-                            if (row != null && row.containsKey("show") && selected != null) {
-                                row["show"] = selected.noSec()
-                                row["value"] = selected
-                                updateRow(key, row)
-                            }
-                        }
-
-                    }
-                    //val rows = generateSearchItems(able_type)
-                    //searchAdapter.update(rows)
-                }
-            }
-        }
-    }
+//                            if (page == "coach") {
+//                                citys_coach = citys
+//                            } else if (page == "team") {
+//                                citys_team = citys
+//                            }
+//                        }
+//                        ARENA_KEY -> {
+//                            idx = 2
+//                        }
+//                        TEAM_WEEKDAYS_KEY -> {
+//                            idx = 3
+//                            weekdays = data!!.getIntegerArrayListExtra("weekdays")!!
+//                            if (weekdays.size > 0) {
+//                                var arr: ArrayList<String> = arrayListOf()
+//                                val gDays = Global.weekdays
+//                                for (day in weekdays) {
+//                                    for (gDay in gDays) {
+//                                        if (day == gDay.get("value")!! as Int) {
+//                                            arr.add(gDay.get("simple_text")!! as String)
+//                                            break
+//                                        }
+//                                    }
+//                                }
+//                                value = arr.joinToString()
+//                            } else {
+//                                value = "全部"
+//                            }
+//                        }
+//                        TEAM_PLAY_START_KEY -> {
+//                            idx = 4
+//                            times = data!!.getSerializableExtra("times") as HashMap<String, Any>
+//                            if (times.containsKey("time")) {
+//                                value = times["time"]!! as String
+//                            } else {
+//                                value = "全部"
+//                            }
+//                        }
+//                        TEAM_DEGREE_KEY -> {
+//                            idx = 5
+//                            degrees = data!!.getSerializableExtra("degrees") as ArrayList<DEGREE>
+//                            if (degrees.size > 0) {
+//                                var arr: ArrayList<String> = arrayListOf()
+//                                degrees.forEach {
+//                                    arr.add(it.value)
+//                                }
+//                                value = arr.joinToString()
+//                            } else {
+//                                value = "全部"
+//                            }
+//                        }
+//                        AREA_KEY -> {
+//                            idx = 2
+//                            areas = data!!.getParcelableArrayListExtra("areas")!!
+//                            if (areas.size > 0) {
+//                                var arr: ArrayList<String> = arrayListOf()
+//                                for (area in areas) {
+//                                    arr.add(area.name)
+//                                }
+//                                value = arr.joinToString()
+//                            } else {
+//                                value = "全部"
+//                            }
+//                        }
+//                    }
+//                    searchRows[idx]["detail"] = value
+//                    //val rows = generateSearchItems(page)
+//                    //searchAdapter.update(rows)
+//                }
+//            }
+//            SEARCH_REQUEST_CODE1 -> {
+//                if (resultCode == Activity.RESULT_OK) {
+//                    var key = ""
+//                    if (data != null && data.hasExtra("key")) {
+//                        key = data.getStringExtra("key")!!
+//                    }
+//                    var selecteds: ArrayList<String>? = null
+//                    if (data!!.hasExtra("selecteds")) {
+//                        selecteds = data.getStringArrayListExtra("selecteds")
+//                    }
+//                    var selected: String? = null
+//                    if (data.hasExtra("selected")) {
+//                        selected = data.getStringExtra("selected")
+//                    }
+//
+//                    val getRow = fun(key: String): HashMap<String, String>? {
+//                        var row: HashMap<String, String>? = null
+//                        for ((i, searchRow) in searchRows.withIndex()) {
+//                            if (searchRow.containsKey("key")) {
+//                                if (key == searchRow.get("key")) {
+//                                    row = searchRow
+//                                    break
+//                                }
+//                            }
+//                        }
+//
+//                        return row
+//                    }
+//
+//                    val updateRow = fun(key: String, row: HashMap<String, String>) {
+//                        var idx: Int = -1
+//                        for ((i, searchRow) in searchRows.withIndex()) {
+//                            if (searchRow.containsKey("key")) {
+//                                if (key == searchRow.get("key")) {
+//                                    idx = i
+//                                    break
+//                                }
+//                            }
+//                        }
+//                        if (idx >= 0) {
+//                            searchRows[idx] = row
+//                        }
+//                    }
+//
+//                    val row: HashMap<String, String>? = getRow(key)
+//
+//                    var show = ""
+//
+//                    when (key) {
+//                        CITY_KEY -> {
+//                            val session: SharedPreferences = this.getSharedPreferences(SESSION_FILENAME, 0)
+//                            val str = session.getString("citys", "")!!
+//                            var arr: JSONArray? = null
+//                            if (str.length > 0) {
+//                                try {
+//                                    arr = JSONArray(str)
+//                                } catch (e: java.lang.Exception) {
+//                                    //println(e.localizedMessage)
+//                                }
+//                            }
+//
+//                            val texts: ArrayList<String> = arrayListOf()
+//                            for (selected in selecteds!!) {
+//                                if (arr != null) {
+//                                    for (i in 0..arr!!.length() - 1) {
+//                                        val obj = arr!![i] as JSONObject
+//                                        if (selected == obj.getString("value")) {
+//                                            texts.add(obj.getString("title"))
+//                                            break
+//                                        }
+//                                    }
+//                                }
+//                            }
+//                            show = texts.joinToString(",")
+//                            if (row != null && row.containsKey("show")) {
+//                                row["show"] = show
+//                                row["value"] = selecteds.joinToString(",")
+//                                updateRow(key, row)
+//                            }
+//                        }
+//                        WEEKDAY_KEY -> {
+//                            val texts: ArrayList<String> = arrayListOf()
+//                            for (selected in selecteds!!) {
+//                                val text = WEEKDAY.intToString(selected.toInt())
+//                                texts.add(text)
+//                            }
+//                            show = texts.joinToString(",")
+//                            if (row != null && row.containsKey("show")) {
+//                                row["show"] = show
+//                                row["value"] = selecteds.joinToString(",")
+//                                updateRow(key, row)
+//                            }
+//                        }
+//                        START_TIME_KEY, END_TIME_KEY -> {
+//                            if (row != null && row.containsKey("show") && selected != null) {
+//                                row["show"] = selected.noSec()
+//                                row["value"] = selected
+//                                updateRow(key, row)
+//                            }
+//                        }
+//
+//                    }
+//                }
+//            }
+//        }
+//    }
 
 //    fun generateSearchItems(page: String): ArrayList<SearchItem> {
 //
@@ -2275,6 +2272,25 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener,
         }
     }
 
+    val updatePasswordVC = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { res ->
+        if (res.resultCode == Activity.RESULT_OK) {
+
+            if (res.data != null) {
+                val i: Intent? = res.data
+
+                if (i != null) {
+                    if (delegate != null) {
+                        val m: MemberVC = delegate as MemberVC
+                        member.isLoggedIn = false
+                        member.reset()
+                        m.loginout()
+                    }
+                    //refresh()
+                }
+            }
+        }
+    }
+
     val validateVC = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { res ->
         if (res.resultCode == Activity.RESULT_OK) {
 
@@ -2282,13 +2298,13 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener,
                 val i: Intent? = res.data
 
                 if (i != null) {
+                    refresh()
 
-                    val frags = supportFragmentManager.fragments
-                    for (frag in frags) {
-                        val memberFragment = frag as? MemberFragment
-                        memberFragment?.refresh()
-                    }
-
+//                    val frags = supportFragmentManager.fragments
+//                    for (frag in frags) {
+//                        val memberFragment = frag as? MemberFragment
+//                        memberFragment?.refresh()
+//                    }
                 }
             }
         }
