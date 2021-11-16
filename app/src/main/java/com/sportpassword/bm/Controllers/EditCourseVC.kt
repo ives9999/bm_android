@@ -85,7 +85,7 @@ class EditCourseVC : MyTableVC() {
         }
 
         setMyTitle(title)
-        form = CourseForm()
+        //form = CourseForm()
         dataService = CourseService
 
         imageView = edit_featured
@@ -298,29 +298,29 @@ class EditCourseVC : MyTableVC() {
         }
     }
 
-    private fun putValue() {
-        if (myTable != null) {
-            val kc = myTable!!::class
-            for (formItem in form.formItems) {
-                val name = formItem.name!!
-                kc.memberProperties.forEach {
-                    if (it.name == formItem.name) {
-
-                        var value = it.getter.call(myTable).toString()
-                        if (value == "null") { value = "" }
-                        formItem.value = value
-
-                        formItem.make()
-                    }
-                }
-            }
-            if (myTable!!.featured_path.count() > 0) {
-                val featured: String = myTable!!.featured_path
-//                        println(featured)
-                setImage(null, featured)
-            }
-        }
-    }
+//    private fun putValue() {
+//        if (myTable != null) {
+//            val kc = myTable!!::class
+//            for (formItem in form.formItems) {
+//                val name = formItem.name!!
+//                kc.memberProperties.forEach {
+//                    if (it.name == formItem.name) {
+//
+//                        var value = it.getter.call(myTable).toString()
+//                        if (value == "null") { value = "" }
+//                        formItem.value = value
+//
+//                        formItem.make()
+//                    }
+//                }
+//            }
+//            if (myTable!!.featured_path.count() > 0) {
+//                val featured: String = myTable!!.featured_path
+////                        println(featured)
+//                setImage(null, featured)
+//            }
+//        }
+//    }
 
 //    override fun generateItems(section: Int): ArrayList<Item> {
 //

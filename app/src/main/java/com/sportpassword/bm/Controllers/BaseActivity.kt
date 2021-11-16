@@ -402,14 +402,14 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener,
     override fun cellClear(sectionIdx: Int, rowIdx: Int) {
         if (searchSections.size > sectionIdx && searchSections[sectionIdx].items.size > rowIdx) {
             searchSections[sectionIdx].items[rowIdx].value = ""
-            searchSections[sectionIdx].items[rowIdx].show = ""
+            searchSections[sectionIdx].items[rowIdx].show = "全部"
             searchSectionAdapter.setSearchSection(searchSections)
             searchSectionAdapter.notifyItemChanged(sectionIdx)
         }
 
         if (oneSections.size > sectionIdx && oneSections[sectionIdx].items.size > rowIdx) {
             oneSections[sectionIdx].items[rowIdx].value = ""
-            oneSections[sectionIdx].items[rowIdx].show = ""
+            oneSections[sectionIdx].items[rowIdx].show = "全部"
             oneSectionAdapter.setOneSection(oneSections)
             oneSectionAdapter.notifyItemChanged(sectionIdx)
         }

@@ -41,7 +41,7 @@ abstract class MyTableVC : BaseActivity() {
     protected var loading: Boolean = false
     protected lateinit var maskView: View
 
-    protected lateinit var form: BaseForm
+//    protected lateinit var form: BaseForm
 
     protected var theFirstTime: Boolean = true
     protected var page: Int = 1
@@ -72,6 +72,13 @@ abstract class MyTableVC : BaseActivity() {
         if (intent.hasExtra("member_like")) {
             member_like = intent.getBooleanExtra("member_like", false)
         }
+    }
+
+    override fun init() {
+        super.init()
+
+        setRecyclerViewScrollListener()
+        setRecyclerViewRefreshListener()
     }
 
 //    open fun initAdapter(include_section: Boolean=false) {
@@ -321,10 +328,6 @@ abstract class MyTableVC : BaseActivity() {
 
         var pos: Int = 0
 
-//        scrollerListenr = object: RecyclerView.OnScrollListener() {
-//
-//        }
-
         scrollerListenr = object: RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
@@ -337,7 +340,7 @@ abstract class MyTableVC : BaseActivity() {
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
                 super.onScrollStateChanged(recyclerView, newState)
 
-                //println("items.size:${items.size}")
+                //println("items.size:${tableLists.size}")
                 if (tableLists.size == pos + 1 && newState == RecyclerView.SCROLL_STATE_IDLE && tableLists.size < totalCount && !loading) {
                     getDataStart(page, perPage)
                 }
@@ -347,13 +350,15 @@ abstract class MyTableVC : BaseActivity() {
     }
 
     protected open fun setRecyclerViewRefreshListener() {
-        refreshListener = SwipeRefreshLayout.OnRefreshListener {
-            params.clear()
-            refresh()
+        if (refreshLayout != null) {
+            refreshListener = SwipeRefreshLayout.OnRefreshListener {
+                params.clear()
+                refresh()
 
-            refreshLayout!!.isRefreshing = false
+                refreshLayout!!.isRefreshing = false
+            }
+            refreshLayout!!.setOnRefreshListener(refreshListener)
         }
-        refreshLayout!!.setOnRefreshListener(refreshListener)
     }
 
 //    fun <T: FormItem> getFormItemFromKey(cls: Class<T>, key: String): T? {

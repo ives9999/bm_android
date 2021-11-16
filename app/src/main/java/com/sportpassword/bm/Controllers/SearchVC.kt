@@ -53,23 +53,12 @@ class SearchVC : MyTableVC() {
         val btn = findViewById<Button>(R.id.submit_btn)
         btn.setOnClickListener { searchSubmit() }
 
-        init()
-    }
-
-    override fun init() {
-        super.init()
-
-        initTag()
-
         footer.visibility = View.GONE
         remain.visibility = View.GONE
 
         recyclerView = list_container
         maskView = mask
         recyclerView.setHasFixedSize(true)
-//        setRecyclerViewScrollListener()
-//        refreshLayout = tab_refresh
-//        setRecyclerViewRefreshListener()
 
         tableAdapter = TeamAdapter(R.layout.team_list_cell, this)
         recyclerView.adapter = tableAdapter
@@ -79,6 +68,14 @@ class SearchVC : MyTableVC() {
         searchSectionAdapter.setSearchSection(searchSections)
 
         member_like = true
+
+        init()
+    }
+
+    override fun init() {
+        super.init()
+
+        initTag()
         refresh()
     }
     
@@ -313,6 +310,6 @@ class SearchVC : MyTableVC() {
 
         prepareParams()
 
-        toTeam(params)
+        toTeam(params, false, true)
     }
 }

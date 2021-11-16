@@ -18,7 +18,7 @@ class StoreViewHolder(context: Context, viewHolder: View, list1CellDelegate: Lis
         viewHolder.cityBtn.text = row.city_show
         viewHolder.cityBtn.setOnClickListener {
             if (list1CellDelegate != null) {
-                list1CellDelegate!!.cellCity(row)
+                list1CellDelegate.cellCity(row)
             }
         }
 

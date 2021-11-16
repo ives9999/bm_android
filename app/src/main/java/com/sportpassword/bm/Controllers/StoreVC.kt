@@ -85,6 +85,18 @@ class StoreVC : MyTableVC() {
         return s
     }
 
+    override fun cellCity(row: Table) {
+        val key: String = CITY_KEY
+        val row1: StoreTable = row as StoreTable
+        val row2: SearchRow = getSearchRowFromKey(key)
+        row2.value = row1.city_id.toString()
+        row2.show = row1.city_show
+        prepareParams()
+        page = 1
+        tableLists.clear()
+        getDataStart(page, perPage)
+    }
+
 //    override fun generateItems(): ArrayList<Item> {
 //        val items: ArrayList<Item> = arrayListOf()
 //        if (mysTable != null) {
