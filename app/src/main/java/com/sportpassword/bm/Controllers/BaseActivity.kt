@@ -170,7 +170,6 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener,
     //var vcResult: VCResult = VCResult()
 
     open fun arenaSelected(selected: String, show: String) {}
-    open fun degreeSelected(selected: String, show: String) {}
     open fun weekendSelected(selected: String, show: String) {}
     open fun contentEdit(key: String, content: String) {}
 
@@ -455,6 +454,26 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener,
         } else if (key == START_DATE_KEY || key == END_DATE_KEY) {
             show = selected
         }
+
+        var idx: Int = 0
+        val row1 = getSearchRowFromKey(key)
+        val row2 = getOneRowFromKey(key)
+
+        if (row1.title.isNotEmpty()) {
+            idx = getSearchSectionIdxFromRowKey(key)
+            row1.value = selected
+            row1.show = show
+            searchSectionAdapter.notifyItemChanged(idx)
+        } else {
+            idx = getOneSectionIdxFromRowKey(key)
+            row2.value = selected
+            row2.show = show
+            oneSectionAdapter.notifyItemChanged(idx)
+        }
+    }
+
+    open fun degreeSelected(selected: String, show: String) {
+        val key: String = DEGREE_KEY
 
         var idx: Int = 0
         val row1 = getSearchRowFromKey(key)

@@ -326,27 +326,30 @@ abstract class MyTableVC : BaseActivity() {
 
     protected open fun setRecyclerViewScrollListener() {
 
-        var pos: Int = 0
+        if (recyclerView != null) {
+            var pos: Int = 0
 
-        scrollerListenr = object: RecyclerView.OnScrollListener() {
-            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                super.onScrolled(recyclerView, dx, dy)
-                val layoutManager = recyclerView.layoutManager as LinearLayoutManager
-                if (tableLists.size < totalCount) {
-                    pos = layoutManager.findLastVisibleItemPosition()
-                    //println("pos:${pos}")
+            scrollerListenr = object : RecyclerView.OnScrollListener() {
+                override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                    super.onScrolled(recyclerView, dx, dy)
+                    val layoutManager = recyclerView.layoutManager as LinearLayoutManager
+                    if (tableLists.size < totalCount) {
+                        pos = layoutManager.findLastVisibleItemPosition()
+                        //println("pos:${pos}")
+                    }
+                }
+
+                override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                    super.onScrollStateChanged(recyclerView, newState)
+
+                    //println("items.size:${tableLists.size}")
+                    if (tableLists.size == pos + 1 && newState == RecyclerView.SCROLL_STATE_IDLE && tableLists.size < totalCount && !loading) {
+                        getDataStart(page, perPage)
+                    }
                 }
             }
-            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
-                super.onScrollStateChanged(recyclerView, newState)
-
-                //println("items.size:${tableLists.size}")
-                if (tableLists.size == pos + 1 && newState == RecyclerView.SCROLL_STATE_IDLE && tableLists.size < totalCount && !loading) {
-                    getDataStart(page, perPage)
-                }
-            }
+            recyclerView.addOnScrollListener(scrollerListenr)
         }
-        recyclerView.addOnScrollListener(scrollerListenr)
     }
 
     protected open fun setRecyclerViewRefreshListener() {
