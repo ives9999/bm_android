@@ -53,7 +53,7 @@
             android:layout_height="32dp"
             android:layout_marginEnd="4dp"
             android:background="@android:color/transparent"
-            android:onClick="searchPressed"
+            android:onClick="cartPressed"
             android:scaleType="fitCenter"
             android:visibility="invisible"
             app:srcCompat="@drawable/cart1"

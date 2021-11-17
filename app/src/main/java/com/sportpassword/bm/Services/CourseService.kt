@@ -26,7 +26,7 @@ object CourseService: DataService() {
     override fun getSignupListURL(token: String?): String {
         var url: String = URL_SIGNUP_LIST.format("course")
         if (token != null) {
-            url = url + "/" + token!!
+            url = url + "/" + token
         }
 
         return url

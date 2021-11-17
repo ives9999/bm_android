@@ -96,7 +96,9 @@ class ShowTeachVC : YouTubeBaseActivity(), YouTubePlayer.OnInitializedListener {
 
     fun refresh() {
         if (token != null) {
-            Loading.show(mask)
+            runOnUiThread {
+                Loading.show(mask)
+            }
             val params: HashMap<String, String> = hashMapOf("token" to token!!, "member_token" to member.token!!)
             dataService.getOne(this, params) { success ->
                 if (success) {
@@ -105,16 +107,22 @@ class ShowTeachVC : YouTubeBaseActivity(), YouTubePlayer.OnInitializedListener {
                         table!!.filterRow()
 
                         if (table!!.name.isNotEmpty()) {
-                            topTitleLbl.text = table!!.name
+                            runOnUiThread {
+                                topTitleLbl.text = table!!.name
+                            }
                             //setMyTitle(table!!.name)
                         } else if (table!!.title.isNotEmpty()) {
-                            topTitleLbl.text = table!!.title
+                            runOnUiThread {
+                                topTitleLbl.text = table!!.title
+                            }
                             //setMyTitle(table!!.title)
                         }
 
                         setData()
                         showAdapter.rows = showRows
-                        showAdapter.notifyDataSetChanged()
+                        runOnUiThread {
+                            showAdapter.notifyDataSetChanged()
+                        }
 
                         isLike = table!!.like
                         likeCount = table!!.like_count
@@ -123,8 +131,10 @@ class ShowTeachVC : YouTubeBaseActivity(), YouTubePlayer.OnInitializedListener {
 
                     }
                 }
-                closeRefresh()
-                Loading.hide(mask)
+                runOnUiThread {
+                    closeRefresh()
+                    Loading.hide(mask)
+                }
             }
         }
     }
@@ -298,7 +308,9 @@ class ShowTeachVC : YouTubeBaseActivity(), YouTubePlayer.OnInitializedListener {
         val REQUEST_CODE = 0
 
         if (youTubeInitializationResult?.isUserRecoverableError == true) {
-            youTubeInitializationResult.getErrorDialog(this, REQUEST_CODE).show()
+            runOnUiThread {
+                youTubeInitializationResult.getErrorDialog(this, REQUEST_CODE).show()
+            }
         } else {
             val errorMessage = "youtube player 初始化發生錯誤 ($youTubeInitializationResult)"
             Toast.makeText(this, errorMessage, Toast.LENGTH_LONG).show()

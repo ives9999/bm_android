@@ -139,13 +139,17 @@ class PaymentVC : MyTableVC() {
     }
 
     override fun refresh() {
-        Loading.show(mask)
+        runOnUiThread {
+            Loading.show(mask)
+        }
         val params: HashMap<String, String> = hashMapOf("token" to order_token, "member_token" to member.token!!)
         dataService.getOne(this, params) { success ->
             if (success) {
                 jsonString = dataService.jsonString
                 if (jsonString != null && jsonString!!.isNotEmpty()) {
-                    genericTable()
+                    runOnUiThread {
+                        genericTable()
+                    }
                 }
             }
             closeRefresh()

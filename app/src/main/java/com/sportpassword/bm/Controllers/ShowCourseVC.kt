@@ -125,6 +125,11 @@ class ShowCourseVC : ShowVC() {
         ))
     }
 
+    override fun refresh() {
+        signupRows.clear()
+        super.refresh()
+    }
+
 //    override fun initAdapter() {
 //        super.initAdapter()
 
@@ -517,6 +522,52 @@ class ShowCourseVC : ShowVC() {
         }
     }
 
+    fun signupButtonPressed(view: View) {
+        if (!member.isLoggedIn) {
+            warning("請先登入會員")
+            return
+        }
+        Loading.show(mask)
+        CourseService.signup_date(this, token!!, member.token!!, myTable!!.dateTable!!.token) { success ->
+            runOnUiThread {
+                Loading.hide(mask)
+            }
+
+            if (success) {
+
+                val jsonString: String = CourseService.jsonString
+                val signupDateTable: SignupDateTable? = jsonToModel<SignupDateTable>(jsonString)
+                if (signupDateTable != null) {
+                    isSignup = signupDateTable.isSignup
+                    isStandby = signupDateTable.isStandby
+                    canCancelSignup = signupDateTable.cancel
+                    course_date = signupDateTable.date
+                    course_deadline = signupDateTable.deadline
+
+                    runOnUiThread {
+                        showSignupModal()
+                    }
+                } else {
+                    runOnUiThread {
+                        warning("無法解析傳回的signup date table")
+                    }
+                }
+
+
+//                signup_date = CourseService.signup_date
+//                isSignup = signup_date.getBoolean("isSignup")
+//                isStandby = signup_date.getBoolean("isStandby")
+//                canCancelSignup = signup_date.getBoolean("cancel")
+//                course_date = signup_date.getString("date")
+//                course_deadline = signup_date.getString("deadline")
+            } else {
+                runOnUiThread {
+                    warning(CourseService.msg)
+                }
+            }
+        }
+    }
+
     fun showSignupModal() {
 
         val signup_html = "報名課程日期是：" + course_date + "\r\n" + "報名取消截止時間是：" + course_deadline.noSec()
@@ -543,7 +594,6 @@ class ShowCourseVC : ShowVC() {
             }
         }
 
-
         val alert = AlertDialog.Builder(this).create()
         alert.setTitle(title)
         alert.setMessage(msg)
@@ -565,58 +615,55 @@ class ShowCourseVC : ShowVC() {
         }
         Loading.show(mask)
         CourseService.signup(this, token!!, member.token!!, myTable!!.dateTable!!.token, course_deadline) { success ->
-            Loading.hide(mask)
-            val msg = CourseService.msg
-            var title = "警告"
-            val alert = AlertDialog.Builder(this).create()
-            if (CourseService.success) {
-                title = "提示"
-                alert.setButton(AlertDialog.BUTTON_POSITIVE, "關閉") { _, _ ->
-                    refresh()
-                }
-            } else {
-                alert.setButton(AlertDialog.BUTTON_POSITIVE, "關閉") { _, _ ->
-                }
+            runOnUiThread {
+                Loading.hide(mask)
             }
-            alert.setTitle(title)
-            alert.setMessage(msg)
 
-            alert.show()
-        }
-    }
-
-    fun signupListButtonPressed(view: View) {
-        //println("aaa")
-        val intent = Intent(this, SignupListVC::class.java)
-        intent.putExtra("able", "course")
-        intent.putExtra("able_token", token)
-        startActivity(intent)
-    }
-
-    fun signupButtonPressed(view: View) {
-        if (!member.isLoggedIn) {
-            warning("請先登入會員")
-            return
-        }
-        Loading.show(mask)
-        CourseService.signup_date(this, token!!, member.token!!, myTable!!.dateTable!!.token) { success ->
-            Loading.hide(mask)
             if (success) {
-                signup_date = CourseService.signup_date
-                //println(signup_date)
-                isSignup = signup_date.getBoolean("isSignup")
-                isStandby = signup_date.getBoolean("isStandby")
-                canCancelSignup = signup_date.getBoolean("cancel")
-                //signup_id = signup_date.getInt("signup_id")
-                course_date = signup_date.getString("date")
-                course_deadline = signup_date.getString("deadline")
-
-                showSignupModal()
-            } else {
-                warning(CourseService.msg)
+                val jsonString: String = CourseService.jsonString
+                val successTable: SuccessTable? = jsonToModel<SuccessTable>(jsonString)
+                if (successTable != null && successTable.success) {
+                    runOnUiThread {
+                        info(successTable.msg, "", "確定") {
+                            //signupAdapter.notifyDataSetChanged()
+                            refresh()
+                        }
+                    }
+                } else {
+                    runOnUiThread {
+                        warning("報名沒有成功，請洽管理員")
+                    }
+                }
             }
+
+//            val msg = CourseService.msg
+//            var title = "警告"
+//            val alert = AlertDialog.Builder(this).create()
+//            runOnUiThread {
+//                if (CourseService.success) {
+//                    title = "提示"
+//                    alert.setButton(AlertDialog.BUTTON_POSITIVE, "關閉") { _, _ ->
+//                        refresh()
+//                    }
+//                } else {
+//                    alert.setButton(AlertDialog.BUTTON_POSITIVE, "關閉") { _, _ ->
+//                    }
+//                }
+//                alert.setTitle(title)
+//                alert.setMessage(msg)
+//
+//                alert.show()
+//            }
         }
     }
+
+//    fun signupListButtonPressed(view: View) {
+//        //println("aaa")
+//        val intent = Intent(this, SignupListVC::class.java)
+//        intent.putExtra("able", "course")
+//        intent.putExtra("able_token", token)
+//        startActivity(intent)
+//    }
 
 //    fun likeButtonPressed(view: View) {
 //        if (!member.isLoggedIn) {

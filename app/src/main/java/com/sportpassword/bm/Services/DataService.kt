@@ -82,7 +82,7 @@ open class DataService {
         if (token != null) {
             url = url + "/" + token
         }
-        println(url)
+//        println(url)
 
 //        val header: MutableList<Pair<String, String>> = mutableListOf()
 //        header.add(Pair("Accept","application/json"))
@@ -103,8 +103,8 @@ open class DataService {
         }
 //        println(params)
 
-        val j: JSONObject = JSONObject(params as Map<*, *>)
-        println(j.toString())
+//        val j: JSONObject = JSONObject(params as Map<*, *>)
+//        println(j.toString())
 //        val body = j.toString().toRequestBody(HEADER.toMediaTypeOrNull())
 
         val request: okhttp3.Request = getRequest(url, params)
@@ -547,7 +547,7 @@ open class DataService {
     open fun update(context: Context, _params: MutableMap<String, String>, filePath: String, complete: CompletionHandler) {
         jsonString = ""
         val url: String = getUpdateURL()
-        println(url)
+//        println(url)
 
 
 //        val header: MutableList<Pair<String, String>> = mutableListOf()
@@ -565,8 +565,8 @@ open class DataService {
 //        println(jsonString1)
 
 
-        val j: JSONObject = JSONObject(params as Map<*, *>)
-        println(j)
+//        val j: JSONObject = JSONObject(params as Map<*, *>)
+//        println(j)
 
         val bodyBuilder: MultipartBody.Builder = MultipartBody.Builder().setType(MultipartBody.FORM)
 
@@ -676,7 +676,7 @@ open class DataService {
 
         jsonString = ""
         val url: String = getUpdateURL()
-        //println(url)
+//        println(url)
 
 //        val header: MutableList<Pair<String, String>> = mutableListOf()
 //        header.add(Pair("Accept","application/json"))
@@ -686,7 +686,7 @@ open class DataService {
 //        for ((key, value) in params) {
 //            body.put(key, value)
 //        }
-        //println(body)
+//        println(body)
 
         val request: okhttp3.Request = getRequest(url, params)
         okHttpClient.newCall(request).enqueue(object : Callback {
@@ -1224,17 +1224,29 @@ open class DataService {
 
     fun signup_date(context: Context, token: String, member_token: String, date_token: String, complete: CompletionHandler) {
         val url = getSignupDateURL(token)
-        //println(url)
-        val j: String = "{\"device\": \"app\", \"channel\": \"bm\", \"member_token\": " + member_token + ",\"date_token\":" + date_token + "}"
-        //val body: JSONObject = JSONObject(jsonString)
-        //println(body)
-        val body: RequestBody = j.toString().toRequestBody(HEADER.toMediaTypeOrNull())
-        val request = okhttp3.Request.Builder()
-            .url(url)
-            .addHeader("Accept", "application/json")
-            .addHeader("Content-Type", "application/json; charset=utf-8")
-            .post(body)
-            .build()
+//        println(url)
+
+        val params: HashMap<String, String> = hashMapOf()
+        params.put("device", "app")
+        params.put("channel", "bm")
+        params.put("member_token", member_token)
+        params.put("date_token", date_token)
+
+        val request: okhttp3.Request = getRequest(url, params)
+//        val j: JSONObject = JSONObject(params as Map<*, *>)
+//        println(j.toString())
+
+
+//        val j: String = "{\"device\": \"app\", \"channel\": \"bm\", \"member_token\": " + member_token + ",\"date_token\":" + date_token + "}"
+//        val body1: JSONObject = JSONObject(j)
+//        println(body1)
+//        val body: RequestBody = j.toString().toRequestBody(HEADER.toMediaTypeOrNull())
+//        val request = okhttp3.Request.Builder()
+//            .url(url)
+//            .addHeader("Accept", "application/json")
+//            .addHeader("Content-Type", "application/json; charset=utf-8")
+//            .post(body)
+//            .build()
 
         //val request: okhttp3.Request = getRequest(url, params)
         okHttpClient.newCall(request).enqueue(object : Callback {

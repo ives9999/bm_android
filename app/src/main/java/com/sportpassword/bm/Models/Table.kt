@@ -14,7 +14,7 @@ abstract class Tables {
     //var rows: ArrayList<Table> = arrayListOf()
 }
 
-open class SuccessTable {
+open class SuccessTable: Table() {
     val success: Boolean = false
     val msg: String = ""
 }

@@ -102,7 +102,13 @@ class OrderVC : MyTableVC() {
         refreshLayout = refresh
         setRefreshListener()
 
+        init()
         refresh()
+    }
+
+    override fun init() {
+        isPrevIconShow = true
+        super.init()
     }
 
 //    override fun initAdapter(include_section: Boolean) {
@@ -136,10 +142,10 @@ class OrderVC : MyTableVC() {
 
             if (jsonString != null && jsonString!!.isNotEmpty()) {
                 //println(dataService.jsonString)
-                genericTable()
-                initData()
-                oneSectionAdapter.setOneSection(oneSections)
                 runOnUiThread {
+                    genericTable()
+                    initData()
+                    oneSectionAdapter.setOneSection(oneSections)
                     oneSectionAdapter.notifyDataSetChanged()
                 }
             } else {
@@ -304,7 +310,7 @@ class OrderVC : MyTableVC() {
 //        }
 
         rows = arrayListOf()
-        row = OneRow("發票(目前僅提供電子發票)", INVOICE_PERSONAL_KEY, "", INVOICE_KEY, "more", KEYBOARD.default, "", "", false, false)
+        row = OneRow("發票(目前僅提供電子發票)", "personal", "", INVOICE_KEY, "more", KEYBOARD.default, "", "", false, false)
         rows.add(row)
         rows.addAll(invoicePersonalRows)
         section = makeSectionRow("電子發票", INVOICE_KEY, rows, true)
@@ -539,8 +545,10 @@ class OrderVC : MyTableVC() {
             row = OneRow("發票(目前僅提供電子發票)", "", "", INVOICE_KEY, "more")
             section.items.add(row)
             if (idx == 0) {
+                row.value = "personal"
                 section.items.addAll(invoicePersonalRows)
             } else {
+                row.value = "company"
                 section.items.addAll(invoiceCompanyRows)
             }
             top.unmask()
@@ -737,9 +745,12 @@ class OrderVC : MyTableVC() {
         //println(params)
 
         OrderService.update(this, params) { success ->
-            Loading.hide(mask)
+            runOnUiThread {
+                Loading.hide(mask)
+            }
             if (success) {
                 if (OrderService.jsonString.isNotEmpty()) {
+                    println(OrderService.jsonString)
                     try {
                         val table: OrderUpdateResTable = Gson().fromJson(
                             OrderService.jsonString,
@@ -751,16 +762,26 @@ class OrderVC : MyTableVC() {
                             val ecpay_token_ExpireDate: String = orderTable.ecpay_token_ExpireDate
                             cartItemCount = 0
                             session.edit().putInt("cartItemCount", cartItemCount).apply()
-                            info("訂單已經成立，是否前往結帳？", "關閉", "結帳") {
-                                toPayment(orderTable.token, ecpay_token, ecpay_token_ExpireDate)
+                            runOnUiThread {
+                                info("訂單已經成立，是否前往結帳？", "關閉", "結帳") {
+                                    toPayment(orderTable.token, ecpay_token, ecpay_token_ExpireDate)
+                                }
+                            }
+                        } else {
+                            runOnUiThread {
+                                warning("無法拿到伺服器傳回值")
                             }
                         }
                     } catch (e: java.lang.Exception) {
-                        warning(e.localizedMessage!!)
+                        runOnUiThread {
+                            warning(e.localizedMessage!!)
+                        }
                     }
                 }
             } else {
-                warning(OrderService.msg)
+                runOnUiThread {
+                    warning(OrderService.msg)
+                }
             }
         }
 

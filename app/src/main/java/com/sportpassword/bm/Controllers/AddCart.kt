@@ -204,22 +204,32 @@ class AddCartVC : MyTableVC() {
             update = false
             val params: HashMap<String, String> = hashMapOf("token" to product_token!!, "member_token" to member.token!!)
             dataService.getOne(this, params) { success ->
-                Loading.hide(mask)
+                runOnUiThread {
+                    Loading.hide(mask)
+                }
                 if (success) {
                     try {
                         productTable = jsonToModel<ProductTable>(dataService.jsonString)
                     } catch (e: JsonParseException) {
-                        warning(e.localizedMessage!!)
+                        runOnUiThread {
+                            warning(e.localizedMessage!!)
+                        }
                         //println(e.localizedMessage)
                     }
                     if (productTable != null) {
                         //myTable = table as ProductTable
                         productTable!!.filterRow()
-                        initData()
+                        runOnUiThread {
+                            initData()
+                        }
                         oneSectionAdapter.setOneSection(oneSections)
-                        oneSectionAdapter.notifyDataSetChanged()
+                        runOnUiThread {
+                            oneSectionAdapter.notifyDataSetChanged()
+                        }
                     } else {
-                        warning("解析伺服器所傳的字串失敗，請洽管理員")
+                        runOnUiThread {
+                            warning("解析伺服器所傳的字串失敗，請洽管理員")
+                        }
                     }
                 }
             }
@@ -231,12 +241,16 @@ class AddCartVC : MyTableVC() {
             submitBtn.text = "更新購物車"
             val params: HashMap<String, String> = hashMapOf("cart_item_token" to cartItem_token!!, "member_token" to member.token!!)
             CartService.getOne(this, params) { success ->
-                Loading.hide(mask)
+                runOnUiThread {
+                    Loading.hide(mask)
+                }
                 if (success) {
                     try {
                         cartTable = jsonToModel<CartTable>(CartService.jsonString)
                     } catch (e: JsonParseException) {
-                        warning(e.localizedMessage!!)
+                        runOnUiThread {
+                            warning(e.localizedMessage!!)
+                        }
                     }
                     if (cartTable != null) {
                         if (cartTable!!.items.size > 0) {
@@ -244,9 +258,11 @@ class AddCartVC : MyTableVC() {
                             cartItemTable?.filterRow()
                             productTable = cartItemTable!!.product
                             productTable?.filterRow()
-                            initData()
-                            oneSectionAdapter.setOneSection(oneSections)
-                            oneSectionAdapter.notifyDataSetChanged()
+                            runOnUiThread {
+                                initData()
+                                oneSectionAdapter.setOneSection(oneSections)
+                                oneSectionAdapter.notifyDataSetChanged()
+                            }
                         }
                     }
                 }
@@ -633,7 +649,9 @@ class AddCartVC : MyTableVC() {
             //println(params)
 
             CartService.update(this, params) { success ->
-                Loading.hide(mask)
+                runOnUiThread {
+                    Loading.hide(mask)
+                }
                 var msg: String = "成功加入購物車了"
                 if (success) {
                     if (cartItem_token == null) {
@@ -642,11 +660,13 @@ class AddCartVC : MyTableVC() {
                     } else {
                         msg = "已經更新購物車了"
                     }
-                    info(msg, "", "關閉") {
-                        val intent = Intent()
-                        intent.putExtra("refresh", true)
-                        setResult(Activity.RESULT_OK, intent)
-                        finish()
+                    runOnUiThread {
+                        info(msg, "", "關閉") {
+                            val intent = Intent()
+                            intent.putExtra("refresh", true)
+                            setResult(Activity.RESULT_OK, intent)
+                            finish()
+                        }
                     }
 //                    val order_token: String = CartService.order_token
 //                    if (total > 0) {
@@ -662,7 +682,9 @@ class AddCartVC : MyTableVC() {
 //                        }
 //                    }
                 } else {
-                    warning("訂單失敗，或接收失敗，請洽管理員")
+                    runOnUiThread {
+                        warning("訂單失敗，或接收失敗，請洽管理員")
+                    }
                 }
             }
         }

@@ -72,6 +72,8 @@ abstract class MyTableVC : BaseActivity() {
         if (intent.hasExtra("member_like")) {
             member_like = intent.getBooleanExtra("member_like", false)
         }
+
+        recyclerView = RecyclerView(this)
     }
 
     override fun init() {

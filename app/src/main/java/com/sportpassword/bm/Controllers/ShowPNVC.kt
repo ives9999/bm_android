@@ -193,6 +193,7 @@ class ShowPNVC : MyTableVC(), OSPermissionObserver {
         } else {
             pnArr = JSONArray()
         }
+//        println(pnArr)
     }
 }
 
@@ -203,10 +204,18 @@ class PNAdapter(val delegate: ShowPNVC): RecyclerView.Adapter<PNViewHolder>() {
     override fun onBindViewHolder(holder: PNViewHolder, position: Int) {
 
         val row: JSONObject = rows[position] as JSONObject
-        holder.idLbl.text = row.getString("id")
-        holder.pnidLbl.text = row.getString("pnid")
-        holder.title.text = row.getString("title")
-        holder.content.text = row.getString("content")
+        if (row.has("id")) {
+            holder.idLbl.text = row.getString("id")
+        }
+        if (row.has("pnid")) {
+            holder.pnidLbl.text = row.getString("pnid")
+        }
+        if (row.has("title")) {
+            holder.title.text = row.getString("title")
+        }
+        if (row.has("content")) {
+            holder.content.text = row.getString("content")
+        }
 
         holder.pnRemove.setOnClickListener {
             delegate.cellRemove(row.getString("id"))

@@ -26,7 +26,13 @@ class ShowProductVC: ShowVC() {
 
         super.onCreate(savedInstanceState)
 
+        init()
         refresh()
+    }
+
+    override fun init() {
+        isPrevIconShow = true
+        super.init()
     }
 
 //    override fun initAdapter() {}

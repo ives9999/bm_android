@@ -30,7 +30,14 @@ class SelectDegreeVC : MultiSelectVC() {
         val selectRows: ArrayList<SelectRow> = arrayListOf()
 
         for(degree in rows1) {
-            selectRows.add(SelectRow(degree.value, degree.toString()))
+            var isSelected: Boolean = false
+            for (selected in selecteds) {
+                if (selected == degree.toString()) {
+                    isSelected = true
+                    break
+                }
+            }
+            selectRows.add(SelectRow(degree.value, degree.toString(), isSelected))
         }
 
         return selectRows
