@@ -2,6 +2,8 @@ package com.sportpassword.bm.Controllers
 
 import android.os.Bundle
 import com.sportpassword.bm.Adapters.StoreAdapter
+import com.sportpassword.bm.Data.OneRow
+import com.sportpassword.bm.Data.OneSection
 import com.sportpassword.bm.Data.SearchRow
 import com.sportpassword.bm.Data.SearchSection
 import com.sportpassword.bm.Models.*
@@ -73,14 +75,14 @@ class StoreVC : MyTableVC() {
         }
     }
 
-    override fun makeSection0Row(isExpanded: Boolean): SearchSection {
-        val rows: ArrayList<SearchRow> = arrayListOf()
-        val r1: SearchRow = SearchRow("關鍵字", "", "", KEYWORD_KEY, "textField")
+    override fun makeSection0Row(isExpanded: Boolean): OneSection {
+        val rows: ArrayList<OneRow> = arrayListOf()
+        val r1: OneRow = OneRow("關鍵字", "", "", KEYWORD_KEY, "textField")
         rows.add(r1)
-        val r2: SearchRow = SearchRow("縣市", "", "全部", CITY_KEY, "more")
+        val r2: OneRow = OneRow("縣市", "", "全部", CITY_KEY, "more")
         rows.add(r2)
 
-        val s: SearchSection = SearchSection("一般", isExpanded)
+        val s: OneSection = OneSection("一般", "general", isExpanded)
         s.items.addAll(rows)
         return s
     }
@@ -88,7 +90,7 @@ class StoreVC : MyTableVC() {
     override fun cellCity(row: Table) {
         val key: String = CITY_KEY
         val row1: StoreTable = row as StoreTable
-        val row2: SearchRow = getSearchRowFromKey(key)
+        val row2: OneRow = getOneRowFromKey(key)
         row2.value = row1.city_id.toString()
         row2.show = row1.city_show
         prepareParams()

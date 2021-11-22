@@ -630,8 +630,10 @@ class ShowCourseVC : ShowVC() {
                         }
                     }
                 } else {
-                    runOnUiThread {
-                        warning("報名沒有成功，請洽管理員")
+                    if (successTable != null) {
+                        runOnUiThread {
+                            warning(successTable.msg)
+                        }
                     }
                 }
             }

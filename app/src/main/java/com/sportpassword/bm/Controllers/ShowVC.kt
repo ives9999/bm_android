@@ -92,6 +92,7 @@ open class ShowVC: BaseActivity() {
             }
             setFeatured()
             setData()
+            setContent()
             showAdapter.rows = showRows
             showAdapter.notifyDataSetChanged()
             setLike()

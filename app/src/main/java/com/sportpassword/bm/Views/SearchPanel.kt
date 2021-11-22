@@ -11,6 +11,7 @@ import android.widget.RelativeLayout
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.sportpassword.bm.Adapters.OneSectionAdapter
 import com.sportpassword.bm.Adapters.SearchSectionAdapter
 import com.sportpassword.bm.Controllers.BaseActivity
 import com.sportpassword.bm.R
@@ -31,18 +32,18 @@ open class SearchPanel {
 
 //    lateinit var searchAdapter: GroupAdapter<GroupieViewHolder>
 //    var searchRows: ArrayList<HashMap<String, String>> = arrayListOf()
-    lateinit var searchSectionAdapter: SearchSectionAdapter
+    lateinit var oneSectionAdapter: OneSectionAdapter
 //    var searchSections: ArrayList<SearchSection> = arrayListOf()
 
     var layerRightLeftPadding: Int = 40
     var layerTopPadding: Int = 100
     var layerBtnCount: Int = 2
 
-    fun addSearchLayer(context: Context, p: ViewGroup, able_type: String, searchSectionAdapter: SearchSectionAdapter) {
+    fun addSearchLayer(context: Context, p: ViewGroup, able_type: String, oneSectionAdapter: OneSectionAdapter) {
         parent = p
         this.context = context
         this.able_type = able_type
-        this.searchSectionAdapter = searchSectionAdapter
+        this.oneSectionAdapter = oneSectionAdapter
 
         if (layerMask != null) {
             unmask()
@@ -92,7 +93,7 @@ open class SearchPanel {
         searchTableView.backgroundColor = Color.TRANSPARENT
 
 //        val activity: BaseActivity = context!! as BaseActivity
-        searchTableView.adapter = searchSectionAdapter
+        searchTableView.adapter = oneSectionAdapter
 
 //        searchAdapter = GroupAdapter<GroupieViewHolder>()
 //        searchAdapter.setOnItemClickListener { item, view ->

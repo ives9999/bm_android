@@ -4,6 +4,8 @@ import android.content.Context
 import android.os.Bundle
 import android.view.View
 import com.sportpassword.bm.Adapters.CourseAdapter
+import com.sportpassword.bm.Data.OneRow
+import com.sportpassword.bm.Data.OneSection
 import com.sportpassword.bm.Data.SearchRow
 import com.sportpassword.bm.Data.SearchSection
 import com.sportpassword.bm.Models.CourseTable
@@ -83,20 +85,20 @@ class CourseVC : MyTableVC() {
         }
     }
 
-    override fun makeSection0Row(isExpanded: Boolean): SearchSection {
-        val rows: ArrayList<SearchRow> = arrayListOf()
-        val r1: SearchRow = SearchRow("關鍵字", "", "", KEYWORD_KEY, "textField")
+    override fun makeSection0Row(isExpanded: Boolean): OneSection {
+        val rows: ArrayList<OneRow> = arrayListOf()
+        val r1: OneRow = OneRow("關鍵字", "", "", KEYWORD_KEY, "textField")
         rows.add(r1)
-        val r2: SearchRow = SearchRow("縣市", "", "全部", CITY_KEY, "more")
+        val r2: OneRow = OneRow("縣市", "", "全部", CITY_KEY, "more")
         rows.add(r2)
-        val r3: SearchRow = SearchRow("星期幾", "", "全部", WEEKDAY_KEY, "more")
+        val r3: OneRow = OneRow("星期幾", "", "全部", WEEKDAY_KEY, "more")
         rows.add(r3)
-        val r4: SearchRow = SearchRow("開始時間", "", "全部", START_TIME_KEY, "more")
+        val r4: OneRow = OneRow("開始時間", "", "全部", START_TIME_KEY, "more")
         rows.add(r4)
-        val r5: SearchRow = SearchRow("結束時間", "", "全部", END_TIME_KEY, "more")
+        val r5: OneRow = OneRow("結束時間", "", "全部", END_TIME_KEY, "more")
         rows.add(r5)
 
-        val s: SearchSection = SearchSection("一般", isExpanded)
+        val s: OneSection = OneSection("一般", "general", isExpanded)
         s.items.addAll(rows)
         return s
     }
@@ -104,7 +106,7 @@ class CourseVC : MyTableVC() {
     override fun cellCity(row: Table) {
         val key: String = CITY_KEY
         val row1: CourseTable = row as CourseTable
-        val row2: SearchRow = getSearchRowFromKey(key)
+        val row2: OneRow = getOneRowFromKey(key)
         row2.value = row1.city_id.toString()
         row2.show = row1.city_show
         prepareParams()

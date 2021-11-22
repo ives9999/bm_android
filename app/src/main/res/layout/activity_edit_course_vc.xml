@@ -73,7 +73,7 @@
                                 android:layout_marginBottom="8dp"
                                 android:paddingLeft="18dp"
                                 android:paddingRight="18dp"
-                                android:scaleType="centerCrop"
+                                android:scaleType="fitCenter"
                                 app:srcCompat="@drawable/nophoto" />
                             <TextView
                                 android:id="@+id/featured_text"

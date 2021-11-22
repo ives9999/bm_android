@@ -129,6 +129,7 @@ class EditCourseVC : MyTableVC() {
                 genericTable()
                 runOnUiThread {
                     initData()
+                    initFeatured()
                     oneSectionAdapter.notifyDataSetChanged()
                     //putValue()
                 }
@@ -295,6 +296,13 @@ class EditCourseVC : MyTableVC() {
 
             section = makeSectionRow("課程", "charge", rows, true)
             oneSections.add(section)
+        }
+    }
+
+    fun initFeatured() {
+        if (myTable!!.featured_path.count() > 0) {
+            val featured: String = myTable!!.featured_path
+            setImage(null, featured)
         }
     }
 

@@ -643,11 +643,11 @@ abstract class MyTableVC : BaseActivity() {
     override fun arenaSelected(selected: String, show: String) {
 
         val key: String = ARENA_KEY
-        val row = getSearchRowFromKey(key)
+        val row = getOneRowFromKey(key)
         row.value = selected
         row.show = show
-        val idx: Int = getSearchSectionIdxFromRowKey(key)
-        searchSectionAdapter.notifyItemChanged(idx)
+        val idx: Int = getOneSectionIdxFromRowKey(key)
+        oneSectionAdapter.notifyItemChanged(idx)
     }
 
 //    override fun textChanged(str: String) {
@@ -676,7 +676,7 @@ abstract class MyTableVC : BaseActivity() {
 //            idx += row
 //        }
 
-        val section = searchSections[sectionIdx]
+        val section = oneSections[sectionIdx]
         var row = section.items[rowIdx]
 
 //        var row = searchRows.get(idx)
@@ -697,7 +697,7 @@ abstract class MyTableVC : BaseActivity() {
         } else if (key == START_TIME_KEY || key == END_TIME_KEY) {
             toSelectTime(key, value, null, able_type)
         } else if (key == AREA_KEY) {
-            row = getSearchRowFromKey(CITY_KEY)
+            row = getOneRowFromKey(CITY_KEY)
             if (row.value.isNotEmpty()) {
                 val city_id: Int = row.value.toInt()
                 toSelectArea(value, city_id, null, able_type)
@@ -705,7 +705,7 @@ abstract class MyTableVC : BaseActivity() {
                 warning("纖纖選擇縣市")
             }
         } else if (key == ARENA_KEY) {
-            row = getSearchRowFromKey(CITY_KEY)
+            row = getOneRowFromKey(CITY_KEY)
             if (row.value.isNotEmpty()) {
                 val city_id: Int = row.value.toInt()
                 toSelectArena(value, city_id, null, able_type)
@@ -796,15 +796,15 @@ abstract class MyTableVC : BaseActivity() {
 //        getDataStart(page, perPage)
 //    }
 
-    override fun handleSearchSectionExpanded(idx: Int) {
-        //println(idx)
-        val searchSection = searchSections[idx]
-        var isExpanded: Boolean = searchSection.isExpanded
-        isExpanded = !isExpanded
-        searchSections[idx].isExpanded = isExpanded
-        searchSectionAdapter.setSearchSection(searchSections)
-        searchSectionAdapter.notifyItemChanged(idx)
-    }
+//    override fun handleSearchSectionExpanded(idx: Int) {
+//        //println(idx)
+//        val searchSection = oneSections[idx]
+//        var isExpanded: Boolean = searchSection.isExpanded
+//        isExpanded = !isExpanded
+//        oneSections[idx].isExpanded = isExpanded
+//        oneSectionAdapter.setOneSection(oneSections)
+//        oneSectionAdapter.notifyItemChanged(idx)
+//    }
 
     override fun handleOneSectionExpanded(idx: Int) {
         //println(idx)

@@ -105,8 +105,8 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener,
     var tableLists: ArrayList<Table> = arrayListOf()
 
     //for search
-    lateinit var searchSectionAdapter: SearchSectionAdapter
-    var searchSections: ArrayList<SearchSection> = arrayListOf()
+//    lateinit var searchSectionAdapter: SearchSectionAdapter
+//    var searchSections: ArrayList<SearchSection> = arrayListOf()
 
     //for one
     lateinit var oneSectionAdapter: OneSectionAdapter
@@ -187,7 +187,7 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener,
         super.onCreate(savedInstanceState)
 
         gSimulate = isEmulator()
-//        gSimulate = true
+        gSimulate = true
 
         //ConnectTask(this).execute()
         val btn = findViewById<Button>(R.id.submit_btn)
@@ -200,8 +200,8 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener,
         getScreenWidth()
         getScreenHeight()
 
-        searchSectionAdapter = SearchSectionAdapter(this, R.layout.cell_section, this)
-        searchSections = initSectionRows()
+        oneSectionAdapter = OneSectionAdapter(this, R.layout.cell_section, this, hashMapOf())
+        oneSections = initSectionRows()
 
         myColorGreen = ContextCompat.getColor(context, R.color.MY_GREEN)
         delegate = this
@@ -233,9 +233,9 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener,
         cartItemCount = session.getInt("cartItemCount", 0)
         cartIcon.visibility = (member.isLoggedIn && cartItemCount > 0) then { View.VISIBLE } ?: View.GONE
 
-        searchSectionAdapter = SearchSectionAdapter(this, R.layout.cell_section, this)
-        searchSections = initSectionRows()
-        searchSectionAdapter.setSearchSection(searchSections)
+//        searchSectionAdapter = SearchSectionAdapter(this, R.layout.cell_section, this)
+//        searchSections = initSectionRows()
+        oneSectionAdapter.setOneSection(oneSections)
     }
 
     override fun onResume() {
@@ -381,48 +381,32 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener,
             }
         }
 
-        if (searchSections.size > sectionIdx && searchSections[sectionIdx].items.size > rowIdx) {
-            val row: SearchRow = getSearchRowFromIdx(sectionIdx, rowIdx)
-            if (row.key == DOB_KEY) {
-                toSelectDate(row.key, row.value, this)
-            } else if (row.key == CITY_KEY) {
-                toSelectCity(row.value, this)
-            } else if (row.key == AREA_KEY) {
-                val row: OneRow = getOneRowFromKey(CITY_KEY)
-                if (row.value.isEmpty()) {
-                    warning("請先選擇縣市")
-                } else {
-                    toSelectArea(row.value, row.value.toInt(), this)
-                }
+        val row: OneRow = getOneRowFromIdx(sectionIdx, rowIdx)
+        if (row.key == DOB_KEY) {
+            toSelectDate(row.key, row.value, this)
+        } else if (row.key == CITY_KEY) {
+            toSelectCity(row.value, this)
+        } else if (row.key == AREA_KEY) {
+            val row: OneRow = getOneRowFromKey(CITY_KEY)
+            if (row.value.isEmpty()) {
+                warning("請先選擇縣市")
+            } else {
+                toSelectArea(row.value, row.value.toInt(), this)
             }
         }
     }
 
     override fun cellClear(sectionIdx: Int, rowIdx: Int) {
-        if (searchSections.size > sectionIdx && searchSections[sectionIdx].items.size > rowIdx) {
-            searchSections[sectionIdx].items[rowIdx].value = ""
-            searchSections[sectionIdx].items[rowIdx].show = "全部"
-            searchSectionAdapter.setSearchSection(searchSections)
-            searchSectionAdapter.notifyItemChanged(sectionIdx)
-        }
 
-        if (oneSections.size > sectionIdx && oneSections[sectionIdx].items.size > rowIdx) {
-            oneSections[sectionIdx].items[rowIdx].value = ""
-            oneSections[sectionIdx].items[rowIdx].show = "全部"
-            oneSectionAdapter.setOneSection(oneSections)
-            oneSectionAdapter.notifyItemChanged(sectionIdx)
-        }
+        oneSections[sectionIdx].items[rowIdx].value = ""
+        oneSections[sectionIdx].items[rowIdx].show = "全部"
+        oneSectionAdapter.setOneSection(oneSections)
+        oneSectionAdapter.notifyItemChanged(sectionIdx)
     }
 
     override fun cellTextChanged(sectionIdx: Int, rowIdx: Int, str: String) {
 
-        if (searchSections.size > sectionIdx && searchSections[sectionIdx].items.size > rowIdx) {
-            searchSections[sectionIdx].items[rowIdx].value = str
-        }
-
-        if (oneSections.size > sectionIdx && oneSections[sectionIdx].items.size > rowIdx) {
-            oneSections[sectionIdx].items[rowIdx].value = str
-        }
+        oneSections[sectionIdx].items[rowIdx].value = str
     }
 
     override fun cellSwitchChanged(sectionIdx: Int, rowIdx: Int, b: Boolean) {
@@ -432,7 +416,7 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener,
         } else {
             "0"
         }
-        searchSections[sectionIdx].items[rowIdx].value = value
+        oneSections[sectionIdx].items[rowIdx].value = value
     }
 
     override fun singleSelected(key: String, selected: String) {
@@ -456,40 +440,26 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener,
         }
 
         var idx: Int = 0
-        val row1 = getSearchRowFromKey(key)
+//        val row1 = getSearchRowFromKey(key)
         val row2 = getOneRowFromKey(key)
 
-        if (row1.title.isNotEmpty()) {
-            idx = getSearchSectionIdxFromRowKey(key)
-            row1.value = selected
-            row1.show = show
-            searchSectionAdapter.notifyItemChanged(idx)
-        } else {
-            idx = getOneSectionIdxFromRowKey(key)
-            row2.value = selected
-            row2.show = show
-            oneSectionAdapter.notifyItemChanged(idx)
-        }
+        idx = getOneSectionIdxFromRowKey(key)
+        row2.value = selected
+        row2.show = show
+        oneSectionAdapter.notifyItemChanged(idx)
     }
 
     open fun degreeSelected(selected: String, show: String) {
         val key: String = DEGREE_KEY
 
         var idx: Int = 0
-        val row1 = getSearchRowFromKey(key)
+//        val row1 = getSearchRowFromKey(key)
         val row2 = getOneRowFromKey(key)
 
-        if (row1.title.isNotEmpty()) {
-            idx = getSearchSectionIdxFromRowKey(key)
-            row1.value = selected
-            row1.show = show
-            searchSectionAdapter.notifyItemChanged(idx)
-        } else {
-            idx = getOneSectionIdxFromRowKey(key)
-            row2.value = selected
-            row2.show = show
-            oneSectionAdapter.notifyItemChanged(idx)
-        }
+        idx = getOneSectionIdxFromRowKey(key)
+        row2.value = selected
+        row2.show = show
+        oneSectionAdapter.notifyItemChanged(idx)
     }
 
     fun getOneSectionFromKey(sectionKey: String): OneSection {
@@ -514,17 +484,6 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener,
         return 0
     }
 
-    fun getSearchSectionIdxFromRowKey(key: String): Int {
-        for ((idx, section) in searchSections.withIndex()) {
-            for (row in section.items) {
-                if (row.key == key) {
-                    return idx
-                }
-            }
-        }
-        return 0
-    }
-
     fun getOneRowFromKey(key: String): OneRow {
 
         for (section in oneSections) {
@@ -537,21 +496,32 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener,
         return OneRow()
     }
 
-    fun getSearchRowFromKey(key: String): SearchRow {
-
-        for (section in searchSections) {
-            for (row in section.items) {
-                if (row.key == key) {
-                    return row
-                }
-            }
-        }
-        return SearchRow()
-    }
-
-    fun getSearchRowFromIdx(sectionIdx: Int, rowIdx: Int): SearchRow {
-        return searchSections[sectionIdx].items[rowIdx]
-    }
+//    fun getSearchSectionIdxFromRowKey(key: String): Int {
+//        for ((idx, section) in searchSections.withIndex()) {
+//            for (row in section.items) {
+//                if (row.key == key) {
+//                    return idx
+//                }
+//            }
+//        }
+//        return 0
+//    }
+//
+//    fun getSearchRowFromKey(key: String): SearchRow {
+//
+//        for (section in searchSections) {
+//            for (row in section.items) {
+//                if (row.key == key) {
+//                    return row
+//                }
+//            }
+//        }
+//        return SearchRow()
+//    }
+//
+//    fun getSearchRowFromIdx(sectionIdx: Int, rowIdx: Int): SearchRow {
+//        return searchSections[sectionIdx].items[rowIdx]
+//    }
 
     fun getOneRowFromIdx(sectionIdx: Int, rowIdx: Int): OneRow {
         return oneSections[sectionIdx].items[rowIdx]
@@ -990,26 +960,26 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener,
         //val b = findViewById<ViewGroup>(R.id.content)
         //val a = findViewById<RelativeLayout>(R.id.topView).getRootView() as ViewGroup
         val p = window.decorView.rootView as ViewGroup
-        searchSectionAdapter.setSearchSection(searchSections)
+        oneSectionAdapter.setOneSection(oneSections)
         //searchPanel.mask(this, p)
-        searchPanel.addSearchLayer(this, p, able_type, searchSectionAdapter)
+        searchPanel.addSearchLayer(this, p, able_type, oneSectionAdapter)
         //mask()
 
         //second add search view in mask
        // addSearchLayer(tag)
     }
 
-    open fun initSectionRows(): ArrayList<SearchSection> {
+    open fun initSectionRows(): ArrayList<OneSection> {
 
-        val sections: ArrayList<SearchSection> = arrayListOf()
+        val sections: ArrayList<OneSection> = arrayListOf()
 
         sections.add(makeSection0Row())
 
         return sections
     }
 
-    open fun makeSection0Row(isExpanded: Boolean=true): SearchSection {
-        val s: SearchSection = SearchSection("一般", isExpanded)
+    open fun makeSection0Row(isExpanded: Boolean=true): OneSection {
+        val s: OneSection = OneSection("一般", "general", isExpanded)
         return s
     }
 
@@ -1689,10 +1659,10 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener,
 
         params.clear()
 
-        for (searchSection in searchSections) {
-            for (searchRow in searchSection.items) {
-                val key = searchRow.key
-                val value = searchRow.value
+        for (oneSection in oneSections) {
+            for (oneRow in oneSection.items) {
+                val key = oneRow.key
+                val value = oneRow.value
                 params[key] = value
             }
         }

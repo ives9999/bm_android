@@ -2,6 +2,8 @@ package com.sportpassword.bm.Controllers
 
 import android.os.Bundle
 import com.sportpassword.bm.Adapters.TeachAdapter
+import com.sportpassword.bm.Data.OneRow
+import com.sportpassword.bm.Data.OneSection
 import com.sportpassword.bm.Data.SearchRow
 import com.sportpassword.bm.Data.SearchSection
 import com.sportpassword.bm.Models.*
@@ -73,12 +75,12 @@ class TeachVC : MyTableVC() {
         }
     }
 
-    override fun makeSection0Row(isExpanded: Boolean): SearchSection {
-        val rows: ArrayList<SearchRow> = arrayListOf()
-        val r1: SearchRow = SearchRow("標題關鍵字", "", "", KEYWORD_KEY, "textField")
+    override fun makeSection0Row(isExpanded: Boolean): OneSection {
+        val rows: ArrayList<OneRow> = arrayListOf()
+        val r1: OneRow = OneRow("標題關鍵字", "", "", KEYWORD_KEY, "textField")
         rows.add(r1)
 
-        val s: SearchSection = SearchSection("一般", isExpanded)
+        val s: OneSection = OneSection("一般", "general", isExpanded)
         s.items.addAll(rows)
         return s
     }

@@ -7,8 +7,11 @@ import android.view.View
 import android.widget.Button
 import android.widget.LinearLayout
 import com.google.gson.JsonParseException
+import com.sportpassword.bm.Adapters.OneSectionAdapter
 import com.sportpassword.bm.Adapters.SearchSectionAdapter
 import com.sportpassword.bm.Adapters.TeamAdapter
+import com.sportpassword.bm.Data.OneRow
+import com.sportpassword.bm.Data.OneSection
 import com.sportpassword.bm.Data.SearchRow
 import com.sportpassword.bm.Data.SearchSection
 import com.sportpassword.bm.Models.ArenaTable
@@ -63,9 +66,9 @@ class SearchVC : MyTableVC() {
         tableAdapter = TeamAdapter(R.layout.team_list_cell, this)
         recyclerView.adapter = tableAdapter
 
-        searchSectionAdapter = SearchSectionAdapter(this, R.layout.cell_section, this)
-        searchSections = initSectionRows()
-        searchSectionAdapter.setSearchSection(searchSections)
+//        oneSectionAdapter = OneSectionAdapter(this, R.layout.cell_section, this)
+//        oneSections = initSectionRows()
+        oneSectionAdapter.setOneSection(oneSections)
 
         member_like = true
 
@@ -167,7 +170,7 @@ class SearchVC : MyTableVC() {
                     1-> {
                         footer.visibility = View.VISIBLE
                         remain.visibility = View.VISIBLE
-                        recyclerView.adapter = searchSectionAdapter
+                        recyclerView.adapter = oneSectionAdapter
                         //generateSections()
                     }
                     0-> {
@@ -214,9 +217,9 @@ class SearchVC : MyTableVC() {
         }
     }
 
-    override fun initSectionRows(): ArrayList<SearchSection> {
+    override fun initSectionRows(): ArrayList<OneSection> {
 
-        val sections: ArrayList<SearchSection> = arrayListOf()
+        val sections: ArrayList<OneSection> = arrayListOf()
 
         sections.add(makeSection0Row())
         sections.add(makeSection1Row(false))
@@ -224,34 +227,34 @@ class SearchVC : MyTableVC() {
         return sections
     }
 
-    override fun makeSection0Row(isExpanded: Boolean): SearchSection {
-        val rows: ArrayList<SearchRow> = arrayListOf()
+    override fun makeSection0Row(isExpanded: Boolean): OneSection {
+        val rows: ArrayList<OneRow> = arrayListOf()
         //if (isExpanded) {
-        val r1: SearchRow = SearchRow("關鍵字", "", "", KEYWORD_KEY, "textField")
+        val r1: OneRow = OneRow("關鍵字", "", "", KEYWORD_KEY, "textField")
         rows.add(r1)
-        val r2: SearchRow = SearchRow("縣市", "", "全部", CITY_KEY, "more")
+        val r2: OneRow = OneRow("縣市", "", "全部", CITY_KEY, "more")
         rows.add(r2)
-        val r3: SearchRow = SearchRow("星期幾", "", "全部", WEEKDAY_KEY, "more")
+        val r3: OneRow = OneRow("星期幾", "", "全部", WEEKDAY_KEY, "more")
         rows.add(r3)
-        val r4: SearchRow = SearchRow("時段", "", "全部", START_TIME_KEY, "more")
+        val r4: OneRow = OneRow("時段", "", "全部", START_TIME_KEY, "more")
         rows.add(r4)
         //}
 
-        val s: SearchSection = SearchSection("一般", isExpanded)
+        val s: OneSection = OneSection("一般", "general", isExpanded)
         s.items.addAll(rows)
         return s
     }
 
-    private fun makeSection1Row(isExpanded: Boolean=true): SearchSection {
-        val rows: ArrayList<SearchRow> = arrayListOf()
+    private fun makeSection1Row(isExpanded: Boolean=true): OneSection {
+        val rows: ArrayList<OneRow> = arrayListOf()
         //if (isExpanded) {
-        val r1: SearchRow = SearchRow("球館", "", "全部", ARENA_KEY, "more")
+        val r1: OneRow = OneRow("球館", "", "全部", ARENA_KEY, "more")
         rows.add(r1)
-        val r2: SearchRow = SearchRow("程度", "", "全部", DEGREE_KEY, "more")
+        val r2: OneRow = OneRow("程度", "", "全部", DEGREE_KEY, "more")
         rows.add(r2)
         //}
 
-        val s: SearchSection = SearchSection("更多", isExpanded)
+        val s: OneSection = OneSection("更多", "more", isExpanded)
         s.items.addAll(rows)
         return s
     }
@@ -285,7 +288,7 @@ class SearchVC : MyTableVC() {
     override fun cellCity(row: Table) {
         val key: String = CITY_KEY
         val row1: TeamTable = row as TeamTable
-        val row2: SearchRow = getSearchRowFromKey(key)
+        val row2: OneRow = getOneRowFromKey(key)
         row2.value = row1.arena!!.city_id.toString()
         row2.show = row1.arena!!.city_show
         prepareParams()
@@ -297,7 +300,7 @@ class SearchVC : MyTableVC() {
     override fun cellArena(row: Table) {
         val key: String = ARENA_KEY
         val row1: TeamTable = row as TeamTable
-        val row2: SearchRow = getSearchRowFromKey(key)
+        val row2: OneRow = getOneRowFromKey(key)
         row2.value = row1.arena!!.id.toString()
         row2.show = row1.arena!!.name
         prepareParams()
