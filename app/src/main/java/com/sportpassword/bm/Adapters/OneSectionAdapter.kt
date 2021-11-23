@@ -12,6 +12,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.annotation.ColorInt
+import androidx.appcompat.widget.SwitchCompat
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -129,6 +130,9 @@ class OneItemAdapter(val context: Context, private val sectionIdx: Int, private 
             CELL_TYPE.PRIVACY.toInt() -> {
                 return PrivacyViewHolder(inflater.inflate(R.layout.formitem_privacy, parent, false))
             }
+            CELL_TYPE.SWITCH.toInt() -> {
+                return SwitchViewHolder(inflater.inflate(R.layout.formitem_switch, parent, false))
+            }
             else -> {
                 return PlainViewHolder(inflater.inflate(R.layout.formitem_plain, parent, false))
             }
@@ -150,6 +154,7 @@ class OneItemAdapter(val context: Context, private val sectionIdx: Int, private 
             "sex" -> CELL_TYPE.SEX.toInt()
             "password" -> CELL_TYPE.PASSWORD.toInt()
             "privacy" -> CELL_TYPE.PRIVACY.toInt()
+            "switch" -> CELL_TYPE.SWITCH.toInt()
             else -> throw IllegalArgumentException("錯誤的格式" + position)
         }
     }
@@ -321,6 +326,13 @@ class OneItemAdapter(val context: Context, private val sectionIdx: Int, private 
 
             holder.checkBox.setOnCheckedChangeListener { buttonView, isChecked ->
                 delegate.cellPrivacyChanged(sectionIdx, position, isChecked)
+            }
+        } else if (holder is SwitchViewHolder) {
+            holder.title.text = row.title
+            holder.switch.isChecked = row.value == "1"
+
+            holder.switch.setOnCheckedChangeListener { compoundButton, b ->
+                delegate.cellSwitchChanged(sectionIdx, position, b)
             }
         }
     }
@@ -621,4 +633,10 @@ class PrivacyViewHolder(val viewHolder: View): RecyclerView.ViewHolder(viewHolde
     val checkBox: CheckBox = viewHolder.findViewById(R.id.privacyBox)
 
     val required: ImageView = viewHolder.findViewById(R.id.required)
+}
+
+class SwitchViewHolder(val viewHolder: View): RecyclerView.ViewHolder(viewHolder) {
+
+    val title: TextView = viewHolder.findViewById(R.id.title)
+    val switch: SwitchCompat = viewHolder.findViewById(R.id.search_switch)
 }

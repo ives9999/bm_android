@@ -187,7 +187,7 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener,
         super.onCreate(savedInstanceState)
 
         gSimulate = isEmulator()
-        gSimulate = true
+//        gSimulate = true
 
         //ConnectTask(this).execute()
         val btn = findViewById<Button>(R.id.submit_btn)
@@ -349,43 +349,18 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener,
 
     override fun cellMoreClick(sectionIdx: Int, rowIdx: Int) {
 
-        if (oneSections.size > sectionIdx && oneSections[sectionIdx].items.size > rowIdx) {
-            val row: OneRow = getOneRowFromIdx(sectionIdx, rowIdx)
-            if (row.key == DOB_KEY) {
-                toSelectDate(row.key, row.value, this)
-            } else if (row.key == CITY_KEY) {
-                toSelectCity(row.value, this)
-            } else if (row.key == AREA_KEY) {
-                val row1: OneRow = getOneRowFromKey(CITY_KEY)
-                if (row1.value.isEmpty()) {
-                    warning("請先選擇縣市")
-                } else {
-                    toSelectArea(row.value, row.value.toInt(), this)
-                }
-            } else if (row.key == PRICE_UNIT_KEY) {
-                toSelectSingle(SelectPriceUnitVC::class.java, row.key, row.value, this, able_type)
-            } else if (row.key == COURSE_KIND_KEY) {
-                toSelectSingle(SelectCourseKindVC::class.java, row.key, row.value, this, able_type)
-            } else if (row.key == CYCLE_UNIT_KEY) {
-                toSelectSingle(SelectCycleUnitVC::class.java, row.key, row.value, this, able_type)
-            } else if (row.key == WEEKDAY_KEY) {
-//                val tmp = formItem.sender as ArrayList<String>
-//                val selecteds: String = tmp.joinToString(",")
-                toSelectWeekday(row.value, this, able_type)
-            } else if (row.key == START_TIME_KEY || row.key == END_TIME_KEY) {
-//                val tmp = formItem.sender as HashMap<String, String>
-//                val selected = tmp.get("time")!!
-                toSelectSingle(SelectTimeVC::class.java, row.key, row.value, this, able_type)
-            } else if (row.key == START_DATE_KEY || row.key == END_DATE_KEY) {
-                toSelectDate(row.key, row.value, this)
-            }
-        }
-
         val row: OneRow = getOneRowFromIdx(sectionIdx, rowIdx)
         if (row.key == DOB_KEY) {
             toSelectDate(row.key, row.value, this)
         } else if (row.key == CITY_KEY) {
             toSelectCity(row.value, this)
+        } else if (row.key == AREA_KEY) {
+            val row1: OneRow = getOneRowFromKey(CITY_KEY)
+            if (row1.value.isEmpty()) {
+                warning("請先選擇縣市")
+            } else {
+                toSelectArea(row.value, row.value.toInt(), this)
+            }
         } else if (row.key == AREA_KEY) {
             val row: OneRow = getOneRowFromKey(CITY_KEY)
             if (row.value.isEmpty()) {
@@ -393,6 +368,22 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener,
             } else {
                 toSelectArea(row.value, row.value.toInt(), this)
             }
+        } else if (row.key == PRICE_UNIT_KEY) {
+            toSelectSingle(SelectPriceUnitVC::class.java, row.key, row.value, this, able_type)
+        } else if (row.key == COURSE_KIND_KEY) {
+            toSelectSingle(SelectCourseKindVC::class.java, row.key, row.value, this, able_type)
+        } else if (row.key == CYCLE_UNIT_KEY) {
+            toSelectSingle(SelectCycleUnitVC::class.java, row.key, row.value, this, able_type)
+        } else if (row.key == WEEKDAY_KEY) {
+//                val tmp = formItem.sender as ArrayList<String>
+//                val selecteds: String = tmp.joinToString(",")
+            toSelectWeekday(row.value, this, able_type)
+        } else if (row.key == START_TIME_KEY || row.key == END_TIME_KEY) {
+//                val tmp = formItem.sender as HashMap<String, String>
+//                val selected = tmp.get("time")!!
+            toSelectSingle(SelectTimeVC::class.java, row.key, row.value, this, able_type)
+        } else if (row.key == START_DATE_KEY || row.key == END_DATE_KEY) {
+            toSelectDate(row.key, row.value, this)
         }
     }
 

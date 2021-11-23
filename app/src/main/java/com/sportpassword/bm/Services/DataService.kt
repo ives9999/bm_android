@@ -82,7 +82,7 @@ open class DataService {
         if (token != null) {
             url = url + "/" + token
         }
-        println(url)
+//        println(url)
 
 //        val header: MutableList<Pair<String, String>> = mutableListOf()
 //        header.add(Pair("Accept","application/json"))
@@ -102,8 +102,8 @@ open class DataService {
             params.put("member_token", member.token!!)
         }
 
-        val j: JSONObject = JSONObject(params as Map<*, *>)
-        println(j.toString())
+//        val j: JSONObject = JSONObject(params as Map<*, *>)
+//        println(j.toString())
 //        val body = j.toString().toRequestBody(HEADER.toMediaTypeOrNull())
 
         val request: okhttp3.Request = getRequest(url, params)

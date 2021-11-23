@@ -54,7 +54,7 @@ class ArenaVC : MyTableVC() {
 //        list_container.adapter = youAdapter
 //        val myColorGreen = ContextCompat.getColor(this, R.color.MY_GREEN)
         arenaTabLine.backgroundColor = myColorGreen
-        topTitleLbl.setText("課程")
+        topTitleLbl.setText("球館")
 //
         tableAdapter = ArenaAdapter(R.layout.arena_list_cell, this)
 //        val a1: ArenaTable = ArenaTable()
