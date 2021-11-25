@@ -29,6 +29,9 @@
         tools:replace="android:allowBackup"
         tools:targetApi="m">
         <activity
+            android:name=".Controllers.ManagerTeamVC"
+            android:exported="false" />
+        <activity
             android:name=".Controllers.MemberVC"
             android:exported="false" />
         <activity
@@ -43,7 +46,7 @@
         </activity>
         <activity
             android:name=".Controllers.SearchVC"
-            android:exported="true"></activity>
+            android:exported="true" />
         <activity
             android:name=".Controllers.YoutubePlayerVC"
             android:exported="true" />

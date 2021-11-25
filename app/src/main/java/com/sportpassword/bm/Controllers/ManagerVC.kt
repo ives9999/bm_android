@@ -1,91 +1,94 @@
 package com.sportpassword.bm.Controllers
 
+import android.app.Activity
+import android.content.DialogInterface
+import android.content.Intent
 import android.os.Bundle
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import android.view.Menu
 import android.view.View
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import com.sportpassword.bm.Adapters.ManagerAdapter
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Utilities.Alert
 import com.sportpassword.bm.Utilities.CHANNEL
 import com.sportpassword.bm.Utilities.Loading
 import com.sportpassword.bm.member
+import kotlinx.android.synthetic.main.manager_course_vc.*
 import kotlinx.android.synthetic.main.manager_vc.*
 import kotlinx.android.synthetic.main.mask.*
 import org.jetbrains.anko.contentView
 
-class ManagerVC : BaseActivity() {
+var token: String? = null //coach token
+var name: String? = null  //coach name
+var manager_token: String? = null
+
+open class ManagerVC : MyTableVC() {
 
     lateinit var managerAdapter: ManagerAdapter
     var source: String = "team"
 
+    lateinit var dialog: DialogInterface
+
+    override var editCourseResult: ActivityResultLauncher<Intent>? = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()) { res ->
+
+        if (res.resultCode == Activity.RESULT_OK) {
+
+            if (res.data != null) {
+                val i: Intent? = res.data
+
+                if (i != null) {
+                    if (i.hasExtra("manager_token")) {
+                        manager_token = i.getStringExtra("manager_token")!!
+                        params["manager_token"] = manager_token!!
+                        refresh()
+                    }
+                }
+            }
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
+
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.manager_vc)
-        if (intent.hasExtra("source")) {
-            source = intent.getStringExtra("source")!!
+        if (intent.hasExtra("token")) {
+            token = intent.getStringExtra("token")!!
         }
-        if (source == "team") {
-            setMyTitle("球隊管理")
-        } else if (source == "coach") {
-            setMyTitle("教練管理")
-        } else if (source == "arena") {
-            setMyTitle("球館管理")
-        } else {
-            setMyTitle("球隊管理")
+        if (intent.hasExtra("name")) {
+            name = intent.getStringExtra("name")!!
+        }
+        if (intent.hasExtra("manager_token")) {
+            manager_token = intent.getStringExtra("manager_token")!!
+            params["manager_token"] = manager_token!!
         }
 
-        refreshLayout = contentView!!.findViewById<SwipeRefreshLayout>(R.id.tempManager_refresh)
+        recyclerView = list
+        refreshLayout = refresh
+        maskView = mask
         setRefreshListener()
-//        refresh()
+
+        setMyTitle(name!!)
     }
 
-    override fun onResume() {
-        super.onResume()
-        refresh()
-    }
 
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.add, menu)
-        return true
-    }
-
-    override fun cellRefresh() {
-        tableLists.clear()
-        refresh()
+    override fun init() {
+        isPrevIconShow = true
+        super.init()
     }
 
     override fun refresh() {
-        getManagerList()
+        page = 1
+        theFirstTime = true
+//        adapter.clear()
+//        items.clear()
+
+        params.clear()
+        params.put("manager_token", manager_token!!)
+        params.put("status", "all")
+        tableLists.clear()
+        getDataStart(page, perPage)
     }
 
-    private fun getManagerList() {
-        val filter1: Array<Any> = arrayOf("manager_id", "=", member.id)
-        val filter: Array<Array<Any>> = arrayOf(filter1)
-
-        Loading.show(mask)
-//        dataService.getList(this, source, "name", hashMapOf<String, Any>(), 1, 100, filter) { success ->
-//            if (success) {
-////                for (row in dataService.superDataLists) {
-////                    println(row.featured_path)
-////                }
-//                managerAdapter = ManagerAdapter(this, dataService.superDataLists,
-//                        { title, token ->
-//                            toManagerFunction(title, token, source)
-//                        }
-//                )
-//                manager_list.adapter = managerAdapter
-//                closeRefresh()
-//            }
-//            Loading.hide(mask)
-//        }
-    }
-
-    fun add(view: View) {
-        if (member.validate < 1) {
-            Alert.show(this@ManagerVC, "錯誤", "未通過EMail認證，無法新增球隊，認證完後，請先登出再登入")
-        } else {
-            toEdit(source)
-        }
-    }
 }

@@ -23,62 +23,23 @@ import kotlinx.android.synthetic.main.manager_course_vc.refresh
 import org.jetbrains.anko.*
 import org.jetbrains.anko.sdk27.coroutines.onClick
 
-class ManagerCourseVC: MyTableVC() {
-    var token: String? = null //coach token
-    var name: String? = null  //coach name
-    var manager_token: String? = null
+class ManagerCourseVC: ManagerVC() {
 
     //var superCourses: SuperCourses? = null
     var mysTable: CoursesTable? = null
     lateinit var tableAdapter: CourseAdapter
 
-    lateinit var dialog: DialogInterface
-
-    override var editCourseResult: ActivityResultLauncher<Intent>? = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { res ->
-
-        if (res.resultCode == Activity.RESULT_OK) {
-
-            if (res.data != null) {
-                val i: Intent? = res.data
-
-                if (i != null) {
-                    if (i.hasExtra("manager_token")) {
-                        manager_token = i.getStringExtra("manager_token")!!
-                        params["manager_token"] = manager_token!!
-                        refresh()
-                    }
-                }
-            }
-        }
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+
         setContentView(R.layout.manager_course_vc)
-
-        if (intent.hasExtra("token")) {
-            token = intent.getStringExtra("token")!!
-        }
-        if (intent.hasExtra("name")) {
-            name = intent.getStringExtra("name")!!
-        }
-        if (intent.hasExtra("manager_token")) {
-            manager_token = intent.getStringExtra("manager_token")!!
-            params["manager_token"] = manager_token!!
-        }
-
         this.dataService = CourseService
         able_type = "course"
 
         if (name == null) {
             name = "課程"
         }
-        setMyTitle(name!!)
 
-        recyclerView = list
-        refreshLayout = refresh
-        maskView = mask
-        setRefreshListener()
+        super.onCreate(savedInstanceState)
 
         tableAdapter = CourseAdapter(R.layout.course_list_cell, this)
         recyclerView.adapter = tableAdapter
@@ -86,23 +47,6 @@ class ManagerCourseVC: MyTableVC() {
         init()
 
         refresh()
-    }
-
-    override fun init() {
-        isPrevIconShow = true
-        super.init()
-    }
-
-    override fun refresh() {
-        page = 1
-        theFirstTime = true
-//        adapter.clear()
-//        items.clear()
-
-        params.clear()
-        params["manager_token"] = manager_token!!
-        tableLists.clear()
-        getDataStart(page, perPage)
     }
 
 //    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

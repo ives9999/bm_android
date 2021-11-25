@@ -132,7 +132,10 @@ interface ToInterface {
             return
         }
         var intent: Intent? = null
-        if (page == "course") {
+        if (page == "team") {
+            intent = Intent(mainDelegate, ManagerTeamVC::class.java)
+            intent.putExtra("manager_token", member.token)
+        } else if (page == "course") {
             intent = Intent(mainDelegate, ManagerCourseVC::class.java)
             intent.putExtra("manager_token", member.token)
         } else {

@@ -5,6 +5,7 @@ import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.LinearLayout
+import android.widget.TextView
 import androidx.core.content.ContextCompat
 import com.sportpassword.bm.R
 import kotlinx.android.synthetic.main.tag.view.*
@@ -31,15 +32,19 @@ class Tag(context: Context) : LinearLayout(context) {
     }
 
     fun selectedStyle() {
-        tag_view.setBackgroundResource(R.drawable.tag_selected)
+        val i = R.drawable.tag_unselected
+        val t: TextView = findViewById(R.id.tag_view)
+        t.setBackgroundResource(R.drawable.tag_selected)
         //tag_view.setBackgroundResource(R.color.TAG_SELECTED_BACKGROUND)
-        tag_view.setTextColor(ContextCompat.getColor(context, R.color.TAG_SELECTED_TEXTCOLOR))
+        t.setTextColor(ContextCompat.getColor(context, R.color.TAG_SELECTED_TEXTCOLOR))
     }
 
     fun unSelectedStyle() {
-        tag_view.setBackgroundResource(R.drawable.tag_unselected)
+        val i = R.drawable.tag_unselected
+        val t: TextView = findViewById(R.id.tag_view)
+        t.setBackgroundResource(i)
         //tag_view.setBackgroundResource(R.color.TAG_UNSELECTED_BACKGROUND)
-        tag_view.setTextColor(ContextCompat.getColor(context, R.color.TAG_UNSELECTED_TEXTCOLOR))
+        t.setTextColor(ContextCompat.getColor(context, R.color.TAG_UNSELECTED_TEXTCOLOR))
     }
 
 }
