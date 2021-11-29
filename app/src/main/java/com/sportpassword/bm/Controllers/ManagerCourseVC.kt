@@ -41,7 +41,7 @@ class ManagerCourseVC: ManagerVC() {
 
         super.onCreate(savedInstanceState)
 
-        tableAdapter = CourseAdapter(R.layout.course_list_cell, this)
+        tableAdapter = CourseAdapter(R.layout.manager_course_item, this)
         recyclerView.adapter = tableAdapter
         //initAdapter()
         init()
@@ -81,6 +81,11 @@ class ManagerCourseVC: ManagerVC() {
                 tableAdapter.notifyDataSetChanged()
             }
         }
+    }
+
+    override fun cellEdit(row: Table) {
+
+        val i = 6
     }
 
     override fun cellClick(row: Table) {
