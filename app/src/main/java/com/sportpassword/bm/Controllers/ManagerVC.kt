@@ -4,21 +4,11 @@ import android.app.Activity
 import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-import android.view.Menu
-import android.view.View
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import com.sportpassword.bm.Adapters.ManagerAdapter
-import com.sportpassword.bm.R
-import com.sportpassword.bm.Utilities.Alert
-import com.sportpassword.bm.Utilities.CHANNEL
-import com.sportpassword.bm.Utilities.Loading
-import com.sportpassword.bm.member
-import kotlinx.android.synthetic.main.manager_course_vc.*
-import kotlinx.android.synthetic.main.manager_vc.*
+import kotlinx.android.synthetic.main.activity_manager_course_vc.*
 import kotlinx.android.synthetic.main.mask.*
-import org.jetbrains.anko.contentView
 
 var token: String? = null //coach token
 var name: String? = null  //coach name
@@ -26,8 +16,8 @@ var manager_token: String? = null
 
 open class ManagerVC : MyTableVC() {
 
-    lateinit var managerAdapter: ManagerAdapter
-    var source: String = "team"
+//    lateinit var managerAdapter: ManagerAdapter
+//    var source: String = "team"
 
     lateinit var dialog: DialogInterface
 

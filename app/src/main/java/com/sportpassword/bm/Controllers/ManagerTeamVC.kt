@@ -1,16 +1,11 @@
 package com.sportpassword.bm.Controllers
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import com.sportpassword.bm.Adapters.CourseAdapter
 import com.sportpassword.bm.Adapters.TeamAdapter
 import com.sportpassword.bm.Models.*
 import com.sportpassword.bm.R
-import com.sportpassword.bm.Services.CourseService
 import com.sportpassword.bm.Services.TeamService
 import com.sportpassword.bm.Utilities.jsonToModels
-import kotlinx.android.synthetic.main.manager_course_vc.*
-import kotlinx.android.synthetic.main.mask.*
 import org.jetbrains.anko.alert
 import org.jetbrains.anko.button
 import org.jetbrains.anko.customView
@@ -33,7 +28,7 @@ class ManagerTeamVC : ManagerVC() {
 
         super.onCreate(savedInstanceState)
 
-        tableAdapter = TeamAdapter(R.layout.team_list_cell, this)
+        tableAdapter = TeamAdapter(R.layout.manager_team_item, this)
         recyclerView.adapter = tableAdapter
         //initAdapter()
         init()
@@ -54,39 +49,50 @@ class ManagerTeamVC : ManagerVC() {
         }
     }
 
+    override fun cellEdit(row: Table) {
+
+        //toEditTeam(row.title, row.token)
+    }
+
+    override fun cellDelete(row: Table) {
+
+    }
+
     override fun cellClick(row: Table) {
 
-        val _row: TeamTable = row as TeamTable
+        toShowTeam(row.token)
 
-        dialog = alert {
-            title = "選項"
-            customView {
-                verticalLayout {
-                    button("檢視") {
-                        onClick {
-                            dialog.dismiss()
-                            toShowTeam(row.token)
-                        }
-                    }
-                    button("編輯") {
-                        onClick {
-                            dialog.dismiss()
-                            //if (token != null) {
-                            toEditCourse(row.title, row.token, row.token)
-                            //}
-                        }
-                    }
-                    button("刪除") {
-                        onClick {
-                            dialog.dismiss()
-                            //toDelete1("course", row.token)
-                        }
-                    }
-                    button("取消") {
-                        onClick {dialog.dismiss()}
-                    }
-                }
-            }
-        }.show()
+//        val _row: TeamTable = row as TeamTable
+//
+//        dialog = alert {
+//            title = "選項"
+//            customView {
+//                verticalLayout {
+//                    button("檢視") {
+//                        onClick {
+//                            dialog.dismiss()
+//                            toShowTeam(row.token)
+//                        }
+//                    }
+//                    button("編輯") {
+//                        onClick {
+//                            dialog.dismiss()
+//                            //if (token != null) {
+//                            toEditCourse(row.title, row.token, row.token)
+//                            //}
+//                        }
+//                    }
+//                    button("刪除") {
+//                        onClick {
+//                            dialog.dismiss()
+//                            //toDelete1("course", row.token)
+//                        }
+//                    }
+//                    button("取消") {
+//                        onClick {dialog.dismiss()}
+//                    }
+//                }
+//            }
+//        }.show()
     }
 }

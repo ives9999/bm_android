@@ -12,14 +12,19 @@ import org.jetbrains.anko.sdk27.coroutines.onClick
 import androidx.appcompat.app.AlertDialog
 import android.view.View
 import android.widget.*
+import com.sportpassword.bm.Adapters.OneSectionAdapter
 import com.sportpassword.bm.Models.*
 import com.sportpassword.bm.Utilities.*
+import kotlinx.android.synthetic.main.activity_edit_course_vc.*
 import kotlinx.android.synthetic.main.edit_item.*
+import kotlinx.android.synthetic.main.edit_vc.edit_featured
+import kotlinx.android.synthetic.main.edit_vc.edit_featured_container
+import kotlinx.android.synthetic.main.edit_vc.featured_text
 import org.jetbrains.anko.contentView
 import java.io.File
 import kotlinx.android.synthetic.main.mask.*
 
-class EditVC1 : MyTableVC() {
+open class EditVC : MyTableVC() {
 
 //    override val ACTION_PHOTO_REQUEST_CODE = 200
 //    override val activity = this
@@ -31,30 +36,37 @@ class EditVC1 : MyTableVC() {
 //    override var file: File? = null
 //    lateinit override var imageView: ImageView
 
-    val SELECT_REQUEST_CODE = 1
-    var source: String = "team"
+//    val SELECT_REQUEST_CODE = 1
     var token: String = ""
     var title: String = ""
 
-    private var originW: Int = 0
-    private var originH: Int = 0
-    private var originMarginTop = 0
-    private var originMarginBottom = 0
-    private lateinit var originScaleType: ImageView.ScaleType
-    private lateinit var inputV: List<View>
-    private var isFeaturedChange: Boolean = false
+    var originW: Int = 0
+    var originH: Int = 0
+    var originMarginTop = 0
+    var originMarginBottom = 0
+    lateinit var originScaleType: ImageView.ScaleType
+    lateinit var inputV: List<View>
+    var isFeaturedChange: Boolean = false
 
 //    var model: SuperData = Team(0, "", "", "")
     var action: String = "INSERT"
     val editTexts: HashMap<String, Int> = hashMapOf()
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.edit_vc)
 
-        source = intent.getStringExtra("source")!!
-        token = intent.getStringExtra("token")!!
-        val tmp = intent.getStringExtra("title")!!
+        super.onCreate(savedInstanceState)
+//        setContentView(R.layout.edit_vc)
+
+        if (intent.hasExtra("title")) {
+            title = intent.getStringExtra("title")!!
+        }
+        if (intent.hasExtra("token")) {
+            token = intent.getStringExtra("token")!!
+        }
+
+//        source = intent.getStringExtra("source")!!
+//        token = intent.getStringExtra("token")!!
+//        val tmp = intent.getStringExtra("title")!!
 
 //        if (source == "coach") {
 //            title = "新增教練"
@@ -70,9 +82,9 @@ class EditVC1 : MyTableVC() {
 //            model = Arena(0, "")
 //        }
 
-        if (tmp.length > 0) {
-            title = tmp
-        }
+//        if (tmp.length > 0) {
+//            title = tmp
+//        }
         setMyTitle(title)
 //        model.dataReset()
         //println(model.data)
@@ -85,7 +97,18 @@ class EditVC1 : MyTableVC() {
         }
 
 //        sections = model.sections
-        recyclerView = edit_list
+        recyclerView = editTableView
+        refreshLayout = refresh
+
+        //move to MyTableVC的 init()
+//        setRefreshListener()
+
+        oneSectionAdapter = OneSectionAdapter(this, R.layout.cell_section, this, hashMapOf())
+        // init is deal
+//        oneSectionAdapter.setOneSection(oneSections)
+
+        recyclerView.adapter = oneSectionAdapter
+
         //initAdapter(true)
 
         //val allV = getAllChildrenBFS(edit_list)
@@ -93,11 +116,25 @@ class EditVC1 : MyTableVC() {
 
         //textFieldDidEndEditing(inputV)
 
-        refreshLayout = contentView!!.findViewById<SwipeRefreshLayout>(R.id.edit_refresh)
+//        refreshLayout = contentView!!.findViewById<SwipeRefreshLayout>(R.id.edit_refresh)
         //println(refreshLayout)
-        setRefreshListener()
-        refresh()
+//        setRefreshListener()
+//        refresh()
+        oneSections.clear()
+        init()
+        if (token != null && token.length > 0) {
+            refresh()
+        } else {
+            initData()
+        }
     }
+
+    override fun init() {
+        isPrevIconShow = true
+        super.init()
+    }
+
+    open fun initData() {}
 
 //    override fun generateItems(section: Int): ArrayList<Item> {
 //
@@ -287,7 +324,7 @@ class EditVC1 : MyTableVC() {
         prev()
     }
 
-    private fun fieldToData() {
+//    private fun fieldToData() {
 //        for ((key, idx) in editTexts) {
 //            if (model.data.containsKey(key)) {
 //                val it = edit_list.findViewHolderForAdapterPosition(idx) as com.xwray.groupie.kotlinandroidextensions.GroupieViewHolder
@@ -301,8 +338,8 @@ class EditVC1 : MyTableVC() {
 //                _fieldToData(oldValue, newValue, vtype, key)
 //            }
 //        }
-    }
-    private fun _fieldToData(_oldValue: Any, _newValue: String, vtype: String, key: String) {
+//    }
+//    private fun _fieldToData(_oldValue: Any, _newValue: String, vtype: String, key: String) {
 //        var oldValue: Any = _oldValue
 //        if (vtype == "String") {
 //            oldValue = oldValue as String
@@ -334,7 +371,7 @@ class EditVC1 : MyTableVC() {
 //                model.data[key]!!["change"] = true
 //            }
 //        }
-    }
+//    }
 
     // filter the not text input field
 //    private fun filterInputField(allV: List<View>): List<View> {

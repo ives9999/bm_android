@@ -64,24 +64,13 @@
 
                             <ImageView
                                 android:id="@+id/edit_featured"
-                                android:layout_width="60sp"
-                                android:layout_height="60sp"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
                                 android:layout_alignParentStart="true"
                                 android:layout_alignParentTop="true"
                                 android:layout_gravity="center"
-                                android:layout_marginTop="32dp"
-                                android:layout_marginBottom="8dp"
-                                android:paddingLeft="18dp"
-                                android:paddingRight="18dp"
                                 android:scaleType="fitCenter"
                                 app:srcCompat="@drawable/nophoto" />
-                            <TextView
-                                android:id="@+id/featured_text"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:text="請選擇代表圖"
-                                android:textAlignment="center"
-                                android:textColor="@color/MY_WHITE" />
 
                         </LinearLayout>
 

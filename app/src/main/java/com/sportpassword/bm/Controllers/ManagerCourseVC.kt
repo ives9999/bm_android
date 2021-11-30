@@ -16,10 +16,7 @@ import com.sportpassword.bm.Services.CourseService
 import com.sportpassword.bm.Utilities.*
 import com.sportpassword.bm.member
 import kotlinx.android.synthetic.main.manager_course_item.*
-import kotlinx.android.synthetic.main.manager_course_vc.*
 import kotlinx.android.synthetic.main.mask.*
-import kotlinx.android.synthetic.main.activity_store_vc.*
-import kotlinx.android.synthetic.main.manager_course_vc.refresh
 import org.jetbrains.anko.*
 import org.jetbrains.anko.sdk27.coroutines.onClick
 
@@ -31,7 +28,7 @@ class ManagerCourseVC: ManagerVC() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
-        setContentView(R.layout.manager_course_vc)
+        setContentView(R.layout.activity_manager_course_vc)
         this.dataService = CourseService
         able_type = "course"
 
@@ -41,7 +38,7 @@ class ManagerCourseVC: ManagerVC() {
 
         super.onCreate(savedInstanceState)
 
-        tableAdapter = CourseAdapter(R.layout.manager_course_item, this)
+        tableAdapter = CourseAdapter(R.layout.manager_team_item, this)
         recyclerView.adapter = tableAdapter
         //initAdapter()
         init()
@@ -85,43 +82,49 @@ class ManagerCourseVC: ManagerVC() {
 
     override fun cellEdit(row: Table) {
 
-        val i = 6
+        val _row: CourseTable = row as CourseTable
+        toEditCourse(row.title, row.token, row.coach!!.token)
+    }
+
+    override fun cellDelete(row: Table) {
+
     }
 
     override fun cellClick(row: Table) {
 
-        val _row: CourseTable = row as CourseTable
-
-        dialog = alert {
-            title = "選項"
-            customView {
-                verticalLayout {
-                    button("檢視") {
-                        onClick {
-                            dialog.dismiss()
-                            toShowCourse(row.token)
-                        }
-                    }
-                    button("編輯") {
-                        onClick {
-                            dialog.dismiss()
-                            //if (token != null) {
-                            toEditCourse(row.title, row.token, row.coach!!.token)
-                            //}
-                        }
-                    }
-                    button("刪除") {
-                        onClick {
-                            dialog.dismiss()
-                            //toDelete1("course", row.token)
-                        }
-                    }
-                    button("取消") {
-                        onClick {dialog.dismiss()}
-                    }
-                }
-            }
-        }.show()
+        toShowCourse(row.token)
+//        val _row: CourseTable = row as CourseTable
+//
+//        dialog = alert {
+//            title = "選項"
+//            customView {
+//                verticalLayout {
+//                    button("檢視") {
+//                        onClick {
+//                            dialog.dismiss()
+//                            toShowCourse(row.token)
+//                        }
+//                    }
+//                    button("編輯") {
+//                        onClick {
+//                            dialog.dismiss()
+//                            //if (token != null) {
+//                            toEditCourse(row.title, row.token, row.coach!!.token)
+//                            //}
+//                        }
+//                    }
+//                    button("刪除") {
+//                        onClick {
+//                            dialog.dismiss()
+//                            //toDelete1("course", row.token)
+//                        }
+//                    }
+//                    button("取消") {
+//                        onClick {dialog.dismiss()}
+//                    }
+//                }
+//            }
+//        }.show()
     }
 
 //    override fun generateItems(): ArrayList<Item> {

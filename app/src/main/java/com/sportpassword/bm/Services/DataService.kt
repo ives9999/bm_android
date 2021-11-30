@@ -82,7 +82,7 @@ open class DataService {
         if (token != null) {
             url = url + "/" + token
         }
-        println(url)
+//        println(url)
 
 //        val header: MutableList<Pair<String, String>> = mutableListOf()
 //        header.add(Pair("Accept","application/json"))
@@ -105,8 +105,8 @@ open class DataService {
             params.put("member_token", member.token!!)
         }
 
-        val j: JSONObject = JSONObject(params as Map<*, *>)
-        println(j.toString())
+//        val j: JSONObject = JSONObject(params as Map<*, *>)
+//        println(j.toString())
 //        val body = j.toString().toRequestBody(HEADER.toMediaTypeOrNull())
 
         val request: okhttp3.Request = getRequest(url, params)
@@ -547,9 +547,9 @@ open class DataService {
 //    }
 
     open fun update(context: Context, _params: MutableMap<String, String>, filePath: String, complete: CompletionHandler) {
-        jsonString = ""
+//        jsonString = ""
         val url: String = getUpdateURL()
-//        println(url)
+        println(url)
 
 
 //        val header: MutableList<Pair<String, String>> = mutableListOf()
@@ -567,8 +567,8 @@ open class DataService {
 //        println(jsonString1)
 
 
-//        val j: JSONObject = JSONObject(params as Map<*, *>)
-//        println(j)
+        val j: JSONObject = JSONObject(params as Map<*, *>)
+        println(j)
 
         val bodyBuilder: MultipartBody.Builder = MultipartBody.Builder().setType(MultipartBody.FORM)
 

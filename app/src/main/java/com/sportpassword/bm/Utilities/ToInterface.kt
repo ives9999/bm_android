@@ -79,13 +79,13 @@ interface ToInterface {
         mainDelegate.startActivity(i)
     }
 
-    fun toEdit(source: String, title: String = "", token: String = "") {
-        val intent = Intent(mainDelegate, EditVC1::class.java)
-        intent.putExtra("token", token)
-        intent.putExtra("source", source)
-        intent.putExtra("title", title)
-        mainDelegate.startActivity(intent)
-    }
+//    fun toEdit(source: String, title: String = "", token: String = "") {
+//        val intent = Intent(mainDelegate, EditVC::class.java)
+//        intent.putExtra("token", token)
+//        intent.putExtra("source", source)
+//        intent.putExtra("title", title)
+//        mainDelegate.startActivity(intent)
+//    }
 
     fun toEditContent(key: String, title: String, content: String, delegate: BaseActivity?=null) {
 
@@ -104,7 +104,7 @@ interface ToInterface {
     fun toEditCourse(title: String, course_token: String, coach_token: String) {
         val intent = Intent(mainDelegate, EditCourseVC::class.java)
         intent.putExtra("title", title)
-        intent.putExtra("course_token", course_token)
+        intent.putExtra("token", course_token)
         intent.putExtra("coach_token", coach_token)
 
         //mainDelegate.startActivityForResult(intent, GENERAL_REQUEST_CODE)

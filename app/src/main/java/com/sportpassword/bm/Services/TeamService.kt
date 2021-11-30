@@ -38,6 +38,10 @@ object TeamService: DataService() {
         return URL_TEAM_LIKE.format(token)
     }
 
+    override fun getUpdateURL(): String {
+        return URL_TEAM_UPDATE
+    }
+
 //    fun tempPlay_list(context: Context, params: HashMap<String,Any>, page:Int, perPage:Int, complete: CompletionHandler) {
 //        val url = URL_TEAM_TEMP_PLAY_LIST
 ////        println(url)

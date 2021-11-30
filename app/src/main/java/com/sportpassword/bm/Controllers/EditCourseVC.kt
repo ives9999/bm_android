@@ -22,12 +22,13 @@ import com.sportpassword.bm.Utilities.*
 import com.sportpassword.bm.Views.ImagePicker
 import com.sportpassword.bm.member
 import kotlinx.android.synthetic.main.activity_edit_course_vc.*
+import kotlinx.android.synthetic.main.course_list_cell.*
 import kotlinx.android.synthetic.main.mask.*
 import org.jetbrains.anko.sdk27.coroutines.onClick
 import java.io.File
 import kotlin.reflect.full.memberProperties
 
-class EditCourseVC : MyTableVC() {
+class EditCourseVC : EditVC() {
 
 //    override val ACTION_PHOTO_REQUEST_CODE = 200
 //    override val activity = this
@@ -42,40 +43,23 @@ class EditCourseVC : MyTableVC() {
 //    var params1: MutableMap<String, String> = mutableMapOf<String, String>()
 
 
-    var title: String = ""
-    private var course_token: String? = null
     var coach_token: String? = null
 
-    private var originW: Int = 0
-    private var originH: Int = 0
-    private var originMarginTop = 0
-    private var originMarginBottom = 0
-    private lateinit var originScaleType: ImageView.ScaleType
-    private var isFeaturedChange: Boolean = false
-
-    var table: CourseTable? = null
+//    var table: CourseTable? = null
     var myTable: CourseTable? = null
 
     //    val section_keys: ArrayList<ArrayList<String>> = arrayListOf(
 //            arrayListOf(TITLE_KEY, YOUTUBE_KEY),
 //            arrayListOf(PRICE_KEY, PRICE_UNIT_KEY)
 //    )
-    var section_keys: ArrayList<ArrayList<String>> = arrayListOf()
+//    var section_keys: ArrayList<ArrayList<String>> = arrayListOf()
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
         able_type = "course"
+        dataService = CourseService
 
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_edit_course_vc)
-
-        if (intent.hasExtra("title")) {
-            title = intent.getStringExtra("title")!!
-        }
-        if (intent.hasExtra("course_token")) {
-            course_token = intent.getStringExtra("course_token")!!
-        }
         if (intent.hasExtra("coach_token")) {
             coach_token = intent.getStringExtra("coach_token")!!
         }
@@ -84,46 +68,35 @@ class EditCourseVC : MyTableVC() {
             warningWithPrev("沒有傳送教練代碼，無法編輯課程，請洽管理員")
         }
 
-        setMyTitle(title)
-        //form = CourseForm()
-        dataService = CourseService
+        setContentView(R.layout.activity_edit_course_vc)
+        super.onCreate(savedInstanceState)
 
-        imageView = edit_featured
-        getImageViewParams()
-        initImagePicker(R.layout.image_picker_layer)
-        edit_featured_container.onClick {
-            showImagePickerLayer()
-        }
+        //form = CourseForm()
+
+
+//        imageView = edit_featured
+//        getImageViewParams()
+//        initImagePicker(R.layout.image_picker_layer)
+//        edit_featured_container.onClick {
+//            showImagePickerLayer()
+//        }
 
 //        sections = form.getSections()
 //        section_keys = form.getSectionKeys()
 //        println(sections)
 //        println(section_keys)
 
-        recyclerView = editTableView
+//        recyclerView = editTableView
         //initAdapter(true)
 
-        refreshLayout = refresh
-        setRefreshListener()
+//        refreshLayout = refresh
+//        setRefreshListener()
 
-        oneSectionAdapter = OneSectionAdapter(this, R.layout.cell_section, this, hashMapOf())
-        oneSectionAdapter.setOneSection(oneSections)
-        recyclerView.adapter = oneSectionAdapter
-
-        if (course_token != null && course_token!!.length > 0) {
-            init()
-            refresh()
-        }
-    }
-
-    override fun init() {
-        isPrevIconShow = true
-        super.init()
     }
 
     override fun refresh() {
         Loading.show(mask)
-        val params: HashMap<String, String> = hashMapOf("token" to course_token!!)
+        val params: HashMap<String, String> = hashMapOf("token" to token!!)
         dataService.getOne(this, params) { success ->
             if (success) {
                 genericTable()
@@ -142,23 +115,7 @@ class EditCourseVC : MyTableVC() {
         }
     }
 
-    override fun genericTable() {
-        //println(dataService.jsonString)
-        try {
-            table = jsonToModel<CourseTable>(dataService.jsonString)
-        } catch (e: JsonParseException) {
-            warning(e.localizedMessage)
-            //println(e.localizedMessage)
-        }
-        if (table != null) {
-            myTable = table as CourseTable
-            myTable!!.filterRow()
-        } else {
-            warning("解析伺服器所傳的字串失敗，請洽管理員")
-        }
-    }
-
-    private fun initData() {
+    override fun initData() {
 
         if (myTable != null) {
             val rows: ArrayList<OneRow> = arrayListOf()
@@ -177,8 +134,8 @@ class EditCourseVC : MyTableVC() {
             rows.add(row)
             row = OneRow(
                 "youtube代碼",
-                "",
-                "",
+                myTable!!.youtube,
+                myTable!!.youtube,
                 YOUTUBE_KEY,
                 "textField",
                 KEYBOARD.default,
@@ -299,10 +256,26 @@ class EditCourseVC : MyTableVC() {
         }
     }
 
+    override fun genericTable() {
+        //println(dataService.jsonString)
+        try {
+            myTable = jsonToModel<CourseTable>(dataService.jsonString)
+        } catch (e: JsonParseException) {
+            warning(e.localizedMessage)
+            //println(e.localizedMessage)
+        }
+        if (myTable != null) {
+            myTable!!.filterRow()
+        } else {
+            warning("解析伺服器所傳的字串失敗，請洽管理員")
+        }
+    }
+
     fun initFeatured() {
         if (myTable!!.featured_path.count() > 0) {
-            val featured: String = myTable!!.featured_path
-            setImage(null, featured)
+            myTable!!.featured_path.image(this, edit_featured)
+//            val featured: String = myTable!!.featured_path
+//            setImage(null, featured)
         }
     }
 
@@ -504,29 +477,29 @@ class EditCourseVC : MyTableVC() {
 //        }
 //    }
 
-    override fun setImage(newFile: File?, url: String?) {
-        featured_text.visibility = View.INVISIBLE
-        val layoutParams = edit_featured.layoutParams as LinearLayout.LayoutParams
-        layoutParams.width = LinearLayout.LayoutParams.MATCH_PARENT
-        layoutParams.height = LinearLayout.LayoutParams.MATCH_PARENT
-        layoutParams.setMargins(0, 0, 0, 0)
-        imageView.layoutParams = layoutParams
-        isFeaturedChange = true
-        super<MyTableVC>.setImage(newFile, url)
-    }
-
-    override fun removeImage() {
-        featured_text.visibility = View.VISIBLE
-        val layoutParams = edit_featured.layoutParams as LinearLayout.LayoutParams
-        layoutParams.width = originW
-        layoutParams.height = originH
-        layoutParams.setMargins(0, originMarginTop, 0, originMarginBottom)
-        imageView.layoutParams = layoutParams
-        imageView.scaleType = originScaleType
-        isFeaturedChange = true
-        super<MyTableVC>.removeImage()
-        closeImagePickerLayer()
-    }
+//    override fun setImage(newFile: File?, url: String?) {
+//        featured_text.visibility = View.INVISIBLE
+//        val layoutParams = edit_featured.layoutParams as LinearLayout.LayoutParams
+//        layoutParams.width = LinearLayout.LayoutParams.MATCH_PARENT
+//        layoutParams.height = LinearLayout.LayoutParams.MATCH_PARENT
+//        layoutParams.setMargins(0, 0, 0, 0)
+//        imageView.layoutParams = layoutParams
+//        isFeaturedChange = true
+//        super<MyTableVC>.setImage(newFile, url)
+//    }
+//
+//    override fun removeImage() {
+//        featured_text.visibility = View.VISIBLE
+//        val layoutParams = edit_featured.layoutParams as LinearLayout.LayoutParams
+//        layoutParams.width = originW
+//        layoutParams.height = originH
+//        layoutParams.setMargins(0, originMarginTop, 0, originMarginBottom)
+//        imageView.layoutParams = layoutParams
+//        imageView.scaleType = originScaleType
+//        isFeaturedChange = true
+//        super<MyTableVC>.removeImage()
+//        closeImagePickerLayer()
+//    }
 
 //    override fun textFieldTextChanged(formItem: FormItem, text: String) {
 //        //println(row)
@@ -545,15 +518,15 @@ class EditCourseVC : MyTableVC() {
 //
 //    override fun stepperValueChanged(number: Int, name: String) {}
 
-    private fun getImageViewParams() {
-        val l = edit_featured.layoutParams as LinearLayout.LayoutParams
-        originW = l.width
-        originH = l.height
-        originScaleType = edit_featured.scaleType
-        //val m = edit_featured.
-        originMarginTop = l.topMargin
-        originMarginBottom = l.bottomMargin
-    }
+//    private fun getImageViewParams() {
+//        val l = edit_featured.layoutParams as LinearLayout.LayoutParams
+//        originW = l.width
+//        originH = l.height
+//        originScaleType = edit_featured.scaleType
+//        //val m = edit_featured.
+//        originMarginTop = l.topMargin
+//        originMarginBottom = l.bottomMargin
+//    }
 
     fun submitBtnPressed(view: View) {
 
@@ -581,14 +554,14 @@ class EditCourseVC : MyTableVC() {
             }
 
             var action = "UPDATE"
-            if (course_token != null && course_token!!.length == 0) {
+            if (token != null && token.length == 0) {
                 action = "INSERT"
             }
             if (action == "INSERT") {
                 params[CREATED_ID_KEY] = member.id.toString()
             }
-            if (course_token != null) {
-                params["course_token"] = course_token!!
+            if (token != null) {
+                params["course_token"] = token
             }
             if (coach_token != null) {
                 params["coach_token"] = coach_token!!
