@@ -4,29 +4,15 @@ import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
-import android.widget.ImageView
-import android.widget.LinearLayout
-import androidx.appcompat.app.AlertDialog
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.google.gson.JsonParseException
-import com.sportpassword.bm.Adapters.Form.*
-import com.sportpassword.bm.Adapters.OneSectionAdapter
 import com.sportpassword.bm.Data.OneRow
-import com.sportpassword.bm.Form.CourseForm
-import com.sportpassword.bm.Form.FormItem.*
-import com.sportpassword.bm.Form.FormItemCellType
 import com.sportpassword.bm.Models.CourseTable
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.CourseService
 import com.sportpassword.bm.Utilities.*
-import com.sportpassword.bm.Views.ImagePicker
 import com.sportpassword.bm.member
-import kotlinx.android.synthetic.main.activity_edit_course_vc.*
-import kotlinx.android.synthetic.main.course_list_cell.*
 import kotlinx.android.synthetic.main.mask.*
-import org.jetbrains.anko.sdk27.coroutines.onClick
-import java.io.File
-import kotlin.reflect.full.memberProperties
 
 class EditCourseVC : EditVC() {
 
@@ -92,27 +78,6 @@ class EditCourseVC : EditVC() {
 //        refreshLayout = refresh
 //        setRefreshListener()
 
-    }
-
-    override fun refresh() {
-        Loading.show(mask)
-        val params: HashMap<String, String> = hashMapOf("token" to token!!)
-        dataService.getOne(this, params) { success ->
-            if (success) {
-                genericTable()
-                runOnUiThread {
-                    initData()
-                    initFeatured()
-                    oneSectionAdapter.notifyDataSetChanged()
-                    //putValue()
-                }
-                //notifyChanged(true)
-
-                //teamedit_name.setSelection(teamedit_name.length())
-                closeRefresh()
-            }
-            Loading.hide(mask)
-        }
     }
 
     override fun initData() {
@@ -266,16 +231,9 @@ class EditCourseVC : EditVC() {
         }
         if (myTable != null) {
             myTable!!.filterRow()
+            table = myTable
         } else {
             warning("解析伺服器所傳的字串失敗，請洽管理員")
-        }
-    }
-
-    fun initFeatured() {
-        if (myTable!!.featured_path.count() > 0) {
-            myTable!!.featured_path.image(this, edit_featured)
-//            val featured: String = myTable!!.featured_path
-//            setImage(null, featured)
         }
     }
 

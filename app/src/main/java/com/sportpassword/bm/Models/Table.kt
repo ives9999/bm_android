@@ -48,6 +48,7 @@ abstract class Table {
     var city_show: String = ""
     var mobile_show: String = ""
     var tel_show: String = ""
+    var status_show: String = "上線"
 
     open fun filterRow() {
         if (featured_path.isNotEmpty()) {
@@ -78,6 +79,10 @@ abstract class Table {
         }
         if (content == null) {
             content = ""
+        }
+
+        if (status != null) {
+            status_show = STATUS.from(status).value
         }
     }
 

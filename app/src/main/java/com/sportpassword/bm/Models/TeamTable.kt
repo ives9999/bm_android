@@ -1,5 +1,7 @@
 package com.sportpassword.bm.Models
 
+import com.sportpassword.bm.Utilities.DEGREE
+import com.sportpassword.bm.Utilities.STATUS
 import com.sportpassword.bm.Utilities.WEEKDAY
 import com.sportpassword.bm.Utilities.noSec
 
@@ -10,6 +12,7 @@ class TeamsTable: Tables() {
 class TeamTable: Table() {
 
     var leader: String = ""
+    var line: String = ""
     var email: String = ""
     var website: String = ""
     var fb: String = ""
@@ -22,6 +25,8 @@ class TeamTable: Table() {
     var degree: String = ""
     var charge: String = ""
     var manager_id: Int = -1
+    var manager_token: String = ""
+    var manager_nickname: String = ""
     var temp_fee_M: Int = -1
     var temp_fee_F: Int = -1
     var temp_quantity: Int = 0
@@ -31,13 +36,17 @@ class TeamTable: Table() {
     var color: String = ""
     var weekdays: ArrayList<Team_WeekdaysTable> = arrayListOf()
     var arena: ArenaTable? = null
+    var signupDate: SignupDateTable? = null
 
     var play_start_show: String = ""
     var play_end_show: String = ""
     var weekdays_show: String = ""
+    var degree_show: String = ""
     var interval_show: String = ""
     var temp_quantity_show: String = ""
     var temp_signup_count_show: String = ""
+    var temp_status_show: String = "上線"
+    var last_signup_date: String = ""
 
     override fun filterRow() {
 
@@ -63,12 +72,15 @@ class TeamTable: Table() {
             youtube = "未提供"
         }
 
-        if (temp_status == "on") {
-            temp_quantity_show = "臨打：${temp_quantity}位"
-            temp_signup_count_show = "報名：${temp_signup_count}位"
-        } else {
-            temp_quantity_show = "臨打：未開放"
-            temp_signup_count_show = ""
+        if (temp_status != null) {
+            temp_status_show = STATUS.from(temp_status).value
+            if (temp_status == "online") {
+                temp_quantity_show = "臨打：${temp_quantity}位"
+                temp_signup_count_show = "報名：${temp_signup_count}位"
+            } else {
+                temp_quantity_show = "臨打：未開放"
+                temp_signup_count_show = ""
+            }
         }
 
         if (weekdays.size > 0) {
@@ -84,8 +96,24 @@ class TeamTable: Table() {
             interval_show = play_start.noSec() + " ~ " + play_end.noSec()
         }
 
+        if (degree.length > 0) {
+            val degrees: Array<String> = degree.split(",").toTypedArray()
+            var show: ArrayList<String> = arrayListOf()
+
+            for (value in degrees) {
+                val tmp: String = DEGREE.fromEnglish(value).value
+                show.add(tmp)
+            }
+            degree_show = show.joinToString(",")
+        }
+
         if (arena != null) {
             arena!!.filterRow()
+        }
+
+        if (signupDate != null) {
+            signupDate!!.filterRow()
+            last_signup_date = signupDate!!.date
         }
     }
 }

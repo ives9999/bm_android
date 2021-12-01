@@ -50,7 +50,9 @@ open class EditVC : MyTableVC() {
 
 //    var model: SuperData = Team(0, "", "", "")
     var action: String = "INSERT"
-    val editTexts: HashMap<String, Int> = hashMapOf()
+//    val editTexts: HashMap<String, Int> = hashMapOf()
+
+    var table: Table? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -136,6 +138,37 @@ open class EditVC : MyTableVC() {
 
     open fun initData() {}
 
+    override fun refresh() {
+        Loading.show(mask)
+        val params: HashMap<String, String> = hashMapOf("token" to token!!)
+        dataService.getOne(this, params) { success ->
+            if (success) {
+                genericTable()
+                runOnUiThread {
+                    initData()
+                    initFeatured()
+                    oneSectionAdapter.notifyDataSetChanged()
+                    //putValue()
+                }
+                //notifyChanged(true)
+
+                //teamedit_name.setSelection(teamedit_name.length())
+                closeRefresh()
+            }
+            Loading.hide(mask)
+        }
+    }
+
+    fun initFeatured() {
+        if (table != null) {
+            if (table!!.featured_path.count() > 0) {
+                table!!.featured_path.image(this, edit_featured)
+//            val featured: String = myTable!!.featured_path
+//            setImage(null, featured)
+            }
+        }
+    }
+
 //    override fun generateItems(section: Int): ArrayList<Item> {
 //
 //        val items: ArrayList<Item> = arrayListOf()
@@ -193,10 +226,10 @@ open class EditVC : MyTableVC() {
 //        menuInflater.inflate(R.menu.button, menu)
 //        return true
 //    }
-    override fun refresh() {
-        if (token.length > 0) {
-            Loading.show(mask)
-            action = "UPDATE"
+//    override fun refresh() {
+//        if (token.length > 0) {
+//            Loading.show(mask)
+//            action = "UPDATE"
 //            dataService.getOne(this, source, "name", token) { success ->
 //                if (success) {
 //                    model.data = dataService.data
@@ -216,8 +249,8 @@ open class EditVC : MyTableVC() {
 //                }
 //                Loading.hide(mask)
 //            }
-        }
-    }
+//        }
+//    }
 
     override fun setImage(newFile: File?, url: String?) {
         featured_text.visibility = View.INVISIBLE

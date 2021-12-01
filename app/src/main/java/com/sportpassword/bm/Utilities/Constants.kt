@@ -177,6 +177,7 @@ val TEAM_PLAY_START_KEY: String = "play_start"
 val TEAM_WEEKDAYS_KEY: String = "weekdays"
 
 val TEAM_TEMP_CONTENT_KEY = "temp_content"
+val TEAM_TEMP_DATE_KEY = "temp_date"
 val TEAM_TEMP_FEE_F_KEY: String = "temp_fee_F"
 val TEAM_TEMP_FEE_M_KEY: String = "temp_fee_M"
 val TEAM_TEMP_QUANTITY_KEY: String = "temp_quantity"

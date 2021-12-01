@@ -111,6 +111,14 @@ interface ToInterface {
         mainDelegate.editCourseResult?.launch(intent)
     }
 
+    fun toEditTeam(token: String) {
+        val intent = Intent(mainDelegate, EditTeamVC::class.java)
+        intent.putExtra("token", token)
+
+        //mainDelegate.startActivityForResult(intent, GENERAL_REQUEST_CODE)
+        mainDelegate.editCourseResult?.launch(intent)
+    }
+
 //    fun toEditMember() {
 //        val accountIntent = Intent(mainDelegate, AccountActivity::class.java)
 //        mainDelegate.startActivity(accountIntent)
