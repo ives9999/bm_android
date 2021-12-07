@@ -1,26 +1,16 @@
 package com.sportpassword.bm.Controllers
 
-import android.app.Activity
-import android.content.Intent
 import android.os.Bundle
-import androidx.localbroadcastmanager.content.LocalBroadcastManager
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.sportpassword.bm.R
-import com.sportpassword.bm.Services.TeamService
-import kotlinx.android.synthetic.main.edit_vc.*
 import org.jetbrains.anko.sdk27.coroutines.onClick
-import androidx.appcompat.app.AlertDialog
 import android.view.View
 import android.widget.*
 import com.sportpassword.bm.Adapters.OneSectionAdapter
 import com.sportpassword.bm.Models.*
 import com.sportpassword.bm.Utilities.*
 import kotlinx.android.synthetic.main.activity_edit_course_vc.*
-import kotlinx.android.synthetic.main.edit_item.*
 import kotlinx.android.synthetic.main.edit_vc.edit_featured
-import kotlinx.android.synthetic.main.edit_vc.edit_featured_container
 import kotlinx.android.synthetic.main.edit_vc.featured_text
-import org.jetbrains.anko.contentView
 import java.io.File
 import kotlinx.android.synthetic.main.mask.*
 
@@ -91,10 +81,11 @@ open class EditVC : MyTableVC() {
 //        model.dataReset()
         //println(model.data)
 
-        imageView = edit_featured
+        imageView = findViewById(R.id.edit_featured)
         getImageViewParams()
         initImagePicker(R.layout.image_picker_layer)
-        edit_featured_container.onClick {
+        val a: LinearLayout = findViewById(R.id.edit_featured_container)
+        a?.onClick {
             showImagePickerLayer()
         }
 
@@ -148,6 +139,7 @@ open class EditVC : MyTableVC() {
                     initData()
                     initFeatured()
                     oneSectionAdapter.notifyDataSetChanged()
+                    setMyTitle(title)
                     //putValue()
                 }
                 //notifyChanged(true)

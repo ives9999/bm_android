@@ -19,8 +19,8 @@ class EditTeamVC : EditVC() {
         able_type = "team"
         dataService = TeamService
 
-        super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_edit_team_vc)
+        super.onCreate(savedInstanceState)
     }
 
     override fun initData() {
@@ -73,6 +73,14 @@ class EditTeamVC : EditVC() {
         oneSections.add(section)
 
         rows.clear()
+        row = OneRow(
+            "球隊狀態",
+            myTable!!.status,
+            myTable!!.status_show,
+            STATUS_KEY,
+            "switch"
+        )
+        rows.add(row)
         var weekdays: Int = 0
         for (weekday in myTable!!.weekdays) {
             val n: Int = Math.pow(2.0, weekday.weekday.toDouble()).toInt()
@@ -135,18 +143,18 @@ class EditTeamVC : EditVC() {
             "RSL4號球"
         )
         rows.add(row)
-        row = OneRow(
-            "球隊狀態",
-            myTable!!.status,
-            myTable!!.status_show,
-            STATUS_KEY,
-            "switch"
-        )
-        rows.add(row)
         section = makeSectionRow("打球資訊", "play", rows, true)
         oneSections.add(section)
 
         rows.clear()
+        row = OneRow(
+            "臨打狀態",
+            myTable!!.temp_status,
+            myTable!!.temp_status_show,
+            TEAM_TEMP_STATUS_KEY,
+            "switch"
+        )
+        rows.add(row)
         row = OneRow(
             "臨打日期",
             myTable!!.last_signup_date,
@@ -162,14 +170,6 @@ class EditTeamVC : EditVC() {
             TEAM_TEMP_QUANTITY_KEY,
             "textField",
             KEYBOARD.numberPad
-        )
-        rows.add(row)
-        row = OneRow(
-            "臨打狀態",
-            myTable!!.temp_status,
-            myTable!!.temp_status_show,
-            TEAM_TEMP_STATUS_KEY,
-            "switch"
         )
         rows.add(row)
         row = OneRow(
@@ -289,6 +289,9 @@ class EditTeamVC : EditVC() {
         //println(dataService.jsonString)
         try {
             myTable = jsonToModel<TeamTable>(dataService.jsonString)
+            if (myTable != null) {
+                title = myTable!!.name
+            }
         } catch (e: JsonParseException) {
             warning(e.localizedMessage)
             //println(e.localizedMessage)
@@ -300,4 +303,13 @@ class EditTeamVC : EditVC() {
             warning("解析伺服器所傳的字串失敗，請洽管理員")
         }
     }
+
+    override fun cellSwitchChanged(sectionIdx: Int, rowIdx: Int, b: Boolean) {
+
+        val row: OneRow = getOneRowFromIdx(sectionIdx, rowIdx)
+        row.value = b then { "online" } ?: "offline"
+        row.show = b then { "上線" } ?: "下線"
+    }
+
+
 }

@@ -18,7 +18,6 @@ import com.sportpassword.bm.member
 import kotlinx.android.synthetic.main.manager_course_item.*
 import kotlinx.android.synthetic.main.mask.*
 import org.jetbrains.anko.*
-import org.jetbrains.anko.sdk27.coroutines.onClick
 
 class ManagerCourseVC: ManagerVC() {
 

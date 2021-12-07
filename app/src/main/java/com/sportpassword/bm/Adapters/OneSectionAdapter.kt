@@ -133,6 +133,9 @@ class OneItemAdapter(val context: Context, private val sectionIdx: Int, private 
             CELL_TYPE.SWITCH.toInt() -> {
                 return SwitchViewHolder(inflater.inflate(R.layout.formitem_switch, parent, false))
             }
+            CELL_TYPE.CONTENT.toInt() -> {
+                return ContentViewHolder(inflater.inflate(R.layout.formitem_content, parent, false))
+            }
             else -> {
                 return PlainViewHolder(inflater.inflate(R.layout.formitem_plain, parent, false))
             }
@@ -155,6 +158,7 @@ class OneItemAdapter(val context: Context, private val sectionIdx: Int, private 
             "password" -> CELL_TYPE.PASSWORD.toInt()
             "privacy" -> CELL_TYPE.PRIVACY.toInt()
             "switch" -> CELL_TYPE.SWITCH.toInt()
+            "content" -> CELL_TYPE.CONTENT.toInt()
             else -> throw IllegalArgumentException("錯誤的格式" + position)
         }
     }
@@ -329,7 +333,12 @@ class OneItemAdapter(val context: Context, private val sectionIdx: Int, private 
             }
         } else if (holder is SwitchViewHolder) {
             holder.title.text = row.title
-            holder.switch.isChecked = row.value == "1"
+
+            var isCheck: Boolean = true
+            if (row.value != "online" && row.value != "1") {
+                isCheck = false
+            }
+            holder.switch.isChecked = isCheck
 
             holder.switch.setOnCheckedChangeListener { compoundButton, b ->
                 delegate.cellSwitchChanged(sectionIdx, position, b)
@@ -639,4 +648,10 @@ class SwitchViewHolder(val viewHolder: View): RecyclerView.ViewHolder(viewHolder
 
     val title: TextView = viewHolder.findViewById(R.id.title)
     val switch: SwitchCompat = viewHolder.findViewById(R.id.search_switch)
+}
+
+class ContentViewHolder(val viewHolder: View): RecyclerView.ViewHolder(viewHolder) {
+
+    val title: TextView = viewHolder.findViewById(R.id.title)
+    val content: TextView = viewHolder.findViewById(R.id.detail)
 }

@@ -225,6 +225,9 @@ class EditCourseVC : EditVC() {
         //println(dataService.jsonString)
         try {
             myTable = jsonToModel<CourseTable>(dataService.jsonString)
+            if (myTable != null) {
+                title = myTable!!.name
+            }
         } catch (e: JsonParseException) {
             warning(e.localizedMessage)
             //println(e.localizedMessage)

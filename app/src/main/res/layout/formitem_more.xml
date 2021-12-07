@@ -48,12 +48,14 @@
             android:id="@+id/detail"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignEnd="@id/promptBtn"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="60dp"
             android:textColor="@color/MY_WHITE"
             android:textSize="18sp"
             android:visibility="invisible"
-            android:layout_alignParentEnd="true"
-            android:layout_centerVertical="true"
-            android:layout_marginEnd="60dp"
             tools:text="detail" />
 
         <ImageView

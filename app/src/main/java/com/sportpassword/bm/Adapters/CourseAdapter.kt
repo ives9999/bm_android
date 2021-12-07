@@ -8,7 +8,10 @@ import com.sportpassword.bm.Models.CourseTable
 import com.sportpassword.bm.Models.Table
 import com.sportpassword.bm.R
 import kotlinx.android.synthetic.main.course_list_cell.view.*
-import kotlinx.android.synthetic.main.manager_course_item.view.*
+import kotlinx.android.synthetic.main.course_list_cell.view.cityBtn
+import kotlinx.android.synthetic.main.course_list_cell.view.intervalLbl
+import kotlinx.android.synthetic.main.course_list_cell.view.signup_countLbl
+import kotlinx.android.synthetic.main.course_list_cell.view.weekdayLbl
 
 class CourseAdapter(resource: Int, list1CellDelegate: List1CellDelegate?): MyAdapter<CourseViewHolder>(resource, ::CourseViewHolder, list1CellDelegate) {}
 
@@ -69,11 +72,16 @@ class CourseViewHolder(context: Context, viewHolder: View, list1CellDelegate: Li
             }
         }
 
-        if (viewHolder.editIcon != null) {
-            viewHolder.editIcon.setOnClickListener {
-                if (list1CellDelegate != null) {
-                    list1CellDelegate.cellEdit(row)
-                }
+        if (viewHolder.iconView != null) {
+            val v = viewHolder.iconView
+            var a = v.findViewById<ImageButton>(R.id.editIcon)
+            a?.setOnClickListener {
+                list1CellDelegate?.cellEdit(row)
+            }
+
+            a = v.findViewById<ImageButton>(R.id.deleteIcon)
+            a?.setOnClickListener {
+                list1CellDelegate?.cellDelete(row)
             }
         }
 

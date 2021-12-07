@@ -384,6 +384,8 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener,
             toSelectSingle(SelectTimeVC::class.java, row.key, row.value, this, able_type)
         } else if (row.key == START_DATE_KEY || row.key == END_DATE_KEY) {
             toSelectDate(row.key, row.value, this)
+        } else if (row.key == TEAM_TEMP_CONTENT_KEY) {
+            toEditContent(row.key, row.title, row.value, this)
         }
     }
 

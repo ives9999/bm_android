@@ -7,7 +7,6 @@ import com.sportpassword.bm.Controllers.List1CellDelegate
 import com.sportpassword.bm.Models.Table
 import com.sportpassword.bm.Models.TeamTable
 import com.sportpassword.bm.R
-import kotlinx.android.synthetic.main.course_list_cell.view.*
 import kotlinx.android.synthetic.main.team_list_cell.view.*
 import kotlinx.android.synthetic.main.team_list_cell.view.cityBtn
 import kotlinx.android.synthetic.main.team_list_cell.view.iconView
@@ -59,17 +58,27 @@ class TeamViewHolder(context: Context, viewHolder: View, list1CellDelegate: List
 
         if (viewHolder.iconView != null) {
             val v = viewHolder.iconView
-            val a = v.findViewById<ImageButton>(R.id.mapIcon)
+            var a = v.findViewById<ImageButton>(R.id.mapIcon)
             if (a != null && row.arena != null) {
 
                 if (row.arena!!.address == null || row.arena!!.address.isEmpty()) {
-                    viewHolder.mapIcon.visibility = View.GONE
+                    a.visibility = View.GONE
                 } else {
-                    viewHolder.mapIcon.visibility = View.VISIBLE
-                    viewHolder.mapIcon.setOnClickListener {
+                    a.visibility = View.VISIBLE
+                    a.setOnClickListener {
                         list1CellDelegate?.cellShowMap(row)
                     }
                 }
+            }
+
+            a = v.findViewById<ImageButton>(R.id.editIcon)
+            a?.setOnClickListener {
+                list1CellDelegate?.cellEdit(row)
+            }
+
+            a = v.findViewById<ImageButton>(R.id.deleteIcon)
+            a?.setOnClickListener {
+                list1CellDelegate?.cellDelete(row)
             }
         }
 

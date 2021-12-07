@@ -7,9 +7,21 @@
     android:background="@drawable/background"
     tools:context=".Controllers.ContentEditVC">
 
+    <RelativeLayout
+        android:id="@+id/topView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:background="@color/MY_GREEN">
+
+        <include layout="@layout/top_view" />
+
+    </RelativeLayout>
+
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_below="@id/topView">
 
         <LinearLayout
             android:layout_width="match_parent"

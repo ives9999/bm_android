@@ -35,6 +35,13 @@ class ContentEditVC : BaseActivity() {
         if (key == null) {
             //alertError()
         }
+
+        init()
+    }
+
+    override fun init() {
+        isPrevIconShow = true
+        super.init()
     }
 
     fun clear(view: View) {
