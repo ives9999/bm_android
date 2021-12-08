@@ -28,9 +28,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_marginStart="12dp"
-            android:layout_marginTop="12dp"
-            android:layout_marginBottom="12dp"
+            android:layout_marginStart="12sp"
             android:textColor="@color/MY_WHITE"
             android:textSize="16sp"
             tools:text="title" />
@@ -44,19 +42,24 @@
             android:layout_toEndOf="@id/title"
             app:srcCompat="@drawable/question" />
 
+
         <TextView
             android:id="@+id/detail"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignEnd="@id/promptBtn"
             android:layout_alignParentEnd="true"
-            android:layout_centerVertical="true"
-            android:layout_marginStart="16dp"
+            android:layout_marginStart="30dp"
             android:layout_marginEnd="60dp"
+            android:layout_toEndOf="@id/title"
+            android:ems="10"
+            android:padding="8dp"
+            android:paddingStart="12dp"
+            android:paddingTop="4dp"
+            android:paddingBottom="4dp"
+            android:textAlignment="textEnd"
             android:textColor="@color/MY_WHITE"
-            android:textSize="18sp"
-            android:visibility="invisible"
-            tools:text="detail" />
+            android:textColorHint="#8b8f90"
+            android:textSize="21dp" />
 
         <ImageView
             android:id="@+id/greater"

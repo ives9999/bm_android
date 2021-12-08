@@ -29,6 +29,9 @@
         tools:replace="android:allowBackup"
         tools:targetApi="m">
         <activity
+            android:name=".Controllers.SelectManagerVC"
+            android:exported="false" />
+        <activity
             android:name=".Controllers.EditTeamVC"
             android:exported="false" />
         <activity

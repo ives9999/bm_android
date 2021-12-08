@@ -384,8 +384,10 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener,
             toSelectSingle(SelectTimeVC::class.java, row.key, row.value, this, able_type)
         } else if (row.key == START_DATE_KEY || row.key == END_DATE_KEY) {
             toSelectDate(row.key, row.value, this)
-        } else if (row.key == TEAM_TEMP_CONTENT_KEY) {
+        } else if (row.key == TEAM_TEMP_CONTENT_KEY || row.key == CONTENT_KEY || row.key == CHARGE_KEY) {
             toEditContent(row.key, row.title, row.value, this)
+        } else if (row.key == MANAGER_ID_KEY) {
+            toSelectManager(row.value.toInt(), row.token!!, this)
         }
     }
 
@@ -2292,6 +2294,18 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener,
                 val i: Intent? = res.data
                 if (i != null) {
                     dealPhoto(res.data)
+                }
+            }
+        }
+    }
+
+    val selectManager = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { res ->
+
+        if (res.resultCode == Activity.RESULT_OK) {
+            if (res.data != null) {
+                val i: Intent? = res.data
+                if (i != null) {
+
                 }
             }
         }

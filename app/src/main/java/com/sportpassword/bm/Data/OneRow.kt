@@ -24,7 +24,8 @@ data class OneRow(
     var feature_path: String = "",
     var attribute: String = "",
     var amount: String = "",
-    var quantity: String = ""
+    var quantity: String = "",
+    var token: String = ""
 ) {
     var msg: String = ""
 }

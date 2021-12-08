@@ -211,6 +211,7 @@ class EditTeamVC : EditVC() {
             MANAGER_ID_KEY,
             "more"
         )
+        row.token = myTable!!.manager_token
         rows.add(row)
         row = OneRow(
             "line",
@@ -277,7 +278,7 @@ class EditTeamVC : EditVC() {
             "更多詳細說明",
             myTable!!.content,
             myTable!!.content,
-            CHARGE_KEY,
+            CONTENT_KEY,
             "more"
         )
         rows.add(row)
