@@ -387,7 +387,7 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener,
         } else if (row.key == TEAM_TEMP_CONTENT_KEY || row.key == CONTENT_KEY || row.key == CHARGE_KEY) {
             toEditContent(row.key, row.title, row.value, this)
         } else if (row.key == MANAGER_ID_KEY) {
-            toSelectManager(row.value.toInt(), row.token!!, this)
+            toSelectManager(row.value.toInt(), row.token!!, able_type, this)
         }
     }
 
@@ -1891,6 +1891,13 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener,
         return rows
     }
 
+    fun selectedManager(selected: Int, show: String, token: String) {
+        val row = getOneRowFromKey(MANAGER_ID_KEY)
+        row.value = selected.toString()
+        row.show = show
+        row.token = token
+    }
+
     fun getAreasFromCity(city_id: Int, complete: (rows: ArrayList<HashMap<String, String>>) -> Unit): ArrayList<HashMap<String, String>> {
         var rows: ArrayList<HashMap<String, String>> = session.getAreasFromCity(city_id)
         if (rows.count() == 0) {
@@ -2306,6 +2313,29 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener,
                 val i: Intent? = res.data
                 if (i != null) {
 
+                    var manager_id: Int = 0
+                    if (i.hasExtra("manager_id")) {
+                        manager_id = i.getIntExtra("manager_id", 0)
+                    }
+
+                    var manager_token: String = ""
+                    if (i.hasExtra("manager_token")) {
+                        manager_token = i.getStringExtra("manager_token")!!
+                    }
+
+                    var manager_nickname: String = ""
+                    if (i.hasExtra("manager_nickname")) {
+                        manager_nickname = i.getStringExtra("manager_nickname")!!
+                    }
+
+                    var able_type: String = ""
+                    if (i.hasExtra("able_type")) {
+                        able_type = i.getStringExtra("able_type")!!
+                    }
+
+                    if (delegate != null) {
+                        delegate!!.selectedManager(manager_id, manager_nickname, manager_token)
+                    }
                 }
             }
         }

@@ -369,7 +369,7 @@ class TextFieldViewHolder(val viewHolder: View): RecyclerView.ViewHolder(viewHol
 
     val title: TextView = viewHolder.findViewById(R.id.title)
     val prompt: ImageView = viewHolder.findViewById(R.id.promptBtn)
-    val value: EditText = viewHolder.findViewById(R.id.textField)
+    val value: EditText = viewHolder.findViewById(R.id.manager_tokenTF)
 
     val required: ImageView = viewHolder.findViewById(R.id.required)
     val clear: ImageView = viewHolder.findViewById(R.id.clear)
@@ -631,7 +631,7 @@ class SexViewHolder(val viewHolder: View): RecyclerView.ViewHolder(viewHolder) {
 class PasswordViewHolder(val viewHolder: View): RecyclerView.ViewHolder(viewHolder) {
     val title: TextView = viewHolder.findViewById(R.id.title)
     val prompt: ImageView = viewHolder.findViewById(R.id.promptBtn)
-    val value: EditText = viewHolder.findViewById(R.id.textField)
+    val value: EditText = viewHolder.findViewById(R.id.manager_tokenTF)
 
     val required: ImageView = viewHolder.findViewById(R.id.required)
     val clear: ImageView = viewHolder.findViewById(R.id.clear)

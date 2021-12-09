@@ -19,7 +19,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_below="@id/topView"
         android:background="@drawable/background"
         android:orientation="vertical">
@@ -46,7 +46,7 @@
                      />
 
                 <EditText
-                    android:id="@+id/textField"
+                    android:id="@+id/manager_tokenTF"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
@@ -124,6 +124,7 @@
         </RelativeLayout>
 
         <LinearLayout
+            android:id="@+id/memberStactView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="36dp"
@@ -136,20 +137,19 @@
                 android:orientation="horizontal">
 
                 <TextView
+                    style="@style/list_text_general"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="12sp"
-                    android:text="管理者暱稱："
-                    style="@style/list_text_general"
-                    />
+                    android:text="管理者暱稱：" />
 
                 <TextView
+                    android:id="@+id/nicknameLbl"
+                    style="@style/list_text_general"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="12sp"
-                    android:text="小米哥"
-                    style="@style/list_text_general"
-                    />
+                    android:text="小米哥" />
 
             </LinearLayout>
 
@@ -160,22 +160,22 @@
                 android:orientation="horizontal">
 
                 <TextView
+                    style="@style/list_text_general"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="12sp"
-                    android:text="管理者EMail："
-                    style="@style/list_text_general"
-                    />
+                    android:text="管理者EMail：" />
 
                 <TextView
+                    android:id="@+id/emailLbl"
+                    style="@style/list_text_general"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="12sp"
-                    android:text="david@gmail.com"
-                    style="@style/list_text_general"
-                    />
+                    android:text="david@gmail.com" />
 
             </LinearLayout>
+
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -183,25 +183,25 @@
                 android:orientation="horizontal">
 
                 <TextView
+                    style="@style/list_text_general"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="12sp"
-                    android:text="管理者手機："
-                    style="@style/list_text_general"
-                    />
+                    android:text="管理者手機：" />
 
                 <TextView
+                    android:id="@+id/mobileLbl"
+                    style="@style/list_text_general"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="12sp"
-                    android:text="0920123456"
-                    style="@style/list_text_general"
-                    />
+                    android:text="0920123456" />
 
             </LinearLayout>
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/buttonStactView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="32dp"
@@ -227,5 +227,6 @@
                 android:text="取消" />
         </LinearLayout>
     </LinearLayout>
+    <include layout="@layout/mask" />
 
 </RelativeLayout>

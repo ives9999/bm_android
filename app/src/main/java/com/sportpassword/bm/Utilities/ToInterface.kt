@@ -346,11 +346,14 @@ interface ToInterface {
         mainDelegate.selectDevicePhoto.launch(i)
     }
 
-    fun toSelectManager(manager_id: Int = 0, manager_token: String = "", delegate: BaseActivity) {
+    fun toSelectManager(manager_id: Int = 0, manager_token: String = "", able_type: String, delegate: BaseActivity) {
 
         val i = Intent(mainDelegate, SelectManagerVC::class.java)
         i.putExtra("manager_id", manager_id)
         i.putExtra("manager_token", manager_token)
+        i.putExtra("able_type", able_type)
+
+        mainDelegate.delegate = delegate
         mainDelegate.selectManager.launch(i)
     }
 

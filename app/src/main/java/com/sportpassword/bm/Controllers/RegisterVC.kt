@@ -137,6 +137,7 @@ class RegisterVC : MyTableVC() {
     private fun initData() {
 
 //        session.dump()
+        oneSections.clear()
         val rows: ArrayList<OneRow> = arrayListOf()
         var row = OneRow("EMail", member.email!!, member.email!!, EMAIL_KEY, "textField", KEYBOARD.emailAddress, "service@bm.com", "", true)
         row.msg = "EMail沒有填寫"
@@ -170,6 +171,9 @@ class RegisterVC : MyTableVC() {
         row = OneRow("性別", member.sex!!, "", SEX_KEY, "sex", KEYBOARD.default, "", "", true)
         row.msg = "沒有選擇性別"
         rows.add(row)
+        row = OneRow("金鑰", member.token!!, member.token!!, TOKEN_KEY, "textField")
+        rows.add(row)
+
         section = makeSectionRow("個人資料", "data", rows, true)
         oneSections.add(section)
 
