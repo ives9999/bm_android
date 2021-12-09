@@ -1892,10 +1892,14 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener,
     }
 
     fun selectedManager(selected: Int, show: String, token: String) {
-        val row = getOneRowFromKey(MANAGER_ID_KEY)
+        val key: String = MANAGER_ID_KEY
+        val row = getOneRowFromKey(key)
         row.value = selected.toString()
         row.show = show
         row.token = token
+
+        val idx: Int = getOneSectionIdxFromRowKey(key)
+        oneSectionAdapter.notifyItemChanged(idx)
     }
 
     fun getAreasFromCity(city_id: Int, complete: (rows: ArrayList<HashMap<String, String>>) -> Unit): ArrayList<HashMap<String, String>> {
