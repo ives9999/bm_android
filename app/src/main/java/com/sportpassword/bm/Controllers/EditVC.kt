@@ -147,7 +147,9 @@ open class EditVC : MyTableVC() {
                 //teamedit_name.setSelection(teamedit_name.length())
                 closeRefresh()
             }
-            Loading.hide(mask)
+            runOnUiThread {
+                Loading.hide(mask)
+            }
         }
     }
 

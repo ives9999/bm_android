@@ -19,13 +19,213 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_above="@id/bottomView"
+        android:layout_height="wrap_content"
         android:layout_below="@id/topView"
         android:background="@drawable/background"
         android:orientation="vertical">
 
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
+            <RelativeLayout
+                android:id="@+id/container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp">
+
+                <TextView
+                    android:id="@+id/title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="12sp"
+                    android:text="管理者金鑰："
+                    style="@style/list_text_general"
+                     />
+
+                <EditText
+                    android:id="@+id/textField"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginStart="15dp"
+                    android:layout_marginEnd="53dp"
+                    android:layout_toEndOf="@id/title"
+                    android:background="@drawable/edittext_border"
+                    android:ems="10"
+                    android:padding="8dp"
+                    android:paddingStart="12dp"
+                    android:paddingTop="4dp"
+                    android:paddingBottom="4dp"
+                    android:textAlignment="textEnd"
+                    android:textColor="@color/MY_WHITE"
+                    android:textColorHint="#8b8f90"
+                    android:textSize="21dp" />
+
+
+                <ImageView
+                    android:id="@+id/clear"
+                    android:layout_width="28dp"
+                    android:layout_height="28dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="12dp"
+                    app:srcCompat="@drawable/delete" />
+
+            </RelativeLayout>
+
+            <LinearLayout
+                android:id="@+id/question"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/container"
+                android:layout_marginTop="16dp"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/imageView16"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16sp"
+                    android:layout_weight="1"
+                    app:srcCompat="@drawable/question" />
+
+                <TextView
+                    android:id="@+id/textView5"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="如何取得會員金鑰"
+                    style="@style/list_text_general"
+                     />
+            </LinearLayout>
+
+            <RelativeLayout
+                android:id="@+id/validate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/question"
+                android:layout_centerHorizontal="false"
+                android:layout_centerVertical="false"
+                android:layout_gravity="clip_horizontal|center"
+                android:layout_marginTop="32dp"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/cityBtn"
+                    style="@style/city_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="32dp"
+                    android:layout_centerInParent="true"
+                    android:text="驗證" />
+            </RelativeLayout>
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="36dp"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="12sp"
+                    android:text="管理者暱稱："
+                    style="@style/list_text_general"
+                    />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="12sp"
+                    android:text="小米哥"
+                    style="@style/list_text_general"
+                    />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="12sp"
+                    android:text="管理者EMail："
+                    style="@style/list_text_general"
+                    />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="12sp"
+                    android:text="david@gmail.com"
+                    style="@style/list_text_general"
+                    />
+
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="12sp"
+                    android:text="管理者手機："
+                    style="@style/list_text_general"
+                    />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="12sp"
+                    android:text="0920123456"
+                    style="@style/list_text_general"
+                    />
+
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:gravity="center|center_vertical"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/submitBtn"
+                style="@style/submit_button"
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:layout_marginRight="16dp"
+                android:onClick="submitBtnPressed"
+                android:text="送出" />
+
+            <Button
+                android:id="@+id/cancelBtn"
+                style="@style/cancel_button"
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:layout_marginLeft="16dp"
+                android:onClick="cancelBtnPressed"
+                android:text="取消" />
+        </LinearLayout>
     </LinearLayout>
 
 </RelativeLayout>

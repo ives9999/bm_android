@@ -26,5 +26,12 @@ class SelectManagerVC : SelectVC() {
         }
 
         setMyTitle("管理者")
+
+        init()
+    }
+
+    override fun init() {
+        isPrevIconShow = true
+        super.init()
     }
 }

@@ -61,15 +61,19 @@ class TeamTable: Table() {
         }
 
         if (website == null) {
-            website = "未提供"
+            website = ""
         }
 
         if (fb == null) {
-            fb = "未提供"
+            fb = ""
         }
 
         if (youtube == null) {
-            youtube = "未提供"
+            youtube = ""
+        }
+
+        if (line == null) {
+            line = ""
         }
 
         if (temp_status != null) {
