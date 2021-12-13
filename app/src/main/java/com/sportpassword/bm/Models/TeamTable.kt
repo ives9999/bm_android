@@ -29,7 +29,7 @@ class TeamTable: Table() {
     var manager_nickname: String = ""
     var temp_fee_M: Int = -1
     var temp_fee_F: Int = -1
-    var temp_quantity: Int = 0
+    var people_limit: Int = 0
     var temp_content: String = ""
     var temp_status: String = ""
     var temp_signup_count: Int = 0
@@ -43,7 +43,7 @@ class TeamTable: Table() {
     var weekdays_show: String = ""
     var degree_show: String = ""
     var interval_show: String = ""
-    var temp_quantity_show: String = ""
+    var people_limit_show: String = ""
     var temp_signup_count_show: String = ""
     var temp_status_show: String = "上線"
     var last_signup_date: String = ""
@@ -79,10 +79,10 @@ class TeamTable: Table() {
         if (temp_status != null) {
             temp_status_show = STATUS.from(temp_status).value
             if (temp_status == "online") {
-                temp_quantity_show = "臨打：${temp_quantity}位"
+                people_limit_show = "臨打：${people_limit}位"
                 temp_signup_count_show = "報名：${temp_signup_count}位"
             } else {
-                temp_quantity_show = "臨打：未開放"
+                people_limit_show = "臨打：未開放"
                 temp_signup_count_show = ""
             }
         }

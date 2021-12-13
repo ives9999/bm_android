@@ -83,7 +83,7 @@ class TeamViewHolder(context: Context, viewHolder: View, list1CellDelegate: List
         }
 
         if (viewHolder.temp_quantityLbl != null) {
-            viewHolder.temp_quantityLbl.text = row.temp_quantity_show
+            viewHolder.temp_quantityLbl.text = row.people_limit_show
         }
 
         if (viewHolder.signup_countLbl != null) {

@@ -165,8 +165,8 @@ class EditTeamVC : EditVC() {
         rows.add(row)
         row = OneRow(
             "臨打名額",
-            myTable!!.temp_quantity.toString(),
-            myTable!!.temp_quantity.toString(),
+            myTable!!.people_limit.toString(),
+            myTable!!.people_limit.toString(),
             TEAM_TEMP_QUANTITY_KEY,
             "textField",
             KEYBOARD.numberPad
