@@ -50,7 +50,7 @@ class DateSelectVC : BaseActivity() {
         calendar.set(Calendar.DAY_OF_MONTH, dd);
         val milliTime = calendar.timeInMillis
         datePicker.setDate(milliTime, true, true)
-        if (selected == null) {
+        if (selected == null || selected?.length == 0) {
             selected = "" + yyyy + "-" + (MM+1) + "-" + dd
         }
 

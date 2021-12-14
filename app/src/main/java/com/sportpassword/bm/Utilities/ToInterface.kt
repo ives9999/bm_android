@@ -101,22 +101,28 @@ interface ToInterface {
         mainDelegate.editContentVC.launch(i)
     }
 
-    fun toEditCourse(title: String, course_token: String, coach_token: String) {
-        val intent = Intent(mainDelegate, EditCourseVC::class.java)
-        intent.putExtra("title", title)
-        intent.putExtra("token", course_token)
-        intent.putExtra("coach_token", coach_token)
+    fun toEditCourse(title: String, course_token: String, coach_token: String, delegate: BaseActivity?=null) {
+        val i = Intent(mainDelegate, EditCourseVC::class.java)
+        i.putExtra("title", title)
+        i.putExtra("token", course_token)
+        i.putExtra("coach_token", coach_token)
+
+        mainDelegate.delegate = delegate
+        mainDelegate.editCourseVC.launch(i)
 
         //mainDelegate.startActivityForResult(intent, GENERAL_REQUEST_CODE)
-        mainDelegate.editCourseResult?.launch(intent)
+        //mainDelegate.editCourseResult?.launch(intent)
     }
 
-    fun toEditTeam(token: String) {
-        val intent = Intent(mainDelegate, EditTeamVC::class.java)
-        intent.putExtra("token", token)
+    fun toEditTeam(token: String, delegate: BaseActivity?=null) {
+        val i = Intent(mainDelegate, EditTeamVC::class.java)
+        i.putExtra("token", token)
+
+        mainDelegate.delegate = delegate
+        mainDelegate.editTeamVC.launch(i)
 
         //mainDelegate.startActivityForResult(intent, GENERAL_REQUEST_CODE)
-        mainDelegate.editCourseResult?.launch(intent)
+        //mainDelegate.editCourseResult?.launch(intent)
     }
 
 //    fun toEditMember() {

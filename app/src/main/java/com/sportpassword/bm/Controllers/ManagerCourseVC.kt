@@ -82,7 +82,7 @@ class ManagerCourseVC: ManagerVC() {
     override fun cellEdit(row: Table) {
 
         val _row: CourseTable = row as CourseTable
-        toEditCourse(row.title, row.token, row.coach!!.token)
+        toEditCourse(row.title, row.token, row.coach!!.token, this)
     }
 
     override fun cellDelete(row: Table) {

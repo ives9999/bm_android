@@ -1,14 +1,23 @@
 package com.sportpassword.bm.Controllers
 
+import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
+import android.view.View
+import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.google.gson.JsonParseException
 import com.sportpassword.bm.Data.OneRow
 import com.sportpassword.bm.Models.CourseTable
+import com.sportpassword.bm.Models.SuccessTable
 import com.sportpassword.bm.Models.TeamTable
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.CourseService
 import com.sportpassword.bm.Services.TeamService
 import com.sportpassword.bm.Utilities.*
+import com.sportpassword.bm.member
+import kotlinx.android.synthetic.main.mask.*
+import java.util.*
+import kotlin.collections.ArrayList
 
 class EditTeamVC : EditVC() {
 
@@ -60,7 +69,7 @@ class EditTeamVC : EditVC() {
             "球館",
             myTable!!.arena_id.toString(),
             myTable!!.arena!!.name,
-            CITY_KEY,
+            ARENA_KEY,
             "more",
             KEYBOARD.default,
             "",
@@ -138,7 +147,7 @@ class EditTeamVC : EditVC() {
             myTable!!.ball,
             myTable!!.ball,
             TEAM_BALL_KEY,
-            "more",
+            "textField",
             KEYBOARD.default,
             "RSL4號球"
         )
@@ -312,5 +321,22 @@ class EditTeamVC : EditVC() {
         row.show = b then { "上線" } ?: "下線"
     }
 
+    override fun submitValidate() {
 
+        val row: OneRow = getOneRowFromKey(TEAM_TEMP_DATE_KEY)
+        val temp_date_string: String = row.value
+        val temp_date: Date? = temp_date_string.toDate()
+        if (temp_date != null) {
+//            if (temp_date.isSmallerThan(Date()) {
+//                msg = "臨打日期必須在明天之後\n"
+//            }
+        }
+    }
+
+    fun submitBtnPressed(view: View) {
+
+        params.clear()
+        params["cat_id"] = "21"
+        super.submit(view)
+    }
 }

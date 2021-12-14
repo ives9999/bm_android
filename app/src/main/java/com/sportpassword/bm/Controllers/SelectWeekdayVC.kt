@@ -19,16 +19,17 @@ class SelectWeekdayVC : SingleSelectVC() {
 
         val selecteds: ArrayList<Int> = arrayListOf()
         if (selected != null && selected!!.length > 0) {
-            var i: Int = 0
-            while (i < 7) {
+            var i: Int = 1
+            while (i <= 7) {
                 val n = (Math.pow(2.0, i.toDouble())).toInt()
                 if ((selected!!.toInt() and n) > 0) {
                     selecteds.add(i)
                 }
                 i++
             }
+
             if (selecteds.size > 0) {
-                selected = (selecteds[0]+1).toString()
+                selected = (selecteds[0]).toString()
                 tableAdapter.selected = selected
             }
         }

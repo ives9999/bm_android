@@ -350,44 +350,48 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener,
     override fun cellMoreClick(sectionIdx: Int, rowIdx: Int) {
 
         val row: OneRow = getOneRowFromIdx(sectionIdx, rowIdx)
-        if (row.key == DOB_KEY) {
-            toSelectDate(row.key, row.value, this)
-        } else if (row.key == CITY_KEY) {
-            toSelectCity(row.value, this)
-        } else if (row.key == AREA_KEY) {
+        val key: String = row.key
+        val value: String = row.value
+        if (key == DOB_KEY) {
+            toSelectDate(key, value, this)
+        } else if (key == CITY_KEY) {
+            toSelectCity(value, this)
+        } else if (key == AREA_KEY) {
             val row1: OneRow = getOneRowFromKey(CITY_KEY)
             if (row1.value.isEmpty()) {
                 warning("請先選擇縣市")
             } else {
-                toSelectArea(row.value, row.value.toInt(), this)
+                toSelectArea(value, value.toInt(), this)
             }
-        } else if (row.key == AREA_KEY) {
+        } else if (key == ARENA_KEY) {
             val row: OneRow = getOneRowFromKey(CITY_KEY)
-            if (row.value.isEmpty()) {
+            if (value.isEmpty()) {
                 warning("請先選擇縣市")
             } else {
-                toSelectArea(row.value, row.value.toInt(), this)
+                toSelectArena(value, value.toInt(), this)
             }
-        } else if (row.key == PRICE_UNIT_KEY) {
-            toSelectSingle(SelectPriceUnitVC::class.java, row.key, row.value, this, able_type)
-        } else if (row.key == COURSE_KIND_KEY) {
-            toSelectSingle(SelectCourseKindVC::class.java, row.key, row.value, this, able_type)
+        } else if (key == PRICE_UNIT_KEY) {
+            toSelectSingle(SelectPriceUnitVC::class.java, key, value, this, able_type)
+        } else if (key == COURSE_KIND_KEY) {
+            toSelectSingle(SelectCourseKindVC::class.java, key, value, this, able_type)
         } else if (row.key == CYCLE_UNIT_KEY) {
-            toSelectSingle(SelectCycleUnitVC::class.java, row.key, row.value, this, able_type)
-        } else if (row.key == WEEKDAY_KEY) {
+            toSelectSingle(SelectCycleUnitVC::class.java, key, value, this, able_type)
+        } else if (key == WEEKDAY_KEY) {
 //                val tmp = formItem.sender as ArrayList<String>
 //                val selecteds: String = tmp.joinToString(",")
-            toSelectWeekday(row.value, this, able_type)
-        } else if (row.key == START_TIME_KEY || row.key == END_TIME_KEY) {
+            toSelectWeekday(value, this, able_type)
+        } else if (key == START_TIME_KEY || key == END_TIME_KEY || key == TEAM_PLAY_START_KEY || key == TEAM_PLAY_END_KEY) {
 //                val tmp = formItem.sender as HashMap<String, String>
 //                val selected = tmp.get("time")!!
-            toSelectSingle(SelectTimeVC::class.java, row.key, row.value, this, able_type)
-        } else if (row.key == START_DATE_KEY || row.key == END_DATE_KEY) {
-            toSelectDate(row.key, row.value, this)
-        } else if (row.key == TEAM_TEMP_CONTENT_KEY || row.key == CONTENT_KEY || row.key == CHARGE_KEY) {
-            toEditContent(row.key, row.title, row.value, this)
-        } else if (row.key == MANAGER_ID_KEY) {
-            toSelectManager(row.value.toInt(), row.token!!, able_type, this)
+            toSelectSingle(SelectTimeVC::class.java, key, value, this, able_type)
+        } else if (key == START_DATE_KEY || key == END_DATE_KEY || key == TEAM_TEMP_DATE_KEY) {
+            toSelectDate(key, value, this)
+        } else if (key == TEAM_TEMP_CONTENT_KEY || key == CONTENT_KEY || key == CHARGE_KEY) {
+            toEditContent(key, row.title, value, this)
+        } else if (key == MANAGER_ID_KEY) {
+            toSelectManager(value.toInt(), row.token, able_type, this)
+        } else if (key == DEGREE_KEY) {
+            toSelectDegree(value, null, able_type)
         }
     }
 
@@ -418,7 +422,7 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener,
 
         var show: String = ""
 
-        if (key == START_TIME_KEY || key == END_TIME_KEY) {
+        if (key == START_TIME_KEY || key == END_TIME_KEY || key == TEAM_PLAY_START_KEY || key == TEAM_PLAY_END_KEY) {
             show = selected.noSec()
         } else if (key == CITY_KEY || key == AREA_KEY) {
             show = Global.zoneIDToName(selected.toInt())
@@ -430,17 +434,17 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener,
             show = COURSE_KIND.from(selected).value
         } else if (key == CYCLE_UNIT_KEY) {
             show = CYCLE_UNIT.from(selected).value
-        } else if (key == START_DATE_KEY || key == END_DATE_KEY) {
+        } else if (key == START_DATE_KEY || key == END_DATE_KEY || key == TEAM_TEMP_DATE_KEY) {
             show = selected
         }
 
         var idx: Int = 0
 //        val row1 = getSearchRowFromKey(key)
-        val row2 = getOneRowFromKey(key)
+        val row = getOneRowFromKey(key)
 
         idx = getOneSectionIdxFromRowKey(key)
-        row2.value = selected
-        row2.show = show
+        row.value = selected
+        row.show = show
         oneSectionAdapter.notifyItemChanged(idx)
     }
 
@@ -2088,6 +2092,32 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener,
         }
     }
 
+    val editCourseVC = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { res ->
+
+        if (res.resultCode == Activity.RESULT_OK) {
+
+            val i: Intent? = res.data
+            if (i != null) {
+                if (delegate != null) {
+                    delegate!!.refresh()
+                }
+            }
+        }
+    }
+
+    val editTeamVC = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { res ->
+
+        if (res.resultCode == Activity.RESULT_OK) {
+
+            val i: Intent? = res.data
+            if (i != null) {
+                if (delegate != null) {
+                    delegate!!.refresh()
+                }
+            }
+        }
+    }
+
     val loginVC = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { res ->
         if (res.resultCode == Activity.RESULT_OK) {
 
@@ -2229,7 +2259,7 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener,
                     var selected: String = ""
                     if (i.hasExtra("selected")) {
                         selected = i.getStringExtra("selected")!!
-                        if (key != DOB_KEY && key != START_DATE_KEY && key != END_DATE_KEY) {
+                        if (key != DOB_KEY && key != START_DATE_KEY && key != END_DATE_KEY && key != TEAM_TEMP_DATE_KEY) {
                             selected += ":00"
                         }
                     }
@@ -2453,7 +2483,7 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener,
                 val i: Intent? = res.data
 
                 if (i != null) {
-                    var key: String = DEGREE_KEY
+                    var key: String = WEEKDAY_KEY
                     var selected: String = ""
                     if (i.hasExtra("selecteds")) {
                         val selecteds = i.getStringArrayListExtra("selecteds")!!

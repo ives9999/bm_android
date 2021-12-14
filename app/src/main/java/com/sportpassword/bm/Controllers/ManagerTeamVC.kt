@@ -51,7 +51,7 @@ class ManagerTeamVC : ManagerVC() {
 
     override fun cellEdit(row: Table) {
 
-        toEditTeam(row.token)
+        toEditTeam(row.token, this)
     }
 
     override fun cellDelete(row: Table) {

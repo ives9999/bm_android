@@ -36,30 +36,18 @@
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_below="@id/tag_container">
+            android:layout_above="@id/footer"
+            android:layout_below="@id/tag_container"
+            >
 
-            <LinearLayout
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/list_container"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:layout_height="match_parent"
+                android:scrollbars="vertical"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager">
 
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/list_container"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:scrollbars="vertical"
-                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager">
-
-                </androidx.recyclerview.widget.RecyclerView>
-
-                <LinearLayout
-                    android:id="@+id/remain"
-                    android:layout_width="match_parent"
-                    android:layout_height="80dp"
-                    android:orientation="vertical" />
-
-            </LinearLayout>
+            </androidx.recyclerview.widget.RecyclerView>
         </ScrollView>
 
         <LinearLayout
@@ -75,7 +63,7 @@
                 android:id="@+id/submit_btn"
                 style="@style/submit_button"
                 android:layout_width="wrap_content"
-                android:layout_height="30dp"
+                android:layout_height="40dp"
                 android:text="送出"
                 android:textSize="16dp" />
 

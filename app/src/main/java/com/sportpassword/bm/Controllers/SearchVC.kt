@@ -57,7 +57,7 @@ class SearchVC : MyTableVC() {
         btn.setOnClickListener { searchSubmit() }
 
         footer.visibility = View.GONE
-        remain.visibility = View.GONE
+        //remain.visibility = View.GONE
 
         recyclerView = list_container
         maskView = mask
@@ -169,13 +169,13 @@ class SearchVC : MyTableVC() {
                 when (selectedTagIdx) {
                     1-> {
                         footer.visibility = View.VISIBLE
-                        remain.visibility = View.VISIBLE
+                        //remain.visibility = View.VISIBLE
                         recyclerView.adapter = oneSectionAdapter
                         //generateSections()
                     }
                     0-> {
                         footer.visibility = View.GONE
-                        remain.visibility = View.GONE
+                        //remain.visibility = View.GONE
                         member_like = true
                         recyclerView.adapter = tableAdapter
                         params.clear()
@@ -183,7 +183,7 @@ class SearchVC : MyTableVC() {
                     }
                     2-> {
                         footer.visibility = View.GONE
-                        remain.visibility = View.GONE
+                        //remain.visibility = View.GONE
                         member_like = false
                         recyclerView.adapter = tableAdapter
                         params.clear()
@@ -222,7 +222,7 @@ class SearchVC : MyTableVC() {
         val sections: ArrayList<OneSection> = arrayListOf()
 
         sections.add(makeSection0Row())
-        sections.add(makeSection1Row(false))
+        sections.add(makeSection1Row())
 
         return sections
     }

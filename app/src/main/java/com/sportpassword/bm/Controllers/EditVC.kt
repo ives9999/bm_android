@@ -1,5 +1,6 @@
 package com.sportpassword.bm.Controllers
 
+import android.app.Activity
 import android.os.Bundle
 import com.sportpassword.bm.R
 import org.jetbrains.anko.sdk27.coroutines.onClick
@@ -8,6 +9,7 @@ import android.widget.*
 import com.sportpassword.bm.Adapters.OneSectionAdapter
 import com.sportpassword.bm.Models.*
 import com.sportpassword.bm.Utilities.*
+import com.sportpassword.bm.member
 import kotlinx.android.synthetic.main.activity_edit_course_vc.*
 import kotlinx.android.synthetic.main.edit_vc.edit_featured
 import kotlinx.android.synthetic.main.edit_vc.featured_text
@@ -280,71 +282,94 @@ open class EditVC : MyTableVC() {
         originMarginBottom = l.bottomMargin
     }
 
+    open fun submitValidate() {}
+
     fun submit(view: View) {
 
-//        hideKeyboard()
-//        var params: MutableMap<String, Any> = mutableMapOf()
-//        var isPass: Boolean = true
-//        fieldToData()
-//
-//        val name: String = model.data[NAME_KEY]!!["value"] as String
-//        if (name.length == 0) {
-//            isPass = false
-//            Alert.show(context, "提示", "請填寫隊名")
-//        }
-//        val mobile: String = model.data[MOBILE_KEY]!!["value"] as String
-//        if (mobile.length == 0) {
-//            isPass = false
-//            Alert.show(context, "警告", "請填寫電話")
-//        }
-//
-//        if (isPass) {
-//            params = model.makeSubmitArr()
-////            println(params);
-//            if (params.count() == 0 && !isFeaturedChange) {
-//                Alert.show(context, "提示", "沒有修改任何資料或圖片")
-//            } else {
-//                Loading.show(mask)
-//                if (params.count() == 0) {
-//                    if (model.data[ID_KEY]!!["value"] as Int > 0) {
-//                        val id: Int = model.data[ID_KEY]!!["value"] as Int
-//                        params[ID_KEY] = id
-//                    } else {
-//                        params[CREATED_ID_KEY] = member.id
-//                    }
-//                }
-//                val created_id = model.data[CREATED_ID_KEY]!!["value"] as Int
-//                if (created_id < 0) {
-//                    params[CREATED_ID_KEY] = member.id
-//                }
-//
-//                dataService.update(context, source, params, filePath) { success ->
-//                    Loading.hide(mask)
-//                    if (success) {
-//                        if (dataService.success) {
-//                            val id: Int = dataService.id
-//                            model.data[ID_KEY]!!["value"] = id
-//                            model.data[ID_KEY]!!["show"] = id
-//                            Alert.update(this, this.action, {
+        Loading.show(mask)
+        hideKeyboard()
+
+        var msg: String = ""
+        for (section in oneSections) {
+            for (row in section.items) {
+                if (row.isRequired && row.value.isEmpty()) {
+                    msg += row.msg + "\n"
+                }
+            }
+        }
+
+        if (msg.length > 0) {
+            warning(msg)
+        } else {
+            Loading.show(mask)
+            //val params: HashMap<String, String> = hashMapOf()
+            for (section in oneSections) {
+                for (row in section.items) {
+                    params[row.key] = row.value
+                }
+            }
+
+            var action = "UPDATE"
+            if (token != null && token.length == 0) {
+                action = "INSERT"
+            }
+            if (action == "INSERT") {
+                params[CREATED_ID_KEY] = member.id.toString()
+            }
+            if (token != null) {
+                params["token"] = token
+            }
+
+            params["device"] = "app"
+            params["do"] = "update"
+
+            //println(params)
+
+            dataService.update(this, params, filePath) { success ->
+                Loading.hide(mask)
+                if (success) {
+                    if (dataService.success) {
+                        runOnUiThread {
+                            val jsonString: String = dataService.jsonString
+                            val successTable: SuccessTable? = jsonToModel<SuccessTable>(jsonString)
+                            if (successTable != null && successTable.success) {
+                                runOnUiThread {
+                                    info("編輯成功", "", "確定") {
+                                        setResult(Activity.RESULT_OK, intent)
+                                        finish()
+                                    }
+                                }
+                            } else {
+                                if (successTable != null) {
+                                    runOnUiThread {
+                                        warning(successTable.msg)
+                                    }
+                                }
+                            }
+//                            Alert.update(this, action) {
 //                                if (file != null) {
 //                                    file!!.delete()
 //                                }
-//                                val update = Intent(NOTIF_TEAM_UPDATE)
+//                                val update = Intent(NOTIF_COURSE_UPDATE)
 //                                LocalBroadcastManager.getInstance(this).sendBroadcast(update)
+//                                val intent = Intent()
+//                                intent.putExtra("manager_token", member.token)
+//                                setResult(Activity.RESULT_OK, intent)
 //                                finish()
-//                            })
-//                        } else {
-//                            Alert.show(context, "錯誤", dataService.msg)
-//                        }
-//                    } else {
-//                        Alert.show(context, "錯誤", dataService.msg)
-//                    }
-//
-//                }
-//
-//            }
-//        }
-
+//                            }
+                        }
+                    } else {
+                        runOnUiThread {
+                            warning(dataService.msg)
+                        }
+                    }
+                } else {
+                    runOnUiThread {
+                        warning(dataService.msg)
+                    }
+                }
+            }
+        }
     }
 
     fun cancel(view: View) {

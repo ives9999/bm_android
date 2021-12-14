@@ -56,6 +56,8 @@ class SelectManagerVC : SelectVC() {
             }
         }
 
+        //manager_tokenTF.setText("S86cZ3OKQ65LcDMT4pPpPhP8Zcp6JmF")
+
         memberStactView.visibility = View.INVISIBLE
         buttonStactView.visibility = View.INVISIBLE
 
