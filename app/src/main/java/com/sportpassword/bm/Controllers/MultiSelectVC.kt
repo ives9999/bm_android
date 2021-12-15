@@ -57,7 +57,7 @@ open class MultiSelectVC : SelectVC() {
         recyclerView.adapter = tableAdapter
 //        initAdapter()
 
-//        init()
+        init()
     }
 
     override fun cellClick(idx: Int) {

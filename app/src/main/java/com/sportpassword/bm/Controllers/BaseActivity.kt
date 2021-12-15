@@ -170,7 +170,6 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener,
     //var vcResult: VCResult = VCResult()
 
     open fun arenaSelected(selected: String, show: String) {}
-    open fun weekendSelected(selected: String, show: String) {}
     open fun contentEdit(key: String, content: String) {}
 
     //for tag delegate
@@ -380,6 +379,8 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener,
 //                val tmp = formItem.sender as ArrayList<String>
 //                val selecteds: String = tmp.joinToString(",")
             toSelectWeekday(value, this, able_type)
+        } else if (key == WEEKDAYS_KEY) {
+            toSelectWeekdays(value.toInt(), this, able_type)
         } else if (key == START_TIME_KEY || key == END_TIME_KEY || key == TEAM_PLAY_START_KEY || key == TEAM_PLAY_END_KEY) {
 //                val tmp = formItem.sender as HashMap<String, String>
 //                val selected = tmp.get("time")!!
@@ -426,7 +427,7 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener,
             show = selected.noSec()
         } else if (key == CITY_KEY || key == AREA_KEY) {
             show = Global.zoneIDToName(selected.toInt())
-        } else if (key == WEEKDAY_KEY) {
+        } else if (key == WEEKDAY_KEY || key == WEEKDAYS_KEY) {
             show = WEEKDAY.intToString(selected.toInt())
         } else if (key == PRICE_UNIT_KEY) {
             show = PRICE_UNIT.from(selected).value
@@ -448,16 +449,23 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener,
         oneSectionAdapter.notifyItemChanged(idx)
     }
 
+    open fun weekendsSelected(selected: Int, show: String) {
+        val key: String = WEEKDAYS_KEY
+        val row = getOneRowFromKey(key)
+        val idx = getOneSectionIdxFromRowKey(key)
+
+        row.value = selected.toString()
+        row.show = show
+        oneSectionAdapter.notifyItemChanged(idx)
+    }
+
     open fun degreeSelected(selected: String, show: String) {
         val key: String = DEGREE_KEY
+        val row = getOneRowFromKey(key)
+        val idx = getOneSectionIdxFromRowKey(key)
 
-        var idx: Int = 0
-//        val row1 = getSearchRowFromKey(key)
-        val row2 = getOneRowFromKey(key)
-
-        idx = getOneSectionIdxFromRowKey(key)
-        row2.value = selected
-        row2.show = show
+        row.value = selected
+        row.show = show
         oneSectionAdapter.notifyItemChanged(idx)
     }
 
@@ -2483,11 +2491,10 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener,
                 val i: Intent? = res.data
 
                 if (i != null) {
-                    var key: String = WEEKDAY_KEY
-                    var selected: String = ""
+//                    var key: String = WEEKDAYS_KEY
+                    var selected: Int = 0
                     if (i.hasExtra("selecteds")) {
-                        val selecteds = i.getStringArrayListExtra("selecteds")!!
-                        selected = selecteds.joinToString(",")
+                        selected = i.getIntExtra("selecteds", 0)
                     }
 
                     var show: String = ""
@@ -2497,7 +2504,7 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener,
 
                     //activity
                     if (delegate != null) {
-                        delegate!!.weekendSelected(selected, show)
+                        delegate!!.weekendsSelected(selected, show)
                     }
 //                    else {
 //                        //fragment

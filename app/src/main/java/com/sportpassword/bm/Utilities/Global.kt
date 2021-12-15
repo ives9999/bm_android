@@ -356,7 +356,19 @@ enum class WEEKDAY(val value: Int) {
     sat(6),
     sun(7);
 
-    companion object: MYENUM<PRICE_UNIT>() {
+    fun enumToShortString(): String {
+        when (this) {
+            mon -> return "一"
+            tue -> return "二"
+            wed -> return "三"
+            thu -> return "四"
+            fri -> return "五"
+            sat -> return "六"
+            sun -> return "日"
+        }
+    }
+
+    companion object: MYENUM<WEEKDAY>() {
 
         val allValues: ArrayList<WEEKDAY> = arrayListOf(mon, tue, wed, thu, fri, sat, sun)
 

@@ -5,17 +5,37 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/background"
-    tools:context=".Controllers.MultiSelectVC1">
+    tools:context=".Controllers.MultiSelectVC">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/tableView"
+    <RelativeLayout
+        android:id="@+id/topView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:scrollbars="vertical"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager">
+        android:layout_alignParentTop="true"
+        android:background="@color/MY_GREEN">
 
-    </androidx.recyclerview.widget.RecyclerView>
+        <include layout="@layout/top_view" />
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/footer"
+        android:layout_below="@id/topView"
+        android:background="@drawable/background"
+        android:orientation="vertical">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/tableView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:scrollbars="vertical"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager">
+
+        </androidx.recyclerview.widget.RecyclerView>
+    </LinearLayout>
 
     <LinearLayout
         android:id="@+id/footer"

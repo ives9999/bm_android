@@ -99,7 +99,7 @@ class EditTeamVC : EditVC() {
             "星期幾",
             weekdays.toString(),
             myTable!!.weekdays_show,
-            WEEKDAY_KEY,
+            WEEKDAYS_KEY,
             "more",
             KEYBOARD.default,
             "請選擇星期幾打球",

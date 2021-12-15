@@ -311,6 +311,7 @@ val VIMEO_KEY: String = "vimeo"
 val WEBSITE_KEY: String = "website"
 val WEIGHT_KEY: String = "weight"
 val WEEKDAY_KEY: String = "weekday"
+val WEEKDAYS_KEY: String = "weekdays"
 val YOUTUBE_KEY: String = "youtube"
 val ZIP_KEY: String = "zip"
 
