@@ -51,7 +51,7 @@
                         android:layout_height="wrap_content"
                         android:orientation="vertical">
 
-                        <LinearLayout
+                        <RelativeLayout
                             android:id="@+id/edit_featured_container"
                             android:layout_width="140dp"
                             android:layout_height="140dp"
@@ -72,7 +72,16 @@
                                 android:scaleType="fitCenter"
                                 app:srcCompat="@drawable/nophoto" />
 
-                        </LinearLayout>
+                            <TextView
+                                android:id="@+id/featured_text"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentBottom="true"
+                                android:text="請選擇代表圖"
+                                android:textAlignment="center"
+                                android:textColor="@color/MY_WHITE" />
+
+                        </RelativeLayout>
 
                         <androidx.recyclerview.widget.RecyclerView
                             android:id="@+id/editTableView"

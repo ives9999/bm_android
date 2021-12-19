@@ -176,7 +176,7 @@ class EditTeamVC : EditVC() {
             "臨打名額",
             myTable!!.people_limit.toString(),
             myTable!!.people_limit.toString(),
-            TEAM_TEMP_QUANTITY_KEY,
+            PEOPLE_LIMIT_KEY,
             "textField",
             KEYBOARD.numberPad
         )

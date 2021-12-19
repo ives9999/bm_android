@@ -226,7 +226,7 @@ interface ImagePicker {
                 .into(imageView)
     }
 
-    fun makeTempEmptyFile(): File? {
+    open fun makeTempEmptyFile(): File? {
         val dir = File(activity.getExternalFilesDir(null)!!.absolutePath)
         //val dir = File("" + Environment.getExternalStorageDirectory() + "/Android/data" + activity.applicationContext.packageName + "Files")
         if (!dir.exists()) {

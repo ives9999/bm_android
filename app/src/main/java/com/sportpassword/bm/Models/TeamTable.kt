@@ -76,6 +76,10 @@ class TeamTable: Table() {
             line = ""
         }
 
+        if (temp_content == null) {
+            temp_content = ""
+        }
+
         if (temp_status != null) {
             temp_status_show = STATUS.from(temp_status).value
             if (temp_status == "online") {
@@ -90,7 +94,7 @@ class TeamTable: Table() {
         if (weekdays.size > 0) {
             var show: ArrayList<String> = arrayListOf()
             for (weekday in weekdays) {
-                val tmp: String = WEEKDAY.intToString(weekday.weekday)
+                val tmp: String = WEEKDAY.from(weekday.weekday).enumToShortString()
                 show.add(tmp)
             }
             weekdays_show = show.joinToString(",")

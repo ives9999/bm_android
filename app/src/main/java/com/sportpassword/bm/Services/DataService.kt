@@ -385,6 +385,7 @@ open class DataService {
     }
 
     open fun getListURL(): String {return URL_LIST}
+    open fun getIsNameExistUrl(): String {return ""}
     open fun getLikeURL(token: String): String {return URL_LIST}
     open fun getOneURL(): String {return URL_ONE}
     open fun getDeleteURL(): String {return URL_DELETE}
@@ -546,10 +547,91 @@ open class DataService {
 //        }
 //    }
 
+    fun isNameExist(context: Context, name: String, complete: CompletionHandler) {
+        val url: String = getIsNameExistUrl()
+        //println(url)
+        val params: HashMap<String, String> = hashMapOf("device" to "app", "channel" to CHANNEL, "name" to name, "member_token" to member.token!!)
+        //println(params)
+
+        val request: okhttp3.Request = getRequest(url, params)
+        okHttpClient.newCall(request).enqueue(object : Callback {
+            override fun onFailure(call: Call, e: IOException) {
+                msg = "網路錯誤，無法跟伺服器更新資料"
+                complete(success)
+            }
+
+            override fun onResponse(call: Call, response: okhttp3.Response) {
+
+                try {
+                    jsonString = response.body!!.string()
+                    //println(jsonString)
+                    success = true
+                } catch (e: Exception) {
+                    success = false
+                    msg = "parse json failed，請洽管理員"
+                    println(e.localizedMessage)
+                }
+                complete(success)
+            }
+        })
+    }
+
+    open fun requestManager(context: Context, _params: MutableMap<String, String>, filePaths: ArrayList<String>, complete: CompletionHandler) {
+
+        val url: String = URL_REQUEST_MANAGER
+        val params: Map<String, String> = _params.mergeWith(PARAMS)
+
+        msg = ""
+
+        val bodyBuilder: MultipartBody.Builder = MultipartBody.Builder().setType(MultipartBody.FORM)
+
+        for ((key, value) in params) {
+            bodyBuilder.addFormDataPart(key, value)
+        }
+
+        for ((idx, filePath) in filePaths.withIndex()) {
+            val file = File(filePath)
+            if (file.exists()) {
+                val filePart = file.asRequestBody("image/png".toMediaType())
+                val withName: String = "image" + (idx + 1).toString()
+                bodyBuilder.addFormDataPart(withName, file.name, filePart)
+            }
+        }
+
+        val body: RequestBody = bodyBuilder.build()
+
+        val request = okhttp3.Request.Builder()
+            .addHeader("Content-Type", "multipart/form-data")
+            .url(url)
+            .post(body)
+            .build()
+
+        okHttpClient.newCall(request).enqueue(object : Callback {
+            override fun onFailure(call: Call, e: IOException) {
+                msg = "網路錯誤，無法跟伺服器更新資料"
+                complete(success)
+            }
+
+            override fun onResponse(call: Call, response: okhttp3.Response) {
+
+                try {
+                    jsonString = response.body!!.string()
+                    //println(jsonString)
+                    success = true
+                } catch (e: Exception) {
+                    success = false
+                    msg = "parse json failed，請洽管理員"
+                    println(e.localizedMessage)
+                }
+                complete(success)
+            }
+        })
+    }
+
     open fun update(context: Context, _params: MutableMap<String, String>, filePath: String, complete: CompletionHandler) {
 //        jsonString = ""
         val url: String = getUpdateURL()
-        println(url)
+        //println(url)
 
 
 //        val header: MutableList<Pair<String, String>> = mutableListOf()
@@ -567,8 +649,8 @@ open class DataService {
 //        println(jsonString1)
 
 
-        val j: JSONObject = JSONObject(params as Map<*, *>)
-        println(j)
+        //val j: JSONObject = JSONObject(params as Map<*, *>)
+        //println(j)
 
         val bodyBuilder: MultipartBody.Builder = MultipartBody.Builder().setType(MultipartBody.FORM)
 

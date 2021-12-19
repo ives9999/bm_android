@@ -86,7 +86,7 @@ open class EditVC : MyTableVC() {
         imageView = findViewById(R.id.edit_featured)
         getImageViewParams()
         initImagePicker(R.layout.image_picker_layer)
-        val a: LinearLayout = findViewById(R.id.edit_featured_container)
+        val a: RelativeLayout = findViewById(R.id.edit_featured_container)
         a?.onClick {
             showImagePickerLayer()
         }
@@ -250,13 +250,13 @@ open class EditVC : MyTableVC() {
 
     override fun setImage(newFile: File?, url: String?) {
         featured_text.visibility = View.INVISIBLE
-        val layoutParams = edit_featured.layoutParams as LinearLayout.LayoutParams
+        val layoutParams = edit_featured.layoutParams as RelativeLayout.LayoutParams
         layoutParams.width = LinearLayout.LayoutParams.MATCH_PARENT
         layoutParams.height = LinearLayout.LayoutParams.MATCH_PARENT
         layoutParams.setMargins(0, 0, 0, 0)
         imageView.layoutParams = layoutParams
         isFeaturedChange = true
-        super<MyTableVC>.setImage(newFile, url)
+        super.setImage(newFile, url)
     }
 
     override fun removeImage() {
@@ -268,12 +268,12 @@ open class EditVC : MyTableVC() {
         imageView.layoutParams = layoutParams
         imageView.scaleType = originScaleType
         isFeaturedChange = true
-        super<MyTableVC>.removeImage()
+        super.removeImage()
         closeImagePickerLayer()
     }
 
     private fun getImageViewParams() {
-        val l = edit_featured.layoutParams as LinearLayout.LayoutParams
+        val l = edit_featured.layoutParams as RelativeLayout.LayoutParams
         originW = l.width
         originH = l.height
         originScaleType = edit_featured.scaleType

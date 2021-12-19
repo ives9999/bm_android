@@ -1,0 +1,459 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:clickable="true"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
+    tools:context=".Controllers.RequestManagerTeamVC">
+
+    <RelativeLayout
+        android:id="@+id/topView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:background="@color/MY_GREEN">
+
+        <include layout="@layout/top_view" />
+
+    </RelativeLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:background="@drawable/background"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@id/topView"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <RelativeLayout
+                    android:id="@+id/container"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="24dp">
+
+                    <TextView
+                        android:id="@+id/team_nameTV"
+                        style="@style/list_text_general"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentStart="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginStart="12sp"
+                        android:text="球隊名稱：" />
+
+                    <EditText
+                        android:id="@+id/team_nameTF"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_marginStart="15dp"
+                        android:layout_marginEnd="53dp"
+                        android:layout_toEndOf="@id/team_nameTV"
+                        android:background="@drawable/edittext_border"
+                        android:ems="10"
+                        android:padding="8dp"
+                        android:paddingStart="12dp"
+                        android:paddingTop="4dp"
+                        android:paddingBottom="4dp"
+                        android:textAlignment="textEnd"
+                        android:textColor="@color/MY_WHITE"
+                        android:textColorHint="#8b8f90"
+                        android:textSize="21dp" />
+
+
+                    <ImageView
+                        android:id="@+id/clear1"
+                        android:layout_width="28dp"
+                        android:layout_height="28dp"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginEnd="12dp"
+                        app:srcCompat="@drawable/delete" />
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/container"
+                    android:layout_centerHorizontal="false"
+                    android:layout_centerVertical="false"
+                    android:layout_gravity="clip_horizontal|center"
+                    android:layout_marginTop="32dp"
+                    android:orientation="horizontal">
+
+                    <Button
+                        android:id="@+id/isNameExistBtn"
+                        style="@style/city_button"
+                        android:layout_width="wrap_content"
+                        android:layout_height="32dp"
+                        android:layout_centerInParent="true"
+                        android:text="確認" />
+                </RelativeLayout>
+            </RelativeLayout>
+
+            <LinearLayout
+                android:id="@+id/line1"
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                android:layout_marginTop="8dp"
+                android:background="@color/MY_GREY"
+                android:orientation="horizontal" />
+
+            <RelativeLayout
+                android:id="@+id/managerContainer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <RelativeLayout
+                    android:id="@+id/manager_token_container"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="24dp">
+
+                    <TextView
+                        android:id="@+id/manager_token"
+                        style="@style/list_text_general"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentStart="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginStart="12sp"
+                        android:text="管理者金鑰：" />
+
+                    <EditText
+                        android:id="@+id/manager_tokenTF"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_marginStart="15dp"
+                        android:layout_marginEnd="53dp"
+                        android:layout_toEndOf="@id/manager_token"
+                        android:background="@drawable/edittext_border"
+                        android:ems="10"
+                        android:padding="8dp"
+                        android:paddingStart="12dp"
+                        android:paddingTop="4dp"
+                        android:paddingBottom="4dp"
+                        android:textAlignment="textEnd"
+                        android:textColor="@color/MY_WHITE"
+                        android:textColorHint="#8b8f90"
+                        android:textSize="21dp" />
+
+
+                    <ImageView
+                        android:id="@+id/clear2"
+                        android:layout_width="28dp"
+                        android:layout_height="28dp"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginEnd="12dp"
+                        app:srcCompat="@drawable/delete" />
+
+                </RelativeLayout>
+
+                <LinearLayout
+                    android:id="@+id/question"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/manager_token_container"
+                    android:layout_marginTop="16dp"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:id="@+id/imageView16"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16sp"
+                        android:layout_weight="1"
+                        app:srcCompat="@drawable/question" />
+
+                    <TextView
+                        android:id="@+id/textView5"
+                        style="@style/list_text_general"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="如何取得會員金鑰" />
+                </LinearLayout>
+
+                <RelativeLayout
+                    android:id="@+id/manager_button"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/question"
+                    android:layout_centerHorizontal="false"
+                    android:layout_centerVertical="false"
+                    android:layout_gravity="clip_horizontal|center"
+                    android:layout_marginTop="32dp"
+                    android:orientation="horizontal">
+
+                    <Button
+                        android:id="@+id/validateMemberBtn"
+                        style="@style/city_button"
+                        android:layout_width="wrap_content"
+                        android:layout_height="32dp"
+                        android:layout_centerInParent="true"
+                        android:text="驗證" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/manager_data_container"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/manager_button"
+                    android:layout_marginTop="32dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                style="@style/list_text_general"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentStart="true"
+                                android:layout_centerVertical="true"
+                                android:layout_marginStart="12sp"
+                                android:text="管理者暱稱：" />
+
+                            <TextView
+                                android:id="@+id/managerNicknameLbl"
+                                style="@style/list_text_general"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentStart="true"
+                                android:layout_centerVertical="true"
+                                android:layout_marginStart="12sp"
+                                tools:text="小米哥" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                style="@style/list_text_general"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentStart="true"
+                                android:layout_centerVertical="true"
+                                android:layout_marginStart="12sp"
+                                android:text="管理者email：" />
+
+                            <TextView
+                                android:id="@+id/managerEMailLbl"
+                                style="@style/list_text_general"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentStart="true"
+                                android:layout_centerVertical="true"
+                                android:layout_marginStart="12sp"
+                                tools:text="david@gmail.com" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                style="@style/list_text_general"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentStart="true"
+                                android:layout_centerVertical="true"
+                                android:layout_marginStart="12sp"
+                                android:text="管理者手機：" />
+
+                            <TextView
+                                android:id="@+id/managerMobileLbl"
+                                style="@style/list_text_general"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentStart="true"
+                                android:layout_centerVertical="true"
+                                android:layout_marginStart="12sp"
+                                tools:text="0920123456" />
+
+                        </LinearLayout>
+                    </LinearLayout>
+                </RelativeLayout>
+            </RelativeLayout>
+
+            <LinearLayout
+                android:id="@+id/line2"
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                android:layout_marginTop="8dp"
+                android:background="@color/MY_GREY"
+                android:orientation="horizontal" />
+
+            <RelativeLayout
+                android:id="@+id/imageContainer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <LinearLayout
+                    android:id="@+id/image_desc_container"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        style="@style/list_text_general"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentStart="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginStart="12sp"
+                        android:text="上傳兩張球隊圖片：" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/image_desc_container"
+                    android:orientation="horizontal">
+
+                    <RelativeLayout
+                        android:id="@+id/team_image_container1"
+                        android:layout_width="140dp"
+                        android:layout_height="140dp"
+                        android:layout_alignParentStart="true"
+                        android:layout_alignParentBottom="true"
+                        android:layout_marginLeft="8dp"
+                        android:layout_marginTop="8dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/border_dotted"
+                        android:orientation="vertical"
+                        android:paddingStart="16dp"
+                        android:paddingEnd="8dp">
+
+                        <ImageView
+                            android:id="@+id/edit_featured1"
+                            android:layout_width="match_parent"
+                            android:layout_height="120sp"
+                            android:layout_alignParentStart="true"
+                            android:layout_alignParentTop="true"
+                            android:layout_gravity="center"
+                            android:layout_marginBottom="8dp"
+                            android:paddingLeft="18dp"
+                            android:paddingRight="18dp"
+                            android:scaleType="fitCenter"
+                            app:srcCompat="@drawable/nophoto" />
+
+                        <TextView
+                            android:id="@+id/featured_text1"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentBottom="true"
+                            android:text="請選擇球隊圖片1"
+                            android:textAlignment="center"
+                            android:textColor="@color/MY_WHITE" />
+
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:id="@+id/team_image_container2"
+                        android:layout_width="140dp"
+                        android:layout_height="140dp"
+                        android:layout_alignParentStart="true"
+                        android:layout_alignParentBottom="true"
+                        android:layout_marginLeft="8dp"
+                        android:layout_marginTop="8dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/border_dotted"
+                        android:orientation="vertical"
+                        android:paddingStart="8dp"
+                        android:paddingEnd="16dp">
+
+                        <ImageView
+                            android:id="@+id/edit_featured2"
+                            android:layout_width="match_parent"
+                            android:layout_height="120sp"
+                            android:layout_alignParentStart="true"
+                            android:layout_alignParentTop="true"
+                            android:layout_gravity="center"
+                            android:layout_marginBottom="8dp"
+                            android:paddingLeft="18dp"
+                            android:paddingRight="18dp"
+                            android:scaleType="fitCenter"
+                            app:srcCompat="@drawable/nophoto" />
+
+                        <TextView
+                            android:id="@+id/featured_text2"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentBottom="true"
+                            android:text="請選擇球隊圖片2"
+                            android:textAlignment="center"
+                            android:textColor="@color/MY_WHITE" />
+
+                    </RelativeLayout>
+                </LinearLayout>
+            </RelativeLayout>
+
+            <LinearLayout
+                android:id="@+id/line3"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="8dp"
+                android:background="@color/MY_GREY"
+                android:orientation="horizontal" />
+
+            <LinearLayout
+                android:id="@+id/footer"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginTop="32dp"
+                android:gravity="center|center_vertical"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/submitButton"
+                    style="@style/submit_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="30dp"
+                    android:layout_marginEnd="16dp"
+                    android:onClick="submitButtonPressed"
+                    android:text="送出" />
+
+
+                <Button
+                    android:id="@+id/cancelButton"
+                    style="@style/cancel_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="30dp"
+                    android:onClick="cancelButtonPressed"
+                    android:text="取消"
+                    android:textSize="16dp" />
+            </LinearLayout>
+
+        </LinearLayout>
+    </ScrollView>
+    <include layout="@layout/mask" />
+</RelativeLayout>

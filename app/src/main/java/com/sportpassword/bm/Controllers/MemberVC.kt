@@ -138,6 +138,7 @@ class MemberVC : MyTableVC() {
             TO_MEMBER_ORDER_LIST -> this.toMemberOrderList()
             TO_MEMBER_CART_LIST -> this.toMemberCartList()
             "manager_team" -> this.toManager("team")
+            "toRequestManagerTeam" -> this.toRequestManagerTeam()
             "manager_course" -> this.toManager("course")
             TO_LIKE -> {
                 val able_type: String = row.able_type
@@ -280,8 +281,10 @@ class MemberVC : MyTableVC() {
 
         val r1: MemberRow = MemberRow("球隊", "team", "manager_team")
         rows.add(r1)
-        val r2: MemberRow = MemberRow("課程", "course", "manager_course")
+        val r2: MemberRow = MemberRow("球隊申請管理權", "team", "toRequestManagerTeam")
         rows.add(r2)
+        val r3: MemberRow = MemberRow("課程", "course", "manager_course")
+        rows.add(r3)
 
         val s: MemberSection = MemberSection("管理", isExpanded)
         s.items.addAll(rows)

@@ -11,7 +11,6 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.google.gson.JsonParseException
-import com.sportpassword.bm.Adapters.IconCell
 import com.sportpassword.bm.Data.ShowRow
 import com.sportpassword.bm.Data.SignupRow
 import com.sportpassword.bm.Models.*
@@ -238,13 +237,13 @@ class ShowCourseVC : ShowVC() {
             }
 
             if (myTable!!.isSignup) {
-                signupButton.text = "取消報名"
+                submitButton.text = "取消報名"
             } else {
                 val count: Int = myTable!!.signup_normal_models.size
                 if (count >= myTable!!.people_limit) {
-                    signupButton.text = "候補"
+                    submitButton.text = "候補"
                 } else {
-                    signupButton.text = "報名"
+                    submitButton.text = "報名"
                 }
             }
         }
@@ -258,7 +257,7 @@ class ShowCourseVC : ShowVC() {
             signupDateLbl.text = "下次上課時間：" + date + " " + start_time + " ~ " + end_time
         } else {
             signupDateLbl.text = "未提供報名"
-            signupButton.visibility = View.GONE
+            submitButton.visibility = View.GONE
         }
 
         if (myTable != null) {
@@ -295,9 +294,9 @@ class ShowCourseVC : ShowVC() {
         //canCancelSignup
 
         if (isSignup) {
-            signupButton.text = "取消報名"
+            submitButton.text = "取消報名"
         } else {
-            signupButton.text = "報名"
+            submitButton.text = "報名"
         }
     }
 

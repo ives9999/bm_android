@@ -26,6 +26,8 @@ object TeamService: DataService() {
     lateinit var tempPlayDate: TempPlayDate
     lateinit var tempPlayDatePlayers: TempPlayDatePlayers
 
+    val able_type: String = "team"
+
     override fun getListURL(): String {
         return URL_TEAM_LIST
     }
@@ -40,6 +42,10 @@ object TeamService: DataService() {
 
     override fun getUpdateURL(): String {
         return URL_TEAM_UPDATE
+    }
+
+    override fun getIsNameExistUrl(): String {
+        return URL_ISNAMEEXIST.format(able_type)
     }
 
 //    fun tempPlay_list(context: Context, params: HashMap<String,Any>, page:Int, perPage:Int, complete: CompletionHandler) {

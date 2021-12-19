@@ -234,6 +234,11 @@ interface ToInterface {
         mainDelegate.startActivity(registerIntent)
     }
 
+    fun toRequestManagerTeam() {
+        val i = Intent(mainDelegate, RequestManagerTeamVC::class.java)
+        mainDelegate.startActivity(i)
+    }
+
     fun toSearch() {
         val i = Intent(mainDelegate, SearchVC::class.java)
         mainDelegate.startActivity(i)
