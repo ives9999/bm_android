@@ -3,6 +3,8 @@ package com.sportpassword.bm.Controllers
 import android.os.Bundle
 import android.view.View
 import com.google.gson.JsonParseException
+import com.sportpassword.bm.Data.MemberRow
+import com.sportpassword.bm.Data.MemberSection
 import com.sportpassword.bm.Data.ShowRow
 import com.sportpassword.bm.Models.Table
 import com.sportpassword.bm.Models.TeamTable
@@ -42,26 +44,65 @@ class ShowTeamVC: ShowVC() {
 //            "created_at_show" to hashMapOf("icon" to "calendar","title" to "建立日期","content" to "")
 //        )
 
-        init()
+        //init()
         refresh()
     }
 
-    override fun init() {
-        super.init()
+//    override fun init() {
+//        super.init()
+//
+//        showRows.addAll(arrayListOf(
+//            ShowRow("arena", "arena1", "球館"),
+//            ShowRow("interval_show", "clock", "時段"),
+//            ShowRow("ball", "ball", "球種"),
+//            ShowRow("leader", "group", "管理者"),
+//            ShowRow("mobile_show", "mobile", "行動電話"),
+//            ShowRow("line", "line", "line"),
+//            ShowRow("fb", "fb", "FB"),
+//            ShowRow("youtube", "youtube", "Youtube"),
+//            ShowRow("website", "website", "網站"),
+//            ShowRow("email", "email1", "EMail"),
+//            ShowRow("pv", "pv", "瀏覽數"),
+//            ShowRow("created_at_show", "date", "建立日期")
+//        ))
+//    }
 
-        showRows.addAll(arrayListOf(
-            ShowRow("arena", "arena", "球館"),
-            ShowRow("interval_show", "clock", "時段"),
-            ShowRow("ball", "ball", "球種"),
-            ShowRow("leader", "member1", "隊長"),
-            ShowRow("mobile_show", "mobile", "行動電話"),
-            ShowRow("fb", "fb", "FB"),
-            ShowRow("youtube", "youtube", "Youtube"),
-            ShowRow("website", "website", "網站"),
-            ShowRow("email", "email", "EMail"),
-            ShowRow("pv", "pv", "瀏覽數"),
-            ShowRow("created_at_show", "calendar", "建立日期")
-        ))
+    override fun initData() {
+
+        if (myTable == null) {
+            myTable = TeamTable()
+        }
+
+        myTable = table as? TeamTable
+        var row: MemberRow = MemberRow("球館", "arena1", myTable!!.arena!!.name)
+        memberRows.add(row)
+        row = MemberRow("時段", "clock", myTable!!.interval_show)
+        memberRows.add(row)
+        row = MemberRow("球種", "ball", myTable!!.ball)
+        memberRows.add(row)
+        row = MemberRow("程度", "degree", myTable!!.degree_show)
+        memberRows.add(row)
+        row = MemberRow("隊長", "group", myTable!!.manager_nickname)
+        memberRows.add(row)
+        row = MemberRow("行動電話", "mobile", myTable!!.mobile_show)
+        memberRows.add(row)
+        row = MemberRow("line", "line", myTable!!.line)
+        memberRows.add(row)
+        row = MemberRow("FB", "fb", myTable!!.fb)
+        memberRows.add(row)
+        row = MemberRow("Youtube", "youtube", myTable!!.youtube)
+        memberRows.add(row)
+        row = MemberRow("網站", "website", myTable!!.website)
+        memberRows.add(row)
+        row = MemberRow("EMail", "email1", myTable!!.email)
+        memberRows.add(row)
+        row = MemberRow("瀏覽數", "pv", myTable!!.pv.toString())
+        memberRows.add(row)
+        row = MemberRow("建立日期", "date", myTable!!.created_at_show)
+        memberRows.add(row)
+
+        val memberSection: MemberSection = MemberSection("", true, memberRows)
+        memberSections.add(memberSection)
     }
 
     override fun genericTable() {
@@ -80,39 +121,61 @@ class ShowTeamVC: ShowVC() {
         }
     }
 
+    override fun tableToPage() {
+        //table!!.filterRow()
+
+        isLike = table!!.like
+        likeCount = table!!.like_count
+
+        runOnUiThread {
+            if (table!!.name.isNotEmpty()) {
+                setMyTitle(table!!.name)
+            } else if (table!!.title.isNotEmpty()) {
+                setMyTitle(table!!.title)
+            }
+            setFeatured()
+            setData()
+            setContent()
+            memberSectionAdapter.notifyDataSetChanged()
+//            showAdapter.rows = showRows
+//            showAdapter.notifyDataSetChanged()
+            setLike()
+        }
+    }
+
     override fun setData() {
 
-        if (myTable != null) {
-            setMainData(myTable!!)
-        }
+//        if (myTable != null) {
+//            setMainData(myTable!!)
+//        }
     }
 
-    override fun setMainData(table: Table) {
-        for (showRow in showRows) {
-            val key: String = showRow.key
-            val kc = table::class
-            kc.memberProperties.forEach {
-                if (key == it.name) {
-                    var value = it.getter.call(table).toString()
-                    if (value == "null") value = ""
-                    if (value == "-1") value = ""
-                    showRow.show = value
-
-                    if (key == "arena") {
-                        if (myTable!!.arena != null) {
-                            showRow.show = myTable!!.arena!!.name
-                        } else {
-                            showRow.show = "未提供"
-                        }
-                    }
-                }
-            }
-        }
-
-//        val items = generateMainItem()
-//        adapter.update(items)
-
-    }
+//    override fun setMainData(table: Table) {
+//        for (showRow in showRows) {
+//            val key: String = showRow.key
+//            val kc = table::class
+//            kc.memberProperties.forEach {
+//                if (key == it.name) {
+//                    var value = it.getter.call(table).toString()
+//                    if (value == "null") value = ""
+//                    if (value == "-1") value = ""
+//                    showRow.show = value
+//
+//                    if (key == "arena") {
+//                        if (myTable!!.arena != null) {
+//                            showRow.show = myTable!!.arena!!.name
+//                        } else {
+//                            showRow.show = "未提供"
+//                        }
+//                    }
+//                }
+//            }
+//        }
+//
+////        val items = generateMainItem()
+////        adapter.update(items)
+//
+//    }
 
 //    override fun didSelectRowAt(view: View, position: Int) {
 //

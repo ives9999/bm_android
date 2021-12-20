@@ -121,7 +121,7 @@ class MemberVC : MyTableVC() {
         //menu_team_container.visibility = View.INVISIBLE
     }
 
-    fun cellClick1(sectionIdx: Int, rowIdx: Int) {
+    override fun cellClick(sectionIdx: Int, rowIdx: Int) {
 //        println(sectionIdx)
 //        println(rowIdx)
         val memberSection = memberSections[sectionIdx]
@@ -205,16 +205,16 @@ class MemberVC : MyTableVC() {
 
     private fun makeSection0FixRow(): ArrayList<MemberRow> {
         val rows: ArrayList<MemberRow> = arrayListOf()
-        val r1: MemberRow = MemberRow("帳戶資料", "account", TO_PROFILE)
+        val r1: MemberRow = MemberRow("帳戶資料", "account", "", TO_PROFILE)
         rows.add(r1)
-        val r2: MemberRow = MemberRow("更改密碼", "password", TO_PASSWORD)
+        val r2: MemberRow = MemberRow("更改密碼", "password", "", TO_PASSWORD)
         rows.add(r2)
         return rows
     }
 
     private fun makeSection0RefreshRow(): ArrayList<MemberRow> {
         val rows: ArrayList<MemberRow> = arrayListOf()
-        val r1: MemberRow = MemberRow("重新整理", "refresh", "refresh")
+        val r1: MemberRow = MemberRow("重新整理", "refresh", "", "refresh")
         rows.add(r1)
         return rows
     }
@@ -223,11 +223,11 @@ class MemberVC : MyTableVC() {
         val rows: ArrayList<MemberRow> = arrayListOf()
         val validate: Int = member.validate
         if (validate and EMAIL_VALIDATE <= 0) {
-            val r: MemberRow = MemberRow("email認證", "email", "email")
+            val r: MemberRow = MemberRow("email認證", "email", "", "email")
             rows.add(r)
         }
         if (validate and MOBILE_VALIDATE <= 0) {
-            val r: MemberRow = MemberRow("手機認證", "mobile", "mobile")
+            val r: MemberRow = MemberRow("手機認證", "mobile", "", "mobile")
             rows.add(r)
         }
         return rows
@@ -238,9 +238,9 @@ class MemberVC : MyTableVC() {
 
         //if (isExpanded) {
 
-        val r1: MemberRow = MemberRow("購物車", "cart", TO_MEMBER_CART_LIST)
+        val r1: MemberRow = MemberRow("購物車", "cart", "", TO_MEMBER_CART_LIST)
         rows.add(r1)
-        val r2: MemberRow = MemberRow("訂單查詢", "order", TO_MEMBER_ORDER_LIST)
+        val r2: MemberRow = MemberRow("訂單查詢", "order", "", TO_MEMBER_ORDER_LIST)
         rows.add(r2)
         //}
 
@@ -254,19 +254,19 @@ class MemberVC : MyTableVC() {
         val rows: ArrayList<MemberRow> = arrayListOf()
 
         //if (isExpanded) {
-        val r1: MemberRow = MemberRow("球隊", "team", TO_LIKE, "team")
+        val r1: MemberRow = MemberRow("球隊", "team", "", TO_LIKE, "team")
         rows.add(r1)
-        val r2: MemberRow = MemberRow("球館", "arena", TO_LIKE, "arena")
+        val r2: MemberRow = MemberRow("球館", "arena", "", TO_LIKE, "arena")
         rows.add(r2)
-        val r3: MemberRow = MemberRow("教學", "teach", TO_LIKE, "teach")
+        val r3: MemberRow = MemberRow("教學", "teach", "", TO_LIKE, "teach")
         rows.add(r3)
-        val r4: MemberRow = MemberRow("教練", "coach", TO_LIKE, "coach")
+        val r4: MemberRow = MemberRow("教練", "coach", "", TO_LIKE, "coach")
         rows.add(r4)
-        val r5: MemberRow = MemberRow("課程", "course", TO_LIKE, "course")
+        val r5: MemberRow = MemberRow("課程", "course", "", TO_LIKE, "course")
         rows.add(r5)
-        val r6: MemberRow = MemberRow("商品", "product", TO_LIKE, "product")
+        val r6: MemberRow = MemberRow("商品", "product", "", TO_LIKE, "product")
         rows.add(r6)
-        val r7: MemberRow = MemberRow("體育用品店", "store", TO_LIKE, "store")
+        val r7: MemberRow = MemberRow("體育用品店", "store", "", TO_LIKE, "store")
         rows.add(r7)
         //}
 
@@ -279,11 +279,11 @@ class MemberVC : MyTableVC() {
     private fun makeSection3Row(isExpanded: Boolean=true): MemberSection {
         val rows: ArrayList<MemberRow> = arrayListOf()
 
-        val r1: MemberRow = MemberRow("球隊", "team", "manager_team")
+        val r1: MemberRow = MemberRow("球隊", "team", "", "", "manager_team")
         rows.add(r1)
-        val r2: MemberRow = MemberRow("球隊申請管理權", "team", "toRequestManagerTeam")
+        val r2: MemberRow = MemberRow("球隊申請管理權", "team", "", "", "toRequestManagerTeam")
         rows.add(r2)
-        val r3: MemberRow = MemberRow("課程", "course", "manager_course")
+        val r3: MemberRow = MemberRow("課程", "course", "", "manager_course")
         rows.add(r3)
 
         val s: MemberSection = MemberSection("管理", isExpanded)

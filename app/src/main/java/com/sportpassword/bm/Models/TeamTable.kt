@@ -11,14 +11,14 @@ class TeamsTable: Tables() {
 
 class TeamTable: Table() {
 
-    var leader: String = ""
+    //var leader: String = ""
     var line: String = ""
     var email: String = ""
     var website: String = ""
     var fb: String = ""
     var youtube: String = ""
     var arena_id: Int = -1
-    var arena_name: String = ""
+    //var arena_name: String = ""
     var play_start: String = ""
     var play_end: String = ""
     var ball: String = ""
@@ -38,6 +38,10 @@ class TeamTable: Table() {
     var arena: ArenaTable? = null
     var signupDate: SignupDateTable? = null
 
+    var isSignup: Boolean = false
+    var signupNormalTable: ArrayList<SignupNormalTable> = arrayListOf()
+    var signupStandbyTable: ArrayList<SignupStandbyTable> = arrayListOf()
+
     var play_start_show: String = ""
     var play_end_show: String = ""
     var weekdays_show: String = ""
@@ -46,6 +50,8 @@ class TeamTable: Table() {
     var people_limit_show: String = ""
     var temp_signup_count_show: String = ""
     var temp_status_show: String = "上線"
+    var temp_fee_M_show: String = ""
+    var temp_fee_F_show: String = ""
     var last_signup_date: String = ""
 
     override fun filterRow() {

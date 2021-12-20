@@ -341,13 +341,14 @@ open class DataService {
     fun like(context: Context, token: String, able_id: Int) {
 
         val url: String = getLikeURL(token)
-        //println(likeUrl)
+//        println(url)
 
         val params: HashMap<String, String> = hashMapOf(
             "member_token" to member.token!!,
             "able_id" to able_id.toString(),
             "device" to "app"
         )
+//        println(params)
 //        val objectMapper = ObjectMapper()
 //        val body: String = objectMapper.writeValueAsString(params)
 //

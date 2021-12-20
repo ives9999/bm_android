@@ -788,6 +788,7 @@ object MemberService: DataService() {
             "page" to page.toString(),
             "perpage" to perPage.toString()
         )
+//        println(params)
 //        val objectMapper = ObjectMapper()
 //        val body: String = objectMapper.writeValueAsString(params)
 //        println(body)

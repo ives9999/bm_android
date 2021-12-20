@@ -8,12 +8,13 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.sportpassword.bm.Controllers.BaseActivity
 import com.sportpassword.bm.Controllers.MemberVC
 import com.sportpassword.bm.Data.MemberRow
 import com.sportpassword.bm.Data.MemberSection
 import com.sportpassword.bm.R
 
-class MemberSectionAdapter(val context: Context, private val resource: Int, var delegate: MemberVC): RecyclerView.Adapter<MemberSectionViewHolder>() {
+class MemberSectionAdapter(val context: Context, private val resource: Int, var delegate: BaseActivity): RecyclerView.Adapter<MemberSectionViewHolder>() {
 
     private var memberSections: ArrayList<MemberSection> = arrayListOf()
 
@@ -64,7 +65,7 @@ class MemberSectionViewHolder(val viewHolder: View): RecyclerView.ViewHolder(vie
     var recyclerView: RecyclerView = viewHolder.findViewById(R.id.recyclerView)
 }
 
-class MemberItemAdapter(val context: Context, private val sectionIdx: Int, private val memberSection: MemberSection, var delegate: MemberVC): RecyclerView.Adapter<MemberItemViewHolder>() {
+class MemberItemAdapter(val context: Context, private val sectionIdx: Int, private val memberSection: MemberSection, var delegate: BaseActivity): RecyclerView.Adapter<MemberItemViewHolder>() {
 
     var memberRows: ArrayList<MemberRow> = memberSection.items
 
@@ -84,7 +85,7 @@ class MemberItemAdapter(val context: Context, private val sectionIdx: Int, priva
         holder.iconView.setImageResource(iconID)
 
         holder.viewHolder.setOnClickListener {
-            delegate.cellClick1(sectionIdx, position)
+            delegate.cellClick(sectionIdx, position)
         }
     }
 
