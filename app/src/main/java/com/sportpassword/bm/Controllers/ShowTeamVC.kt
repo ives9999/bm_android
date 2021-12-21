@@ -3,20 +3,34 @@ package com.sportpassword.bm.Controllers
 import android.os.Bundle
 import android.view.View
 import com.google.gson.JsonParseException
-import com.sportpassword.bm.Data.MemberRow
-import com.sportpassword.bm.Data.MemberSection
+import com.sportpassword.bm.Adapters.SignupAdapter
 import com.sportpassword.bm.Data.ShowRow
+import com.sportpassword.bm.Data.SignupRow
 import com.sportpassword.bm.Models.Table
 import com.sportpassword.bm.Models.TeamTable
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.TeamService
 import com.sportpassword.bm.Utilities.jsonToModel
+import com.sportpassword.bm.Utilities.noSec
+import com.sportpassword.bm.Utilities.toDate
+import com.sportpassword.bm.Utilities.toMyString
+import kotlinx.android.synthetic.main.activity_show_course_vc.*
+import kotlinx.android.synthetic.main.activity_show_team_vc.*
 import kotlinx.android.synthetic.main.activity_show_team_vc.refresh
+import kotlinx.android.synthetic.main.activity_show_team_vc.signupButton
+import kotlinx.android.synthetic.main.activity_show_team_vc.signupDateLbl
+import kotlinx.android.synthetic.main.activity_show_team_vc.signupTableView
+import java.util.*
 import kotlin.reflect.full.memberProperties
 
 class ShowTeamVC: ShowVC() {
 
     var myTable: TeamTable? = null
+
+    var isTempPlay: Boolean = true
+
+    lateinit var signupAdapter: SignupAdapter
+    var signupRows: ArrayList<SignupRow> = arrayListOf()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         setContentView(R.layout.activity_show_team_vc)
@@ -44,65 +58,31 @@ class ShowTeamVC: ShowVC() {
 //            "created_at_show" to hashMapOf("icon" to "calendar","title" to "建立日期","content" to "")
 //        )
 
-        //init()
+        signupAdapter = SignupAdapter(this)
+        signupTableView.adapter = signupAdapter
+
+        init()
         refresh()
     }
 
-//    override fun init() {
-//        super.init()
-//
-//        showRows.addAll(arrayListOf(
-//            ShowRow("arena", "arena1", "球館"),
-//            ShowRow("interval_show", "clock", "時段"),
-//            ShowRow("ball", "ball", "球種"),
-//            ShowRow("leader", "group", "管理者"),
-//            ShowRow("mobile_show", "mobile", "行動電話"),
-//            ShowRow("line", "line", "line"),
-//            ShowRow("fb", "fb", "FB"),
-//            ShowRow("youtube", "youtube", "Youtube"),
-//            ShowRow("website", "website", "網站"),
-//            ShowRow("email", "email1", "EMail"),
-//            ShowRow("pv", "pv", "瀏覽數"),
-//            ShowRow("created_at_show", "date", "建立日期")
-//        ))
-//    }
+    override fun init() {
+        showRows.addAll(arrayListOf(
+            ShowRow("arena", "arena1", "球館"),
+            ShowRow("interval_show", "clock", "時段"),
+            ShowRow("ball", "ball", "球種"),
+            ShowRow("degree", "degree", "程度"),
+            ShowRow("leader", "group", "管理者"),
+            ShowRow("mobile_show", "mobile", "行動電話"),
+            ShowRow("line", "line", "line"),
+            ShowRow("fb", "fb", "FB"),
+            ShowRow("youtube", "youtube", "Youtube"),
+            ShowRow("website", "website", "網站"),
+            ShowRow("email", "email1", "EMail"),
+            ShowRow("pv", "pv", "瀏覽數"),
+            ShowRow("created_at_show", "date", "建立日期")
+        ))
 
-    override fun initData() {
-
-        if (myTable == null) {
-            myTable = TeamTable()
-        }
-
-        myTable = table as? TeamTable
-        var row: MemberRow = MemberRow("球館", "arena1", myTable!!.arena!!.name)
-        memberRows.add(row)
-        row = MemberRow("時段", "clock", myTable!!.interval_show)
-        memberRows.add(row)
-        row = MemberRow("球種", "ball", myTable!!.ball)
-        memberRows.add(row)
-        row = MemberRow("程度", "degree", myTable!!.degree_show)
-        memberRows.add(row)
-        row = MemberRow("隊長", "group", myTable!!.manager_nickname)
-        memberRows.add(row)
-        row = MemberRow("行動電話", "mobile", myTable!!.mobile_show)
-        memberRows.add(row)
-        row = MemberRow("line", "line", myTable!!.line)
-        memberRows.add(row)
-        row = MemberRow("FB", "fb", myTable!!.fb)
-        memberRows.add(row)
-        row = MemberRow("Youtube", "youtube", myTable!!.youtube)
-        memberRows.add(row)
-        row = MemberRow("網站", "website", myTable!!.website)
-        memberRows.add(row)
-        row = MemberRow("EMail", "email1", myTable!!.email)
-        memberRows.add(row)
-        row = MemberRow("瀏覽數", "pv", myTable!!.pv.toString())
-        memberRows.add(row)
-        row = MemberRow("建立日期", "date", myTable!!.created_at_show)
-        memberRows.add(row)
-
-        val memberSection: MemberSection = MemberSection("", true, memberRows)
-        memberSections.add(memberSection)
+        super.init()
     }
 
     override fun genericTable() {
@@ -121,61 +101,132 @@ class ShowTeamVC: ShowVC() {
         }
     }
 
-    override fun tableToPage() {
-        //table!!.filterRow()
+    override fun setData() {
 
-        isLike = table!!.like
-        likeCount = table!!.like_count
-
-        runOnUiThread {
-            if (table!!.name.isNotEmpty()) {
-                setMyTitle(table!!.name)
-            } else if (table!!.title.isNotEmpty()) {
-                setMyTitle(table!!.title)
-            }
-            setFeatured()
-            setData()
-            setContent()
-            memberSectionAdapter.notifyDataSetChanged()
-//            showAdapter.rows = showRows
-//            showAdapter.notifyDataSetChanged()
-            setLike()
+        if (myTable != null) {
+            setMainData(myTable!!)
+            setSignupData()
         }
     }
 
-    override fun setData() {
+    override fun setMainData(table: Table) {
+        for (showRow in showRows) {
+            val key: String = showRow.key
+            val kc = table::class
+            kc.memberProperties.forEach {
+                if (key == it.name) {
+                    var value = it.getter.call(table).toString()
+                    if (value == "null") value = ""
+                    if (value == "-1") value = ""
+                    showRow.show = value
 
-//        if (myTable != null) {
-//            setMainData(myTable!!)
-//        }
+                    if (key == "arena") {
+                        if (myTable!!.arena != null) {
+                            showRow.show = myTable!!.arena!!.name
+                        } else {
+                            showRow.show = "未提供"
+                        }
+                    }
+                }
+            }
+        }
+
+//        val items = generateMainItem()
+//        adapter.update(items)
+
     }
 
-//    override fun setMainData(table: Table) {
-//        for (showRow in showRows) {
-//            val key: String = showRow.key
-//            val kc = table::class
-//            kc.memberProperties.forEach {
-//                if (key == it.name) {
-//                    var value = it.getter.call(table).toString()
-//                    if (value == "null") value = ""
-//                    if (value == "-1") value = ""
-//                    showRow.show = value
-//
-//                    if (key == "arena") {
-//                        if (myTable!!.arena != null) {
-//                            showRow.show = myTable!!.arena!!.name
-//                        } else {
-//                            showRow.show = "未提供"
-//                        }
-//                    }
-//                }
-//            }
-//        }
-//
-////        val items = generateMainItem()
-////        adapter.update(items)
-//
-//    }
+    fun setSignupData() {
+
+        isTempPlayOnline()
+
+        if (!isTempPlay) {
+            signupDataLbl.text = "目前球隊不開放臨打"
+            deadlineLbl.visibility = View.GONE
+            signupTableView.visibility = View.GONE
+        } else {
+            if (myTable != null && myTable!!.signupDate != null) {
+                signupDataLbl.text = "報名資料"
+                signupDateLbl.text =
+                    "下次臨打時間：" + myTable!!.signupDate!!.date + " " + myTable!!.interval_show
+                deadlineLbl.text = "報名截止時間：" + myTable!!.signupDate!!.deadline.noSec()
+            }
+
+        }
+
+        if (myTable!!.people_limit == 0) {
+            signupButton.visibility = View.GONE
+        } else {
+            for (i in 0..myTable!!.people_limit - 1) {
+                var name = ""
+                if (myTable!!.signupNormalTables.count() > i) {
+                    val tmp = myTable!!.signupNormalTables[i].member_name?.let {
+                        name = it
+                    }
+                }
+                val signupRow: SignupRow = SignupRow((i+1).toString()+".", name)
+                signupRows.add(signupRow)
+            }
+            if (myTable!!.signupStandbyTables.count() > 0) {
+                for (i in 0..myTable!!.signupStandbyTables.count() - 1) {
+                    var name = ""
+                    val tmp = myTable!!.signupStandbyTables[i].member_name?.let {
+                        name = it
+                    }
+                    val signupRow: SignupRow = SignupRow("候補" + (i+1).toString()+".", name)
+                    signupRows.add(signupRow)
+                }
+            }
+
+            signupAdapter.rows = signupRows
+            signupAdapter.notifyDataSetChanged()
+        }
+
+        if (myTable!!.isSignup) {
+            signupButton.setText("取消報名")
+        } else {
+            val count = myTable!!.signupNormalTables.size
+            if (count >= myTable!!.people_limit) {
+                signupButton.setText("候補")
+            } else {
+                signupButton.setText("報名")
+            }
+        }
+    }
+
+    fun isTempPlayOnline() {
+
+        //1.如果臨打狀態是關閉，關閉臨打
+        if (myTable!!.temp_status == "offline") {
+            isTempPlay = false
+        }
+
+        //2.如果沒有設定臨打日期，關閉臨打
+        if (myTable!!.signupDate != null) {
+            val temp_date_string: String = myTable!!.signupDate!!.date + " 00:00:00"
+
+            //3.如果臨打日期超過現在的日期，關閉臨打
+            var temp_date: Date = Date()
+            temp_date_string.toDate("yyyy-MM-dd HH:mm:ss")?.let {
+                temp_date = it
+            }
+
+            val today_string: String = Date().toMyString("yyyy-MM-dd") + " 23:59:59"
+            var today: Date = Date()
+            today_string.toDate("yyyy-MM-dd HH:mm:ss")?.let {
+                today = it
+            }
+
+            if (temp_date.before(today)) {
+                isTempPlay = false
+            }
+        }
+
+        //3.如果管理者設定報名臨打名額是0，關閉臨打
+        if (myTable!!.people_limit == 0) {
+            isTempPlay = false
+        }
+    }
 
 //    override fun didSelectRowAt(view: View, position: Int) {
 //

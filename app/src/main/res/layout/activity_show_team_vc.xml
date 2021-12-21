@@ -71,10 +71,54 @@
                 </androidx.recyclerview.widget.RecyclerView>
 
                 <TextView
-                    android:id="@+id/contentLbl"
+                    android:id="@+id/signupDataLbl"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/tableView"
+                    android:layout_marginLeft="12dp"
+                    android:layout_marginBottom="8dp"
+                    android:text="報名資料"
+                    style="@style/list_text_title"
+                    android:textSize="24dp" />
+
+                <TextView
+                    android:id="@+id/signupDateLbl"
+                    style="@style/list_text_general"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/signupDataLbl"
+                    android:layout_marginLeft="12dp"
+                    android:layout_marginBottom="8dp"
+                    android:text=""
+                    android:textSize="16dp"
+                    tools:text="下次臨打時間：2020-02-06 20:00~22:00" />
+
+                <TextView
+                    android:id="@+id/deadlineLbl"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/signupDateLbl"
+                    android:layout_marginLeft="12dp"
+                    android:layout_marginBottom="8dp"
+                    android:text=""
+                    style="@style/list_text_general"
+                    android:textSize="16dp"
+                    tools:text="報名截止時間：2020-02-06 18:00" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/signupTableView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/deadlineLbl"
+                    android:layout_marginTop="7dp"
+                    android:layout_marginBottom="24dp"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+
+                <TextView
+                    android:id="@+id/contentLbl"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/signupTableView"
                     android:layout_marginLeft="12dp"
                     android:layout_marginBottom="8dp"
                     android:text="詳細介紹"
@@ -107,7 +151,7 @@
         android:orientation="horizontal">
 
         <Button
-            android:id="@+id/submitButton"
+            android:id="@+id/signupButton"
             style="@style/submit_button"
             android:layout_width="wrap_content"
             android:layout_height="30dp"

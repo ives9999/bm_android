@@ -12,7 +12,7 @@
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
         android:textAlignment="viewStart"
-        android:textColor="@color/MY_WHITE"
+        style="@style/list_text_general"
         android:textSize="18sp"
         tools:text="1." />
 
@@ -20,8 +20,8 @@
         android:id="@+id/name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="@color/MY_WHITE"
         android:textSize="18sp"
+        style="@style/list_text_general"
         tools:text="name"/>
 
 </LinearLayout>

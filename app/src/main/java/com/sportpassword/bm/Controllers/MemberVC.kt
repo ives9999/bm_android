@@ -279,11 +279,11 @@ class MemberVC : MyTableVC() {
     private fun makeSection3Row(isExpanded: Boolean=true): MemberSection {
         val rows: ArrayList<MemberRow> = arrayListOf()
 
-        val r1: MemberRow = MemberRow("球隊", "team", "", "", "manager_team")
+        val r1: MemberRow = MemberRow("球隊", "team", "", "manager_team", "team")
         rows.add(r1)
-        val r2: MemberRow = MemberRow("球隊申請管理權", "team", "", "", "toRequestManagerTeam")
+        val r2: MemberRow = MemberRow("球隊申請管理權", "team", "", "toRequestManagerTeam", "team")
         rows.add(r2)
-        val r3: MemberRow = MemberRow("課程", "course", "", "manager_course")
+        val r3: MemberRow = MemberRow("課程", "course", "", "manager_course", "course")
         rows.add(r3)
 
         val s: MemberSection = MemberSection("管理", isExpanded)

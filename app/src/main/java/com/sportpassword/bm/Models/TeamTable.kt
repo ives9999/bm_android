@@ -1,5 +1,6 @@
 package com.sportpassword.bm.Models
 
+import com.google.gson.annotations.SerializedName
 import com.sportpassword.bm.Utilities.DEGREE
 import com.sportpassword.bm.Utilities.STATUS
 import com.sportpassword.bm.Utilities.WEEKDAY
@@ -36,11 +37,11 @@ class TeamTable: Table() {
     var color: String = ""
     var weekdays: ArrayList<Team_WeekdaysTable> = arrayListOf()
     var arena: ArenaTable? = null
-    var signupDate: SignupDateTable? = null
+    @SerializedName("signup_date") var signupDate: SignupDateTable? = null
 
     var isSignup: Boolean = false
-    var signupNormalTable: ArrayList<SignupNormalTable> = arrayListOf()
-    var signupStandbyTable: ArrayList<SignupStandbyTable> = arrayListOf()
+    var signupNormalTables: ArrayList<SignupNormalTable> = arrayListOf()
+    var signupStandbyTables: ArrayList<SignupStandbyTable> = arrayListOf()
 
     var play_start_show: String = ""
     var play_end_show: String = ""

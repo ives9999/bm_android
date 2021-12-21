@@ -157,7 +157,7 @@
         android:orientation="horizontal">
 
         <Button
-            android:id="@+id/submitButton"
+            android:id="@+id/signupButton"
             style="@style/submit_button"
             android:layout_width="wrap_content"
             android:layout_height="30dp"

@@ -8,8 +8,6 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.sportpassword.bm.Adapters.MemberSectionAdapter
-import com.sportpassword.bm.Data.MemberRow
 import com.sportpassword.bm.Data.ShowRow
 import com.sportpassword.bm.Models.Table
 import com.sportpassword.bm.R
@@ -34,7 +32,6 @@ open class ShowVC: BaseActivity() {
     var likeCount: Int = 0
 
     lateinit var showAdapter: ShowAdapter
-    var memberRows: ArrayList<MemberRow> = arrayListOf()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,20 +47,22 @@ open class ShowVC: BaseActivity() {
         if (tableView != null) {
             tableView.adapter = showAdapter
         }
-
-        memberSectionAdapter = MemberSectionAdapter(this, R.layout.cell_section, this)
-        tableView.adapter = memberSectionAdapter
-
         //initAdapter()
         //refresh()
     }
+
+//    open fun initAdapter() {
+//        adapter = GroupAdapter()
+
+//        val items = generateMainItem()
+//        adapter.addAll(items)
+//        tableView.adapter = adapter
+//    }
 
     override fun init() {
         isPrevIconShow = true
         super.init()
     }
-
-    open fun initData() {}
 
     open fun genericTable() {}
 
@@ -74,38 +73,30 @@ open class ShowVC: BaseActivity() {
             dataService.getOne(this, params) { success ->
                 if (success) {
                     genericTable()
-                    initData()
-                    memberSectionAdapter.setMyTableSection(memberSections)
                     if (table != null) {
-                        tableToPage()
+                        table!!.filterRow()
+
+                        runOnUiThread {
+                            if (table!!.name.isNotEmpty()) {
+                                setMyTitle(table!!.name)
+                            } else if (table!!.title.isNotEmpty()) {
+                                setMyTitle(table!!.title)
+                            }
+                            setFeatured()
+                            setData()
+                            setContent()
+                            showAdapter.rows = showRows
+                            showAdapter.notifyDataSetChanged()
+
+                            isLike = table!!.like
+                            likeCount = table!!.like_count
+                            setLike()
+                        }
                     }
                 }
                 closeRefresh()
-                runOnUiThread {
-                    Loading.hide(mask)
-                }
+                Loading.hide(mask)
             }
-        }
-    }
-
-    open fun tableToPage() {
-        table!!.filterRow()
-
-        isLike = table!!.like
-        likeCount = table!!.like_count
-
-        runOnUiThread {
-            if (table!!.name.isNotEmpty()) {
-                setMyTitle(table!!.name)
-            } else if (table!!.title.isNotEmpty()) {
-                setMyTitle(table!!.title)
-            }
-            setFeatured()
-            setData()
-            setContent()
-            showAdapter.rows = showRows
-            showAdapter.notifyDataSetChanged()
-            setLike()
         }
     }
 

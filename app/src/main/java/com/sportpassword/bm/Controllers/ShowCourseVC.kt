@@ -11,6 +11,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.google.gson.JsonParseException
+import com.sportpassword.bm.Adapters.SignupAdapter
 import com.sportpassword.bm.Data.ShowRow
 import com.sportpassword.bm.Data.SignupRow
 import com.sportpassword.bm.Models.*
@@ -237,13 +238,13 @@ class ShowCourseVC : ShowVC() {
             }
 
             if (myTable!!.isSignup) {
-                submitButton.text = "取消報名"
+                signupButton.text = "取消報名"
             } else {
                 val count: Int = myTable!!.signup_normal_models.size
                 if (count >= myTable!!.people_limit) {
-                    submitButton.text = "候補"
+                    signupButton.text = "候補"
                 } else {
-                    submitButton.text = "報名"
+                    signupButton.text = "報名"
                 }
             }
         }
@@ -257,7 +258,7 @@ class ShowCourseVC : ShowVC() {
             signupDateLbl.text = "下次上課時間：" + date + " " + start_time + " ~ " + end_time
         } else {
             signupDateLbl.text = "未提供報名"
-            submitButton.visibility = View.GONE
+            signupButton.visibility = View.GONE
         }
 
         if (myTable != null) {
@@ -294,9 +295,9 @@ class ShowCourseVC : ShowVC() {
         //canCancelSignup
 
         if (isSignup) {
-            submitButton.text = "取消報名"
+            signupButton.text = "取消報名"
         } else {
-            submitButton.text = "報名"
+            signupButton.text = "報名"
         }
     }
 
@@ -671,36 +672,6 @@ class ShowCourseVC : ShowVC() {
 //            toLogin()
 //        }
 //    }
-}
-
-class SignupAdapter(val context: Context): RecyclerView.Adapter<SignupViewHolder>() {
-
-    var rows: ArrayList<SignupRow> = arrayListOf()
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SignupViewHolder {
-        val inflater = LayoutInflater.from(parent.context)
-        val viewHolder = inflater.inflate(R.layout.olcell, parent, false)
-
-        return SignupViewHolder(viewHolder)
-    }
-
-    override fun onBindViewHolder(holder: SignupViewHolder, position: Int) {
-
-        val row: SignupRow = rows[position]
-        holder.number.text = row.number
-        holder.name.text = row.name
-    }
-
-    override fun getItemCount(): Int {
-        return rows.size
-    }
-
-}
-
-class SignupViewHolder(val viewHolder: View): RecyclerView.ViewHolder(viewHolder) {
-
-    var number: TextView = viewHolder.findViewById(R.id.number)
-    var name: TextView = viewHolder.findViewById(R.id.name)
 }
 
 //class CourseCoachAdapter(val context: Context): RecyclerView.Adapter<CourseCoachViewHolder>() {
