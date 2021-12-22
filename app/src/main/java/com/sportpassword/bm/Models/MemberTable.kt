@@ -387,6 +387,28 @@ class Member(val context: Context) {
         }
         return msg
     }
+
+    fun checkEMailValidate(): Boolean {
+        
+        var isValidate: Boolean = false
+        
+        if (member.validate and 1 > 0) {
+            isValidate = true
+        }
+        
+        return isValidate
+    }
+
+    fun checkMobileValidate(): Boolean {
+        
+        var isValidate: Boolean = false
+        
+        if (member.validate and 2 > 0) {
+            isValidate = true
+        }
+        
+        return isValidate
+    }
     
 //    private fun setField(fieldName: String): Any {
 //        val a: Field = javaClass.getDeclaredField(fieldName)

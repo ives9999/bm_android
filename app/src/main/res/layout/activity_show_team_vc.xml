@@ -72,13 +72,13 @@
 
                 <TextView
                     android:id="@+id/signupDataLbl"
+                    style="@style/list_text_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/tableView"
                     android:layout_marginLeft="12dp"
                     android:layout_marginBottom="8dp"
                     android:text="報名資料"
-                    style="@style/list_text_title"
                     android:textSize="24dp" />
 
                 <TextView
@@ -116,13 +116,13 @@
 
                 <TextView
                     android:id="@+id/contentLbl"
+                    style="@style/list_text_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/signupTableView"
                     android:layout_marginLeft="12dp"
                     android:layout_marginBottom="8dp"
                     android:text="詳細介紹"
-                    style="@style/list_text_title"
                     android:textSize="24dp" />
 
                 <WebView

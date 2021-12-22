@@ -1385,17 +1385,17 @@ open class DataService {
 //        }
     }
 
-    fun signup(context: Context, token: String, member_token: String, date_token: String, course_deadline: String, complete: CompletionHandler) {
+    fun signup(context: Context, token: String, member_token: String, date_token: String, complete: CompletionHandler) {
         val url = getSignupURL(token)
-//        println(url)
+        println(url)
 //        val jsonString: String = "{\"device\": \"app\", \"channel\": \"bm\", \"member_token\": " + member_token + ", \"signup_id\": " + signup_id.toString() + ", \"course_date\": " + course_date + ", \"course_deadline\": " + course_deadline + "}"
         val params: HashMap<String, String> = hashMapOf()
         params.put("device", "app")
         params.put("channel", "bm")
         params.put("member_token", member_token)
         params.put("able_date_token", date_token)
-        params.put("cancel_deadline", course_deadline)
-//        println(params)
+//        params.put("cancel_deadline", course_deadline)
+        println(params)
 
         val request: okhttp3.Request = getRequest(url, params)
         okHttpClient.newCall(request).enqueue(object : Callback {

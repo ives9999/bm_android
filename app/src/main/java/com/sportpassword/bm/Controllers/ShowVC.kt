@@ -9,6 +9,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.sportpassword.bm.Data.ShowRow
+import com.sportpassword.bm.Data.SignupRow
 import com.sportpassword.bm.Models.Table
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Utilities.Loading
@@ -30,6 +31,7 @@ open class ShowVC: BaseActivity() {
 
     var isLike: Boolean = false
     var likeCount: Int = 0
+    var signupRows: ArrayList<SignupRow> = arrayListOf()
 
     lateinit var showAdapter: ShowAdapter
 
@@ -68,6 +70,7 @@ open class ShowVC: BaseActivity() {
 
     override fun refresh() {
         if (token != null) {
+            signupRows.clear()
             Loading.show(mask)
             val params: HashMap<String, String> = hashMapOf("token" to token!!, "member_token" to member.token!!)
             dataService.getOne(this, params) { success ->

@@ -40,8 +40,9 @@ class TeamTable: Table() {
     @SerializedName("signup_date") var signupDate: SignupDateTable? = null
 
     var isSignup: Boolean = false
-    var signupNormalTables: ArrayList<SignupNormalTable> = arrayListOf()
-    var signupStandbyTables: ArrayList<SignupStandbyTable> = arrayListOf()
+
+    @SerializedName("signup_normal_models") var signupNormalTables: ArrayList<SignupNormalTable> = arrayListOf()
+    @SerializedName("signup_standby_models") var signupStandbyTables: ArrayList<SignupStandbyTable> = arrayListOf()
 
     var play_start_show: String = ""
     var play_end_show: String = ""

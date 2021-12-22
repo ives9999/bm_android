@@ -48,6 +48,12 @@ object TeamService: DataService() {
         return URL_ISNAMEEXIST.format(able_type)
     }
 
+    override fun getSignupURL(token: String): String {
+        val url: String = URL_SIGNUP.format(able_type, token)
+
+        return url
+    }
+
 //    fun tempPlay_list(context: Context, params: HashMap<String,Any>, page:Int, perPage:Int, complete: CompletionHandler) {
 //        val url = URL_TEAM_TEMP_PLAY_LIST
 ////        println(url)

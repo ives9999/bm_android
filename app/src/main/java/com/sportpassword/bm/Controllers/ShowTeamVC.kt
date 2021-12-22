@@ -6,15 +6,13 @@ import com.google.gson.JsonParseException
 import com.sportpassword.bm.Adapters.SignupAdapter
 import com.sportpassword.bm.Data.ShowRow
 import com.sportpassword.bm.Data.SignupRow
+import com.sportpassword.bm.Models.SuccessTable
 import com.sportpassword.bm.Models.Table
 import com.sportpassword.bm.Models.TeamTable
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.TeamService
-import com.sportpassword.bm.Utilities.jsonToModel
-import com.sportpassword.bm.Utilities.noSec
-import com.sportpassword.bm.Utilities.toDate
-import com.sportpassword.bm.Utilities.toMyString
-import kotlinx.android.synthetic.main.activity_show_course_vc.*
+import com.sportpassword.bm.Utilities.*
+import com.sportpassword.bm.member
 import kotlinx.android.synthetic.main.activity_show_team_vc.*
 import kotlinx.android.synthetic.main.activity_show_team_vc.refresh
 import kotlinx.android.synthetic.main.activity_show_team_vc.signupButton
@@ -22,6 +20,7 @@ import kotlinx.android.synthetic.main.activity_show_team_vc.signupDateLbl
 import kotlinx.android.synthetic.main.activity_show_team_vc.signupTableView
 import java.util.*
 import kotlin.reflect.full.memberProperties
+import kotlinx.android.synthetic.main.mask.*
 
 class ShowTeamVC: ShowVC() {
 
@@ -30,7 +29,6 @@ class ShowTeamVC: ShowVC() {
     var isTempPlay: Boolean = true
 
     lateinit var signupAdapter: SignupAdapter
-    var signupRows: ArrayList<SignupRow> = arrayListOf()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         setContentView(R.layout.activity_show_team_vc)
@@ -65,26 +63,6 @@ class ShowTeamVC: ShowVC() {
         refresh()
     }
 
-    override fun init() {
-        showRows.addAll(arrayListOf(
-            ShowRow("arena", "arena1", "球館"),
-            ShowRow("interval_show", "clock", "時段"),
-            ShowRow("ball", "ball", "球種"),
-            ShowRow("degree", "degree", "程度"),
-            ShowRow("leader", "group", "管理者"),
-            ShowRow("mobile_show", "mobile", "行動電話"),
-            ShowRow("line", "line", "line"),
-            ShowRow("fb", "fb", "FB"),
-            ShowRow("youtube", "youtube", "Youtube"),
-            ShowRow("website", "website", "網站"),
-            ShowRow("email", "email1", "EMail"),
-            ShowRow("pv", "pv", "瀏覽數"),
-            ShowRow("created_at_show", "date", "建立日期")
-        ))
-
-        super.init()
-    }
-
     override fun genericTable() {
         //println(dataService.jsonString)
         try {
@@ -110,26 +88,42 @@ class ShowTeamVC: ShowVC() {
     }
 
     override fun setMainData(table: Table) {
-        for (showRow in showRows) {
-            val key: String = showRow.key
-            val kc = table::class
-            kc.memberProperties.forEach {
-                if (key == it.name) {
-                    var value = it.getter.call(table).toString()
-                    if (value == "null") value = ""
-                    if (value == "-1") value = ""
-                    showRow.show = value
 
-                    if (key == "arena") {
-                        if (myTable!!.arena != null) {
-                            showRow.show = myTable!!.arena!!.name
-                        } else {
-                            showRow.show = "未提供"
-                        }
-                    }
-                }
-            }
-        }
+        showRows.addAll(arrayListOf(
+            ShowRow("arena", "arena1", "球館", myTable!!.arena!!.name),
+            ShowRow("interval_show", "clock", "時段", myTable!!.interval_show),
+            ShowRow("ball", "ball", "球種", myTable!!.ball),
+            ShowRow("degree", "degree", "程度", myTable!!.degree_show),
+            ShowRow("leader", "group", "管理者", myTable!!.manager_nickname),
+            ShowRow("mobile_show", "mobile", "行動電話", myTable!!.mobile_show),
+            ShowRow("line", "line", "line", myTable!!.line),
+            ShowRow("fb", "fb", "FB", myTable!!.fb),
+            ShowRow("youtube", "youtube", "Youtube", myTable!!.youtube),
+            ShowRow("website", "website", "網站", myTable!!.website),
+            ShowRow("email", "email1", "EMail", myTable!!.email),
+            ShowRow("pv", "pv", "瀏覽數", myTable!!.pv.toString()),
+            ShowRow("created_at_show", "date", "建立日期", myTable!!.created_at_show)
+        ))
+//        for (showRow in showRows) {
+//            val key: String = showRow.key
+//            val kc = table::class
+//            kc.memberProperties.forEach {
+//                if (key == it.name) {
+//                    var value = it.getter.call(table).toString()
+//                    if (value == "null") value = ""
+//                    if (value == "-1") value = ""
+//                    showRow.show = value
+//
+//                    if (key == "arena") {
+//                        if (myTable!!.arena != null) {
+//                            showRow.show = myTable!!.arena!!.name
+//                        } else {
+//                            showRow.show = "未提供"
+//                        }
+//                    }
+//                }
+//            }
+//        }
 
 //        val items = generateMainItem()
 //        adapter.update(items)
@@ -142,7 +136,8 @@ class ShowTeamVC: ShowVC() {
 
         if (!isTempPlay) {
             signupDataLbl.text = "目前球隊不開放臨打"
-            deadlineLbl.visibility = View.GONE
+            signupDateLbl.visibility = View.INVISIBLE
+            deadlineLbl.visibility = View.INVISIBLE
             signupTableView.visibility = View.GONE
         } else {
             if (myTable != null && myTable!!.signupDate != null) {
@@ -203,7 +198,7 @@ class ShowTeamVC: ShowVC() {
 
         //2.如果沒有設定臨打日期，關閉臨打
         if (myTable!!.signupDate != null) {
-            val temp_date_string: String = myTable!!.signupDate!!.date + " 00:00:00"
+            val temp_date_string: String = myTable!!.signupDate!!.date + " 23:59:59"
 
             //3.如果臨打日期超過現在的日期，關閉臨打
             var temp_date: Date = Date()
@@ -211,13 +206,13 @@ class ShowTeamVC: ShowVC() {
                 temp_date = it
             }
 
-            val today_string: String = Date().toMyString("yyyy-MM-dd") + " 23:59:59"
-            var today: Date = Date()
-            today_string.toDate("yyyy-MM-dd HH:mm:ss")?.let {
-                today = it
+            val now_string: String = Date().toMyString("yyyy-MM-dd") + " 23:59:59"
+            var now: Date = Date()
+            now_string.toDate("yyyy-MM-dd HH:mm:ss")?.let {
+                now = it
             }
 
-            if (temp_date.before(today)) {
+            if (temp_date.before(now)) {
                 isTempPlay = false
             }
         }
@@ -225,6 +220,74 @@ class ShowTeamVC: ShowVC() {
         //3.如果管理者設定報名臨打名額是0，關閉臨打
         if (myTable!!.people_limit == 0) {
             isTempPlay = false
+        }
+    }
+
+    fun signupButtonPressed(view: View) {
+
+        if (!member.isLoggedIn) {
+            warning("請先登入會員")
+            return
+        }
+
+        if (!member.checkEMailValidate()) {
+            warning("請先通過email認證")
+            return
+        }
+
+        if (!member.checkMobileValidate()) {
+            warning("請先通過行動電話認證")
+            return
+        }
+
+        if (myTable != null && myTable!!.signupDate != null) {
+
+            var deadline_time: Date? = null
+            myTable!!.signupDate!!.deadline.toDate("yyyy-MM-dd HH:mm:ss")?.let {
+                deadline_time = it
+            }
+
+            if (deadline_time != null) {
+                val now: Date = Date()
+                if (now.after(deadline_time)) {
+
+                    msg = "已經超過報名截止時間，請下次再報名"
+                    if (myTable!!.isSignup) {
+                        msg = "已經超過取消報名截止時間，無法取消報名"
+                    }
+                    warning(msg)
+                    return
+                }
+            } else {
+                warning("無法取得報名截止時間，無法報名，請洽管理員")
+                return
+            }
+
+            Loading.show(mask)
+            dataService.signup(this, myTable!!.token, member.token!!, myTable!!.signupDate!!.token) { success->
+
+                runOnUiThread {
+                    Loading.hide(mask)
+                }
+
+                if (success) {
+                    val jsonString: String = dataService.jsonString
+                    val successTable: SuccessTable? = jsonToModel(jsonString)
+                    if (successTable != null && successTable.success) {
+                        runOnUiThread {
+                            info(successTable.msg, "", "確定") {
+                                refresh()
+                            }
+                        }
+                    } else {
+                        if (successTable != null) {
+                            runOnUiThread {
+                                warning(successTable.msg)
+                            }
+                        }
+                    }
+                }
+            }
         }
     }
 

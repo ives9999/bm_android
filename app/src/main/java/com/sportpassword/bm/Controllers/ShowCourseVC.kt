@@ -54,7 +54,6 @@ class ShowCourseVC : ShowVC() {
     var coachRows: ArrayList<ShowRow> = arrayListOf()
 
     lateinit var signupAdapter: SignupAdapter
-    var signupRows: ArrayList<SignupRow> = arrayListOf()
 
 //    lateinit var signupAdapter: GroupAdapter<GroupieViewHolder>
 //    lateinit var coachAdapter: GroupAdapter<GroupieViewHolder>
@@ -125,10 +124,10 @@ class ShowCourseVC : ShowVC() {
         ))
     }
 
-    override fun refresh() {
-        signupRows.clear()
-        super.refresh()
-    }
+//    override fun refresh() {
+//        signupRows.clear()
+//        super.refresh()
+//    }
 
 //    override fun initAdapter() {
 //        super.initAdapter()
@@ -614,7 +613,7 @@ class ShowCourseVC : ShowVC() {
             return
         }
         Loading.show(mask)
-        CourseService.signup(this, token!!, member.token!!, myTable!!.dateTable!!.token, course_deadline) { success ->
+        CourseService.signup(this, token!!, member.token!!, myTable!!.dateTable!!.token) { success ->
             runOnUiThread {
                 Loading.hide(mask)
             }
