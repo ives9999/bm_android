@@ -137,6 +137,7 @@ class MemberVC : MyTableVC() {
             "refresh" -> refresh()
             TO_MEMBER_ORDER_LIST -> this.toMemberOrderList()
             TO_MEMBER_CART_LIST -> this.toMemberCartList()
+            TO_MEMBER_SIGNUP_LIST -> this.toMemberSignupList(row.able_type)
             "manager_team" -> this.toManager("team")
             "toRequestManagerTeam" -> this.toRequestManagerTeam()
             "manager_course" -> this.toManager("course")
@@ -162,6 +163,7 @@ class MemberVC : MyTableVC() {
         sections.add(makeSection1Row())
         sections.add(makeSection2Row(false))
         sections.add(makeSection3Row())
+        sections.add(makeSection4Row())
 
         return sections
     }
@@ -183,7 +185,7 @@ class MemberVC : MyTableVC() {
         return sections
     }
 
-    private fun makeSection0Row1(isExpanded: Boolean=true): MemberSection {
+    fun makeSection0Row1(isExpanded: Boolean=true): MemberSection {
         val rows: ArrayList<MemberRow> = arrayListOf()
 
         //if (isExpanded) {
@@ -275,8 +277,21 @@ class MemberVC : MyTableVC() {
 
         return s
     }
-
     private fun makeSection3Row(isExpanded: Boolean=true): MemberSection {
+        val rows: ArrayList<MemberRow> = arrayListOf()
+
+        val r1: MemberRow = MemberRow("球隊", "team", "", TO_MEMBER_SIGNUP_LIST, "team")
+        rows.add(r1)
+        val r2: MemberRow = MemberRow("課程", "course", "", TO_MEMBER_SIGNUP_LIST, "course")
+        rows.add(r2)
+
+        val s: MemberSection = MemberSection("報名", isExpanded)
+        s.items.addAll(rows)
+
+        return s
+    }
+
+    private fun makeSection4Row(isExpanded: Boolean=true): MemberSection {
         val rows: ArrayList<MemberRow> = arrayListOf()
 
         val r1: MemberRow = MemberRow("球隊", "team", "", "manager_team", "team")

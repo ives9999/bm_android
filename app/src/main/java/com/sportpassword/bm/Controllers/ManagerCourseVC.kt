@@ -89,6 +89,11 @@ class ManagerCourseVC: ManagerVC() {
 
     }
 
+    override fun cellSignup(row: Table) {
+
+        toManagerSignup(able_type, row.token)
+    }
+
     override fun cellClick(row: Table) {
 
         toShowCourse(row.token)

@@ -83,6 +83,11 @@ class CourseViewHolder(context: Context, viewHolder: View, list1CellDelegate: Li
             a?.setOnClickListener {
                 list1CellDelegate?.cellDelete(row)
             }
+
+            a = v.findViewById<ImageButton>(R.id.signupIcon)
+            a?.setOnClickListener {
+                list1CellDelegate?.cellSignup(row)
+            }
         }
 
 //        val r = viewHolder.context.resources.getIdentifier("editIcon", "id", viewHolder.context.packageName)

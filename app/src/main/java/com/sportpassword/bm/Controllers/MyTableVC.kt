@@ -832,6 +832,8 @@ interface List1CellDelegate {
     fun cellCity(row: Table){}
     fun cellArea(row: Table){}
     fun cellArena(row: Table){}
+    //管理者檢視報名列表
+    fun cellSignup(row: Table){}
 
     fun cellTextChanged(sectionIdx: Int, rowIdx: Int, str: String) {}
     fun cellSwitchChanged(sectionIdx: Int, rowIdx: Int, b: Boolean) {}

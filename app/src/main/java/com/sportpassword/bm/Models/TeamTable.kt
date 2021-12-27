@@ -102,7 +102,8 @@ class TeamTable: Table() {
         if (weekdays.size > 0) {
             var show: ArrayList<String> = arrayListOf()
             for (weekday in weekdays) {
-                val tmp: String = WEEKDAY.from(weekday.weekday).enumToShortString()
+                val tmp: String = WEEKDAY.intToString(weekday.weekday)
+                //val tmp: String = WEEKDAY.from(weekday.weekday).enumToShortString()
                 show.add(tmp)
             }
             weekdays_show = show.joinToString(",")
