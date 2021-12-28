@@ -175,6 +175,14 @@ interface ToInterface {
         mainDelegate.startActivity(intent)
     }
 
+    fun toManagerSignupList(able_type: String, able_token: String) {
+
+        val intent = Intent(mainDelegate, ManagerSignupListVC::class.java)
+        intent.putExtra("able_type", able_type)
+        intent.putExtra("able_token", able_token)
+        mainDelegate.startActivity(intent)
+    }
+
     fun toMember() {
         val i = Intent(mainDelegate, MemberVC::class.java)
         mainDelegate.startActivity(i)

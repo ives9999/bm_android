@@ -664,6 +664,38 @@ enum class KEYBOARD(val type: String) {
     }
 }
 
+enum class SIGNUP_STATUS(val type: String) {
+
+    normal("報名"),
+    standby("候補"),
+    cancel("取消");
+
+    override fun toString(): String {
+        return type
+    }
+
+    companion object {
+        fun toString(value: SIGNUP_STATUS): String {
+            when (value) {
+                normal -> return "normal"
+                standby -> return "standby"
+                cancel -> return "cancel"
+            }
+        }
+
+        fun stringToSwift(str: String): SIGNUP_STATUS {
+
+            when(str) {
+
+                "normal"-> return normal
+                "standby"-> return standby
+                "cancel"-> return cancel
+            }
+            return normal
+        }
+    }
+}
+
 /**
  * Created by ives on 2018/3/8.
  */

@@ -194,7 +194,7 @@ abstract class MyTableVC : BaseActivity() {
 //        println("totalPage:$totalPage")
     }
 
-    fun getPage() {
+    open fun getPage() {
         page = tables!!.page
         perPage = tables!!.perPage
         totalCount = tables!!.totalCount

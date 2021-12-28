@@ -13,5 +13,5 @@ data class MemberRow (
     var show: String = "",
     var segue: String = "",
     var able_type: String = ""
-        )
+)
 {}

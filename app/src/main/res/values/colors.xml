@@ -2,6 +2,7 @@
 <resources>
     <color name="CELL_SELECTED">#665D65</color>
     <color name="MY_LIGHT_RED">#FF4081</color>
+    <color name="MY_LIGHT_WHITE">#AAAAAA</color>
     <color name="MY_WEIGHT_RED">#FF3030</color>
     <color name="colorPrimary">#a6d903</color>
     <color name="colorPrimaryDark">#658501</color>

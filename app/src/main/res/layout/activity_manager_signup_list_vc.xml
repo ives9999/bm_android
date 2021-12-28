@@ -4,9 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/constraintLayout"
-    tools:context=".Controllers.ManagerSignupVC"
-    android:orientation="vertical">
+    tools:context=".Controllers.ManagerSignupListVC">
 
     <RelativeLayout
         android:id="@+id/topView"
@@ -27,7 +25,7 @@
         android:orientation="vertical">
 
         <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-            android:id="@+id/order_list_refresh"
+            android:id="@+id/list_refresh"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_constraintTop_toTopOf="parent">

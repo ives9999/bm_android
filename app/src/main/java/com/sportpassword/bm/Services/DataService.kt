@@ -64,18 +64,257 @@ open class DataService {
 //
 //    }
 
-    fun getRequest(url: String, params: Map<String, String>): okhttp3.Request {
+    open fun delete(context: Context, type: String, token: String, complete: CompletionHandler) {
+        val url = getDeleteURL()
+        //println(url)
+        val body = JSONObject()
+        body.put("source", "app")
+        body.put("channel", "bm")
+        body.put("token", token)
+        body.put("type", type)
+        val requestBody = body.toString()
+        //println(requestBody)
 
-        val j: JSONObject = JSONObject(params as Map<*, *>)
-        val body: RequestBody = j.toString().toRequestBody(HEADER.toMediaTypeOrNull())
+        val request = object : JsonObjectRequest(Request.Method.POST, url, null, Response.Listener { json ->
+            //println(json)
+            try {
+                success = json.getBoolean("success")
+            } catch (e: JSONException) {
+                println(e.localizedMessage)
+                success = false
+                msg = "無法刪除，請稍後再試 " + e.localizedMessage
+            }
+            if (!success) {
+                //makeErrorMsg(json)
+            }
+            complete(success)
+        }, Response.ErrorListener { error ->
+            //Log.d("ERROR", "Could not register user: $error")
+            println(error.localizedMessage)
+            this.msg = "取得失敗，網站或網路錯誤"
+            complete(false)
+        }) {
+            override fun getBodyContentType(): String {
+                return HEADER
+            }
 
-        return okhttp3.Request.Builder()
-            .url(url)
-            .addHeader("Accept", "application/json")
-            .addHeader("Content-Type", "application/json; charset=utf-8")
-            .post(body)
-            .build()
+            override fun getBody(): ByteArray {
+                return requestBody.toByteArray()
+            }
+        }
+        Volley.newRequestQueue(context).add(request)
     }
+
+    fun deleteTT(context: Context, type: String, params:HashMap<String, String>, completion: CompletionHandler) {
+        val body = JSONObject()
+        body.put("source", "app")
+        body.put("channel", CHANNEL)
+        for ((key, value) in params) {
+            body.put(key, value)
+        }
+        val requestBody = body.toString()
+        //print(body)
+        val url = "$URL_TT_DELETE".format(type)
+        //print(url)
+        val request = object : JsonObjectRequest(Request.Method.POST, url, null, Response.Listener { json ->
+            //println("json: " + json)
+            try {
+
+                success = json.getBoolean("success")
+                if (!success) {
+                    msg = json.getString("msg")
+                } else {
+//                    timetables = JSONParse.parse<Timetables>(json)!!
+//                    for (row in timetables.rows) {
+//                        row.filterRow()
+//                    }
+                }
+                //println(json)
+//                println(data)
+            } catch (e: JSONException) {
+                println("parse data error: " + e.localizedMessage)
+                success = false
+                msg = "無法getOne，沒有傳回成功值 " + e.localizedMessage
+            }
+            completion(success)
+
+        }, Response.ErrorListener { error ->
+            //Log.d("ERROR", "Could not register user: $error")
+            println(error.localizedMessage)
+            this.msg = "取得失敗，網站或網路錯誤"
+            completion(false)
+        }) {
+            override fun getBodyContentType(): String {
+                return HEADER
+            }
+
+            override fun getBody(): ByteArray {
+                return requestBody.toByteArray()
+            }
+        }
+        Volley.newRequestQueue(context).add(request)
+    }
+
+    fun getArenaByCityID(context: Context, city_id: Int, complete: CompletionHandler) {
+        val url = URL_ARENA_BY_CITY_ID
+        //println(url)
+
+        val body = JSONObject()
+        body.put("source", "app")
+        body.put("city", city_id)
+        val requestBody = body.toString()
+        arenas = arrayListOf()
+
+        val request = object : JsonArrayRequest(Request.Method.POST, url, null, Response.Listener { json ->
+            //println(json)
+            try {
+                success = true
+                //println(json)
+                for (i in 0..json.length()-1) {
+                    val obj = json.getJSONObject(i)
+                    val id: Int = obj.getInt("id")
+                    val name: String = obj.getString("name")
+                    val arena: ArenaTable = ArenaTable()
+                    arena.id = id
+                    arena.name = name
+                    arenas.add(arena)
+                }
+            } catch (e: JSONException) {
+                println(e.localizedMessage)
+                success = false
+                msg = "無法get Arenas，沒有傳回成功值 " + e.localizedMessage
+            }
+            if (this.success) {
+                //jsonToMember(json)
+            } else {
+                //DataService.makeErrorMsg(json)
+            }
+            complete(true)
+        }, Response.ErrorListener { error ->
+            //Log.d("ERROR", "Could not register user: $error")
+            println(error.localizedMessage)
+            this.msg = "取得失敗，網站或網路錯誤"
+            complete(false)
+        }) {
+            override fun getBodyContentType(): String {
+                return HEADER
+            }
+
+            override fun getBody(): ByteArray {
+                return requestBody.toByteArray()
+            }
+        }
+        Volley.newRequestQueue(context).add(request)
+    }
+
+    fun getAreaByCityIDs(context: Context, city_ids: ArrayList<Int>, city_type:String, complete: CompletionHandler) {
+        val url = URL_AREA_BY_CITY_IDS
+//        println(url)
+
+        val body = JSONObject()
+        var arr: JSONArray = JSONArray()
+        for (city_id in city_ids) {
+            arr.put(city_id)
+        }
+        body.put("source", "app")
+        body.put("channel", "bm")
+        body.put("citys", arr)
+        body.put("city_type", city_type)
+        body.put("version", "1.2.5")
+        val requestBody = body.toString()
+//        println(requestBody)
+
+        val request = object : JsonObjectRequest(Request.Method.POST, url, null, Response.Listener { json ->
+            //            println(json)
+            try {
+                citysandareas.clear()
+                val keys = json.keys()
+                for ((i, key) in keys.withIndex()) {
+                    val obj = json.getJSONObject(key)
+                    val city_id: Int = obj.getInt("id")
+                    val city_name: String = obj.getString("name")
+                    val _rows = obj.getJSONArray("rows")
+                    var rows: ArrayList<HashMap<String, Any>> = arrayListOf()
+                    for (j in 0.._rows.length()-1) {
+                        val row = _rows.getJSONObject(j)
+                        val area_id = row.getInt("id")
+                        val area_name = row.getString("name")
+                        rows.add(hashMapOf("id" to area_id, "name" to area_name))
+                    }
+                    citysandareas.put(city_id, hashMapOf<String, Any>("id" to city_id, "name" to city_name, "rows" to rows))
+                }
+                complete(true)
+            } catch (e: JSONException) {
+                println("exception: " + e.localizedMessage)
+                msg = "無法get Arenas，沒有傳回成功值 " + e.localizedMessage
+                complete(false)
+            }
+        }, Response.ErrorListener { error ->
+            //Log.d("ERROR", "Could not register user: $error")
+            println(error.localizedMessage)
+            this.msg = "取得失敗，網站或網路錯誤"
+            complete(false)
+        }) {
+            override fun getBodyContentType(): String {
+                return HEADER
+            }
+
+            override fun getBody(): ByteArray {
+                return requestBody.toByteArray()
+            }
+        }
+        Volley.newRequestQueue(context).add(request)
+    }
+
+    fun getCitys(context: Context, type: String="all", zone: Boolean=false, complete: CompletionHandler) {
+        val url = URL_CITYS
+//        println(url)
+
+        val body = JSONObject()
+        body.put("source", "app")
+        body.put("channel", "bm")
+        body.put("type", type)
+        body.put("zone", zone)
+        val requestBody = body.toString()
+        citys = arrayListOf()
+
+        val request = object : JsonArrayRequest(Request.Method.POST, url, null, Response.Listener { json ->
+            //println(json)
+            try {
+                success = true
+                //println(json)
+                for (i in 0..json.length()-1) {
+                    val obj = json.getJSONObject(i)
+                    val id: Int = obj.getInt("id")
+                    val name: String = obj.getString("name")
+                    citys.add(City(id, name))
+                }
+            } catch (e: JSONException) {
+                println(e.localizedMessage)
+                success = false
+                msg = "無法get Citys，沒有傳回成功值 " + e.localizedMessage
+            }
+            complete(true)
+        }, Response.ErrorListener { error ->
+            //Log.d("ERROR", "Could not register user: $error")
+            println(error.localizedMessage)
+            this.msg = "取得失敗，網站或網路錯誤"
+            complete(false)
+        }) {
+            override fun getBodyContentType(): String {
+                return HEADER
+            }
+
+            override fun getBody(): ByteArray {
+                return requestBody.toByteArray()
+            }
+        }
+        Volley.newRequestQueue(context).add(request)
+    }
+
+    open fun getDeleteURL(): String {return URL_DELETE}
+    open fun getIsNameExistUrl(): String {return ""}
+    open fun getLikeURL(token: String): String {return URL_LIST}
 
     open fun getList(context: Context, token: String?, _params: HashMap<String, String>?, page: Int, perPage: Int, complete: CompletionHandler) {
         var url = getListURL()
@@ -160,6 +399,172 @@ open class DataService {
 //                complete(success)
 //            }
 //        }
+    }
+
+    open fun getListURL(): String {return URL_LIST}
+
+    open fun getOne(context: Context, params: HashMap<String, String>, complete: CompletionHandler) {
+
+        val url = getOneURL()
+        println(url)
+
+//        val header: MutableList<Pair<String, String>> = mutableListOf()
+//        header.add(Pair("Accept","application/json"))
+//        header.add(Pair("Content-Type","application/json; charset=utf-8"))
+
+        params.put("strip_html", "false")
+        params.put("device", "app")
+//        val objectMapper = ObjectMapper()
+//        val body: String = objectMapper.writeValueAsString(params)
+        println(params)
+
+        val request: okhttp3.Request = getRequest(url, params)
+        okHttpClient.newCall(request).enqueue(object : Callback {
+            override fun onFailure(call: Call, e: IOException) {
+                msg = "網路錯誤，無法跟伺服器更新資料"
+                complete(success)
+            }
+
+            override fun onResponse(call: Call, response: okhttp3.Response) {
+
+                try {
+                    jsonString = response.body!!.string()
+//                    println(jsonString)
+                    success = true
+                } catch (e: Exception) {
+                    success = false
+                    msg = "parse json failed，請洽管理員"
+                    println(e.localizedMessage)
+                }
+                complete(success)
+            }
+        })
+
+
+//        MyHttpClient.instance.post(context, url, body) { success ->
+//
+//            if (success) {
+//                val response = MyHttpClient.instance.response
+//                if (response != null) {
+//                    try {
+//                        jsonString = response.toString()
+//                        //println(jsonString)
+//
+//                        this.success = true
+//                    } catch (e: Exception) {
+//                        this.success = false
+//                        msg = "parse json failed，請洽管理員"
+//                        println(e.localizedMessage)
+//                    }
+//                    complete(this.success)
+//                } else {
+//                    println("response is null")
+//                }
+//            } else {
+//                msg = "網路錯誤，無法跟伺服器更新資料"
+//                complete(success)
+//            }
+//        }
+    }
+
+    open fun getOneURL(): String {return URL_ONE}
+
+    fun getRequest(url: String, params: Map<String, String>): okhttp3.Request {
+
+        val j: JSONObject = JSONObject(params as Map<*, *>)
+        val body: RequestBody = j.toString().toRequestBody(HEADER.toMediaTypeOrNull())
+
+        return okhttp3.Request.Builder()
+            .url(url)
+            .addHeader("Accept", "application/json")
+            .addHeader("Content-Type", "application/json; charset=utf-8")
+            .post(body)
+            .build()
+    }
+
+    open fun getSignupDateURL(token: String): String { return ""}
+    open fun getSignupListURL(token: String? = null): String { return ""}
+    open fun getSignupURL(token: String): String { return ""}
+
+    fun getTT(context: Context, token: String, type:String, complete: CompletionHandler) {
+        val url = "$URL_TT".format(type)
+//        println(url)
+
+        val body = JSONObject()
+        body.put("source", "app")
+        body.put("channel", "bm")
+        body.put("token", token)
+        val requestBody = body.toString()
+//        println(requestBody)
+        val request = object : JsonObjectRequest(Request.Method.POST, url, null, Response.Listener { json ->
+//            println("json: " + json)
+            try {
+//                timetables = JSONParse.parse<Timetables>(json)!!
+//                for (row in timetables.rows) {
+//                    row.filterRow()
+//                }
+////                timetables.print()
+//                if (!timetables.success) {
+//                    msg = json.getString("msg")
+//                }
+                complete(timetables.success)
+            } catch (e: JSONException) {
+                println("parse data error: " + e.localizedMessage)
+                success = false
+                msg = "無法getOne，沒有傳回成功值 " + e.localizedMessage
+            }
+            if (this.success) {
+                //jsonToMember(json)
+            } else {
+                //DataService.makeErrorMsg(json)
+            }
+            //complete(true)
+        }, Response.ErrorListener { error ->
+            //Log.d("ERROR", "Could not register user: $error")
+            println(error.localizedMessage)
+            this.msg = "取得失敗，網站或網路錯誤"
+            complete(false)
+        }) {
+            override fun getBodyContentType(): String {
+                return HEADER
+            }
+
+            override fun getBody(): ByteArray {
+                return requestBody.toByteArray()
+            }
+        }
+        Volley.newRequestQueue(context).add(request)
+    }
+
+    open fun getUpdateURL(): String {return ""}
+
+    fun isNameExist(context: Context, name: String, complete: CompletionHandler) {
+        val url: String = getIsNameExistUrl()
+        //println(url)
+        val params: HashMap<String, String> = hashMapOf("device" to "app", "channel" to CHANNEL, "name" to name, "member_token" to member.token!!)
+        //println(params)
+
+        val request: okhttp3.Request = getRequest(url, params)
+        okHttpClient.newCall(request).enqueue(object : Callback {
+            override fun onFailure(call: Call, e: IOException) {
+                msg = "網路錯誤，無法跟伺服器更新資料"
+                complete(success)
+            }
+
+            override fun onResponse(call: Call, response: okhttp3.Response) {
+
+                try {
+                    jsonString = response.body!!.string()
+                    //println(jsonString)
+                    success = true
+                } catch (e: Exception) {
+                    success = false
+                    msg = "parse json failed，請洽管理員"
+                    println(e.localizedMessage)
+                }
+                complete(success)
+            }
+        })
     }
 
 //    open fun getList(context: Context, token: String?, _filter: HashMap<String, Any>?, page: Int, perPage: Int, complete: CompletionHandler) {
@@ -385,11 +790,45 @@ open class DataService {
         })
     }
 
-    open fun getListURL(): String {return URL_LIST}
-    open fun getIsNameExistUrl(): String {return ""}
-    open fun getLikeURL(token: String): String {return URL_LIST}
-    open fun getOneURL(): String {return URL_ONE}
-    open fun getDeleteURL(): String {return URL_DELETE}
+    fun managerSignupList(able_type: String, able_token: String, page: Int, perPage: Int, complete: CompletionHandler) {
+
+        val url: String = URL_MANAGER_SIGNUPLIST.format(able_type)
+        println(url)
+
+        val params: HashMap<String, String> = hashMapOf(
+            "channel" to CHANNEL,
+            "device" to "app",
+            "able_token" to able_token,
+            "manager_token" to member.token!!,
+            "page" to page.toString(),
+            "perPage" to perPage.toString()
+        )
+        println(params)
+
+        val request: okhttp3.Request = getRequest(url, params)
+
+        okHttpClient.newCall(request).enqueue(object : Callback {
+            override fun onFailure(call: Call, e: IOException) {
+//                msg = "網路錯誤，無法跟伺服器更新資料"
+//                complete(success)
+            }
+
+            override fun onResponse(call: Call, response: okhttp3.Response) {
+                try {
+                    jsonString = response.body!!.string()
+                    //println(jsonString)
+                    success = true
+                } catch (e: Exception) {
+                    success = false
+                    msg = "parse json failed，請洽管理員"
+                    println(e.localizedMessage)
+                }
+                complete(success)
+            }
+        })
+
+    }
+
 //    open fun parseModel(json: JSONObject): SuperModel {return SuperModel(JSONObject())}
 //    open fun parseModels(json: JSONObject): SuperModel {return SuperModel(JSONObject())}
 //    open fun jsonToMember(json: JSONObject, context: Context){}
@@ -433,70 +872,6 @@ open class DataService {
 //    }
 
     //open fun getOne(context: Context, id: Int, source: String, token: String, completion: CompletionHandler) {}
-
-    open fun getOne(context: Context, params: HashMap<String, String>, complete: CompletionHandler) {
-
-        val url = getOneURL()
-        println(url)
-
-//        val header: MutableList<Pair<String, String>> = mutableListOf()
-//        header.add(Pair("Accept","application/json"))
-//        header.add(Pair("Content-Type","application/json; charset=utf-8"))
-
-        params.put("strip_html", "false")
-        params.put("device", "app")
-//        val objectMapper = ObjectMapper()
-//        val body: String = objectMapper.writeValueAsString(params)
-        println(params)
-
-        val request: okhttp3.Request = getRequest(url, params)
-        okHttpClient.newCall(request).enqueue(object : Callback {
-            override fun onFailure(call: Call, e: IOException) {
-                msg = "網路錯誤，無法跟伺服器更新資料"
-                complete(success)
-            }
-
-            override fun onResponse(call: Call, response: okhttp3.Response) {
-
-                try {
-                    jsonString = response.body!!.string()
-//                    println(jsonString)
-                    success = true
-                } catch (e: Exception) {
-                    success = false
-                    msg = "parse json failed，請洽管理員"
-                    println(e.localizedMessage)
-                }
-                complete(success)
-            }
-        })
-
-
-//        MyHttpClient.instance.post(context, url, body) { success ->
-//
-//            if (success) {
-//                val response = MyHttpClient.instance.response
-//                if (response != null) {
-//                    try {
-//                        jsonString = response.toString()
-//                        //println(jsonString)
-//
-//                        this.success = true
-//                    } catch (e: Exception) {
-//                        this.success = false
-//                        msg = "parse json failed，請洽管理員"
-//                        println(e.localizedMessage)
-//                    }
-//                    complete(this.success)
-//                } else {
-//                    println("response is null")
-//                }
-//            } else {
-//                msg = "網路錯誤，無法跟伺服器更新資料"
-//                complete(success)
-//            }
-//        }
-    }
 
 //    open fun getOne(context: Context, params: HashMap<String, String>, complete: CompletionHandler) {
 //
@@ -548,35 +923,6 @@ open class DataService {
 //        }
 //    }
 
-    fun isNameExist(context: Context, name: String, complete: CompletionHandler) {
-        val url: String = getIsNameExistUrl()
-        //println(url)
-        val params: HashMap<String, String> = hashMapOf("device" to "app", "channel" to CHANNEL, "name" to name, "member_token" to member.token!!)
-        //println(params)
-
-        val request: okhttp3.Request = getRequest(url, params)
-        okHttpClient.newCall(request).enqueue(object : Callback {
-            override fun onFailure(call: Call, e: IOException) {
-                msg = "網路錯誤，無法跟伺服器更新資料"
-                complete(success)
-            }
-
-            override fun onResponse(call: Call, response: okhttp3.Response) {
-
-                try {
-                    jsonString = response.body!!.string()
-                    //println(jsonString)
-                    success = true
-                } catch (e: Exception) {
-                    success = false
-                    msg = "parse json failed，請洽管理員"
-                    println(e.localizedMessage)
-                }
-                complete(success)
-            }
-        })
-    }
-
     open fun requestManager(context: Context, _params: MutableMap<String, String>, filePaths: ArrayList<String>, complete: CompletionHandler) {
 
         val url: String = URL_REQUEST_MANAGER
@@ -627,6 +973,146 @@ open class DataService {
                 complete(success)
             }
         })
+    }
+
+    fun signup(context: Context, token: String, member_token: String, date_token: String, complete: CompletionHandler) {
+        val url = getSignupURL(token)
+        //println(url)
+//        val jsonString: String = "{\"device\": \"app\", \"channel\": \"bm\", \"member_token\": " + member_token + ", \"signup_id\": " + signup_id.toString() + ", \"course_date\": " + course_date + ", \"course_deadline\": " + course_deadline + "}"
+        val params: HashMap<String, String> = hashMapOf()
+        params.put("device", "app")
+        params.put("channel", "bm")
+        params.put("member_token", member_token)
+        params.put("able_date_token", date_token)
+//        params.put("cancel_deadline", course_deadline)
+        //println(params)
+
+        val request: okhttp3.Request = getRequest(url, params)
+        okHttpClient.newCall(request).enqueue(object : Callback {
+            override fun onFailure(call: Call, e: IOException) {
+                msg = "網路錯誤，無法跟伺服器更新資料"
+                complete(success)
+            }
+
+            override fun onResponse(call: Call, response: okhttp3.Response) {
+
+                try {
+                    jsonString = response.body!!.string()
+//                    println(jsonString)
+                    success = true
+                } catch (e: Exception) {
+                    success = false
+                    msg = "parse json failed，請洽管理員"
+                    println(e.localizedMessage)
+                }
+                complete(success)
+            }
+        })
+
+//        MyHttpClient.instance.post(context, url, body.toString()) { success ->
+//
+//            if (success) {
+//                val response = MyHttpClient.instance.response
+//                if (response != null) {
+//                    try {
+//                        val json = JSONObject(response.toString())
+////                        println(json)
+//                        this.success = json.getBoolean("success")
+//                        if (json.has("msg")) {
+//                            this.msg = json.getString("msg")
+//                        }
+//                    } catch (e: Exception) {
+//                        this.success = false
+//                        msg = "parse json failed，請洽管理員"
+//                        println(e.localizedMessage)
+//                    }
+//                    complete(this.success)
+//                } else {
+//                    println("response is null")
+//                }
+//            } else {
+//                msg = "網路錯誤，無法跟伺服器更新資料"
+//                complete(success)
+//            }
+//        }
+    }
+
+    fun signup_date(context: Context, token: String, member_token: String, date_token: String, complete: CompletionHandler) {
+        val url = getSignupDateURL(token)
+//        println(url)
+
+        val params: HashMap<String, String> = hashMapOf()
+        params.put("device", "app")
+        params.put("channel", "bm")
+        params.put("member_token", member_token)
+        params.put("date_token", date_token)
+
+        val request: okhttp3.Request = getRequest(url, params)
+//        val j: JSONObject = JSONObject(params as Map<*, *>)
+//        println(j.toString())
+
+
+//        val j: String = "{\"device\": \"app\", \"channel\": \"bm\", \"member_token\": " + member_token + ",\"date_token\":" + date_token + "}"
+//        val body1: JSONObject = JSONObject(j)
+//        println(body1)
+//        val body: RequestBody = j.toString().toRequestBody(HEADER.toMediaTypeOrNull())
+//        val request = okhttp3.Request.Builder()
+//            .url(url)
+//            .addHeader("Accept", "application/json")
+//            .addHeader("Content-Type", "application/json; charset=utf-8")
+//            .post(body)
+//            .build()
+
+        //val request: okhttp3.Request = getRequest(url, params)
+        okHttpClient.newCall(request).enqueue(object : Callback {
+            override fun onFailure(call: Call, e: IOException) {
+                msg = "網路錯誤，無法跟伺服器更新資料"
+                complete(success)
+            }
+
+            override fun onResponse(call: Call, response: okhttp3.Response) {
+
+                try {
+                    jsonString = response.body!!.string()
+//                    println(jsonString)
+                    success = true
+                } catch (e: Exception) {
+                    success = false
+                    msg = "parse json failed，請洽管理員"
+                    println(e.localizedMessage)
+                }
+                complete(success)
+            }
+        })
+
+//        MyHttpClient.instance.post(context, url, body.toString()) { success ->
+//
+//            if (success) {
+//                val response = MyHttpClient.instance.response
+//                if (response != null) {
+//                    try {
+//                        val json = JSONObject(response.toString())
+//                        //println(json)
+//                        this.success = json.getBoolean("success")
+//                        if (this.success) {
+//                            this.signup_date = json
+//                        } else {
+//                            this.msg = json.getString("msg")
+//                        }
+//                    } catch (e: Exception) {
+//                        this.success = false
+//                        msg = "parse json failed，請洽管理員"
+//                        println(e.localizedMessage)
+//                    }
+//                    complete(this.success)
+//                } else {
+//                    println("response is null")
+//                }
+//            } else {
+//                msg = "從伺服器取得報名日期資料錯誤，請洽管理員"
+//                complete(success)
+//            }
+//        }
     }
 
     open fun update(context: Context, _params: MutableMap<String, String>, filePath: String, complete: CompletionHandler) {
@@ -823,370 +1309,122 @@ open class DataService {
         update(context, "", params, complete)
     }
 
-    fun getImage(url: String, completion: CompletionHandler) {
-        try {
-            val inStream: InputStream = URL(url).openStream()
-            image = BitmapFactory.decodeStream(inStream)
-            completion(true)
-        } catch (e: Exception) {
-            completion(false)
-        }
-    }
+//    fun getImage(url: String, completion: CompletionHandler) {
+//        try {
+//            val inStream: InputStream = URL(url).openStream()
+//            image = BitmapFactory.decodeStream(inStream)
+//            completion(true)
+//        } catch (e: Exception) {
+//            completion(false)
+//        }
+//    }
 
-    open fun delete(context: Context, type: String, token: String, complete: CompletionHandler) {
-        val url = getDeleteURL()
-        //println(url)
-        val body = JSONObject()
-        body.put("source", "app")
-        body.put("channel", "bm")
-        body.put("token", token)
-        body.put("type", type)
-        val requestBody = body.toString()
-        //println(requestBody)
-
-        val request = object : JsonObjectRequest(Request.Method.POST, url, null, Response.Listener { json ->
-            //println(json)
-            try {
-                success = json.getBoolean("success")
-            } catch (e: JSONException) {
-                println(e.localizedMessage)
-                success = false
-                msg = "無法刪除，請稍後再試 " + e.localizedMessage
-            }
-            if (!success) {
-                //makeErrorMsg(json)
-            }
-            complete(success)
-        }, Response.ErrorListener { error ->
-            //Log.d("ERROR", "Could not register user: $error")
-            println(error.localizedMessage)
-            this.msg = "取得失敗，網站或網路錯誤"
-            complete(false)
-        }) {
-            override fun getBodyContentType(): String {
-                return HEADER
-            }
-
-            override fun getBody(): ByteArray {
-                return requestBody.toByteArray()
-            }
-        }
-        Volley.newRequestQueue(context).add(request)
-    }
-
-    fun getCitys(context: Context, type: String="all", zone: Boolean=false, complete: CompletionHandler) {
-        val url = URL_CITYS
-//        println(url)
-
-        val body = JSONObject()
-        body.put("source", "app")
-        body.put("channel", "bm")
-        body.put("type", type)
-        body.put("zone", zone)
-        val requestBody = body.toString()
-        citys = arrayListOf()
-
-        val request = object : JsonArrayRequest(Request.Method.POST, url, null, Response.Listener { json ->
-            //println(json)
-            try {
-                success = true
-                //println(json)
-                for (i in 0..json.length()-1) {
-                    val obj = json.getJSONObject(i)
-                    val id: Int = obj.getInt("id")
-                    val name: String = obj.getString("name")
-                    citys.add(City(id, name))
-                }
-            } catch (e: JSONException) {
-                println(e.localizedMessage)
-                success = false
-                msg = "無法get Citys，沒有傳回成功值 " + e.localizedMessage
-            }
-            complete(true)
-        }, Response.ErrorListener { error ->
-            //Log.d("ERROR", "Could not register user: $error")
-            println(error.localizedMessage)
-            this.msg = "取得失敗，網站或網路錯誤"
-            complete(false)
-        }) {
-            override fun getBodyContentType(): String {
-                return HEADER
-            }
-
-            override fun getBody(): ByteArray {
-                return requestBody.toByteArray()
-            }
-        }
-        Volley.newRequestQueue(context).add(request)
-    }
-
-    fun getAllCitys(context: Context, complete: CompletionHandler) {
-        val url = URL_CITYS
-        //println(url)
-
-        val body = JSONObject()
-        body.put("source", "app")
-        val requestBody = body.toString()
-        citys = arrayListOf()
-
-        val request = object : JsonArrayRequest(Request.Method.POST, url, null, Response.Listener { json ->
-            //println(json)
-            try {
-                success = true
-                //println(json)
-                for (i in 0..json.length()-1) {
-                    val obj = json.getJSONObject(i)
-                    val id: Int = obj.getInt("id")
-                    val name: String = obj.getString("name")
-                    citys.add(City(id, name))
-                }
-            } catch (e: JSONException) {
-                println(e.localizedMessage)
-                success = false
-                msg = "無法get Citys，沒有傳回成功值 " + e.localizedMessage
-            }
-            if (this.success) {
-                //jsonToMember(json)
-            } else {
-                //DataService.makeErrorMsg(json)
-            }
-            complete(true)
-        }, Response.ErrorListener { error ->
-            //Log.d("ERROR", "Could not register user: $error")
-            println(error.localizedMessage)
-            this.msg = "取得失敗，網站或網路錯誤"
-            complete(false)
-        }) {
-            override fun getBodyContentType(): String {
-                return HEADER
-            }
-
-            override fun getBody(): ByteArray {
-                return requestBody.toByteArray()
-            }
-        }
-        Volley.newRequestQueue(context).add(request)
-    }
-
-    fun getArenaByCityID(context: Context, city_id: Int, complete: CompletionHandler) {
-        val url = URL_ARENA_BY_CITY_ID
-        //println(url)
-
-        val body = JSONObject()
-        body.put("source", "app")
-        body.put("city", city_id)
-        val requestBody = body.toString()
-        arenas = arrayListOf()
-
-        val request = object : JsonArrayRequest(Request.Method.POST, url, null, Response.Listener { json ->
-            //println(json)
-            try {
-                success = true
-                //println(json)
-                for (i in 0..json.length()-1) {
-                    val obj = json.getJSONObject(i)
-                    val id: Int = obj.getInt("id")
-                    val name: String = obj.getString("name")
-                    val arena: ArenaTable = ArenaTable()
-                    arena.id = id
-                    arena.name = name
-                    arenas.add(arena)
-                }
-            } catch (e: JSONException) {
-                println(e.localizedMessage)
-                success = false
-                msg = "無法get Arenas，沒有傳回成功值 " + e.localizedMessage
-            }
-            if (this.success) {
-                //jsonToMember(json)
-            } else {
-                //DataService.makeErrorMsg(json)
-            }
-            complete(true)
-        }, Response.ErrorListener { error ->
-            //Log.d("ERROR", "Could not register user: $error")
-            println(error.localizedMessage)
-            this.msg = "取得失敗，網站或網路錯誤"
-            complete(false)
-        }) {
-            override fun getBodyContentType(): String {
-                return HEADER
-            }
-
-            override fun getBody(): ByteArray {
-                return requestBody.toByteArray()
-            }
-        }
-        Volley.newRequestQueue(context).add(request)
-    }
-
-    fun getArenaByCityIDs(context: Context, city_ids: ArrayList<Int>, city_type:String, complete: CompletionHandler) {
-        val url = URL_ARENA_BY_CITY_IDS
-//        println(url)
-
-        val body = JSONObject()
-        var arr: JSONArray = JSONArray()
-        for (city_id in city_ids) {
-            arr.put(city_id)
-        }
-        body.put("source", "app")
-        body.put("channel", "bm")
-        body.put("citys", arr)
-        body.put("city_type", city_type)
-        body.put("version", "1.2.5")
-        val requestBody = body.toString()
-//        println(requestBody)
-
-        val request = object : JsonObjectRequest(Request.Method.POST, url, null, Response.Listener { json ->
-//            println(json)
-            try {
-                citysandarenas.clear()
-                val keys = json.keys()
-                for ((i, key) in keys.withIndex()) {
-                    val obj = json.getJSONObject(key)
-                    val city_id: Int = obj.getInt("id")
-                    val city_name: String = obj.getString("name")
-                    val _rows = obj.getJSONArray("rows")
-                    var rows: ArrayList<HashMap<String, Any>> = arrayListOf()
-                    for (j in 0.._rows.length()-1) {
-                        val row = _rows.getJSONObject(j)
-                        val arena_id = row.getInt("id")
-                        val arena_name = row.getString("name")
-                        rows.add(hashMapOf("id" to arena_id, "name" to arena_name))
-                    }
-                    citysandarenas.put(city_id, hashMapOf<String, Any>("id" to city_id, "name" to city_name, "rows" to rows))
-                }
-                complete(true)
-            } catch (e: JSONException) {
-                println("exception: " + e.localizedMessage)
-                msg = "無法get Arenas，沒有傳回成功值 " + e.localizedMessage
-                complete(false)
-            }
-        }, Response.ErrorListener { error ->
-            //Log.d("ERROR", "Could not register user: $error")
-            println(error.localizedMessage)
-            this.msg = "取得失敗，網站或網路錯誤"
-            complete(false)
-        }) {
-            override fun getBodyContentType(): String {
-                return HEADER
-            }
-
-            override fun getBody(): ByteArray {
-                return requestBody.toByteArray()
-            }
-        }
-        Volley.newRequestQueue(context).add(request)
-    }
-
-    fun getAreaByCityIDs(context: Context, city_ids: ArrayList<Int>, city_type:String, complete: CompletionHandler) {
-        val url = URL_AREA_BY_CITY_IDS
-//        println(url)
-
-        val body = JSONObject()
-        var arr: JSONArray = JSONArray()
-        for (city_id in city_ids) {
-            arr.put(city_id)
-        }
-        body.put("source", "app")
-        body.put("channel", "bm")
-        body.put("citys", arr)
-        body.put("city_type", city_type)
-        body.put("version", "1.2.5")
-        val requestBody = body.toString()
-//        println(requestBody)
-
-        val request = object : JsonObjectRequest(Request.Method.POST, url, null, Response.Listener { json ->
-            //            println(json)
-            try {
-                citysandareas.clear()
-                val keys = json.keys()
-                for ((i, key) in keys.withIndex()) {
-                    val obj = json.getJSONObject(key)
-                    val city_id: Int = obj.getInt("id")
-                    val city_name: String = obj.getString("name")
-                    val _rows = obj.getJSONArray("rows")
-                    var rows: ArrayList<HashMap<String, Any>> = arrayListOf()
-                    for (j in 0.._rows.length()-1) {
-                        val row = _rows.getJSONObject(j)
-                        val area_id = row.getInt("id")
-                        val area_name = row.getString("name")
-                        rows.add(hashMapOf("id" to area_id, "name" to area_name))
-                    }
-                    citysandareas.put(city_id, hashMapOf<String, Any>("id" to city_id, "name" to city_name, "rows" to rows))
-                }
-                complete(true)
-            } catch (e: JSONException) {
-                println("exception: " + e.localizedMessage)
-                msg = "無法get Arenas，沒有傳回成功值 " + e.localizedMessage
-                complete(false)
-            }
-        }, Response.ErrorListener { error ->
-            //Log.d("ERROR", "Could not register user: $error")
-            println(error.localizedMessage)
-            this.msg = "取得失敗，網站或網路錯誤"
-            complete(false)
-        }) {
-            override fun getBodyContentType(): String {
-                return HEADER
-            }
-
-            override fun getBody(): ByteArray {
-                return requestBody.toByteArray()
-            }
-        }
-        Volley.newRequestQueue(context).add(request)
-    }
-
-    fun getTT(context: Context, token: String, type:String, complete: CompletionHandler) {
-        val url = "$URL_TT".format(type)
-//        println(url)
-
-        val body = JSONObject()
-        body.put("source", "app")
-        body.put("channel", "bm")
-        body.put("token", token)
-        val requestBody = body.toString()
-//        println(requestBody)
-        val request = object : JsonObjectRequest(Request.Method.POST, url, null, Response.Listener { json ->
-//            println("json: " + json)
-            try {
-//                timetables = JSONParse.parse<Timetables>(json)!!
-//                for (row in timetables.rows) {
-//                    row.filterRow()
+//    fun getAllCitys(context: Context, complete: CompletionHandler) {
+//        val url = URL_CITYS
+//        //println(url)
+//
+//        val body = JSONObject()
+//        body.put("source", "app")
+//        val requestBody = body.toString()
+//        citys = arrayListOf()
+//
+//        val request = object : JsonArrayRequest(Request.Method.POST, url, null, Response.Listener { json ->
+//            //println(json)
+//            try {
+//                success = true
+//                //println(json)
+//                for (i in 0..json.length()-1) {
+//                    val obj = json.getJSONObject(i)
+//                    val id: Int = obj.getInt("id")
+//                    val name: String = obj.getString("name")
+//                    citys.add(City(id, name))
 //                }
-////                timetables.print()
-//                if (!timetables.success) {
-//                    msg = json.getString("msg")
-//                }
-                complete(timetables.success)
-            } catch (e: JSONException) {
-                println("parse data error: " + e.localizedMessage)
-                success = false
-                msg = "無法getOne，沒有傳回成功值 " + e.localizedMessage
-            }
-            if (this.success) {
-                //jsonToMember(json)
-            } else {
-                //DataService.makeErrorMsg(json)
-            }
-            //complete(true)
-        }, Response.ErrorListener { error ->
-            //Log.d("ERROR", "Could not register user: $error")
-            println(error.localizedMessage)
-            this.msg = "取得失敗，網站或網路錯誤"
-            complete(false)
-        }) {
-            override fun getBodyContentType(): String {
-                return HEADER
-            }
+//            } catch (e: JSONException) {
+//                println(e.localizedMessage)
+//                success = false
+//                msg = "無法get Citys，沒有傳回成功值 " + e.localizedMessage
+//            }
+//            if (this.success) {
+//                //jsonToMember(json)
+//            } else {
+//                //DataService.makeErrorMsg(json)
+//            }
+//            complete(true)
+//        }, Response.ErrorListener { error ->
+//            //Log.d("ERROR", "Could not register user: $error")
+//            println(error.localizedMessage)
+//            this.msg = "取得失敗，網站或網路錯誤"
+//            complete(false)
+//        }) {
+//            override fun getBodyContentType(): String {
+//                return HEADER
+//            }
+//
+//            override fun getBody(): ByteArray {
+//                return requestBody.toByteArray()
+//            }
+//        }
+//        Volley.newRequestQueue(context).add(request)
+//    }
 
-            override fun getBody(): ByteArray {
-                return requestBody.toByteArray()
-            }
-        }
-        Volley.newRequestQueue(context).add(request)
-    }
+//    fun getArenaByCityIDs(context: Context, city_ids: ArrayList<Int>, city_type:String, complete: CompletionHandler) {
+//        val url = URL_ARENA_BY_CITY_IDS
+////        println(url)
+//
+//        val body = JSONObject()
+//        var arr: JSONArray = JSONArray()
+//        for (city_id in city_ids) {
+//            arr.put(city_id)
+//        }
+//        body.put("source", "app")
+//        body.put("channel", "bm")
+//        body.put("citys", arr)
+//        body.put("city_type", city_type)
+//        body.put("version", "1.2.5")
+//        val requestBody = body.toString()
+////        println(requestBody)
+//
+//        val request = object : JsonObjectRequest(Request.Method.POST, url, null, Response.Listener { json ->
+////            println(json)
+//            try {
+//                citysandarenas.clear()
+//                val keys = json.keys()
+//                for ((i, key) in keys.withIndex()) {
+//                    val obj = json.getJSONObject(key)
+//                    val city_id: Int = obj.getInt("id")
+//                    val city_name: String = obj.getString("name")
+//                    val _rows = obj.getJSONArray("rows")
+//                    var rows: ArrayList<HashMap<String, Any>> = arrayListOf()
+//                    for (j in 0.._rows.length()-1) {
+//                        val row = _rows.getJSONObject(j)
+//                        val arena_id = row.getInt("id")
+//                        val arena_name = row.getString("name")
+//                        rows.add(hashMapOf("id" to arena_id, "name" to arena_name))
+//                    }
+//                    citysandarenas.put(city_id, hashMapOf<String, Any>("id" to city_id, "name" to city_name, "rows" to rows))
+//                }
+//                complete(true)
+//            } catch (e: JSONException) {
+//                println("exception: " + e.localizedMessage)
+//                msg = "無法get Arenas，沒有傳回成功值 " + e.localizedMessage
+//                complete(false)
+//            }
+//        }, Response.ErrorListener { error ->
+//            //Log.d("ERROR", "Could not register user: $error")
+//            println(error.localizedMessage)
+//            this.msg = "取得失敗，網站或網路錯誤"
+//            complete(false)
+//        }) {
+//            override fun getBodyContentType(): String {
+//                return HEADER
+//            }
+//
+//            override fun getBody(): ByteArray {
+//                return requestBody.toByteArray()
+//            }
+//        }
+//        Volley.newRequestQueue(context).add(request)
+//    }
 
     fun updateTT(context: Context, type: String, params:HashMap<String, String>, completion: CompletionHandler) {
         val body = JSONObject()
@@ -1238,60 +1476,6 @@ open class DataService {
         Volley.newRequestQueue(context).add(request)
     }
 
-    fun deleteTT(context: Context, type: String, params:HashMap<String, String>, completion: CompletionHandler) {
-        val body = JSONObject()
-        body.put("source", "app")
-        body.put("channel", CHANNEL)
-        for ((key, value) in params) {
-            body.put(key, value)
-        }
-        val requestBody = body.toString()
-        //print(body)
-        val url = "$URL_TT_DELETE".format(type)
-        //print(url)
-        val request = object : JsonObjectRequest(Request.Method.POST, url, null, Response.Listener { json ->
-            //println("json: " + json)
-            try {
-
-                success = json.getBoolean("success")
-                if (!success) {
-                    msg = json.getString("msg")
-                } else {
-//                    timetables = JSONParse.parse<Timetables>(json)!!
-//                    for (row in timetables.rows) {
-//                        row.filterRow()
-//                    }
-                }
-                //println(json)
-//                println(data)
-            } catch (e: JSONException) {
-                println("parse data error: " + e.localizedMessage)
-                success = false
-                msg = "無法getOne，沒有傳回成功值 " + e.localizedMessage
-            }
-            completion(success)
-
-        }, Response.ErrorListener { error ->
-            //Log.d("ERROR", "Could not register user: $error")
-            println(error.localizedMessage)
-            this.msg = "取得失敗，網站或網路錯誤"
-            completion(false)
-        }) {
-            override fun getBodyContentType(): String {
-                return HEADER
-            }
-
-            override fun getBody(): ByteArray {
-                return requestBody.toByteArray()
-            }
-        }
-        Volley.newRequestQueue(context).add(request)
-    }
-
-    open fun getUpdateURL(): String {return ""}
-    open fun getSignupURL(token: String): String { return ""}
-    open fun getSignupDateURL(token: String): String { return ""}
-    open fun getSignupListURL(token: String? = null): String { return ""}
 //    open fun parseAbleForSingupList(data: JSONObject): SuperModel { return SuperModel(data) }
 
 
@@ -1306,146 +1490,6 @@ open class DataService {
 //        "cantSingup": false, 不能報名
 //        "msg": ""
 //    }
-
-    fun signup_date(context: Context, token: String, member_token: String, date_token: String, complete: CompletionHandler) {
-        val url = getSignupDateURL(token)
-//        println(url)
-
-        val params: HashMap<String, String> = hashMapOf()
-        params.put("device", "app")
-        params.put("channel", "bm")
-        params.put("member_token", member_token)
-        params.put("date_token", date_token)
-
-        val request: okhttp3.Request = getRequest(url, params)
-//        val j: JSONObject = JSONObject(params as Map<*, *>)
-//        println(j.toString())
-
-
-//        val j: String = "{\"device\": \"app\", \"channel\": \"bm\", \"member_token\": " + member_token + ",\"date_token\":" + date_token + "}"
-//        val body1: JSONObject = JSONObject(j)
-//        println(body1)
-//        val body: RequestBody = j.toString().toRequestBody(HEADER.toMediaTypeOrNull())
-//        val request = okhttp3.Request.Builder()
-//            .url(url)
-//            .addHeader("Accept", "application/json")
-//            .addHeader("Content-Type", "application/json; charset=utf-8")
-//            .post(body)
-//            .build()
-
-        //val request: okhttp3.Request = getRequest(url, params)
-        okHttpClient.newCall(request).enqueue(object : Callback {
-            override fun onFailure(call: Call, e: IOException) {
-                msg = "網路錯誤，無法跟伺服器更新資料"
-                complete(success)
-            }
-
-            override fun onResponse(call: Call, response: okhttp3.Response) {
-
-                try {
-                    jsonString = response.body!!.string()
-//                    println(jsonString)
-                    success = true
-                } catch (e: Exception) {
-                    success = false
-                    msg = "parse json failed，請洽管理員"
-                    println(e.localizedMessage)
-                }
-                complete(success)
-            }
-        })
-
-//        MyHttpClient.instance.post(context, url, body.toString()) { success ->
-//
-//            if (success) {
-//                val response = MyHttpClient.instance.response
-//                if (response != null) {
-//                    try {
-//                        val json = JSONObject(response.toString())
-//                        //println(json)
-//                        this.success = json.getBoolean("success")
-//                        if (this.success) {
-//                            this.signup_date = json
-//                        } else {
-//                            this.msg = json.getString("msg")
-//                        }
-//                    } catch (e: Exception) {
-//                        this.success = false
-//                        msg = "parse json failed，請洽管理員"
-//                        println(e.localizedMessage)
-//                    }
-//                    complete(this.success)
-//                } else {
-//                    println("response is null")
-//                }
-//            } else {
-//                msg = "從伺服器取得報名日期資料錯誤，請洽管理員"
-//                complete(success)
-//            }
-//        }
-    }
-
-    fun signup(context: Context, token: String, member_token: String, date_token: String, complete: CompletionHandler) {
-        val url = getSignupURL(token)
-        println(url)
-//        val jsonString: String = "{\"device\": \"app\", \"channel\": \"bm\", \"member_token\": " + member_token + ", \"signup_id\": " + signup_id.toString() + ", \"course_date\": " + course_date + ", \"course_deadline\": " + course_deadline + "}"
-        val params: HashMap<String, String> = hashMapOf()
-        params.put("device", "app")
-        params.put("channel", "bm")
-        params.put("member_token", member_token)
-        params.put("able_date_token", date_token)
-//        params.put("cancel_deadline", course_deadline)
-        println(params)
-
-        val request: okhttp3.Request = getRequest(url, params)
-        okHttpClient.newCall(request).enqueue(object : Callback {
-            override fun onFailure(call: Call, e: IOException) {
-                msg = "網路錯誤，無法跟伺服器更新資料"
-                complete(success)
-            }
-
-            override fun onResponse(call: Call, response: okhttp3.Response) {
-
-                try {
-                    jsonString = response.body!!.string()
-//                    println(jsonString)
-                    success = true
-                } catch (e: Exception) {
-                    success = false
-                    msg = "parse json failed，請洽管理員"
-                    println(e.localizedMessage)
-                }
-                complete(success)
-            }
-        })
-
-//        MyHttpClient.instance.post(context, url, body.toString()) { success ->
-//
-//            if (success) {
-//                val response = MyHttpClient.instance.response
-//                if (response != null) {
-//                    try {
-//                        val json = JSONObject(response.toString())
-////                        println(json)
-//                        this.success = json.getBoolean("success")
-//                        if (json.has("msg")) {
-//                            this.msg = json.getString("msg")
-//                        }
-//                    } catch (e: Exception) {
-//                        this.success = false
-//                        msg = "parse json failed，請洽管理員"
-//                        println(e.localizedMessage)
-//                    }
-//                    complete(this.success)
-//                } else {
-//                    println("response is null")
-//                }
-//            } else {
-//                msg = "網路錯誤，無法跟伺服器更新資料"
-//                complete(success)
-//            }
-//        }
-    }
 
 //    fun signup_list(context: Context, token: String? = null, page: Int = 1, perPage: Int = 8, complete: CompletionHandler) {
 //        val url: String = getSignupListURL(token)

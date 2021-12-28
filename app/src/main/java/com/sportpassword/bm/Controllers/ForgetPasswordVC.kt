@@ -51,7 +51,9 @@ class ForgetPasswordVC : BaseActivity() {
                 try {
                     t = Gson().fromJson<SuccessTable>(MemberService.jsonString, SuccessTable::class.java)
                 } catch (e: JsonParseException) {
-                    warning(e.localizedMessage!!)
+                    runOnUiThread {
+                        warning(e.localizedMessage!!)
+                    }
                 }
 
                 if (t != null) {

@@ -21,7 +21,7 @@ class ManagerTeamVC : ManagerVC() {
 
         setContentView(R.layout.activity_manager_team_vc)
         this.dataService = TeamService
-        able_type = "course"
+        able_type = "team"
         if (name == null) {
             name = "球隊"
         }

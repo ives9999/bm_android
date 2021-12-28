@@ -2,33 +2,15 @@ package com.sportpassword.bm.Controllers
 
 import android.app.AlertDialog
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import android.view.Menu
-import android.view.View
-import android.widget.ImageButton
-import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.content.pm.PackageInfoCompat
-import com.sportpassword.bm.Adapters.ListAdapter
+import com.sportpassword.bm.Adapters.MoreAdapter
 import com.sportpassword.bm.Data.MoreRow
-import com.sportpassword.bm.Fragments.MoreAdapter
-import com.sportpassword.bm.Models.City
-import com.sportpassword.bm.Models.Tables
 import com.sportpassword.bm.R
-import com.sportpassword.bm.Services.DataService
-import com.sportpassword.bm.Utilities.CITY_KEY
-import com.sportpassword.bm.Utilities.Global
-import com.sportpassword.bm.Utilities.Loading
-import com.sportpassword.bm.Utilities.PERPAGE
 import kotlinx.android.synthetic.main.bottom_view.*
-import kotlinx.android.synthetic.main.mask.*
 import kotlinx.android.synthetic.main.tab_course.*
 import kotlinx.android.synthetic.main.top_view.*
 import org.jetbrains.anko.backgroundColor
-import java.lang.Exception
 
 open class MoreVC : MyTableVC() {
 
