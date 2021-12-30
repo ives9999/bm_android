@@ -3,20 +3,23 @@ package com.sportpassword.bm.Controllers
 import android.os.Bundle
 import com.google.gson.Gson
 import com.google.gson.JsonParseException
+import com.sportpassword.bm.Adapters.ManagerSignupListAdapter
 import com.sportpassword.bm.Adapters.TeamAdapter
 import com.sportpassword.bm.Models.SignupNormalTable
 import com.sportpassword.bm.Models.Table
-import com.sportpassword.bm.Models.TeamTable
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.CourseService
 import com.sportpassword.bm.Services.TeamService
 import com.sportpassword.bm.Utilities.Loading
+import kotlinx.android.synthetic.main.activity_manager_signup_list_vc.*
 import kotlinx.android.synthetic.main.mask.*
 
 class ManagerSignupListVC : MyTableVC() {
 
     var able_token: String = ""
     var signupNormalTables: ArrayList<SignupNormalTable> = arrayListOf()
+
+    lateinit var adapter: ManagerSignupListAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -39,10 +42,13 @@ class ManagerSignupListVC : MyTableVC() {
             dataService = CourseService
         }
 
-        tableAdapter = TeamAdapter(R.layout.manager_team_item, this)
-        recyclerView.adapter = tableAdapter
+        recyclerView = list_container
+
+        adapter = ManagerSignupListAdapter(R.layout.manager_signuplist_cell, this)
+        recyclerView.adapter = adapter
 
         init()
+        refresh()
     }
 
     override fun init() {
@@ -101,12 +107,12 @@ class ManagerSignupListVC : MyTableVC() {
 
         }
         if (signupListResultTable != null && signupListResultTable.success) {
-            getPage()
+            //getPage()
             signupNormalTables = signupListResultTable.rows
             tableLists += generateItems1(SignupNormalTable::class, signupNormalTables)
-            tableAdapter.setMyTableList(tableLists)
+            adapter.setMyTableList(tableLists)
             runOnUiThread {
-                tableAdapter.notifyDataSetChanged()
+                adapter.notifyDataSetChanged()
             }
         }
     }

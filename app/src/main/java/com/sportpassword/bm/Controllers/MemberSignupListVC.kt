@@ -26,6 +26,8 @@ class MemberSignupListVC : MyTableVC() {
         }
 
         init()
+
+        //recyclerView = list_container
     }
 
     override fun init() {

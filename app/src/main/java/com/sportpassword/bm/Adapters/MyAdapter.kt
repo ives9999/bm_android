@@ -36,8 +36,8 @@ abstract class MyAdapter<T: MyViewHolder>(private val resource: Int, private val
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): T {
-        val inflater = LayoutInflater.from(parent.context)
-        val viewHolder = inflater.inflate(resource, parent, false)
+        val inflater: LayoutInflater = LayoutInflater.from(parent.context)
+        val viewHolder: View = inflater.inflate(resource, parent, false)
 
         return viewHolderConstructor(parent.context, viewHolder, list1CellDelegate)
     }
@@ -157,3 +157,33 @@ open class MyViewHolder(val context: Context, val viewHolder: View, val list1Cel
         }
     }
 }
+
+//open class BaseAdapter(private val resource: Int, private val list1CellDelegate: List1CellDelegate?): RecyclerView.Adapter<BaseViewHolder>() {
+//
+//    var list: ArrayList<Table> = arrayListOf()
+//
+//    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder {
+//
+//        val inflater: LayoutInflater = LayoutInflater.from(parent.context)
+//        val viewHolder: View = inflater.inflate(resource, parent, false)
+//
+//        return BaseViewHolder(parent.context, viewHolder, list1CellDelegate)
+//    }
+//
+//    override fun onBindViewHolder(holder: BaseViewHolder, position: Int) {
+//
+//        val row: Table = list[position]
+//
+//        holder.bind(row, position)
+//    }
+//
+//    override fun getItemCount(): Int {
+//
+//        return list.size
+//    }
+//}
+//
+//open class BaseViewHolder(val context: Context, val viewHolder: View, val list1CellDelegate: List1CellDelegate? = null): RecyclerView.ViewHolder(viewHolder) {
+//
+//    open fun bind(row: Table, idx: Int) {}
+//}
