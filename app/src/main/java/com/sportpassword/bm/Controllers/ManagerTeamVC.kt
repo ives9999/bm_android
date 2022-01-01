@@ -22,8 +22,10 @@ class ManagerTeamVC : ManagerVC() {
         setContentView(R.layout.activity_manager_team_vc)
         this.dataService = TeamService
         able_type = "team"
+
+//        setMyTitle("球隊管理列表")
         if (name == null) {
-            name = "球隊"
+            name = "球隊管理列表"
         }
 
         super.onCreate(savedInstanceState)
@@ -60,7 +62,7 @@ class ManagerTeamVC : ManagerVC() {
 
     override fun cellSignup(row: Table) {
 
-        toManagerSignup(able_type, row.token)
+        toManagerSignup(able_type, row.token, row.name)
     }
 
     override fun cellClick(row: Table) {

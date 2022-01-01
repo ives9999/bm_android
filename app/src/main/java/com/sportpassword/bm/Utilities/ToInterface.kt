@@ -140,21 +140,21 @@ interface ToInterface {
         mainDelegate.loginVC.launch(i)
     }
 
-    fun toManager(page: String) {
+    fun toManager(able_type: String) {
         if (!member.isLoggedIn) {
             Alert.show(mainDelegate, "警告", "請先登入會員")
             return
         }
         var intent: Intent? = null
-        if (page == "team") {
+        if (able_type == "team") {
             intent = Intent(mainDelegate, ManagerTeamVC::class.java)
             intent.putExtra("manager_token", member.token)
-        } else if (page == "course") {
+        } else if (able_type == "course") {
             intent = Intent(mainDelegate, ManagerCourseVC::class.java)
             intent.putExtra("manager_token", member.token)
         } else {
             intent = Intent(mainDelegate, ManagerVC::class.java)
-            intent.putExtra("source", page)
+            intent.putExtra("source", able_type)
         }
         mainDelegate.startActivity(intent)
     }
@@ -167,19 +167,21 @@ interface ToInterface {
         mainDelegate.startActivity(intent)
     }
 
-    fun toManagerSignup(able_type: String, able_token: String) {
+    fun toManagerSignup(able_type: String, able_token: String, able_title: String) {
 
         val intent = Intent(mainDelegate, ManagerSignupVC::class.java)
         intent.putExtra("able_type", able_type)
         intent.putExtra("able_token", able_token)
+        intent.putExtra("able_title", able_title)
         mainDelegate.startActivity(intent)
     }
 
-    fun toManagerSignupList(able_type: String, able_token: String) {
+    fun toManagerSignupList(able_type: String, able_token: String, able_title: String) {
 
         val intent = Intent(mainDelegate, ManagerSignupListVC::class.java)
         intent.putExtra("able_type", able_type)
         intent.putExtra("able_token", able_token)
+        intent.putExtra("able_title", able_title)
         mainDelegate.startActivity(intent)
     }
 

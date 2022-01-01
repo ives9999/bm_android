@@ -85,32 +85,44 @@
     <style name="submit_button">
         <item name="android:background">@drawable/button_rc</item>
         <item name="android:textColor">@color/MY_WHITE</item>
+        <item name="android:paddingStart">12dp</item>
+        <item name="android:paddingEnd">12dp</item>
     </style>
 
     <style name="cancel_button">
         <item name="android:background">@drawable/button_rc_gray</item>
         <item name="android:textColor">@color/MY_WHITE</item>
+        <item name="android:paddingStart">12dp</item>
+        <item name="android:paddingEnd">12dp</item>
     </style>
 
     <style name="delete_button">
         <item name="android:background">@drawable/button_rc_purple</item>
         <item name="android:textColor">@color/MY_WHITE</item>
+        <item name="android:paddingStart">12dp</item>
+        <item name="android:paddingEnd">12dp</item>
     </style>
 
     <style name="clear_button">
         <item name="android:background">@drawable/button_rc_purple</item>
         <item name="android:textColor">@color/MY_WHITE</item>
+        <item name="android:paddingStart">12dp</item>
+        <item name="android:paddingEnd">12dp</item>
     </style>
 
     <style name="city_button">
         <item name="android:background">@drawable/button_city</item>
         <item name="android:textColor">@color/BLACK</item>
         <item name="android:textSize">18dp</item>
+        <item name="android:paddingStart">12dp</item>
+        <item name="android:paddingEnd">12dp</item>
     </style>
 
     <style name="like_button">
         <item name="android:background">@drawable/button_like</item>
         <item name="android:textColor">@color/MY_WHITE</item>
+        <item name="android:paddingStart">12dp</item>
+        <item name="android:paddingEnd">12dp</item>
     </style>
 
     <!-- Splash Screen theme -->

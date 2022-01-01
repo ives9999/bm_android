@@ -793,7 +793,7 @@ open class DataService {
     fun managerSignupList(able_type: String, able_token: String, page: Int, perPage: Int, complete: CompletionHandler) {
 
         val url: String = URL_MANAGER_SIGNUPLIST.format(able_type)
-        println(url)
+        //println(url)
 
         val params: HashMap<String, String> = hashMapOf(
             "channel" to CHANNEL,
@@ -803,7 +803,7 @@ open class DataService {
             "page" to page.toString(),
             "perPage" to perPage.toString()
         )
-        println(params)
+        //println(params)
 
         val request: okhttp3.Request = getRequest(url, params)
 
@@ -826,7 +826,6 @@ open class DataService {
                 complete(success)
             }
         })
-
     }
 
 //    open fun parseModel(json: JSONObject): SuperModel {return SuperModel(JSONObject())}

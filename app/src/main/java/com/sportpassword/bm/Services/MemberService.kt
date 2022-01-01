@@ -842,14 +842,43 @@ object MemberService: DataService() {
 //        }
     }
 
-    fun memberSignupCalendar(year: Int, month: Int, member_token: String?=null, source: String="course", complete: CompletionHandler): Pair<Boolean, String> {
-        var res = true
-        if (member_token == null) {
-            res = false
-            return Pair(res, "沒有傳輸會員碼錯誤，請洽管理員")
-        }
+    fun memberSignupCalendar(year: Int, month: Int, member_token: String?=null, able_type: String="course", page: Int, perPage: Int, complete: CompletionHandler) {
+        val url: String = URL_MEMBER_SIGNUPLIST
+        println(url)
 
-        return Pair(res, "")
+        val params: HashMap<String, String> = hashMapOf(
+            "channel" to CHANNEL,
+            "device" to "app",
+            "y" to year.toString(),
+            "m" to month.toString(),
+            "able_type" to able_type,
+            "member_token" to member.token!!,
+            "page" to page.toString(),
+            "perPage" to perPage.toString()
+        )
+        println(params)
+
+        val request: okhttp3.Request = getRequest(url, params)
+
+        okHttpClient.newCall(request).enqueue(object : Callback {
+            override fun onFailure(call: Call, e: IOException) {
+//                msg = "網路錯誤，無法跟伺服器更新資料"
+//                complete(success)
+            }
+
+            override fun onResponse(call: Call, response: okhttp3.Response) {
+                try {
+                    jsonString = response.body!!.string()
+                    //println(jsonString)
+                    success = true
+                } catch (e: Exception) {
+                    success = false
+                    msg = "parse json failed，請洽管理員"
+                    println(e.localizedMessage)
+                }
+                complete(success)
+            }
+        })
     }
 
 //    override fun jsonToMember(json: JSONObject, context: Context) {

@@ -12,11 +12,15 @@ import com.sportpassword.bm.Services.CourseService
 import com.sportpassword.bm.Services.TeamService
 import com.sportpassword.bm.Utilities.Loading
 import kotlinx.android.synthetic.main.activity_manager_signup_list_vc.*
+import kotlinx.android.synthetic.main.activity_show_course_vc.*
 import kotlinx.android.synthetic.main.mask.*
 
 class ManagerSignupListVC : MyTableVC() {
 
     var able_token: String = ""
+    var able_title: String = ""
+
+    var signupListResultTable: SignupListResultTable? = null
     var signupNormalTables: ArrayList<SignupNormalTable> = arrayListOf()
 
     lateinit var adapter: ManagerSignupListAdapter
@@ -34,13 +38,19 @@ class ManagerSignupListVC : MyTableVC() {
             able_token = intent.getStringExtra("able_token")!!
         }
 
+        if (intent.hasExtra("able_title")) {
+            able_title = intent.getStringExtra("able_title")!!
+        }
+
+        setMyTitle(able_title + "報名會員列表")
         if (able_type == "team") {
-            setMyTitle("管理球隊報名列表")
             dataService = TeamService
         } else if (able_type == "course") {
-            setMyTitle("管理課程報名列表")
             dataService = CourseService
         }
+
+        refreshLayout = list_refresh
+        setRefreshListener()
 
         recyclerView = list_container
 
@@ -91,6 +101,7 @@ class ManagerSignupListVC : MyTableVC() {
         }
         runOnUiThread {
             Loading.hide(mask)
+            closeRefresh()
         }
         loading = false
         if (refreshLayout != null) {
@@ -100,15 +111,16 @@ class ManagerSignupListVC : MyTableVC() {
 
     override fun genericTable() {
 
-        var signupListResultTable: SignupListResultTable? = null
         try {
             signupListResultTable = Gson().fromJson<SignupListResultTable>(dataService.jsonString, SignupListResultTable::class.java)
         } catch (e: JsonParseException) {
 
         }
-        if (signupListResultTable != null && signupListResultTable.success) {
-            //getPage()
-            signupNormalTables = signupListResultTable.rows
+        if (signupListResultTable != null && signupListResultTable!!.success) {
+            if (page == 1) {
+                getPage()
+            }
+            signupNormalTables = signupListResultTable!!.rows
             tableLists += generateItems1(SignupNormalTable::class, signupNormalTables)
             adapter.setMyTableList(tableLists)
             runOnUiThread {
@@ -118,12 +130,13 @@ class ManagerSignupListVC : MyTableVC() {
     }
 
     override fun getPage() {
-        page = tables!!.page
-        perPage = tables!!.perPage
-        totalCount = tables!!.totalCount
-        val _totalPage: Int = totalCount / perPage
-        totalPage = if (totalCount % perPage > 0) _totalPage + 1 else _totalPage
-        theFirstTime = false
+        if (signupListResultTable != null) {
+
+            perPage = signupListResultTable!!.perPage
+            totalCount = signupListResultTable!!.totalCount
+            val _totalPage: Int = totalCount / perPage
+            totalPage = if (totalCount % perPage > 0) _totalPage + 1 else _totalPage
+        }
     }
 }
 
@@ -131,6 +144,9 @@ class SignupListResultTable: Table() {
 
     var success: Boolean = false
     var msg: String = ""
+    var page: Int = -1
+    var totalCount: Int = -1
+    var perPage: Int = -1
     var rows: ArrayList<SignupNormalTable> = arrayListOf()
 
 }

@@ -43,12 +43,7 @@ open class ManagerVC : MyTableVC() {
     override fun onCreate(savedInstanceState: Bundle?) {
 
         super.onCreate(savedInstanceState)
-        if (intent.hasExtra("token")) {
-            token = intent.getStringExtra("token")!!
-        }
-        if (intent.hasExtra("name")) {
-            name = intent.getStringExtra("name")!!
-        }
+
         if (intent.hasExtra("manager_token")) {
             manager_token = intent.getStringExtra("manager_token")!!
             params["manager_token"] = manager_token!!

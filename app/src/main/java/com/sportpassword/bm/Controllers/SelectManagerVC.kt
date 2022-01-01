@@ -10,9 +10,7 @@ import com.sportpassword.bm.Models.SuccessTable
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.MemberService
 import com.sportpassword.bm.Utilities.Loading
-import com.sportpassword.bm.Utilities.hideKeyboard
 import com.sportpassword.bm.Utilities.jsonToModel
-import com.sportpassword.bm.member
 import kotlinx.android.synthetic.main.activity_select_manager_vc.*
 import kotlinx.android.synthetic.main.mask.*
 
@@ -94,7 +92,7 @@ class SelectManagerVC : SelectVC() {
                             runOnUiThread {
                                 manager_id = managerTable!!.id
                                 manager_token = managerTable!!.token
-                                nicknameLbl.text = managerTable!!.nickname
+                                nameLbl.text = managerTable!!.nickname
                                 emailLbl.text = managerTable!!.email
                                 mobileLbl.text = managerTable!!.mobile
 

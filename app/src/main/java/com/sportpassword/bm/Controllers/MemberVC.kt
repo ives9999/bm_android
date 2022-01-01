@@ -98,7 +98,7 @@ class MemberVC : MyTableVC() {
     
     private fun _loginBlock() {
         //_loginAdapter()
-        nicknameLbl.text = member.nickname
+        nameLbl.text = member.nickname
         if (member.avatar!!.isNotEmpty()) {
             member.avatar!!.image(this, avatarView)
         }
@@ -112,7 +112,7 @@ class MemberVC : MyTableVC() {
     }
     
     private fun _logoutBlock() {
-        nicknameLbl.text = "未登入"
+        nameLbl.text = "未登入"
         loginBtn.text = "登入"
         registerBtn.visibility = View.VISIBLE
         forgetPasswordBtn.visibility = View.VISIBLE

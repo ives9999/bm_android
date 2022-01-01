@@ -16,6 +16,8 @@ import kotlinx.android.synthetic.main.activity_manager_signup_vc.*
 class ManagerSignupVC : MyTableVC() {
 
     var able_token: String = ""
+    var able_title: String = ""
+
     lateinit var tableAdapter: MoreAdapter
     var managerRows: ArrayList<MoreRow> = arrayListOf()
 
@@ -32,11 +34,15 @@ class ManagerSignupVC : MyTableVC() {
             able_token = intent.getStringExtra("able_token")!!
         }
 
+        if (intent.hasExtra("able_title")) {
+            able_title = intent.getStringExtra("able_title")!!
+        }
+
+        setMyTitle(able_title + "報名管理")
+
         if (able_type == "team") {
-            setMyTitle("管理球隊報名")
             dataService = TeamService
         } else if (able_type == "course") {
-            setMyTitle("管理課程報名")
             dataService = CourseService
         }
 
@@ -74,7 +80,7 @@ class ManagerSignupVC : MyTableVC() {
         val row: MoreRow = managerRows[idx]
         val key: String = row.key
         when (key) {
-            TO_MANAGER_SIGNUPLIST-> this.toManagerSignupList(able_type, able_token)
+            TO_MANAGER_SIGNUPLIST-> this.toManagerSignupList(able_type, able_token, able_title)
             //TO_BLACKLIST-> this.toCoach()
         }
     }

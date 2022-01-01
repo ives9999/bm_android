@@ -51,11 +51,13 @@ abstract class Table {
     var status_show: String = "上線"
 
     open fun filterRow() {
-        if (featured_path.isNotEmpty()) {
+        if (featured_path != null && featured_path.isNotEmpty()) {
             if (!featured_path.startsWith("http://") && !featured_path.startsWith("https://")) {
                 featured_path = BASE_URL + featured_path
                 //print(featured_path)
             }
+        } else {
+            featured_path = BASE_URL + "/imgs/nophoto.png"
         }
 
         if (city_id > 0) {

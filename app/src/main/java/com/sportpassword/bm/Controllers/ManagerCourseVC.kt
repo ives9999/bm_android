@@ -31,8 +31,9 @@ class ManagerCourseVC: ManagerVC() {
         this.dataService = CourseService
         able_type = "course"
 
+//        setMyTitle("課程管理列表")
         if (name == null) {
-            name = "課程"
+            name = "課程管理列表"
         }
 
         super.onCreate(savedInstanceState)
@@ -91,7 +92,7 @@ class ManagerCourseVC: ManagerVC() {
 
     override fun cellSignup(row: Table) {
 
-        toManagerSignup(able_type, row.token)
+        toManagerSignup(able_type, row.token, row.title)
     }
 
     override fun cellClick(row: Table) {

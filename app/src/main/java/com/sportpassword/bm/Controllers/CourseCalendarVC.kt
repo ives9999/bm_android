@@ -66,14 +66,14 @@ class CourseCalendarVC: MyTableVC() {
         Loading.show(maskView)
         loading = true
 
-        val res = MemberService.memberSignupCalendar(y, m, member.token) { success ->
+        val res = MemberService.memberSignupCalendar(y, m, member.token, "course", _page, _perPage) { success ->
 
         }
-        if (!res.first) {
-            Loading.hide(maskView)
-            loading = false
-            Alert.show(this, "警告", res.second)
-        }
+//        if (!res.first) {
+//            Loading.hide(maskView)
+//            loading = false
+//            Alert.show(this, "警告", res.second)
+//        }
     }
 
     override fun getDataEnd(success: Boolean) {

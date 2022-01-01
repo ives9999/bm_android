@@ -64,23 +64,13 @@
                             android:orientation="horizontal">
 
                             <TextView
-                                android:id="@+id/nicknameLbl"
+                                android:id="@+id/nameLbl"
                                 style="@style/list_text_title"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="2dp"
                                 android:textAllCaps="false"
                                 tools:text="暱稱" />
-
-                            <TextView
-                                android:id="@+id/nameLbl"
-                                style="@style/list_text_general"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="2dp"
-                                android:layout_marginStart="12dp"
-                                android:textAllCaps="false"
-                                tools:text="姓名" />
 
                             <ImageView
                                 android:id="@+id/statusIV"
@@ -92,24 +82,61 @@
                                 android:scaleType="fitStart"
                                 app:srcCompat="@drawable/signup_normal" />
                         </LinearLayout>
+
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:layout_marginBottom="12dp"
-                            android:orientation="vertical">
+                            android:orientation="horizontal">
 
                             <Button
-                                android:id="@+id/mobileBtn"
+                                android:id="@+id/cityBtn"
                                 style="@style/city_button"
                                 android:layout_width="wrap_content"
                                 android:layout_height="26dp"
                                 android:layout_marginBottom="12dp" />
 
                             <Button
-                                android:id="@+id/emailBtn"
+                                android:id="@+id/arenaBtn"
                                 style="@style/city_button"
                                 android:layout_width="wrap_content"
-                                android:layout_height="26dp" />
+                                android:layout_height="26dp"
+                                android:layout_marginStart="12dp" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            style="@style/list_text_general"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="12dp"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                style="@style/list_text_general"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="2dp"
+                                android:id="@+id/weekendLbl"
+                                android:text="星期幾"
+                                android:textAllCaps="false" />
+                        </LinearLayout>
+                        <LinearLayout
+                            style="@style/list_text_general"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="12dp"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                style="@style/list_text_general"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="2dp"
+                                android:id="@+id/intervalLbl"
+                                android:text="時段"
+                                android:textAllCaps="false" />
                         </LinearLayout>
 
                         <LinearLayout
@@ -133,8 +160,8 @@
                                 style="@style/highlight"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_marginTop="2dp"
                                 android:layout_marginStart="12dp"
+                                android:layout_marginTop="2dp"
                                 android:textAllCaps="false"
                                 tools:text="2021-01-05 15:06(四)" />
                         </LinearLayout>

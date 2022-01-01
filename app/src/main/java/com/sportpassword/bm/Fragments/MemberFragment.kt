@@ -1,17 +1,13 @@
 package com.sportpassword.bm.Fragments
 
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.*
 import android.widget.*
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.sportpassword.bm.Adapters.MemberSectionAdapter
 import com.sportpassword.bm.Controllers.*
 import com.sportpassword.bm.Data.MemberRow
 import com.sportpassword.bm.Data.MemberSection
-import com.sportpassword.bm.Data.SearchRow
 import com.sportpassword.bm.Models.MemberTable
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.MemberService
@@ -178,7 +174,7 @@ open class MemberFragment: TabFragment() {
     }
     private fun _loginBlock() {
         //_loginAdapter()
-        nicknameLbl.text = member.nickname
+        nameLbl.text = member.nickname
         if (member.avatar!!.isNotEmpty()) {
             member.avatar!!.image(mainActivity!!, avatarView)
         }
@@ -191,7 +187,7 @@ open class MemberFragment: TabFragment() {
 //        initMemberFunction()
     }
     private fun _logoutBlock() {
-        nicknameLbl.text = "未登入"
+        nameLbl.text = "未登入"
         loginBtn.text = "登入"
         registerBtn.visibility = View.VISIBLE
         forgetPasswordBtn.visibility = View.VISIBLE
