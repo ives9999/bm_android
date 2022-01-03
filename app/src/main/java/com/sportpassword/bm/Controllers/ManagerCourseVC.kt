@@ -209,6 +209,7 @@ class ManagerCourseVC: ManagerVC() {
 //    }
 
     fun add(view: View) {
+
         if (member.validate < 1) {
             Alert.show(this@ManagerCourseVC, "錯誤", "未通過EMail認證，無法新增課程，認證完後，請先登出再登入")
         } else {

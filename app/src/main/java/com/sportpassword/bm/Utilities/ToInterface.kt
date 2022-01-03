@@ -114,9 +114,11 @@ interface ToInterface {
         //mainDelegate.editCourseResult?.launch(intent)
     }
 
-    fun toEditTeam(token: String, delegate: BaseActivity?=null) {
+    fun toEditTeam(token: String?=null, delegate: BaseActivity?=null) {
         val i = Intent(mainDelegate, EditTeamVC::class.java)
-        i.putExtra("token", token)
+        if (token != null) {
+            i.putExtra("token", token)
+        }
 
         mainDelegate.delegate = delegate
         mainDelegate.editTeamVC.launch(i)

@@ -1,6 +1,7 @@
 package com.sportpassword.bm.Controllers
 
 import android.os.Bundle
+import android.view.View
 import com.sportpassword.bm.Adapters.TeamAdapter
 import com.sportpassword.bm.Models.*
 import com.sportpassword.bm.R
@@ -93,5 +94,10 @@ class ManagerTeamVC : ManagerVC() {
 //                }
 //            }
 //        }.show()
+    }
+
+    override fun addPressed(view: View) {
+
+        toEditTeam()
     }
 }

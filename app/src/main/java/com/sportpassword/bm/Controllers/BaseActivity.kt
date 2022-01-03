@@ -382,11 +382,11 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener,
                 toSelectArea(value, value.toInt(), this)
             }
         } else if (key == ARENA_KEY) {
-            val row: OneRow = getOneRowFromKey(CITY_KEY)
+            val row1: OneRow = getOneRowFromKey(CITY_KEY)
             if (value.isEmpty()) {
                 warning("請先選擇縣市")
             } else {
-                toSelectArena(value, value.toInt(), this)
+                toSelectArena(value, row1.value.toInt(), this)
             }
         } else if (key == PRICE_UNIT_KEY) {
             toSelectSingle(SelectPriceUnitVC::class.java, key, value, this, able_type)
@@ -1021,9 +1021,10 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener,
 
     ////////// for top bar cart icon pressed ///////////////////////////////////
     fun cartPressed(view: View) {
-
         toMemberCartList()
     }
+
+    open fun addPressed(view: View) {}
 
     protected fun mask() {
         if (layerMask == null) {

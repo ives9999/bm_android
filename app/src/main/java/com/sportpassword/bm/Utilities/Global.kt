@@ -1009,6 +1009,13 @@ fun String.toArray(): Array<String> {
     return this.split(",").toTypedArray()
 }
 
+fun String.isInt(): Boolean {
+    if (toIntOrNull() == null) {
+        return false
+    }
+    return true
+}
+
 fun Int.quotientAndRemainder(dividingBy: Int): Pair<Int, Int> {
     val q: Int = this / dividingBy
     val r: Int = this % dividingBy

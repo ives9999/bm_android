@@ -7,9 +7,7 @@ import android.view.View
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.google.gson.JsonParseException
 import com.sportpassword.bm.Data.OneRow
-import com.sportpassword.bm.Models.CourseTable
-import com.sportpassword.bm.Models.SuccessTable
-import com.sportpassword.bm.Models.TeamTable
+import com.sportpassword.bm.Models.*
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.CourseService
 import com.sportpassword.bm.Services.TeamService
@@ -29,13 +27,48 @@ class EditTeamVC : EditVC() {
         dataService = TeamService
 
         setContentView(R.layout.activity_edit_team_vc)
+
+        if (token == null) {
+//            myTable = TeamTable()
+//            myTable!!.arena = ArenaTable()
+//            myTable!!.name = "測試與球隊"
+//            myTable!!.city_id = 218
+//            myTable!!.arena_id = 6
+//            val arena: ArenaTable = ArenaTable()
+//            arena.name = "艾婕"
+//            myTable!!.arena = arena
+//            val weekdays1: Team_WeekdaysTable = Team_WeekdaysTable()
+//            weekdays1.weekday = 2
+//            val weekdays2: Team_WeekdaysTable = Team_WeekdaysTable()
+//            weekdays2.weekday = 4
+//            myTable!!.weekdays = arrayListOf<Team_WeekdaysTable>(weekdays1, weekdays2)
+//            myTable!!.play_start = "19:00:00"
+//            myTable!!.play_end = "21:00:00"
+//            myTable!!.degree = "high,soso"
+//            myTable!!.ball = "RSL4號"
+//            myTable!!.temp_fee_M = 300
+//            myTable!!.temp_fee_F = 200
+//            myTable!!.manager_id = 1
+//            myTable!!.manager_nickname = "xxx"
+//            myTable!!.line = "rich@gmail.com"
+//            myTable!!.mobile = "0920123456"
+//            myTable!!.email = "john@housetube.tw"
+//            myTable!!.youtube = "youtube"
+//            myTable!!.fb = "fb"
+//            myTable!!.charge = "收費詳細說明"
+//            myTable!!.content = "這是內容說明"
+//            myTable!!.filterRow()
+        }
         super.onCreate(savedInstanceState)
+
+        setMyTitle("新增羽球隊")
     }
 
     override fun initData() {
 
         if (myTable == null) {
             myTable = TeamTable()
+            myTable!!.arena = ArenaTable()
         }
 
         val rows: ArrayList<OneRow> = arrayListOf()

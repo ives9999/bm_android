@@ -117,7 +117,7 @@ open class EditVC : MyTableVC() {
 //        refresh()
         oneSections.clear()
         init()
-        if (token != null && token.length > 0) {
+        if (token != null && token.isNotEmpty()) {
             refresh()
         } else {
             initData()
@@ -286,19 +286,29 @@ open class EditVC : MyTableVC() {
 
     fun submit(view: View) {
 
-        Loading.show(mask)
         hideKeyboard()
 
-        var msg: String = ""
+        msg = ""
         for (section in oneSections) {
             for (row in section.items) {
-                if (row.isRequired && row.value.isEmpty()) {
+                var isRequire: Boolean = false
+                if (row.value.isInt()) {
+                    if (row.isRequired && row.value.toInt() <= 0) {
+                        isRequire = true
+                    }
+                } else {
+                    if (row.isRequired && row.value.isEmpty()) {
+                        isRequire = true
+                    }
+                }
+
+                if (isRequire) {
                     msg += row.msg + "\n"
                 }
             }
         }
 
-        if (msg.length > 0) {
+        if (msg.isNotEmpty()) {
             warning(msg)
         } else {
             Loading.show(mask)

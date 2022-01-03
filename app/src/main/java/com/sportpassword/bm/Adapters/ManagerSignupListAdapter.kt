@@ -58,7 +58,7 @@ class ManagerSignupListViewHolder(context: Context, viewHolder: View, list1CellD
                     it.setText(row.memberTable!!.name)
                 }
 
-                viewHolder.findViewById<Button>(R.id.cityBtn)?.let {
+                viewHolder.findViewById<Button>(R.id.mobileBtn)?.let {
                     if (row.memberTable!!.mobile == null) {
                         it.visibility = View.GONE
                     } else {
@@ -67,7 +67,7 @@ class ManagerSignupListViewHolder(context: Context, viewHolder: View, list1CellD
                     }
                 }
 
-                viewHolder.findViewById<Button>(R.id.arenaBtn)?.let {
+                viewHolder.findViewById<Button>(R.id.emailBtn)?.let {
                     if (row.memberTable!!.email == null) {
                         it.visibility = View.GONE
                     } else {
