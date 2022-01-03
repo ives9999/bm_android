@@ -80,7 +80,7 @@ open class ManagerVC : MyTableVC() {
 
     override fun refresh() {
         page = 1
-        theFirstTime = true
+//        theFirstTime = true
 //        adapter.clear()
 //        items.clear()
 
@@ -91,5 +91,4 @@ open class ManagerVC : MyTableVC() {
         tableLists.clear()
         getDataStart(page, perPage)
     }
-
 }

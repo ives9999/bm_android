@@ -1,12 +1,7 @@
 package com.sportpassword.bm.Controllers
 
-import android.app.Activity
-import android.content.DialogInterface
-import android.content.Intent
 import android.os.Bundle
 import android.view.View
-import androidx.activity.result.ActivityResultLauncher
-import androidx.activity.result.contract.ActivityResultContracts
 import com.sportpassword.bm.Adapters.CourseAdapter
 import com.sportpassword.bm.Models.CourseTable
 import com.sportpassword.bm.Models.CoursesTable
@@ -27,23 +22,17 @@ class ManagerCourseVC: ManagerVC() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
-        setContentView(R.layout.activity_manager_course_vc)
         this.dataService = CourseService
-        able_type = "course"
-
-//        setMyTitle("課程管理列表")
-//        if (name == null) {
-//            name = "課程管理列表"
-//        }
+        resource = R.layout.activity_manager_course_vc
 
         super.onCreate(savedInstanceState)
 
         tableAdapter = CourseAdapter(R.layout.manager_team_item, this)
         recyclerView.adapter = tableAdapter
         //initAdapter()
-        init()
+//        init()
 
-        refresh()
+//        refresh()
     }
 
 //    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -71,7 +60,9 @@ class ManagerCourseVC: ManagerVC() {
         mysTable = jsonToModels<CoursesTable>(jsonString!!)
         if (mysTable != null) {
             tables = mysTable
-            getPage()
+            if (page == 1) {
+                getPage()
+            }
             tableLists += generateItems1(CourseTable::class, mysTable!!.rows)
             tableAdapter.setMyTableList(tableLists)
             runOnUiThread {

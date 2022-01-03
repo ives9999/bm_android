@@ -7,7 +7,6 @@ import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.TeamService
 import com.sportpassword.bm.Utilities.jsonToModels
 
-
 class ManagerTeamVC : ManagerVC() {
 
     var mysTable: TeamsTable? = null
@@ -24,16 +23,18 @@ class ManagerTeamVC : ManagerVC() {
         tableAdapter = TeamAdapter(R.layout.manager_team_item, this)
         recyclerView.adapter = tableAdapter
         //initAdapter()
-        init()
+//        init()
 
-        refresh()
+//        refresh()
     }
 
     override fun genericTable() {
         mysTable = jsonToModels<TeamsTable>(jsonString!!)
         if (mysTable != null) {
             tables = mysTable
-            getPage()
+            if (page == 1) {
+                getPage()
+            }
             tableLists += generateItems1(TeamTable::class, mysTable!!.rows)
             tableAdapter.setMyTableList(tableLists)
             runOnUiThread {
