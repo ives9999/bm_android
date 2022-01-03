@@ -113,7 +113,7 @@ class TeamTable: Table() {
             interval_show = play_start.noSec() + " ~ " + play_end.noSec()
         }
 
-        if (degree.length > 0) {
+        if (degree != null && degree.isNotEmpty()) {
             val degrees: Array<String> = degree.split(",").toTypedArray()
             var show: ArrayList<String> = arrayListOf()
 

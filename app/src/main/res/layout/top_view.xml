@@ -48,6 +48,18 @@
         android:orientation="horizontal">
 
         <ImageButton
+            android:id="@+id/addIcon"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_marginEnd="4dp"
+            android:background="@android:color/transparent"
+            android:onClick="addPressed"
+            android:scaleType="fitCenter"
+            android:visibility="invisible"
+            app:srcCompat="@drawable/add"
+            tools:visibility="visible" />
+
+        <ImageButton
             android:id="@+id/cartIcon"
             android:layout_width="32dp"
             android:layout_height="32dp"

@@ -145,17 +145,10 @@ interface ToInterface {
             Alert.show(mainDelegate, "警告", "請先登入會員")
             return
         }
-        var intent: Intent? = null
-        if (able_type == "team") {
-            intent = Intent(mainDelegate, ManagerTeamVC::class.java)
-            intent.putExtra("manager_token", member.token)
-        } else if (able_type == "course") {
-            intent = Intent(mainDelegate, ManagerCourseVC::class.java)
-            intent.putExtra("manager_token", member.token)
-        } else {
-            intent = Intent(mainDelegate, ManagerVC::class.java)
-            intent.putExtra("source", able_type)
-        }
+        //val intent: Intent = Intent(mainDelegate, Test::class.java)
+        val intent: Intent = Intent(mainDelegate, ManagerTeamVC::class.java)
+        intent.putExtra("able_type", able_type)
+        intent.putExtra("manager_token", member.token)
         mainDelegate.startActivity(intent)
     }
 

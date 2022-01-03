@@ -6,27 +6,18 @@ import com.sportpassword.bm.Models.*
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.TeamService
 import com.sportpassword.bm.Utilities.jsonToModels
-import org.jetbrains.anko.alert
-import org.jetbrains.anko.button
-import org.jetbrains.anko.customView
-import org.jetbrains.anko.sdk27.coroutines.onClick
-import org.jetbrains.anko.verticalLayout
 
-
-var mysTable: TeamsTable? = null
-lateinit var tableAdapter: TeamAdapter
 
 class ManagerTeamVC : ManagerVC() {
+
+    var mysTable: TeamsTable? = null
+    lateinit var tableAdapter: TeamAdapter
+
     override fun onCreate(savedInstanceState: Bundle?) {
 
-        setContentView(R.layout.activity_manager_team_vc)
+//        setContentView(R.layout.activity_manager_team_vc)
         this.dataService = TeamService
-        able_type = "team"
-
-//        setMyTitle("球隊管理列表")
-        if (name == null) {
-            name = "球隊管理列表"
-        }
+        resource = R.layout.activity_manager_team_vc
 
         super.onCreate(savedInstanceState)
 

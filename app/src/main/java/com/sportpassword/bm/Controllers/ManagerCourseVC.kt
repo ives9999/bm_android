@@ -32,9 +32,9 @@ class ManagerCourseVC: ManagerVC() {
         able_type = "course"
 
 //        setMyTitle("課程管理列表")
-        if (name == null) {
-            name = "課程管理列表"
-        }
+//        if (name == null) {
+//            name = "課程管理列表"
+//        }
 
         super.onCreate(savedInstanceState)
 
@@ -221,9 +221,9 @@ class ManagerCourseVC: ManagerVC() {
         if (member.validate < 1) {
             Alert.show(this@ManagerCourseVC, "錯誤", "未通過EMail認證，無法新增課程，認證完後，請先登出再登入")
         } else {
-            if (manager_token != null) {
-                toEditCourse("新增課程", "", manager_token!!)
-            }
+//            if (manager_token != null) {
+//                toEditCourse("新增課程", "", manager_token!!)
+//            }
         }
     }
 }

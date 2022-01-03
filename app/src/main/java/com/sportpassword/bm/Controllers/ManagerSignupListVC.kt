@@ -11,6 +11,7 @@ import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.CourseService
 import com.sportpassword.bm.Services.TeamService
 import com.sportpassword.bm.Utilities.Loading
+import com.sportpassword.bm.member
 import kotlinx.android.synthetic.main.activity_manager_signup_list_vc.*
 import kotlinx.android.synthetic.main.activity_show_course_vc.*
 import kotlinx.android.synthetic.main.mask.*
@@ -73,7 +74,7 @@ class ManagerSignupListVC : MyTableVC() {
 //        items.clear()
 
         params.clear()
-        params.put("manager_token", manager_token!!)
+        params.put("manager_token", member.token!!)
         params.put("status", "all")
         tableLists.clear()
         getDataStart(page, perPage)
