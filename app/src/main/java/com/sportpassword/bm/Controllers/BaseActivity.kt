@@ -399,7 +399,8 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener,
 //                val selecteds: String = tmp.joinToString(",")
             toSelectWeekday(value, this, able_type)
         } else if (key == WEEKDAYS_KEY) {
-            toSelectWeekdays(value.toInt(), this, able_type)
+            val n: Int = (value.isInt()) then { value.toInt() } ?: 0
+            toSelectWeekdays(n, this, able_type)
         } else if (key == START_TIME_KEY || key == END_TIME_KEY || key == TEAM_PLAY_START_KEY || key == TEAM_PLAY_END_KEY) {
 //                val tmp = formItem.sender as HashMap<String, String>
 //                val selected = tmp.get("time")!!

@@ -234,7 +234,7 @@ class SearchVC : MyTableVC() {
         rows.add(r1)
         val r2: OneRow = OneRow("縣市", "", "全部", CITY_KEY, "more")
         rows.add(r2)
-        val r3: OneRow = OneRow("星期幾", "", "全部", WEEKDAY_KEY, "more")
+        val r3: OneRow = OneRow("星期幾", "", "全部", WEEKDAYS_KEY, "more")
         rows.add(r3)
         val r4: OneRow = OneRow("時段", "", "全部", START_TIME_KEY, "more")
         rows.add(r4)

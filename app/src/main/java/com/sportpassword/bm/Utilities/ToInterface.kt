@@ -469,7 +469,7 @@ interface ToInterface {
         mainDelegate.selectWeekdayVC.launch(i)
     }
 
-    fun toSelectWeekdays(selected: Int=0, delegate: BaseActivity?=null, able_type: String?=null) {
+    fun toSelectWeekdays(selecteds: Int=0, delegate: BaseActivity?=null, able_type: String?=null) {
 
         val i = Intent(mainDelegate, SelectWeekdaysVC::class.java)
 
@@ -477,7 +477,7 @@ interface ToInterface {
             i.putExtra("able_type", able_type)
         }
 
-        i.putExtra("selected1", selected)
+        i.putExtra("selected1", selecteds)
 
         if (delegate != null) {
             mainDelegate.delegate = delegate
