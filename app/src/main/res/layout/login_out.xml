@@ -1,68 +1,85 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/BLACK"
+    android:orientation="horizontal"
+    android:paddingTop="8dp"
     tools:layout_editor_absoluteY="81dp">
 
-    <Button
+    <LinearLayout
         android:id="@+id/loginBtn"
-        style="@style/Widget.AppCompat.Button.Borderless"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:background="@android:color/transparent"
-        android:drawableLeft="@drawable/power"
-        android:drawablePadding="4dp"
-        android:fontFamily="sans-serif"
-        android:padding="16dp"
-        android:text="登入"
-        android:textColor="@color/MY_WHITE"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        android:typeface="serif"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:orientation="horizontal">
 
-    <Button
+        <ImageView
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_weight="1"
+            app:srcCompat="@drawable/login" />
+
+        <TextView
+            android:id="@+id/loginTV"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="4dp"
+            android:layout_weight="1"
+            android:text="登入"
+            android:textColor="@color/MY_WHITE"
+            android:textSize="16dp" />
+    </LinearLayout>
+
+    <LinearLayout
         android:id="@+id/forgetPasswordBtn"
-        style="@style/Widget.AppCompat.Button.Borderless"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:background="@android:color/transparent"
-        android:drawableLeft="@drawable/password"
-        android:drawablePadding="4dp"
-        android:fontFamily="sans-serif"
-        android:padding="16dp"
-        android:text="忘記密碼"
-        android:textColor="@color/MY_WHITE"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        android:typeface="serif"
-        app:layout_constraintStart_toEndOf="@id/loginBtn"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:layout_marginStart="12dp"
+        android:orientation="horizontal">
 
-    <Button
+        <ImageView
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_weight="1"
+            app:srcCompat="@drawable/password" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="4dp"
+            android:layout_weight="1"
+            android:text="忘記密碼"
+            android:textColor="@color/MY_WHITE"
+            android:textSize="16dp" />
+    </LinearLayout>
+
+    <LinearLayout
         android:id="@+id/registerBtn"
-        style="@style/Widget.AppCompat.Button.Borderless"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:background="@android:color/transparent"
-        android:drawableLeft="@drawable/register"
-        android:drawablePadding="4dp"
-        android:fontFamily="sans-serif"
-        android:padding="16dp"
-        android:text="註冊"
-        android:textColor="@color/MY_WHITE"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        android:typeface="serif"
-        app:layout_constraintStart_toEndOf="@id/forgetPasswordBtn"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:layout_marginStart="12dp"
+        android:orientation="horizontal">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <ImageView
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_weight="1"
+            app:srcCompat="@drawable/signin" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="4dp"
+            android:layout_weight="1"
+            android:text="註冊"
+            android:textColor="@color/MY_WHITE"
+            android:textSize="16dp" />
+    </LinearLayout>
+
+</LinearLayout>

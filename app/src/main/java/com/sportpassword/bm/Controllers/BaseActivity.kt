@@ -379,7 +379,7 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener,
             if (row1.value.isEmpty()) {
                 warning("請先選擇縣市")
             } else {
-                toSelectArea(value, value.toInt(), this)
+                toSelectArea(value, row1.value.toInt(), this)
             }
         } else if (key == ARENA_KEY) {
             val row1: OneRow = getOneRowFromKey(CITY_KEY)

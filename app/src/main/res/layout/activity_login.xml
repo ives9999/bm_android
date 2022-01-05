@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:clickable="true"
     android:focusableInTouchMode="true"
-    tools:context="com.sportpassword.bm.Controllers.LoginActivity"
+    tools:context="com.sportpassword.bm.Controllers.LoginVC"
     >
 
     <RelativeLayout
@@ -55,19 +55,18 @@
             style="@android:style/Widget.DeviceDefault.Light.EditText"
             android:layout_width="wrap_content"
             android:layout_height="36dp"
-            android:background="@drawable/text_field_rc"
-            android:drawableLeft="@drawable/password"
-            android:drawablePadding="12dp"
-            android:paddingStart="12dp"
             android:layout_marginBottom="24dp"
+            android:background="@drawable/text_field_rc"
+            android:drawableLeft="@drawable/forget_password"
+            android:drawablePadding="12dp"
             android:ems="10"
             android:hint="密碼"
             android:inputType="textPassword"
+            android:paddingStart="12dp"
             android:singleLine="false"
             android:textColor="@color/MY_WHITE"
             android:textColorHint="@color/grey"
-            android:textSize="18sp"
-            />
+            android:textSize="18sp" />
 
         <Button
             android:id="@+id/button"

@@ -240,19 +240,20 @@ class OneItemAdapter(val context: Context, private val sectionIdx: Int, private 
                     holder.iconView.visibility = View.GONE
                 }
             }
-            if (holder.iconView.visibility == View.VISIBLE) {
-                holder.editIcon.setOnClickListener {
-                    delegate.cellEdit(sectionIdx, rowIdx)
-                }
-
-                holder.deleteIcon.setOnClickListener {
-                    delegate.cellDelete(sectionIdx, rowIdx)
-                }
-
-                holder.refreshIcon.setOnClickListener {
-                    delegate.cellRefresh()
-                }
-            }
+            holder.iconView.visibility = View.GONE
+//            if (holder.iconView.visibility == View.VISIBLE) {
+//                holder.editIcon.setOnClickListener {
+//                    delegate.cellEdit(sectionIdx, rowIdx)
+//                }
+//
+//                holder.deleteIcon.setOnClickListener {
+//                    delegate.cellDelete(sectionIdx, rowIdx)
+//                }
+//
+//                holder.refreshIcon.setOnClickListener {
+//                    delegate.cellRefresh()
+//                }
+//            }
         } else if (holder is RadioViewHolder) {
 
             val group = holder.init(context, row)

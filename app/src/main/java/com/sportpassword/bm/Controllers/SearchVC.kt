@@ -300,9 +300,15 @@ class SearchVC : MyTableVC() {
     override fun cellArena(row: Table) {
         val key: String = ARENA_KEY
         val row1: TeamTable = row as TeamTable
+
         val row2: OneRow = getOneRowFromKey(key)
         row2.value = row1.arena!!.id.toString()
         row2.show = row1.arena!!.name
+
+        val row3: OneRow = getOneRowFromKey(CITY_KEY)
+        row3.value = row1.arena!!.city_id.toString()
+        row3.show = Global.zoneIDToName(row1.arena!!.city_id)
+
         prepareParams()
         page = 1
         tableLists.clear()

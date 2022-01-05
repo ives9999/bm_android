@@ -171,8 +171,11 @@ class RegisterVC : MyTableVC() {
         row = OneRow("性別", member.sex!!, "", SEX_KEY, "sex", KEYBOARD.default, "", "", true)
         row.msg = "沒有選擇性別"
         rows.add(row)
-        row = OneRow("金鑰", member.token!!, member.token!!, TOKEN_KEY, "textField")
-        rows.add(row)
+
+        if (member.isLoggedIn) {
+            row = OneRow("金鑰", member.token!!, member.token!!, TOKEN_KEY, "textField")
+            rows.add(row)
+        }
 
         section = makeSectionRow("個人資料", "data", rows, true)
         oneSections.add(section)

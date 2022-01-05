@@ -280,6 +280,8 @@ class AddCartVC : MyTableVC() {
 //            initAdapter(true)
             setMyTitle(productTable!!.name)
 
+            oneSections.clear()
+
             var rows: ArrayList<OneRow> = arrayListOf()
             var row = OneRow("商品", productTable!!.name, productTable!!.name, PRODUCT_KEY, "text")
             rows.add(row)

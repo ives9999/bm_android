@@ -487,11 +487,11 @@ class ShowCourseVC : ShowVC() {
                 //println(position)
                 val key = coachRows[position].key
                 if (key == NAME_KEY) {
-                    val intent = Intent(this, ShowActivity::class.java)
-                    //intent.putExtra("type", source)
-                    intent.putExtra("token", coachTable!!.token)
-                    intent.putExtra("title", coachTable!!.name)
-                    startActivity(intent)
+//                    val intent = Intent(this, ShowActivity::class.java)
+//                    //intent.putExtra("type", source)
+//                    intent.putExtra("token", coachTable!!.token)
+//                    intent.putExtra("title", coachTable!!.name)
+//                    startActivity(intent)
                 } else if (key == MOBILE_KEY) {
                     val mobile = coachTable!!.mobile
                     this.mobile = mobile

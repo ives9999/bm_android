@@ -27,7 +27,7 @@ open class MoreVC : MyTableVC() {
         rows.add(r3)
         val r4: MoreRow = MoreRow("體育用品店", "store", "store", R.color.MY_WHITE)
         rows.add(r4)
-        val r5: MoreRow = MoreRow("推播訊息", "pn", "bell", R.color.MY_WHITE)
+        val r5: MoreRow = MoreRow("推播訊息", "pn", "push", R.color.MY_WHITE)
         rows.add(r5)
         val r6: MoreRow = MoreRow("版本", "version", "version", R.color.MY_WHITE)
         rows.add(r6)

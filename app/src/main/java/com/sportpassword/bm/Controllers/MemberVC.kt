@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.Button
+import android.widget.LinearLayout
 import com.sportpassword.bm.Adapters.MemberSectionAdapter
 import com.sportpassword.bm.Data.MemberRow
 import com.sportpassword.bm.Data.MemberSection
@@ -47,11 +48,11 @@ class MemberVC : MyTableVC() {
         refreshLayout = page_refresh
         maskView = mask
 
-        val loginBtn = findViewById<Button>(R.id.loginBtn)
+        val loginBtn = findViewById<LinearLayout>(R.id.loginBtn)
         loginBtn.setOnClickListener { loginBtnPressed() }
-        val reginBtn = findViewById<Button>(R.id.registerBtn)
+        val reginBtn = findViewById<LinearLayout>(R.id.registerBtn)
         reginBtn.setOnClickListener { registerBtnPressed() }
-        val forgetPasswordBtn = findViewById<Button>(R.id.forgetPasswordBtn)
+        val forgetPasswordBtn = findViewById<LinearLayout>(R.id.forgetPasswordBtn)
         forgetPasswordBtn.setOnClickListener { forgetpasswordBtnPressed() }
 
         setRecyclerViewRefreshListener()
@@ -102,7 +103,7 @@ class MemberVC : MyTableVC() {
         if (member.avatar!!.isNotEmpty()) {
             member.avatar!!.image(this, avatarView)
         }
-        loginBtn.text = "登出"
+        loginTV.text = "登出"
         registerBtn.visibility = View.INVISIBLE
         forgetPasswordBtn.visibility = View.INVISIBLE
         list_container.visibility = View.VISIBLE
@@ -113,7 +114,7 @@ class MemberVC : MyTableVC() {
     
     private fun _logoutBlock() {
         nameLbl.text = "未登入"
-        loginBtn.text = "登入"
+        loginTV.text = "登入"
         registerBtn.visibility = View.VISIBLE
         forgetPasswordBtn.visibility = View.VISIBLE
         list_container.visibility = View.INVISIBLE

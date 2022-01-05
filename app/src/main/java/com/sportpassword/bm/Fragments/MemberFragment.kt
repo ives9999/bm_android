@@ -178,7 +178,7 @@ open class MemberFragment: TabFragment() {
         if (member.avatar!!.isNotEmpty()) {
             member.avatar!!.image(mainActivity!!, avatarView)
         }
-        loginBtn.text = "登出"
+        loginTV.text = "登出"
         registerBtn.visibility = View.INVISIBLE
         forgetPasswordBtn.visibility = View.INVISIBLE
         member_container.visibility = View.VISIBLE
@@ -188,7 +188,7 @@ open class MemberFragment: TabFragment() {
     }
     private fun _logoutBlock() {
         nameLbl.text = "未登入"
-        loginBtn.text = "登入"
+        loginTV.text = "登入"
         registerBtn.visibility = View.VISIBLE
         forgetPasswordBtn.visibility = View.VISIBLE
         member_container.visibility = View.INVISIBLE

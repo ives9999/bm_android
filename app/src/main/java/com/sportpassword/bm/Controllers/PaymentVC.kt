@@ -221,6 +221,8 @@ class PaymentVC : MyTableVC() {
                 }
             }
 
+            oneSections.clear()
+
             val row = OneRow(
                 productTable!!.name,
                 "",
@@ -232,7 +234,7 @@ class PaymentVC : MyTableVC() {
                 "",
                 false,
                 false,
-                productTable!!.featured_path,
+                productTable.featured_path,
                 attribute_text,
                 orderItemTable.amount_show,
                 orderItemTable.quantity.toString()
