@@ -18,10 +18,11 @@
 
     <TextView
         android:id="@+id/name"
+        style="@style/list_text_general"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="18dp"
         android:textSize="18sp"
-        style="@style/list_text_general"
-        tools:text="name"/>
+        tools:text="name" />
 
 </LinearLayout>

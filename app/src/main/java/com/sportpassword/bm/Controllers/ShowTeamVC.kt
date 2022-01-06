@@ -56,7 +56,7 @@ class ShowTeamVC: ShowVC() {
 //            "created_at_show" to hashMapOf("icon" to "calendar","title" to "建立日期","content" to "")
 //        )
 
-        signupAdapter = SignupAdapter(this)
+        signupAdapter = SignupAdapter(this, this)
         signupTableView.adapter = signupAdapter
 
         init()
@@ -287,6 +287,26 @@ class ShowTeamVC: ShowVC() {
                         }
                     }
                 }
+            }
+        }
+    }
+
+    override fun showSignupInfo(position: Int) {
+
+        if (myTable != null) {
+            if (myTable!!.manager_token == member.token) {
+                val people_limit = myTable!!.people_limit
+                if (position < people_limit) {
+                    val signup_normal_model = myTable!!.signupNormalTables[position]
+                    //print(signup_normal_model.member_token)
+                    //getMemberOne(member_token: signup_normal_model.member_token)
+
+                } else {
+                    val signup_standby_model = myTable!!.signupStandbyTables[position]
+                    //getMemberOne(member_token: signup_standby_model.member_token)
+                }
+            } else {
+                warning("只有球隊管理員可以檢視報名者資訊")
             }
         }
     }

@@ -30,10 +30,7 @@ import com.onesignal.OneSignal
 import com.sportpassword.bm.Adapters.OneSectionAdapter
 import com.sportpassword.bm.Adapters.SearchSectionAdapter
 import com.sportpassword.bm.App
-import com.sportpassword.bm.Data.OneRow
-import com.sportpassword.bm.Data.OneSection
-import com.sportpassword.bm.Data.SearchRow
-import com.sportpassword.bm.Data.SearchSection
+import com.sportpassword.bm.Data.*
 import com.sportpassword.bm.Fragments.*
 import com.sportpassword.bm.Models.*
 import com.sportpassword.bm.R
@@ -2087,6 +2084,8 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener,
 
         FEATURED_PATH = BASE_URL + FEATURED_PATH
     }
+
+    open fun showSignupInfo(position: Int) {}
 
     val addCartVC = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { res ->
         if (res.resultCode == Activity.RESULT_OK) {

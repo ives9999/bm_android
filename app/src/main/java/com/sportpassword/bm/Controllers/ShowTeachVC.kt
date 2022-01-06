@@ -96,6 +96,8 @@ class ShowTeachVC : YouTubeBaseActivity(), YouTubePlayer.OnInitializedListener {
 //    }
 
     fun refresh() {
+
+        showRows.clear()
         if (token != null) {
             runOnUiThread {
                 Loading.show(mask)
