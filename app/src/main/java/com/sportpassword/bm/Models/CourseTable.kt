@@ -1,5 +1,6 @@
 package com.sportpassword.bm.Models
 
+import com.google.gson.annotations.SerializedName
 import com.sportpassword.bm.Utilities.*
 
 class CoursesTable: Tables() {
@@ -35,8 +36,8 @@ class CourseTable: Table() {
     var created_at_text: String = ""
     var coach: CoachTable? = null
     var dateTable: DateTable? = null
-    var signup_normal_models: ArrayList<SignupNormalTable> = arrayListOf()
-    var signup_standby_models: ArrayList<SignupStandbyTable> = arrayListOf()
+    @SerializedName("signup_normal_models") var signupNormalTables: ArrayList<SignupNormalTable> = arrayListOf()
+    @SerializedName("signup_standby_models") var signupStandbyTables: ArrayList<SignupStandbyTable> = arrayListOf()
 
     //var nextCourseTime: [String: String] = [String: String]()
     var isSignup: Boolean = false
@@ -108,8 +109,8 @@ class CourseTable: Table() {
             people_limit_show = "未提供報名"
         }
 
-        if (signup_normal_models.size > 0) {
-            signup_count_show = "${signup_normal_models.size}位"
+        if (signupNormalTables.size > 0) {
+            signup_count_show = "${signupNormalTables.size}位"
         } else {
             signup_count_show = "0位"
         }

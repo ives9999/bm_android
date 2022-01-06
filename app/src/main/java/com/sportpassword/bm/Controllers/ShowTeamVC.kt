@@ -1,15 +1,21 @@
 package com.sportpassword.bm.Controllers
 
+import android.app.Activity
+import android.app.AlertDialog
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import com.google.gson.Gson
 import com.google.gson.JsonParseException
 import com.sportpassword.bm.Adapters.SignupAdapter
 import com.sportpassword.bm.Data.ShowRow
 import com.sportpassword.bm.Data.SignupRow
+import com.sportpassword.bm.Models.MemberTable
 import com.sportpassword.bm.Models.SuccessTable
 import com.sportpassword.bm.Models.Table
 import com.sportpassword.bm.Models.TeamTable
 import com.sportpassword.bm.R
+import com.sportpassword.bm.Services.MemberService
 import com.sportpassword.bm.Services.TeamService
 import com.sportpassword.bm.Utilities.*
 import com.sportpassword.bm.member
@@ -291,6 +297,7 @@ class ShowTeamVC: ShowVC() {
         }
     }
 
+    //showSignupInfo is click signup data to call back function defined in BaseActivity
     override fun showSignupInfo(position: Int) {
 
         if (myTable != null) {
@@ -299,11 +306,11 @@ class ShowTeamVC: ShowVC() {
                 if (position < people_limit) {
                     val signup_normal_model = myTable!!.signupNormalTables[position]
                     //print(signup_normal_model.member_token)
-                    //getMemberOne(member_token: signup_normal_model.member_token)
+                    getMemberOne(signup_normal_model.member_token)
 
                 } else {
                     val signup_standby_model = myTable!!.signupStandbyTables[position]
-                    //getMemberOne(member_token: signup_standby_model.member_token)
+                    getMemberOne(signup_standby_model.member_token)
                 }
             } else {
                 warning("只有球隊管理員可以檢視報名者資訊")

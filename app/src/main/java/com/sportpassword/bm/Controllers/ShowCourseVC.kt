@@ -75,7 +75,7 @@ class ShowCourseVC : ShowVC() {
         refreshLayout = refresh
         setRefreshListener()
 
-         super.onCreate(savedInstanceState)
+        super.onCreate(savedInstanceState)
 
 //        tableRowKeys = mutableListOf("weekday_text","interval_show","date","price_text_long","people_limit_text","kind_text","pv","created_at_show")
 //        tableRows = hashMapOf(
@@ -93,7 +93,7 @@ class ShowCourseVC : ShowVC() {
         courseCoachAdapter = ShowAdapter(this)
         coachTableView.adapter = courseCoachAdapter
 
-        signupAdapter = SignupAdapter(this)
+        signupAdapter = SignupAdapter(this, this)
         signupTableView.adapter = signupAdapter
 
         init()
@@ -240,7 +240,7 @@ class ShowCourseVC : ShowVC() {
             if (myTable!!.isSignup) {
                 signupButton.text = "取消報名"
             } else {
-                val count: Int = myTable!!.signup_normal_models.size
+                val count: Int = myTable!!.signupNormalTables.size
                 if (count >= myTable!!.people_limit) {
                     signupButton.text = "候補"
                 } else {
@@ -264,8 +264,8 @@ class ShowCourseVC : ShowVC() {
         if (myTable != null) {
             for (i in 0..myTable!!.people_limit - 1) {
                 var name = ""
-                if (myTable!!.signup_normal_models.count() > i) {
-                    val tmp = myTable!!.signup_normal_models[i].member_name?.let {
+                if (myTable!!.signupNormalTables.count() > i) {
+                    val tmp = myTable!!.signupNormalTables[i].member_name?.let {
                         name = it
                     }
                 }
@@ -274,10 +274,10 @@ class ShowCourseVC : ShowVC() {
             }
         }
 
-        if (myTable!!.signup_standby_models.count() > 0) {
-            for (i in 0..myTable!!.signup_standby_models.count() - 1) {
+        if (myTable!!.signupStandbyTables.count() > 0) {
+            for (i in 0..myTable!!.signupStandbyTables.count() - 1) {
                 var name = ""
-                val tmp = myTable!!.signup_standby_models[i].member_name?.let {
+                val tmp = myTable!!.signupStandbyTables[i].member_name?.let {
                     name = it
                 }
                 val signupRow: SignupRow = SignupRow("候補" + (i+1).toString()+".", name)
@@ -659,6 +659,26 @@ class ShowCourseVC : ShowVC() {
         }
     }
 
+    //showSignupInfo is click signup data to call back function defined in BaseActivity
+    override fun showSignupInfo(position: Int) {
+
+        if (coachTable != null) {
+            if (coachTable!!.manager_id == member.id) {
+                val people_limit = myTable!!.people_limit
+                if (position < people_limit) {
+                    val signup_normal_model = myTable!!.signupNormalTables[position]
+                    getMemberOne(signup_normal_model.member_token)
+
+                } else {
+                    val signup_standby_model = myTable!!.signupStandbyTables[position]
+                    getMemberOne(signup_standby_model.member_token)
+                }
+            } else {
+                warning("只有球隊管理員可以檢視報名者資訊")
+            }
+        }
+    }
+
 //    fun signupListButtonPressed(view: View) {
 //        //println("aaa")
 //        val intent = Intent(this, SignupListVC::class.java)
@@ -701,9 +721,9 @@ class ShowCourseVC : ShowVC() {
 //
 //}
 
-class CourseCoachViewHolder(val viewHolder: View): RecyclerView.ViewHolder(viewHolder) {
-
-    var icon: ImageView = viewHolder.findViewById(R.id.icon)
-    var title: TextView = viewHolder.findViewById(R.id.title)
-    var show: TextView = viewHolder.findViewById(R.id.content)
-}
+//class CourseCoachViewHolder(val viewHolder: View): RecyclerView.ViewHolder(viewHolder) {
+//
+//    var icon: ImageView = viewHolder.findViewById(R.id.icon)
+//    var title: TextView = viewHolder.findViewById(R.id.title)
+//    var show: TextView = viewHolder.findViewById(R.id.content)
+//}

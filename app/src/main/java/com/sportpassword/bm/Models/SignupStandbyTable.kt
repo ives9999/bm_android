@@ -8,4 +8,5 @@ class SignupStandbyTable: Table() {
     var able_date_id: Int = -1
     var cancel_deadline: String = ""
     var member_name: String = ""
+    var member_token: String = ""
 }

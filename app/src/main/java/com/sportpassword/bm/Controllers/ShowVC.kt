@@ -1,5 +1,6 @@
 package com.sportpassword.bm.Controllers
 
+import android.app.AlertDialog
 import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -8,13 +9,20 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.google.gson.Gson
+import com.google.gson.JsonParseException
 import com.sportpassword.bm.Adapters.ShowAdapter
 import com.sportpassword.bm.Data.ShowRow
 import com.sportpassword.bm.Data.SignupRow
+import com.sportpassword.bm.Models.MemberTable
+import com.sportpassword.bm.Models.SuccessTable
 import com.sportpassword.bm.Models.Table
 import com.sportpassword.bm.R
+import com.sportpassword.bm.Services.MemberService
 import com.sportpassword.bm.Utilities.Loading
 import com.sportpassword.bm.Utilities.image
+import com.sportpassword.bm.Utilities.jsonToModel
+import com.sportpassword.bm.Utilities.makeCall
 import com.sportpassword.bm.member
 import kotlinx.android.synthetic.main.activity_show_course_vc.*
 import kotlinx.android.synthetic.main.mask.*
@@ -244,5 +252,66 @@ open class ShowVC: BaseActivity() {
 //    override fun didSelectRowAt(view: View, position: Int) {}
 
     open fun setData() {}
+
+    fun getMemberOne(member_token: String) {
+
+        Loading.show(mask)
+        MemberService.getOne(this, hashMapOf("token" to member_token)) { success ->
+
+            runOnUiThread {
+                Loading.hide(mask)
+            }
+            if (success) {
+                var t: SuccessTable? = null
+                try {
+                    t = Gson().fromJson<SuccessTable>(MemberService.jsonString, SuccessTable::class.java)
+                } catch (e: JsonParseException) {
+                    runOnUiThread {
+                        warning(e.localizedMessage!!)
+                    }
+                }
+                var t_success: Boolean = false
+                var t_msg: String = ""
+                if (t != null) {
+                    t_success = t.success
+                    t_msg = t.msg
+                }
+                if (!t_success) {
+                    runOnUiThread {
+                        warning(t_msg)
+                    }
+                } else {
+                    val memberTable = jsonToModel<MemberTable>(MemberService.jsonString)
+                    runOnUiThread {
+                        if (memberTable != null) {
+                            memberTable.filterRow()
+                            showTempMemberInfo(memberTable)
+                        } else {
+                            warning(MemberService.msg)
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    fun showTempMemberInfo(memberTable: MemberTable) {
+
+        val content: String = "真實姓名：" + memberTable.name + "\n" + "聯絡電話：" + memberTable.mobile_show + "\n" + "聯絡EMail：" + memberTable.email
+
+        AlertDialog.Builder(this)
+            .setTitle(memberTable.nickname)
+            .setMessage(content)
+            .setPositiveButton("打電話") { _, _ ->
+                if (memberTable.mobile != null && memberTable.mobile.isNotEmpty())
+                    memberTable.mobile.makeCall(this)
+            }
+            .setNegativeButton("關閉") { _, _ ->
+
+            }
+            .show()
+//        println(memberTable.nickname)
+//        println(memberTable.mobile)
+    }
 }
 
