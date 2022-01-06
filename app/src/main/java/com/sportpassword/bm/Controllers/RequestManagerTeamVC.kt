@@ -13,6 +13,7 @@ import com.sportpassword.bm.Services.MemberService
 import com.sportpassword.bm.Services.TeamService
 import com.sportpassword.bm.Utilities.Loading
 import com.sportpassword.bm.Utilities.jsonToModel
+import com.sportpassword.bm.Utilities.website
 import com.sportpassword.bm.member
 import kotlinx.android.synthetic.main.activity_request_manager_team_vc.*
 import kotlinx.android.synthetic.main.mask.*
@@ -56,7 +57,7 @@ class RequestManagerTeamVC : BaseActivity() {
         teamNameTF = findViewById(R.id.team_nameTF)
         managerTokenTF = findViewById(R.id.manager_tokenTF)
 
-        //teamNameTF.setText("早安羽球隊")
+        teamNameTF.setText("早安羽球隊")
         //managerTokenTF.setText("bbeq9v41HVRBOgPNEA9pmAEH6abNZPs")
 
         managerNicknameLbl = findViewById(R.id.managerNicknameLbl)
@@ -113,6 +114,12 @@ class RequestManagerTeamVC : BaseActivity() {
         managerContainer.visibility = View.INVISIBLE
         imageContainer.visibility = View.INVISIBLE
         footer.visibility = View.INVISIBLE
+
+        findViewById<LinearLayout>(R.id.question) ?. let {
+            it.setOnClickListener {
+                "https://bm.sportpassword.com/doc/member_private_key.html".website(this)
+            }
+        }
 
         init()
     }
