@@ -204,22 +204,27 @@ class ShowTeamVC: ShowVC() {
 
         //2.如果沒有設定臨打日期，關閉臨打
         if (myTable!!.signupDate != null) {
-            val temp_date_string: String = myTable!!.signupDate!!.date + " 23:59:59"
+            val temp_date_string: String = myTable!!.signupDate!!.date
 
             //3.如果臨打日期超過現在的日期，關閉臨打
             var temp_date: Date = Date()
-            temp_date_string.toDate("yyyy-MM-dd HH:mm:ss")?.let {
+            temp_date_string.toDate("yyyy-MM-dd")?.let {
                 temp_date = it
             }
 
-            val now_string: String = Date().toMyString("yyyy-MM-dd") + " 23:59:59"
+            val now_string: String = Date().toMyString("yyyy-MM-dd")
             var now: Date = Date()
-            now_string.toDate("yyyy-MM-dd HH:mm:ss")?.let {
+            now_string.toDate("yyyy-MM-dd")?.let {
                 now = it
             }
 
-            if (temp_date.before(now)) {
-                isTempPlay = false
+            //(1)如果報名日期剛好也是臨打日期則可以報名
+            if (temp_date.equals(now)) {
+                isTempPlay = true
+            } else {
+                //(2)如果報名日期已經過了臨打日期則無法報名
+                //(3)如果報名日期還沒過了臨打日期則無法報名
+                isTempPlay = !temp_date.before(now)
             }
         }
 
