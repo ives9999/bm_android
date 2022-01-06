@@ -297,7 +297,7 @@ open class ShowVC: BaseActivity() {
 
     fun showTempMemberInfo(memberTable: MemberTable) {
 
-        val content: String = "真實姓名：" + memberTable.name + "\n" + "聯絡電話：" + memberTable.mobile_show + "\n" + "聯絡EMail：" + memberTable.email
+        val content: String = "姓名：" + memberTable.name + "\n" + "電話：" + memberTable.mobile_show + "\n" + "EMail：" + memberTable.email
 
         AlertDialog.Builder(this)
             .setTitle(memberTable.nickname)

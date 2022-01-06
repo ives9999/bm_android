@@ -58,6 +58,7 @@ class MemberVC : MyTableVC() {
         setRecyclerViewRefreshListener()
 
         memberSectionAdapter = MemberSectionAdapter(this, R.layout.cell_section, this)
+        memberSections = updateSectionRow1()
         memberSectionAdapter.setMyTableSection(memberSections)
         recyclerView.adapter = memberSectionAdapter
         loginout()

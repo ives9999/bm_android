@@ -15,6 +15,7 @@ import com.sportpassword.bm.Services.MemberService
 import com.sportpassword.bm.Utilities.*
 import com.sportpassword.bm.member
 import kotlinx.android.synthetic.main.activity_login.*
+import kotlinx.android.synthetic.main.activity_member_vc.*
 import kotlinx.android.synthetic.main.mask.*
 import kotlin.reflect.full.memberProperties
 
@@ -45,6 +46,8 @@ class LoginVC : BaseActivity() {
     }
 
     fun loginSubmit(view: View) {
+
+        _hideKeyboard(login_layout)
         Loading.show(mask)
         val email = loginEmailTxt.text.toString()
         if (email.isEmpty()) {
