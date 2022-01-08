@@ -45,6 +45,12 @@ class ValidateVC : BaseActivity() {
             codeTxt.inputType = InputType.TYPE_CLASS_NUMBER
         }
         hidekeyboard(validate_layout)
+        init()
+    }
+
+    override fun init() {
+        isPrevIconShow = true
+        super.init()
     }
 
     fun submit(view: View) {

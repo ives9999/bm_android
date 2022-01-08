@@ -253,9 +253,11 @@ interface ToInterface {
         mainDelegate.startActivity(i)
     }
 
-    fun toRegister() {
-        val registerIntent: Intent = Intent(mainDelegate, RegisterVC::class.java)
-        mainDelegate.startActivity(registerIntent)
+    fun toRegister(delegate: BaseActivity?=null) {
+        val i = Intent(mainDelegate, RegisterVC::class.java)
+
+        mainDelegate.delegate = delegate
+        mainDelegate.registerVC.launch(i)
     }
 
     fun toRequestManagerTeam() {

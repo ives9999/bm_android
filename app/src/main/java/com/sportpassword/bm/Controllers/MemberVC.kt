@@ -323,7 +323,7 @@ class MemberVC : MyTableVC() {
     }
 
     fun registerBtnPressed(){
-        this.toRegister()
+        this.toRegister(this)
 //        val registerIntent: Intent = Intent(activity, RegisterActivity::class.java)
 //        startActivityForResult(registerIntent, this.REGISTER_REQUEST_CODE)
     }

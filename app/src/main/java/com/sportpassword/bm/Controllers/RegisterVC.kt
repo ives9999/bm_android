@@ -1,5 +1,6 @@
 package com.sportpassword.bm.Controllers
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
@@ -635,7 +636,7 @@ class RegisterVC : MyTableVC() {
                 )
                 if (table != null) {
                     if (!table.success) {
-                        var msg: String = ""
+                        msg = ""
                         for (error in table.errors) {
                             msg += error + "\n"
                         }
@@ -645,7 +646,9 @@ class RegisterVC : MyTableVC() {
                             val memberTable: MemberTable = table.model!!
                             memberTable.toSession(this, true)
                             info(msg, "", "關閉") {
-                                prev()
+                                setResult(Activity.RESULT_OK, intent)
+                                finish()
+                                //prev()
                             }
                         }
                     }
