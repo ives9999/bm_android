@@ -28,7 +28,7 @@ class EditTeamVC : EditVC() {
 
         setContentView(R.layout.activity_edit_team_vc)
 
-        if (token == null) {
+        if (token == null|| token.isEmpty()) {
 //            myTable = TeamTable()
 //            myTable!!.arena = ArenaTable()
 //            myTable!!.name = "測試與球隊"
@@ -72,7 +72,18 @@ class EditTeamVC : EditVC() {
         }
 
         val rows: ArrayList<OneRow> = arrayListOf()
-        var row = OneRow(
+        val manager_id: String = (myTable!!.manager_id <= 0) then { "" } ?: myTable!!.manager_id.toString()
+        var row: OneRow = OneRow(
+            "管理員",
+            manager_id,
+            myTable!!.manager_nickname,
+            MANAGER_ID_KEY,
+            "more"
+        )
+        row.prompt = "如果新增者就是管理者，就不用填寫此項目"
+        row.token = myTable!!.manager_token
+        rows.add(row)
+        row = OneRow(
             "名稱",
             myTable!!.name,
             myTable!!.name,
@@ -205,29 +216,35 @@ class EditTeamVC : EditVC() {
             "more"
         )
         rows.add(row)
+
+        val people_limit: String = (myTable!!.people_limit > 0) then { myTable!!.people_limit.toString()} ?: ""
         row = OneRow(
             "臨打名額",
-            myTable!!.people_limit.toString(),
-            myTable!!.people_limit.toString(),
+            people_limit,
+            people_limit,
             PEOPLE_LIMIT_KEY,
             "textField",
             KEYBOARD.numberPad
         )
         rows.add(row)
+
+        val temp_fee_M: String = (myTable!!.temp_fee_M >= 0) then { myTable!!.temp_fee_M.toString() } ?: ""
         row = OneRow(
             "臨打費用-男",
-            myTable!!.temp_fee_M.toString(),
-            myTable!!.temp_fee_M.toString(),
+            temp_fee_M,
+            temp_fee_M,
             TEAM_TEMP_FEE_M_KEY,
             "textField",
             KEYBOARD.numberPad,
             "300"
         )
         rows.add(row)
+
+        val temp_fee_F: String = (myTable!!.temp_fee_F >= 0) then { myTable!!.temp_fee_F.toString() } ?: ""
         row = OneRow(
             "臨打費用-女",
-            myTable!!.temp_fee_F.toString(),
-            myTable!!.temp_fee_F.toString(),
+            temp_fee_F,
+            temp_fee_F,
             TEAM_TEMP_FEE_F_KEY,
             "textField",
             KEYBOARD.numberPad,
@@ -246,15 +263,6 @@ class EditTeamVC : EditVC() {
         oneSections.add(section)
 
         rows.clear()
-        row = OneRow(
-            "隊長",
-            myTable!!.manager_id.toString(),
-            myTable!!.manager_nickname,
-            MANAGER_ID_KEY,
-            "more"
-        )
-        row.token = myTable!!.manager_token
-        rows.add(row)
         row = OneRow(
             "line",
             myTable!!.line,

@@ -650,6 +650,12 @@ abstract class MyTableVC : BaseActivity() {
         oneSectionAdapter.notifyItemChanged(idx)
     }
 
+    override fun contentEdit(key: String, content: String) {
+        super.contentEdit(key, content)
+        val idx: Int = getOneSectionIdxFromRowKey(key)
+        oneSectionAdapter.notifyItemChanged(idx)
+    }
+
 //    override fun textChanged(str: String) {
 //        val key: String = KEYWORD_KEY
 //        val row = getDefinedRow(key)
@@ -834,6 +840,7 @@ interface List1CellDelegate {
     fun cellArena(row: Table){}
     //管理者檢視報名列表
     fun cellSignup(row: Table){}
+    fun cellPrompt(sectionIdx: Int, rowIdx: Int) {}
 
     fun cellTextChanged(sectionIdx: Int, rowIdx: Int, str: String) {}
     fun cellSwitchChanged(sectionIdx: Int, rowIdx: Int, b: Boolean) {}

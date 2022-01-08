@@ -87,7 +87,7 @@ open class EditVC : MyTableVC() {
         getImageViewParams()
         initImagePicker(R.layout.image_picker_layer)
         val a: RelativeLayout = findViewById(R.id.edit_featured_container)
-        a?.onClick {
+        a.onClick {
             showImagePickerLayer()
         }
 

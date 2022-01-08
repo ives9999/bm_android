@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import android.widget.LinearLayout
 import com.google.gson.JsonParseException
 import com.sportpassword.bm.Models.MemberTable
 import com.sportpassword.bm.Models.SuccessTable
@@ -11,6 +12,7 @@ import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.MemberService
 import com.sportpassword.bm.Utilities.Loading
 import com.sportpassword.bm.Utilities.jsonToModel
+import com.sportpassword.bm.Utilities.website
 import kotlinx.android.synthetic.main.activity_select_manager_vc.*
 import kotlinx.android.synthetic.main.mask.*
 
@@ -51,6 +53,12 @@ class SelectManagerVC : SelectVC() {
             } else {
                 val manager_token: String = manager_tokenTF.text.toString()
                 getMemberOne(manager_token)
+            }
+        }
+
+        findViewById<LinearLayout>(R.id.question) ?. let {
+            it.setOnClickListener {
+                "https://bm.sportpassword.com/doc/member_private_key.html".website(this)
             }
         }
 

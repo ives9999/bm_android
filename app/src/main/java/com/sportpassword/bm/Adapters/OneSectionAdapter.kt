@@ -24,6 +24,7 @@ import com.sportpassword.bm.Data.OneSection
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Utilities.CELL_TYPE
 import com.sportpassword.bm.Utilities.quotientAndRemainder
+import com.sportpassword.bm.Utilities.then
 import com.sportpassword.bm.Views.Tag
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.cart_list_cell.view.*
@@ -264,7 +265,7 @@ class OneItemAdapter(val context: Context, private val sectionIdx: Int, private 
             holder.title.text = row.title
             holder.show.text = row.show
             holder.show.visibility = View.VISIBLE
-            holder.prompt.visibility = View.INVISIBLE
+            holder.prompt.visibility = (row.prompt.isNotEmpty()) then { View.VISIBLE } ?: View.GONE
 
             holder.required.visibility = if (row.isRequired) { View.VISIBLE } else { View.INVISIBLE }
 
@@ -279,6 +280,12 @@ class OneItemAdapter(val context: Context, private val sectionIdx: Int, private 
                 }
             } else {
                 holder.clear.visibility = View.GONE
+            }
+
+            if (row.prompt.isNotEmpty()) {
+                holder.prompt.setOnClickListener {
+                    delegate.cellPrompt(sectionIdx, position)
+                }
             }
         } else if (holder is BarcodeViewHolder) {
 

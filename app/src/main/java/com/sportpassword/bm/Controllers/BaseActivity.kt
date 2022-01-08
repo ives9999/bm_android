@@ -168,7 +168,11 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener,
     //var vcResult: VCResult = VCResult()
 
     open fun arenaSelected(selected: String, show: String) {}
-    open fun contentEdit(key: String, content: String) {}
+    open fun contentEdit(key: String, content: String) {
+        val row = getOneRowFromKey(key)
+        row.value = content
+        row.show = content
+    }
 
     //for tag delegate
 //    open fun textFieldTextChanged(sectionKey: String, rowKey: String, value: String){}
@@ -419,6 +423,14 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener,
         oneSections[sectionIdx].items[rowIdx].show = "全部"
         oneSectionAdapter.setOneSection(oneSections)
         oneSectionAdapter.notifyItemChanged(sectionIdx)
+    }
+
+    override fun cellPrompt(sectionIdx: Int, rowIdx: Int) {
+
+        val row: OneRow = getOneRowFromIdx(sectionIdx, rowIdx)
+        if (row.prompt.isNotEmpty()) {
+            info(row.prompt)
+        }
     }
 
     override fun cellTextChanged(sectionIdx: Int, rowIdx: Int, str: String) {

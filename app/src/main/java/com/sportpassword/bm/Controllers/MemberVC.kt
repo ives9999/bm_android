@@ -58,7 +58,7 @@ class MemberVC : MyTableVC() {
         setRecyclerViewRefreshListener()
 
         memberSectionAdapter = MemberSectionAdapter(this, R.layout.cell_section, this)
-        memberSections = updateSectionRow1()
+        memberSections = initSectionRow()
         memberSectionAdapter.setMyTableSection(memberSections)
         recyclerView.adapter = memberSectionAdapter
         loginout()
@@ -104,6 +104,7 @@ class MemberVC : MyTableVC() {
         if (member.avatar!!.isNotEmpty()) {
             member.avatar!!.image(this, avatarView)
         }
+
         loginTV.text = "登出"
         registerBtn.visibility = View.INVISIBLE
         forgetPasswordBtn.visibility = View.INVISIBLE

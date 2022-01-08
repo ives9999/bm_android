@@ -208,6 +208,11 @@ class ManagerCourseVC: ManagerVC() {
 //        }.show()
 //    }
 
+    override fun addPressed(view: View) {
+
+        //toEditCourse(null, this)
+    }
+
     fun add(view: View) {
 
         if (member.validate < 1) {

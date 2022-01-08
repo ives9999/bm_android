@@ -98,6 +98,6 @@ class ManagerTeamVC : ManagerVC() {
 
     override fun addPressed(view: View) {
 
-        toEditTeam()
+        toEditTeam(null, this)
     }
 }

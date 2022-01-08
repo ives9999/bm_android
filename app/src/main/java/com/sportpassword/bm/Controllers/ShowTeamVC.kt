@@ -97,6 +97,7 @@ class ShowTeamVC: ShowVC() {
 
         showRows.addAll(arrayListOf(
             ShowRow("arena", "arena1", "球館", myTable!!.arena!!.name),
+            ShowRow("weekday", "date", "星期", myTable!!.weekdays_show),
             ShowRow("interval_show", "clock", "時段", myTable!!.interval_show),
             ShowRow("ball", "ball", "球種", myTable!!.ball),
             ShowRow("degree", "degree", "程度", myTable!!.degree_show),
@@ -105,7 +106,7 @@ class ShowTeamVC: ShowVC() {
             ShowRow("line", "line", "line", myTable!!.line),
             ShowRow("fb", "fb", "FB", myTable!!.fb),
             ShowRow("youtube", "youtube", "Youtube", myTable!!.youtube),
-            ShowRow("website", "website", "網站", myTable!!.website),
+//            ShowRow("website", "website", "網站", myTable!!.website),
             ShowRow("email", "email1", "EMail", myTable!!.email),
             ShowRow("pv", "pv", "瀏覽數", myTable!!.pv.toString()),
             ShowRow("created_at_show", "date", "建立日期", myTable!!.created_at_show)
