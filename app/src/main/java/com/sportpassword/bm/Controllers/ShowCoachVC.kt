@@ -94,6 +94,10 @@ class ShowCoachVC: ShowVC() {
 
     override fun init() {
         super.init()
+    }
+
+    override fun initData() {
+        super.initData()
 
         showRows.addAll(arrayListOf(
             ShowRow(MOBILE_KEY, "mobile", "行動電話"),

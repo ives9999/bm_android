@@ -8,6 +8,12 @@ import com.sportpassword.bm.R
 import com.sportpassword.bm.Utilities.*
 import kotlinx.android.synthetic.main.date_select_vc.*
 import java.util.*
+import android.widget.DatePicker
+
+import android.widget.DatePicker.OnDateChangedListener
+
+
+
 
 class DateSelectVC : BaseActivity() {
 
@@ -41,22 +47,31 @@ class DateSelectVC : BaseActivity() {
         if (selected != null && selected!!.isDate()) {
             date = selected!!.toDateTime("yyyy-MM-dd")
         }
-        val yyyy = date!!.getY()
-        val MM = date.getm() - 1
-        val dd = date.getd()
-        val calendar = Calendar.getInstance()
-        calendar.set(Calendar.YEAR, yyyy);
-        calendar.set(Calendar.MONTH, MM);
-        calendar.set(Calendar.DAY_OF_MONTH, dd);
-        val milliTime = calendar.timeInMillis
-        datePicker.setDate(milliTime, true, true)
+        val yyyy: Int = date!!.getY()
+        val MM: Int = date.getm() - 1
+        val dd: Int = date.getd()
+//        val calendar = Calendar.getInstance()
+//        calendar.set(Calendar.YEAR, yyyy);
+//        calendar.set(Calendar.MONTH, MM);
+//        calendar.set(Calendar.DAY_OF_MONTH, dd);
+//        val milliTime = calendar.timeInMillis
+
+        //datePicker.updateDate(yyyy, MM, dd)
+
+//        datePicker.setDate(milliTime, true, true)
         if (selected == null || selected?.length == 0) {
             selected = "" + yyyy + "-" + (MM+1) + "-" + dd
         }
 
-        datePicker.setOnDateChangeListener { calendarView, yyyy1, MM1, dd1 ->
-            selected = "" + yyyy1 + "-" + (MM1+1) + "-" + dd1
-        }
+        val onDateChangeListener = MyOnDateChangeListener(this)
+        datePicker.init(yyyy, MM, dd, onDateChangeListener)
+
+//        datePicker.setOnDateChangedListener { _, yyyy1, MM1, dd1 ->
+//            selected = "" + yyyy1 + "-" + (MM1+1) + "-" + dd1
+//        }
+//        datePicker.setOnDateChangeListener { calendarView, yyyy1, MM1, dd1 ->
+//
+//        }
 
         init()
     }
@@ -66,6 +81,10 @@ class DateSelectVC : BaseActivity() {
         super.init()
     }
 
+    fun dateOnChangListener(year: Int, month: Int, day: Int) {
+        selected = "$year-$month-$day"
+    }
+
     fun submitBtnPressed(v: View) {
         val intent = Intent()
         intent.putExtra("key", key)
@@ -73,6 +92,15 @@ class DateSelectVC : BaseActivity() {
         intent.putExtra("selected", selected)
         setResult(Activity.RESULT_OK, intent)
         finish()
+    }
+}
+
+class MyOnDateChangeListener(val delegate: DateSelectVC) : OnDateChangedListener {
+    override fun onDateChanged(view: DatePicker, year: Int, month: Int, day: Int) {
+        val mon = month + 1
+        //expirationDate.setText("$day/$mon/$year")
+
+        delegate.dateOnChangListener(year, month + 1, day)
     }
 }
 

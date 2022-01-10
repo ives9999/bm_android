@@ -46,6 +46,10 @@ class ShowArenaVC: ShowVC() {
 
     override fun init() {
         super.init()
+    }
+
+    override fun initData() {
+        super.initData()
 
         showRows.addAll(arrayListOf(
             ShowRow("tel_show", "tel", "電話"),

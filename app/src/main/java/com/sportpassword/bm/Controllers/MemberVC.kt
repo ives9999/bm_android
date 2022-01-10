@@ -74,7 +74,7 @@ class MemberVC : MyTableVC() {
                 if (success) {
                     val table = jsonToModel<MemberTable>(MemberService.jsonString)
                     table?.toSession(this, true)
-                    memberSections = updateSectionRow1()
+                    memberSections = initSectionRow()
                     memberSectionAdapter.setMyTableSection(memberSections)
                     runOnUiThread {
                         memberSectionAdapter.notifyDataSetChanged()

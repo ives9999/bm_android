@@ -24,15 +24,12 @@
         android:layout_below="@id/topView"
         android:background="@drawable/background"
         android:orientation="vertical">
-        <CalendarView
+
+        <DatePicker
             android:id="@+id/datePicker"
-            style="@android:style/Widget.DeviceDefault.CalendarView"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="12dp"
-            android:layout_marginTop="12dp"
-            android:layout_marginRight="12dp"
-            android:layout_marginBottom="24dp"
+            android:layout_gravity="center"
             android:background="@color/MY_WHITE" />
     </LinearLayout>
 

@@ -74,14 +74,18 @@ class ShowTeamVC: ShowVC() {
         try {
             table = jsonToModel<TeamTable>(dataService.jsonString)
         } catch (e: JsonParseException) {
-            warning(e.localizedMessage!!)
+            runOnUiThread {
+                warning(e.localizedMessage!!)
+            }
             //println(e.localizedMessage)
         }
         if (table != null) {
             myTable = table as TeamTable
             myTable!!.filterRow()
         } else {
-            warning("解析伺服器所傳的字串失敗，請洽管理員")
+            runOnUiThread {
+                warning("解析伺服器所傳的字串失敗，請洽管理員")
+            }
         }
     }
 

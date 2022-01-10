@@ -54,6 +54,10 @@ object TeamService: DataService() {
         return url
     }
 
+    override fun getDeleteURL(): String {
+        return URL_TEAM_DELETE
+    }
+
 //    fun tempPlay_list(context: Context, params: HashMap<String,Any>, page:Int, perPage:Int, complete: CompletionHandler) {
 //        val url = URL_TEAM_TEMP_PLAY_LIST
 ////        println(url)

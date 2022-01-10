@@ -2,11 +2,15 @@ package com.sportpassword.bm.Controllers
 
 import android.os.Bundle
 import android.view.View
+import com.google.gson.Gson
 import com.sportpassword.bm.Adapters.TeamAdapter
 import com.sportpassword.bm.Models.*
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.TeamService
+import com.sportpassword.bm.Utilities.Global
+import com.sportpassword.bm.Utilities.Loading
 import com.sportpassword.bm.Utilities.jsonToModels
+import kotlinx.android.synthetic.main.mask.*
 
 class ManagerTeamVC : ManagerVC() {
 
@@ -51,6 +55,38 @@ class ManagerTeamVC : ManagerVC() {
 
     override fun cellDelete(row: Table) {
 
+        msg = "是否確定要刪除此球隊？"
+        warning(msg, true, "刪除") {
+            Loading.show(mask)
+            dataService.delete(this, able_type, row.token, "trash") { success ->
+                runOnUiThread {
+                    Loading.hide(mask)
+                }
+
+                if (success) {
+                    try {
+                        val successTable: SuccessTable = Gson().fromJson(dataService.jsonString, SuccessTable::class.java)
+                        if (!successTable.success) {
+                            runOnUiThread {
+                                warning(successTable.msg)
+                            }
+                        } else {
+                            runOnUiThread {
+                                refresh()
+                            }
+                        }
+                    } catch (e: java.lang.Exception) {
+                        runOnUiThread {
+                            warning("解析JSON字串時，得到空值，請洽管理員")
+                        }
+                    }
+                } else {
+                    runOnUiThread {
+                        warning("刪除失敗，請洽管理員")
+                    }
+                }
+            }
+        }
     }
 
     override fun cellSignup(row: Table) {

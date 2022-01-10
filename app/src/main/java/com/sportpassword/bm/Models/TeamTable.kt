@@ -88,6 +88,14 @@ class TeamTable: Table() {
             temp_content = ""
         }
 
+//        if (ball == null) {
+//            ball = ""
+//        }
+//
+//        if (email == null) {
+//            email = ""
+//        }
+
         if (temp_status != null) {
             temp_status_show = STATUS.from(temp_status).value
             if (temp_status == "online") {

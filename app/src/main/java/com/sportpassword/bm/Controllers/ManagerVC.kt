@@ -68,6 +68,7 @@ open class ManagerVC : MyTableVC() {
         }
 
         init()
+        //必須指定status，預設是只會出現上線的
         refresh()
     }
 
@@ -87,7 +88,7 @@ open class ManagerVC : MyTableVC() {
         params.clear()
         params.put("manager_token", manager_token!!)
         params.put("able_type", able_type)
-        params.put("status", "all")
+        params.put("status", "online,offline")
         tableLists.clear()
         getDataStart(page, perPage)
     }

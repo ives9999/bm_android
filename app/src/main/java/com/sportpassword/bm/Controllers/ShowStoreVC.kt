@@ -44,6 +44,10 @@ class ShowStoreVC : ShowVC() {
 
     override fun init() {
         super.init()
+    }
+
+    override fun initData() {
+        super.initData()
 
         showRows.addAll(arrayListOf(
             ShowRow("tel_show", "tel", "市內電話"),

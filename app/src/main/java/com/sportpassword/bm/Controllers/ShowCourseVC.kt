@@ -102,7 +102,11 @@ class ShowCourseVC : ShowVC() {
 
     override fun init() {
         super.init()
+    }
 
+    override fun initData() {
+
+        showRows.clear()
         showRows.addAll(arrayListOf(
             ShowRow("weekday_text", "calendar", "日期"),
             ShowRow("interval_show", "clock", "時段"),
@@ -114,6 +118,7 @@ class ShowCourseVC : ShowVC() {
             ShowRow("created_at_show", "calendar", "建立日期")
         ))
 
+        coachRows.clear()
         coachRows.addAll(arrayListOf(
             ShowRow(NAME_KEY, "coach", "教練"),
             ShowRow(MOBILE_KEY, "mobile", "行動電話"),

@@ -64,16 +64,17 @@ open class DataService {
 //
 //    }
 
-    open fun delete(context: Context, type: String, token: String, complete: CompletionHandler) {
+    open fun delete(context: Context, type: String, token: String, status: String = "trash", complete: CompletionHandler) {
         val url = getDeleteURL()
-        //println(url)
+        println(url)
         val body = JSONObject()
-        body.put("source", "app")
+        body.put("device", "app")
         body.put("channel", "bm")
         body.put("token", token)
         body.put("type", type)
+        body.put("status", status)
         val requestBody = body.toString()
-        //println(requestBody)
+        println(requestBody)
 
         val request = object : JsonObjectRequest(Request.Method.POST, url, null, Response.Listener { json ->
             //println(json)

@@ -75,13 +75,16 @@ open class ShowVC: BaseActivity() {
         super.init()
     }
 
+    open fun initData() {}
+
     open fun genericTable() {}
 
     override fun refresh() {
 
         if (token != null) {
-            signupRows.clear()
-            showRows.clear()
+//            signupRows.clear()
+//            showRows.clear()
+            initData()
             Loading.show(mask)
             val params: HashMap<String, String> = hashMapOf("token" to token!!, "member_token" to member.token!!)
             dataService.getOne(this, params) { success ->

@@ -44,6 +44,10 @@ object CourseService: DataService() {
         return url
     }
 
+    override fun getDeleteURL(): String {
+        return URL_COURSE_DELETE
+    }
+
 //    override fun parseAbleForSingupList(data: JSONObject): SuperModel {
 //        val s: CourseTable = JSONParse.parse<CourseTable>(data)!!
 //
