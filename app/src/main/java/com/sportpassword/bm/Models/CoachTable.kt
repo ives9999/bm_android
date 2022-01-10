@@ -30,6 +30,10 @@ class CoachTable: Table() {
             website = "未提供"
         }
 
+        if (line == null) {
+            line = "未提供"
+        }
+
         if (fb == null) {
             fb = "未提供"
         }

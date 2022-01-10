@@ -48,19 +48,6 @@ class ShowStoreVC : ShowVC() {
 
     override fun initData() {
         super.initData()
-
-        showRows.addAll(arrayListOf(
-            ShowRow("tel_show", "tel", "市內電話"),
-            ShowRow("mobile_show", "mobile", "行動電話"),
-            ShowRow("address", "marker", "住址"),
-            ShowRow("fb", "fb", "FB"),
-            ShowRow("line", "lineicon", "FB"),
-            ShowRow("website", "website", "line"),
-            ShowRow("email", "email1", "EMail"),
-            ShowRow("interval_show", "clock", "營業時間"),
-            ShowRow("pv", "pv", "瀏覽數"),
-            ShowRow("created_at_show", "calendar", "建立日期")
-        ))
     }
 
     override fun genericTable() {
@@ -82,7 +69,20 @@ class ShowStoreVC : ShowVC() {
     override fun setData() {
 
         if (myTable != null) {
-            setMainData(myTable!!)
+            showRows.clear()
+            showRows.addAll(arrayListOf(
+                ShowRow("tel_show", "tel", "市內電話", myTable!!.tel_show),
+                ShowRow("mobile_show", "mobile", "行動電話", myTable!!.mobile_show),
+                ShowRow("address", "map", "住址", myTable!!.address),
+                ShowRow("fb", "fb", "FB", myTable!!.fb),
+                ShowRow("line", "line", "Line", myTable!!.line),
+                ShowRow("website", "website", "網站", myTable!!.website),
+                ShowRow("email", "email1", "EMail", myTable!!.email),
+                ShowRow("interval_show", "clock", "營業時間", myTable!!.interval_show),
+                ShowRow("pv", "pv", "瀏覽數", myTable!!.pv.toString()),
+                ShowRow("created_at_show", "date", "建立日期", myTable!!.created_at_show)
+            ))
+//            setMainData(myTable!!)
         }
     }
 

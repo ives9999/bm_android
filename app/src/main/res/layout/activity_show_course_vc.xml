@@ -50,6 +50,7 @@
 
                 <TextView
                     android:id="@+id/courseDetailLbl"
+                    style="@style/list_text_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/featured"
@@ -57,7 +58,6 @@
                     android:layout_marginTop="16dp"
                     android:layout_marginBottom="8dp"
                     android:text="課程資料"
-                    style="@style/list_text_title"
                     android:textSize="24sp" />
 
                 <androidx.recyclerview.widget.RecyclerView
@@ -72,13 +72,14 @@
 
                 <TextView
                     android:id="@+id/signupDetailLbl"
+                    style="@style/list_text_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/tableView"
                     android:layout_marginLeft="12dp"
+                    android:layout_marginTop="16dp"
                     android:layout_marginBottom="8dp"
                     android:text="報名資料"
-                    style="@style/list_text_title"
                     android:textSize="24dp" />
 
                 <TextView
@@ -104,12 +105,13 @@
 
                 <TextView
                     android:id="@+id/coachDetailLbl"
+                    style="@style/list_text_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/signupTableView"
                     android:layout_marginLeft="12dp"
+                    android:layout_marginTop="16dp"
                     android:layout_marginBottom="8dp"
-                    style="@style/list_text_title"
                     android:text="教練資料"
                     android:textSize="24dp" />
 
@@ -122,13 +124,14 @@
 
                 <TextView
                     android:id="@+id/contentLbl"
+                    style="@style/list_text_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/coachTableView"
                     android:layout_marginLeft="12dp"
+                    android:layout_marginTop="12dp"
                     android:layout_marginBottom="8dp"
                     android:text="詳細介紹"
-                    style="@style/list_text_title"
                     android:textSize="24dp" />
 
                 <WebView

@@ -14,6 +14,7 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.google.gson.JsonParseException
+import com.sportpassword.bm.Adapters.ManagerAdapter
 import com.sportpassword.bm.Adapters.ShowAdapter
 import com.sportpassword.bm.Data.ShowRow
 import com.sportpassword.bm.Models.*
@@ -47,8 +48,8 @@ class ShowCoachVC: ShowVC() {
     val eventViews: ArrayList<ViewGroup> = arrayListOf()
     var eventTag: Int = 0
 
-    lateinit var coachCourseAdapter: ShowAdapter
-    var courseRows: ArrayList<ShowRow> = arrayListOf()
+    lateinit var coachCourseAdapter: ManagerAdapter
+    var courseRows: ArrayList<Table> = arrayListOf()
 
 //    lateinit var courseAdapter: GroupAdapter<GroupieViewHolder>
 
@@ -86,7 +87,7 @@ class ShowCoachVC: ShowVC() {
         webViewSettings(this, featWebView)
         webViewSettings(this, contentView)
 
-        coachCourseAdapter = ShowAdapter(this)
+        coachCourseAdapter = ManagerAdapter(this, courseRows, this)
         courseTableView.adapter = coachCourseAdapter
         init()
         refresh()
@@ -98,18 +99,6 @@ class ShowCoachVC: ShowVC() {
 
     override fun initData() {
         super.initData()
-
-        showRows.addAll(arrayListOf(
-            ShowRow(MOBILE_KEY, "mobile", "行動電話"),
-            ShowRow(LINE_KEY, "lineicon", "line"),
-            ShowRow(FB_KEY, "fb", "fb"),
-            ShowRow(YOUTUBE_KEY, "youtube", "youtube"),
-            ShowRow(WEBSITE_KEY, "website", "網站"),
-            ShowRow(EMAIL_KEY, "email", "EMail"),
-            ShowRow(COACH_SENIORITY_KEY, "seniority", "年資"),
-            ShowRow("pv", "pv", "瀏覽數"),
-            ShowRow("created_at_show", "calendar", "建立日期")
-        ))
     }
 
 //    fun initCourseAdapter() {
@@ -233,6 +222,26 @@ class ShowCoachVC: ShowVC() {
 //        return items
 //    }
 
+    override fun setMainData(table: Table) {
+
+        if (myTable != null) {
+            showRows.clear()
+            showRows.addAll(
+                arrayListOf(
+                    ShowRow(MOBILE_KEY, "mobile", "行動電話", myTable!!.mobile_show),
+                    ShowRow(LINE_KEY, "line", "line", myTable!!.line),
+                    ShowRow(FB_KEY, "fb", "fb", myTable!!.fb),
+                    ShowRow(YOUTUBE_KEY, "youtube", "youtube", myTable!!.youtube),
+                    ShowRow(WEBSITE_KEY, "website", "網站", myTable!!.website),
+                    ShowRow(EMAIL_KEY, "email", "EMail", myTable!!.email),
+                    ShowRow(COACH_SENIORITY_KEY, "seniority", "年資", myTable!!.seniority_show),
+                    ShowRow("pv", "pv", "瀏覽數", myTable!!.pv.toString()),
+                    ShowRow("created_at_show", "date", "建立日期", myTable!!.created_at_show)
+                )
+            )
+        }
+    }
+
     override fun setData() {
         if (myTable != null) {
             if (myTable!!.citys.size > 0) {
@@ -274,6 +283,9 @@ class ShowCoachVC: ShowVC() {
         if (myTable != null) {
             filter = hashMapOf("coach_id" to myTable!!.id.toString())
         }
+
+        courseRows.clear()
+
         CourseService.getList(this, token, filter, 1, 100) { success ->
 
             if (success) {
@@ -282,9 +294,10 @@ class ShowCoachVC: ShowVC() {
                 if (coursesTable != null) {
                     for (row in coursesTable!!.rows) {
                         row.filterRow()
-                        courseRows.add(ShowRow("", row.featured_path, row.title))
+                        courseRows.add(row)
                     }
                 }
+
                 coachCourseAdapter.rows = courseRows
 
                 runOnUiThread {
@@ -298,6 +311,12 @@ class ShowCoachVC: ShowVC() {
 //                }
             }
         }
+    }
+
+    override fun cellCourse(row: Table) {
+        super.cellCourse(row)
+
+        toShowCourse(row.token)
     }
 
 //    fun addGrid() {

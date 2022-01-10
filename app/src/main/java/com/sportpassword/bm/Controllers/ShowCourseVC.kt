@@ -105,29 +105,7 @@ class ShowCourseVC : ShowVC() {
     }
 
     override fun initData() {
-
-        showRows.clear()
-        showRows.addAll(arrayListOf(
-            ShowRow("weekday_text", "calendar", "日期"),
-            ShowRow("interval_show", "clock", "時段"),
-            ShowRow("date", "calendar", "期間"),
-            ShowRow("price_text_long", "money", "收費"),
-            ShowRow("people_limit_text", "group", "接受報名人數"),
-            ShowRow("kind_text", "cycle", "週期"),
-            ShowRow("pv", "pv", "瀏覽數"),
-            ShowRow("created_at_show", "calendar", "建立日期")
-        ))
-
-        coachRows.clear()
-        coachRows.addAll(arrayListOf(
-            ShowRow(NAME_KEY, "coach", "教練"),
-            ShowRow(MOBILE_KEY, "mobile", "行動電話"),
-            ShowRow(LINE_KEY, "lineicon", "line"),
-            ShowRow(FB_KEY, "fb", "fb"),
-            ShowRow(YOUTUBE_KEY, "youtube", "youtube"),
-            ShowRow(WEBSITE_KEY, "website", "網站"),
-            ShowRow(EMAIL_KEY, "email", "EMail")
-        ))
+        super.initData()
     }
 
 //    override fun refresh() {
@@ -208,26 +186,33 @@ class ShowCourseVC : ShowVC() {
 
         if (myTable != null) {
 
-            if (myTable!!.coach != null) {
-                if (myTable!!.start_date != null && myTable!!.start_date.isNotEmpty()) {
-                    val date = myTable!!.start_date + " ~ " + myTable!!.end_date
-                    val showRow: ShowRow = getRowFromKey("date")
-                    showRow.show = date
-//                    tableRows["date"]!!["content"] = date
-                } else {
-                    val showRow: ShowRow = getRowFromKey("date")
-                    showRows.remove(showRow)
-//                    tableRowKeys.remove("date");
-                    //println(tableRowKeys);
-//                    tableRows.remove("date");
-                }
+            showRows.clear()
+            showRows.addAll(arrayListOf(
+                ShowRow("weekday_text", "date", "星期幾", myTable!!.weekdays_show),
+                ShowRow("interval_show", "clock", "時段", myTable!!.interval_show),
+                //ShowRow("date", "date", "期間", myTable!!),
+                ShowRow("price_text_long", "money", "收費", myTable!!.price_text_long),
+                ShowRow("people_limit_text", "group", "接受報名人數", myTable!!.people_limit_text),
+                ShowRow("kind_text", "cycle", "週期", myTable!!.kind_text),
+                ShowRow("pv", "pv", "瀏覽數", myTable!!.pv.toString()),
+                ShowRow("created_at_show", "date", "建立日期", myTable!!.created_at_show)
+            ))
 
-                val interval = myTable!!.interval_show
-                val showRow: ShowRow = getRowFromKey("interval_show")
-                showRow.show = interval
-//                tableRows["interval_show"]!!["content"] = interval
-            }
-            setMainData(myTable!!)
+//            if (myTable!!.coach != null) {
+//                if (myTable!!.start_date != null && myTable!!.start_date.isNotEmpty()) {
+//                    val date = myTable!!.start_date + " ~ " + myTable!!.end_date
+//                    val showRow: ShowRow = getRowFromKey("date")
+//                    showRow.show = date
+//                } else {
+//                    val showRow: ShowRow = getRowFromKey("date")
+//                    showRows.remove(showRow)
+//                }
+//
+//                val interval = myTable!!.interval_show
+//                val showRow: ShowRow = getRowFromKey("interval_show")
+//                showRow.show = interval
+//            }
+            //setMainData(myTable!!)
 
             if (myTable!!.coach != null) {
                 coachTable = myTable!!.coach
@@ -256,6 +241,7 @@ class ShowCourseVC : ShowVC() {
     }
 
     fun setSignupData() {
+
         val date: String = dateTable!!.date
         val start_time: String = myTable!!.start_time_show
         val end_time: String = myTable!!.end_time_show
@@ -266,6 +252,7 @@ class ShowCourseVC : ShowVC() {
             signupButton.visibility = View.GONE
         }
 
+        signupRows.clear()
         if (myTable != null) {
             for (i in 0..myTable!!.people_limit - 1) {
                 var name = ""
@@ -307,18 +294,32 @@ class ShowCourseVC : ShowVC() {
     }
 
     fun setCoachData() {
-        for (coachRow in coachRows) {
-            val key = coachRow.key
-            val kc = coachTable!!::class
-            kc.memberProperties.forEach {
-                if (key == it.name) {
-                    val value = it.getter.call(coachTable).toString()
-                    coachRow.show = value
-                }
-            }
-        }
+
+        coachRows.clear()
+        coachRows.addAll(arrayListOf(
+            ShowRow(NAME_KEY, "coach", "教練", coachTable!!.name),
+            ShowRow(MOBILE_KEY, "mobile", "行動電話", coachTable!!.mobile_show),
+            ShowRow(LINE_KEY, "line", "line", coachTable!!.line),
+            ShowRow(FB_KEY, "fb", "fb", coachTable!!.fb),
+            ShowRow(YOUTUBE_KEY, "youtube", "youtube", coachTable!!.youtube),
+            ShowRow(WEBSITE_KEY, "website", "網站", coachTable!!.website),
+            ShowRow(EMAIL_KEY, "email", "EMail", coachTable!!.email)
+        ))
+
         courseCoachAdapter.rows = coachRows
         courseCoachAdapter.notifyDataSetChanged()
+//        for (coachRow in coachRows) {
+//            val key = coachRow.key
+//            val kc = coachTable!!::class
+//            kc.memberProperties.forEach {
+//                if (key == it.name) {
+//                    val value = it.getter.call(coachTable).toString()
+//                    coachRow.show = value
+//                }
+//            }
+//        }
+//        courseCoachAdapter.rows = coachRows
+//        courseCoachAdapter.notifyDataSetChanged()
 
 
         //println(coachTableRows)

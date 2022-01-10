@@ -100,6 +100,10 @@ class MemberVC : MyTableVC() {
     
     private fun _loginBlock() {
         //_loginAdapter()
+        memberSections = initSectionRow()
+        memberSectionAdapter.setMyTableSection(memberSections)
+        memberSectionAdapter.notifyDataSetChanged()
+
         nameLbl.text = member.nickname
         if (member.avatar!!.isNotEmpty()) {
             member.avatar!!.image(this, avatarView)
@@ -171,22 +175,22 @@ class MemberVC : MyTableVC() {
         return sections
     }
 
-    private fun updateSectionRow1(): ArrayList<MemberSection> {
-        val sections: ArrayList<MemberSection> = arrayListOf()
-        for ((idx, memberSection) in memberSections.withIndex()) {
-            val isExpanded: Boolean = memberSection.isExpanded
-            if (idx == 0) {
-                sections.add(makeSection0Row1(isExpanded))
-            } else if (idx == 1) {
-                sections.add(makeSection1Row(isExpanded))
-            } else if (idx == 2) {
-                sections.add(makeSection2Row(isExpanded))
-            } else if (idx == 3) {
-                sections.add(makeSection3Row(isExpanded))
-            }
-        }
-        return sections
-    }
+//    private fun updateSectionRow1(): ArrayList<MemberSection> {
+//        val sections: ArrayList<MemberSection> = arrayListOf()
+//        for ((idx, memberSection) in memberSections.withIndex()) {
+//            val isExpanded: Boolean = memberSection.isExpanded
+//            if (idx == 0) {
+//                sections.add(makeSection0Row1(isExpanded))
+//            } else if (idx == 1) {
+//                sections.add(makeSection1Row(isExpanded))
+//            } else if (idx == 2) {
+//                sections.add(makeSection2Row(isExpanded))
+//            } else if (idx == 3) {
+//                sections.add(makeSection3Row(isExpanded))
+//            }
+//        }
+//        return sections
+//    }
 
     fun makeSection0Row1(isExpanded: Boolean=true): MemberSection {
         val rows: ArrayList<MemberRow> = arrayListOf()

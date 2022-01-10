@@ -99,6 +99,7 @@ class ShowTeamVC: ShowVC() {
 
     override fun setMainData(table: Table) {
 
+        showRows.clear()
         showRows.addAll(arrayListOf(
             ShowRow("arena", "arena1", "球館", myTable!!.arena!!.name),
             ShowRow("weekday", "date", "星期", myTable!!.weekdays_show),
@@ -115,30 +116,6 @@ class ShowTeamVC: ShowVC() {
             ShowRow("pv", "pv", "瀏覽數", myTable!!.pv.toString()),
             ShowRow("created_at_show", "date", "建立日期", myTable!!.created_at_show)
         ))
-//        for (showRow in showRows) {
-//            val key: String = showRow.key
-//            val kc = table::class
-//            kc.memberProperties.forEach {
-//                if (key == it.name) {
-//                    var value = it.getter.call(table).toString()
-//                    if (value == "null") value = ""
-//                    if (value == "-1") value = ""
-//                    showRow.show = value
-//
-//                    if (key == "arena") {
-//                        if (myTable!!.arena != null) {
-//                            showRow.show = myTable!!.arena!!.name
-//                        } else {
-//                            showRow.show = "未提供"
-//                        }
-//                    }
-//                }
-//            }
-//        }
-
-//        val items = generateMainItem()
-//        adapter.update(items)
-
     }
 
     fun setSignupData() {
