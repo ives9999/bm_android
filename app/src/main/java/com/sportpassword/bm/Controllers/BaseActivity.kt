@@ -370,7 +370,7 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener,
 
         val row: OneRow = getOneRowFromIdx(sectionIdx, rowIdx)
         val key: String = row.key
-        val value: String = row.value
+        var value: String = row.value
         if (key == DOB_KEY) {
             toSelectDate(key, value, this)
         } else if (key == CITY_KEY) {
@@ -411,6 +411,9 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener,
         } else if (key == TEAM_TEMP_CONTENT_KEY || key == CONTENT_KEY || key == CHARGE_KEY) {
             toEditContent(key, row.title, value, this)
         } else if (key == MANAGER_ID_KEY) {
+            if (value.isEmpty()) {
+                value = "0"
+            }
             toSelectManager(value.toInt(), row.token, able_type, this)
         } else if (key == DEGREE_KEY) {
             toSelectDegree(value, null, able_type)

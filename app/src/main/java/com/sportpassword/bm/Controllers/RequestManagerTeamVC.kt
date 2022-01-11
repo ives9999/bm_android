@@ -57,7 +57,7 @@ class RequestManagerTeamVC : BaseActivity() {
         teamNameTF = findViewById(R.id.team_nameTF)
         managerTokenTF = findViewById(R.id.manager_tokenTF)
 
-        teamNameTF.setText("早安羽球隊")
+        //teamNameTF.setText("早安羽球隊")
         //managerTokenTF.setText("bbeq9v41HVRBOgPNEA9pmAEH6abNZPs")
 
         managerNicknameLbl = findViewById(R.id.managerNicknameLbl)
