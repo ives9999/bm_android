@@ -208,6 +208,8 @@ class ShowTeamVC: ShowVC() {
                 //(3)如果報名日期還沒過了臨打日期則無法報名
                 isTempPlay = !temp_date.before(now)
             }
+        } else {
+            isTempPlay = false
         }
 
         //3.如果管理者設定報名臨打名額是0，關閉臨打

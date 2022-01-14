@@ -384,7 +384,7 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener,
             }
         } else if (key == ARENA_KEY) {
             val row1: OneRow = getOneRowFromKey(CITY_KEY)
-            if (value.isEmpty()) {
+            if (row1.value.isEmpty()) {
                 warning("請先選擇縣市")
             } else {
                 toSelectArena(value, row1.value.toInt(), this)
@@ -414,7 +414,10 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener,
             if (value.isEmpty()) {
                 value = "0"
             }
-            toSelectManager(value.toInt(), row.token, able_type, this)
+
+            val res: Int = value.toIntOrNull() ?: 0
+
+            toSelectManager(res, row.token, able_type, this)
         } else if (key == DEGREE_KEY) {
             toSelectDegree(value, null, able_type)
         }

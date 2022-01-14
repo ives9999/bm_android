@@ -66,7 +66,7 @@ open class DataService {
 
     open fun delete(context: Context, type: String, token: String, status: String = "trash", complete: CompletionHandler) {
         val url = getDeleteURL()
-        println(url)
+        //println(url)
         val body = JSONObject()
         body.put("device", "app")
         body.put("channel", "bm")
@@ -74,7 +74,7 @@ open class DataService {
         body.put("type", type)
         body.put("status", status)
         val requestBody = body.toString()
-        println(requestBody)
+        //println(requestBody)
 
         val request = object : JsonObjectRequest(Request.Method.POST, url, null, Response.Listener { json ->
             //println(json)
@@ -322,7 +322,7 @@ open class DataService {
         if (token != null) {
             url = url + "/" + token
         }
-        println(url)
+        //println(url)
 
 //        val header: MutableList<Pair<String, String>> = mutableListOf()
 //        header.add(Pair("Accept","application/json"))
@@ -345,8 +345,8 @@ open class DataService {
             params.put("member_token", member.token!!)
         }
 
-        val j: JSONObject = JSONObject(params as Map<*, *>)
-        println(j.toString())
+        //val j: JSONObject = JSONObject(params as Map<*, *>)
+        //println(j.toString())
 //        val body = j.toString().toRequestBody(HEADER.toMediaTypeOrNull())
 
         val request: okhttp3.Request = getRequest(url, params)
@@ -407,7 +407,7 @@ open class DataService {
     open fun getOne(context: Context, params: HashMap<String, String>, complete: CompletionHandler) {
 
         val url = getOneURL()
-        println(url)
+        //println(url)
 
 //        val header: MutableList<Pair<String, String>> = mutableListOf()
 //        header.add(Pair("Accept","application/json"))
@@ -417,7 +417,7 @@ open class DataService {
         params.put("device", "app")
 //        val objectMapper = ObjectMapper()
 //        val body: String = objectMapper.writeValueAsString(params)
-        println(params)
+        //println(params)
 
         val request: okhttp3.Request = getRequest(url, params)
         okHttpClient.newCall(request).enqueue(object : Callback {
