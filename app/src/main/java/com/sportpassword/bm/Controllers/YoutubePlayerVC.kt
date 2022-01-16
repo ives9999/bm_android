@@ -13,7 +13,7 @@ import kotlinx.android.synthetic.main.activity_show_teach_vc.*
 class YoutubePlayerVC : YouTubeBaseActivity(), YouTubePlayer.OnInitializedListener {
 
     var token: String? = null
-    val api_key = "AIzaSyCR_6_3cnKPtamzWcXtwqjedFCcKYD3zPI"
+    var apiKey = ""
     //var youTubePlayer: YouTubePlayer? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -23,7 +23,8 @@ class YoutubePlayerVC : YouTubeBaseActivity(), YouTubePlayer.OnInitializedListen
         if (intent.hasExtra("token")) {
             token = intent.getStringExtra("token")!!
         }
-        youtube.initialize(api_key, this)
+        apiKey = getString(R.string.youtube_api_key)
+        youtube.initialize(apiKey, this)
     }
 
     fun prev(view: View) {

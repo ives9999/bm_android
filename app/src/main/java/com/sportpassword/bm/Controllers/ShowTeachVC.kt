@@ -47,7 +47,7 @@ class ShowTeachVC : YouTubeBaseActivity(), YouTubePlayer.OnInitializedListener {
     var isLike: Boolean = false
     var likeCount: Int = 0
 
-    val api_key = "AIzaSyCR_6_3cnKPtamzWcXtwqjedFCcKYD3zPI"
+    var apiKey = ""
 
     var youTubePlayer: YouTubePlayer? = null
 
@@ -74,7 +74,8 @@ class ShowTeachVC : YouTubeBaseActivity(), YouTubePlayer.OnInitializedListener {
 //            "pv" to hashMapOf( "icon" to "pv","title" to "瀏覽數","content" to ""),
 //            "created_at_show" to hashMapOf( "icon" to "calendar","title" to "建立日期","content" to "")
 //        )
-        youtube.initialize(api_key, this)
+        apiKey = getString(R.string.youtube_api_key)
+        youtube.initialize(apiKey, this)
 
         init()
         refresh()

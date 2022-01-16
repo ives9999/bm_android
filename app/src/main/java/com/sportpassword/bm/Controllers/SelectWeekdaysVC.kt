@@ -5,10 +5,9 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import com.sportpassword.bm.Data.SelectRow
-import com.sportpassword.bm.Utilities.DEGREE
-import com.sportpassword.bm.Utilities.DEGREE_KEY
 import com.sportpassword.bm.Utilities.WEEKDAY
 import com.sportpassword.bm.Utilities.WEEKDAY_KEY
+import kotlin.math.pow
 
 class SelectWeekdaysVC : MultiSelectVC() {
 
@@ -67,28 +66,46 @@ class SelectWeekdaysVC : MultiSelectVC() {
         return selectRows
     }
 
+    override fun cellClick(idx: Int) {
+        val row = tableRows[idx]
+        var isExist = false
+        val n: Int = 2.0.pow((idx + 1).toDouble()).toInt()
+        if ((n and selecteds1) > 0) {
+            isExist = true
+        }
+
+        if (isExist) {
+            selecteds1 = selecteds1 xor n
+            row.isSelected = false
+        } else {
+            selecteds1 = selecteds1 or n
+            row.isSelected = true
+        }
+        tableAdapter.rows = tableRows
+        tableAdapter.selecteds = selecteds
+        tableAdapter.notifyDataSetChanged()
+    }
+
     override fun submit(view: View) {
 
-        var value: Int = 0
-        for (selected in selecteds) {
-            value = value or (Math.pow(2.0, selected.toDouble())).toInt()
-        }
-
-
         var show: String = ""
-        val tmps: ArrayList<String> = arrayListOf()
-        for (selected in selecteds) {
-            tmps.add(WEEKDAY.from(selected.toInt()).enumToShortString())
+        val temps: ArrayList<String> = arrayListOf()
+        for (i in 1..7) {
+            val n: Int = 2.0.pow(i).toInt()
+            if ((n and selecteds1) > 0) {
+                temps.add(WEEKDAY.from(i).enumToShortString())
+            }
         }
-        if (tmps.size > 0) {
-            show = tmps.joinToString(",")
+
+        if (temps.size > 0) {
+            show = temps.joinToString(",")
         }
 
         val intent = Intent()
         intent.putExtra("key", key)
         intent.putExtra("able_type", able_type)
         //println(selecteds);
-        intent.putExtra("selecteds", value)
+        intent.putExtra("selecteds", selecteds1)
         intent.putExtra("show", show)
         setResult(Activity.RESULT_OK, intent)
         finish()
