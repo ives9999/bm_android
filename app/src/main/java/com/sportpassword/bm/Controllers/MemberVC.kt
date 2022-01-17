@@ -5,10 +5,13 @@ import android.os.Bundle
 import android.view.View
 import android.widget.Button
 import android.widget.LinearLayout
+import com.google.gson.Gson
 import com.sportpassword.bm.Adapters.MemberSectionAdapter
 import com.sportpassword.bm.Data.MemberRow
 import com.sportpassword.bm.Data.MemberSection
 import com.sportpassword.bm.Models.MemberTable
+import com.sportpassword.bm.Models.SuccessTable
+import com.sportpassword.bm.Models.Table
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.MemberService
 import com.sportpassword.bm.Utilities.*
@@ -20,6 +23,7 @@ import kotlinx.android.synthetic.main.login_out.*
 import kotlinx.android.synthetic.main.mask.*
 import kotlinx.android.synthetic.main.nav_header_main.*
 import org.jetbrains.anko.backgroundColor
+import org.jetbrains.anko.toast
 
 var memberSections: ArrayList<MemberSection> = arrayListOf()
 lateinit var memberSectionAdapter: MemberSectionAdapter
@@ -160,6 +164,7 @@ class MemberVC : MyTableVC() {
                     "store" -> this.toStore(true)
                 }
             }
+            "delete" -> delete()
         }
     }
 
@@ -171,6 +176,7 @@ class MemberVC : MyTableVC() {
         sections.add(makeSection2Row(false))
         sections.add(makeSection3Row())
         sections.add(makeSection4Row())
+        sections.add(makeSection5Row())
 
         return sections
     }
@@ -314,6 +320,18 @@ class MemberVC : MyTableVC() {
         return s
     }
 
+    private fun makeSection5Row(isExpanded: Boolean=true): MemberSection {
+        val rows: ArrayList<MemberRow> = arrayListOf()
+
+        val r1: MemberRow = MemberRow("退出會員", "delete", "", "delete", "member")
+        rows.add(r1)
+
+        val s: MemberSection = MemberSection("刪除", isExpanded)
+        s.items.addAll(rows)
+
+        return s
+    }
+
     fun loginBtnPressed() {
         if (member.isLoggedIn) {
             member.isLoggedIn = false
@@ -350,5 +368,39 @@ class MemberVC : MyTableVC() {
         memberSections[idx].isExpanded = isExpanded
         memberSectionAdapter.setMyTableSection(memberSections)
         memberSectionAdapter.notifyDataSetChanged()
+    }
+
+    fun delete() {
+        warning("是否確定要刪除自己的會員資料？", true, "刪除") {
+            Loading.show(mask)
+            dataService.delete(this, "member", member.token!!, "trash") { success ->
+                runOnUiThread {
+                    Loading.hide(mask)
+                }
+
+                if (success) {
+                    try {
+                        val successTable: SuccessTable = Gson().fromJson(dataService.jsonString, SuccessTable::class.java)
+                        if (!successTable.success) {
+                            runOnUiThread {
+                                warning(successTable.msg)
+                            }
+                        } else {
+                            runOnUiThread {
+                                refresh()
+                            }
+                        }
+                    } catch (e: java.lang.Exception) {
+                        runOnUiThread {
+                            warning("解析JSON字串時，得到空值，請洽管理員")
+                        }
+                    }
+                } else {
+                    runOnUiThread {
+                        warning("刪除失敗，請洽管理員")
+                    }
+                }
+            }
+        }
     }
 }

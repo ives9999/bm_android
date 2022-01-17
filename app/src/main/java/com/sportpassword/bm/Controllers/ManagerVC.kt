@@ -7,9 +7,11 @@ import android.os.Bundle
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import com.sportpassword.bm.Adapters.ManagerAdapter
+import com.sportpassword.bm.Models.Table
 import com.sportpassword.bm.R
 import kotlinx.android.synthetic.main.activity_manager_course_vc.*
 import kotlinx.android.synthetic.main.mask.*
+import org.jetbrains.anko.toast
 
 
 open class ManagerVC : MyTableVC() {

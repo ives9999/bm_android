@@ -27,6 +27,10 @@ object MemberService: DataService() {
         return URL_MEMBER_UPDATE
     }
 
+    override fun getDeleteURL(): String {
+        return URL_MEMBER_DELETE
+    }
+
 //    fun register(context: Context, email: String, password: String, repassword: String, complete: CompletionHandler) {
 //        val url = URL_REGISTER
 //        //println(url)
