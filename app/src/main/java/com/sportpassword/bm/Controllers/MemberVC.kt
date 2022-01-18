@@ -93,6 +93,16 @@ class MemberVC : MyTableVC() {
         }
     }
 
+    private fun login() {
+        toLogin()
+    }
+
+    private fun logout() {
+        member.isLoggedIn = false
+        member.reset()
+        loginout()
+    }
+
     fun loginout() {
         //println(member.isLoggedIn)
         if (member.isLoggedIn) {
@@ -323,7 +333,7 @@ class MemberVC : MyTableVC() {
     private fun makeSection5Row(isExpanded: Boolean=true): MemberSection {
         val rows: ArrayList<MemberRow> = arrayListOf()
 
-        val r1: MemberRow = MemberRow("退出會員", "delete", "", "delete", "member")
+        val r1: MemberRow = MemberRow("刪除會員", "delete", "", "delete", "member")
         rows.add(r1)
 
         val s: MemberSection = MemberSection("刪除", isExpanded)
@@ -332,30 +342,28 @@ class MemberVC : MyTableVC() {
         return s
     }
 
-    fun loginBtnPressed() {
+    private fun loginBtnPressed() {
         if (member.isLoggedIn) {
-            member.isLoggedIn = false
-            member.reset()
-            loginout()
+            logout()
             //MemberService.logout(this)
             //refresh()
         } else {
-            toLogin()
+            login()
         }
     }
 
-    fun registerBtnPressed(){
+    private fun registerBtnPressed(){
         this.toRegister(this)
 //        val registerIntent: Intent = Intent(activity, RegisterActivity::class.java)
 //        startActivityForResult(registerIntent, this.REGISTER_REQUEST_CODE)
     }
-    fun forgetpasswordBtnPressed() {
+    private fun forgetpasswordBtnPressed() {
         this.toForgetPassword()
 //        val forgetPasswordIntent = Intent(activity, ForgetPasswordActivity::class.java)
 //        startActivity(forgetPasswordIntent)
     }
 
-    fun toCalendarCourseSignup() {
+    private fun toCalendarCourseSignup() {
         val intent = Intent(activity, CourseCalendarVC::class.java)
         startActivity(intent)
     }
@@ -387,7 +395,7 @@ class MemberVC : MyTableVC() {
                             }
                         } else {
                             runOnUiThread {
-                                refresh()
+                                deleteEnd()
                             }
                         }
                     } catch (e: java.lang.Exception) {
@@ -401,6 +409,12 @@ class MemberVC : MyTableVC() {
                     }
                 }
             }
+        }
+    }
+
+    private fun deleteEnd() {
+        info("您的帳號已經被刪除，羽球密碼感謝您的支持", "", "關閉") {
+            logout()
         }
     }
 }
