@@ -14,6 +14,7 @@ class SignupNormalTable: Table() {
 
     var ableTable: AbleTable? = null
     var memberTable: MemberTable? = null
+    var dateTable: DateTable? = null
 
     override fun filterRow() {
         super.filterRow()

@@ -5,6 +5,7 @@ import com.google.gson.Gson
 import com.google.gson.JsonParseException
 import com.sportpassword.bm.Adapters.ManagerSignupListAdapter
 import com.sportpassword.bm.Adapters.TeamAdapter
+import com.sportpassword.bm.Models.DateTable
 import com.sportpassword.bm.Models.SignupNormalTable
 import com.sportpassword.bm.Models.Table
 import com.sportpassword.bm.R
@@ -23,6 +24,7 @@ class ManagerSignupListVC : MyTableVC() {
 
     var signupListResultTable: SignupListResultTable? = null
     var signupNormalTables: ArrayList<SignupNormalTable> = arrayListOf()
+    var signupSections: ArrayList<SignupSection> = arrayListOf()
 
     lateinit var adapter: ManagerSignupListAdapter
 
@@ -55,7 +57,7 @@ class ManagerSignupListVC : MyTableVC() {
 
         recyclerView = list_container
 
-        adapter = ManagerSignupListAdapter(R.layout.manager_signuplist_cell, this)
+        adapter = ManagerSignupListAdapter(this)
         recyclerView.adapter = adapter
 
         init()
@@ -122,8 +124,35 @@ class ManagerSignupListVC : MyTableVC() {
                 getPage()
             }
             signupNormalTables = signupListResultTable!!.rows
-            tableLists += generateItems1(SignupNormalTable::class, signupNormalTables)
-            adapter.setMyTableList(tableLists)
+
+            for (signupNormalTable in signupNormalTables) {
+
+                signupNormalTable.filterRow()
+                if (signupNormalTable.dateTable != null) {
+
+                    val dateTable: DateTable = signupNormalTable.dateTable!!
+                    val date: String = dateTable.date
+
+                    var bExist: Boolean = false
+                    for (signupSection in signupSections) {
+                        if (signupSection.date == date) {
+                            signupSection.rows.add(signupNormalTable)
+                            bExist = true
+                        }
+                    }
+
+                    if (!bExist) {
+                        val signupSection: SignupSection = SignupSection()
+                        signupSection.date = date
+                        signupSection.rows.add(signupNormalTable)
+                        signupSections.add(signupSection)
+                    }
+                }
+            }
+
+            //tableLists += generateItems1(SignupNormalTable::class, signupNormalTables)
+            //adapter.setMyTableList(tableLists)
+            adapter.signupSections = signupSections
             runOnUiThread {
                 adapter.notifyDataSetChanged()
             }
@@ -139,6 +168,16 @@ class ManagerSignupListVC : MyTableVC() {
             totalPage = if (totalCount % perPage > 0) _totalPage + 1 else _totalPage
         }
     }
+
+    override fun handleOneSectionExpanded(idx: Int) {
+        //println(idx)
+        val signupSection = signupSections[idx]
+        var isExpanded: Boolean = signupSection.isExpanded
+        isExpanded = !isExpanded
+        signupSections[idx].isExpanded = isExpanded
+        adapter.signupSections = signupSections
+        adapter.notifyItemChanged(idx)
+    }
 }
 
 class SignupListResultTable: Table() {
@@ -150,4 +189,11 @@ class SignupListResultTable: Table() {
     var perPage: Int = -1
     var rows: ArrayList<SignupNormalTable> = arrayListOf()
 
+}
+
+class SignupSection {
+
+    var date: String = ""
+    var isExpanded: Boolean = true
+    var rows: ArrayList<SignupNormalTable> = arrayListOf()
 }

@@ -40,6 +40,7 @@ class TeamTable: Table() {
     @SerializedName("signup_date") var signupDate: SignupDateTable? = null
 
     var isSignup: Boolean = false
+    var isTempPlay: Boolean = false
 
     @SerializedName("signup_normal_models") var signupNormalTables: ArrayList<SignupNormalTable> = arrayListOf()
     @SerializedName("signup_standby_models") var signupStandbyTables: ArrayList<SignupStandbyTable> = arrayListOf()
@@ -139,6 +140,14 @@ class TeamTable: Table() {
         if (signupDate != null) {
             signupDate!!.filterRow()
             last_signup_date = signupDate!!.date
+        }
+
+        if (temp_status == "online" && temp_signup_count > 0) {
+            people_limit_show = "臨打：${people_limit}位"
+            temp_signup_count_show = "報名：${temp_signup_count}位"
+        } else {
+            people_limit_show = "本週未提供臨打"
+            temp_signup_count_show = ""
         }
     }
 }

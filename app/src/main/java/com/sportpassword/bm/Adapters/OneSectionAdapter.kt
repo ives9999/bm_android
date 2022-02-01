@@ -50,7 +50,6 @@ class OneSectionAdapter(val context: Context, private val resource: Int, var del
         val viewHolder = inflater.inflate(resource, parent, false)
 
         return OneSectionViewHolder(viewHolder)
-
     }
 
     override fun onBindViewHolder(holder: OneSectionViewHolder, position: Int) {
