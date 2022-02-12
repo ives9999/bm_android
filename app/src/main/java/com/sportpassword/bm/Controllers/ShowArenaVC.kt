@@ -56,7 +56,7 @@ class ShowArenaVC: ShowVC() {
             ShowRow("address", "map", "住址"),
             ShowRow("fb", "fb", "FB"),
             ShowRow("interval_show", "clock", "時段"),
-            ShowRow("block", "block", "場地"),
+            ShowRow("block_show", "block", "場地"),
             ShowRow("bathroom_show", "bathroom", "浴室"),
             ShowRow("air_condition_show", "air_condition", "空調"),
             ShowRow("parking_show", "parking", "停車場"),

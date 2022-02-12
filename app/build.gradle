@@ -22,12 +22,9 @@ plugins {
 android {
     useLibrary 'org.apache.http.legacy'
     packagingOptions {
-        exclude 'META-INF/DEPENDENCIES'
-        exclude 'META-INF/NOTICE'
-        exclude 'META-INF/LICENSE'
-        exclude 'META-INF/LICENSE.txt'
-        exclude 'META-INF/NOTICE.txt'
-        exclude 'META-INF/ASL2.0'
+        resources {
+            excludes += ['META-INF/DEPENDENCIES', 'META-INF/NOTICE', 'META-INF/LICENSE', 'META-INF/LICENSE.txt', 'META-INF/NOTICE.txt', 'META-INF/ASL2.0']
+        }
     }
     signingConfigs {
         config {
@@ -44,8 +41,8 @@ android {
         applicationId "com.sportpassword.bm"
         minSdkVersion 21
         targetSdkVersion 31
-        versionCode 54
-        versionName "1.8.6"
+        versionCode 55
+        versionName "1.8.7"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
         manifestPlaceholders = [
@@ -63,11 +60,6 @@ android {
         debug {
             signingConfig signingConfigs.debug
         }
-    }
-    lintOptions {
-        checkReleaseBuilds false
-        abortOnError false
-        disable 'MissingTranslation'
     }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
@@ -88,6 +80,11 @@ android {
     //this is for groupie view binding
     androidExtensions {
         experimental = true
+    }
+    lint {
+        abortOnError false
+        checkReleaseBuilds false
+        disable 'MissingTranslation'
     }
 }
 
