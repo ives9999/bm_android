@@ -38,9 +38,9 @@ class MemberOrderViewHolder(context: Context, viewHolder: View, list1CellDelegat
         viewHolder.noLbl.text = (idx+1).toString()
 
         viewHolder.orderAllProcessLbl.text = row.all_process_show
-        viewHolder.gatewayProcessLbl.text = row.gateway!!.process_show
-        viewHolder.shippingProcessLbl.text = row.shipping!!.process_show
-        viewHolder.gatewayMethodLbl.text = row.gateway!!.method_show
-        viewHolder.shippingMethodLbl.text = row.shipping!!.method_show
+        viewHolder.gatewayProcessLbl.text = row.gateway?.process_show
+        viewHolder.shippingProcessLbl.text = row.shipping?.process_show
+        viewHolder.gatewayMethodLbl.text = row.gateway?.method_show
+        viewHolder.shippingMethodLbl.text = row.shipping?.method_show
     }
 }
