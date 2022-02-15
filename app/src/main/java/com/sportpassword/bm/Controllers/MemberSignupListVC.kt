@@ -6,6 +6,7 @@ import com.google.gson.Gson
 import com.google.gson.JsonParseException
 import com.sportpassword.bm.Adapters.MemberSignupListAdapter
 import com.sportpassword.bm.Models.SignupNormalTable
+import com.sportpassword.bm.Models.Table
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.CourseService
 import com.sportpassword.bm.Services.MemberService
@@ -111,6 +112,9 @@ class MemberSignupListVC : MyTableVC() {
                 getPage()
             }
             signupNormalTables = signupResultTable!!.rows
+            for (signupNormalTable in signupNormalTables) {
+                signupNormalTable.ableTable?.able_type = able_type
+            }
             tableLists += generateItems1(SignupNormalTable::class, signupNormalTables)
             adapter.setMyTableList(tableLists)
             runOnUiThread {
@@ -126,6 +130,15 @@ class MemberSignupListVC : MyTableVC() {
             totalCount = signupResultTable!!.totalCount
             val _totalPage: Int = totalCount / perPage
             totalPage = if (totalCount % perPage > 0) _totalPage + 1 else _totalPage
+        }
+    }
+
+    override fun cellClick(row: Table) {
+        val row1: SignupNormalTable = row as SignupNormalTable
+        if (row1.ableTable?.able_type == "team") {
+            row1.ableTable?.token?.let { toShowTeam(it) }
+        } else if (row1.ableTable?.able_type == "course") {
+            row1.ableTable?.token?.let { toShowCourse(it) }
         }
     }
 }
