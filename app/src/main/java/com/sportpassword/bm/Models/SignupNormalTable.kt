@@ -53,7 +53,6 @@ class AbleTable: Table() {
     var weekdays: Int = 0
     var play_start: String = ""
     var play_end: String = ""
-    var able_type: String = ""
 
     var weekdays_show: String = ""
     var interval_show: String = ""

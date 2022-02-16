@@ -112,9 +112,6 @@ class MemberSignupListVC : MyTableVC() {
                 getPage()
             }
             signupNormalTables = signupResultTable!!.rows
-            for (signupNormalTable in signupNormalTables) {
-                signupNormalTable.ableTable?.able_type = able_type
-            }
             tableLists += generateItems1(SignupNormalTable::class, signupNormalTables)
             adapter.setMyTableList(tableLists)
             runOnUiThread {
@@ -135,9 +132,9 @@ class MemberSignupListVC : MyTableVC() {
 
     override fun cellClick(row: Table) {
         val row1: SignupNormalTable = row as SignupNormalTable
-        if (row1.ableTable?.able_type == "team") {
+        if (able_type == "team") {
             row1.ableTable?.token?.let { toShowTeam(it) }
-        } else if (row1.ableTable?.able_type == "course") {
+        } else if (able_type == "course") {
             row1.ableTable?.token?.let { toShowCourse(it) }
         }
     }
