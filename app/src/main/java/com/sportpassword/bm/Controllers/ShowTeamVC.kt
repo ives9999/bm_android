@@ -140,20 +140,22 @@ class ShowTeamVC: ShowVC() {
         if (myTable!!.people_limit == 0) {
             signupButton.visibility = View.GONE
         } else {
+            signupRows.clear()
             for (i in 0..myTable!!.people_limit - 1) {
                 var name = ""
                 if (myTable!!.signupNormalTables.count() > i) {
-                    val tmp = myTable!!.signupNormalTables[i].member_name?.let {
+                    val tmp = myTable!!.signupNormalTables[i].member_name.let {
                         name = it
                     }
                 }
                 val signupRow: SignupRow = SignupRow((i+1).toString()+".", name)
                 signupRows.add(signupRow)
             }
+
             if (myTable!!.signupStandbyTables.count() > 0) {
-                for (i in 0..myTable!!.signupStandbyTables.count() - 1) {
+                for (i in 0 until myTable!!.signupStandbyTables.count()) {
                     var name = ""
-                    val tmp = myTable!!.signupStandbyTables[i].member_name?.let {
+                    val tmp = myTable!!.signupStandbyTables[i].member_name.let {
                         name = it
                     }
                     val signupRow: SignupRow = SignupRow("候補" + (i+1).toString()+".", name)
