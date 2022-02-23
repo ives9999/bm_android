@@ -732,7 +732,7 @@ fun String.noTime(): String {
     return res
 }
 fun String.isPrimitive(): Boolean {
-    val type = this.toLowerCase()
+    val type = this.lowercase(Locale.getDefault())
     var b: Boolean = false
     when (type) {
         "boolean", "int", "float", "double", "string" -> b = true

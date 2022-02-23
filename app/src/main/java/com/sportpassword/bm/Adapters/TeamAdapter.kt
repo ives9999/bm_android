@@ -7,6 +7,7 @@ import com.sportpassword.bm.Controllers.List1CellDelegate
 import com.sportpassword.bm.Models.Table
 import com.sportpassword.bm.Models.TeamTable
 import com.sportpassword.bm.R
+import com.sportpassword.bm.Utilities.truncate
 import kotlinx.android.synthetic.main.team_list_cell.view.*
 import kotlinx.android.synthetic.main.team_list_cell.view.cityBtn
 import kotlinx.android.synthetic.main.team_list_cell.view.iconView
@@ -30,7 +31,11 @@ class TeamViewHolder(context: Context, viewHolder: View, list1CellDelegate: List
                     list1CellDelegate?.cellCity(row)
                 }
 
-                viewHolder.arenaBtn.text = row.arena!!.name
+                var arena_name: String = row.arena!!.name
+                if (arena_name.length > 5) {
+                   arena_name.truncate(5)
+                }
+                viewHolder.arenaBtn.text = arena_name
                 viewHolder.arenaBtn.setOnClickListener {
                     list1CellDelegate?.cellArena(row)
                 }
