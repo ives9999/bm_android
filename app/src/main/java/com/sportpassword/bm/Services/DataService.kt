@@ -323,7 +323,7 @@ open class DataService {
         if (token != null) {
             url = url + "/" + token
         }
-        println(url)
+        //println(url)
 
 //        val header: MutableList<Pair<String, String>> = mutableListOf()
 //        header.add(Pair("Accept","application/json"))
@@ -346,8 +346,8 @@ open class DataService {
             params.put("member_token", member.token!!)
         }
 
-        val j: JSONObject = JSONObject(params as Map<*, *>)
-        println(j.toString())
+        //val j: JSONObject = JSONObject(params as Map<*, *>)
+        //println(j.toString())
 //        val body = j.toString().toRequestBody(HEADER.toMediaTypeOrNull())
 
         val request: okhttp3.Request = getRequest(url, params)
@@ -987,7 +987,7 @@ open class DataService {
 
     fun signup(context: Context, token: String, member_token: String, date_token: String, complete: CompletionHandler) {
         val url = getSignupURL(token)
-        println(url)
+        //println(url)
 //        val jsonString: String = "{\"device\": \"app\", \"channel\": \"bm\", \"member_token\": " + member_token + ", \"signup_id\": " + signup_id.toString() + ", \"course_date\": " + course_date + ", \"course_deadline\": " + course_deadline + "}"
         val player_id: String = getPlayerID()
         val params: HashMap<String, String> = hashMapOf()
@@ -997,7 +997,7 @@ open class DataService {
         params.put("able_date_token", date_token)
         params.put("player_id", player_id)
 //        params.put("cancel_deadline", course_deadline)
-        println(params)
+        //println(params)
 
         val request: okhttp3.Request = getRequest(url, params)
         okHttpClient.newCall(request).enqueue(object : Callback {
