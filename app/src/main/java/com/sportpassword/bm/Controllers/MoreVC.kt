@@ -29,7 +29,17 @@ open class MoreVC : MyTableVC() {
         rows.add(r4)
         val r5: MoreRow = MoreRow("推播訊息", "pn", "push", R.color.MY_WHITE)
         rows.add(r5)
-        val r6: MoreRow = MoreRow("版本", "version", "version", R.color.MY_WHITE)
+
+
+        val p = context.applicationContext.packageManager.getPackageInfo(
+            context.packageName,
+            0
+        )
+        val v = PackageInfoCompat.getLongVersionCode(p).toInt()
+        val n = p.versionName
+        val version: String = "$n#$v"
+
+        val r6: MoreRow = MoreRow("版本", "version", "version", R.color.MY_WHITE, version)
         rows.add(r6)
 
         return rows

@@ -24,7 +24,7 @@
         android:layout_below="@id/topView"
         android:layout_above="@id/footer"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        android:background="@drawable/background"
+        android:background="@color/MY_BLACK"
         android:clickable="true"
         android:focusable="true"
         android:focusableInTouchMode="true">

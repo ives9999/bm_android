@@ -26,12 +26,12 @@
         android:layout_below="@id/topView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/background"
+        android:background="@color/MY_BLACK"
         >
         <androidx.core.widget.NestedScrollView
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            android:background="@drawable/background">
+            android:background="@color/MY_BLACK">
 
             <LinearLayout
                 android:layout_width="match_parent"

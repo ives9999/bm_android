@@ -5,7 +5,7 @@
     android:id="@+id/testa"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/background"
+    android:background="@color/MY_BLACK"
     android:clickable="true"
     android:focusableInTouchMode="true"
     tools:context="com.sportpassword.bm.Controllers.AccountUpdate1Activity">

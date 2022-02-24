@@ -22,6 +22,10 @@ class MoreAdapter(val list1CellDelegate: List1CellDelegate?): RecyclerView.Adapt
         holder.icon.setImage(row.icon)
         holder.title.setTextColor(ContextCompat.getColor(holder.title.context, row.color))
 
+        if (row.content.isNotEmpty()) {
+            holder.content.text = row.content
+        }
+
         holder.viewHolder.setOnClickListener {
             list1CellDelegate?.cellClick(position)
         }
@@ -43,4 +47,5 @@ class MoreViewHolder1(val viewHolder: View): RecyclerView.ViewHolder(viewHolder)
 
     var title: TextView = viewHolder.findViewById(R.id.text)
     var icon: ImageView = viewHolder.findViewById(R.id.icon)
+    var content: TextView = viewHolder.findViewById(R.id.content)
 }

@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/background"
+    android:background="@color/MY_BLACK"
     tools:context="com.sportpassword.bm.Controllers.EditVC1">
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
@@ -12,12 +12,12 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginBottom="50dp"
-        android:background="@drawable/background">
+        android:background="@color/MY_BLACK">
 
         <androidx.core.widget.NestedScrollView
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            android:background="@drawable/background">
+            android:background="@color/MY_BLACK">
 
             <LinearLayout
                 android:layout_width="match_parent"

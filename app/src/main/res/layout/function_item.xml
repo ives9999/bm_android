@@ -37,6 +37,17 @@
             app:layout_constraintStart_toEndOf="@+id/icon"
             app:layout_constraintTop_toTopOf="@+id/icon" />
 
+        <TextView
+            android:id="@+id/content"
+            style="@style/list_text_general"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="24dp"
+            android:text="編輯"
+            app:layout_constraintBottom_toBottomOf="@+id/icon"
+            app:layout_constraintEnd_toStartOf="@+id/more"
+            app:layout_constraintTop_toTopOf="@+id/icon" />
+
         <ImageView
             android:id="@+id/more"
             style="@style/list_text_general"

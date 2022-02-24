@@ -17,7 +17,7 @@
             android:id="@+id/list_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/background"
+            android:background="@color/MY_BLACK"
             app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
             android:scrollbars="vertical">
 

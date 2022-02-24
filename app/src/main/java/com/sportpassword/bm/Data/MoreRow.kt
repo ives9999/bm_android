@@ -4,5 +4,6 @@ data class MoreRow(
     var title: String = "",
     var key: String = "",
     var icon: String = "",
-    var color: Int = 0
+    var color: Int = 0,
+    var content: String = ""
 )
