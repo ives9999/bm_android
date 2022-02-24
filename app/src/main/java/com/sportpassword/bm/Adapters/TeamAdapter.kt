@@ -25,7 +25,7 @@ class TeamViewHolder(context: Context, viewHolder: View, list1CellDelegate: List
         val row: TeamTable = _row as TeamTable
 
         if (viewHolder.cityBtn != null) {
-            if (row.arena?.name != null && row.arena!!.name.length > 0) {
+            if (row.arena?.name != null && row.arena!!.name.isNotEmpty()) {
                 viewHolder.cityBtn.text = row.arena!!.city_show
                 viewHolder.cityBtn.setOnClickListener {
                     list1CellDelegate?.cellCity(row)
@@ -33,7 +33,7 @@ class TeamViewHolder(context: Context, viewHolder: View, list1CellDelegate: List
 
                 var arena_name: String = row.arena!!.name
                 if (arena_name.length > 5) {
-                   arena_name.truncate(5)
+                   arena_name = arena_name.truncate(5)
                 }
                 viewHolder.arenaBtn.text = arena_name
                 viewHolder.arenaBtn.setOnClickListener {
