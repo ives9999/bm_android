@@ -109,7 +109,10 @@ dependencies {
     implementation "androidx.cardview:cardview:1.0.0"
     implementation "androidx.browser:browser:1.4.0"
     implementation 'com.android.volley:volley:1.2.1'
+
     implementation 'com.squareup.picasso:picasso:2.5.2'
+    implementation 'jp.wasabeef:picasso-transformations:2.1.0'
+
     //implementation 'com.github.franmontiel:PersistentCookieJar:v1.0.1'
     //implementation 'com.ohmerhe.kolley:kolley:0.3.1'
     implementation 'com.chauthai.swipereveallayout:swipe-reveal-layout:1.4.1'

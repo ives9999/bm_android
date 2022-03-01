@@ -10,6 +10,8 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:layout_marginBottom="12dp"
         android:baselineAligned="false"
         android:orientation="horizontal">
 
@@ -27,25 +29,18 @@
                 android:gravity="center_vertical"
                 android:orientation="horizontal">
 
-                <LinearLayout
-                    android:id="@+id/featrued_container"
-                    android:layout_width="90dp"
-                    android:layout_height="90dp"
-                    android:layout_gravity="center_horizontal|center_vertical"
-                    android:layout_marginRight="12dp">
-
-                    <ImageView
-                        android:id="@+id/listFeatured"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:background="@drawable/loading_square_120"
-                        android:scaleType="fitCenter"
-                        tools:srcCompat="@drawable/loading_square_120" />
-                </LinearLayout>
+                <ImageView
+                    android:id="@+id/listFeatured"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_marginStart="16dp"
+                    android:scaleType="fitCenter"
+                    tools:srcCompat="@drawable/loading_square_120" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
                     android:orientation="horizontal">
 
                     <LinearLayout
@@ -102,6 +97,7 @@
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:layout_marginBottom="6dp"
                             android:orientation="horizontal">
 
 
@@ -118,6 +114,7 @@
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:layout_marginBottom="6dp"
                             android:orientation="horizontal">
 
                             <TextView
@@ -147,6 +144,7 @@
                                 style="@style/list_text_general"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                android:layout_marginStart="32dp"
                                 tools:text="報名人數" />
 
                         </LinearLayout>
