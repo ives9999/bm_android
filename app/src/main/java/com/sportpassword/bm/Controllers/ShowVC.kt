@@ -2,7 +2,12 @@ package com.sportpassword.bm.Controllers
 
 import android.app.AlertDialog
 import android.content.Context
+import android.content.res.Resources
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.os.Bundle
+import android.util.DisplayMetrics
+import android.view.Display
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -19,13 +24,12 @@ import com.sportpassword.bm.Models.SuccessTable
 import com.sportpassword.bm.Models.Table
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.MemberService
-import com.sportpassword.bm.Utilities.Loading
-import com.sportpassword.bm.Utilities.image
-import com.sportpassword.bm.Utilities.jsonToModel
-import com.sportpassword.bm.Utilities.makeCall
+import com.sportpassword.bm.Utilities.*
 import com.sportpassword.bm.member
+import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_show_course_vc.*
 import kotlinx.android.synthetic.main.mask.*
+import java.net.URL
 import kotlin.reflect.full.memberProperties
 
 open class ShowVC: BaseActivity() {
@@ -155,8 +159,35 @@ open class ShowVC: BaseActivity() {
     fun setFeatured() {
         if (featured != null) {
             if (table != null && table!!.featured_path.isNotEmpty()) {
-                val featured_path = table!!.featured_path
-                featured_path.image(this, featured)
+                var featured_path = table!!.featured_path
+                //featured_path.image(this, featured)
+                if (!featured_path.startsWith("http://") && !featured_path.startsWith("https://")) {
+                    featured_path = BASE_URL + featured_path
+                }
+
+                // get device dimensions
+                val displayMetrics: DisplayMetrics = Resources.getSystem().displayMetrics
+                val screen_width: Float = displayMetrics.widthPixels.toFloat()
+
+                val url: URL = URL(featured_path)
+                val bmp: Bitmap = BitmapFactory.decodeStream(url.openConnection().getInputStream())
+                val image_width: Float = bmp.width.toFloat()
+                val image_height: Float = bmp.height.toFloat()
+
+                var featured_w: Float = (image_width >= screen_width) then {screen_width} ?: image_width
+                var featured_h: Float = image_height
+                if (image_width > 0 && image_height > 0) {
+                    val scale: Float = (image_width > image_height) then {screen_width/image_width} ?: screen_width/image_height
+                    featured_h = image_height * scale
+                }
+
+                Picasso.with(context)
+                    .load(featured_path)
+                    .fit()
+                    .centerInside()
+                    .placeholder(R.drawable.loading_square_120)
+                    .error(R.drawable.loading_square_120)
+                    .into(featured)
             } else {
                 featured.setImageResource(R.drawable.loading_square_120)
             }
