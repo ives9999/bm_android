@@ -69,33 +69,19 @@ class TeamTable: Table() {
             play_end_show = play_end.noSec()
         }
 
-        if (website == null) {
-            website = ""
-        }
+        if (website == null) { website = "" }
 
-        if (fb == null) {
-            fb = ""
-        }
+        if (fb == null) { fb = "" }
 
-        if (youtube == null) {
-            youtube = ""
-        }
+        if (youtube == null) { youtube = "" }
 
-        if (line == null) {
-            line = ""
-        }
+        if (line == null) { line = "" }
 
-        if (temp_content == null) {
-            temp_content = ""
-        }
+        if (temp_content == null) { temp_content = "" }
 
-//        if (ball == null) {
-//            ball = ""
-//        }
-//
-//        if (email == null) {
-//            email = ""
-//        }
+        if (charge == null) { charge = "" }
+
+        if (ball == null) { ball = "" }
 
         if (temp_status != null) {
             temp_status_show = STATUS.from(temp_status).value

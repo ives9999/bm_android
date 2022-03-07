@@ -60,6 +60,12 @@ abstract class Table {
             featured_path = BASE_URL + "/imgs/nophoto.png"
         }
 
+        if (name == null) { name = "" }
+        if (title == null) { title = "" }
+        if (channel == null) { channel = "" }
+        if (tel == null) { tel = "" }
+        if (mobile == null) { mobile = "" }
+
         if (city_id > 0) {
             city_show = Global.zoneIDToName(city_id)
         }
