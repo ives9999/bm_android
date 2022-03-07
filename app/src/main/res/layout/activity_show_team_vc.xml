@@ -44,97 +44,96 @@
                     android:id="@+id/featured"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@color/MY_LIGHT_RED"
+                    android:scaleType="fitCenter"
                     app:srcCompat="@drawable/loading_square" />
 
-                <TextView
-                    android:id="@+id/mainDataLbl"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                <LinearLayout
+                    android:id="@+id/data_container"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
                     android:layout_below="@+id/featured"
-                    android:layout_marginLeft="12dp"
-                    android:layout_marginTop="16dp"
-                    android:layout_marginBottom="8dp"
-                    android:text="主要資料"
-                    style="@style/list_text_title"
-                    android:textSize="24sp" />
+                    android:layout_marginTop="-200dp"
+                    android:background="@color/MY_BLACK"
+                    android:orientation="vertical">
 
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/tableView"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/mainDataLbl"
-                    android:layout_marginBottom="12dp"
-                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager">
+                    <TextView
+                        android:id="@+id/mainDataLbl"
+                        style="@style/list_text_title"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:layout_marginBottom="8dp"
+                        android:text="主要資料"
+                        android:textSize="24sp" />
 
-                </androidx.recyclerview.widget.RecyclerView>
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/tableView"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="12dp"
+                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager">
 
-                <TextView
-                    android:id="@+id/signupDataLbl"
-                    style="@style/list_text_title"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/tableView"
-                    android:layout_marginLeft="12dp"
-                    android:layout_marginBottom="8dp"
-                    android:text="報名資料"
-                    android:textSize="24dp" />
+                    </androidx.recyclerview.widget.RecyclerView>
 
-                <TextView
-                    android:id="@+id/signupDateLbl"
-                    style="@style/list_text_general"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/signupDataLbl"
-                    android:layout_marginLeft="12dp"
-                    android:layout_marginBottom="8dp"
-                    android:text=""
-                    android:textSize="16dp"
-                    tools:text="下次臨打時間：2020-02-06 20:00~22:00" />
+                    <TextView
+                        android:id="@+id/signupDataLbl"
+                        style="@style/list_text_title"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="8dp"
+                        android:text="報名資料"
+                        android:textSize="24dp" />
 
-                <TextView
-                    android:id="@+id/deadlineLbl"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/signupDateLbl"
-                    android:layout_marginLeft="12dp"
-                    android:layout_marginBottom="8dp"
-                    android:text=""
-                    style="@style/list_text_general"
-                    android:textSize="16dp"
-                    tools:text="報名截止時間：2020-02-06 18:00" />
+                    <TextView
+                        android:id="@+id/signupDateLbl"
+                        style="@style/list_text_general"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="8dp"
+                        android:text=""
+                        android:textSize="16dp"
+                        tools:text="下次臨打時間：2020-02-06 20:00~22:00" />
 
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/signupTableView"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/deadlineLbl"
-                    android:layout_marginTop="7dp"
-                    android:layout_marginBottom="24dp"
-                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+                    <TextView
+                        android:id="@+id/deadlineLbl"
+                        style="@style/list_text_general"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="8dp"
+                        android:text=""
+                        android:textSize="16dp"
+                        tools:text="報名截止時間：2020-02-06 18:00" />
 
-                <TextView
-                    android:id="@+id/contentLbl"
-                    style="@style/list_text_title"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/signupTableView"
-                    android:layout_marginLeft="12dp"
-                    android:layout_marginBottom="8dp"
-                    android:text="詳細介紹"
-                    android:textSize="24dp" />
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/signupTableView"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="7dp"
+                        android:layout_marginBottom="24dp"
+                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
-                <WebView
-                    android:id="@+id/contentView"
-                    style="@android:style/Widget.WebView"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/contentLbl"
-                    android:layout_marginLeft="12dp"
-                    android:layout_marginRight="12dp"
-                    android:layout_marginBottom="50dp"
-                    android:background="@android:color/transparent"
-                    android:padding="12dp" />
+                    <TextView
+                        android:id="@+id/contentLbl"
+                        style="@style/list_text_title"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="8dp"
+                        android:text="詳細介紹"
+                        android:textSize="24dp" />
+
+                    <WebView
+                        android:id="@+id/contentView"
+                        style="@android:style/Widget.WebView"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="12dp"
+                        android:layout_marginRight="12dp"
+                        android:layout_marginBottom="50dp"
+                        android:background="@android:color/transparent"
+                        android:padding="12dp" />
+
+                </LinearLayout>
+
             </RelativeLayout>
         </ScrollView>
 

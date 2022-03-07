@@ -1,5 +1,6 @@
 package com.sportpassword.bm.Controllers
 
+import android.app.ActionBar
 import android.app.AlertDialog
 import android.content.Context
 import android.content.res.Resources
@@ -28,6 +29,12 @@ import com.sportpassword.bm.Utilities.*
 import com.sportpassword.bm.member
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_show_course_vc.*
+import kotlinx.android.synthetic.main.activity_show_course_vc.contentView
+import kotlinx.android.synthetic.main.activity_show_course_vc.featured
+import kotlinx.android.synthetic.main.activity_show_course_vc.likeButton
+import kotlinx.android.synthetic.main.activity_show_course_vc.refresh
+import kotlinx.android.synthetic.main.activity_show_course_vc.tableView
+import kotlinx.android.synthetic.main.activity_show_team_vc.*
 import kotlinx.android.synthetic.main.mask.*
 import java.net.URL
 import kotlin.reflect.full.memberProperties
@@ -176,15 +183,28 @@ open class ShowVC: BaseActivity() {
 
                 var featured_w: Float = (image_width >= screen_width) then {screen_width} ?: image_width
                 var featured_h: Float = image_height
+                var leftMargin: Int = 0
                 if (image_width > 0 && image_height > 0) {
-                    val scale: Float = (image_width > image_height) then {screen_width/image_width} ?: screen_width/image_height
-                    featured_h = image_height * scale
+                    if (image_width > screen_width) {
+                        val scale: Float =
+                            (image_width > image_height) then { screen_width / image_width }
+                                ?: screen_width / image_height
+                        featured_h = image_height * scale
+                    } else {
+                        leftMargin = ((screenWidth - featured_w) / 2).toInt()
+                    }
                 }
+
+                val params: ViewGroup.MarginLayoutParams = featured.layoutParams as ViewGroup.MarginLayoutParams
+                params.width = featured_w.toInt()
+                params.height = featured_h.toInt()
+                if (leftMargin > 0) {
+                    params.leftMargin = 140
+                }
+                featured.layoutParams = params
 
                 Picasso.with(context)
                     .load(featured_path)
-                    .fit()
-                    .centerInside()
                     .placeholder(R.drawable.loading_square_120)
                     .error(R.drawable.loading_square_120)
                     .into(featured)
