@@ -11,28 +11,26 @@
         android:id="@+id/icon"
         android:layout_width="18dp"
         android:layout_height="18dp"
-        android:layout_marginLeft="12dp"
-        android:layout_marginTop="6dp"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="0dp"
         app:srcCompat="@drawable/ic_menu_camera" />
 
     <TextView
         android:id="@+id/title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="8dp"
+        android:layout_marginStart="8dp"
         android:textAlignment="viewStart"
         style="@style/list_text_general"
-        android:textSize="16sp"
         tools:text="Title" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="8dp"
+        android:layout_marginStart="8dp"
         android:text="："
         android:textAlignment="viewStart"
         style="@style/list_text_general"
-        android:textSize="16sp"
         tools:text="Title" />
 
     <TextView
@@ -40,6 +38,5 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         style="@style/list_text_general"
-        android:textSize="16sp"
         tools:text="Content" />
 </LinearLayout>

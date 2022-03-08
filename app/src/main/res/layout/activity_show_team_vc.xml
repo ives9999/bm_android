@@ -4,31 +4,18 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/MY_BLACK"
+    android:background="@color/MY_BOTTOM_BACKGROUND"
     tools:context=".Controllers.ShowCourseVC">
-
-    <RelativeLayout
-        android:id="@+id/topView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:background="@color/MY_GREEN">
-
-        <include layout="@layout/top_view" />
-
-    </RelativeLayout>
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/refresh"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/topView"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        android:background="@color/MY_BLACK"
         android:clickable="true"
         android:focusable="true"
         android:focusableInTouchMode="true"
-        >
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
 
         <ScrollView
@@ -37,13 +24,13 @@
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
+                android:layout_height="wrap_content">
 
                 <ImageView
                     android:id="@+id/featured"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:background="@color/MY_BOTTOM_BACKGROUND"
                     android:scaleType="fitCenter"
                     app:srcCompat="@drawable/loading_square" />
 
@@ -52,9 +39,25 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_below="@+id/featured"
-                    android:layout_marginTop="-200dp"
-                    android:background="@color/MY_BLACK"
+                    android:layout_marginTop="-30dp"
+                    android:background="@drawable/show_data_container"
                     android:orientation="vertical">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="60dp">
+
+                        <TextView
+                            android:id="@+id/topTitleLbl"
+                            style="@style/list_text_title"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerInParent="true"
+                            android:text="標題"
+                            android:textAlignment="center"
+                            android:textColor="@color/MY_GREEN"
+                            tools:text="標題" />
+                    </RelativeLayout>
 
                     <TextView
                         android:id="@+id/mainDataLbl"
@@ -144,7 +147,7 @@
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_alignParentBottom="true"
-        android:background="@color/MY_GREEN"
+        android:background="@color/MY_BOTTOM_BACKGROUND"
         android:gravity="center|center_vertical"
         android:orientation="horizontal">
 
@@ -169,6 +172,7 @@
             android:textSize="16dp" />
 
     </LinearLayout>
+
     <include layout="@layout/mask" />
 
 </RelativeLayout>
