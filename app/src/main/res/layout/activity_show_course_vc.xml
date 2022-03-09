@@ -4,32 +4,18 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/MY_BLACK"
+    android:background="@color/MY_BOTTOM_BACKGROUND"
     tools:context=".Controllers.ShowCourseVC">
-
-    <RelativeLayout
-        android:id="@+id/topView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:background="@color/MY_GREEN">
-
-        <include layout="@layout/top_view" />
-
-    </RelativeLayout>
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/refresh"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/topView"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        android:background="@color/MY_BLACK"
         android:clickable="true"
         android:focusable="true"
         android:focusableInTouchMode="true"
-        >
-
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <ScrollView
             android:layout_width="match_parent"
@@ -37,114 +23,129 @@
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
+                android:layout_height="wrap_content">
 
                 <ImageView
                     android:id="@+id/featured"
                     android:layout_width="match_parent"
-                    android:layout_height="180dp"
-                    android:layout_marginTop="20dp"
+                    android:layout_height="wrap_content"
+                    android:background="@color/MY_BOTTOM_BACKGROUND"
                     android:scaleType="fitCenter"
                     app:srcCompat="@drawable/loading_square" />
 
-                <TextView
-                    android:id="@+id/courseDetailLbl"
-                    style="@style/list_text_title"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                <LinearLayout
+                    android:id="@+id/data_container"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
                     android:layout_below="@+id/featured"
-                    android:layout_marginLeft="12dp"
-                    android:layout_marginTop="16dp"
-                    android:layout_marginBottom="8dp"
-                    android:text="課程資料"
-                    android:textSize="24sp" />
+                    android:layout_marginTop="-30dp"
+                    android:background="@drawable/show_data_container"
+                    android:orientation="vertical">
 
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/tableView"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/courseDetailLbl"
-                    android:layout_marginBottom="12dp"
-                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager">
+                    <RelativeLayout
+                        android:id="@+id/topView"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentTop="true">
 
-                </androidx.recyclerview.widget.RecyclerView>
+                        <include layout="@layout/top_view_show" />
 
-                <TextView
-                    android:id="@+id/signupDetailLbl"
-                    style="@style/list_text_title"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/tableView"
-                    android:layout_marginLeft="12dp"
-                    android:layout_marginTop="16dp"
-                    android:layout_marginBottom="8dp"
-                    android:text="報名資料"
-                    android:textSize="24dp" />
+                    </RelativeLayout>
 
-                <TextView
-                    android:id="@+id/signupDateLbl"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/signupDetailLbl"
-                    android:layout_marginLeft="12dp"
-                    android:layout_marginBottom="8dp"
-                    android:text=""
-                    android:textColor="@color/MY_WHITE"
-                    android:textSize="16dp"
-                    tools:text="下次上課時間：2020-02-06 20:00~22:00" />
+                    <TextView
+                        android:id="@+id/mainDataLbl"
+                        style="@style/list_text_title"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:layout_marginBottom="8dp"
+                        android:text="主要資料"
+                        android:textSize="24sp" />
 
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/signupTableView"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/signupDateLbl"
-                    android:layout_marginTop="7dp"
-                    android:layout_marginBottom="24dp"
-                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/tableView"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="12dp"
+                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager">
 
-                <TextView
-                    android:id="@+id/coachDetailLbl"
-                    style="@style/list_text_title"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/signupTableView"
-                    android:layout_marginLeft="12dp"
-                    android:layout_marginTop="16dp"
-                    android:layout_marginBottom="8dp"
-                    android:text="教練資料"
-                    android:textSize="24dp" />
+                    </androidx.recyclerview.widget.RecyclerView>
 
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/coachTableView"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/coachDetailLbl"
-                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+                    <TextView
+                        android:id="@+id/signupDataLbl"
+                        style="@style/list_text_title"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="8dp"
+                        android:text="報名資料"
+                        android:textSize="24dp" />
 
-                <TextView
-                    android:id="@+id/contentLbl"
-                    style="@style/list_text_title"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/coachTableView"
-                    android:layout_marginLeft="12dp"
-                    android:layout_marginTop="12dp"
-                    android:layout_marginBottom="8dp"
-                    android:text="詳細介紹"
-                    android:textSize="24dp" />
+                    <TextView
+                        android:id="@+id/signupDateLbl"
+                        style="@style/list_text_general"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="8dp"
+                        android:text=""
+                        android:textSize="16dp"
+                        tools:text="下次臨打時間：2020-02-06 20:00~22:00" />
 
-                <WebView
-                    android:id="@+id/contentView"
-                    style="@android:style/Widget.WebView"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/contentLbl"
-                    android:layout_marginLeft="12dp"
-                    android:layout_marginRight="12dp"
-                    android:layout_marginBottom="50dp"
-                    android:background="@android:color/transparent"
-                    android:padding="12dp" />
+                    <TextView
+                        android:id="@+id/deadlineLbl"
+                        style="@style/list_text_general"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="8dp"
+                        android:text=""
+                        android:textSize="16dp"
+                        tools:text="報名截止時間：2020-02-06 18:00" />
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/signupTableView"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="7dp"
+                        android:layout_marginBottom="24dp"
+                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+
+                    <TextView
+                        android:id="@+id/coachDetailLbl"
+                        style="@style/list_text_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:layout_marginBottom="8dp"
+                        android:text="教練資料"
+                        android:textSize="24dp" />
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/coachTableView"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+
+                    <TextView
+                        android:id="@+id/contentLbl"
+                        style="@style/list_text_title"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="8dp"
+                        android:text="詳細介紹"
+                        android:textSize="24dp" />
+
+                    <WebView
+                        android:id="@+id/contentView"
+                        style="@android:style/Widget.WebView"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="12dp"
+                        android:layout_marginRight="12dp"
+                        android:layout_marginBottom="50dp"
+                        android:background="@android:color/transparent"
+                        android:padding="12dp" />
+
+                </LinearLayout>
+
             </RelativeLayout>
         </ScrollView>
 
@@ -153,18 +154,19 @@
     <LinearLayout
         android:id="@+id/footer"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="65dp"
         android:layout_alignParentBottom="true"
-        android:background="@color/MY_GREEN"
-        android:gravity="center|center_vertical"
-        android:orientation="horizontal">
+        android:background="@color/MY_BOTTOM_BACKGROUND"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:weightSum="3">
 
         <Button
             android:id="@+id/signupButton"
-            style="@style/submit_button"
-            android:layout_width="wrap_content"
-            android:layout_height="30dp"
-            android:layout_marginEnd="16dp"
+            style="@style/signup_button"
+            android:layout_width="120dp"
+            android:layout_height="40dp"
+            android:layout_marginStart="20dp"
             android:onClick="signupButtonPressed"
             android:text="報名" />
 
@@ -172,14 +174,16 @@
         <Button
             android:id="@+id/likeButton"
             style="@style/like_button"
-            android:layout_width="wrap_content"
-            android:layout_height="30dp"
+            android:layout_width="120dp"
+            android:layout_height="40dp"
+            android:layout_marginStart="20dp"
             android:drawableStart="@drawable/like_show"
             android:onClick="likeButtonPressed"
             android:text="100人"
             android:textSize="16dp" />
 
     </LinearLayout>
+
     <include layout="@layout/mask" />
 
 </RelativeLayout>

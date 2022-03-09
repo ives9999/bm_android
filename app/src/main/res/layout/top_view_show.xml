@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="54dp"
+    android:background="@android:color/transparent">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="false"
+        android:layout_centerVertical="true"
+        android:layout_marginStart="12dp"
+        android:background="@android:color/transparent"
+        android:orientation="horizontal">
+
+        <ImageButton
+            android:id="@+id/prevIcon"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:background="@android:color/transparent"
+            android:onClick="prev"
+            android:scaleType="fitCenter"
+            android:src="@drawable/refresh"
+            android:visibility="invisible"
+            tools:visibility="visible" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/topTitleLbl"
+        style="@style/list_text_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:text="標題"
+        android:textAlignment="center"
+        android:textColor="@color/MY_GREEN"
+        tools:text="標題" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_centerHorizontal="false"
+        android:layout_centerVertical="true"
+        android:layout_marginEnd="12dp"
+        android:orientation="horizontal">
+
+        <ImageButton
+            android:id="@+id/addIcon"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_marginEnd="4dp"
+            android:background="@android:color/transparent"
+            android:onClick="addPressed"
+            android:scaleType="fitCenter"
+            android:visibility="invisible"
+            app:srcCompat="@drawable/add"
+            tools:visibility="visible" />
+
+        <ImageButton
+            android:id="@+id/cartIcon"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_marginEnd="4dp"
+            android:background="@android:color/transparent"
+            android:onClick="cartPressed"
+            android:scaleType="fitCenter"
+            android:visibility="invisible"
+            app:srcCompat="@drawable/cart1"
+            tools:visibility="visible" />
+
+        <ImageButton
+            android:id="@+id/searchIcon"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:background="@android:color/transparent"
+            android:onClick="searchPressed"
+            android:scaleType="fitCenter"
+            android:src="@drawable/search1"
+            android:visibility="invisible"
+            tools:visibility="visible" />
+    </LinearLayout>
+
+</RelativeLayout>

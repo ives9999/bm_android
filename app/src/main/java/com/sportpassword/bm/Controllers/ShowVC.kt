@@ -12,6 +12,7 @@ import android.view.Display
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
@@ -57,6 +58,9 @@ open class ShowVC: BaseActivity() {
 
     lateinit var showAdapter: ShowAdapter
 
+    var bottom_button_count: Int = 1
+    val button_width: Int = 400
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -71,6 +75,8 @@ open class ShowVC: BaseActivity() {
         if (tableView != null) {
             tableView.adapter = showAdapter
         }
+
+        setBottomButtonPadding()
         //initAdapter()
         //refresh()
     }
@@ -175,8 +181,7 @@ open class ShowVC: BaseActivity() {
                 }
 
                 // get device dimensions
-                val displayMetrics: DisplayMetrics = Resources.getSystem().displayMetrics
-                val screen_width: Float = displayMetrics.widthPixels.toFloat()
+                //val displayMetrics: DisplayMetrics = Resources.getSystem().displayMetrics
 
                 val url: URL = URL(featured_path)
                 val inputStream: InputStream = url.openConnection().getInputStream()
@@ -186,14 +191,14 @@ open class ShowVC: BaseActivity() {
                     val image_height: Float = bmp.height.toFloat()
 
                     val featured_w: Float =
-                        (image_width >= screen_width) then { screen_width } ?: image_width
+                        (image_width >= screenWidth.toFloat()) then { screenWidth.toFloat() } ?: image_width
                     var featured_h: Float = image_height
                     var marginStart: Int = 0
                     if (image_width > 0 && image_height > 0) {
-                        if (image_width > screen_width) {
+                        if (image_width > screenWidth.toFloat()) {
                             val scale: Float =
-                                (image_width > image_height) then { screen_width / image_width }
-                                    ?: screen_width / image_height
+                                (image_width > image_height) then { screenWidth / image_width }
+                                    ?: screenWidth / image_height
                             featured_h = image_height * scale
                         } else {
                             marginStart = ((screenWidth - featured_w) / 2).toInt()
@@ -223,6 +228,16 @@ open class ShowVC: BaseActivity() {
             } else {
                 featured.setImageResource(R.drawable.loading_square_120)
             }
+        }
+    }
+
+    open fun setBottomButtonPadding() {
+        val padding: Int = (screenWidth - bottom_button_count * button_width) / (bottom_button_count + 1)
+        val likeButtonConstraintLeading: Int = bottom_button_count * padding + (bottom_button_count - 1)*button_width
+        findViewById<Button>(R.id.likeButton) ?. let {
+            val params: ViewGroup.MarginLayoutParams = it.layoutParams as ViewGroup.MarginLayoutParams
+            params.marginStart = likeButtonConstraintLeading
+            it.layoutParams = params
         }
     }
 

@@ -5,18 +5,16 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/MY_BOTTOM_BACKGROUND"
-    tools:context=".Controllers.ShowCourseVC">
+    tools:context=".Controllers.ShowTeamVC">
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/refresh"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/topView"
         android:clickable="true"
         android:focusable="true"
         android:focusableInTouchMode="true"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
-
 
         <ScrollView
             android:layout_width="match_parent"
@@ -44,19 +42,13 @@
                     android:orientation="vertical">
 
                     <RelativeLayout
+                        android:id="@+id/topView"
                         android:layout_width="match_parent"
-                        android:layout_height="60dp">
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentTop="true">
 
-                        <TextView
-                            android:id="@+id/topTitleLbl"
-                            style="@style/list_text_title"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_centerInParent="true"
-                            android:text="標題"
-                            android:textAlignment="center"
-                            android:textColor="@color/MY_GREEN"
-                            tools:text="標題" />
+                        <include layout="@layout/top_view_show" />
+
                     </RelativeLayout>
 
                     <TextView
@@ -145,18 +137,19 @@
     <LinearLayout
         android:id="@+id/footer"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="65dp"
         android:layout_alignParentBottom="true"
         android:background="@color/MY_BOTTOM_BACKGROUND"
-        android:gravity="center|center_vertical"
-        android:orientation="horizontal">
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:weightSum="3">
 
         <Button
             android:id="@+id/signupButton"
-            style="@style/submit_button"
-            android:layout_width="wrap_content"
-            android:layout_height="30dp"
-            android:layout_marginEnd="16dp"
+            style="@style/signup_button"
+            android:layout_width="120dp"
+            android:layout_height="40dp"
+            android:layout_marginStart="20dp"
             android:onClick="signupButtonPressed"
             android:text="報名" />
 
@@ -164,8 +157,9 @@
         <Button
             android:id="@+id/likeButton"
             style="@style/like_button"
-            android:layout_width="wrap_content"
-            android:layout_height="30dp"
+            android:layout_width="120dp"
+            android:layout_height="40dp"
+            android:layout_marginStart="20dp"
             android:drawableStart="@drawable/like_show"
             android:onClick="likeButtonPressed"
             android:text="100人"

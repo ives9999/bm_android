@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
@@ -74,6 +75,7 @@ class ShowCourseVC : ShowVC() {
 
         refreshLayout = refresh
         setRefreshListener()
+        bottom_button_count = 2
 
         super.onCreate(savedInstanceState)
 
@@ -144,6 +146,31 @@ class ShowCourseVC : ShowVC() {
             myTable!!.filterRow()
         } else {
             warning("解析伺服器所傳的字串失敗，請洽管理員")
+        }
+    }
+
+    override fun setBottomButtonPadding() {
+        //當沒有報名時
+        findViewById<Button>(R.id.signupButton) ?. let {
+            if (it.visibility == View.GONE) {
+                bottom_button_count -= 1
+            }
+        }
+        val padding: Int = (screenWidth - bottom_button_count * button_width) / (bottom_button_count + 1)
+        //val leading: Int = bottom_button_count * padding + (bottom_button_count - 1) * button_width
+
+        findViewById<Button>(R.id.signupButton) ?. let {
+            val params: ViewGroup.MarginLayoutParams = it.layoutParams as ViewGroup.MarginLayoutParams
+            params.width = button_width
+            params.marginStart = padding
+            it.layoutParams = params
+        }
+
+        findViewById<Button>(R.id.likeButton) ?. let {
+            val params: ViewGroup.MarginLayoutParams = it.layoutParams as ViewGroup.MarginLayoutParams
+            params.width = button_width
+            params.marginStart = padding
+            it.layoutParams = params
         }
     }
 
