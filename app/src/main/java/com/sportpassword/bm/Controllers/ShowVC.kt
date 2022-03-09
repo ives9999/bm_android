@@ -184,7 +184,13 @@ open class ShowVC: BaseActivity() {
                 //val displayMetrics: DisplayMetrics = Resources.getSystem().displayMetrics
 
                 val url: URL = URL(featured_path)
-                val inputStream: InputStream = url.openConnection().getInputStream()
+                val connection: URLConnection = url.openConnection()
+                var inputStream: InputStream? = null
+                try {
+                    inputStream = connection.getInputStream()
+                } catch (e: Exception) {
+                    println(e.localizedMessage)
+                }
                 if (inputStream != null) {
                     val bmp: Bitmap = BitmapFactory.decodeStream(inputStream)
                     val image_width: Float = bmp.width.toFloat()
