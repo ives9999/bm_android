@@ -248,10 +248,10 @@ class ShowCoachVC: ShowVC() {
                 for (city in myTable!!.citys) {
                     params["city_id"] = arrayListOf(city.id).toString()
                     params["city_type"] = "all"
-                    cityBtn.setText(city.name)
+                    //cityBtn.setText(city.name)
                 }
             } else {
-                cityBtn.visibility = View.GONE
+                //cityBtn.visibility = View.GONE
             }
 
             setMainData(myTable!!)

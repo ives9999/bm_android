@@ -128,7 +128,8 @@ class TeamTable: Table() {
             last_signup_date = signupDate!!.date
         }
 
-        if (temp_status == "online" && temp_signup_count > 0) {
+        if (isTempPlay) {
+        //if (temp_status == "online" && temp_signup_count > 0) {
             people_limit_show = "臨打：${people_limit}位"
             temp_signup_count_show = "報名：${temp_signup_count}位"
         } else {

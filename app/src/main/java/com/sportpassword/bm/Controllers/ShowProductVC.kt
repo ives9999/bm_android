@@ -2,6 +2,8 @@ package com.sportpassword.bm.Controllers
 
 import android.os.Bundle
 import android.view.View
+import android.view.ViewGroup
+import android.widget.Button
 import com.google.gson.JsonParseException
 import com.sportpassword.bm.Models.ProductTable
 import com.sportpassword.bm.R
@@ -19,12 +21,13 @@ class ShowProductVC: ShowVC() {
 
         setContentView(R.layout.activity_show_product_vc)
 
+        bottom_button_count = 2
+
+        super.onCreate(savedInstanceState)
         dataService = ProductService
 
         refreshLayout = refresh
         setRefreshListener()
-
-        super.onCreate(savedInstanceState)
 
         init()
         refresh()
@@ -33,6 +36,25 @@ class ShowProductVC: ShowVC() {
     override fun init() {
         isPrevIconShow = true
         super.init()
+    }
+
+    override fun setBottomButtonPadding() {
+        val padding: Int = (screenWidth - bottom_button_count * button_width) / (bottom_button_count + 1)
+        //val leading: Int = bottom_button_count * padding + (bottom_button_count - 1) * button_width
+
+        findViewById<Button>(R.id.submitBtn) ?. let {
+            val params: ViewGroup.MarginLayoutParams = it.layoutParams as ViewGroup.MarginLayoutParams
+            params.width = button_width
+            params.marginStart = padding
+            it.layoutParams = params
+        }
+
+        findViewById<Button>(R.id.likeButton) ?. let {
+            val params: ViewGroup.MarginLayoutParams = it.layoutParams as ViewGroup.MarginLayoutParams
+            params.width = button_width
+            params.marginStart = padding
+            it.layoutParams = params
+        }
     }
 
 //    override fun initAdapter() {}
@@ -88,10 +110,6 @@ class ShowProductVC: ShowVC() {
     fun setImages() {
         val images: ArrayList<String> = myTable!!.images
         imageContainerView.showImages(images, this)
-    }
-
-    override fun setContent() {
-        contentView.text = myTable!!.content
     }
 
     fun submitBtnPressed(view: View) {

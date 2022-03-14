@@ -188,7 +188,7 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener,
         super.onCreate(savedInstanceState)
 
         gSimulate = isEmulator()
-        //gSimulate = true
+        //gSimulate = false
 
         //ConnectTask(this).execute()
         val btn = findViewById<Button>(R.id.submit_btn)

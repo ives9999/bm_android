@@ -11,7 +11,7 @@
         android:id="@+id/refresh"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/topView"
+        android:layout_above="@id/footer"
         android:clickable="true"
         android:focusable="true"
         android:focusableInTouchMode="true"
@@ -45,28 +45,17 @@
                     <RelativeLayout
                         android:id="@+id/topView"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentTop="true">
+                        android:layout_height="wrap_content">
 
                         <include layout="@layout/top_view_show" />
 
                     </RelativeLayout>
 
-                    <TextView
-                        android:id="@+id/mainDataLbl"
-                        style="@style/list_text_title"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="16dp"
-                        android:layout_marginBottom="8dp"
-                        android:text="主要資料"
-                        android:textSize="24sp" />
-
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/tableView"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="12dp"
+                        android:layout_marginTop="24dp"
                         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager">
 
                     </androidx.recyclerview.widget.RecyclerView>
@@ -76,18 +65,18 @@
                         style="@style/list_text_title"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="8dp"
+                        android:layout_marginTop="24dp"
+                        android:textAlignment="center"
                         android:text="報名資料"
-                        android:textSize="24dp" />
+                         />
 
                     <TextView
                         android:id="@+id/signupDateLbl"
                         style="@style/list_text_general"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="8dp"
+                        android:layout_marginTop="12dp"
                         android:text=""
-                        android:textSize="16dp"
                         tools:text="下次臨打時間：2020-02-06 20:00~22:00" />
 
                     <TextView
@@ -95,33 +84,31 @@
                         style="@style/list_text_general"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="8dp"
+                        android:layout_marginTop="12dp"
                         android:text=""
-                        android:textSize="16dp"
                         tools:text="報名截止時間：2020-02-06 18:00" />
 
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/signupTableView"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="7dp"
-                        android:layout_marginBottom="24dp"
+                        android:layout_marginTop="12dp"
                         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
                     <TextView
                         android:id="@+id/coachDetailLbl"
                         style="@style/list_text_title"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="16dp"
-                        android:layout_marginBottom="8dp"
+                        android:layout_marginTop="24dp"
                         android:text="教練資料"
-                        android:textSize="24dp" />
+                        android:textAlignment="center" />
 
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/coachTableView"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="12dp"
                         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
                     <TextView
@@ -129,20 +116,19 @@
                         style="@style/list_text_title"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="8dp"
+                        android:layout_marginTop="24dp"
+                        android:textAlignment="center"
                         android:text="詳細介紹"
-                        android:textSize="24dp" />
+                         />
 
                     <WebView
                         android:id="@+id/contentView"
                         style="@android:style/Widget.WebView"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="12dp"
-                        android:layout_marginRight="12dp"
-                        android:layout_marginBottom="50dp"
+                        android:layout_marginTop="12dp"
                         android:background="@android:color/transparent"
-                        android:padding="12dp" />
+                         />
 
                 </LinearLayout>
 
