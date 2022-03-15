@@ -23,9 +23,9 @@ import com.sportpassword.bm.Utilities.*
 import com.sportpassword.bm.member
 import kotlinx.android.synthetic.main.activity_show_team_vc.*
 import kotlinx.android.synthetic.main.activity_show_team_vc.refresh
-import kotlinx.android.synthetic.main.activity_show_team_vc.signupButton
 import kotlinx.android.synthetic.main.activity_show_team_vc.signupDateLbl
 import kotlinx.android.synthetic.main.activity_show_team_vc.signupTableView
+import kotlinx.android.synthetic.main.bottom_view_show.*
 import java.util.*
 import kotlin.reflect.full.memberProperties
 import kotlinx.android.synthetic.main.mask.*

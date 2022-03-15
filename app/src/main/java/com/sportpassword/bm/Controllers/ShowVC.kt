@@ -32,10 +32,10 @@ import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_show_course_vc.*
 import kotlinx.android.synthetic.main.activity_show_course_vc.contentView
 import kotlinx.android.synthetic.main.activity_show_course_vc.featured
-import kotlinx.android.synthetic.main.activity_show_course_vc.likeButton
 import kotlinx.android.synthetic.main.activity_show_course_vc.refresh
 import kotlinx.android.synthetic.main.activity_show_course_vc.tableView
 import kotlinx.android.synthetic.main.activity_show_team_vc.*
+import kotlinx.android.synthetic.main.bottom_view_show.*
 import kotlinx.android.synthetic.main.mask.*
 import java.io.InputStream
 import java.net.URL
@@ -287,7 +287,7 @@ open class ShowVC: BaseActivity() {
     }
 
     private fun setIcon() {
-        var res: Int = R.drawable.like_show
+        var res: Int = R.drawable.likeongreenno
         if (isLike) {
             res = R.drawable.like_show1
         }

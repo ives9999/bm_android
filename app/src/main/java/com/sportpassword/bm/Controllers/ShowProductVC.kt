@@ -29,6 +29,10 @@ class ShowProductVC: ShowVC() {
         refreshLayout = refresh
         setRefreshListener()
 
+        findViewById<Button>(R.id.signupButton) ?. let {
+            it.text = "放入購物車"
+        }
+
         init()
         refresh()
     }

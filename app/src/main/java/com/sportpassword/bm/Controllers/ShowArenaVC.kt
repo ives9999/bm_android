@@ -2,6 +2,7 @@ package com.sportpassword.bm.Controllers
 
 import android.os.Bundle
 import android.view.View
+import android.widget.Button
 import com.google.gson.JsonParseException
 import com.sportpassword.bm.Data.ShowRow
 import com.sportpassword.bm.Models.ArenaTable
@@ -40,6 +41,11 @@ class ShowArenaVC: ShowVC() {
 //            "pv" to hashMapOf("icon" to "pv","title" to "瀏覽數","content" to ""),
 //            "created_at_show" to hashMapOf("icon" to "calendar","title" to "建立日期","content" to "")
 //        )
+
+        findViewById<Button>(R.id.signupButton) ?. let {
+            it.visibility = View.GONE
+        }
+
         init()
         refresh()
     }

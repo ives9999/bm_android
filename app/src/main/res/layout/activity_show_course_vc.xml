@@ -137,38 +137,7 @@
 
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
-    <LinearLayout
-        android:id="@+id/footer"
-        android:layout_width="match_parent"
-        android:layout_height="65dp"
-        android:layout_alignParentBottom="true"
-        android:background="@color/MY_BOTTOM_BACKGROUND"
-        android:gravity="center_vertical"
-        android:orientation="horizontal"
-        android:weightSum="3">
-
-        <Button
-            android:id="@+id/signupButton"
-            style="@style/signup_button"
-            android:layout_width="120dp"
-            android:layout_height="40dp"
-            android:layout_marginStart="20dp"
-            android:onClick="signupButtonPressed"
-            android:text="報名" />
-
-
-        <Button
-            android:id="@+id/likeButton"
-            style="@style/like_button"
-            android:layout_width="120dp"
-            android:layout_height="40dp"
-            android:layout_marginStart="20dp"
-            android:drawableStart="@drawable/like_show"
-            android:onClick="likeButtonPressed"
-            android:text="100人"
-            android:textSize="16dp" />
-
-    </LinearLayout>
+    <include layout="@layout/bottom_view_show" />
 
     <include layout="@layout/mask" />
 

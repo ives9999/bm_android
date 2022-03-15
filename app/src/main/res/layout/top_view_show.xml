@@ -22,7 +22,7 @@
             android:background="@android:color/transparent"
             android:onClick="prev"
             android:scaleType="fitCenter"
-            android:src="@drawable/refresh"
+            android:src="@drawable/prev"
             android:visibility="invisible"
             tools:visibility="visible" />
     </LinearLayout>

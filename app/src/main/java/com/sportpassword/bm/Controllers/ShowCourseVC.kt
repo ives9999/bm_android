@@ -22,6 +22,7 @@ import com.sportpassword.bm.Services.CourseService
 import com.sportpassword.bm.Utilities.*
 import com.sportpassword.bm.member
 import kotlinx.android.synthetic.main.activity_show_course_vc.*
+import kotlinx.android.synthetic.main.bottom_view_show.*
 import kotlinx.android.synthetic.main.mask.*
 import org.json.JSONObject
 import kotlin.reflect.full.memberProperties

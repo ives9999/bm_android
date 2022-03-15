@@ -84,7 +84,7 @@
     </style>
 
     <style name="signup_button">
-        <item name="android:background">@drawable/button_rc</item>
+        <item name="android:background">@drawable/button_signup</item>
         <item name="android:textColor">@color/MY_WHITE</item>
         <item name="android:paddingStart">12dp</item>
         <item name="android:paddingEnd">12dp</item>
