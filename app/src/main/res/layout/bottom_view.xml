@@ -34,7 +34,7 @@
         <LinearLayout
             android:id="@+id/teamTabLine"
             android:layout_width="match_parent"
-            android:layout_height="4dp"
+            android:layout_height="2dp"
             android:orientation="vertical" />
     </LinearLayout>
 
@@ -66,7 +66,7 @@
         <LinearLayout
             android:id="@+id/courseTabLine"
             android:layout_width="match_parent"
-            android:layout_height="4dp"
+            android:layout_height="2dp"
             android:orientation="vertical" />
 
     </LinearLayout>
@@ -99,7 +99,7 @@
         <LinearLayout
             android:id="@+id/memberTabLine"
             android:layout_width="match_parent"
-            android:layout_height="4dp"
+            android:layout_height="2dp"
             android:orientation="vertical" />
     </LinearLayout>
 
@@ -120,7 +120,7 @@
             app:srcCompat="@drawable/arena" />
 
         <TextView
-            android:id="@+id/areanTabTitle"
+            android:id="@+id/arenaTabTitle"
             style="@style/list_text_general"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -131,7 +131,7 @@
         <LinearLayout
             android:id="@+id/arenaTabLine"
             android:layout_width="match_parent"
-            android:layout_height="4dp"
+            android:layout_height="2dp"
             android:orientation="vertical" />
     </LinearLayout>
 
@@ -162,7 +162,7 @@
         <LinearLayout
             android:id="@+id/moreTabLine"
             android:layout_width="match_parent"
-            android:layout_height="4dp"
+            android:layout_height="2dp"
             android:orientation="vertical" />
     </LinearLayout>
 </LinearLayout>

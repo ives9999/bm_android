@@ -1,6 +1,7 @@
 package com.sportpassword.bm.Controllers
 
 import android.os.Bundle
+import androidx.core.content.ContextCompat
 import com.sportpassword.bm.Adapters.ArenaAdapter
 import com.sportpassword.bm.Data.OneRow
 import com.sportpassword.bm.Data.OneSection
@@ -16,6 +17,7 @@ import kotlinx.android.synthetic.main.bottom_view.*
 import kotlinx.android.synthetic.main.mask.*
 import kotlinx.android.synthetic.main.top_view.*
 import org.jetbrains.anko.backgroundColor
+import org.jetbrains.anko.textColor
 
 class ArenaVC : MyTableVC() {
 
@@ -48,23 +50,11 @@ class ArenaVC : MyTableVC() {
         refreshLayout = page_refresh
         maskView = mask
         setRefreshListener()
-//        val l = LinearLayoutManager(this)
-//        l.orientation = LinearLayoutManager.VERTICAL
-//        list.layoutManager = l
-//        list_container.adapter = youAdapter
-//        val myColorGreen = ContextCompat.getColor(this, R.color.MY_GREEN)
-        arenaTabLine.backgroundColor = myColorGreen
+
         topTitleLbl.setText("球館")
-//
+        setBottomTabFocus()
+
         tableAdapter = ArenaAdapter(R.layout.arena_list_cell, this)
-//        val a1: ArenaTable = ArenaTable()
-//        a1.title = "aaa"
-//        val a2: ArenaTable = ArenaTable()
-//        a2.title = "bbb"
-//        val a: ArrayList<ArenaTable> = arrayListOf(
-//            a1, a2
-//        )
-//        tableAdapter.tableList = a
         list_container.adapter = tableAdapter
 
         init()

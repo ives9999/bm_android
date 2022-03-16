@@ -43,11 +43,13 @@ class SearchVC : MyTableVC() {
     var selectedTagIdx: Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
+
+        able_type = "team"
+
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search_vc)
 
-        able_type = "team"
-        teamTabLine.backgroundColor = myColorGreen
+        setBottomTabFocus()
         topTitleLbl.setText("球隊")
 
         dataService = TeamService

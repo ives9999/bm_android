@@ -51,7 +51,7 @@ open class MoreVC : MyTableVC() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_more_vc)
 
-        moreTabLine.backgroundColor = myColorGreen
+        setBottomTabFocus()
         topTitleLbl.setText("更多")
 
         recyclerView = list_container

@@ -39,6 +39,7 @@ import com.sportpassword.bm.Utilities.*
 import com.sportpassword.bm.Views.ImagePicker
 import com.sportpassword.bm.Views.SearchPanel
 import com.sportpassword.bm.member
+import kotlinx.android.synthetic.main.bottom_view.*
 import kotlinx.android.synthetic.main.mask.*
 import kotlinx.android.synthetic.main.top_view.*
 import org.jetbrains.anko.*
@@ -1113,6 +1114,20 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener,
         layerBlackView = null
         parent.removeView(layerMask)
         layerMask = null
+    }
+
+    protected fun setBottomTabFocus() {
+
+        val tabTitleID: Int = resources.getIdentifier(able_type + "TabTitle", "id", packageName)
+        val tabLineID: Int = resources.getIdentifier(able_type + "TabLine", "id", packageName)
+
+        findViewById<TextView>(tabTitleID) ?. let {
+            it.textColor = ContextCompat.getColor(context, R.color.MY_GREEN)
+        }
+
+        findViewById<LinearLayout>(tabLineID) ?. let {
+            it.backgroundColor = myColorGreen
+        }
     }
 
 //    protected fun addSearchLayer(page: String) {

@@ -31,12 +31,13 @@ lateinit var memberSectionAdapter: MemberSectionAdapter
 class MemberVC : MyTableVC() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
+
         able_type = "member"
 
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_member_vc)
 
-        memberTabLine.backgroundColor = myColorGreen
+        setBottomTabFocus()
         setMyTitle("會員")
 
         dataService = MemberService

@@ -43,9 +43,8 @@ class CourseVC : MyTableVC() {
             isSearchIconShow = intent.getBooleanExtra("isSearchIconShow", false)
         }
 
-        courseTabLine.backgroundColor = myColorGreen
+        setBottomTabFocus()
         topTitleLbl.setText("課程")
-        //setMyTitle("課程")
 
         recyclerView = list_container
         refreshLayout = page_refresh

@@ -48,7 +48,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:background="@color/TAB_BACKGROUND"
+        android:background="@color/TAB_BOTTOM_BACKGROUND"
         android:orientation="horizontal"
         android:paddingTop="3dp"
         android:paddingBottom="0dp">
