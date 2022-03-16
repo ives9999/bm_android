@@ -67,7 +67,7 @@ class ShowArenaVC: ShowVC() {
             ShowRow("air_condition_show", "air_condition", "空調"),
             ShowRow("parking_show", "parking", "停車場"),
             ShowRow("pv", "pv", "瀏覽數"),
-            ShowRow("created_at_show", "calendar", "建立日期")
+            ShowRow("created_at_show", "date", "建立日期")
         ))
     }
 

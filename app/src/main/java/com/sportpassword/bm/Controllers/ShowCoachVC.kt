@@ -239,7 +239,7 @@ class ShowCoachVC: ShowVC() {
                     ShowRow(FB_KEY, "fb", "fb", myTable!!.fb),
                     ShowRow(YOUTUBE_KEY, "youtube", "youtube", myTable!!.youtube),
                     ShowRow(WEBSITE_KEY, "website", "網站", myTable!!.website),
-                    ShowRow(EMAIL_KEY, "email", "EMail", myTable!!.email),
+                    ShowRow(EMAIL_KEY, "email1", "EMail", myTable!!.email),
                     ShowRow(COACH_SENIORITY_KEY, "seniority", "年資", myTable!!.seniority_show),
                     ShowRow("pv", "pv", "瀏覽數", myTable!!.pv.toString()),
                     ShowRow("created_at_show", "date", "建立日期", myTable!!.created_at_show)
