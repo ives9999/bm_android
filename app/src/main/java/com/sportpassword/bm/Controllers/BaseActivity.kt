@@ -1118,6 +1118,7 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener,
 
         val tabTitleID: Int = resources.getIdentifier(able_type + "TabTitle", "id", packageName)
         val tabLineID: Int = resources.getIdentifier(able_type + "TabLine", "id", packageName)
+        val tabIconID: Int = resources.getIdentifier(able_type + "TabIcon", "id", packageName)
 
         findViewById<TextView>(tabTitleID) ?. let {
             it.textColor = ContextCompat.getColor(context, R.color.MY_GREEN)
@@ -1125,6 +1126,10 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener,
 
         findViewById<LinearLayout>(tabLineID) ?. let {
             it.backgroundColor = myColorGreen
+        }
+
+        findViewById<ImageView>(tabIconID) ?. let {
+            it.setImage(able_type + "_g")
         }
     }
 

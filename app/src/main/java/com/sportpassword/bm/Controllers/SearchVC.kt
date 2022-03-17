@@ -21,10 +21,12 @@ import com.sportpassword.bm.Models.TeamsTable
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.TeamService
 import com.sportpassword.bm.Utilities.*
+import com.sportpassword.bm.Views.TabSearch
 import com.sportpassword.bm.Views.Tag
 import kotlinx.android.synthetic.main.activity_search_vc.*
 import kotlinx.android.synthetic.main.bottom_view.*
 import kotlinx.android.synthetic.main.mask.*
+import kotlinx.android.synthetic.main.tab_search.view.*
 import kotlinx.android.synthetic.main.tag.view.*
 import kotlinx.android.synthetic.main.top_view.*
 import org.jetbrains.anko.backgroundColor
@@ -36,9 +38,9 @@ class SearchVC : MyTableVC() {
     lateinit var tableAdapter: TeamAdapter
 
     var searchTags: ArrayList<HashMap<String, Any>> = arrayListOf (
-        hashMapOf("key" to "like", "selected" to true, "tag" to 0, "name" to "喜歡", "class" to ""),
-        hashMapOf("key" to "search", "selected" to false, "tag" to 1, "name" to "搜尋", "class" to ""),
-        hashMapOf("key" to "like", "selected" to false, "tag" to 2, "name" to "全部", "class" to "")
+        hashMapOf("key" to "like", "selected" to true, "tag" to 0, "icon" to "like", "text" to "喜歡", "class" to ""),
+        hashMapOf("key" to "search", "selected" to false, "tag" to 1, "icon" to "member", "text" to "搜尋", "class" to ""),
+        hashMapOf("key" to "like", "selected" to false, "tag" to 2, "icon" to "search_w", "text" to "全部", "class" to "")
     )
     var selectedTagIdx: Int = 0
 
@@ -80,8 +82,50 @@ class SearchVC : MyTableVC() {
     override fun init() {
         super.init()
 
-        initTag()
+        //initTag()
+        initSearchTab()
         refresh()
+    }
+
+    private fun initSearchTab() {
+
+        val lp_tag = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT)
+        lp_tag.gravity = Gravity.CENTER
+        lp_tag.weight = 1F
+        val textSize: Float = 16F
+
+        for ((i, searchTab) in searchTags.withIndex()) {
+            val tab: TabSearch = TabSearch(this)
+            tab.layoutParams = lp_tag
+            tab.gravity = Gravity.CENTER
+
+            var idx: Int = 1000
+            if (searchTab.containsKey("tag")) {
+                idx = searchTab["tag"] as Int
+            }
+            tab.tag = idx
+
+            var icon: String = "like"
+            if (searchTab.containsKey("icon")) {
+                icon = searchTab["icon"] as String
+            }
+            tab.icon.setImage(icon)
+
+            var text: String = "預設"
+            if (searchTab.containsKey("text")) {
+                text = searchTab["text"] as String
+            }
+            tab.text.text = text
+            tab.text.textSize = textSize
+            searchTags[i]["class"] = tab
+
+            tag_container.addView(tab)
+
+            tab.setOnClickListener {
+                tabPressed(it)
+            }
+        }
+        updateTabSelected(selectedTagIdx)
     }
     
     private fun initTag() {
@@ -158,8 +202,8 @@ class SearchVC : MyTableVC() {
 
     private fun tabPressed(view: View) {
 
-        val tag: Tag = view as Tag
-        val idx: Int? = tag.tag as? Int
+        val tab: TabSearch = view as TabSearch
+        val idx: Int? = tab.tag as? Int
         if (idx != null) {
             val selectedTag: HashMap<String, Any> = searchTags[idx]
             val selected: Boolean = selectedTag["selected"] as? Boolean == true
@@ -210,7 +254,7 @@ class SearchVC : MyTableVC() {
 
         for (searchTag in searchTags) {
             if (searchTag.containsKey("class")) {
-                val tag: Tag? = searchTag["class"] as? Tag
+                val tag: TabSearch? = searchTag["class"] as? TabSearch
                 if (tag != null) {
                     tag.isChecked = searchTag["selected"] as Boolean
                     tag.setSelectedStyle()
