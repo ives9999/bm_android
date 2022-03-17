@@ -455,9 +455,7 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener,
         oneSections[sectionIdx].items[rowIdx].value = value
     }
 
-    open fun cellCourse(row: Table) {
-
-    }
+    open fun cellCourse(row: Table) {}
 
     override fun singleSelected(key: String, selected: String) {
 
