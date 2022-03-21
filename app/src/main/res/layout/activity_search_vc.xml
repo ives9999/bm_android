@@ -27,27 +27,37 @@
         <LinearLayout
             android:id="@+id/tag_container"
             android:layout_width="match_parent"
-            android:layout_height="80dp"
+            android:layout_height="50dp"
             android:layout_alignParentTop="true"
             android:orientation="horizontal">
 
         </LinearLayout>
 
-        <ScrollView
+        <LinearLayout
+            android:id="@+id/line"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_below="@id/tag_container"
+            android:background="@color/MY_GREY"
+            android:orientation="horizontal" />
+
+        <LinearLayout
+            android:id="@+id/tableViewContainer"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_above="@id/footer"
-            android:layout_below="@id/tag_container">
+            android:layout_below="@id/line">
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/list_container"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:background="@color/FBBLUE"
                 android:scrollbars="vertical"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager">
 
             </androidx.recyclerview.widget.RecyclerView>
-        </ScrollView>
+        </LinearLayout>
 
         <LinearLayout
             android:id="@+id/footer"

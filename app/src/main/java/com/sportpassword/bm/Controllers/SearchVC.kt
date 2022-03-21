@@ -4,8 +4,10 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.Gravity
 import android.view.View
+import android.view.ViewGroup
 import android.widget.Button
 import android.widget.LinearLayout
+import androidx.core.content.ContextCompat
 import com.google.gson.JsonParseException
 import com.sportpassword.bm.Adapters.OneSectionAdapter
 import com.sportpassword.bm.Adapters.SearchSectionAdapter
@@ -29,6 +31,7 @@ import kotlinx.android.synthetic.main.mask.*
 import kotlinx.android.synthetic.main.tab_search.view.*
 import kotlinx.android.synthetic.main.tag.view.*
 import kotlinx.android.synthetic.main.top_view.*
+import org.jetbrains.anko.Android
 import org.jetbrains.anko.backgroundColor
 import org.jetbrains.anko.support.v4.runOnUiThread
 
@@ -214,12 +217,28 @@ class SearchVC : MyTableVC() {
                 selectedTagIdx = idx
                 when (selectedTagIdx) {
                     1-> {
+                        val params: ViewGroup.MarginLayoutParams = tableViewContainer.layoutParams as ViewGroup.MarginLayoutParams
+                        params.marginStart = 120
+                        params.marginEnd = 120
+                        params.topMargin = 24
+                        tableViewContainer.layoutParams = params
+
+                        val color = ContextCompat.getColor(this, R.color.MY_RED)
+                        tableViewContainer.backgroundColor = color
+
                         footer.visibility = View.VISIBLE
                         //remain.visibility = View.VISIBLE
                         recyclerView.adapter = oneSectionAdapter
                         //generateSections()
                     }
                     0-> {
+                        val params1: ViewGroup.MarginLayoutParams = tableViewContainer.layoutParams as ViewGroup.MarginLayoutParams
+                        params1.marginStart = 0
+                        params1.marginEnd = 0
+                        tableViewContainer.layoutParams = params1
+
+                        val color = ContextCompat.getColor(this, android.R.color.transparent)
+                        tableViewContainer.backgroundColor = color
                         footer.visibility = View.GONE
                         //remain.visibility = View.GONE
                         member_like = true
@@ -228,6 +247,8 @@ class SearchVC : MyTableVC() {
                         refresh()
                     }
                     2-> {
+                        val color = ContextCompat.getColor(this, android.R.color.transparent)
+                        tableViewContainer.backgroundColor = color
                         footer.visibility = View.GONE
                         //remain.visibility = View.GONE
                         member_like = false

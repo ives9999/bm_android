@@ -10,7 +10,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:background="@color/MY_WHITE">
+        android:background="@color/MY_LIGHT_RED">
 
         <TextView
             android:id="@+id/titleLbl"
@@ -42,5 +42,5 @@
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/BLACK" />
+        android:background="@android:color/transparent" />
 </LinearLayout>
