@@ -73,6 +73,8 @@ class SearchVC : MyTableVC() {
         tableAdapter = TeamAdapter(R.layout.team_list_cell, this)
         recyclerView.adapter = tableAdapter
 
+        setListView()
+
 //        oneSectionAdapter = OneSectionAdapter(this, R.layout.cell_section, this)
 //        oneSections = initSectionRows()
         oneSectionAdapter.setOneSection(oneSections)
@@ -217,28 +219,14 @@ class SearchVC : MyTableVC() {
                 selectedTagIdx = idx
                 when (selectedTagIdx) {
                     1-> {
-                        val params: ViewGroup.MarginLayoutParams = tableViewContainer.layoutParams as ViewGroup.MarginLayoutParams
-                        params.marginStart = 120
-                        params.marginEnd = 120
-                        params.topMargin = 24
-                        tableViewContainer.layoutParams = params
-
-                        val color = ContextCompat.getColor(this, R.color.MY_RED)
-                        tableViewContainer.backgroundColor = color
-
+                        setFilterView()
                         footer.visibility = View.VISIBLE
                         //remain.visibility = View.VISIBLE
                         recyclerView.adapter = oneSectionAdapter
                         //generateSections()
                     }
                     0-> {
-                        val params1: ViewGroup.MarginLayoutParams = tableViewContainer.layoutParams as ViewGroup.MarginLayoutParams
-                        params1.marginStart = 0
-                        params1.marginEnd = 0
-                        tableViewContainer.layoutParams = params1
-
-                        val color = ContextCompat.getColor(this, android.R.color.transparent)
-                        tableViewContainer.backgroundColor = color
+                        setListView()
                         footer.visibility = View.GONE
                         //remain.visibility = View.GONE
                         member_like = true
@@ -247,8 +235,7 @@ class SearchVC : MyTableVC() {
                         refresh()
                     }
                     2-> {
-                        val color = ContextCompat.getColor(this, android.R.color.transparent)
-                        tableViewContainer.backgroundColor = color
+                        setListView()
                         footer.visibility = View.GONE
                         //remain.visibility = View.GONE
                         member_like = false
@@ -269,6 +256,33 @@ class SearchVC : MyTableVC() {
             searchTags[i] = searchTag
         }
         setTabSelectedStyle()
+    }
+
+    private fun setFilterView() {
+        var params: ViewGroup.MarginLayoutParams = tableViewContainer.layoutParams as ViewGroup.MarginLayoutParams
+        params.marginStart = 50
+        params.marginEnd = 50
+        params.topMargin = 50
+        tableViewContainer.layoutParams = params
+
+        val drawable = ContextCompat.getDrawable(this, R.drawable.search_linearlayout)
+        tableViewContainer.background = drawable
+
+        params = list_container.layoutParams as ViewGroup.MarginLayoutParams
+        params.marginStart = 60
+        params.marginEnd = 60
+        params.topMargin = 50
+        list_container.layoutParams = params
+    }
+
+    private fun setListView() {
+        val params: ViewGroup.MarginLayoutParams = tableViewContainer.layoutParams as ViewGroup.MarginLayoutParams
+        params.marginStart = 0
+        params.marginEnd = 0
+        tableViewContainer.layoutParams = params
+
+        val color = ContextCompat.getColor(this, android.R.color.transparent)
+        tableViewContainer.backgroundColor = color
     }
 
     private fun setTabSelectedStyle() {

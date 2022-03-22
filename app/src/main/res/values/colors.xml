@@ -21,6 +21,7 @@
     <color name="LAYER">#f0e4e4</color>
     <color name="LIKEBUTTON">#a6d903</color>
     <color name="SEARCH_BACKGROUND">#393939</color>
+    <color name="SECTION_HEADER">#555555</color>
     <color name="SIGNUPBUTTON">#FF5993</color>
     <color name="TEXTGRAY">#BFBFBF</color>
     <color name="TEXTBORDER">#a6d903</color>

@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@android:color/transparent"
     tools:context=".Controllers.SearchVC">
 
     <RelativeLayout
@@ -16,70 +17,77 @@
 
     </RelativeLayout>
 
-    <RelativeLayout
+    <LinearLayout
+        android:id="@+id/tag_container"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_above="@id/bottomView"
+        android:layout_height="50dp"
         android:layout_below="@id/topView"
         android:background="@color/MY_BLACK"
-        android:orientation="vertical">
+        android:orientation="horizontal" />
 
-        <LinearLayout
-            android:id="@+id/tag_container"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:layout_alignParentTop="true"
-            android:orientation="horizontal">
+    <LinearLayout
+        android:id="@+id/line"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@id/tag_container"
+        android:background="@color/MY_GREY"
+        android:orientation="horizontal" />
 
-        </LinearLayout>
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/bottomView"
+        android:layout_below="@+id/line"
+        android:background="@color/MY_BLACK">
 
-        <LinearLayout
-            android:id="@+id/line"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_below="@id/tag_container"
-            android:background="@color/MY_GREY"
-            android:orientation="horizontal" />
-
-        <LinearLayout
-            android:id="@+id/tableViewContainer"
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_above="@id/footer"
-            android:layout_below="@id/line">
+            android:orientation="vertical">
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/list_container"
+            <LinearLayout
+                android:id="@+id/tableViewContainer"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@color/FBBLUE"
-                android:scrollbars="vertical"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager">
+                android:background="@drawable/search_linearlayout"
+                android:orientation="vertical">
 
-            </androidx.recyclerview.widget.RecyclerView>
-        </LinearLayout>
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/list_container"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/transparent"
+                    android:scrollbars="vertical"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager">
 
-        <LinearLayout
-            android:id="@+id/footer"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:layout_alignParentBottom="true"
-            android:background="@color/MY_GREEN"
-            android:gravity="center|center_vertical"
-            android:orientation="horizontal">
+                </androidx.recyclerview.widget.RecyclerView>
 
-            <Button
-                android:id="@+id/submit_btn"
-                style="@style/submit_button"
-                android:layout_width="wrap_content"
-                android:layout_height="40dp"
-                android:text="送出"
-                android:textSize="16dp" />
+                <LinearLayout
+                    android:id="@+id/footer"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_marginTop="50dp"
+                    android:layout_marginBottom="12dp"
+                    android:background="@android:color/transparent"
+                    android:gravity="center|center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingStart="28dp"
+                    android:paddingEnd="28dp">
 
+                    <Button
+                        android:id="@+id/submit_btn"
+                        style="@style/submit_button"
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:text="送出"
+                        android:textSize="16dp" />
 
-        </LinearLayout>
+                </LinearLayout>
 
-    </RelativeLayout>
+            </LinearLayout>
+
+        </RelativeLayout>
+    </ScrollView>
 
     <LinearLayout
         android:id="@+id/bottomView"
