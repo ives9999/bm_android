@@ -64,7 +64,7 @@
             android:textAlignment="textStart"
             android:textColor="@color/MY_WHITE"
             android:textColorHint="#8b8f90"
-            android:textSize="21dp" />
+            android:textSize="16dp" />
 
         <ImageView
             android:id="@+id/clear"
