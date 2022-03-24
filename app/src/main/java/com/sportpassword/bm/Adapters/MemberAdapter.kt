@@ -37,9 +37,9 @@ class MemberSectionAdapter(val context: Context, private val resource: Int, var 
         val tableSection: MemberSection = memberSections[position]
         var iconID: Int = 0
         if (tableSection.isExpanded) {
-            iconID = context.resources.getIdentifier("to_down", "drawable", context.packageName)
+            iconID = context.resources.getIdentifier("to_down_w", "drawable", context.packageName)
         } else {
-            iconID = context.resources.getIdentifier("to_right", "drawable", context.packageName)
+            iconID = context.resources.getIdentifier("to_right_w", "drawable", context.packageName)
         }
         holder.greater.setImageResource(iconID)
 

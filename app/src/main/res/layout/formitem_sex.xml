@@ -23,10 +23,11 @@
 
         <TextView
             android:id="@+id/title"
-            android:layout_width="wrap_content"
+            android:layout_width="60dp"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_marginStart="12dp"
+            android:textAlignment="textEnd"
             android:textColor="@color/MY_WHITE"
             android:textSize="16sp"
             tools:text="性別" />
@@ -48,8 +49,8 @@
                 android:checked="true"
                 android:tag="M"
                 android:text="男"
-                android:textColor="#FFFFFF"
-                app:buttonTint="@color/MY_WHITE" />
+                android:textColor="@color/MY_GREEN"
+                app:buttonTint="@color/MY_GREEN" />
 
             <RadioButton
                 android:id="@+id/female"
@@ -58,8 +59,8 @@
                 android:layout_marginEnd="16dp"
                 android:tag="F"
                 android:text="女"
-                android:textColor="#FFFFFF"
-                app:buttonTint="@color/MY_WHITE" />
+                android:textColor="@color/MY_GREEN"
+                app:buttonTint="@color/MY_GREEN" />
         </RadioGroup>
 
 
