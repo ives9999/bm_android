@@ -40,7 +40,8 @@
                 android:background="@drawable/search_linearlayout"
                 android:clickable="true"
                 android:focusableInTouchMode="true"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:focusable="true">
 
                 <LinearLayout
                     android:id="@+id/edit_layout"
@@ -52,9 +53,7 @@
                         android:id="@+id/edit_featured_container"
                         android:layout_width="140dp"
                         android:layout_height="140dp"
-                        android:layout_alignParentStart="true"
-                        android:layout_alignParentBottom="true"
-                        android:layout_marginLeft="8dp"
+                        android:layout_marginStart="8dp"
                         android:layout_marginTop="8dp"
                         android:background="@drawable/border_dotted"
                         android:orientation="vertical">

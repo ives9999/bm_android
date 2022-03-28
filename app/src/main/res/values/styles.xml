@@ -98,7 +98,7 @@
     </style>
 
     <style name="cancel_button">
-        <item name="android:background">@drawable/button_rc_gray</item>
+        <item name="android:background">@drawable/button_cancel</item>
         <item name="android:textColor">@color/MY_WHITE</item>
         <item name="android:paddingStart">12dp</item>
         <item name="android:paddingEnd">12dp</item>
