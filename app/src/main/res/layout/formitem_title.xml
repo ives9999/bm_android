@@ -19,6 +19,7 @@
             android:id="@+id/required"
             android:layout_width="12dp"
             android:layout_height="12dp"
+            android:layout_marginStart="6dp"
             android:layout_centerVertical="true"
             android:visibility="invisible"
             app:srcCompat="@drawable/required" />

@@ -46,7 +46,7 @@
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_alignParentBottom="true"
-        android:background="@color/MY_GREEN"
+        android:background="@color/TAB_BOTTOM_BACKGROUND"
         android:gravity="center|center_vertical"
         android:orientation="horizontal">
 
