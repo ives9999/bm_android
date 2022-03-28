@@ -14,6 +14,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.google.gson.Gson
@@ -240,7 +241,7 @@ open class ShowVC: BaseActivity() {
     open fun setBottomButtonPadding() {
         val padding: Int = (screenWidth - bottom_button_count * button_width) / (bottom_button_count + 1)
         val likeButtonConstraintLeading: Int = bottom_button_count * padding + (bottom_button_count - 1)*button_width
-        findViewById<Button>(R.id.likeButton) ?. let {
+        findViewById<LinearLayout>(R.id.likeButton) ?. let {
             val params: ViewGroup.MarginLayoutParams = it.layoutParams as ViewGroup.MarginLayoutParams
             params.marginStart = likeButtonConstraintLeading
             it.layoutParams = params
@@ -287,29 +288,35 @@ open class ShowVC: BaseActivity() {
     }
 
     private fun setIcon() {
-        var res: Int = R.drawable.like
-        if (isLike) {
-            res = R.drawable.like1
+
+        findViewById<ImageView>(R.id.like_icon) ?. let {
+            var res: Int = R.drawable.like
+            if (isLike) {
+                res = R.drawable.like1
+            }
+            it.setImageResource(res)
         }
-        likeButton.setCompoundDrawablesWithIntrinsicBounds(res, 0, 0, 0)
     }
 
     private fun setCount() {
-        if (table!!.like) {
-            if (isLike) {
-                likeCount = table!!.like_count
-            } else {
-                likeCount = table!!.like_count - 1
-            }
-        } else {
-            if (isLike) {
-                likeCount = table!!.like_count + 1
-            } else {
-                likeCount = table!!.like_count
-            }
-        }
 
-        likeButton.text = "${likeCount.toString()}人"
+        findViewById<TextView>(R.id.like_count) ?. let {
+            likeCount = if (table!!.like) {
+                if (isLike) {
+                    table!!.like_count
+                } else {
+                    table!!.like_count - 1
+                }
+            } else {
+                if (isLike) {
+                    table!!.like_count + 1
+                } else {
+                    table!!.like_count
+                }
+            }
+
+            it.text = "${likeCount.toString()}人"
+        }
     }
 
     fun getRowFromKey(key: String): ShowRow {

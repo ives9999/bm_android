@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.LinearLayout
 import com.google.gson.JsonParseException
 import com.sportpassword.bm.Models.ProductTable
 import com.sportpassword.bm.R
@@ -46,14 +47,14 @@ class ShowProductVC: ShowVC() {
         val padding: Int = (screenWidth - bottom_button_count * button_width) / (bottom_button_count + 1)
         //val leading: Int = bottom_button_count * padding + (bottom_button_count - 1) * button_width
 
-        findViewById<Button>(R.id.submitBtn) ?. let {
+        findViewById<Button>(R.id.signupButton) ?. let {
             val params: ViewGroup.MarginLayoutParams = it.layoutParams as ViewGroup.MarginLayoutParams
             params.width = button_width
             params.marginStart = padding
             it.layoutParams = params
         }
 
-        findViewById<Button>(R.id.likeButton) ?. let {
+        findViewById<LinearLayout>(R.id.likeButton) ?. let {
             val params: ViewGroup.MarginLayoutParams = it.layoutParams as ViewGroup.MarginLayoutParams
             params.width = button_width
             params.marginStart = padding

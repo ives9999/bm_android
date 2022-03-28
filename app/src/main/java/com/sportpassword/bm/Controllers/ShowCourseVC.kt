@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.google.gson.JsonParseException
@@ -167,7 +168,7 @@ class ShowCourseVC : ShowVC() {
             it.layoutParams = params
         }
 
-        findViewById<Button>(R.id.likeButton) ?. let {
+        findViewById<LinearLayout>(R.id.likeButton) ?. let {
             val params: ViewGroup.MarginLayoutParams = it.layoutParams as ViewGroup.MarginLayoutParams
             params.width = button_width
             params.marginStart = padding

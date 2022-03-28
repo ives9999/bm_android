@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.LinearLayout
 import com.google.gson.Gson
 import com.google.gson.JsonParseException
 import com.sportpassword.bm.Adapters.SignupAdapter
@@ -109,7 +110,7 @@ class ShowTeamVC: ShowVC() {
             it.layoutParams = params
         }
 
-        findViewById<Button>(R.id.likeButton) ?. let {
+        findViewById<LinearLayout>(R.id.likeButton) ?. let {
             val params: ViewGroup.MarginLayoutParams = it.layoutParams as ViewGroup.MarginLayoutParams
             params.width = button_width
             params.marginStart = padding
