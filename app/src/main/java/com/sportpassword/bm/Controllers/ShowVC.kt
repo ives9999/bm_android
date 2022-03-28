@@ -287,9 +287,9 @@ open class ShowVC: BaseActivity() {
     }
 
     private fun setIcon() {
-        var res: Int = R.drawable.likeongreenno
+        var res: Int = R.drawable.like
         if (isLike) {
-            res = R.drawable.like_show1
+            res = R.drawable.like1
         }
         likeButton.setCompoundDrawablesWithIntrinsicBounds(res, 0, 0, 0)
     }

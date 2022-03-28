@@ -85,7 +85,7 @@
 
     <style name="signup_button">
         <item name="android:background">@drawable/button_signup</item>
-        <item name="android:textColor">@color/MY_WHITE</item>
+        <item name="android:textColor">@color/MY_BLACK</item>
         <item name="android:paddingStart">12dp</item>
         <item name="android:paddingEnd">12dp</item>
     </style>
@@ -128,7 +128,7 @@
 
     <style name="like_button">
         <item name="android:background">@drawable/button_like</item>
-        <item name="android:textColor">@color/MY_BLACK</item>
+        <item name="android:textColor">@color/MY_GREEN</item>
         <item name="android:paddingStart">16dp</item>
         <item name="android:paddingEnd">16dp</item>
     </style>
