@@ -2,9 +2,7 @@ package com.sportpassword.bm.Controllers
 
 import android.app.Activity
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import android.text.InputType
 import android.view.View
 import com.google.gson.Gson
@@ -14,7 +12,6 @@ import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.MemberService
 import com.sportpassword.bm.Utilities.Alert
 import com.sportpassword.bm.Utilities.Loading
-import com.sportpassword.bm.Utilities.memberDidChangeIntent
 import com.sportpassword.bm.member
 import kotlinx.android.synthetic.main.activity_validate.*
 import kotlinx.android.synthetic.main.mask.*
@@ -33,16 +30,16 @@ class ValidateVC : BaseActivity() {
 
         if (type == "email") {
             setMyTitle("email認證")
-            typeLbl.text = "email"
+            //typeTxt.text = "email"
             typeTxt.setMyText(member.email!!, "")
             typeTxt.inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS
-            codeTxt.inputType = InputType.TYPE_CLASS_TEXT
+            typeTxt.inputType = InputType.TYPE_CLASS_TEXT
         } else if (type == "mobile") {
             setMyTitle("手機認證")
-            typeLbl.text = "手機"
+            //typeText. = "手機"
             typeTxt.setMyText(member.mobile!!, "")
             typeTxt.inputType = InputType.TYPE_CLASS_PHONE
-            codeTxt.inputType = InputType.TYPE_CLASS_NUMBER
+            typeTxt.inputType = InputType.TYPE_CLASS_NUMBER
         }
         hidekeyboard(validate_layout)
         init()
@@ -99,7 +96,7 @@ class ValidateVC : BaseActivity() {
     }
 
     fun resend(view: View) {
-        val value = typeTxt.text.toString()
+        val value = codeTxt.text.toString()
         if (value.length <= 0) {
             var msg = ""
             if (type == "email") {

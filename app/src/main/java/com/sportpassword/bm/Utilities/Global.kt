@@ -14,6 +14,7 @@ import android.graphics.Color
 import android.graphics.Paint
 import android.net.Uri
 import android.text.InputType
+import android.util.TypedValue
 import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
@@ -41,6 +42,7 @@ import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.DataService
 import com.squareup.picasso.Picasso
 import org.jetbrains.anko.backgroundColor
+import org.jetbrains.anko.displayMetrics
 import org.jetbrains.anko.makeCall
 import org.jetbrains.anko.sdk27.coroutines.onClick
 import java.text.NumberFormat
@@ -1024,6 +1026,12 @@ fun Int.quotientAndRemainder(dividingBy: Int): Pair<Int, Int> {
 
 fun Int.formattedWithSeparator(): String {
     return NumberFormat.getNumberInstance().format(this)
+}
+
+fun Int.dpToPx(context: Context): Int {
+    val px: Int = (TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, this.toFloat(), context.displayMetrics)).toInt()
+
+    return px
 }
 
 fun Date.toMyString(pattern: String = "yyyy-MM-dd HH:mm:ss"): String {

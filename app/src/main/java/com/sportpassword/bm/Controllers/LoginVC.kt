@@ -1,10 +1,18 @@
 package com.sportpassword.bm.Controllers
 
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
+import android.hardware.display.DisplayManager
 import android.os.Bundle
 import android.os.Parcelable
-import android.view.View
+import android.util.DisplayMetrics
+import android.util.TypedValue
+import android.view.*
+import android.widget.Button
+import android.widget.TextView
+import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.constraintlayout.widget.ConstraintSet
 import com.google.gson.Gson
 import com.google.gson.JsonParseException
 import com.sportpassword.bm.Fragments.MemberFragment
@@ -17,6 +25,7 @@ import com.sportpassword.bm.member
 import kotlinx.android.synthetic.main.activity_login.*
 import kotlinx.android.synthetic.main.activity_member_vc.*
 import kotlinx.android.synthetic.main.mask.*
+import org.jetbrains.anko.displayMetrics
 import kotlin.reflect.full.memberProperties
 
 
@@ -43,6 +52,40 @@ class LoginVC : BaseActivity() {
     override fun init() {
         isPrevIconShow = true
         super.init()
+
+        val dp: Int = 300
+        val width: Int = dp.dpToPx(this)
+        val margin: Int = (screenWidth - width) / 2
+        //val margin: Int = 100
+
+        val constraintLayout: ConstraintLayout = findViewById<ConstraintLayout>(R.id.otherContainer)
+
+        findViewById<TextView>(R.id.forget_password) ?. let {
+
+            val set: ConstraintSet = ConstraintSet()
+            set.clone(constraintLayout)
+            set.connect(it.id, ConstraintSet.START, ConstraintSet.PARENT_ID, ConstraintSet.START, margin)
+            //c.connect(R.id.forget_password, ConstraintSet.TOP, R.id.otherContainer, ConstraintSet.TOP, 0)
+            set.applyTo(constraintLayout)
+
+//            val params: ViewGroup.MarginLayoutParams = it.layoutParams as ViewGroup.MarginLayoutParams
+//            params.marginStart = margin
+//            it.layoutParams = params
+        }
+
+        findViewById<TextView>(R.id.register) ?. let {
+
+            val set: ConstraintSet = ConstraintSet()
+            set.clone(constraintLayout)
+            set.connect(it.id, ConstraintSet.END, ConstraintSet.PARENT_ID, ConstraintSet.END, margin)
+            set.applyTo(constraintLayout)
+
+
+//            val params: ViewGroup.MarginLayoutParams = it.layoutParams as ViewGroup.MarginLayoutParams
+//            params.marginEnd
+//            params.rightMargin = margin
+//            it.layoutParams = params
+        }
     }
 
     fun loginSubmit(view: View) {
