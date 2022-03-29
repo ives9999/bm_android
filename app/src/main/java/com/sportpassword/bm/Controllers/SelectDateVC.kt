@@ -6,7 +6,7 @@ import android.os.Bundle
 import android.view.View
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Utilities.*
-import kotlinx.android.synthetic.main.date_select_vc.*
+import kotlinx.android.synthetic.main.select_date_vc.*
 import java.util.*
 import android.widget.DatePicker
 
@@ -15,7 +15,7 @@ import android.widget.DatePicker.OnDateChangedListener
 
 
 
-class DateSelectVC : BaseActivity() {
+class SelectDateVC : BaseActivity() {
 
     lateinit var key: String
     var type: SELECT_DATE_TYPE = SELECT_DATE_TYPE.start
@@ -24,7 +24,7 @@ class DateSelectVC : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.date_select_vc)
+        setContentView(R.layout.select_date_vc)
 
         if (intent.hasExtra("key")) {
             key = intent.getStringExtra("key")!!
@@ -95,7 +95,7 @@ class DateSelectVC : BaseActivity() {
     }
 }
 
-class MyOnDateChangeListener(val delegate: DateSelectVC) : OnDateChangedListener {
+class MyOnDateChangeListener(val delegate: SelectDateVC) : OnDateChangedListener {
     override fun onDateChanged(view: DatePicker, year: Int, month: Int, day: Int) {
         val mon = month + 1
         //expirationDate.setText("$day/$mon/$year")

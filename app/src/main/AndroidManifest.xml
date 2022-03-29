@@ -160,7 +160,7 @@
         <activity
             android:name=".Controllers.ShowTimetableVC"
             android:exported="true" />
-        <activity android:name=".Controllers.DateSelectVC" />
+        <activity android:name=".Controllers.SelectDateVC" />
         <activity android:name=".Controllers.LoginVC" />
         <activity android:name=".Controllers.RegisterVC" />
         <activity android:name=".Controllers.BaseActivity" />

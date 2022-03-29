@@ -1,131 +1,121 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/linearLayout32"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/BLACK"
-    android:paddingLeft="16dp"
-    android:paddingRight="16dp">
+    android:layout_height="wrap_content"
+    android:background="@color/MY_BLACK"
+    android:orientation="vertical">
 
-
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/BLACK"
-        tools:layout_editor_absoluteX="16dp">
+        android:layout_margin="12dp"
+        android:background="@drawable/search_linearlayout"
+        android:orientation="vertical">
 
-
-        <RelativeLayout
-            android:id="@+id/image_picker_block1"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="12dp"
-            android:background="@drawable/block_round_corner">
+            android:background="@color/MY_GREEN"
+            android:orientation="vertical">
 
             <TextView
-                android:id="@+id/image_picker_title"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:paddingBottom="16dp"
-                android:paddingTop="16dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:layout_marginTop="12dp"
+                android:layout_marginBottom="12dp"
                 android:text="新增圖片從"
-                android:textColor="@color/BLACK"
-                android:textSize="18sp" />
+                android:textColor="@color/MY_BLACK"
+                android:textSize="24sp"
+                android:textStyle="bold" />
 
-            <include
-                android:id="@+id/divider_61"
-                layout="@layout/divider"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/image_picker_title" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
             <Button
                 android:id="@+id/image_picker_photo_btn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/divider_61"
-                android:layout_centerHorizontal="true"
-                android:layout_marginBottom="12dp"
+                android:layout_gravity="center"
                 android:layout_marginTop="12dp"
                 android:background="@android:color/transparent"
                 android:text="照片"
-                android:textColor="@color/BLACK"
+                android:textColor="@color/MY_WHITE"
                 android:textSize="24sp"
                 tools:layout_editor_absoluteX="67dp"
                 tools:layout_editor_absoluteY="38dp" />
 
-            <include
-                android:id="@+id/divider_62"
-                layout="@layout/divider"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/image_picker_photo_btn" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
             <Button
                 android:id="@+id/image_picker_camera_btn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/divider_62"
-                android:layout_centerHorizontal="true"
-                android:layout_marginBottom="12dp"
+                android:layout_gravity="center"
                 android:layout_marginTop="12dp"
                 android:background="@android:color/transparent"
                 android:text="相機"
-                android:textColor="@color/BLACK"
+                android:textColor="@color/MY_WHITE"
                 android:textSize="24sp"
                 tools:layout_editor_absoluteX="161dp"
                 tools:layout_editor_absoluteY="156dp" />
-        </RelativeLayout>
 
-        <RelativeLayout
-            android:id="@+id/image_picker_block2"
+        </LinearLayout>
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/image_picker_block1"
-            android:layout_marginBottom="12dp"
-            android:background="@drawable/block_round_corner">
-
+            android:orientation="vertical">
 
             <Button
                 android:id="@+id/image_picker_remove_btn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:layout_marginBottom="12dp"
+                android:layout_gravity="center"
                 android:layout_marginTop="12dp"
+                android:layout_marginBottom="12dp"
                 android:background="@android:color/transparent"
                 android:text="移除"
-                android:textColor="@color/BLACK"
+                android:textColor="@color/MY_WHITE"
                 android:textSize="24sp"
                 tools:layout_editor_absoluteX="161dp"
                 tools:layout_editor_absoluteY="156dp" />
-        </RelativeLayout>
 
-        <RelativeLayout
-            android:id="@+id/image_picker_block3"
+        </LinearLayout>
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/image_picker_block2"
-            android:background="@drawable/block_round_corner">
+            android:orientation="vertical">
 
             <Button
                 android:id="@+id/image_picker_cancel_btn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:layout_marginBottom="12dp"
+                android:layout_gravity="center"
                 android:layout_marginTop="12dp"
+                android:layout_marginBottom="12dp"
                 android:background="@android:color/transparent"
                 android:text="取消"
-                android:textColor="@color/BLACK"
+                android:textColor="@color/MY_WHITE"
                 android:textSize="24sp"
                 tools:layout_editor_absoluteX="161dp"
                 tools:layout_editor_absoluteY="156dp" />
-        </RelativeLayout>
-    </RelativeLayout>
 
+        </LinearLayout>
+    </LinearLayout>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>

@@ -329,7 +329,7 @@ interface ToInterface {
     }
 
     fun toSelectDate(key: String, selected: String?=null, delegate: BaseActivity?=null, able_type: String?=null) {
-        val i = Intent(mainDelegate, DateSelectVC::class.java)
+        val i = Intent(mainDelegate, SelectDateVC::class.java)
 
         i.putExtra("key", key)
         if (selected != null) {
