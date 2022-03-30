@@ -5,6 +5,7 @@ import android.app.Activity
 import android.content.ContentValues
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Build
@@ -17,6 +18,7 @@ import android.view.View
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.LinearLayout
+import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
 //import com.github.babedev.dexter.dsl.runtimePermission
 import com.sportpassword.bm.R
@@ -73,6 +75,10 @@ interface ImagePicker {
     }
 
     fun grantPhotoPermission() {
+
+        if (ContextCompat.checkSelfPermission(context, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+
+        }
 
         //println(activity.permissionsExist(arrayListOf(android.Manifest.permission.READ_EXTERNAL_STORAGE, android.Manifest.permission.WRITE_EXTERNAL_STORAGE)))
         if (!activity.permissionsExist(arrayListOf(Manifest.permission.READ_EXTERNAL_STORAGE))) {
