@@ -12,128 +12,154 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:baselineAligned="false"
-        android:orientation="vertical">
+        android:layout_marginTop="12dp"
+        android:layout_marginBottom="12dp"
+        android:orientation="horizontal">
 
         <LinearLayout
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            android:gravity="center_vertical"
-            android:orientation="horizontal">
+            android:layout_marginEnd="8dp"
+            android:layout_weight="10"
+            android:baselineAligned="false"
+            android:orientation="vertical">
 
-            <LinearLayout
-                android:id="@+id/featrued_container"
-                android:layout_width="90dp"
-                android:layout_height="90dp"
-                android:layout_gravity="center_horizontal|center_vertical"
-                android:layout_marginEnd="12dp">
-
-                <ImageView
-                    android:id="@+id/listFeatured"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/loading_square_120"
-                    android:scaleType="fitCenter"
-                    tools:srcCompat="@drawable/loading_square_120" />
-            </LinearLayout>
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:gravity="center_vertical"
                 android:orientation="horizontal">
+
+                <LinearLayout
+                    android:id="@+id/featrued_container"
+                    android:layout_width="90dp"
+                    android:layout_height="90dp"
+                    android:layout_gravity="center_horizontal|center_vertical"
+                    android:layout_marginEnd="12dp">
+
+                    <ImageView
+                        android:id="@+id/listFeatured"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/loading_square_120"
+                        android:scaleType="fitCenter"
+                        tools:srcCompat="@drawable/loading_square_120" />
+                </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="8dp"
-                    android:orientation="vertical">
+                    android:orientation="horizontal">
 
-                    <TextView
-                        android:id="@+id/titleLbl"
-                        android:layout_width="wrap_content"
+                    <LinearLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="2dp"
-                        style="@style/list_text_title"
-                        tools:text="標題" />
+                        android:layout_marginEnd="8dp"
+                        android:orientation="vertical">
 
-                    <TextView
-                        android:id="@+id/attributeLbl"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        style="@style/list_text_general"
-                        tools:text="屬性" />
+                        <TextView
+                            android:id="@+id/titleLbl"
+                            style="@style/list_text_title"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="2dp"
+                            tools:text="標題" />
 
-                    <TextView
-                        android:id="@+id/amountLbl"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        style="@style/highlight"
-                        tools:text="價錢" />
-                    <TextView
-                        android:id="@+id/quantityLbl"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        style="@style/list_text_general"
-                        tools:text="數量" />
+                        <TextView
+                            android:id="@+id/attributeLbl"
+                            style="@style/list_text_general"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            tools:text="屬性" />
+
+                        <TextView
+                            android:id="@+id/amountLbl"
+                            style="@style/highlight"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            tools:text="價錢" />
+
+                        <TextView
+                            android:id="@+id/quantityLbl"
+                            style="@style/list_text_general"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            tools:text="數量" />
+
+                    </LinearLayout>
+
 
                 </LinearLayout>
 
-
             </LinearLayout>
+
+            <RelativeLayout
+                android:id="@+id/iconView"
+                android:layout_width="wrap_content"
+                android:layout_height="36dp"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_horizontal|center_vertical">
+
+                    <ImageButton
+                        android:id="@+id/editIcon"
+                        android:layout_width="36dp"
+                        android:layout_height="36dp"
+                        android:layout_marginLeft="16dp"
+                        android:layout_weight="1"
+                        android:background="@null"
+                        android:scaleType="fitCenter"
+                        app:srcCompat="@drawable/edit1" />
+
+                    <ImageButton
+                        android:id="@+id/deleteIcon"
+                        android:layout_width="36dp"
+                        android:layout_height="36dp"
+                        android:layout_marginLeft="16dp"
+                        android:layout_weight="1"
+                        android:background="@null"
+                        android:scaleType="fitCenter"
+                        app:srcCompat="@drawable/delete" />
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:gravity="center_horizontal|center_vertical">
+
+
+                    <ImageButton
+                        android:id="@+id/refreshIcon"
+                        android:layout_width="36dp"
+                        android:layout_height="36dp"
+                        android:layout_marginLeft="16dp"
+                        android:layout_weight="1"
+                        android:background="@null"
+                        android:scaleType="fitCenter"
+                        app:srcCompat="@drawable/refresh" />
+                </LinearLayout>
+            </RelativeLayout>
 
         </LinearLayout>
+        <LinearLayout
+            android:id="@+id/greater_container"
+            android:layout_width="20dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical">
 
-        <RelativeLayout
-            android:id="@+id/iconView"
-            android:layout_width="wrap_content"
-            android:layout_height="36dp"
-            android:orientation="horizontal">
-
-            <LinearLayout
+            <ImageView
+                android:id="@+id/imageView14"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:gravity="center_horizontal|center_vertical">
-
-                <ImageButton
-                    android:id="@+id/editIcon"
-                    app:srcCompat="@drawable/edit1"
-                    android:layout_width="36dp"
-                    android:layout_height="36dp"
-                    android:layout_marginLeft="16dp"
-                    android:layout_weight="1"
-                    android:background="@null"
-                    android:scaleType="fitCenter" />
-
-                <ImageButton
-                    android:id="@+id/deleteIcon"
-                    app:srcCompat="@drawable/delete"
-                    android:layout_width="36dp"
-                    android:layout_height="36dp"
-                    android:layout_marginLeft="16dp"
-                    android:layout_weight="1"
-                    android:background="@null"
-                    android:scaleType="fitCenter" />
-            </LinearLayout>
-
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:gravity="center_horizontal|center_vertical">
-
-
-                <ImageButton
-                    android:id="@+id/refreshIcon"
-                    app:srcCompat="@drawable/refresh"
-                    android:layout_width="36dp"
-                    android:layout_height="36dp"
-                    android:layout_marginLeft="16dp"
-                    android:layout_weight="1"
-                    android:background="@null"
-                    android:scaleType="fitCenter" />
-            </LinearLayout>
-        </RelativeLayout>
-
+                android:contentDescription="greater"
+                app:srcCompat="@drawable/greater1" />
+        </LinearLayout>
     </LinearLayout>
 
     <LinearLayout
