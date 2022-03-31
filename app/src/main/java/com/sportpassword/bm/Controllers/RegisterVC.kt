@@ -97,6 +97,7 @@ class RegisterVC : MyTableVC() {
         imageView = edit_featured
         getImageViewParams()
         initImagePicker(R.layout.image_picker_layer)
+        activity = this
         edit_featured_container.onClick {
             showImagePickerLayer()
         }

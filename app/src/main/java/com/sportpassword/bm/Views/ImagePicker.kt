@@ -18,6 +18,7 @@ import android.view.View
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.LinearLayout
+import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
 //import com.github.babedev.dexter.dsl.runtimePermission
@@ -58,12 +59,49 @@ interface ImagePicker {
 
         val photoBtn = alertView.findViewById<Button>(R.id.image_picker_photo_btn)
         photoBtn.onClick {
-            grantPhotoPermission()
+            if (isGrantPhotoPermission()) {
+                //in ToInterface.kt
+                activity.toSelectDevicePhoto()
+            } else {
+                activity.requestPermission(arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE), ACTION_PHOTO_REQUEST_CODE)
+            }
+            //grantPhotoPermission()
         }
+
         val cameraBtn = alertView.findViewById<Button>(R.id.image_picker_camera_btn)
         cameraBtn.onClick {
-            grantCameraPermission()
+            if (isGrantCameraPermission()) {
+                val capturedImage = File(activity.getExternalFilesDir(Environment.DIRECTORY_PICTURES), "My_Captured_Photo.jpg")
+                //val fileUri = File()
+                if (capturedImage.exists()) {
+                    capturedImage.delete()
+                }
+                capturedImage.createNewFile()
+
+                //fileUri = Uri.EMPTY
+                if (Build.VERSION.SDK_INT >= 24) {
+                    try {
+                        fileUri = FileProvider.getUriForFile(activity, "com.sportpassword.bm.fileprovider", capturedImage)
+//                    println(fileUri.toString())
+                        if (fileUri != Uri.EMPTY) {
+                            currentPhotoPath = fileUri.toString()
+                        } else {
+                            activity.warning("無法取得fileUri，請洽管理員")
+                        }
+                    } catch (e: Exception) {
+                        println(e.localizedMessage)
+                    }
+                } else {
+                    fileUri = Uri.fromFile(capturedImage)
+                }
+
+                activity.toSelectDeviceCamera()
+            } else {
+                ActivityCompat.requestPermissions(activity, arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.CAMERA), ACTION_PHOTO_REQUEST_CODE)
+            }
+            //grantCameraPermission()
         }
+
         val removeBtn = alertView.findViewById<Button>(R.id.image_picker_remove_btn)
         removeBtn.onClick {
             removeImage()
@@ -74,36 +112,36 @@ interface ImagePicker {
         }
     }
 
+    fun isGrantPhotoPermission(): Boolean {
+        var isGrant: Boolean = true
+        if (ContextCompat.checkSelfPermission(activity, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+           isGrant = false
+        }
+
+        return isGrant
+    }
+
+    fun isGrantCameraPermission(): Boolean {
+        var isGrant: Boolean = true
+        if (ContextCompat.checkSelfPermission(activity, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED ||
+                ContextCompat.checkSelfPermission(activity, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+            isGrant = false
+        }
+
+        return isGrant
+    }
+
     fun grantPhotoPermission() {
 
-        if (ContextCompat.checkSelfPermission(context, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-
-        }
+        //檢查是否已經取得權限，如果沒有的話
 
         //println(activity.permissionsExist(arrayListOf(android.Manifest.permission.READ_EXTERNAL_STORAGE, android.Manifest.permission.WRITE_EXTERNAL_STORAGE)))
         if (!activity.permissionsExist(arrayListOf(Manifest.permission.READ_EXTERNAL_STORAGE))) {
             activity.requestPermission(arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE), ACTION_PHOTO_REQUEST_CODE)
         } else {
-            activity.toSelectDevicePhoto()
-//            val intent = Intent(Intent.ACTION_GET_CONTENT)
-//            intent.type = "image/*"
-//            activity.startActivityForResult(intent, ACTION_PHOTO_REQUEST_CODE)
-        }
 
-//        activity.runtimePermission {
-//            permissions(Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE) {
-//                checked { report ->
-//                    if (report.areAllPermissionsGranted()) {
-//                        val intent = Intent(Intent.ACTION_GET_CONTENT)
-//                        intent.type = "image/*"
-//                        activity.startActivityForResult(intent, ACTION_PHOTO_REQUEST_CODE)
-//                    } else {
-//                        //closeImagePickerLayer()
-//                        activity.toast("由於您沒有同意使用照片的權限，因此無法設定代表圖")
-//                    }
-//                }
-//            }
-//        }
+            activity.toSelectDevicePhoto()
+        }
     }
 
     fun grantCameraPermission() {
@@ -115,6 +153,11 @@ interface ImagePicker {
         } else {
             b1 = true
         }
+
+        if (ActivityCompat.shouldShowRequestPermissionRationale(activity, Manifest.permission.CAMERA)) {
+            ActivityCompat.requestPermissions(activity, arrayOf(Manifest.permission.CAMERA, Manifest.permission.READ_EXTERNAL_STORAGE), ACTION_PHOTO_REQUEST_CODE)
+        }
+
         if (!activity.permissionsExist(arrayListOf(Manifest.permission.CAMERA))) {
             activity.requestPermission(arrayOf(Manifest.permission.CAMERA), ACTION_PHOTO_REQUEST_CODE)
         } else {

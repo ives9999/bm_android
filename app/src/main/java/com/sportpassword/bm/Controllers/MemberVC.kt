@@ -1,10 +1,12 @@
 package com.sportpassword.bm.Controllers
 
+import android.Manifest
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.Button
 import android.widget.LinearLayout
+import androidx.core.app.ActivityCompat
 import com.google.gson.Gson
 import com.sportpassword.bm.Adapters.MemberSectionAdapter
 import com.sportpassword.bm.Data.MemberRow
@@ -151,6 +153,9 @@ class MemberVC : MyTableVC() {
         val segue = row.segue
         when(segue) {
             TO_PROFILE -> this.toRegister()
+//            TO_PROFILE -> {
+//                ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.CAMERA), ACTION_PHOTO_REQUEST_CODE)
+//            }
             TO_PASSWORD -> toUpdatePassword()
             "email" -> this.toValidate("email")
             "mobile" -> this.toValidate("mobile")

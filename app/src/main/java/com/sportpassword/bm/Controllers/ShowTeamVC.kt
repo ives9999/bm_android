@@ -131,10 +131,20 @@ class ShowTeamVC: ShowVC() {
         showRows.clear()
         showRows.addAll(arrayListOf(
             ShowRow("arena", "arena1", "球館", myTable!!.arena!!.name),
+        ))
+        if (myTable!!.arena != null) {
+            showRows.addAll(arrayListOf(
+                ShowRow("city_show", "map", "縣市", myTable!!.arena!!.city_show),
+                ShowRow("area_show", "map", "區域", myTable!!.arena!!.area_show)
+            ))
+        }
+        showRows.addAll(arrayListOf(
             ShowRow("weekday", "date", "星期", myTable!!.weekdays_show),
             ShowRow("interval_show", "clock", "時段", myTable!!.interval_show),
             ShowRow("ball", "ball", "球種", myTable!!.ball),
             ShowRow("degree", "degree", "程度", myTable!!.degree_show),
+            ShowRow("temp_fee_M_show", "money", "費用-男", myTable!!.temp_fee_M_show),
+            ShowRow("temp_fee_F_show", "money", "費用-女", myTable!!.temp_fee_F_show),
             ShowRow("leader", "group", "管理者", myTable!!.manager_nickname),
             ShowRow("mobile_show", "mobile", "行動電話", myTable!!.mobile_show),
             ShowRow("line", "line", "line", myTable!!.line),

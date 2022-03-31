@@ -136,5 +136,17 @@ class TeamTable: Table() {
             people_limit_show = "本週未提供臨打"
             temp_signup_count_show = ""
         }
+
+        if (temp_fee_M >= 0) {
+            temp_fee_M_show = "${temp_fee_M}元"
+        } else {
+            temp_fee_M_show = "未提供"
+        }
+
+        if (temp_fee_F >= 0) {
+            temp_fee_F_show = "${temp_fee_F}元"
+        } else {
+            temp_fee_F_show = "未提供"
+        }
     }
 }

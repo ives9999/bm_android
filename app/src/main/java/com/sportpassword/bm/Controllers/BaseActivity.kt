@@ -62,7 +62,7 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener,
 
     // ImagePicker Interface property
     override val ACTION_PHOTO_REQUEST_CODE = 200
-    override val activity = this
+    override var activity = this
     override val context = this
     override lateinit var imagePickerLayer: androidx.appcompat.app.AlertDialog
     override lateinit var alertView: View
@@ -679,6 +679,13 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener,
                     makeCall(this.mobile)
                 }
                 return
+            }
+            ACTION_PHOTO_REQUEST_CODE -> {
+                if (grantResults.isEmpty() || grantResults[0] != PackageManager.PERMISSION_GRANTED) {
+                    warning("沒有同意權限，因此無法使用此功能，請至設定功能中開啟權限，方能使用此功能")
+                } else {
+                    finish()
+                }
             }
         }
     }
