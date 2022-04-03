@@ -2,11 +2,13 @@ package com.sportpassword.bm.Controllers
 
 import android.Manifest
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.os.Bundle
 import android.view.View
 import android.widget.Button
 import android.widget.LinearLayout
 import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import com.google.gson.Gson
 import com.sportpassword.bm.Adapters.MemberSectionAdapter
 import com.sportpassword.bm.Data.MemberRow
@@ -154,7 +156,19 @@ class MemberVC : MyTableVC() {
         when(segue) {
             TO_PROFILE -> this.toRegister()
 //            TO_PROFILE -> {
-//                ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.CAMERA), ACTION_PHOTO_REQUEST_CODE)
+//                var isGrant: Boolean = true
+//                //val b1 = ContextCompat.checkSelfPermission(activity, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED
+//                val b2 = ContextCompat.checkSelfPermission(activity, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED
+//                if (!b2) {
+//                    ActivityCompat.requestPermissions(
+//                        this,
+//                        arrayOf(
+//                            //Manifest.permission.WRITE_EXTERNAL_STORAGE
+//                            Manifest.permission.CAMERA
+//                        ),
+//                        500
+//                    )
+//                }
 //            }
             TO_PASSWORD -> toUpdatePassword()
             "email" -> this.toValidate("email")
@@ -183,6 +197,23 @@ class MemberVC : MyTableVC() {
             "delete" -> delete()
         }
     }
+
+//    override fun onRequestPermissionsResult(
+//        requestCode: Int,
+//        permissions: Array<out String>,
+//        grantResults: IntArray
+//    ) {
+//        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+//        when (requestCode) {
+//            500 -> {
+//                if (grantResults.size > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+//                    println("aaa")
+//                } else {
+//                    println("bbb")
+//                }
+//            }
+//        }
+//    }
 
     private fun initSectionRow(): ArrayList<MemberSection> {
         val sections: ArrayList<MemberSection> = arrayListOf()

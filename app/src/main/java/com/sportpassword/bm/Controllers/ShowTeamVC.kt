@@ -143,6 +143,7 @@ class ShowTeamVC: ShowVC() {
             ShowRow("interval_show", "clock", "時段", myTable!!.interval_show),
             ShowRow("ball", "ball", "球種", myTable!!.ball),
             ShowRow("degree", "degree", "程度", myTable!!.degree_show),
+            ShowRow("block_show", "arena1", "場地", myTable!!.block_show),
             ShowRow("temp_fee_M_show", "money", "費用-男", myTable!!.temp_fee_M_show),
             ShowRow("temp_fee_F_show", "money", "費用-女", myTable!!.temp_fee_F_show),
             ShowRow("leader", "group", "管理者", myTable!!.manager_nickname),

@@ -187,6 +187,15 @@ class EditTeamVC : EditVC() {
         )
         rows.add(row)
         row = OneRow(
+            "場地",
+            myTable!!.block.toString(),
+            myTable!!.block_show,
+            BLOCK_KEY,
+            "textField",
+            KEYBOARD.numberPad
+        )
+        rows.add(row)
+        row = OneRow(
             "球種",
             myTable!!.ball,
             myTable!!.ball,

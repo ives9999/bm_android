@@ -41,8 +41,8 @@ android {
         applicationId "com.sportpassword.bm"
         minSdkVersion 21
         targetSdkVersion 31
-        versionCode 56
-        versionName "2.0.0"
+        versionCode 57
+        versionName "2.0.1"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
         manifestPlaceholders = [

@@ -2,6 +2,7 @@ package com.sportpassword.bm.Controllers
 
 import android.app.Activity
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.os.Bundle
 import android.view.View
 import android.widget.ImageView

@@ -369,11 +369,13 @@ interface ToInterface {
 
     fun toSelectDeviceCamera() {
 
-        val i = Intent("android.media.action.IMAGE_CAPTURE")
-        if (i.resolveActivity(mainDelegate.packageManager) != null) {
+        val i = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+        //val i = Intent("android.media.action.IMAGE_CAPTURE")
+        //don't use remark by ives 2022/04/01
+        //if (i.resolveActivity(mainDelegate.packageManager) != null) {
             i.putExtra(MediaStore.EXTRA_OUTPUT, mainDelegate.fileUri)
             mainDelegate.selectDeviceCamera.launch(i)
-        }
+        //}
     }
 
     fun toSelectDevicePhoto() {

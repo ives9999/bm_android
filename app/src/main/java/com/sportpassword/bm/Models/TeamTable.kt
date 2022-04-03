@@ -25,6 +25,7 @@ class TeamTable: Table() {
     var ball: String = ""
     var degree: String = ""
     var charge: String = ""
+    var block: Int = 1
     var manager_id: Int = -1
     var manager_token: String = ""
     var manager_nickname: String = ""
@@ -49,6 +50,7 @@ class TeamTable: Table() {
     var play_end_show: String = ""
     var weekdays_show: String = ""
     var degree_show: String = ""
+    var block_show: String = "1面"
     var interval_show: String = ""
     var people_limit_show: String = ""
     var temp_signup_count_show: String = ""
@@ -82,6 +84,7 @@ class TeamTable: Table() {
         if (charge == null) { charge = "" }
 
         if (ball == null) { ball = "" }
+        if (block == null) { block = 1 }
 
         if (temp_status != null) {
             temp_status_show = STATUS.from(temp_status).value
@@ -147,6 +150,10 @@ class TeamTable: Table() {
             temp_fee_F_show = "${temp_fee_F}元"
         } else {
             temp_fee_F_show = "未提供"
+        }
+
+        if (block > 1) {
+            block_show = "${block}面"
         }
     }
 }
