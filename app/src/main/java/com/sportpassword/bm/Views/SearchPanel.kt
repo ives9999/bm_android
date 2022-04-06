@@ -56,7 +56,7 @@ open class SearchPanel {
             addBlackView()
             addSearchTableView()
             layerAddButtonLayout()
-//            layerBtnCount = 2
+////            layerBtnCount = 2
             layerAddSubmitBtn()
             layerAddCancelBtn()
         }
@@ -68,7 +68,7 @@ open class SearchPanel {
 //        val h = layerMask!!.measuredHeight
 
         val lp = RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
-        lp.setMargins(layerRightLeftPadding, layerTopPadding, layerRightLeftPadding, 0)
+        lp.setMargins(layerRightLeftPadding, layerTopPadding, layerRightLeftPadding, layerTopPadding)
         //val lp = RelativeLayout.LayoutParams(w - (2 * layerRightLeftPadding), h - layerTopPadding)
         layerBlackView = RelativeLayout(context!!)
         layerBlackView!!.layoutParams = lp
@@ -121,7 +121,7 @@ open class SearchPanel {
             layerButtonLayout!!.layoutParams = lp
             val color = ContextCompat.getColor(context!!, R.color.MY_BOTTOM_BACKGROUND)
             layerButtonLayout!!.backgroundColor = color
-            layerButtonLayout!!.gravity = Gravity.CENTER
+            //layerButtonLayout!!.gravity = Gravity.CENTER
             layerButtonLayout!!.orientation = LinearLayout.HORIZONTAL
             layerBlackView!!.addView(layerButtonLayout)
         }
@@ -137,11 +137,13 @@ open class SearchPanel {
 
         val lp2 = LinearLayout.LayoutParams(width, height)
         //lp2.weight = 1F
+        lp2.gravity = Gravity.CENTER_VERTICAL
 
-        val padding: Int = (activity.screenWidth - layerBtnCount * width - layerRightLeftPadding * 2) / (layerBtnCount + 1)
+        val padding: Int = (activity.screenWidth - layerBtnCount * width - 2 * layerRightLeftPadding) / (layerBtnCount + 1)
         lp2.marginStart = padding
 
-        //lp2.setMargins(padding, 0, 60, 0)
+        //is the same as above set
+        //lp2.setMargins(padding, 0, 0, 0)
         layerSubmitBtn!!.layoutParams = lp2
         layerSubmitBtn!!.setOnClickListener {
             layerSubmit()
@@ -164,6 +166,8 @@ open class SearchPanel {
         val height: Int = (context != null) then { 30.dpToPx(context!!) } ?: 60
 
         val lp2 = LinearLayout.LayoutParams(width, height)
+        lp2.gravity = Gravity.CENTER_VERTICAL
+
         val padding: Int = (activity.screenWidth - layerBtnCount * width - layerRightLeftPadding * 2) / (layerBtnCount + 1)
         lp2.marginStart = padding
         //lp2.weight = 1F
@@ -247,7 +251,7 @@ open class SearchPanel {
             layerMask = LinearLayout(context)
             layerMask!!.id = R.id.MyMask
             val lp = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
-            lp.bottomMargin = 400
+            //lp.bottomMargin = 400
             layerMask!!.layoutParams = lp
 
             //mask.layoutParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT)
