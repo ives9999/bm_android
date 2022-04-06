@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="54dp"
-    android:background="@android:color/transparent">
+    android:background="@color/MY_BLACK">
 
     <LinearLayout
         android:layout_width="wrap_content"
@@ -17,8 +17,8 @@
 
         <ImageButton
             android:id="@+id/prevIcon"
-            android:layout_width="32dp"
-            android:layout_height="32dp"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
             android:background="@android:color/transparent"
             android:onClick="prev"
             android:scaleType="fitCenter"
@@ -35,7 +35,7 @@
         android:layout_centerInParent="true"
         android:text="標題"
         android:textAlignment="center"
-        android:textColor="@color/MY_GREEN"
+        android:textColor="@color/MY_WHITE"
         tools:text="標題" />
 
     <LinearLayout

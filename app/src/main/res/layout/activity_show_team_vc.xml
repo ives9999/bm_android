@@ -7,6 +7,16 @@
     android:background="@color/MY_BOTTOM_BACKGROUND"
     tools:context=".Controllers.ShowTeamVC">
 
+    <RelativeLayout
+        android:id="@+id/topView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true">
+
+        <include layout="@layout/top_view_show" />
+
+    </RelativeLayout>
+
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/refresh"
         android:layout_width="match_parent"
@@ -14,6 +24,7 @@
         android:clickable="true"
         android:focusable="true"
         android:focusableInTouchMode="true"
+        android:layout_below="@+id/topView"
         android:layout_above="@id/footer"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
@@ -41,16 +52,6 @@
                     android:layout_marginTop="-30dp"
                     android:background="@drawable/show_data_container"
                     android:orientation="vertical">
-
-                    <RelativeLayout
-                        android:id="@+id/topView"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentTop="true">
-
-                        <include layout="@layout/top_view_show" />
-
-                    </RelativeLayout>
 
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/tableView"
