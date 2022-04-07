@@ -40,6 +40,9 @@ open class SearchPanel {
     var layerRightLeftPadding: Int = 40
     var layerTopPadding: Int = 200
     var layerBtnCount: Int = 2
+    val buttonLayoutHeight: Int = 50
+    val buttonWidth: Int = 120
+    val buttonHeight: Int = 30
 
     fun addSearchLayer(context: Context, p: ViewGroup, able_type: String, oneSectionAdapter: OneSectionAdapter) {
         parent = p
@@ -113,7 +116,7 @@ open class SearchPanel {
         layerButtonLayout = LinearLayout(context)
         layerButtonLayout!!.id = R.id.SearchButtonLayer
 
-        val height: Int = (context != null) then { 50.dpToPx(context!!) } ?: 300
+        val height: Int = (context != null) then { buttonLayoutHeight.dpToPx(context!!) } ?: 300
 
         val lp = RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, height)
         lp.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM)
@@ -132,8 +135,8 @@ open class SearchPanel {
         val activity: BaseActivity = context!! as BaseActivity
         layerSubmitBtn = activity.layoutInflater.inflate(R.layout.submit_button, null) as Button
 
-        val width: Int = (context != null) then { 120.dpToPx(context!!) } ?: 300
-        val height: Int = (context != null) then { 30.dpToPx(context!!) } ?: 60
+        val width: Int = (context != null) then { buttonWidth.dpToPx(context!!) } ?: 300
+        val height: Int = (context != null) then { buttonHeight.dpToPx(context!!) } ?: 60
 
         val lp2 = LinearLayout.LayoutParams(width, height)
         //lp2.weight = 1F
@@ -162,8 +165,8 @@ open class SearchPanel {
         val activity: BaseActivity = context!! as BaseActivity
         layerCancelBtn = activity.layoutInflater.inflate(R.layout.cancel_button, null) as Button
 
-        val width: Int = (context != null) then { 120.dpToPx(context!!) } ?: 300
-        val height: Int = (context != null) then { 30.dpToPx(context!!) } ?: 60
+        val width: Int = (context != null) then { buttonWidth.dpToPx(context!!) } ?: 300
+        val height: Int = (context != null) then { buttonHeight.dpToPx(context!!) } ?: 60
 
         val lp2 = LinearLayout.LayoutParams(width, height)
         lp2.gravity = Gravity.CENTER_VERTICAL

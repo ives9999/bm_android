@@ -7,10 +7,11 @@
     android:background="@android:color/transparent"
     android:orientation="vertical">
 
-    <RelativeLayout
+    <LinearLayout
         android:id="@+id/container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:orientation="horizontal"
         android:layout_marginTop="4dp"
         android:gravity="center_vertical">
 
@@ -20,30 +21,25 @@
             android:layout_width="12dp"
             android:layout_height="12dp"
             android:layout_marginStart="6dp"
-            android:layout_centerVertical="true"
-            android:visibility="invisible"
+            android:visibility="gone"
             app:srcCompat="@drawable/required" />
 
         <TextView
             android:id="@+id/title"
-            android:layout_width="wrap_content"
+            android:layout_width="80dp"
             android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
             android:layout_marginStart="12dp"
+            android:textAlignment="textEnd"
             android:textColor="@color/MY_WHITE"
             android:textSize="16sp"
             tools:text="title" />
 
-        <RelativeLayout
+        <LinearLayout
             android:id="@+id/number_container"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_centerVertical="true"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="12dp"
-            android:layout_marginEnd="8dp"
-            android:layout_toEndOf="@id/title">
+            android:layout_marginStart="12sp"
+            >
 
             <Button
                 android:id="@+id/minus"
@@ -66,7 +62,7 @@
                 android:background="@drawable/edittext_border"
                 android:gravity="center"
                 android:text="1"
-                android:textColor="@color/MY_RED"
+                android:textColor="@color/MY_GREEN"
                 android:textSize="26dp" />
 
             <Button
@@ -79,10 +75,10 @@
                 android:textAlignment="center"
                 android:textColor="@color/MY_WHITE"
                 android:textSize="30dp" />
-        </RelativeLayout>
+        </LinearLayout>
 
 
-    </RelativeLayout>
+    </LinearLayout>
 
     <LinearLayout
         android:id="@+id/line"
