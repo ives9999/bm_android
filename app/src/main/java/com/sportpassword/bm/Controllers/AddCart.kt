@@ -32,6 +32,7 @@ import com.sportpassword.bm.Views.Tag
 import com.sportpassword.bm.member
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_addcart_vc.*
+import kotlinx.android.synthetic.main.bottom_view_general.*
 import kotlinx.android.synthetic.main.cart_list_cell.view.*
 import kotlinx.android.synthetic.main.formitem_barcode.*
 import kotlinx.android.synthetic.main.formitem_more.view.*
@@ -68,6 +69,8 @@ class AddCartVC : MyTableVC() {
     var selected_idx: Int = 0
 
     var update: Boolean = false
+    var bottom_button_count: Int = 2
+    val button_width: Int = 400
 
 //    val productRows: ArrayList<HashMap<String, String>> =  arrayListOf(
 //        hashMapOf("title" to "商品","key" to PRODUCT_KEY,"value" to "","show" to "","cell" to "text")
@@ -126,9 +129,35 @@ class AddCartVC : MyTableVC() {
 
         refreshLayout = refresh
         setRefreshListener()
+        setBottomButtonPadding()
 
-        //initData()
+        init()
         refresh()
+    }
+
+    override fun init() {
+        isPrevIconShow = true
+        super.init()
+    }
+
+    fun setBottomButtonPadding() {
+
+        val padding: Int = (screenWidth - bottom_button_count * button_width) / (bottom_button_count + 1)
+        //val leading: Int = bottom_button_count * padding + (bottom_button_count - 1) * button_width
+
+        findViewById<Button>(R.id.submitBtn) ?. let {
+            val params: ViewGroup.MarginLayoutParams = it.layoutParams as ViewGroup.MarginLayoutParams
+            params.width = button_width
+            params.marginStart = padding
+            it.layoutParams = params
+        }
+
+        findViewById<Button>(R.id.cancelBtn) ?. let {
+            val params: ViewGroup.MarginLayoutParams = it.layoutParams as ViewGroup.MarginLayoutParams
+            params.width = button_width
+            params.marginStart = padding
+            it.layoutParams = params
+        }
     }
 
 //    private fun initSectionRows1(): ArrayList<OneSection> {

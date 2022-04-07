@@ -5,6 +5,8 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.view.View
+import android.view.ViewGroup
+import android.widget.Button
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.RelativeLayout
@@ -57,6 +59,9 @@ class RegisterVC : MyTableVC() {
 
     private var old_selected_city: String = ""
     private var member_token: String = ""
+
+    var bottom_button_count: Int = 2
+    val button_width: Int = 400
 
 //    val SELECT_REQUEST_CODE = 1
 
@@ -116,6 +121,7 @@ class RegisterVC : MyTableVC() {
 
         refreshLayout = refresh
         setRefreshListener()
+        setBottomButtonPadding()
 
         init()
     }
@@ -324,6 +330,27 @@ class RegisterVC : MyTableVC() {
 //            }
 //        }
     }
+
+    fun setBottomButtonPadding() {
+
+        val padding: Int = (screenWidth - bottom_button_count * button_width) / (bottom_button_count + 1)
+        //val leading: Int = bottom_button_count * padding + (bottom_button_count - 1) * button_width
+
+        findViewById<Button>(R.id.submitBtn) ?. let {
+            val params: ViewGroup.MarginLayoutParams = it.layoutParams as ViewGroup.MarginLayoutParams
+            params.width = button_width
+            params.marginStart = padding
+            it.layoutParams = params
+        }
+
+        findViewById<Button>(R.id.cancelBtn) ?. let {
+            val params: ViewGroup.MarginLayoutParams = it.layoutParams as ViewGroup.MarginLayoutParams
+            params.width = button_width
+            params.marginStart = padding
+            it.layoutParams = params
+        }
+    }
+
 
 //    override fun generateItems(section: Int): ArrayList<Item> {
 //

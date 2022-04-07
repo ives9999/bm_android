@@ -13,6 +13,7 @@ import kotlinx.android.synthetic.main.mask.*
 import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
 import android.view.*
+import android.widget.Button
 import android.widget.RelativeLayout
 import androidx.recyclerview.widget.RecyclerView
 import com.google.gson.Gson
@@ -34,6 +35,9 @@ class OrderVC : MyTableVC() {
     var selected_number: Int = 1
     var selected_price: Int = 0
     var selected_idx: Int = 0
+
+    var bottom_button_count: Int = 2
+    val button_width: Int = 400
 
 //    var tableView: RecyclerView? = null
 
@@ -101,6 +105,7 @@ class OrderVC : MyTableVC() {
 
         refreshLayout = refresh
         setRefreshListener()
+        setBottomButtonPadding()
 
         init()
         refresh()
@@ -109,6 +114,26 @@ class OrderVC : MyTableVC() {
     override fun init() {
         isPrevIconShow = true
         super.init()
+    }
+
+    fun setBottomButtonPadding() {
+
+        val padding: Int = (screenWidth - bottom_button_count * button_width) / (bottom_button_count + 1)
+        //val leading: Int = bottom_button_count * padding + (bottom_button_count - 1) * button_width
+
+        findViewById<Button>(R.id.submitBtn) ?. let {
+            val params: ViewGroup.MarginLayoutParams = it.layoutParams as ViewGroup.MarginLayoutParams
+            params.width = button_width
+            params.marginStart = padding
+            it.layoutParams = params
+        }
+
+        findViewById<Button>(R.id.cancelBtn) ?. let {
+            val params: ViewGroup.MarginLayoutParams = it.layoutParams as ViewGroup.MarginLayoutParams
+            params.width = button_width
+            params.marginStart = padding
+            it.layoutParams = params
+        }
     }
 
 //    override fun initAdapter(include_section: Boolean) {

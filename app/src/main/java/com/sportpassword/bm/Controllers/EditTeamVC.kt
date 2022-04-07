@@ -360,7 +360,9 @@ class EditTeamVC : EditVC() {
             myTable!!.filterRow()
             table = myTable
         } else {
-            warning("解析伺服器所傳的字串失敗，請洽管理員")
+            runOnUiThread {
+                warning("解析伺服器所傳的字串失敗，請洽管理員")
+            }
         }
     }
 

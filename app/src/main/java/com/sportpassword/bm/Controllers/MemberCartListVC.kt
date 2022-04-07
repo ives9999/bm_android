@@ -3,6 +3,8 @@ package com.sportpassword.bm.Controllers
 import android.content.Context
 import android.os.Bundle
 import android.view.View
+import android.view.ViewGroup
+import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import com.sportpassword.bm.Adapters.MemberCartAdapter
@@ -14,6 +16,7 @@ import com.sportpassword.bm.member
 import com.sportpassword.bm.Utilities.*
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_member_cart_list_vc.*
+import kotlinx.android.synthetic.main.bottom_view_general.*
 import kotlinx.android.synthetic.main.cart_list_cell.view.*
 import kotlinx.android.synthetic.main.cart_list_cell.view.listFeatured
 import kotlinx.android.synthetic.main.cart_list_cell.view.titleLbl
@@ -25,6 +28,9 @@ class MemberCartListVC : MyTableVC() {
 
     var myTable: CartTable? = null
     var cartItemsTable: ArrayList<CartItemTable> = arrayListOf()
+
+    var bottom_button_count: Int = 2
+    val button_width: Int = 400
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -42,6 +48,8 @@ class MemberCartListVC : MyTableVC() {
         tableAdapter = MemberCartAdapter(R.layout.cart_list_cell, this)
         recyclerView.adapter = tableAdapter
 
+        setBottomButtonPadding()
+
         init()
         refresh()
     }
@@ -49,6 +57,27 @@ class MemberCartListVC : MyTableVC() {
     override fun init() {
         isPrevIconShow = true
         super.init()
+    }
+
+    fun setBottomButtonPadding() {
+
+        val padding: Int = (screenWidth - bottom_button_count * button_width) / (bottom_button_count + 1)
+        //val leading: Int = bottom_button_count * padding + (bottom_button_count - 1) * button_width
+
+        findViewById<Button>(R.id.submitBtn) ?. let {
+            val params: ViewGroup.MarginLayoutParams = it.layoutParams as ViewGroup.MarginLayoutParams
+            params.width = button_width
+            params.marginStart = padding
+            it.layoutParams = params
+            it.text = "建立訂單"
+        }
+
+        findViewById<Button>(R.id.cancelBtn) ?. let {
+            val params: ViewGroup.MarginLayoutParams = it.layoutParams as ViewGroup.MarginLayoutParams
+            params.width = button_width
+            params.marginStart = padding
+            it.layoutParams = params
+        }
     }
 
 //    override fun onCreateOptionsMenu(menu: Menu?): Boolean {

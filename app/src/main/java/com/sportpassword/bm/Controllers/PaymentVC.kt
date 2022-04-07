@@ -4,6 +4,8 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import android.view.ViewGroup
+import android.widget.Button
 import com.google.gson.Gson
 import com.sportpassword.bm.Adapters.OneItemAdapter
 import com.sportpassword.bm.Adapters.OneSectionAdapter
@@ -15,7 +17,7 @@ import com.sportpassword.bm.Services.OrderService
 import com.sportpassword.bm.Utilities.*
 import com.sportpassword.bm.member
 import kotlinx.android.synthetic.main.activity_payment_vc.*
-import kotlinx.android.synthetic.main.activity_payment_vc.footer
+import kotlinx.android.synthetic.main.bottom_view_general.*
 import kotlinx.android.synthetic.main.mask.*
 import kotlinx.android.synthetic.main.payment_cell.*
 import tw.com.ecpay.paymentgatewaykit.manager.*
@@ -87,6 +89,9 @@ class PaymentVC : MyTableVC() {
 
     var title: String = ""
 
+    var bottom_button_count: Int = 2
+    val button_width: Int = 400
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_payment_vc)
@@ -118,6 +123,8 @@ class PaymentVC : MyTableVC() {
         //initAdapter()
         //refresh()
 
+        setBottomButtonPadding()
+
         init()
         if (ecpay_token.length > 0) {
             toECPay()
@@ -129,6 +136,26 @@ class PaymentVC : MyTableVC() {
     override fun init() {
         isPrevIconShow = true
         super.init()
+    }
+
+    fun setBottomButtonPadding() {
+
+        val padding: Int = (screenWidth - bottom_button_count * button_width) / (bottom_button_count + 1)
+        //val leading: Int = bottom_button_count * padding + (bottom_button_count - 1) * button_width
+
+        findViewById<Button>(R.id.submitBtn) ?. let {
+            val params: ViewGroup.MarginLayoutParams = it.layoutParams as ViewGroup.MarginLayoutParams
+            params.width = button_width
+            params.marginStart = padding
+            it.layoutParams = params
+        }
+
+        findViewById<Button>(R.id.cancelBtn) ?. let {
+            val params: ViewGroup.MarginLayoutParams = it.layoutParams as ViewGroup.MarginLayoutParams
+            params.width = button_width
+            params.marginStart = padding
+            it.layoutParams = params
+        }
     }
 
     fun toECPay() {
