@@ -5,6 +5,7 @@ import android.os.Bundle
 import com.sportpassword.bm.R
 import org.jetbrains.anko.sdk27.coroutines.onClick
 import android.view.View
+import android.view.ViewGroup
 import android.widget.*
 import com.sportpassword.bm.Adapters.OneSectionAdapter
 import com.sportpassword.bm.Models.*
@@ -45,6 +46,9 @@ open class EditVC : MyTableVC() {
 //    val editTexts: HashMap<String, Int> = hashMapOf()
 
     var table: Table? = null
+
+    var bottom_button_count: Int = 2
+    val button_width: Int = 400
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -115,6 +119,9 @@ open class EditVC : MyTableVC() {
         //println(refreshLayout)
 //        setRefreshListener()
 //        refresh()
+
+        setBottomButtonPadding()
+
         oneSections.clear()
         init()
         if (token != null && token.isNotEmpty()) {
@@ -127,6 +134,26 @@ open class EditVC : MyTableVC() {
     override fun init() {
         isPrevIconShow = true
         super.init()
+    }
+
+    fun setBottomButtonPadding() {
+
+        val padding: Int = (screenWidth - bottom_button_count * button_width) / (bottom_button_count + 1)
+        //val leading: Int = bottom_button_count * padding + (bottom_button_count - 1) * button_width
+
+        findViewById<Button>(R.id.submitBtn) ?. let {
+            val params: ViewGroup.MarginLayoutParams = it.layoutParams as ViewGroup.MarginLayoutParams
+            params.width = button_width
+            params.marginStart = padding
+            it.layoutParams = params
+        }
+
+        findViewById<Button>(R.id.cancelBtn) ?. let {
+            val params: ViewGroup.MarginLayoutParams = it.layoutParams as ViewGroup.MarginLayoutParams
+            params.width = button_width
+            params.marginStart = padding
+            it.layoutParams = params
+        }
     }
 
     open fun initData() {}
