@@ -214,7 +214,7 @@ open class DataService {
 //        println(url)
 
         val body = JSONObject()
-        var arr: JSONArray = JSONArray()
+        val arr: JSONArray = JSONArray()
         for (city_id in city_ids) {
             arr.put(city_id)
         }
