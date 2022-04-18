@@ -74,6 +74,7 @@ abstract class MyTableVC : BaseActivity() {
         }
 
         recyclerView = RecyclerView(this)
+        recyclerView.setHasFixedSize(true)
     }
 
     override fun init() {
@@ -334,8 +335,10 @@ abstract class MyTableVC : BaseActivity() {
             scrollerListenr = object : RecyclerView.OnScrollListener() {
                 override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                     super.onScrolled(recyclerView, dx, dy)
+                    //println("dy:${dy}")
                     val layoutManager = recyclerView.layoutManager as LinearLayoutManager
                     if (tableLists.size < totalCount) {
+                        //pos = layoutManager.findLastCompletelyVisibleItemPosition()
                         pos = layoutManager.findLastVisibleItemPosition()
                         //println("pos:${pos}")
                     }
@@ -344,7 +347,7 @@ abstract class MyTableVC : BaseActivity() {
                 override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
                     super.onScrollStateChanged(recyclerView, newState)
 
-                    //println("items.size:${tableLists.size}")
+                    //println("tableLists.size:${tableLists.size}")
                     if (tableLists.size == pos + 1 && newState == RecyclerView.SCROLL_STATE_IDLE && tableLists.size < totalCount && !loading) {
                         getDataStart(page, perPage)
                     }

@@ -33,16 +33,12 @@
         android:background="@color/MY_GREY"
         android:orientation="horizontal" />
 
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_above="@id/bottomView"
-        android:layout_below="@+id/line"
-        android:background="@color/MY_BLACK">
-
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_above="@id/bottomView"
+            android:layout_below="@+id/line"
+            android:background="@color/MY_BLACK"
             android:orientation="vertical">
 
             <LinearLayout
@@ -87,7 +83,6 @@
             </LinearLayout>
 
         </RelativeLayout>
-    </ScrollView>
 
     <LinearLayout
         android:id="@+id/bottomView"
