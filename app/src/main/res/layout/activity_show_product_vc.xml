@@ -46,7 +46,7 @@
                 <LinearLayout
                     android:id="@+id/data_container"
                     android:layout_width="match_parent"
-                    android:layout_height="1000dp"
+                    android:layout_height="match_parent"
                     android:layout_below="@+id/featured"
                     android:layout_marginTop="-30dp"
                     android:background="@drawable/show_data_container"
