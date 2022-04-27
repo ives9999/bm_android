@@ -323,7 +323,7 @@ open class DataService {
         if (token != null) {
             url = url + "/" + token
         }
-        //println(url)
+        println(url)
 
 //        val header: MutableList<Pair<String, String>> = mutableListOf()
 //        header.add(Pair("Accept","application/json"))
