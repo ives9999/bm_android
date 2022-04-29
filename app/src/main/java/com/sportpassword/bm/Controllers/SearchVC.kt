@@ -7,7 +7,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.LinearLayout
+import android.widget.TextView
 import androidx.core.content.ContextCompat
+import androidx.recyclerview.widget.RecyclerView
 import com.google.gson.JsonParseException
 import com.sportpassword.bm.Adapters.OneSectionAdapter
 import com.sportpassword.bm.Adapters.SearchSectionAdapter
@@ -25,6 +27,7 @@ import com.sportpassword.bm.Services.TeamService
 import com.sportpassword.bm.Utilities.*
 import com.sportpassword.bm.Views.TabSearch
 import com.sportpassword.bm.Views.Tag
+import com.sportpassword.bm.member
 import kotlinx.android.synthetic.main.activity_search_vc.*
 import kotlinx.android.synthetic.main.bottom_view.*
 import kotlinx.android.synthetic.main.mask.*
@@ -34,6 +37,7 @@ import kotlinx.android.synthetic.main.top_view.*
 import org.jetbrains.anko.Android
 import org.jetbrains.anko.backgroundColor
 import org.jetbrains.anko.support.v4.runOnUiThread
+import org.jetbrains.anko.textColor
 
 class SearchVC : MyTableVC() {
 
@@ -46,6 +50,8 @@ class SearchVC : MyTableVC() {
         hashMapOf("key" to "like", "selected" to false, "tag" to 2, "icon" to "search_w", "text" to "全部", "class" to "")
     )
     var selectedTagIdx: Int = 0
+
+    var mustLoginLbl: TextView? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -89,7 +95,17 @@ class SearchVC : MyTableVC() {
 
         //initTag()
         initSearchTab()
-        refresh()
+        if (member.isLoggedIn) {
+            refresh()
+        } else {
+            findViewById<LinearLayout>(R.id.tableViewContainer) ?. let {
+                findViewById<RecyclerView>(R.id.list_container) ?. let {
+                    it.visibility = View.GONE
+                }
+
+                mustLoginLbl = it.setInfo(this, "請先登入")
+            }
+        }
     }
 
     private fun initSearchTab() {

@@ -37,6 +37,7 @@ import org.jetbrains.anko.backgroundColor
 import org.jetbrains.anko.displayMetrics
 import org.jetbrains.anko.makeCall
 import org.jetbrains.anko.sdk27.coroutines.onClick
+import org.jetbrains.anko.textColor
 import java.text.NumberFormat
 import java.text.ParseException
 import java.text.SimpleDateFormat
@@ -1265,6 +1266,21 @@ fun ViewGroup.cancelButton(context: Context, click: ()->Unit): Button {
     this.addView(view)
 
     return view
+}
+
+fun ViewGroup.setInfo(context: Context, info: String): TextView {
+
+    val label: TextView = TextView(context)
+    val lp: ViewGroup.MarginLayoutParams = ViewGroup.MarginLayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 100)
+    lp.topMargin = 200
+    label.layoutParams = lp
+    label.gravity = Gravity.CENTER_HORIZONTAL
+    label.textColor = ContextCompat.getColor(context, R.color.MY_WHITE)
+    label.text = info
+
+    this.addView(label)
+
+    return label
 }
 
 fun TextView.selected() {
