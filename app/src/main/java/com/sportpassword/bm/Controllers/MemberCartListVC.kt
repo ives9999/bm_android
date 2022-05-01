@@ -103,17 +103,27 @@ class MemberCartListVC : MyTableVC() {
             if (mysTable!!.rows.size > 0) {
                 myTable = mysTable!!.rows[0]
                 cartItemsTable = myTable!!.items
+                if (cartItemsTable.size > 0) {
+                    getPage()
+                    tableLists += generateItems1(CartItemTable::class, myTable!!.items)
+                    tableAdapter.setMyTableList(tableLists)
+                    runOnUiThread {
+                        submitBtn.visibility =
+                            (cartItemsTable.size > 0) then { View.VISIBLE } ?: View.GONE
+                        tableAdapter.notifyDataSetChanged()
+                    }
+                } else {
+                    val rootView: ViewGroup = getRootView()
+                    runOnUiThread {
+                        rootView.setInfo(this, "目前購物車無商品")
+                        submitBtn.visibility = View.GONE
+                    }
 
-                getPage()
-                tableLists += generateItems1(CartItemTable::class, myTable!!.items)
-                tableAdapter.setMyTableList(tableLists)
-                runOnUiThread {
-                    submitBtn.visibility = (cartItemsTable.size > 0) then { View.VISIBLE } ?: View.GONE
-                    tableAdapter.notifyDataSetChanged()
-                }
-            } else {
-                runOnUiThread {
-                    submitBtn.visibility = View.GONE
+                    bottom_button_count = 1
+                    runOnUiThread {
+                        submitBtn.visibility = View.GONE
+                        setBottomButtonPadding()
+                    }
                 }
             }
         }

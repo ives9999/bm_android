@@ -238,6 +238,10 @@ class SearchVC : MyTableVC() {
                         setFilterView()
                         footer.visibility = View.VISIBLE
                         //remain.visibility = View.VISIBLE
+                        mustLoginLbl?.visibility = View.INVISIBLE
+                        findViewById<RecyclerView>(R.id.list_container) ?. let {
+                            it.visibility = View.VISIBLE
+                        }
                         recyclerView.adapter = oneSectionAdapter
                         //generateSections()
                     }
@@ -248,11 +252,36 @@ class SearchVC : MyTableVC() {
                         member_like = true
                         recyclerView.adapter = tableAdapter
                         params.clear()
-                        refresh()
+
+                        if (member.isLoggedIn) {
+                            findViewById<RecyclerView>(R.id.list_container) ?. let {
+                                it.visibility = View.VISIBLE
+                            }
+                            refresh()
+                        } else {
+                            if (mustLoginLbl == null) {
+                                findViewById<LinearLayout>(R.id.tableViewContainer) ?. let {
+                                    findViewById<RecyclerView>(R.id.list_container) ?. let {
+                                        it.visibility = View.GONE
+                                    }
+
+                                    mustLoginLbl = it.setInfo(this, "請先登入")
+                                }
+                            } else {
+                                findViewById<RecyclerView>(R.id.list_container) ?. let {
+                                    it.visibility = View.GONE
+                                }
+                                mustLoginLbl!!.visibility = View.VISIBLE
+                            }
+                        }
                     }
                     2-> {
                         setListView()
                         footer.visibility = View.GONE
+                        mustLoginLbl?.visibility = View.INVISIBLE
+                        findViewById<RecyclerView>(R.id.list_container) ?. let {
+                            it.visibility = View.VISIBLE
+                        }
                         //remain.visibility = View.GONE
                         member_like = false
                         recyclerView.adapter = tableAdapter

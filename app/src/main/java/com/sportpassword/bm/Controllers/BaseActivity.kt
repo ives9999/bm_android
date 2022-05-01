@@ -629,6 +629,11 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener,
         return 0
     }
 
+    protected fun getRootView(): ViewGroup {
+
+        return window.decorView.findViewById<ViewGroup>(android.R.id.content)
+    }
+
     private fun getScreenHeight() {
         val displayMetrics = resources.displayMetrics
         density = displayMetrics.density

@@ -1,6 +1,7 @@
 package com.sportpassword.bm.Controllers
 
 import android.os.Bundle
+import android.view.ViewGroup
 import com.sportpassword.bm.Adapters.TeachAdapter
 import com.sportpassword.bm.Data.OneRow
 import com.sportpassword.bm.Data.OneSection
@@ -66,11 +67,18 @@ class TeachVC : MyTableVC() {
         mysTable = jsonToModels(jsonString!!)
         if (mysTable != null) {
             tables = mysTable
-            getPage()
-            tableLists += generateItems1(TeachTable::class, mysTable!!.rows)
-            tableAdapter.setMyTableList(tableLists)
-            runOnUiThread {
-                tableAdapter.notifyDataSetChanged()
+            if (mysTable!!.rows.count() > 0) {
+                getPage()
+                tableLists += generateItems1(TeachTable::class, mysTable!!.rows)
+                tableAdapter.setMyTableList(tableLists)
+                runOnUiThread {
+                    tableAdapter.notifyDataSetChanged()
+                }
+            } else {
+                val rootView: ViewGroup = getRootView()
+                runOnUiThread {
+                    rootView.setInfo(this, "目前暫無資料")
+                }
             }
         }
     }

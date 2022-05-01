@@ -2,6 +2,7 @@ package com.sportpassword.bm.Controllers
 
 import android.os.Bundle
 import android.view.View
+import android.view.ViewGroup
 import com.google.gson.Gson
 import com.sportpassword.bm.Adapters.TeamAdapter
 import com.sportpassword.bm.Models.*
@@ -10,6 +11,7 @@ import com.sportpassword.bm.Services.TeamService
 import com.sportpassword.bm.Utilities.Global
 import com.sportpassword.bm.Utilities.Loading
 import com.sportpassword.bm.Utilities.jsonToModels
+import com.sportpassword.bm.Utilities.setInfo
 import kotlinx.android.synthetic.main.mask.*
 
 class ManagerTeamVC : ManagerVC() {
@@ -37,13 +39,20 @@ class ManagerTeamVC : ManagerVC() {
         mysTable = jsonToModels<TeamsTable>(jsonString!!)
         if (mysTable != null) {
             tables = mysTable
-            if (page == 1) {
-                getPage()
-            }
-            tableLists += generateItems1(TeamTable::class, mysTable!!.rows)
-            tableAdapter.setMyTableList(tableLists)
-            runOnUiThread {
-                tableAdapter.notifyDataSetChanged()
+            if (mysTable!!.rows.size > 0) {
+                if (page == 1) {
+                    getPage()
+                }
+                tableLists += generateItems1(TeamTable::class, mysTable!!.rows)
+                tableAdapter.setMyTableList(tableLists)
+                runOnUiThread {
+                    tableAdapter.notifyDataSetChanged()
+                }
+            } else {
+                val rootView: ViewGroup = getRootView()
+                runOnUiThread {
+                    rootView.setInfo(this, "目前暫無資料")
+                }
             }
         }
     }

@@ -2,6 +2,7 @@ package com.sportpassword.bm.Controllers
 
 import android.os.Bundle
 import android.view.View
+import android.view.ViewGroup
 import com.sportpassword.bm.Adapters.CourseAdapter
 import com.sportpassword.bm.Models.CourseTable
 import com.sportpassword.bm.Models.CoursesTable
@@ -60,13 +61,20 @@ class ManagerCourseVC: ManagerVC() {
         mysTable = jsonToModels<CoursesTable>(jsonString!!)
         if (mysTable != null) {
             tables = mysTable
-            if (page == 1) {
-                getPage()
-            }
-            tableLists += generateItems1(CourseTable::class, mysTable!!.rows)
-            tableAdapter.setMyTableList(tableLists)
-            runOnUiThread {
-                tableAdapter.notifyDataSetChanged()
+            if (mysTable!!.rows.size > 0) {
+                if (page == 1) {
+                    getPage()
+                }
+                tableLists += generateItems1(CourseTable::class, mysTable!!.rows)
+                tableAdapter.setMyTableList(tableLists)
+                runOnUiThread {
+                    tableAdapter.notifyDataSetChanged()
+                }
+            } else {
+                val rootView: ViewGroup = getRootView()
+                runOnUiThread {
+                    rootView.setInfo(this, "目前暫無資料")
+                }
             }
         }
     }

@@ -1,6 +1,7 @@
 package com.sportpassword.bm.Controllers
 
 import android.os.Bundle
+import android.view.ViewGroup
 import com.sportpassword.bm.Adapters.TeamAdapter
 import com.sportpassword.bm.Models.Table
 import com.sportpassword.bm.Models.TeamTable
@@ -70,11 +71,18 @@ class TeamVC : MyTableVC() {
         mysTable = jsonToModels(jsonString!!)
         if (mysTable != null) {
             tables = mysTable
-            getPage()
-            tableLists += generateItems1(TeamTable::class, mysTable!!.rows)
-            tableAdapter.setMyTableList(tableLists)
-            runOnUiThread {
-                tableAdapter.notifyDataSetChanged()
+            if (mysTable!!.rows.count() > 0) {
+                getPage()
+                tableLists += generateItems1(TeamTable::class, mysTable!!.rows)
+                tableAdapter.setMyTableList(tableLists)
+                runOnUiThread {
+                    tableAdapter.notifyDataSetChanged()
+                }
+            } else {
+                val rootView: ViewGroup = getRootView()
+                runOnUiThread {
+                    rootView.setInfo(this, "目前暫無資料")
+                }
             }
         }
     }

@@ -2,6 +2,7 @@ package com.sportpassword.bm.Controllers
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.ViewGroup
 import com.google.gson.Gson
 import com.google.gson.JsonParseException
 import com.sportpassword.bm.Adapters.MemberSignupListAdapter
@@ -12,6 +13,7 @@ import com.sportpassword.bm.Services.CourseService
 import com.sportpassword.bm.Services.MemberService
 import com.sportpassword.bm.Services.TeamService
 import com.sportpassword.bm.Utilities.Loading
+import com.sportpassword.bm.Utilities.setInfo
 import com.sportpassword.bm.member
 import kotlinx.android.synthetic.main.activity_member_signup_list_vc.*
 import kotlinx.android.synthetic.main.mask.*
@@ -108,14 +110,22 @@ class MemberSignupListVC : MyTableVC() {
             println(e.localizedMessage)
         }
         if (signupResultTable != null && signupResultTable!!.success) {
-            if (page == 1) {
-                getPage()
-            }
-            signupNormalTables = signupResultTable!!.rows
-            tableLists += generateItems1(SignupNormalTable::class, signupNormalTables)
-            adapter.setMyTableList(tableLists)
-            runOnUiThread {
-                adapter.notifyDataSetChanged()
+
+            if (signupResultTable!!.rows.size > 0) {
+                if (page == 1) {
+                    getPage()
+                }
+                signupNormalTables = signupResultTable!!.rows
+                tableLists += generateItems1(SignupNormalTable::class, signupNormalTables)
+                adapter.setMyTableList(tableLists)
+                runOnUiThread {
+                    adapter.notifyDataSetChanged()
+                }
+            } else {
+                val rootView: ViewGroup = getRootView()
+                runOnUiThread {
+                    rootView.setInfo(this, "目前暫無資料")
+                }
             }
         }
     }

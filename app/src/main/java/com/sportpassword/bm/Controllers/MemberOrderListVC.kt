@@ -4,11 +4,13 @@ import android.content.Context
 import android.os.Bundle
 import android.view.Menu
 import android.view.View
+import android.view.ViewGroup
 import com.sportpassword.bm.Adapters.MemberOrderAdapter
 import com.sportpassword.bm.Models.*
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.OrderService
 import com.sportpassword.bm.Utilities.jsonToModels
+import com.sportpassword.bm.Utilities.setInfo
 import com.sportpassword.bm.member
 import kotlinx.android.synthetic.main.activity_member_order_list_vc.*
 import kotlinx.android.synthetic.main.mask.*
@@ -71,13 +73,19 @@ class MemberOrderListVC : MyTableVC() {
         mysTable = jsonToModels<OrdersTable>(dataService.jsonString)
         if (mysTable != null) {
             tables = mysTable
-            getPage()
-            tableLists += generateItems1(OrderTable::class, mysTable!!.rows)
-            tableAdapter.setMyTableList(tableLists)
-            runOnUiThread {
-                tableAdapter.notifyDataSetChanged()
+            if (mysTable!!.rows.count() > 0) {
+                getPage()
+                tableLists += generateItems1(OrderTable::class, mysTable!!.rows)
+                tableAdapter.setMyTableList(tableLists)
+                runOnUiThread {
+                    tableAdapter.notifyDataSetChanged()
+                }
+            } else {
+                val rootView: ViewGroup = getRootView()
+                runOnUiThread {
+                    rootView.setInfo(this, "目前無訂單")
+                }
             }
-
         }
     }
 

@@ -1,6 +1,7 @@
 package com.sportpassword.bm.Controllers
 
 import android.os.Bundle
+import android.view.ViewGroup
 import com.google.gson.Gson
 import com.google.gson.JsonParseException
 import com.sportpassword.bm.Adapters.ManagerSignupListAdapter
@@ -12,6 +13,7 @@ import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.CourseService
 import com.sportpassword.bm.Services.TeamService
 import com.sportpassword.bm.Utilities.Loading
+import com.sportpassword.bm.Utilities.setInfo
 import com.sportpassword.bm.member
 import kotlinx.android.synthetic.main.activity_manager_signup_list_vc.*
 import kotlinx.android.synthetic.main.activity_show_course_vc.*
@@ -120,41 +122,46 @@ class ManagerSignupListVC : MyTableVC() {
 
         }
         if (signupListResultTable != null && signupListResultTable!!.success) {
-            if (page == 1) {
-                getPage()
-            }
-            signupNormalTables = signupListResultTable!!.rows
+            if (signupListResultTable!!.rows.size > 0) {
+                if (page == 1) {
+                    getPage()
+                }
+                signupNormalTables = signupListResultTable!!.rows
 
-            for (signupNormalTable in signupNormalTables) {
+                for (signupNormalTable in signupNormalTables) {
 
-                signupNormalTable.filterRow()
-                if (signupNormalTable.dateTable != null) {
+                    signupNormalTable.filterRow()
+                    if (signupNormalTable.dateTable != null) {
 
-                    val dateTable: DateTable = signupNormalTable.dateTable!!
-                    val date: String = dateTable.date
+                        val dateTable: DateTable = signupNormalTable.dateTable!!
+                        val date: String = dateTable.date
 
-                    var bExist: Boolean = false
-                    for (signupSection in signupSections) {
-                        if (signupSection.date == date) {
+                        var bExist: Boolean = false
+                        for (signupSection in signupSections) {
+                            if (signupSection.date == date) {
+                                signupSection.rows.add(signupNormalTable)
+                                bExist = true
+                            }
+                        }
+
+                        if (!bExist) {
+                            val signupSection: SignupSection = SignupSection()
+                            signupSection.date = date
                             signupSection.rows.add(signupNormalTable)
-                            bExist = true
+                            signupSections.add(signupSection)
                         }
                     }
-
-                    if (!bExist) {
-                        val signupSection: SignupSection = SignupSection()
-                        signupSection.date = date
-                        signupSection.rows.add(signupNormalTable)
-                        signupSections.add(signupSection)
-                    }
                 }
-            }
 
-            //tableLists += generateItems1(SignupNormalTable::class, signupNormalTables)
-            //adapter.setMyTableList(tableLists)
-            adapter.signupSections = signupSections
-            runOnUiThread {
-                adapter.notifyDataSetChanged()
+                adapter.signupSections = signupSections
+                runOnUiThread {
+                    adapter.notifyDataSetChanged()
+                }
+            } else {
+                val rootView: ViewGroup = getRootView()
+                runOnUiThread {
+                    rootView.setInfo(this, "目前暫無資料")
+                }
             }
         }
     }

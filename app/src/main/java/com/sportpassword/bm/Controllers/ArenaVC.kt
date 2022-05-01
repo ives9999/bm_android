@@ -1,6 +1,7 @@
 package com.sportpassword.bm.Controllers
 
 import android.os.Bundle
+import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import com.sportpassword.bm.Adapters.ArenaAdapter
 import com.sportpassword.bm.Data.OneRow
@@ -70,23 +71,18 @@ class ArenaVC : MyTableVC() {
         mysTable = jsonToModels<ArenasTable>(jsonString!!)
         if (mysTable != null) {
             tables = mysTable
-            getPage()
-            tableLists += generateItems1(ArenaTable::class, mysTable!!.rows)
-//            val a: ArrayList<Table> = arrayListOf()
-//            for (tableList in tableLists) {
-//                val a1: ArenaTable = ArenaTable()
-//                a1.title = tableList.name
-//                a.add(a1)
-//            }
-//            tableAdapter.tableList = a
-            tableAdapter.tableList = tableLists
-//            for (i in 0..5) {
-//                youItems.add(YouItem(i.toString()))
-//            }
-//            youAdapter.items = youItems
-            runOnUiThread {
-//                youAdapter.notifyDataSetChanged()
-                tableAdapter.notifyDataSetChanged()
+            if (mysTable!!.rows.count() > 0) {
+                getPage()
+                tableLists += generateItems1(ArenaTable::class, mysTable!!.rows)
+                tableAdapter.tableList = tableLists
+                runOnUiThread {
+                    tableAdapter.notifyDataSetChanged()
+                }
+            } else {
+                val rootView: ViewGroup = getRootView()
+                runOnUiThread {
+                    rootView.setInfo(this, "目前暫無資料")
+                }
             }
         }
     }
