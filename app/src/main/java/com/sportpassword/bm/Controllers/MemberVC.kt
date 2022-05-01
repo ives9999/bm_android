@@ -59,8 +59,8 @@ class MemberVC : MyTableVC() {
 
         val loginBtn = findViewById<LinearLayout>(R.id.loginBtn)
         loginBtn.setOnClickListener { loginBtnPressed() }
-        val reginBtn = findViewById<LinearLayout>(R.id.registerBtn)
-        reginBtn.setOnClickListener { registerBtnPressed() }
+        val registerBtn = findViewById<LinearLayout>(R.id.registerBtn)
+        registerBtn.setOnClickListener { registerBtnPressed() }
         val forgetPasswordBtn = findViewById<LinearLayout>(R.id.forgetPasswordBtn)
         forgetPasswordBtn.setOnClickListener { forgetpasswordBtnPressed() }
 
@@ -259,7 +259,8 @@ class MemberVC : MyTableVC() {
         rows.addAll(refreshRows)
         //}
 
-        val s: MemberSection = MemberSection("會員資料", isExpanded)
+        val s: MemberSection = MemberSection("會員資料", true)
+        //val s: MemberSection = MemberSection("會員資料", isExpanded)
         s.items.addAll(rows)
 
         return s
@@ -306,7 +307,8 @@ class MemberVC : MyTableVC() {
         rows.add(r2)
         //}
 
-        val s: MemberSection = MemberSection("訂單查詢", isExpanded)
+        val s: MemberSection = MemberSection("訂單查詢", true)
+        //val s: MemberSection = MemberSection("訂單查詢", isExpanded)
         s.items.addAll(rows)
 
         return s
@@ -332,7 +334,8 @@ class MemberVC : MyTableVC() {
         rows.add(r7)
         //}
 
-        val s: MemberSection = MemberSection("喜歡", isExpanded)
+        val s: MemberSection = MemberSection("喜歡", true)
+        //val s: MemberSection = MemberSection("喜歡", isExpanded)
         s.items.addAll(rows)
 
         return s
@@ -345,7 +348,8 @@ class MemberVC : MyTableVC() {
         val r2: MemberRow = MemberRow("課程", "course", "", TO_MEMBER_SIGNUP_LIST, "course")
         rows.add(r2)
 
-        val s: MemberSection = MemberSection("報名", isExpanded)
+        val s: MemberSection = MemberSection("報名", true)
+        //val s: MemberSection = MemberSection("報名", isExpanded)
         s.items.addAll(rows)
 
         return s
@@ -361,7 +365,8 @@ class MemberVC : MyTableVC() {
         val r3: MemberRow = MemberRow("課程", "course", "", "manager_course", "course")
         rows.add(r3)
 
-        val s: MemberSection = MemberSection("管理", isExpanded)
+        val s: MemberSection = MemberSection("管理", true)
+        //val s: MemberSection = MemberSection("管理", isExpanded)
         s.items.addAll(rows)
 
         return s
@@ -373,7 +378,8 @@ class MemberVC : MyTableVC() {
         val r1: MemberRow = MemberRow("刪除會員", "delete", "", "delete", "member")
         rows.add(r1)
 
-        val s: MemberSection = MemberSection("刪除", isExpanded)
+        val s: MemberSection = MemberSection("刪除", true)
+        //val s: MemberSection = MemberSection("刪除", isExpanded)
         s.items.addAll(rows)
 
         return s

@@ -63,16 +63,16 @@ class OneSectionAdapter(val context: Context, private val resource: Int, var del
         holder.recyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         holder.recyclerView.adapter = adapter
 
-        var iconID: Int = 0
-        if (section.isExpanded) {
-            iconID = context.resources.getIdentifier("to_down_w", "drawable", context.packageName)
-        } else {
-            iconID = context.resources.getIdentifier("to_right_w", "drawable", context.packageName)
-        }
-        holder.greater.setImageResource(iconID)
-        holder.greater.setOnClickListener {
-            delegate.handleOneSectionExpanded(position)
-        }
+//        var iconID: Int = 0
+//        if (section.isExpanded) {
+//            iconID = context.resources.getIdentifier("to_down_w", "drawable", context.packageName)
+//        } else {
+//            iconID = context.resources.getIdentifier("to_right_w", "drawable", context.packageName)
+//        }
+//        holder.greater.setImageResource(iconID)
+//        holder.greater.setOnClickListener {
+//            delegate.handleOneSectionExpanded(position)
+//        }
     }
 
     override fun getItemCount(): Int {
