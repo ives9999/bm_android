@@ -583,7 +583,7 @@ class AddCartVC : MyTableVC() {
 //
 //    override fun privateChanged(checked: Boolean) {}
 
-    fun submitBtnPressed(view: View) {
+    fun signupButtonPressed(view: View) {
 
         val params: HashMap<String, String> = hashMapOf()
 

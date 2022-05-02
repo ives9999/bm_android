@@ -112,18 +112,18 @@ class MemberCartListVC : MyTableVC() {
                             (cartItemsTable.size > 0) then { View.VISIBLE } ?: View.GONE
                         tableAdapter.notifyDataSetChanged()
                     }
-                } else {
-                    val rootView: ViewGroup = getRootView()
-                    runOnUiThread {
-                        rootView.setInfo(this, "目前購物車無商品")
-                        submitBtn.visibility = View.GONE
-                    }
+                }
+            } else {
+                val rootView: ViewGroup = getRootView()
+                runOnUiThread {
+                    rootView.setInfo(this, "目前購物車無商品")
+                    submitBtn.visibility = View.GONE
+                }
 
-                    bottom_button_count = 1
-                    runOnUiThread {
-                        submitBtn.visibility = View.GONE
-                        setBottomButtonPadding()
-                    }
+                bottom_button_count = 1
+                runOnUiThread {
+                    submitBtn.visibility = View.GONE
+                    setBottomButtonPadding()
                 }
             }
         }
@@ -147,7 +147,7 @@ class MemberCartListVC : MyTableVC() {
 
     override fun cellDelete(row: Table) {
         warning("是否確定要刪除呢？", "取消", "刪除") {
-            dataService.delete(this, "cart_item", row.token) { success ->
+            dataService.delete(this, "cart_item", row.token, "delete") { success ->
                 if (success) {
                     refresh()
 
@@ -170,7 +170,7 @@ class MemberCartListVC : MyTableVC() {
 //        toShowProduct(row.product!!.token)
 //    }
 
-    fun submitBtnPressed(view: View) {
+    fun signupButtonPressed(view: View) {
         toOrder()
     }
 

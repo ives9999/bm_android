@@ -685,7 +685,7 @@ class OrderVC : MyTableVC() {
 //        }
 //    }
 
-    fun submitBtnPressed(view: View) {
+    fun signupButtonPressed(view: View) {
 
         Loading.show(mask)
         val params: HashMap<String, String> = hashMapOf()
