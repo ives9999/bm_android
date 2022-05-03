@@ -693,10 +693,11 @@ class AddCartVC : MyTableVC() {
                     }
                     runOnUiThread {
                         info(msg, "", "關閉") {
-                            val intent = Intent()
-                            intent.putExtra("refresh", true)
-                            setResult(Activity.RESULT_OK, intent)
-                            finish()
+                            toMemberCartList()
+//                            val intent = Intent()
+//                            intent.putExtra("refresh", true)
+//                            setResult(Activity.RESULT_OK, intent)
+//                            finish()
                         }
                     }
 //                    val order_token: String = CartService.order_token
