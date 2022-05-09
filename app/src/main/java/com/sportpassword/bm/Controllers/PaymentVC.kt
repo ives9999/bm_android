@@ -762,7 +762,7 @@ class PaymentVC : MyTableVC() {
                 finish()
                 toProduct()
             } else {
-                warning(OrderService.msg, true, "關閉") {
+                warning(OrderService.msg, false, "關閉") {
                     finish()
                     toProduct()
                 }
@@ -840,17 +840,20 @@ class PaymentVC : MyTableVC() {
 
                     CallbackStatus.Fail -> {
                         warning("Fail Code=" + it.getRtnCode() +
-                                ", Msg=" + it.getRtnMsg(), true, "關閉") {
+                                ", Msg=" + it.getRtnMsg(), false, "關閉") {
                             finish()
                             toProduct()
                         }
                     }
 
                     CallbackStatus.Cancel -> {
-                        warning("交易取消")
+                        warning("交易取消", false, "關閉") {
+                            finish()
+                            toProduct()
+                        }
                     }
                     else -> {
-                        warning("回傳值無法解析，請洽管理員", true, "關閉") {
+                        warning("回傳值無法解析，請洽管理員", false, "關閉") {
                             finish()
                             toProduct()
                         }
@@ -873,7 +876,7 @@ class PaymentVC : MyTableVC() {
         }
     }
 
-    fun submitBtnPressed(view: View) {
+    fun signupButtonPressed(view: View) {
         ecpay_token = orderTable!!.ecpay_token
         toECPay()
     }
