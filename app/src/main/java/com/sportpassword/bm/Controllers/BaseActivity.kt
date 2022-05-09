@@ -64,7 +64,7 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener,
     var areas: ArrayList<Area> = arrayListOf()
     var arenas: ArrayList<ArenaTable> = arrayListOf()
     var bathroom: Boolean = false
-    val body_css = "<style>body{background-color:#000;padding-left:8px;padding-right:8px;margin-top:0;padding-top:0;color:#888888;font-size:18px;}a{color:#a6d903;}img{width:400px;}</style>"
+    val body_css = "<style>body{background-color:#000;padding-left:8px;padding-right:8px;margin-top:0;padding-top:0;color:#888888;font-size:18px;}a{color:#a6d903;}img{width:380px;}</style>"
     var cartItemCount: Int = 0
     override lateinit var alertView: View
     var citys: ArrayList<City> = arrayListOf()

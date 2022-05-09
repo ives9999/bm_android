@@ -813,7 +813,9 @@ class OrderVC : MyTableVC() {
     }
 
     fun cancelBtnPressed(view: View) {
-        prev()
+        finishAffinity()
+        toProduct()
+        //prev()
     }
 }
 

@@ -191,6 +191,7 @@ interface ToInterface {
     }
 
     fun toMemberCartList() {
+        mainDelegate.finish()
         val i = Intent(mainDelegate, MemberCartListVC::class.java)
         mainDelegate.startActivity(i)
     }
@@ -226,6 +227,7 @@ interface ToInterface {
                 }
             } else {
 
+                mainDelegate.finish()
                 val i = Intent(mainDelegate, OrderVC::class.java)
                 //i.putExtra("product_token", product_token)
                 //i.putExtra("title", title)
@@ -236,6 +238,7 @@ interface ToInterface {
 
 
     fun toPayment(order_token: String, ecpay_token: String?=null, ecpay_token_ExpireDate: String?=null) {
+        mainDelegate.finish()
         val i = Intent(mainDelegate, PaymentVC::class.java)
         i.putExtra("order_token", order_token)
         if (ecpay_token != null) {

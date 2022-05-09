@@ -759,10 +759,13 @@ class PaymentVC : MyTableVC() {
 
         OrderService.update(this, params) { success ->
             if (success) {
-                //refresh()
+                finish()
                 toProduct()
             } else {
-                warning(OrderService.msg)
+                warning(OrderService.msg, true, "關閉") {
+                    finish()
+                    toProduct()
+                }
             }
         }
     }
@@ -837,14 +840,20 @@ class PaymentVC : MyTableVC() {
 
                     CallbackStatus.Fail -> {
                         warning("Fail Code=" + it.getRtnCode() +
-                                ", Msg=" + it.getRtnMsg())
+                                ", Msg=" + it.getRtnMsg(), true, "關閉") {
+                            finish()
+                            toProduct()
+                        }
                     }
 
                     CallbackStatus.Cancel -> {
                         warning("交易取消")
                     }
                     else -> {
-                        warning("回傳值無法解析，請洽管理員")
+                        warning("回傳值無法解析，請洽管理員", true, "關閉") {
+                            finish()
+                            toProduct()
+                        }
                     }
                 }
             })
