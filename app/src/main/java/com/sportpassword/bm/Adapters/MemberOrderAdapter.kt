@@ -34,6 +34,7 @@ class MemberOrderViewHolder(context: Context, viewHolder: View, list1CellDelegat
         viewHolder.nameLbl.text = name
         viewHolder.dateLbl.text = row.created_at_show
         viewHolder.priceLbl.text = row.amount_show
+        viewHolder.priceLbl.textSize = 20F
         viewHolder.orderNoLbl.text = row.order_no
         viewHolder.noLbl.text = (idx+1).toString()
 

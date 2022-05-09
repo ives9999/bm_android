@@ -759,7 +759,8 @@ class PaymentVC : MyTableVC() {
 
         OrderService.update(this, params) { success ->
             if (success) {
-                refresh()
+                //refresh()
+                toProduct()
             } else {
                 warning(OrderService.msg)
             }

@@ -98,13 +98,7 @@ class SearchVC : MyTableVC() {
         if (member.isLoggedIn) {
             refresh()
         } else {
-            findViewById<LinearLayout>(R.id.tableViewContainer) ?. let {
-                findViewById<RecyclerView>(R.id.list_container) ?. let {
-                    it.visibility = View.GONE
-                }
-
-                mustLoginLbl = it.setInfo(this, "請先登入")
-            }
+            showNothingInfo("請先登入")
         }
     }
 
@@ -208,16 +202,32 @@ class SearchVC : MyTableVC() {
         }
         if (mysTable != null) {
             tables = mysTable
-            getPage()
-            tableLists += generateItems1(TeamTable::class, mysTable!!.rows)
-            tableAdapter.setMyTableList(tableLists)
-            runOnUiThread {
-                tableAdapter.notifyDataSetChanged()
+            if (mysTable!!.rows.size > 0) {
+                getPage()
+                tableLists += generateItems1(TeamTable::class, mysTable!!.rows)
+                tableAdapter.setMyTableList(tableLists)
+                runOnUiThread {
+                    tableAdapter.notifyDataSetChanged()
+                }
+            } else {
+                showNothingInfo("目前暫無資料")
             }
 
             //val items = generateItems()
             //adapter.update(items)
             //adapter.notifyDataSetChanged()
+        }
+    }
+
+    private fun showNothingInfo(info: String) {
+        runOnUiThread {
+            findViewById<LinearLayout>(R.id.tableViewContainer)?.let {
+                findViewById<RecyclerView>(R.id.list_container)?.let {
+                    it.visibility = View.GONE
+                }
+
+                mustLoginLbl = it.setInfo(this, info)
+            }
         }
     }
 
@@ -260,13 +270,7 @@ class SearchVC : MyTableVC() {
                             refresh()
                         } else {
                             if (mustLoginLbl == null) {
-                                findViewById<LinearLayout>(R.id.tableViewContainer) ?. let {
-                                    findViewById<RecyclerView>(R.id.list_container) ?. let {
-                                        it.visibility = View.GONE
-                                    }
-
-                                    mustLoginLbl = it.setInfo(this, "請先登入")
-                                }
+                                showNothingInfo("請先登入")
                             } else {
                                 findViewById<RecyclerView>(R.id.list_container) ?. let {
                                     it.visibility = View.GONE

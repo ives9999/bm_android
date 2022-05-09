@@ -318,33 +318,35 @@ class AddCartVC : MyTableVC() {
             var section = makeSectionRow("商品名稱", PRODUCT_KEY, rows, true)
             oneSections.add(section)
 
-            rows = arrayListOf()
-            for (attribute in productTable!!.attributes) {
-                var tmp: String = attribute.attribute
-                tmp = tmp.replace("{", "")
-                tmp = tmp.replace("}", "")
-                tmp = tmp.replace("\"", "")
+            if (productTable!!.attributes.size > 0) {
+                rows = arrayListOf()
+                for (attribute in productTable!!.attributes) {
+                    var tmp: String = attribute.attribute
+                    tmp = tmp.replace("{", "")
+                    tmp = tmp.replace("}", "")
+                    tmp = tmp.replace("\"", "")
 
-                //show is 湖水綠,極致黑,經典白,太空灰
-                //name is 顏色
-                //key is color
-                var value: String = ""
-                val alias: String = attribute.alias
-                if (cartItemTable != null) {
-                    for (item_attriubtes in cartItemTable!!.attributes) {
-                        for ((idx, value1) in item_attriubtes) {
-                            if (value1 == alias) {
-                                value = item_attriubtes["value"]!!
-                                break
+                    //show is 湖水綠,極致黑,經典白,太空灰
+                    //name is 顏色
+                    //key is color
+                    var value: String = ""
+                    val alias: String = attribute.alias
+                    if (cartItemTable != null) {
+                        for (item_attriubtes in cartItemTable!!.attributes) {
+                            for ((idx, value1) in item_attriubtes) {
+                                if (value1 == alias) {
+                                    value = item_attriubtes["value"]!!
+                                    break
+                                }
                             }
                         }
                     }
+                    row = OneRow(attribute.name, value, tmp, alias, "tag")
+                    rows.add(row)
                 }
-                row = OneRow(attribute.name, value, tmp, alias, "tag")
-                rows.add(row)
+                section = makeSectionRow("商品屬性", ATTRIBUTE_KEY, rows, true)
+                oneSections.add(section)
             }
-            section = makeSectionRow("商品屬性", ATTRIBUTE_KEY, rows, true)
-            oneSections.add(section)
 
             //print(attributeRows)
 //            myRows[1]["rows"] = attributeRows
