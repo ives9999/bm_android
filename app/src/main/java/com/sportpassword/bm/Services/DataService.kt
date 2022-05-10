@@ -1130,7 +1130,7 @@ open class DataService {
     open fun update(context: Context, _params: MutableMap<String, String>, filePath: String, complete: CompletionHandler) {
 //        jsonString = ""
         val url: String = getUpdateURL()
-        //println(url)
+//        println(url)
 
 
 //        val header: MutableList<Pair<String, String>> = mutableListOf()
@@ -1148,8 +1148,8 @@ open class DataService {
 //        println(jsonString1)
 
 
-        //val j: JSONObject = JSONObject(params as Map<*, *>)
-        //println(j)
+//        val j: JSONObject = JSONObject(params as Map<*, *>)
+//        println(j)
 
         val bodyBuilder: MultipartBody.Builder = MultipartBody.Builder().setType(MultipartBody.FORM)
 
