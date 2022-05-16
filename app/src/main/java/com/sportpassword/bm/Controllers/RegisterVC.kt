@@ -66,21 +66,21 @@ class RegisterVC : MyTableVC() {
 //    val SELECT_REQUEST_CODE = 1
 
     val testData: HashMap<String, String> = hashMapOf(
-        EMAIL_KEY to "john@housetube.tw",
-        PASSWORD_KEY to "1234",
-        REPASSWORD_KEY to "1234",
-        NAME_KEY to "孫士君",
-        NICKNAME_KEY to "孫士君",
-        DOB_KEY to "1969-01-05",
-        MOBILE_KEY to "0911299998",
-        TEL_KEY to "062295888",
-        CITY_KEY to "218",
-        "city_name" to "台南市",
-        AREA_KEY to "219",
-        "area_name" to "中西區",
-        ROAD_KEY to "南華街101號8樓",
-        FB_KEY to "https://www.facebook.com/ives.sun",
-        LINE_KEY to "ives9999"
+//        EMAIL_KEY to "john@housetube.tw",
+//        PASSWORD_KEY to "1234",
+//        REPASSWORD_KEY to "1234",
+//        NAME_KEY to "孫士君",
+//        NICKNAME_KEY to "孫士君",
+//        DOB_KEY to "1969-01-05",
+//        MOBILE_KEY to "0911299998",
+//        TEL_KEY to "062295888",
+//        CITY_KEY to "218",
+//        "city_name" to "台南市",
+//        AREA_KEY to "219",
+//        "area_name" to "中西區",
+//        ROAD_KEY to "南華街101號8樓",
+//        FB_KEY to "https://www.facebook.com/ives.sun",
+//        LINE_KEY to "ives9999"
     )
 
     override fun onCreate(savedInstanceState: Bundle?) {
