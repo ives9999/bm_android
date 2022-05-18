@@ -103,6 +103,12 @@
         <item name="android:paddingStart">12dp</item>
         <item name="android:paddingEnd">12dp</item>
     </style>
+    <style name="three_button">
+        <item name="android:background">@drawable/button_three</item>
+        <item name="android:textColor">@color/MY_WHITE</item>
+        <item name="android:paddingStart">12dp</item>
+        <item name="android:paddingEnd">12dp</item>
+    </style>
 
     <style name="delete_button">
         <item name="android:background">@drawable/button_rc_purple</item>

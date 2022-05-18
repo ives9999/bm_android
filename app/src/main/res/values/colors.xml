@@ -30,6 +30,7 @@
     <color name="TEXT_WHITE">#d1d1d1</color>
     <color name="CANCEL_BUTTON">#444444</color>
     <color name="CITY_BUTTON">#5d5d5d</color>
+    <color name="THREE_BUTTON">#8618f5</color>
     <!-- Photo Viewer Colors -->
     <color name="solid_black">#ff000000</color>
     <color name="photo_crop_dim_color">#cc000000</color>

@@ -89,7 +89,7 @@ class PaymentVC : MyTableVC() {
 
     var title: String = ""
 
-    var bottom_button_count: Int = 2
+    var bottom_button_count: Int = 3
     val button_width: Int = 400
 
     override fun onCreate(savedInstanceState: Bundle?) {
