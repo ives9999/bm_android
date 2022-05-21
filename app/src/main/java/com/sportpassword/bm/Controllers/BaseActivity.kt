@@ -1074,7 +1074,7 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener,
         prev()
     }
 
-    fun prev() {
+    open fun prev() {
         hideKeyboard()
         val intent = Intent()
         setResult(Activity.RESULT_CANCELED, intent)

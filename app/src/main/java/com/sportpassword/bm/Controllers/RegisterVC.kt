@@ -1,20 +1,29 @@
 package com.sportpassword.bm.Controllers
 
 import android.app.Activity
+import android.app.Dialog
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
+import android.view.Window
+import android.view.WindowManager
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.RelativeLayout
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.google.gson.Gson
 import com.google.gson.JsonParseException
 import com.sportpassword.bm.Adapters.OneSectionAdapter
+import com.sportpassword.bm.Adapters.SingleSelectAdapter
 import com.sportpassword.bm.Data.OneRow
+import com.sportpassword.bm.Data.SelectRow
 import com.sportpassword.bm.Form.FormItem.*
+import com.sportpassword.bm.Models.Area
+import com.sportpassword.bm.Models.City
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.MemberService
 import com.sportpassword.bm.Utilities.*
@@ -26,8 +35,11 @@ import kotlinx.android.synthetic.main.activity_register.refresh
 import kotlinx.android.synthetic.main.mask.*
 import java.io.File
 import com.sportpassword.bm.Models.MemberTable
+import com.sportpassword.bm.Views.MoreDialog
 import com.sportpassword.bm.member
 import kotlinx.android.synthetic.main.activity_register.edit_featured_container
+import kotlinx.android.synthetic.main.activity_single_select_vc.*
+import kotlinx.android.synthetic.main.title_bar.*
 import kotlinx.android.synthetic.main.top_view.*
 import org.jetbrains.anko.sdk27.coroutines.onClick
 import kotlin.reflect.full.createType
@@ -64,6 +76,8 @@ class RegisterVC : MyTableVC() {
     val button_width: Int = 400
 
 //    val SELECT_REQUEST_CODE = 1
+
+    private lateinit var moreDialog: MoreDialog
 
     val testData: HashMap<String, String> = hashMapOf(
 //        EMAIL_KEY to "john@housetube.tw",
@@ -377,17 +391,6 @@ class RegisterVC : MyTableVC() {
                 msg += "必須同意隱私權政策才能完成註冊"
             }
         }
-//        for (formItem in form.formItems) {
-//            formItem.checkValidity()
-//            if (!formItem.isValid) {
-//                if (formItem.msg != null) {
-//                    msg += formItem.msg!! + "\n"
-//                } else {
-//                    warning("有錯誤")
-//                }
-//                isSubmit = false
-//            }
-//        }
 
         if (msg.length > 0) {
             warning(msg)
@@ -399,25 +402,7 @@ class RegisterVC : MyTableVC() {
                     params[row.key] = row.value
                 }
             }
-//            for (formItem in form.formItems) {
-//
-//                if (formItem.value != null) {
-//                    val value: String = formItem.value!!
-//                    params[formItem.name!!] = value
-//                }
-//                //忘記這兩個程式的作用為何
-//                if (params.containsKey(CITY_KEY)) {
-//                    params["city_id"] = params[CITY_KEY]!!
-//                    //params.remove(CITY_KEY)
-//                }
-//                if (params.containsKey(AREA_KEY)) {
-//                    params["area_id"] = params[AREA_KEY]!!
-//                    //params.remove(AREA_KEY)
-//                }
-//                if (member_token.length > 0) {
-//                    params[TOKEN_KEY] = member_token
-//                }
-//            }
+
             params["device"] = "app"
             params["do"] = "update"
             if (isFeaturedChange) {
@@ -447,40 +432,6 @@ class RegisterVC : MyTableVC() {
                 }
             }
         }
-
-//        val email: String = registerEmailTxt.text.toString()
-//        if (email.isEmpty()) {
-//            Alert.show(this, "警告", "EMail沒填")
-//        }
-//        val password: String = registerPasswordTxt.text.toString()
-//        if (password.isEmpty()) {
-//            Alert.show(this, "警告", "密碼沒填")
-//        }
-//        val repassword: String = registerRePasswordTxt.text.toString()
-//        if (repassword.isEmpty()) {
-//            Alert.show(this, "警告", "密碼確認欄位沒填")
-//        }
-//        if (password != repassword) {
-//            Alert.show(this, "警告", "密碼不一致")
-//        }
-
-        //println("submit: " + URL_REGISTER)
-//        Loading.show(mask)
-//        MemberService.register(this, email, password, repassword) { success ->
-//            Loading.hide(mask)
-//            if (success) {
-//                //println("register ok")
-//                if (MemberService.success) {
-//                    Alert.show(this, "成功", "註冊成功，請儘速通過email認證，才能使用更多功能！！") {
-//                        home(this)
-//                    }
-//                } else {
-//                    Alert.show(this, "警告", MemberService.msg)
-//                }
-//            } else {
-//                Alert.show(this, "警告", MemberService.msg)
-//            }
-//        }
     }
 
 //    fun registerFBSubmit(view: View) {
@@ -602,13 +553,16 @@ class RegisterVC : MyTableVC() {
         if (row.key == DOB_KEY) {
             toSelectDate(row.key, row.value, this)
         } else if (row.key == CITY_KEY) {
-            toSelectCity(row.value, this)
+            //toSelectCity(row.value, this)
+            toMoreDialog(row.key, row.value)
         } else if (row.key == AREA_KEY) {
-            val row: OneRow = getOneRowFromKey(CITY_KEY)
-            if (row.value.isEmpty()) {
+            val row1: OneRow = getOneRowFromKey(CITY_KEY)
+            if (row1.value.isEmpty()) {
                 warning("請先選擇縣市")
             } else {
-                toSelectArea(row.value, row.value.toInt(), this)
+                //toSelectArea(row.value, row.value.toInt(), this)
+
+                toMoreDialog(row.key, row.value)
             }
         }
     }
@@ -635,6 +589,37 @@ class RegisterVC : MyTableVC() {
         }
     }
 
+    override fun cellClick(idx: Int) {
+        //super.cellClick(idx)
+        val moreKey: String? = moreDialog.key
+        if (moreKey != null) {
+            val row: OneRow = getOneRowFromKey(moreKey)
+            if (moreKey == CITY_KEY) {
+                if (citys == null || citys.size == 0) {
+                    citys = Global.getCitys()
+                }
+                val city = citys[idx]
+                row.value = city.id.toString()
+                row.show = city.name
+                //row.show = Global.zoneIDToName(selected.toInt())
+                if (city.id.toString() != old_selected_city) {
+                    val row1: OneRow = getOneRowFromKey(AREA_KEY)
+                    row1.value = ""
+                    row1.show = ""
+                }
+            } else if (moreKey == AREA_KEY) {
+                val row1: OneRow = getOneRowFromKey(CITY_KEY)
+                val city_id: Int = (row1.value.isInt()) then { row1.value.toInt() } ?: 0
+                val areas: ArrayList<Area> = Global.getAreasByCityID(city_id)
+                row.value = areas[idx].id.toString()
+                row.show = areas[idx].name
+            }
+            val sectionIdx: Int = getOneSectionIdxFromRowKey(moreKey)
+            oneSectionAdapter.notifyItemChanged(sectionIdx)
+        }
+        moreDialog.dismiss()
+    }
+
     override fun singleSelected(key: String, selected: String) {
 
         val row: OneRow = getOneRowFromKey(key)
@@ -654,70 +639,25 @@ class RegisterVC : MyTableVC() {
 
         val sectionIdx: Int = getOneSectionIdxFromRowKey(key)
         oneSectionAdapter.notifyItemChanged(sectionIdx)
-
-//        val item = getFormItemFromKey(key)
-//        if (item != null && selected.isNotEmpty()) {
-//            if (item.value != selected) {
-//                item.reset()
-//            }
-//            if (key == AREA_KEY) {
-//                val item1: AreaFormItem = item as AreaFormItem
-//                val cityItem = getFormItemFromKey(CITY_KEY)
-//                item1.city_id = cityItem!!.value!!.toInt()
-//            } else if (key == CITY_KEY) {
-//                val item1 = getFormItemFromKey(AREA_KEY)
-//                if (old_selected_city != selected) {
-//                    if (item1 != null) {
-//                        item1.reset()
-//                    }
-//                    old_selected_city = selected
-//                }
-//            }
-//            item.value = selected
-//            item.make()
-//        }
-        //notifyChanged(true)
     }
 
-//    override fun textFieldTextChanged(formItem: FormItem, text: String) {
-//        val item = getFormItemFromKey(key)
-//        if (item != null) {
-        //move to adapter
-//        formItem!!.value = text
-//        formItem!!.make()
-//        }
-        //println(text)
-//    }
+    private fun toMoreDialog(key: String, selected: String) {
 
-//    override fun sexChanged(sex: String) {
-        //move to adapter
-//        val forItem = getFormItemFromKey(SEX_KEY)
-//        if (forItem != null) {
-//            forItem.value = sex
-//        }
-        //println(sex)
+        moreDialog = MoreDialog(this, screenWidth, key)
+        moreDialog.setContentView(R.layout.activity_single_select_vc)
 
-//    }
+        moreDialog.setBottomButtonPadding(1, button_width)
 
-//    override fun tagChecked(checked: Boolean, name: String, key: String, value: String) {}
-//
-//    override fun stepperValueChanged(number: Int, name: String) {}
-//
-//    override fun privateChanged(checked: Boolean) {
-        //move to adapter
-//        val formItem = getFormItemFromKey(PRIVACY_KEY)
-//        if (formItem != null) {
-//            if (checked) {
-//                formItem.value = "1"
-//            } else {
-//                formItem.value = null
-//            }
-//        }
-//        if (!checked) {
-//            warning("必須同意隱私權條款，才能完成註冊")
-//        }
-//        //println(checked)
-//    }
+        if (key == AREA_KEY) {
+            val row1: OneRow = getOneRowFromKey(CITY_KEY)
+            val city_id_str: String = row1.value
+            val city_id: Int = ((city_id_str.isInt()) then { city_id_str.toInt() }) ?: 0
+            moreDialog.city_id = city_id
+        }
+        moreDialog.setSingleSelect(selected, this)
+
+        moreDialog.show(30)
+    }
 }
 
 class RegisterResTable {
