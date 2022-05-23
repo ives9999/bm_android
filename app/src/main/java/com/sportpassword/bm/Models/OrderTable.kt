@@ -1,6 +1,7 @@
 package com.sportpassword.bm.Models
 
 import com.sportpassword.bm.Utilities.*
+import java.time.LocalDateTime
 import java.util.*
 
 class OrdersTable: Tables() {
@@ -24,6 +25,8 @@ class OrderTable: Table() {
     var handle_fee: Int = 0
 
     var invoice_type: String = ""
+    var invoice_no: String = ""
+    var invoice_at: String = ""
     var invoice_email: String = ""
     var invoice_company_name: String = ""
     var invoice_company_tax: String = ""
@@ -56,12 +59,9 @@ class OrderTable: Table() {
     var gateway: GatewayTable? = null
     var shipping: ShippingTable? = null
     var product: ProductTable? = null
+    var `return`: ReturnTable? = null
 
     var items: ArrayList<OrderItemTable> = arrayListOf()
-
-//    var order_clothes: ArrayList<OrderClothesTable> = arrayListOf()
-//    var order_racket: ArrayList<OrderRacketTable> = arrayListOf()
-//    var order_mejump: ArrayList<OrderMeJumpTable> = arrayListOf()
 
     var attribute: String = ""
     var unit: String = "件"
@@ -87,12 +87,14 @@ class OrderTable: Table() {
 //    var shipping_at_show: String = "準備中"
 
     var invoice_type_show: String = ""
+    var canReturn: Boolean = false
 
     override fun filterRow() {
 
         super.filterRow()
         gateway?.filterRow()
         shipping?.filterRow()
+        `return`?.filterRow()
 
         if (product != null) {
             product_name = product!!.name
@@ -144,7 +146,31 @@ class OrderTable: Table() {
             invoice_type_show = "個人"
         }
 
+        if (invoice_no == null) {
+            invoice_no = ""
+        }
+
+        if (invoice_at == null) {
+            invoice_at = ""
+        }
+
         order_tel_show = order_tel.mobileShow()
+
+        if (all_process == 6) {
+            var return_expired_date: Date = Date()
+            if (complete_at.isNotEmpty()) {
+                complete_at.toDate("yyyy-MM-dd")?.let {
+                    val c: Calendar = Calendar.getInstance()
+                    c.time = it
+                    c.add(Calendar.DATE, 10)
+                    return_expired_date = c.time
+                }
+            }
+
+            canReturn = (Date().before(return_expired_date) then { true }) ?: false
+        } else {
+            canReturn = false
+        }
     }
 
     private fun makeAttributes(): String {

@@ -149,20 +149,26 @@ class PaymentVC : MyTableVC() {
         //val leading: Int = bottom_button_count * padding + (bottom_button_count - 1) * button_width
 
         findViewById<Button>(R.id.submitBtn) ?. let {
-            val params: ViewGroup.MarginLayoutParams = it.layoutParams as ViewGroup.MarginLayoutParams
-            params.width = button_width
-            params.marginStart = padding
-            it.layoutParams = params
-        }
-
-        findViewById<Button>(R.id.cancelBtn) ?. let {
-            val params: ViewGroup.MarginLayoutParams = it.layoutParams as ViewGroup.MarginLayoutParams
-            params.width = button_width
-            params.marginStart = padding
-            it.layoutParams = params
+            if (it.visibility == View.VISIBLE) {
+                val params: ViewGroup.MarginLayoutParams =
+                    it.layoutParams as ViewGroup.MarginLayoutParams
+                params.width = button_width
+                params.marginStart = padding
+                it.layoutParams = params
+            }
         }
 
         findViewById<Button>(R.id.threeBtn) ?. let {
+            if (it.visibility == View.VISIBLE) {
+                val params: ViewGroup.MarginLayoutParams =
+                    it.layoutParams as ViewGroup.MarginLayoutParams
+                params.width = button_width
+                params.marginStart = padding
+                it.layoutParams = params
+            }
+        }
+
+        findViewById<Button>(R.id.cancelBtn) ?. let {
             val params: ViewGroup.MarginLayoutParams = it.layoutParams as ViewGroup.MarginLayoutParams
             params.width = button_width
             params.marginStart = padding
@@ -212,9 +218,28 @@ class PaymentVC : MyTableVC() {
             orderTable!!.filterRow()
             runOnUiThread {
                 if (orderTable!!.all_process > 1) {//已經付費了
-                    footer.visibility = View.GONE
+                    //footer.visibility = View.GONE
+                    findViewById<Button>(R.id.submitBtn) ?. let {
+                        it.visibility = View.GONE
+                        bottom_button_count--
+                    }
+
+                    if (!orderTable!!.canReturn) {
+                        findViewById<Button>(R.id.threeBtn) ?. let {
+                            it.visibility = View.GONE
+                            bottom_button_count--
+                        }
+                    }
+                    setBottomButtonPadding()
                 } else {
-                    footer.visibility = View.VISIBLE
+                    //footer.visibility = View.VISIBLE
+                    if (!orderTable!!.canReturn) {
+                        findViewById<Button>(R.id.threeBtn) ?. let {
+                            it.visibility = View.GONE
+                            bottom_button_count--
+                        }
+                    }
+                    setBottomButtonPadding()
                 }
             }
 
@@ -232,16 +257,6 @@ class PaymentVC : MyTableVC() {
         setMyTitle(orderTable!!.order_no)
 
         var rows: ArrayList<OneRow> = arrayListOf()
-
-//        mySections = arrayListOf(
-//            hashMapOf("name" to "商品", "isExpanded" to true, KEY_KEY to PRODUCT_KEY),
-//            hashMapOf("name" to "訂單", "isExpanded" to true, KEY_KEY to ORDER_KEY),
-//            hashMapOf("name" to "付款方式", "isExpanded" to true, KEY_KEY to GATEWAY_KEY),
-//            hashMapOf("name" to "寄送方式", "isExpanded" to true, KEY_KEY to SHIPPING_KEY),
-//            hashMapOf("name" to "電子發票", "isExpanded" to true, KEY_KEY to INVOICE_KEY),
-//            hashMapOf("name" to "訂購人資料", "isExpanded" to true, KEY_KEY to MEMBER_KEY),
-//            hashMapOf("name" to "其他留言", "isExpanded" to true, KEY_KEY to MEMO_KEY)
-//        )
 
         val orderItemsTable = orderTable!!.items
         for (orderItemTable in orderItemsTable) {
@@ -286,19 +301,9 @@ class PaymentVC : MyTableVC() {
         var section = makeSectionRow("商品", PRODUCT_KEY, rows, true)
         oneSections.add(section)
 
-//        myRows = arrayListOf(
-//            hashMapOf(KEY_KEY to PRODUCT_KEY, "rows" to productRows),
-//            hashMapOf(KEY_KEY to ORDER_KEY, "rows" to orderRows),
-//            hashMapOf(KEY_KEY to GATEWAY_KEY, "rows" to gatewayRows),
-//            hashMapOf(KEY_KEY to SHIPPING_KEY, "rows" to shippingRows),
-//            hashMapOf(KEY_KEY to INVOICE_KEY, "rows" to invoiceRows),
-//            hashMapOf(KEY_KEY to MEMBER_KEY, "rows" to memberRows),
-//            hashMapOf(KEY_KEY to MEMO_KEY, "rows" to memoRows)
-//        )
-
         //order
         rows = arrayListOf()
-        var row = OneRow("訂單編號", orderTable!!.order_no, orderTable!!.order_no, ORDER_NO_KEY, "text")
+        var row = OneRow("編號", orderTable!!.order_no, orderTable!!.order_no, ORDER_NO_KEY, "text")
         rows.add(row)
         row = OneRow("商品金額", orderTable!!.amount.toString(), orderTable!!.amount_show, AMOUNT_KEY, "text")
         rows.add(row)
@@ -306,51 +311,14 @@ class PaymentVC : MyTableVC() {
         rows.add(row)
         row = OneRow("税", orderTable!!.tax.toString(), orderTable!!.tax_show, TAX_KEY, "text")
         rows.add(row)
-        row = OneRow("訂單金額", orderTable!!.total.toString(), orderTable!!.total_show, TOTAL_KEY, "text")
+        row = OneRow("總金額", orderTable!!.total.toString(), orderTable!!.total_show, TOTAL_KEY, "text")
         rows.add(row)
-        row = OneRow("訂單建立時間", orderTable!!.created_at, orderTable!!.created_at_show, CREATED_AT_KEY, "text")
+        row = OneRow("建立時間", orderTable!!.created_at, orderTable!!.created_at_show, CREATED_AT_KEY, "text")
         rows.add(row)
-        row = OneRow("訂單狀態", orderTable!!.process, orderTable!!.order_process_show, ORDER_PROCESS_KEY, "text")
+        row = OneRow("狀態", orderTable!!.process, orderTable!!.order_process_show, ORDER_PROCESS_KEY, "text")
         rows.add(row)
         section = makeSectionRow("訂單", ORDER_KEY, rows, true)
         oneSections.add(section)
-
-
-
-//        var row: HashMap<String, String> = getRowRowsFromMyRowsByKey1(ORDER_NO_KEY)
-//        row[VALUE_KEY] = orderTable!!.order_no
-//        row[SHOW_KEY] = orderTable!!.order_no
-//        replaceRowByKey(ORDER_KEY, ORDER_NO_KEY,row)
-
-//        row = getRowRowsFromMyRowsByKey1(AMOUNT_KEY)
-//        row[VALUE_KEY] = orderTable!!.amount.toString()
-//        row[SHOW_KEY] = orderTable!!.amount_show
-//        replaceRowByKey(ORDER_KEY, AMOUNT_KEY,row)
-
-//        row = getRowRowsFromMyRowsByKey1(SHIPPING_FEE_KEY)
-//        row[VALUE_KEY] = orderTable!!.shipping_fee.toString()
-//        row[SHOW_KEY] = orderTable!!.shipping_fee_show
-//        replaceRowByKey(ORDER_KEY, SHIPPING_FEE_KEY,row)
-
-//        row = getRowRowsFromMyRowsByKey1(TAX_KEY)
-//        row[VALUE_KEY] = orderTable!!.tax.toString()
-//        row[SHOW_KEY] = orderTable!!.tax_show
-//        replaceRowByKey(ORDER_KEY, TAX_KEY,row)
-
-//        row = getRowRowsFromMyRowsByKey1(TOTAL_KEY)
-//        row[VALUE_KEY] = orderTable!!.total.toString()
-//        row[SHOW_KEY] = orderTable!!.total_show
-//        replaceRowByKey(ORDER_KEY, TOTAL_KEY,row)
-
-//        row = getRowRowsFromMyRowsByKey1(CREATED_AT_KEY)
-//        row[VALUE_KEY] = orderTable!!.created_at
-//        row[SHOW_KEY] = orderTable!!.created_at_show
-//        replaceRowByKey(ORDER_KEY, CREATED_AT_KEY,row)
-
-//        row = getRowRowsFromMyRowsByKey1(ORDER_PROCESS_KEY)
-//        row[VALUE_KEY] = orderTable!!.process
-//        row[SHOW_KEY] = orderTable!!.order_process_show
-//        replaceRowByKey(ORDER_KEY, ORDER_PROCESS_KEY,row)
 
         //gateway
         rows = arrayListOf()
@@ -362,21 +330,6 @@ class PaymentVC : MyTableVC() {
         rows.add(row)
         section = makeSectionRow("付款方式", GATEWAY_KEY, rows, true)
         oneSections.add(section)
-
-//        row = getRowRowsFromMyRowsByKey1(GATEWAY_METHOD_KEY)
-//        row[VALUE_KEY] = orderTable!!.gateway!!.method
-//        row[SHOW_KEY] = orderTable!!.gateway!!.method_show
-//        replaceRowByKey(GATEWAY_KEY, GATEWAY_METHOD_KEY,row)
-//
-//        row = getRowRowsFromMyRowsByKey1(GATEWAY_AT_KEY)
-//        row[VALUE_KEY] = orderTable!!.gateway!!.gateway_at
-//        row[SHOW_KEY] = orderTable!!.gateway!!.gateway_at_show
-//        replaceRowByKey(GATEWAY_KEY, GATEWAY_AT_KEY,row)
-//
-//        row = getRowRowsFromMyRowsByKey1(GATEWAY_PROCESS_KEY)
-//        row[VALUE_KEY] = orderTable!!.gateway!!.process
-//        row[SHOW_KEY] = orderTable!!.gateway!!.process_show
-//        replaceRowByKey(GATEWAY_KEY, GATEWAY_PROCESS_KEY,row)
 
         //shipping
         rows = arrayListOf()
@@ -412,38 +365,6 @@ class PaymentVC : MyTableVC() {
         section = makeSectionRow("到貨方式", SHIPPING_KEY, rows, true)
         oneSections.add(section)
 
-//        row = getRowRowsFromMyRowsByKey1(SHIPPING_METHOD_KEY)
-//        row[VALUE_KEY] = orderTable!!.shipping!!.method
-//        row[SHOW_KEY] = orderTable!!.shipping!!.method_show
-//        shippingRows = replaceRowByKey(shippingRows, SHIPPING_METHOD_KEY, row)
-//        //replaceRowByKey(sectionSHIPPING_KEY, rowSHIPPING_METHOD_KEY,row)
-//
-//        row = getRowRowsFromMyRowsByKey1(SHIPPING_AT_KEY)
-//        row[VALUE_KEY] = orderTable!!.shipping!!.shipping_at
-//        row[SHOW_KEY] = orderTable!!.shipping!!.shipping_at_show
-//        shippingRows = replaceRowByKey(shippingRows, SHIPPING_AT_KEY, row)
-//        //replaceRowByKey(sectionSHIPPING_KEY, rowSHIPPING_AT_KEY,row)
-//
-//        row = getRowRowsFromMyRowsByKey1(SHIPPING_PROCESS_KEY)
-//        row[VALUE_KEY] = orderTable!!.shipping!!.process
-//        row[SHOW_KEY] = orderTable!!.shipping!!.process_show
-//        shippingRows = replaceRowByKey(shippingRows, SHIPPING_PROCESS_KEY, row)
-//        //replaceRowByKey(sectionSHIPPING_KEY, rowSHIPPING_PROCESS_KEY,row)
-//
-//        if (orderTable!!.shipping!!.method == "store_711" || orderTable!!.shipping?.method == "store_family") {
-//            row = hashMapOf(TITLE_KEY to "到達商店時間", KEY_KEY to SHIPPING_STORE_AT_KEY, VALUE_KEY to orderTable!!.shipping!!.store_at, SHOW_KEY to orderTable!!.shipping!!.store_at_show, CELL_KEY to "text")
-//            shippingRows.add(row)
-//        }
-//
-//        row = hashMapOf(TITLE_KEY to "到貨時間", KEY_KEY to SHIPPING_COMPLETE_AT_KEY, VALUE_KEY to orderTable!!.shipping!!.complete_at, SHOW_KEY to orderTable!!.shipping!!.complete_at_show, CELL_KEY to "text")
-//        shippingRows.add(row)
-//
-//        if (orderTable!!.shipping!!.back_at.length > 0) {
-//            row = hashMapOf(TITLE_KEY to "退貨時間", KEY_KEY to SHIPPING_BACK_AT_KEY, VALUE_KEY to orderTable!!.shipping!!.back_at, SHOW_KEY to orderTable!!.shipping!!.back_at_show, CELL_KEY to "text")
-//            shippingRows.add(row)
-//        }
-//        replaceRowsByKey(SHIPPING_KEY, shippingRows)
-
         //invoice
         val invoice_type: String = orderTable!!.invoice_type
         rows = arrayListOf()
@@ -457,28 +378,13 @@ class PaymentVC : MyTableVC() {
         }
         row = OneRow("寄送EMail", orderTable!!.invoice_email, orderTable!!.invoice_email, INVOICE_EMAIL_KEY, "text")
         rows.add(row)
+        row = OneRow("發票號碼", orderTable!!.invoice_no, orderTable!!.invoice_no, INVOICE_NO_KEY, "text")
+        rows.add(row)
+        row = OneRow("開立時間", orderTable!!.invoice_at, orderTable!!.invoice_at, INVOICE_AT_KEY, "text")
+        rows.add(row)
+
         section = makeSectionRow("電子發票", SHIPPING_KEY, rows, true)
         oneSections.add(section)
-
-//        row = getRowFromKey(invoiceRows, INVOICE_TYPE_KEY)
-//        row[VALUE_KEY] = invoice_type
-//        row[SHOW_KEY] = orderTable!!.invoice_type_show
-//        invoiceRows = replaceRowByKey(invoiceRows, INVOICE_TYPE_KEY, row)
-
-//        if (invoice_type == "company") {
-//            row = hashMapOf(TITLE_KEY to "公司或行號名稱", KEY_KEY to INVOICE_COMPANY_NAME_KEY, VALUE_KEY to orderTable!!.invoice_company_name, SHOW_KEY to orderTable!!.invoice_company_name, CELL_KEY to "text")
-//            invoiceRows.add(row)
-//            row = hashMapOf(TITLE_KEY to "統一編號", KEY_KEY to INVOICE_COMPANY_TAX_KEY, VALUE_KEY to orderTable!!.invoice_company_tax, SHOW_KEY to orderTable!!.invoice_company_tax, CELL_KEY to "text")
-//            invoiceRows.add(row)
-//        }
-
-//        row = getRowFromKey(invoiceRows, INVOICE_EMAIL_KEY)
-//        row[VALUE_KEY] = orderTable!!.invoice_email
-//        row[SHOW_KEY] = orderTable!!.invoice_email
-//        invoiceRows = replaceRowByKey(invoiceRows, INVOICE_EMAIL_KEY, row)
-//
-//        replaceRowsByKey(INVOICE_KEY, invoiceRows)
-        //myRows[4]["rows"] = invoiceRows
 
         //member
         rows = arrayListOf()
@@ -494,150 +400,12 @@ class PaymentVC : MyTableVC() {
         section = makeSectionRow("訂購人資料", ORDER_KEY, rows, true)
         oneSections.add(section)
 
-//        row = getRowRowsFromMyRowsByKey1(NAME_KEY)
-//        row[VALUE_KEY] = orderTable!!.order_name
-//        row[SHOW_KEY] = orderTable!!.order_name
-//        replaceRowByKey(MEMBER_KEY, NAME_KEY,row)
-
-//        row = getRowRowsFromMyRowsByKey1(MOBILE_KEY)
-//        row[VALUE_KEY] = orderTable!!.order_tel
-//        row[SHOW_KEY] = orderTable!!.order_tel_show
-//        replaceRowByKey(MEMBER_KEY, MOBILE_KEY,row)
-//
-//        row = getRowRowsFromMyRowsByKey1(EMAIL_KEY)
-//        row[VALUE_KEY] = orderTable!!.order_email
-//        row[SHOW_KEY] = orderTable!!.order_email
-//        replaceRowByKey(MEMBER_KEY, EMAIL_KEY,row)
-//
-//        row = getRowRowsFromMyRowsByKey1(ADDRESS_KEY)
-//        row[VALUE_KEY] = orderTable!!.order_address
-//        row[SHOW_KEY] = orderTable!!.order_address
-//        replaceRowByKey(MEMBER_KEY, ADDRESS_KEY,row)
-//
         rows = arrayListOf()
         row = OneRow("留言", orderTable!!.memo, orderTable!!.memo, MEMO_KEY, "text")
         rows.add(row)
         section = makeSectionRow("其他留言", ORDER_KEY, rows, true)
         oneSections.add(section)
-
-//        //memo
-//        row = getRowRowsFromMyRowsByKey1(MEMO_KEY)
-//        row[VALUE_KEY] = orderTable!!.memo
-//        row[SHOW_KEY] = orderTable!!.memo
-//        replaceRowByKey(MEMO_KEY, MEMO_KEY,row)
-
-//        initAdapter(true)
-        //        recyclerView.setHasFixedSize(true)
-//        if (refreshLayout != null) {
-//            setRefreshListener()
-//        }
-//        setRecyclerViewScrollListener()
     }
-
-
-
-//    override fun initAdapter(include_section: Boolean) {
-//        //adapter.clear()
-//        if (include_section) {
-//            for ((idx, mySection) in mySections.withIndex()) {
-//                val section = Section()
-//                //adapterSections.add(section)
-//                val title: String = mySection["name"] as String
-//                val isExpanded: Boolean = mySection["isExpanded"] as Boolean
-//                val expandableGroup = ExpandableGroup(GroupSection(title), isExpanded)
-//                val items = generateItems(idx)
-//                section.addAll(items)
-//                expandableGroup.add(section)
-//
-//                //adapter.add(expandableGroup)
-//            }
-//        }
-//
-//        //recyclerView.adapter = adapter
-//    }
-//
-//    override fun generateItems(section: Int): ArrayList<Item> {
-//
-//        if (myRows.size == 0) {
-//            return arrayListOf()
-//        }
-//        //items.clear()
-//        var sectionKey: String = ""
-//        val sectionRow: HashMap<String, Any> = myRows[section]
-//        val tmp: String? = sectionRow["key"] as? String
-//        if (tmp != null) {
-//            sectionKey = tmp
-//        }
-//
-//        if (!sectionRow.containsKey("rows")) {
-//            return arrayListOf()
-//        }
-//
-//        @Suppress("UNCHECKED_CAST")
-//        val rows: ArrayList<HashMap<String, String>> =
-//            sectionRow["rows"] as ArrayList<HashMap<String, String>>
-//
-//        for ((idx, row) in rows.withIndex()) {
-//
-//            var rowKey: String = ""
-//            if (row.containsKey("key") && row["key"] != null) {
-//                rowKey = row["key"]!!
-//            }
-//            var title: String = ""
-//            if (row.containsKey("title") && row["title"] != null) {
-//                title = row["title"]!!
-//            }
-//            var value: String = ""
-//            if (row.containsKey("value") && row["value"] != null) {
-//                value = row["value"]!!
-//            }
-//            var show: String = ""
-//            if (row.containsKey("show") && row["show"] != null) {
-//                show = row["show"]!!
-//            }
-//
-//            val cell_type: String? = row["cell"]
-//
-//            //var formItemAdapter: FormItemAdapter1? = null
-//            if (cell_type == "cart") {
-//                var featured_path = FEATURED_PATH
-//                if (row.containsKey("featured_path") && row["featured_path"] != null && row["featured_path"]!!.length > 0) {
-//                    featured_path = row["featured_path"]!!
-//                }
-//                var attribute = ""
-//                if (row.containsKey("attribute") && row["attribute"] != null) {
-//                    attribute = row["attribute"]!!
-//                }
-//                var amount = ""
-//                if (row.containsKey("amount") && row["amount"] != null) {
-//                    amount = row["amount"]!!
-//                }
-//                var quantity = ""
-//                if (row.containsKey("quantity") && row["quantity"] != null) {
-//                    quantity = row["quantity"]!!
-//                }
-////                val cartItemItem = CartItemItem(
-////                    this,
-////                    sectionKey,
-////                    rowKey,
-////                    title,
-////                    featured_path,
-////                    attribute,
-////                    amount,
-////                    quantity
-////                )
-////                items.add(cartItemItem)
-//            } else if (cell_type == "text") {
-//                val item = PlainAdapter1(title, show)
-//                //items.add(item)
-//            } else if (cell_type == "more") {
-//                val item = MoreAdapter1(sectionKey, rowKey, title, value, show, this, false)
-//                //items.add(item)
-//            }
-//        }
-//
-//        return arrayListOf()
-//    }
 
     override fun cellMoreClick(sectionIdx: Int, rowIdx: Int) {
 
@@ -649,34 +417,8 @@ class PaymentVC : MyTableVC() {
         showTableLayer(tableViewHeight)
 
         val panelAdapter = OneItemAdapter(this, sectionIdx, section, this, hashMapOf())
-        //val panelAdapter = PanelAdapter(this, sectionIdx, this)
 
         layerTableView!!.adapter = panelAdapter
-
-
-//        val panelAdapter = GroupAdapter<com.xwray.groupie.GroupieViewHolder>()
-//        tableView!!.adapter = panelAdapter
-
-        //items.clear()
-//        for (row in popupRows) {
-//            val title: String = row[TITLE_KEY] ?: run { "" }
-//            val show: String = row[SHOW_KEY] ?: run { "" }
-//            val cell_type: String = row[CELL_KEY] ?: run { "text" }
-//
-//            //text and barcode cell
-//            if (cell_type == "text") {
-//                val item = PlainAdapter1(title, show)
-//                //items.add(item)
-//            } else if (cell_type == "barcode") {
-//                if (show.length == 0) {
-//                    warning("沒有取得條碼，代碼或帳號，請重新下單")
-//                } else {
-//                    val item = BarcodeAdapter(title, show)
-//                    //items.add(item)
-//                }
-//            }
-//        }
-        //panelAdapter.addAll(items)
     }
 
     private fun fillPopupRows(): ArrayList<OneRow> {
@@ -693,11 +435,6 @@ class PaymentVC : MyTableVC() {
             rows.add(row)
             row = OneRow("到期日", expire_at, expire_at, EXPIRE_AT_KEY, "text")
             rows.add(row)
-//            popupRows = arrayListOf(
-//                hashMapOf(TITLE_KEY to "銀行代號", KEY_KEY to BANK_CODE_KEY, VALUE_KEY to bank_code, SHOW_KEY to bank_code, CELL_KEY to "text"),
-//                hashMapOf(TITLE_KEY to "銀行帳號", KEY_KEY to BANK_ACCOUNT_KEY, VALUE_KEY to bank_account, SHOW_KEY to bank_account, CELL_KEY to "text"),
-//                hashMapOf(TITLE_KEY to "到期日", KEY_KEY to EXPIRE_AT_KEY, VALUE_KEY to expire_at, SHOW_KEY to expire_at, CELL_KEY to "text")
-//            )
         } else if (method == GATEWAY.store_cvs) {
             val payment_no: String = orderTable!!.gateway!!.payment_no
             val expire_at: String = orderTable!!.gateway!!.expire_at_show
@@ -705,10 +442,6 @@ class PaymentVC : MyTableVC() {
             rows.add(row)
             row = OneRow("到期日", expire_at, expire_at, EXPIRE_AT_KEY, "text")
             rows.add(row)
-//            popupRows = arrayListOf(
-//                hashMapOf(TITLE_KEY to "繳款代碼",KEY_KEY to PAYMENT_NO_KEY,VALUE_KEY to payment_no,SHOW_KEY to payment_no,CELL_KEY to "text"),
-//                hashMapOf(TITLE_KEY to "到期日",KEY_KEY to EXPIRE_AT_KEY,VALUE_KEY to expire_at,SHOW_KEY to expire_at,CELL_KEY to "text")
-//            )
         } else if (method == GATEWAY.store_barcode) {
             val barcode1: String = orderTable!!.gateway!!.barcode1
             val barcode2: String = orderTable!!.gateway!!.barcode2
@@ -722,12 +455,6 @@ class PaymentVC : MyTableVC() {
             rows.add(row)
             row = OneRow("到期日", expire_at, expire_at, EXPIRE_AT_KEY, "text")
             rows.add(row)
-//            popupRows = arrayListOf(
-//                hashMapOf(TITLE_KEY to "繳款條碼1",KEY_KEY to BARCODE1_KEY,VALUE_KEY to barcode1,SHOW_KEY to barcode1,CELL_KEY to "barcode"),
-//                hashMapOf(TITLE_KEY to "繳款條碼2",KEY_KEY to BARCODE2_KEY,VALUE_KEY to barcode2,SHOW_KEY to barcode2,CELL_KEY to "barcode"),
-//                hashMapOf(TITLE_KEY to "繳款條碼3",KEY_KEY to BARCODE3_KEY,VALUE_KEY to barcode3,SHOW_KEY to barcode3,CELL_KEY to "barcode"),
-//                hashMapOf(TITLE_KEY to "到期日",KEY_KEY to EXPIRE_AT_KEY,VALUE_KEY to expire_at,SHOW_KEY to expire_at,CELL_KEY to "text")
-//            )
         } else if (method == GATEWAY.credit_card) {
             val card6No: String = orderTable!!.gateway!!.card6No
             val card4No: String = orderTable!!.gateway!!.card4No
@@ -735,10 +462,6 @@ class PaymentVC : MyTableVC() {
             rows.add(row)
             row = OneRow("信用卡前6碼", card4No, card4No, "card4No", "text")
             rows.add(row)
-//            popupRows = arrayListOf(
-//                hashMapOf(TITLE_KEY to "信用卡前6碼",KEY_KEY to PAYMENT_NO_KEY,VALUE_KEY to card6No,SHOW_KEY to card6No,CELL_KEY to "text"),
-//                hashMapOf(TITLE_KEY to "信用卡後4碼",KEY_KEY to EXPIRE_AT_KEY,VALUE_KEY to card4No,SHOW_KEY to card4No,CELL_KEY to "text")
-//            )
         }
 
         return rows
