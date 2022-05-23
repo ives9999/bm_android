@@ -157,6 +157,37 @@ open class DataService {
         Volley.newRequestQueue(context).add(request)
     }
 
+    fun ezshipReturnCode(context: Context, token: String, complete: CompletionHandler) {
+        val url: String = URL_ORDER_RETURN
+        val params: HashMap<String, String> = hashMapOf(
+            "device" to "app",
+            "channel" to CHANNEL,
+            "token" to token
+        )
+
+        val request: okhttp3.Request = getRequest(url, params)
+        okHttpClient.newCall(request).enqueue(object : Callback {
+            override fun onFailure(call: Call, e: IOException) {
+                msg = "網路錯誤，無法跟伺服器更新資料"
+                complete(success)
+            }
+
+            override fun onResponse(call: Call, response: okhttp3.Response) {
+
+                try {
+                    jsonString = response.body!!.string()
+//                    println(jsonString)
+                    success = true
+                } catch (e: Exception) {
+                    success = false
+                    msg = "parse json failed，請洽管理員"
+                    println(e.localizedMessage)
+                }
+                complete(success)
+            }
+        })
+    }
+
     fun getArenaByCityID(context: Context, city_id: Int, complete: CompletionHandler) {
         val url = URL_ARENA_BY_CITY_ID
         //println(url)
@@ -323,7 +354,7 @@ open class DataService {
         if (token != null) {
             url = url + "/" + token
         }
-        println(url)
+        //println(url)
 
 //        val header: MutableList<Pair<String, String>> = mutableListOf()
 //        header.add(Pair("Accept","application/json"))
@@ -346,8 +377,8 @@ open class DataService {
             params.put("member_token", member.token!!)
         }
 
-        val j: JSONObject = JSONObject(params as Map<*, *>)
-        println(j.toString())
+        //val j: JSONObject = JSONObject(params as Map<*, *>)
+        //println(j.toString())
 //        val body = j.toString().toRequestBody(HEADER.toMediaTypeOrNull())
 
         val request: okhttp3.Request = getRequest(url, params)

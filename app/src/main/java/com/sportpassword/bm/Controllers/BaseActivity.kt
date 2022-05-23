@@ -252,6 +252,7 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener,
         URL_ONE = "${URL_HOME}%s/one"
         URL_ORDER = "${URL_HOME}order/payment%s"
         URL_ORDER_LIST = URL_HOME + "order/list"
+        URL_ORDER_RETURN = URL_HOME + "order/ezship_return_code"
         URL_ORDER_UPDATE = "${URL_HOME}order/update"
         URL_PRODUCT_LIKE = URL_HOME + "product/like/%s"
         URL_PRODUCT_LIST = URL_HOME + "product/list"

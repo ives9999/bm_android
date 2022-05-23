@@ -1,12 +1,12 @@
 package com.sportpassword.bm.Controllers
 
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import com.google.gson.Gson
+import com.google.gson.JsonParseException
 import com.sportpassword.bm.Adapters.OneItemAdapter
 import com.sportpassword.bm.Adapters.OneSectionAdapter
 import com.sportpassword.bm.Data.OneRow
@@ -19,7 +19,6 @@ import com.sportpassword.bm.member
 import kotlinx.android.synthetic.main.activity_payment_vc.*
 import kotlinx.android.synthetic.main.bottom_view_general.*
 import kotlinx.android.synthetic.main.mask.*
-import kotlinx.android.synthetic.main.payment_cell.*
 import tw.com.ecpay.paymentgatewaykit.manager.*
 
 class PaymentVC : MyTableVC() {
@@ -125,6 +124,12 @@ class PaymentVC : MyTableVC() {
 
         setBottomButtonPadding()
 
+        findViewById<Button>(R.id.threeBtn) ?. let {
+            it.setOnClickListener {
+                backBtnPressed()
+            }
+        }
+
         init()
         if (ecpay_token.length > 0) {
             toECPay()
@@ -151,6 +156,13 @@ class PaymentVC : MyTableVC() {
         }
 
         findViewById<Button>(R.id.cancelBtn) ?. let {
+            val params: ViewGroup.MarginLayoutParams = it.layoutParams as ViewGroup.MarginLayoutParams
+            params.width = button_width
+            params.marginStart = padding
+            it.layoutParams = params
+        }
+
+        findViewById<Button>(R.id.threeBtn) ?. let {
             val params: ViewGroup.MarginLayoutParams = it.layoutParams as ViewGroup.MarginLayoutParams
             params.width = button_width
             params.marginStart = padding
@@ -881,6 +893,33 @@ class PaymentVC : MyTableVC() {
         toECPay()
     }
 
+    fun backBtnPressed() {
+        if (order_token.isNotEmpty()) {
+            Loading.show(mask)
+            OrderService.ezshipReturnCode(this, order_token) { success ->
+                runOnUiThread {
+                    Loading.hide(mask)
+                    try {
+                        val successTable: BackResTable = Gson().fromJson<BackResTable>(
+                            OrderService.jsonString,
+                            BackResTable::class.java
+                        )
+                        if (!successTable.success) {
+                            val msg: String = "錯誤訊息：" + successTable.msg + "\n" + "錯誤編號：" + successTable.error_code
+                            info(successTable.msg)
+                        } else {
+                            val msg: String = "退貨編號：" + successTable.sn_id + "\n" + "退貨編號使用期限：" + successTable.expire_at
+                            info(msg)
+                        }
+                    } catch (e: JsonParseException) {
+                        warning(e.localizedMessage!!)
+                        //println(e.localizedMessage)
+                    }
+                }
+            }
+        }
+    }
+
     fun cancelBtnPressed(view: View) {
         prev()
     }
@@ -1020,15 +1059,16 @@ class PaymentVC : MyTableVC() {
     }
 }
 
-//class PaymentItem(val context: Context, val row: HashMap<String, String>): Item() {
-//
-//    override fun bind(viewHolder: GroupieViewHolder, position: Int) {
-//        viewHolder.titleLbl.text = row["name"]
-//        viewHolder.contentLbl.text = row["value"]
-//    }
-//
-//    override fun getLayout() = R.layout.payment_cell
-//}
+class BackResTable {
+
+    var success: Boolean = false
+    var msg: String = ""
+    var sn_id: String = ""
+    var expire_at: String = ""
+    var order_id: Int = 0
+    var error_code: String = ""
+    var url: String = ""
+}
 
 
 

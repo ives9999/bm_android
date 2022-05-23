@@ -27,10 +27,7 @@ import com.google.gson.JsonParser
 import com.google.gson.internal.LinkedTreeMap
 import com.google.gson.reflect.TypeToken
 import com.sportpassword.bm.Controllers.BaseActivity
-import com.sportpassword.bm.Models.Area
-import com.sportpassword.bm.Models.City
-import com.sportpassword.bm.Models.Table
-import com.sportpassword.bm.Models.Tables
+import com.sportpassword.bm.Models.*
 import com.sportpassword.bm.R
 import com.squareup.picasso.Picasso
 import org.jetbrains.anko.backgroundColor

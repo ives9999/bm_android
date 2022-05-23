@@ -23,7 +23,6 @@
         style="@style/three_button"
         android:layout_width="120dp"
         android:layout_height="30dp"
-        android:onClick="signupButtonPressed"
         android:text="退貨" />
 
 
