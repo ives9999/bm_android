@@ -157,17 +157,17 @@ class OrderTable: Table() {
         order_tel_show = order_tel.mobileShow()
 
         if (all_process == 6) {
-            var return_expired_date: Date = Date()
+            var return_expire_date: Date = Date()
             if (complete_at.isNotEmpty()) {
                 complete_at.toDate("yyyy-MM-dd")?.let {
                     val c: Calendar = Calendar.getInstance()
                     c.time = it
                     c.add(Calendar.DATE, 10)
-                    return_expired_date = c.time
+                    return_expire_date = c.time
                 }
             }
 
-            canReturn = (Date().before(return_expired_date) then { true }) ?: false
+            canReturn = (Date().before(return_expire_date) then { true }) ?: false
         } else {
             canReturn = false
         }
