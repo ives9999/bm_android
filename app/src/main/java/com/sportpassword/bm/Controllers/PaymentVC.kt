@@ -28,46 +28,6 @@ class PaymentVC : MyTableVC() {
     var ecpay_token_ExpireDate: String = ""
     var orderTable: OrderTable? = null
 
-//    var productRows: ArrayList<HashMap<String, String>> = arrayListOf()
-//
-//    var orderRows: ArrayList<HashMap<String, String>> = arrayListOf(
-//        hashMapOf(TITLE_KEY to "訂單編號", KEY_KEY to ORDER_NO_KEY, VALUE_KEY to "", SHOW_KEY to "", CELL_KEY to "text"),
-//        hashMapOf(TITLE_KEY to "商品金額", KEY_KEY to AMOUNT_KEY, VALUE_KEY to "", SHOW_KEY to "", CELL_KEY to "text"),
-//        hashMapOf(TITLE_KEY to "運費", KEY_KEY to SHIPPING_FEE_KEY, VALUE_KEY to "", SHOW_KEY to "", CELL_KEY to "text"),
-//        hashMapOf(TITLE_KEY to "稅", KEY_KEY to TAX_KEY, VALUE_KEY to "", SHOW_KEY to "", CELL_KEY to "text"),
-//        hashMapOf(TITLE_KEY to "訂單金額", KEY_KEY to TOTAL_KEY, VALUE_KEY to "", SHOW_KEY to "", CELL_KEY to "text"),
-//        hashMapOf(TITLE_KEY to "訂單建立時間", KEY_KEY to CREATED_AT_KEY, VALUE_KEY to "", SHOW_KEY to "", CELL_KEY to "text"),
-//        hashMapOf(TITLE_KEY to "訂單狀態", KEY_KEY to ORDER_PROCESS_KEY, VALUE_KEY to "", SHOW_KEY to "", CELL_KEY to "text")
-//    )
-//
-//    var gatewayRows: ArrayList<HashMap<String, String>> = arrayListOf(
-//        hashMapOf(TITLE_KEY to "付款方式", KEY_KEY to GATEWAY_METHOD_KEY, VALUE_KEY to "", SHOW_KEY to "", CELL_KEY to "more"),
-//        hashMapOf(TITLE_KEY to "付款狀態", KEY_KEY to GATEWAY_PROCESS_KEY, VALUE_KEY to "", SHOW_KEY to "", CELL_KEY to "text"),
-//        hashMapOf(TITLE_KEY to "付款時間", KEY_KEY to GATEWAY_AT_KEY, VALUE_KEY to "", SHOW_KEY to "", CELL_KEY to "text")
-//    )
-//
-//    var shippingRows: ArrayList<HashMap<String, String>> = arrayListOf(
-//        hashMapOf(TITLE_KEY to "到貨方式", KEY_KEY to SHIPPING_METHOD_KEY, VALUE_KEY to "", SHOW_KEY to "", CELL_KEY to "text"),
-//        hashMapOf(TITLE_KEY to "到貨狀態", KEY_KEY to SHIPPING_PROCESS_KEY, VALUE_KEY to "", SHOW_KEY to "", CELL_KEY to "text"),
-//        hashMapOf(TITLE_KEY to "出貨時間", KEY_KEY to SHIPPING_AT_KEY, VALUE_KEY to "", SHOW_KEY to "", CELL_KEY to "text")
-//    )
-//
-//    var invoiceRows: ArrayList<HashMap<String, String>> = arrayListOf(
-//        hashMapOf(TITLE_KEY to "發票種類", KEY_KEY to INVOICE_TYPE_KEY, VALUE_KEY to "", SHOW_KEY to "", CELL_KEY to "text"),
-//        hashMapOf(TITLE_KEY to "寄送EMail", KEY_KEY to INVOICE_EMAIL_KEY, VALUE_KEY to "", SHOW_KEY to "", CELL_KEY to "text")
-//    )
-//
-//    var memberRows: ArrayList<HashMap<String, String>> = arrayListOf(
-//        hashMapOf(TITLE_KEY to "姓名",KEY_KEY to NAME_KEY,VALUE_KEY to "",SHOW_KEY to "",CELL_KEY to "text"),
-//        hashMapOf(TITLE_KEY to "電話",KEY_KEY to MOBILE_KEY,VALUE_KEY to "",SHOW_KEY to "",CELL_KEY to "text"),
-//        hashMapOf(TITLE_KEY to "EMail",KEY_KEY to EMAIL_KEY,VALUE_KEY to "",SHOW_KEY to "",CELL_KEY to "text"),
-//        hashMapOf(TITLE_KEY to "住址",KEY_KEY to ADDRESS_KEY,VALUE_KEY to "",SHOW_KEY to "",CELL_KEY to "text")
-//    )
-//
-//    val memoRows: ArrayList<HashMap<String, String>> = arrayListOf(
-//        hashMapOf(TITLE_KEY to "留言",KEY_KEY to MEMO_KEY,VALUE_KEY to "",SHOW_KEY to "",CELL_KEY to "text")
-//    )
-
     var gateway: GATEWAY = GATEWAY.credit_card
     var payment_no: String = ""
     var expire_at: String = ""

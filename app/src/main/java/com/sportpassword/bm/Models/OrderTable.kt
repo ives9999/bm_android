@@ -400,7 +400,7 @@ class ShippingTable: Table() {
         back_at = if (back_at == null) { "" } else { back_at }
 
         shipping_at_show = if (shipping_at == null) { SHIPPING.getRawValueFromString("direct")} else { shipping_at.noSec()}
-        store_at_show = if (shipping_at == null) { "" } else { store_at.noSec()}
+        store_at_show = if (store_at == null) { "" } else { store_at.noSec()}
         complete_at_show = if (complete_at == null) { "" } else { complete_at.noSec()}
         back_at_show = if (back_at == null) { "" } else { back_at.noSec()}
 
