@@ -950,6 +950,18 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener,
         startActivity(i)
     }
 
+    val paymentVC = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { res ->
+        if (res.resultCode == Activity.RESULT_OK) {
+
+            val i: Intent? = res.data
+//            if (i != null) {
+//                if (delegate != null) {
+//                    delegate!!.refresh()
+//                }
+//            }
+        }
+    }
+
     fun permissionExist(permission: String): Boolean {
         val permission = ContextCompat.checkSelfPermission(this, permission)
         return permission == PackageManager.PERMISSION_GRANTED

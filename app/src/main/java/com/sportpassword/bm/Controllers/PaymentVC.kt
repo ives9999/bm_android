@@ -17,7 +17,6 @@ import com.sportpassword.bm.Services.OrderService
 import com.sportpassword.bm.Utilities.*
 import com.sportpassword.bm.member
 import kotlinx.android.synthetic.main.activity_payment_vc.*
-import kotlinx.android.synthetic.main.bottom_view_general.*
 import kotlinx.android.synthetic.main.mask.*
 import tw.com.ecpay.paymentgatewaykit.manager.*
 
@@ -601,10 +600,6 @@ class PaymentVC : MyTableVC() {
                 }
             }
         }
-    }
-
-    fun cancelBtnPressed(view: View) {
-        prev()
     }
 
     fun successMsg(it: CreatePaymentCallbackData): String {

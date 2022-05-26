@@ -48,17 +48,7 @@ class MemberOrderListVC : MyTableVC() {
         super.init()
     }
 
-//    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-//        isSearchIconShow = false
-//        super.onCreateOptionsMenu(menu)
-//
-//        return true
-//    }
-
     override fun refresh() {
-//        page = 1
-//        theFirstTime = true
-//        getDataStart(page, perPage)
 
         page = 1
         theFirstTime = true
@@ -88,62 +78,8 @@ class MemberOrderListVC : MyTableVC() {
             }
         }
     }
-
-//    override fun generateItems(): ArrayList<Item> {
-//        if (mysTable != null) {
-//            for (row in mysTable!!.rows) {
-//                row.filterRow()
-//                val orderItem = OrderItem(this, row)
-//                //productItem.list1CellDelegate = this
-//                //items.add(orderItem)
-//            }
-//        }
-//
-//        return arrayListOf()
-//    }
-//
-//    override fun rowClick(item: com.xwray.groupie.Item<com.xwray.groupie.GroupieViewHolder>, view: View) {
-//
-//        val orderItem = item as OrderItem
-//        val table = orderItem.row
-//        toPayment(table.token)
-//    }
 }
 
-//class OrderItem(val context: Context, val row: OrderTable): Item() {
-//
-//    //var list1CellDelegate: List1CellDelegate? = null
-//
-//    override fun bind(viewHolder: GroupieViewHolder, position: Int) {
-//
-//        val items: ArrayList<OrderItemTable> = row.items
-//        var name: String = ""
-//        if (items.size > 0) {
-//            val productTable = items[0].product
-//            if (productTable != null) {
-//                name = productTable.name
-//            }
-//            if (items.size > 1) {
-//                name += "..."
-//            }
-//        } else {
-//            name = "無法取得商品名稱，請洽管理員"
-//        }
-//        viewHolder.nameLbl.text = name
-//        viewHolder.dateLbl.text = row.created_at_show
-//        viewHolder.priceLbl.text = row.amount_show
-//        viewHolder.orderNoLbl.text = row.order_no
-//        viewHolder.noLbl.text = (position+1).toString()
-//
-//        viewHolder.orderAllProcessLbl.text = row.all_process_show
-//        viewHolder.gatewayProcessLbl.text = row.gateway!!.process_show
-//        viewHolder.shippingProcessLbl.text = row.shipping!!.process_show
-//        viewHolder.gatewayMethodLbl.text = row.gateway!!.method_show
-//        viewHolder.shippingMethodLbl.text = row.shipping!!.method_show
-//    }
-//
-//    override fun getLayout() = R.layout.order_list_cell
-//}
 
 
 
