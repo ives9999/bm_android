@@ -337,23 +337,23 @@ class GatewayTable: Table() {
     var barcode3: String = ""
     var bank_code: String = ""
     var bank_account: String = ""
-    var gateway_at: String = ""
+    var complete_at: String = ""
     var expire_at: String = ""
 
     var method_show: String = ""
     var process_show: String = ""
-    var gateway_at_show: String = ""
+    var complete_at_show: String = ""
     var expire_at_show: String = ""
 
     override fun filterRow() {
         super.filterRow()
 
-        gateway_at_show = if (gateway_at == null) { GATEWAY_PROCESS.getRawValueFromString("normal")} else { gateway_at.noSec()}
+        complete_at_show = if (complete_at == null) { GATEWAY_PROCESS.getRawValueFromString("normal")} else { complete_at.noSec()}
         expire_at_show = if (expire_at == null) { "" } else { expire_at.noSec() }
         method_show = GATEWAY.getRawValueFromString(method)
         process_show = GATEWAY_PROCESS.getRawValueFromString(process)
 
-        if (gateway_at == null) { gateway_at = "" }
+        if (complete_at == null) { complete_at = "" }
         if (card6No == null) { card6No = "" }
         if (card4No == null) { card4No = "" }
     }

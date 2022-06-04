@@ -369,7 +369,7 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener,
 //                val selecteds: String = tmp.joinToString(",")
             toSelectWeekday(value, this, able_type)
         } else if (key == WEEKDAYS_KEY) {
-            val n: Int = (value.isInt()) then { value.toInt() } ?: 0
+            val n: Int = ((value.isInt()) then { value.toInt() }) ?: 0
             toSelectWeekdays(n, this, able_type)
         } else if (key == START_TIME_KEY || key == END_TIME_KEY || key == TEAM_PLAY_START_KEY || key == TEAM_PLAY_END_KEY) {
 //                val tmp = formItem.sender as HashMap<String, String>
@@ -410,11 +410,7 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener,
 
     override fun cellSwitchChanged(sectionIdx: Int, rowIdx: Int, b: Boolean) {
 
-        val value = if (b) {
-            "1"
-        } else {
-            "0"
-        }
+        val value: String = (b then { "1" }) ?: "0"
         oneSections[sectionIdx].items[rowIdx].value = value
     }
 
@@ -512,7 +508,7 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener,
     }
 
     fun getAreasFromCity(city_id: Int, complete: (rows: ArrayList<HashMap<String, String>>) -> Unit): ArrayList<HashMap<String, String>> {
-        var rows: ArrayList<HashMap<String, String>> = session.getAreasFromCity(city_id)
+        val rows: ArrayList<HashMap<String, String>> = session.getAreasFromCity(city_id)
         if (rows.count() == 0) {
             Loading.show(mask)
             val city_ids: ArrayList<Int> = arrayListOf(city_id)
@@ -581,10 +577,6 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener,
     }
 
     fun getMyParent(): ViewGroup {
-//        val rootView = window.decorView.rootView
-//        val parentID = resources.getIdentifier(containerID, "id", packageName)
-//        val parent = rootView.findViewById<ConstraintLayout>(parentID)
-//        return parent
         return window.decorView.rootView as ViewGroup
     }
 
@@ -692,17 +684,17 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener,
             addIcon = it
         }
 
-        prevIcon?.visibility = isPrevIconShow then { View.VISIBLE } ?: View.GONE
+        prevIcon?.visibility = (isPrevIconShow then { View.VISIBLE }) ?: View.GONE
 
-        searchIcon?.visibility = isSearchIconShow then { View.VISIBLE } ?: View.GONE
-        addIcon?.visibility = isAddIconShow then { View.VISIBLE } ?: View.GONE
+        searchIcon?.visibility = (isSearchIconShow then { View.VISIBLE }) ?: View.GONE
+        addIcon?.visibility = (isAddIconShow then { View.VISIBLE }) ?: View.GONE
 
         //當購物車中有商品時，購物車的icon就會出現，如果沒有就不會出現
         //1.AddCartVC中，商品加入購物車時，+1
         //2.MemberCartListVC中，移除購物車中的商品時，-1
         //3.購物車轉成訂單時OrderVC，購物車中的商品數變0
         cartItemCount = session.getInt("cartItemCount", 0)
-        cartIcon?.visibility = (member.isLoggedIn && cartItemCount > 0) then { View.VISIBLE } ?: View.GONE
+        cartIcon?.visibility = ((member.isLoggedIn && cartItemCount > 0) then { View.VISIBLE }) ?: View.GONE
 
 //        searchSectionAdapter = SearchSectionAdapter(this, R.layout.cell_section, this)
 //        searchSections = initSectionRows()

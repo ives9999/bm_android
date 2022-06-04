@@ -90,11 +90,7 @@ class PaymentVC : MyTableVC() {
         }
 
         init()
-        if (ecpay_token.length > 0) {
-            toECPay()
-        } else {
-            refresh()
-        }
+        (ecpay_token.isNotEmpty() then { toECPay() }) ?: refresh()
     }
 
     override fun init() {
@@ -285,7 +281,7 @@ class PaymentVC : MyTableVC() {
         rows.add(row)
         row = OneRow("付款狀態", orderTable!!.gateway!!.process, orderTable!!.gateway!!.process_show, GATEWAY_PROCESS_KEY, "text")
         rows.add(row)
-        row = OneRow("付款時間", orderTable!!.gateway!!.gateway_at, orderTable!!.gateway!!.gateway_at_show, GATEWAY_AT_KEY, "text")
+        row = OneRow("付款時間", orderTable!!.gateway!!.complete_at, orderTable!!.gateway!!.complete_at_show, GATEWAY_AT_KEY, "text")
         rows.add(row)
         section = makeSectionRow("付款方式", GATEWAY_KEY, rows, true)
         oneSections.add(section)
@@ -427,9 +423,16 @@ class PaymentVC : MyTableVC() {
     }
 
     fun updateOrder() {
+
+        mask()
         val params: HashMap<String, String> = hashMapOf("token" to order_token, "member_token" to member.token!!,"do" to "update")
         params["expire_at"] = expire_at
         params["trade_no"] = trade_no
+
+        //1.信用卡回傳，(1)刷卡時間，(2)處理費，(3)信用卡前6碼，(4)信用卡後4碼
+        //2.超商代碼回傳，(1)代碼，(2)代碼檢視網址
+        //3.barcode已經停止使用
+        //4.虛擬匯款帳號，(1)銀行代號，(2)銀行帳號
         if (gateway == GATEWAY.store_cvs) {
             params["gateway_process"] = GATEWAY_PROCESS.code.toEnglishString()
             params["payment_no"] = payment_no
@@ -452,6 +455,7 @@ class PaymentVC : MyTableVC() {
         }
 
         OrderService.update(this, params) { success ->
+            unmask()
             if (success) {
                 finish()
                 toProduct()

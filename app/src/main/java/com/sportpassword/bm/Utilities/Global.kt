@@ -417,6 +417,7 @@ enum class ORDER_PROCESS(val englishName: String, val chineseName: String) {
     normal("normal", "訂單成立"),
     gateway("gateway", "完成付款"),
     shipping("shipping", "出貨中"),
+    store("store", "送達超商"),
     complete("complete", "訂單完成"),
     returning("returning", "商品退回中"),
     `return`("return", "商品已退回");
@@ -509,7 +510,8 @@ enum class GATEWAY(val englishName: String, val chineseName: String) {
     store_pay_family("store_pay_family", "全家超商取貨付款"),
     ATM("ATM", "虛擬帳戶"),
     remit("remit", "匯款"),
-    cash("cash", "現金");
+    cash("cash", "現金"),
+    coin("coin", "解碼幣");
 
     fun toChineseString(): String {
         return chineseName
@@ -537,6 +539,7 @@ enum class GATEWAY(val englishName: String, val chineseName: String) {
                 "ATM"-> return ATM
                 "remit"-> return remit
                 "cash"-> return cash
+                "coin"-> return coin
             }
             return credit_card
         }
@@ -547,7 +550,8 @@ enum class GATEWAY_PROCESS(val englishName: String, val chineseName: String) {
 
     normal("normal", "未付款"),
     code("code", "取得付款代碼"),
-    complete("complete", "完成付款");
+    complete("complete", "完成付款"),
+    fail("fail", "付款失敗");
 
     fun toChineseString(): String {
         return chineseName

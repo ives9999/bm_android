@@ -377,7 +377,7 @@ open class DataService {
             params.put("member_token", member.token!!)
         }
 
-        //val j: JSONObject = JSONObject(params as Map<*, *>)
+        val j: JSONObject = JSONObject(params as Map<*, *>)
         //println(j.toString())
 //        val body = j.toString().toRequestBody(HEADER.toMediaTypeOrNull())
 
