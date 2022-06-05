@@ -212,7 +212,7 @@ interface ToInterface {
         mainDelegate.startActivity(i)
     }
 
-    fun toOrder() {
+    fun toOrder(product_token: String? = null) {
         var msg: String = ""
         if (!member.isLoggedIn) {
             mainDelegate.warning("必須先登入會員，才能進行購買", true, "登入") {
@@ -229,7 +229,9 @@ interface ToInterface {
 
                 mainDelegate.finish()
                 val i = Intent(mainDelegate, OrderVC::class.java)
-                //i.putExtra("product_token", product_token)
+                if (product_token != null) {
+                    i.putExtra("product_token", product_token)
+                }
                 //i.putExtra("title", title)
                 mainDelegate.startActivity(i)
             }

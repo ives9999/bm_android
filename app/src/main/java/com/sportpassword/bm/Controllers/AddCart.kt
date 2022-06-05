@@ -440,20 +440,9 @@ class AddCartVC : MyTableVC() {
 
         sub_total = selected_price * selected_number
         val row = getRowFromRowKey(SUBTOTAL_KEY)
-//        val row = getRowRowsFromMyRowsByKey1(SUBTOTAL_KEY)
         row.value = sub_total.toString()
         row.show = "NT$ " + sub_total.toString() + "元"
-//        replaceRowFromKey(SUBTOTAL_KEY, row)
         updateTotal()
-
-//        val priceItem = getFormItemFromKey(SUBTOTAL_KEY)
-//        if (priceItem != null) {
-//            sub_total = selected_price * selected_number
-//            priceItem.value = sub_total.toString()
-//            priceItem.make()
-//            //updateShippingFee()
-//            updateTotal()
-//        }
     }
 
 //    fun updateShippingFee() {
@@ -471,20 +460,8 @@ class AddCartVC : MyTableVC() {
 
         total = sub_total + shippingFee
         val row = getRowFromRowKey(TOTAL_KEY)
-//        val row = getRowRowsFromMyRowsByKey1(TOTAL_KEY)
         row.value = total.toString()
         row.show = "NT$ " + total.toString() + "元"
-//        replaceRowFromKey(TOTAL_KEY, row)
-        //notifyChanged(true)
-
-//        val priceItem = getFormItemFromKey(TOTAL_KEY)
-//        if (priceItem != null) {
-//            total = sub_total + shippingFee
-//            priceItem.value = total.toString()
-//            priceItem.make()
-//            //adapter.notifyDataSetChanged()
-//            notifyChanged(true)
-//        }
     }
 
 //    override fun notifyChanged(include_section: Boolean) {

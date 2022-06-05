@@ -443,7 +443,7 @@ enum class ALL_PROCESS(val englishName: String, val chineseName: String) {
     normal("normal", "訂單成立"),
     gateway_on("gateway_on", "付款中"),
     gateway_off("gateway_off", "完成付款，準備出貨"),
-    shipping("shipping", "已經出貨中"),
+    shipping("shipping", "準備出貨"),
     store("store", "商品到達便利商店"),
     complete("complete", "完成取貨"),
     returning("returning", "商品退回中"),
@@ -551,7 +551,8 @@ enum class GATEWAY_PROCESS(val englishName: String, val chineseName: String) {
     normal("normal", "未付款"),
     code("code", "取得付款代碼"),
     complete("complete", "完成付款"),
-    fail("fail", "付款失敗");
+    fail("fail", "付款失敗"),
+    `return`("return", "完成退款");
 
     fun toChineseString(): String {
         return chineseName
@@ -606,7 +607,7 @@ enum class SHIPPING(val englishName: String, val chineseName: String) {
 
 enum class SHIPPING_PROCESS(val englishName: String, val chineseName: String) {
     normal("normal", "準備中"),
-    shipping("shipping", "出貨中"),
+    shipping("shipping", "已經出貨"),
     store("store", "商品已到便利商店"),
     complete("complete", "已完成取貨"),
     back("back", "貨物退回");

@@ -19,8 +19,14 @@ class ProductViewHolder(context: Context, viewHolder: View, list1CellDelegate: L
         val row: ProductTable = _row as ProductTable
 
         viewHolder.buyBtn.setOnClickListener {
-            val a: ProductVC = context as ProductVC
-            a.toAddCart(row.token)
+            val vc: ProductVC = context as ProductVC
+
+            val type: String = row.type
+            if (type == "coin") {
+                vc.toOrder(row.token)
+            } else {
+                vc.toAddCart(row.token)
+            }
         }
 
         if (row.prices.size > 0) {

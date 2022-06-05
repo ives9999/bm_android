@@ -154,6 +154,9 @@ class OrderTable: Table() {
             invoice_at = ""
         }
 
+        if (ecpay_token == null) { ecpay_token = "" }
+        if (ecpay_token_ExpireDate == null) { ecpay_token_ExpireDate = "" }
+
         order_tel_show = order_tel.mobileShow()
 
         if (all_process == 6) {
@@ -339,17 +342,20 @@ class GatewayTable: Table() {
     var bank_account: String = ""
     var complete_at: String = ""
     var expire_at: String = ""
+    var return_at: String = ""
 
     var method_show: String = ""
     var process_show: String = ""
     var complete_at_show: String = ""
     var expire_at_show: String = ""
+    var return_at_show: String = ""
 
     override fun filterRow() {
         super.filterRow()
 
         complete_at_show = if (complete_at == null) { GATEWAY_PROCESS.getRawValueFromString("normal")} else { complete_at.noSec()}
         expire_at_show = if (expire_at == null) { "" } else { expire_at.noSec() }
+        return_at_show = if (return_at == null) { "" } else { return_at.noSec() }
         method_show = GATEWAY.getRawValueFromString(method)
         process_show = GATEWAY_PROCESS.getRawValueFromString(process)
 
