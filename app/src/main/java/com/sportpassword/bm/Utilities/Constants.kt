@@ -333,6 +333,7 @@ val ZIP_KEY: String = "zip"
 val ARENA_TYPE = 4
 val AVATAR_KEY: String = "avatar"
 val CHANNEL_KEY: String = "channel"
+val COIN_KEY: String = "coin"
 val DOB_KEY: String = "dob"
 val EMAIL_VALIDATE: Int = 1
 val GENERAL_TYPE = 1

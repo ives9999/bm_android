@@ -381,61 +381,6 @@ class AddCartVC : MyTableVC() {
         }
     }
 
-//    override fun generateItems(section: Int): ArrayList<Item> {
-//
-//        var sectionKey: String = ""
-//        val section: HashMap<String, Any> = myRows[section]
-//        val tmp: String? = section["key"] as? String
-//        if (tmp != null) {
-//            sectionKey = tmp
-//        }
-//
-//        val clearClick = { formItem: FormItem ->
-//        }
-//
-//        val promptClick = { formItem: FormItem ->
-//        }
-//
-//        if (!section.containsKey("rows")) {
-//            return arrayListOf()
-//        }
-//
-//        @Suppress("UNCHECKED_CAST")
-//        val rows: ArrayList<HashMap<String, String>> = section["rows"] as ArrayList<HashMap<String, String>>
-//
-//        val adapterRows: ArrayList<Item> = arrayListOf()
-//        for (row in rows) {
-//
-//            val rowKey: String? = row["key"]
-//            val title: String? = row["title"]
-//            val value: String? = row["value"]
-//            val show: String? = row["show"]
-//            val cell_type: String? = row["cell"]
-//
-//            var formItemAdapter: FormItemAdapter1? = null
-//            if (cell_type == "text") {
-//                formItemAdapter = PlainAdapter1(title!!, show!!)
-//            } else if (cell_type == "tag") {
-//                formItemAdapter = TagAdapter1(sectionKey, rowKey!!, title!!, value!!, show!!, this)
-//            } else if (cell_type == "number") {
-//                val tmp1: Array<String> = show!!.split(",").toTypedArray()
-//                var min: Int = 1
-//                var max: Int = 1
-//                if (tmp1.size == 2) {
-//                    min = tmp1[0].toInt()
-//                    max = tmp1[1].toInt()
-//                }
-//
-//                formItemAdapter = NumberAdapter1(sectionKey, rowKey!!, title!!, value!!, min, max, this)
-//            }
-//            if (formItemAdapter != null) {
-//                adapterRows.add(formItemAdapter)
-//            }
-//        }
-//
-//        return adapterRows
-//    }
-
     fun updateSubTotal() {
 
         sub_total = selected_price * selected_number
@@ -463,83 +408,6 @@ class AddCartVC : MyTableVC() {
         row.value = total.toString()
         row.show = "NT$ " + total.toString() + "元"
     }
-
-//    override fun notifyChanged(include_section: Boolean) {
-//        if (include_section) {
-//            for ((idx, _) in mySections.withIndex()) {
-//                val items = generateItems(idx)
-//                adapterSections[idx].update(items)
-//            }
-//        } else {
-//            val items = generateItems()
-//            adapter.update(items)
-//        }
-//        adapter.notifyDataSetChanged()
-//    }
-
-//    override fun setTag(sectionKey: String, rowKey: String, attribute: String, selected: Boolean) {
-//
-////        println(sectionKey)
-////        println(rowKey)
-////        println(attribute)
-////        println(selected)
-//
-//        val rows = getRowRowsFromMyRowsByKey(sectionKey)
-//        for (row in rows) {
-//            if (row.containsKey("key")) {
-//                val key: String = row["key"]!!
-//                if (key == rowKey) {
-//                    val _row = row
-//                    _row["value"] = attribute
-//                    replaceRowByKey(sectionKey, rowKey, _row)
-//                    //notifyChanged(true)
-//                }
-//            }
-//        }
-//    }
-
-//    override fun stepperValueChanged(sectionKey: String, rowKey: String, number: Int) {
-//
-//        val rows = getRowRowsFromMyRowsByKey(sectionKey)
-//        for (row in rows) {
-//            if (row.containsKey("key")) {
-//                val key: String = row["key"]!!
-//                if (key == rowKey) {
-//                    val _row = row
-//                    _row["value"] = number.toString()
-//                    replaceRowByKey(sectionKey, rowKey, _row)
-//                    selected_number = number
-//                    updateSubTotal()
-//
-//                    //notifyChanged(true)
-//                }
-//            }
-//        }
-//    }
-//
-//    override fun tagChecked(checked: Boolean, name: String, key: String, value: String) {
-//        //println(value)
-//        if (name == "type") {
-//            val id: Int = key.toInt()
-//            var idx: Int = 0
-//            for (price in productTable!!.prices) {
-//                if (price.id == id) {
-//                    selected_price = price.price_member
-//                    this.selected_idx = idx
-//                    updateSubTotal()
-//                    break
-//                }
-//                idx += 1
-//            }
-//        }
-//    }
-//
-//    override fun stepperValueChanged(number: Int, name: String) {
-//        selected_number = number
-//        val numberFormItem: NumberFormItem = getFormItemFromKey(name) as NumberFormItem
-//        numberFormItem.value = number.toString()
-//        updateSubTotal()
-//    }
 
     override fun cellSetTag(sectionIdx: Int, rowIdx: Int, value: String, isChecked: Boolean) {
         val row: OneRow = oneSections[sectionIdx].items[rowIdx]
@@ -611,19 +479,6 @@ class AddCartVC : MyTableVC() {
             val value: String = attribute.value
             val alias: String = attribute.key
             val title: String = attribute.title
-//            var tmp: String? = attribute["value"]
-//            if (tmp != null) {
-//                value = tmp
-//            }
-//            tmp = attribute["key"]
-//            if (tmp != null) {
-//                alias = tmp
-//            }
-//            tmp = attribute["title"]
-//            if (tmp != null) {
-//                name = tmp
-//            }
-
             if (value.length == 0) {
                 isAttribute = false
                 warning("請先選擇${title}")
@@ -632,25 +487,6 @@ class AddCartVC : MyTableVC() {
                 selected_attributes.add(tmp)
             }
         }
-
-//        val shippingFeeFormItem = getFormItemFromKey(SHIPPING_FEE_KEY)
-//        params["shipping_fee"] = shippingFeeFormItem!!.value!!
-
-//        var item = getFormItemFromKey(COLOR_KEY)
-//        if (item != null) {
-//            params["color"] = item.value!!
-//        }
-//
-//        item = getFormItemFromKey(CLOTHES_SIZE_KEY)
-//        if (item != null) {
-//            params["size"] = item.value!!
-//        }
-//
-//        item = getFormItemFromKey(WEIGHT_KEY)
-//        if (item != null) {
-//            params["weight"] = item.value!!
-//        }
-//        println(params)
 
         if (isAttribute) {
             Loading.show(mask)

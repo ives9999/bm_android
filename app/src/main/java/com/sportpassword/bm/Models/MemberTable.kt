@@ -15,6 +15,7 @@ import kotlin.reflect.full.valueParameters
 class MemberTable: Table() {
 
     var nickname: String = ""
+    var coin: Int = 0
     var dob: String = ""
     var sex: String = ""
     var email: String = ""
@@ -135,6 +136,11 @@ class Member(val context: Context) {
         get() = session.getString(NICKNAME_KEY, "")
         set(value) {
             session.edit().putString(NICKNAME_KEY, value).apply()
+        }
+    var coin: Int
+        get() = session.getInt(COIN_KEY, 0)
+        set(value) {
+            session.edit().putInt(COIN_KEY, value).apply()
         }
     var uid: String?
         get() = session.getString(UID_KEY, "")

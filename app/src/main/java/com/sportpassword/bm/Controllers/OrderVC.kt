@@ -324,13 +324,33 @@ class OrderVC : MyTableVC() {
             row.quantity = "1"
 
             rows.add(row)
-            section = makeSectionRow("商品", PRODUCT_KEY, rows, true)
+            section = makeSectionRow("商品名稱", PRODUCT_KEY, rows, true)
             oneSections.add(section)
+
+            if (productTable!!.attributes.size > 0) {
+                rows = arrayListOf()
+                for (attribute in productTable!!.attributes) {
+                    var tmp: String = attribute.attribute
+                    tmp = tmp.replace("{", "")
+                    tmp = tmp.replace("}", "")
+                    tmp = tmp.replace("\"", "")
+
+                    //show is 湖水綠,極致黑,經典白,太空灰
+                    //name is 顏色
+                    //key is color
+                    val value: String = ""
+                    val alias: String = attribute.alias
+                    row = OneRow(attribute.name, value, tmp, alias, "tag")
+                    rows.add(row)
+                }
+                section = makeSectionRow("商品屬性", ATTRIBUTE_KEY, rows, true)
+                oneSections.add(section)
+            }
 
             rows.clear()
             val min: String = productTable!!.order_min.toString()
             val max: String = productTable!!.order_max.toString()
-            var quantity: String = "1"
+            val quantity: String = "1"
             row = OneRow("數量", quantity, "${min},${max}", QUANTITY_KEY, "number")
             rows.add(row)
 
@@ -486,6 +506,12 @@ class OrderVC : MyTableVC() {
         oneSections[sectionIdx].items[rowIdx].value = str
     }
 
+    override fun cellSetTag(sectionIdx: Int, rowIdx: Int, value: String, isChecked: Boolean) {
+        val row: OneRow = oneSections[sectionIdx].items[rowIdx]
+        //replaceRowFromIdx(sectionIdx, rowIdx, row)
+        row.value = value
+    }
+
     override fun cellRadioChanged(key: String, sectionIdx: Int, rowIdx: Int, idx: Int) {
         var row: OneRow = OneRow()
         if (key == GATEWAY_KEY || key == SHIPPING_KEY) {
@@ -543,7 +569,9 @@ class OrderVC : MyTableVC() {
         val params: HashMap<String, String> = hashMapOf()
         params["device"] = "app"
         params["do"] = "update"
-        params["cart_id"] = cartTable!!.id.toString()
+        if (cartTable != null) {
+            params["cart_id"] = cartTable!!.id.toString()
+        }
 
         params[AMOUNT_KEY] = getRowValue(AMOUNT_KEY)
         params[SHIPPING_FEE_KEY] = getRowValue(SHIPPING_FEE_KEY)
@@ -555,6 +583,26 @@ class OrderVC : MyTableVC() {
         val discount: Int = params[DISCOUNT_KEY]!!.toInt()
         val total: Int = params[TOTAL_KEY]!!.toInt()
         params[GRAND_TOTAL_KEY] = (discount + total).toString()
+
+        //是否有選擇商品屬性
+        val selected_attributes: ArrayList<String> = arrayListOf()
+        val attributes: ArrayList<OneRow> = getRowsFromSectionKey(ATTRIBUTE_KEY)
+        if (attributes.size > 0) {
+            for (attribute in attributes) {
+
+                val value: String = attribute.value
+                val alias: String = attribute.key
+                val title: String = attribute.title
+                if (value.length == 0) {
+                    warning("請先選擇${title}")
+                } else {
+                    val tmp = "{name:${title},alias:${alias},value:${value}}"
+                    selected_attributes.add(tmp)
+                }
+            }
+            params["attribute"] = selected_attributes.joinToString("|")
+        }
+
         params[GATEWAY_KEY] = getRowValue(GATEWAY_KEY)
         params[SHIPPING_KEY] = getRowValue(SHIPPING_KEY)
 
@@ -592,7 +640,7 @@ class OrderVC : MyTableVC() {
             }
             if (success) {
                 if (OrderService.jsonString.isNotEmpty()) {
-                    println(OrderService.jsonString)
+                    //println(OrderService.jsonString)
                     try {
                         val table: OrderUpdateResTable = Gson().fromJson(
                             OrderService.jsonString,

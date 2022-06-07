@@ -157,7 +157,14 @@ class OrderTable: Table() {
         if (ecpay_token == null) { ecpay_token = "" }
         if (ecpay_token_ExpireDate == null) { ecpay_token_ExpireDate = "" }
 
-        order_tel_show = order_tel.mobileShow()
+        if (order_name == null) { order_name = "" }
+        if (order_tel != null) {
+            order_tel_show = order_tel.mobileShow()
+        } else {
+            order_tel = ""
+        }
+        if (order_email == null) { order_email = "" }
+        if (order_address == null) { order_address = "" }
 
         if (all_process == 6) {
             var return_expire_date: Date = Date()

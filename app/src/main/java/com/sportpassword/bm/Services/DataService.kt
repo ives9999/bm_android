@@ -1290,17 +1290,17 @@ open class DataService {
 
         jsonString = ""
         val url: String = getUpdateURL()
-        //println(url)
+        println(url)
 
 //        val header: MutableList<Pair<String, String>> = mutableListOf()
 //        header.add(Pair("Accept","application/json"))
 //        header.add(Pair("Content-Type","application/json; charset=utf-8"))
 
-//        val body = JSONObject()
-//        for ((key, value) in params) {
-//            body.put(key, value)
-//        }
-//        println(body)
+        val body = JSONObject()
+        for ((key, value) in params) {
+            body.put(key, value)
+        }
+        println(body)
 
         val request: okhttp3.Request = getRequest(url, params)
         okHttpClient.newCall(request).enqueue(object : Callback {

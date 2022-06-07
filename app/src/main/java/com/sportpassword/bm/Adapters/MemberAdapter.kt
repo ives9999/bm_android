@@ -84,6 +84,10 @@ class MemberItemAdapter(val context: Context, private val sectionIdx: Int, priva
         val iconID = context.resources.getIdentifier(icon, "drawable", context.packageName)
         holder.iconView.setImageResource(iconID)
 
+        if (row.show.isNotEmpty()) {
+            holder.show.text = row.show
+        }
+
         holder.viewHolder.setOnClickListener {
             delegate.cellClick(sectionIdx, position)
         }
@@ -103,4 +107,5 @@ class MemberItemViewHolder(val viewHolder: View): RecyclerView.ViewHolder(viewHo
 
     var iconView: ImageView = viewHolder.findViewById(R.id.icon)
     var titleLbl: TextView = viewHolder.findViewById(R.id.text)
+    var show: TextView = viewHolder.findViewById(R.id.show)
 }

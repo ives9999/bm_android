@@ -251,10 +251,13 @@ class MemberVC : MyTableVC() {
 
     private fun makeSection0FixRow(): ArrayList<MemberRow> {
         val rows: ArrayList<MemberRow> = arrayListOf()
-        val r1: MemberRow = MemberRow("帳戶資料", "account", "", TO_PROFILE)
-        rows.add(r1)
-        val r2: MemberRow = MemberRow("更改密碼", "password", "", TO_PASSWORD)
-        rows.add(r2)
+        var r: MemberRow = MemberRow("解碼幣", "account", "", TO_PROFILE)
+        r.show = member.coin.formattedWithSeparator()
+        rows.add(r)
+        r = MemberRow("帳戶資料", "account", "", TO_PROFILE)
+        rows.add(r)
+        r = MemberRow("更改密碼", "password", "", TO_PASSWORD)
+        rows.add(r)
         return rows
     }
 
