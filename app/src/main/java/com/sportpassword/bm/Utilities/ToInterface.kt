@@ -196,6 +196,11 @@ interface ToInterface {
         mainDelegate.startActivity(i)
     }
 
+    fun toMemberCoinList() {
+        val i = Intent(mainDelegate, MemberCoinListVC::class.java)
+        mainDelegate.startActivity(i)
+    }
+
     fun toMemberOrderList() {
         val i = Intent(mainDelegate, MemberOrderListVC::class.java)
         mainDelegate.startActivity(i)

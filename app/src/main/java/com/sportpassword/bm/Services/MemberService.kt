@@ -781,6 +781,50 @@ object MemberService: DataService() {
         */
     }
 
+    fun coinlist(context: Context, member_token: String?, page: Int=1, perPage: Int=20, complete: CompletionHandler) {
+
+        var _member_token: String = member.token!!
+        if (member_token != null) {
+            _member_token = member_token
+        }
+        val params = hashMapOf<String, String>(
+            "device" to "app",
+            "channel" to CHANNEL,
+            "member_token" to _member_token,
+            "page" to page.toString(),
+            "perpage" to perPage.toString()
+        )
+        //println(params)
+//        val objectMapper = ObjectMapper()
+//        val body: String = objectMapper.writeValueAsString(params)
+//        println(body)
+
+        val url: String = URL_MEMBER_COINLIST
+        //println(url)
+
+        val request: okhttp3.Request = getRequest(url, params)
+        okHttpClient.newCall(request).enqueue(object : Callback {
+            override fun onFailure(call: Call, e: IOException) {
+                msg = "網路錯誤，無法跟伺服器更新資料"
+                complete(success)
+            }
+
+            override fun onResponse(call: Call, response: okhttp3.Response) {
+
+                try {
+                    jsonString = response.body!!.string()
+//                    println(jsonString)
+                    success = true
+                } catch (e: Exception) {
+                    success = false
+                    msg = "parse json failed，請洽管理員"
+                    println(e.localizedMessage)
+                }
+                complete(success)
+            }
+        })
+    }
+
     fun likelist(context: Context, able_type: String, like_list: String="喜歡", page: Int=1, perPage: Int=20, complete: CompletionHandler) {
 
         val params = hashMapOf<String, String>(
@@ -821,29 +865,6 @@ object MemberService: DataService() {
                 complete(success)
             }
         })
-
-//        MyHttpClient.instance.post(context, url, body) { success ->
-//            if (success) {
-//                val response = MyHttpClient.instance.response
-//                if (response != null) {
-//                    try {
-//                        jsonString = response.toString()
-////                        println(jsonString)
-//                        this.success = true
-//                    } catch (e: Exception) {
-//                        this.success = false
-//                        msg = "parse json failed，請洽管理員"
-//                        println(e.localizedMessage)
-//                    }
-//                    complete(this.success)
-//                } else {
-//                    println("response is null")
-//                }
-//            } else {
-//                msg = "網路錯誤，無法跟伺服器更新資料"
-//                complete(success)
-//            }
-//        }
     }
 
     fun memberSignupCalendar(year: Int, month: Int, member_token: String?=null, able_type: String="course", page: Int, perPage: Int, complete: CompletionHandler) {

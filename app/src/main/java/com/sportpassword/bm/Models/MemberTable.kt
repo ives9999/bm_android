@@ -444,6 +444,32 @@ class Member(val context: Context) {
 //    }
 }
 
+class MemberCoinTable: Table() {
+
+    var member_id: Int = 0
+    var in_out: Boolean = false
+    var coin: Int = 0
+    var able_type: String = ""
+    var able_id: Int = 0
+    var price: Int = 0
+    var order_id: Int = 0
+    var coin_show: String = "0"
+    var able_type_show: String = ""
+
+    override fun filterRow() {
+        super.filterRow()
+
+        if (coin > 0) {
+            coin_show = "NT$ " + coin.formattedWithSeparator()
+        }
+
+        if (able_type.length > 0 && able_id > 0) {
+
+            able_type_show = "購買訂單檢視"
+        }
+    }
+}
+
 enum class MEMBER_ROLE(val value: String) {
     member("member"), sale("sale"), designer("designer"), manager("manager"), admin("admin");
 }

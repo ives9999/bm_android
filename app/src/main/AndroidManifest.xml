@@ -29,6 +29,9 @@
         tools:replace="android:allowBackup"
         tools:targetApi="m">
         <activity
+            android:name=".Controllers.MemberCoinListVC"
+            android:exported="false" />
+        <activity
             android:name=".Controllers.Test"
             android:exported="false" />
         <activity

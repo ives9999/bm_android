@@ -176,6 +176,7 @@ class MemberVC : MyTableVC() {
 //            "blacklist" -> goBlackList()
             "calendar_course_signup" -> toCalendarCourseSignup()
             "refresh" -> refresh()
+            TO_MEMBER_COIN_LIST -> this.toMemberCoinList()
             TO_MEMBER_ORDER_LIST -> this.toMemberOrderList()
             TO_MEMBER_CART_LIST -> this.toMemberCartList()
             TO_MEMBER_SIGNUP_LIST -> this.toMemberSignupList(row.able_type)
@@ -251,7 +252,7 @@ class MemberVC : MyTableVC() {
 
     private fun makeSection0FixRow(): ArrayList<MemberRow> {
         val rows: ArrayList<MemberRow> = arrayListOf()
-        var r: MemberRow = MemberRow("解碼幣", "account", "", TO_PROFILE)
+        var r: MemberRow = MemberRow("解碼幣", "account", "", TO_MEMBER_COIN_LIST)
         r.show = member.coin.formattedWithSeparator()
         rows.add(r)
         r = MemberRow("帳戶資料", "account", "", TO_PROFILE)
