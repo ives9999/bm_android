@@ -420,7 +420,8 @@ enum class ORDER_PROCESS(val englishName: String, val chineseName: String) {
     store("store", "送達超商"),
     complete("complete", "訂單完成"),
     returning("returning", "商品退回中"),
-    `return`("return", "商品已退回");
+    `return`("return", "商品已退回"),
+    gateway_fail("gateway_fail", "付款失敗");
 
     fun toChineseString(): String {
         return chineseName
@@ -447,7 +448,8 @@ enum class ALL_PROCESS(val englishName: String, val chineseName: String) {
     store("store", "商品到達便利商店"),
     complete("complete", "完成取貨"),
     returning("returning", "商品退回中"),
-    `return`("return", "商品已退回");
+    `return`("return", "商品已退回"),
+    gateway_fail("gateway_fail", "付款失敗");
 
     fun toChineseString(): String {
         return chineseName
@@ -470,6 +472,7 @@ enum class ALL_PROCESS(val englishName: String, val chineseName: String) {
                 6-> return complete
                 7-> return returning
                 8-> return `return`
+                9-> return gateway_fail
             }
             return normal
         }

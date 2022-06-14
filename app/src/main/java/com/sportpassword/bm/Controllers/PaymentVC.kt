@@ -529,16 +529,22 @@ class PaymentVC : MyTableVC() {
                             updateOrder()
                         }
                     } else {
-                        val sb = StringBuffer()
-                        sb.append(it.getRtnCode())
-                        sb.append("\r\n")
-                        sb.append(it.getRtnMsg())
-                        warning(sb.toString())
+                        if (it.getRtnCode() == 10100058) {
+                            msg = "付款失敗，有可能是信用卡刷卡錯誤，請檢查信用卡資訊是否有誤"
+                        }
+                        warning("Fail Code=" + it.getRtnCode() +
+                                ", Msg=" + msg, false, "關閉") {
+                            finish()
+                            toProduct()
+                        }
                     }
 
                     CallbackStatus.Fail -> {
+                        if (it.getRtnCode() == 10100058) {
+                            msg = "付款失敗，有可能是信用卡刷卡錯誤，請檢查信用卡資訊是否有誤"
+                        }
                         warning("Fail Code=" + it.getRtnCode() +
-                                ", Msg=" + it.getRtnMsg(), false, "關閉") {
+                                ", Msg=" + msg, false, "關閉") {
                             finish()
                             toProduct()
                         }

@@ -10,7 +10,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:layout_marginBottom="8dp">
+        android:layout_marginBottom="8dp"
+        android:background="@color/BLACK">
 
         <LinearLayout
             android:id="@+id/container1"
@@ -63,7 +64,9 @@
 
             <RelativeLayout
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="4dp">
 
                 <TextView
                     android:id="@+id/orderNoLbl"
@@ -86,6 +89,8 @@
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="4dp"
                 android:orientation="horizontal">
 
                 <TextView
@@ -103,61 +108,78 @@
                     android:text="Label" />
             </LinearLayout>
 
-            <LinearLayout
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:id="@+id/gatewayProcessTitleLbl"
-                    style="@style/list_text_general"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="付款狀態：" />
-
-                <TextView
-                    android:id="@+id/gatewayProcessLbl"
-                    style="@style/list_text_general"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Label" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:id="@+id/gatewayMethodTitleLbl"
-                    style="@style/list_text_general"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="付款方式：" />
-
-                <TextView
-                    android:id="@+id/gatewayMethodLbl"
-                    style="@style/list_text_general"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Label" />
-            </LinearLayout>
-
-            <RelativeLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
+                android:orientation="horizontal"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="4dp">
 
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <TextView
+                        android:id="@+id/gatewayProcessTitleLbl"
+                        style="@style/list_text_general"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="付款狀態：" />
+
+                    <TextView
+                        android:id="@+id/gatewayProcessLbl"
+                        style="@style/list_text_general"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Label" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="140dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginStart="210dp"
+                    android:orientation="horizontal"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <TextView
+                        android:id="@+id/gatewayMethodTitleLbl"
+                        style="@style/list_text_general"
+                        android:layout_width="70dp"
+                        android:layout_height="wrap_content"
+                        android:text="付款方式：" />
+
+                    <TextView
+                        android:id="@+id/gatewayMethodLbl"
+                        style="@style/list_text_general"
+                        android:layout_width="70dp"
+                        android:layout_height="wrap_content"
+                        android:text="Label" />
+                </LinearLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="4dp">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
 
                     <TextView
                         android:id="@+id/shippingProcessTitleLbl"
                         style="@style/list_text_general"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="出貨狀態：" />
+                        android:text="到貨狀態：" />
 
                     <TextView
                         android:id="@+id/shippingProcessLbl"
@@ -168,27 +190,30 @@
                 </LinearLayout>
 
                 <LinearLayout
-                    android:layout_width="wrap_content"
+                    android:layout_width="140dp"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:orientation="horizontal">
+                    android:layout_marginStart="210dp"
+                    android:orientation="horizontal"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
 
                     <TextView
                         android:id="@+id/shippingMethodTitleLbl"
                         style="@style/list_text_general"
-                        android:layout_width="wrap_content"
+                        android:layout_width="70dp"
                         android:layout_height="wrap_content"
-                        android:text="出貨方式：" />
+                        android:text="到貨方式：" />
 
                     <TextView
                         android:id="@+id/shippingMethodLbl"
                         style="@style/list_text_general"
-                        android:layout_width="wrap_content"
+                        android:layout_width="70dp"
                         android:layout_height="wrap_content"
                         android:text="Label" />
                 </LinearLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
-            </RelativeLayout>
+
         </LinearLayout>
 
         <LinearLayout
