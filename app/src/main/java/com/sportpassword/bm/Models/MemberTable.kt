@@ -89,7 +89,7 @@ class MemberTable: Table() {
     }
 
     fun validateShow(rawValue: Int): ArrayList<String> {
-        var res = arrayListOf<String>()
+        val res = arrayListOf<String>()
         if (rawValue and 1 > 0) {
             res.add("email認證")
         }
@@ -448,6 +448,8 @@ class MemberCoinTable: Table() {
 
     var member_id: Int = 0
     var in_out: Boolean = false
+    var in_type: String = ""
+    var out_type: String = ""
     var coin: Int = 0
     var able_type: String = ""
     var able_id: Int = 0
@@ -463,7 +465,7 @@ class MemberCoinTable: Table() {
             coin_show = "NT$ " + coin.formattedWithSeparator()
         }
 
-        if (able_type.length > 0 && able_id > 0) {
+        if (able_type != null && able_type.length > 0 && able_id > 0) {
 
             able_type_show = "購買訂單檢視"
         }

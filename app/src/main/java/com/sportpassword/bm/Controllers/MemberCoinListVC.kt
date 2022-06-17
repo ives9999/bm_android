@@ -26,7 +26,7 @@ class MemberCoinListVC: MyTableVC() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_member_coin_list_vc)
 
-        setMyTitle("解碼幣")
+        setMyTitle("解碼點數")
 
         recyclerView = list
         refreshLayout = list_refresh

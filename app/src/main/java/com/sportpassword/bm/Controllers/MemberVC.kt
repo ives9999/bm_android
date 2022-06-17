@@ -252,7 +252,7 @@ class MemberVC : MyTableVC() {
 
     private fun makeSection0FixRow(): ArrayList<MemberRow> {
         val rows: ArrayList<MemberRow> = arrayListOf()
-        var r: MemberRow = MemberRow("解碼幣", "account", "", TO_MEMBER_COIN_LIST)
+        var r: MemberRow = MemberRow("解碼點數", "coin", "", TO_MEMBER_COIN_LIST)
         r.show = member.coin.formattedWithSeparator()
         rows.add(r)
         r = MemberRow("帳戶資料", "account", "", TO_PROFILE)
