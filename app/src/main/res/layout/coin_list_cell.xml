@@ -11,44 +11,109 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="12dp"
-        android:layout_marginEnd="12dp"
         android:layout_marginTop="24dp"
+        android:layout_marginEnd="12dp"
         android:layout_marginBottom="24dp">
 
         <TextView
             android:id="@+id/noLbl"
             style="@style/list_text_general"
             android:layout_width="24dp"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            tools:text="100." />
+
+        <Button
+            android:id="@+id/typeButton"
+            style="@style/city_button"
+            android:layout_width="55dp"
+            android:layout_height="30dp"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="16dp"
+            android:text="購買" />
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_marginStart="24dp"
+            android:layout_marginStart="100dp"
             android:orientation="horizontal">
 
-            <TextView
-                android:id="@+id/priceLbl"
-                style="@style/highlight"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-
-            <TextView
-                android:id="@+id/able_typeLbl"
-                style="@style/list_text_general"
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="24dp" />
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/able_typeLbl"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    tools:text="使用點數內容" />
+
+                <TextView
+                    android:id="@+id/dateLbl"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="3dp"
+                    tools:text="2022-06-17" />
+
+            </LinearLayout>
         </LinearLayout>
 
-        <TextView
-            android:id="@+id/dateLbl"
-            style="@style/list_text_general"
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
-            android:layout_centerVertical="true" />
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="115dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/priceSignLbl"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:text="NT$"
+                android:textSize="10dp" />
+
+            <TextView
+                android:id="@+id/priceLbl"
+                style="@style/list_text_general"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:layout_marginStart="4dp"
+                android:textSize="16dp"
+                tools:text="550" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="16dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/balanceSignLbl"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:text="NT$"
+                android:textSize="10dp" />
+
+            <TextView
+                android:id="@+id/balanceLbl"
+                style="@style/list_text_general"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:layout_marginStart="4dp"
+                android:text="1000"
+                android:textSize="16dp"
+                tools:text="550" />
+        </LinearLayout>
 
     </RelativeLayout>
 

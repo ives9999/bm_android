@@ -98,6 +98,42 @@ enum class CELL_TYPE(val value: String) {
 
 }
 
+enum class MEMBER_COIN_IN_TYPE(val englishName: String, val chineseName: String) {
+    buy("buy", "購買"),
+    gift("gift", "贈品"),
+    none("none", "無");
+
+    companion object {
+
+        fun enumFromString(value: String): MEMBER_COIN_IN_TYPE {
+            when (value) {
+                "buy" -> return MEMBER_COIN_IN_TYPE.buy
+                "gift" -> return MEMBER_COIN_IN_TYPE.gift
+                "none" -> return MEMBER_COIN_IN_TYPE.none
+            }
+            return MEMBER_COIN_IN_TYPE.none
+        }
+    }
+}
+
+enum class MEMBER_COIN_OUT_TYPE(val englishName: String, val chineseName: String) {
+    product("product", "商品"),
+    course("course", "課程"),
+    none("none", "無");
+
+    companion object {
+
+        fun enumFromString(value: String): MEMBER_COIN_OUT_TYPE {
+            when (value) {
+                "product" -> return product
+                "course" -> return course
+                "none" -> return none
+            }
+            return none
+        }
+    }
+}
+
 enum class MYCOLOR(val value: Int) {
 //    danger("danger"), success("success"), primary("primary"), warning("warning"),
 //    info("info"), gray("gray")
@@ -1300,6 +1336,17 @@ fun TextView.unSelected() {
     val uncheckedColor = ContextCompat.getColor(context, R.color.MY_WHITE)
     this.setTextColor(uncheckedColor)
 }
+
+fun TextView.setTextLook(size: Float, color: Int) {
+    this.textSize = size
+    this.textColor = ContextCompat.getColor(context, color)
+}
+
+fun Button.setLook(backgroundColor: Int, textColor: Int) {
+    this.backgroundColor = ContextCompat.getColor(context, backgroundColor)
+    this.textColor = ContextCompat.getColor(context, textColor)
+}
+
 
 fun SharedPreferences.dump() {
     this.all.map {

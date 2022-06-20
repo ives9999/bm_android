@@ -454,9 +454,12 @@ class MemberCoinTable: Table() {
     var able_type: String = ""
     var able_id: Int = 0
     var price: Int = 0
+    var balance: Int = 0
     var order_id: Int = 0
     var coin_show: String = "0"
     var able_type_show: String = ""
+    var type_in_enum: MEMBER_COIN_IN_TYPE = MEMBER_COIN_IN_TYPE.none
+    var type_out_enum: MEMBER_COIN_OUT_TYPE = MEMBER_COIN_OUT_TYPE.none
 
     override fun filterRow() {
         super.filterRow()
@@ -466,8 +469,15 @@ class MemberCoinTable: Table() {
         }
 
         if (able_type != null && able_type.length > 0 && able_id > 0) {
-
+            able_type_show = "使用點數內容"
+        } else {
             able_type_show = "購買訂單檢視"
+        }
+
+        if (in_out) {
+            type_in_enum = MEMBER_COIN_IN_TYPE.enumFromString(in_type)
+        } else {
+            type_out_enum = MEMBER_COIN_OUT_TYPE.enumFromString(out_type)
         }
     }
 }

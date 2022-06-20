@@ -34,6 +34,7 @@ class MemberCoinListVC: MyTableVC() {
         tableAdapter = MemberCoinAdapter(this)
         recyclerView.adapter = tableAdapter
 
+        init()
         refresh()
     }
 
