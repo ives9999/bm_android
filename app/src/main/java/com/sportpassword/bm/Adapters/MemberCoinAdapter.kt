@@ -46,6 +46,8 @@ class MemberCoinViewHolder(context: Context, viewHolder: View, list1CellDelegate
 
         noLbl.text = no
         priceLbl.text = _row.coin.formattedWithSeparator()
+        balanceLbl.text = _row.balance.formattedWithSeparator()
+
         if (_row.able_type_show.isNotEmpty()) {
             able_typeLbl.text = _row.able_type_show
             able_typeLbl.setTextLook(16F, R.color.TEXT_WHITE)
