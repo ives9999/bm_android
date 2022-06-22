@@ -453,9 +453,11 @@ class MemberCoinTable: Table() {
     var coin: Int = 0
     var able_type: String = ""
     var able_id: Int = 0
+    var able_token: String = ""
     var price: Int = 0
     var balance: Int = 0
     var order_id: Int = 0
+    var order_token: String = ""
     var coin_show: String = "0"
     var able_type_show: String = ""
     var type_in_enum: MEMBER_COIN_IN_TYPE = MEMBER_COIN_IN_TYPE.none

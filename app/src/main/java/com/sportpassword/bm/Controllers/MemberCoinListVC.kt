@@ -6,9 +6,12 @@ import com.google.gson.Gson
 import com.google.gson.JsonParseException
 import com.sportpassword.bm.Adapters.MemberCoinAdapter
 import com.sportpassword.bm.Models.MemberCoinTable
+import com.sportpassword.bm.Models.Table
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.MemberService
 import com.sportpassword.bm.Utilities.Loading
+import com.sportpassword.bm.Utilities.MEMBER_COIN_IN_TYPE
+import com.sportpassword.bm.Utilities.MEMBER_COIN_OUT_TYPE
 import com.sportpassword.bm.Utilities.setInfo
 import com.sportpassword.bm.member
 import kotlinx.android.synthetic.main.activity_member_coin_list_vc.*
@@ -96,6 +99,19 @@ class MemberCoinListVC: MyTableVC() {
             totalCount = coinResultTable!!.totalCount
             val _totalPage: Int = totalCount / perPage
             totalPage = if (totalCount % perPage > 0) _totalPage + 1 else _totalPage
+        }
+    }
+
+    override fun cellClick(row: Table) {
+        //購買點數，前往查看訂單
+        val _row: MemberCoinTable = row as MemberCoinTable
+        if (MEMBER_COIN_IN_TYPE.enumFromString(row.in_type) == MEMBER_COIN_IN_TYPE.buy && _row.order_token.length > 0) {
+            toPayment(row.order_token, "member")
+        }
+
+        //使用點數購買商品，前往查看訂單
+        if (!row.in_out && MEMBER_COIN_OUT_TYPE.enumFromString(row.out_type) == MEMBER_COIN_OUT_TYPE.product && _row.able_type == "order") {
+            toPayment(row.able_token, "member")
         }
     }
 }

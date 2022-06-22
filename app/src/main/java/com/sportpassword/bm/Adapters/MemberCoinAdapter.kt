@@ -45,7 +45,6 @@ class MemberCoinViewHolder(context: Context, viewHolder: View, list1CellDelegate
         val no: String = (idx + 1).toString() + "."
 
         noLbl.text = no
-        priceLbl.text = _row.coin.formattedWithSeparator()
         balanceLbl.text = _row.balance.formattedWithSeparator()
 
         if (_row.able_type_show.isNotEmpty()) {
@@ -65,6 +64,7 @@ class MemberCoinViewHolder(context: Context, viewHolder: View, list1CellDelegate
             ((_row.in_out) then { _row.type_in_enum.chineseName }) ?: _row.type_out_enum.chineseName
 
         if (_row.in_out) {
+            priceLbl.text = "+" + _row.coin.formattedWithSeparator()
             if (_row.type_in_enum == MEMBER_COIN_IN_TYPE.buy) {
                 typeButton.setLook(R.color.MEMBER_COIN_BUY, R.color.MY_WHITE)
             } else if (_row.type_in_enum == MEMBER_COIN_IN_TYPE.gift) {
@@ -73,12 +73,26 @@ class MemberCoinViewHolder(context: Context, viewHolder: View, list1CellDelegate
                 typeButton.visibility = View.INVISIBLE
             }
         } else {
+            priceLbl.text = "-" + _row.coin.formattedWithSeparator()
+            priceLbl.setTextLook(16F, R.color.MY_RED)
             if (_row.type_out_enum == MEMBER_COIN_OUT_TYPE.product) {
                 typeButton.setLook(R.color.MEMBER_COIN_PAY, R.color.MY_WHITE)
             } else if (_row.type_out_enum == MEMBER_COIN_OUT_TYPE.course) {
                 typeButton.setLook(R.color.MEMBER_COIN_PAY, R.color.MY_WHITE)
             } else {
                 typeButton.visibility = View.INVISIBLE
+            }
+        }
+
+        viewHolder.setOnClickListener {
+            //購買點數，前往查看訂單
+            if (MEMBER_COIN_IN_TYPE.enumFromString(_row.in_type) == MEMBER_COIN_IN_TYPE.buy && _row.order_token.length > 0 && list1CellDelegate != null) {
+                list1CellDelegate.cellClick(row)
+            }
+
+            //使用點數購買商品，前往查看訂單
+            if (!row.in_out && MEMBER_COIN_OUT_TYPE.enumFromString(row.out_type) == MEMBER_COIN_OUT_TYPE.product && row.able_type == "order" && list1CellDelegate != null) {
+                list1CellDelegate.cellClick(row)
             }
         }
 
