@@ -9,6 +9,8 @@ import com.sportpassword.bm.Adapters.MemberOrderAdapter
 import com.sportpassword.bm.Models.*
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.OrderService
+import com.sportpassword.bm.Utilities.MEMBER_COIN_IN_TYPE
+import com.sportpassword.bm.Utilities.MEMBER_COIN_OUT_TYPE
 import com.sportpassword.bm.Utilities.jsonToModels
 import com.sportpassword.bm.Utilities.setInfo
 import com.sportpassword.bm.member
@@ -77,6 +79,10 @@ class MemberOrderListVC : MyTableVC() {
                 }
             }
         }
+    }
+
+    override fun cellClick(row: Table) {
+        toPayment(row.token, null, null,"member")
     }
 }
 

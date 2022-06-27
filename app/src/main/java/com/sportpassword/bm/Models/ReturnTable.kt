@@ -1,5 +1,7 @@
 package com.sportpassword.bm.Models
 
+import com.sportpassword.bm.Utilities.noSec
+
 class ReturnTable: Table() {
 
     var order_id: Int = -1
@@ -7,6 +9,8 @@ class ReturnTable: Table() {
     var return_code: String = ""
     var expire_at: String = ""
     var error_msg: String = ""
+
+    var expire_at_show: String = ""
 
     override fun filterRow() {
         super.filterRow()
@@ -25,6 +29,14 @@ class ReturnTable: Table() {
 
         if (error_msg == null) {
             error_msg = ""
+        }
+
+        if (expire_at.length > 0) {
+            expire_at_show = expire_at.noSec()
+        }
+
+        if (created_at.length > 0) {
+            created_at_show = created_at.noSec()
         }
     }
 }

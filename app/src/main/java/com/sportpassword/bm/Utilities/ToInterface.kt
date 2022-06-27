@@ -244,10 +244,11 @@ interface ToInterface {
     }
 
 
-    fun toPayment(order_token: String, ecpay_token: String?=null, ecpay_token_ExpireDate: String?=null) {
+    fun toPayment(order_token: String, ecpay_token: String?=null, ecpay_token_ExpireDate: String?=null, source: String="order") {
         //mainDelegate.finish()
         val i = Intent(mainDelegate, PaymentVC::class.java)
         i.putExtra("order_token", order_token)
+        i.putExtra("source", source)
         if (ecpay_token != null) {
             i.putExtra("ecpay_token", ecpay_token)
         }

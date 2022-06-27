@@ -21,10 +21,9 @@ const val numberPad = InputType.TYPE_CLASS_NUMBER
 const val phonePad = InputType.TYPE_CLASS_PHONE
 const val emailPad = InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS
 
-
 // URL Constants
-//const val REMOTE_BASE_URL = "https://bm.sportpassword.com"
-const val REMOTE_BASE_URL = "https://sandbox.sportpassword.com"
+const val REMOTE_BASE_URL = "https://bm.sportpassword.com"
+//const val REMOTE_BASE_URL = "https://sandbox.sportpassword.com"
 //const val REMOTE_BASE_URL = "http://192.168.100.120"
 //const val LOCALHOST_BASE_URL = "http://10.0.2.2"
 //const val LOCALHOST_BASE_URL = "http://bm.sportpassword.localhost"
@@ -293,6 +292,10 @@ val PRODUCT_KEY: String = "product"
 val PV_KEY: String = "pv"
 val QUANTITY_KEY: String = "quantity"
 val REPASSWORD_KEY: String = "repassword"
+val RETURN_KEY: String = "return"
+val RETURN_SN_ID_KEY: String = "return_sn_id"
+val RETURN_EXPIRE_AT_KEY: String = "return_expire_at"
+val RETURN_CREATED_AT_KEY: String = "return_created_at"
 val PRIVACY_KEY: String = "privacy"
 val ROAD_KEY: String = "road"
 val ROLE_KEY: String = "role"

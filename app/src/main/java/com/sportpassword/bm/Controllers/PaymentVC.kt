@@ -50,6 +50,8 @@ class PaymentVC : MyTableVC() {
     var bottom_button_count: Int = 3
     val button_width: Int = 400
 
+    var source: String = "order"
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_payment_vc)
@@ -62,6 +64,9 @@ class PaymentVC : MyTableVC() {
         }
         if (intent.hasExtra("tokenExpireDate")) {
             ecpay_token_ExpireDate = intent.getStringExtra("ecpay_token_ExpireDate")!!
+        }
+        if (intent.hasExtra("source")) {
+            source = intent.getStringExtra("source")!!
         }
 
         title = getString(R.string.app_name)
@@ -133,8 +138,8 @@ class PaymentVC : MyTableVC() {
 
     fun toECPay() {
 
-        PaymentkitManager.initialize(this, ServerType.Stage)
-        //PaymentkitManager.initialize(this, ServerType.Prod)
+        //PaymentkitManager.initialize(this, ServerType.Stage)
+        PaymentkitManager.initialize(this, ServerType.Prod)
         PaymentkitManager.createPayment(this, ecpay_token, LanguageCode.zhTW, true, title, PaymentkitManager.RequestCode_CreatePayment)
     }
 
@@ -161,6 +166,7 @@ class PaymentVC : MyTableVC() {
 
     override fun genericTable() {
         try {
+            //println(jsonString)
             orderTable = Gson().fromJson(jsonString, OrderTable::class.java)
         } catch (e: java.lang.Exception) {
             runOnUiThread {
@@ -213,6 +219,20 @@ class PaymentVC : MyTableVC() {
 
         var rows: ArrayList<OneRow> = arrayListOf()
 
+        if (source == "member") {
+            findViewById<Button>(R.id.cancelBtn) ?. let {
+                it.text = "上一頁"
+            }
+        } else if (source == "order") {
+            findViewById<Button>(R.id.cancelBtn) ?. let {
+                it.text = "結束"
+            }
+        } else {
+            findViewById<Button>(R.id.cancelBtn) ?. let {
+                it.text = "取消"
+            }
+        }
+
         val orderItemsTable = orderTable!!.items
         for (orderItemTable in orderItemsTable) {
 
@@ -257,7 +277,7 @@ class PaymentVC : MyTableVC() {
         oneSections.add(section)
 
         //order
-        rows = arrayListOf()
+        rows.clear()
         var row = OneRow("編號", orderTable!!.order_no, orderTable!!.order_no, ORDER_NO_KEY, "text")
         rows.add(row)
         row = OneRow("商品金額", orderTable!!.amount.toString(), orderTable!!.amount_show, AMOUNT_KEY, "text")
@@ -276,7 +296,7 @@ class PaymentVC : MyTableVC() {
         oneSections.add(section)
 
         //gateway
-        rows = arrayListOf()
+        rows.clear()
         row = OneRow("付款方式", orderTable!!.gateway!!.method, orderTable!!.gateway!!.method_show, GATEWAY_METHOD_KEY, "more", KEYBOARD.default, "", "", false, false)
         rows.add(row)
         row = OneRow("付款狀態", orderTable!!.gateway!!.process, orderTable!!.gateway!!.process_show, GATEWAY_PROCESS_KEY, "text")
@@ -287,7 +307,7 @@ class PaymentVC : MyTableVC() {
         oneSections.add(section)
 
         //shipping
-        rows = arrayListOf()
+        rows.clear()
         row = OneRow("到貨方式", orderTable!!.shipping!!.method, orderTable!!.shipping!!.method_show, SHIPPING_METHOD_KEY, "text")
         rows.add(row)
         row = OneRow("到貨狀態", orderTable!!.shipping!!.process, orderTable!!.shipping!!.process_show, SHIPPING_PROCESS_KEY, "text")
@@ -322,7 +342,7 @@ class PaymentVC : MyTableVC() {
 
         //invoice
         val invoice_type: String = orderTable!!.invoice_type
-        rows = arrayListOf()
+        rows.clear()
         row = OneRow("發票種類", invoice_type, orderTable!!.invoice_type_show, INVOICE_TYPE_KEY, "text")
         rows.add(row)
         if (invoice_type == "company") {
@@ -342,7 +362,7 @@ class PaymentVC : MyTableVC() {
         oneSections.add(section)
 
         //member
-        rows = arrayListOf()
+        rows.clear()
         row = OneRow("姓名", orderTable!!.order_name, orderTable!!.order_name, NAME_KEY, "text")
         rows.add(row)
         row = OneRow("電話", orderTable!!.order_tel, orderTable!!.order_tel_show, MOBILE_KEY, "text")
@@ -355,11 +375,25 @@ class PaymentVC : MyTableVC() {
         section = makeSectionRow("訂購人資料", ORDER_KEY, rows, true)
         oneSections.add(section)
 
-        rows = arrayListOf()
+        //memo
+        rows.clear()
         row = OneRow("留言", orderTable!!.memo, orderTable!!.memo, MEMO_KEY, "text")
         rows.add(row)
         section = makeSectionRow("其他留言", ORDER_KEY, rows, true)
         oneSections.add(section)
+
+        //return
+        if (orderTable!!.`return` != null) {
+            rows.clear()
+            row = OneRow("退貨編號", orderTable!!.`return`!!.sn_id, orderTable!!.`return`!!.sn_id, RETURN_SN_ID_KEY, "text")
+            rows.add(row)
+            row = OneRow("編號到期時間", orderTable!!.`return`!!.expire_at, orderTable!!.`return`!!.expire_at_show, RETURN_EXPIRE_AT_KEY, "text")
+            rows.add(row)
+            row = OneRow("退貨時間", orderTable!!.`return`!!.created_at, orderTable!!.`return`!!.created_at_show, RETURN_CREATED_AT_KEY, "text")
+            rows.add(row)
+            section = makeSectionRow("退貨", RETURN_KEY, rows, true)
+            oneSections.add(section)
+        }
     }
 
     override fun cellMoreClick(sectionIdx: Int, rowIdx: Int) {

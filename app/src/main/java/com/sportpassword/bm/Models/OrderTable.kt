@@ -156,6 +156,7 @@ class OrderTable: Table() {
 
         if (ecpay_token == null) { ecpay_token = "" }
         if (ecpay_token_ExpireDate == null) { ecpay_token_ExpireDate = "" }
+        if (memo == null) { memo = "" }
 
         if (order_name == null) { order_name = "" }
         if (order_tel != null) {

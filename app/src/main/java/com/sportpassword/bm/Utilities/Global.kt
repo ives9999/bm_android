@@ -649,7 +649,7 @@ enum class SHIPPING_PROCESS(val englishName: String, val chineseName: String) {
     shipping("shipping", "已經出貨"),
     store("store", "商品已到便利商店"),
     complete("complete", "已完成取貨"),
-    back("back", "貨物退回");
+    `return`("back", "貨物退回");
 
     fun toChineseString(): String {
         return chineseName
