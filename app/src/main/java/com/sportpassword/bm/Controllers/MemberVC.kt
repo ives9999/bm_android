@@ -195,6 +195,7 @@ class MemberVC : MyTableVC() {
                     "store" -> this.toStore(true)
                 }
             }
+            TO_MEMBER_BANK -> this.toMemberBank()
             "delete" -> delete()
         }
     }
@@ -224,6 +225,7 @@ class MemberVC : MyTableVC() {
         sections.add(makeSection2Row(false))
         sections.add(makeSection3Row())
         sections.add(makeSection4Row())
+        sections.add(makeSectionBankRow())
         sections.add(makeSectionXRow())
 
         return sections
@@ -362,7 +364,7 @@ class MemberVC : MyTableVC() {
     private fun makeSectionBankRow(isExpanded: Boolean=true): MemberSection {
         val rows: ArrayList<MemberRow> = arrayListOf()
 
-        val r1: MemberRow = MemberRow("銀行帳號", "bank", "", "bank", "member")
+        val r1: MemberRow = MemberRow("銀行帳號", "bank", "", TO_MEMBER_BANK, "member")
         rows.add(r1)
 
         val s: MemberSection = MemberSection("銀行帳號", true)

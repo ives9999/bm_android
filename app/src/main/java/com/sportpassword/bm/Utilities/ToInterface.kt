@@ -190,6 +190,11 @@ interface ToInterface {
         mainDelegate.startActivity(i)
     }
 
+    fun toMemberBank() {
+        val i = Intent(mainDelegate, MemberBankVC::class.java)
+        mainDelegate.startActivity(i)
+    }
+
     fun toMemberCartList() {
         mainDelegate.finish()
         val i = Intent(mainDelegate, MemberCartListVC::class.java)
