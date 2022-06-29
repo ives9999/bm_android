@@ -67,7 +67,7 @@ class MemberCoinListVC: MyTableVC() {
     }
 
     override fun genericTable() {
-        println(MemberService.jsonString)
+        //println(MemberService.jsonString)
         try {
             coinResultTable = Gson().fromJson<CoinResultTable>(MemberService.jsonString, CoinResultTable::class.java)
         } catch (e: JsonParseException) {
@@ -86,7 +86,7 @@ class MemberCoinListVC: MyTableVC() {
             } else {
                 val rootView: ViewGroup = getRootView()
                 runOnUiThread {
-                    rootView.setInfo(this, "無法解析伺服器傳回的參數")
+                    rootView.setInfo(this, "目前暫無資料")
                 }
             }
         }

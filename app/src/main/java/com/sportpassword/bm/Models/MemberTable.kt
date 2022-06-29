@@ -484,6 +484,18 @@ class MemberCoinTable: Table() {
     }
 }
 
+class MemberBankTable: Table() {
+
+    var bank: String = ""
+    var branch: String = ""
+    var bank_code: Int = 0
+    var account: String = ""
+
+    override fun filterRow() {
+        super.filterRow()
+    }
+}
+
 enum class MEMBER_ROLE(val value: String) {
     member("member"), sale("sale"), designer("designer"), manager("manager"), admin("admin");
 }
