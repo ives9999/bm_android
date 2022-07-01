@@ -8,6 +8,11 @@ import com.sportpassword.bm.Controllers.MainActivity
 import com.sportpassword.bm.Models.*
 import okhttp3.Call
 import okhttp3.Callback
+import okhttp3.MediaType.Companion.toMediaType
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
+import okhttp3.RequestBody.Companion.asRequestBody
+import java.io.File
 import java.io.IOException
 import java.lang.Exception
 
@@ -683,6 +688,35 @@ object MemberService: DataService() {
 //        LoginManager.getInstance().logOut()
 //    }
 
+    fun bank(context: Context, _params: MutableMap<String, String>, complete: CompletionHandler) {
+
+        val url: String = URL_MEMBER_BANK
+        val params: Map<String, String> = _params.mergeWith(PARAMS)
+
+        val request: okhttp3.Request = getRequest(url, params)
+
+        okHttpClient.newCall(request).enqueue(object : Callback {
+            override fun onFailure(call: Call, e: IOException) {
+                msg = "網路錯誤，無法跟伺服器更新資料"
+                complete(success)
+            }
+
+            override fun onResponse(call: Call, response: okhttp3.Response) {
+
+                try {
+                    jsonString = response.body!!.string()
+                    //println(jsonString)
+                    success = true
+                } catch (e: Exception) {
+                    success = false
+                    msg = "parse json failed，請洽管理員"
+                    println(e.localizedMessage)
+                }
+                complete(success)
+            }
+        })
+    }
+
     fun blacklist(context: Context, token: String, complete: CompletionHandler) {
 
         val url = URL_MEMBER_BLACKLIST
@@ -869,7 +903,7 @@ object MemberService: DataService() {
 
     fun memberSignupCalendar(year: Int, month: Int, member_token: String?=null, able_type: String="course", page: Int, perPage: Int, complete: CompletionHandler) {
         val url: String = URL_MEMBER_SIGNUPLIST
-        println(url)
+        //println(url)
 
         val params: HashMap<String, String> = hashMapOf(
             "channel" to CHANNEL,
@@ -881,7 +915,7 @@ object MemberService: DataService() {
             "page" to page.toString(),
             "perPage" to perPage.toString()
         )
-        println(params)
+        //println(params)
 
         val request: okhttp3.Request = getRequest(url, params)
 

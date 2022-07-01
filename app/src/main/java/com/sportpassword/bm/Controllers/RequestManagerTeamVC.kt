@@ -281,7 +281,7 @@ class RequestManagerTeamVC : BaseActivity() {
 
         Loading.show(mask)
         dataService.requestManager(this, params, images) { success ->
-
+            Loading.hide(mask)
             if (success) {
                 try {
                     val successTable: SuccessTable? = jsonToModel<SuccessTable>(dataService.jsonString)

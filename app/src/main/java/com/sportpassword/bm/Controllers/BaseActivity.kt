@@ -245,6 +245,7 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener,
         URL_MEMBER_LIKELIST = "${URL_HOME}member/likelist"
         URL_LIST = "${URL_HOME}%s"
         URL_LOGIN = URL_HOME + "login"
+        URL_MEMBER_BANK = URL_HOME + "member/bank"
         URL_MEMBER_BLACKLIST = URL_HOME + "member/blacklist"
         URL_MEMBER_GETONE = URL_HOME + "member/getOne"
         URL_MEMBER_SIGNUPLIST = "${URL_HOME}member/signup_calendar"
