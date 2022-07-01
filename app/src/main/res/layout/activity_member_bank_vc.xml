@@ -80,12 +80,13 @@
 
 
                     <ImageView
-                        android:id="@+id/clear1"
+                        android:id="@+id/clear_bank"
                         android:layout_width="28dp"
                         android:layout_height="28dp"
                         android:layout_alignParentEnd="true"
                         android:layout_centerVertical="true"
                         android:layout_marginEnd="24dp"
+                        android:tag="1"
                         app:srcCompat="@drawable/delete" />
                 </RelativeLayout>
 
@@ -127,12 +128,13 @@
 
 
                     <ImageView
-                        android:id="@+id/clear2"
+                        android:id="@+id/clear_branch"
                         android:layout_width="28dp"
                         android:layout_height="28dp"
                         android:layout_alignParentEnd="true"
                         android:layout_centerVertical="true"
                         android:layout_marginEnd="24dp"
+                        android:tag="2"
                         app:srcCompat="@drawable/delete" />
                 </RelativeLayout>
 
@@ -150,7 +152,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
                         android:layout_marginStart="12sp"
-                        android:text="分行名稱："
+                        android:text="銀行代碼："
                         android:textAlignment="textEnd" />
 
                     <EditText
@@ -163,6 +165,7 @@
                         android:layout_toEndOf="@id/bank_codeTV"
                         android:background="@drawable/edittext_border"
                         android:ems="10"
+                        android:inputType="number"
                         android:padding="8dp"
                         android:paddingStart="12dp"
                         android:paddingTop="4dp"
@@ -174,12 +177,13 @@
 
 
                     <ImageView
-                        android:id="@+id/clear3"
+                        android:id="@+id/clear_bank_code"
                         android:layout_width="28dp"
                         android:layout_height="28dp"
                         android:layout_centerVertical="true"
                         android:layout_gravity="center_vertical"
                         android:layout_marginStart="13dp"
+                        android:tag="3"
                         app:srcCompat="@drawable/delete" />
                 </LinearLayout>
 
@@ -210,6 +214,7 @@
                         android:layout_toEndOf="@id/accountTV"
                         android:background="@drawable/edittext_border"
                         android:ems="10"
+                        android:inputType="number"
                         android:padding="8dp"
                         android:paddingStart="12dp"
                         android:paddingTop="4dp"
@@ -221,12 +226,13 @@
 
 
                     <ImageView
-                        android:id="@+id/clear4"
+                        android:id="@+id/clear_account"
                         android:layout_width="28dp"
                         android:layout_height="28dp"
                         android:layout_alignParentEnd="true"
                         android:layout_centerVertical="true"
                         android:layout_marginEnd="24dp"
+                        android:tag="4"
                         app:srcCompat="@drawable/delete" />
                 </RelativeLayout>
 

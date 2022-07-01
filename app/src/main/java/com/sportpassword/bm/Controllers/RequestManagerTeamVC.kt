@@ -7,7 +7,6 @@ import android.widget.*
 import com.google.gson.JsonParseException
 import com.sportpassword.bm.Models.MemberTable
 import com.sportpassword.bm.Models.SuccessTable
-import com.sportpassword.bm.Models.TeamTable
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.MemberService
 import com.sportpassword.bm.Services.TeamService
@@ -64,12 +63,12 @@ class RequestManagerTeamVC : BaseActivity() {
         managerEMailLbl = findViewById(R.id.managerEMailLbl)
         managerMobileLbl = findViewById(R.id.managerMobileLbl)
 
-        val clear1: ImageView = findViewById(R.id.clear1)
+        val clear1: ImageView = findViewById(R.id.clear_bank)
         clear1.setOnClickListener {
             teamNameTF.setText("")
         }
 
-        val clear2: ImageView = findViewById(R.id.clear2)
+        val clear2: ImageView = findViewById(R.id.clear_branch)
         clear2.setOnClickListener {
             managerTokenTF.setText("")
         }

@@ -73,7 +73,7 @@
 
 
                     <ImageView
-                        android:id="@+id/clear1"
+                        android:id="@+id/clear_bank"
                         android:layout_width="28dp"
                         android:layout_height="28dp"
                         android:layout_alignParentEnd="true"
@@ -154,7 +154,7 @@
 
 
                     <ImageView
-                        android:id="@+id/clear2"
+                        android:id="@+id/clear_branch"
                         android:layout_width="28dp"
                         android:layout_height="28dp"
                         android:layout_alignParentEnd="true"

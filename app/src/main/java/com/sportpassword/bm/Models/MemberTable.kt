@@ -41,6 +41,8 @@ class MemberTable: Table() {
     
     var area_show: String = ""
 
+    var bank: MemberBankTable? = null
+
     override fun filterRow() {
         super.filterRow()
 
@@ -80,12 +82,33 @@ class MemberTable: Table() {
                     session.edit().putString(name, value).apply()
                 is Boolean ->
                     session.edit().putBoolean(name, value).apply()
+                is MemberBankTable -> {
+                    val memberBankTable: MemberBankTable = value as MemberBankTable
+                    toBankSession(context, memberBankTable)
+                }
             }            
         }
+        session.dump()
         // val keys = session.all.map { it.key }
         // for (key in keys) {
             
         // }
+    }
+
+    fun toBankSession(context: Context, memberBankTable: MemberBankTable) {
+        val session: SharedPreferences = context.getSharedPreferences(SESSION_FILENAME, 0)
+        memberBankTable::class.memberProperties.forEach {
+            val name: String = it.name
+            val value = it.getter.call(memberBankTable)
+            when (value) {
+                is Int ->
+                    session.edit().putInt(name, value).apply()
+                is String ->
+                    session.edit().putString(name, value).apply()
+                is Boolean ->
+                    session.edit().putBoolean(name, value).apply()
+            }
+        }
     }
 
     fun validateShow(rawValue: Int): ArrayList<String> {
@@ -261,6 +284,28 @@ class Member(val context: Context) {
         get() = session.getBoolean(ISLOGGEDIN_KEY, false)
         set(value) {
             session.edit().putBoolean(ISLOGGEDIN_KEY, value).apply()
+        }
+    var bank: String?
+        get() = session.getString(BANK_BANK_KEY, "")
+        set(value) {
+            session.edit().putString(BANK_BANK_KEY, value).apply()
+        }
+    var branch: String?
+        get() = session.getString(BANK_BRANCH_KEY, "")
+        set(value) {
+            session.edit().putString(BANK_BRANCH_KEY, value).apply()
+        }
+    var bank_code: Int?
+        get() = session.getInt(BANK_CODE_KEY, 0)
+        set(value) {
+            if (value != null) {
+                session.edit().putInt(BANK_CODE_KEY, value).apply()
+            }
+        }
+    var account: String?
+        get() = session.getString(BANK_ACCOUNT_KEY, "")
+        set(value) {
+            session.edit().putString(BANK_ACCOUNT_KEY, value).apply()
         }
     // var isTeamManager: Boolean = false
     // var justGetMemberOne: Boolean = false

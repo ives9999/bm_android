@@ -3,6 +3,7 @@ package com.sportpassword.bm.Controllers
 import android.app.Activity
 import android.os.Bundle
 import android.view.View
+import android.widget.ImageView
 import com.google.gson.JsonParseException
 import com.sportpassword.bm.Models.SuccessTable
 import com.sportpassword.bm.R
@@ -21,12 +22,43 @@ class MemberBankVC : BaseActivity() {
 
         setMyTitle("會員銀行帳戶資訊")
 
+        findViewById<ImageView>(R.id.clear_bank) ?. let { clear ->
+            clear.setOnClickListener {
+                clearButtonPressed(clear_bank)
+            }
+        }
+
+        findViewById<ImageView>(R.id.clear_branch) ?. let { clear ->
+            clear.setOnClickListener {
+                clearButtonPressed(clear)
+            }
+        }
+
+        findViewById<ImageView>(R.id.clear_bank_code) ?. let { clear ->
+            clear.setOnClickListener {
+                clearButtonPressed(clear)
+            }
+        }
+
+        findViewById<ImageView>(R.id.clear_account) ?. let { clear ->
+            clear.setOnClickListener {
+                clearButtonPressed(clear)
+            }
+        }
+
         init()
     }
 
     override fun init() {
         isPrevIconShow = true
         super.init()
+
+        bankTF.setText(member.bank)
+        branchTF.setText(member.branch)
+        if (member.bank_code != null) {
+            bank_codeTF.setText(member.bank_code!!.toString())
+        }
+        accountTF.setText(member.account)
     }
     fun submitButtonPressed(view: View) {
 
@@ -86,5 +118,24 @@ class MemberBankVC : BaseActivity() {
 
     fun cancelButtonPressed(view: View) {
         prev()
+    }
+
+    private fun clearButtonPressed(view: View) {
+        val tag = view.tag
+
+        when (tag) {
+            "1" -> {
+                bankTF.setText("")
+            }
+            "2" -> {
+                branchTF.setText("")
+            }
+            "3"-> {
+                bank_codeTF.setText("")
+            }
+            "4"-> {
+                accountTF.setText("")
+            }
+        }
     }
 }
