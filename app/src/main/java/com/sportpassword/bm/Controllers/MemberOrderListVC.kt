@@ -9,10 +9,7 @@ import com.sportpassword.bm.Adapters.MemberOrderAdapter
 import com.sportpassword.bm.Models.*
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.OrderService
-import com.sportpassword.bm.Utilities.MEMBER_COIN_IN_TYPE
-import com.sportpassword.bm.Utilities.MEMBER_COIN_OUT_TYPE
-import com.sportpassword.bm.Utilities.jsonToModels
-import com.sportpassword.bm.Utilities.setInfo
+import com.sportpassword.bm.Utilities.*
 import com.sportpassword.bm.member
 import kotlinx.android.synthetic.main.activity_member_order_list_vc.*
 import kotlinx.android.synthetic.main.mask.*
@@ -82,7 +79,17 @@ class MemberOrderListVC : MyTableVC() {
     }
 
     override fun cellClick(row: Table) {
-        toPayment(row.token, null, null,"member")
+
+        val orderTable: OrderTable = row as OrderTable
+
+        val gateway_method: String = orderTable.gateway!!.method
+        if (gateway_method == GATEWAY.credit_card.englishName || gateway_method == GATEWAY.store_cvs.englishName) {
+            toPayment(row.token, null, null, "member")
+        } else if (gateway_method == GATEWAY.coin.englishName) {
+
+        } else if (gateway_method == GATEWAY.store_pay_711.englishName || gateway_method == GATEWAY.store_pay_family.englishName) {
+            toWebView()
+        }
     }
 }
 

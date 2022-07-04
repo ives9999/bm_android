@@ -508,6 +508,7 @@ open class MemberFragment: TabFragment() {
 //    }
 
 
+    @Deprecated("Deprecated in Java")
     override fun setUserVisibleHint(isVisibleToUser: Boolean) {
         super.setUserVisibleHint(isVisibleToUser)
         isCourseShow = isVisibleToUser

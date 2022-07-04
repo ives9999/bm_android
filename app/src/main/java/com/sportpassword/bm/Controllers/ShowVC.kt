@@ -204,8 +204,8 @@ open class ShowVC: BaseActivity() {
                     if (image_width > 0 && image_height > 0) {
                         if (image_width > screenWidth.toFloat()) {
                             val scale: Float =
-                                (image_width > image_height) then { screenWidth / image_width }
-                                    ?: screenWidth / image_height
+                                ((image_width > image_height) then { screenWidth / image_width })
+                                    ?: (screenWidth / image_height)
                             featured_h = image_height * scale
                         } else {
                             marginStart = ((screenWidth - featured_w) / 2).toInt()

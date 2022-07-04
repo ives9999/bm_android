@@ -29,6 +29,9 @@
         tools:replace="android:allowBackup"
         tools:targetApi="m">
         <activity
+            android:name=".Controllers.WebViewVC"
+            android:exported="false" />
+        <activity
             android:name=".Controllers.MemberBankVC"
             android:exported="false" />
         <activity

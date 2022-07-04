@@ -78,6 +78,7 @@ class AccountActivity : BaseActivity() {
         startActivityForResult(intent, ACCOUNT_REQUEST_CODE)
     }
 
+    @Deprecated("Deprecated in Java")
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 //        when (requestCode) {

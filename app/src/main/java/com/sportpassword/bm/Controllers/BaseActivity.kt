@@ -1906,6 +1906,7 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener,
                 return true
             }
 
+            @Deprecated("Deprecated in Java")
             override fun shouldOverrideUrlLoading(view: WebView?, url: String?): Boolean {
                 //println(url)
                 url!!.website(context)

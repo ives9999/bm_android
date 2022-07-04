@@ -60,6 +60,7 @@ class MemberBankVC : BaseActivity() {
         }
         accountTF.setText(member.account)
     }
+
     fun submitButtonPressed(view: View) {
 
         msg = ""
