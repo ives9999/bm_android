@@ -391,7 +391,7 @@ class ShippingTable: Table() {
     var shipping_at: String = ""
     var store_at: String = ""
     var complete_at: String = ""
-    var back_at: String = ""
+    var return_at: String = ""
 
     var UpdateStatusDate: String = ""
     var CVSPaymentNo: String = ""
@@ -403,7 +403,7 @@ class ShippingTable: Table() {
     var shipping_at_show: String = ""
     var store_at_show: String = ""
     var complete_at_show: String = ""
-    var back_at_show: String = ""
+    var return_at_show: String = ""
 
     override fun filterRow() {
         super.filterRow()
@@ -411,12 +411,12 @@ class ShippingTable: Table() {
         method_show = SHIPPING.getRawValueFromString(method)
         process_show = SHIPPING_PROCESS.getRawValueFromString(process)
 
-        back_at = if (back_at == null) { "" } else { back_at }
+        return_at = if (return_at == null) { "" } else { return_at }
 
         shipping_at_show = if (shipping_at == null) { SHIPPING.getRawValueFromString("direct")} else { shipping_at.noSec()}
         store_at_show = if (store_at == null) { "" } else { store_at.noSec()}
         complete_at_show = if (complete_at == null) { "" } else { complete_at.noSec()}
-        back_at_show = if (back_at == null) { "" } else { back_at.noSec()}
+        return_at_show = if (return_at == null) { "" } else { return_at.noSec()}
 
         if (shipping_at == null) { shipping_at = "" }
         if (complete_at == null) { complete_at = "" }

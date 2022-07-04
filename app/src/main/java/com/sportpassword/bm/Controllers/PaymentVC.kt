@@ -326,11 +326,11 @@ class PaymentVC : MyTableVC() {
         }
         row = OneRow("到貨時間", orderTable!!.shipping!!.complete_at, orderTable!!.shipping!!.complete_at_show, SHIPPING_COMPLETE_AT_KEY, "text")
         rows.add(row)
-        if (orderTable!!.shipping!!.back_at.length > 0) {
+        if (orderTable!!.shipping!!.return_at.length > 0) {
             row = OneRow(
                 "退貨時間",
-                orderTable!!.shipping!!.back_at,
-                orderTable!!.shipping!!.back_at_show,
+                orderTable!!.shipping!!.return_at,
+                orderTable!!.shipping!!.return_at_show,
                 SHIPPING_BACK_AT_KEY,
                 "text"
             )
