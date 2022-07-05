@@ -59,6 +59,7 @@ class MemberOrderListVC : MyTableVC() {
     }
 
     override fun genericTable() {
+        println(dataService.jsonString)
         mysTable = jsonToModels<OrdersTable>(dataService.jsonString)
         if (mysTable != null) {
             tables = mysTable
@@ -88,7 +89,7 @@ class MemberOrderListVC : MyTableVC() {
         } else if (gateway_method == GATEWAY.coin.englishName) {
 
         } else if (gateway_method == GATEWAY.store_pay_711.englishName || gateway_method == GATEWAY.store_pay_family.englishName) {
-            toWebView()
+            toWebView(orderTable.token)
         }
     }
 }

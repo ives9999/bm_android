@@ -169,9 +169,7 @@ class PaymentVC : MyTableVC() {
             //println(jsonString)
             orderTable = Gson().fromJson(jsonString, OrderTable::class.java)
         } catch (e: java.lang.Exception) {
-            runOnUiThread {
-                warning(e.localizedMessage)
-            }
+            warning(e.localizedMessage)
         }
         if (orderTable == null) {
             warning("購物車中無商品，或購物車超過一個錯誤，請洽管理員")

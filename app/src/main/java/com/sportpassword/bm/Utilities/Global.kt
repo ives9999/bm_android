@@ -560,6 +560,15 @@ enum class GATEWAY(val englishName: String, val chineseName: String) {
         return englishName
     }
 
+    fun enumToECPay(): String {
+        return when(this) {
+            store_pay_711-> "UNIMARTC2C"
+            store_pay_family -> "FAMI"
+            //store_pay_hilife -> return "HILIFE"
+            else -> "UNIMARTC2C"
+        }
+    }
+
     companion object: MYENUM<GATEWAY>() {
 
         fun getRawValueFromString(value: String): String {

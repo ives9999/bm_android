@@ -640,8 +640,9 @@ interface ToInterface {
 
     }
 
-    fun toWebView() {
+    fun toWebView(token: String?) {
         val i = Intent(mainDelegate, WebViewVC::class.java)
+        i.putExtra("token", token)
         mainDelegate.startActivity(i)
     }
 
