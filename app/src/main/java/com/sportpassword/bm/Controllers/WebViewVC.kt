@@ -1,10 +1,13 @@
 package com.sportpassword.bm.Controllers
 
+import android.content.Context
 import android.os.Bundle
 import android.view.View
+import android.webkit.JavascriptInterface
 import android.webkit.WebSettings
 import android.webkit.WebView
 import android.widget.Button
+import android.widget.Toast
 import com.google.gson.Gson
 import com.sportpassword.bm.Models.OrderTable
 import com.sportpassword.bm.Models.Table
@@ -13,6 +16,7 @@ import com.sportpassword.bm.Services.OrderService
 import com.sportpassword.bm.Utilities.GATEWAY
 import com.sportpassword.bm.Utilities.Loading
 import com.sportpassword.bm.member
+import kotlinx.android.synthetic.main.activity_web_view_vc.*
 import kotlinx.android.synthetic.main.mask.*
 import java.net.URLEncoder
 
@@ -79,10 +83,26 @@ class WebViewVC : BaseActivity() {
         println(url)
         println(params)
 
-        findViewById<WebView>(R.id.webView)?. let {
-            it.settings.javaScriptEnabled = true
-            it.postUrl(url, params.toByteArray())
-        }
+        webView.settings.javaScriptEnabled = true
+        //webView.postUrl(url, params.toByteArray())
+        webView.loadUrl("http://192.168.100.120/c2c.html")
+        webView.evaluateJavascript("document.body.style.background = 'blue';", null)
+        webView.addJavascriptInterface(MyJavascriptInterface(context), "MyJavascriptInterface")
+
+//        findViewById<WebView>(R.id.webView)?. let {
+//            it.settings.javaScriptEnabled = true
+//            it.evaluateJavascript("document.body.style.background = 'blue';", null)
+//            it.addJavascriptInterface(MyJavascriptInterface(requireContext()))
+//            it.postUrl(url, params.toByteArray())
+//        }
+    }
+}
+
+class MyJavascriptInterface(private val context: Context) {
+
+    @JavascriptInterface
+    fun showToast(message: String) {
+        Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
     }
 }
 
