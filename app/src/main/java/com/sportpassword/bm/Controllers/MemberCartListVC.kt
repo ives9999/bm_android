@@ -112,6 +112,12 @@ class MemberCartListVC : MyTableVC() {
                             (cartItemsTable.size > 0) then { View.VISIBLE } ?: View.GONE
                         tableAdapter.notifyDataSetChanged()
                     }
+                } else {
+                    val rootView: ViewGroup = getRootView()
+                    runOnUiThread {
+                        rootView.setInfo(this, "目前購物車無商品")
+                        submitBtn.visibility = View.GONE
+                    }
                 }
             } else {
                 val rootView: ViewGroup = getRootView()
