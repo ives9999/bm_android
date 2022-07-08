@@ -412,6 +412,7 @@ class ShippingTable: Table() {
         process_show = SHIPPING_PROCESS.getRawValueFromString(process)
 
         return_at = if (return_at == null) { "" } else { return_at }
+        store_at = if (store_at == null) { "" } else { store_at }
 
         shipping_at_show = if (shipping_at == null) { SHIPPING.getRawValueFromString("direct")} else { shipping_at.noSec()}
         store_at_show = if (store_at == null) { "" } else { store_at.noSec()}

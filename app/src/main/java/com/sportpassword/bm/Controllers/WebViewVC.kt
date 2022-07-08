@@ -79,30 +79,38 @@ class WebViewVC : BaseActivity() {
             params += "&IsCollection=${URLEncoder.encode("Y", "UTF-8")}"
             params += "&Device=${URLEncoder.encode("1", "UTF-8")}"
             params += "&order_token=${URLEncoder.encode(token!!, "UTF-8")}"
+            params += "&phone=${URLEncoder.encode("android", "UTF-8")}"
         }
         println(url)
         println(params)
 
-        webView.settings.javaScriptEnabled = true
-        //webView.postUrl(url, params.toByteArray())
-        webView.loadUrl("http://192.168.100.120/c2c.html")
-        webView.evaluateJavascript("document.body.style.background = 'blue';", null)
-        webView.addJavascriptInterface(MyJavascriptInterface(context), "MyJavascriptInterface")
 
-//        findViewById<WebView>(R.id.webView)?. let {
-//            it.settings.javaScriptEnabled = true
-//            it.evaluateJavascript("document.body.style.background = 'blue';", null)
-//            it.addJavascriptInterface(MyJavascriptInterface(requireContext()))
-//            it.postUrl(url, params.toByteArray())
-//        }
+        findViewById<WebView>(R.id.webView)?. let {
+            it.settings.javaScriptEnabled = true
+            it.evaluateJavascript("document.body.style.background = 'blue';", null)
+            webView.addJavascriptInterface(MyJavascriptInterface(context, this), "MyJavascriptInterface")
+            //webView.addJavascriptInterface(JSBridge(),"JSBridge")
+            it.postUrl(url, params.toByteArray())
+            //webView.loadUrl("http://192.168.100.120/c2c.html?n=6")
+        }
     }
 }
 
-class MyJavascriptInterface(private val context: Context) {
+//class JSBridge(){
+//    @JavascriptInterface
+//    fun showMessageInNative(message:String){
+//        //Received message from webview in native, process data
+//        println(message)
+//    }
+//}
+
+class MyJavascriptInterface(private val context: Context, private val baseActivity: BaseActivity) {
 
     @JavascriptInterface
     fun showToast(message: String) {
-        Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
+        println(message)
+        //Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
+        baseActivity.prev()
     }
 }
 

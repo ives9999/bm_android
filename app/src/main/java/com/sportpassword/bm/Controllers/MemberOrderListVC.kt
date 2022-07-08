@@ -81,16 +81,18 @@ class MemberOrderListVC : MyTableVC() {
 
     override fun cellClick(row: Table) {
 
-        val orderTable: OrderTable = row as OrderTable
+//        val orderTable: OrderTable = row as OrderTable
+//
+//        val gateway_method: String = orderTable.gateway!!.method
+//        if (gateway_method == GATEWAY.credit_card.englishName || gateway_method == GATEWAY.store_cvs.englishName) {
+//            toPayment(row.token, null, null, "member")
+//        } else if (gateway_method == GATEWAY.coin.englishName) {
+//
+//        } else if (gateway_method == GATEWAY.store_pay_711.englishName || gateway_method == GATEWAY.store_pay_family.englishName) {
+//            toWebView(orderTable.token)
+//        }
 
-        val gateway_method: String = orderTable.gateway!!.method
-        if (gateway_method == GATEWAY.credit_card.englishName || gateway_method == GATEWAY.store_cvs.englishName) {
-            toPayment(row.token, null, null, "member")
-        } else if (gateway_method == GATEWAY.coin.englishName) {
-
-        } else if (gateway_method == GATEWAY.store_pay_711.englishName || gateway_method == GATEWAY.store_pay_family.englishName) {
-            toWebView(orderTable.token)
-        }
+        toPayment(row.token, null, null, "member")
     }
 }
 
