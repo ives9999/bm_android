@@ -98,6 +98,7 @@ class MemberCartListVC : MyTableVC() {
 
     override fun genericTable() {
         mysTable = jsonToModels<CartsTable>(dataService.jsonString)
+        println(dataService.jsonString)
         tables = mysTable
         if (mysTable != null) {
             if (mysTable!!.rows.size > 0) {
