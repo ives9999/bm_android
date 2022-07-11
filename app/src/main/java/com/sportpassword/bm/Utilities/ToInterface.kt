@@ -640,10 +640,12 @@ interface ToInterface {
 
     }
 
-    fun toWebView(token: String?) {
+    fun toWebView(token: String?, delegate: BaseActivity?) {
         val i = Intent(mainDelegate, WebViewVC::class.java)
         i.putExtra("token", token)
-        mainDelegate.startActivity(i)
+
+        mainDelegate.delegate = delegate
+        mainDelegate.webViewVC.launch(i)
     }
 
     fun toYoutubePlayer(token: String) {

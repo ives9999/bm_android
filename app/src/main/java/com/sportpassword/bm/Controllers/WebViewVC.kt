@@ -1,6 +1,8 @@
 package com.sportpassword.bm.Controllers
 
+import android.app.Activity
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.webkit.JavascriptInterface
@@ -81,8 +83,8 @@ class WebViewVC : BaseActivity() {
             params += "&order_token=${URLEncoder.encode(token!!, "UTF-8")}"
             params += "&phone=${URLEncoder.encode("android", "UTF-8")}"
         }
-        println(url)
-        println(params)
+//        println(url)
+//        println(params)
 
 
         findViewById<WebView>(R.id.webView)?. let {
@@ -108,9 +110,12 @@ class MyJavascriptInterface(private val context: Context, private val baseActivi
 
     @JavascriptInterface
     fun showToast(message: String) {
-        println(message)
+        //println(message)
         //Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
-        baseActivity.prev()
+        //baseActivity.prev()
+        val intent = Intent()
+        baseActivity.setResult(Activity.RESULT_OK, intent)
+        baseActivity.finish()
     }
 }
 

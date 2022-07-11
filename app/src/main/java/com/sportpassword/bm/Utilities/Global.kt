@@ -563,8 +563,8 @@ enum class GATEWAY(val englishName: String, val chineseName: String) {
     fun enumToECPay(): String {
         return when(this) {
             store_pay_711-> "UNIMARTC2C"
-            store_pay_family -> "FAMI"
-            //store_pay_hilife -> return "HILIFE"
+            store_pay_family -> "FAMIC2C"
+            //store_pay_hilife -> return "HILIFEC2C"
             else -> "UNIMARTC2C"
         }
     }

@@ -772,12 +772,6 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener,
                         val d: MemberVC = delegate as MemberVC
                         d.loginout()
                     }
-
-//                    val frags = supportFragmentManager.fragments
-//                    for (frag in frags) {
-//                        val memberFragment = frag as? MemberFragment
-//                        memberFragment?.loginout()
-//                    }
                 }
             }
         }
@@ -1919,6 +1913,25 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener,
             }
         }
         webView.setBackgroundColor(Color.TRANSPARENT)
+    }
+
+    val webViewVC = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { res ->
+        if (res.resultCode == Activity.RESULT_OK) {
+
+            if (res.data != null) {
+                val i: Intent? = res.data
+
+                if (i != null) {
+
+                    if (delegate != null) {
+                        delegate!!.info("超商付款取貨，已經完成門市設定，我們將盡快出貨！！", "", "關閉") {
+                            finishAffinity()
+                            toProduct()
+                        }
+                    }
+                }
+            }
+        }
     }
 
     open fun weekendsSelected(selected: Int, show: String) {
