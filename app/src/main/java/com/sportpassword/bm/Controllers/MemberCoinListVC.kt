@@ -105,14 +105,20 @@ class MemberCoinListVC: MyTableVC() {
     override fun cellClick(row: Table) {
         //購買點數，前往查看訂單
         val _row: MemberCoinTable = row as MemberCoinTable
-        if (MEMBER_COIN_IN_TYPE.enumFromString(row.in_type) == MEMBER_COIN_IN_TYPE.buy && _row.order_token.length > 0) {
-            toPayment(row.order_token, "member")
-        }
 
-        //使用點數購買商品，前往查看訂單
-        if (!row.in_out && MEMBER_COIN_OUT_TYPE.enumFromString(row.out_type) == MEMBER_COIN_OUT_TYPE.product && _row.able_type == "order") {
-            toPayment(row.able_token, "member")
+//        var order_token: String?
+//        if (_row.in_out) {
+//
+//        }
+//        toPayment(row.order_token, null, null, "member")
+        if (MEMBER_COIN_IN_TYPE.enumFromString(row.in_type) == MEMBER_COIN_IN_TYPE.buy && _row.order_token.length > 0) {
+            toPayment(row.order_token, null, null, "member")
         }
+//
+//        //使用點數購買商品，前往查看訂單
+//        if (!row.in_out && MEMBER_COIN_OUT_TYPE.enumFromString(row.out_type) == MEMBER_COIN_OUT_TYPE.product && _row.able_type == "order") {
+//            toPayment(row.able_token, null, null, "member")
+//        }
     }
 }
 

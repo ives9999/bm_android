@@ -85,15 +85,16 @@ class MemberCoinViewHolder(context: Context, viewHolder: View, list1CellDelegate
         }
 
         viewHolder.setOnClickListener {
+            list1CellDelegate?.cellClick(row)
             //購買點數，前往查看訂單
-            if (MEMBER_COIN_IN_TYPE.enumFromString(_row.in_type) == MEMBER_COIN_IN_TYPE.buy && _row.order_token.length > 0 && list1CellDelegate != null) {
-                list1CellDelegate.cellClick(row)
-            }
-
-            //使用點數購買商品，前往查看訂單
-            if (!row.in_out && MEMBER_COIN_OUT_TYPE.enumFromString(row.out_type) == MEMBER_COIN_OUT_TYPE.product && row.able_type == "order" && list1CellDelegate != null) {
-                list1CellDelegate.cellClick(row)
-            }
+//            if (MEMBER_COIN_IN_TYPE.enumFromString(_row.in_type) == MEMBER_COIN_IN_TYPE.buy && _row.order_token.length > 0 && list1CellDelegate != null) {
+//                list1CellDelegate.cellClick(row)
+//            }
+//
+//            //使用點數購買商品，前往查看訂單
+//            if (!row.in_out && MEMBER_COIN_OUT_TYPE.enumFromString(row.out_type) == MEMBER_COIN_OUT_TYPE.product && row.able_type == "order" && list1CellDelegate != null) {
+//                list1CellDelegate.cellClick(row)
+//            }
         }
 
 //        if (list1CellDelegate != null) {

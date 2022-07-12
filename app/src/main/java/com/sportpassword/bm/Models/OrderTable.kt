@@ -299,29 +299,31 @@ class OrderItemTable: Table() {
 
         product?.filterRow()
 
-        //{name:尺寸,alias:size,value:M}|{name:顏色,alias:color,value:藍色}
-        val tmps: Array<String> = attribute.split("|").toTypedArray()
+        if (attribute != null) {
+            //{name:尺寸,alias:size,value:M}|{name:顏色,alias:color,value:藍色}
+            val tmps: Array<String> = attribute.split("|").toTypedArray()
 
-        for (tmp in tmps) {
+            for (tmp in tmps) {
 
-            //{name:尺寸,alias:size,value:M}
-            var _tmp = tmp.replace("{", "")
-            _tmp = _tmp.replace("}", "")
+                //{name:尺寸,alias:size,value:M}
+                var _tmp = tmp.replace("{", "")
+                _tmp = _tmp.replace("}", "")
 
-            //name:尺寸,alias:size,value:M
-            val arr: Array<String> = _tmp.split(",").toTypedArray()
+                //name:尺寸,alias:size,value:M
+                val arr: Array<String> = _tmp.split(",").toTypedArray()
 
-            //name:尺寸
-            //alias:size
-            //value:M
-            val a: HashMap<String, String> = hashMapOf()
-            if (a.size > 0) {
-                for (str in arr) {
-                    val b: Array<String> = str.split(":").toTypedArray()
-                    a[b[0]] = b[1]
+                //name:尺寸
+                //alias:size
+                //value:M
+                val a: HashMap<String, String> = hashMapOf()
+                if (a.size > 0) {
+                    for (str in arr) {
+                        val b: Array<String> = str.split(":").toTypedArray()
+                        a[b[0]] = b[1]
+                    }
+
+                    attributes.add(a)
                 }
-
-                attributes.add(a)
             }
         }
 
