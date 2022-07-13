@@ -180,6 +180,10 @@ abstract class MyTableVC : BaseActivity() {
 
             //notifyDataSetChanged()
             page++
+        } else {
+            runOnUiThread {
+                warning(dataService.msg)
+            }
         }
 //        mask?.let { mask?.dismiss() }
         runOnUiThread {

@@ -100,6 +100,10 @@ class MemberBankVC : BaseActivity() {
                     if (successTable != null) {
                         if (successTable.success) {
                             runOnUiThread {
+                                member.bank = params["bank"]
+                                member.branch = params["branch"]
+                                member.bank_code = params["bank_code"]?.toInt()
+                                member.account = params["account"]
                                 info("已經更新您銀行帳戶資料")
                             }
                         } else {

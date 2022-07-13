@@ -550,7 +550,7 @@ enum class GATEWAY(val englishName: String, val chineseName: String) {
     ATM("ATM", "虛擬帳戶"),
     remit("remit", "匯款"),
     cash("cash", "現金"),
-    coin("coin", "解碼幣");
+    coin("coin", "解碼點數");
 
     fun toChineseString(): String {
         return chineseName

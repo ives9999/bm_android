@@ -646,37 +646,46 @@ class OrderVC : MyTableVC() {
                             OrderService.jsonString,
                             OrderUpdateResTable::class.java
                         )
-                        val orderTable: OrderTable? = table.model
-                        if (orderTable != null) {
-                            orderTable.filterRow()
-                            val ecpay_token: String = orderTable.ecpay_token
-                            val ecpay_token_ExpireDate: String = orderTable.ecpay_token_ExpireDate
-                            cartItemCount = 0
-                            session.edit().putInt("cartItemCount", cartItemCount).apply()
 
-                            var gateway_method: GATEWAY = GATEWAY.credit_card
-                            if (orderTable.gateway != null) {
-                                gateway_method = GATEWAY.stringToEnum(orderTable.gateway!!.method)
-                            }
-
+                        if (!table.success) {
                             runOnUiThread {
-                                if (gateway_method == GATEWAY.credit_card || gateway_method == GATEWAY.store_cvs || gateway_method == GATEWAY.coin) {
-                                    info("訂單已經成立，是否前往結帳？", "關閉", "結帳") {
-                                        toPayment(
-                                            orderTable.token,
-                                            ecpay_token,
-                                            ecpay_token_ExpireDate
-                                        )
-                                    }
-                                } else if (gateway_method == GATEWAY.store_pay_711 || gateway_method == GATEWAY.store_pay_family) {
-                                    info("訂單已經成立，是否前往選取超商？", "關閉", "選取超商") {
-                                        toWebView(orderTable.token, this)
-                                    }
-                                }
+                                warning(table.msg)
                             }
                         } else {
-                            runOnUiThread {
-                                warning("無法拿到伺服器傳回值")
+                            val orderTable: OrderTable? = table.model
+                            if (orderTable != null) {
+                                orderTable.filterRow()
+                                val ecpay_token: String = orderTable.ecpay_token
+                                val ecpay_token_ExpireDate: String =
+                                    orderTable.ecpay_token_ExpireDate
+                                cartItemCount = 0
+                                session.edit().putInt("cartItemCount", cartItemCount).apply()
+
+                                var gateway_method: GATEWAY = GATEWAY.credit_card
+                                if (orderTable.gateway != null) {
+                                    gateway_method =
+                                        GATEWAY.stringToEnum(orderTable.gateway!!.method)
+                                }
+
+                                runOnUiThread {
+                                    if (gateway_method == GATEWAY.credit_card || gateway_method == GATEWAY.store_cvs || gateway_method == GATEWAY.coin) {
+                                        info("訂單已經成立，是否前往結帳？", "關閉", "結帳") {
+                                            toPayment(
+                                                orderTable.token,
+                                                ecpay_token,
+                                                ecpay_token_ExpireDate
+                                            )
+                                        }
+                                    } else if (gateway_method == GATEWAY.store_pay_711 || gateway_method == GATEWAY.store_pay_family) {
+                                        info("訂單已經成立，是否前往選取超商？", "關閉", "選取超商") {
+                                            toWebView(orderTable.token, this)
+                                        }
+                                    }
+                                }
+                            } else {
+                                runOnUiThread {
+                                    warning("無法拿到伺服器傳回值")
+                                }
                             }
                         }
                     } catch (e: java.lang.Exception) {

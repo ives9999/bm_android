@@ -59,7 +59,7 @@ class MemberOrderListVC : MyTableVC() {
     }
 
     override fun genericTable() {
-        println(dataService.jsonString)
+        //println(dataService.jsonString)
         mysTable = jsonToModels<OrdersTable>(dataService.jsonString)
         if (mysTable != null) {
             tables = mysTable

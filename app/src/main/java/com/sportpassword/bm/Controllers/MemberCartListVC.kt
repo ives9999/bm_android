@@ -181,9 +181,13 @@ class MemberCartListVC : MyTableVC() {
         toOrder()
     }
 
-    fun cancelBtnPressed(view: View) {
-        prev()
-    }
+//    override fun prev() {
+//        finish()
+//    }
+
+//    fun cancelBtnPressed(view: View) {
+//        prev()
+//    }
 }
 
 //class CartItemItem(override var context: Context, var _row: CartItemTable): ListItem<Table>(context, _row) {
