@@ -460,6 +460,10 @@ class Member(val context: Context) {
         
         return isValidate
     }
+
+    fun updateMemberCoin(value: Int) {
+        member.coin += value
+    }
     
 //    private fun setField(fieldName: String): Any {
 //        val a: Field = javaClass.getDeclaredField(fieldName)

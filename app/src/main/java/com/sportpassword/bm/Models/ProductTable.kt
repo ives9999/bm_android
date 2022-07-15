@@ -10,6 +10,7 @@ class ProductsTable: Tables() {
 class ProductTable: Table() {
 
     var type: String = ""
+    var coin: Int = 0
     var color: String = ""
     var size: String = ""
     var weight: String = ""
@@ -21,6 +22,7 @@ class ProductTable: Table() {
     var cart_token: String = ""
 
     var alias: String = ""
+    var invoice_name: String = ""
 
     var images: ArrayList<String> = arrayListOf()
     var prices: ArrayList<ProductPriceTable> = arrayListOf()

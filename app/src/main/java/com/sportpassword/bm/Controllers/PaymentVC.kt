@@ -52,6 +52,8 @@ class PaymentVC : MyTableVC() {
 
     var source: String = "order"
 
+    var isECPay: Boolean = false
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_payment_vc)
@@ -88,6 +90,10 @@ class PaymentVC : MyTableVC() {
 
         setBottomButtonPadding()
 
+        findViewById<Button>(R.id.submitBtn) ?. let {
+            it.text = "付款"
+        }
+
         findViewById<Button>(R.id.threeBtn) ?. let {
             it.setOnClickListener {
                 backBtnPressed()
@@ -95,7 +101,10 @@ class PaymentVC : MyTableVC() {
         }
 
         init()
-        (ecpay_token.isNotEmpty() then { toECPay() }) ?: refresh()
+        (ecpay_token.isNotEmpty() then {
+            toECPay()
+            isECPay = true
+        }) ?: refresh()
     }
 
     override fun init() {
@@ -138,8 +147,8 @@ class PaymentVC : MyTableVC() {
 
     fun toECPay() {
 
-        //PaymentkitManager.initialize(this, ServerType.Stage)
-        PaymentkitManager.initialize(this, ServerType.Prod)
+        PaymentkitManager.initialize(this, ServerType.Stage)
+        //PaymentkitManager.initialize(this, ServerType.Prod)
         PaymentkitManager.createPayment(this, ecpay_token, LanguageCode.zhTW, true, title, PaymentkitManager.RequestCode_CreatePayment)
     }
 
@@ -202,6 +211,7 @@ class PaymentVC : MyTableVC() {
                 }
             }
 
+            updateMemberCoin()
             initData()
             oneSectionAdapter.setOneSection(oneSections)
             runOnUiThread {
@@ -470,7 +480,7 @@ class PaymentVC : MyTableVC() {
 
     fun updateOrder() {
 
-        mask()
+        //mask()
         val params: HashMap<String, String> = hashMapOf("token" to order_token, "member_token" to member.token!!,"do" to "update")
         params["expire_at"] = expire_at
         params["trade_no"] = trade_no
@@ -501,10 +511,11 @@ class PaymentVC : MyTableVC() {
         }
 
         OrderService.update(this, params) { success ->
-            unmask()
+            //unmask()
             if (success) {
-                finish()
-                toProduct()
+                refresh()
+                //finish()
+                //toProduct()
             } else {
                 warning(OrderService.msg, false, "關閉") {
                     finish()
@@ -512,6 +523,21 @@ class PaymentVC : MyTableVC() {
                 }
             }
         }
+    }
+
+    fun updateMemberCoin() {
+
+        if (orderTable != null) {
+            val items: ArrayList<OrderItemTable> = orderTable!!.items
+            if (items.size > 0) {
+                val item: OrderItemTable = items[0]
+                val product: ProductTable = item.product!!
+                if (product.type == "coin") {
+                    member.updateMemberCoin(product.coin)
+                }
+            }
+        }
+
     }
 
     @Deprecated("Deprecated in Java")
