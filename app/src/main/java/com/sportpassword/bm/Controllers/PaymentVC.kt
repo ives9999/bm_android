@@ -147,8 +147,8 @@ class PaymentVC : MyTableVC() {
 
     fun toECPay() {
 
-        PaymentkitManager.initialize(this, ServerType.Stage)
-        //PaymentkitManager.initialize(this, ServerType.Prod)
+        //PaymentkitManager.initialize(this, ServerType.Stage)
+        PaymentkitManager.initialize(this, ServerType.Prod)
         PaymentkitManager.createPayment(this, ecpay_token, LanguageCode.zhTW, true, title, PaymentkitManager.RequestCode_CreatePayment)
     }
 
@@ -513,13 +513,14 @@ class PaymentVC : MyTableVC() {
         OrderService.update(this, params) { success ->
             //unmask()
             if (success) {
-                refresh()
+                finishAffinity()
+                toPayment(order_token)
                 //finish()
                 //toProduct()
             } else {
                 warning(OrderService.msg, false, "關閉") {
-                    finish()
-                    toProduct()
+                    finishAffinity()
+                    toPayment(order_token)
                 }
             }
         }
@@ -607,8 +608,8 @@ class PaymentVC : MyTableVC() {
                         }
                         warning("Fail Code=" + it.getRtnCode() +
                                 ", Msg=" + msg, false, "關閉") {
-                            finish()
-                            toProduct()
+                            finishAffinity()
+                            toPayment(order_token)
                         }
                     }
 
@@ -618,21 +619,21 @@ class PaymentVC : MyTableVC() {
                         }
                         warning("Fail Code=" + it.getRtnCode() +
                                 ", Msg=" + msg, false, "關閉") {
-                            finish()
-                            toProduct()
+                            finishAffinity()
+                            toPayment(order_token)
                         }
                     }
 
                     CallbackStatus.Cancel -> {
                         warning("交易取消", false, "關閉") {
-                            finish()
-                            toProduct()
+                            finishAffinity()
+                            toPayment(order_token)
                         }
                     }
                     else -> {
                         warning("回傳值無法解析，請洽管理員", false, "關閉") {
-                            finish()
-                            toProduct()
+                            finishAffinity()
+                            toPayment(order_token)
                         }
                     }
                 }
@@ -656,6 +657,15 @@ class PaymentVC : MyTableVC() {
     fun signupButtonPressed(view: View) {
         ecpay_token = orderTable!!.ecpay_token
         toECPay()
+    }
+
+    override fun prev() {
+        if (source == "order") {
+            finishAffinity()
+            toProduct()
+        } else {
+            super.prev()
+        }
     }
 
     fun backBtnPressed() {

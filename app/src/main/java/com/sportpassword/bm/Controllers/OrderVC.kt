@@ -41,6 +41,8 @@ class OrderVC : MyTableVC() {
     var bottom_button_count: Int = 2
     val button_width: Int = 400
 
+    var grand_total: Int = 0
+
 //    var tableView: RecyclerView? = null
 
 
@@ -579,10 +581,10 @@ class OrderVC : MyTableVC() {
         params[TOTAL_KEY] = getRowValue(TOTAL_KEY)
         params[DISCOUNT_KEY] = "0"
 
-
         val discount: Int = params[DISCOUNT_KEY]!!.toInt()
         val total: Int = params[TOTAL_KEY]!!.toInt()
-        params[GRAND_TOTAL_KEY] = (discount + total).toString()
+        grand_total = discount + total
+        params[GRAND_TOTAL_KEY] = grand_total.toString()
 
         //是否有選擇商品屬性
         val selected_attributes: ArrayList<String> = arrayListOf()
@@ -668,7 +670,7 @@ class OrderVC : MyTableVC() {
                                 }
 
                                 runOnUiThread {
-                                    if (gateway_method == GATEWAY.credit_card || gateway_method == GATEWAY.store_cvs || gateway_method == GATEWAY.coin) {
+                                    if (gateway_method == GATEWAY.credit_card || gateway_method == GATEWAY.store_cvs) {
                                         info("訂單已經成立，是否前往結帳？", "關閉", "結帳") {
                                             toPayment(
                                                 orderTable.token,
@@ -679,6 +681,11 @@ class OrderVC : MyTableVC() {
                                     } else if (gateway_method == GATEWAY.store_pay_711 || gateway_method == GATEWAY.store_pay_family) {
                                         info("訂單已經成立，是否前往選取超商？", "關閉", "選取超商") {
                                             toWebView(orderTable.token, this)
+                                        }
+                                    } else if (gateway_method == GATEWAY.coin) {
+                                        member.updateMemberCoin(-1 * grand_total)
+                                        info("訂單成立並已經結帳", "", "關閉") {
+                                            toPayment(orderTable.token)
                                         }
                                     }
                                 }

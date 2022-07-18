@@ -1,7 +1,9 @@
 package com.sportpassword.bm.Controllers
 
 import android.os.Bundle
+import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import com.google.gson.Gson
 import com.google.gson.JsonParseException
 import com.sportpassword.bm.Adapters.MemberCoinAdapter
@@ -16,11 +18,15 @@ import com.sportpassword.bm.Utilities.setInfo
 import com.sportpassword.bm.member
 import kotlinx.android.synthetic.main.activity_member_coin_list_vc.*
 import kotlinx.android.synthetic.main.mask.*
+import kotlinx.android.synthetic.main.mask.view.*
 
 class MemberCoinListVC: MyTableVC() {
 
     lateinit var tableAdapter: MemberCoinAdapter
     var coinResultTable: CoinResultTable? = null
+
+    var bottom_button_count: Int = 3
+    val button_width: Int = 400
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -36,6 +42,28 @@ class MemberCoinListVC: MyTableVC() {
 
         tableAdapter = MemberCoinAdapter(this)
         recyclerView.adapter = tableAdapter
+
+        findViewById<Button>(R.id.submitBtn) ?. let {
+            it.text = "退款"
+            it.visibility = View.GONE
+            bottom_button_count -= 1
+        }
+
+        findViewById<Button>(R.id.threeBtn) ?. let {
+            it.text = "購買點數"
+            it.setOnClickListener {
+                toProduct()
+            }
+        }
+
+        findViewById<Button>(R.id.cancelBtn) ?. let {
+            it.text = "回上一頁"
+            it.setOnClickListener {
+                prev()
+            }
+        }
+
+        setBottomButtonPadding()
 
         init()
         refresh()
@@ -111,6 +139,39 @@ class MemberCoinListVC: MyTableVC() {
         } else if (row.out_type != null && !row.in_out && MEMBER_COIN_OUT_TYPE.enumFromString(row.out_type) == MEMBER_COIN_OUT_TYPE.product && _row.able_type == "order") {
             //使用點數購買商品，前往查看訂單
             toPayment(row.able_token, null, null, "member")
+        }
+    }
+
+    fun setBottomButtonPadding() {
+
+        val padding: Int = (screenWidth - bottom_button_count * button_width) / (bottom_button_count + 1)
+        //val leading: Int = bottom_button_count * padding + (bottom_button_count - 1) * button_width
+
+        findViewById<Button>(R.id.submitBtn) ?. let {
+            if (it.visibility == View.VISIBLE) {
+                val params: ViewGroup.MarginLayoutParams =
+                    it.layoutParams as ViewGroup.MarginLayoutParams
+                params.width = button_width
+                params.marginStart = padding
+                it.layoutParams = params
+            }
+        }
+
+        findViewById<Button>(R.id.threeBtn) ?. let {
+            if (it.visibility == View.VISIBLE) {
+                val params: ViewGroup.MarginLayoutParams =
+                    it.layoutParams as ViewGroup.MarginLayoutParams
+                params.width = button_width
+                params.marginStart = padding
+                it.layoutParams = params
+            }
+        }
+
+        findViewById<Button>(R.id.cancelBtn) ?. let {
+            val params: ViewGroup.MarginLayoutParams = it.layoutParams as ViewGroup.MarginLayoutParams
+            params.width = button_width
+            params.marginStart = padding
+            it.layoutParams = params
         }
     }
 }

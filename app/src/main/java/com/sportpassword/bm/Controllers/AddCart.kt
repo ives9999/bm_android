@@ -1,6 +1,7 @@
 package com.sportpassword.bm.Controllers
 
 import android.app.Activity
+import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
 import android.content.res.ColorStateList
@@ -507,13 +508,19 @@ class AddCartVC : MyTableVC() {
                         msg = "已經更新購物車了"
                     }
                     runOnUiThread {
-                        info(msg, "", "關閉") {
-                            toMemberCartList()
-//                            val intent = Intent()
-//                            intent.putExtra("refresh", true)
-//                            setResult(Activity.RESULT_OK, intent)
-//                            finish()
-                        }
+                        AlertDialog.Builder(this)
+                            .setTitle("訊息")
+                            .setMessage(msg)
+                            .setPositiveButton("繼續購物") { _, _ ->
+                                toProduct()
+                            }
+                            .setNegativeButton("前往購物車") { _, _ ->
+                                toMemberCartList()
+                            }
+                            .show()
+//                        info(msg, "", "關閉") {
+//                            toMemberCartList()
+//                        }
                     }
 //                    val order_token: String = CartService.order_token
 //                    if (total > 0) {
