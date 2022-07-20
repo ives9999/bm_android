@@ -84,6 +84,10 @@ class MemberCoinViewHolder(context: Context, viewHolder: View, list1CellDelegate
             }
         }
 
+        if (_row.name.isNotEmpty()) {
+            able_typeLbl.text = _row.name
+        }
+
         viewHolder.setOnClickListener {
             list1CellDelegate?.cellClick(row)
             //購買點數，前往查看訂單

@@ -44,15 +44,16 @@ class MemberCoinListVC: MyTableVC() {
         recyclerView.adapter = tableAdapter
 
         findViewById<Button>(R.id.submitBtn) ?. let {
-            it.text = "退款"
-            it.visibility = View.GONE
-            bottom_button_count -= 1
-        }
-
-        findViewById<Button>(R.id.threeBtn) ?. let {
             it.text = "購買點數"
             it.setOnClickListener {
                 toProduct()
+            }
+        }
+
+        findViewById<Button>(R.id.threeBtn) ?. let {
+            it.text = "退款"
+            it.setOnClickListener {
+                //toProduct()
             }
         }
 

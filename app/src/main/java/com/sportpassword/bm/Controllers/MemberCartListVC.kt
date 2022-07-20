@@ -32,12 +32,18 @@ class MemberCartListVC : MyTableVC() {
     var bottom_button_count: Int = 2
     val button_width: Int = 400
 
+    var source: String = "order"
+
     override fun onCreate(savedInstanceState: Bundle?) {
 
         dataService = CartService
 
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_member_cart_list_vc)
+
+        if (intent.hasExtra("source")) {
+            source = intent.getStringExtra("source")!!
+        }
 
         setMyTitle("購物車")
 
@@ -181,13 +187,14 @@ class MemberCartListVC : MyTableVC() {
         toOrder()
     }
 
-//    override fun prev() {
-//        finish()
-//    }
-
-//    fun cancelBtnPressed(view: View) {
-//        prev()
-//    }
+    override fun prev() {
+        if (source == "member") {
+            super.prev()
+        } else if (source == "order") {
+            finishAffinity()
+            toProduct()
+        }
+    }
 }
 
 //class CartItemItem(override var context: Context, var _row: CartItemTable): ListItem<Table>(context, _row) {

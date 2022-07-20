@@ -41,8 +41,8 @@ android {
         applicationId "com.sportpassword.bm"
         minSdkVersion 21
         targetSdkVersion 32
-        versionCode 69
-        versionName "2.2.3"
+        versionCode 70
+        versionName "2.2.4"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
         manifestPlaceholders = [
@@ -146,7 +146,7 @@ dependencies {
 
     // view pager 2
     implementation "androidx.viewpager2:viewpager2:1.0.0"
-    implementation 'com.google.android.material:material:1.7.0-alpha02'
+    implementation 'com.google.android.material:material:1.7.0-alpha03'
 
     //for ecpay
     implementation "tw.com.ecpay.paymentgatewaykit:ECPayPaymentGatewayKit:1.0.3"

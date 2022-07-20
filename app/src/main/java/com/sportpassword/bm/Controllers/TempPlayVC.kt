@@ -42,7 +42,7 @@ class TempPlayVC : MyTableVC() {
         refresh()
     }
 
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
         return true
     }
 

@@ -195,9 +195,9 @@ interface ToInterface {
         mainDelegate.startActivity(i)
     }
 
-    fun toMemberCartList() {
-        mainDelegate.finish()
+    fun toMemberCartList(source: String="order") {
         val i = Intent(mainDelegate, MemberCartListVC::class.java)
+        i.putExtra("source", source)
         mainDelegate.startActivity(i)
     }
 

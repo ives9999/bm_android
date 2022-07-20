@@ -122,7 +122,7 @@ class TimeTableVC : BaseActivity() {
         //TimeTableView.adapter = adapter
     }
 
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.add, menu)
         return true
     }
