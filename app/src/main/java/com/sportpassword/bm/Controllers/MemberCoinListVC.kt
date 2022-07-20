@@ -24,6 +24,7 @@ class MemberCoinListVC: MyTableVC() {
 
     lateinit var tableAdapter: MemberCoinAdapter
     var coinResultTable: CoinResultTable? = null
+    var coinReturnResultTable: CoinReturnResultTable? = null
 
     var bottom_button_count: Int = 3
     val button_width: Int = 400
@@ -53,7 +54,7 @@ class MemberCoinListVC: MyTableVC() {
         findViewById<Button>(R.id.threeBtn) ?. let {
             it.text = "退款"
             it.setOnClickListener {
-                //toProduct()
+                coinReturn()
             }
         }
 
@@ -175,6 +176,47 @@ class MemberCoinListVC: MyTableVC() {
             it.layoutParams = params
         }
     }
+
+    fun coinReturn() {
+        msg = ""
+        if (member.bank!!.length == 0 || member.branch!!.length == 0 || member.bank_code!! == 0 || member.account!!.length == 0) {
+            msg += "請先填寫完整的銀行匯款資料才能進行退款，是否前往填寫"
+            warning(msg, true, "是") {
+                toMemberBank()
+            }
+        }
+
+        if (msg.isEmpty()) {
+            Loading.show(mask)
+            loading = true
+
+            MemberService.coinReturn(this, member.token!!) { success ->
+                Loading.hide(mask)
+                jsonString = MemberService.jsonString
+                if (success) {
+                    if (jsonString != null && jsonString!!.isNotEmpty()) {
+
+                        try {
+                            coinReturnResultTable = Gson().fromJson<CoinReturnResultTable>(MemberService.jsonString, CoinReturnResultTable::class.java)
+                            val i = 6
+                        } catch (e: JsonParseException) {
+                            runOnUiThread {
+                                warning(e.localizedMessage!!)
+                            }
+                        }
+
+                        if (coinReturnResultTable != null) {
+                            runOnUiThread {
+                                val tableViewHeight: Int = rowHeight * 5
+                                showTableLayer(tableViewHeight)
+
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
 }
 
 class CoinResultTable {
@@ -185,4 +227,15 @@ class CoinResultTable {
     var perPage: Int = -1
     var msg: String = ""
     var rows: ArrayList<MemberCoinTable> = arrayListOf()
+}
+
+class CoinReturnResultTable {
+
+    var success: Boolean = false
+    var grand_price: Int = 0
+    var grand_give: Int = 0
+    var grand_spend: Int = 0
+    var handle_fee: Int = 0
+    var transfer_fee: Int = 0
+    var return_coin: Int = 0
 }

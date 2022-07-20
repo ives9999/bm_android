@@ -241,6 +241,7 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener,
         URL_ISNAMEEXIST = "${URL_HOME}%s/isNameExist"
         URL_MANAGER_SIGNUPLIST = "${URL_HOME}%s/manager_signup_list"
         URL_MEMBER_COINLIST = "${URL_HOME}member/coinlist"
+        URL_MEMBER_COINRETURN = "${URL_HOME}member/coinReturn"
         URL_MEMBER_DELETE = URL_HOME + "member/delete"
         URL_MEMBER_LIKELIST = "${URL_HOME}member/likelist"
         URL_LIST = "${URL_HOME}%s"
