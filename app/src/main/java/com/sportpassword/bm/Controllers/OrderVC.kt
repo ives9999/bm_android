@@ -1,6 +1,5 @@
 package com.sportpassword.bm.Controllers
 
-import android.content.res.Resources
 import android.os.Bundle
 import com.sportpassword.bm.Models.*
 import com.sportpassword.bm.R
@@ -14,13 +13,10 @@ import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
 import android.view.*
 import android.widget.Button
-import android.widget.RelativeLayout
-import androidx.recyclerview.widget.RecyclerView
 import com.google.gson.Gson
 import com.sportpassword.bm.Adapters.OneItemAdapter
 import com.sportpassword.bm.Adapters.OneSectionAdapter
 import com.sportpassword.bm.Data.*
-import com.sportpassword.bm.Services.MemberService
 import com.sportpassword.bm.Services.ProductService
 
 class OrderVC : MyTableVC() {
@@ -384,7 +380,7 @@ class OrderVC : MyTableVC() {
         if (needShipping) {
             //shipping
             rows.clear()
-            titles = productTable!!.gateway.toArray()
+            titles = productTable!!.shipping.toArray()
             tmp = arrayListOf()
             for (title in titles) {
                 tmp.add(SHIPPING.stringToEnum(title).chineseName)
@@ -402,7 +398,7 @@ class OrderVC : MyTableVC() {
         }
 
         rows.clear()
-        row = OneRow("發票(目前僅提供電子發票)", "personal", "", INVOICE_KEY, "more", KEYBOARD.default, "", "", false, false)
+        row = OneRow("發票(目前僅提供電子發票)", "personal", "個人", INVOICE_KEY, "more", KEYBOARD.default, "", "", false, false)
         rows.add(row)
         rows.addAll(invoicePersonalRows)
         section = makeSectionRow("電子發票", INVOICE_KEY, rows, true)
@@ -518,17 +514,34 @@ class OrderVC : MyTableVC() {
         var row: OneRow = OneRow()
         if (key == GATEWAY_KEY || key == SHIPPING_KEY) {
             row = oneSections[sectionIdx].items[rowIdx]
+
+            //1.先取得該商品的所有付款方式的陣列
+            val shows: Array<String> = oneRowShowToArray(row)
+
+            //2.將選擇付款的方式索引改為gateway enum然後判斷是否等於gateway enum的值
+            //如果付款方式選擇超商取貨付款，則到貨方式也自動更改為超商取貨
+            if (key == GATEWAY_KEY && (GATEWAY.stringToEnum(shows[idx]) == GATEWAY.store_pay_711 || GATEWAY.stringToEnum(shows[idx]) == GATEWAY.store_pay_family)) {
+                val row1: OneRow = getRowFromRowKey(SHIPPING_KEY)
+                if (GATEWAY.stringToEnum(shows[idx]) == GATEWAY.store_pay_711) {
+                    row1.value = SHIPPING.store_711.englishName
+                } else if (GATEWAY.stringToEnum(shows[idx]) == GATEWAY.store_pay_family) {
+                    row1.value = SHIPPING.store_family.englishName
+                }
+                oneSectionAdapter.notifyItemChanged(sectionIdx+1)
+            }
         } else if (key == INVOICE_KEY) {
             row = invoiceOptionRows[rowIdx]
         }
 
-        val tmp: Array<String> = row.show.toArray()
+        val tmp: Array<String> = oneRowShowToArray(row)
         for ((idx1, value) in tmp.withIndex()) {
+
             if (idx1 == idx) {
                 row.value = value
                 break
             }
         }
+
         if (key == INVOICE_KEY) {
             val section: OneSection = getOneSectionFromIdx(sectionIdx)
             section.items.clear()
@@ -565,7 +578,12 @@ class OrderVC : MyTableVC() {
         oneSectionAdapter.notifyItemChanged(sectionIdx)
     }
 
-    fun signupButtonPressed(view: View) {
+    fun oneRowShowToArray(row: OneRow): Array<String> {
+
+        return row.show.toArray()
+    }
+
+    fun submitButtonPressed(view: View) {
 
         Loading.show(mask)
         val params: HashMap<String, String> = hashMapOf()
