@@ -1297,10 +1297,27 @@ fun ViewGroup.buttonPanel(context: Context, height: Int): LinearLayout {
     val lp = RelativeLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, height)
     lp.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM)
     view.layoutParams = lp
-    val color = ContextCompat.getColor(context, R.color.MY_GREEN)
+    view.setPadding(20, 0, 20, 0)
+    val color = ContextCompat.getColor(context, R.color.SEARCH_BACKGROUND)
     view.backgroundColor = color
     view.gravity = Gravity.CENTER
-    view.orientation = LinearLayout.HORIZONTAL
+    view.orientation = LinearLayout.VERTICAL
+    this.addView(view)
+
+    return view
+}
+
+fun ViewGroup.submitButton(context: Context, click: ()->Unit): Button {
+
+    val a = context as BaseActivity
+    val view = a.layoutInflater.inflate(R.layout.submit_button, null) as Button
+    val lp = LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 90)
+    //lp.weight = 1F
+    lp.setMargins(32, 12, 32, 24)
+    view.layoutParams = lp
+    view.onClick {
+        click()
+    }
     this.addView(view)
 
     return view
@@ -1310,8 +1327,9 @@ fun ViewGroup.cancelButton(context: Context, click: ()->Unit): Button {
 
     val a = context as BaseActivity
     val view = a.layoutInflater.inflate(R.layout.cancel_button, null) as Button
-    val lp = LinearLayout.LayoutParams(300, 90)
-    lp.setMargins(16, 0, 0, 0)
+    val lp = LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 90)
+    //lp.weight = 1F
+    lp.setMargins(32, 24, 32, 12)
     view.layoutParams = lp
     view.onClick {
         click()

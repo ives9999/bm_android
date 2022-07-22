@@ -2,7 +2,7 @@
 <resources>
     <color name="BLACK">#000000</color>
     <color name="black_overlay">#66000000</color>
-    <color name="CANCEL_BUTTON">#444444</color>
+    <color name="CANCEL_BUTTON">#7A7A7A</color>
     <color name="CELL_SELECTED">#665D65</color>
     <color name="CITY_BUTTON">#5d5d5d</color>
     <color name="colorAccent">#FF4081</color>

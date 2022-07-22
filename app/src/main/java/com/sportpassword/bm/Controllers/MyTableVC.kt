@@ -290,8 +290,8 @@ abstract class MyTableVC : BaseActivity() {
             top.unmask()
         }
 
-        val buttonViewHeight: Int = 150
-        blackViewHeight = tableViewHeight + buttonViewHeight + 200
+        val layerButtonLayoutHeight: Int = setButtonLayoutHeight()
+        blackViewHeight = tableViewHeight + layerButtonLayoutHeight + 200
 
         val statusBarHeight: Int = getStatusBarHeight()
 //        val appBarHeight: Int = 64
@@ -307,13 +307,23 @@ abstract class MyTableVC : BaseActivity() {
             width,
             blackViewHeight)
 
-        layerTableView = blackView!!.tableView(this, 0, buttonViewHeight)
-        layerButtonLayout = blackView!!.buttonPanel(this, buttonViewHeight)
+        layerTableView = blackView!!.tableView(this, 0, layerButtonLayoutHeight)
+        layerButtonLayout = blackView!!.buttonPanel(this, layerButtonLayoutHeight)
+
+        addPanelBtn()
+    }
+
+    open fun setButtonLayoutHeight(): Int {
+        val buttonViewHeight: Int = 150
+
+        return buttonViewHeight
+    }
+
+    open fun addPanelBtn() {
         layerCancelBtn = layerButtonLayout.cancelButton(this) {
             top.unmask()
         }
     }
-
 
     fun getStatusBarHeight(): Int {
         var result = 0

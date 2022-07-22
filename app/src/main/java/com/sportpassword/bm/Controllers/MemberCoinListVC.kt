@@ -7,16 +7,18 @@ import android.widget.Button
 import com.google.gson.Gson
 import com.google.gson.JsonParseException
 import com.sportpassword.bm.Adapters.MemberCoinAdapter
+import com.sportpassword.bm.Adapters.OneItemAdapter
+import com.sportpassword.bm.Data.OneRow
+import com.sportpassword.bm.Data.OneSection
 import com.sportpassword.bm.Models.MemberCoinTable
 import com.sportpassword.bm.Models.Table
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.MemberService
-import com.sportpassword.bm.Utilities.Loading
-import com.sportpassword.bm.Utilities.MEMBER_COIN_IN_TYPE
-import com.sportpassword.bm.Utilities.MEMBER_COIN_OUT_TYPE
-import com.sportpassword.bm.Utilities.setInfo
+import com.sportpassword.bm.Utilities.*
 import com.sportpassword.bm.member
 import kotlinx.android.synthetic.main.activity_member_coin_list_vc.*
+import kotlinx.android.synthetic.main.activity_member_coin_list_vc.top
+import kotlinx.android.synthetic.main.activity_payment_vc.*
 import kotlinx.android.synthetic.main.mask.*
 import kotlinx.android.synthetic.main.mask.view.*
 
@@ -206,16 +208,50 @@ class MemberCoinListVC: MyTableVC() {
                         }
 
                         if (coinReturnResultTable != null) {
-                            runOnUiThread {
-                                val tableViewHeight: Int = rowHeight * 5
-                                showTableLayer(tableViewHeight)
+                            val rows: ArrayList<OneRow> = arrayListOf()
+                            var row: OneRow = OneRow()
+                            row = OneRow("購買：", coinReturnResultTable!!.grand_price.toString(), coinReturnResultTable!!.grand_price.formattedWithSeparator() + " 點", "grand_price", "text")
+                            rows.add(row)
+                            row = OneRow("贈送：", coinReturnResultTable!!.grand_give.toString(), coinReturnResultTable!!.grand_give.formattedWithSeparator() + " 點", "grand_give", "text")
+                            rows.add(row)
+                            row = OneRow("支出：", coinReturnResultTable!!.grand_spend.toString(), coinReturnResultTable!!.grand_spend.formattedWithSeparator() + " 點", "grand_spend", "text")
+                            rows.add(row)
+                            row = OneRow("手續費：", coinReturnResultTable!!.handle_fee.toString(), coinReturnResultTable!!.handle_fee.formattedWithSeparator() + " 點", "handle_fee", "text")
+                            rows.add(row)
+                            row = OneRow("轉帳費：", coinReturnResultTable!!.transfer_fee.toString(), coinReturnResultTable!!.transfer_fee.formattedWithSeparator() + " 點", "transfer_fee", "text")
+                            rows.add(row)
+                            row = OneRow("退款金額：", coinReturnResultTable!!.return_coin.toString(), coinReturnResultTable!!.return_coin.formattedWithSeparator() + " 點", "return_coin", "text")
+                            rows.add(row)
 
+                            val section: OneSection = OneSection("退款", "coin", true, rows)
+                            val tableViewHeight: Int = rowHeight * rows.size + 200
+
+                            runOnUiThread {
+                                showTableLayer(tableViewHeight)
+                                val panelAdapter = OneItemAdapter(this, 0, section, this, hashMapOf())
+
+                                layerTableView!!.adapter = panelAdapter
                             }
                         }
                     }
                 }
             }
         }
+    }
+
+    override fun setButtonLayoutHeight(): Int {
+        val buttonViewHeight: Int = 150
+
+        return buttonViewHeight * 2
+    }
+
+    override fun addPanelBtn() {
+
+        layerSubmitBtn = layerButtonLayout.submitButton(this) {
+            println("aaa")
+        }
+
+        super.addPanelBtn()
     }
 }
 
