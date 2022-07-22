@@ -654,7 +654,7 @@ class PaymentVC : MyTableVC() {
         }
     }
 
-    fun signupButtonPressed(view: View) {
+    fun submitButtonPressed(view: View) {
         ecpay_token = orderTable!!.ecpay_token
         toECPay()
     }

@@ -1307,11 +1307,11 @@ fun ViewGroup.buttonPanel(context: Context, height: Int): LinearLayout {
     return view
 }
 
-fun ViewGroup.submitButton(context: Context, click: ()->Unit): Button {
+fun ViewGroup.submitButton(context: Context, height: Int, click: ()->Unit): Button {
 
     val a = context as BaseActivity
     val view = a.layoutInflater.inflate(R.layout.submit_button, null) as Button
-    val lp = LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 90)
+    val lp = LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, height)
     //lp.weight = 1F
     lp.setMargins(32, 12, 32, 24)
     view.layoutParams = lp
@@ -1323,13 +1323,13 @@ fun ViewGroup.submitButton(context: Context, click: ()->Unit): Button {
     return view
 }
 
-fun ViewGroup.cancelButton(context: Context, click: ()->Unit): Button {
+fun ViewGroup.cancelButton(context: Context, height: Int, click: ()->Unit): Button {
 
     val a = context as BaseActivity
     val view = a.layoutInflater.inflate(R.layout.cancel_button, null) as Button
-    val lp = LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 90)
+    val lp = LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, height)
     //lp.weight = 1F
-    lp.setMargins(32, 24, 32, 12)
+    lp.setMargins(48, 24, 48, 12)
     view.layoutParams = lp
     view.onClick {
         click()
@@ -1366,6 +1366,10 @@ fun TextView.unSelected() {
 
 fun TextView.setTextLook(size: Float, color: Int) {
     this.textSize = size
+    this.setTextLookColor(color)
+}
+
+fun TextView.setTextLookColor(color: Int) {
     this.textColor = ContextCompat.getColor(context, color)
 }
 

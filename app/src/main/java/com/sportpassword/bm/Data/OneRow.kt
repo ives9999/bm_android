@@ -25,6 +25,8 @@ data class OneRow(
     var attribute: String = "",
     var amount: String = "",
     var quantity: String = "",
+    var titleColor: Int = 0,
+    var showColor: Int = 0,
     var token: String = ""
 ) {
     var msg: String = ""

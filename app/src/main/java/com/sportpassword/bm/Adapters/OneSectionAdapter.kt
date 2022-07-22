@@ -22,9 +22,7 @@ import com.sportpassword.bm.Controllers.List1CellDelegate
 import com.sportpassword.bm.Data.OneRow
 import com.sportpassword.bm.Data.OneSection
 import com.sportpassword.bm.R
-import com.sportpassword.bm.Utilities.CELL_TYPE
-import com.sportpassword.bm.Utilities.quotientAndRemainder
-import com.sportpassword.bm.Utilities.then
+import com.sportpassword.bm.Utilities.*
 import com.sportpassword.bm.Views.Tag
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.cart_list_cell.view.*
@@ -35,6 +33,7 @@ import kotlinx.android.synthetic.main.formitem_radio.view.*
 import kotlinx.android.synthetic.main.formitem_tag.view.*
 import kotlinx.android.synthetic.main.tag.view.*
 import org.jetbrains.anko.backgroundColor
+import org.jetbrains.anko.textColor
 import java.lang.IllegalArgumentException
 
 class OneSectionAdapter(val context: Context, private val resource: Int, var delegate: List1CellDelegate, val others: HashMap<String, String>): RecyclerView.Adapter<OneSectionViewHolder>() {
@@ -170,8 +169,14 @@ class OneItemAdapter(val context: Context, private val sectionIdx: Int, private 
 
         if (holder is PlainViewHolder) {
             holder.title.text = row.title
+            if (row.titleColor > 0) {
+                holder.title.setTextLookColor(R.color.MY_RED)
+            }
             holder.show.text = row.show
             holder.show.backgroundColor = Color.TRANSPARENT
+            if (row.showColor > 0) {
+                holder.show.setTextLookColor(R.color.MY_RED)
+            }
         } else if (holder is TextFieldViewHolder) {
             holder.title.text = row.title
             holder.prompt.visibility = View.INVISIBLE

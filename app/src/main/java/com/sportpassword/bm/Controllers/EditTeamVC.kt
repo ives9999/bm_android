@@ -385,7 +385,7 @@ class EditTeamVC : EditVC() {
         }
     }
 
-    fun signupButtonPressed(view: View) {
+    fun submitButtonPressed(view: View) {
 
         params.clear()
         params["cat_id"] = "21"

@@ -221,6 +221,8 @@ class MemberCoinListVC: MyTableVC() {
                             row = OneRow("轉帳費：", coinReturnResultTable!!.transfer_fee.toString(), coinReturnResultTable!!.transfer_fee.formattedWithSeparator() + " 點", "transfer_fee", "text")
                             rows.add(row)
                             row = OneRow("退款金額：", coinReturnResultTable!!.return_coin.toString(), coinReturnResultTable!!.return_coin.formattedWithSeparator() + " 點", "return_coin", "text")
+                            row.titleColor = R.color.MY_RED
+                            row.showColor = R.color.MY_RED
                             rows.add(row)
 
                             val section: OneSection = OneSection("退款", "coin", true, rows)
@@ -240,15 +242,15 @@ class MemberCoinListVC: MyTableVC() {
     }
 
     override fun setButtonLayoutHeight(): Int {
-        val buttonViewHeight: Int = 150
+        val buttonViewHeight: Int = 180
 
         return buttonViewHeight * 2
     }
 
     override fun addPanelBtn() {
 
-        layerSubmitBtn = layerButtonLayout.submitButton(this) {
-            println("aaa")
+        layerSubmitBtn = layerButtonLayout.submitButton(this, 120) {
+            info("即將推出")
         }
 
         super.addPanelBtn()

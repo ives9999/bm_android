@@ -369,7 +369,7 @@ class RegisterVC : MyTableVC() {
         }
     }
 
-    fun signupButtonPressed(view: View) {
+    fun submitButtonPressed(view: View) {
 
         var msg: String = ""
         for (section in oneSections) {

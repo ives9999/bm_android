@@ -117,7 +117,7 @@ class ShowProductVC: ShowVC() {
         imageContainerView.showImages(images, this)
     }
 
-    fun signupButtonPressed(view: View) {
+    fun submitButtonPressed(view: View) {
         //print("purchase")
         toAddCart(myTable!!.token)
     }

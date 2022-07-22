@@ -314,13 +314,13 @@ abstract class MyTableVC : BaseActivity() {
     }
 
     open fun setButtonLayoutHeight(): Int {
-        val buttonViewHeight: Int = 150
+        val buttonViewHeight: Int = 180
 
         return buttonViewHeight
     }
 
     open fun addPanelBtn() {
-        layerCancelBtn = layerButtonLayout.cancelButton(this) {
+        layerCancelBtn = layerButtonLayout.cancelButton(this, 120) {
             top.unmask()
         }
     }

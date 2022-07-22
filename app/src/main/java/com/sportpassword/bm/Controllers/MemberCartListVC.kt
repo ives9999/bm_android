@@ -183,7 +183,7 @@ class MemberCartListVC : MyTableVC() {
 //        toShowProduct(row.product!!.token)
 //    }
 
-    fun signupButtonPressed(view: View) {
+    fun submitButtonPressed(view: View) {
         toOrder()
     }
 

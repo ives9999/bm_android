@@ -261,7 +261,7 @@ class ShowTeamVC: ShowVC() {
         }
     }
 
-    fun signupButtonPressed(view: View) {
+    fun submitButtonPressed(view: View) {
 
         if (!member.isLoggedIn) {
             warning("請先登入會員")

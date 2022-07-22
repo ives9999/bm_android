@@ -489,7 +489,7 @@ class EditCourseVC : EditVC() {
 //        originMarginBottom = l.bottomMargin
 //    }
 
-    fun signupButtonPressed(view: View) {
+    fun submitButtonPressed(view: View) {
 
         params.clear()
         params["cat_id"] = "41"
