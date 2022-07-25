@@ -547,6 +547,8 @@ enum class GATEWAY(val englishName: String, val chineseName: String) {
     store_barcode("store_barcode", "超商條碼"),
     store_pay_711("store_pay_711", "7-11超商取貨付款"),
     store_pay_family("store_pay_family", "全家超商取貨付款"),
+    store_pay_hilife("store_pay_hilife", "萊爾富超商取貨付款"),
+    store_pay_ok("store_pay_ok", "OK超商取貨付款"),
     ATM("ATM", "虛擬帳戶"),
     remit("remit", "匯款"),
     cash("cash", "現金"),
@@ -564,7 +566,8 @@ enum class GATEWAY(val englishName: String, val chineseName: String) {
         return when(this) {
             store_pay_711-> "UNIMARTC2C"
             store_pay_family -> "FAMIC2C"
-            //store_pay_hilife -> return "HILIFEC2C"
+            store_pay_hilife -> return "HILIFEC2C"
+            store_pay_ok -> return "OKMARTC2C"
             else -> "UNIMARTC2C"
         }
     }
@@ -584,6 +587,8 @@ enum class GATEWAY(val englishName: String, val chineseName: String) {
                 "store_barcode"-> return store_barcode
                 "store_pay_711"-> return store_pay_711
                 "store_pay_family"-> return store_pay_family
+                "store_pay_hilife"-> return store_pay_hilife
+                "store_pay_ok"-> return store_pay_ok
                 "ATM"-> return ATM
                 "remit"-> return remit
                 "cash"-> return cash
@@ -623,6 +628,8 @@ enum class SHIPPING(val englishName: String, val chineseName: String) {
     direct("direct", "宅配"),
     store_711("store_711", "7-11超商取貨"),
     store_family("store_family", "全家超商取貨"),
+    store_hilife("store_hilife", "萊爾富超商取貨"),
+    store_ok("store_ok", "OK超商取貨"),
     cash("cash", "面交");
 
     fun toChineseString(): String {
@@ -646,6 +653,8 @@ enum class SHIPPING(val englishName: String, val chineseName: String) {
                 "direct"-> return direct
                 "store_711"-> return store_711
                 "store_family"-> return store_family
+                "store_hilife"-> return store_hilife
+                "store_ok"-> return store_ok
                 "cash"-> return cash
             }
             return direct

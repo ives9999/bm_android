@@ -520,12 +520,19 @@ class OrderVC : MyTableVC() {
 
             //2.將選擇付款的方式索引改為gateway enum然後判斷是否等於gateway enum的值
             //如果付款方式選擇超商取貨付款，則到貨方式也自動更改為超商取貨
-            if (key == GATEWAY_KEY && (GATEWAY.stringToEnum(shows[idx]) == GATEWAY.store_pay_711 || GATEWAY.stringToEnum(shows[idx]) == GATEWAY.store_pay_family)) {
+            if (key == GATEWAY_KEY && (GATEWAY.stringToEnum(shows[idx]) == GATEWAY.store_pay_711 ||
+                        GATEWAY.stringToEnum(shows[idx]) == GATEWAY.store_pay_family ||
+                        GATEWAY.stringToEnum(shows[idx]) == GATEWAY.store_pay_hilife ||
+                        GATEWAY.stringToEnum(shows[idx]) == GATEWAY.store_pay_ok)) {
                 val row1: OneRow = getRowFromRowKey(SHIPPING_KEY)
                 if (GATEWAY.stringToEnum(shows[idx]) == GATEWAY.store_pay_711) {
                     row1.value = SHIPPING.store_711.englishName
                 } else if (GATEWAY.stringToEnum(shows[idx]) == GATEWAY.store_pay_family) {
                     row1.value = SHIPPING.store_family.englishName
+                } else if (GATEWAY.stringToEnum(shows[idx]) == GATEWAY.store_pay_hilife) {
+                    row1.value = SHIPPING.store_hilife.englishName
+                } else if (GATEWAY.stringToEnum(shows[idx]) == GATEWAY.store_pay_ok) {
+                    row1.value = SHIPPING.store_ok.englishName
                 }
                 oneSectionAdapter.notifyItemChanged(sectionIdx+1)
             }
@@ -696,7 +703,10 @@ class OrderVC : MyTableVC() {
                                                 ecpay_token_ExpireDate
                                             )
                                         }
-                                    } else if (gateway_method == GATEWAY.store_pay_711 || gateway_method == GATEWAY.store_pay_family) {
+                                    } else if (gateway_method == GATEWAY.store_pay_711
+                                        || gateway_method == GATEWAY.store_pay_family
+                                        || gateway_method == GATEWAY.store_pay_hilife
+                                        || gateway_method == GATEWAY.store_pay_ok) {
                                         info("訂單已經成立，是否前往選取超商？", "關閉", "選取超商") {
                                             toWebView(orderTable.token, this)
                                         }

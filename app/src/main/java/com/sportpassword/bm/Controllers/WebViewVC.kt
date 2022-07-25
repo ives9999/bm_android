@@ -17,6 +17,7 @@ import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.OrderService
 import com.sportpassword.bm.Utilities.GATEWAY
 import com.sportpassword.bm.Utilities.Loading
+import com.sportpassword.bm.Utilities.URL_ECPAY2_C2C_MAP
 import com.sportpassword.bm.member
 import kotlinx.android.synthetic.main.activity_web_view_vc.*
 import kotlinx.android.synthetic.main.mask.*
@@ -71,7 +72,8 @@ class WebViewVC : BaseActivity() {
     fun showWebView(table: Table) {
 
         val orderTable: OrderTable = table as OrderTable
-        val url: String = "http://192.168.100.120/app/order/ecpay2_c2c_map"
+        //val url: String = "http://192.168.100.120/app/order/ecpay2_c2c_map"
+        val url: String = URL_ECPAY2_C2C_MAP
 
         var params: String = "LogisticsType=${
             URLEncoder.encode("CVS", "UTF-8")}"
@@ -83,8 +85,8 @@ class WebViewVC : BaseActivity() {
             params += "&order_token=${URLEncoder.encode(token!!, "UTF-8")}"
             params += "&phone=${URLEncoder.encode("android", "UTF-8")}"
         }
-//        println(url)
-//        println(params)
+        println(url)
+        println(params)
 
 
         findViewById<WebView>(R.id.webView)?. let {

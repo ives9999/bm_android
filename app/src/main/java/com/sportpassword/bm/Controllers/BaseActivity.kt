@@ -235,6 +235,7 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener,
         URL_COURSE_LIST = URL_HOME + "course/list"
         URL_COURSE_UPDATE = URL_HOME + "course/update"
         URL_DELETE = URL_HOME + "%s/delete"
+        URL_ECPAY2_C2C_MAP = URL_HOME + "order/ecpay2_c2c_map"
         URL_EMAIL_VALIDATE = URL_HOME + "member/email_validate"
         URL_FB_LOGIN = URL_HOME + "member/fb"
         URL_FORGETPASSWORD = "$BASE_URL/member/forget_password"
