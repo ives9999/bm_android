@@ -545,6 +545,28 @@ class MemberBankTable: Table() {
     }
 }
 
+class MemberLotteryTable: Table() {
+
+    var member_id: Int = 0
+    var level: String = ""
+
+    override fun filterRow() {
+        super.filterRow()
+    }
+
+}
+
+class MemberLotteryLogTable: Table() {
+
+    var member_lottery_id: Int = 0
+    var amount: Int = 0
+
+    override fun filterRow() {
+        super.filterRow()
+    }
+
+}
+
 enum class MEMBER_ROLE(val value: String) {
     member("member"), sale("sale"), designer("designer"), manager("manager"), admin("admin");
 }
