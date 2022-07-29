@@ -54,7 +54,7 @@ class MemberVC : MyTableVC() {
         super.init()
 
         recyclerView = list_container
-        refreshLayout = page_refresh
+        //refreshLayout = page_refresh
         maskView = mask
 
         val loginBtn = findViewById<LinearLayout>(R.id.loginBtn)
@@ -64,7 +64,7 @@ class MemberVC : MyTableVC() {
         val forgetPasswordBtn = findViewById<LinearLayout>(R.id.forgetPasswordBtn)
         forgetPasswordBtn.setOnClickListener { forgetpasswordBtnPressed() }
 
-        setRecyclerViewRefreshListener()
+        //setRecyclerViewRefreshListener()
 
         memberSectionAdapter = MemberSectionAdapter(this, R.layout.cell_section, this)
         memberSections = initSectionRow()
@@ -133,7 +133,7 @@ class MemberVC : MyTableVC() {
         forgetPasswordBtn.visibility = View.INVISIBLE
         list_container.visibility = View.VISIBLE
         //menu_team_container.visibility = View.VISIBLE
-        refreshLayout = page_refresh
+//        refreshLayout = page_refresh
 //        initMemberFunction()
     }
     
@@ -256,6 +256,8 @@ class MemberVC : MyTableVC() {
         val rows: ArrayList<MemberRow> = arrayListOf()
         var r: MemberRow = MemberRow("解碼點數", "coin", "", TO_MEMBER_COIN_LIST)
         r.show = member.coin.formattedWithSeparator() + " 點"
+        rows.add(r)
+        r = MemberRow("進階會員", "levelup", "", TO_MEMBER_LEVELUP)
         rows.add(r)
         r = MemberRow("帳戶資料", "account", "", TO_PROFILE)
         rows.add(r)

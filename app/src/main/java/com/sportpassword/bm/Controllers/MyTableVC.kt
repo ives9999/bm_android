@@ -84,38 +84,6 @@ abstract class MyTableVC : BaseActivity() {
         setRecyclerViewRefreshListener()
     }
 
-//    open fun initAdapter(include_section: Boolean=false) {
-//        adapter = GroupAdapter()
-//        adapter.setOnItemClickListener { item, view ->
-//            rowClick(item, view)
-//        }
-//
-//
-//        // for member register and member update personal data
-//        if (include_section) {
-//            for (section in sections) {
-//                adapterSections.add(Section())
-//            }
-//            for ((idx, title) in sections.withIndex()) {
-//                val expandableGroup = ExpandableGroup(GroupSection(title), true)
-//                val items = generateItems(idx)
-//                adapterSections[idx].addAll(items)
-//                expandableGroup.add(adapterSections[idx])
-//                adapter.add(expandableGroup)
-//            }
-//        } else {
-//            val items = generateItems()
-//            adapter.addAll(items)
-//        }
-//
-//        recyclerView.adapter = adapter
-//        recyclerView.setHasFixedSize(true)
-//        if (refreshLayout != null) {
-//            setRefreshListener()
-//        }
-//        setRecyclerViewScrollListener()
-//    }
-
     override fun refresh() {
 //        page = 1
 //        theFirstTime = true
@@ -154,24 +122,6 @@ abstract class MyTableVC : BaseActivity() {
                 if (jsonString != null && jsonString!!.isNotEmpty()) {
 //                    println(dataService.jsonString)
                     genericTable()
-
-                    //superCourses = dataService.superModel as SuperCourses
-//                    if (tables != null) {
-//                        page = tables!!.page
-//                        perPage = tables!!.perPage
-//                        totalCount = tables!!.totalCount
-//                        val _totalPage: Int = totalCount / perPage
-//                        totalPage = if (totalCount % perPage > 0) _totalPage + 1 else _totalPage
-//                        theFirstTime = false
-//
-//                        val items = generateItems()
-//                        adapter.update(items)
-//                        adapter.notifyDataSetChanged()
-//                        page++
-//                    } else {
-//                        warning(Global.message)
-//                        Global.message = ""
-//                    }
                 } else {
                     warning("沒有取得回傳的json字串，請洽管理員")
                 }
@@ -383,232 +333,12 @@ abstract class MyTableVC : BaseActivity() {
         }
     }
 
-//    fun <T: FormItem> getFormItemFromKey(cls: Class<T>, key: String): T? {
-//
-//        var res: T? = null
-//        for (formItem in form.formItems) {
-//            if (formItem.name == key) {
-//                res = formItem as? T
-//                break
-//            }
-//        }
-//
-//        return res
-//    }
-//
-//    open fun getFormItemFromKey(key: String): FormItem? {
-//
-//        var res: FormItem? = null
-//        for (formItem in form.formItems) {
-//            if (formItem.name == key) {
-//                res = formItem
-//                break
-//            }
-//        }
-//
-//        return res
-//    }
-
-//    fun getDefinedRow(key: String): HashMap<String, String> {
-//
-//        for (row in searchRows) {
-//            if (row["key"] == key) {
-//                return row
-//            }
-//        }
-//
-//        return hashMapOf()
-//    }
-
-//    fun replaceRows(key: String, row: HashMap<String, String>) {
-//        for ((idx, _row) in searchRows.withIndex()) {
-//            if (_row["key"] == key) {
-//                searchRows[idx] = row
-//                break
-//            }
-//        }
-//    }
-
-    //    myRows = [
-    //        ["key":"data", "rows": fixedRows],
-    //        ["key":"order", "rows": orderRows],
-    //        ["key":"like", "rows": likeRows],
-    //        ["key":"manager", "rows": courseRows],
-    //    ]
-
-//    fun getSectionRowFromMyRowsByKey(key: String): HashMap<String, Any> {
-//
-//        for (row in myRows) {
-//            val key1: String? = row["key"] as? String
-//            if (key1 != null) {
-//                if (key == key1) {
-//                    return row
-//                }
-//            }
-//        }
-//
-//        return hashMapOf()
-//    }
-
-//    fun getSectionRowFromMyRowsByIdx(idx: Int): HashMap<String, Any> {
-//
-//        return myRows[idx]
-//    }
-
-    //    let fixedRows: [[String: String]] = [
-    //        ["text": "帳戶資料", "icon": "account", "segue": TO_PROFILE],
-    //        ["text": "更改密碼", "icon": "password", "segue": TO_PASSWORD]
-    //    ]
-//    fun getRowRowsFromMyRowsByKey(key: String): ArrayList<HashMap<String, String>> {
-//
-//        val sectionRow: HashMap<String, Any> = getSectionRowFromMyRowsByKey(key)
-//        if (sectionRow.containsKey("rows")) {
-//            @Suppress("UNCHECKED_CAST")
-//            val tmp: ArrayList<HashMap<String, String>> = sectionRow["rows"] as ArrayList<HashMap<String, String>>
-//            if (tmp != null) {
-//            return tmp
-//        }
-//        }
-//
-//        return arrayListOf()
-//    }
-
-//    fun getRowRowsFromMyRowsByKey1(key: String): HashMap<String, String> {
-//
-//        for (sectionRow in myRows) {
-//            if (sectionRow.containsKey("rows")) {
-//                val rowRows = sectionRow["rows"] as ArrayList<HashMap<String, String>>
-//                for (rowRow in rowRows) {
-//                    if (rowRow["key"] == key) {
-//                        return rowRow
-//                    }
-//                }
-//            }
-//        }
-//
-//        return hashMapOf()
-//    }
-
-//    fun replaceRowsByKey(sectionKey: String, rows: ArrayList<HashMap<String, String>>) {
-//
-//        for ((sectionIdx, sectionRow) in myRows.withIndex()) {
-//
-//            var sectionKey1: String? = sectionRow["key"] as? String
-//            if (sectionKey1 != null) {
-//                if (sectionKey1 == sectionKey) {
-//                    myRows[sectionIdx]["rows"] = rows
-//                }
-//            }
-//        }
-//    }
-//
-//    fun replaceRowByKey(rowKey: String, _row: HashMap<String, String>) {
-//        //var sectionIdx: Int = -1
-//        var sectionKey: String = ""
-//        for ((idx, row) in myRows.withIndex()) {
-//
-//            // row is  ["key":"product", "rows": productRows]
-//            if (row.containsKey("rows")) {
-//                val rows: ArrayList<HashMap<String, String>> = row["rows"] as ArrayList<HashMap<String, String>>
-//                for (row1 in rows) {
-//                    val key1: String? = row1["key"]
-//                    if (key1 != null) {
-//                        if (rowKey == key1) {
-//                            //sectionIdx = idx
-//                            //找出 section row 的 key
-//                            sectionKey = myRows[idx]["key"] as String
-//                        }
-//                    }
-//                }
-//            }
-//        }
-//
-//        replaceRowByKey(sectionKey, rowKey, _row)
-//    }
-//
-//    fun replaceRowByKey(sectionKey: String, rowKey: String, _row: HashMap<String, String>) {
-//
-//        var tmpRows: ArrayList<HashMap<String, String>> = arrayListOf()
-//
-//
-//        for ((sectionIdx, sectionRow) in myRows.withIndex()) {
-//
-//            tmpRows = sectionRow["rows"] as ArrayList<HashMap<String, String>>
-//            val sectionKey1: String = sectionRow["key"] as String
-//            if (sectionKey1 == sectionKey) {
-//
-//                val sectionRows: ArrayList<HashMap<String, Any>> = sectionRow["rows"] as ArrayList<HashMap<String, Any>>
-//                for ((rowIdx, rowRow) in sectionRows.withIndex()) {
-//                    val rowKey1: String? = rowRow["key"] as? String
-//                    if (rowKey1 != null) {
-//
-//                        //2.用row key找出 row row
-//                        if (rowKey1 == rowKey) {
-//                            tmpRows[rowIdx] = _row
-//                        }
-//                    }
-//                }
-//            }
-//            myRows[sectionIdx]["rows"] = tmpRows
-//        }
-//    }
-//
-//    fun replaceRowByKey(rows: ArrayList<HashMap<String, String>>, key: String, newRow: HashMap<String, String>): ArrayList<HashMap<String, String>> {
-//
-//        val _rows = rows
-//        for ((idx, row) in rows.withIndex()) {
-//
-//            val key1: String = row["key"] ?: run {""}
-//            if (key1 == key) {
-//                _rows[idx] = newRow
-//                break
-//            }
-//        }
-//        return _rows
-//    }
-
-//    fun getRowFromKey(rows: ArrayList<HashMap<String, String>>, key: String): HashMap<String, String> {
-//
-//        for (row in rows) {
-//
-//            val key1: String = row["key"] ?: run {""}
-//            if (key1 == key) {
-//                return row
-//            }
-//        }
-//        return hashMapOf()
-//    }
-
-//    open fun getRowValue(rowKey: String): String {
-//
-//        val row = getRowRowsFromMyRowsByKey1(rowKey)
-//        var value: String = ""
-//        val tmp: String? = row["value"]
-//        if (tmp != null)  {
-//            value = tmp
-//        }
-//
-//        return value
-//    }
-
     fun makeSectionRow(title: String, key: String, rows: ArrayList<OneRow>, isExpanded: Boolean=true): OneSection {
 
         val s: OneSection = OneSection(title, key, isExpanded)
         s.items.addAll(rows)
         return s
     }
-
-//    fun getRowShow(rowKey: String): String {
-//
-//        val row = getRowRowsFromMyRowsByKey1(rowKey)
-//        var show: String = ""
-//        val tmp: String? = row["show"]
-//        if (tmp != null)  {
-//            show = tmp
-//        }
-//
-//        return show
-//    }
 
     fun getRowsFromSectionKey(key: String): ArrayList<OneRow> {
         for (section in oneSections) {
@@ -636,27 +366,6 @@ abstract class MyTableVC : BaseActivity() {
         return row.value
     }
 
-//    fun replaceRowFromKey(key: String, row1: OneRow) {
-//        for ((sectionIdx, section) in oneSections.withIndex()) {
-//            for ((rowIdx, row) in section.items.withIndex()) {
-//                if (key == row.key) {
-//                    oneSections[sectionIdx].items[rowIdx] = row
-//                    break
-//                }
-//            }
-//        }
-//    }
-//
-//    fun replaceRowFromIdx(sectionIdx: Int, rowIdx: Int, row1: OneRow) {
-//        oneSections[sectionIdx].items[rowIdx] = row1
-//    }
-
-//    private fun updateAdapter() {
-//        val rows = generateSearchItems(able_type)
-//        searchPanel.searchAdapter.update(rows)
-//
-//    }
-
     override fun arenaSelected(selected: String, show: String) {
 
         val key: String = ARENA_KEY
@@ -673,46 +382,13 @@ abstract class MyTableVC : BaseActivity() {
         oneSectionAdapter.notifyItemChanged(idx)
     }
 
-//    override fun textChanged(str: String) {
-//        val key: String = KEYWORD_KEY
-//        val row = getDefinedRow(key)
-//        row["value"] = str
-//    }
-//
-//    override fun switchChanged(pos: Int, b: Boolean) {
-//
-//        val row = searchRows[pos]
-//        val key = row["key"]!!
-//        if (b) { row["value"] = "1" } else { row["value"] = "0" }
-//        replaceRows(key, row)
-//    }
-
     override fun prepare(sectionIdx: Int, rowIdx: Int) {
-        //        var idx = 0
-//        if (section == 0) {
-//            idx = row
-//        } else {
-//            for (i in 0..section-1) {
-//                val tmps: ArrayList<String> = mySections[i]["key"] as ArrayList<String>
-//                idx += tmps.size
-//            }
-//            idx += row
-//        }
 
         val section = oneSections[sectionIdx]
         var row = section.items[rowIdx]
 
-//        var row = searchRows.get(idx)
-//        var key: String = ""
-//        if (row.containsKey("key")) {
-//            key = row["key"]!!
-//        }
-
         val key: String = row.key
         val value: String = row.value
-//        if (row.containsKey("value")) {
-//            value = row["value"]!!
-//        }
         if (key == CITY_KEY) {
             toSelectCity(value, null, able_type)
         } else if (key == WEEKDAY_KEY) {
@@ -806,28 +482,6 @@ abstract class MyTableVC : BaseActivity() {
 //
 //        }
     }
-
-//    override fun cellCity(row: Table) {
-//        val key: String = CITY_KEY
-//        val city_id: Int = row.city_id
-//        val row = getDefinedRow(key)
-//        row["value"] = city_id.toString()
-//        replaceRows(key, row)
-//        prepareParams()
-//        page = 1
-//        tableLists.clear()
-//        getDataStart(page, perPage)
-//    }
-
-//    override fun handleSearchSectionExpanded(idx: Int) {
-//        //println(idx)
-//        val searchSection = oneSections[idx]
-//        var isExpanded: Boolean = searchSection.isExpanded
-//        isExpanded = !isExpanded
-//        oneSections[idx].isExpanded = isExpanded
-//        oneSectionAdapter.setOneSection(oneSections)
-//        oneSectionAdapter.notifyItemChanged(idx)
-//    }
 
     override fun handleOneSectionExpanded(idx: Int) {
         //println(idx)
