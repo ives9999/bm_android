@@ -206,6 +206,11 @@ interface ToInterface {
         mainDelegate.startActivity(i)
     }
 
+    fun toMemberLevelUp() {
+        val i = Intent(mainDelegate, MemberLevelUpVC::class.java)
+        mainDelegate.memberLevelUpVC.launch(i)
+    }
+
     fun toMemberOrderList() {
         val i = Intent(mainDelegate, MemberOrderListVC::class.java)
         mainDelegate.startActivity(i)

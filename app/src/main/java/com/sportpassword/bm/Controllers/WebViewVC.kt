@@ -5,9 +5,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
-import android.webkit.JavascriptInterface
-import android.webkit.WebSettings
-import android.webkit.WebView
+import android.webkit.*
 import android.widget.Button
 import android.widget.Toast
 import com.google.gson.Gson
@@ -85,12 +83,24 @@ class WebViewVC : BaseActivity() {
             params += "&order_token=${URLEncoder.encode(token!!, "UTF-8")}"
             params += "&phone=${URLEncoder.encode("android", "UTF-8")}"
         }
-        println(url)
-        println(params)
+//        println(url)
+//        println(params)
 
 
         findViewById<WebView>(R.id.webView)?. let {
             it.settings.javaScriptEnabled = true
+
+            it.webViewClient = object : WebViewClient() {
+//                override fun shouldOverrideUrlLoading(
+//                    view: WebView?,
+//                    request: WebResourceRequest?
+//                ): Boolean {
+//                    view?.loadUrl(url)
+//                    return true
+//                }
+            }
+
+
             it.evaluateJavascript("document.body.style.background = 'blue';", null)
             webView.addJavascriptInterface(MyJavascriptInterface(context, this), "MyJavascriptInterface")
             //webView.addJavascriptInterface(JSBridge(),"JSBridge")

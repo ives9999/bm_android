@@ -176,7 +176,7 @@ class MemberVC : MyTableVC() {
 //            "blacklist" -> goBlackList()
             "calendar_course_signup" -> toCalendarCourseSignup()
             "refresh" -> refresh()
-            TO_MEMBER_COIN_LIST -> this.toMemberCoinList()
+
             TO_MEMBER_ORDER_LIST -> this.toMemberOrderList()
             TO_MEMBER_CART_LIST -> this.toMemberCartList("member")
             TO_MEMBER_SIGNUP_LIST -> this.toMemberSignupList(row.able_type)
@@ -197,6 +197,8 @@ class MemberVC : MyTableVC() {
             }
             TO_MEMBER_BANK -> this.toMemberBank()
             "delete" -> delete()
+            TO_MEMBER_COIN_LIST -> this.toMemberCoinList()
+            TO_MEMBER_LEVELUP -> this.toMemberLevelUp()
         }
     }
 
@@ -257,7 +259,7 @@ class MemberVC : MyTableVC() {
         var r: MemberRow = MemberRow("解碼點數", "coin", "", TO_MEMBER_COIN_LIST)
         r.show = member.coin.formattedWithSeparator() + " 點"
         rows.add(r)
-        r = MemberRow("進階會員", "levelup", "", TO_MEMBER_LEVELUP)
+        r = MemberRow("進階會員", "coin", "", TO_MEMBER_LEVELUP)
         rows.add(r)
         r = MemberRow("帳戶資料", "account", "", TO_PROFILE)
         rows.add(r)

@@ -808,6 +808,19 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener,
         }
     }
 
+    val memberLevelUpVC = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { res ->
+
+        if (res.resultCode == Activity.RESULT_OK) {
+
+            val i: Intent? = res.data
+            if (i != null) {
+                if (delegate != null) {
+                    delegate!!.refresh()
+                }
+            }
+        }
+    }
+
     protected fun myMakeCall(_mobile: String) {
         mobile = _mobile
         val p = ContextCompat.checkSelfPermission(this, android.Manifest.permission.CALL_PHONE)
