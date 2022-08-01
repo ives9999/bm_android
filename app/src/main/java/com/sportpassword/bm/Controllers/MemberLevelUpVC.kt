@@ -4,17 +4,33 @@ import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
-import com.sportpassword.bm.Adapters.MemberLevelUpAdapter
+import androidx.recyclerview.widget.RecyclerView
+import com.google.gson.Gson
+import com.google.gson.JsonParseException
+import com.google.gson.reflect.TypeToken
+import com.sportpassword.bm.Adapters.MemberLevelUpViewHolder
+import com.sportpassword.bm.Adapters.MyAdapter2
+import com.sportpassword.bm.Adapters.MyViewHolder2
 import com.sportpassword.bm.Data.OneRow
+import com.sportpassword.bm.Models.*
 import com.sportpassword.bm.R
-import kotlinx.android.synthetic.main.activity_member_coin_list_vc.*
+import com.sportpassword.bm.Services.MemberService
+import com.sportpassword.bm.Utilities.*
+import com.sportpassword.bm.member
+import kotlinx.android.synthetic.main.activity_member_level_up_vc.*
+import kotlinx.android.synthetic.main.mask.*
+import java.lang.reflect.Type
 
 class MemberLevelUpVC : MyTableVC() {
 
-    lateinit var tableAdapter: MemberLevelUpAdapter
+    //lateinit var tableAdapter: MyAdapter2<MemberLevelUpViewHolder<MemberLevelKindTable>, MemberLevelKindTable>
+    lateinit var myTable: MyTable2VC<MemberLevelUpViewHolder<MemberLevelKindTable>, MemberLevelKindTable>
+    var rows: ArrayList<MemberLevelKindTable> = arrayListOf()
 
     var bottom_button_count: Int = 3
     val button_width: Int = 400
+
+    var mysTable: Tables2<MemberLevelKindTable>? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -23,18 +39,106 @@ class MemberLevelUpVC : MyTableVC() {
 
         setMyTitle("進階會員")
 
-        val rows: ArrayList<OneRow> = arrayListOf()
-        val row: OneRow = OneRow()
-        row.title = "金牌會員"
-        rows.add(row)
+        val recyclerView: RecyclerView = findViewById(R.id.list)
+        val type: Type = object : TypeToken<MemberLevelKindTable>() {}.type
+        //val n: Type = MemberLevelKindTable::class.java
+        myTable = MyTable2VC(recyclerView, R.layout.levelup_cell, ::MemberLevelUpViewHolder, type, this)
+        myTable.setItems(rows)
 
-        recyclerView = list
-        tableAdapter = MemberLevelUpAdapter(this)
-        recyclerView.adapter = tableAdapter
+        //recyclerView = list
+        //tableAdapter = MyAdapter2(R.layout.levelup_cell, ::MemberLevelUpViewHolder, this)
+        //recyclerView.adapter = tableAdapter
+        //tableAdapter.items = rows
         //tableAdapter.setMyTableList(rows)
 
         setBottomThreeView()
+        init()
+
+        refresh()
     }
+
+    override fun init() {
+        isPrevIconShow = true
+        super.init()
+    }
+
+    override fun refresh() {
+
+        page = 1
+        theFirstTime = true
+
+        Loading.show(mask)
+        loading = true
+
+        MemberService.levelKind(this, member.token!!, page, perPage) { success ->
+            runOnUiThread {
+                Loading.hide(mask)
+            }
+            jsonString = MemberService.jsonString
+            genericTable()
+
+            //genericTable()
+
+            if (jsonString != null) {
+                val b: Boolean = myTable.parseJSON(jsonString!!)
+                if (!b && myTable.msg.isEmpty()) {
+                    val rootView: ViewGroup = getRootView()
+                    runOnUiThread {
+                        rootView.setInfo(this, "目前暫無資料")
+                    }
+                } else {
+                    runOnUiThread {
+                        myTable.notifyDataSetChanged()
+                    }
+                }
+            }
+        }
+    }
+
+    override fun genericTable() {
+        //println(MemberService.jsonString)
+        val type = object : TypeToken<Tables2<MemberLevelKindTable>>() {}.type
+        mysTable = jsonToModels2<Tables2<MemberLevelKindTable>, MemberLevelKindTable>(jsonString!!, type)
+
+        if (mysTable != null) {
+            if (mysTable!!.rows.count() > 0) {
+                //getPage()
+                page = mysTable!!.page
+                perPage = mysTable!!.perPage
+                totalCount = mysTable!!.totalCount
+                val _totalPage: Int = totalCount / perPage
+                totalPage = if (totalCount % perPage > 0) _totalPage + 1 else _totalPage
+
+                rows += generateItems1(MemberLevelKindTable::class, mysTable!!.rows)
+                myTable.setItems(rows)
+                //tableAdapter.items = rows
+                runOnUiThread {
+                    myTable.notifyDataSetChanged()
+                    //tableAdapter.notifyDataSetChanged()
+                }
+            } else {
+                val rootView: ViewGroup = getRootView()
+                runOnUiThread {
+                    rootView.setInfo(this, "目前暫無資料")
+                }
+            }
+        }
+    }
+
+//    fun initRows() {
+//        var row: OneRow = OneRow()
+//        row.title = "金牌會員"
+//        rows.add(row)
+//        row = OneRow()
+//        row.title = "銀牌會員"
+//        rows.add(row)
+//        row = OneRow()
+//        row.title = "銅牌會員"
+//        rows.add(row)
+//        row = OneRow()
+//        row.title = "鐵牌會員"
+//        rows.add(row)
+//    }
 
     fun setBottomThreeView() {
         findViewById<Button>(R.id.submitBtn) ?. let {

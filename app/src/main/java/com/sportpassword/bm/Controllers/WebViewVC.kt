@@ -86,11 +86,11 @@ class WebViewVC : BaseActivity() {
 //        println(url)
 //        println(params)
 
-
         findViewById<WebView>(R.id.webView)?. let {
             it.settings.javaScriptEnabled = true
 
             it.webViewClient = object : WebViewClient() {
+                //加入以下的程式碼，webview就會另開視窗
 //                override fun shouldOverrideUrlLoading(
 //                    view: WebView?,
 //                    request: WebResourceRequest?
@@ -99,7 +99,6 @@ class WebViewVC : BaseActivity() {
 //                    return true
 //                }
             }
-
 
             it.evaluateJavascript("document.body.style.background = 'blue';", null)
             webView.addJavascriptInterface(MyJavascriptInterface(context, this), "MyJavascriptInterface")

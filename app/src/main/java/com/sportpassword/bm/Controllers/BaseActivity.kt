@@ -244,6 +244,7 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener,
         URL_MEMBER_COINLIST = "${URL_HOME}member/coinlist"
         URL_MEMBER_COINRETURN = "${URL_HOME}member/coinReturn"
         URL_MEMBER_DELETE = URL_HOME + "member/delete"
+        URL_MEMBER_LEVEL_KIND = "${URL_HOME}member/levelKind"
         URL_MEMBER_LIKELIST = "${URL_HOME}member/likelist"
         URL_LIST = "${URL_HOME}%s"
         URL_LOGIN = URL_HOME + "login"

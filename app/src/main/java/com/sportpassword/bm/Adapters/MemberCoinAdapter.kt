@@ -15,18 +15,18 @@ import kotlinx.android.synthetic.main.coin_list_cell.view.*
 import org.jetbrains.anko.backgroundColor
 import org.jetbrains.anko.textColor
 
-class MemberCoinAdapter(list1CellDelegate: List1CellDelegate?): MyAdapter<MemberCoinViewHolder>(
+class MemberCoinAdapter(list1CellDelegate: List1CellDelegate?): MyAdapter2<MemberCoinViewHolder, Table>(
     R.layout.coin_list_cell, ::MemberCoinViewHolder, list1CellDelegate) {
 
     override fun onBindViewHolder(holder: MemberCoinViewHolder, position: Int) {
 
-        val row: MemberCoinTable = tableList[position] as MemberCoinTable
-
-        holder.bind(row, position)
+//        val row: MemberCoinTable = items[position] as MemberCoinTable
+//
+//        holder.bind(row, position)
     }
 }
 
-class MemberCoinViewHolder(context: Context, viewHolder: View, list1CellDelegate: List1CellDelegate? = null): MyViewHolder(context, viewHolder, list1CellDelegate) {
+class MemberCoinViewHolder(context: Context, viewHolder: View, list1CellDelegate: List1CellDelegate? = null): MyViewHolder2<Table>(context, viewHolder, list1CellDelegate) {
 
     val noLbl: TextView = viewHolder.noLbl
     val able_typeLbl: TextView = viewHolder.able_typeLbl

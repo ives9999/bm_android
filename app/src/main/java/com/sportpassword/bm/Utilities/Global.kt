@@ -35,6 +35,7 @@ import org.jetbrains.anko.displayMetrics
 import org.jetbrains.anko.makeCall
 import org.jetbrains.anko.sdk27.coroutines.onClick
 import org.jetbrains.anko.textColor
+import java.lang.reflect.Type
 import java.text.NumberFormat
 import java.text.ParseException
 import java.text.SimpleDateFormat
@@ -1798,6 +1799,21 @@ inline fun <reified T: Tables> jsonToModels(jsonString: String): T? {
         t = Gson().fromJson<T>(jsonString, T::class.java)
     } catch (e: java.lang.Exception) {
         Global.message = e.localizedMessage
+    }
+
+    return t
+}
+
+inline fun <reified T: Tables2<U>, U> jsonToModels2(jsonString: String, typeToken: Type): T? {
+
+    var t: T? = null
+    println(t)
+    try {
+        t = Gson().fromJson<T>(jsonString, typeToken)
+    } catch (e: java.lang.Exception) {
+        Global.message = e.localizedMessage
+        println(e.localizedMessage)
+        val e1 = e.localizedMessage
     }
 
     return t

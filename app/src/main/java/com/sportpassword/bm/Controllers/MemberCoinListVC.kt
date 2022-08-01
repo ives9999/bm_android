@@ -111,7 +111,7 @@ class MemberCoinListVC: MyTableVC() {
             if (coinResultTable!!.rows.size > 0) {
                 getPage()
                 tableLists += generateItems1(MemberCoinTable::class, coinResultTable!!.rows)
-                tableAdapter.setMyTableList(tableLists)
+                tableAdapter.items = tableLists
                 runOnUiThread {
                     tableAdapter.notifyDataSetChanged()
                 }

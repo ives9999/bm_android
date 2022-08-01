@@ -65,6 +65,31 @@ open class DataService {
 //
 //    }
 
+    fun _simpleService(context: Context, url: String, params: HashMap<String, String>, complete: CompletionHandler) {
+
+        val request: okhttp3.Request = getRequest(url, params)
+        okHttpClient.newCall(request).enqueue(object : Callback {
+            override fun onFailure(call: Call, e: IOException) {
+                msg = "網路錯誤，無法跟伺服器更新資料"
+                complete(success)
+            }
+
+            override fun onResponse(call: Call, response: okhttp3.Response) {
+
+                try {
+                    jsonString = response.body!!.string()
+//                    println(jsonString)
+                    success = true
+                } catch (e: Exception) {
+                    success = false
+                    msg = "parse json failed，請洽管理員"
+                    println(e.localizedMessage)
+                }
+                complete(success)
+            }
+        })
+    }
+
     open fun delete(context: Context, type: String, token: String, status: String = "trash", complete: CompletionHandler) {
         val url = getDeleteURL()
         //println(url)

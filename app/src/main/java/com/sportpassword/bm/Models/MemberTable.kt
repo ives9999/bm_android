@@ -564,6 +564,24 @@ class MemberLotteryLogTable: Table() {
     override fun filterRow() {
         super.filterRow()
     }
+}
+
+//class MemberLevelKindTables: Tables2<MemberLevelKindTable>() {
+//
+//}
+
+class MemberLevelKindTable: Table() {
+
+    var eng_name: String = ""
+    var price: Int = 0
+    var cycle: Int = 0
+    var cycle_unit: String = ""
+    var lottery: Int = 0
+    var gift_coin: Int = 0
+
+    override fun filterRow() {
+        super.filterRow()
+    }
 
 }
 

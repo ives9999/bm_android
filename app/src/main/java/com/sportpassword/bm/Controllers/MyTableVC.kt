@@ -197,15 +197,11 @@ abstract class MyTableVC : BaseActivity() {
         return temp
     }
 
-//    open fun generateItems(): ArrayList<Item> {
-//        return arrayListOf()
-//    }
-////
-//    open fun generateItems(section: Int): ArrayList<Item> {
-//        return arrayListOf()
-//    }
-//
     open fun genericTable() {}
+    open fun genericTable2() {
+
+
+    }
 //    open fun rowClick(item: com.xwray.groupie.Item<GroupieViewHolder>, view: View) {}
 
 //    override fun prepareParams(city_type: String) {
