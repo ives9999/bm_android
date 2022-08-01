@@ -17,11 +17,16 @@ import com.sportpassword.bm.Utilities.jsonToModels2
 import java.lang.reflect.Type
 import kotlin.reflect.typeOf
 
-class MyTable2VC<T: MyViewHolder2<U>, U: Table>(recyclerView: RecyclerView, cell: Int, private val viewHolderConstructor: (Context, View, List1CellDelegate?)-> T, private val type: Type, list1CellDelegate: List1CellDelegate?) {
+class MyTable2VC<T: MyViewHolder2<U>, U: Table>(recyclerView: RecyclerView, cell: Int, private val viewHolderConstructor: (Context, View, List1CellDelegate?)-> T, private val tableType: Type, list1CellDelegate: List1CellDelegate?) {
 
     //var recyclerView: RecyclerView
     val adapter: MyAdapter2<T, U>
     var msg: String = ""
+
+    var page: Int = 1
+    var perPage: Int = 20
+    var totalCount: Int = 0
+    var totalPage: Int = 0
 
     init {
         //recyclerView = findViewById<RecyclerView>(resource)
@@ -42,35 +47,37 @@ class MyTable2VC<T: MyViewHolder2<U>, U: Table>(recyclerView: RecyclerView, cell
 
     private fun genericTable2(jsonString: String): ArrayList<U> {
         val rows: ArrayList<U> = arrayListOf()
+        val tables2: Tables2<U>? = jsonToModels2<Tables2<U>, U>(jsonString, tableType)
 
-        //val type = object : TypeToken<Tables2<U>>() {}.type
-
-        //val a = Gson().fromJson<U>(jsonString, type)
-        //val tables2: Tables2<U>? = jsonToModels2<Tables2<U>, U>(jsonString, type)
-        //val a = Gson().fromJson<U>(jsonString)
-
-        //var tables2: Tables2<MemberLevelKindTable>? = null
-        val mysTable = jsonToModels2<Tables2<MemberLevelKindTable>, MemberLevelKindTable>(jsonString!!, type)
-
-        try {
-            val tables2 = Gson().fromJson<Tables2<MemberLevelKindTable>>(jsonString, type)
-            val n = 6
-        } catch (e: java.lang.Exception) {
-            Global.message = e.localizedMessage
-            println(e.localizedMessage)
-        }
-
-//        if (tables2 == null) {
-//            msg = "無法從伺服器取得正確的json資料，請洽管理員"
-//        } else {
-//            if (tables2.success) {
-//                if (tables2.rows.size > 0) {
-//                    //rows.addAll(tables2.rows)
-//                }
-//            } else {
-//                msg = "解析JSON字串時，沒有成功，系統傳回值錯誤，請洽管理員"
-//            }
+//        try {
+//            //val type = object : TypeToken<Tables2<MemberLevelKindTable>>() {}.type
+//            val tables2 = Gson().fromJson<Tables2<U>>(jsonString, type)
+//            val n = 6
+//        } catch (e: java.lang.Exception) {
+//            Global.message = e.localizedMessage
+//            println(e.localizedMessage)
 //        }
+
+        if (tables2 == null) {
+            msg = "無法從伺服器取得正確的json資料，請洽管理員"
+        } else {
+            if (tables2.success) {
+                if (tables2.rows.size > 0) {
+
+                    if (page == 1) {
+                        page = tables2.page
+                        perPage = tables2.perPage
+                        totalCount = tables2.totalCount
+                        val _totalPage: Int = totalCount / perPage
+                        totalPage = if (totalCount % perPage > 0) _totalPage + 1 else _totalPage
+                    }
+
+                    rows.addAll(tables2.rows)
+                }
+            } else {
+                msg = "解析JSON字串時，沒有成功，系統傳回值錯誤，請洽管理員"
+            }
+        }
 
         return rows
     }

@@ -15,18 +15,8 @@ import kotlinx.android.synthetic.main.coin_list_cell.view.*
 import org.jetbrains.anko.backgroundColor
 import org.jetbrains.anko.textColor
 
-class MemberCoinAdapter(list1CellDelegate: List1CellDelegate?): MyAdapter2<MemberCoinViewHolder, Table>(
-    R.layout.coin_list_cell, ::MemberCoinViewHolder, list1CellDelegate) {
-
-    override fun onBindViewHolder(holder: MemberCoinViewHolder, position: Int) {
-
-//        val row: MemberCoinTable = items[position] as MemberCoinTable
-//
-//        holder.bind(row, position)
-    }
-}
-
-class MemberCoinViewHolder(context: Context, viewHolder: View, list1CellDelegate: List1CellDelegate? = null): MyViewHolder2<Table>(context, viewHolder, list1CellDelegate) {
+class MemberCoinViewHolder<T>(context: Context, viewHolder: View, list1CellDelegate: List1CellDelegate? = null):
+    MyViewHolder2<MemberCoinTable>(context, viewHolder, list1CellDelegate) {
 
     val noLbl: TextView = viewHolder.noLbl
     val able_typeLbl: TextView = viewHolder.able_typeLbl
@@ -38,20 +28,19 @@ class MemberCoinViewHolder(context: Context, viewHolder: View, list1CellDelegate
     val typeButton: Button = viewHolder.typeButton
 
     //_row is cartTable
-    override fun bind(row: Table, idx: Int) {
+    override fun bind(row: MemberCoinTable, idx: Int) {
 
-        val _row: MemberCoinTable = row as MemberCoinTable
-        _row.filterRow()
+        row.filterRow()
         val no: String = (idx + 1).toString() + "."
 
         noLbl.text = no
-        balanceLbl.text = _row.balance.formattedWithSeparator()
+        balanceLbl.text = row.balance.formattedWithSeparator()
 
-        if (_row.able_type_show.isNotEmpty()) {
-            able_typeLbl.text = _row.able_type_show
+        if (row.able_type_show.isNotEmpty()) {
+            able_typeLbl.text = row.able_type_show
             able_typeLbl.setTextLook(16F, R.color.TEXT_WHITE)
         }
-        dateLbl.text = _row.created_at.noSec()
+        dateLbl.text = row.created_at.noSec()
         dateLbl.setTextLook(10F, R.color.MY_LIGHT_WHITE)
 
         priceSignLbl.setTextLook(10F, R.color.MY_WHITE)
@@ -61,31 +50,31 @@ class MemberCoinViewHolder(context: Context, viewHolder: View, list1CellDelegate
         balanceLbl.setTextLook(16F, R.color.MY_WHITE)
 
         typeButton.text =
-            ((_row.in_out) then { _row.type_in_enum.chineseName }) ?: _row.type_out_enum.chineseName
+            ((row.in_out) then { row.type_in_enum.chineseName }) ?: row.type_out_enum.chineseName
 
-        if (_row.in_out) {
-            priceLbl.text = "+" + _row.coin.formattedWithSeparator()
-            if (_row.type_in_enum == MEMBER_COIN_IN_TYPE.buy) {
+        if (row.in_out) {
+            priceLbl.text = "+" + row.coin.formattedWithSeparator()
+            if (row.type_in_enum == MEMBER_COIN_IN_TYPE.buy) {
                 typeButton.setLook(R.color.MEMBER_COIN_BUY, R.color.MY_WHITE)
-            } else if (_row.type_in_enum == MEMBER_COIN_IN_TYPE.gift) {
+            } else if (row.type_in_enum == MEMBER_COIN_IN_TYPE.gift) {
                 typeButton.setLook(R.color.MEMBER_COIN_GIFT, R.color.MY_WHITE)
             } else {
                 typeButton.visibility = View.INVISIBLE
             }
         } else {
-            priceLbl.text = "-" + _row.coin.formattedWithSeparator()
+            priceLbl.text = "-" + row.coin.formattedWithSeparator()
             priceLbl.setTextLook(16F, R.color.MY_RED)
-            if (_row.type_out_enum == MEMBER_COIN_OUT_TYPE.product) {
+            if (row.type_out_enum == MEMBER_COIN_OUT_TYPE.product) {
                 typeButton.setLook(R.color.MEMBER_COIN_PAY, R.color.MY_WHITE)
-            } else if (_row.type_out_enum == MEMBER_COIN_OUT_TYPE.course) {
+            } else if (row.type_out_enum == MEMBER_COIN_OUT_TYPE.course) {
                 typeButton.setLook(R.color.MEMBER_COIN_PAY, R.color.MY_WHITE)
             } else {
                 typeButton.visibility = View.INVISIBLE
             }
         }
 
-        if (_row.name.isNotEmpty()) {
-            able_typeLbl.text = _row.name
+        if (row.name.isNotEmpty()) {
+            able_typeLbl.text = row.name
         }
 
         viewHolder.setOnClickListener {

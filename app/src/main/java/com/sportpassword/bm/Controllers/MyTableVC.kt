@@ -38,7 +38,6 @@ abstract class MyTableVC : BaseActivity() {
     protected lateinit var recyclerView: RecyclerView
     protected lateinit var listAdapter: ListAdapter
 
-    protected var loading: Boolean = false
     protected lateinit var maskView: View
 
 //    protected lateinit var form: BaseForm
@@ -50,7 +49,6 @@ abstract class MyTableVC : BaseActivity() {
     protected var totalPage: Int = 0
 //    val items: ArrayList<Item> = arrayListOf()
 
-    var jsonString: String? = null
 
     var member_like: Boolean = false
 

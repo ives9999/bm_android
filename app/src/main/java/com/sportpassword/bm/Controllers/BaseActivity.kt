@@ -28,6 +28,7 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.google.gson.internal.LinkedTreeMap
 import com.onesignal.OneSignal
+import com.sportpassword.bm.Adapters.MyViewHolder2
 import com.sportpassword.bm.Adapters.OneSectionAdapter
 import com.sportpassword.bm.Adapters.SearchSectionAdapter
 import com.sportpassword.bm.App
@@ -141,6 +142,11 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener,
     protected lateinit var scrollerListenr: RecyclerView.OnScrollListener
 
     var weekdays: ArrayList<Int> = arrayListOf()
+
+    //for tableView
+    protected var loading: Boolean = false
+    var jsonString: String? = null
+
 
     //for search
 //    lateinit var searchSectionAdapter: SearchSectionAdapter
@@ -1750,6 +1756,28 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener,
     }
 
     open fun showSignupInfo(position: Int) {}
+
+    open fun <T: MyViewHolder2<U>, U: Table> showTableView(myTable: MyTable2VC<T, U>) {
+        runOnUiThread {
+            Loading.hide(mask)
+        }
+        jsonString = MemberService.jsonString
+        //genericTable()
+
+        if (jsonString != null) {
+            val b: Boolean = myTable.parseJSON(jsonString!!)
+            if (!b && myTable.msg.isEmpty()) {
+                val rootView: ViewGroup = getRootView()
+                runOnUiThread {
+                    rootView.setInfo(this, "目前暫無資料")
+                }
+            } else {
+                runOnUiThread {
+                    myTable.notifyDataSetChanged()
+                }
+            }
+        }
+    }
 
     override fun singleSelected(key: String, selected: String) {
 
