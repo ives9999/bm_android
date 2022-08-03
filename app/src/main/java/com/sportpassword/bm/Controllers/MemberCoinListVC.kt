@@ -8,13 +8,11 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.gson.Gson
 import com.google.gson.JsonParseException
 import com.google.gson.reflect.TypeToken
-import com.sportpassword.bm.Adapters.MemberCoinAdapter
-import com.sportpassword.bm.Adapters.MemberLevelUpViewHolder
+import com.sportpassword.bm.Adapters.MemberCoinViewHolder
 import com.sportpassword.bm.Adapters.OneItemAdapter
 import com.sportpassword.bm.Data.OneRow
 import com.sportpassword.bm.Data.OneSection
 import com.sportpassword.bm.Models.MemberCoinTable
-import com.sportpassword.bm.Models.MemberLevelKindTable
 import com.sportpassword.bm.Models.Table
 import com.sportpassword.bm.Models.Tables2
 import com.sportpassword.bm.R
@@ -22,10 +20,7 @@ import com.sportpassword.bm.Services.MemberService
 import com.sportpassword.bm.Utilities.*
 import com.sportpassword.bm.member
 import kotlinx.android.synthetic.main.activity_member_coin_list_vc.*
-import kotlinx.android.synthetic.main.activity_member_coin_list_vc.top
-import kotlinx.android.synthetic.main.activity_payment_vc.*
 import kotlinx.android.synthetic.main.mask.*
-import kotlinx.android.synthetic.main.mask.view.*
 import java.lang.reflect.Type
 
 class MemberCoinListVC: MyTableVC() {
@@ -35,8 +30,7 @@ class MemberCoinListVC: MyTableVC() {
     var coinReturnResultTable: CoinReturnResultTable? = null
 
     private val tableType: Type = object : TypeToken<Tables2<MemberCoinTable>>() {}.type
-    lateinit var myTable: MyTable2VC<MemberLevelUpViewHolder<MemberLevelKindTable>, MemberLevelKindTable>
-
+    lateinit var myTable: MyTable2VC<MemberCoinViewHolder<MemberCoinTable>, MemberCoinTable>
 
     var bottom_button_count: Int = 3
     val button_width: Int = 400
@@ -51,8 +45,7 @@ class MemberCoinListVC: MyTableVC() {
         setMyTitle("解碼點數")
 
         val recyclerView: RecyclerView = findViewById(R.id.list)
-        myTable = MyTable2VC(recyclerView, R.layout.levelup_cell, ::MemberLevelUpViewHolder, tableType, this)
-
+        myTable = MyTable2VC(recyclerView, R.layout.coin_list_cell, ::MemberCoinViewHolder, tableType, this)
 
         //recyclerView = list
         refreshLayout = list_refresh
@@ -87,55 +80,58 @@ class MemberCoinListVC: MyTableVC() {
         loading = true
 
         MemberService.coinlist(this, member.token!!, myTable.page, myTable.perPage) { success ->
-            showTableView(myTable)
-        }
-    }
-
-    override fun getDataStart(_page: Int, _perPage: Int, token: String?) {
-        Loading.show(mask)
-        loading = true
-
-        MemberService.coinlist(this, member.token!!, _page, _perPage) { success ->
-            jsonString = MemberService.jsonString
-            getDataEnd(success)
-        }
-    }
-
-    override fun genericTable() {
-        //println(MemberService.jsonString)
-        try {
-            coinResultTable = Gson().fromJson<CoinResultTable>(MemberService.jsonString, CoinResultTable::class.java)
-        } catch (e: JsonParseException) {
             runOnUiThread {
-                warning(e.localizedMessage!!)
+                Loading.hide(mask)
             }
-        }
-        if (coinResultTable != null) {
-            if (coinResultTable!!.rows.size > 0) {
-                getPage()
-                tableLists += generateItems1(MemberCoinTable::class, coinResultTable!!.rows)
-                tableAdapter.items = tableLists
-                runOnUiThread {
-                    tableAdapter.notifyDataSetChanged()
-                }
-            } else {
-                val rootView: ViewGroup = getRootView()
-                runOnUiThread {
-                    rootView.setInfo(this, "目前暫無資料")
-                }
-            }
+            showTableView(myTable, MemberService.jsonString)
         }
     }
 
-    override fun getPage() {
-        if (coinResultTable != null) {
-            page = coinResultTable!!.page
-            perPage = coinResultTable!!.perPage
-            totalCount = coinResultTable!!.totalCount
-            val _totalPage: Int = totalCount / perPage
-            totalPage = if (totalCount % perPage > 0) _totalPage + 1 else _totalPage
-        }
-    }
+//    override fun getDataStart(_page: Int, _perPage: Int, token: String?) {
+//        Loading.show(mask)
+//        loading = true
+//
+//        MemberService.coinlist(this, member.token!!, _page, _perPage) { success ->
+//            jsonString = MemberService.jsonString
+//            getDataEnd(success)
+//        }
+//    }
+//
+//    override fun genericTable() {
+//        //println(MemberService.jsonString)
+//        try {
+//            coinResultTable = Gson().fromJson<CoinResultTable>(MemberService.jsonString, CoinResultTable::class.java)
+//        } catch (e: JsonParseException) {
+//            runOnUiThread {
+//                warning(e.localizedMessage!!)
+//            }
+//        }
+//        if (coinResultTable != null) {
+//            if (coinResultTable!!.rows.size > 0) {
+//                getPage()
+//                tableLists += generateItems1(MemberCoinTable::class, coinResultTable!!.rows)
+//                tableAdapter.items = tableLists
+//                runOnUiThread {
+//                    tableAdapter.notifyDataSetChanged()
+//                }
+//            } else {
+//                val rootView: ViewGroup = getRootView()
+//                runOnUiThread {
+//                    rootView.setInfo(this, "目前暫無資料")
+//                }
+//            }
+//        }
+//    }
+//
+//    override fun getPage() {
+//        if (coinResultTable != null) {
+//            page = coinResultTable!!.page
+//            perPage = coinResultTable!!.perPage
+//            totalCount = coinResultTable!!.totalCount
+//            val _totalPage: Int = totalCount / perPage
+//            totalPage = if (totalCount % perPage > 0) _totalPage + 1 else _totalPage
+//        }
+//    }
 
     override fun cellClick(row: Table) {
         //購買點數，前往查看訂單

@@ -1757,23 +1757,18 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener,
 
     open fun showSignupInfo(position: Int) {}
 
-    open fun <T: MyViewHolder2<U>, U: Table> showTableView(myTable: MyTable2VC<T, U>) {
-        runOnUiThread {
-            Loading.hide(mask)
-        }
-        jsonString = MemberService.jsonString
-        //genericTable()
+    open fun <T: MyViewHolder2<U>, U: Table> showTableView(tableView: MyTable2VC<T, U>, jsonString: String?) {
 
         if (jsonString != null) {
-            val b: Boolean = myTable.parseJSON(jsonString!!)
-            if (!b && myTable.msg.isEmpty()) {
+            val b: Boolean = tableView.parseJSON(jsonString!!)
+            if (!b && tableView.msg.isEmpty()) {
                 val rootView: ViewGroup = getRootView()
                 runOnUiThread {
                     rootView.setInfo(this, "目前暫無資料")
                 }
             } else {
                 runOnUiThread {
-                    myTable.notifyDataSetChanged()
+                    tableView.notifyDataSetChanged()
                 }
             }
         }

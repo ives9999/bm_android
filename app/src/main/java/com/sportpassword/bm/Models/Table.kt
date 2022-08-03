@@ -9,6 +9,7 @@ import kotlin.reflect.full.memberProperties
 
 class Tables2<T: Table> {
     var success: Boolean = true
+    var msg: String = ""
     var page: Int = 0
     var totalCount: Int = 0
     var perPage: Int = 0

@@ -18,7 +18,7 @@ import java.lang.reflect.Type
 class MemberLevelUpVC : BaseActivity() {
 
     private val tableType: Type = object : TypeToken<Tables2<MemberLevelKindTable>>() {}.type
-    lateinit var myTable: MyTable2VC<MemberLevelUpViewHolder<MemberLevelKindTable>, MemberLevelKindTable>
+    lateinit var tableView: MyTable2VC<MemberLevelUpViewHolder<MemberLevelKindTable>, MemberLevelKindTable>
     //lateinit var tableAdapter: MyAdapter2<MemberLevelUpViewHolder<MemberLevelKindTable>, MemberLevelKindTable>
     //var rows: ArrayList<MemberLevelKindTable> = arrayListOf()
 
@@ -36,7 +36,7 @@ class MemberLevelUpVC : BaseActivity() {
         setMyTitle("進階會員")
 
         val recyclerView: RecyclerView = findViewById(R.id.list)
-        myTable = MyTable2VC(recyclerView, R.layout.levelup_cell, ::MemberLevelUpViewHolder, tableType, this)
+        tableView = MyTable2VC(recyclerView, R.layout.levelup_cell, ::MemberLevelUpViewHolder, tableType, this)
         //myTable.setItems(rows)
 
         //recyclerView = list
@@ -58,16 +58,19 @@ class MemberLevelUpVC : BaseActivity() {
 
     override fun refresh() {
 
-        myTable.page = 1
+        tableView.page = 1
         getDataFromServer()
     }
 
-    fun getDataFromServer() {
+    private fun getDataFromServer() {
         Loading.show(mask)
         loading = true
 
-        MemberService.levelKind(this, member.token!!, myTable.page, myTable.perPage) { success ->
-            showTableView(myTable)
+        MemberService.levelKind(this, member.token!!, tableView.page, tableView.perPage) { success ->
+            runOnUiThread {
+                Loading.hide(mask)
+            }
+            showTableView(tableView, MemberService.jsonString)
         }
     }
 

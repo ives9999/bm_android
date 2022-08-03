@@ -666,6 +666,7 @@ enum class SHIPPING(val englishName: String, val chineseName: String) {
 enum class SHIPPING_PROCESS(val englishName: String, val chineseName: String) {
     normal("normal", "準備中"),
     shipping("shipping", "已經出貨"),
+    logistic("logistic", "已經送到物流中心"),
     store("store", "商品已到便利商店"),
     complete("complete", "已完成取貨"),
     `return`("back", "貨物退回");
