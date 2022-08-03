@@ -14,6 +14,7 @@ import android.widget.*
 import androidx.annotation.ColorInt
 import androidx.appcompat.widget.SwitchCompat
 import androidx.core.content.ContextCompat
+import androidx.core.view.get
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.zxing.BarcodeFormat
@@ -263,6 +264,8 @@ class OneItemAdapter(val context: Context, private val sectionIdx: Int, private 
 
             val group = holder.init(context, row)
             group.setOnCheckedChangeListener { radioGroup, i ->
+                val radio = radioGroup.get(i + 1) as RadioButton
+                radio.isChecked = true
                 delegate.cellRadioChanged(row.key, sectionIdx, position, i)
             }
         } else if (holder is MoreViewHolder) {

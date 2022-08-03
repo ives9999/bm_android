@@ -563,6 +563,16 @@ enum class GATEWAY(val englishName: String, val chineseName: String) {
         return englishName
     }
 
+    fun mapToShipping(): SHIPPING {
+        return when(this) {
+            store_pay_711-> SHIPPING.store_711
+            store_pay_family->SHIPPING.store_family
+            store_pay_hilife->SHIPPING.store_hilife
+            store_pay_ok->SHIPPING.store_ok
+            else->SHIPPING.direct
+        }
+    }
+
     fun enumToECPay(): String {
         return when(this) {
             store_pay_711-> "UNIMARTC2C"
@@ -1694,7 +1704,7 @@ object Alert {
         alert.show()
         return alert
     }
-    fun show(context: Context, title: String, msg: String, showCloseButton:Boolean=false,buttonTitle:String, buttonAction: ()->Unit): AlertDialog {
+    fun show(context: Context, title: String, msg: String, showCloseButton:Boolean=false, buttonTitle:String, buttonAction: ()->Unit): AlertDialog {
         val alert = _show(context, title, msg)
         if (showCloseButton) {
             alert.setButton(AlertDialog.BUTTON_NEGATIVE, "關閉") { Interface, j ->

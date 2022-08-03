@@ -511,19 +511,33 @@ class OrderVC : MyTableVC() {
     }
 
     override fun cellRadioChanged(key: String, sectionIdx: Int, rowIdx: Int, idx: Int) {
-        var row: OneRow = OneRow()
-        if (key == GATEWAY_KEY || key == SHIPPING_KEY) {
+        var row: OneRow = oneSections[sectionIdx].items[rowIdx]
+
+        val tmp: Array<String> = oneRowShowToArray(row)
+        for ((idx1, value) in tmp.withIndex()) {
+
+            if (idx1 == idx) {
+                row.value = value
+                break
+            }
+        }
+
+        if (key == GATEWAY_KEY) {
+
             row = oneSections[sectionIdx].items[rowIdx]
 
             //1.先取得該商品的所有付款方式的陣列
             val shows: Array<String> = oneRowShowToArray(row)
+            val gateway_enum: GATEWAY = GATEWAY.stringToEnum(shows[idx])
 
             //2.將選擇付款的方式索引改為gateway enum然後判斷是否等於gateway enum的值
             //如果付款方式選擇超商取貨付款，則到貨方式也自動更改為超商取貨
-            if (key == GATEWAY_KEY && (GATEWAY.stringToEnum(shows[idx]) == GATEWAY.store_pay_711 ||
-                        GATEWAY.stringToEnum(shows[idx]) == GATEWAY.store_pay_family ||
-                        GATEWAY.stringToEnum(shows[idx]) == GATEWAY.store_pay_hilife ||
-                        GATEWAY.stringToEnum(shows[idx]) == GATEWAY.store_pay_ok)) {
+            if (key == GATEWAY_KEY &&
+                (gateway_enum == GATEWAY.store_pay_711 ||
+                        gateway_enum == GATEWAY.store_pay_family ||
+                        gateway_enum == GATEWAY.store_pay_hilife ||
+                        gateway_enum == GATEWAY.store_pay_ok)
+            ) {
                 val row1: OneRow = getRowFromRowKey(SHIPPING_KEY)
                 if (GATEWAY.stringToEnum(shows[idx]) == GATEWAY.store_pay_711) {
                     row1.value = SHIPPING.store_711.englishName
@@ -536,17 +550,23 @@ class OrderVC : MyTableVC() {
                 }
                 oneSectionAdapter.notifyItemChanged(sectionIdx+1)
             }
+        } else if (key == SHIPPING_KEY) {
+
+
+            val gateway_enum: GATEWAY = _gatewayChecked()
+            //如果是更改選擇「到貨方式」，則檢查是否為超商貨到付款，如果是不允許更改預設值
+            if (gateway_enum == GATEWAY.store_pay_711 ||
+                    gateway_enum == GATEWAY.store_pay_family ||
+                    gateway_enum == GATEWAY.store_pay_hilife ||
+                    gateway_enum == GATEWAY.store_pay_ok) {
+                row.value = SHIPPING.store_711.englishName
+                oneSectionAdapter.notifyItemChanged(sectionIdx+1)
+
+                //_shippingCheckedForC2C(gateway_enum, GATEWAY.store_pay_711, "7-11超商貨到付款，到貨方式只能選取7-11到貨", row, sectionIdx)
+            }
+
         } else if (key == INVOICE_KEY) {
             row = invoiceOptionRows[rowIdx]
-        }
-
-        val tmp: Array<String> = oneRowShowToArray(row)
-        for ((idx1, value) in tmp.withIndex()) {
-
-            if (idx1 == idx) {
-                row.value = value
-                break
-            }
         }
 
         if (key == INVOICE_KEY) {
@@ -563,6 +583,25 @@ class OrderVC : MyTableVC() {
             }
             top.unmask()
             oneSectionAdapter.notifyItemChanged(sectionIdx)
+        }
+    }
+
+    fun _gatewayChecked(): GATEWAY {
+        val row: OneRow = getRowFromRowKey(GATEWAY_KEY)
+        val value: GATEWAY = GATEWAY.stringToEnum(row.value)
+
+        return value
+    }
+
+    fun _shippingCheckedForC2C(gateway_enumA: GATEWAY, gateway_enumB: GATEWAY, msg: String, row: OneRow, sectionIdx: Int) {
+
+        val shipping_enum: SHIPPING = gateway_enumB.mapToShipping()
+        if (gateway_enumA == gateway_enumB && SHIPPING.stringToEnum(row.key) != shipping_enum) {
+            warning(msg, false, "關閉") {
+                //row.value = gateway_enumA.mapToShipping().englishName
+                row.value = SHIPPING.store_711.englishName
+                oneSectionAdapter.notifyItemChanged(sectionIdx+1)
+            }
         }
     }
 
