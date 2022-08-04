@@ -13,11 +13,16 @@ import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
 import android.view.*
 import android.widget.Button
+import android.widget.RadioButton
+import android.widget.RadioGroup
+import androidx.core.view.get
+import androidx.core.view.size
 import com.google.gson.Gson
 import com.sportpassword.bm.Adapters.OneItemAdapter
 import com.sportpassword.bm.Adapters.OneSectionAdapter
 import com.sportpassword.bm.Data.*
 import com.sportpassword.bm.Services.ProductService
+import kotlinx.android.synthetic.main.iconcell.view.*
 
 class OrderVC : MyTableVC() {
 
@@ -510,7 +515,7 @@ class OrderVC : MyTableVC() {
         row.value = value
     }
 
-    override fun cellRadioChanged(key: String, sectionIdx: Int, rowIdx: Int, idx: Int) {
+    override fun cellRadioChanged(key: String, sectionIdx: Int, rowIdx: Int, idx: Int, radioGroup: RadioGroup) {
         var row: OneRow = oneSections[sectionIdx].items[rowIdx]
 
         val tmp: Array<String> = oneRowShowToArray(row)
@@ -559,10 +564,11 @@ class OrderVC : MyTableVC() {
                     gateway_enum == GATEWAY.store_pay_family ||
                     gateway_enum == GATEWAY.store_pay_hilife ||
                     gateway_enum == GATEWAY.store_pay_ok) {
-                row.value = SHIPPING.store_711.englishName
-                oneSectionAdapter.notifyItemChanged(sectionIdx+1)
 
-                //_shippingCheckedForC2C(gateway_enum, GATEWAY.store_pay_711, "7-11超商貨到付款，到貨方式只能選取7-11到貨", row, sectionIdx)
+                //row.value = SHIPPING.store_711.englishName
+                //oneSectionAdapter.notifyItemChanged(sectionIdx+1)
+
+                _shippingCheckedForC2C(gateway_enum, GATEWAY.store_pay_711, "7-11超商貨到付款，到貨方式只能選取7-11到貨", row, radioGroup)
             }
 
         } else if (key == INVOICE_KEY) {
@@ -593,14 +599,29 @@ class OrderVC : MyTableVC() {
         return value
     }
 
-    fun _shippingCheckedForC2C(gateway_enumA: GATEWAY, gateway_enumB: GATEWAY, msg: String, row: OneRow, sectionIdx: Int) {
+    fun _shippingCheckedForC2C(gateway_enumA: GATEWAY, gateway_enumB: GATEWAY, msg: String, row: OneRow, radioGroup: RadioGroup) {
 
+        //1.先由付款方式取得對應的到貨方式，例如「全家貨到付款」，到貨方式就是「全家取貨」
         val shipping_enum: SHIPPING = gateway_enumB.mapToShipping()
+
+        //2.判斷選擇的到貨方式是否不對
         if (gateway_enumA == gateway_enumB && SHIPPING.stringToEnum(row.key) != shipping_enum) {
+            //3.如果不對，顯示警告視窗
             warning(msg, false, "關閉") {
-                //row.value = gateway_enumA.mapToShipping().englishName
-                row.value = SHIPPING.store_711.englishName
-                oneSectionAdapter.notifyItemChanged(sectionIdx+1)
+                //4.先更改對應資料為正確的到貨方式
+                row.value = shipping_enum.englishName
+
+                //5.改回對的到貨方式
+                val title: String = shipping_enum.toChineseString()
+                for (i in 0 until radioGroup.size) {
+                    val radio: RadioButton = radioGroup[i] as RadioButton
+                    if (radio.text == title) {
+                        radio.isChecked = true
+                        break
+                    }
+                }
+
+                //oneSectionAdapter.notifyItemChanged(sectionIdx+1)
             }
         }
     }

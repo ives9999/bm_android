@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.res.ColorStateList
 import android.graphics.Bitmap
 import android.graphics.Color
+import android.provider.MediaStore
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.Gravity
@@ -15,6 +16,7 @@ import androidx.annotation.ColorInt
 import androidx.appcompat.widget.SwitchCompat
 import androidx.core.content.ContextCompat
 import androidx.core.view.get
+import androidx.core.view.size
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.zxing.BarcodeFormat
@@ -263,11 +265,25 @@ class OneItemAdapter(val context: Context, private val sectionIdx: Int, private 
         } else if (holder is RadioViewHolder) {
 
             val group = holder.init(context, row)
-            group.setOnCheckedChangeListener { radioGroup, i ->
-                val radio = radioGroup.get(i + 1) as RadioButton
-                radio.isChecked = true
-                delegate.cellRadioChanged(row.key, sectionIdx, position, i)
+
+            for (i in 0 until group.size) {
+                val radio: RadioButton = group[i] as RadioButton
+                radio.setOnClickListener {
+                    delegate.cellRadioChanged(row.key, sectionIdx, position, i, group)
+                }
             }
+            val l = 6
+//            group.setOnClickListener {
+//                val i = 6
+//            }
+//            group.setOnCheckedChangeListener { radioGroup, i ->
+//
+//                val radio: RadioButton = radioGroup[i] as RadioButton
+//                radio.isChecked = false
+//                val radio1: RadioButton = radioGroup[i+1] as RadioButton
+//                radio1.isChecked = true
+//                //delegate.cellRadioChanged(row.key, sectionIdx, position, i, radioGroup)
+//            }
         } else if (holder is MoreViewHolder) {
             holder.title.text = row.title
             holder.show.text = row.show
@@ -578,6 +594,13 @@ class RadioViewHolder(val viewHolder: View): RecyclerView.ViewHolder(viewHolder)
             }
 
             radioButton.isChecked = isChecked
+
+//            radioButton.setOnClickListener {
+//                val n = it.id
+//                val l = radioButtons[n+1]
+//                l.isChecked = true
+//                val m = 6
+//            }
             group.addView(radioButton)
 
             radioButtons.add(radioButton)

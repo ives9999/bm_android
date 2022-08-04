@@ -259,7 +259,7 @@ class MemberVC : MyTableVC() {
         var r: MemberRow = MemberRow("解碼點數", "coin", "", TO_MEMBER_COIN_LIST)
         r.show = member.coin.formattedWithSeparator() + " 點"
         rows.add(r)
-        r = MemberRow("進階會員", "coin", "", TO_MEMBER_LEVELUP)
+        r = MemberRow("進階會員", "member_level_up", "", TO_MEMBER_LEVELUP)
         rows.add(r)
         r = MemberRow("帳戶資料", "account", "", TO_PROFILE)
         rows.add(r)

@@ -5,6 +5,7 @@ import android.content.res.Resources
 import android.os.Bundle
 import androidx.recyclerview.widget.RecyclerView
 import android.view.View
+import android.widget.RadioGroup
 import android.widget.RelativeLayout
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
@@ -510,7 +511,7 @@ interface List1CellDelegate {
     fun cellTextChanged(sectionIdx: Int, rowIdx: Int, str: String) {}
     fun cellSwitchChanged(sectionIdx: Int, rowIdx: Int, b: Boolean) {}
     fun cellNumberChanged(sectionIdx: Int, rowIdx: Int, number: Int) {}
-    fun cellRadioChanged(key: String, sectionIdx: Int, rowIdx: Int, idx: Int) {}
+    fun cellRadioChanged(key: String, sectionIdx: Int, rowIdx: Int, idx: Int, radioGroup: RadioGroup) {}
     fun cellSexChanged(key: String, sectionIdx: Int, rowIdx: Int, sex: String) {}
     fun cellPrivacyChanged(sectionIdx: Int, rowIdx: Int, checked: Boolean) {}
     fun cellMoreClick(sectionIdx: Int, rowIdx: Int) {}
