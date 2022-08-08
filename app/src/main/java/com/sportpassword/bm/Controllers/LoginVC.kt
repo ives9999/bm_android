@@ -110,7 +110,7 @@ class LoginVC : BaseActivity() {
             }
             //println(success)
             if (success) {
-//                println(MemberService.jsonString)
+                //println(MemberService.jsonString)
                 var t: SuccessTable? = null
                 try {
                     t = Gson().fromJson<SuccessTable>(MemberService.jsonString, SuccessTable::class.java)
