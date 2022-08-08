@@ -482,7 +482,8 @@ enum class ALL_PROCESS(val englishName: String, val chineseName: String) {
     gateway_on("gateway_on", "付款中"),
     gateway_off("gateway_off", "完成付款，準備出貨"),
     shipping("shipping", "準備出貨"),
-    store("store", "商品到達便利商店"),
+    logistic("logistic", "到達物流中心"),
+    store("store", "到達便利商店"),
     complete("complete", "完成取貨"),
     returning("returning", "商品退回中"),
     `return`("return", "商品已退回"),
@@ -505,11 +506,12 @@ enum class ALL_PROCESS(val englishName: String, val chineseName: String) {
                 2-> return gateway_on
                 3-> return gateway_off
                 4-> return shipping
-                5-> return store
-                6-> return complete
-                7-> return returning
-                8-> return `return`
-                9-> return gateway_fail
+                5-> return logistic
+                6-> return store
+                7-> return complete
+                8-> return returning
+                9-> return `return`
+                10-> return gateway_fail
             }
             return normal
         }

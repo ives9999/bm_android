@@ -459,20 +459,17 @@ class PaymentVC : MyTableVC() {
             rows.add(row)
             row = OneRow("信用卡前6碼", card4No, card4No, "card4No", "text")
             rows.add(row)
-        } else if (method == GATEWAY.store_pay_711) {
-            if (orderTable!!.shipping != null) {
-                val CVSPaymentNo: String = orderTable!!.shipping!!.CVSPaymentNo
-                val CVSValidationNo: String = orderTable!!.shipping!!.CVSValidationNo
-                val paymentNo: String = CVSPaymentNo + CVSValidationNo
-                row = OneRow("條碼", paymentNo, paymentNo, "paymentNo", "text")
-                rows.add(row)
-            }
-        } else if (method == GATEWAY.store_pay_family) {
-            if (orderTable!!.shipping != null) {
-                val paymentNo: String = orderTable!!.shipping!!.BookingNote
-                row = OneRow("條碼", paymentNo, paymentNo, "paymentNo", "text")
-                rows.add(row)
-            }
+        } else if (
+            method == GATEWAY.store_pay_711 ||
+            method == GATEWAY.store_pay_family ||
+            method == GATEWAY.store_pay_hilife ||
+            method == GATEWAY.store_pay_ok
+        ) {
+            val CVSPaymentNo: String = orderTable!!.shipping!!.CVSPaymentNo
+            val CVSValidationNo: String = orderTable!!.shipping!!.CVSValidationNo
+            val paymentNo: String = CVSPaymentNo + CVSValidationNo
+            row = OneRow("條碼", paymentNo, paymentNo, "paymentNo", "text")
+            rows.add(row)
         }
 
         return rows

@@ -169,7 +169,7 @@ class OrderTable: Table() {
 
         if (all_process == 6) {
             var return_expire_date: Date = Date()
-            if (complete_at.isNotEmpty()) {
+            if (complete_at != null && complete_at.isNotEmpty()) {
                 complete_at.toDate("yyyy-MM-dd")?.let {
                     val c: Calendar = Calendar.getInstance()
                     c.time = it
