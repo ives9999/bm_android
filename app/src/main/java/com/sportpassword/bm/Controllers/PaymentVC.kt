@@ -147,8 +147,8 @@ class PaymentVC : MyTableVC() {
 
     fun toECPay() {
 
-        //PaymentkitManager.initialize(this, ServerType.Stage)
-        PaymentkitManager.initialize(this, ServerType.Prod)
+        PaymentkitManager.initialize(this, ServerType.Stage)
+        //PaymentkitManager.initialize(this, ServerType.Prod)
         PaymentkitManager.createPayment(this, ecpay_token, LanguageCode.zhTW, true, title, PaymentkitManager.RequestCode_CreatePayment)
     }
 
@@ -510,10 +510,39 @@ class PaymentVC : MyTableVC() {
         OrderService.update(this, params) { success ->
             //unmask()
             if (success) {
-                finishAffinity()
-                toPayment(order_token)
-                //finish()
-                //toProduct()
+
+                try {
+                    val successTable: UpdateResTable = Gson().fromJson<UpdateResTable>(
+                        OrderService.jsonString,
+                        UpdateResTable::class.java
+                    )
+                    if (!successTable.success) {
+                        val msg: String = "錯誤訊息：" + successTable.msg
+                        info(successTable.msg)
+                    } else {
+                        successTable.model ?. let {
+                            val shippingTable: ShippingTable = it.shipping!!
+                            val method: SHIPPING = SHIPPING.stringToEnum(shippingTable.method)
+                            if (method == SHIPPING.store_711 || method == SHIPPING.store_family || method == SHIPPING.store_hilife || method == SHIPPING.store_ok) {
+                                runOnUiThread {
+                                    info("訂單已經完成付款，是否前往選擇超商門市？", "關閉", "是") {
+                                        toWebView(it.token, this)
+                                    }
+                                }
+                            } else {
+                                runOnUiThread {
+                                    info("完成付款，我們將儘速將商品運送給您，謝謝您的光顧!!", "", "關閉") {
+                                        finishAffinity()
+                                        toPayment(order_token)
+                                    }
+                                }
+                            }
+                        }
+                    }
+                } catch (e: JsonParseException) {
+                    warning(e.localizedMessage!!)
+                    //println(e.localizedMessage)
+                }
             } else {
                 warning(OrderService.msg, false, "關閉") {
                     finishAffinity()
@@ -590,15 +619,7 @@ class PaymentVC : MyTableVC() {
                                 expire_at = ATM.expireDate
                             }
                         }
-
-                        if (gateway == GATEWAY.credit_card) {
-                            info("完成付款，我們將儘速將商品運送給您，謝謝您的光顧!!", "", "關閉") {
-                                //refresh()
-                                updateOrder()
-                            }
-                        } else {
-                            updateOrder()
-                        }
+                        updateOrder()
                     } else {
                         if (it.getRtnCode() == 10100058) {
                             msg = "付款失敗，有可能是信用卡刷卡錯誤，請檢查信用卡資訊是否有誤"
@@ -837,6 +858,16 @@ class BackResTable {
     var error_code: String = ""
     var url: String = ""
 }
+
+class UpdateResTable {
+
+    var success: Boolean = false
+    var msg: String = ""
+    var id: Int = 0
+    var update: String = ""
+    var model: OrderTable? = null
+}
+
 
 
 

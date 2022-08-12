@@ -9,12 +9,14 @@ import android.webkit.*
 import android.widget.Button
 import android.widget.Toast
 import com.google.gson.Gson
+import com.sportpassword.bm.Models.GatewayTable
 import com.sportpassword.bm.Models.OrderTable
 import com.sportpassword.bm.Models.Table
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.OrderService
 import com.sportpassword.bm.Utilities.GATEWAY
 import com.sportpassword.bm.Utilities.Loading
+import com.sportpassword.bm.Utilities.SHIPPING
 import com.sportpassword.bm.Utilities.URL_ECPAY2_C2C_MAP
 import com.sportpassword.bm.member
 import kotlinx.android.synthetic.main.activity_web_view_vc.*
@@ -73,16 +75,33 @@ class WebViewVC : BaseActivity() {
         //val url: String = "http://192.168.100.120/app/order/ecpay2_c2c_map"
         val url: String = URL_ECPAY2_C2C_MAP
 
+        var gateway: GATEWAY = GATEWAY.credit_card
+        orderTable.gateway ?. let {
+            gateway = GATEWAY.stringToEnum(it.method)
+        }
+
+        var shipping: SHIPPING = SHIPPING.direct
+        orderTable.shipping ?. let {
+            shipping = SHIPPING.stringToEnum(it.method)
+        }
+
+        var isCollection: String = "N"
+        if ((gateway == GATEWAY.store_pay_711 && shipping == SHIPPING.store_711) ||
+            (gateway == GATEWAY.store_pay_family && shipping == SHIPPING.store_family) ||
+            (gateway == GATEWAY.store_pay_hilife && shipping == SHIPPING.store_hilife) ||
+            (gateway == GATEWAY.store_pay_ok && shipping == SHIPPING.store_ok)
+        ) {
+            isCollection = "Y"
+        }
+
         var params: String = "LogisticsType=${
             URLEncoder.encode("CVS", "UTF-8")}"
-        if (orderTable.gateway != null) {
-            val gatewayEnum: GATEWAY = GATEWAY.stringToEnum(orderTable.gateway!!.method)
-            params += "&LogisticsSubType=${URLEncoder.encode(gatewayEnum.enumToECPay(), "UTF-8")}"
-            params += "&IsCollection=${URLEncoder.encode("Y", "UTF-8")}"
-            params += "&Device=${URLEncoder.encode("1", "UTF-8")}"
-            params += "&order_token=${URLEncoder.encode(token!!, "UTF-8")}"
-            params += "&phone=${URLEncoder.encode("android", "UTF-8")}"
-        }
+
+        params += "&LogisticsSubType=${URLEncoder.encode(gateway.enumToECPay(), "UTF-8")}"
+        params += "&IsCollection=${URLEncoder.encode(isCollection, "UTF-8")}"
+        params += "&Device=${URLEncoder.encode("1", "UTF-8")}"
+        params += "&order_token=${URLEncoder.encode(token!!, "UTF-8")}"
+        params += "&phone=${URLEncoder.encode("android", "UTF-8")}"
 //        println(url)
 //        println(params)
 
