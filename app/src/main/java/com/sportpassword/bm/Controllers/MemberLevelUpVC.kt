@@ -15,10 +15,10 @@ import com.sportpassword.bm.member
 import kotlinx.android.synthetic.main.mask.*
 import java.lang.reflect.Type
 
-class MemberLevelUpVC : BaseActivity() {
+class MemberLevelUpVC : BaseActivity(), List2CellDelegate<MemberLevelKindTable> {
 
     private val tableType: Type = object : TypeToken<Tables2<MemberLevelKindTable>>() {}.type
-    lateinit var tableView: MyTable2VC<MemberLevelUpViewHolder<MemberLevelKindTable>, MemberLevelKindTable>
+    lateinit var tableView: MyTable2VC<MemberLevelUpViewHolder, MemberLevelKindTable>
     //lateinit var tableAdapter: MyAdapter2<MemberLevelUpViewHolder<MemberLevelKindTable>, MemberLevelKindTable>
     //var rows: ArrayList<MemberLevelKindTable> = arrayListOf()
 
@@ -72,6 +72,12 @@ class MemberLevelUpVC : BaseActivity() {
             }
             showTableView(tableView, MemberService.jsonString)
         }
+    }
+
+    override fun cellClick(row: MemberLevelKindTable) {
+
+        //println(row.price)
+        toMemberLevelUpPay(row.name, row.price)
     }
 
 //    override fun genericTable() {

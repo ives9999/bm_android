@@ -29,6 +29,9 @@
         tools:replace="android:allowBackup"
         tools:targetApi="m">
         <activity
+            android:name=".Controllers.MemberLevelUpPayVC"
+            android:exported="false" />
+        <activity
             android:name=".Controllers.MemberLevelUpVC"
             android:exported="false" />
         <activity

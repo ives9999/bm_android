@@ -42,12 +42,6 @@ abstract class MyTableVC : BaseActivity() {
     protected lateinit var maskView: View
 
 //    protected lateinit var form: BaseForm
-
-    protected var theFirstTime: Boolean = true
-    protected var page: Int = 1
-    protected var perPage: Int = PERPAGE
-    protected var totalCount: Int = 0
-    protected var totalPage: Int = 0
 //    val items: ArrayList<Item> = arrayListOf()
 
 
@@ -57,13 +51,6 @@ abstract class MyTableVC : BaseActivity() {
 
     //取代superDataLists(define in BaseActivity)，放置所有拿到的SuperModel，分頁時會使用到
     //var <T> allSuperModels: ArrayList<T> = arrayListOf()
-
-    val rowHeight: Int = 200
-    var blackViewHeight: Int = 500
-    val blackViewPaddingLeft: Int = 80
-    var blackView: RelativeLayout? = null
-    var layerTableView: RecyclerView? = null
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -228,56 +215,6 @@ abstract class MyTableVC : BaseActivity() {
 //            params[key] = value
 //        }
 //    }
-
-    fun showTableLayer(tableViewHeight: Int) {
-        layerMask = top.mask(this)
-        layerMask!!.setOnClickListener {
-            top.unmask()
-        }
-
-        val layerButtonLayoutHeight: Int = setButtonLayoutHeight()
-        blackViewHeight = tableViewHeight + layerButtonLayoutHeight + 200
-
-        val statusBarHeight: Int = getStatusBarHeight()
-//        val appBarHeight: Int = 64
-        val frame_width = Resources.getSystem().displayMetrics.widthPixels
-        val frame_height = Resources.getSystem().displayMetrics.heightPixels - statusBarHeight - 200
-        val width: Int = frame_width - 2*blackViewPaddingLeft
-        val topX: Int = (frame_height-blackViewHeight)/2;
-
-        blackView = layerMask!!.blackView(
-            this,
-            blackViewPaddingLeft,
-            topX,
-            width,
-            blackViewHeight)
-
-        layerTableView = blackView!!.tableView(this, 0, layerButtonLayoutHeight)
-        layerButtonLayout = blackView!!.buttonPanel(this, layerButtonLayoutHeight)
-
-        addPanelBtn()
-    }
-
-    open fun setButtonLayoutHeight(): Int {
-        val buttonViewHeight: Int = 180
-
-        return buttonViewHeight
-    }
-
-    open fun addPanelBtn() {
-        layerCancelBtn = layerButtonLayout.cancelButton(this, 120) {
-            top.unmask()
-        }
-    }
-
-    fun getStatusBarHeight(): Int {
-        var result = 0
-        val resourceId = resources.getIdentifier("status_bar_height", "dimen", "android")
-        if (resourceId > 0) {
-            result = resources.getDimensionPixelSize(resourceId)
-        }
-        return result
-    }
 
 //    override fun showSearchPanel() {
 //        searchSectionAdapter.setSearchSection(searchSections)

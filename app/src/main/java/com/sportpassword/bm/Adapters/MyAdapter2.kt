@@ -6,9 +6,10 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.sportpassword.bm.Controllers.List1CellDelegate
+import com.sportpassword.bm.Controllers.List2CellDelegate
 import com.sportpassword.bm.Models.Table
 
-open class MyAdapter2<T: MyViewHolder2<U>, U: Table>(private val resource: Int, private val viewHolderConstructor: (Context, View, List1CellDelegate?)-> T, val list1CellDelegate: List1CellDelegate?=null): RecyclerView.Adapter<T>() {
+open class MyAdapter2<T: MyViewHolder2<U>, U: Table>(private val resource: Int, private val viewHolderConstructor: (Context, View, List2CellDelegate<U>?)-> T, private val list2CellDelegate: List2CellDelegate<U>?=null): RecyclerView.Adapter<T>() {
 
     var items: ArrayList<U> = arrayListOf()
 
@@ -27,11 +28,16 @@ open class MyAdapter2<T: MyViewHolder2<U>, U: Table>(private val resource: Int, 
         val viewHolder: View = inflater.inflate(resource, parent, false)
 
         //return T(parent.context, viewHolder, list1CellDelegate)
-        return viewHolderConstructor(parent.context, viewHolder, list1CellDelegate)
+        return viewHolderConstructor(parent.context, viewHolder, list2CellDelegate)
     }
 }
 
-open class MyViewHolder2<U>(val context: Context, val viewHolder: View, val list1CellDelegate: List1CellDelegate? = null): RecyclerView.ViewHolder(viewHolder) {
+open class MyViewHolder2<U: Table>(val context: Context, val viewHolder: View, private val list2CellDelegate: List2CellDelegate<U>? = null): RecyclerView.ViewHolder(viewHolder) {
 
-    open fun bind(row: U, idx: Int) {}
+    open fun bind(row: U, idx: Int) {
+
+        viewHolder.setOnClickListener {
+            list2CellDelegate?.cellClick(row)
+        }
+    }
 }

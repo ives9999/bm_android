@@ -7,6 +7,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.content.pm.PackageManager
+import android.content.res.Resources
 import android.graphics.Bitmap
 import android.graphics.Color
 import android.net.Uri
@@ -41,6 +42,7 @@ import com.sportpassword.bm.Utilities.*
 import com.sportpassword.bm.Views.ImagePicker
 import com.sportpassword.bm.Views.SearchPanel
 import com.sportpassword.bm.member
+import kotlinx.android.synthetic.main.activity_payment_vc.*
 import kotlinx.android.synthetic.main.bottom_view.*
 import kotlinx.android.synthetic.main.mask.*
 import kotlinx.android.synthetic.main.top_view.*
@@ -146,6 +148,19 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener,
     //for tableView
     protected var loading: Boolean = false
     var jsonString: String? = null
+
+    protected var theFirstTime: Boolean = true
+    protected var page: Int = 1
+    protected var perPage: Int = PERPAGE
+    protected var totalCount: Int = 0
+    protected var totalPage: Int = 0
+
+    val rowHeight: Int = 200
+    var blackViewHeight: Int = 500
+    val blackViewPaddingLeft: Int = 80
+    var blackView: RelativeLayout? = null
+    var layerTableView: RecyclerView? = null
+
 
 
     //for search
@@ -322,6 +337,12 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener,
                     }
                 }
             }
+        }
+    }
+
+    open fun addPanelBtn() {
+        layerCancelBtn = layerButtonLayout.cancelButton(this, 120) {
+            top.unmask()
         }
     }
 
@@ -652,6 +673,15 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener,
         screenWidth = displayMetrics.widthPixels
     }
 
+    fun getStatusBarHeight(): Int {
+        var result = 0
+        val resourceId = resources.getIdentifier("status_bar_height", "dimen", "android")
+        if (resourceId > 0) {
+            result = resources.getDimensionPixelSize(resourceId)
+        }
+        return result
+    }
+
     protected fun hidekeyboard(parent: View) {
         val allV = getAllChildrenBFS(parent)
         for (i in 0..allV.size-1) {
@@ -816,6 +846,19 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener,
     }
 
     val memberLevelUpVC = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { res ->
+
+        if (res.resultCode == Activity.RESULT_OK) {
+
+            val i: Intent? = res.data
+            if (i != null) {
+                if (delegate != null) {
+                    delegate!!.refresh()
+                }
+            }
+        }
+    }
+
+    val memberLevelUpPayVC = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { res ->
 
         if (res.resultCode == Activity.RESULT_OK) {
 
@@ -1637,6 +1680,12 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener,
         }
     }
 
+    open fun setButtonLayoutHeight(): Int {
+        val buttonViewHeight: Int = 180
+
+        return buttonViewHeight
+    }
+
     protected fun setBottomTabFocus() {
 
         val tabTitleID: Int = resources.getIdentifier(able_type + "TabTitle", "id", packageName)
@@ -1705,6 +1754,35 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener,
             }
             refreshLayout!!.setOnRefreshListener(refreshListener)
         }
+    }
+
+    fun showTableLayer(tableViewHeight: Int) {
+        layerMask = top.mask(this)
+        layerMask!!.setOnClickListener {
+            top.unmask()
+        }
+
+        val layerButtonLayoutHeight: Int = setButtonLayoutHeight()
+        blackViewHeight = tableViewHeight + layerButtonLayoutHeight + 200
+
+        val statusBarHeight: Int = getStatusBarHeight()
+//        val appBarHeight: Int = 64
+        val frame_width = Resources.getSystem().displayMetrics.widthPixels
+        val frame_height = Resources.getSystem().displayMetrics.heightPixels - statusBarHeight - 200
+        val width: Int = frame_width - 2*blackViewPaddingLeft
+        val topX: Int = (frame_height-blackViewHeight)/2;
+
+        blackView = layerMask!!.blackView(
+            this,
+            blackViewPaddingLeft,
+            topX,
+            width,
+            blackViewHeight)
+
+        layerTableView = blackView!!.tableView(this, 0, layerButtonLayoutHeight)
+        layerButtonLayout = blackView!!.buttonPanel(this, layerButtonLayoutHeight)
+
+        addPanelBtn()
     }
 
     ////// search panel start //////////////////////////////////////

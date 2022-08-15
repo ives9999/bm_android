@@ -23,14 +23,14 @@ import kotlinx.android.synthetic.main.activity_member_coin_list_vc.*
 import kotlinx.android.synthetic.main.mask.*
 import java.lang.reflect.Type
 
-class MemberCoinListVC: MyTableVC() {
+class MemberCoinListVC: BaseActivity(), List2CellDelegate<MemberCoinTable> {
 
     //lateinit var tableAdapter: MemberCoinAdapter
     var coinResultTable: CoinResultTable? = null
     var coinReturnResultTable: CoinReturnResultTable? = null
 
     private val tableType: Type = object : TypeToken<Tables2<MemberCoinTable>>() {}.type
-    lateinit var myTable: MyTable2VC<MemberCoinViewHolder<MemberCoinTable>, MemberCoinTable>
+    lateinit var myTable: MyTable2VC<MemberCoinViewHolder, MemberCoinTable>
 
     var bottom_button_count: Int = 3
     val button_width: Int = 400
@@ -87,6 +87,17 @@ class MemberCoinListVC: MyTableVC() {
         }
     }
 
+    override fun cellClick(row: MemberCoinTable) {
+        //購買點數，前往查看訂單
+
+        if (row.in_type != null && MEMBER_COIN_IN_TYPE.enumFromString(row.in_type) == MEMBER_COIN_IN_TYPE.buy && row.order_token.length > 0) {
+            toPayment(row.order_token, null, null, "member")
+        } else if (row.out_type != null && !row.in_out && MEMBER_COIN_OUT_TYPE.enumFromString(row.out_type) == MEMBER_COIN_OUT_TYPE.product && row.able_type == "order") {
+            //使用點數購買商品，前往查看訂單
+            toPayment(row.able_token, null, null, "member")
+        }
+    }
+
 //    override fun getDataStart(_page: Int, _perPage: Int, token: String?) {
 //        Loading.show(mask)
 //        loading = true
@@ -133,17 +144,9 @@ class MemberCoinListVC: MyTableVC() {
 //        }
 //    }
 
-    override fun cellClick(row: Table) {
-        //購買點數，前往查看訂單
-        val _row: MemberCoinTable = row as MemberCoinTable
-
-        if (row.in_type != null && MEMBER_COIN_IN_TYPE.enumFromString(row.in_type) == MEMBER_COIN_IN_TYPE.buy && _row.order_token.length > 0) {
-            toPayment(row.order_token, null, null, "member")
-        } else if (row.out_type != null && !row.in_out && MEMBER_COIN_OUT_TYPE.enumFromString(row.out_type) == MEMBER_COIN_OUT_TYPE.product && _row.able_type == "order") {
-            //使用點數購買商品，前往查看訂單
-            toPayment(row.able_token, null, null, "member")
-        }
-    }
+//    override fun cellClick(row: Table) {
+//
+//    }
 
     fun setBottomButtonPadding() {
 

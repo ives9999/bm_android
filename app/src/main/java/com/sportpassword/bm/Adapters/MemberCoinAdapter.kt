@@ -7,6 +7,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import com.sportpassword.bm.Controllers.List1CellDelegate
+import com.sportpassword.bm.Controllers.List2CellDelegate
 import com.sportpassword.bm.Models.MemberCoinTable
 import com.sportpassword.bm.Models.Table
 import com.sportpassword.bm.R
@@ -15,8 +16,8 @@ import kotlinx.android.synthetic.main.coin_list_cell.view.*
 import org.jetbrains.anko.backgroundColor
 import org.jetbrains.anko.textColor
 
-class MemberCoinViewHolder<T>(context: Context, viewHolder: View, list1CellDelegate: List1CellDelegate? = null):
-    MyViewHolder2<MemberCoinTable>(context, viewHolder, list1CellDelegate) {
+class MemberCoinViewHolder(context: Context, viewHolder: View, list2CellDelegate: List2CellDelegate<MemberCoinTable>? = null):
+    MyViewHolder2<MemberCoinTable>(context, viewHolder, list2CellDelegate) {
 
     val noLbl: TextView = viewHolder.noLbl
     val able_typeLbl: TextView = viewHolder.able_typeLbl
@@ -29,6 +30,8 @@ class MemberCoinViewHolder<T>(context: Context, viewHolder: View, list1CellDeleg
 
     //_row is cartTable
     override fun bind(row: MemberCoinTable, idx: Int) {
+
+        super.bind(row, idx)
 
         row.filterRow()
         val no: String = (idx + 1).toString() + "."
@@ -77,8 +80,8 @@ class MemberCoinViewHolder<T>(context: Context, viewHolder: View, list1CellDeleg
             able_typeLbl.text = row.name
         }
 
-        viewHolder.setOnClickListener {
-            list1CellDelegate?.cellClick(row)
+        //viewHolder.setOnClickListener {
+            //list2CellDelegate?.cellClick(row)
             //購買點數，前往查看訂單
 //            if (MEMBER_COIN_IN_TYPE.enumFromString(_row.in_type) == MEMBER_COIN_IN_TYPE.buy && _row.order_token.length > 0 && list1CellDelegate != null) {
 //                list1CellDelegate.cellClick(row)
@@ -88,7 +91,7 @@ class MemberCoinViewHolder<T>(context: Context, viewHolder: View, list1CellDeleg
 //            if (!row.in_out && MEMBER_COIN_OUT_TYPE.enumFromString(row.out_type) == MEMBER_COIN_OUT_TYPE.product && row.able_type == "order" && list1CellDelegate != null) {
 //                list1CellDelegate.cellClick(row)
 //            }
-        }
+        //}
 
 //        if (list1CellDelegate != null) {
 //            refreshIcon?.setOnClickListener {
