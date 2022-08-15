@@ -11,8 +11,10 @@ class MemberLevelUpViewHolder<T>(context: Context, viewHolder: View, list1CellDe
     MyViewHolder2<MemberLevelKindTable>(context, viewHolder, list1CellDelegate) {
 
     val titleLbl: TextView = viewHolder.titleLbl
+    val priceLbl: TextView = viewHolder.priceLbl
 
-    override fun bind(row: MemberLevelKindTable, idx: Int) {
-        titleLbl.text = row.name
+    override fun bind(item: MemberLevelKindTable, idx: Int) {
+        titleLbl.text = item.name
+        priceLbl.text = "NT$: " + item.price.toString() + " 元/月"
     }
 }

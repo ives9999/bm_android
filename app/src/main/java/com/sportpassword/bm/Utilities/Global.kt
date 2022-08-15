@@ -767,6 +767,42 @@ enum class SIGNUP_STATUS(val type: String) {
     }
 }
 
+enum class MEMBER_LEVEL(val englishName: String, val chineseName: String) {
+
+    gold("gold", "金牌"),
+    silver("silver", "銀牌"),
+    copper("copper", "銅牌"),
+    steal("steal", "鐵牌");
+
+    fun toChineseString(): String {
+        return chineseName
+    }
+
+    fun toEnglishString(): String {
+        return englishName
+    }
+
+    companion object: MYENUM<MEMBER_LEVEL>() {
+
+        fun getRawValueFromString(value: String): String {
+            return SHIPPING.valueOf(value).toChineseString()
+        }
+
+        fun stringToEnum(str: String): MEMBER_LEVEL {
+
+            when(str) {
+
+                "gold"-> return gold
+                "silver"-> return silver
+                "copper"-> return copper
+                "steal"-> return steal
+            }
+            return steal
+        }
+    }
+}
+
+
 /**
  * Created by ives on 2018/3/8.
  */

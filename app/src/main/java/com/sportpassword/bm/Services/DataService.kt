@@ -379,7 +379,7 @@ open class DataService {
         if (token != null) {
             url = url + "/" + token
         }
-        println(url)
+//        println(url)
 
 //        val header: MutableList<Pair<String, String>> = mutableListOf()
 //        header.add(Pair("Accept","application/json"))
@@ -402,8 +402,8 @@ open class DataService {
             params.put("member_token", member.token!!)
         }
 
-        val j: JSONObject = JSONObject(params as Map<*, *>)
-        println(j.toString())
+//        val j: JSONObject = JSONObject(params as Map<*, *>)
+//        println(j.toString())
 //        val body = j.toString().toRequestBody(HEADER.toMediaTypeOrNull())
 
         val request: okhttp3.Request = getRequest(url, params)
@@ -633,182 +633,6 @@ open class DataService {
             }
         })
     }
-
-//    open fun getList(context: Context, token: String?, _filter: HashMap<String, Any>?, page: Int, perPage: Int, complete: CompletionHandler) {
-//
-//        var url = getListURL()
-//        if (token != null) {
-//            url = url + "/" + token
-//        }
-//        //println(url)
-//
-//        val header: MutableList<Pair<String, String>> = mutableListOf()
-//        header.add(Pair("Accept","application/json"))
-//        header.add(Pair("Content-Type","application/json; charset=utf-8"))
-//
-//        val filter: HashMap<String, Any>?
-//        if (_filter == null) {
-//            filter = hashMapOf()
-//        } else {
-//            filter = _filter
-//        }
-//        filter.put("source", "app")
-//        filter.put("channel", "bm")
-//        filter.put("status", "online")
-//        filter.put("page", page)
-//        filter.put("perPage", perPage)
-//
-//        val body = filter.toJSONString()
-//        //println(body)
-//
-//        MyHttpClient.instance.post(context, url, body) { success ->
-//            if (success) {
-//                val response = MyHttpClient.instance.response
-//                if (response != null) {
-//                    try {
-//
-//                        //val s = Gson().fromJson<SuperCourses>(response.toString(), SuperCourses::class.java)
-//
-//                        val json = JSONObject(response.toString())
-//                        //println(json)
-//                        superModel = parseModels(json)
-//                        //superCourses = JSONParse.parse<SuperCourses>(json)!!
-////                        for (row in superCourses.rows) {
-////                            val citys = row.coach.citys
-////                            for (city in citys) {
-////                                city.print()
-////                            }
-////                        }
-//                        this.success = true
-//                    } catch (e: Exception) {
-//                        this.success = false
-//                        msg = "parse json failed，請洽管理員"
-//                        println(e.localizedMessage)
-//                    }
-//                    complete(this.success)
-//                } else {
-//                    println("response is null")
-//                }
-//            } else {
-//                msg = "網路錯誤，無法跟伺服器更新資料"
-//                complete(success)
-//            }
-//        }
-//    }
-
-//    fun getList(context: Context, type:String, titleField:String, params: HashMap<String,Any>, page:Int, perPage:Int, filter:Array<Array<Any>>?, complete:CompletionHandler) {
-//        val url = "$URL_LIST".format(type)
-//        val header: MutableList<Pair<String, String>> = mutableListOf()
-//        header.add(Pair("Accept","application/json"))
-//        header.add(Pair("Content-Type","application/json; charset=utf-8"))
-//
-//        val body = JSONObject()
-//        body.put("source", "app")
-//        body.put("channel", "bm")
-//        body.put("page", page.toString())
-//        body.put("perPage", perPage.toString())
-//
-//        for ((key, value) in params) {
-//            var valueStr: String = ""
-//            when (key) {
-//                "city_id" -> {
-//                    var arr: JSONArray = JSONArray(value as ArrayList<Int>)
-//                    body.put(key, arr)
-//                }
-//                "city_type" -> {
-//                    body.put(key, value)
-//                }
-//                "area_id" -> {
-//                    var arr: JSONArray = JSONArray(value as ArrayList<Int>)
-//                    body.put(key, arr)
-//                }
-//                "play_days" -> {
-//                    var arr: JSONArray = JSONArray(value as ArrayList<Int>)
-//                    body.put(key, arr)
-//                }
-//                "play_time" -> {
-//                    body.put(key, value)
-//                }
-//                "use_date_range" -> {
-//                    body.put(key, value)
-//                }
-//                "arena_id" -> {
-//                    var arr: JSONArray = JSONArray(value as ArrayList<Int>)
-//                    body.put(key, arr)
-//                }
-//                "degree" -> {
-//                    var arr: JSONArray = JSONArray(value as ArrayList<String>)
-//                    body.put(key, arr)
-//                }
-//                "k" -> {
-//                    body.put(key, value)
-//                }
-//                ARENA_AIR_CONDITION_KEY -> {
-//                    body.put(key, value)
-//                }
-//                ARENA_BATHROOM_KEY -> {
-//                    body.put(key, value)
-//                }
-//                ARENA_PARKING_KEY -> {
-//                    body.put(key, value)
-//                }
-//            }
-//        }
-//        if (filter != null) {
-//            val whereArr = JSONArray()
-//            for (i in filter.indices) {
-//                val operateArr = JSONArray()
-//                for (item in filter[i]) {
-//                    operateArr.put(item)
-//                }
-//                whereArr.put(operateArr)
-//            }
-//            body.put("where", whereArr)
-//        }
-//        MyHttpClient.instance.post(context, url, body.toString()) { success ->
-//            if (success) {
-////                superDataLists.clear()
-//                val response = MyHttpClient.instance.response
-//                if (response != null) {
-////                    println(response.toString())
-//                    try {
-//                        val json = JSONObject(response.toString())
-//                        this.success = true
-//                        this.totalCount = json.getInt("totalCount")
-//                        this.page = json.getInt("page")
-//                        this.perPage = json.getInt("perPage")
-//                        val rows = json.getJSONArray("rows")
-////                        println(rows)
-//                        for (i in 0..rows.length() - 1) {
-//                            val obj = rows.getJSONObject(i)
-//                            val title = obj.getString(titleField)
-//                            val token = obj.getString("token")
-//                            var vimeo = if (obj.has("vimeo")) obj.getString("vimeo") else ""
-//                            var youtube = if (obj.has("youtube")) obj.getString("youtube").toString() else ""
-//                            val id = obj.getInt("id")
-//                            var featured_path = if (obj.has("featured_path")) obj.get("featured_path").toString() else ""
-//                            //println(featured_path)
-//                            if (featured_path.isNotEmpty()) {
-//                                if (!featured_path.startsWith("http://") && !featured_path.startsWith("https://")) {
-//                                    featured_path = BASE_URL + featured_path
-//                                }
-//                            }
-//
-//                        }
-//                    } catch (e: Exception) {
-//                        this.success = false
-//                        msg = "parse json failed，請洽管理員"
-//                    }
-//                    complete(this.success)
-//                } else {
-//                    println("response is null")
-//                }
-//            } else {
-//                msg = "網路錯誤，無法跟伺服器更新資料"
-//                complete(success)
-//            }
-//        }
-//    }
 
     fun like(context: Context, token: String, able_id: Int) {
 
