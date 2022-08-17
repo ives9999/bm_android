@@ -211,10 +211,11 @@ interface ToInterface {
         mainDelegate.memberLevelUpVC.launch(i)
     }
 
-    fun toMemberLevelUpPay(name: String, price: Int) {
+    fun toMemberLevelUpPay(name: String, price: Int, kind: String) {
         val i = Intent(mainDelegate, MemberLevelUpPayVC::class.java)
         i.putExtra("name", name)
         i.putExtra("price", price)
+        i.putExtra("kind", kind)
         mainDelegate.memberLevelUpPayVC.launch(i)
     }
 

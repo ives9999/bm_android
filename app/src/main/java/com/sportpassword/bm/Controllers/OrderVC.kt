@@ -756,7 +756,7 @@ class OrderVC : MyTableVC() {
 
                                 runOnUiThread {
                                     if (gateway_method == GATEWAY.credit_card || gateway_method == GATEWAY.store_cvs) {
-                                        info("訂單已經成立，是否前往結帳？", "關閉", "結帳") {
+                                        info("訂單已經成立，是否前往付款？", "關閉", "付款") {
                                             toPayment(
                                                 orderTable.token,
                                                 ecpay_token,

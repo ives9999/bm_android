@@ -273,6 +273,7 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener,
         URL_MEMBER_BLACKLIST = URL_HOME + "member/blacklist"
         URL_MEMBER_GETONE = URL_HOME + "member/getOne"
         URL_MEMBER_SIGNUPLIST = "${URL_HOME}member/signup_calendar"
+        URL_MEMBER_SUBSCRIPTION = "${URL_HOME}member/subscription"
         URL_MEMBER_UPDATE = URL_HOME + "member/update"
         URL_MOBILE_VALIDATE = URL_HOME + "member/mobile_validate"
         URL_ONE = "${URL_HOME}%s/one"

@@ -77,7 +77,7 @@ class MemberLevelUpVC : BaseActivity(), List2CellDelegate<MemberLevelKindTable> 
     override fun cellClick(row: MemberLevelKindTable) {
 
         //println(row.price)
-        toMemberLevelUpPay(row.name, row.price)
+        toMemberLevelUpPay(row.name, row.price, row.eng_name)
     }
 
 //    override fun genericTable() {
