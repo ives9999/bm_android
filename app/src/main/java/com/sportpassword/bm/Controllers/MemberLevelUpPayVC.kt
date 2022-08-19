@@ -32,7 +32,7 @@ class MemberLevelUpPayVC : BaseActivity() {
         price = (intent.hasExtra("price") then { intent.getIntExtra("price", 0) }) ?: 0
         kind = (intent.hasExtra("kind") then { intent.getStringExtra("kind") }) ?: "gold"
 
-        setMyTitle(name)
+        setMyTitle(name+"會員")
 
         setBottomThreeView()
         init()
@@ -106,7 +106,7 @@ class MemberLevelUpPayVC : BaseActivity() {
         }
 
         findViewById<Button>(R.id.threeBtn) ?. let {
-            it.text = "退款"
+            it.text = "取消訂閱"
             it.setOnClickListener {
                 //coinReturn()
             }

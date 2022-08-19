@@ -45,7 +45,7 @@ class MemberLevelUpVC : BaseActivity(), List2CellDelegate<MemberLevelKindTable> 
         //tableAdapter.items = rows
         //tableAdapter.setMyTableList(rows)
 
-        setBottomThreeView()
+        //setBottomThreeView()
         init()
 
         refresh()

@@ -166,7 +166,7 @@ class Member(val context: Context) {
         set(value) {
             session.edit().putInt(COIN_KEY, value).apply()
         }
-    var level: String
+    var level: String?
         get() = session.getString(LEVEL_KEY, "")
         set(value) {
             session.edit().putString(LEVEL_KEY, value).apply()
