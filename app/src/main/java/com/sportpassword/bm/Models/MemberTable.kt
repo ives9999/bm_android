@@ -16,6 +16,7 @@ class MemberTable: Table() {
 
     var nickname: String = ""
     var coin: Int = 0
+    var level: String = ""
     var dob: String = ""
     var sex: String = ""
     var email: String = ""
@@ -164,6 +165,11 @@ class Member(val context: Context) {
         get() = session.getInt(COIN_KEY, 0)
         set(value) {
             session.edit().putInt(COIN_KEY, value).apply()
+        }
+    var level: String
+        get() = session.getString(LEVEL_KEY, "")
+        set(value) {
+            session.edit().putString(LEVEL_KEY, value).apply()
         }
     var uid: String?
         get() = session.getString(UID_KEY, "")
@@ -545,26 +551,26 @@ class MemberBankTable: Table() {
     }
 }
 
-class MemberLotteryTable: Table() {
-
-    var member_id: Int = 0
-    var level: String = ""
-
-    override fun filterRow() {
-        super.filterRow()
-    }
-
-}
-
-class MemberLotteryLogTable: Table() {
-
-    var member_lottery_id: Int = 0
-    var amount: Int = 0
-
-    override fun filterRow() {
-        super.filterRow()
-    }
-}
+//class MemberLotteryTable: Table() {
+//
+//    var member_id: Int = 0
+//    var level: String = ""
+//
+//    override fun filterRow() {
+//        super.filterRow()
+//    }
+//
+//}
+//
+//class MemberLotteryLogTable: Table() {
+//
+//    var member_lottery_id: Int = 0
+//    var amount: Int = 0
+//
+//    override fun filterRow() {
+//        super.filterRow()
+//    }
+//}
 
 //class MemberLevelKindTables: Tables2<MemberLevelKindTable>() {
 //
@@ -582,7 +588,12 @@ class MemberLevelKindTable: Table() {
     override fun filterRow() {
         super.filterRow()
     }
+}
 
+class MemberSubscriptionLogTable: Table() {
+
+    var member_id: Int = 0
+    var amount: Int = 0
 }
 
 enum class MEMBER_ROLE(val value: String) {
