@@ -45,7 +45,7 @@ class MemberLevelUpVC : BaseActivity(), List2CellDelegate<MemberLevelKindTable> 
         //tableAdapter.items = rows
         //tableAdapter.setMyTableList(rows)
 
-        //setBottomThreeView()
+        setBottomThreeView()
         init()
 
         refresh()
@@ -111,17 +111,19 @@ class MemberLevelUpVC : BaseActivity(), List2CellDelegate<MemberLevelKindTable> 
 
     fun setBottomThreeView() {
         findViewById<Button>(R.id.submitBtn) ?. let {
-            it.text = "購買點數"
+            it.text = "退訂"
             it.setOnClickListener {
                 toProduct()
             }
         }
 
         findViewById<Button>(R.id.threeBtn) ?. let {
-            it.text = "退款"
-            it.setOnClickListener {
-                //coinReturn()
-            }
+            it.visibility = View.GONE
+            bottom_button_count -= 1
+//            it.text = "退款"
+//            it.setOnClickListener {
+//                //coinReturn()
+//            }
         }
 
         findViewById<Button>(R.id.cancelBtn) ?. let {

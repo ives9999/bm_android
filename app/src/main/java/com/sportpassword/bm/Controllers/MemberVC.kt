@@ -260,6 +260,8 @@ class MemberVC : MyTableVC() {
         r.show = member.coin.formattedWithSeparator() + " 點"
         rows.add(r)
         r = MemberRow("進階會員", "member_level_up", "", TO_MEMBER_LEVELUP)
+        val level: MEMBER_LEVEL = MEMBER_LEVEL.stringToEnum(member.level!!)
+        r.show = level.chineseName
         rows.add(r)
         r = MemberRow("帳戶資料", "account", "", TO_PROFILE)
         rows.add(r)
