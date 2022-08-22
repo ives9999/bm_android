@@ -23,7 +23,7 @@ typealias selectedClosure<U> = ((U) -> Boolean)?
 
 class MyTable2VC<T: MyViewHolder2<U>, U: Table>(
     recyclerView: RecyclerView,
-    cell: Int,
+    cellResource: Int,
     viewHolderConstructor: viewHolder<T, U>,
     private val tableType: Type,
     didSelect: didSelectClosure<U>,
@@ -41,7 +41,7 @@ class MyTable2VC<T: MyViewHolder2<U>, U: Table>(
 
     init {
         //recyclerView = findViewById<RecyclerView>(resource)
-        adapter = MyAdapter2<T, U>(cell, viewHolderConstructor, didSelect, selected)
+        adapter = MyAdapter2<T, U>(cellResource, viewHolderConstructor, didSelect, selected)
         recyclerView.adapter = adapter
     }
 

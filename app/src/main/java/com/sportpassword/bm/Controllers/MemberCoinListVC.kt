@@ -12,6 +12,7 @@ import com.sportpassword.bm.Adapters.MemberCoinViewHolder
 import com.sportpassword.bm.Adapters.OneItemAdapter
 import com.sportpassword.bm.Data.OneRow
 import com.sportpassword.bm.Data.OneSection
+import com.sportpassword.bm.Interface.MyTable2IF
 import com.sportpassword.bm.Models.MemberCoinTable
 import com.sportpassword.bm.Models.MemberLevelKindTable
 import com.sportpassword.bm.Models.Table
@@ -24,14 +25,14 @@ import kotlinx.android.synthetic.main.activity_member_coin_list_vc.*
 import kotlinx.android.synthetic.main.mask.*
 import java.lang.reflect.Type
 
-class MemberCoinListVC: BaseActivity() {
+class MemberCoinListVC: BaseActivity(), MyTable2IF {
 
     //lateinit var tableAdapter: MemberCoinAdapter
     var coinResultTable: CoinResultTable? = null
     var coinReturnResultTable: CoinReturnResultTable? = null
 
     private val tableType: Type = object : TypeToken<Tables2<MemberCoinTable>>() {}.type
-    lateinit var myTable: MyTable2VC<MemberCoinViewHolder, MemberCoinTable>
+    lateinit var tableView: MyTable2VC<MemberCoinViewHolder, MemberCoinTable>
 
     var bottom_button_count: Int = 3
     val button_width: Int = 400
@@ -46,7 +47,7 @@ class MemberCoinListVC: BaseActivity() {
         setMyTitle("解碼點數")
 
         val recyclerView: RecyclerView = findViewById(R.id.list)
-        myTable = MyTable2VC(recyclerView, R.layout.coin_list_cell, ::MemberCoinViewHolder, tableType, this::didSelect, this::tableViewSetSelected)
+        tableView = MyTable2VC(recyclerView, R.layout.coin_list_cell, ::MemberCoinViewHolder, tableType, this::didSelect, this::tableViewSetSelected)
 
         //recyclerView = list
         refreshLayout = list_refresh
@@ -86,11 +87,20 @@ class MemberCoinListVC: BaseActivity() {
         Loading.show(mask)
         loading = true
 
-        MemberService.coinlist(this, member.token!!, myTable.page, myTable.perPage) { success ->
+        MemberService.coinlist(this, member.token!!, tableView.page, tableView.perPage) { success ->
             runOnUiThread {
                 Loading.hide(mask)
+
+                //MyTable2IF
+                val b: Boolean = showTableView(tableView, MemberService.jsonString)
+                if (b) {
+                    tableView.notifyDataSetChanged()
+                } else {
+                    val rootView: ViewGroup = getRootView()
+                    rootView.setInfo(this, "目前暫無資料")
+                }
             }
-            showTableView(myTable, MemberService.jsonString)
+            //showTableView(myTable, MemberService.jsonString)
         }
     }
 

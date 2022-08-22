@@ -7,6 +7,7 @@ import android.widget.Button
 import androidx.recyclerview.widget.RecyclerView
 import com.google.gson.reflect.TypeToken
 import com.sportpassword.bm.Adapters.MemberLevelUpViewHolder
+import com.sportpassword.bm.Interface.MyTable2IF
 import com.sportpassword.bm.Models.*
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.MemberService
@@ -15,7 +16,7 @@ import com.sportpassword.bm.member
 import kotlinx.android.synthetic.main.mask.*
 import java.lang.reflect.Type
 
-class MemberLevelUpVC : BaseActivity() {
+class MemberLevelUpVC : BaseActivity(), MyTable2IF {
 
     private val tableType: Type = object : TypeToken<Tables2<MemberLevelKindTable>>() {}.type
     lateinit var tableView: MyTable2VC<MemberLevelUpViewHolder, MemberLevelKindTable>
@@ -37,13 +38,6 @@ class MemberLevelUpVC : BaseActivity() {
 
         val recyclerView: RecyclerView = findViewById(R.id.list)
         tableView = MyTable2VC(recyclerView, R.layout.levelup_cell, ::MemberLevelUpViewHolder, tableType, this::didSelect, this::tableViewSetSelected)
-        //myTable.setItems(rows)
-
-        //recyclerView = list
-        //tableAdapter = MyAdapter2(R.layout.levelup_cell, ::MemberLevelUpViewHolder, this)
-        //recyclerView.adapter = tableAdapter
-        //tableAdapter.items = rows
-        //tableAdapter.setMyTableList(rows)
 
         setBottomThreeView()
         init()
@@ -69,13 +63,21 @@ class MemberLevelUpVC : BaseActivity() {
         MemberService.levelKind(this, member.token!!, tableView.page, tableView.perPage) { success ->
             runOnUiThread {
                 Loading.hide(mask)
+
+                //MyTable2IF
+                val b: Boolean = showTableView(tableView, MemberService.jsonString)
+                if (b) {
+                    tableView.notifyDataSetChanged()
+                } else {
+                    val rootView: ViewGroup = getRootView()
+                    rootView.setInfo(this, "目前暫無資料")
+                }
             }
-            showTableView(tableView, MemberService.jsonString)
         }
     }
 
     fun didSelect(row: MemberLevelKindTable, idx: Int) {
-
+        toMemberLevelUpPay(row.name, row.price, row.eng_name)
     }
 
     fun tableViewSetSelected(row: MemberLevelKindTable): Boolean {

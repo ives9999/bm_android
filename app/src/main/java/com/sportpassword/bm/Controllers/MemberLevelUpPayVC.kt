@@ -4,15 +4,14 @@ import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.TextView
 import com.google.gson.Gson
 import com.sportpassword.bm.Models.OrderTable
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.MemberService
 import com.sportpassword.bm.Services.OrderService
-import com.sportpassword.bm.Utilities.GATEWAY
 import com.sportpassword.bm.Utilities.Loading
 import com.sportpassword.bm.Utilities.then
-import com.sportpassword.bm.member
 import kotlinx.android.synthetic.main.mask.*
 
 class MemberLevelUpPayVC : BaseActivity() {
@@ -41,6 +40,10 @@ class MemberLevelUpPayVC : BaseActivity() {
     override fun init() {
         isPrevIconShow = true
         super.init()
+
+        findViewById<TextView>(R.id.contentLbl) ?. let {
+            it.setText("金牌選項\n獎項內容")
+        }
     }
 
     fun setBottomThreeView() {
