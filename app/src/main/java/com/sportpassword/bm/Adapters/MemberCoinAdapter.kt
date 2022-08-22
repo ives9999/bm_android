@@ -8,6 +8,8 @@ import android.widget.TextView
 import androidx.core.content.ContextCompat
 import com.sportpassword.bm.Controllers.List1CellDelegate
 import com.sportpassword.bm.Controllers.List2CellDelegate
+import com.sportpassword.bm.Controllers.didSelectClosure
+import com.sportpassword.bm.Controllers.selectedClosure
 import com.sportpassword.bm.Models.MemberCoinTable
 import com.sportpassword.bm.Models.Table
 import com.sportpassword.bm.R
@@ -16,8 +18,12 @@ import kotlinx.android.synthetic.main.coin_list_cell.view.*
 import org.jetbrains.anko.backgroundColor
 import org.jetbrains.anko.textColor
 
-class MemberCoinViewHolder(context: Context, viewHolder: View, list2CellDelegate: List2CellDelegate<MemberCoinTable>? = null):
-    MyViewHolder2<MemberCoinTable>(context, viewHolder, list2CellDelegate) {
+class MemberCoinViewHolder(
+    context: Context,
+    viewHolder: View,
+    didSelect: didSelectClosure<MemberCoinTable>,
+    selected: selectedClosure<MemberCoinTable>
+    ): MyViewHolder2<MemberCoinTable>(context, viewHolder, didSelect, selected) {
 
     val noLbl: TextView = viewHolder.noLbl
     val able_typeLbl: TextView = viewHolder.able_typeLbl

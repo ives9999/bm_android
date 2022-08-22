@@ -13,6 +13,7 @@ import com.sportpassword.bm.Adapters.OneItemAdapter
 import com.sportpassword.bm.Data.OneRow
 import com.sportpassword.bm.Data.OneSection
 import com.sportpassword.bm.Models.MemberCoinTable
+import com.sportpassword.bm.Models.MemberLevelKindTable
 import com.sportpassword.bm.Models.Table
 import com.sportpassword.bm.Models.Tables2
 import com.sportpassword.bm.R
@@ -23,7 +24,7 @@ import kotlinx.android.synthetic.main.activity_member_coin_list_vc.*
 import kotlinx.android.synthetic.main.mask.*
 import java.lang.reflect.Type
 
-class MemberCoinListVC: BaseActivity(), List2CellDelegate<MemberCoinTable> {
+class MemberCoinListVC: BaseActivity() {
 
     //lateinit var tableAdapter: MemberCoinAdapter
     var coinResultTable: CoinResultTable? = null
@@ -45,7 +46,7 @@ class MemberCoinListVC: BaseActivity(), List2CellDelegate<MemberCoinTable> {
         setMyTitle("解碼點數")
 
         val recyclerView: RecyclerView = findViewById(R.id.list)
-        myTable = MyTable2VC(recyclerView, R.layout.coin_list_cell, ::MemberCoinViewHolder, tableType, this)
+        myTable = MyTable2VC(recyclerView, R.layout.coin_list_cell, ::MemberCoinViewHolder, tableType, this::didSelect, this::tableViewSetSelected)
 
         //recyclerView = list
         refreshLayout = list_refresh
@@ -60,6 +61,12 @@ class MemberCoinListVC: BaseActivity(), List2CellDelegate<MemberCoinTable> {
         init()
         refresh()
     }
+
+    fun didSelect(row: MemberCoinTable, idx: Int) {
+
+    }
+
+    fun tableViewSetSelected(row: MemberCoinTable): Boolean { return false }
 
     override fun init() {
         isPrevIconShow = true
@@ -87,16 +94,16 @@ class MemberCoinListVC: BaseActivity(), List2CellDelegate<MemberCoinTable> {
         }
     }
 
-    override fun cellClick(row: MemberCoinTable) {
-        //購買點數，前往查看訂單
-
-        if (row.in_type != null && MEMBER_COIN_IN_TYPE.enumFromString(row.in_type) == MEMBER_COIN_IN_TYPE.buy && row.order_token.length > 0) {
-            toPayment(row.order_token, null, null, "member")
-        } else if (row.out_type != null && !row.in_out && MEMBER_COIN_OUT_TYPE.enumFromString(row.out_type) == MEMBER_COIN_OUT_TYPE.product && row.able_type == "order") {
-            //使用點數購買商品，前往查看訂單
-            toPayment(row.able_token, null, null, "member")
-        }
-    }
+//    override fun cellClick(row: MemberCoinTable) {
+//        //購買點數，前往查看訂單
+//
+//        if (row.in_type != null && MEMBER_COIN_IN_TYPE.enumFromString(row.in_type) == MEMBER_COIN_IN_TYPE.buy && row.order_token.length > 0) {
+//            toPayment(row.order_token, null, null, "member")
+//        } else if (row.out_type != null && !row.in_out && MEMBER_COIN_OUT_TYPE.enumFromString(row.out_type) == MEMBER_COIN_OUT_TYPE.product && row.able_type == "order") {
+//            //使用點數購買商品，前往查看訂單
+//            toPayment(row.able_token, null, null, "member")
+//        }
+//    }
 
 //    override fun getDataStart(_page: Int, _perPage: Int, token: String?) {
 //        Loading.show(mask)

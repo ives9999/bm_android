@@ -15,7 +15,7 @@ import com.sportpassword.bm.member
 import kotlinx.android.synthetic.main.mask.*
 import java.lang.reflect.Type
 
-class MemberLevelUpVC : BaseActivity(), List2CellDelegate<MemberLevelKindTable> {
+class MemberLevelUpVC : BaseActivity() {
 
     private val tableType: Type = object : TypeToken<Tables2<MemberLevelKindTable>>() {}.type
     lateinit var tableView: MyTable2VC<MemberLevelUpViewHolder, MemberLevelKindTable>
@@ -36,7 +36,7 @@ class MemberLevelUpVC : BaseActivity(), List2CellDelegate<MemberLevelKindTable> 
         setMyTitle("進階會員")
 
         val recyclerView: RecyclerView = findViewById(R.id.list)
-        tableView = MyTable2VC(recyclerView, R.layout.levelup_cell, ::MemberLevelUpViewHolder, tableType, this)
+        tableView = MyTable2VC(recyclerView, R.layout.levelup_cell, ::MemberLevelUpViewHolder, tableType, this::didSelect, this::tableViewSetSelected)
         //myTable.setItems(rows)
 
         //recyclerView = list
@@ -74,11 +74,20 @@ class MemberLevelUpVC : BaseActivity(), List2CellDelegate<MemberLevelKindTable> 
         }
     }
 
-    override fun cellClick(row: MemberLevelKindTable) {
+    fun didSelect(row: MemberLevelKindTable, idx: Int) {
 
-        //println(row.price)
-        toMemberLevelUpPay(row.name, row.price, row.eng_name)
     }
+
+    fun tableViewSetSelected(row: MemberLevelKindTable): Boolean {
+
+        return row.eng_name == member.level
+    }
+
+//    override fun cellClick(row: MemberLevelKindTable) {
+//
+//        //println(row.price)
+//        toMemberLevelUpPay(row.name, row.price, row.eng_name)
+//    }
 
 //    override fun genericTable() {
 //        val type = object : TypeToken<Tables2<MemberLevelKindTable>>() {}.type

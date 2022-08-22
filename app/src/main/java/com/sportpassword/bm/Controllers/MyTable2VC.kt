@@ -17,7 +17,18 @@ import com.sportpassword.bm.Utilities.jsonToModels2
 import java.lang.reflect.Type
 import kotlin.reflect.typeOf
 
-class MyTable2VC<T: MyViewHolder2<U>, U: Table>(recyclerView: RecyclerView, cell: Int, private val viewHolderConstructor: (Context, View, List2CellDelegate<U>?)-> T, private val tableType: Type, list2CellDelegate: List2CellDelegate<U>?) {
+typealias viewHolder<T, U> = (Context, View, didSelectClosure<U>, selectedClosure<U>)-> T
+typealias didSelectClosure<U> = ((U, idx: Int) -> Unit)?
+typealias selectedClosure<U> = ((U) -> Boolean)?
+
+class MyTable2VC<T: MyViewHolder2<U>, U: Table>(
+    recyclerView: RecyclerView,
+    cell: Int,
+    viewHolderConstructor: viewHolder<T, U>,
+    private val tableType: Type,
+    didSelect: didSelectClosure<U>,
+    selected: selectedClosure<U>
+) {
 
     //var recyclerView: RecyclerView
     val adapter: MyAdapter2<T, U>
@@ -30,7 +41,7 @@ class MyTable2VC<T: MyViewHolder2<U>, U: Table>(recyclerView: RecyclerView, cell
 
     init {
         //recyclerView = findViewById<RecyclerView>(resource)
-        adapter = MyAdapter2<T, U>(cell, viewHolderConstructor, list2CellDelegate)
+        adapter = MyAdapter2<T, U>(cell, viewHolderConstructor, didSelect, selected)
         recyclerView.adapter = adapter
     }
 
