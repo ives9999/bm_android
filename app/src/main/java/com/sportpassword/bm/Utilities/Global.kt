@@ -12,6 +12,11 @@ import android.graphics.Color
 import android.graphics.Paint
 import android.net.Uri
 import android.text.InputType
+import android.text.SpannableString
+import android.text.Spanned
+import android.text.style.AbsoluteSizeSpan
+import android.text.style.ForegroundColorSpan
+import android.text.style.StyleSpan
 import android.util.TypedValue
 import android.view.Gravity
 import android.view.View
@@ -1430,6 +1435,47 @@ fun TextView.setTextLook(size: Float, color: Int) {
 
 fun TextView.setTextLookColor(color: Int) {
     this.textColor = ContextCompat.getColor(context, color)
+}
+
+fun TextView.setSpecialTextColor(fullText : String , changeText : String, color: Int) {
+    val spannableString: SpannableString = SpannableString(fullText)
+    val foreColor: ForegroundColorSpan = ForegroundColorSpan(ContextCompat.getColor(context, color))
+
+    val start: Int = fullText.indexOf(changeText)
+    val end: Int = start + changeText.length + 1
+
+    spannableString.setSpan(foreColor, start, end, Spanned.SPAN_INCLUSIVE_INCLUSIVE)
+
+    this.setText(spannableString)
+}
+
+fun TextView.setSpecialTextBold(fullText : String , changeText : String, ofSize: Int) {
+    val spannableString: SpannableString = SpannableString(fullText)
+    val bold: AbsoluteSizeSpan = AbsoluteSizeSpan(ofSize)
+
+    val start: Int = fullText.indexOf(changeText)
+    val end: Int = start + changeText.length + 1
+
+    spannableString.setSpan(bold, start, end, Spanned.SPAN_INCLUSIVE_INCLUSIVE)
+
+    this.setText(spannableString)
+}
+
+fun TextView.setSpecialTextColorAndBold(fullText : String , changeText : String, color: Int, ofSize: Int, ofBold: Int) {
+    val spannableString: SpannableString = SpannableString(fullText)
+
+    val foreColor: ForegroundColorSpan = ForegroundColorSpan(ContextCompat.getColor(context, color))
+    val size: AbsoluteSizeSpan = AbsoluteSizeSpan(ofSize)
+    val bold: StyleSpan = StyleSpan(ofBold)
+
+    val start: Int = fullText.indexOf(changeText)
+    val end: Int = start + changeText.length
+
+    spannableString.setSpan(foreColor, start, end, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+    spannableString.setSpan(size, start, end, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+    spannableString.setSpan(bold, start, end, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+
+    this.setText(spannableString)
 }
 
 fun Button.setLook(backgroundColor: Int, textColor: Int) {

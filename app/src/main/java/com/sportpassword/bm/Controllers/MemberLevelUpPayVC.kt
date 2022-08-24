@@ -1,17 +1,22 @@
 package com.sportpassword.bm.Controllers
 
+import android.content.Context
+import android.graphics.Color
 import android.os.Bundle
+import android.text.SpannableString
+import android.text.Spanned
+import android.text.style.ForegroundColorSpan
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import com.google.gson.Gson
 import com.sportpassword.bm.Models.OrderTable
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.MemberService
 import com.sportpassword.bm.Services.OrderService
-import com.sportpassword.bm.Utilities.Loading
-import com.sportpassword.bm.Utilities.then
+import com.sportpassword.bm.Utilities.*
 import kotlinx.android.synthetic.main.mask.*
 
 class MemberLevelUpPayVC : BaseActivity() {
@@ -21,7 +26,7 @@ class MemberLevelUpPayVC : BaseActivity() {
     var kind: String = ""
 
     var bottom_button_count: Int = 3
-    val button_width: Int = 400
+    val button_width: Int = 300
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,8 +46,14 @@ class MemberLevelUpPayVC : BaseActivity() {
         isPrevIconShow = true
         super.init()
 
-        findViewById<TextView>(R.id.contentLbl) ?. let {
-            it.setText("金牌選項\n獎項內容")
+        findViewById<TextView>(R.id.prizeLbl) ?. let {
+            var prize: String = ""
+            prize += "金牌福利\n"
+            prize += "金牌福利有 三張 抽獎券，每月系統會舉行抽獎，抽獎券越多，越容易中獎。\n"
+
+            //it.setSpecialTextColor(prize, "三張", R.color.MY_RED)
+            //it.setSpecialTextBold(prize, "三張", 180)
+            it.setSpecialTextColorAndBold(prize, "三張", R.color.MY_RED, 180, 20)
         }
     }
 
