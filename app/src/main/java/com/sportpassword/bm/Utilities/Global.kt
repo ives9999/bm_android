@@ -787,6 +787,15 @@ enum class MEMBER_LEVEL(val englishName: String, val chineseName: String) {
         return englishName
     }
 
+    fun lottery(): Int {
+        when (this) {
+            gold-> return 3
+            silver -> return 2
+            copper -> return 1
+            else -> return 0
+        }
+    }
+
     companion object: MYENUM<MEMBER_LEVEL>() {
 
         fun getRawValueFromString(value: String): String {
@@ -1147,6 +1156,33 @@ fun Int.dpToPx(context: Context): Int {
     )).toInt()
 }
 
+fun Int.numberToChinese(): String {
+    when (this) {
+        1->
+        return "一"
+        2->
+        return "二"
+        3->
+        return "三"
+        4->
+        return "四"
+        5->
+        return "五"
+        6->
+        return "六"
+        7->
+        return "七"
+        8->
+        return "八"
+        9->
+        return "九"
+        10->
+        return "十"
+        else->
+        return ""
+    }
+}
+
 fun Date.toMyString(pattern: String = "yyyy-MM-dd HH:mm:ss"): String {
     val formatter = SimpleDateFormat(pattern)
     return formatter.format(this)
@@ -1468,8 +1504,9 @@ fun TextView.setSpecialTextColorAndBold(fullText : String , changeText : String,
     val size: AbsoluteSizeSpan = AbsoluteSizeSpan(ofSize)
     val bold: StyleSpan = StyleSpan(ofBold)
 
-    val start: Int = fullText.indexOf(changeText)
-    val end: Int = start + changeText.length
+    var start: Int = fullText.indexOf(changeText)
+    start = ((start < 0) then { 0 }) ?: start
+    val end: Int = ((start > 0) then { start + changeText.length }) ?: 0
 
     spannableString.setSpan(foreColor, start, end, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
     spannableString.setSpan(size, start, end, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)

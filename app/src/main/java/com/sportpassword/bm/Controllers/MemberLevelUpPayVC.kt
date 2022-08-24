@@ -36,7 +36,24 @@ class MemberLevelUpPayVC : BaseActivity() {
         price = (intent.hasExtra("price") then { intent.getIntExtra("price", 0) }) ?: 0
         kind = (intent.hasExtra("kind") then { intent.getStringExtra("kind") }) ?: "gold"
 
-        setMyTitle(name+"會員")
+        val kind_enum: MEMBER_LEVEL = MEMBER_LEVEL.stringToEnum(kind)
+        val kind_chinese: String = kind_enum.chineseName
+
+        setMyTitle(kind_chinese+"會員付款")
+
+        findViewById<TextView>(R.id.prizeLbl) ?. let {
+
+            var prize: String = ""
+            val lottery_num: Int = kind_enum.lottery()
+            val lottery_chinese: String = lottery_num.numberToChinese() + "張"
+
+            prize += kind_chinese + "福利\n"
+            prize += kind_chinese + "福利有 " + lottery_chinese + " 抽獎券，每月系統會舉行抽獎，抽獎券越多，越容易中獎。\n"
+
+            //it.setSpecialTextColor(prize, "三張", R.color.MY_RED)
+            //it.setSpecialTextBold(prize, "三張", 180)
+            it.setSpecialTextColorAndBold(prize, lottery_chinese, R.color.MY_RED, 180, 20)
+        }
 
         setBottomThreeView()
         init()
@@ -46,15 +63,6 @@ class MemberLevelUpPayVC : BaseActivity() {
         isPrevIconShow = true
         super.init()
 
-        findViewById<TextView>(R.id.prizeLbl) ?. let {
-            var prize: String = ""
-            prize += "金牌福利\n"
-            prize += "金牌福利有 三張 抽獎券，每月系統會舉行抽獎，抽獎券越多，越容易中獎。\n"
-
-            //it.setSpecialTextColor(prize, "三張", R.color.MY_RED)
-            //it.setSpecialTextBold(prize, "三張", 180)
-            it.setSpecialTextColorAndBold(prize, "三張", R.color.MY_RED, 180, 20)
-        }
     }
 
     fun setBottomThreeView() {
