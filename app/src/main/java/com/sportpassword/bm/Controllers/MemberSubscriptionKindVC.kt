@@ -24,7 +24,7 @@ class MemberSubscriptionKindVC : BaseActivity(), MyTable2IF {
     //var rows: ArrayList<MemberLevelKindTable> = arrayListOf()
 
     var bottom_button_count: Int = 3
-    val button_width: Int = 400
+    val button_width: Int = 300
 
     //var mysTable: Tables2<MemberLevelKindTable>? = null
 

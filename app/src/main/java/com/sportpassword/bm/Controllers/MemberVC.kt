@@ -81,8 +81,10 @@ class MemberVC : MyTableVC() {
                     Loading.hide(mask)
                 }
                 if (success) {
+                    //println(MemberService.jsonString)
                     val table = jsonToModel<MemberTable>(MemberService.jsonString)
                     table?.toSession(this, true)
+                    //session.dump()
                     memberSections = initSectionRow()
                     memberSectionAdapter.setMyTableSection(memberSections)
                     runOnUiThread {
@@ -260,8 +262,13 @@ class MemberVC : MyTableVC() {
         r.show = member.coin.formattedWithSeparator() + " 點"
         rows.add(r)
         r = MemberRow("訂閱會員", "member_level_up", "", TO_MEMBER_SURIPTION_KIND)
-        val level: MEMBER_SUBSCRIPTION_KIND = MEMBER_SUBSCRIPTION_KIND.stringToEnum(member.subscription!!)
-        r.show = level.chineseName
+        member.subscription?.let {
+            if (it.isNotEmpty()) {
+                val subscription: MEMBER_SUBSCRIPTION_KIND =
+                    MEMBER_SUBSCRIPTION_KIND.stringToEnum(it)
+                r.show = subscription.chineseName
+            }
+        }
         rows.add(r)
         r = MemberRow("帳戶資料", "account", "", TO_PROFILE)
         rows.add(r)

@@ -16,7 +16,7 @@ class MemberTable: Table() {
 
     var nickname: String = ""
     var coin: Int = 0
-    var level: String = ""
+    var subscription: String = ""
     var dob: String = ""
     var sex: String = ""
     var email: String = ""
@@ -75,7 +75,10 @@ class MemberTable: Table() {
         val session: SharedPreferences = context.getSharedPreferences(SESSION_FILENAME, 0)
         this::class.memberProperties.forEach {
             val name: String = it.name
-            val value = it.getter.call(this)
+            var value = it.getter.call(this)
+            if (value == null && name == "subscription") {
+                value = ""
+            }
             when (value) {
                 is Int ->
                     session.edit().putInt(name, value).apply()
@@ -89,7 +92,7 @@ class MemberTable: Table() {
                 }
             }            
         }
-        session.dump()
+        //session.dump()
         // val keys = session.all.map { it.key }
         // for (key in keys) {
             
