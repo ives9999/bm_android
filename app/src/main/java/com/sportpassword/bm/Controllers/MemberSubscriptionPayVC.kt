@@ -17,9 +17,10 @@ import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.MemberService
 import com.sportpassword.bm.Services.OrderService
 import com.sportpassword.bm.Utilities.*
+import com.sportpassword.bm.member
 import kotlinx.android.synthetic.main.mask.*
 
-class MemberLevelUpPayVC : BaseActivity() {
+class MemberSubscriptionPayVC : BaseActivity() {
 
     var name: String = ""
     var price: Int = 0
@@ -30,13 +31,13 @@ class MemberLevelUpPayVC : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_member_level_up_pay_vc)
+        setContentView(R.layout.activity_member_subscription_pay_vc)
 
         name = (intent.hasExtra("name") then { intent.getStringExtra("name") }) ?: ""
         price = (intent.hasExtra("price") then { intent.getIntExtra("price", 0) }) ?: 0
         kind = (intent.hasExtra("kind") then { intent.getStringExtra("kind") }) ?: "gold"
 
-        val kind_enum: MEMBER_LEVEL = MEMBER_LEVEL.stringToEnum(kind)
+        val kind_enum: MEMBER_SUBSCRIPTION_KIND = MEMBER_SUBSCRIPTION_KIND.stringToEnum(kind)
         val kind_chinese: String = kind_enum.chineseName
 
         setMyTitle(kind_chinese+"會員付款")
@@ -69,58 +70,65 @@ class MemberLevelUpPayVC : BaseActivity() {
         findViewById<Button>(R.id.submitBtn) ?. let {
             it.text = "訂閱"
             it.setOnClickListener {
-                Loading.show(mask)
-                MemberService.subscription(this, kind) { success ->
+                if (member.subscription!!.isNotEmpty()) {
                     runOnUiThread {
-                        Loading.hide(mask)
+                        warning("您已經有訂閱了，請先退訂，再重新訂閱")
                     }
+                } else {
 
-                    if (success) {
-                        if (MemberService.jsonString.isNotEmpty()) {
-                            //println(MemberService.jsonString)
-                            try {
-                                val table: OrderUpdateResTable = Gson().fromJson(
-                                    MemberService.jsonString,
-                                    OrderUpdateResTable::class.java
-                                )
+                    Loading.show(mask)
+                    MemberService.subscription(this, kind) { success ->
+                        runOnUiThread {
+                            Loading.hide(mask)
+                        }
 
-                                if (!table.success) {
-                                    runOnUiThread {
-                                        warning(table.msg)
-                                    }
-                                } else {
-                                    val orderTable: OrderTable? = table.model
-                                    if (orderTable != null) {
-                                        orderTable.filterRow()
-                                        val ecpay_token: String = orderTable.ecpay_token
-                                        val ecpay_token_ExpireDate: String =
-                                            orderTable.ecpay_token_ExpireDate
+                        if (success) {
+                            if (MemberService.jsonString.isNotEmpty()) {
+                                //println(MemberService.jsonString)
+                                try {
+                                    val table: OrderUpdateResTable = Gson().fromJson(
+                                        MemberService.jsonString,
+                                        OrderUpdateResTable::class.java
+                                    )
 
+                                    if (!table.success) {
                                         runOnUiThread {
-                                            info("訂閱已經成立，是否前往付款？", "關閉", "付款") {
-                                                toPayment(
-                                                    orderTable.token,
-                                                    ecpay_token,
-                                                    ecpay_token_ExpireDate
-                                                )
+                                            warning(table.msg)
+                                        }
+                                    } else {
+                                        val orderTable: OrderTable? = table.model
+                                        if (orderTable != null) {
+                                            orderTable.filterRow()
+                                            val ecpay_token: String = orderTable.ecpay_token
+                                            val ecpay_token_ExpireDate: String =
+                                                orderTable.ecpay_token_ExpireDate
+
+                                            runOnUiThread {
+                                                info("訂閱已經成立，是否前往付款？", "關閉", "付款") {
+                                                    toPayment(
+                                                        orderTable.token,
+                                                        ecpay_token,
+                                                        ecpay_token_ExpireDate
+                                                    )
+                                                }
+                                            }
+
+                                        } else {
+                                            runOnUiThread {
+                                                warning("無法拿到伺服器傳回值")
                                             }
                                         }
-
-                                    } else {
-                                        runOnUiThread {
-                                            warning("無法拿到伺服器傳回值")
-                                        }
+                                    }
+                                } catch (e: java.lang.Exception) {
+                                    runOnUiThread {
+                                        warning(e.localizedMessage!!)
                                     }
                                 }
-                            } catch (e: java.lang.Exception) {
-                                runOnUiThread {
-                                    warning(e.localizedMessage!!)
-                                }
                             }
-                        }
-                    } else {
-                        runOnUiThread {
-                            warning(OrderService.msg)
+                        } else {
+                            runOnUiThread {
+                                warning(OrderService.msg)
+                            }
                         }
                     }
                 }

@@ -772,7 +772,7 @@ enum class SIGNUP_STATUS(val type: String) {
     }
 }
 
-enum class MEMBER_LEVEL(val englishName: String, val chineseName: String) {
+enum class MEMBER_SUBSCRIPTION_KIND(val englishName: String, val chineseName: String) {
 
     gold("gold", "金牌"),
     silver("silver", "銀牌"),
@@ -796,13 +796,13 @@ enum class MEMBER_LEVEL(val englishName: String, val chineseName: String) {
         }
     }
 
-    companion object: MYENUM<MEMBER_LEVEL>() {
+    companion object: MYENUM<MEMBER_SUBSCRIPTION_KIND>() {
 
         fun getRawValueFromString(value: String): String {
             return SHIPPING.valueOf(value).toChineseString()
         }
 
-        fun stringToEnum(str: String): MEMBER_LEVEL {
+        fun stringToEnum(str: String): MEMBER_SUBSCRIPTION_KIND {
 
             when(str) {
 

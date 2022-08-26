@@ -3,19 +3,12 @@ package com.sportpassword.bm.Controllers
 import android.content.Context
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
-import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
-import com.sportpassword.bm.Adapters.MemberLevelUpViewHolder
-//import com.sportpassword.bm.Adapters.MemberLevelUpAdapter
 import com.sportpassword.bm.Adapters.MyAdapter2
 import com.sportpassword.bm.Adapters.MyViewHolder2
-import com.sportpassword.bm.Models.MemberLevelKindTable
 import com.sportpassword.bm.Models.Table
 import com.sportpassword.bm.Models.Tables2
-import com.sportpassword.bm.Utilities.Global
 import com.sportpassword.bm.Utilities.jsonToModels2
 import java.lang.reflect.Type
-import kotlin.reflect.typeOf
 
 typealias viewHolder<T, U> = (Context, View, didSelectClosure<U>, selectedClosure<U>)-> T
 typealias didSelectClosure<U> = ((U, idx: Int) -> Unit)?
@@ -27,7 +20,7 @@ class MyTable2VC<T: MyViewHolder2<U>, U: Table>(
     viewHolderConstructor: viewHolder<T, U>,
     private val tableType: Type,
     didSelect: didSelectClosure<U>,
-    selected: selectedClosure<U>
+    private val selected: selectedClosure<U>
 ) {
 
     //var recyclerView: RecyclerView
@@ -75,6 +68,16 @@ class MyTable2VC<T: MyViewHolder2<U>, U: Table>(
             if (tables2.success) {
                 if (tables2.rows.size > 0) {
 
+                    for ((idx, row) in tables2.rows.withIndex()) {
+                        row.filterRow()
+
+                        row.no = idx + 1
+
+                        selected?.let { it(row) }.let {
+                            row.selected = it!!
+                        }
+                    }
+
                     if (page == 1) {
                         page = tables2.page
                         perPage = tables2.perPage
@@ -102,7 +105,7 @@ class MyTable2VC<T: MyViewHolder2<U>, U: Table>(
     }
 }
 
-interface List2CellDelegate<U: Table> {
-    fun cellClick(row: U) {}
-}
+//interface List2CellDelegate<U: Table> {
+//    fun cellClick(row: U) {}
+//}
 

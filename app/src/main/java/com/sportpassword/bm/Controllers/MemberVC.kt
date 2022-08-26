@@ -198,7 +198,7 @@ class MemberVC : MyTableVC() {
             TO_MEMBER_BANK -> this.toMemberBank()
             "delete" -> delete()
             TO_MEMBER_COIN_LIST -> this.toMemberCoinList()
-            TO_MEMBER_LEVELUP -> this.toMemberLevelUp()
+            TO_MEMBER_SURIPTION_KIND -> this.toMemberSuriptionKind()
         }
     }
 
@@ -259,8 +259,8 @@ class MemberVC : MyTableVC() {
         var r: MemberRow = MemberRow("解碼點數", "coin", "", TO_MEMBER_COIN_LIST)
         r.show = member.coin.formattedWithSeparator() + " 點"
         rows.add(r)
-        r = MemberRow("進階會員", "member_level_up", "", TO_MEMBER_LEVELUP)
-        val level: MEMBER_LEVEL = MEMBER_LEVEL.stringToEnum(member.level!!)
+        r = MemberRow("訂閱會員", "member_level_up", "", TO_MEMBER_SURIPTION_KIND)
+        val level: MEMBER_SUBSCRIPTION_KIND = MEMBER_SUBSCRIPTION_KIND.stringToEnum(member.subscription!!)
         r.show = level.chineseName
         rows.add(r)
         r = MemberRow("帳戶資料", "account", "", TO_PROFILE)

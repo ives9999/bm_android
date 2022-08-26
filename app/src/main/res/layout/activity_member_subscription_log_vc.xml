@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/top"
-    tools:context=".Controllers.MemberLevelUpVC"
+    tools:context=".Controllers.MemberSubscriptionLogVC"
     android:orientation="vertical">
 
     <RelativeLayout
@@ -44,7 +44,6 @@
         </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
     </LinearLayout>
 
-    <include layout="@layout/bottom_view_three" />
     <include layout="@layout/mask" />
 
 </RelativeLayout>

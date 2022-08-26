@@ -14,8 +14,6 @@ import com.sportpassword.bm.Data.OneRow
 import com.sportpassword.bm.Data.OneSection
 import com.sportpassword.bm.Interface.MyTable2IF
 import com.sportpassword.bm.Models.MemberCoinTable
-import com.sportpassword.bm.Models.MemberLevelKindTable
-import com.sportpassword.bm.Models.Table
 import com.sportpassword.bm.Models.Tables2
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.MemberService
@@ -35,7 +33,7 @@ class MemberCoinListVC: BaseActivity(), MyTable2IF {
     lateinit var tableView: MyTable2VC<MemberCoinViewHolder, MemberCoinTable>
 
     var bottom_button_count: Int = 3
-    val button_width: Int = 400
+    val button_width: Int = 300
 
     override fun onCreate(savedInstanceState: Bundle?) {
 

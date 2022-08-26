@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import androidx.recyclerview.widget.RecyclerView
 import com.google.gson.reflect.TypeToken
-import com.sportpassword.bm.Adapters.MemberLevelUpViewHolder
+import com.sportpassword.bm.Adapters.MemberSubscriptionKindViewHolder
 import com.sportpassword.bm.Interface.MyTable2IF
 import com.sportpassword.bm.Models.*
 import com.sportpassword.bm.R
@@ -16,10 +16,10 @@ import com.sportpassword.bm.member
 import kotlinx.android.synthetic.main.mask.*
 import java.lang.reflect.Type
 
-class MemberLevelUpVC : BaseActivity(), MyTable2IF {
+class MemberSubscriptionKindVC : BaseActivity(), MyTable2IF {
 
-    private val tableType: Type = object : TypeToken<Tables2<MemberLevelKindTable>>() {}.type
-    lateinit var tableView: MyTable2VC<MemberLevelUpViewHolder, MemberLevelKindTable>
+    private val tableType: Type = object : TypeToken<Tables2<MemberSubscriptionKindTable>>() {}.type
+    lateinit var tableView: MyTable2VC<MemberSubscriptionKindViewHolder, MemberSubscriptionKindTable>
     //lateinit var tableAdapter: MyAdapter2<MemberLevelUpViewHolder<MemberLevelKindTable>, MemberLevelKindTable>
     //var rows: ArrayList<MemberLevelKindTable> = arrayListOf()
 
@@ -32,12 +32,12 @@ class MemberLevelUpVC : BaseActivity(), MyTable2IF {
 
         dataService = MemberService
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_member_level_up_vc)
+        setContentView(R.layout.activity_member_subscription_kind_vc)
 
-        setMyTitle("進階會員")
+        setMyTitle("訂閱會員")
 
         val recyclerView: RecyclerView = findViewById(R.id.list)
-        tableView = MyTable2VC(recyclerView, R.layout.levelup_cell, ::MemberLevelUpViewHolder, tableType, this::didSelect, this::tableViewSetSelected)
+        tableView = MyTable2VC(recyclerView, R.layout.subscriptionkind_cell, ::MemberSubscriptionKindViewHolder, tableType, this::didSelect, this::tableViewSetSelected)
 
         setBottomThreeView()
         init()
@@ -60,7 +60,7 @@ class MemberLevelUpVC : BaseActivity(), MyTable2IF {
         Loading.show(mask)
         loading = true
 
-        MemberService.levelKind(this, member.token!!, tableView.page, tableView.perPage) { success ->
+        MemberService.subscriptionKind(this, member.token!!, tableView.page, tableView.perPage) { success ->
             runOnUiThread {
                 Loading.hide(mask)
 
@@ -76,65 +76,28 @@ class MemberLevelUpVC : BaseActivity(), MyTable2IF {
         }
     }
 
-    fun didSelect(row: MemberLevelKindTable, idx: Int) {
-        toMemberLevelUpPay(row.name, row.price, row.eng_name)
+    fun didSelect(row: MemberSubscriptionKindTable, idx: Int) {
+        toMemberSubscriptionPay(row.name, row.price, row.eng_name)
     }
 
-    fun tableViewSetSelected(row: MemberLevelKindTable): Boolean {
+    fun tableViewSetSelected(row: MemberSubscriptionKindTable): Boolean {
 
-        return row.eng_name == member.level
+        return row.eng_name == member.subscription
     }
-
-//    override fun cellClick(row: MemberLevelKindTable) {
-//
-//        //println(row.price)
-//        toMemberLevelUpPay(row.name, row.price, row.eng_name)
-//    }
-
-//    override fun genericTable() {
-//        val type = object : TypeToken<Tables2<MemberLevelKindTable>>() {}.type
-//        mysTable = jsonToModels2<Tables2<MemberLevelKindTable>, MemberLevelKindTable>(jsonString!!, type)
-//
-//        if (mysTable != null) {
-//            if (mysTable!!.rows.count() > 0) {
-//                //getPage()
-//                page = mysTable!!.page
-//                perPage = mysTable!!.perPage
-//                totalCount = mysTable!!.totalCount
-//                val _totalPage: Int = totalCount / perPage
-//                totalPage = if (totalCount % perPage > 0) _totalPage + 1 else _totalPage
-//
-//                rows += generateItems1(MemberLevelKindTable::class, mysTable!!.rows)
-//                myTable.setItems(rows)
-//                //tableAdapter.items = rows
-//                runOnUiThread {
-//                    myTable.notifyDataSetChanged()
-//                    //tableAdapter.notifyDataSetChanged()
-//                }
-//            } else {
-//                val rootView: ViewGroup = getRootView()
-//                runOnUiThread {
-//                    rootView.setInfo(this, "目前暫無資料")
-//                }
-//            }
-//        }
-//    }
 
     fun setBottomThreeView() {
         findViewById<Button>(R.id.submitBtn) ?. let {
-            it.text = "退訂"
+            it.text = "查詢"
             it.setOnClickListener {
-                toProduct()
+                toMemberSuriptionLog()
             }
         }
 
         findViewById<Button>(R.id.threeBtn) ?. let {
-            it.visibility = View.GONE
-            bottom_button_count -= 1
-//            it.text = "退款"
-//            it.setOnClickListener {
-//                //coinReturn()
-//            }
+            it.text = "退訂"
+            it.setOnClickListener {
+                //toProduct()
+            }
         }
 
         findViewById<Button>(R.id.cancelBtn) ?. let {

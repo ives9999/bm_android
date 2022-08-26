@@ -6,8 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
-import com.sportpassword.bm.Controllers.List1CellDelegate
-import com.sportpassword.bm.Controllers.List2CellDelegate
 import com.sportpassword.bm.Controllers.didSelectClosure
 import com.sportpassword.bm.Controllers.selectedClosure
 import com.sportpassword.bm.Models.Table

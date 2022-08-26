@@ -265,7 +265,8 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener,
         URL_MEMBER_COINLIST = "${URL_HOME}member/coinlist"
         URL_MEMBER_COINRETURN = "${URL_HOME}member/coinReturn"
         URL_MEMBER_DELETE = URL_HOME + "member/delete"
-        URL_MEMBER_LEVEL_KIND = "${URL_HOME}member/levelKind"
+        URL_MEMBER_SUBSCRIPTION_KIND = "${URL_HOME}member/subscriptionKind"
+        URL_MEMBER_SUBSCRIPTION_LOG = "${URL_HOME}member/subscriptionLog"
         URL_MEMBER_LIKELIST = "${URL_HOME}member/likelist"
         URL_LIST = "${URL_HOME}%s"
         URL_LOGIN = URL_HOME + "login"
@@ -846,7 +847,7 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener,
         }
     }
 
-    val memberLevelUpVC = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { res ->
+    val memberSubscriptionKindVC = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { res ->
 
         if (res.resultCode == Activity.RESULT_OK) {
 
@@ -859,7 +860,20 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener,
         }
     }
 
-    val memberLevelUpPayVC = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { res ->
+    val memberSubscriptionLogVC = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { res ->
+
+        if (res.resultCode == Activity.RESULT_OK) {
+
+            val i: Intent? = res.data
+            if (i != null) {
+                if (delegate != null) {
+                    delegate!!.refresh()
+                }
+            }
+        }
+    }
+
+    val memberSubscriptionPayVC = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { res ->
 
         if (res.resultCode == Activity.RESULT_OK) {
 

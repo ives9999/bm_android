@@ -29,10 +29,13 @@
         tools:replace="android:allowBackup"
         tools:targetApi="m">
         <activity
-            android:name=".Controllers.MemberLevelUpPayVC"
+            android:name=".Controllers.MemberSubscriptionLogVC"
             android:exported="false" />
         <activity
-            android:name=".Controllers.MemberLevelUpVC"
+            android:name=".Controllers.MemberSubscriptionPayVC"
+            android:exported="false" />
+        <activity
+            android:name=".Controllers.MemberSubscriptionKindVC"
             android:exported="false" />
         <activity
             android:name=".Controllers.WebViewVC"

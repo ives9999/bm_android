@@ -60,6 +60,9 @@ abstract class Table {
     var tel_show: String = ""
     var status_show: String = "上線"
 
+    var no: Int = 1
+    var selected: Boolean = false
+
     open fun filterRow() {
         if (featured_path != null && featured_path.isNotEmpty()) {
             if (!featured_path.startsWith("http://") && !featured_path.startsWith("https://")) {

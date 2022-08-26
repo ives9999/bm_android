@@ -302,7 +302,7 @@ object MemberService: DataService() {
         return URL_MEMBER_DELETE
     }
 
-    fun levelKind(context: Context, member_token: String?, page: Int=1, perPage: Int=20, complete: CompletionHandler) {
+    fun subscriptionKind(context: Context, member_token: String?, page: Int=1, perPage: Int=20, complete: CompletionHandler) {
         var _member_token: String = member.token!!
         if (member_token != null) {
             _member_token = member_token
@@ -319,7 +319,30 @@ object MemberService: DataService() {
 //        val body: String = objectMapper.writeValueAsString(params)
 //        println(body)
 
-        val url: String = URL_MEMBER_LEVEL_KIND
+        val url: String = URL_MEMBER_SUBSCRIPTION_KIND
+        //println(url)
+
+        _simpleService(context, url, params, complete)
+    }
+
+    fun subscriptionLog(context: Context, member_token: String?, page: Int=1, perPage: Int=20, complete: CompletionHandler) {
+        var _member_token: String = member.token!!
+        if (member_token != null) {
+            _member_token = member_token
+        }
+        val params = hashMapOf<String, String>(
+            "device" to "app",
+            "channel" to CHANNEL,
+            "member_token" to _member_token,
+            "page" to page.toString(),
+            "perpage" to perPage.toString()
+        )
+        //println(params)
+//        val objectMapper = ObjectMapper()
+//        val body: String = objectMapper.writeValueAsString(params)
+//        println(body)
+
+        val url: String = URL_MEMBER_SUBSCRIPTION_LOG
         //println(url)
 
         _simpleService(context, url, params, complete)

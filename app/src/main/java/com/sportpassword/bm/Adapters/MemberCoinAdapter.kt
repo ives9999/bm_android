@@ -3,20 +3,13 @@ package com.sportpassword.bm.Adapters
 import android.content.Context
 import android.view.View
 import android.widget.Button
-import android.widget.ImageView
 import android.widget.TextView
-import androidx.core.content.ContextCompat
-import com.sportpassword.bm.Controllers.List1CellDelegate
-import com.sportpassword.bm.Controllers.List2CellDelegate
 import com.sportpassword.bm.Controllers.didSelectClosure
 import com.sportpassword.bm.Controllers.selectedClosure
 import com.sportpassword.bm.Models.MemberCoinTable
-import com.sportpassword.bm.Models.Table
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Utilities.*
 import kotlinx.android.synthetic.main.coin_list_cell.view.*
-import org.jetbrains.anko.backgroundColor
-import org.jetbrains.anko.textColor
 
 class MemberCoinViewHolder(
     context: Context,

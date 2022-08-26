@@ -140,14 +140,18 @@ class ShowCourseVC : ShowVC() {
         try {
             table = jsonToModel<CourseTable>(dataService.jsonString)
         } catch (e: JsonParseException) {
-            warning(e.localizedMessage)
-            //println(e.localizedMessage)
+            runOnUiThread {
+                warning(e.localizedMessage)
+                //println(e.localizedMessage)
+            }
         }
         if (table != null) {
             myTable = table as CourseTable
             myTable!!.filterRow()
         } else {
-            warning("解析伺服器所傳的字串失敗，請洽管理員")
+            runOnUiThread {
+                warning("解析伺服器所傳的字串失敗，請洽管理員")
+            }
         }
     }
 

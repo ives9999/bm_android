@@ -166,10 +166,10 @@ class Member(val context: Context) {
         set(value) {
             session.edit().putInt(COIN_KEY, value).apply()
         }
-    var level: String?
-        get() = session.getString(LEVEL_KEY, "")
+    var subscription: String?
+        get() = session.getString(SUBSCRIPTION_KEY, "")
         set(value) {
-            session.edit().putString(LEVEL_KEY, value).apply()
+            session.edit().putString(SUBSCRIPTION_KEY, value).apply()
         }
     var uid: String?
         get() = session.getString(UID_KEY, "")
@@ -576,7 +576,7 @@ class MemberBankTable: Table() {
 //
 //}
 
-class MemberLevelKindTable: Table() {
+class MemberSubscriptionKindTable: Table() {
 
     var eng_name: String = ""
     var price: Int = 0

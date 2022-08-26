@@ -206,17 +206,22 @@ interface ToInterface {
         mainDelegate.startActivity(i)
     }
 
-    fun toMemberLevelUp() {
-        val i = Intent(mainDelegate, MemberLevelUpVC::class.java)
-        mainDelegate.memberLevelUpVC.launch(i)
+    fun toMemberSuriptionKind() {
+        val i = Intent(mainDelegate, MemberSubscriptionKindVC::class.java)
+        mainDelegate.memberSubscriptionKindVC.launch(i)
     }
 
-    fun toMemberLevelUpPay(name: String, price: Int, kind: String) {
-        val i = Intent(mainDelegate, MemberLevelUpPayVC::class.java)
+    fun toMemberSuriptionLog() {
+        val i = Intent(mainDelegate, MemberSubscriptionLogVC::class.java)
+        mainDelegate.memberSubscriptionLogVC.launch(i)
+    }
+
+    fun toMemberSubscriptionPay(name: String, price: Int, kind: String) {
+        val i = Intent(mainDelegate, MemberSubscriptionPayVC::class.java)
         i.putExtra("name", name)
         i.putExtra("price", price)
         i.putExtra("kind", kind)
-        mainDelegate.memberLevelUpPayVC.launch(i)
+        mainDelegate.memberSubscriptionPayVC.launch(i)
     }
 
     fun toMemberOrderList() {
