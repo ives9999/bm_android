@@ -209,9 +209,10 @@ class OneItemAdapter(val context: Context, private val sectionIdx: Int, private 
 
             val tags: ArrayList<Tag> = holder.generateTag(context, row.value, row.show)
             for (tag in tags) {
+                val rowIdx: Int = tag.tag as Int
                 tag.setOnClickListener {
                     holder.handleTap(tag)
-                    delegate.cellSetTag(this.sectionIdx, this.rowIdx, tag.value, tag.isChecked)
+                    delegate.cellSetTag(this.sectionIdx, tag.tag as Int, tag.value, tag.isChecked)
                 }
             }
         } else if (holder is NumberViewHolder) {
