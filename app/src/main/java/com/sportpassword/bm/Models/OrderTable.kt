@@ -167,21 +167,21 @@ class OrderTable: Table() {
         if (order_email == null) { order_email = "" }
         if (order_address == null) { order_address = "" }
 
-        if (all_process == 6) {
-            var return_expire_date: Date = Date()
-            if (complete_at != null && complete_at.isNotEmpty()) {
-                complete_at.toDate("yyyy-MM-dd")?.let {
-                    val c: Calendar = Calendar.getInstance()
-                    c.time = it
-                    c.add(Calendar.DATE, 10)
-                    return_expire_date = c.time
-                }
-            }
-
-            canReturn = (Date().before(return_expire_date) then { true }) ?: false
-        } else {
-            canReturn = false
-        }
+//        if (all_process == 6) {
+//            var return_expire_date: Date = Date()
+//            if (complete_at != null && complete_at.isNotEmpty()) {
+//                complete_at.toDate("yyyy-MM-dd")?.let {
+//                    val c: Calendar = Calendar.getInstance()
+//                    c.time = it
+//                    c.add(Calendar.DATE, 10)
+//                    return_expire_date = c.time
+//                }
+//            }
+//
+//            canReturn = (Date().before(return_expire_date) then { true }) ?: false
+//        } else {
+//            canReturn = false
+//        }
     }
 
     private fun makeAttributes(): String {

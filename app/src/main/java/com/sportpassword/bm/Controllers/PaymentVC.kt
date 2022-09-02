@@ -184,6 +184,7 @@ class PaymentVC : MyTableVC() {
             warning("購物車中無商品，或購物車超過一個錯誤，請洽管理員")
         } else {
             orderTable!!.filterRow()
+            //println(orderTable!!.canReturn)
             runOnUiThread {
                 if (orderTable!!.all_process > 1) {//已經付費了
                     //footer.visibility = View.GONE
