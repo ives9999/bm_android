@@ -71,7 +71,7 @@ open class TabFragment : Fragment(), List1CellDelegate, Serializable {
     protected lateinit var refreshListener: SwipeRefreshLayout.OnRefreshListener
     protected lateinit var scrollerListenr: RecyclerView.OnScrollListener
     //    var vimeoClient: VimeoClient? = null
-    var mainActivity: MainActivity? = null
+    var mainActivity: MainActivity1? = null
 
     protected var isCourseShow: Boolean = false
     protected var isTeamShow: Boolean = false
@@ -97,7 +97,7 @@ open class TabFragment : Fragment(), List1CellDelegate, Serializable {
             screenWidth = requireArguments().getInt(ARG_PARAM2)
         }
         that = this
-        mainActivity = activity as MainActivity
+        mainActivity = activity as MainActivity1
         mainActivity!!.able_type = able_type
         searchSectionAdapter = SearchSectionAdapter(mainActivity!!, R.layout.cell_section, this)
         searchSections = initSectionRows()

@@ -131,7 +131,7 @@ class CourseFragment : TabFragment() {
     override fun setUserVisibleHint(isVisibleToUser: Boolean) {
         super.setUserVisibleHint(isVisibleToUser)
         able_type = "course"
-        mainActivity?.isSearchIconShow = true
+        //mainActivity?.isSearchIconShow = true
         if (isVisibleToUser && !bInit) {
             refresh()
         }

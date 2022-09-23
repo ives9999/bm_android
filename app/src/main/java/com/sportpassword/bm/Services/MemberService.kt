@@ -4,7 +4,6 @@ import android.content.Context
 import org.json.JSONObject
 import com.sportpassword.bm.Utilities.*
 import com.sportpassword.bm.member
-import com.sportpassword.bm.Controllers.MainActivity
 import com.sportpassword.bm.Models.*
 import okhttp3.Call
 import okhttp3.Callback
@@ -428,11 +427,11 @@ object MemberService: DataService() {
         })
     }
 
-    fun logout(mainActivity: MainActivity) {
-        //FBLogout()
-        mainActivity.session.resetMember()
-        member.reset()
-    }
+//    fun logout(mainActivity: MainActivity) {
+//        //FBLogout()
+//        mainActivity.session.resetMember()
+//        member.reset()
+//    }
 
     fun memberSignupCalendar(year: Int, month: Int, member_token: String?=null, able_type: String="course", page: Int, perPage: Int, complete: CompletionHandler) {
         val url: String = URL_MEMBER_SIGNUPLIST

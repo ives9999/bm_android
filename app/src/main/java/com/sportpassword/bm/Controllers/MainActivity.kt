@@ -19,7 +19,7 @@ import kotlinx.android.synthetic.main.activity_test.*
 import kotlinx.android.synthetic.main.login_out.*
 import kotlinx.android.synthetic.main.nav_header_main.*
 
-class MainActivity : BaseActivity() {
+class MainActivity1 : BaseActivity() {
 
     /**
      * The [android.support.v4.view.PagerAdapter] that will provide
