@@ -1939,7 +1939,7 @@ inline fun <reified T: Tables> jsonToModels(jsonString: String): T? {
 inline fun <reified T: Tables2<U>, U> jsonToModels2(jsonString: String, typeToken: Type): T? {
 
     var t: T? = null
-    println(t)
+    //println(t)
     try {
         t = Gson().fromJson<T>(jsonString, typeToken)
     } catch (e: java.lang.Exception) {

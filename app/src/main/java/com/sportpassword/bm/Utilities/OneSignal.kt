@@ -8,9 +8,7 @@ import android.graphics.Color
 import android.text.Spannable
 import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
-import com.onesignal.*
 import com.sportpassword.bm.App
-import com.sportpassword.bm.Controllers.MainActivity
 import com.sportpassword.bm.Controllers.ShowPNVC
 import com.sportpassword.bm.member
 import org.json.JSONArray

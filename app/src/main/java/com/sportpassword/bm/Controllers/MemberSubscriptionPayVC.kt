@@ -70,7 +70,7 @@ class MemberSubscriptionPayVC : BaseActivity() {
         findViewById<Button>(R.id.submitBtn) ?. let {
             it.text = "訂閱"
 
-            println(member.subscription!!)
+            //println(member.subscription!!)
             it.setOnClickListener {
                 if (member.subscription!!.isNotEmpty()) {
                     runOnUiThread {
@@ -86,7 +86,7 @@ class MemberSubscriptionPayVC : BaseActivity() {
 
                         if (success) {
                             if (MemberService.jsonString.isNotEmpty()) {
-                                println(MemberService.jsonString)
+                                //println(MemberService.jsonString)
                                 try {
                                     val table: OrderUpdateResTable = Gson().fromJson(
                                         MemberService.jsonString,
