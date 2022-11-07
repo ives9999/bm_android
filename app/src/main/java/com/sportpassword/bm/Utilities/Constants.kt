@@ -26,15 +26,9 @@ const val REMOTE_BASE_URL = "https://bm.sportpassword.com"
 //const val REMOTE_BASE_URL = "https://sandbox.sportpassword.com"
 //const val REMOTE_BASE_URL = "http://192.168.100.120"
 //const val LOCALHOST_BASE_URL = "http://10.0.2.2"
-<<<<<<< HEAD
 //const val LOCALHOST_BASE_URL = "http://bm.sportpassword.localhost"
 //const val LOCALHOST_BASE_URL = "http://192.168.100.120"
 const val LOCALHOST_BASE_URL = "http://192.168.100.33"
-=======
-const val LOCALHOST_BASE_URL = "http://bm.sportpassword.localhost"
-
-//const val LOCALHOST_BASE_URL = "http://192.168.3.103"
->>>>>>> origin/master
 var BASE_URL = ""
 var URL_HOME = ""
 
