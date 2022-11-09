@@ -3,10 +3,17 @@ package com.sportpassword.bm.Controllers
 import android.Manifest
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.Bitmap
 import android.os.Bundle
 import android.view.View
+import android.view.ViewGroup
+import android.view.WindowManager
 import android.widget.Button
+import android.widget.ImageView
 import android.widget.LinearLayout
+import android.widget.RelativeLayout
+import androidmads.library.qrgenearator.QRGContents
+import androidmads.library.qrgenearator.QRGEncoder
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.google.gson.Gson
@@ -28,9 +35,12 @@ import kotlinx.android.synthetic.main.mask.*
 import kotlinx.android.synthetic.main.nav_header_main.*
 import org.jetbrains.anko.backgroundColor
 import org.jetbrains.anko.toast
+import java.lang.Exception
 
 var memberSections: ArrayList<MemberSection> = arrayListOf()
 lateinit var memberSectionAdapter: MemberSectionAdapter
+
+lateinit var qrEncoder: QRGEncoder
 
 class MemberVC : MyTableVC() {
 
@@ -201,25 +211,14 @@ class MemberVC : MyTableVC() {
             "delete" -> delete()
             TO_MEMBER_COIN_LIST -> this.toMemberCoinList()
             TO_MEMBER_SURIPTION_KIND -> this.toMemberSuriptionKind()
+            "qrcode" -> {
+
+                val qrcodeIV: ImageView = makeQrcodeLayer()
+                val qrcode: Bitmap? = generateQRCode(member.token!!)
+                qrcodeIV.setImageBitmap(qrcode)
+            }
         }
     }
-
-//    override fun onRequestPermissionsResult(
-//        requestCode: Int,
-//        permissions: Array<out String>,
-//        grantResults: IntArray
-//    ) {
-//        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-//        when (requestCode) {
-//            500 -> {
-//                if (grantResults.size > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-//                    println("aaa")
-//                } else {
-//                    println("bbb")
-//                }
-//            }
-//        }
-//    }
 
     private fun initSectionRow(): ArrayList<MemberSection> {
         val sections: ArrayList<MemberSection> = arrayListOf()
@@ -271,6 +270,8 @@ class MemberVC : MyTableVC() {
         }
         rows.add(r)
         r = MemberRow("帳戶資料", "account", "", TO_PROFILE)
+        rows.add(r)
+        r = MemberRow("QRCode", "qrcode", "", "qrcode")
         rows.add(r)
         r = MemberRow("更改密碼", "password", "", TO_PASSWORD)
         rows.add(r)
@@ -473,5 +474,38 @@ class MemberVC : MyTableVC() {
         info("您的帳號已經被刪除，羽球密碼感謝您的支持", "", "關閉") {
             logout()
         }
+    }
+
+    fun makeQrcodeLayer(): ImageView {
+        val view = window.decorView.rootView as ViewGroup
+        val maskView: LinearLayout = view.mask(this)
+
+        val blackViewHeight: Int = 2000
+        val blackViewPaddingLeft: Int = 20
+        val blackView: RelativeLayout = maskView.blackView(this, blackViewPaddingLeft, (screenHeight - blackViewHeight)/2 + 100, screenWidth - 2*blackViewPaddingLeft, blackViewHeight)
+
+        val qrcodeIV: ImageView = ImageView(this)
+        val l: RelativeLayout.LayoutParams = RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT)
+        l.addRule(RelativeLayout.CENTER_HORIZONTAL)
+        l.addRule(RelativeLayout.CENTER_VERTICAL)
+        qrcodeIV.layoutParams = l
+        blackView.addView(qrcodeIV)
+
+        return qrcodeIV
+    }
+
+    fun generateQRCode(string: String): Bitmap? {
+        var dimen = if (screenWidth < screenHeight) screenWidth else screenHeight
+        dimen = dimen * 3 / 4
+        qrEncoder = QRGEncoder(string, null, QRGContents.Type.TEXT, dimen)
+
+        var bitmap: Bitmap? = null
+        try {
+            bitmap = qrEncoder.encodeAsBitmap()
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+
+        return bitmap
     }
 }

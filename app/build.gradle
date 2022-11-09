@@ -162,6 +162,9 @@ dependencies {
 
     //youtube
     implementation files('libs/YouTubeAndroidPlayerApi.jar')
+
+    //qrcode
+    implementation 'androidmads.library.qrgenearator:QRGenearator:1.0.3'
 }
 
 //configurations.all {
