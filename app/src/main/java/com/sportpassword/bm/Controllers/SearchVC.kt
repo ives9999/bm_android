@@ -61,7 +61,7 @@ class SearchVC : MyTableVC() {
         setContentView(R.layout.activity_search_vc)
 
         setBottomTabFocus()
-        topTitleLbl.setText("球隊")
+        //topTitleLbl.setText("球隊")
 
         dataService = TeamService
         delegate = this

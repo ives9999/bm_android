@@ -185,6 +185,13 @@ interface ToInterface {
         mainDelegate.startActivity(intent)
     }
 
+    fun toManagerTeamMember(token: String) {
+
+        val intent = Intent(mainDelegate, ManagerTeamMemberVC::class.java)
+        intent.putExtra("token", token)
+        mainDelegate.startActivity(intent)
+    }
+
     fun toMember() {
         val i = Intent(mainDelegate, MemberVC::class.java)
         mainDelegate.startActivity(i)

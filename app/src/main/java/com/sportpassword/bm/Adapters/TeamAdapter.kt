@@ -90,6 +90,11 @@ class TeamViewHolder(context: Context, viewHolder: View, list1CellDelegate: List
             a?.setOnClickListener {
                 list1CellDelegate?.cellSignup(row)
             }
+
+            a = v.findViewById<ImageButton>(R.id.teamMemberIcon)
+            a?.setOnClickListener {
+                list1CellDelegate?.cellTeamMember(row)
+            }
         }
 
         if (viewHolder.temp_quantityLbl != null) {

@@ -27,6 +27,7 @@ import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.MemberService
 import com.sportpassword.bm.Utilities.*
 import com.sportpassword.bm.member
+import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_member_vc.*
 import kotlinx.android.synthetic.main.activity_member_vc.list_container
 import kotlinx.android.synthetic.main.bottom_view.*
@@ -55,6 +56,13 @@ class MemberVC : MyTableVC() {
         setMyTitle("會員")
 
         dataService = MemberService
+        maskView = mask
+        val loginBtn = findViewById<LinearLayout>(R.id.loginBtn)
+        loginBtn.setOnClickListener { loginBtnPressed() }
+        val registerBtn = findViewById<LinearLayout>(R.id.registerBtn)
+        registerBtn.setOnClickListener { registerBtnPressed() }
+        val forgetPasswordBtn = findViewById<LinearLayout>(R.id.forgetPasswordBtn)
+        forgetPasswordBtn.setOnClickListener { forgetpasswordBtnPressed() }
 
         memberSections = initSectionRow()
         init()
@@ -65,14 +73,7 @@ class MemberVC : MyTableVC() {
 
         recyclerView = list_container
         //refreshLayout = page_refresh
-        maskView = mask
 
-        val loginBtn = findViewById<LinearLayout>(R.id.loginBtn)
-        loginBtn.setOnClickListener { loginBtnPressed() }
-        val registerBtn = findViewById<LinearLayout>(R.id.registerBtn)
-        registerBtn.setOnClickListener { registerBtnPressed() }
-        val forgetPasswordBtn = findViewById<LinearLayout>(R.id.forgetPasswordBtn)
-        forgetPasswordBtn.setOnClickListener { forgetpasswordBtnPressed() }
 
         //setRecyclerViewRefreshListener()
 
@@ -80,6 +81,14 @@ class MemberVC : MyTableVC() {
         memberSections = initSectionRow()
         memberSectionAdapter.setMyTableSection(memberSections)
         recyclerView.adapter = memberSectionAdapter
+
+        //println(member.avatar)
+        Picasso.with(context)
+            .load(member.avatar)
+            .placeholder(R.drawable.loading_square_120)
+            .error(R.drawable.loading_square_120)
+            .into(avatarView)
+
         loginout()
     }
 

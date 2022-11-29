@@ -103,6 +103,11 @@ class ManagerTeamVC : ManagerVC() {
         toManagerSignup(able_type, row.token, row.name)
     }
 
+    override fun cellTeamMember(row: Table) {
+        //println("aaa")
+        toManagerTeamMember(row.token)
+    }
+
     override fun cellClick(row: Table) {
 
         toShowTeam(row.token)

@@ -443,6 +443,7 @@ interface List1CellDelegate {
     fun cellArena(row: Table){}
     //管理者檢視報名列表
     fun cellSignup(row: Table){}
+    fun cellTeamMember(row: Table){}
     fun cellPrompt(sectionIdx: Int, rowIdx: Int) {}
 
     fun cellTextChanged(sectionIdx: Int, rowIdx: Int, str: String) {}
