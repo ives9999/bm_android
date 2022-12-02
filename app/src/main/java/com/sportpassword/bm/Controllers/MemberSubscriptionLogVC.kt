@@ -7,7 +7,6 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.google.gson.reflect.TypeToken
-import com.sportpassword.bm.Adapters.MyViewHolder2
 import com.sportpassword.bm.Interface.MyTable2IF
 import com.sportpassword.bm.Models.MemberSubscriptionLogTable
 import com.sportpassword.bm.Models.Tables2
@@ -89,7 +88,7 @@ class MemberSubscriptionLogViewHolder(
     selected: selectedClosure<MemberSubscriptionLogTable>
 ): MyViewHolder2<MemberSubscriptionLogTable>(context, viewHolder, didSelect, selected) {
 
-    val noLbl: TextView = viewHolder.noLbl
+    val noLbl: TextView = viewHolder.noTV
     val priceLbl: TextView = viewHolder.priceLbl
     val dateLbl: TextView = viewHolder.dateLbl
 

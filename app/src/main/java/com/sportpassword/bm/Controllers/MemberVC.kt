@@ -83,11 +83,13 @@ class MemberVC : MyTableVC() {
         recyclerView.adapter = memberSectionAdapter
 
         //println(member.avatar)
-        Picasso.with(context)
-            .load(member.avatar)
-            .placeholder(R.drawable.loading_square_120)
-            .error(R.drawable.loading_square_120)
-            .into(avatarView)
+        if (member.avatar!!.isNotEmpty()) {
+            Picasso.with(context)
+                .load(member.avatar)
+                .placeholder(R.drawable.loading_square_120)
+                .error(R.drawable.loading_square_120)
+                .into(avatarView)
+        }
 
         loginout()
     }

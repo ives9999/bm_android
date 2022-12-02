@@ -1,7 +1,8 @@
 package com.sportpassword.bm.Interface
 
-import com.sportpassword.bm.Adapters.MyViewHolder2
+import com.sportpassword.bm.Controllers.BaseActivity
 import com.sportpassword.bm.Controllers.MyTable2VC
+import com.sportpassword.bm.Controllers.MyViewHolder2
 import com.sportpassword.bm.Models.Table
 import com.sportpassword.bm.Utilities.then
 

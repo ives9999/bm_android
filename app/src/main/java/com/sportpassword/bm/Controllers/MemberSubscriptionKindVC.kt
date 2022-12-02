@@ -1,12 +1,13 @@
 package com.sportpassword.bm.Controllers
 
+import android.content.Context
 import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.google.gson.reflect.TypeToken
-import com.sportpassword.bm.Adapters.MemberSubscriptionKindViewHolder
 import com.sportpassword.bm.Interface.MyTable2IF
 import com.sportpassword.bm.Models.*
 import com.sportpassword.bm.R
@@ -14,6 +15,7 @@ import com.sportpassword.bm.Services.MemberService
 import com.sportpassword.bm.Utilities.*
 import com.sportpassword.bm.member
 import kotlinx.android.synthetic.main.mask.*
+import kotlinx.android.synthetic.main.subscriptionkind_cell.view.*
 import java.lang.reflect.Type
 
 class MemberSubscriptionKindVC : BaseActivity(), MyTable2IF {
@@ -141,5 +143,23 @@ class MemberSubscriptionKindVC : BaseActivity(), MyTable2IF {
             params.marginStart = padding
             it.layoutParams = params
         }
+    }
+}
+
+class MemberSubscriptionKindViewHolder(
+    context: Context,
+    viewHolder: View,
+    didSelect: didSelectClosure<MemberSubscriptionKindTable>,
+    selected: selectedClosure<MemberSubscriptionKindTable>
+): MyViewHolder2<MemberSubscriptionKindTable>(context, viewHolder, didSelect, selected) {
+
+    val titleLbl: TextView = viewHolder.titleLbl
+    val priceLbl: TextView = viewHolder.priceLbl
+
+    override fun bind(row: MemberSubscriptionKindTable, idx: Int) {
+        super.bind(row, idx)
+
+        titleLbl.text = row.name
+        priceLbl.text = "NT$: " + row.price.toString() + " 元/月"
     }
 }

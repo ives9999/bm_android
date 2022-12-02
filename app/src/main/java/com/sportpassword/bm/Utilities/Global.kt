@@ -1,5 +1,6 @@
 package com.sportpassword.bm.Utilities
 
+import android.Manifest
 import android.animation.Animator
 import android.app.Activity
 import android.app.AlertDialog
@@ -7,6 +8,7 @@ import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
+import android.content.pm.PackageManager
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
@@ -23,6 +25,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.*
+import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -1766,24 +1769,24 @@ object Loading {
     fun show(mask: View) {
         mask.alpha = 0f
         mask.visibility = View.VISIBLE
-        mask.animate().setDuration(duration).alpha(alpha).setListener(object: Animator.AnimatorListener {
-            override fun onAnimationEnd(p0: Animator?) {
+        mask.animate().setDuration(duration).alpha(alpha).setListener(object : Animator.AnimatorListener {
+            override fun onAnimationEnd(p0: Animator) {
                 mask.visibility = View.VISIBLE
             }
-            override fun onAnimationRepeat(p0: Animator?) {}
-            override fun onAnimationCancel(p0: Animator?) {}
-            override fun onAnimationStart(p0: Animator?) {}
+            override fun onAnimationRepeat(p0: Animator) {}
+            override fun onAnimationCancel(p0: Animator) {}
+            override fun onAnimationStart(p0: Animator) {}
         })
     }
     fun hide(mask: View) {
         mask.visibility = View.VISIBLE
         mask.animate().setDuration(duration).alpha(0f).setListener(object: Animator.AnimatorListener {
-            override fun onAnimationEnd(p0: Animator?) {
+            override fun onAnimationEnd(p0: Animator) {
                 mask.visibility = View.INVISIBLE
             }
-            override fun onAnimationRepeat(p0: Animator?) {}
-            override fun onAnimationCancel(p0: Animator?) {}
-            override fun onAnimationStart(p0: Animator?) {}
+            override fun onAnimationRepeat(p0: Animator) {}
+            override fun onAnimationCancel(p0: Animator) {}
+            override fun onAnimationStart(p0: Animator) {}
         })
     }
 }
@@ -1795,23 +1798,23 @@ object Mask {
         view.alpha = 0f
         view.visibility = View.VISIBLE
         view.animate().setDuration(duration).alpha(alpha).setListener(object: Animator.AnimatorListener {
-            override fun onAnimationEnd(p0: Animator?) {
+            override fun onAnimationEnd(p0: Animator) {
                 view.visibility = View.VISIBLE
             }
-            override fun onAnimationRepeat(p0: Animator?) {}
-            override fun onAnimationCancel(p0: Animator?) {}
-            override fun onAnimationStart(p0: Animator?) {}
+            override fun onAnimationRepeat(p0: Animator) {}
+            override fun onAnimationCancel(p0: Animator) {}
+            override fun onAnimationStart(p0: Animator) {}
         })
     }
     fun hide(mask: View) {
         mask.visibility = View.VISIBLE
         mask.animate().setDuration(duration).alpha(0f).setListener(object: Animator.AnimatorListener {
-            override fun onAnimationEnd(p0: Animator?) {
+            override fun onAnimationEnd(p0: Animator) {
                 mask.visibility = View.INVISIBLE
             }
-            override fun onAnimationRepeat(p0: Animator?) {}
-            override fun onAnimationCancel(p0: Animator?) {}
-            override fun onAnimationStart(p0: Animator?) {}
+            override fun onAnimationRepeat(p0: Animator) {}
+            override fun onAnimationCancel(p0: Animator) {}
+            override fun onAnimationStart(p0: Animator) {}
         })
     }
 }
@@ -1990,6 +1993,16 @@ infix fun Map<String, String>.mergeWith(anotherMap: Map<String, String>): Map<St
         result[it.key] = value
     }
     return result
+}
+
+fun isPermissionGranted(context: Context, permission: String): Boolean {
+    val selfPermission: Int = ContextCompat.checkSelfPermission(context, permission)
+
+    return selfPermission == PackageManager.PERMISSION_GRANTED
+}
+
+fun askForPermission(activity: Activity, permission: String, requestCode: Int) {
+    ActivityCompat.requestPermissions(activity, arrayOf(permission), requestCode)
 }
 
 //fun getFragment(activity: BaseActivity, able_type: String): TabFragment? {

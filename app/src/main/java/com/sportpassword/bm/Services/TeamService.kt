@@ -58,6 +58,38 @@ object TeamService: DataService() {
         return URL_TEAM_DELETE
     }
 
+    fun addTeamMember(context: Context, team_token: String, member_token: String, manager_token: String, complete: CompletionHandler) {
+        val url: String = URL_TEAM_MEMBER_ADD
+        val params: HashMap<String, String> = hashMapOf(
+            "device" to "app", "channel" to CHANNEL, "team_token" to team_token, "member_token" to member_token, "manager_token" to manager_token
+        )
+        println(url)
+        println(params)
+
+        _simpleService(context, url, params, complete)
+    }
+
+    fun deleteTeamMember(context: Context, token: String, complete: CompletionHandler) {
+        val url : String = URL_TEAM_MEMBER_DELETE
+        val params: HashMap<String, String> = hashMapOf("device" to "app", "channel" to CHANNEL, "token" to token)
+        println(url)
+        println(params)
+
+        _simpleService(context, url, params, complete)
+    }
+
+    fun teamMemberList(context: Context, token: String, page:Int, perPage: Int, complete: CompletionHandler) {
+        val url: String = URL_TEAM_MEMBER_LIST
+        var params: HashMap<String, String> = hashMapOf(
+            "device" to "app", "channel" to CHANNEL, "page" to page.toString(), "perPage" to perPage.toString(), "token" to token
+        )
+
+        println(url)
+        println(params)
+
+        _simpleService(context, url, params, complete)
+    }
+
 //    fun tempPlay_list(context: Context, params: HashMap<String,Any>, page:Int, perPage:Int, complete: CompletionHandler) {
 //        val url = URL_TEAM_TEMP_PLAY_LIST
 ////        println(url)

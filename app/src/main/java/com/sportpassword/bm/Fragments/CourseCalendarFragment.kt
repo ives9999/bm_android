@@ -38,17 +38,17 @@ class CourseCalendarFragment : TabFragment() {
         //println(monthLastDay)
     }
 
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.search_manager, menu)
-        super.onCreateOptionsMenu(menu, inflater)
-        val memuView = menu.findItem(R.id.menu_search_manager).actionView
-
-        val searchBtn = memuView.findViewById<ImageButton>(R.id.search)
-        //val ManagerBtn = memuView.findViewById<ImageButton>(R.id.manager)
-
-        searchBtn.tag = type
-        //ManagerBtn.tag = type
-    }
+//    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+//        inflater.inflate(R.menu.search_manager, menu)
+//        super.onCreateOptionsMenu(menu, inflater)
+//        val memuView = menu.findItem(R.id.menu_search_manager).actionView
+//
+//        val searchBtn = memuView.findViewById<ImageButton>(R.id.search)
+//        //val ManagerBtn = memuView.findViewById<ImageButton>(R.id.manager)
+//
+//        searchBtn.tag = type
+//        //ManagerBtn.tag = type
+//    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {

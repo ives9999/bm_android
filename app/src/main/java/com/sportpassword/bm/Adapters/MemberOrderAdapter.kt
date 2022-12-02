@@ -36,7 +36,7 @@ class MemberOrderViewHolder(context: Context, viewHolder: View, list1CellDelegat
         viewHolder.priceLbl.text = row.amount_show
         viewHolder.priceLbl.textSize = 20F
         viewHolder.orderNoLbl.text = row.order_no
-        viewHolder.noLbl.text = (idx+1).toString()
+        viewHolder.noTV.text = (idx+1).toString()
 
         viewHolder.orderAllProcessLbl.text = row.all_process_show
         viewHolder.gatewayProcessLbl.text = row.gateway?.process_show

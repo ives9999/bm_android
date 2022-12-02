@@ -53,11 +53,11 @@ class MoreFragment : TabFragment() {
         super.onCreate(savedInstanceState)
     }
 
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        val memuView = menu.findItem(R.id.menu_all).actionView
-        val searchBtn = memuView.findViewById<ImageButton>(R.id.search)
-        searchBtn.visibility = View.GONE
-    }
+//    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+//        val memuView = menu.findItem(R.id.menu_all).actionView
+//        val searchBtn = memuView.findViewById<ImageButton>(R.id.search)
+//        searchBtn.visibility = View.GONE
+//    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {

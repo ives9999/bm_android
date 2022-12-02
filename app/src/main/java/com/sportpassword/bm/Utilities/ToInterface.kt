@@ -4,6 +4,7 @@ import android.content.Intent
 import android.provider.MediaStore
 import android.view.View
 import com.sportpassword.bm.Controllers.*
+import com.sportpassword.bm.Controllers.ScanQRCodeVC
 import com.sportpassword.bm.member
 
 interface ToInterface {
@@ -305,6 +306,11 @@ interface ToInterface {
         val i = Intent(mainDelegate, RequestManagerTeamVC::class.java)
         mainDelegate.startActivity(i)
     }
+
+//    fun toScanQRCode() {
+//        val i = Intent(mainDelegate, ScanQRCodeVC::class.java)
+//        mainDelegate.scanQRCodeVC.launch(i)
+//    }
 
     fun toSearch() {
         val i = Intent(mainDelegate, SearchVC::class.java)

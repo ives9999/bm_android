@@ -29,12 +29,9 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.google.gson.internal.LinkedTreeMap
 import com.onesignal.OneSignal
-import com.sportpassword.bm.Adapters.MyViewHolder2
 import com.sportpassword.bm.Adapters.OneSectionAdapter
-import com.sportpassword.bm.Adapters.SearchSectionAdapter
 import com.sportpassword.bm.App
 import com.sportpassword.bm.Data.*
-import com.sportpassword.bm.Fragments.*
 import com.sportpassword.bm.Models.*
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.*
@@ -43,7 +40,6 @@ import com.sportpassword.bm.Views.ImagePicker
 import com.sportpassword.bm.Views.SearchPanel
 import com.sportpassword.bm.member
 import kotlinx.android.synthetic.main.activity_payment_vc.*
-import kotlinx.android.synthetic.main.bottom_view.*
 import kotlinx.android.synthetic.main.mask.*
 import kotlinx.android.synthetic.main.top_view.*
 import org.jetbrains.anko.*
@@ -130,10 +126,13 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener,
     var parking: Boolean = false
     var refreshLayout: SwipeRefreshLayout? = null
     protected lateinit var refreshListener: SwipeRefreshLayout.OnRefreshListener
+
     val REQUEST_PHONE_CALL = 100
     val REGISTER_REQUEST_CODE = 2
     val SEARCH_REQUEST_CODE = 4
     val SEARCH_REQUEST_CODE1 = 5
+    val REQUEST_CAMERA = 200
+
     var screenHeight: Int = 0
     var searchPanel: SearchPanel = SearchPanel()
     val session: SharedPreferences = App.ctx!!.getSharedPreferences(SESSION_FILENAME, 0)
@@ -300,6 +299,9 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener,
         URL_TEAM_DELETE = URL_HOME + "team/delete"
         URL_TEAM_LIKE = URL_HOME + "team/like/%s"
         URL_TEAM_LIST = URL_HOME + "team/list"
+        URL_TEAM_MEMBER_ADD = URL_HOME + "team/addTeamMember"
+        URL_TEAM_MEMBER_DELETE = URL_HOME + "team/deleteTeamMember"
+        URL_TEAM_MEMBER_LIST = URL_HOME + "team/teamMemberList"
         URL_TEAM_TEMP_PLAY = URL_TEAM + "tempPlay/onoff"
         URL_TEAM_TEMP_PLAY_LIST = URL_TEAM + "tempPlay/list"
         URL_TEAM_TEMP_PLAY_BLACKLIST = URL_TEAM + "tempPlay/blacklist"
@@ -961,6 +963,10 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener,
                 }
                 return
             }
+//            REQUEST_CAMERA -> {
+//                if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+//                }
+//            }
 //            ACTION_PHOTO_REQUEST_CODE -> {
 //                if (grantResults.isEmpty() || grantResults[0] != PackageManager.PERMISSION_GRANTED) {
 //                    warning("沒有同意權限，因此無法使用此功能，請至設定功能中開啟權限，方能使用此功能")
@@ -1029,6 +1035,17 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener,
 //            }
         }
     }
+
+//    val scanQRCodeVC = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { res ->
+//        if (res.resultCode == Activity.RESULT_OK) {
+//            val i: Intent? = res.data
+//            i.apply {
+//                if (i!!.hasExtra("token")) {
+//
+//                }
+//            }
+//        }
+//    }
 
     fun permissionExist(permission: String): Boolean {
         val permission = ContextCompat.checkSelfPermission(this, permission)
@@ -2013,9 +2030,9 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener,
     fun webViewSettings(context: Context, webView: WebView) {
         val settings = webView.settings
         settings.javaScriptEnabled = true
-        settings.setAppCacheEnabled(true)
+        //settings.setAppCacheEnabled(true)
         settings.cacheMode = WebSettings.LOAD_DEFAULT
-        settings.setAppCachePath(cacheDir.path)
+        //settings.setAppCachePath(cacheDir.path)
         settings.setSupportZoom(true)
         settings.builtInZoomControls = true
         settings.displayZoomControls = true
