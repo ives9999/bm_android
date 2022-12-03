@@ -23,7 +23,7 @@ import java.lang.reflect.Type
 class MemberSubscriptionLogVC : BaseActivity(), MyTable2IF {
 
     private val tableType: Type = object : TypeToken<Tables2<MemberSubscriptionLogTable>>() {}.type
-    lateinit var tableView: MyTable2VC<MemberSubscriptionLogViewHolder, MemberSubscriptionLogTable>
+    lateinit var tableView: MyTable2VC<MemberSubscriptionLogViewHolder, MemberSubscriptionLogTable, MemberSubscriptionLogVC>
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -35,7 +35,7 @@ class MemberSubscriptionLogVC : BaseActivity(), MyTable2IF {
 
         val recyclerView: RecyclerView = findViewById(R.id.list)
         tableView = MyTable2VC(recyclerView, R.layout.subscriptionlog_cell,
-            ::MemberSubscriptionLogViewHolder, tableType, this::didSelect, this::tableViewSetSelected)
+            ::MemberSubscriptionLogViewHolder, tableType, this::didSelect, this::tableViewSetSelected, this)
 
         init()
 
@@ -83,14 +83,15 @@ class MemberSubscriptionLogVC : BaseActivity(), MyTable2IF {
 
 class MemberSubscriptionLogViewHolder(
     context: Context,
-    viewHolder: View,
+    view: View,
     didSelect: didSelectClosure<MemberSubscriptionLogTable>,
-    selected: selectedClosure<MemberSubscriptionLogTable>
-): MyViewHolder2<MemberSubscriptionLogTable>(context, viewHolder, didSelect, selected) {
+    selected: selectedClosure<MemberSubscriptionLogTable>,
+    delegate: MemberSubscriptionLogVC
+): MyViewHolder2<MemberSubscriptionLogTable, MemberSubscriptionLogVC>(context, view, didSelect, selected, delegate) {
 
-    val noLbl: TextView = viewHolder.noTV
-    val priceLbl: TextView = viewHolder.priceLbl
-    val dateLbl: TextView = viewHolder.dateLbl
+    val noLbl: TextView = view.noTV
+    val priceLbl: TextView = view.priceLbl
+    val dateLbl: TextView = view.dateLbl
 
     override fun bind(row: MemberSubscriptionLogTable, idx: Int) {
         super.bind(row, idx)

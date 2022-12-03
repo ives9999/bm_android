@@ -13,21 +13,22 @@ import com.sportpassword.bm.Utilities.jsonToModels2
 import org.jetbrains.anko.backgroundColor
 import java.lang.reflect.Type
 
-typealias viewHolder<T, U> = (Context, View, didSelectClosure<U>, selectedClosure<U>)-> T
+typealias viewHolder<T, U, V> = (Context, View, didSelectClosure<U>, selectedClosure<U>, V)-> T
 typealias didSelectClosure<U> = ((U, idx: Int) -> Unit)?
 typealias selectedClosure<U> = ((U) -> Boolean)?
 
-class MyTable2VC<T: MyViewHolder2<U>, U: Table>(
+class MyTable2VC<T: MyViewHolder2<U, V>, U: Table, V: BaseActivity>(
     recyclerView: RecyclerView,
     cellResource: Int,
-    viewHolderConstructor: viewHolder<T, U>,
+    viewHolderConstructor: viewHolder<T, U, V>,
     private val tableType: Type,
     didSelect: didSelectClosure<U>,
-    private val selected: selectedClosure<U>
+    private val selected: selectedClosure<U>,
+    delegate: V
 ) {
 
     //var recyclerView: RecyclerView
-    val adapter: MyAdapter2<T, U>
+    val adapter: MyAdapter2<T, U, V>
     var msg: String = ""
 
     var page: Int = 1
@@ -37,7 +38,7 @@ class MyTable2VC<T: MyViewHolder2<U>, U: Table>(
 
     init {
         //recyclerView = findViewById<RecyclerView>(resource)
-        adapter = MyAdapter2<T, U>(cellResource, viewHolderConstructor, didSelect, selected)
+        adapter = MyAdapter2<T, U, V>(cellResource, viewHolderConstructor, didSelect, selected, delegate)
         recyclerView.adapter = adapter
     }
 
@@ -108,12 +109,12 @@ class MyTable2VC<T: MyViewHolder2<U>, U: Table>(
     }
 }
 
-
-open class MyAdapter2<T: MyViewHolder2<U>, U: Table> (
+open class MyAdapter2<T: MyViewHolder2<U, V>, U: Table, V: BaseActivity> (
     private val resource: Int,
-    private val viewHolderConstructor: (Context, View, didSelectClosure<U>, selectedClosure<U>)-> T,
+    private val viewHolderConstructor: (Context, View, didSelectClosure<U>, selectedClosure<U>, V)-> T,
     private val didSelect: didSelectClosure<U>,
-    private val selected: selectedClosure<U> /* = ((U) -> kotlin.Boolean)? */
+    private val selected: selectedClosure<U>, /* = ((U) -> kotlin.Boolean)? */
+    private val delegate: V
 ) : RecyclerView.Adapter<T>() {
 
     var items: ArrayList<U> = arrayListOf()
@@ -132,20 +133,21 @@ open class MyAdapter2<T: MyViewHolder2<U>, U: Table> (
         val inflater: LayoutInflater = LayoutInflater.from(parent.context)
         val view: View = inflater.inflate(resource, parent, false)
         //return T(parent.context, viewHolder, list1CellDelegate)
-        return viewHolderConstructor(parent.context, view, didSelect, selected)
+        return viewHolderConstructor(parent.context, view, didSelect, selected, delegate)
     }
 }
 
-open class MyViewHolder2<U: Table>(
+open class MyViewHolder2<U: Table, V: BaseActivity>(
     val context: Context,
-    val viewHolder: View,
+    val view: View,
     private val didSelect: didSelectClosure<U>,
-    val selected: selectedClosure<U>
-) : RecyclerView.ViewHolder(viewHolder) {
+    val selected: selectedClosure<U>,
+    val delegate: V
+) : RecyclerView.ViewHolder(view) {
 
     open fun bind(row: U, idx: Int) {
 
-        viewHolder.setOnClickListener {
+        view.setOnClickListener {
             didSelect?.let { it1 -> it1(row, idx) }
             //list2CellDelegate?.cellClick(row)
         }
@@ -153,7 +155,7 @@ open class MyViewHolder2<U: Table>(
         val isSelected = selected?.let { it(row) } == true
         if (isSelected) {
             val color: Int = ContextCompat.getColor(context, R.color.CELL_SELECTED)
-            viewHolder.backgroundColor = color
+            view.backgroundColor = color
         }
     }
 }

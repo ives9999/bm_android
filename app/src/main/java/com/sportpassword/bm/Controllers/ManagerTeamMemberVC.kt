@@ -34,7 +34,7 @@ open class ManagerTeamMemberVC : BaseActivity(), MyTable2IF {
     var top: Top? = null
 
     private val tableType: Type = object : TypeToken<Tables2<TeamMemberTable>>() {}.type
-    lateinit var tableView: MyTable2VC<TeamMemberViewHolder, TeamMemberTable>
+    lateinit var tableView: MyTable2VC<TeamMemberViewHolder, TeamMemberTable, ManagerTeamMemberVC>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -58,7 +58,7 @@ open class ManagerTeamMemberVC : BaseActivity(), MyTable2IF {
         }
 
         val recyclerView: RecyclerView = findViewById(R.id.list)
-        tableView = MyTable2VC(recyclerView, R.layout.team_member_list_cell, ::TeamMemberViewHolder, tableType, this::didSelect, this::tableViewSetSelected)
+        tableView = MyTable2VC(recyclerView, R.layout.team_member_list_cell, ::TeamMemberViewHolder, tableType, this::didSelect, this::tableViewSetSelected, this)
         //tableView.adapter = TeamMemberAdapter(R.layout.team_member_list_cell, ::TeamMemberViewHolder, this::didSelect, this::tableViewSetSelected)
         refreshLayout = list_refresh
 
@@ -154,6 +154,10 @@ open class ManagerTeamMemberVC : BaseActivity(), MyTable2IF {
 
     }
 
+    fun remove(row: TeamMemberTable) {
+        println(row.id)
+    }
+
     private fun tableViewSetSelected(row: TeamMemberTable): Boolean { return false }
 
     private fun toScanQRCode() {
@@ -187,10 +191,11 @@ open class ManagerTeamMemberVC : BaseActivity(), MyTable2IF {
 
 class TeamMemberViewHolder(
     context: Context,
-    viewHolder: View,
+    view: View,
     didSelect: didSelectClosure<TeamMemberTable>,
-    selected: selectedClosure<TeamMemberTable>
-): MyViewHolder2<TeamMemberTable>(context, viewHolder, didSelect, selected) {
+    selected: selectedClosure<TeamMemberTable>,
+    delegate: ManagerTeamMemberVC
+): MyViewHolder2<TeamMemberTable, ManagerTeamMemberVC>(context, view, didSelect, selected, delegate) {
 
     override fun bind(row: TeamMemberTable, idx: Int) {
 
@@ -199,21 +204,21 @@ class TeamMemberViewHolder(
         row.filterRow()
         val no: String = (idx + 1).toString() + "."
 
-        viewHolder.findViewById<TextView>(R.id.noTV) ?. let {
+        view.findViewById<TextView>(R.id.noTV) ?. let {
             it.text = no
         }
 
-        viewHolder.findViewById<TextView>(R.id.nameTV) ?. let {
+        view.findViewById<TextView>(R.id.nameTV) ?. let {
             it.text = row.member_nickname
         }
 
-        viewHolder.findViewById<TextView>(R.id.dateTV) ?. let {
+        view.findViewById<TextView>(R.id.dateTV) ?. let {
             it.text = row.created_at.noSec()
         }
 
-        viewHolder.findViewById<ImageView>(R.id.deleteIV) ?. let {
+        view.findViewById<ImageView>(R.id.deleteIV) ?. let {
             it.setOnClickListener {
-
+                delegate.remove(row)
             }
         }
     }

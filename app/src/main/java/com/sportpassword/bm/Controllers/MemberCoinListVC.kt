@@ -32,7 +32,7 @@ class MemberCoinListVC: BaseActivity(), MyTable2IF {
     var coinReturnResultTable: CoinReturnResultTable? = null
 
     private val tableType: Type = object : TypeToken<Tables2<MemberCoinTable>>() {}.type
-    lateinit var tableView: MyTable2VC<MemberCoinViewHolder, MemberCoinTable>
+    lateinit var tableView: MyTable2VC<MemberCoinViewHolder, MemberCoinTable, MemberCoinListVC>
 
     var bottom_button_count: Int = 3
     val button_width: Int = 300
@@ -47,7 +47,7 @@ class MemberCoinListVC: BaseActivity(), MyTable2IF {
         setMyTitle("解碼點數")
 
         val recyclerView: RecyclerView = findViewById(R.id.list)
-        tableView = MyTable2VC(recyclerView, R.layout.coin_list_cell, ::MemberCoinViewHolder, tableType, this::didSelect, this::tableViewSetSelected)
+        tableView = MyTable2VC(recyclerView, R.layout.coin_list_cell, ::MemberCoinViewHolder, tableType, this::didSelect, this::tableViewSetSelected, this)
 
         //recyclerView = list
         refreshLayout = list_refresh
@@ -301,19 +301,20 @@ class MemberCoinListVC: BaseActivity(), MyTable2IF {
 
 class MemberCoinViewHolder(
     context: Context,
-    viewHolder: View,
+    view: View,
     didSelect: didSelectClosure<MemberCoinTable>,
-    selected: selectedClosure<MemberCoinTable>
-): MyViewHolder2<MemberCoinTable>(context, viewHolder, didSelect, selected) {
+    selected: selectedClosure<MemberCoinTable>,
+    delegate: MemberCoinListVC
+): MyViewHolder2<MemberCoinTable, MemberCoinListVC>(context, view, didSelect, selected, delegate) {
 
-    val noLbl: TextView = viewHolder.noTV
-    val able_typeLbl: TextView = viewHolder.able_typeLbl
-    val dateLbl: TextView = viewHolder.dateLbl
-    val priceSignLbl: TextView = viewHolder.priceSignLbl
-    val priceLbl: TextView = viewHolder.priceLbl
-    val balanceSignLbl: TextView = viewHolder.balanceSignLbl
-    val balanceLbl: TextView = viewHolder.balanceLbl
-    val typeButton: Button = viewHolder.typeButton
+    val noLbl: TextView = view.noTV
+    val able_typeLbl: TextView = view.able_typeLbl
+    val dateLbl: TextView = view.dateLbl
+    val priceSignLbl: TextView = view.priceSignLbl
+    val priceLbl: TextView = view.priceLbl
+    val balanceSignLbl: TextView = view.balanceSignLbl
+    val balanceLbl: TextView = view.balanceLbl
+    val typeButton: Button = view.typeButton
 
     //_row is cartTable
     override fun bind(row: MemberCoinTable, idx: Int) {

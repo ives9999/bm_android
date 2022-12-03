@@ -21,7 +21,7 @@ import java.lang.reflect.Type
 class MemberSubscriptionKindVC : BaseActivity(), MyTable2IF {
 
     private val tableType: Type = object : TypeToken<Tables2<MemberSubscriptionKindTable>>() {}.type
-    lateinit var tableView: MyTable2VC<MemberSubscriptionKindViewHolder, MemberSubscriptionKindTable>
+    lateinit var tableView: MyTable2VC<MemberSubscriptionKindViewHolder, MemberSubscriptionKindTable, MemberSubscriptionKindVC>
     //lateinit var tableAdapter: MyAdapter2<MemberLevelUpViewHolder<MemberLevelKindTable>, MemberLevelKindTable>
     //var rows: ArrayList<MemberLevelKindTable> = arrayListOf()
 
@@ -39,7 +39,7 @@ class MemberSubscriptionKindVC : BaseActivity(), MyTable2IF {
         setMyTitle("訂閱會員")
 
         val recyclerView: RecyclerView = findViewById(R.id.list)
-        tableView = MyTable2VC(recyclerView, R.layout.subscriptionkind_cell, ::MemberSubscriptionKindViewHolder, tableType, this::didSelect, this::tableViewSetSelected)
+        tableView = MyTable2VC(recyclerView, R.layout.subscriptionkind_cell, ::MemberSubscriptionKindViewHolder, tableType, this::didSelect, this::tableViewSetSelected, this)
 
         setBottomThreeView()
         init()
@@ -148,13 +148,14 @@ class MemberSubscriptionKindVC : BaseActivity(), MyTable2IF {
 
 class MemberSubscriptionKindViewHolder(
     context: Context,
-    viewHolder: View,
+    view: View,
     didSelect: didSelectClosure<MemberSubscriptionKindTable>,
-    selected: selectedClosure<MemberSubscriptionKindTable>
-): MyViewHolder2<MemberSubscriptionKindTable>(context, viewHolder, didSelect, selected) {
+    selected: selectedClosure<MemberSubscriptionKindTable>,
+    delegate: MemberSubscriptionKindVC
+): MyViewHolder2<MemberSubscriptionKindTable, MemberSubscriptionKindVC>(context, view, didSelect, selected, delegate) {
 
-    val titleLbl: TextView = viewHolder.titleLbl
-    val priceLbl: TextView = viewHolder.priceLbl
+    val titleLbl: TextView = view.titleLbl
+    val priceLbl: TextView = view.priceLbl
 
     override fun bind(row: MemberSubscriptionKindTable, idx: Int) {
         super.bind(row, idx)

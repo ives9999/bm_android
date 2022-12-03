@@ -8,7 +8,7 @@ import com.sportpassword.bm.Utilities.then
 
 interface MyTable2IF {
 
-    fun <T: MyViewHolder2<U>, U: Table> showTableView(tableView: MyTable2VC<T, U>, jsonString: String?): Boolean {
+    fun <T: MyViewHolder2<U, V>, U: Table, V: BaseActivity> showTableView(tableView: MyTable2VC<T, U, V>, jsonString: String?): Boolean {
 
         if (jsonString != null) {
             val b: Boolean = tableView.parseJSON(jsonString)
