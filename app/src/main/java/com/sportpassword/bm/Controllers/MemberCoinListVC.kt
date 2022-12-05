@@ -47,7 +47,7 @@ class MemberCoinListVC: BaseActivity(), MyTable2IF {
         setMyTitle("解碼點數")
 
         val recyclerView: RecyclerView = findViewById(R.id.list)
-        tableView = MyTable2VC(recyclerView, R.layout.coin_list_cell, ::MemberCoinViewHolder, tableType, this::didSelect, this::tableViewSetSelected, this)
+        tableView = MyTable2VC(recyclerView, R.layout.coin_list_cell, ::MemberCoinViewHolder, tableType, this::tableViewSetSelected, this)
 
         //recyclerView = list
         refreshLayout = list_refresh
@@ -302,10 +302,9 @@ class MemberCoinListVC: BaseActivity(), MyTable2IF {
 class MemberCoinViewHolder(
     context: Context,
     view: View,
-    didSelect: didSelectClosure<MemberCoinTable>,
     selected: selectedClosure<MemberCoinTable>,
     delegate: MemberCoinListVC
-): MyViewHolder2<MemberCoinTable, MemberCoinListVC>(context, view, didSelect, selected, delegate) {
+): MyViewHolder2<MemberCoinTable, MemberCoinListVC>(context, view, selected, delegate) {
 
     val noLbl: TextView = view.noTV
     val able_typeLbl: TextView = view.able_typeLbl

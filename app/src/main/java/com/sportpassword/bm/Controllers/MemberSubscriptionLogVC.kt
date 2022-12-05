@@ -35,7 +35,7 @@ class MemberSubscriptionLogVC : BaseActivity(), MyTable2IF {
 
         val recyclerView: RecyclerView = findViewById(R.id.list)
         tableView = MyTable2VC(recyclerView, R.layout.subscriptionlog_cell,
-            ::MemberSubscriptionLogViewHolder, tableType, this::didSelect, this::tableViewSetSelected, this)
+            ::MemberSubscriptionLogViewHolder, tableType, this::tableViewSetSelected, this)
 
         init()
 
@@ -73,8 +73,6 @@ class MemberSubscriptionLogVC : BaseActivity(), MyTable2IF {
         }
     }
 
-    fun didSelect(row: MemberSubscriptionLogTable, idx: Int) {}
-
     fun tableViewSetSelected(row: MemberSubscriptionLogTable): Boolean {
 
         return false
@@ -84,10 +82,9 @@ class MemberSubscriptionLogVC : BaseActivity(), MyTable2IF {
 class MemberSubscriptionLogViewHolder(
     context: Context,
     view: View,
-    didSelect: didSelectClosure<MemberSubscriptionLogTable>,
     selected: selectedClosure<MemberSubscriptionLogTable>,
     delegate: MemberSubscriptionLogVC
-): MyViewHolder2<MemberSubscriptionLogTable, MemberSubscriptionLogVC>(context, view, didSelect, selected, delegate) {
+): MyViewHolder2<MemberSubscriptionLogTable, MemberSubscriptionLogVC>(context, view, selected, delegate) {
 
     val noLbl: TextView = view.noTV
     val priceLbl: TextView = view.priceLbl

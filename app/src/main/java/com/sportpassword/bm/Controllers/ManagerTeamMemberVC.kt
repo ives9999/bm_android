@@ -58,7 +58,7 @@ open class ManagerTeamMemberVC : BaseActivity(), MyTable2IF {
         }
 
         val recyclerView: RecyclerView = findViewById(R.id.list)
-        tableView = MyTable2VC(recyclerView, R.layout.team_member_list_cell, ::TeamMemberViewHolder, tableType, this::didSelect, this::tableViewSetSelected, this)
+        tableView = MyTable2VC(recyclerView, R.layout.team_member_list_cell, ::TeamMemberViewHolder, tableType, this::tableViewSetSelected, this)
         //tableView.adapter = TeamMemberAdapter(R.layout.team_member_list_cell, ::TeamMemberViewHolder, this::didSelect, this::tableViewSetSelected)
         refreshLayout = list_refresh
 
@@ -129,6 +129,9 @@ open class ManagerTeamMemberVC : BaseActivity(), MyTable2IF {
         loading = true
 
         TeamService.addTeamMember(this, token!!, member_token, member.token!!) { success ->
+            runOnUiThread {
+                Loading.hide(mask)
+            }
             if (success) {
                 var successTable: SuccessTable? = null
                 try {
@@ -146,16 +149,28 @@ open class ManagerTeamMemberVC : BaseActivity(), MyTable2IF {
                     }
                     //println(e.localizedMessage)
                 }
+            } else {
+                warning("新增失敗")
             }
         }
     }
 
-    private fun didSelect(row: TeamMemberTable, idx: Int) {
+    fun deleteTeamMember(row: TeamMemberTable) {
+        warning("確定要刪除嗎？", true, "刪除") {
+            Loading.show(mask)
+            loading = true
 
-    }
-
-    fun remove(row: TeamMemberTable) {
-        println(row.id)
+            TeamService.deleteTeamMember(this, row.token) { success ->
+                runOnUiThread {
+                    Loading.hide(mask)
+                    if (success) {
+                        refresh()
+                    } else {
+                        warning("刪除失敗")
+                    }
+                }
+            }
+        }
     }
 
     private fun tableViewSetSelected(row: TeamMemberTable): Boolean { return false }
@@ -180,22 +195,12 @@ open class ManagerTeamMemberVC : BaseActivity(), MyTable2IF {
 
 }
 
-//class TeamMemberAdapter(
-//    private val resource: Int,
-//    private val viewHolderConstructor: (Context, View, didSelectClosure<TeamMemberTable>, selectedClosure<TeamMemberTable>)-> TeamMemberViewHolder,
-//    private val didSelect: didSelectClosure<TeamMemberTable>,
-//    private val selected: selectedClosure<TeamMemberTable> /* = ((U) -> kotlin.Boolean)? */): MyAdapter2<TeamMemberViewHolder, TeamMemberTable>(resource, viewHolderConstructor, didSelect, selected
-//) {
-//    val thisDelegate: ManagerTeamMemberVC? = null
-//    }
-
 class TeamMemberViewHolder(
     context: Context,
     view: View,
-    didSelect: didSelectClosure<TeamMemberTable>,
     selected: selectedClosure<TeamMemberTable>,
     delegate: ManagerTeamMemberVC
-): MyViewHolder2<TeamMemberTable, ManagerTeamMemberVC>(context, view, didSelect, selected, delegate) {
+): MyViewHolder2<TeamMemberTable, ManagerTeamMemberVC>(context, view, selected, delegate) {
 
     override fun bind(row: TeamMemberTable, idx: Int) {
 
@@ -218,7 +223,7 @@ class TeamMemberViewHolder(
 
         view.findViewById<ImageView>(R.id.deleteIV) ?. let {
             it.setOnClickListener {
-                delegate.remove(row)
+                delegate.deleteTeamMember(row)
             }
         }
     }

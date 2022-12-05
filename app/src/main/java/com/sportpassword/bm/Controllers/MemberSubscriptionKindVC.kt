@@ -18,7 +18,7 @@ import kotlinx.android.synthetic.main.mask.*
 import kotlinx.android.synthetic.main.subscriptionkind_cell.view.*
 import java.lang.reflect.Type
 
-class MemberSubscriptionKindVC : BaseActivity(), MyTable2IF {
+class MemberSubscriptionKindVC : BaseActivity(), MyTable2IF, List1CellDelegate {
 
     private val tableType: Type = object : TypeToken<Tables2<MemberSubscriptionKindTable>>() {}.type
     lateinit var tableView: MyTable2VC<MemberSubscriptionKindViewHolder, MemberSubscriptionKindTable, MemberSubscriptionKindVC>
@@ -39,7 +39,7 @@ class MemberSubscriptionKindVC : BaseActivity(), MyTable2IF {
         setMyTitle("訂閱會員")
 
         val recyclerView: RecyclerView = findViewById(R.id.list)
-        tableView = MyTable2VC(recyclerView, R.layout.subscriptionkind_cell, ::MemberSubscriptionKindViewHolder, tableType, this::didSelect, this::tableViewSetSelected, this)
+        tableView = MyTable2VC(recyclerView, R.layout.subscriptionkind_cell, ::MemberSubscriptionKindViewHolder, tableType, this::tableViewSetSelected, this)
 
         setBottomThreeView()
         init()
@@ -78,9 +78,17 @@ class MemberSubscriptionKindVC : BaseActivity(), MyTable2IF {
         }
     }
 
-    fun didSelect(row: MemberSubscriptionKindTable, idx: Int) {
-        toMemberSubscriptionPay(row.name, row.price, row.eng_name)
+    override fun cellClick(row: Table) {
+        val row1: MemberSubscriptionKindTable? = row as? MemberSubscriptionKindTable?
+        if (row1 != null) {
+            toMemberSubscriptionPay(row.name, row.price, row.eng_name)
+        }
     }
+
+
+//    fun didSelect(row: MemberSubscriptionKindTable, idx: Int) {
+//        toMemberSubscriptionPay(row.name, row.price, row.eng_name)
+//    }
 
     fun tableViewSetSelected(row: MemberSubscriptionKindTable): Boolean {
 
@@ -149,10 +157,9 @@ class MemberSubscriptionKindVC : BaseActivity(), MyTable2IF {
 class MemberSubscriptionKindViewHolder(
     context: Context,
     view: View,
-    didSelect: didSelectClosure<MemberSubscriptionKindTable>,
     selected: selectedClosure<MemberSubscriptionKindTable>,
     delegate: MemberSubscriptionKindVC
-): MyViewHolder2<MemberSubscriptionKindTable, MemberSubscriptionKindVC>(context, view, didSelect, selected, delegate) {
+): MyViewHolder2<MemberSubscriptionKindTable, MemberSubscriptionKindVC>(context, view, selected, delegate) {
 
     val titleLbl: TextView = view.titleLbl
     val priceLbl: TextView = view.priceLbl
