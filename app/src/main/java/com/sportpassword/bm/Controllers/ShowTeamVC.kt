@@ -4,10 +4,12 @@ import android.app.Activity
 import android.app.AlertDialog
 import android.content.Intent
 import android.os.Bundle
+import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.LinearLayout
+import androidx.recyclerview.widget.RecyclerView
 import com.google.gson.Gson
 import com.google.gson.JsonParseException
 import com.sportpassword.bm.Adapters.SignupAdapter
@@ -21,23 +23,37 @@ import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.MemberService
 import com.sportpassword.bm.Services.TeamService
 import com.sportpassword.bm.Utilities.*
+import com.sportpassword.bm.Views.TabSearch
+import com.sportpassword.bm.Views.Top
 import com.sportpassword.bm.member
+import kotlinx.android.synthetic.main.activity_search_vc.*
 import kotlinx.android.synthetic.main.activity_show_team_vc.*
 import kotlinx.android.synthetic.main.activity_show_team_vc.refresh
 import kotlinx.android.synthetic.main.activity_show_team_vc.signupDateLbl
 import kotlinx.android.synthetic.main.activity_show_team_vc.signupTableView
 import kotlinx.android.synthetic.main.bottom_view_show.*
+import kotlinx.android.synthetic.main.bottom_view_show.footer
 import java.util.*
 import kotlin.reflect.full.memberProperties
 import kotlinx.android.synthetic.main.mask.*
+import kotlinx.android.synthetic.main.tab_search.view.*
 
 class ShowTeamVC: ShowVC() {
 
+    var top: Top? = null
     var myTable: TeamTable? = null
 
     var isTempPlay: Boolean = true
 
     lateinit var signupAdapter: SignupAdapter
+
+    var topTags: ArrayList<HashMap<String, Any>> = arrayListOf (
+        hashMapOf("key" to "introduce", "focus" to true, "tag" to 0, "icon" to "admin", "text" to "介紹", "class" to ""),
+        hashMapOf("key" to "teammember", "focus" to false, "tag" to 1, "icon" to "team", "text" to "隊員", "class" to ""),
+        hashMapOf("key" to "tempplay", "focus" to false, "tag" to 2, "icon" to "tempplay", "text" to "臨打", "class" to "")
+    )
+    var focusTabIdx: Int = 0
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         setContentView(R.layout.activity_show_team_vc)
@@ -66,11 +82,64 @@ class ShowTeamVC: ShowVC() {
 //            "created_at_show" to hashMapOf("icon" to "calendar","title" to "建立日期","content" to "")
 //        )
 
+        findViewById<Top>(R.id.top) ?. let {
+            top = it
+            it.showPrev(true)
+        }
+
         signupAdapter = SignupAdapter(this, this)
         signupTableView.adapter = signupAdapter
 
         init()
         refresh()
+    }
+
+    override fun init() {
+        super.init()
+        initTopTab()
+    }
+
+    private fun initTopTab() {
+
+        val lp_tag = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT)
+        lp_tag.gravity = Gravity.CENTER
+        lp_tag.weight = 1F
+        val textSize: Float = 16F
+
+        for ((i, topTag) in topTags.withIndex()) {
+            val tab: TabSearch = TabSearch(this)
+            tab.layoutParams = lp_tag
+            tab.gravity = Gravity.CENTER
+
+            var idx: Int = 1000
+            if (topTag.containsKey("tag")) {
+                idx = topTag["tag"] as Int
+            }
+            tab.tag = idx
+
+            var icon: String = "like"
+            if (topTag.containsKey("icon")) {
+                icon = topTag["icon"] as String
+            }
+            tab.icon.setImage(icon)
+
+            var text: String = "預設"
+            if (topTag.containsKey("text")) {
+                text = topTag["text"] as String
+            }
+            tab.text.text = text
+            tab.text.textSize = textSize
+            topTags[i]["class"] = tab
+
+            findViewById<LinearLayout>(R.id.tag_container) ?. let {
+                it.addView(tab)
+            }
+
+            tab.setOnClickListener {
+                tabPressed(it)
+            }
+        }
+        updateTabSelected(focusTabIdx)
     }
 
     override fun genericTable() {
@@ -346,6 +415,86 @@ class ShowTeamVC: ShowVC() {
                 }
             } else {
                 warning("只有球隊管理員可以檢視報名者資訊")
+            }
+        }
+    }
+
+
+    private fun tabPressed(view: View) {
+
+        val tab: TabSearch = view as TabSearch
+        val idx: Int? = tab.tag as? Int
+        if (idx != null) {
+            val focusTag: HashMap<String, Any> = topTags[idx]
+            val focused: Boolean = focusTag["focus"] as? Boolean == true
+
+            //按了其他頁面的按鈕
+            if (!focused) {
+                updateTabSelected(idx)
+                focusTabIdx = idx
+                when (focusTabIdx) {
+                    1-> {
+                        //setFilterView()
+                        footer.visibility = View.VISIBLE
+                        findViewById<RecyclerView>(R.id.list_container) ?. let {
+                            it.visibility = View.VISIBLE
+                        }
+                        //recyclerView.adapter = oneSectionAdapter
+                    }
+                    0-> {
+                        //setListView()
+                        footer.visibility = View.GONE
+                        //remain.visibility = View.GONE
+                        //recyclerView.adapter = tableAdapter
+                        params.clear()
+
+                        if (member.isLoggedIn) {
+                            findViewById<RecyclerView>(R.id.list_container) ?. let {
+                                it.visibility = View.VISIBLE
+                            }
+                            refresh()
+                        } else {
+                            findViewById<RecyclerView>(R.id.list_container) ?. let {
+                                it.visibility = View.GONE
+                            }
+                        }
+                    }
+                    2-> {
+                        //setListView()
+                        footer.visibility = View.GONE
+                        findViewById<RecyclerView>(R.id.list_container) ?. let {
+                            it.visibility = View.VISIBLE
+                        }
+                        //remain.visibility = View.GONE
+                        //recyclerView.adapter = tableAdapter
+                        params.clear()
+                        refresh()
+                    }
+                }
+            }
+        }
+    }
+
+
+    private fun updateTabSelected(idx: Int) {
+
+        // set user click which tag, set tag selected is true
+        for ((i, topTag) in topTags.withIndex()) {
+            topTag["focus"] = i == idx
+            topTags[i] = topTag
+        }
+        setTabSelectedStyle()
+    }
+
+    private fun setTabSelectedStyle() {
+
+        for (topTag in topTags) {
+            if (topTag.containsKey("class")) {
+                val tag: TabSearch? = topTag["class"] as? TabSearch
+                if (tag != null) {
+                    tag.isChecked = topTag["focus"] as Boolean
+                    tag.setSelectedStyle()
+                }
             }
         }
     }
