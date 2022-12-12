@@ -180,6 +180,7 @@ class ShowTeamVC: ShowVC() {
         if (table != null) {
             myTable = table as TeamTable
             myTable!!.filterRow()
+            top?.setTitle(myTable!!.name)
         } else {
             runOnUiThread {
                 warning("解析伺服器所傳的字串失敗，請洽管理員")

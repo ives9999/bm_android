@@ -109,11 +109,11 @@ open class ShowVC: BaseActivity() {
             val params: HashMap<String, String> = hashMapOf("token" to token!!, "member_token" to member.token!!)
             dataService.getOne(this, params) { success ->
                 if (success) {
-                    genericTable()
-                    if (table != null) {
-                        table!!.filterRow()
+                    runOnUiThread {
+                        genericTable()
+                        if (table != null) {
+                            table!!.filterRow()
 
-                        runOnUiThread {
                             if (table!!.name.isNotEmpty()) {
                                 setMyTitle(table!!.name)
                             } else if (table!!.title.isNotEmpty()) {
