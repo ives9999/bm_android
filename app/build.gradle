@@ -86,6 +86,7 @@ android {
         checkReleaseBuilds false
         disable 'MissingTranslation'
     }
+    namespace 'com.sportpassword.bm'
 }
 
 

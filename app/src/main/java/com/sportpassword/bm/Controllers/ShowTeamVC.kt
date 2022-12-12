@@ -12,13 +12,12 @@ import android.widget.LinearLayout
 import androidx.recyclerview.widget.RecyclerView
 import com.google.gson.Gson
 import com.google.gson.JsonParseException
+import com.google.gson.reflect.TypeToken
 import com.sportpassword.bm.Adapters.SignupAdapter
 import com.sportpassword.bm.Data.ShowRow
 import com.sportpassword.bm.Data.SignupRow
-import com.sportpassword.bm.Models.MemberTable
-import com.sportpassword.bm.Models.SuccessTable
-import com.sportpassword.bm.Models.Table
-import com.sportpassword.bm.Models.TeamTable
+import com.sportpassword.bm.Interface.MyTable2IF
+import com.sportpassword.bm.Models.*
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.MemberService
 import com.sportpassword.bm.Services.TeamService
@@ -37,6 +36,8 @@ import java.util.*
 import kotlin.reflect.full.memberProperties
 import kotlinx.android.synthetic.main.mask.*
 import kotlinx.android.synthetic.main.tab_search.view.*
+import java.lang.reflect.Type
+import kotlin.collections.ArrayList
 
 class ShowTeamVC: ShowVC() {
 
@@ -53,7 +54,13 @@ class ShowTeamVC: ShowVC() {
         hashMapOf("key" to "tempplay", "focus" to false, "tag" to 2, "icon" to "tempplay", "text" to "臨打", "class" to "")
     )
     var focusTabIdx: Int = 0
+    var isTeamMemberLoaded: Boolean = false
+    var teamMemberRows: ArrayList<SignupRow> = arrayListOf()
 
+    var introduceContainerLL: LinearLayout? = null
+    var teamMemberContainerLL: LinearLayout? = null
+    var tempPlayContainerLL: LinearLayout? = null
+    var teamMemberTableView: RecyclerView? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         setContentView(R.layout.activity_show_team_vc)
@@ -87,8 +94,25 @@ class ShowTeamVC: ShowVC() {
             it.showPrev(true)
         }
 
+        findViewById<LinearLayout>(R.id.introduceContainerLL) ?. let {
+            introduceContainerLL = it
+        }
+
+        findViewById<LinearLayout>(R.id.teamMemberContainerLL) ?. let {
+            teamMemberContainerLL = it
+        }
+
+        findViewById<LinearLayout>(R.id.tempPlayContainerLL) ?. let {
+            tempPlayContainerLL = it
+        }
+
+        findViewById<RecyclerView>(R.id.teamMemberTableView) ?. let {
+            teamMemberTableView = it
+        }
+
         signupAdapter = SignupAdapter(this, this)
         signupTableView.adapter = signupAdapter
+        teamMemberTableView?.adapter = signupAdapter
 
         init()
         refresh()
@@ -142,6 +166,7 @@ class ShowTeamVC: ShowVC() {
         updateTabSelected(focusTabIdx)
     }
 
+    //這是給內頁介紹詳細資料用的
     override fun genericTable() {
         //println(dataService.jsonString)
         try {
@@ -158,6 +183,50 @@ class ShowTeamVC: ShowVC() {
         } else {
             runOnUiThread {
                 warning("解析伺服器所傳的字串失敗，請洽管理員")
+            }
+        }
+    }
+
+    private fun getTeamMemberList() {
+        Loading.show(mask)
+        loading = true
+
+        TeamService.teamMemberList(this, token!!, page, perPage) { success ->
+            runOnUiThread {
+                Loading.hide(mask)
+
+                val tableType: Type = object : TypeToken<Tables2<TeamMemberTable>>() {}.type
+                val tables2: Tables2<TeamMemberTable>? = jsonToModels2<Tables2<TeamMemberTable>, TeamMemberTable>(TeamService.jsonString, tableType)
+                if (tables2 == null) {
+                    msg = "無法從伺服器取得正確的json資料，請洽管理員"
+                } else {
+                    if (tables2.success) {
+                        if (tables2.rows.size > 0) {
+
+                            for ((idx, row) in tables2.rows.withIndex()) {
+                                row.filterRow()
+                                val signupRow: SignupRow = SignupRow((idx+1).toString(), row.member_nickname)
+                                teamMemberRows.add(signupRow)
+                            }
+
+                            if (page == 1) {
+                                page = tables2.page
+                                perPage = tables2.perPage
+                                totalCount = tables2.totalCount
+                                val _totalPage: Int = totalCount / perPage
+                                totalPage = if (totalCount % perPage > 0) _totalPage + 1 else _totalPage
+                            }
+
+                            signupAdapter.rows = teamMemberRows
+                            teamMemberTableView?.adapter?.notifyDataSetChanged()
+                        } else {
+                            val rootView: ViewGroup = getRootView()
+                            rootView.setInfo(this, "目前暫無資料")
+                        }
+                    } else {
+                        msg = "解析JSON字串時，沒有成功，系統傳回值錯誤，請洽管理員"
+                    }
+                }
             }
         }
     }
@@ -191,7 +260,6 @@ class ShowTeamVC: ShowVC() {
 
         if (myTable != null) {
             setMainData(myTable!!)
-            setSignupData()
         }
     }
 
@@ -243,7 +311,6 @@ class ShowTeamVC: ShowVC() {
                     "下次臨打時間：" + myTable!!.signupDate!!.date + " " + myTable!!.interval_show
                 deadlineLbl.text = "報名截止時間：" + myTable!!.signupDate!!.deadline.noSec()
             }
-
         }
 
         if (myTable!!.people_limit == 0) {
@@ -433,42 +500,38 @@ class ShowTeamVC: ShowVC() {
                 updateTabSelected(idx)
                 focusTabIdx = idx
                 when (focusTabIdx) {
-                    1-> {
-                        //setFilterView()
-                        footer.visibility = View.VISIBLE
-                        findViewById<RecyclerView>(R.id.list_container) ?. let {
-                            it.visibility = View.VISIBLE
-                        }
-                        //recyclerView.adapter = oneSectionAdapter
-                    }
                     0-> {
-                        //setListView()
-                        footer.visibility = View.GONE
-                        //remain.visibility = View.GONE
-                        //recyclerView.adapter = tableAdapter
-                        params.clear()
+                        //setFilterView()
+                        introduceContainerLL?.visibility = View.VISIBLE
+                        teamMemberContainerLL?.visibility = View.GONE
+                        tempPlayContainerLL?.visibility = View.GONE
 
-                        if (member.isLoggedIn) {
-                            findViewById<RecyclerView>(R.id.list_container) ?. let {
-                                it.visibility = View.VISIBLE
-                            }
-                            refresh()
+                        footer.visibility = View.INVISIBLE
+                    }
+                    1-> {
+                        teamMemberContainerLL?.visibility = View.VISIBLE
+                        introduceContainerLL?.visibility = View.GONE
+                        tempPlayContainerLL?.visibility = View.GONE
+
+                        signupRows.clear()
+                        if (!isTeamMemberLoaded) {
+                            getTeamMemberList()
+                            isTeamMemberLoaded = true
                         } else {
-                            findViewById<RecyclerView>(R.id.list_container) ?. let {
-                                it.visibility = View.GONE
-                            }
+                            signupAdapter.rows = teamMemberRows
+                            teamMemberTableView?.adapter?.notifyDataSetChanged()
                         }
+
+                        footer.visibility = View.VISIBLE
                     }
                     2-> {
-                        //setListView()
-                        footer.visibility = View.GONE
-                        findViewById<RecyclerView>(R.id.list_container) ?. let {
-                            it.visibility = View.VISIBLE
-                        }
-                        //remain.visibility = View.GONE
-                        //recyclerView.adapter = tableAdapter
-                        params.clear()
-                        refresh()
+                        tempPlayContainerLL?.visibility = View.VISIBLE
+                        introduceContainerLL?.visibility = View.GONE
+                        teamMemberContainerLL?.visibility = View.GONE
+
+                        signupRows.clear()
+                        setSignupData()
+                        footer.visibility = View.VISIBLE
                     }
                 }
             }

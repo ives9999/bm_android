@@ -32,47 +32,108 @@
         android:id="@+id/refresh"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:clickable="true"
+        android:layout_below="@id/line"
+        android:background="@color/MY_BLACK"
         android:focusable="true"
-        android:focusableInTouchMode="true"
-        android:layout_below="@+id/line"
-        android:layout_above="@id/footer"
-        android:layout_marginTop="12dp"
+        android:paddingTop="12dp"
+
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-        <ScrollView
+        <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            >
 
-            <RelativeLayout
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <ImageView
-                    android:id="@+id/featured"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@color/MY_BOTTOM_BACKGROUND"
-                    android:scaleType="fitCenter"
-                    app:srcCompat="@drawable/loading_square" />
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
 
                 <LinearLayout
-                    android:id="@+id/data_container"
+                    android:id="@+id/introduceContainerLL"
+                    android:orientation="vertical"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_below="@+id/featured"
-                    android:layout_marginTop="-30dp"
-                    android:background="@drawable/show_data_container"
-                    android:orientation="vertical">
+                    android:layout_height="wrap_content">
 
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/tableView"
+                    <ImageView
+                        android:id="@+id/featured"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/MY_BOTTOM_BACKGROUND"
+                        android:scaleType="fitCenter"
+                        app:srcCompat="@drawable/loading_square" />
+
+                    <LinearLayout
+                        android:id="@+id/data_container"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginTop="-30dp"
+                        android:background="@drawable/show_data_container"
+                        android:orientation="vertical">
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/tableView"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="24dp"
+                            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager">
+
+                        </androidx.recyclerview.widget.RecyclerView>
+
+                        <TextView
+                            android:id="@+id/contentLbl"
+                            style="@style/list_text_title"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="24dp"
+                            android:text="詳細介紹"
+                            android:textAlignment="center" />
+
+                        <WebView
+                            android:id="@+id/contentView"
+                            style="@android:style/Widget.WebView"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="12dp"
+                            android:background="@android:color/transparent"
+                            />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/teamMemberContainerLL"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:visibility="gone"
+                    >
+
+                    <TextView
+                        android:id="@+id/teamMemberDataLbl"
+                        style="@style/list_text_title"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="24dp"
-                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager">
+                        android:text="報名資料"
+                        android:textAlignment="center" />
 
-                    </androidx.recyclerview.widget.RecyclerView>
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/teamMemberTableView"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="12dp"
+                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/tempPlayContainerLL"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:visibility="gone"
+                    >
 
                     <TextView
                         android:id="@+id/signupDataLbl"
@@ -107,29 +168,13 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="12dp"
                         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
-
-                    <TextView
-                        android:id="@+id/contentLbl"
-                        style="@style/list_text_title"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="24dp"
-                        android:text="詳細介紹"
-                        android:textAlignment="center" />
-
-                    <WebView
-                        android:id="@+id/contentView"
-                        style="@android:style/Widget.WebView"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="12dp"
-                        android:background="@android:color/transparent"
-                         />
-
                 </LinearLayout>
 
-            </RelativeLayout>
-        </ScrollView>
+
+            </LinearLayout>
+
+
+        </androidx.core.widget.NestedScrollView>
 
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
