@@ -1,40 +1,31 @@
 package com.sportpassword.bm.Controllers
 
-import android.app.Activity
-import android.app.AlertDialog
-import android.content.Intent
 import android.os.Bundle
 import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.LinearLayout
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.google.gson.Gson
 import com.google.gson.JsonParseException
 import com.google.gson.reflect.TypeToken
 import com.sportpassword.bm.Adapters.SignupAdapter
 import com.sportpassword.bm.Data.ShowRow
 import com.sportpassword.bm.Data.SignupRow
-import com.sportpassword.bm.Interface.MyTable2IF
 import com.sportpassword.bm.Models.*
 import com.sportpassword.bm.R
-import com.sportpassword.bm.Services.MemberService
 import com.sportpassword.bm.Services.TeamService
 import com.sportpassword.bm.Utilities.*
 import com.sportpassword.bm.Views.Bottom
+import com.sportpassword.bm.Views.EndlessRecyclerViewScrollListener
 import com.sportpassword.bm.Views.TabSearch
 import com.sportpassword.bm.Views.Top
 import com.sportpassword.bm.member
-import kotlinx.android.synthetic.main.activity_search_vc.*
 import kotlinx.android.synthetic.main.activity_show_team_vc.*
 import kotlinx.android.synthetic.main.activity_show_team_vc.refresh
-import kotlinx.android.synthetic.main.activity_show_team_vc.signupDateLbl
-import kotlinx.android.synthetic.main.activity_show_team_vc.signupTableView
 import kotlinx.android.synthetic.main.bottom_view_show.*
-import kotlinx.android.synthetic.main.bottom_view_show.footer
 import java.util.*
-import kotlin.reflect.full.memberProperties
 import kotlinx.android.synthetic.main.mask.*
 import kotlinx.android.synthetic.main.tab_search.view.*
 import java.lang.reflect.Type
@@ -47,8 +38,6 @@ class ShowTeamVC: ShowVC() {
     var myTable: TeamTable? = null
 
     var isTempPlay: Boolean = true
-
-    lateinit var signupAdapter: SignupAdapter
 
     var topTags: ArrayList<HashMap<String, Any>> = arrayListOf (
         hashMapOf("key" to "introduce", "focus" to true, "tag" to 0, "icon" to "admin", "text" to "介紹", "class" to ""),
@@ -63,6 +52,21 @@ class ShowTeamVC: ShowVC() {
     var teamMemberContainerLL: LinearLayout? = null
     var tempPlayContainerLL: LinearLayout? = null
     var teamMemberTableView: RecyclerView? = null
+    var tempPlayTableView: RecyclerView? = null
+
+    //team member
+    lateinit var teamMemberAdapter: SignupAdapter
+    private lateinit var teamMemberLinearLayoutManager: LinearLayoutManager
+    protected lateinit var teamMemberScrollListener: MemberTeamScrollListener
+    var teamMemberPage: Int = 1
+    var teamMemberPerpage: Int = PERPAGE
+
+    //temp play
+    lateinit var tempPlayAdapter: SignupAdapter
+    private lateinit var tempPlayLinearLayoutManager: LinearLayoutManager
+    protected lateinit var tempPlayScrollListener: TempPlayScrollListener
+    var tempPlayPage: Int = 1
+    var tempPlayPerpage: Int = PERPAGE
 
     override fun onCreate(savedInstanceState: Bundle?) {
         setContentView(R.layout.activity_show_team_vc)
@@ -113,13 +117,27 @@ class ShowTeamVC: ShowVC() {
             tempPlayContainerLL = it
         }
 
+        teamMemberAdapter = SignupAdapter(this, this)
         findViewById<RecyclerView>(R.id.teamMemberTableView) ?. let {
             teamMemberTableView = it
+            it.adapter = teamMemberAdapter
+
+            teamMemberLinearLayoutManager = LinearLayoutManager(this)
+            it.layoutManager = teamMemberLinearLayoutManager
+            teamMemberScrollListener = MemberTeamScrollListener(teamMemberLinearLayoutManager)
+            it.addOnScrollListener(teamMemberScrollListener)
         }
 
-        signupAdapter = SignupAdapter(this, this)
-        signupTableView.adapter = signupAdapter
-        teamMemberTableView?.adapter = signupAdapter
+        tempPlayAdapter = SignupAdapter(this, this)
+        findViewById<RecyclerView>(R.id.tempPlayTableView) ?. let {
+            tempPlayTableView = it
+            it.adapter = tempPlayAdapter
+
+            tempPlayLinearLayoutManager = LinearLayoutManager(this)
+            it.layoutManager = tempPlayLinearLayoutManager
+            tempPlayScrollListener = TempPlayScrollListener(tempPlayLinearLayoutManager)
+            it.addOnScrollListener(tempPlayScrollListener)
+        }
 
         init()
         refresh()
@@ -196,7 +214,16 @@ class ShowTeamVC: ShowVC() {
         }
     }
 
-    private fun getTeamMemberList() {
+    protected fun countTeamMemberTotalPage() {
+        val _totalPage: Int = totalCount / teamMemberPerpage
+        totalPage = if (totalCount % teamMemberPerpage > 0) _totalPage+1 else _totalPage
+
+        if (totalPage <= 1) {
+            teamMemberTableView?.removeOnScrollListener(teamMemberScrollListener)
+        }
+    }
+
+    private fun getTeamMemberList(page: Int, perPage: Int) {
         Loading.show(mask)
         loading = true
 
@@ -214,22 +241,24 @@ class ShowTeamVC: ShowVC() {
 
                             for ((idx, row) in tables2.rows.withIndex()) {
                                 row.filterRow()
-                                val signupRow: SignupRow = SignupRow((idx+1).toString(), row.member_nickname)
+                                val baseIdx: Int = (page-1)*perPage
+                                val signupRow: SignupRow = SignupRow((baseIdx + idx + 1).toString(), row.member_nickname)
                                 teamMemberRows.add(signupRow)
                             }
 
-                            if (page == 1) {
-                                page = tables2.page
-                                perPage = tables2.perPage
+                            if (this.teamMemberPage == 1) {
+                                this.teamMemberPage = tables2.page
+                                this.teamMemberPerpage = tables2.perPage
                                 totalCount = tables2.totalCount
                                 val _totalPage: Int = totalCount / perPage
                                 totalPage = if (totalCount % perPage > 0) _totalPage + 1 else _totalPage
+                                countTeamMemberTotalPage()
                             }
 
                             teamMemberDataLbl.visibility = View.VISIBLE
                             teamMemberDataLbl.text = "總人數${totalCount}位"
-                            signupAdapter.rows = teamMemberRows
-                            teamMemberTableView?.adapter?.notifyDataSetChanged()
+                            teamMemberAdapter.rows = teamMemberRows
+                            teamMemberAdapter.notifyDataSetChanged()
                         } else {
                             val rootView: ViewGroup = getRootView()
                             rootView.setInfo(this, "目前暫無資料")
@@ -311,16 +340,16 @@ class ShowTeamVC: ShowVC() {
         isTempPlayOnline()
 
         if (!isTempPlay) {
-            signupDataLbl.text = "目前球隊不開放臨打"
-            signupDateLbl.visibility = View.INVISIBLE
-            deadlineLbl.visibility = View.INVISIBLE
-            signupTableView.visibility = View.GONE
+            tempPlayDataLbl.text = "目前球隊不開放臨打"
+            tempPlayDateLbl.visibility = View.INVISIBLE
+            tempPlayDeadlineLbl.visibility = View.INVISIBLE
+            tempPlayTableView?.visibility = View.GONE
         } else {
             if (myTable != null && myTable!!.signupDate != null) {
-                signupDataLbl.text = "報名資料"
-                signupDateLbl.text =
+                tempPlayDataLbl.text = "報名資料"
+                tempPlayDateLbl.text =
                     "下次臨打時間：" + myTable!!.signupDate!!.date + " " + myTable!!.interval_show
-                deadlineLbl.text = "報名截止時間：" + myTable!!.signupDate!!.deadline.noSec()
+                tempPlayDeadlineLbl.text = "報名截止時間：" + myTable!!.signupDate!!.deadline.noSec()
             }
         }
 
@@ -351,8 +380,8 @@ class ShowTeamVC: ShowVC() {
                 }
             }
 
-            signupAdapter.rows = signupRows
-            signupAdapter.notifyDataSetChanged()
+            tempPlayAdapter.rows = signupRows
+            tempPlayAdapter.notifyDataSetChanged()
         }
 
         if (myTable!!.isSignup) {
@@ -525,11 +554,8 @@ class ShowTeamVC: ShowVC() {
 
                         signupRows.clear()
                         if (!isTeamMemberLoaded) {
-                            getTeamMemberList()
+                            getTeamMemberList(this.teamMemberPage, this.teamMemberPerpage)
                             isTeamMemberLoaded = true
-                        } else {
-                            signupAdapter.rows = teamMemberRows
-                            teamMemberTableView?.adapter?.notifyDataSetChanged()
                         }
 
                         showBottom?.showButton(false, true, false)
@@ -541,13 +567,13 @@ class ShowTeamVC: ShowVC() {
 
                         signupRows.clear()
                         setSignupData()
+
                         showBottom?.showButton(true, true, false)
                     }
                 }
             }
         }
     }
-
 
     private fun updateTabSelected(idx: Int) {
 
@@ -576,4 +602,29 @@ class ShowTeamVC: ShowVC() {
 //
 //    }
 
+    inner class MemberTeamScrollListener(recyelerViewLinearLayoutManager: LinearLayoutManager): EndlessRecyclerViewScrollListener(recyelerViewLinearLayoutManager) {
+
+        //page: 目前在第幾頁
+        //totalItemCount: 已經下載幾頁
+        override fun onLoadMore(page: Int, totalItemsCount: Int, view: RecyclerView?) {
+            //page已經+1了
+            if (page == totalPage) {
+                teamMemberTableView?.removeOnScrollListener(teamMemberScrollListener)
+            }
+            getTeamMemberList(page, teamMemberPerpage)
+        }
+    }
+
+    inner class TempPlayScrollListener(recyelerViewLinearLayoutManager: LinearLayoutManager): EndlessRecyclerViewScrollListener(recyelerViewLinearLayoutManager) {
+
+        //page: 目前在第幾頁
+        //totalItemCount: 已經下載幾頁
+        override fun onLoadMore(page: Int, totalItemsCount: Int, view: RecyclerView?) {
+            //page已經+1了
+            if (page == totalPage) {
+                tempPlayTableView?.removeOnScrollListener(tempPlayScrollListener)
+            }
+            //getTeamMemberList(page, teamMemberPerpage)
+        }
+    }
 }

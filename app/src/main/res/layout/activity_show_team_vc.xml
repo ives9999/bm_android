@@ -32,8 +32,8 @@
         android:id="@+id/refresh"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_above="@id/bottom"
         android:layout_below="@id/line"
-        android:layout_above="@+id/footer"
         android:background="@color/MY_BLACK"
         android:focusable="true"
         android:paddingTop="12dp"
@@ -42,8 +42,7 @@
 
         <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            >
+            android:layout_height="match_parent">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -52,9 +51,9 @@
 
                 <LinearLayout
                     android:id="@+id/introduceContainerLL"
-                    android:orientation="vertical"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
 
                     <ImageView
                         android:id="@+id/featured"
@@ -96,8 +95,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="12dp"
-                            android:background="@android:color/transparent"
-                            />
+                            android:background="@android:color/transparent" />
 
                     </LinearLayout>
 
@@ -108,8 +106,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:visibility="gone"
-                    >
+                    android:visibility="gone">
 
                     <TextView
                         android:id="@+id/teamMemberDataLbl"
@@ -133,11 +130,10 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:visibility="gone"
-                    >
+                    android:visibility="gone">
 
                     <TextView
-                        android:id="@+id/signupDataLbl"
+                        android:id="@+id/tempPlayDataLbl"
                         style="@style/list_text_title"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -146,7 +142,7 @@
                         android:textAlignment="center" />
 
                     <TextView
-                        android:id="@+id/signupDateLbl"
+                        android:id="@+id/tempPlayDateLbl"
                         style="@style/list_text_general"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -155,7 +151,7 @@
                         tools:text="下次臨打時間：2020-02-06 20:00~22:00" />
 
                     <TextView
-                        android:id="@+id/deadlineLbl"
+                        android:id="@+id/tempPlayDeadlineLbl"
                         style="@style/list_text_general"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -164,11 +160,11 @@
                         tools:text="報名截止時間：2020-02-06 18:00" />
 
                     <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/signupTableView"
+                        android:id="@+id/tempPlayTableView"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="12dp"
-                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+                        />
                 </LinearLayout>
 
 
