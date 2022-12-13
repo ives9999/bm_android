@@ -22,6 +22,7 @@ import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.MemberService
 import com.sportpassword.bm.Services.TeamService
 import com.sportpassword.bm.Utilities.*
+import com.sportpassword.bm.Views.Bottom
 import com.sportpassword.bm.Views.TabSearch
 import com.sportpassword.bm.Views.Top
 import com.sportpassword.bm.member
@@ -42,6 +43,7 @@ import kotlin.collections.ArrayList
 class ShowTeamVC: ShowVC() {
 
     var top: Top? = null
+    var showBottom: Bottom? = null
     var myTable: TeamTable? = null
 
     var isTempPlay: Boolean = true
@@ -70,7 +72,7 @@ class ShowTeamVC: ShowVC() {
         refreshLayout = refresh
         setRefreshListener()
 
-        bottom_button_count = 2
+        bottom_button_count = 3
 //        initAdapter()
         super.onCreate(savedInstanceState)
 
@@ -92,6 +94,11 @@ class ShowTeamVC: ShowVC() {
         findViewById<Top>(R.id.top) ?. let {
             top = it
             it.showPrev(true)
+        }
+
+        findViewById<Bottom>(R.id.bottom) ?. let {
+            showBottom = it
+            it.showButton(false, true, false)
         }
 
         findViewById<LinearLayout>(R.id.introduceContainerLL) ?. let {
@@ -181,6 +188,7 @@ class ShowTeamVC: ShowVC() {
             myTable = table as TeamTable
             myTable!!.filterRow()
             top?.setTitle(myTable!!.name)
+            showBottom?.setLike(myTable!!.like, myTable!!.like_count)
         } else {
             runOnUiThread {
                 warning("解析伺服器所傳的字串失敗，請洽管理員")
@@ -218,6 +226,8 @@ class ShowTeamVC: ShowVC() {
                                 totalPage = if (totalCount % perPage > 0) _totalPage + 1 else _totalPage
                             }
 
+                            teamMemberDataLbl.visibility = View.VISIBLE
+                            teamMemberDataLbl.text = "總人數${totalCount}位"
                             signupAdapter.rows = teamMemberRows
                             teamMemberTableView?.adapter?.notifyDataSetChanged()
                         } else {
@@ -346,13 +356,13 @@ class ShowTeamVC: ShowVC() {
         }
 
         if (myTable!!.isSignup) {
-            signupButton.setText("取消報名")
+            showBottom?.setSubmitBtnTitle("取消報名")
         } else {
             val count = myTable!!.signupNormalTables.size
             if (count >= myTable!!.people_limit) {
-                signupButton.setText("候補")
+                showBottom?.setSubmitBtnTitle("候補")
             } else {
-                signupButton.setText("報名")
+                showBottom?.setSubmitBtnTitle("報名")
             }
         }
     }
@@ -502,12 +512,11 @@ class ShowTeamVC: ShowVC() {
                 focusTabIdx = idx
                 when (focusTabIdx) {
                     0-> {
-                        //setFilterView()
                         introduceContainerLL?.visibility = View.VISIBLE
                         teamMemberContainerLL?.visibility = View.GONE
                         tempPlayContainerLL?.visibility = View.GONE
 
-                        footer.visibility = View.INVISIBLE
+                        showBottom?.showButton(false, true, false)
                     }
                     1-> {
                         teamMemberContainerLL?.visibility = View.VISIBLE
@@ -523,7 +532,7 @@ class ShowTeamVC: ShowVC() {
                             teamMemberTableView?.adapter?.notifyDataSetChanged()
                         }
 
-                        footer.visibility = View.VISIBLE
+                        showBottom?.showButton(false, true, false)
                     }
                     2-> {
                         tempPlayContainerLL?.visibility = View.VISIBLE
@@ -532,7 +541,7 @@ class ShowTeamVC: ShowVC() {
 
                         signupRows.clear()
                         setSignupData()
-                        footer.visibility = View.VISIBLE
+                        showBottom?.showButton(true, true, false)
                     }
                 }
             }
