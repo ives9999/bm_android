@@ -103,6 +103,7 @@ class ShowTeamVC: ShowVC() {
         findViewById<Bottom>(R.id.bottom) ?. let {
             showBottom = it
             it.showButton(false, true, false)
+            it.setOnSubmitClickListener(signup)
         }
 
         findViewById<LinearLayout>(R.id.introduceContainerLL) ?. let {
@@ -189,6 +190,48 @@ class ShowTeamVC: ShowVC() {
             }
         }
         updateTabSelected(focusTabIdx)
+    }
+
+    override fun refresh() {
+
+        if (token != null) {
+//            signupRows.clear()
+//            showRows.clear()
+            initData()
+            Loading.show(mask)
+            val params: HashMap<String, String> = hashMapOf("token" to token!!, "member_token" to member.token!!)
+            dataService.getOne(this, params) { success ->
+                if (success) {
+                    runOnUiThread {
+                        genericTable()
+                        if (table != null) {
+                            table!!.filterRow()
+
+                            if (table!!.name.isNotEmpty()) {
+                                setMyTitle(table!!.name)
+                            } else if (table!!.title.isNotEmpty()) {
+                                setMyTitle(table!!.title)
+                            }
+                            setFeatured()
+                            setData()
+                            setContent()
+                            showAdapter.rows = showRows
+                            showAdapter.notifyDataSetChanged()
+
+                            isLike = table!!.like
+                            likeCount = table!!.like_count
+                            setLike()
+
+                            _tabPressed(focusTabIdx)
+                        }
+                    }
+                }
+                runOnUiThread {
+                    closeRefresh()
+                    Loading.hide(mask)
+                }
+            }
+        }
     }
 
     //這是給內頁介紹詳細資料用的
@@ -335,7 +378,7 @@ class ShowTeamVC: ShowVC() {
         ))
     }
 
-    fun setSignupData() {
+    private fun setSignupData() {
 
         isTempPlayOnline()
 
@@ -396,7 +439,7 @@ class ShowTeamVC: ShowVC() {
         }
     }
 
-    fun isTempPlayOnline() {
+    private fun isTempPlayOnline() {
 
         //1.如果臨打狀態是關閉，關閉臨打
         if (myTable!!.temp_status == "offline") {
@@ -437,7 +480,11 @@ class ShowTeamVC: ShowVC() {
         }
     }
 
-    fun submitButtonPressed(view: View) {
+    val signup: ()->Unit = {
+        signupButtonPressed()
+    }
+
+    private fun signupButtonPressed() {
 
         if (!member.isLoggedIn) {
             warning("請先登入會員")
@@ -526,51 +573,52 @@ class ShowTeamVC: ShowVC() {
         }
     }
 
-
     private fun tabPressed(view: View) {
-
         val tab: TabSearch = view as TabSearch
         val idx: Int? = tab.tag as? Int
         if (idx != null) {
             val focusTag: HashMap<String, Any> = topTags[idx]
             val focused: Boolean = focusTag["focus"] as? Boolean == true
-
-            //按了其他頁面的按鈕
             if (!focused) {
                 updateTabSelected(idx)
                 focusTabIdx = idx
-                when (focusTabIdx) {
-                    0-> {
-                        introduceContainerLL?.visibility = View.VISIBLE
-                        teamMemberContainerLL?.visibility = View.GONE
-                        tempPlayContainerLL?.visibility = View.GONE
+                _tabPressed(focusTabIdx)
+            }
+        }
+    }
 
-                        showBottom?.showButton(false, true, false)
-                    }
-                    1-> {
-                        teamMemberContainerLL?.visibility = View.VISIBLE
-                        introduceContainerLL?.visibility = View.GONE
-                        tempPlayContainerLL?.visibility = View.GONE
+    private fun _tabPressed(idx: Int) {
 
-                        signupRows.clear()
-                        if (!isTeamMemberLoaded) {
-                            getTeamMemberList(this.teamMemberPage, this.teamMemberPerpage)
-                            isTeamMemberLoaded = true
-                        }
+        when (focusTabIdx) {
+            0-> {
+                introduceContainerLL?.visibility = View.VISIBLE
+                teamMemberContainerLL?.visibility = View.GONE
+                tempPlayContainerLL?.visibility = View.GONE
 
-                        showBottom?.showButton(false, true, false)
-                    }
-                    2-> {
-                        tempPlayContainerLL?.visibility = View.VISIBLE
-                        introduceContainerLL?.visibility = View.GONE
-                        teamMemberContainerLL?.visibility = View.GONE
+                showBottom?.showButton(false, true, false)
+            }
+            1-> {
+                teamMemberContainerLL?.visibility = View.VISIBLE
+                introduceContainerLL?.visibility = View.GONE
+                tempPlayContainerLL?.visibility = View.GONE
 
-                        signupRows.clear()
-                        setSignupData()
-
-                        showBottom?.showButton(true, true, false)
-                    }
+                signupRows.clear()
+                if (!isTeamMemberLoaded) {
+                    getTeamMemberList(this.teamMemberPage, this.teamMemberPerpage)
+                    isTeamMemberLoaded = true
                 }
+
+                showBottom?.showButton(false, true, false)
+            }
+            2-> {
+                tempPlayContainerLL?.visibility = View.VISIBLE
+                introduceContainerLL?.visibility = View.GONE
+                teamMemberContainerLL?.visibility = View.GONE
+
+                signupRows.clear()
+                setSignupData()
+
+                showBottom?.showButton(true, true, false)
             }
         }
     }

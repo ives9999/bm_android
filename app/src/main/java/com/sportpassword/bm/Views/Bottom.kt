@@ -78,7 +78,13 @@ class Bottom@JvmOverloads constructor(context: Context, attrs: AttributeSet? = n
         setAnchor(padding)
     }
 
-    fun setAnchor(padding: Int) {
+    fun setOnSubmitClickListener(lambda: ()-> Unit) {
+        submitBtn?.setOnClickListener {
+            lambda.invoke()
+        }
+    }
+
+    private fun setAnchor(padding: Int) {
 
         if (submitBtn != null && submitBtn!!.visibility == View.VISIBLE) {
             setPadding(submitBtn!!, padding)
@@ -116,13 +122,13 @@ class Bottom@JvmOverloads constructor(context: Context, attrs: AttributeSet? = n
         submitBtn?.setText(title)
     }
 
-    fun getBottomButtonPadding(): Int {
+    private fun getBottomButtonPadding(): Int {
         val padding: Int = (screenWidth - bottom_button_count * button_width) / (bottom_button_count + 1)
 
         return padding
     }
 
-    fun setPadding(view: View, padding: Int) {
+    private fun setPadding(view: View, padding: Int) {
 
         val p: MarginLayoutParams = view.layoutParams as MarginLayoutParams
         p.marginStart = padding
