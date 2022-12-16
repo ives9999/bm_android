@@ -1944,6 +1944,8 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener,
         }
     }
 
+    open fun teamMemberInfo(idx: Int) {}
+
     fun unmask() {
         val duration: Long = 500
         if (layerBlackView != null) {

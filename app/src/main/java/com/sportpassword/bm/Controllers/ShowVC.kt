@@ -287,7 +287,7 @@ open class ShowVC: BaseActivity() {
         setCount()
     }
 
-    private fun setIcon() {
+    open fun setIcon() {
 
         findViewById<ImageView>(R.id.like_icon) ?. let {
             var res: Int = R.drawable.like
@@ -298,7 +298,7 @@ open class ShowVC: BaseActivity() {
         }
     }
 
-    private fun setCount() {
+    open fun setCount() {
 
         findViewById<TextView>(R.id.like_count) ?. let {
             likeCount = if (table!!.like) {
@@ -328,7 +328,7 @@ open class ShowVC: BaseActivity() {
         return ShowRow()
     }
 
-    fun likeButtonPressed(view: View) {
+    fun likeButtonPressed() {
 
         if (!member.isLoggedIn) {
             toLogin()

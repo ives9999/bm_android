@@ -84,6 +84,18 @@ class Bottom@JvmOverloads constructor(context: Context, attrs: AttributeSet? = n
         }
     }
 
+    fun setOnLikeClickListener(lambda: ()-> Unit) {
+        likeLL?.setOnClickListener {
+            lambda.invoke()
+        }
+    }
+
+    fun setOnCancelClickListener(lambda: () -> Unit) {
+        cancelBtn?.setOnClickListener {
+            lambda.invoke()
+        }
+    }
+
     private fun setAnchor(padding: Int) {
 
         if (submitBtn != null && submitBtn!!.visibility == View.VISIBLE) {
@@ -104,7 +116,7 @@ class Bottom@JvmOverloads constructor(context: Context, attrs: AttributeSet? = n
         setCount(count)
     }
 
-    private fun setIcon(isLike: Boolean) {
+    fun setIcon(isLike: Boolean) {
 
         var res: Int = R.drawable.like
         if (isLike) {
@@ -113,7 +125,7 @@ class Bottom@JvmOverloads constructor(context: Context, attrs: AttributeSet? = n
         likeIconIV?.setImageResource(res)
     }
 
-    private fun setCount(count: Int) {
+    fun setCount(count: Int) {
 
         likeCountTV?.text = "${count}人"
     }

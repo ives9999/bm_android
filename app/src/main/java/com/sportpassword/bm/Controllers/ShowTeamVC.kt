@@ -1,7 +1,9 @@
 package com.sportpassword.bm.Controllers
 
+import android.content.Context
 import android.os.Bundle
 import android.view.Gravity
+import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
@@ -11,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.gson.JsonParseException
 import com.google.gson.reflect.TypeToken
 import com.sportpassword.bm.Adapters.SignupAdapter
+import com.sportpassword.bm.Adapters.SignupViewHolder
 import com.sportpassword.bm.Data.ShowRow
 import com.sportpassword.bm.Data.SignupRow
 import com.sportpassword.bm.Models.*
@@ -55,7 +58,7 @@ class ShowTeamVC: ShowVC() {
     var tempPlayTableView: RecyclerView? = null
 
     //team member
-    lateinit var teamMemberAdapter: SignupAdapter
+    lateinit var teamMemberAdapter: TeamMemberAdapter
     private lateinit var teamMemberLinearLayoutManager: LinearLayoutManager
     protected lateinit var teamMemberScrollListener: MemberTeamScrollListener
     var teamMemberPage: Int = 1
@@ -104,6 +107,8 @@ class ShowTeamVC: ShowVC() {
             showBottom = it
             it.showButton(false, true, false)
             it.setOnSubmitClickListener(signup)
+            it.setOnLikeClickListener(like)
+            it.setOnCancelClickListener(cancel)
         }
 
         findViewById<LinearLayout>(R.id.introduceContainerLL) ?. let {
@@ -118,7 +123,7 @@ class ShowTeamVC: ShowVC() {
             tempPlayContainerLL = it
         }
 
-        teamMemberAdapter = SignupAdapter(this, this)
+        teamMemberAdapter = TeamMemberAdapter(this, this)
         findViewById<RecyclerView>(R.id.teamMemberTableView) ?. let {
             teamMemberTableView = it
             it.adapter = teamMemberAdapter
@@ -285,7 +290,7 @@ class ShowTeamVC: ShowVC() {
                             for ((idx, row) in tables2.rows.withIndex()) {
                                 row.filterRow()
                                 val baseIdx: Int = (page-1)*perPage
-                                val signupRow: SignupRow = SignupRow((baseIdx + idx + 1).toString(), row.member_nickname)
+                                val signupRow: SignupRow = SignupRow((baseIdx + idx + 1).toString(), row.member_nickname, row.member_token)
                                 teamMemberRows.add(signupRow)
                             }
 
@@ -480,7 +485,15 @@ class ShowTeamVC: ShowVC() {
         }
     }
 
-    val signup: ()->Unit = {
+    val cancel: ()-> Unit = {
+        prev()
+    }
+
+    val like: ()-> Unit = {
+        likeButtonPressed()
+    }
+
+    val signup: () ->Unit = {
         signupButtonPressed()
     }
 
@@ -552,18 +565,42 @@ class ShowTeamVC: ShowVC() {
         }
     }
 
+    override fun setIcon() {
+        showBottom?.setIcon(isLike)
+    }
+
+    override fun setCount() {
+        likeCount = if (table!!.like) {
+            if (isLike) {
+                table!!.like_count
+            } else {
+                table!!.like_count - 1
+            }
+        } else {
+            if (isLike) {
+                table!!.like_count + 1
+            } else {
+                table!!.like_count
+            }
+        }
+        showBottom?.setCount(likeCount)
+    }
+
     //showSignupInfo is click signup data to call back function defined in BaseActivity
     override fun showSignupInfo(position: Int) {
 
         if (myTable != null) {
             if (myTable!!.manager_token == member.token) {
+                val signupNormalCount: Int = myTable!!.signupNormalTables.size
                 val people_limit = myTable!!.people_limit
-                if (position < people_limit) {
+
+                if (position < signupNormalCount) {
                     val signup_normal_model = myTable!!.signupNormalTables[position]
                     //print(signup_normal_model.member_token)
                     getMemberOne(signup_normal_model.member_token)
 
-                } else {
+                }
+                if (position > people_limit) {
                     val signup_standby_model = myTable!!.signupStandbyTables[position]
                     getMemberOne(signup_standby_model.member_token)
                 }
@@ -623,6 +660,17 @@ class ShowTeamVC: ShowVC() {
         }
     }
 
+    override fun teamMemberInfo(idx: Int) {
+        if (myTable != null) {
+            if (myTable!!.manager_token == member.token) {
+                val teamMemberRow: SignupRow = teamMemberRows[idx]
+                getMemberOne(teamMemberRow.token)
+            } else {
+                warning("只有球隊管理員可以檢視報名者資訊")
+            }
+        }
+    }
+
     private fun updateTabSelected(idx: Int) {
 
         // set user click which tag, set tag selected is true
@@ -675,4 +723,35 @@ class ShowTeamVC: ShowVC() {
             //getTeamMemberList(page, teamMemberPerpage)
         }
     }
+}
+
+class TeamMemberAdapter(val context: Context, val delegate: BaseActivity?=null): RecyclerView.Adapter<SignupViewHolder>() {
+
+    var rows: ArrayList<SignupRow> = arrayListOf()
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SignupViewHolder {
+        val inflater = LayoutInflater.from(parent.context)
+        val viewHolder = inflater.inflate(R.layout.olcell, parent, false)
+
+        return SignupViewHolder(viewHolder)
+    }
+
+    override fun onBindViewHolder(holder: SignupViewHolder, position: Int) {
+
+        val row: SignupRow = rows[position]
+        holder.number.text = row.number
+        holder.name.text = row.name
+
+        holder.viewHolder.setOnClickListener {
+
+            if (delegate != null) {
+                delegate.teamMemberInfo(position)
+            }
+        }
+    }
+
+    override fun getItemCount(): Int {
+        return rows.size
+    }
+
 }
