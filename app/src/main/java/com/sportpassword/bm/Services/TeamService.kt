@@ -63,8 +63,8 @@ object TeamService: DataService() {
         val params: HashMap<String, String> = hashMapOf(
             "device" to "app", "channel" to CHANNEL, "team_token" to team_token, "member_token" to member_token, "manager_token" to manager_token
         )
-        println(url)
-        println(params)
+        //println(url)
+        //println(params)
 
         _simpleService(context, url, params, complete)
     }
@@ -72,8 +72,8 @@ object TeamService: DataService() {
     fun deleteTeamMember(context: Context, token: String, complete: CompletionHandler) {
         val url : String = URL_TEAM_MEMBER_DELETE
         val params: HashMap<String, String> = hashMapOf("device" to "app", "channel" to CHANNEL, "token" to token)
-        println(url)
-        println(params)
+        //println(url)
+        //println(params)
 
         _simpleService(context, url, params, complete)
     }

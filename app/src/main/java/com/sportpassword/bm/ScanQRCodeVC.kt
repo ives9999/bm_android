@@ -111,7 +111,7 @@ class ScanQRCodeVC : BaseActivity() {
                     val scannedValue: String = barcodes.valueAt(0).displayValue
                     runOnUiThread {
                         cameraSource.stop()
-                        Toast.makeText(this@ScanQRCodeVC, "$scannedValue", Toast.LENGTH_LONG).show()
+                        //Toast.makeText(this@ScanQRCodeVC, "$scannedValue", Toast.LENGTH_LONG).show()
 
                         val intent = Intent()
                         intent.putExtra("token", scannedValue)

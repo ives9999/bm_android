@@ -27,6 +27,7 @@ abstract class Tables {
 open class SuccessTable: Table() {
     val success: Boolean = false
     val msg: String = ""
+    val msgs: ArrayList<String> = arrayListOf()
 }
 
 abstract class Table {

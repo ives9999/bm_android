@@ -131,26 +131,28 @@ open class ManagerTeamMemberVC : BaseActivity(), MyTable2IF {
         TeamService.addTeamMember(this, token!!, member_token, member.token!!) { success ->
             runOnUiThread {
                 Loading.hide(mask)
-            }
-            if (success) {
-                var successTable: SuccessTable? = null
-                try {
-                    successTable = jsonToModel<SuccessTable>(TeamService.jsonString)
-                    if (successTable!!.success) {
-                        runOnUiThread {
+                if (success) {
+                    var successTable: SuccessTable? = null
+                    try {
+                        //println(TeamService.jsonString)
+                        successTable = jsonToModel<SuccessTable>(TeamService.jsonString)
+                        if (successTable!!.success) {
                             refresh()
+                        } else {
+                            val msgs: ArrayList<String> = successTable.msgs
+                            var msg: String = ""
+                            for (temp in msgs) {
+                                msg += temp + "\n"
+                            }
+                            warning(msg)
                         }
-                    } else {
-                        warning(successTable.msg)
-                    }
-                } catch (e: JsonParseException) {
-                    runOnUiThread {
+                    } catch (e: JsonParseException) {
                         warning(e.localizedMessage!!)
+                        //println(e.localizedMessage)
                     }
-                    //println(e.localizedMessage)
+                } else {
+                    warning("新增失敗")
                 }
-            } else {
-                warning("新增失敗")
             }
         }
     }
