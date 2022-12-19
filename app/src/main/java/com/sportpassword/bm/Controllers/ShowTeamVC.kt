@@ -290,7 +290,12 @@ class ShowTeamVC: ShowVC() {
                             for ((idx, row) in tables2.rows.withIndex()) {
                                 row.filterRow()
                                 val baseIdx: Int = (page-1)*perPage
-                                val signupRow: SignupRow = SignupRow((baseIdx + idx + 1).toString(), row.member_nickname, row.member_token)
+
+                                val nickname: String =
+                                    ((row.memberTable != null) then { row.memberTable!!.nickname })
+                                        ?: ""
+                                val token: String = ((row.memberTable != null) then { row.memberTable!!.token }) ?: ""
+                                val signupRow: SignupRow = SignupRow((baseIdx + idx + 1).toString(), nickname, token)
                                 teamMemberRows.add(signupRow)
                             }
 

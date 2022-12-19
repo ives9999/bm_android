@@ -243,6 +243,11 @@ interface ToInterface {
         mainDelegate.startActivity(i)
     }
 
+    fun toMemberTeamList() {
+        val i = Intent(mainDelegate, MemberTeamListVC::class.java)
+        mainDelegate.startActivity(i)
+    }
+
     fun toMore() {
         val i = Intent(mainDelegate, MoreVC::class.java)
         mainDelegate.startActivity(i)

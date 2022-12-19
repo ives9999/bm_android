@@ -27,9 +27,16 @@
         android:usesCleartextTraffic="true"
         tools:replace="android:allowBackup"
         tools:targetApi="m">
-<!--        <activity-->
-<!--            android:name=".Controllers"-->
-<!--            android:exported="false" />-->
+        <activity
+            android:name=".Controllers.MemberTeamListVC"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <!-- <activity -->
+        <!-- android:name=".Controllers" -->
+        <!-- android:exported="false" /> -->
         <activity
             android:name=".Controllers.ManagerTeamMemberVC"
             android:exported="false" />
@@ -106,21 +113,18 @@
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/providerfile" />
-        </provider>
-
-<!--        <activity-->
-<!--            android:name=".Controllers.MainActivity"-->
-<!--            android:exported="true"-->
-<!--            android:label="@string/app_name">-->
-
-            <!--
+        </provider> <!-- <activity -->
+        <!-- android:name=".Controllers.MainActivity" -->
+        <!-- android:exported="true" -->
+        <!-- android:label="@string/app_name"> -->
+        <!--
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-            -->
-<!--        </activity>-->
+        -->
+        <!-- </activity> -->
         <activity android:name=".Controllers.OrderVC" />
         <activity android:name=".Controllers.MemberCartListVC" />
         <activity

@@ -48,7 +48,7 @@ open class ManagerTeamMemberVC : BaseActivity(), MyTable2IF {
         findViewById<Top>(R.id.top) ?. let {
             top = it
             it.showPrev(true)
-            it.setTitle("球隊隊員")
+            it.setTitle("參加球隊")
         }
 
         findViewById<ImageView>(R.id.scanIV) ?. let {
@@ -216,7 +216,7 @@ class TeamMemberViewHolder(
         }
 
         view.findViewById<TextView>(R.id.nameTV) ?. let {
-            it.text = row.member_nickname
+            it.text = row.memberTable?.nickname
         }
 
         view.findViewById<TextView>(R.id.dateTV) ?. let {

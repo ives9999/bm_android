@@ -228,6 +228,7 @@ class MemberVC : MyTableVC() {
                 val qrcode: Bitmap? = generateQRCode(member.token!!)
                 qrcodeIV.setImageBitmap(qrcode)
             }
+            "toMemberTeamList" -> this.toMemberTeamList()
         }
     }
 
@@ -357,12 +358,14 @@ class MemberVC : MyTableVC() {
     private fun makeSection3Row(isExpanded: Boolean=true): MemberSection {
         val rows: ArrayList<MemberRow> = arrayListOf()
 
-        val r1: MemberRow = MemberRow("球隊", "team", "", TO_MEMBER_SIGNUP_LIST, "team")
+        val r1: MemberRow = MemberRow("球隊", "team", "", "toMemberTeamList", "team")
         rows.add(r1)
-        val r2: MemberRow = MemberRow("課程", "course", "", TO_MEMBER_SIGNUP_LIST, "course")
+        val r2: MemberRow = MemberRow("臨打", "tempplay", "", TO_MEMBER_SIGNUP_LIST, "team")
         rows.add(r2)
+        val r3: MemberRow = MemberRow("課程", "course", "", TO_MEMBER_SIGNUP_LIST, "course")
+        rows.add(r3)
 
-        val s: MemberSection = MemberSection("報名", true)
+        val s: MemberSection = MemberSection("參加", true)
         //val s: MemberSection = MemberSection("報名", isExpanded)
         s.items.addAll(rows)
 
