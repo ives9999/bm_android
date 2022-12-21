@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.google.gson.reflect.TypeToken
 import com.sportpassword.bm.Interface.MyTable2IF
 import com.sportpassword.bm.Models.MemberSubscriptionLogTable
@@ -33,10 +34,6 @@ class MemberSubscriptionLogVC : BaseActivity(), MyTable2IF {
 
         setMyTitle("訂閱會員付款紀錄")
 
-        val recyclerView: RecyclerView = findViewById(R.id.list)
-        tableView = MyTable2VC(recyclerView, R.layout.subscriptionlog_cell,
-            ::MemberSubscriptionLogViewHolder, tableType, this::tableViewSetSelected, this)
-
         init()
 
         refresh()
@@ -45,26 +42,34 @@ class MemberSubscriptionLogVC : BaseActivity(), MyTable2IF {
     override fun init() {
         isPrevIconShow = true
         super.init()
+
+        findViewById<SwipeRefreshLayout>(R.id.refreshSR) ?. let {
+            refreshLayout = it
+        }
+
+        val recyclerView: RecyclerView = findViewById(R.id.list)
+        tableView = MyTable2VC(recyclerView, refreshLayout, R.layout.subscriptionlog_cell,
+            ::MemberSubscriptionLogViewHolder, tableType, this::tableViewSetSelected, this::getDataFromServer, this)
     }
 
     override fun refresh() {
-
-        tableView.page = 1
-        getDataFromServer()
+        page = 1
+        tableView.getDataFromServer(page)
     }
 
-    private fun getDataFromServer() {
+    private fun getDataFromServer(page: Int) {
         Loading.show(mask)
         loading = true
 
-        MemberService.subscriptionLog(this, member.token!!, tableView.page, tableView.perPage) { success ->
+        MemberService.subscriptionLog(this, member.token!!, page, tableView.perPage) { success ->
             runOnUiThread {
                 Loading.hide(mask)
 
                 //MyTable2IF
                 val b: Boolean = showTableView(tableView, MemberService.jsonString)
                 if (b) {
-                    tableView.notifyDataSetChanged()
+                    this.totalPage = tableView.totalPage
+                    refreshLayout?.isRefreshing = false
                 } else {
                     val rootView: ViewGroup = getRootView()
                     rootView.setInfo(this, "目前暫無資料")
@@ -72,6 +77,26 @@ class MemberSubscriptionLogVC : BaseActivity(), MyTable2IF {
             }
         }
     }
+
+//    private fun getDataFromServer() {
+//        Loading.show(mask)
+//        loading = true
+//
+//        MemberService.subscriptionLog(this, member.token!!, tableView.page, tableView.perPage) { success ->
+//            runOnUiThread {
+//                Loading.hide(mask)
+//
+//                //MyTable2IF
+//                val b: Boolean = showTableView(tableView, MemberService.jsonString)
+//                if (b) {
+//                    tableView.notifyDataSetChanged()
+//                } else {
+//                    val rootView: ViewGroup = getRootView()
+//                    rootView.setInfo(this, "目前暫無資料")
+//                }
+//            }
+//        }
+//    }
 
     fun tableViewSetSelected(row: MemberSubscriptionLogTable): Boolean {
 
@@ -82,9 +107,8 @@ class MemberSubscriptionLogVC : BaseActivity(), MyTable2IF {
 class MemberSubscriptionLogViewHolder(
     context: Context,
     view: View,
-    selected: selectedClosure<MemberSubscriptionLogTable>,
     delegate: MemberSubscriptionLogVC
-): MyViewHolder2<MemberSubscriptionLogTable, MemberSubscriptionLogVC>(context, view, selected, delegate) {
+): MyViewHolder2<MemberSubscriptionLogTable, MemberSubscriptionLogVC>(context, view, delegate) {
 
     val noLbl: TextView = view.noTV
     val priceLbl: TextView = view.priceLbl

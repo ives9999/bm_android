@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.google.gson.reflect.TypeToken
 import com.sportpassword.bm.Interface.MyTable2IF
 import com.sportpassword.bm.Models.*
@@ -37,11 +38,6 @@ class MemberSubscriptionKindVC : BaseActivity(), MyTable2IF, List1CellDelegate {
         setContentView(R.layout.activity_member_subscription_kind_vc)
 
         setMyTitle("訂閱會員")
-
-        val recyclerView: RecyclerView = findViewById(R.id.list)
-        tableView = MyTable2VC(recyclerView, R.layout.subscriptionkind_cell, ::MemberSubscriptionKindViewHolder, tableType, this::tableViewSetSelected, this)
-
-        setBottomThreeView()
         init()
 
         refresh()
@@ -50,26 +46,36 @@ class MemberSubscriptionKindVC : BaseActivity(), MyTable2IF, List1CellDelegate {
     override fun init() {
         isPrevIconShow = true
         super.init()
+
+        findViewById<SwipeRefreshLayout>(R.id.refreshSR) ?. let {
+            refreshLayout = it
+        }
+
+        val recyclerView: RecyclerView = findViewById(R.id.list)
+        tableView = MyTable2VC(recyclerView, refreshLayout, R.layout.subscriptionkind_cell, ::MemberSubscriptionKindViewHolder, tableType, this::tableViewSetSelected, this::getDataFromServer, this)
+
+        setBottomThreeView()
     }
 
     override fun refresh() {
 
         tableView.page = 1
-        getDataFromServer()
+        tableView.getDataFromServer(page)
     }
 
-    private fun getDataFromServer() {
+    private fun getDataFromServer(page: Int) {
         Loading.show(mask)
         loading = true
 
-        MemberService.subscriptionKind(this, member.token!!, tableView.page, tableView.perPage) { success ->
+        MemberService.subscriptionKind(this, member.token!!, page, tableView.perPage) { success ->
             runOnUiThread {
                 Loading.hide(mask)
 
                 //MyTable2IF
                 val b: Boolean = showTableView(tableView, MemberService.jsonString)
                 if (b) {
-                    tableView.notifyDataSetChanged()
+                    this.totalPage = tableView.totalPage
+                    refreshLayout?.isRefreshing = false
                 } else {
                     val rootView: ViewGroup = getRootView()
                     rootView.setInfo(this, "目前暫無資料")
@@ -90,12 +96,11 @@ class MemberSubscriptionKindVC : BaseActivity(), MyTable2IF, List1CellDelegate {
 //        toMemberSubscriptionPay(row.name, row.price, row.eng_name)
 //    }
 
-    fun tableViewSetSelected(row: MemberSubscriptionKindTable): Boolean {
-
+    private fun tableViewSetSelected(row: MemberSubscriptionKindTable): Boolean {
         return row.eng_name == member.subscription
     }
 
-    fun setBottomThreeView() {
+    private fun setBottomThreeView() {
         findViewById<Button>(R.id.submitBtn) ?. let {
             it.text = "查詢"
             it.setOnClickListener {
@@ -157,9 +162,8 @@ class MemberSubscriptionKindVC : BaseActivity(), MyTable2IF, List1CellDelegate {
 class MemberSubscriptionKindViewHolder(
     context: Context,
     view: View,
-    selected: selectedClosure<MemberSubscriptionKindTable>,
     delegate: MemberSubscriptionKindVC
-): MyViewHolder2<MemberSubscriptionKindTable, MemberSubscriptionKindVC>(context, view, selected, delegate) {
+): MyViewHolder2<MemberSubscriptionKindTable, MemberSubscriptionKindVC>(context, view, delegate) {
 
     val titleLbl: TextView = view.titleLbl
     val priceLbl: TextView = view.priceLbl

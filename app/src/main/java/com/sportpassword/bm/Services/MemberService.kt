@@ -253,6 +253,15 @@ object MemberService: DataService() {
         })
     }
 
+    fun deleteMemberTeam(context: Context, team_member_token: String, complete: CompletionHandler) {
+        val url : String = URL_MEMBER_TEAM_DELETE
+        val params: HashMap<String, String> = hashMapOf("device" to "app", "channel" to CHANNEL, "team_member_token" to team_member_token)
+        //println(url)
+        //println(params)
+
+        _simpleService(context, url, params, complete)
+    }
+
     fun forgetPassword(context: Context, email: String, complete: CompletionHandler) {
         val lowerCaseEmail = email.toLowerCase()
         val url = URL_FORGETPASSWORD
@@ -524,6 +533,18 @@ object MemberService: DataService() {
 
         val url: String = URL_MEMBER_SUBSCRIPTION
         //println(url)
+
+        _simpleService(context, url, params, complete)
+    }
+
+    fun teamlist(context: Context, token: String, page:Int, perPage: Int, complete: CompletionHandler) {
+        val url: String = URL_MEMBER_TEAM_LIST
+        val params: HashMap<String, String> = hashMapOf(
+            "device" to "app", "channel" to CHANNEL, "page" to page.toString(), "perPage" to perPage.toString(), "token" to token
+        )
+
+        println(url)
+        println(params)
 
         _simpleService(context, url, params, complete)
     }

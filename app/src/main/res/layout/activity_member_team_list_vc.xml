@@ -11,4 +11,23 @@
         android:layout_width="match_parent"
         android:layout_height="54dp" />
 
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/refreshSR"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/MY_BLACK"
+        android:layout_below="@id/top">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:scrollbars="vertical"
+            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager">
+
+        </androidx.recyclerview.widget.RecyclerView>
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+    <include layout="@layout/mask" />
+
 </RelativeLayout>

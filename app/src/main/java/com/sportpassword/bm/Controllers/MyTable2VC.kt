@@ -5,64 +5,93 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.sportpassword.bm.Models.Table
 import com.sportpassword.bm.Models.Tables2
 import com.sportpassword.bm.R
+import com.sportpassword.bm.Services.MemberService
+import com.sportpassword.bm.Utilities.Loading
+import com.sportpassword.bm.Utilities.PERPAGE
 import com.sportpassword.bm.Utilities.jsonToModels2
+import com.sportpassword.bm.Utilities.setInfo
+import com.sportpassword.bm.Views.EndlessRecyclerViewScrollListener
+import com.sportpassword.bm.member
+import kotlinx.android.synthetic.main.cell_section.*
+import kotlinx.android.synthetic.main.mask.*
 import org.jetbrains.anko.backgroundColor
 import java.lang.reflect.Type
 
-typealias viewHolder<T, U, V> = (Context, View, selectedClosure<U>, V)-> T
+typealias viewHolder<T, U, V> = (Context, View, V)-> T
 typealias selectedClosure<U> = ((U) -> Boolean)?
+typealias getDataFromServerClosure = (Int) -> Unit
 
 class MyTable2VC<T: MyViewHolder2<U, V>, U: Table, V: BaseActivity>(
-    recyclerView: RecyclerView,
+    private val recyclerView: RecyclerView,
+    private val refreshLayout: SwipeRefreshLayout? = null,
     cellResource: Int,
     viewHolderConstructor: viewHolder<T, U, V>,
     private val tableType: Type,
     private val selected: selectedClosure<U>,
-    delegate: V
+    private val getDataFromServer: getDataFromServerClosure,
+    private val delegate: V
 ) {
 
     //var recyclerView: RecyclerView
     val adapter: MyAdapter2<T, U, V>
     var msg: String = ""
+    val rows: ArrayList<U> = arrayListOf()
 
     var page: Int = 1
-    var perPage: Int = 20
+    var perPage: Int = PERPAGE
     var totalCount: Int = 0
     var totalPage: Int = 0
 
+    var scrollListener: ScrollListener? = null
+
     init {
         //recyclerView = findViewById<RecyclerView>(resource)
-        adapter = MyAdapter2<T, U, V>(cellResource, viewHolderConstructor, selected, delegate)
+        adapter = MyAdapter2<T, U, V>(cellResource, viewHolderConstructor, delegate)
         recyclerView.adapter = adapter
+
+        val refreshListener: SwipeRefreshLayout.OnRefreshListener = SwipeRefreshLayout.OnRefreshListener {
+            delegate.refresh()
+        }
+        refreshLayout?.setOnRefreshListener(refreshListener)
+    }
+
+    fun getDataFromServer(page: Int) {
+        this.page = page
+        if (page == 1) {
+            rows.clear()
+        }
+        if (page == totalPage) {
+            if (scrollListener != null) {
+                recyclerView.removeOnScrollListener(scrollListener!!)
+            }
+        }
+
+        getDataFromServer.invoke(page)
     }
 
     fun parseJSON(jsonString: String): Boolean {
-        val rows: ArrayList<U> = genericTable2(jsonString)
+        val rows = genericTable2(jsonString)
         if (rows.size == 0) {
             return false
         } else {
-            setItems(rows)
+            this.rows.addAll(rows)
+            setItems()
+            notifyDataSetChanged()
         }
 
         return true
     }
 
     private fun genericTable2(jsonString: String): ArrayList<U> {
+
         val rows: ArrayList<U> = arrayListOf()
         val tables2: Tables2<U>? = jsonToModels2<Tables2<U>, U>(jsonString, tableType)
-
-//        try {
-//            //val type = object : TypeToken<Tables2<MemberLevelKindTable>>() {}.type
-//            val tables2 = Gson().fromJson<Tables2<U>>(jsonString, type)
-//            val n = 6
-//        } catch (e: java.lang.Exception) {
-//            Global.message = e.localizedMessage
-//            println(e.localizedMessage)
-//        }
 
         if (tables2 == null) {
             msg = "無法從伺服器取得正確的json資料，請洽管理員"
@@ -73,9 +102,11 @@ class MyTable2VC<T: MyViewHolder2<U, V>, U: Table, V: BaseActivity>(
                     for ((idx, row) in tables2.rows.withIndex()) {
                         row.filterRow()
 
-                        row.no = idx + 1
+                        row.no = idx + 1 + (page - 1)*perPage
 
-                        selected?.let { it(row) }.let {
+                        selected ?. let {
+                            it(row)
+                        } .let {
                             row.selected = it!!
                         }
                     }
@@ -86,6 +117,13 @@ class MyTable2VC<T: MyViewHolder2<U, V>, U: Table, V: BaseActivity>(
                         totalCount = tables2.totalCount
                         val _totalPage: Int = totalCount / perPage
                         totalPage = if (totalCount % perPage > 0) _totalPage + 1 else _totalPage
+
+                        if (totalPage > 1) {
+                            val layoutManager = LinearLayoutManager(delegate)
+                            recyclerView.layoutManager = layoutManager
+                            scrollListener = ScrollListener(layoutManager)
+                            recyclerView.addOnScrollListener(scrollListener!!)
+                        }
                     }
 
                     rows.addAll(tables2.rows)
@@ -98,19 +136,28 @@ class MyTable2VC<T: MyViewHolder2<U, V>, U: Table, V: BaseActivity>(
         return rows
     }
 
-    fun setItems(rows: ArrayList<U>) {
-        adapter.items = rows
+    fun setItems() {
+        adapter.items = this.rows
     }
 
     fun notifyDataSetChanged() {
         adapter.notifyDataSetChanged()
     }
+
+    inner class ScrollListener(recyelerViewLinearLayoutManager: LinearLayoutManager): EndlessRecyclerViewScrollListener(recyelerViewLinearLayoutManager) {
+
+        //page: 目前在第幾頁
+        //totalItemCount: 已經下載幾頁
+        override fun onLoadMore(page: Int, totalItemsCount: Int, view: RecyclerView?) {
+            //page已經+1了
+            getDataFromServer(page)
+        }
+    }
 }
 
 open class MyAdapter2<T: MyViewHolder2<U, V>, U: Table, V: BaseActivity> (
     private val resource: Int,
-    private val viewHolderConstructor: (Context, View, selectedClosure<U>, V)-> T,
-    private val selected: selectedClosure<U>, /* = ((U) -> kotlin.Boolean)? */
+    private val viewHolderConstructor: (Context, View, V)-> T,
     private val delegate: V
 ) : RecyclerView.Adapter<T>() {
 
@@ -130,14 +177,13 @@ open class MyAdapter2<T: MyViewHolder2<U, V>, U: Table, V: BaseActivity> (
         val inflater: LayoutInflater = LayoutInflater.from(parent.context)
         val view: View = inflater.inflate(resource, parent, false)
         //return T(parent.context, viewHolder, list1CellDelegate)
-        return viewHolderConstructor(parent.context, view, selected, delegate)
+        return viewHolderConstructor(parent.context, view, delegate)
     }
 }
 
 open class MyViewHolder2<U: Table, V: BaseActivity>(
     val context: Context,
     val view: View,
-    val selected: selectedClosure<U>,
     val delegate: V
 ) : RecyclerView.ViewHolder(view) {
 
@@ -149,10 +195,10 @@ open class MyViewHolder2<U: Table, V: BaseActivity>(
             delegate.cellClick(row)
         }
 
-        val isSelected = selected?.let { it(row) } == true
-        if (isSelected) {
-            val color: Int = ContextCompat.getColor(context, R.color.CELL_SELECTED)
-            view.backgroundColor = color
+        var color: Int = ContextCompat.getColor(context, R.color.MY_BLACK)
+        if (row.selected) {
+            color = ContextCompat.getColor(context, R.color.CELL_SELECTED)
         }
+        view.backgroundColor = color
     }
 }

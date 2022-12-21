@@ -13,6 +13,7 @@ import android.widget.TextView
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.google.gson.JsonParseException
 import com.google.gson.reflect.TypeToken
 import com.sportpassword.bm.Interface.MyTable2IF
@@ -51,19 +52,31 @@ open class ManagerTeamMemberVC : BaseActivity(), MyTable2IF {
             it.setTitle("參加球隊")
         }
 
+        init()
+        refresh()
+    }
+
+    override fun init() {
+
+        findViewById<SwipeRefreshLayout>(R.id.refreshSR) ?. let {
+            refreshLayout = it
+        }
+
+        findViewById<RecyclerView>(R.id.list) ?. let {
+            tableView = MyTable2VC(it, refreshLayout, R.layout.team_member_list_cell, ::TeamMemberViewHolder, tableType, this::tableViewSetSelected, this::getDataFromServer, this)
+        }
+
         findViewById<ImageView>(R.id.scanIV) ?. let {
             it.setOnClickListener {
                 handleScan()
             }
         }
 
-        val recyclerView: RecyclerView = findViewById(R.id.list)
-        tableView = MyTable2VC(recyclerView, R.layout.team_member_list_cell, ::TeamMemberViewHolder, tableType, this::tableViewSetSelected, this)
-        //tableView.adapter = TeamMemberAdapter(R.layout.team_member_list_cell, ::TeamMemberViewHolder, this::didSelect, this::tableViewSetSelected)
-        refreshLayout = list_refresh
+    }
 
-        init()
-        refresh()
+    override fun refresh() {
+        page = 1
+        tableView.getDataFromServer(page)
     }
 
     private fun handleScan() {
@@ -90,20 +103,7 @@ open class ManagerTeamMemberVC : BaseActivity(), MyTable2IF {
         }
     }
 
-    override fun init() {
-        super.init()
-    }
-
-    override fun refresh() {
-
-        page = 1
-        getDataFromServer()
-//        theFirstTime = true
-//        tableLists.clear()
-//        getDataStart(page, perPage, member.token)
-    }
-
-    private fun getDataFromServer() {
+    private fun getDataFromServer(page: Int) {
         Loading.show(mask)
         loading = true
 
@@ -114,7 +114,8 @@ open class ManagerTeamMemberVC : BaseActivity(), MyTable2IF {
                 //MyTable2IF
                 val b: Boolean = showTableView(tableView, TeamService.jsonString)
                 if (b) {
-                    tableView.notifyDataSetChanged()
+                    this.totalPage = tableView.totalPage
+                    refreshLayout?.isRefreshing = false
                 } else {
                     val rootView: ViewGroup = getRootView()
                     rootView.setInfo(this, "目前暫無資料")
@@ -194,15 +195,13 @@ open class ManagerTeamMemberVC : BaseActivity(), MyTable2IF {
             }
         }
     }
-
 }
 
 class TeamMemberViewHolder(
     context: Context,
     view: View,
-    selected: selectedClosure<TeamMemberTable>,
     delegate: ManagerTeamMemberVC
-): MyViewHolder2<TeamMemberTable, ManagerTeamMemberVC>(context, view, selected, delegate) {
+): MyViewHolder2<TeamMemberTable, ManagerTeamMemberVC>(context, view, delegate) {
 
     override fun bind(row: TeamMemberTable, idx: Int) {
 

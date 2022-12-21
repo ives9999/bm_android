@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.google.gson.Gson
 import com.google.gson.JsonParseException
 import com.google.gson.reflect.TypeToken
@@ -46,41 +47,54 @@ class MemberCoinListVC: BaseActivity(), MyTable2IF {
 
         setMyTitle("解碼點數")
 
-        val recyclerView: RecyclerView = findViewById(R.id.list)
-        tableView = MyTable2VC(recyclerView, R.layout.coin_list_cell, ::MemberCoinViewHolder, tableType, this::tableViewSetSelected, this)
-
-        //recyclerView = list
-        refreshLayout = list_refresh
-
-        //tableAdapter = MemberCoinAdapter(this)
-        //recyclerView.adapter = tableAdapter
-
-        setBottomThreeView()
-
-        setBottomButtonPadding()
-
         init()
         refresh()
     }
 
-    fun didSelect(row: MemberCoinTable, idx: Int) {
-
-    }
-
-    fun tableViewSetSelected(row: MemberCoinTable): Boolean { return false }
-
     override fun init() {
         isPrevIconShow = true
         super.init()
+
+        findViewById<SwipeRefreshLayout>(R.id.refreshSR) ?. let {
+            refreshLayout = it
+        }
+        val recyclerView: RecyclerView = findViewById(R.id.list)
+        tableView = MyTable2VC(recyclerView, refreshLayout, R.layout.coin_list_cell, ::MemberCoinViewHolder, tableType, this::tableViewSetSelected, this::getDataFromServer, this)
+
+        setBottomThreeView()
+
+        setBottomButtonPadding()
     }
 
-    override fun refresh() {
+    fun didSelect(row: MemberCoinTable, idx: Int) {}
 
+    fun tableViewSetSelected(row: MemberCoinTable): Boolean { return false }
+
+    override fun refresh() {
         page = 1
-        getDataFromServer()
-//        theFirstTime = true
-//        tableLists.clear()
-//        getDataStart(page, perPage, member.token)
+        tableView.getDataFromServer(page)
+    }
+
+    private fun getDataFromServer(page: Int) {
+        Loading.show(mask)
+        loading = true
+
+        MemberService.coinlist(this, member.token!!, page, tableView.perPage) { success ->
+            runOnUiThread {
+                Loading.hide(mask)
+
+                //MyTable2IF
+                val b: Boolean = showTableView(tableView, MemberService.jsonString)
+                if (b) {
+                    this.totalPage = tableView.totalPage
+                    refreshLayout?.isRefreshing = false
+                } else {
+                    val rootView: ViewGroup = getRootView()
+                    rootView.setInfo(this, "目前暫無資料")
+                }
+            }
+            //showTableView(myTable, MemberService.jsonString)
+        }
     }
 
     fun getDataFromServer() {
@@ -302,9 +316,8 @@ class MemberCoinListVC: BaseActivity(), MyTable2IF {
 class MemberCoinViewHolder(
     context: Context,
     view: View,
-    selected: selectedClosure<MemberCoinTable>,
     delegate: MemberCoinListVC
-): MyViewHolder2<MemberCoinTable, MemberCoinListVC>(context, view, selected, delegate) {
+): MyViewHolder2<MemberCoinTable, MemberCoinListVC>(context, view, delegate) {
 
     val noLbl: TextView = view.noTV
     val able_typeLbl: TextView = view.able_typeLbl

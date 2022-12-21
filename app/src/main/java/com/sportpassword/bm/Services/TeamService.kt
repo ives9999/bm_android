@@ -80,7 +80,7 @@ object TeamService: DataService() {
 
     fun teamMemberList(context: Context, token: String, page:Int, perPage: Int, complete: CompletionHandler) {
         val url: String = URL_TEAM_MEMBER_LIST
-        var params: HashMap<String, String> = hashMapOf(
+        val params: HashMap<String, String> = hashMapOf(
             "device" to "app", "channel" to CHANNEL, "page" to page.toString(), "perPage" to perPage.toString(), "token" to token
         )
 

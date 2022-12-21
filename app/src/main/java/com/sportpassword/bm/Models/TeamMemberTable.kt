@@ -16,5 +16,9 @@ class TeamMemberTable: Table() {
 
     override fun filterRow() {
         super.filterRow()
+
+        memberTable?.filterRow()
+        managerTable?.filterRow()
+        teamTable?.filterRow()
     }
 }

@@ -260,6 +260,8 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener,
         URL_FB_LOGIN = URL_HOME + "member/fb"
         URL_FORGETPASSWORD = "$BASE_URL/member/forget_password"
         URL_ISNAMEEXIST = "${URL_HOME}%s/isNameExist"
+        URL_LIST = "${URL_HOME}%s"
+        URL_LOGIN = URL_HOME + "login"
         URL_MANAGER_SIGNUPLIST = "${URL_HOME}%s/manager_signup_list"
         URL_MEMBER_COINLIST = "${URL_HOME}member/coinlist"
         URL_MEMBER_COINRETURN = "${URL_HOME}member/coinReturn"
@@ -267,13 +269,13 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener,
         URL_MEMBER_SUBSCRIPTION_KIND = "${URL_HOME}member/subscriptionKind"
         URL_MEMBER_SUBSCRIPTION_LOG = "${URL_HOME}member/subscriptionLog"
         URL_MEMBER_LIKELIST = "${URL_HOME}member/likelist"
-        URL_LIST = "${URL_HOME}%s"
-        URL_LOGIN = URL_HOME + "login"
         URL_MEMBER_BANK = URL_HOME + "member/bank"
         URL_MEMBER_BLACKLIST = URL_HOME + "member/blacklist"
         URL_MEMBER_GETONE = URL_HOME + "member/getOne"
         URL_MEMBER_SIGNUPLIST = "${URL_HOME}member/signup_calendar"
         URL_MEMBER_SUBSCRIPTION = "${URL_HOME}member/subscription"
+        URL_MEMBER_TEAM_DELETE = "${URL_HOME}member/deleteMemberTeam"
+        URL_MEMBER_TEAM_LIST = "${URL_HOME}member/teamlist"
         URL_MEMBER_UPDATE = URL_HOME + "member/update"
         URL_MOBILE_VALIDATE = URL_HOME + "member/mobile_validate"
         URL_ONE = "${URL_HOME}%s/one"
@@ -429,6 +431,8 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener,
     }
 
     open fun cellCourse(row: Table) {}
+
+    override fun cellDelete(row: Table) {}
 
     override fun cellPrompt(sectionIdx: Int, rowIdx: Int) {
 
@@ -611,6 +615,8 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener,
         }
         return rows
     }
+
+    //open fun getDataFromServer(page: Int) {}
 
     fun getMyParent(): ViewGroup {
         return window.decorView.rootView as ViewGroup

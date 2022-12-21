@@ -10,7 +10,7 @@ abstract class EndlessRecyclerViewScrollListener : RecyclerView.OnScrollListener
     // The minimum amount of items to have below your current scroll position
     // before loading more.
     // 剩下幾筆後，就要開始load下一頁
-    private var visibleThreshold = 5
+    private var visibleThreshold = 2
 
     // The current offset index of data you have loaded
     //目前在第幾頁
@@ -103,7 +103,7 @@ abstract class EndlessRecyclerViewScrollListener : RecyclerView.OnScrollListener
         // the visibleThreshold and need to reload more data.
         // If we do need to reload some more data, we execute onLoadMore to fetch the data.
         // threshold should reflect how many total columns there are too
-        // 如果超過要下載的剩下筆數，就澳開始下載
+        // 如果超過要下載的剩下筆數，就要開始下載
         if (!loading && lastVisibleItemPosition + visibleThreshold > totalItemCount) {
             currentPage++
             onLoadMore(currentPage, totalItemCount, view)
