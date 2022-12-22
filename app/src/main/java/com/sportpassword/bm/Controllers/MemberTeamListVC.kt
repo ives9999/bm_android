@@ -125,7 +125,7 @@ class MemberTeamListVC : BaseActivity(), MyTable2IF {
 
     override fun cellDelete(row: Table) {
 //        println(row.id)
-        warning("確定要刪除嗎？", "取消", "刪除") {
+        warning("確定要退出嗎？", "取消", "退出") {
 
             Loading.show(mask)
             loading = true
