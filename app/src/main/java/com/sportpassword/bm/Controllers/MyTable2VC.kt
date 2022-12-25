@@ -76,16 +76,18 @@ class MyTable2VC<T: MyViewHolder2<U, V>, U: Table, V: BaseActivity>(
     }
 
     fun parseJSON(jsonString: String): Boolean {
+        var res: Boolean = true
         val rows = genericTable2(jsonString)
         if (rows.size == 0) {
-            return false
+            res = false
         } else {
             this.rows.addAll(rows)
             setItems()
-            notifyDataSetChanged()
         }
+        refreshLayout?.isRefreshing = false
+        notifyDataSetChanged()
 
-        return true
+        return res
     }
 
     private fun genericTable2(jsonString: String): ArrayList<U> {

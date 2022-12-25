@@ -58,10 +58,10 @@ object TeamService: DataService() {
         return URL_TEAM_DELETE
     }
 
-    fun addTeamMember(context: Context, team_token: String, member_token: String, manager_token: String, complete: CompletionHandler) {
+    fun addTeamMember(context: Context, token: String, member_token: String, manager_token: String, complete: CompletionHandler) {
         val url: String = URL_TEAM_MEMBER_ADD
         val params: HashMap<String, String> = hashMapOf(
-            "device" to "app", "channel" to CHANNEL, "team_token" to team_token, "member_token" to member_token, "manager_token" to manager_token
+            "device" to "app", "channel" to CHANNEL, "token" to token, "member_token" to member_token, "manager_token" to manager_token
         )
         //println(url)
         //println(params)
@@ -84,8 +84,8 @@ object TeamService: DataService() {
             "device" to "app", "channel" to CHANNEL, "page" to page.toString(), "perPage" to perPage.toString(), "token" to token
         )
 
-        println(url)
-        println(params)
+//        println(url)
+//        println(params)
 
         _simpleService(context, url, params, complete)
     }

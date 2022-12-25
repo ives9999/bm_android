@@ -34,6 +34,8 @@ import java.lang.reflect.Type
 class MemberTeamListVC : BaseActivity(), MyTable2IF {
 
     var top: Top? = null
+    private var infoTV: TextView? = null
+
     private val tableType: Type = object : TypeToken<Tables2<TeamMemberTable>>() {}.type
     lateinit var tableView: MyTable2VC<MemberTeamViewHolder, TeamMemberTable, MemberTeamListVC>
 
@@ -106,7 +108,7 @@ class MemberTeamListVC : BaseActivity(), MyTable2IF {
                 val b: Boolean = showTableView(tableView, MemberService.jsonString)
                 if (b) {
                     this.totalPage = tableView.totalPage
-                    refreshLayout?.isRefreshing = false
+                    infoTV?.visibility = View.GONE
                 } else {
                     val rootView: ViewGroup = getRootView()
                     rootView.setInfo(this, "目前暫無資料")

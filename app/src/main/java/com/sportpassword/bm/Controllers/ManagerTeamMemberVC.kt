@@ -33,6 +33,7 @@ open class ManagerTeamMemberVC : BaseActivity(), MyTable2IF {
 
     var token: String? = null
     var top: Top? = null
+    private var infoTV: TextView? = null
 
     private val tableType: Type = object : TypeToken<Tables2<TeamMemberTable>>() {}.type
     lateinit var tableView: MyTable2VC<TeamMemberViewHolder, TeamMemberTable, ManagerTeamMemberVC>
@@ -115,10 +116,10 @@ open class ManagerTeamMemberVC : BaseActivity(), MyTable2IF {
                 val b: Boolean = showTableView(tableView, TeamService.jsonString)
                 if (b) {
                     this.totalPage = tableView.totalPage
-                    refreshLayout?.isRefreshing = false
+                    infoTV?.visibility = View.GONE
                 } else {
                     val rootView: ViewGroup = getRootView()
-                    rootView.setInfo(this, "目前暫無資料")
+                    infoTV = rootView.setInfo(this, "目前暫無資料")
                 }
             }
             //showTableView(myTable, MemberService.jsonString)
