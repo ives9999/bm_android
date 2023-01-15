@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/transparent"
+    android:background="@color/MY_BLACK"
     tools:context=".Controllers.SearchVC">
 
     <RelativeLayout
@@ -33,56 +33,55 @@
         android:background="@color/MY_GREY"
         android:orientation="horizontal" />
 
-        <RelativeLayout
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/footer"
+        android:layout_below="@+id/line"
+        android:background="@color/MY_BLACK"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:id="@+id/tableViewContainer"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_above="@id/bottomView"
-            android:layout_below="@+id/line"
-            android:background="@color/MY_BLACK"
+            android:background="@drawable/search_linearlayout"
             android:orientation="vertical">
 
-            <LinearLayout
-                android:id="@+id/tableViewContainer"
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/list_container"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@drawable/search_linearlayout"
-                android:orientation="vertical">
+                android:layout_height="wrap_content"
+                android:background="@android:color/transparent"
+                android:scrollbars="vertical"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager">
 
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/list_container"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@android:color/transparent"
-                    android:scrollbars="vertical"
-                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager">
+            </androidx.recyclerview.widget.RecyclerView>
 
-                </androidx.recyclerview.widget.RecyclerView>
+        </LinearLayout>
 
-                <LinearLayout
-                    android:id="@+id/footer"
-                    android:layout_width="match_parent"
-                    android:layout_height="50dp"
-                    android:layout_marginTop="50dp"
-                    android:layout_marginBottom="12dp"
-                    android:background="@android:color/transparent"
-                    android:gravity="center|center_vertical"
-                    android:orientation="horizontal"
-                    android:paddingStart="28dp"
-                    android:paddingEnd="28dp">
+    </RelativeLayout>
 
-                    <Button
-                        android:id="@+id/submit_btn"
-                        style="@style/submit_button"
-                        android:layout_width="match_parent"
-                        android:layout_height="40dp"
-                        android:text="送出"
-                        android:textSize="16dp" />
+    <LinearLayout
+        android:id="@+id/footer"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_above="@id/bottomView"
+        android:background="@android:color/transparent"
+        android:gravity="center|center_vertical"
+        android:orientation="horizontal"
+        android:paddingStart="28dp"
+        android:paddingEnd="28dp">
 
-                </LinearLayout>
+        <Button
+            android:id="@+id/submit_btn"
+            style="@style/submit_button"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:text="送出"
+            android:textSize="16dp" />
 
-            </LinearLayout>
-
-        </RelativeLayout>
+    </LinearLayout>
 
     <LinearLayout
         android:id="@+id/bottomView"
@@ -97,5 +96,6 @@
         <include layout="@layout/bottom_view" />
 
     </LinearLayout>
+
     <include layout="@layout/mask" />
 </RelativeLayout>
