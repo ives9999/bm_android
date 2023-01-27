@@ -8,19 +8,16 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.recyclerview.widget.RecyclerView
-import androidx.recyclerview.widget.RecyclerView.Recycler
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.sportpassword.bm.Adapters.OneSectionAdapter
 import com.sportpassword.bm.Models.*
 import com.sportpassword.bm.Utilities.*
-import com.sportpassword.bm.databinding.ActivityBlackListVcBinding
 import com.sportpassword.bm.member
 import java.io.File
 
 open class EditVC : MyTableVC() {
 
-    private lateinit var binding: ActivityBlackListVcBinding
-    private lateinit var view: ViewGroup
+    //private lateinit var view: ViewGroup
 
     var token: String = ""
     var title: String = ""
@@ -156,7 +153,7 @@ open class EditVC : MyTableVC() {
     open fun initData() {}
 
     override fun refresh() {
-        Loading.show(view)
+        //Loading.show(view)
         val params: HashMap<String, String> = hashMapOf("token" to token)
         dataService.getOne(this, params) { success ->
             if (success) {
@@ -174,7 +171,7 @@ open class EditVC : MyTableVC() {
                 closeRefresh()
             }
             runOnUiThread {
-                Loading.hide(view)
+                //Loading.hide(view)
             }
         }
     }

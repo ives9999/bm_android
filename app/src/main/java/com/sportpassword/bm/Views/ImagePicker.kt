@@ -25,14 +25,9 @@ import androidx.core.content.FileProvider
 import com.sportpassword.bm.R
 import org.jetbrains.anko.layoutInflater
 import org.jetbrains.anko.sdk27.coroutines.onClick
-import org.jetbrains.anko.toast
-//import com.github.babedev.dexter.dsl.runtimePermission
 import com.sportpassword.bm.Controllers.BaseActivity
-import com.sportpassword.bm.Utilities.makeCall
 import com.squareup.picasso.MemoryPolicy
 import com.squareup.picasso.Picasso
-import kotlinx.android.synthetic.main.edit_vc.*
-import org.jetbrains.anko.makeCall
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException

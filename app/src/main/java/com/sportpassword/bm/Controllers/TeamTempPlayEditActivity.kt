@@ -1,21 +1,15 @@
 package com.sportpassword.bm.Controllers
 
-import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import androidx.localbroadcastmanager.content.LocalBroadcastManager
-import android.view.Menu
 import android.view.View
-import android.widget.EditText
-//import com.sportpassword.bm.Models.Team
+import android.view.ViewGroup
 import com.sportpassword.bm.R
-import com.sportpassword.bm.Services.TeamService
-import com.sportpassword.bm.Utilities.*
-import kotlinx.android.synthetic.main.activity_team_temp_play_edit.*
-import org.jetbrains.anko.sdk27.coroutines.onCheckedChange
-import kotlinx.android.synthetic.main.mask.*
+import com.sportpassword.bm.databinding.ActivityTeamTempPlayEditBinding
 
 class TeamTempPlayEditActivity : BaseActivity() {
+
+    private lateinit var binding: ActivityTeamTempPlayEditBinding
+    private lateinit var view: ViewGroup
 
     var teamToken = ""
 //    val model: Team = Team(0, "", "", "")
@@ -26,7 +20,10 @@ class TeamTempPlayEditActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_team_temp_play_edit)
+
+        binding = ActivityTeamTempPlayEditBinding.inflate(layoutInflater)
+        view = binding.root
+        setContentView(view)
 
         teamToken = intent.getStringExtra("token")!!
         refresh()

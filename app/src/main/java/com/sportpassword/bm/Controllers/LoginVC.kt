@@ -9,7 +9,6 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintSet
 import com.google.gson.Gson
 import com.google.gson.JsonParseException
-import com.sportpassword.bm.Fragments.MemberFragment
 import com.sportpassword.bm.Models.MemberTable
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Models.SuccessTable
@@ -24,8 +23,6 @@ class LoginVC : BaseActivity() {
     private lateinit var view: ViewGroup
 
     var table: MemberTable? = null
-
-    var memberVC: MemberFragment? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

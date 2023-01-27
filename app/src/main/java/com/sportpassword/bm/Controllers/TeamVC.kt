@@ -2,6 +2,7 @@ package com.sportpassword.bm.Controllers
 
 import android.os.Bundle
 import android.view.ViewGroup
+import android.widget.FrameLayout
 import com.sportpassword.bm.Adapters.TeamAdapter
 import com.sportpassword.bm.Models.Table
 import com.sportpassword.bm.Models.TeamTable
@@ -9,10 +10,12 @@ import com.sportpassword.bm.Models.TeamsTable
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.TeamService
 import com.sportpassword.bm.Utilities.*
-import kotlinx.android.synthetic.main.activity_store_vc.*
-import kotlinx.android.synthetic.main.mask.*
+import com.sportpassword.bm.databinding.ActivityTeamVcBinding
 
 class TeamVC : MyTableVC() {
+
+    private lateinit var binding: ActivityTeamVcBinding
+    private lateinit var view: ViewGroup
 
     var mysTable: TeamsTable? = null
     lateinit var tableAdapter: TeamAdapter
@@ -32,7 +35,10 @@ class TeamVC : MyTableVC() {
 //        )
 
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_store_vc)
+
+        binding = ActivityTeamVcBinding.inflate(layoutInflater)
+        view = binding.root
+        setContentView(view)
 
         setMyTitle("球隊")
 
@@ -51,9 +57,12 @@ class TeamVC : MyTableVC() {
             isSearchIconShow = intent.getBooleanExtra("isSearchIconShow", false)
         }
 
-        recyclerView = list_container
-        refreshLayout = refresh
-        maskView = mask
+        recyclerView = binding.listContainer
+        refreshLayout = binding.refresh
+
+        view.findViewById<FrameLayout>(R.id.mask) ?. let { mask ->
+            maskView = mask
+        }
 
         //initAdapter()
         tableAdapter = TeamAdapter(R.layout.team_list_cell, this)

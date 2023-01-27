@@ -7,10 +7,6 @@ import com.sportpassword.bm.Models.Timetable
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.TimetableService
 import com.sportpassword.bm.Utilities.*
-import kotlinx.android.synthetic.main.activity_show_timetable_vc.*
-import kotlinx.android.synthetic.main.iconcell.*
-import kotlinx.android.synthetic.main.mask.*
-import kotlin.reflect.full.memberProperties
 
 class ShowTimetableVC : BaseActivity() {
 
@@ -55,9 +51,9 @@ class ShowTimetableVC : BaseActivity() {
         source = intent.getStringExtra("source")
         token = intent.getStringExtra("token")
 
-        webViewSettings(this@ShowTimetableVC, contentView)
+        //webViewSettings(this@ShowTimetableVC, contentView)
 
-        refreshLayout = refresh
+        //refreshLayout = refresh
         setRefreshListener()
 
         initAdapter()

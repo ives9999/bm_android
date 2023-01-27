@@ -2,25 +2,24 @@ package com.sportpassword.bm.Controllers
 
 import android.os.Bundle
 import android.view.ViewGroup
+import android.widget.FrameLayout
 import com.sportpassword.bm.Adapters.StoreAdapter
 import com.sportpassword.bm.Data.OneRow
 import com.sportpassword.bm.Data.OneSection
-import com.sportpassword.bm.Data.SearchRow
-import com.sportpassword.bm.Data.SearchSection
 import com.sportpassword.bm.Models.*
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.StoreService
 import com.sportpassword.bm.Utilities.*
-import kotlinx.android.synthetic.main.activity_store_vc.*
-import kotlinx.android.synthetic.main.mask.*
-import kotlinx.android.synthetic.main.store_list_cell.view.*
+import com.sportpassword.bm.databinding.ActivityStoreVcBinding
 import kotlin.collections.ArrayList
 
 class StoreVC : MyTableVC() {
 
+    private lateinit var binding: ActivityStoreVcBinding
+    private lateinit var view: ViewGroup
+
     var mysTable: StoresTable? = null
     lateinit var tableAdapter: StoreAdapter
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -30,7 +29,10 @@ class StoreVC : MyTableVC() {
 //        )
 
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_store_vc)
+
+        binding = ActivityStoreVcBinding.inflate(layoutInflater)
+        view = binding.root
+        setContentView(view)
 
         //source_activity = "store"
         //val title_field = intent.getStringExtra("titleField")
@@ -38,9 +40,12 @@ class StoreVC : MyTableVC() {
         setMyTitle("體育用品店")
 
         dataService = StoreService
-        recyclerView = list_container
-        refreshLayout = refresh
-        maskView = mask
+        recyclerView = binding.listContainer
+        refreshLayout = binding.refresh
+
+        view.findViewById<FrameLayout>(R.id.mask) ?. let { mask ->
+            maskView = mask
+        }
 
         //initAdapter()
         tableAdapter = StoreAdapter(R.layout.store_list_cell, this)

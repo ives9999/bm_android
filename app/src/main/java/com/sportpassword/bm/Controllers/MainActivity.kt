@@ -1,22 +1,16 @@
 package com.sportpassword.bm.Controllers
 
-import android.app.Activity
-import android.content.IntentFilter
 import android.graphics.PorterDuff
 import android.os.Build
 import android.os.Bundle
 import androidx.annotation.RequiresApi
 import com.google.android.material.tabs.TabLayout
-import androidx.fragment.app.FragmentPagerAdapter
 import androidx.core.content.ContextCompat
-import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import android.view.View
 import android.view.ViewGroup
-import com.sportpassword.bm.Adapters.TabAdapter
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Utilities.*
 import com.sportpassword.bm.databinding.ActivityMainBinding
-import com.sportpassword.bm.databinding.MytablevcBinding
 
 class MainActivity1 : BaseActivity() {
 
@@ -161,8 +155,6 @@ class MainActivity1 : BaseActivity() {
         //把fragment放到ViewPager容器內
         val w = (screenWidth.toFloat() / density).toInt()
         //val adapter = TabAdapter(supportFragmentManager, tabsTextArr, w)
-        val adapter = TabAdapter(this, tabsTextArr, w)
-        binding.fragmentContainer.adapter = adapter
 
         //mSectionPagerAdapter = SectionsPagerAdapter(supportFragmentManager)
         //tab_container.adapter = mSectionPagerAdapter

@@ -5,15 +5,16 @@ import android.view.ViewGroup
 import com.sportpassword.bm.Adapters.TeachAdapter
 import com.sportpassword.bm.Data.OneRow
 import com.sportpassword.bm.Data.OneSection
-import com.sportpassword.bm.Data.SearchRow
-import com.sportpassword.bm.Data.SearchSection
 import com.sportpassword.bm.Models.*
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.TeachService
 import com.sportpassword.bm.Utilities.*
-import kotlinx.android.synthetic.main.activity_store_vc.*
+import com.sportpassword.bm.databinding.ActivityTeachVcBinding
 
 class TeachVC : MyTableVC() {
+
+    private lateinit var binding: ActivityTeachVcBinding
+    private lateinit var view: ViewGroup
 
     //lateinit var collectionAdapter: CollectionAdapter
     var mysTable: TeachesTable? = null
@@ -29,7 +30,10 @@ class TeachVC : MyTableVC() {
 //        )
 
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_store_vc)
+
+        binding = ActivityTeachVcBinding.inflate(layoutInflater)
+        view = binding.root
+        setContentView(view)
 
         setMyTitle("教學")
 
@@ -40,8 +44,8 @@ class TeachVC : MyTableVC() {
             }
         }
 
-        recyclerView = list_container
-        refreshLayout = refresh
+        recyclerView = binding.teachList
+        refreshLayout = binding.teachRefresh
         //initAdapter()
         tableAdapter = TeachAdapter(R.layout.teach_list_cell, this)
         recyclerView.adapter = tableAdapter

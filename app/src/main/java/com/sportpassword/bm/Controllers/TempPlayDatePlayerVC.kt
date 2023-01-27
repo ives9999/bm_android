@@ -1,23 +1,23 @@
 package com.sportpassword.bm.Controllers
 
 import android.content.DialogInterface
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.ViewGroup
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.sportpassword.bm.Adapters.TempPlayDatePlayerAdapter
-import com.sportpassword.bm.Models.TempPlayDatePlayer
 import com.sportpassword.bm.Models.TempPlayDatePlayers
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.TeamService
 import com.sportpassword.bm.Utilities.Loading
-import kotlinx.android.synthetic.main.activity_login.view.*
-import kotlinx.android.synthetic.main.activity_temp_play_date_player.*
+import com.sportpassword.bm.databinding.ActivityTempPlayDateBinding
+import com.sportpassword.bm.databinding.ActivityTempPlayDatePlayerBinding
 import org.jetbrains.anko.*
-import kotlinx.android.synthetic.main.mask.*
 
 class TempPlayDatePlayerVC : BaseActivity() {
+
+    private lateinit var binding: ActivityTempPlayDatePlayerBinding
+    private lateinit var view: ViewGroup
 
     var date: String = ""
     var teamName: String = ""
@@ -28,7 +28,10 @@ class TempPlayDatePlayerVC : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_temp_play_date_player)
+
+        binding = ActivityTempPlayDatePlayerBinding.inflate(layoutInflater)
+        view = binding.root
+        setContentView(view)
 
         if (intent.hasExtra("date")) {
             date = intent.getStringExtra("date")!!
@@ -50,9 +53,11 @@ class TempPlayDatePlayerVC : BaseActivity() {
 
     override fun refresh() {
         super.refresh()
-        Loading.show(mask)
+        Loading.show(view)
         TeamService.tempPlay_datePlayer(this, date, teamToken) { success ->
-            Loading.hide(mask)
+            runOnUiThread {
+                Loading.hide(view)
+            }
             if (success) {
                 tempPlayDatePlayers = TeamService.tempPlayDatePlayers
                 //println(rows)
@@ -78,9 +83,9 @@ class TempPlayDatePlayerVC : BaseActivity() {
                     //println(mobile)
                     myMakeCall(mobile)
                 })
-                temp_play_date_player_list.adapter = tempPlayDatePlayerAdapter
+                binding.tempPlayDatePlayerList.adapter = tempPlayDatePlayerAdapter
                 val layoutManager = LinearLayoutManager(this)
-                temp_play_date_player_list.layoutManager = layoutManager
+                binding.tempPlayDatePlayerList.layoutManager = layoutManager
                 closeRefresh()
             } else {
                 warning(TeamService.msg)

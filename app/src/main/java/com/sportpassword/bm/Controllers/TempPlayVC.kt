@@ -3,22 +3,25 @@ package com.sportpassword.bm.Controllers
 import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
+import android.view.ViewGroup
 import com.sportpassword.bm.Models.TeamsTable
-import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.TeamService
 import com.sportpassword.bm.Utilities.*
-import kotlinx.android.synthetic.main.activity_temp_play_vc.*
+import com.sportpassword.bm.databinding.ActivityTempPlayVcBinding
 
 class TempPlayVC : MyTableVC() {
 
-//    protected lateinit var tempPlayListAdapter: TempPlayListAdapter
-//    protected var dataLists: ArrayList<Map<String, Map<String, Any>>> = arrayListOf()
+    private lateinit var binding: ActivityTempPlayVcBinding
+    private lateinit var view: ViewGroup
 
     var mysTable: TeamsTable? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_temp_play_vc)
+
+        binding = ActivityTempPlayVcBinding.inflate(layoutInflater)
+        view = binding.root
+        setContentView(view)
 
         setMyTitle("臨打")
 
@@ -34,9 +37,9 @@ class TempPlayVC : MyTableVC() {
 
         prepareParams()
 
-        recyclerView = tempplay_list
+        recyclerView = binding.tempplayList
         dataService = TeamService
-        refreshLayout = tempplay_refresh
+        refreshLayout = binding.tempplayRefresh
         //initAdapter()
 
         refresh()

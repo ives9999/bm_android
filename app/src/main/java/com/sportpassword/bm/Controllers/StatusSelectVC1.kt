@@ -3,13 +3,16 @@ package com.sportpassword.bm.Controllers
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
-import android.view.View
+import android.view.ViewGroup
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Utilities.STATUS
-import kotlinx.android.synthetic.main.mytablevc.*
-import kotlinx.android.synthetic.main.status_select_item.*
+import com.sportpassword.bm.databinding.ActivityBlackListVcBinding
+import com.sportpassword.bm.databinding.MytablevcBinding
 
 class StatusSelectVC1 : MyTableVC() {
+
+    private lateinit var binding: MytablevcBinding
+    private lateinit var view: ViewGroup
 
     lateinit var key: String
     lateinit var all: ArrayList<HashMap<String, Any>>
@@ -18,7 +21,11 @@ class StatusSelectVC1 : MyTableVC() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.mytablevc)
+
+        binding = MytablevcBinding.inflate(layoutInflater)
+        view = binding.root
+        setContentView(view)
+
         setMyTitle("狀態")
 
         selected = intent.getSerializableExtra("selected") as STATUS
@@ -27,7 +34,7 @@ class StatusSelectVC1 : MyTableVC() {
         }
 
         all = STATUS.all()
-        recyclerView = mytable
+        recyclerView = binding.mytable
         //initAdapter()
     }
 

@@ -7,27 +7,26 @@ import android.graphics.Color
 import android.os.Bundle
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintSet
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import android.view.*
 import android.widget.*
 import com.sportpassword.bm.Adapters.Form.*
-//import com.sportpassword.bm.Adapters.Form.ViewDelegate
 import com.sportpassword.bm.Form.FormItem.*
-import com.sportpassword.bm.Form.FormItemCellType
 import com.sportpassword.bm.Form.TimeTableForm
 import com.sportpassword.bm.Models.Timetables
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.CoachService
-import kotlinx.android.synthetic.main.activity_time_table_vc.*
-import kotlinx.android.synthetic.main.mask.*
 import com.sportpassword.bm.Utilities.*
+import com.sportpassword.bm.databinding.ActivityTimeTableVcBinding
 import com.sportpassword.bm.member
 import org.jetbrains.anko.*
 import org.jetbrains.anko.sdk27.coroutines.onClick
 import kotlin.reflect.full.declaredMemberProperties
 
 class TimeTableVC : BaseActivity() {
+
+    private lateinit var binding: ActivityTimeTableVcBinding
+    private lateinit var view: ViewGroup
 
     var source: String = "coach"
     var token: String = "token"
@@ -72,7 +71,10 @@ class TimeTableVC : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_time_table_vc)
+
+        binding = ActivityTimeTableVcBinding.inflate(layoutInflater)
+        view = binding.root
+        setContentView(view)
 
         if (intent.hasExtra("source")) {
             source = intent.getStringExtra("source")!!
@@ -92,9 +94,9 @@ class TimeTableVC : BaseActivity() {
         cellWidth = screenWidth.toFloat() / columnNum.toFloat()
         addGrid()
 
-        refreshLayout = refresh
+        refreshLayout = binding.refresh
         setRefreshListener()
-        refresh.isEnabled = false
+        binding.refresh.isEnabled = false
         refresh()
 
 
@@ -105,15 +107,15 @@ class TimeTableVC : BaseActivity() {
 //                refresh.isEnabled = false
 //            }
 //        }
-        scroll.viewTreeObserver.addOnScrollChangedListener(object: ViewTreeObserver.OnScrollChangedListener {
+        binding.scroll.viewTreeObserver.addOnScrollChangedListener(object: ViewTreeObserver.OnScrollChangedListener {
             override fun onScrollChanged() {
-                val scrollY = scroll.scrollY
+                val scrollY = binding.scroll.scrollY
                 //println(scrollY)
                 // refresh is enable untill scroll is reach top
                 if (scrollY <= 0) {
-                    refresh.isEnabled = true
+                    binding.refresh.isEnabled = true
                 } else {
-                    refresh.isEnabled = false
+                    binding.refresh.isEnabled = false
                 }
             }
 
@@ -129,15 +131,17 @@ class TimeTableVC : BaseActivity() {
 
     override fun refresh() {
         //super.refresh()
-        Loading.show(mask)
+        Loading.show(view)
         dataService.getTT(this, token, source) { success ->
             if (success) {
-                refreshEvent(container)
+                refreshEvent(binding.container)
             } else {
                 warning(dataService.msg)
             }
-            closeRefresh()
-            Loading.hide(mask)
+            runOnUiThread {
+                closeRefresh()
+                Loading.hide(view)
+            }
         }
     }
 
@@ -158,26 +162,26 @@ class TimeTableVC : BaseActivity() {
                 addTimeLabel(grid, startTime)
             }
 
-            container.addView(grid)
+            binding.container.addView(grid)
             gridViews.add(grid)
             val c = ConstraintSet()
-            c.clone(container)
+            c.clone(binding.container)
             if (startTime == startNum) {
-                c.connect(grid.id, ConstraintSet.TOP, container.id, ConstraintSet.TOP, 0)
+                c.connect(grid.id, ConstraintSet.TOP, binding.container.id, ConstraintSet.TOP, 0)
                 if (weekday == 0) {
-                    c.connect(grid.id, ConstraintSet.LEFT, container.id, ConstraintSet.LEFT, 0)
+                    c.connect(grid.id, ConstraintSet.LEFT, binding.container.id, ConstraintSet.LEFT, 0)
                 } else {
                     c.connect(grid.id, ConstraintSet.LEFT, gridViews[i-1].id, ConstraintSet.RIGHT, 0)
                 }
             } else {
                 c.connect(grid.id, ConstraintSet.TOP, gridViews[i-8].id, ConstraintSet.BOTTOM, 0)
                 if (weekday == 0) {
-                    c.connect(grid.id, ConstraintSet.LEFT, container.id, ConstraintSet.LEFT, 0)
+                    c.connect(grid.id, ConstraintSet.LEFT, binding.container.id, ConstraintSet.LEFT, 0)
                 } else {
                     c.connect(grid.id, ConstraintSet.LEFT, gridViews[i-1].id, ConstraintSet.RIGHT, 0)
                 }
             }
-            c.applyTo(container)
+            c.applyTo(binding.container)
         }
     }
 
@@ -209,7 +213,7 @@ class TimeTableVC : BaseActivity() {
             parent.addView(eventView)
             eventViews.add(eventView)
             val c1 = ConstraintSet()
-            c1.clone(container)
+            c1.clone(binding.container)
             val weekday = row.weekday
             val _start_hour = row._start_hour
             val _start_minute = row._start_minute
@@ -222,7 +226,7 @@ class TimeTableVC : BaseActivity() {
             val idx = columnNum*(_start_hour-startNum) + weekday
             c1.connect(eventView.id, ConstraintSet.TOP, gridViews[idx].id, ConstraintSet.TOP, y.toInt())
             c1.connect(eventView.id, ConstraintSet.LEFT, gridViews[idx].id, ConstraintSet.LEFT, cellBorderWidth*4)
-            c1.applyTo(container)
+            c1.applyTo(binding.container)
 
             val titleLbl = TextView(this)
             var lp = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT)
@@ -635,12 +639,12 @@ class TimeTableVC : BaseActivity() {
             params["id"] = form.id!!.toString()
         }
         //print(params)
-        Loading.show(mask)
+        Loading.show(view)
         dataService.updateTT(this, source, params) { success ->
-                Loading.hide(mask)
+                Loading.hide(view)
             if (success) {
                 unmask()
-                refreshEvent(container)
+                refreshEvent(binding.container)
             } else {
                 warning(dataService.msg)
             }
@@ -681,11 +685,11 @@ class TimeTableVC : BaseActivity() {
         }
         //print(params)
         unmask()
-        Loading.show(mask)
+        Loading.show(view)
         dataService.deleteTT(this, "coach", params) { success ->
-            Loading.hide(mask)
+            Loading.hide(view)
             if (success) {
-                refreshEvent(container)
+                refreshEvent(binding.container)
             } else {
                 warning(dataService.msg)
             }

@@ -4,24 +4,30 @@ import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import android.view.ViewGroup
 import com.google.gson.Gson
 import com.google.gson.JsonParseException
 import com.sportpassword.bm.Models.SuccessTable
-import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.MemberService
 import com.sportpassword.bm.Utilities.Alert
 import com.sportpassword.bm.Utilities.Loading
-import kotlinx.android.synthetic.main.activity_update_password.*
-import kotlinx.android.synthetic.main.mask.*
+import com.sportpassword.bm.databinding.ActivityUpdatePasswordBinding
 
 class UpdatePasswordVC : BaseActivity() {
 
+    private lateinit var binding: ActivityUpdatePasswordBinding
+    private lateinit var view: ViewGroup
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_update_password)
+
+        binding = ActivityUpdatePasswordBinding.inflate(layoutInflater)
+        view = binding.root
+        setContentView(view)
+
         setMyTitle("更改密碼")
-        hidekeyboard(updatePassword_layout)
-        updatePasswordOldPasswordTxt.requestFocus()
+        hidekeyboard(binding.updatePasswordLayout)
+        binding.updatePasswordOldPasswordTxt.requestFocus()
 
         init()
     }
@@ -32,22 +38,22 @@ class UpdatePasswordVC : BaseActivity() {
     }
 
     fun updatePasswordSubmit(view: View) {
-        val oldPwd = updatePasswordOldPasswordTxt.text.toString()
+        val oldPwd = binding.updatePasswordOldPasswordTxt.text.toString()
         if (oldPwd.isEmpty()) {
             Alert.show(this, "警告", "舊密碼沒填")
         }
-        val newPwd = updatePasswordNewPasswordTxt.text.toString()
+        val newPwd = binding.updatePasswordNewPasswordTxt.text.toString()
         if (newPwd.isEmpty()) {
             Alert.show(this, "警告", "新密碼沒填")
         }
-        val rePwd = updatePasswordRePasswordTxt.text.toString()
+        val rePwd = binding.updatePasswordRePasswordTxt.text.toString()
         if (newPwd != rePwd) {
             Alert.show(this, "警告", "新密碼不符合")
         }
-        Loading.show(mask)
+        Loading.show(view)
         MemberService.changePassword(this, oldPwd, newPwd, rePwd) { success ->
             runOnUiThread {
-                Loading.hide(mask)
+                Loading.hide(view)
             }
             if (success) {
 

@@ -1,18 +1,20 @@
 package com.sportpassword.bm.Controllers
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.ViewGroup
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.sportpassword.bm.Adapters.TempPlayDateAdapter
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.TeamService
 import com.sportpassword.bm.Utilities.Loading
-import kotlinx.android.synthetic.main.activity_temp_play_date.*
-import kotlinx.android.synthetic.main.mask.*
+import com.sportpassword.bm.databinding.ActivityTempPlayDateBinding
 import org.jetbrains.anko.contentView
 
 class TempPlayDateVC : BaseActivity() {
+
+    private lateinit var binding: ActivityTempPlayDateBinding
+    private lateinit var view: ViewGroup
 
     var name: String = ""
     var token: String = ""
@@ -21,7 +23,10 @@ class TempPlayDateVC : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_temp_play_date)
+
+        binding = ActivityTempPlayDateBinding.inflate(layoutInflater)
+        view = binding.root
+        setContentView(view)
 
         if (intent.hasExtra("name")) {
             name = intent.getStringExtra("name")!!
@@ -39,9 +44,11 @@ class TempPlayDateVC : BaseActivity() {
 
     override fun refresh() {
         super.refresh()
-        Loading.show(mask)
+        Loading.show(view)
         TeamService.tempPlay_date(this, token) { success ->
-            Loading.hide(mask)
+            runOnUiThread {
+                Loading.hide(view)
+            }
             if (success) {
                 rows = TeamService.tempPlayDate.rows
                 //println(rows)
@@ -50,9 +57,9 @@ class TempPlayDateVC : BaseActivity() {
                     //println(date)
                     toTempPlayDatePlayer(date, name, token)
                 })
-                temp_play_date_list.adapter = tempPlayDateAdapter
+                binding.tempPlayDateList.adapter = tempPlayDateAdapter
                 val layoutManager = LinearLayoutManager(this)
-                temp_play_date_list.layoutManager = layoutManager
+                binding.tempPlayDateList.layoutManager = layoutManager
                 closeRefresh()
             } else {
                 warning(TeamService.msg)

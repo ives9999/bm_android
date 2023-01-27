@@ -1,17 +1,19 @@
 package com.sportpassword.bm.Controllers
 
 import android.os.Bundle
+import android.view.ViewGroup
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.sportpassword.bm.Adapters.TempPlaySignupOneAdapter
 import com.sportpassword.bm.R
-import com.sportpassword.bm.Services.MemberService
 import com.sportpassword.bm.Utilities.*
-import kotlinx.android.synthetic.main.activity_temp_play_signup_one_vc.*
-import kotlinx.android.synthetic.main.mask.*
+import com.sportpassword.bm.databinding.ActivityTempPlaySignupOneVcBinding
 import org.jetbrains.anko.contentView
+import org.jetbrains.anko.runOnUiThread
 
 class  TempPlaySignupOneVC : BaseActivity() {
+
+    private lateinit var binding: ActivityTempPlaySignupOneVcBinding
+    private lateinit var view: ViewGroup
 
     var team_name: String = ""
     var teamToken: String = ""
@@ -32,7 +34,10 @@ class  TempPlaySignupOneVC : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_temp_play_signup_one_vc)
+
+        binding = ActivityTempPlaySignupOneVcBinding.inflate(layoutInflater)
+        view = binding.root
+        setContentView(view)
 
         if (intent.hasExtra("memberToken")) {
             memberToken = intent.getStringExtra("memberToken")!!
@@ -85,7 +90,7 @@ class  TempPlaySignupOneVC : BaseActivity() {
         })
         tempPlaySignupOneAdapter.lists = memberOne
         tempPlaySignupOneAdapter.keys = keys
-        data_list.adapter = tempPlaySignupOneAdapter
+        binding.dataList.adapter = tempPlaySignupOneAdapter
 
         refreshLayout = contentView!!.findViewById<SwipeRefreshLayout>(R.id.tempPlaySignupOne_refresh)
         setRefreshListener()
@@ -96,11 +101,13 @@ class  TempPlaySignupOneVC : BaseActivity() {
     override fun refresh() {
         super.refresh()
         initMemberOne()
-        Loading.show(mask)
+        Loading.show(view)
         initGetMemberValue { success ->
             if (success) {
                 initIsTeamManager { success ->
-                    Loading.hide(mask)
+                    runOnUiThread {
+                        Loading.hide(view)
+                    }
                     if (status == "off") {
                         memberOne.add(hashMapOf("temp_play_status" to hashMapOf("title" to "取消", "value" to off_at.noSec() as Any)))
                     }

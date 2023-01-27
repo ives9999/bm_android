@@ -31,7 +31,7 @@ class CoachVC : MyTableVC() {
         binding = ActivityCoachVcBinding.inflate(layoutInflater)
         view = binding.root
         setContentView(view)
-        setContentView(R.layout.activity_store_vc)
+        //setContentView(R.layout.activity_store_vc)
         //setContentView(R.layout.activity_coach_vc)
 
         setMyTitle("教練")

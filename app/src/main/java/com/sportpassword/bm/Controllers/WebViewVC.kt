@@ -4,33 +4,34 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.view.View
+import android.view.ViewGroup
 import android.webkit.*
-import android.widget.Button
-import android.widget.Toast
 import com.google.gson.Gson
-import com.sportpassword.bm.Models.GatewayTable
 import com.sportpassword.bm.Models.OrderTable
 import com.sportpassword.bm.Models.Table
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.OrderService
 import com.sportpassword.bm.Utilities.GATEWAY
-import com.sportpassword.bm.Utilities.Loading
 import com.sportpassword.bm.Utilities.SHIPPING
 import com.sportpassword.bm.Utilities.URL_ECPAY2_C2C_MAP
+import com.sportpassword.bm.databinding.ActivityWebViewVcBinding
 import com.sportpassword.bm.member
-import kotlinx.android.synthetic.main.activity_web_view_vc.*
-import kotlinx.android.synthetic.main.mask.*
 import java.net.URLEncoder
 
 class WebViewVC : BaseActivity() {
+
+    private lateinit var binding: ActivityWebViewVcBinding
+    private lateinit var view: ViewGroup
 
     var token: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_web_view_vc)
+
+        binding = ActivityWebViewVcBinding.inflate(layoutInflater)
+        view = binding.root
+        setContentView(view)
 
         token = intent.getStringExtra("token")
 
@@ -120,7 +121,7 @@ class WebViewVC : BaseActivity() {
             }
 
             it.evaluateJavascript("document.body.style.background = 'blue';", null)
-            webView.addJavascriptInterface(MyJavascriptInterface(context, this), "MyJavascriptInterface")
+            binding.webView.addJavascriptInterface(MyJavascriptInterface(context, this), "MyJavascriptInterface")
             //webView.addJavascriptInterface(JSBridge(),"JSBridge")
             it.postUrl(url, params.toByteArray())
             //webView.loadUrl("http://192.168.100.120/c2c.html?n=6")

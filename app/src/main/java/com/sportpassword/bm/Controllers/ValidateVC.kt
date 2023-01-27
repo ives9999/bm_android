@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.text.InputType
 import android.view.View
+import android.view.ViewGroup
 import com.google.gson.Gson
 import com.google.gson.JsonParseException
 import com.sportpassword.bm.Models.SuccessTable
@@ -12,17 +13,22 @@ import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.MemberService
 import com.sportpassword.bm.Utilities.Alert
 import com.sportpassword.bm.Utilities.Loading
+import com.sportpassword.bm.databinding.ActivityValidateBinding
 import com.sportpassword.bm.member
-import kotlinx.android.synthetic.main.activity_validate.*
-import kotlinx.android.synthetic.main.mask.*
 
 class ValidateVC : BaseActivity() {
+
+    private lateinit var binding: ActivityValidateBinding
+    private lateinit var view: ViewGroup
 
     var type: String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_validate)
+
+        binding = ActivityValidateBinding.inflate(layoutInflater)
+        view = binding.root
+        setContentView(view)
 
         if (intent.hasExtra("type")) {
             type = intent.getStringExtra("type")!!
@@ -31,17 +37,17 @@ class ValidateVC : BaseActivity() {
         if (type == "email") {
             setMyTitle("email認證")
             //typeTxt.text = "email"
-            typeTxt.setMyText(member.email!!, "")
-            typeTxt.inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS
-            typeTxt.inputType = InputType.TYPE_CLASS_TEXT
+            binding.typeTxt.setMyText(member.email!!, "")
+            binding.typeTxt.inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS
+            binding.typeTxt.inputType = InputType.TYPE_CLASS_TEXT
         } else if (type == "mobile") {
             setMyTitle("手機認證")
             //typeText. = "手機"
-            typeTxt.setMyText(member.mobile!!, "")
-            typeTxt.inputType = InputType.TYPE_CLASS_PHONE
-            typeTxt.inputType = InputType.TYPE_CLASS_NUMBER
+            binding.typeTxt.setMyText(member.mobile!!, "")
+            binding.typeTxt.inputType = InputType.TYPE_CLASS_PHONE
+            binding.typeTxt.inputType = InputType.TYPE_CLASS_NUMBER
         }
-        hidekeyboard(validate_layout)
+        hidekeyboard(binding.validateLayout)
         init()
     }
 
@@ -51,15 +57,15 @@ class ValidateVC : BaseActivity() {
     }
 
     fun submit(view: View) {
-        _hideKeyboard(validate_layout)
-        val code = codeTxt.text.toString()
+        _hideKeyboard(binding.validateLayout)
+        val code = binding.codeTxt.text.toString()
         if (code.length == 0) {
             Alert.show(this, "警告", "請填寫認證碼")
         } else {
-            Loading.show(mask)
+            Loading.show(view)
             MemberService.validate(this, type, code, member.token!!) { success ->
                 runOnUiThread {
-                    Loading.hide(mask)
+                    Loading.hide(view)
                 }
                 if (success) {
 
@@ -96,7 +102,7 @@ class ValidateVC : BaseActivity() {
     }
 
     fun resend(view: View) {
-        val value = codeTxt.text.toString()
+        val value = binding.codeTxt.text.toString()
         if (value.length <= 0) {
             var msg = ""
             if (type == "email") {
@@ -106,10 +112,10 @@ class ValidateVC : BaseActivity() {
             }
             Alert.show(this, "警告", msg)
         } else {
-            Loading.show(mask)
+            Loading.show(view)
             MemberService.sendVaildateCode(this, type, value, member.token!!) { success ->
                 runOnUiThread {
-                    Loading.hide(mask)
+                    Loading.hide(view)
                 }
                 if (success) {
 

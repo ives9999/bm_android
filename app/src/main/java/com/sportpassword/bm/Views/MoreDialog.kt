@@ -6,16 +6,15 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
 import android.widget.Button
+import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.sportpassword.bm.Adapters.SingleSelectAdapter
 import com.sportpassword.bm.Controllers.List1CellDelegate
 import com.sportpassword.bm.Data.SelectRow
 import com.sportpassword.bm.Models.Area
-import com.sportpassword.bm.Models.City
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Utilities.*
-import kotlinx.android.synthetic.main.top_view.*
 
 class MoreDialog(context: Context, val screenWidth: Int, var key: String? = null): Dialog(context) {
 
@@ -90,10 +89,14 @@ class MoreDialog(context: Context, val screenWidth: Int, var key: String? = null
         }
 
         if (key == CITY_KEY) {
-            this.topTitleLbl.text = "縣市"
+            findViewById<TextView>(R.id.topTitleLbl) ?. let {
+                it.text = "縣市"
+            }
             singleSelectAdapter.rows = rowBridgeForCity()
         } else if (key == AREA_KEY) {
-            this.topTitleLbl.text = "區域"
+            findViewById<TextView>(R.id.topTitleLbl) ?. let {
+                it.text = "區域"
+            }
             singleSelectAdapter.rows = rowBridgeForArea()
         }
 

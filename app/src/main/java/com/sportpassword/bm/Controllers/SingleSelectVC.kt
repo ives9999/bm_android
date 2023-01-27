@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.view.ViewGroup
 import com.sportpassword.bm.Adapters.SingleSelectAdapter
 import com.sportpassword.bm.databinding.ActivitySingleSelectVcBinding
-import kotlinx.android.synthetic.main.activity_single_select_vc.*
 
 interface SingleSelectDelegate {
     fun singleSelected(key: String, selected: String)
@@ -35,7 +34,7 @@ open class SingleSelectVC : SelectVC() {
             able_type = intent.getStringExtra("able_type")!!
         }
 
-        recyclerView = tableView
+        recyclerView = binding.tableView
         tableAdapter = SingleSelectAdapter(selected, this)
         recyclerView.adapter = tableAdapter
 //        recyclerView.adapter = adapter

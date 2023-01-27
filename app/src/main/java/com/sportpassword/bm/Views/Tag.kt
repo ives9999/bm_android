@@ -1,15 +1,11 @@
 package com.sportpassword.bm.Views
 
 import android.content.Context
-import android.graphics.Color
 import android.view.LayoutInflater
-import android.view.View
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import com.sportpassword.bm.R
-import kotlinx.android.synthetic.main.tag.view.*
-import org.jetbrains.anko.textResource
 
 class Tag(context: Context) : LinearLayout(context) {
 

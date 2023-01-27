@@ -2,16 +2,17 @@ package com.sportpassword.bm.Controllers
 
 import android.os.Bundle
 import android.view.View
+import android.view.ViewGroup
 import com.sportpassword.bm.Models.CourseTable
-import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.CourseService
 import com.sportpassword.bm.Utilities.Loading
+import com.sportpassword.bm.databinding.ActivitySignupListVcBinding
 import com.sportpassword.bm.member
-import kotlinx.android.synthetic.main.activity_signup_list_vc.*
-import kotlinx.android.synthetic.main.mask.*
-import kotlinx.android.synthetic.main.signup_list_cell.*
 
 class SignupListVC : MyTableVC() {
+
+    private lateinit var binding: ActivitySignupListVcBinding
+    private lateinit var view: ViewGroup
 
     var memberToken: String = ""
     var able: String = ""
@@ -22,7 +23,10 @@ class SignupListVC : MyTableVC() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_signup_list_vc)
+
+        binding = ActivitySignupListVcBinding.inflate(layoutInflater)
+        view = binding.root
+        setContentView(view)
 
         setMyTitle("報名列表")
         memberToken = member.token!!
@@ -39,8 +43,8 @@ class SignupListVC : MyTableVC() {
         if (able == "course") {
             dataService = CourseService
         }
-        recyclerView = list
-        refreshLayout = list_refresh
+        recyclerView = binding.list
+        refreshLayout = binding.listRefresh
 
         //initAdapter()
         refresh()
@@ -48,7 +52,7 @@ class SignupListVC : MyTableVC() {
 
     override fun getDataStart(_page: Int, _perPage: Int, token: String?) {
         //println("page: $_page")
-        Loading.show(mask)
+        Loading.show(view)
 //        dataService.signup_list(this, able_token, _page, _perPage) { success ->
 //            getDataEnd(success)
 //        }
@@ -65,7 +69,7 @@ class SignupListVC : MyTableVC() {
                 //perPage = signups.perPage
                 //totalCount = signups.totalCount
                 if (totalCount > 0) {
-                    list_empty.visibility = View.INVISIBLE
+                    binding.listEmpty.visibility = View.INVISIBLE
                 }
                 var _pageCount: Int = totalCount / perPage
                 totalPage = if (totalCount % perPage > 0) _pageCount+1 else _pageCount
@@ -85,7 +89,7 @@ class SignupListVC : MyTableVC() {
 
             page++
         }
-        Loading.hide(mask)
+        Loading.hide(view)
         //recyclerView.smoothScrollToPosition(scrollerPos + 1)
 //        println("page:$page")
 //        println("perPage:$perPage")

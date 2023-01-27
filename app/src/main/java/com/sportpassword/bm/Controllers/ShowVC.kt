@@ -1,22 +1,16 @@
 package com.sportpassword.bm.Controllers
 
-import android.app.ActionBar
 import android.app.AlertDialog
-import android.content.Context
-import android.content.res.Resources
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.os.Bundle
-import android.util.DisplayMetrics
-import android.view.Display
-import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
+import android.webkit.WebView
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.google.gson.Gson
 import com.google.gson.JsonParseException
 import com.sportpassword.bm.Adapters.ShowAdapter
@@ -30,14 +24,6 @@ import com.sportpassword.bm.Services.MemberService
 import com.sportpassword.bm.Utilities.*
 import com.sportpassword.bm.member
 import com.squareup.picasso.Picasso
-import kotlinx.android.synthetic.main.activity_show_course_vc.*
-import kotlinx.android.synthetic.main.activity_show_course_vc.contentView
-import kotlinx.android.synthetic.main.activity_show_course_vc.featured
-import kotlinx.android.synthetic.main.activity_show_course_vc.refresh
-import kotlinx.android.synthetic.main.activity_show_course_vc.tableView
-import kotlinx.android.synthetic.main.activity_show_team_vc.*
-import kotlinx.android.synthetic.main.bottom_view_show.*
-import kotlinx.android.synthetic.main.mask.*
 import java.io.InputStream
 import java.net.URL
 import java.net.URLConnection
@@ -69,12 +55,15 @@ open class ShowVC: BaseActivity() {
             token = intent.getStringExtra("token")!!
         }
 
-        refreshLayout = refresh
+        findViewById<SwipeRefreshLayout>(R.id.refresh) ?. let {
+            refreshLayout = it
+        }
         setRefreshListener()
 
         showAdapter = ShowAdapter(this)
-        if (tableView != null) {
-            tableView.adapter = showAdapter
+
+        findViewById<RecyclerView>(R.id.tableView) ?. let {
+            it.adapter = showAdapter
         }
 
         setBottomButtonPadding()
@@ -105,7 +94,7 @@ open class ShowVC: BaseActivity() {
 //            signupRows.clear()
 //            showRows.clear()
             initData()
-            Loading.show(mask)
+            //Loading.show(mask)
             val params: HashMap<String, String> = hashMapOf("token" to token!!, "member_token" to member.token!!)
             dataService.getOne(this, params) { success ->
                 if (success) {
@@ -133,7 +122,7 @@ open class ShowVC: BaseActivity() {
                 }
                 runOnUiThread {
                     closeRefresh()
-                    Loading.hide(mask)
+                    //Loading.hide(mask)
                 }
             }
         }
@@ -173,7 +162,8 @@ open class ShowVC: BaseActivity() {
 //    }
 
     fun setFeatured() {
-        if (featured != null) {
+
+        findViewById<ImageView>(R.id.featured) ?. let { featured ->
             if (table != null && table!!.featured_path.isNotEmpty()) {
                 var featured_path = table!!.featured_path
                 //featured_path.image(this, featured)
@@ -274,9 +264,11 @@ open class ShowVC: BaseActivity() {
         }
         //val content: String = "<html lang=\"zh-TW\"><head><meta charset=\"UTF-8\"></head><body style=\"background-color: #000;color:#fff;font-size:28px;\">"+superCourse!!.content+"</body></html>"
         //println(content)
-        contentView.loadDataWithBaseURL(null, content, "text/html", "UTF-8", null)
-        //contentView.loadData(strHtml, "text/html; charset=utf-8", "UTF-8")
-        //contentView.loadData("<html><body style='background-color:#000;'>Hello, world!</body></html>", "text/html", "UTF-8")
+        findViewById<WebView>(R.id.contentView) ?. let { contentView ->
+            contentView.loadDataWithBaseURL(null, content, "text/html", "UTF-8", null)
+            //contentView.loadData(strHtml, "text/html; charset=utf-8", "UTF-8")
+            //contentView.loadData("<html><body style='background-color:#000;'>Hello, world!</body></html>", "text/html", "UTF-8")
+        }
     }
 
     fun setLike() {
@@ -349,11 +341,11 @@ open class ShowVC: BaseActivity() {
 
     fun getMemberOne(member_token: String) {
 
-        Loading.show(mask)
+        //Loading.show(mask)
         MemberService.getOne(this, hashMapOf("token" to member_token)) { success ->
 
             runOnUiThread {
-                Loading.hide(mask)
+                //Loading.hide(mask)
             }
             if (success) {
                 var t: SuccessTable? = null

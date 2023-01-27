@@ -2,15 +2,19 @@ package com.sportpassword.bm.Controllers
 
 import android.os.Bundle
 import android.view.View
+import android.view.ViewGroup
 import android.widget.Toast
 import com.google.android.youtube.player.YouTubeBaseActivity
 import com.google.android.youtube.player.YouTubeInitializationResult
 import com.google.android.youtube.player.YouTubePlayer
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Utilities.hideKeyboard
-import kotlinx.android.synthetic.main.activity_show_teach_vc.*
+import com.sportpassword.bm.databinding.ActivityYoutubePlayerVcBinding
 
 class YoutubePlayerVC : YouTubeBaseActivity(), YouTubePlayer.OnInitializedListener {
+
+    private lateinit var binding: ActivityYoutubePlayerVcBinding
+    private lateinit var view: ViewGroup
 
     var token: String? = null
     var apiKey = ""
@@ -18,13 +22,16 @@ class YoutubePlayerVC : YouTubeBaseActivity(), YouTubePlayer.OnInitializedListen
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_youtube_player_vc)
+
+        binding = ActivityYoutubePlayerVcBinding.inflate(layoutInflater)
+        view = binding.root
+        setContentView(view)
 
         if (intent.hasExtra("token")) {
             token = intent.getStringExtra("token")!!
         }
         apiKey = getString(R.string.youtube_api_key)
-        youtube.initialize(apiKey, this)
+        binding.youtube.initialize(apiKey, this)
     }
 
     fun prev(view: View) {

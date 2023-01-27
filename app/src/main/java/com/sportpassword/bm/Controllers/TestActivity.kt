@@ -1,25 +1,25 @@
 package com.sportpassword.bm.Controllers
 
-import android.content.Context
-import android.graphics.Point
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.DisplayMetrics
-import android.view.WindowManager
+import android.view.ViewGroup
 import android.webkit.WebChromeClient
-import android.webkit.WebSettings
-import com.sportpassword.bm.R
-import com.sportpassword.bm.Utilities.CompletionHandler
-import kotlinx.android.synthetic.main.activity_test.*
+import com.sportpassword.bm.databinding.ActivityTestBinding
 
 class TestActivity : AppCompatActivity() {
 
-//    lateinit var vimeoClient: VimeoClient
+    private lateinit var binding: ActivityTestBinding
+    private lateinit var view: ViewGroup
+
+    //    lateinit var vimeoClient: VimeoClient
     var embed = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_test)
+
+        binding = ActivityTestBinding.inflate(layoutInflater)
+        view = binding.root
+        setContentView(view)
 
 
 //        val mWm = getSystemService(Context.WINDOW_SERVICE) as WindowManager
@@ -63,9 +63,9 @@ class TestActivity : AppCompatActivity() {
         //val url = "https://player.vimeo.com/external/265966500.m3u8?s=34b38682f7d95a03185deb417e4c0945e3923882"
         //webView.loadUrl(url)
         //webView.settings.pluginState = WebSettings.PluginState.ON
-        webView.settings.javaScriptEnabled = true
-        webView.webChromeClient = WebChromeClient()
-        webView.loadData(html, "text/html; charset=utf-8", "UTF-8")
+        binding.webView.settings.javaScriptEnabled = true
+        binding.webView.webChromeClient = WebChromeClient()
+        binding.webView.loadData(html, "text/html; charset=utf-8", "UTF-8")
     }
 
 //    private fun getEmbed(uri: String, complete: CompletionHandler) {
