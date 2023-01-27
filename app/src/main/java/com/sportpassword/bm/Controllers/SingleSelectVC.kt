@@ -3,17 +3,9 @@ package com.sportpassword.bm.Controllers
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.TextView
-import androidx.recyclerview.widget.RecyclerView
 import com.sportpassword.bm.Adapters.SingleSelectAdapter
-import com.sportpassword.bm.Data.SelectRow
-import com.sportpassword.bm.R
-import com.sportpassword.bm.Utilities.selected
-import com.sportpassword.bm.Utilities.unSelected
+import com.sportpassword.bm.databinding.ActivitySingleSelectVcBinding
 import kotlinx.android.synthetic.main.activity_single_select_vc.*
 
 interface SingleSelectDelegate {
@@ -22,11 +14,17 @@ interface SingleSelectDelegate {
 
 open class SingleSelectVC : SelectVC() {
 
+    private lateinit var binding: ActivitySingleSelectVcBinding
+    lateinit var view: ViewGroup
+
     var selected: String? = null
     lateinit var tableAdapter: SingleSelectAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        setContentView(R.layout.activity_single_select_vc)
+
+        binding = ActivitySingleSelectVcBinding.inflate(layoutInflater)
+        view = binding.root
+        setContentView(view)
         super.onCreate(savedInstanceState)
 
         if (intent.hasExtra("selected")) {

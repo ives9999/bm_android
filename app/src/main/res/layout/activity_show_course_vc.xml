@@ -138,7 +138,9 @@
 
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
-    <include layout="@layout/bottom_view_show" />
+    <include layout="@layout/bottom_view_show"
+        android:id="@+id/bottomViewShowInclude"
+        />
 
     <include layout="@layout/mask" />
 

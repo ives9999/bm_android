@@ -3,21 +3,22 @@ package com.sportpassword.bm.Controllers
 import android.content.Intent
 import android.os.Bundle
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-import androidx.recyclerview.widget.LinearLayoutManager
-import android.view.Menu
 import android.view.View
+import android.view.ViewGroup
 import android.widget.ImageView
 import com.sportpassword.bm.Adapters.SignupsAdapter
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.TeamService
 import com.sportpassword.bm.Utilities.*
+import com.sportpassword.bm.databinding.ActivityShowTempPlayBinding
 import com.sportpassword.bm.member
 import com.squareup.picasso.Picasso
-import kotlinx.android.synthetic.main.activity_show_temp_play.*
 import org.jetbrains.anko.contentView
-import kotlinx.android.synthetic.main.mask.*
 
 class ShowTempPlayActivity : BaseActivity() {
+
+    private lateinit var binding: ActivityShowTempPlayBinding
+    private lateinit var view: ViewGroup
 
     lateinit var teamToken: String
     lateinit var signupsAdapter: SignupsAdapter
@@ -29,7 +30,10 @@ class ShowTempPlayActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_show_temp_play)
+
+        binding = ActivityShowTempPlayBinding.inflate(layoutInflater)
+        view = binding.root
+        setContentView(view)
 
         teamToken = intent.getStringExtra(TOKEN_KEY)!!
         //println(token)
@@ -73,7 +77,7 @@ class ShowTempPlayActivity : BaseActivity() {
 //                setMyTitle(name)
 //            }
 //        }
-        Loading.hide(mask)
+        Loading.hide(view)
     }
 
     fun plusOne(view: View) {
@@ -99,9 +103,9 @@ class ShowTempPlayActivity : BaseActivity() {
     }
 
     private fun _plusOne() {
-        Loading.show(mask)
+        Loading.show(view)
         TeamService.plusOne(this, name, nearDate, memberToken) { success ->
-            Loading.hide(mask)
+            Loading.hide(view)
             val msg: String = "報名臨打成功"
             if (success) {
                 Alert.show(this, "成功", msg)
@@ -120,9 +124,9 @@ class ShowTempPlayActivity : BaseActivity() {
             return
         }
 
-        Loading.show(mask)
+        Loading.show(view)
         TeamService.cancelPlusOne(this, name, nearDate, memberToken) { success ->
-            Loading.hide(mask)
+            Loading.hide(view)
             var msg: String = "取消報名臨打成功"
             if (success) {
                 Alert.show(this, "成功", msg)
@@ -153,8 +157,8 @@ class ShowTempPlayActivity : BaseActivity() {
                     .error(R.drawable.load_failed_square)
                     .into(imageView)
         }
-        show_temp_play_city_btn.text = data[CITY_KEY]!!["show"] as String
-        show_temp_play_arena_btn.text = data[ARENA_KEY]!!["show"] as String
+        binding.showTempPlayCityBtn.text = data[CITY_KEY]!!["show"] as String
+        binding.showTempPlayArenaBtn.text = data[ARENA_KEY]!!["show"] as String
 
         var key = ""
         var lbl = ""
@@ -163,51 +167,51 @@ class ShowTempPlayActivity : BaseActivity() {
         lbl = data[key]!!["ch"] as String
         text = data[key]!!["show"] as String
         nearDate = data[key]!!["value"] as String
-        show_date.text = "$lbl: $text"
+        binding.showDate.text = "$lbl: $text"
 
         lbl = "臨打時段"
         text = data[TEAM_PLAY_START_KEY]!!["show"] as String + " - " + data[TEAM_PLAY_END_KEY]!!["show"] as String
-        show_interval.text = lbl + ": " + text
+        binding.showInterval.text = lbl + ": " + text
 
         key = TEAM_TEMP_QUANTITY_KEY
         lbl = data[key]!!["ch"] as String
         text = data[key]!!["show"] as String
-        show_quantity.text = lbl + ": " + text
+        binding.showQuantity.text = lbl + ": " + text
 
         key = TEAM_TEMP_SIGNUP_KEY
         lbl = data[key]!!["ch"] as String
         text = data[key]!!["value"] as String
-        show_signup.text = lbl + ": " + text
+        binding.showSignup.text = lbl + ": " + text
 
         key = TEAM_TEMP_FEE_M_KEY
         lbl = data[key]!!["ch"] as String
         text = data[key]!!["show"] as String
-        show_fee_M.text = lbl + ": " + text
+        binding.showFeeM.text = lbl + ": " + text
 
         key = TEAM_TEMP_FEE_F_KEY
         lbl = data[key]!!["ch"] as String
         text = data[key]!!["show"] as String
-        show_fee_Ｆ.text = lbl + ": " + text
+        binding.showFeeF.text = lbl + ": " + text
 
         key = TEAM_BALL_KEY
         lbl = data[key]!!["ch"] as String
         text = data[key]!!["show"] as String
-        show_ball.text = lbl + ": " + text
+        binding.showBall.text = lbl + ": " + text
 
         key = TEAM_LEADER_KEY
         lbl = data[key]!!["ch"] as String
         text = data[key]!!["show"] as String
-        show_manager.text = lbl + ": " + text
+        binding.showManager.text = lbl + ": " + text
 
         key = MOBILE_KEY
         lbl = data[key]!!["ch"] as String
         text = data[key]!!["show"] as String
-        show_mobile.text = lbl + ": " + text
+        binding.showMobile.text = lbl + ": " + text
 
         key = TEAM_DEGREE_KEY
         lbl = data[key]!!["ch"] as String
         text = data[key]!!["show"] as String
-        show_degree.text = lbl + ": " + text
+        binding.showDegree.text = lbl + ": " + text
 
         name = data[NAME_KEY]!!["value"] as String
         memberToken = member.token!!

@@ -1,6 +1,5 @@
 package com.sportpassword.bm.Controllers
 
-import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.Color
 import android.os.Bundle
@@ -16,20 +15,20 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.google.gson.JsonParseException
 import com.sportpassword.bm.Adapters.ManagerAdapter
-import com.sportpassword.bm.Adapters.ShowAdapter
 import com.sportpassword.bm.Data.ShowRow
 import com.sportpassword.bm.Models.*
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.CoachService
 import com.sportpassword.bm.Services.CourseService
 import com.sportpassword.bm.Utilities.*
-import com.squareup.picasso.Picasso
-import kotlinx.android.synthetic.main.activity_show_coach_vc.*
-import kotlinx.android.synthetic.main.manager_course_item.*
+import com.sportpassword.bm.databinding.ActivityShowCoachVcBinding
 import org.jetbrains.anko.backgroundColor
 import org.jetbrains.anko.textColor
 
 class ShowCoachVC: ShowVC() {
+
+    private lateinit var binding: ActivityShowCoachVcBinding
+    private lateinit var view: ViewGroup
 
     var myTable: CoachTable? = null
     var coursesTable: CoursesTable? = null
@@ -56,10 +55,12 @@ class ShowCoachVC: ShowVC() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
-        setContentView(R.layout.activity_show_coach_vc)
+        binding = ActivityShowCoachVcBinding.inflate(layoutInflater)
+        view = binding.root
+        setContentView(view)
 
         dataService = CoachService
-        refreshLayout = refresh
+        refreshLayout = binding.refresh
         setRefreshListener()
         //initAdapter()
 //        initCourseAdapter()
@@ -82,14 +83,14 @@ class ShowCoachVC: ShowVC() {
 //            PV_KEY to hashMapOf("icon" to "pv","title" to "瀏覽數","content" to "","isPressed" to "false")
 //        )
 
-        webViewSettings(this, chargeWebView)
-        webViewSettings(this, expWebView)
-        webViewSettings(this, licenseWebView)
-        webViewSettings(this, featWebView)
-        webViewSettings(this, contentView)
+        webViewSettings(this, binding.chargeWebView)
+        webViewSettings(this, binding.expWebView)
+        webViewSettings(this, binding.licenseWebView)
+        webViewSettings(this, binding.featWebView)
+        webViewSettings(this, binding.contentView)
 
         coachCourseAdapter = ManagerAdapter(this, courseRows, this)
-        courseTableView.adapter = coachCourseAdapter
+        binding.courseTableView.adapter = coachCourseAdapter
 
         findViewById<Button>(R.id.signupButton) ?. let {
             it.visibility = View.GONE
@@ -262,16 +263,16 @@ class ShowCoachVC: ShowVC() {
 
             setMainData(myTable!!)
             if (myTable!!.charge != null) {
-                setWeb(chargeWebView, myTable!!.charge)
+                setWeb(binding.chargeWebView, myTable!!.charge)
             }
             if (myTable!!.exp != null) {
-                setWeb(expWebView, myTable!!.exp)
+                setWeb(binding.expWebView, myTable!!.exp)
             }
             if (myTable!!.license != null) {
-                setWeb(licenseWebView, myTable!!.license)
+                setWeb(binding.licenseWebView, myTable!!.license)
             }
             if (myTable!!.feat != null) {
-                setWeb(featWebView, myTable!!.feat)
+                setWeb(binding.featWebView, myTable!!.feat)
             }
 
             setCourse()

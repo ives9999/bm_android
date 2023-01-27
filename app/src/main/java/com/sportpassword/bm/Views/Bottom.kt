@@ -18,7 +18,7 @@ class Bottom@JvmOverloads constructor(context: Context, attrs: AttributeSet? = n
 
     val view = View.inflate(context, R.layout.bottom_view1, this)
 
-    private var submitBtn: Button? = null
+    var submitBtn: Button? = null
     private var likeLL: LinearLayout? = null
     private var cancelBtn: Button? = null
 

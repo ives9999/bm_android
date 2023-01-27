@@ -6,18 +6,16 @@ import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.FrameLayout
+import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.google.gson.JsonParseException
-import com.sportpassword.bm.Adapters.OneSectionAdapter
-import com.sportpassword.bm.Adapters.SearchSectionAdapter
 import com.sportpassword.bm.Adapters.TeamAdapter
 import com.sportpassword.bm.Data.OneRow
 import com.sportpassword.bm.Data.OneSection
-import com.sportpassword.bm.Data.SearchRow
-import com.sportpassword.bm.Data.SearchSection
 import com.sportpassword.bm.Models.ArenaTable
 import com.sportpassword.bm.Models.Table
 import com.sportpassword.bm.Models.TeamTable
@@ -27,19 +25,14 @@ import com.sportpassword.bm.Services.TeamService
 import com.sportpassword.bm.Utilities.*
 import com.sportpassword.bm.Views.TabSearch
 import com.sportpassword.bm.Views.Tag
+import com.sportpassword.bm.databinding.ActivitySearchVcBinding
 import com.sportpassword.bm.member
-import kotlinx.android.synthetic.main.activity_search_vc.*
-import kotlinx.android.synthetic.main.bottom_view.*
-import kotlinx.android.synthetic.main.mask.*
-import kotlinx.android.synthetic.main.tab_search.view.*
-import kotlinx.android.synthetic.main.tag.view.*
-import kotlinx.android.synthetic.main.top_view.*
-import org.jetbrains.anko.Android
 import org.jetbrains.anko.backgroundColor
-import org.jetbrains.anko.support.v4.runOnUiThread
-import org.jetbrains.anko.textColor
 
 class SearchVC : MyTableVC() {
+
+    private lateinit var binding: ActivitySearchVcBinding
+    private lateinit var view: ViewGroup
 
     var mysTable: TeamsTable? = null
     lateinit var tableAdapter: TeamAdapter
@@ -58,7 +51,10 @@ class SearchVC : MyTableVC() {
         able_type = "team"
 
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_search_vc)
+
+        binding = ActivitySearchVcBinding.inflate(layoutInflater)
+        view = binding.root
+        setContentView(view)
 
         setBottomTabFocus()
         //topTitleLbl.setText("球隊")
@@ -69,11 +65,13 @@ class SearchVC : MyTableVC() {
         val btn = findViewById<Button>(R.id.submit_btn)
         btn.setOnClickListener { searchSubmit() }
 
-        footer.visibility = View.GONE
+        binding.footer.visibility = View.GONE
         //remain.visibility = View.GONE
 
-        recyclerView = list_container
-        maskView = mask
+        recyclerView = binding.listContainer
+        findViewById<FrameLayout>(R.id.mask) ?. let { mask ->
+            maskView = mask
+        }
         recyclerView.setHasFixedSize(true)
 
         tableAdapter = TeamAdapter(R.layout.team_list_cell, this)
@@ -124,17 +122,23 @@ class SearchVC : MyTableVC() {
             if (searchTab.containsKey("icon")) {
                 icon = searchTab["icon"] as String
             }
-            tab.icon.setImage(icon)
+
+            tab.findViewById<ImageView>(R.id.icon) ?. let {
+                it.setImage(icon)
+            }
 
             var text: String = "預設"
             if (searchTab.containsKey("text")) {
                 text = searchTab["text"] as String
             }
-            tab.text.text = text
-            tab.text.textSize = textSize
+
+            tab.findViewById<TextView>(R.id.text) ?. let {
+                it.text = text
+                it.textSize = textSize
+            }
             searchTags[i]["class"] = tab
 
-            tag_container.addView(tab)
+            binding.tagContainer.addView(tab)
 
             tab.setOnClickListener {
                 tabPressed(it)
@@ -164,7 +168,7 @@ class SearchVC : MyTableVC() {
         for ((i, searchTag) in searchTags.withIndex()) {
 
             val tag: Tag = Tag(this)
-            tag_container.addView(tag)
+            binding.tagContainer.addView(tag)
             tag.layoutParams = lp_tag
             tag.gravity = Gravity.CENTER
 
@@ -178,11 +182,14 @@ class SearchVC : MyTableVC() {
             if (searchTag.containsKey("name")) {
                 name = searchTag["name"] as String
             }
-            tag.tag_view.text = name
+
+            tag.findViewById<TextView>(R.id.tag_view) ?. let {
+                it.text = name
+                it.textSize = textSize
+                it.setPadding(60, 15, 60, 15)
+            }
 
 //            tag.tag_view.layoutParams = lp_tag_view
-            tag.tag_view.textSize = textSize
-            tag.tag_view.setPadding(60, 15, 60, 15)
 
             searchTags[i]["class"] = tag
 
@@ -246,7 +253,7 @@ class SearchVC : MyTableVC() {
                 when (selectedTagIdx) {
                     1-> {
                         setFilterView()
-                        footer.visibility = View.VISIBLE
+                        binding.footer.visibility = View.VISIBLE
                         //remain.visibility = View.VISIBLE
                         mustLoginLbl?.visibility = View.INVISIBLE
                         findViewById<RecyclerView>(R.id.list_container) ?. let {
@@ -257,7 +264,7 @@ class SearchVC : MyTableVC() {
                     }
                     0-> {
                         setListView()
-                        footer.visibility = View.GONE
+                        binding.footer.visibility = View.GONE
                         //remain.visibility = View.GONE
                         member_like = true
                         recyclerView.adapter = tableAdapter
@@ -281,7 +288,7 @@ class SearchVC : MyTableVC() {
                     }
                     2-> {
                         setListView()
-                        footer.visibility = View.GONE
+                        binding.footer.visibility = View.GONE
                         mustLoginLbl?.visibility = View.INVISIBLE
                         findViewById<RecyclerView>(R.id.list_container) ?. let {
                             it.visibility = View.VISIBLE
@@ -308,30 +315,30 @@ class SearchVC : MyTableVC() {
     }
 
     private fun setFilterView() {
-        var params: ViewGroup.MarginLayoutParams = tableViewContainer.layoutParams as ViewGroup.MarginLayoutParams
+        var params: ViewGroup.MarginLayoutParams = binding.tableViewContainer.layoutParams as ViewGroup.MarginLayoutParams
         params.marginStart = 50
         params.marginEnd = 50
         params.topMargin = 50
-        tableViewContainer.layoutParams = params
+        binding.tableViewContainer.layoutParams = params
 
         val drawable = ContextCompat.getDrawable(this, R.drawable.search_linearlayout)
-        tableViewContainer.background = drawable
+        binding.tableViewContainer.background = drawable
 
-        params = list_container.layoutParams as ViewGroup.MarginLayoutParams
+        params = binding.listContainer.layoutParams as ViewGroup.MarginLayoutParams
         params.marginStart = 60
         params.marginEnd = 60
         params.topMargin = 50
-        list_container.layoutParams = params
+        binding.listContainer.layoutParams = params
     }
 
     private fun setListView() {
-        val params: ViewGroup.MarginLayoutParams = tableViewContainer.layoutParams as ViewGroup.MarginLayoutParams
+        val params: ViewGroup.MarginLayoutParams = binding.tableViewContainer.layoutParams as ViewGroup.MarginLayoutParams
         params.marginStart = 0
         params.marginEnd = 0
-        tableViewContainer.layoutParams = params
+        binding.tableViewContainer.layoutParams = params
 
         val color = ContextCompat.getColor(this, android.R.color.transparent)
-        tableViewContainer.backgroundColor = color
+        binding.tableViewContainer.backgroundColor = color
     }
 
     private fun setTabSelectedStyle() {

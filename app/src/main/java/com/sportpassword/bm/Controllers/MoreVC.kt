@@ -55,7 +55,6 @@ open class MoreVC : MyTableVC() {
         binding = ActivityMoreVcBinding.inflate(layoutInflater)
         view = binding.root
         setContentView(view)
-        setContentView(R.layout.activity_more_vc)
 
         setBottomTabFocus()
         binding.topInclude.topTitleLbl.setText("更多")

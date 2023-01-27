@@ -2,19 +2,20 @@ package com.sportpassword.bm.Controllers
 
 import android.os.Bundle
 import android.view.ViewGroup
+import android.widget.FrameLayout
 import com.sportpassword.bm.Adapters.ProductAdapter
 import com.sportpassword.bm.Data.OneRow
 import com.sportpassword.bm.Data.OneSection
-import com.sportpassword.bm.Data.SearchRow
-import com.sportpassword.bm.Data.SearchSection
 import com.sportpassword.bm.Models.*
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.ProductService
 import com.sportpassword.bm.Utilities.*
-import kotlinx.android.synthetic.main.activity_product_vc.*
-import kotlinx.android.synthetic.main.mask.*
+import com.sportpassword.bm.databinding.ActivityProductVcBinding
 
 class ProductVC : MyTableVC() {
+
+    private lateinit var binding: ActivityProductVcBinding
+    private lateinit var view: ViewGroup
 
     var mysTable: ProductsTable? = null
     lateinit var tableAdapter: ProductAdapter
@@ -26,7 +27,10 @@ class ProductVC : MyTableVC() {
 //        )
 
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_product_vc)
+
+        binding = ActivityProductVcBinding.inflate(layoutInflater)
+        view = binding.root
+        setContentView(view)
 
 //        source_activity = "product"
 //        val title_field = intent.getStringExtra("titleField")
@@ -34,9 +38,12 @@ class ProductVC : MyTableVC() {
         setMyTitle("商店")
 
         dataService = ProductService
-        recyclerView = product_list
-        refreshLayout = product_refresh
-        maskView = mask
+        recyclerView = binding.productList
+        refreshLayout = binding.productRefresh
+
+        findViewById<FrameLayout>(R.id.mask) ?. let { mask ->
+            maskView = mask
+        }
 
         //initAdapter()
 //        adapter = GroupAdapter()

@@ -1,63 +1,32 @@
 package com.sportpassword.bm.Controllers
 
 import android.app.Activity
-import android.app.Dialog
-import android.content.Intent
-import android.content.pm.PackageManager
 import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
-import android.view.Window
-import android.view.WindowManager
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.RelativeLayout
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.google.gson.Gson
 import com.google.gson.JsonParseException
 import com.sportpassword.bm.Adapters.OneSectionAdapter
-import com.sportpassword.bm.Adapters.SingleSelectAdapter
 import com.sportpassword.bm.Data.OneRow
-import com.sportpassword.bm.Data.SelectRow
-import com.sportpassword.bm.Form.FormItem.*
 import com.sportpassword.bm.Models.Area
-import com.sportpassword.bm.Models.City
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.MemberService
 import com.sportpassword.bm.Utilities.*
-import kotlinx.android.synthetic.main.activity_register.*
-import kotlinx.android.synthetic.main.activity_register.editTableView
-import kotlinx.android.synthetic.main.activity_register.edit_featured
-import kotlinx.android.synthetic.main.activity_register.featured_text
-import kotlinx.android.synthetic.main.activity_register.refresh
-import kotlinx.android.synthetic.main.mask.*
 import java.io.File
 import com.sportpassword.bm.Models.MemberTable
 import com.sportpassword.bm.Views.MoreDialog
+import com.sportpassword.bm.databinding.ActivityRegisterBinding
 import com.sportpassword.bm.member
-import kotlinx.android.synthetic.main.activity_register.edit_featured_container
-import kotlinx.android.synthetic.main.activity_single_select_vc.*
-import kotlinx.android.synthetic.main.title_bar.*
-import kotlinx.android.synthetic.main.top_view.*
 import org.jetbrains.anko.sdk27.coroutines.onClick
-import kotlin.reflect.full.createType
-import kotlin.reflect.full.memberProperties
 
 class RegisterVC : MyTableVC() {
 
-    //image picker
-//    override val ACTION_CAMERA_REQUEST_CODE = 100
-//    override val ACTION_PHOTO_REQUEST_CODE = 200
-//    override val activity = this
-//    override val context = this
-//    override var currentPhotoPath = ""
-//    override var filePath: String = ""
-//    override var file: File? = null
-//    override lateinit var imagePickerLayer: AlertDialog
-//    override lateinit var alertView: View
-//    override lateinit var imageView: ImageView
+    private lateinit var binding: ActivityRegisterBinding
+    private lateinit var view: ViewGroup
 
     private var originW: Int = 0
     private var originH: Int = 0
@@ -100,29 +69,33 @@ class RegisterVC : MyTableVC() {
     override fun onCreate(savedInstanceState: Bundle?) {
 
         super.onCreate(savedInstanceState)
+
+        binding = ActivityRegisterBinding.inflate(layoutInflater)
+        view = binding.root
+        setContentView(view)
         setContentView(R.layout.activity_register)
 
         //setMyTitle("註冊")
         if (member.isLoggedIn) {
-            topTitleLbl.text = member.name
+            binding.topInclude.topTitleLbl.text = member.name
         } else {
-            topTitleLbl.text = "註冊"
+            binding.topInclude.topTitleLbl.text = "註冊"
         }
-        hidekeyboard(register_layout)
+        hidekeyboard(binding.registerLayout)
 
 //        form = RegisterForm(this)
 //        sections = form.getSections()
 //        section_keys = form.getSectionKeys()
 
-        imageView = edit_featured
+        imageView = binding.editFeatured
         getImageViewParams()
         initImagePicker(R.layout.image_picker_layer)
         activity = this
-        edit_featured_container.onClick {
+        binding.editFeaturedContainer.onClick {
             showImagePickerLayer()
         }
 
-        recyclerView = editTableView
+        recyclerView = binding.editTableView
         oneSectionAdapter = OneSectionAdapter(this, R.layout.cell_section, this, hashMapOf())
         oneSectionAdapter.setOneSection(oneSections)
         recyclerView.adapter = oneSectionAdapter
@@ -133,7 +106,7 @@ class RegisterVC : MyTableVC() {
 
         //initAdapter(true)
 
-        refreshLayout = refresh
+        refreshLayout = binding.refresh
         setRefreshListener()
         setBottomButtonPadding()
 
@@ -395,7 +368,7 @@ class RegisterVC : MyTableVC() {
         if (msg.length > 0) {
             warning(msg)
         } else {
-            Loading.show(mask)
+            Loading.show(view)
             val params: HashMap<String, String> = hashMapOf()
             for (section in oneSections) {
                 for (row in section.items) {
@@ -416,7 +389,9 @@ class RegisterVC : MyTableVC() {
 
             //this is execute DataService update
             MemberService.update(this, params, filePath) { success ->
-                Loading.hide(mask)
+                runOnUiThread {
+                    Loading.hide(view)
+                }
                 if (success) {
                     if (MemberService.success) {
                         echoYes()
@@ -481,8 +456,8 @@ class RegisterVC : MyTableVC() {
     }
 
     override fun setImage(newFile: File?, url: String?) {
-        featured_text.visibility = View.INVISIBLE
-        val layoutParams = edit_featured.layoutParams as RelativeLayout.LayoutParams
+        binding.featuredText.visibility = View.INVISIBLE
+        val layoutParams = binding.editFeatured.layoutParams as RelativeLayout.LayoutParams
         layoutParams.width = LinearLayout.LayoutParams.MATCH_PARENT
         layoutParams.height = LinearLayout.LayoutParams.MATCH_PARENT
         layoutParams.setMargins(0, 0, 0, 0)
@@ -492,8 +467,8 @@ class RegisterVC : MyTableVC() {
     }
 
     override fun removeImage() {
-        featured_text.visibility = View.VISIBLE
-        val layoutParams = edit_featured.layoutParams as RelativeLayout.LayoutParams
+        binding.featuredText.visibility = View.VISIBLE
+        val layoutParams = binding.editFeatured.layoutParams as RelativeLayout.LayoutParams
         layoutParams.width = originW
         layoutParams.height = originH
         layoutParams.setMargins(0, originMarginTop, 0, originMarginBottom)
@@ -535,10 +510,10 @@ class RegisterVC : MyTableVC() {
     }
 
     private fun getImageViewParams() {
-        val l = edit_featured.layoutParams as RelativeLayout.LayoutParams
+        val l = binding.editFeatured.layoutParams as RelativeLayout.LayoutParams
         originW = l.width
         originH = l.height
-        originScaleType = edit_featured.scaleType
+        originScaleType = binding.editFeatured.scaleType
         //val m = edit_featured.
         originMarginTop = l.topMargin
         originMarginBottom = l.bottomMargin

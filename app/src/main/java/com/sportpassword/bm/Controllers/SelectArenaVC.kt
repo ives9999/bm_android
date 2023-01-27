@@ -9,7 +9,6 @@ import com.sportpassword.bm.Services.TeamService
 import com.sportpassword.bm.Utilities.ARENA_KEY
 import com.sportpassword.bm.Utilities.Global
 import com.sportpassword.bm.Utilities.Loading
-import kotlinx.android.synthetic.main.mask.*
 
 class SelectArenaVC : SingleSelectVC() {
 
@@ -43,10 +42,10 @@ class SelectArenaVC : SingleSelectVC() {
 //        tableView.adapter = adapter
 
         if (city_id != null) {
-            Loading.show(mask)
+            Loading.show(view)
             TeamService.getArenaByCityID(this, city_id) { success ->
 
-                Loading.hide(mask)
+                Loading.hide(view)
                 if (success) {
                     arenas1 = TeamService.arenas
                     if (arenas1 != null) {

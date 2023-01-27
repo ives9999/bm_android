@@ -2,6 +2,7 @@ package com.sportpassword.bm.Controllers
 
 import android.os.Bundle
 import android.view.View
+import android.view.ViewGroup
 import android.widget.Button
 import com.google.gson.JsonParseException
 import com.sportpassword.bm.Data.ShowRow
@@ -9,18 +10,24 @@ import com.sportpassword.bm.Models.StoreTable
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.StoreService
 import com.sportpassword.bm.Utilities.*
-import kotlinx.android.synthetic.main.activity_show_course_vc.refresh
+import com.sportpassword.bm.databinding.ActivityShowStoreVcBinding
 
 class ShowStoreVC : ShowVC() {
+
+    private lateinit var binding: ActivityShowStoreVcBinding
+    private lateinit var view: ViewGroup
 
     var myTable: StoreTable? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        setContentView(R.layout.activity_show_store_vc)
+
+        binding = ActivityShowStoreVcBinding.inflate(layoutInflater)
+        view = binding.root
+        setContentView(view)
 
         dataService = StoreService
 
-        refreshLayout = refresh
+        refreshLayout = binding.refresh
         setRefreshListener()
 
 //        initAdapter()

@@ -1,17 +1,8 @@
 package com.sportpassword.bm.Controllers
 
-import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.View
-import com.sportpassword.bm.App
 import com.sportpassword.bm.Data.SelectRow
-import com.sportpassword.bm.R
-import com.sportpassword.bm.Utilities.CITY_KEY
-import com.sportpassword.bm.Utilities.Loading
-import com.sportpassword.bm.Utilities.SESSION_FILENAME
-import kotlinx.android.synthetic.main.mask.*
-import org.json.JSONArray
-import org.json.JSONObject
 
 open class SelectVC : MyTableVC() {
 

@@ -7,7 +7,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.ImageView
 import android.widget.LinearLayout
+import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.gson.JsonParseException
@@ -24,17 +26,16 @@ import com.sportpassword.bm.Views.Bottom
 import com.sportpassword.bm.Views.EndlessRecyclerViewScrollListener
 import com.sportpassword.bm.Views.TabSearch
 import com.sportpassword.bm.Views.Top
+import com.sportpassword.bm.databinding.ActivityShowTeamVcBinding
 import com.sportpassword.bm.member
-import kotlinx.android.synthetic.main.activity_show_team_vc.*
-import kotlinx.android.synthetic.main.activity_show_team_vc.refresh
-import kotlinx.android.synthetic.main.bottom_view_show.*
 import java.util.*
-import kotlinx.android.synthetic.main.mask.*
-import kotlinx.android.synthetic.main.tab_search.view.*
 import java.lang.reflect.Type
 import kotlin.collections.ArrayList
 
 class ShowTeamVC: ShowVC() {
+
+    private lateinit var binding: ActivityShowTeamVcBinding
+    private lateinit var view: ViewGroup
 
     var top: Top? = null
     var showBottom: Bottom? = null
@@ -72,11 +73,14 @@ class ShowTeamVC: ShowVC() {
     var tempPlayPerpage: Int = PERPAGE
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        setContentView(R.layout.activity_show_team_vc)
+
+        binding = ActivityShowTeamVcBinding.inflate(layoutInflater)
+        view = binding.root
+        setContentView(view)
 
         dataService = TeamService
 
-        refreshLayout = refresh
+        refreshLayout = binding.refresh
         setRefreshListener()
 
         bottom_button_count = 3
@@ -176,14 +180,20 @@ class ShowTeamVC: ShowVC() {
             if (topTag.containsKey("icon")) {
                 icon = topTag["icon"] as String
             }
-            tab.icon.setImage(icon)
+
+            tab.findViewById<ImageView>(R.id.icon) ?. let {
+                it.setImage(icon)
+            }
 
             var text: String = "預設"
             if (topTag.containsKey("text")) {
                 text = topTag["text"] as String
             }
-            tab.text.text = text
-            tab.text.textSize = textSize
+
+            tab.findViewById<TextView>(R.id.text) ?. let {
+                it.text = text
+                it.textSize = textSize
+            }
             topTags[i]["class"] = tab
 
             findViewById<LinearLayout>(R.id.tag_container) ?. let {
@@ -203,7 +213,7 @@ class ShowTeamVC: ShowVC() {
 //            signupRows.clear()
 //            showRows.clear()
             initData()
-            Loading.show(mask)
+            Loading.show(view)
             val params: HashMap<String, String> = hashMapOf("token" to token!!, "member_token" to member.token!!)
             dataService.getOne(this, params) { success ->
                 if (success) {
@@ -233,7 +243,7 @@ class ShowTeamVC: ShowVC() {
                 }
                 runOnUiThread {
                     closeRefresh()
-                    Loading.hide(mask)
+                    Loading.hide(view)
                 }
             }
         }
@@ -272,12 +282,12 @@ class ShowTeamVC: ShowVC() {
     }
 
     private fun getTeamMemberList(page: Int, perPage: Int) {
-        Loading.show(mask)
+        Loading.show(view)
         loading = true
 
         TeamService.teamMemberList(this, token!!, page, perPage) { success ->
             runOnUiThread {
-                Loading.hide(mask)
+                Loading.hide(view)
 
                 val tableType: Type = object : TypeToken<Tables2<TeamMemberTable>>() {}.type
                 val tables2: Tables2<TeamMemberTable>? = jsonToModels2<Tables2<TeamMemberTable>, TeamMemberTable>(TeamService.jsonString, tableType)
@@ -308,8 +318,8 @@ class ShowTeamVC: ShowVC() {
                                 countTeamMemberTotalPage()
                             }
 
-                            teamMemberDataLbl.visibility = View.VISIBLE
-                            teamMemberDataLbl.text = "總人數${totalCount}位"
+                            binding.teamMemberDataLbl.visibility = View.VISIBLE
+                            binding.teamMemberDataLbl.text = "總人數${totalCount}位"
                             teamMemberAdapter.rows = teamMemberRows
                             teamMemberAdapter.notifyDataSetChanged()
                         } else {
@@ -393,21 +403,21 @@ class ShowTeamVC: ShowVC() {
         isTempPlayOnline()
 
         if (!isTempPlay) {
-            tempPlayDataLbl.text = "目前球隊不開放臨打"
-            tempPlayDateLbl.visibility = View.INVISIBLE
-            tempPlayDeadlineLbl.visibility = View.INVISIBLE
+            binding.tempPlayDataLbl.text = "目前球隊不開放臨打"
+            binding.tempPlayDateLbl.visibility = View.INVISIBLE
+            binding.tempPlayDeadlineLbl.visibility = View.INVISIBLE
             tempPlayTableView?.visibility = View.GONE
         } else {
             if (myTable != null && myTable!!.signupDate != null) {
-                tempPlayDataLbl.text = "報名資料"
-                tempPlayDateLbl.text =
+                binding.tempPlayDataLbl.text = "報名資料"
+                binding.tempPlayDateLbl.text =
                     "下次臨打時間：" + myTable!!.signupDate!!.date + " " + myTable!!.interval_show
-                tempPlayDeadlineLbl.text = "報名截止時間：" + myTable!!.signupDate!!.deadline.noSec()
+                binding.tempPlayDeadlineLbl.text = "報名截止時間：" + myTable!!.signupDate!!.deadline.noSec()
             }
         }
 
         if (myTable!!.people_limit == 0) {
-            signupButton.visibility = View.GONE
+            showBottom?.submitBtn?.visibility = View.GONE
             setBottomButtonPadding()
         } else {
             signupRows.clear()
@@ -542,11 +552,11 @@ class ShowTeamVC: ShowVC() {
                 return
             }
 
-            Loading.show(mask)
+            Loading.show(view)
             dataService.signup(this, myTable!!.token, member.token!!, myTable!!.signupDate!!.token) { success->
 
                 runOnUiThread {
-                    Loading.hide(mask)
+                    Loading.hide(view)
                 }
 
                 if (success) {

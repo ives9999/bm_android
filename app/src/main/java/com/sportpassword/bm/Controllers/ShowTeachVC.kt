@@ -3,6 +3,7 @@ package com.sportpassword.bm.Controllers
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import android.view.ViewGroup
 import android.widget.Toast
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.google.android.youtube.player.YouTubeBaseActivity
@@ -16,20 +17,17 @@ import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.TeachService
 import com.sportpassword.bm.Utilities.jsonToModel
 import kotlin.reflect.full.memberProperties
-import kotlinx.android.synthetic.main.activity_show_teach_vc.*
 import com.sportpassword.bm.Data.ShowRow
 import com.sportpassword.bm.Services.DataService
 import com.sportpassword.bm.Utilities.Loading
 import com.sportpassword.bm.Utilities.hideKeyboard
+import com.sportpassword.bm.databinding.ActivityShowTeachVcBinding
 import com.sportpassword.bm.member
-import kotlinx.android.synthetic.main.activity_show_course_vc.*
-import kotlinx.android.synthetic.main.activity_show_teach_vc.likeButton
-import kotlinx.android.synthetic.main.activity_show_teach_vc.refresh
-import kotlinx.android.synthetic.main.activity_show_teach_vc.tableView
-import kotlinx.android.synthetic.main.mask.*
-import kotlinx.android.synthetic.main.top_view.*
 
 class ShowTeachVC : YouTubeBaseActivity(), YouTubePlayer.OnInitializedListener {
+
+    private lateinit var binding: ActivityShowTeachVcBinding
+    private lateinit var view: ViewGroup
 
     var dataService: DataService = DataService()
     var refreshLayout: SwipeRefreshLayout? = null
@@ -54,14 +52,17 @@ class ShowTeachVC : YouTubeBaseActivity(), YouTubePlayer.OnInitializedListener {
     override fun onCreate(savedInstanceState: Bundle?) {
 
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_show_teach_vc)
+
+        binding = ActivityShowTeachVcBinding.inflate(layoutInflater)
+        view = binding.root
+        setContentView(view)
 
         dataService = TeachService
-        refreshLayout = refresh
+        refreshLayout = binding.refresh
         setRefreshListener()
 
         showAdapter = ShowAdapter(this)
-        tableView.adapter = showAdapter
+        binding.tableView.adapter = showAdapter
 
 //        initAdapter()
 
@@ -75,7 +76,7 @@ class ShowTeachVC : YouTubeBaseActivity(), YouTubePlayer.OnInitializedListener {
 //            "created_at_show" to hashMapOf( "icon" to "calendar","title" to "建立日期","content" to "")
 //        )
         apiKey = getString(R.string.youtube_api_key)
-        youtube.initialize(apiKey, this)
+        binding.youtube.initialize(apiKey, this)
 
         init()
         refresh()
@@ -101,7 +102,7 @@ class ShowTeachVC : YouTubeBaseActivity(), YouTubePlayer.OnInitializedListener {
         showRows.clear()
         if (token != null) {
             runOnUiThread {
-                Loading.show(mask)
+                Loading.show(view)
             }
             val params: HashMap<String, String> = hashMapOf("token" to token!!, "member_token" to member.token!!)
             dataService.getOne(this, params) { success ->
@@ -112,12 +113,12 @@ class ShowTeachVC : YouTubeBaseActivity(), YouTubePlayer.OnInitializedListener {
 
                         if (table!!.name.isNotEmpty()) {
                             runOnUiThread {
-                                topTitleLbl.text = table!!.name
+                                binding.topViewInclude.topTitleLbl.text = table!!.name
                             }
                             //setMyTitle(table!!.name)
                         } else if (table!!.title.isNotEmpty()) {
                             runOnUiThread {
-                                topTitleLbl.text = table!!.title
+                                binding.topViewInclude.topTitleLbl.text = table!!.title
                             }
                             //setMyTitle(table!!.title)
                         }
@@ -137,7 +138,7 @@ class ShowTeachVC : YouTubeBaseActivity(), YouTubePlayer.OnInitializedListener {
                 }
                 runOnUiThread {
                     closeRefresh()
-                    Loading.hide(mask)
+                    Loading.hide(view)
                 }
             }
         }
@@ -235,7 +236,7 @@ class ShowTeachVC : YouTubeBaseActivity(), YouTubePlayer.OnInitializedListener {
         if (isLike) {
             res = R.drawable.like_show1
         }
-        likeButton.setCompoundDrawablesWithIntrinsicBounds(res, 0, 0, 0)
+        binding.likeButton.setCompoundDrawablesWithIntrinsicBounds(res, 0, 0, 0)
     }
 
     private fun setCount() {
@@ -253,7 +254,7 @@ class ShowTeachVC : YouTubeBaseActivity(), YouTubePlayer.OnInitializedListener {
             }
         }
 
-        likeButton.text = "${likeCount.toString()}人"
+        binding.likeButton.text = "${likeCount.toString()}人"
     }
 
     fun likeButtonPressed(view: View) {

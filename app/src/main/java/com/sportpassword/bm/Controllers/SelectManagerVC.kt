@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import android.view.ViewGroup
 import android.widget.LinearLayout
 import com.google.gson.JsonParseException
 import com.sportpassword.bm.Models.MemberTable
@@ -13,10 +14,12 @@ import com.sportpassword.bm.Services.MemberService
 import com.sportpassword.bm.Utilities.Loading
 import com.sportpassword.bm.Utilities.jsonToModel
 import com.sportpassword.bm.Utilities.website
-import kotlinx.android.synthetic.main.activity_select_manager_vc.*
-import kotlinx.android.synthetic.main.mask.*
+import com.sportpassword.bm.databinding.ActivitySelectManagerVcBinding
 
 class SelectManagerVC : SelectVC() {
+
+    private lateinit var binding: ActivitySelectManagerVcBinding
+    private lateinit var view: ViewGroup
 
     var selected: Int = 0
     var manager_id: Int = 0
@@ -27,7 +30,10 @@ class SelectManagerVC : SelectVC() {
     override fun onCreate(savedInstanceState: Bundle?) {
 
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_select_manager_vc)
+
+        binding = ActivitySelectManagerVcBinding.inflate(layoutInflater)
+        view = binding.root
+        setContentView(view)
 
         if (intent.hasExtra("manager_id")) {
             manager_id = intent.getIntExtra("manager_id", 0)
@@ -43,15 +49,15 @@ class SelectManagerVC : SelectVC() {
 
         setMyTitle("管理者")
 
-        clear.setOnClickListener {
-            manager_tokenTF.setText("")
+        binding.clear.setOnClickListener {
+            binding.managerTokenTF.setText("")
         }
 
-        cityBtn.setOnClickListener {
-            if (manager_tokenTF.text.isEmpty()) {
+        binding.cityBtn.setOnClickListener {
+            if (binding.managerTokenTF.text.isEmpty()) {
                 warning("請填管理者金鑰")
             } else {
-                val manager_token: String = manager_tokenTF.text.toString()
+                val manager_token: String = binding.managerTokenTF.text.toString()
                 getMemberOne(manager_token)
             }
         }
@@ -64,8 +70,8 @@ class SelectManagerVC : SelectVC() {
 
         //manager_tokenTF.setText("S86cZ3OKQ65LcDMT4pPpPhP8Zcp6JmF")
 
-        memberStactView.visibility = View.INVISIBLE
-        buttonStactView.visibility = View.INVISIBLE
+        binding.memberStactView.visibility = View.INVISIBLE
+        binding.buttonStactView.visibility = View.INVISIBLE
 
         init()
     }
@@ -78,10 +84,10 @@ class SelectManagerVC : SelectVC() {
     fun getMemberOne(token: String) {
 
         params = hashMapOf("token" to token)
-        Loading.show(mask)
+        Loading.show(view)
         MemberService.getOne(this, params) { success ->
             runOnUiThread {
-                Loading.hide(mask)
+                Loading.hide(view)
             }
             if (success) {
                 var successTable: SuccessTable? = null
@@ -100,12 +106,12 @@ class SelectManagerVC : SelectVC() {
                             runOnUiThread {
                                 manager_id = managerTable!!.id
                                 manager_token = managerTable!!.token
-                                nameLbl.text = managerTable!!.nickname
-                                emailLbl.text = managerTable!!.email
-                                mobileLbl.text = managerTable!!.mobile
+                                binding.nameLbl.text = managerTable!!.nickname
+                                binding.emailLbl.text = managerTable!!.email
+                                binding.mobileLbl.text = managerTable!!.mobile
 
-                                memberStactView.visibility = View.VISIBLE
-                                buttonStactView.visibility = View.VISIBLE
+                                binding.memberStactView.visibility = View.VISIBLE
+                                binding.buttonStactView.visibility = View.VISIBLE
                             }
                         }
                     } else {

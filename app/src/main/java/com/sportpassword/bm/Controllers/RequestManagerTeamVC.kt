@@ -3,6 +3,7 @@ package com.sportpassword.bm.Controllers
 import android.app.Activity
 import android.os.Bundle
 import android.view.View
+import android.view.ViewGroup
 import android.widget.*
 import com.google.gson.JsonParseException
 import com.sportpassword.bm.Models.MemberTable
@@ -13,13 +14,15 @@ import com.sportpassword.bm.Services.TeamService
 import com.sportpassword.bm.Utilities.Loading
 import com.sportpassword.bm.Utilities.jsonToModel
 import com.sportpassword.bm.Utilities.website
+import com.sportpassword.bm.databinding.ActivityRequestManagerTeamVcBinding
 import com.sportpassword.bm.member
-import kotlinx.android.synthetic.main.activity_request_manager_team_vc.*
-import kotlinx.android.synthetic.main.mask.*
 import java.io.File
 
 
 class RequestManagerTeamVC : BaseActivity() {
+
+    private lateinit var binding: ActivityRequestManagerTeamVcBinding
+    private lateinit var view: ViewGroup
 
     lateinit var teamNameTF: EditText
     lateinit var managerTokenTF: EditText
@@ -46,7 +49,10 @@ class RequestManagerTeamVC : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_request_manager_team_vc)
+
+        binding = ActivityRequestManagerTeamVcBinding.inflate(layoutInflater)
+        view = binding.root
+        setContentView(view)
 
         dataService = TeamService
         able_type = "team"
@@ -88,12 +94,12 @@ class RequestManagerTeamVC : BaseActivity() {
 
         initImagePicker(R.layout.image_picker_layer)
         teamImageView1.setOnClickListener {
-            imageView = edit_featured1
+            imageView = binding.editFeatured1
             teamImageIdx = 1
             showImagePickerLayer()
         }
         teamImageView2.setOnClickListener {
-            imageView = edit_featured2
+            imageView = binding.editFeatured2
             teamImageIdx = 2
             showImagePickerLayer()
         }
@@ -135,7 +141,7 @@ class RequestManagerTeamVC : BaseActivity() {
             warning("請填球隊名稱")
         } else {
 
-            Loading.show(mask)
+            Loading.show(view)
             dataService.isNameExist(this, team_name) { success ->
 
                 if (success) {
@@ -161,7 +167,7 @@ class RequestManagerTeamVC : BaseActivity() {
                 }
                 runOnUiThread {
                     closeRefresh()
-                    Loading.hide(mask)
+                    Loading.hide(view)
                 }
             }
         }
@@ -174,7 +180,7 @@ class RequestManagerTeamVC : BaseActivity() {
             warning("請填管理者金鑰")
         } else {
 
-            Loading.show(mask)
+            Loading.show(view)
             MemberService.getOne(this, hashMapOf("token" to manager_token)) { success ->
 
                 if (success) {
@@ -209,7 +215,7 @@ class RequestManagerTeamVC : BaseActivity() {
                 }
                 runOnUiThread {
                     closeRefresh()
-                    Loading.hide(mask)
+                    Loading.hide(view)
                 }
             }
         }
@@ -278,9 +284,9 @@ class RequestManagerTeamVC : BaseActivity() {
             return
         }
 
-        Loading.show(mask)
+        Loading.show(view)
         dataService.requestManager(this, params, images) { success ->
-            Loading.hide(mask)
+            Loading.hide(view)
             if (success) {
                 try {
                     val successTable: SuccessTable? = jsonToModel<SuccessTable>(dataService.jsonString)

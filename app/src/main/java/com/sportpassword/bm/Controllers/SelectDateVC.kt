@@ -4,18 +4,18 @@ import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
-import com.sportpassword.bm.R
+import android.view.ViewGroup
 import com.sportpassword.bm.Utilities.*
-import kotlinx.android.synthetic.main.select_date_vc.*
-import java.util.*
 import android.widget.DatePicker
 
 import android.widget.DatePicker.OnDateChangedListener
-
-
+import com.sportpassword.bm.databinding.SelectDateVcBinding
 
 
 class SelectDateVC : BaseActivity() {
+
+    private lateinit var binding: SelectDateVcBinding
+    private lateinit var view: ViewGroup
 
     lateinit var key: String
     var type: SELECT_DATE_TYPE = SELECT_DATE_TYPE.start
@@ -24,7 +24,10 @@ class SelectDateVC : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.select_date_vc)
+
+        binding = SelectDateVcBinding.inflate(layoutInflater)
+        view = binding.root
+        setContentView(view)
 
         if (intent.hasExtra("key")) {
             key = intent.getStringExtra("key")!!
@@ -64,7 +67,7 @@ class SelectDateVC : BaseActivity() {
         }
 
         val onDateChangeListener = MyOnDateChangeListener(this)
-        datePicker.init(yyyy, MM, dd, onDateChangeListener)
+        binding.datePicker.init(yyyy, MM, dd, onDateChangeListener)
 
 //        datePicker.setOnDateChangedListener { _, yyyy1, MM1, dd1 ->
 //            selected = "" + yyyy1 + "-" + (MM1+1) + "-" + dd1

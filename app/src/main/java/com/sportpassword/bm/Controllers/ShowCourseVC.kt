@@ -1,16 +1,11 @@
 package com.sportpassword.bm.Controllers
 
 import android.app.AlertDialog
-import android.content.Context
-import android.content.Intent
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
-import android.widget.ImageView
 import android.widget.LinearLayout
-import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.google.gson.JsonParseException
 import com.sportpassword.bm.Adapters.ShowAdapter
@@ -21,34 +16,14 @@ import com.sportpassword.bm.Models.*
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.CourseService
 import com.sportpassword.bm.Utilities.*
+import com.sportpassword.bm.databinding.ActivityShowCourseVcBinding
 import com.sportpassword.bm.member
-import kotlinx.android.synthetic.main.activity_show_course_vc.*
-import kotlinx.android.synthetic.main.bottom_view_show.*
-import kotlinx.android.synthetic.main.mask.*
 import org.json.JSONObject
-import kotlin.reflect.full.memberProperties
 
 class ShowCourseVC : ShowVC() {
 
-    //var course_id: Int? = null
-    //var source: String  = "course" //course
-
-//    val coachTableRowKeys:Array<String> = arrayOf(NAME_KEY,MOBILE_KEY,LINE_KEY,FB_KEY,YOUTUBE_KEY,WEBSITE_KEY,EMAIL_KEY)
-//    var coachTableRows: HashMap<String, HashMap<String, String>> = hashMapOf(
-//        NAME_KEY to hashMapOf("icon" to "coach","title" to "教練","content" to "","isPressed" to "true"),
-//        MOBILE_KEY to hashMapOf("icon" to "mobile","title" to "行動電話","content" to "","isPressed" to "true"),
-//        LINE_KEY to hashMapOf("icon" to "lineicon","title" to "line id","content" to "","isPressed" to "false"),
-//        FB_KEY to hashMapOf("icon" to "fb","title" to "fb","content" to "","isPressed" to "true"),
-//        YOUTUBE_KEY to hashMapOf("icon" to "youtube","title" to "youtube","content" to "","isPressed" to "true"),
-//        WEBSITE_KEY to hashMapOf("icon" to "website","title" to "網站","content" to "","isPressed" to "true"),
-//        EMAIL_KEY to hashMapOf("icon" to "email","title" to "郵件","content" to "","isPressed" to "true")
-//    )
-//
-//    val signupTableRowKeys:Array<String> = arrayOf("date", "deadline")
-//    var signupTableRows: HashMap<String, HashMap<String, String>> = hashMapOf(
-//            "date" to hashMapOf("icon" to "calendar","title" to "報名上課日期","content" to "","isPressed" to "false"),
-//            "deadline" to hashMapOf("icon" to "clock","title" to "報名截止時間","content" to "","isPressed" to "false")
-//    )
+    private lateinit var binding: ActivityShowCourseVcBinding
+    private lateinit var view: ViewGroup
 
     var myTable: CourseTable? = null
     var coachTable: CoachTable? = null
@@ -71,11 +46,14 @@ class ShowCourseVC : ShowVC() {
     var course_deadline: String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        setContentView(R.layout.activity_show_course_vc)
+
+        binding = ActivityShowCourseVcBinding.inflate(layoutInflater)
+        view = binding.root
+        setContentView(view)
 
         dataService = CourseService
 
-        refreshLayout = refresh
+        refreshLayout = binding.refresh
         setRefreshListener()
         bottom_button_count = 2
 
@@ -95,10 +73,10 @@ class ShowCourseVC : ShowVC() {
 //        )
 
         courseCoachAdapter = ShowAdapter(this)
-        coachTableView.adapter = courseCoachAdapter
+        binding.coachTableView.adapter = courseCoachAdapter
 
         signupAdapter = SignupAdapter(this, this)
-        signupTableView.adapter = signupAdapter
+        binding.signupTableView.adapter = signupAdapter
 
         init()
         refresh()
@@ -261,13 +239,13 @@ class ShowCourseVC : ShowVC() {
             }
 
             if (myTable!!.isSignup) {
-                signupButton.text = "取消報名"
+                binding.bottomViewShowInclude.signupButton.text = "取消報名"
             } else {
                 val count: Int = myTable!!.signupNormalTables.size
                 if (count >= myTable!!.people_limit) {
-                    signupButton.text = "候補"
+                    binding.bottomViewShowInclude.signupButton.text = "候補"
                 } else {
-                    signupButton.text = "報名"
+                    binding.bottomViewShowInclude.signupButton.text = "報名"
                 }
             }
         }
@@ -279,10 +257,10 @@ class ShowCourseVC : ShowVC() {
         val start_time: String = myTable!!.start_time_show
         val end_time: String = myTable!!.end_time_show
         if (myTable!!.people_limit > 0) {
-            signupDateLbl.text = "下次上課時間：" + date + " " + start_time + " ~ " + end_time
+            binding.signupDateLbl.text = "下次上課時間：" + date + " " + start_time + " ~ " + end_time
         } else {
-            signupDateLbl.text = "未提供報名"
-            signupButton.visibility = View.GONE
+            binding.signupDateLbl.text = "未提供報名"
+            binding.bottomViewShowInclude.signupButton.visibility = View.GONE
         }
 
         signupRows.clear()
@@ -320,9 +298,9 @@ class ShowCourseVC : ShowVC() {
         //canCancelSignup
 
         if (isSignup) {
-            signupButton.text = "取消報名"
+            binding.bottomViewShowInclude.signupButton.text = "取消報名"
         } else {
-            signupButton.text = "報名"
+            binding.bottomViewShowInclude.signupButton.text = "報名"
         }
     }
 
@@ -522,7 +500,7 @@ class ShowCourseVC : ShowVC() {
             val p = parent as RecyclerView
             //println(p.getIDString())
             val id = p.getIDString()
-            if (id == coachTableView.getIDString()) {
+            if (id == binding.coachTableView.getIDString()) {
                 //println(position)
                 val key = coachRows[position].key
                 if (key == NAME_KEY) {
@@ -566,10 +544,10 @@ class ShowCourseVC : ShowVC() {
             warning("請先登入會員")
             return
         }
-        Loading.show(mask)
+        Loading.show(view)
         CourseService.signup_date(this, token!!, member.token!!, myTable!!.dateTable!!.token) { success ->
             runOnUiThread {
-                Loading.hide(mask)
+                Loading.hide(view)
             }
 
             if (success) {
@@ -652,10 +630,10 @@ class ShowCourseVC : ShowVC() {
             warning("請先登入會員")
             return
         }
-        Loading.show(mask)
+        Loading.show(view)
         CourseService.signup(this, token!!, member.token!!, myTable!!.dateTable!!.token) { success ->
             runOnUiThread {
-                Loading.hide(mask)
+                Loading.hide(view)
             }
 
             if (success) {

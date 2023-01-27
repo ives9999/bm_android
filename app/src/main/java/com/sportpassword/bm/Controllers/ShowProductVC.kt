@@ -10,16 +10,20 @@ import com.sportpassword.bm.Models.ProductTable
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.ProductService
 import com.sportpassword.bm.Utilities.*
-import kotlinx.android.synthetic.main.activity_show_product_vc.*
-import kotlinx.android.synthetic.main.activity_show_product_vc.contentView
-import kotlinx.android.synthetic.main.activity_show_product_vc.refresh
+import com.sportpassword.bm.databinding.ActivityShowProductVcBinding
 
 class ShowProductVC: ShowVC() {
+
+    private lateinit var binding: ActivityShowProductVcBinding
+    private lateinit var view: ViewGroup
 
     var myTable: ProductTable? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
+        binding = ActivityShowProductVcBinding.inflate(layoutInflater)
+        view = binding.root
+        setContentView(view)
         setContentView(R.layout.activity_show_product_vc)
 
         bottom_button_count = 2
@@ -27,7 +31,7 @@ class ShowProductVC: ShowVC() {
         super.onCreate(savedInstanceState)
         dataService = ProductService
 
-        refreshLayout = refresh
+        refreshLayout = binding.refresh
         setRefreshListener()
 
         findViewById<Button>(R.id.signupButton) ?. let {
@@ -114,7 +118,7 @@ class ShowProductVC: ShowVC() {
 
     fun setImages() {
         val images: ArrayList<String> = myTable!!.images
-        imageContainerView.showImages(images, this)
+        binding.imageContainerView.showImages(images, this)
     }
 
     fun submitButtonPressed(view: View) {

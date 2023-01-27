@@ -7,8 +7,6 @@ import com.sportpassword.bm.Services.CartService
 import com.sportpassword.bm.Services.OrderService
 import com.sportpassword.bm.Utilities.*
 import com.sportpassword.bm.member
-import kotlinx.android.synthetic.main.activity_order_vc.*
-import kotlinx.android.synthetic.main.mask.*
 import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
 import android.view.*
@@ -22,9 +20,12 @@ import com.sportpassword.bm.Adapters.OneItemAdapter
 import com.sportpassword.bm.Adapters.OneSectionAdapter
 import com.sportpassword.bm.Data.*
 import com.sportpassword.bm.Services.ProductService
-import kotlinx.android.synthetic.main.iconcell.view.*
+import com.sportpassword.bm.databinding.ActivityOrderVcBinding
 
 class OrderVC : MyTableVC() {
+
+    private lateinit var binding: ActivityOrderVcBinding
+    private lateinit var view: ViewGroup
 
     var product_token: String? = null
     var productTable: ProductTable? = null
@@ -86,7 +87,10 @@ class OrderVC : MyTableVC() {
     override fun onCreate(savedInstanceState: Bundle?) {
 
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_order_vc)
+
+        binding = ActivityOrderVcBinding.inflate(layoutInflater)
+        view = binding.root
+        setContentView(view)
 
         setMyTitle("訂單")
 
@@ -96,13 +100,13 @@ class OrderVC : MyTableVC() {
 
         //initAdapter(true)
         dataService = CartService
-        recyclerView = order_list
+        recyclerView = binding.orderList
 
         oneSectionAdapter = OneSectionAdapter(this, R.layout.cell_section, this, hashMapOf())
         oneSectionAdapter.setOneSection(oneSections)
         recyclerView.adapter = oneSectionAdapter
 
-        refreshLayout = refresh
+        refreshLayout = binding.refresh
         setRefreshListener()
         setBottomButtonPadding()
 
@@ -161,7 +165,7 @@ class OrderVC : MyTableVC() {
     }
 
     override fun getDataStart(_page: Int, _perPage: Int, token: String?) {
-        Loading.show(mask)
+        Loading.show(view)
         loading = true
 
         //單一品項購買，沒有使用購物車，直接結帳
@@ -203,7 +207,7 @@ class OrderVC : MyTableVC() {
         }
 //        mask?.let { mask?.dismiss() }
         runOnUiThread {
-            Loading.hide(mask)
+            Loading.hide(view)
         }
         loading = false
         refreshLayout!!.isRefreshing = false
@@ -587,7 +591,7 @@ class OrderVC : MyTableVC() {
                 row.value = "company"
                 section.items.addAll(invoiceCompanyRows)
             }
-            top.unmask()
+            view.unmask()
             oneSectionAdapter.notifyItemChanged(sectionIdx)
         }
     }
@@ -652,7 +656,7 @@ class OrderVC : MyTableVC() {
 
     fun submitButtonPressed(view: View) {
 
-        Loading.show(mask)
+        Loading.show(view)
         val params: HashMap<String, String> = hashMapOf()
         params["device"] = "app"
         params["do"] = "update"
@@ -723,7 +727,7 @@ class OrderVC : MyTableVC() {
 
         OrderService.update(this, params) { success ->
             runOnUiThread {
-                Loading.hide(mask)
+                Loading.hide(view)
             }
             if (success) {
                 if (OrderService.jsonString.isNotEmpty()) {

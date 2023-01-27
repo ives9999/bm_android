@@ -12,7 +12,7 @@ import com.onesignal.OSPermissionObserver
 import com.onesignal.OSPermissionStateChanges
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Utilities.*
-import kotlinx.android.synthetic.main.activity_show_pnvc.*
+import com.sportpassword.bm.databinding.ActivityShowPnvcBinding
 import me.leolin.shortcutbadger.ShortcutBadger
 import org.json.JSONArray
 import org.json.JSONObject
@@ -20,12 +20,19 @@ import java.lang.Exception
 
 class ShowPNVC : MyTableVC(), OSPermissionObserver {
 
+    private lateinit var binding: ActivityShowPnvcBinding
+    private lateinit var view: ViewGroup
+
     var pnArr: JSONArray = JSONArray()
     var isReceive: Boolean = false
     lateinit var thisAdapter: PNAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        binding = ActivityShowPnvcBinding.inflate(layoutInflater)
+        view = binding.root
+        setContentView(view)
         setContentView(R.layout.activity_show_pnvc)
         setMyTitle("推播訊息")
 
@@ -55,14 +62,14 @@ class ShowPNVC : MyTableVC(), OSPermissionObserver {
 //        //println("hasPrompt status is $hasPrompt")
 //        setupSwitch.isChecked = isReceive
 
-        setupSwitch.setOnCheckedChangeListener { compoundButton, b ->
+        binding.setupSwitch.setOnCheckedChangeListener { compoundButton, b ->
             //println(b)
             warning("必須透過設定來開啟或關閉是否接收推播功能，無法直接由此處才開啟或關閉接收推播訊息")
         }
 
         getArr()
-        recyclerView = pn_list
-        refreshLayout = showpnvc_refresh
+        recyclerView = binding.pnList
+        refreshLayout = binding.showpnvcRefresh
         setRefreshListener()
 
         //initAdapter()
@@ -106,9 +113,9 @@ class ShowPNVC : MyTableVC(), OSPermissionObserver {
         thisAdapter.rows = pnArr
 //        var items = arrayListOf<Item>()
         if (pnArr.length() == 0 ) {
-            pn_empty.visibility = View.VISIBLE
+            binding.pnEmpty.visibility = View.VISIBLE
         } else {
-            pn_empty.visibility = View.GONE
+            binding.pnEmpty.visibility = View.GONE
 //            items = generateItems()
         }
         //adapter.update(items)

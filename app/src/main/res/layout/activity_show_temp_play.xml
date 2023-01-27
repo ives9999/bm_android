@@ -109,7 +109,7 @@
                         android:textSize="21dp" />
 
                     <TextView
-                        android:id="@+id/show_fee_M"
+                        android:id="@+id/showFeeM"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/show_signup"
@@ -120,10 +120,10 @@
                         android:textSize="21dp" />
 
                     <TextView
-                        android:id="@+id/show_fee_Ｆ"
+                        android:id="@+id/showFeeF"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_below="@+id/show_fee_M"
+                        android:layout_below="@+id/showFeeM"
                         android:layout_marginLeft="8dp"
                         android:layout_marginTop="12dp"
                         android:text="臨打費用：女："

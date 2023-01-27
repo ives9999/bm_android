@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.FrameLayout
 import com.google.gson.Gson
 import com.google.gson.JsonParseException
 import com.sportpassword.bm.Adapters.OneItemAdapter
@@ -15,12 +16,14 @@ import com.sportpassword.bm.Models.*
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.OrderService
 import com.sportpassword.bm.Utilities.*
+import com.sportpassword.bm.databinding.ActivityPaymentVcBinding
 import com.sportpassword.bm.member
-import kotlinx.android.synthetic.main.activity_payment_vc.*
-import kotlinx.android.synthetic.main.mask.*
 import tw.com.ecpay.paymentgatewaykit.manager.*
 
 class PaymentVC : MyTableVC() {
+
+    private lateinit var binding: ActivityPaymentVcBinding
+    private lateinit var view: ViewGroup
 
     var ecpay_token: String = ""
     var order_token: String = ""
@@ -56,7 +59,10 @@ class PaymentVC : MyTableVC() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_payment_vc)
+
+        binding = ActivityPaymentVcBinding.inflate(layoutInflater)
+        view = binding.root
+        setContentView(view)
 
         if (intent.hasExtra("ecpay_token")) {
             ecpay_token = intent.getStringExtra("ecpay_token")!!
@@ -76,9 +82,12 @@ class PaymentVC : MyTableVC() {
         setMyTitle(title)
 
         dataService = OrderService
-        recyclerView = payment_list
+        recyclerView = binding.paymentList
 //        refreshLayout = refresh
-        maskView = mask
+
+        findViewById<FrameLayout>(R.id.mask) ?. let { mask ->
+            maskView = mask
+        }
         setRefreshListener()
 
         oneSectionAdapter = OneSectionAdapter(this, R.layout.cell_section, this, hashMapOf("product_icon_view" to "false"))
@@ -154,7 +163,7 @@ class PaymentVC : MyTableVC() {
 
     override fun refresh() {
         runOnUiThread {
-            Loading.show(mask)
+            Loading.show(view)
         }
         val params: HashMap<String, String> = hashMapOf("token" to order_token, "member_token" to member.token!!)
         dataService.getOne(this, params) { success ->
@@ -168,7 +177,7 @@ class PaymentVC : MyTableVC() {
             }
             closeRefresh()
             runOnUiThread {
-                Loading.hide(mask)
+                Loading.hide(view)
             }
         }
     }
@@ -689,10 +698,10 @@ class PaymentVC : MyTableVC() {
 
     fun backBtnPressed() {
         if (order_token.isNotEmpty()) {
-            Loading.show(mask)
+            Loading.show(view)
             OrderService.ezshipReturnCode(this, order_token) { success ->
                 runOnUiThread {
-                    Loading.hide(mask)
+                    Loading.hide(view)
                     try {
                         val successTable: BackResTable = Gson().fromJson<BackResTable>(
                             OrderService.jsonString,
