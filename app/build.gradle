@@ -12,7 +12,8 @@ plugins {
     id 'com.onesignal.androidsdk.onesignal-gradle-plugin'
     id 'com.android.application'
     id 'kotlin-android'
-    id 'kotlin-android-extensions'
+    //id 'kotlin-android-extensions'
+    id 'org.jetbrains.kotlin.android'
 }
 
 //repositories {
@@ -78,9 +79,9 @@ android {
     //////////////////////
 
     //this is for groupie view binding
-    androidExtensions {
-        experimental = true
-    }
+//    androidExtensions {
+//        experimental = true
+//    }
     lint {
         abortOnError false
         checkReleaseBuilds false
@@ -100,7 +101,7 @@ dependencies {
     implementation "org.jetbrains.anko:anko-commons:0.10.8"
     //implementation "org.jetbrains.anko:anko-design:$anko_version"
     implementation 'androidx.appcompat:appcompat:1.6.0'
-    implementation "com.google.android.material:material:1.7.0"
+    implementation "com.google.android.material:material:1.8.0"
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'androidx.multidex:multidex:2.0.1'
@@ -127,6 +128,7 @@ dependencies {
     //    }
     //    implementation project(':vimeo-networking')
     implementation 'com.beust:klaxon:3.0.1'
+    implementation 'androidx.core:core-ktx:1.9.0'
 //    implementation 'com.github.lisawray.groupie:groupie:2.9.0'
     //implementation 'com.github.lisawray.groupie:groupie-viewbinding:2.9.0'
 //    implementation "com.github.lisawray.groupie:groupie-kotlin-android-extensions:2.9.0"
@@ -147,7 +149,7 @@ dependencies {
 
     // view pager 2
     implementation "androidx.viewpager2:viewpager2:1.0.0"
-    implementation 'com.google.android.material:material:1.8.0-rc01'
+    implementation 'com.google.android.material:material:1.9.0-alpha01'
 
     //for ecpay
     implementation "tw.com.ecpay.paymentgatewaykit:ECPayPaymentGatewayKit:1.0.3"

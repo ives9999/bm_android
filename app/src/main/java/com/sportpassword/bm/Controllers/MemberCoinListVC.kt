@@ -20,13 +20,16 @@ import com.sportpassword.bm.Models.Tables2
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.MemberService
 import com.sportpassword.bm.Utilities.*
+import com.sportpassword.bm.databinding.ActivityBlackListVcBinding
+import com.sportpassword.bm.databinding.ActivityMemberCoinListVcBinding
+import com.sportpassword.bm.databinding.MytablevcBinding
 import com.sportpassword.bm.member
-import kotlinx.android.synthetic.main.activity_member_coin_list_vc.*
-import kotlinx.android.synthetic.main.coin_list_cell.view.*
-import kotlinx.android.synthetic.main.mask.*
 import java.lang.reflect.Type
 
 class MemberCoinListVC: BaseActivity(), MyTable2IF {
+
+    private lateinit var binding: ActivityMemberCoinListVcBinding
+    private lateinit var view: ViewGroup
 
     //lateinit var tableAdapter: MemberCoinAdapter
     var coinResultTable: CoinResultTable? = null
@@ -43,7 +46,10 @@ class MemberCoinListVC: BaseActivity(), MyTable2IF {
         dataService = MemberService
 
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_member_coin_list_vc)
+
+        binding = ActivityMemberCoinListVcBinding.inflate(layoutInflater)
+        view = binding.root
+        setContentView(view)
 
         setMyTitle("解碼點數")
 
@@ -76,12 +82,12 @@ class MemberCoinListVC: BaseActivity(), MyTable2IF {
     }
 
     private fun getDataFromServer(page: Int) {
-        Loading.show(mask)
+        Loading.show(view)
         loading = true
 
         MemberService.coinlist(this, member.token!!, page, tableView.perPage) { success ->
             runOnUiThread {
-                Loading.hide(mask)
+                Loading.hide(view)
 
                 //MyTable2IF
                 val b: Boolean = showTableView(tableView, MemberService.jsonString)
@@ -98,12 +104,12 @@ class MemberCoinListVC: BaseActivity(), MyTable2IF {
     }
 
     fun getDataFromServer() {
-        Loading.show(mask)
+        Loading.show(view)
         loading = true
 
         MemberService.coinlist(this, member.token!!, tableView.page, tableView.perPage) { success ->
             runOnUiThread {
-                Loading.hide(mask)
+                Loading.hide(view)
 
                 //MyTable2IF
                 val b: Boolean = showTableView(tableView, MemberService.jsonString)
@@ -245,11 +251,11 @@ class MemberCoinListVC: BaseActivity(), MyTable2IF {
         }
 
         if (msg.isEmpty()) {
-            Loading.show(mask)
+            Loading.show(view)
             loading = true
 
             MemberService.coinReturn(this, member.token!!) { success ->
-                Loading.hide(mask)
+                Loading.hide(view)
                 jsonString = MemberService.jsonString
                 if (success) {
                     if (jsonString != null && jsonString!!.isNotEmpty()) {
@@ -319,14 +325,14 @@ class MemberCoinViewHolder(
     delegate: MemberCoinListVC
 ): MyViewHolder2<MemberCoinTable, MemberCoinListVC>(context, view, delegate) {
 
-    val noLbl: TextView = view.noTV
-    val able_typeLbl: TextView = view.able_typeLbl
-    val dateLbl: TextView = view.dateLbl
-    val priceSignLbl: TextView = view.priceSignLbl
-    val priceLbl: TextView = view.priceLbl
-    val balanceSignLbl: TextView = view.balanceSignLbl
-    val balanceLbl: TextView = view.balanceLbl
-    val typeButton: Button = view.typeButton
+    val noLbl: TextView = view.findViewById(R.id.noTV)
+    val able_typeLbl: TextView = view.findViewById(R.id.able_typeLbl)
+    val dateLbl: TextView = view.findViewById(R.id.dateLbl)
+    val priceSignLbl: TextView = view.findViewById(R.id.priceSignLbl)
+    val priceLbl: TextView = view.findViewById(R.id.priceLbl)
+    val balanceSignLbl: TextView = view.findViewById(R.id.balanceSignLbl)
+    val balanceLbl: TextView = view.findViewById(R.id.balanceLbl)
+    val typeButton: Button = view.findViewById(R.id.typeButton)
 
     //_row is cartTable
     override fun bind(row: MemberCoinTable, idx: Int) {

@@ -7,29 +7,21 @@ import org.jetbrains.anko.sdk27.coroutines.onClick
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView.Recycler
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.sportpassword.bm.Adapters.OneSectionAdapter
 import com.sportpassword.bm.Models.*
 import com.sportpassword.bm.Utilities.*
+import com.sportpassword.bm.databinding.ActivityBlackListVcBinding
 import com.sportpassword.bm.member
-import kotlinx.android.synthetic.main.activity_edit_course_vc.*
-import kotlinx.android.synthetic.main.edit_vc.edit_featured
-import kotlinx.android.synthetic.main.edit_vc.featured_text
 import java.io.File
-import kotlinx.android.synthetic.main.mask.*
 
 open class EditVC : MyTableVC() {
 
-//    override val ACTION_PHOTO_REQUEST_CODE = 200
-//    override val activity = this
-//    override val context = this
-//    lateinit override var imagePickerLayer: AlertDialog
-//    lateinit override var alertView: View
-//    override var currentPhotoPath = ""
-//    override var filePath: String = ""
-//    override var file: File? = null
-//    lateinit override var imageView: ImageView
+    private lateinit var binding: ActivityBlackListVcBinding
+    private lateinit var view: ViewGroup
 
-//    val SELECT_REQUEST_CODE = 1
     var token: String = ""
     var title: String = ""
 
@@ -96,8 +88,13 @@ open class EditVC : MyTableVC() {
         }
 
 //        sections = model.sections
-        recyclerView = editTableView
-        refreshLayout = refresh
+        findViewById<RecyclerView>(R.id.editTableView) ?. let {
+            recyclerView = it
+        }
+
+        findViewById<SwipeRefreshLayout>(R.id.refresh) ?. let {
+            refreshLayout = it
+        }
 
         //move to MyTableVC的 init()
 //        setRefreshListener()
@@ -159,8 +156,8 @@ open class EditVC : MyTableVC() {
     open fun initData() {}
 
     override fun refresh() {
-        Loading.show(mask)
-        val params: HashMap<String, String> = hashMapOf("token" to token!!)
+        Loading.show(view)
+        val params: HashMap<String, String> = hashMapOf("token" to token)
         dataService.getOne(this, params) { success ->
             if (success) {
                 genericTable()
@@ -177,17 +174,20 @@ open class EditVC : MyTableVC() {
                 closeRefresh()
             }
             runOnUiThread {
-                Loading.hide(mask)
+                Loading.hide(view)
             }
         }
     }
 
     fun initFeatured() {
-        if (table != null) {
-            if (table!!.featured_path.count() > 0) {
-                table!!.featured_path.image(this, edit_featured)
+
+        findViewById<ImageView>(R.id.edit_featured) ?. let {
+            if (table != null) {
+                if (table!!.featured_path.count() > 0) {
+                    table!!.featured_path.image(this, it)
 //            val featured: String = myTable!!.featured_path
 //            setImage(null, featured)
+                }
             }
         }
     }
@@ -276,37 +276,51 @@ open class EditVC : MyTableVC() {
 //    }
 
     override fun setImage(newFile: File?, url: String?) {
-        featured_text.visibility = View.INVISIBLE
-        val layoutParams = edit_featured.layoutParams as RelativeLayout.LayoutParams
-        layoutParams.width = LinearLayout.LayoutParams.MATCH_PARENT
-        layoutParams.height = LinearLayout.LayoutParams.MATCH_PARENT
-        layoutParams.setMargins(0, 0, 0, 0)
-        imageView.layoutParams = layoutParams
-        isFeaturedChange = true
-        super.setImage(newFile, url)
+
+        findViewById<TextView>(R.id.featured_text) ?. let {
+            it.visibility = View.INVISIBLE
+        }
+
+        findViewById<ImageView>(R.id.edit_featured) ?. let {
+            val layoutParams = it.layoutParams as RelativeLayout.LayoutParams
+            layoutParams.width = LinearLayout.LayoutParams.MATCH_PARENT
+            layoutParams.height = LinearLayout.LayoutParams.MATCH_PARENT
+            layoutParams.setMargins(0, 0, 0, 0)
+            imageView.layoutParams = layoutParams
+            isFeaturedChange = true
+            super.setImage(newFile, url)
+        }
     }
 
     override fun removeImage() {
-        featured_text.visibility = View.VISIBLE
-        val layoutParams = edit_featured.layoutParams as LinearLayout.LayoutParams
-        layoutParams.width = originW
-        layoutParams.height = originH
-        layoutParams.setMargins(0, originMarginTop, 0, originMarginBottom)
-        imageView.layoutParams = layoutParams
-        imageView.scaleType = originScaleType
-        isFeaturedChange = true
-        super.removeImage()
-        closeImagePickerLayer()
+
+        findViewById<TextView>(R.id.featured_text) ?. let {
+            it.visibility = View.VISIBLE
+        }
+
+        findViewById<ImageView>(R.id.edit_featured) ?. let {
+            val layoutParams = it.layoutParams as LinearLayout.LayoutParams
+            layoutParams.width = originW
+            layoutParams.height = originH
+            layoutParams.setMargins(0, originMarginTop, 0, originMarginBottom)
+            imageView.layoutParams = layoutParams
+            imageView.scaleType = originScaleType
+            isFeaturedChange = true
+            super.removeImage()
+            closeImagePickerLayer()
+        }
     }
 
     private fun getImageViewParams() {
-        val l = edit_featured.layoutParams as RelativeLayout.LayoutParams
-        originW = l.width
-        originH = l.height
-        originScaleType = edit_featured.scaleType
-        //val m = edit_featured.
-        originMarginTop = l.topMargin
-        originMarginBottom = l.bottomMargin
+        findViewById<ImageView>(R.id.edit_featured) ?. let {
+            val l = it.layoutParams as RelativeLayout.LayoutParams
+            originW = l.width
+            originH = l.height
+            originScaleType = it.scaleType
+            //val m = edit_featured.
+            originMarginTop = l.topMargin
+            originMarginBottom = l.bottomMargin
+        }
     }
 
     open fun submitValidate() {}
@@ -338,7 +352,7 @@ open class EditVC : MyTableVC() {
         if (msg.isNotEmpty()) {
             warning(msg)
         } else {
-            Loading.show(mask)
+            Loading.show(view)
             //val params: HashMap<String, String> = hashMapOf()
             for (section in oneSections) {
                 for (row in section.items) {
@@ -363,7 +377,7 @@ open class EditVC : MyTableVC() {
             //println(params)
 
             dataService.update(this, params, filePath) { success ->
-                Loading.hide(mask)
+                Loading.hide(view)
                 if (success) {
                     if (dataService.success) {
                         runOnUiThread {

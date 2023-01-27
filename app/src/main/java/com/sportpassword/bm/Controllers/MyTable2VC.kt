@@ -11,15 +11,9 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.sportpassword.bm.Models.Table
 import com.sportpassword.bm.Models.Tables2
 import com.sportpassword.bm.R
-import com.sportpassword.bm.Services.MemberService
-import com.sportpassword.bm.Utilities.Loading
 import com.sportpassword.bm.Utilities.PERPAGE
 import com.sportpassword.bm.Utilities.jsonToModels2
-import com.sportpassword.bm.Utilities.setInfo
 import com.sportpassword.bm.Views.EndlessRecyclerViewScrollListener
-import com.sportpassword.bm.member
-import kotlinx.android.synthetic.main.cell_section.*
-import kotlinx.android.synthetic.main.mask.*
 import org.jetbrains.anko.backgroundColor
 import java.lang.reflect.Type
 

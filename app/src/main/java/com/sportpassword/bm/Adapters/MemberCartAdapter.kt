@@ -3,6 +3,7 @@ package com.sportpassword.bm.Adapters
 import android.content.Context
 import android.view.View
 import android.widget.ImageView
+import android.widget.RelativeLayout
 import android.widget.TextView
 import com.sportpassword.bm.Controllers.List1CellDelegate
 import com.sportpassword.bm.Models.CartItemTable
@@ -10,7 +11,6 @@ import com.sportpassword.bm.Models.ProductTable
 import com.sportpassword.bm.Models.Table
 import com.sportpassword.bm.R
 import com.squareup.picasso.Picasso
-import kotlinx.android.synthetic.main.cart_list_cell.view.*
 
 class MemberCartAdapter(resource: Int, list1CellDelegate: List1CellDelegate?): MyAdapter<MemberCartViewHolder>(resource, ::MemberCartViewHolder, list1CellDelegate) {
 
@@ -24,11 +24,11 @@ class MemberCartAdapter(resource: Int, list1CellDelegate: List1CellDelegate?): M
 
 class MemberCartViewHolder(context: Context, viewHolder: View, list1CellDelegate: List1CellDelegate? = null): MyViewHolder(context, viewHolder, list1CellDelegate) {
 
-    val title: TextView = viewHolder.titleLbl
-    val featured_path: ImageView = viewHolder.listFeatured
-    val attribute: TextView = viewHolder.attributeLbl
-    val amount: TextView = viewHolder.amountLbl
-    val quantity: TextView = viewHolder.quantityLbl
+//    val title: TextView = viewHolder.titleLbl
+//    val featured_path: ImageView = viewHolder.listFeatured
+//    val attribute: TextView = viewHolder.attributeLbl
+//    val amount: TextView = viewHolder.amountLbl
+//    val quantity: TextView = viewHolder.quantityLbl
 
     //_row is cartTable
     override fun bind(row: Table, idx: Int) {
@@ -55,24 +55,42 @@ class MemberCartViewHolder(context: Context, viewHolder: View, list1CellDelegate
                 }
             }
         }
-        attribute.text = attribute_text
-        amount.text = row.amount_show
-        quantity.text = "數量：${row.quantity}"
+
+        viewHolder.findViewById<TextView>(R.id.attributeLbl) ?. let {
+            it.text = attribute_text
+        }
+
+        viewHolder.findViewById<TextView>(R.id.amountLbl) ?. let {
+            it.text = row.amount_show
+        }
+
+        viewHolder.findViewById<TextView>(R.id.quantityLbl) ?. let {
+            it.text = "數量：${row.quantity}"
+        }
 
         if (list1CellDelegate != null) {
-            refreshIcon?.setOnClickListener {
-                list1CellDelegate.cellRefresh()
+
+            viewHolder.findViewById<ImageView>(R.id.refreshIcon) ?. let {
+                it.setOnClickListener {
+                    list1CellDelegate.cellRefresh()
+                }
             }
 
-            viewHolder.editIcon.setOnClickListener {
-                list1CellDelegate.cellEdit(row)
+            viewHolder.findViewById<ImageView>(R.id.editIcon) ?. let {
+                it.setOnClickListener {
+                    list1CellDelegate.cellEdit(row)
+                }
             }
 
-            viewHolder.deleteIcon.setOnClickListener {
-                list1CellDelegate.cellDelete(row)
+            viewHolder.findViewById<ImageView>(R.id.deleteIcon) ?. let {
+                it.setOnClickListener {
+                    list1CellDelegate.cellDelete(row)
+                }
             }
         } else {
-            viewHolder.iconView.visibility = View.GONE
+            viewHolder.findViewById<RelativeLayout>(R.id.iconView) ?. let {
+                it.visibility = View.GONE
+            }
         }
     }
 }

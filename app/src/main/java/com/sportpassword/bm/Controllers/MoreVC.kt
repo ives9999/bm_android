@@ -1,18 +1,20 @@
 package com.sportpassword.bm.Controllers
 
+import android.app.Activity
 import android.app.AlertDialog
 import android.content.Intent
 import android.os.Bundle
+import android.view.ViewGroup
 import androidx.core.content.pm.PackageInfoCompat
 import com.sportpassword.bm.Adapters.MoreAdapter
 import com.sportpassword.bm.Data.MoreRow
 import com.sportpassword.bm.R
-import kotlinx.android.synthetic.main.bottom_view.*
-import kotlinx.android.synthetic.main.tab_course.*
-import kotlinx.android.synthetic.main.top_view.*
-import org.jetbrains.anko.backgroundColor
+import com.sportpassword.bm.databinding.ActivityMoreVcBinding
 
 open class MoreVC : MyTableVC() {
+
+    private lateinit var binding: ActivityMoreVcBinding
+    private lateinit var view: ViewGroup
 
     lateinit var tableAdapter: MoreAdapter
     var moreRows: ArrayList<MoreRow> = arrayListOf()
@@ -49,12 +51,16 @@ open class MoreVC : MyTableVC() {
         able_type = "more"
 
         super.onCreate(savedInstanceState)
+
+        binding = ActivityMoreVcBinding.inflate(layoutInflater)
+        view = binding.root
+        setContentView(view)
         setContentView(R.layout.activity_more_vc)
 
         setBottomTabFocus()
-        topTitleLbl.setText("更多")
+        binding.topInclude.topTitleLbl.setText("更多")
 
-        recyclerView = list_container
+        recyclerView = binding.listContainer
         recyclerView.setHasFixedSize(true)
         setRecyclerViewScrollListener()
 

@@ -28,15 +28,7 @@ import com.sportpassword.bm.R
 import com.sportpassword.bm.Utilities.*
 import com.sportpassword.bm.Views.Tag
 import com.squareup.picasso.Picasso
-import kotlinx.android.synthetic.main.cart_list_cell.view.*
-import kotlinx.android.synthetic.main.formitem_more.view.*
-import kotlinx.android.synthetic.main.formitem_number.view.*
-import kotlinx.android.synthetic.main.formitem_number.view.title
-import kotlinx.android.synthetic.main.formitem_radio.view.*
-import kotlinx.android.synthetic.main.formitem_tag.view.*
-import kotlinx.android.synthetic.main.tag.view.*
 import org.jetbrains.anko.backgroundColor
-import org.jetbrains.anko.textColor
 import java.lang.IllegalArgumentException
 
 class OneSectionAdapter(val context: Context, private val resource: Int, var delegate: List1CellDelegate, val others: HashMap<String, String>): RecyclerView.Adapter<OneSectionViewHolder>() {
@@ -393,8 +385,9 @@ class OneItemAdapter(val context: Context, private val sectionIdx: Int, private 
 
 class PlainViewHolder(val viewHolder: View): RecyclerView.ViewHolder(viewHolder) {
 
-    val title: TextView = viewHolder.title
-    val show: TextView = viewHolder.detail
+
+    val title: TextView = viewHolder.findViewById(R.id.title)
+    val show: TextView = viewHolder.findViewById(R.id.detail)
 }
 
 class TextFieldViewHolder(val viewHolder: View): RecyclerView.ViewHolder(viewHolder) {
@@ -409,8 +402,8 @@ class TextFieldViewHolder(val viewHolder: View): RecyclerView.ViewHolder(viewHol
 
 class TagViewHolder(val viewHolder: View): RecyclerView.ViewHolder(viewHolder) {
 
-    val title: TextView = viewHolder.title
-    val tag_container: TableLayout = viewHolder.tag_container
+    val title: TextView = viewHolder.findViewById(R.id.title)
+    val tag_container: TableLayout = viewHolder.findViewById(R.id.tag_container)
     val tagLabels: ArrayList<Tag> = arrayListOf()
 
     fun generateTag(context: Context, value: String, show: String): ArrayList<Tag> {
@@ -447,7 +440,10 @@ class TagViewHolder(val viewHolder: View): RecyclerView.ViewHolder(viewHolder) {
             tag.tag = idx
             tag.key = attribute
             tag.value = attribute
-            tag.tag_view.text = attribute
+
+            tag.findViewById<TextView>(R.id.tag_view) ?. let {
+                it.text = attribute
+            }
 
             tagLabels.add(tag)
 
@@ -483,10 +479,10 @@ class TagViewHolder(val viewHolder: View): RecyclerView.ViewHolder(viewHolder) {
 
 class NumberViewHolder(val viewHolder: View): RecyclerView.ViewHolder(viewHolder) {
 
-    val title: TextView = viewHolder.title
-    val minus: Button = viewHolder.minus
-    val plus: Button = viewHolder.plus
-    var numberLbl: TextView = viewHolder.numberLbl
+    val title: TextView = viewHolder.findViewById(R.id.title)
+    val minus: Button = viewHolder.findViewById(R.id.minus)
+    val plus: Button = viewHolder.findViewById(R.id.plus)
+    var numberLbl: TextView = viewHolder.findViewById(R.id.numberLbl)
 
     var value: Int = 1
     var show: String = ""
@@ -540,11 +536,11 @@ class NumberViewHolder(val viewHolder: View): RecyclerView.ViewHolder(viewHolder
 
 class CartViewHolder(val viewHolder: View): RecyclerView.ViewHolder(viewHolder) {
 
-    val title: TextView = viewHolder.titleLbl
-    val featured: ImageView = viewHolder.listFeatured
-    val attribute: TextView = viewHolder.attributeLbl
-    val amount: TextView = viewHolder.amountLbl
-    val quantity: TextView = viewHolder.quantityLbl
+    val title: TextView = viewHolder.findViewById(R.id.title)
+    val featured: ImageView = viewHolder.findViewById(R.id.listFeatured)
+    val attribute: TextView = viewHolder.findViewById(R.id.attributeLbl)
+    val amount: TextView = viewHolder.findViewById(R.id.amountLbl)
+    val quantity: TextView = viewHolder.findViewById(R.id.quantityLbl)
 
     val iconView: RelativeLayout = viewHolder.findViewById(R.id.iconView)
     val editIcon: ImageView = viewHolder.findViewById(R.id.editIcon)
@@ -569,7 +565,9 @@ class RadioViewHolder(val viewHolder: View): RecyclerView.ViewHolder(viewHolder)
             )
         )
 
-        viewHolder.radioContainer.removeAllViews()
+        viewHolder.findViewById<LinearLayout>(R.id.radioContainer) ?. let {
+            it.removeAllViews()
+        }
 
         val lp = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT)
         lp.setMargins(18, 24, 0, 24)
@@ -607,23 +605,25 @@ class RadioViewHolder(val viewHolder: View): RecyclerView.ViewHolder(viewHolder)
             radioButtons.add(radioButton)
         }
 
-        viewHolder.radioContainer.addView(group)
+        viewHolder.findViewById<LinearLayout>(R.id.radioContainer) ?. let {
+            it.addView(group)
+        }
 
         return group
     }
 }
 
 class MoreViewHolder(val viewHolder: View): RecyclerView.ViewHolder(viewHolder) {
-    val title: TextView = viewHolder.title
-    val show: TextView = viewHolder.detail
-    val prompt: ImageView = viewHolder.promptBtn
+    val title: TextView = viewHolder.findViewById(R.id.title)
+    val show: TextView = viewHolder.findViewById(R.id.detail)
+    val prompt: ImageView = viewHolder.findViewById(R.id.promptBtn)
 
     val required: ImageView = viewHolder.findViewById(R.id.required)
-    val clear: ImageView = viewHolder.clear
+    val clear: ImageView = viewHolder.findViewById(R.id.clear)
 }
 
 class BarcodeViewHolder(val viewHolder: View): RecyclerView.ViewHolder(viewHolder) {
-    val title: TextView = viewHolder.title
+    val title: TextView = viewHolder.findViewById(R.id.title)
     val barcode: ImageView = viewHolder.findViewById(R.id.barcode)
 
     fun createBarcodeBitmap(value: String, @ColorInt barcodeColor: Int, @ColorInt backgroundColor: Int, width: Int, height: Int): Bitmap {

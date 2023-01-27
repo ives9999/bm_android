@@ -1,27 +1,28 @@
 package com.sportpassword.bm.Controllers
 
+import android.app.Activity
 import android.content.Context
 import android.os.Bundle
 import android.view.View
+import android.view.ViewGroup
+import android.widget.FrameLayout
 import com.sportpassword.bm.Models.CourseTable
 import com.sportpassword.bm.Models.CoursesTable
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.CourseService
 import com.sportpassword.bm.Services.MemberService
 import com.sportpassword.bm.Utilities.*
+import com.sportpassword.bm.databinding.ActivityCourseVcBinding
+import com.sportpassword.bm.databinding.TabCourseCalendarBinding
 import com.sportpassword.bm.member
-import kotlinx.android.synthetic.main.course_calendar_item.*
-import kotlinx.android.synthetic.main.mask.*
-import kotlinx.android.synthetic.main.tab_course.*
 import java.util.*
-import kotlin.collections.ArrayList
-import kotlinx.android.synthetic.main.tab_course.list_container
-import kotlinx.android.synthetic.main.tab_course.tab_refresh
-import kotlinx.android.synthetic.main.tab_course_calendar.*
 import kotlin.collections.HashMap
 import org.jetbrains.anko.*
 
 class CourseCalendarVC: MyTableVC() {
+
+    private lateinit var binding: TabCourseCalendarBinding
+    private lateinit var view: ViewGroup
 
     var superCourses: CoursesTable? = null
 
@@ -32,21 +33,27 @@ class CourseCalendarVC: MyTableVC() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.tab_course_calendar)
+
+        binding = TabCourseCalendarBinding.inflate(layoutInflater)
+        view = binding.root
+        setContentView(view)
 
         val title = "會員報名課程列表"
         setMyTitle(title)
 
-        year.text = y.toString()
-        month.text = m.toString()
-        year_month.text = "$y-$m"
+        binding.year.text = y.toString()
+        binding.month.text = m.toString()
+        binding.yearMonth.text = "$y-$m"
 
         dataService = CourseService
         calendarParams = makeCalendar()
 
-        recyclerView = list_container
-        refreshLayout = tab_refresh
-        maskView = mask
+        recyclerView = binding.listContainer
+        refreshLayout = binding.tabRefresh
+
+        view.findViewById<FrameLayout>(R.id.mask) ?. let { mask ->
+            maskView = mask
+        }
 
 //        initAdapter()
         recyclerView.setHasFixedSize(true)
@@ -169,8 +176,8 @@ class CourseCalendarVC: MyTableVC() {
         }
         selector("選擇月份", years.toList(), { dialogInterface, i ->
             y = years[i].toInt()
-            year.text = y.toString()
-            year_month.text = "$y-$m"
+            binding.year.text = y.toString()
+            binding.yearMonth.text = "$y-$m"
         })
 
 
@@ -202,8 +209,8 @@ class CourseCalendarVC: MyTableVC() {
         }
         selector("選擇年份", months.toList(), { dialogInterface, i ->
             m = months[i].toInt()
-            month.text = m.toString()
-            year_month.text = "$y-$m"
+            binding.month.text = m.toString()
+            binding.yearMonth.text = "$y-$m"
         })
 
     }

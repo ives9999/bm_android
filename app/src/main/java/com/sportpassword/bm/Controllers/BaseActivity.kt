@@ -39,9 +39,6 @@ import com.sportpassword.bm.Utilities.*
 import com.sportpassword.bm.Views.ImagePicker
 import com.sportpassword.bm.Views.SearchPanel
 import com.sportpassword.bm.member
-import kotlinx.android.synthetic.main.activity_payment_vc.*
-import kotlinx.android.synthetic.main.mask.*
-import kotlinx.android.synthetic.main.top_view.*
 import org.jetbrains.anko.*
 import org.json.JSONArray
 import org.json.JSONObject
@@ -179,11 +176,15 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener,
     //var vcResult: VCResult = VCResult()
 
     private fun _addBlackList(reason: String, memberToken: String, teamToken: String) {
-        Loading.show(mask)
+        findViewById<FrameLayout>(R.id.mask) ?. let {
+            Loading.show(it)
+        }
         val token = member.token
         if (token != null) {
             TeamService.addBlackList(this, teamToken, memberToken, token, reason) { success ->
-                Loading.hide(mask)
+                findViewById<FrameLayout>(R.id.mask) ?. let {
+                    Loading.hide(it)
+                }
                 if (success) {
                     info("加入黑名單成功")
                 } else {
@@ -207,7 +208,9 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener,
     }
 
     protected fun _getTeamManagerList(completion: CompletionHandler) {
-        Loading.show(mask)
+        findViewById<FrameLayout>(R.id.mask) ?. let {
+            Loading.show(it)
+        }
         val filter1: Array<Any> = arrayOf("channel", "=", CHANNEL)
         val filter2: Array<Any> = arrayOf("manager_id", "=", member.id)
         val filter: Array<Array<Any>> = arrayOf(filter1, filter2)
@@ -348,7 +351,9 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener,
 
     open fun addPanelBtn() {
         layerCancelBtn = layerButtonLayout.cancelButton(this, 120) {
-            top.unmask()
+            findViewById<RelativeLayout>(R.id.mask) ?. let {
+                it.unmask()
+            }
         }
     }
 
@@ -550,7 +555,9 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener,
     fun getAreasFromCity(city_id: Int, complete: (rows: ArrayList<HashMap<String, String>>) -> Unit): ArrayList<HashMap<String, String>> {
         val rows: ArrayList<HashMap<String, String>> = session.getAreasFromCity(city_id)
         if (rows.count() == 0) {
-            Loading.show(mask)
+            findViewById<FrameLayout>(R.id.mask) ?. let {
+                Loading.show(it)
+            }
             val city_ids: ArrayList<Int> = arrayListOf(city_id)
             dataService.getAreaByCityIDs(this, city_ids, "all") { success ->
                 if (success) {
@@ -580,7 +587,9 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener,
                 }
             }
 
-            Loading.hide(mask)
+            findViewById<FrameLayout>(R.id.mask) ?. let {
+                Loading.hide(it)
+            }
         }
 
         return rows
@@ -589,7 +598,9 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener,
     fun getCitys(complete: (rows: ArrayList<HashMap<String, String>>)-> Unit): ArrayList<HashMap<String, String>> {
         var rows: ArrayList<HashMap<String, String>> = session.getAllCitys()
         if (rows.count() == 0) {
-            Loading.show(mask)
+            findViewById<FrameLayout>(R.id.mask) ?. let {
+                Loading.show(it)
+            }
             dataService.getCitys(this, "all", false) { success ->
                 if (success) {
                     val citys = dataService.citys
@@ -611,7 +622,10 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener,
                     complete(rows)
                 }
             }
-            Loading.hide(mask)
+
+            findViewById<FrameLayout>(R.id.mask) ?. let {
+                Loading.hide(it)
+            }
         }
         return rows
     }
@@ -1748,8 +1762,8 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener,
     }
 
     protected fun setMyTitle(title: String) {
-        if (topTitleLbl != null) {
-            topTitleLbl.text = title
+        findViewById<TextView>(R.id.topTitleLbl) ?. let {
+            it.text = title
         }
 //        val actionBar: ActionBar = supportActionBar!!
 //        actionBar.setDisplayShowTitleEnabled(false)
@@ -1795,9 +1809,12 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener,
     }
 
     fun showTableLayer(tableViewHeight: Int) {
-        layerMask = top.mask(this)
-        layerMask!!.setOnClickListener {
-            top.unmask()
+
+        findViewById<RelativeLayout>(R.id.top) ?. let {
+            layerMask = it.mask(this)
+            layerMask!!.setOnClickListener { it1 ->
+                it.unmask()
+            }
         }
 
         val layerButtonLayoutHeight: Int = setButtonLayoutHeight()

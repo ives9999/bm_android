@@ -11,9 +11,6 @@ import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.CourseService
 import com.sportpassword.bm.Utilities.*
 import com.sportpassword.bm.member
-import kotlinx.android.synthetic.main.manager_course_item.*
-import kotlinx.android.synthetic.main.mask.*
-import org.jetbrains.anko.*
 
 class ManagerCourseVC: ManagerVC() {
 

@@ -12,18 +12,6 @@ import com.sportpassword.bm.Form.FormItem.FormItem
 import com.sportpassword.bm.Form.FormItemCellType
 import com.sportpassword.bm.R
 
-import kotlinx.android.synthetic.main.formitem_more.*
-import kotlinx.android.synthetic.main.formitem_plain.*
-import kotlinx.android.synthetic.main.formitem_textfield.*
-import org.jetbrains.anko.backgroundColor
-import kotlinx.android.synthetic.main.formitem_more.title as title
-import kotlinx.android.synthetic.main.formitem_textfield.title as textfield_title
-import kotlinx.android.synthetic.main.formitem_more.clear as clear
-import kotlinx.android.synthetic.main.formitem_textfield.clear as textfield_clear
-import kotlinx.android.synthetic.main.formitem_more.promptBtn as promptBtn
-import kotlinx.android.synthetic.main.formitem_more.detail as detail
-import kotlinx.android.synthetic.main.formitem_more.container as container
-
 //interface TextFieldChangeDelegate {
 //    fun textFieldTextChanged(indexPath: IndexPath, text: String)
 //}

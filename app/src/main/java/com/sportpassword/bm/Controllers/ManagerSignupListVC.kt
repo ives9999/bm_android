@@ -1,5 +1,6 @@
 package com.sportpassword.bm.Controllers
 
+import android.app.Activity
 import android.os.Bundle
 import android.view.ViewGroup
 import com.google.gson.Gson
@@ -14,12 +15,15 @@ import com.sportpassword.bm.Services.CourseService
 import com.sportpassword.bm.Services.TeamService
 import com.sportpassword.bm.Utilities.Loading
 import com.sportpassword.bm.Utilities.setInfo
+import com.sportpassword.bm.databinding.ActivityBlackListVcBinding
+import com.sportpassword.bm.databinding.ActivityManagerSignupListVcBinding
+import com.sportpassword.bm.databinding.MytablevcBinding
 import com.sportpassword.bm.member
-import kotlinx.android.synthetic.main.activity_manager_signup_list_vc.*
-import kotlinx.android.synthetic.main.activity_show_course_vc.*
-import kotlinx.android.synthetic.main.mask.*
 
 class ManagerSignupListVC : MyTableVC() {
+
+    private lateinit var binding: ActivityManagerSignupListVcBinding
+    private lateinit var view: ViewGroup
 
     var able_token: String = ""
     var able_title: String = ""
@@ -33,7 +37,10 @@ class ManagerSignupListVC : MyTableVC() {
     override fun onCreate(savedInstanceState: Bundle?) {
 
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_manager_signup_list_vc)
+
+        binding = ActivityManagerSignupListVcBinding.inflate(layoutInflater)
+        view = binding.root
+        setContentView(view)
 
         if (intent.hasExtra("able_type")) {
             able_type = intent.getStringExtra("able_type")!!
@@ -54,10 +61,10 @@ class ManagerSignupListVC : MyTableVC() {
             dataService = CourseService
         }
 
-        refreshLayout = list_refresh
+        refreshLayout = binding.listRefresh
         setRefreshListener()
 
-        recyclerView = list_container
+        recyclerView = binding.listContainer
 
         adapter = ManagerSignupListAdapter(this)
         recyclerView.adapter = adapter
@@ -85,7 +92,7 @@ class ManagerSignupListVC : MyTableVC() {
     }
 
     override fun getDataStart(_page: Int, _perPage: Int, token: String?) {
-        Loading.show(mask)
+        Loading.show(view)
         loading = true
 
         dataService.managerSignupList(able_type, able_token, _page, _perPage) { success ->
@@ -105,7 +112,7 @@ class ManagerSignupListVC : MyTableVC() {
             page++
         }
         runOnUiThread {
-            Loading.hide(mask)
+            Loading.hide(view)
             closeRefresh()
         }
         loading = false

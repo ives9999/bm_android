@@ -18,7 +18,6 @@ import com.sportpassword.bm.Utilities.setImage
 import com.sportpassword.bm.member
 import com.squareup.picasso.Picasso
 import jp.wasabeef.picasso.transformations.RoundedCornersTransformation
-import kotlinx.android.synthetic.main.list1_cell.view.*
 
 abstract class MyAdapter<T: MyViewHolder>(private val resource: Int, private val viewHolderConstructor: (Context, View, List1CellDelegate?)-> T, val list1CellDelegate: List1CellDelegate?=null): RecyclerView.Adapter<T>() {
 
@@ -109,20 +108,20 @@ open class MyViewHolder(val context: Context, val viewHolder: View, val list1Cel
 
                 if (row.mobile_show.isNotEmpty()) {
                     if (list1CellDelegate != null) {
-                        telIcon!!.setOnClickListener {
+                        telIcon?.setOnClickListener {
                             list1CellDelegate.cellMobile(row)
                         }
-                        viewHolder.telIcon.visibility = View.VISIBLE
+                        telIcon?.visibility = View.VISIBLE
                     }
                 } else if (row.tel_show.isNotEmpty()) {
                     if (list1CellDelegate != null) {
                         telIcon!!.setOnClickListener {
                             list1CellDelegate.cellMobile(row)
                         }
-                        viewHolder.telIcon.visibility = View.VISIBLE
+                        telIcon?.visibility = View.VISIBLE
                     }
                 } else {
-                    viewHolder.telIcon.visibility = View.GONE
+                    telIcon?.visibility = View.GONE
                 }
             }
             if (mapIcon != null) {
@@ -156,9 +155,9 @@ open class MyViewHolder(val context: Context, val viewHolder: View, val list1Cel
     fun setLike() {
         isLike = !isLike
         if (isLike) {
-            viewHolder.likeIcon.setImage("like1")
+            likeIcon?.setImage("like1")
         } else {
-            viewHolder.likeIcon.setImage("like")
+            likeIcon?.setImage("like")
         }
     }
 }

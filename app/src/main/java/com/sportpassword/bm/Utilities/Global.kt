@@ -1016,28 +1016,35 @@ class IndexPath(val section: Int, val row: Int){}
 object Loading {
     val alpha = 0.8f
     val duration: Long = 100
-    fun show(mask: View) {
-        mask.alpha = 0f
-        mask.visibility = View.VISIBLE
-        mask.animate().setDuration(duration).alpha(alpha).setListener(object : Animator.AnimatorListener {
-            override fun onAnimationEnd(p0: Animator) {
-                mask.visibility = View.VISIBLE
-            }
-            override fun onAnimationRepeat(p0: Animator) {}
-            override fun onAnimationCancel(p0: Animator) {}
-            override fun onAnimationStart(p0: Animator) {}
-        })
+
+    fun show(view: View) {
+        view.findViewById<FrameLayout>(R.id.mask) ?. let { mask ->
+            mask.alpha = 0f
+            mask.visibility = View.VISIBLE
+            mask.animate().setDuration(duration).alpha(alpha).setListener(object : Animator.AnimatorListener {
+                override fun onAnimationEnd(p0: Animator) {
+                    mask.visibility = View.VISIBLE
+                }
+                override fun onAnimationRepeat(p0: Animator) {}
+                override fun onAnimationCancel(p0: Animator) {}
+                override fun onAnimationStart(p0: Animator) {}
+            })
+        }
     }
-    fun hide(mask: View) {
-        mask.visibility = View.VISIBLE
-        mask.animate().setDuration(duration).alpha(0f).setListener(object: Animator.AnimatorListener {
-            override fun onAnimationEnd(p0: Animator) {
-                mask.visibility = View.INVISIBLE
-            }
-            override fun onAnimationRepeat(p0: Animator) {}
-            override fun onAnimationCancel(p0: Animator) {}
-            override fun onAnimationStart(p0: Animator) {}
-        })
+    fun hide(view: View) {
+        view.findViewById<FrameLayout>(R.id.mask) ?. let { mask ->
+            mask.visibility = View.VISIBLE
+            mask.animate().setDuration(duration).alpha(0f)
+                .setListener(object : Animator.AnimatorListener {
+                    override fun onAnimationEnd(p0: Animator) {
+                        mask.visibility = View.INVISIBLE
+                    }
+
+                    override fun onAnimationRepeat(p0: Animator) {}
+                    override fun onAnimationCancel(p0: Animator) {}
+                    override fun onAnimationStart(p0: Animator) {}
+                })
+        }
     }
 }
 

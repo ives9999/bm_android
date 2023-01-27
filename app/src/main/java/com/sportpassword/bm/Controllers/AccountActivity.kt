@@ -1,58 +1,55 @@
 package com.sportpassword.bm.Controllers
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import androidx.appcompat.app.ActionBar
 import android.view.*
-import android.widget.TextView
-import com.sportpassword.bm.Models.MEMBER_SEX
-import com.sportpassword.bm.R
-import com.sportpassword.bm.member
-import kotlinx.android.synthetic.main.activity_account.*
-import kotlinx.android.synthetic.main.activity_account_update1.*
-import kotlinx.android.synthetic.main.mask.*
+import com.sportpassword.bm.databinding.ActivityAccountBinding
 
 class AccountActivity : BaseActivity() {
 
     val default = "未提供"
     val ACCOUNT_REQUEST_CODE = 1
 
+    private lateinit var binding: ActivityAccountBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_account)
+
+        binding = ActivityAccountBinding.inflate(layoutInflater)
+        val view = binding.root
+        setContentView(view)
         setMyTitle("帳戶")
 
         //setData()
 
         //val title: TextView =
 
-        accountNicknameRow.setOnClickListener { view ->
+        binding.accountNicknameRow.setOnClickListener {
 //            val accountUpdateIntent = Intent(this, AccountUpdate1Activity::class.java)
 //            accountUpdateIntent.putExtra("type", "nickname")
 //            startActivity(accountUpdateIntent)
             goIntent("nickname")
         }
-        accountNameRow.setOnClickListener { view ->
+        binding.accountNameRow.setOnClickListener {
             goIntent("name")
         }
-        accountEmailRow.setOnClickListener { view ->
+        binding.accountEmailRow.setOnClickListener {
             goIntent("email")
         }
-        accountSexRow.setOnClickListener { view ->
+        binding.accountSexRow.setOnClickListener {
             goIntent("sex")
         }
-        accountDobRow.setOnClickListener { view ->
+        binding.accountDobRow.setOnClickListener {
             goIntent("dob")
         }
-        accountMobileRow.setOnClickListener { view ->
+        binding.accountMobileRow.setOnClickListener {
             goIntent("mobile")
         }
-        accountTelRow.setOnClickListener { view ->
+        binding.accountTelRow.setOnClickListener {
             goIntent("tel")
         }
 
-        refreshLayout = account_refresh
+        refreshLayout = binding.accountRefresh
         setRefreshListener()
     }
 

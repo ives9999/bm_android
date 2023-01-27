@@ -2,13 +2,15 @@ package com.sportpassword.bm.Controllers
 
 import android.app.Activity
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
-import com.sportpassword.bm.R
-import kotlinx.android.synthetic.main.activity_content_edit_vc.*
+import android.view.ViewGroup
+import com.sportpassword.bm.databinding.ActivityContentEditVcBinding
 
 class ContentEditVC : BaseActivity() {
+
+    private lateinit var binding: ActivityContentEditVcBinding
+    private lateinit var view: ViewGroup
 
     var title: String = "選擇"
     var key: String? = null
@@ -16,7 +18,10 @@ class ContentEditVC : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_content_edit_vc)
+
+        binding = ActivityContentEditVcBinding.inflate(layoutInflater)
+        view = binding.root
+        setContentView(view)
 
         if (intent.hasExtra("title")) {
             title = intent.getStringExtra("title")!!
@@ -26,7 +31,7 @@ class ContentEditVC : BaseActivity() {
 
         if (intent.hasExtra("content")) {
             content = intent.getStringExtra("content")
-            edittext.setText(content!!)
+            binding.edittext.setText(content!!)
         }
 
         if (intent.hasExtra("key")) {
@@ -45,12 +50,12 @@ class ContentEditVC : BaseActivity() {
     }
 
     fun clear(view: View) {
-        edittext.setText("")
+        binding.edittext.setText("")
     }
 
     fun submit(view: View) {
 
-        val content = edittext.text.toString()
+        val content = binding.edittext.text.toString()
         val intent = Intent()
         intent.putExtra("key", key)
         intent.putExtra("content", content)

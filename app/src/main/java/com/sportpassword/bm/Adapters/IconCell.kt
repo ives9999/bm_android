@@ -5,7 +5,6 @@ import androidx.core.content.ContextCompat
 import android.view.View
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Utilities.setImage
-import kotlinx.android.synthetic.main.iconcell.*
 import org.jetbrains.anko.textColor
 
 class IconCell(val context: Context, val icon: String, val title: String, val content: String, val isPressed: Boolean=false) {

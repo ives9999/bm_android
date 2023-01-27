@@ -5,32 +5,40 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.View
 import android.view.ViewGroup
+import android.widget.FrameLayout
 import com.sportpassword.bm.Adapters.MemberOrderAdapter
 import com.sportpassword.bm.Models.*
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.OrderService
 import com.sportpassword.bm.Utilities.*
+import com.sportpassword.bm.databinding.ActivityMemberOrderListVcBinding
+import com.sportpassword.bm.databinding.MytablevcBinding
 import com.sportpassword.bm.member
-import kotlinx.android.synthetic.main.activity_member_order_list_vc.*
-import kotlinx.android.synthetic.main.mask.*
-import kotlinx.android.synthetic.main.order_list_cell.view.*
-import kotlin.collections.ArrayList
 
 class MemberOrderListVC : MyTableVC() {
+
+    private lateinit var binding: ActivityMemberOrderListVcBinding
+    private lateinit var view: ViewGroup
 
     var mysTable: OrdersTable? = null
     lateinit var tableAdapter: MemberOrderAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_member_order_list_vc)
+
+        binding = ActivityMemberOrderListVcBinding.inflate(layoutInflater)
+        view = binding.root
+        setContentView(view)
 
         setMyTitle("會員訂單")
 
         dataService = OrderService
-        recyclerView = order_list
-        refreshLayout = order_list_refresh
-        maskView = mask
+        recyclerView = binding.orderList
+        refreshLayout = binding.orderListRefresh
+
+        view.findViewById<FrameLayout>(R.id.mask) ?. let { mask ->
+            maskView = mask
+        }
         setRefreshListener()
         setRecyclerViewScrollListener()
 

@@ -1,45 +1,27 @@
 package com.sportpassword.bm.Controllers
 
-import android.app.Activity
-import android.content.Intent
 import android.os.Bundle
 import android.view.View
-import androidx.localbroadcastmanager.content.LocalBroadcastManager
+import android.view.ViewGroup
 import com.google.gson.JsonParseException
 import com.sportpassword.bm.Data.OneRow
 import com.sportpassword.bm.Models.CourseTable
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.CourseService
 import com.sportpassword.bm.Utilities.*
-import com.sportpassword.bm.member
-import kotlinx.android.synthetic.main.mask.*
+import com.sportpassword.bm.databinding.ActivityBlackListVcBinding
+import com.sportpassword.bm.databinding.ActivityEditCourseVcBinding
+import com.sportpassword.bm.databinding.MytablevcBinding
 
 class EditCourseVC : EditVC() {
 
-//    override val ACTION_PHOTO_REQUEST_CODE = 200
-//    override val activity = this
-//    override val context = this
-//    override var currentPhotoPath = ""
-//    override var filePath: String = ""
-//    override var file: File? = null
-//    override lateinit var imagePickerLayer: AlertDialog
-//    override lateinit var alertView: View
-//    override lateinit var imageView: ImageView
-
-//    var params1: MutableMap<String, String> = mutableMapOf<String, String>()
-
+    private lateinit var binding: ActivityEditCourseVcBinding
+    private lateinit var view: ViewGroup
 
     var coach_token: String? = null
 
 //    var table: CourseTable? = null
     var myTable: CourseTable? = null
-
-    //    val section_keys: ArrayList<ArrayList<String>> = arrayListOf(
-//            arrayListOf(TITLE_KEY, YOUTUBE_KEY),
-//            arrayListOf(PRICE_KEY, PRICE_UNIT_KEY)
-//    )
-//    var section_keys: ArrayList<ArrayList<String>> = arrayListOf()
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -54,7 +36,9 @@ class EditCourseVC : EditVC() {
             warningWithPrev("沒有傳送教練代碼，無法編輯課程，請洽管理員")
         }
 
-        setContentView(R.layout.activity_edit_course_vc)
+        binding = ActivityEditCourseVcBinding.inflate(layoutInflater)
+        view = binding.root
+        setContentView(view)
         super.onCreate(savedInstanceState)
 
         //form = CourseForm()

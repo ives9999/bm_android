@@ -1,41 +1,28 @@
 package com.sportpassword.bm.Controllers
 
 import android.Manifest
-import android.content.Intent
-import android.content.pm.PackageManager
-import android.graphics.Bitmap
+import android.content.Intent import android.graphics.Bitmap
 import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
-import android.view.WindowManager
-import android.widget.Button
+import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.RelativeLayout
 import androidmads.library.qrgenearator.QRGContents
 import androidmads.library.qrgenearator.QRGEncoder
-import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
 import com.google.gson.Gson
 import com.sportpassword.bm.Adapters.MemberSectionAdapter
 import com.sportpassword.bm.Data.MemberRow
 import com.sportpassword.bm.Data.MemberSection
 import com.sportpassword.bm.Models.MemberTable
 import com.sportpassword.bm.Models.SuccessTable
-import com.sportpassword.bm.Models.Table
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.MemberService
 import com.sportpassword.bm.Utilities.*
+import com.sportpassword.bm.databinding.ActivityMemberVcBinding
 import com.sportpassword.bm.member
 import com.squareup.picasso.Picasso
-import kotlinx.android.synthetic.main.activity_member_vc.*
-import kotlinx.android.synthetic.main.activity_member_vc.list_container
-import kotlinx.android.synthetic.main.bottom_view.*
-import kotlinx.android.synthetic.main.login_out.*
-import kotlinx.android.synthetic.main.mask.*
-import kotlinx.android.synthetic.main.nav_header_main.*
-import org.jetbrains.anko.backgroundColor
-import org.jetbrains.anko.toast
 import java.lang.Exception
 
 var memberSections: ArrayList<MemberSection> = arrayListOf()
@@ -45,18 +32,27 @@ lateinit var qrEncoder: QRGEncoder
 
 class MemberVC : MyTableVC() {
 
+    private lateinit var binding: ActivityMemberVcBinding
+    private lateinit var view: ViewGroup
+
     override fun onCreate(savedInstanceState: Bundle?) {
 
         able_type = "member"
 
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_member_vc)
+
+        binding = ActivityMemberVcBinding.inflate(layoutInflater)
+        view = binding.root
+        setContentView(view)
 
         setBottomTabFocus()
         setMyTitle("會員")
 
         dataService = MemberService
-        maskView = mask
+
+        view.findViewById<FrameLayout>(R.id.mask) ?. let { mask ->
+            maskView = mask
+        }
         val loginBtn = findViewById<LinearLayout>(R.id.loginBtn)
         loginBtn.setOnClickListener { loginBtnPressed() }
         val registerBtn = findViewById<LinearLayout>(R.id.registerBtn)
@@ -71,7 +67,7 @@ class MemberVC : MyTableVC() {
     override fun init() {
         super.init()
 
-        recyclerView = list_container
+        recyclerView = binding.listContainer
         //refreshLayout = page_refresh
 
 
@@ -88,7 +84,7 @@ class MemberVC : MyTableVC() {
                 .load(member.avatar)
                 .placeholder(R.drawable.loading_square_120)
                 .error(R.drawable.loading_square_120)
-                .into(avatarView)
+                .into(binding.navDrawerHeaderInclude.avatarView)
         }
 
         loginout()
@@ -96,10 +92,10 @@ class MemberVC : MyTableVC() {
 
     override fun refresh() {
         if (member.isLoggedIn) {
-            Loading.show(mask)
+            Loading.show(view)
             dataService.getOne(this, hashMapOf("token" to member.token!!)) { success ->
                 runOnUiThread {
-                    Loading.hide(mask)
+                    Loading.hide(view)
                 }
                 if (success) {
                     //println(MemberService.jsonString)
@@ -146,27 +142,27 @@ class MemberVC : MyTableVC() {
         memberSectionAdapter.setMyTableSection(memberSections)
         memberSectionAdapter.notifyDataSetChanged()
 
-        nameLbl.text = member.nickname
+        binding.navDrawerHeaderInclude.nameLbl.text = member.nickname
         if (member.avatar!!.isNotEmpty()) {
-            member.avatar!!.image(this, avatarView)
+            member.avatar!!.image(this, binding.navDrawerHeaderInclude.avatarView)
         }
 
-        loginTV.text = "登出"
-        registerBtn.visibility = View.INVISIBLE
-        forgetPasswordBtn.visibility = View.INVISIBLE
-        list_container.visibility = View.VISIBLE
+        binding.loginOutInclude.loginTV.text = "登出"
+        binding.loginOutInclude.registerBtn.visibility = View.INVISIBLE
+        binding.loginOutInclude.forgetPasswordBtn.visibility = View.INVISIBLE
+        binding.listContainer.visibility = View.VISIBLE
         //menu_team_container.visibility = View.VISIBLE
 //        refreshLayout = page_refresh
 //        initMemberFunction()
     }
     
     private fun _logoutBlock() {
-        nameLbl.text = "未登入"
-        loginTV.text = "登入"
-        registerBtn.visibility = View.VISIBLE
-        forgetPasswordBtn.visibility = View.VISIBLE
-        list_container.visibility = View.INVISIBLE
-        avatarView.setImageResource(R.drawable.menuprofileicon)
+        binding.navDrawerHeaderInclude.nameLbl.text = "未登入"
+        binding.loginOutInclude.loginTV.text = "登入"
+        binding.loginOutInclude.registerBtn.visibility = View.VISIBLE
+        binding.loginOutInclude.forgetPasswordBtn.visibility = View.VISIBLE
+        binding.listContainer.visibility = View.INVISIBLE
+        binding.navDrawerHeaderInclude.avatarView.setImageResource(R.drawable.menuprofileicon)
         //menu_team_container.visibility = View.INVISIBLE
     }
 
@@ -452,10 +448,10 @@ class MemberVC : MyTableVC() {
 
     fun delete() {
         warning("是否確定要刪除自己的會員資料？", true, "刪除") {
-            Loading.show(mask)
+            Loading.show(view)
             dataService.delete(this, "member", member.token!!, "trash") { success ->
                 runOnUiThread {
-                    Loading.hide(mask)
+                    Loading.hide(view)
                 }
 
                 if (success) {

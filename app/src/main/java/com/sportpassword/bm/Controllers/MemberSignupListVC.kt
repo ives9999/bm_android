@@ -1,6 +1,5 @@
 package com.sportpassword.bm.Controllers
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.ViewGroup
 import com.google.gson.Gson
@@ -14,11 +13,13 @@ import com.sportpassword.bm.Services.MemberService
 import com.sportpassword.bm.Services.TeamService
 import com.sportpassword.bm.Utilities.Loading
 import com.sportpassword.bm.Utilities.setInfo
+import com.sportpassword.bm.databinding.ActivityMemberSignupListVcBinding
 import com.sportpassword.bm.member
-import kotlinx.android.synthetic.main.activity_member_signup_list_vc.*
-import kotlinx.android.synthetic.main.mask.*
 
 class MemberSignupListVC : MyTableVC() {
+
+    private lateinit var binding: ActivityMemberSignupListVcBinding
+    private lateinit var view: ViewGroup
 
     lateinit var adapter: MemberSignupListAdapter
 
@@ -28,7 +29,10 @@ class MemberSignupListVC : MyTableVC() {
     override fun onCreate(savedInstanceState: Bundle?) {
 
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_member_signup_list_vc)
+
+        binding = ActivityMemberSignupListVcBinding.inflate(layoutInflater)
+        view = binding.root
+        setContentView(view)
 
         if (intent.hasExtra("able_type")) {
             able_type = intent.getStringExtra("able_type")!!
@@ -42,10 +46,10 @@ class MemberSignupListVC : MyTableVC() {
             dataService = CourseService
         }
 
-        refreshLayout = list_refresh
+        refreshLayout = binding.listRefresh
         setRefreshListener()
 
-        recyclerView = list
+        recyclerView = binding.list
 
         adapter = MemberSignupListAdapter(R.layout.member_signuplist_cell, this)
         recyclerView.adapter = adapter
@@ -73,7 +77,7 @@ class MemberSignupListVC : MyTableVC() {
     }
 
     override fun getDataStart(_page: Int, _perPage: Int, token: String?) {
-        Loading.show(mask)
+        Loading.show(view)
         loading = true
 
         MemberService.memberSignupCalendar(2021, 1, member.token!!, able_type, _page, _perPage) { success ->
@@ -93,7 +97,7 @@ class MemberSignupListVC : MyTableVC() {
             page++
         }
         runOnUiThread {
-            Loading.hide(mask)
+            Loading.hide(view)
             closeRefresh()
         }
         loading = false

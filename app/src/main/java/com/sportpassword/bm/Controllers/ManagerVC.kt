@@ -1,22 +1,16 @@
 package com.sportpassword.bm.Controllers
 
-import android.app.Activity
-import android.content.DialogInterface
-import android.content.Intent
 import android.os.Bundle
-import androidx.activity.result.ActivityResultLauncher
-import androidx.activity.result.contract.ActivityResultContracts
-import com.sportpassword.bm.Adapters.ManagerAdapter
-import com.sportpassword.bm.Models.Table
+import android.view.ViewGroup
+import android.widget.FrameLayout
+import androidx.recyclerview.widget.RecyclerView
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.sportpassword.bm.R
-import kotlinx.android.synthetic.main.activity_manager_course_vc.*
-import kotlinx.android.synthetic.main.mask.*
-import org.jetbrains.anko.toast
 
 
 open class ManagerVC : MyTableVC() {
 
-//    lateinit var managerAdapter: ManagerAdapter
+    lateinit var view: ViewGroup
 //    var source: String = "team"
     var manager_token: String? = null
     var resource: Int = 0
@@ -58,9 +52,17 @@ open class ManagerVC : MyTableVC() {
 //            params["able_type"] = able_type
         }
 
-        recyclerView = list
-        refreshLayout = refresh
-        maskView = mask
+        findViewById<RecyclerView>(R.id.list) ?. let {
+            recyclerView = it
+        }
+
+        findViewById<SwipeRefreshLayout>(R.id.refresh) ?. let {
+            refreshLayout = it
+        }
+
+        findViewById<FrameLayout>(R.id.mask) ?. let { mask ->
+            maskView = mask
+        }
         setRefreshListener()
 
         if (able_type == "team") {

@@ -1,24 +1,23 @@
 package com.sportpassword.bm.Controllers
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-import androidx.recyclerview.widget.LinearLayoutManager
 import android.view.View
+import android.view.ViewGroup
 import com.sportpassword.bm.Adapters.BlakListAdapter
-import com.sportpassword.bm.Models.BlackList
 import com.sportpassword.bm.Models.BlackLists
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.MemberService
 import com.sportpassword.bm.Services.TeamService
 import com.sportpassword.bm.Utilities.Loading
+import com.sportpassword.bm.databinding.ActivityBlackListVcBinding
 import com.sportpassword.bm.member
-import kotlinx.android.synthetic.main.activity_black_list_vc.*
 import org.jetbrains.anko.contentView
-import org.jetbrains.anko.makeCall
-import kotlinx.android.synthetic.main.mask.*
 
 class BlackListVC : BaseActivity() {
+
+    private lateinit var binding: ActivityBlackListVcBinding
+    private lateinit var view: ViewGroup
 
     lateinit var blackLists: BlackLists
     lateinit var blacklistAdapter: BlakListAdapter
@@ -26,7 +25,11 @@ class BlackListVC : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_black_list_vc)
+
+        binding = ActivityBlackListVcBinding.inflate(layoutInflater)
+        view = binding.root
+        setContentView(view)
+
         setMyTitle("黑名單")
         memberToken = member.token.toString()
 
@@ -37,21 +40,21 @@ class BlackListVC : BaseActivity() {
 
     override fun refresh() {
         super.refresh()
-        Loading.show(mask)
+        Loading.show(this.view)
         MemberService.blacklist(this, memberToken) { success ->
-            Loading.hide(mask)
+            Loading.hide(this.view)
             if (success) {
                 blackLists = MemberService.blackLists
                 if (blackLists.rows.size > 0) {
-                    empty_container.visibility = View.GONE
+                    binding.emptyContainer .visibility = View.GONE
                     blacklistAdapter = BlakListAdapter(this, blackLists.rows,
                             { position -> },
                             { mobile -> call(mobile) },
                             { position -> cancel(position) })
-                    black_list.adapter = blacklistAdapter
+                    binding.blackList.adapter = blacklistAdapter
                     closeRefresh()
                 } else {
-                    empty_container.visibility = View.VISIBLE
+                    binding.emptyContainer.visibility = View.VISIBLE
                 }
             } else {
                 warning(MemberService.msg)
@@ -69,9 +72,9 @@ class BlackListVC : BaseActivity() {
 
         val token = member.token
         if (token != null) {
-            Loading.show(mask)
+            Loading.show(this.view)
             TeamService.removeBlackList(this, teamToken, memberToken, token) { success ->
-                Loading.hide(mask)
+                Loading.hide(this.view)
                 if (success) {
                     info("移除黑名單成功")
                     refresh()

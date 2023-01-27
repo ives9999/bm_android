@@ -3,6 +3,7 @@ package com.sportpassword.bm.Controllers
 import android.app.Activity
 import android.os.Bundle
 import android.view.View
+import android.view.ViewGroup
 import android.widget.ImageView
 import com.google.gson.JsonParseException
 import com.sportpassword.bm.Models.SuccessTable
@@ -10,21 +11,27 @@ import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.MemberService
 import com.sportpassword.bm.Utilities.Loading
 import com.sportpassword.bm.Utilities.jsonToModel
+import com.sportpassword.bm.databinding.ActivityMemberBankVcBinding
+import com.sportpassword.bm.databinding.MytablevcBinding
 import com.sportpassword.bm.member
-import kotlinx.android.synthetic.main.activity_member_bank_vc.*
-import kotlinx.android.synthetic.main.mask.*
 
 class MemberBankVC : BaseActivity() {
 
+    private lateinit var binding: ActivityMemberBankVcBinding
+    private lateinit var view: ViewGroup
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_member_bank_vc)
+
+        binding = ActivityMemberBankVcBinding.inflate(layoutInflater)
+        view = binding.root
+        setContentView(view)
 
         setMyTitle("會員銀行帳戶資訊")
 
         findViewById<ImageView>(R.id.clear_bank) ?. let { clear ->
             clear.setOnClickListener {
-                clearButtonPressed(clear_bank)
+                clearButtonPressed(binding.clearBank)
             }
         }
 
@@ -53,35 +60,35 @@ class MemberBankVC : BaseActivity() {
         isPrevIconShow = true
         super.init()
 
-        bankTF.setText(member.bank)
-        branchTF.setText(member.branch)
+        binding.bankTF.setText(member.bank)
+        binding.branchTF.setText(member.branch)
         if (member.bank_code != null) {
-            bank_codeTF.setText(member.bank_code!!.toString())
+            binding.bankCodeTF.setText(member.bank_code!!.toString())
         }
-        accountTF.setText(member.account)
+        binding.accountTF.setText(member.account)
     }
 
     fun submitButtonPressed(view: View) {
 
         msg = ""
 
-        if (bankTF.text.isEmpty()) {
+        if (binding.bankTF.text.isEmpty()) {
             msg += "沒有填寫銀行名稱\n"
         }
-        if (branchTF.text.isEmpty()) {
+        if (binding.branchTF.text.isEmpty()) {
             msg += "沒有填寫分行名稱\n"
         }
-        if (bank_codeTF.text.isEmpty()) {
+        if (binding.bankCodeTF.text.isEmpty()) {
             msg += "沒有填寫銀行代碼\n"
         }
-        if (accountTF.text.isEmpty()) {
+        if (binding.accountTF.text.isEmpty()) {
             msg += "沒有填寫銀行帳號\n"
         }
 
-        params["bank"] = bankTF.text.toString()
-        params["branch"] = branchTF.text.toString()
-        params["bank_code"] = bank_codeTF.text.toString()
-        params["account"] = accountTF.text.toString()
+        params["bank"] = binding.bankTF.text.toString()
+        params["branch"] = binding.branchTF.text.toString()
+        params["bank_code"] = binding.bankCodeTF.text.toString()
+        params["account"] = binding.accountTF.text.toString()
         params["member_token"] = member.token!!
 
         params["do"] = "update"
@@ -91,9 +98,9 @@ class MemberBankVC : BaseActivity() {
             return
         }
 
-        Loading.show(mask)
+        Loading.show(view)
         MemberService.bank(this, params) { success ->
-            Loading.hide(mask)
+            Loading.hide(view)
             if (success) {
                 try {
                     val successTable: SuccessTable? = jsonToModel<SuccessTable>(MemberService.jsonString)
@@ -130,16 +137,16 @@ class MemberBankVC : BaseActivity() {
 
         when (tag) {
             "1" -> {
-                bankTF.setText("")
+                binding.bankTF.setText("")
             }
             "2" -> {
-                branchTF.setText("")
+                binding.branchTF.setText("")
             }
             "3"-> {
-                bank_codeTF.setText("")
+                binding.bankCodeTF.setText("")
             }
             "4"-> {
-                accountTF.setText("")
+                binding.accountTF.setText("")
             }
         }
     }

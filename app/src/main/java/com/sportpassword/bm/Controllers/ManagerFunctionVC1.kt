@@ -1,21 +1,28 @@
 package com.sportpassword.bm.Controllers
 
 import android.os.Bundle
-import android.view.View
+import android.view.ViewGroup
 import com.sportpassword.bm.R
-import kotlinx.android.synthetic.main.function_item.*
-import kotlinx.android.synthetic.main.manager_function_vc.*
+import com.sportpassword.bm.databinding.ActivityBlackListVcBinding
+import com.sportpassword.bm.databinding.ManagerFunctionVcBinding
+import com.sportpassword.bm.databinding.MytablevcBinding
 
 class ManagerFunctionVC1 : MyTableVC() {
+
+    private lateinit var binding: ManagerFunctionVcBinding
+    private lateinit var view: ViewGroup
 
     var token: String = ""
     var title: String = ""
     var source: String = "team"
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
+
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.manager_function_vc)
+
+        binding = ManagerFunctionVcBinding.inflate(layoutInflater)
+        view = binding.root
+        setContentView(view)
 
         title = intent.getStringExtra("title")!!
         token = intent.getStringExtra("token")!!
@@ -47,7 +54,7 @@ class ManagerFunctionVC1 : MyTableVC() {
 //            )
 //        }
 
-        recyclerView = function_list
+        recyclerView = binding.functionList
         //initAdapter()
     }
 

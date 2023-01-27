@@ -59,7 +59,10 @@
         android:background="@color/MY_RED"
         android:clickable="true"
         android:orientation="vertical">
-        <include layout="@layout/login_out"/>
+
+        <include layout="@layout/login_out"
+            android:id="@+id/loginOutInclude"
+            />
     </LinearLayout>
 
     <LinearLayout

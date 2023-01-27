@@ -24,12 +24,15 @@ import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.TeamService
 import com.sportpassword.bm.Utilities.*
 import com.sportpassword.bm.Views.Top
+import com.sportpassword.bm.databinding.ActivityManagerTeamMemberBinding
+import com.sportpassword.bm.databinding.MytablevcBinding
 import com.sportpassword.bm.member
-import kotlinx.android.synthetic.main.activity_member_coin_list_vc.*
-import kotlinx.android.synthetic.main.mask.*
 import java.lang.reflect.Type
 
 open class ManagerTeamMemberVC : BaseActivity(), MyTable2IF {
+
+    private lateinit var binding: ActivityManagerTeamMemberBinding
+    private lateinit var view: ViewGroup
 
     var token: String? = null
     var top: Top? = null
@@ -40,7 +43,10 @@ open class ManagerTeamMemberVC : BaseActivity(), MyTable2IF {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_manager_team_member)
+
+        binding = ActivityManagerTeamMemberBinding.inflate(layoutInflater)
+        view = binding.root
+        setContentView(view)
 
         if (intent.hasExtra("token")) {
             token = intent.getStringExtra("token")!!
@@ -105,12 +111,12 @@ open class ManagerTeamMemberVC : BaseActivity(), MyTable2IF {
     }
 
     private fun getDataFromServer(page: Int) {
-        Loading.show(mask)
+        Loading.show(view)
         loading = true
 
         TeamService.teamMemberList(this, token!!, tableView.page, tableView.perPage) { success ->
             runOnUiThread {
-                Loading.hide(mask)
+                Loading.hide(view)
 
                 //MyTable2IF
                 val b: Boolean = showTableView(tableView, TeamService.jsonString)
@@ -127,12 +133,12 @@ open class ManagerTeamMemberVC : BaseActivity(), MyTable2IF {
     }
 
     private fun addTeamMember(member_token: String) {
-        Loading.show(mask)
+        Loading.show(view)
         loading = true
 
         TeamService.addTeamMember(this, token!!, member_token, member.token!!) { success ->
             runOnUiThread {
-                Loading.hide(mask)
+                Loading.hide(view)
                 if (success) {
                     var successTable: SuccessTable? = null
                     try {
@@ -161,12 +167,12 @@ open class ManagerTeamMemberVC : BaseActivity(), MyTable2IF {
 
     fun deleteTeamMember(row: TeamMemberTable) {
         warning("確定要刪除嗎？", true, "刪除") {
-            Loading.show(mask)
+            Loading.show(view)
             loading = true
 
             TeamService.deleteTeamMember(this, row.token) { success ->
                 runOnUiThread {
-                    Loading.hide(mask)
+                    Loading.hide(view)
                     if (success) {
                         refresh()
                     } else {

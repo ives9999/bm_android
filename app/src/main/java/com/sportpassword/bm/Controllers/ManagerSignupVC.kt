@@ -3,6 +3,7 @@ package com.sportpassword.bm.Controllers
 import android.app.AlertDialog
 import android.content.Intent
 import android.os.Bundle
+import android.view.ViewGroup
 import androidx.core.content.pm.PackageInfoCompat
 import com.sportpassword.bm.Adapters.MoreAdapter
 import com.sportpassword.bm.Data.MoreRow
@@ -11,9 +12,13 @@ import com.sportpassword.bm.Services.CourseService
 import com.sportpassword.bm.Services.TeamService
 import com.sportpassword.bm.Utilities.TO_BLACKLIST
 import com.sportpassword.bm.Utilities.TO_MANAGER_SIGNUPLIST
-import kotlinx.android.synthetic.main.activity_manager_signup_vc.*
+import com.sportpassword.bm.databinding.ActivityManagerSignupVcBinding
+import com.sportpassword.bm.databinding.MytablevcBinding
 
 class ManagerSignupVC : MyTableVC() {
+
+    private lateinit var binding: ActivityManagerSignupVcBinding
+    private lateinit var view: ViewGroup
 
     var able_token: String = ""
     var able_title: String = ""
@@ -24,7 +29,10 @@ class ManagerSignupVC : MyTableVC() {
     override fun onCreate(savedInstanceState: Bundle?) {
 
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_manager_signup_vc)
+
+        binding = ActivityManagerSignupVcBinding.inflate(layoutInflater)
+        view = binding.root
+        setContentView(view)
 
         if (intent.hasExtra("able_type")) {
             able_type = intent.getStringExtra("able_type")!!
@@ -46,7 +54,7 @@ class ManagerSignupVC : MyTableVC() {
             dataService = CourseService
         }
 
-        recyclerView = list_container
+        recyclerView = binding.listContainer
         tableAdapter = MoreAdapter(this)
         setRecyclerViewScrollListener()
 

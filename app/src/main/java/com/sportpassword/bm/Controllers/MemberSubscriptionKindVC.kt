@@ -14,12 +14,15 @@ import com.sportpassword.bm.Models.*
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.MemberService
 import com.sportpassword.bm.Utilities.*
+import com.sportpassword.bm.databinding.ActivityMemberSubscriptionKindVcBinding
+import com.sportpassword.bm.databinding.MytablevcBinding
 import com.sportpassword.bm.member
-import kotlinx.android.synthetic.main.mask.*
-import kotlinx.android.synthetic.main.subscriptionkind_cell.view.*
 import java.lang.reflect.Type
 
 class MemberSubscriptionKindVC : BaseActivity(), MyTable2IF, List1CellDelegate {
+
+    private lateinit var binding: ActivityMemberSubscriptionKindVcBinding
+    private lateinit var view: ViewGroup
 
     private val tableType: Type = object : TypeToken<Tables2<MemberSubscriptionKindTable>>() {}.type
     lateinit var tableView: MyTable2VC<MemberSubscriptionKindViewHolder, MemberSubscriptionKindTable, MemberSubscriptionKindVC>
@@ -35,7 +38,10 @@ class MemberSubscriptionKindVC : BaseActivity(), MyTable2IF, List1CellDelegate {
 
         dataService = MemberService
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_member_subscription_kind_vc)
+
+        binding = ActivityMemberSubscriptionKindVcBinding.inflate(layoutInflater)
+        view = binding.root
+        setContentView(view)
 
         setMyTitle("訂閱會員")
         init()
@@ -64,12 +70,12 @@ class MemberSubscriptionKindVC : BaseActivity(), MyTable2IF, List1CellDelegate {
     }
 
     private fun getDataFromServer(page: Int) {
-        Loading.show(mask)
+        Loading.show(view)
         loading = true
 
         MemberService.subscriptionKind(this, member.token!!, page, tableView.perPage) { success ->
             runOnUiThread {
-                Loading.hide(mask)
+                Loading.hide(view)
 
                 //MyTable2IF
                 val b: Boolean = showTableView(tableView, MemberService.jsonString)
@@ -165,8 +171,8 @@ class MemberSubscriptionKindViewHolder(
     delegate: MemberSubscriptionKindVC
 ): MyViewHolder2<MemberSubscriptionKindTable, MemberSubscriptionKindVC>(context, view, delegate) {
 
-    val titleLbl: TextView = view.titleLbl
-    val priceLbl: TextView = view.priceLbl
+    val titleLbl: TextView = view.findViewById(R.id.titleLbl)
+    val priceLbl: TextView = view.findViewById(R.id.priceLbl)
 
     override fun bind(row: MemberSubscriptionKindTable, idx: Int) {
         super.bind(row, idx)

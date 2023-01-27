@@ -8,7 +8,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
 import com.sportpassword.bm.R
-import kotlinx.android.synthetic.main.timetable_item.view.*
 
 class TimeTableAdapter: BaseAdapter {
 
@@ -37,9 +36,9 @@ class TimeTableAdapter: BaseAdapter {
         if (position % columnNum == 0) {
             val first = startNum + rowNum
             val second = first + 1
-            view.text.text = "%d-%d".format(first, second)
+            //view.text.text = "%d-%d".format(first, second)
         } else {
-            view.text.text = ""
+            //view.text.text = ""
         }
 
         val startTime: Int = position / columnNum + startNum

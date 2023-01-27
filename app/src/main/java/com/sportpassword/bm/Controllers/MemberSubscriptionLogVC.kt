@@ -16,12 +16,14 @@ import com.sportpassword.bm.Services.MemberService
 import com.sportpassword.bm.Utilities.Loading
 import com.sportpassword.bm.Utilities.noSec
 import com.sportpassword.bm.Utilities.setInfo
+import com.sportpassword.bm.databinding.ActivityMemberSubscriptionLogVcBinding
 import com.sportpassword.bm.member
-import kotlinx.android.synthetic.main.mask.*
-import kotlinx.android.synthetic.main.subscriptionlog_cell.view.*
 import java.lang.reflect.Type
 
 class MemberSubscriptionLogVC : BaseActivity(), MyTable2IF {
+
+    private lateinit var binding: ActivityMemberSubscriptionLogVcBinding
+    private lateinit var view: ViewGroup
 
     private val tableType: Type = object : TypeToken<Tables2<MemberSubscriptionLogTable>>() {}.type
     lateinit var tableView: MyTable2VC<MemberSubscriptionLogViewHolder, MemberSubscriptionLogTable, MemberSubscriptionLogVC>
@@ -30,7 +32,10 @@ class MemberSubscriptionLogVC : BaseActivity(), MyTable2IF {
 
         dataService = MemberService
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_member_subscription_log_vc)
+
+        binding = ActivityMemberSubscriptionLogVcBinding.inflate(layoutInflater)
+        view = binding.root
+        setContentView(view)
 
         setMyTitle("訂閱會員付款紀錄")
 
@@ -58,12 +63,12 @@ class MemberSubscriptionLogVC : BaseActivity(), MyTable2IF {
     }
 
     private fun getDataFromServer(page: Int) {
-        Loading.show(mask)
+        Loading.show(view)
         loading = true
 
         MemberService.subscriptionLog(this, member.token!!, page, tableView.perPage) { success ->
             runOnUiThread {
-                Loading.hide(mask)
+                Loading.hide(view)
 
                 //MyTable2IF
                 val b: Boolean = showTableView(tableView, MemberService.jsonString)
@@ -110,9 +115,9 @@ class MemberSubscriptionLogViewHolder(
     delegate: MemberSubscriptionLogVC
 ): MyViewHolder2<MemberSubscriptionLogTable, MemberSubscriptionLogVC>(context, view, delegate) {
 
-    val noLbl: TextView = view.noTV
-    val priceLbl: TextView = view.priceLbl
-    val dateLbl: TextView = view.dateLbl
+    val noLbl: TextView = view.findViewById(R.id.noTV)
+    val priceLbl: TextView = view.findViewById(R.id.priceLbl)
+    val dateLbl: TextView = view.findViewById(R.id.dateLbl)
 
     override fun bind(row: MemberSubscriptionLogTable, idx: Int) {
         super.bind(row, idx)

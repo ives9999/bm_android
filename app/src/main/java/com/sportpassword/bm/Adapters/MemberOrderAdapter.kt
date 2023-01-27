@@ -2,11 +2,12 @@ package com.sportpassword.bm.Adapters
 
 import android.content.Context
 import android.view.View
+import android.widget.TextView
 import com.sportpassword.bm.Controllers.List1CellDelegate
 import com.sportpassword.bm.Models.OrderItemTable
 import com.sportpassword.bm.Models.OrderTable
 import com.sportpassword.bm.Models.Table
-import kotlinx.android.synthetic.main.order_list_cell.view.*
+import com.sportpassword.bm.R
 
 class MemberOrderAdapter(resource: Int, list1CellDelegate: List1CellDelegate?): MyAdapter<MemberOrderViewHolder>(resource, ::MemberOrderViewHolder, list1CellDelegate) {
 
@@ -31,17 +32,46 @@ class MemberOrderViewHolder(context: Context, viewHolder: View, list1CellDelegat
         } else {
             name = "無法取得商品名稱，請洽管理員"
         }
-        viewHolder.nameLbl.text = name
-        viewHolder.dateLbl.text = row.created_at_show
-        viewHolder.priceLbl.text = row.amount_show
-        viewHolder.priceLbl.textSize = 20F
-        viewHolder.orderNoLbl.text = row.order_no
-        viewHolder.noTV.text = (idx+1).toString()
 
-        viewHolder.orderAllProcessLbl.text = row.all_process_show
-        viewHolder.gatewayProcessLbl.text = row.gateway?.process_show
-        viewHolder.shippingProcessLbl.text = row.shipping?.process_show
-        viewHolder.gatewayMethodLbl.text = row.gateway?.method_show
-        viewHolder.shippingMethodLbl.text = row.shipping?.method_show
+        viewHolder.findViewById<TextView>(R.id.nameLbl) ?. let {
+            it.text = name
+        }
+
+        viewHolder.findViewById<TextView>(R.id.dateLbl) ?. let {
+            it.text = row.created_at_show
+        }
+
+        viewHolder.findViewById<TextView>(R.id.priceLbl) ?. let {
+            it.text = row.amount_show
+            it.textSize = 20F
+        }
+
+        viewHolder.findViewById<TextView>(R.id.orderNoLbl) ?. let {
+            it.text = row.order_no
+        }
+
+        viewHolder.findViewById<TextView>(R.id.noTV) ?. let {
+            it.text = (idx+1).toString()
+        }
+
+        viewHolder.findViewById<TextView>(R.id.orderAllProcessLbl) ?. let {
+            it.text = row.all_process_show
+        }
+
+        viewHolder.findViewById<TextView>(R.id.gatewayProcessLbl) ?. let {
+            it.text = row.gateway?.process_show
+        }
+
+        viewHolder.findViewById<TextView>(R.id.shippingProcessLbl) ?. let {
+            it.text = row.shipping?.process_show
+        }
+
+        viewHolder.findViewById<TextView>(R.id.gatewayMethodLbl) ?. let {
+            it.text = row.gateway?.method_show
+        }
+
+        viewHolder.findViewById<TextView>(R.id.shippingMethodLbl) ?. let {
+            it.text = row.shipping?.method_show
+        }
     }
 }

@@ -5,15 +5,16 @@ import android.view.ViewGroup
 import com.sportpassword.bm.Adapters.CoachAdapter
 import com.sportpassword.bm.Data.OneRow
 import com.sportpassword.bm.Data.OneSection
-import com.sportpassword.bm.Data.SearchRow
-import com.sportpassword.bm.Data.SearchSection
 import com.sportpassword.bm.Models.*
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.CoachService
 import com.sportpassword.bm.Utilities.*
-import kotlinx.android.synthetic.main.activity_store_vc.*
+import com.sportpassword.bm.databinding.ActivityCoachVcBinding
 
 class CoachVC : MyTableVC() {
+
+    private lateinit var binding: ActivityCoachVcBinding
+    private lateinit var view: ViewGroup
 
     var mysTable: CoachesTable? = null
     lateinit var tableAdapter: CoachAdapter
@@ -26,6 +27,10 @@ class CoachVC : MyTableVC() {
 //        )
 
         super.onCreate(savedInstanceState)
+
+        binding = ActivityCoachVcBinding.inflate(layoutInflater)
+        view = binding.root
+        setContentView(view)
         setContentView(R.layout.activity_store_vc)
         //setContentView(R.layout.activity_coach_vc)
 
@@ -33,8 +38,8 @@ class CoachVC : MyTableVC() {
         able_type = "coach"
 
         dataService = CoachService
-        recyclerView = list_container
-        refreshLayout = refresh
+        recyclerView = binding.coachList
+        refreshLayout = binding.coachRefresh
         //initAdapter()
         tableAdapter = CoachAdapter(R.layout.coach_list_cell, this)
         recyclerView.adapter = tableAdapter

@@ -1,5 +1,6 @@
 package com.sportpassword.bm.Controllers
 
+import android.app.Activity
 import android.content.IntentFilter
 import android.graphics.PorterDuff
 import android.os.Build
@@ -10,14 +11,12 @@ import androidx.fragment.app.FragmentPagerAdapter
 import androidx.core.content.ContextCompat
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import android.view.View
+import android.view.ViewGroup
 import com.sportpassword.bm.Adapters.TabAdapter
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Utilities.*
-import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.tab.view.*
-import kotlinx.android.synthetic.main.activity_test.*
-import kotlinx.android.synthetic.main.login_out.*
-import kotlinx.android.synthetic.main.nav_header_main.*
+import com.sportpassword.bm.databinding.ActivityMainBinding
+import com.sportpassword.bm.databinding.MytablevcBinding
 
 class MainActivity1 : BaseActivity() {
 
@@ -32,6 +31,9 @@ class MainActivity1 : BaseActivity() {
 
     //private var mSectionPagerAdapter: SectionsPagerAdapter? = null
     //private val apiClient = VimeoClient.getInstance()
+
+    private lateinit var binding: ActivityMainBinding
+    private lateinit var view: ViewGroup
 
     val tabsTextArr: Array<String> = arrayOf<String>("球隊", "課程", "會員", "球館", "更多")
     val tabsIconArr: Array<String> = arrayOf<String>("team", "course", "member", "arena", "more")
@@ -102,10 +104,12 @@ class MainActivity1 : BaseActivity() {
 //        OneSignal.clearOneSignalNotifications()
 
         //println("detect:" + gSimulate)
-        setContentView(R.layout.activity_main)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        view = binding.root
+        setContentView(view)
 
         //App 最上面的標題列
-        setSupportActionBar(toolbar)
+        setSupportActionBar(binding.toolbar)
         supportActionBar!!.setDisplayShowTitleEnabled(false)
 
         // TTEditAction bar 右邊的「提交」按鈕
@@ -146,12 +150,10 @@ class MainActivity1 : BaseActivity() {
         for (i in tabsTextArr.indices) {
             val text: String = tabsTextArr[i]
             val icon: Int = resources.getIdentifier(tabsIconArr[i], "drawable", packageName)
-            tabs.addTab(tabs.newTab().setText(text).setIcon(icon))
+            binding.tabs.addTab(binding.tabs.newTab().setText(text).setIcon(icon))
         }
-        val tab: TabLayout.Tab? = tabs.getTabAt(0)
+        val tab: TabLayout.Tab? = binding.tabs.getTabAt(0)
         setTabIconSelected(tab!!)
-
-
 
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
@@ -160,18 +162,18 @@ class MainActivity1 : BaseActivity() {
         val w = (screenWidth.toFloat() / density).toInt()
         //val adapter = TabAdapter(supportFragmentManager, tabsTextArr, w)
         val adapter = TabAdapter(this, tabsTextArr, w)
-        fragment_container.adapter = adapter
+        binding.fragmentContainer.adapter = adapter
 
         //mSectionPagerAdapter = SectionsPagerAdapter(supportFragmentManager)
         //tab_container.adapter = mSectionPagerAdapter
 
 //        fragment_container.addOnPageChangeListener(TabLayout.TabLayoutOnPageChangeListener(tabs))
 //        tabs.addOnTabSelectedListener(TabLayout.ViewPagerOnTabSelectedListener(fragment_container))
-        tabs.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
+        binding.tabs.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab?) {
                 setTabIconSelected(tab!!)
                 val position = tab.position
-                fragment_container.currentItem = position
+                binding.fragmentContainer.currentItem = position
                 //adapter.createFragment(position)
             }
 
@@ -215,7 +217,7 @@ class MainActivity1 : BaseActivity() {
 //        } catch (e: Exception) {
 //            println(e.localizedMessage)
 //        }
-        home_total_ad.visibility = View.GONE
+        binding.homeTotalAd.visibility = View.GONE
     }
 
     @RequiresApi(Build.VERSION_CODES.M)
@@ -247,7 +249,7 @@ class MainActivity1 : BaseActivity() {
     private fun setTitle(title: String) {
         //val titleView = toolbar.findViewById<View>(R.id.toolbar_title) as TextView
         //titleView.text = title
-        toolbar_title.text = title
+        binding.toolbarTitle.text = title
     }
 
 //    fun search_team(view: View) {

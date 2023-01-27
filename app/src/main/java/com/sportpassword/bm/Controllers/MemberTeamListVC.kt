@@ -7,7 +7,6 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.google.gson.reflect.TypeToken
@@ -22,16 +21,17 @@ import com.sportpassword.bm.Utilities.Loading
 import com.sportpassword.bm.Utilities.noSec
 import com.sportpassword.bm.Utilities.setInfo
 import com.sportpassword.bm.Utilities.then
-import com.sportpassword.bm.Views.EndlessRecyclerViewScrollListener
 import com.sportpassword.bm.Views.Top
+import com.sportpassword.bm.databinding.ActivityMemberTeamListVcBinding
 import com.sportpassword.bm.member
 import com.squareup.picasso.MemoryPolicy
 import com.squareup.picasso.Picasso
-import kotlinx.android.synthetic.main.cell_section.*
-import kotlinx.android.synthetic.main.mask.*
 import java.lang.reflect.Type
 
 class MemberTeamListVC : BaseActivity(), MyTable2IF {
+
+    private lateinit var binding: ActivityMemberTeamListVcBinding
+    private lateinit var view: ViewGroup
 
     var top: Top? = null
     private var infoTV: TextView? = null
@@ -41,7 +41,10 @@ class MemberTeamListVC : BaseActivity(), MyTable2IF {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_member_team_list_vc)
+
+        binding = ActivityMemberTeamListVcBinding.inflate(layoutInflater)
+        view = binding.root
+        setContentView(view)
 
         findViewById<Top>(R.id.top) ?. let {
             top = it
@@ -96,12 +99,12 @@ class MemberTeamListVC : BaseActivity(), MyTable2IF {
 //    }
 
     private fun getDataFromServer(page: Int) {
-        Loading.show(mask)
+        Loading.show(view)
         loading = true
 
         MemberService.teamlist(this, member.token!!, page, tableView.perPage) { success ->
             runOnUiThread {
-                Loading.hide(mask)
+                Loading.hide(view)
 
                 //MyTable2IF
 //                println(MemberService.jsonString)
@@ -129,11 +132,11 @@ class MemberTeamListVC : BaseActivity(), MyTable2IF {
 //        println(row.id)
         warning("確定要退出嗎？", "取消", "退出") {
 
-            Loading.show(mask)
+            Loading.show(view)
             loading = true
             MemberService.deleteMemberTeam(this, row.token) { success ->
                 runOnUiThread {
-                    Loading.hide(mask)
+                    Loading.hide(view)
                     refresh()
                     //val b: Boolean = showTableView(tableView, MemberService.jsonString)
 //                        if (b) {

@@ -7,7 +7,6 @@ import com.sportpassword.bm.R
 import com.sportpassword.bm.Utilities.IndexPath
 //import com.xwray.groupie.kotlinandroidextensions.GroupieViewHolder
 //import com.xwray.groupie.kotlinandroidextensions.GroupieViewHolder
-import kotlinx.android.synthetic.main.formitem_content.*
 import org.jetbrains.anko.backgroundColor
 import com.sportpassword.bm.Form.FormItem.FormItem
 

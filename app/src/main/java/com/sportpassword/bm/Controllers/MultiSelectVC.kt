@@ -13,10 +13,12 @@ import com.sportpassword.bm.Data.SelectRow
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Utilities.selected
 import com.sportpassword.bm.Utilities.unSelected
-import kotlinx.android.synthetic.main.activity_multi_select_vc.*
-import kotlinx.android.synthetic.main.select_item.*
+import com.sportpassword.bm.databinding.ActivityMultiSelectVcBinding
 
 open class MultiSelectVC : SelectVC() {
+
+    private lateinit var binding: ActivityMultiSelectVcBinding
+    private lateinit var view: ViewGroup
 
     var selecteds: ArrayList<String> = arrayListOf()
     lateinit var tableAdapter: MultiSelectAdapter
@@ -41,7 +43,10 @@ open class MultiSelectVC : SelectVC() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_multi_select_vc)
+
+        binding = ActivityMultiSelectVcBinding.inflate(layoutInflater)
+        view = binding.root
+        setContentView(view)
 
         if (intent.hasExtra("selecteds")) {
             selecteds = intent.getStringArrayListExtra("selecteds")!!
@@ -52,7 +57,7 @@ open class MultiSelectVC : SelectVC() {
         }
 
 
-        recyclerView = tableView
+        recyclerView = binding.tableView
         tableAdapter = MultiSelectAdapter(selecteds, this)
         recyclerView.adapter = tableAdapter
 //        initAdapter()

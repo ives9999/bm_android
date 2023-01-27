@@ -1,26 +1,22 @@
 package com.sportpassword.bm.Controllers
 
-import android.content.Context
-import android.graphics.Color
 import android.os.Bundle
-import android.text.SpannableString
-import android.text.Spanned
-import android.text.style.ForegroundColorSpan
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
-import androidx.core.content.ContextCompat
 import com.google.gson.Gson
 import com.sportpassword.bm.Models.OrderTable
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.MemberService
-import com.sportpassword.bm.Services.OrderService
 import com.sportpassword.bm.Utilities.*
+import com.sportpassword.bm.databinding.ActivityMemberSubscriptionPayVcBinding
 import com.sportpassword.bm.member
-import kotlinx.android.synthetic.main.mask.*
 
 class MemberSubscriptionPayVC : BaseActivity() {
+
+    private lateinit var binding: ActivityMemberSubscriptionPayVcBinding
+    private lateinit var view: ViewGroup
 
     var name: String = ""
     var price: Int = 0
@@ -31,7 +27,10 @@ class MemberSubscriptionPayVC : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_member_subscription_pay_vc)
+
+        binding = ActivityMemberSubscriptionPayVcBinding.inflate(layoutInflater)
+        view = binding.root
+        setContentView(view)
 
         name = (intent.hasExtra("name") then { intent.getStringExtra("name") }) ?: ""
         price = (intent.hasExtra("price") then { intent.getIntExtra("price", 0) }) ?: 0
@@ -78,10 +77,10 @@ class MemberSubscriptionPayVC : BaseActivity() {
                     }
                 } else {
 
-                    Loading.show(mask)
+                    Loading.show(view)
                     MemberService.subscription(this, kind) { success ->
                         runOnUiThread {
-                            Loading.hide(mask)
+                            Loading.hide(view)
                         }
 
                         if (success) {

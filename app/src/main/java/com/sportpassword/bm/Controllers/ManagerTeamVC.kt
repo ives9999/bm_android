@@ -3,16 +3,16 @@ package com.sportpassword.bm.Controllers
 import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
+import android.widget.FrameLayout
 import com.google.gson.Gson
 import com.sportpassword.bm.Adapters.TeamAdapter
 import com.sportpassword.bm.Models.*
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.TeamService
-import com.sportpassword.bm.Utilities.Global
 import com.sportpassword.bm.Utilities.Loading
 import com.sportpassword.bm.Utilities.jsonToModels
 import com.sportpassword.bm.Utilities.setInfo
-import kotlinx.android.synthetic.main.mask.*
+import com.sportpassword.bm.databinding.ActivityManagerTeamVcBinding
 
 class ManagerTeamVC : ManagerVC() {
 
@@ -26,6 +26,9 @@ class ManagerTeamVC : ManagerVC() {
         resource = R.layout.activity_manager_team_vc
 
         super.onCreate(savedInstanceState)
+
+        val binding = ActivityManagerTeamVcBinding.inflate(layoutInflater)
+        view = binding.root
 
         tableAdapter = TeamAdapter(R.layout.manager_team_item, this)
         recyclerView.adapter = tableAdapter
@@ -66,10 +69,10 @@ class ManagerTeamVC : ManagerVC() {
 
         msg = "是否確定要刪除此球隊？"
         warning(msg, true, "刪除") {
-            Loading.show(mask)
+            Loading.show(view)
             dataService.delete(this, able_type, row.token, "trash") { success ->
                 runOnUiThread {
-                    Loading.hide(mask)
+                    Loading.hide(view)
                 }
 
                 if (success) {

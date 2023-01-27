@@ -1,12 +1,9 @@
 package com.sportpassword.bm.Controllers
 
-import android.content.Context
 import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
-import android.widget.ImageView
-import android.widget.TextView
 import com.sportpassword.bm.Adapters.MemberCartAdapter
 import com.sportpassword.bm.Models.*
 import com.sportpassword.bm.R
@@ -14,14 +11,13 @@ import com.sportpassword.bm.Services.CartService
 import com.sportpassword.bm.Utilities.jsonToModels
 import com.sportpassword.bm.member
 import com.sportpassword.bm.Utilities.*
-import com.squareup.picasso.Picasso
-import kotlinx.android.synthetic.main.activity_member_cart_list_vc.*
-import kotlinx.android.synthetic.main.bottom_view_general.*
-import kotlinx.android.synthetic.main.cart_list_cell.view.*
-import kotlinx.android.synthetic.main.cart_list_cell.view.listFeatured
-import kotlinx.android.synthetic.main.cart_list_cell.view.titleLbl
+import com.sportpassword.bm.databinding.ActivityMemberCartListVcBinding
+import com.sportpassword.bm.databinding.MytablevcBinding
 
 class MemberCartListVC : MyTableVC() {
+
+    private lateinit var binding: ActivityMemberCartListVcBinding
+    private lateinit var view: ViewGroup
 
     var mysTable: CartsTable? = null
     lateinit var tableAdapter: MemberCartAdapter
@@ -39,7 +35,10 @@ class MemberCartListVC : MyTableVC() {
         dataService = CartService
 
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_member_cart_list_vc)
+
+        binding = ActivityMemberCartListVcBinding.inflate(layoutInflater)
+        view = binding.root
+        setContentView(view)
 
         if (intent.hasExtra("source")) {
             source = intent.getStringExtra("source")!!
@@ -47,8 +46,8 @@ class MemberCartListVC : MyTableVC() {
 
         setMyTitle("購物車")
 
-        recyclerView = cart_list
-        refreshLayout = cart_refresh
+        recyclerView = binding.cartList
+        refreshLayout = binding.cartRefresh
 
 //        initAdapter()
         tableAdapter = MemberCartAdapter(R.layout.cart_list_cell, this)
@@ -115,7 +114,7 @@ class MemberCartListVC : MyTableVC() {
                     tableLists += generateItems1(CartItemTable::class, myTable!!.items)
                     tableAdapter.setMyTableList(tableLists)
                     runOnUiThread {
-                        submitBtn.visibility =
+                        binding.bottom.submitBtn.visibility =
                             (cartItemsTable.size > 0) then { View.VISIBLE } ?: View.GONE
                         tableAdapter.notifyDataSetChanged()
                     }
@@ -123,19 +122,19 @@ class MemberCartListVC : MyTableVC() {
                     val rootView: ViewGroup = getRootView()
                     runOnUiThread {
                         rootView.setInfo(this, "目前購物車無商品")
-                        submitBtn.visibility = View.GONE
+                        binding.bottom.submitBtn.visibility = View.GONE
                     }
                 }
             } else {
                 val rootView: ViewGroup = getRootView()
                 runOnUiThread {
                     rootView.setInfo(this, "目前購物車無商品")
-                    submitBtn.visibility = View.GONE
+                    binding.bottom.submitBtn.visibility = View.GONE
                 }
 
                 bottom_button_count = 1
                 runOnUiThread {
-                    submitBtn.visibility = View.GONE
+                    binding.bottom.submitBtn.visibility = View.GONE
                     setBottomButtonPadding()
                 }
             }

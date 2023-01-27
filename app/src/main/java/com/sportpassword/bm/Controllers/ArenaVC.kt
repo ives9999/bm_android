@@ -2,6 +2,7 @@ package com.sportpassword.bm.Controllers
 
 import android.os.Bundle
 import android.view.ViewGroup
+import android.widget.FrameLayout
 import androidx.core.content.ContextCompat
 import com.sportpassword.bm.Adapters.ArenaAdapter
 import com.sportpassword.bm.Data.OneRow
@@ -12,15 +13,14 @@ import com.sportpassword.bm.Models.*
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.ArenaService
 import com.sportpassword.bm.Utilities.*
-import kotlinx.android.synthetic.main.activity_arena_vc.list_container
-import kotlinx.android.synthetic.main.activity_arena_vc.page_refresh
-import kotlinx.android.synthetic.main.bottom_view.*
-import kotlinx.android.synthetic.main.mask.*
-import kotlinx.android.synthetic.main.top_view.*
+import com.sportpassword.bm.databinding.ActivityAccountBinding
+import com.sportpassword.bm.databinding.ActivityArenaVcBinding
 import org.jetbrains.anko.backgroundColor
 import org.jetbrains.anko.textColor
 
 class ArenaVC : MyTableVC() {
+
+    private lateinit var binding: ActivityArenaVcBinding
 
     var mysTable: ArenasTable? = null
     lateinit var tableAdapter: ArenaAdapter
@@ -31,7 +31,9 @@ class ArenaVC : MyTableVC() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        setContentView(R.layout.activity_arena_vc)
+        binding = ActivityArenaVcBinding.inflate(layoutInflater)
+        val view = binding.root
+        setContentView(view)
 
         this.dataService = ArenaService
         able_type = "arena"
@@ -47,16 +49,19 @@ class ArenaVC : MyTableVC() {
 //        youAdapter = YouAdapter()
 //        youAdapter.items = youItems
 
-        recyclerView = list_container
-        refreshLayout = page_refresh
-        maskView = mask
+        recyclerView = binding.listContainer
+        refreshLayout = binding.pageRefresh
+
+        findViewById<FrameLayout>(R.id.mask) ?. let {
+            maskView = it
+        }
         setRefreshListener()
 
-        topTitleLbl.setText("球館")
+        binding.topview1.topTitleLbl.setText("球館")
         setBottomTabFocus()
 
         tableAdapter = ArenaAdapter(R.layout.arena_list_cell, this)
-        list_container.adapter = tableAdapter
+        binding.listContainer.adapter = tableAdapter
 
         init()
         refresh()

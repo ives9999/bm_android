@@ -3,14 +3,16 @@ package com.sportpassword.bm.Controllers
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
-import android.view.View
+import android.view.ViewGroup
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Utilities.MYCOLOR
-import kotlinx.android.synthetic.main.color_select_item.*
-import kotlinx.android.synthetic.main.mytablevc.*
-import org.jetbrains.anko.backgroundColor
+import com.sportpassword.bm.databinding.ActivityAccountBinding
+import com.sportpassword.bm.databinding.MytablevcBinding
 
 class ColorSelectVC: MyTableVC() {
+
+    private lateinit var binding: MytablevcBinding
+    private lateinit var view: ViewGroup
 
     lateinit var key: String
     lateinit var all: ArrayList<HashMap<String, Any>>
@@ -20,7 +22,11 @@ class ColorSelectVC: MyTableVC() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.mytablevc)
+
+        binding = MytablevcBinding.inflate(layoutInflater)
+        view = binding.root
+        setContentView(view)
+
         setMyTitle("顏色")
 
         if (intent.hasExtra("selecteds")) {
@@ -29,7 +35,7 @@ class ColorSelectVC: MyTableVC() {
         key = intent.getStringExtra("key")!!
 
         all = MYCOLOR.all()
-        recyclerView = mytable
+        recyclerView = binding.mytable
         //initAdapter()
     }
 

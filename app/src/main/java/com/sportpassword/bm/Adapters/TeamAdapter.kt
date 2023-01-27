@@ -2,18 +2,15 @@ package com.sportpassword.bm.Adapters
 
 import android.content.Context
 import android.view.View
+import android.widget.Button
 import android.widget.ImageButton
+import android.widget.RelativeLayout
+import android.widget.TextView
 import com.sportpassword.bm.Controllers.List1CellDelegate
 import com.sportpassword.bm.Models.Table
 import com.sportpassword.bm.Models.TeamTable
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Utilities.truncate
-import kotlinx.android.synthetic.main.team_list_cell.view.*
-import kotlinx.android.synthetic.main.team_list_cell.view.cityBtn
-import kotlinx.android.synthetic.main.team_list_cell.view.iconView
-import kotlinx.android.synthetic.main.team_list_cell.view.intervalLbl
-import kotlinx.android.synthetic.main.team_list_cell.view.signup_countLbl
-import kotlinx.android.synthetic.main.team_list_cell.view.weekdayLbl
 
 class TeamAdapter(resource: Int, list1CellDelegate: List1CellDelegate?): MyAdapter<TeamViewHolder>(resource, ::TeamViewHolder, list1CellDelegate) {}
 
@@ -24,46 +21,50 @@ class TeamViewHolder(context: Context, viewHolder: View, list1CellDelegate: List
 
         val row: TeamTable = _row as TeamTable
 
-        if (viewHolder.cityBtn != null) {
+        viewHolder.findViewById<Button>(R.id.cityBtn) ?. let {
             if (row.arena?.name != null && row.arena!!.name.isNotEmpty()) {
-                viewHolder.cityBtn.text = row.arena!!.city_show
-                viewHolder.cityBtn.setOnClickListener {
+                it.text = row.arena!!.city_show
+                it.setOnClickListener {
                     list1CellDelegate?.cellCity(row)
                 }
 
                 var arena_name: String = row.arena!!.name
                 if (arena_name.length > 5) {
-                   arena_name = arena_name.truncate(5)
+                    arena_name = arena_name.truncate(5)
                 }
-                viewHolder.arenaBtn.text = arena_name
-                viewHolder.arenaBtn.setOnClickListener {
-                    list1CellDelegate?.cellArena(row)
+
+                viewHolder.findViewById<Button>(R.id.arenaBtn) ?. let { it1 ->
+                    it1.text = arena_name
+                    it1.setOnClickListener {
+                        list1CellDelegate?.cellArena(row)
+                    }
                 }
             } else {
-                viewHolder.cityBtn.visibility = View.GONE
-                viewHolder.arenaBtn.visibility = View.GONE
+                it.visibility = View.GONE
+                viewHolder.findViewById<Button>(R.id.arenaBtn) ?. let { it1 ->
+                    it1.visibility = View.GONE
+                }
             }
         }
 
-        if (viewHolder.weekdayLbl != null) {
+        viewHolder.findViewById<TextView>(R.id.weekdayLbl) ?. let {
             if (row.weekdays_show.isNotEmpty()) {
-                viewHolder.weekdayLbl.text = row.weekdays_show
+                it.text = row.weekdays_show
             } else {
-                viewHolder.weekdayLbl.text = "臨打日期:未提供"
+                it.text = "臨打日期:未提供"
             }
         }
 
-        if (viewHolder.intervalLbl != null) {
+        viewHolder.findViewById<TextView>(R.id.intervalLbl) ?. let {
             if (row.interval_show.isNotEmpty()) {
-                viewHolder.intervalLbl.text = row.interval_show
+                it.text = row.interval_show
             } else {
-                viewHolder.weekdayLbl.text = "臨打時段:未提供"
+                it.text = "臨打時段:未提供"
             }
         }
 
-        if (viewHolder.iconView != null) {
-            val v = viewHolder.iconView
-            var a = v.findViewById<ImageButton>(R.id.mapIcon)
+        viewHolder.findViewById<RelativeLayout>(R.id.iconView) ?. let {
+            var a = it.findViewById<ImageButton>(R.id.mapIcon)
             if (a != null && row.arena != null) {
 
                 if (row.arena!!.address == null || row.arena!!.address.isEmpty()) {
@@ -76,33 +77,33 @@ class TeamViewHolder(context: Context, viewHolder: View, list1CellDelegate: List
                 }
             }
 
-            a = v.findViewById<ImageButton>(R.id.editIcon)
+            a = it.findViewById<ImageButton>(R.id.editIcon)
             a?.setOnClickListener {
                 list1CellDelegate?.cellEdit(row)
             }
 
-            a = v.findViewById<ImageButton>(R.id.deleteIcon)
+            a = it.findViewById<ImageButton>(R.id.deleteIcon)
             a?.setOnClickListener {
                 list1CellDelegate?.cellDelete(row)
             }
 
-            a = v.findViewById<ImageButton>(R.id.signupIcon)
+            a = it.findViewById<ImageButton>(R.id.signupIcon)
             a?.setOnClickListener {
                 list1CellDelegate?.cellSignup(row)
             }
 
-            a = v.findViewById<ImageButton>(R.id.teamMemberIcon)
+            a = it.findViewById<ImageButton>(R.id.teamMemberIcon)
             a?.setOnClickListener {
                 list1CellDelegate?.cellTeamMember(row)
             }
         }
 
-        if (viewHolder.temp_quantityLbl != null) {
-            viewHolder.temp_quantityLbl.text = row.people_limit_show
+        viewHolder.findViewById<TextView>(R.id.temp_quantityLbl) ?. let {
+            it.text = row.people_limit_show
         }
 
-        if (viewHolder.signup_countLbl != null) {
-            viewHolder.signup_countLbl.text = row.temp_signup_count_show
+        viewHolder.findViewById<TextView>(R.id.signup_countLbl) ?. let {
+            it.text = row.temp_signup_count_show
         }
     }
 }

@@ -1,29 +1,25 @@
 package com.sportpassword.bm.Controllers
 
-import android.content.Context
+import android.app.Activity
 import android.os.Bundle
-import android.view.View
 import android.view.ViewGroup
+import android.widget.FrameLayout
 import com.sportpassword.bm.Adapters.CourseAdapter
 import com.sportpassword.bm.Data.OneRow
 import com.sportpassword.bm.Data.OneSection
-import com.sportpassword.bm.Data.SearchRow
-import com.sportpassword.bm.Data.SearchSection
 import com.sportpassword.bm.Models.CourseTable
 import com.sportpassword.bm.Models.CoursesTable
 import com.sportpassword.bm.Models.Table
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.CourseService
 import com.sportpassword.bm.Utilities.*
-import kotlinx.android.synthetic.main.activity_course_vc.*
-import kotlinx.android.synthetic.main.activity_store_vc.list_container
-import kotlinx.android.synthetic.main.bottom_view.*
-import kotlinx.android.synthetic.main.course_list_cell.view.*
-import kotlinx.android.synthetic.main.mask.*
-import kotlinx.android.synthetic.main.top_view.*
-import org.jetbrains.anko.backgroundColor
+import com.sportpassword.bm.databinding.ActivityCourseVcBinding
+import com.sportpassword.bm.databinding.MytablevcBinding
 
 class CourseVC : MyTableVC() {
+
+    private lateinit var binding: ActivityCourseVcBinding
+    private lateinit var view: ViewGroup
 
     var mysTable: CoursesTable? = null
     lateinit var tableAdapter: CourseAdapter
@@ -31,7 +27,9 @@ class CourseVC : MyTableVC() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        setContentView(R.layout.activity_course_vc)
+        binding = ActivityCourseVcBinding.inflate(layoutInflater)
+        view = binding.root
+        setContentView(view)
 
         this.dataService = CourseService
         able_type = "course"
@@ -45,11 +43,14 @@ class CourseVC : MyTableVC() {
         }
 
         setBottomTabFocus()
-        topTitleLbl.setText("課程")
+        binding.topViewRL.topTitleLbl.setText("課程")
 
-        recyclerView = list_container
-        refreshLayout = page_refresh
-        maskView = mask
+        recyclerView = binding.listContainer
+        refreshLayout = binding.pageRefresh
+
+        view.findViewById<FrameLayout>(R.id.mask) ?. let { mask ->
+            maskView = mask
+        }
         setRefreshListener()
 
 //        initAdapter()

@@ -29,29 +29,13 @@ import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.CartService
 import com.sportpassword.bm.Services.ProductService
 import com.sportpassword.bm.Utilities.*
-import com.sportpassword.bm.Views.Tag
+import com.sportpassword.bm.databinding.ActivityAccountBinding
+import com.sportpassword.bm.databinding.ActivityAddcartVcBinding
 import com.sportpassword.bm.member
-import com.squareup.picasso.Picasso
-import kotlinx.android.synthetic.main.activity_addcart_vc.*
-import kotlinx.android.synthetic.main.bottom_view_general.*
-import kotlinx.android.synthetic.main.cart_list_cell.view.*
-import kotlinx.android.synthetic.main.formitem_barcode.*
-import kotlinx.android.synthetic.main.formitem_more.view.*
-import kotlinx.android.synthetic.main.formitem_more.view.promptBtn
-import kotlinx.android.synthetic.main.formitem_number.view.*
-import kotlinx.android.synthetic.main.formitem_plain.view.detail
-import kotlinx.android.synthetic.main.formitem_plain.view.title
-import kotlinx.android.synthetic.main.formitem_radio.view.*
-import kotlinx.android.synthetic.main.formitem_sex.*
-import kotlinx.android.synthetic.main.formitem_tag.view.*
-import kotlinx.android.synthetic.main.formitem_textfield.view.*
-import kotlinx.android.synthetic.main.formitem_textfield.view.clear
-import kotlinx.android.synthetic.main.mask.*
-import kotlinx.android.synthetic.main.tag.view.*
-import org.jetbrains.anko.backgroundColor
-import java.lang.IllegalArgumentException
 
 class AddCartVC : MyTableVC() {
+
+    private lateinit var binding: ActivityAddcartVcBinding
 
     var product_token: String? = null
     var cartItem_token: String? = null
@@ -110,7 +94,10 @@ class AddCartVC : MyTableVC() {
 //        )
 
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_addcart_vc)
+
+        binding = ActivityAddcartVcBinding.inflate(layoutInflater)
+        val view = binding.root
+        setContentView(view)
 
         if (intent.hasExtra("product_token")) {
             product_token = intent.getStringExtra("product_token")
@@ -122,13 +109,13 @@ class AddCartVC : MyTableVC() {
         //hidekeyboard(order_layout)
 
         dataService = ProductService
-        recyclerView = editTableView
+        recyclerView = binding.editTableView
         oneSectionAdapter = OneSectionAdapter(this, R.layout.cell_section, this, hashMapOf())
 //        addCartSections = initSectionRows1()
         oneSectionAdapter.setOneSection(oneSections)
         recyclerView.adapter = oneSectionAdapter
 
-        refreshLayout = refresh
+        refreshLayout = binding.refresh
         setRefreshListener()
         setBottomButtonPadding()
 
@@ -225,7 +212,10 @@ class AddCartVC : MyTableVC() {
 //    }
 
     override fun refresh() {
-        Loading.show(mask)
+        findViewById<FrameLayout>(R.id.mask) ?. let {
+            Loading.show(it)
+        }
+
         if (product_token != null) {
 //            adapter.clear()
 //            adapterSections.clear()
@@ -235,7 +225,9 @@ class AddCartVC : MyTableVC() {
             val params: HashMap<String, String> = hashMapOf("token" to product_token!!, "member_token" to member.token!!)
             dataService.getOne(this, params) { success ->
                 runOnUiThread {
-                    Loading.hide(mask)
+                    findViewById<FrameLayout>(R.id.mask) ?. let {
+                        Loading.hide(it)
+                    }
                 }
                 if (success) {
                     try {
@@ -268,11 +260,15 @@ class AddCartVC : MyTableVC() {
         if (cartItem_token != null) {
 
             update = true
-            submitBtn.text = "更新購物車"
+            findViewById<Button>(R.id.submitBtn) ?. let {
+                it.text = "更新購物車"
+            }
             val params: HashMap<String, String> = hashMapOf("cart_item_token" to cartItem_token!!, "member_token" to member.token!!)
             CartService.getOne(this, params) { success ->
                 runOnUiThread {
-                    Loading.hide(mask)
+                    findViewById<FrameLayout>(R.id.mask) ?. let {
+                        Loading.hide(it)
+                    }
                 }
                 if (success) {
                     try {
@@ -490,14 +486,18 @@ class AddCartVC : MyTableVC() {
         }
 
         if (isAttribute) {
-            Loading.show(mask)
+            findViewById<FrameLayout>(R.id.mask) ?. let {
+                Loading.show(it)
+            }
 
             params["attribute"] = selected_attributes.joinToString("|")
             //println(params)
 
             CartService.update(this, params) { success ->
                 runOnUiThread {
-                    Loading.hide(mask)
+                    findViewById<FrameLayout>(R.id.mask) ?. let {
+                        Loading.hide(it)
+                    }
                 }
                 var msg: String = "成功加入購物車了"
                 if (success) {

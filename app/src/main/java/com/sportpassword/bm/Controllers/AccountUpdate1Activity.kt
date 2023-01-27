@@ -1,5 +1,6 @@
 package com.sportpassword.bm.Controllers
 
+import android.app.Activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -13,34 +14,32 @@ import android.widget.RadioButton
 import android.widget.RadioGroup
 import com.sportpassword.bm.Models.MEMBER_SEX
 import com.sportpassword.bm.R
-import com.sportpassword.bm.Services.MemberService
-import com.sportpassword.bm.Utilities.Alert
-import com.sportpassword.bm.Utilities.Loading
-import com.sportpassword.bm.Utilities.NOTIF_MEMBER_DID_CHANGE
-import com.sportpassword.bm.Utilities.memberDidChangeIntent
-import com.sportpassword.bm.member
-import kotlinx.android.synthetic.main.activity_account_update1.*
-import kotlinx.android.synthetic.main.tab.*
+import com.sportpassword.bm.databinding.ActivityAccountBinding
+import com.sportpassword.bm.databinding.ActivityAccountUpdate1Binding
 import java.util.*
-import kotlinx.android.synthetic.main.mask.*
 
 class AccountUpdate1Activity : BaseActivity() {
 
     var field = ""
     var value = ""
 
+    private lateinit var binding: ActivityAccountUpdate1Binding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_account_update1)
 
-        hidekeyboard(testa)
+        binding = ActivityAccountUpdate1Binding.inflate(layoutInflater)
+        val view = binding.root
+        setContentView(view)
+
+        hidekeyboard(binding.testa)
 
         field = intent.getStringExtra("field")!!
         //value = member.fetch(field)
 
-        accountTxt.visibility = View.INVISIBLE
-        accountRadioGroup.visibility = View.INVISIBLE
-        accountDate.visibility = View.INVISIBLE
+        binding.accountTxt.visibility = View.INVISIBLE
+        binding.accountRadioGroup.visibility = View.INVISIBLE
+        binding.accountDate.visibility = View.INVISIBLE
 
         when (field) {
             "sex" -> {
@@ -78,7 +77,7 @@ class AccountUpdate1Activity : BaseActivity() {
             }
         }
         //println(value)
-        accountRadioGroup.setOnCheckedChangeListener(RadioGroup.OnCheckedChangeListener{ group, checkedId ->
+        binding.accountRadioGroup.setOnCheckedChangeListener(RadioGroup.OnCheckedChangeListener{ group, checkedId ->
             val radio = findViewById<RadioButton>(checkedId)
             val sex = MEMBER_SEX.from(radio.text.toString()).toString()
             value = sex
@@ -86,20 +85,20 @@ class AccountUpdate1Activity : BaseActivity() {
     }
 
     fun radioForm() {
-        accountRadioGroup.visibility = View.VISIBLE
-        accountDate.visibility = View.INVISIBLE
-        accountTxt.visibility = View.INVISIBLE
-        clearbutton_account.visibility = View.INVISIBLE
-        accountRadioYes.text = "先生"
-        accountRadioNo.text = "小姐"
-        if (value == MEMBER_SEX.M.toString()) accountRadioYes.isChecked=true else accountRadioNo.isChecked=true
+        binding.accountRadioGroup.visibility = View.VISIBLE
+        binding.accountDate.visibility = View.INVISIBLE
+        binding.accountTxt.visibility = View.INVISIBLE
+        binding.clearbuttonAccount.visibility = View.INVISIBLE
+        binding.accountRadioYes.text = "先生"
+        binding.accountRadioNo.text = "小姐"
+        if (value == MEMBER_SEX.M.toString()) binding.accountRadioYes.isChecked=true else binding.accountRadioNo.isChecked=true
     }
 
     fun dobForm() {
-        accountRadioGroup.visibility = View.INVISIBLE
-        accountDate.visibility = View.VISIBLE
-        accountTxt.visibility = View.INVISIBLE
-        clearbutton_account.visibility = View.INVISIBLE
+        binding.accountRadioGroup.visibility = View.INVISIBLE
+        binding.accountDate.visibility = View.VISIBLE
+        binding.accountTxt.visibility = View.INVISIBLE
+        binding.clearbuttonAccount.visibility = View.INVISIBLE
         if (value.length == 0) {
             value = "2000-01-01"
         }
@@ -108,13 +107,13 @@ class AccountUpdate1Activity : BaseActivity() {
         //println(dobs)
         //val startDate = Date("1920-01-01")
         val cal = Calendar.getInstance()
-        accountDate.maxDate = cal.timeInMillis
+        binding.accountDate.maxDate = cal.timeInMillis
         cal.set(Calendar.YEAR, 1920)
         cal.set(Calendar.MONTH, Calendar.JANUARY)
         cal.set(Calendar.DAY_OF_MONTH, 1)
-        accountDate.minDate = cal.timeInMillis
+        binding.accountDate.minDate = cal.timeInMillis
 
-        accountDate.init(dobs[0], dobs[1]-1, dobs[2], DatePicker.OnDateChangedListener{ datePicker, y, m, d ->
+        binding.accountDate.init(dobs[0], dobs[1]-1, dobs[2], DatePicker.OnDateChangedListener{ datePicker, y, m, d ->
             //println("y:$y, m:$m, d:$d")
             value = "$y-${m+1}-$d"
             //println(value)
@@ -129,19 +128,19 @@ class AccountUpdate1Activity : BaseActivity() {
     }
 
     fun textForm() {
-        accountRadioGroup.visibility = View.INVISIBLE
-        accountDate.visibility = View.INVISIBLE
-        accountTxt.visibility = View.VISIBLE
-        clearbutton_account.visibility = View.VISIBLE
-        accountTxt.setText(value)
-        accountTxt.requestFocus()
-        accountTxt.setSelection(value.length)
+        binding.accountRadioGroup.visibility = View.INVISIBLE
+        binding.accountDate.visibility = View.INVISIBLE
+        binding.accountTxt.visibility = View.VISIBLE
+        binding.clearbuttonAccount.visibility = View.VISIBLE
+        binding.accountTxt.setText(value)
+        binding.accountTxt.requestFocus()
+        binding.accountTxt.setSelection(value.length)
     }
 
     fun accountSubmit(view: View) {
 //        Loading.show(mask)
-        if (accountTxt.visibility == View.VISIBLE) {
-            value = accountTxt.text.toString()
+        if (binding.accountTxt.visibility == View.VISIBLE) {
+            value = binding.accountTxt.text.toString()
             //println(value)
         }
 //        MemberService.update(this, member.id, field, value) { success ->
@@ -160,6 +159,6 @@ class AccountUpdate1Activity : BaseActivity() {
     }
 
     fun clear(view: View) {
-        accountTxt.setText("")
+        binding.accountTxt.setText("")
     }
 }

@@ -9,11 +9,8 @@ import com.google.gson.JsonParseException
 import com.sportpassword.bm.Data.OneRow
 import com.sportpassword.bm.Models.*
 import com.sportpassword.bm.R
-import com.sportpassword.bm.Services.CourseService
 import com.sportpassword.bm.Services.TeamService
 import com.sportpassword.bm.Utilities.*
-import com.sportpassword.bm.member
-import kotlinx.android.synthetic.main.mask.*
 import java.util.*
 import kotlin.collections.ArrayList
 

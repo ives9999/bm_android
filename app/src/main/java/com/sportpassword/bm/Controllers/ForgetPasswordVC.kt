@@ -1,11 +1,9 @@
 package com.sportpassword.bm.Controllers
 
 import android.app.Activity
-import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import android.view.View
+import android.view.ViewGroup
 import com.google.gson.Gson
 import com.google.gson.JsonParseException
 import com.sportpassword.bm.Models.SuccessTable
@@ -13,20 +11,25 @@ import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.MemberService
 import com.sportpassword.bm.Utilities.Alert
 import com.sportpassword.bm.Utilities.Loading
-import com.sportpassword.bm.Utilities.NOTIF_MEMBER_DID_CHANGE
-import kotlinx.android.synthetic.main.activity_forget_password.*
-import kotlinx.android.synthetic.main.activity_login.*
-import kotlinx.android.synthetic.main.mask.*
+import com.sportpassword.bm.databinding.ActivityForgetPasswordBinding
+import com.sportpassword.bm.databinding.MytablevcBinding
 
 class ForgetPasswordVC : BaseActivity() {
 
+    private lateinit var binding: ActivityForgetPasswordBinding
+    private lateinit var view: ViewGroup
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_forget_password)
+
+        binding = ActivityForgetPasswordBinding.inflate(layoutInflater)
+        view = binding.root
+        setContentView(view)
+
         setMyTitle("忘記密碼")
-        hidekeyboard(forgetPassword_layout)
+        hidekeyboard(binding.root)
         //forgetPasswordEmailTxt.setText("ives@housetube.tw")
-        forgetPasswordEmailTxt.requestFocus()
+        binding.forgetPasswordEmailTxt.requestFocus()
 
         init()
     }
@@ -37,14 +40,14 @@ class ForgetPasswordVC : BaseActivity() {
     }
 
     fun forgetPasswordSubmit(view: View) {
-        val email = forgetPasswordEmailTxt.text.toString()
+        val email = binding.forgetPasswordEmailTxt.text.toString()
         if (email.isEmpty()) {
             Alert.show(this, "警告", "EMail沒填")
         }
 
-        Loading.show(mask)
+        Loading.show(view)
         MemberService.forgetPassword(this, email) { success ->
-            Loading.hide(mask)
+            Loading.hide(view)
             if (success) {
 
                 var t: SuccessTable? = null

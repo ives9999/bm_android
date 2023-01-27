@@ -13,7 +13,9 @@
         android:layout_alignParentTop="true"
         android:background="@color/MY_GREEN">
 
-        <include layout="@layout/top_view" />
+        <include layout="@layout/top_view"
+            android:id="@+id/topInclude"
+            />
 
     </RelativeLayout>
 

@@ -1,26 +1,21 @@
 package com.sportpassword.bm.Controllers
 
 import android.content.Intent
-import android.content.res.Resources
 import android.os.Bundle
 import androidx.recyclerview.widget.RecyclerView
 import android.view.View
+import android.widget.FrameLayout
 import android.widget.RadioGroup
-import android.widget.RelativeLayout
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.sportpassword.bm.Adapters.ListAdapter
-import com.sportpassword.bm.Adapters.OneSectionAdapter
 import com.sportpassword.bm.Data.OneRow
 import com.sportpassword.bm.Data.OneSection
-import com.sportpassword.bm.Data.SearchRow
-import com.sportpassword.bm.Form.BaseForm
 import com.sportpassword.bm.Models.*
+import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.MemberService
 import com.sportpassword.bm.Utilities.*
 import com.sportpassword.bm.member
-import kotlinx.android.synthetic.main.activity_payment_vc.*
-import kotlinx.android.synthetic.main.mask.*
 import kotlin.reflect.KClass
 
 abstract class MyTableVC : BaseActivity() {
@@ -85,7 +80,9 @@ abstract class MyTableVC : BaseActivity() {
     }
 
     open fun getDataStart(_page: Int, _perPage: Int, token: String? = null) {
-        Loading.show(mask)
+        findViewById<FrameLayout>(R.id.mask) ?. let { mask ->
+            Loading.show(mask)
+        }
         loading = true
 
         if (member_like) {
@@ -123,7 +120,9 @@ abstract class MyTableVC : BaseActivity() {
         }
 //        mask?.let { mask?.dismiss() }
         runOnUiThread {
-            Loading.hide(mask)
+            findViewById<FrameLayout>(R.id.mask) ?. let { mask ->
+                Loading.hide(mask)
+            }
         }
         loading = false
         if (refreshLayout != null) {

@@ -1,15 +1,9 @@
 package com.sportpassword.bm.Controllers
 
 import android.app.Activity
-import android.content.Context
 import android.content.Intent
-import android.hardware.display.DisplayManager
 import android.os.Bundle
-import android.os.Parcelable
-import android.util.DisplayMetrics
-import android.util.TypedValue
 import android.view.*
-import android.widget.Button
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintSet
@@ -21,15 +15,13 @@ import com.sportpassword.bm.R
 import com.sportpassword.bm.Models.SuccessTable
 import com.sportpassword.bm.Services.MemberService
 import com.sportpassword.bm.Utilities.*
-import com.sportpassword.bm.member
-import kotlinx.android.synthetic.main.activity_login.*
-import kotlinx.android.synthetic.main.activity_member_vc.*
-import kotlinx.android.synthetic.main.mask.*
-import org.jetbrains.anko.displayMetrics
-import kotlin.reflect.full.memberProperties
-
+import com.sportpassword.bm.databinding.ActivityLoginBinding
+import com.sportpassword.bm.databinding.MytablevcBinding
 
 class LoginVC : BaseActivity() {
+
+    private lateinit var binding: ActivityLoginBinding
+    private lateinit var view: ViewGroup
 
     var table: MemberTable? = null
 
@@ -37,9 +29,12 @@ class LoginVC : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_login)
+
+        binding = ActivityLoginBinding.inflate(layoutInflater)
+        view = binding.root
+        setContentView(view)
         setMyTitle("登入")
-        hidekeyboard(login_layout)
+        hidekeyboard(binding.root)
 
         init()
         //loginEmailTxt.requestFocus()
@@ -90,13 +85,13 @@ class LoginVC : BaseActivity() {
 
     fun loginSubmit(view: View) {
 
-        _hideKeyboard(login_layout)
-        Loading.show(mask)
-        val email = loginEmailTxt.text.toString()
+        _hideKeyboard(binding.root)
+        Loading.show(view)
+        val email = binding.loginEmailTxt.text.toString()
         if (email.isEmpty()) {
             Alert.show(this, "警告", "EMail沒填")
         }
-        val password = loginPasswordTxt.text.toString()
+        val password = binding.loginPasswordTxt.text.toString()
         if (password.isEmpty()) {
             Alert.show(this, "警告", "密碼沒填")
         }
@@ -106,7 +101,7 @@ class LoginVC : BaseActivity() {
 
         MemberService.login(this, email, password, playerID) { success ->
             runOnUiThread {
-                Loading.hide(mask)
+                Loading.hide(view)
             }
             //println(success)
             if (success) {
