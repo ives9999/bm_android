@@ -37,8 +37,6 @@ abstract class MyTableVC : BaseActivity() {
     protected lateinit var recyclerView: RecyclerView
     protected lateinit var listAdapter: ListAdapter
 
-    protected lateinit var maskView: View
-
 //    protected lateinit var form: BaseForm
 //    val items: ArrayList<Item> = arrayListOf()
 

@@ -60,10 +60,6 @@ class TeamVC : MyTableVC() {
         recyclerView = binding.listContainer
         refreshLayout = binding.refresh
 
-        view.findViewById<FrameLayout>(R.id.mask) ?. let { mask ->
-            maskView = mask
-        }
-
         //initAdapter()
         tableAdapter = TeamAdapter(R.layout.team_list_cell, this)
         recyclerView.adapter = tableAdapter

@@ -48,9 +48,6 @@ class CourseVC : MyTableVC() {
         recyclerView = binding.listContainer
         refreshLayout = binding.pageRefresh
 
-        view.findViewById<FrameLayout>(R.id.mask) ?. let { mask ->
-            maskView = mask
-        }
         setRefreshListener()
 
 //        initAdapter()

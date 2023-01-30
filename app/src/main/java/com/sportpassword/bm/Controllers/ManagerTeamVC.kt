@@ -9,7 +9,6 @@ import com.sportpassword.bm.Adapters.TeamAdapter
 import com.sportpassword.bm.Models.*
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.TeamService
-import com.sportpassword.bm.Utilities.Loading
 import com.sportpassword.bm.Utilities.jsonToModels
 import com.sportpassword.bm.Utilities.setInfo
 import com.sportpassword.bm.databinding.ActivityManagerTeamVcBinding

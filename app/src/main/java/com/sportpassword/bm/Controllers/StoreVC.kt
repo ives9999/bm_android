@@ -43,10 +43,6 @@ class StoreVC : MyTableVC() {
         recyclerView = binding.listContainer
         refreshLayout = binding.refresh
 
-        view.findViewById<FrameLayout>(R.id.mask) ?. let { mask ->
-            maskView = mask
-        }
-
         //initAdapter()
         tableAdapter = StoreAdapter(R.layout.store_list_cell, this)
         recyclerView.adapter = tableAdapter

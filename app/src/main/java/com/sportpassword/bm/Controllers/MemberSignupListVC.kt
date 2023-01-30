@@ -11,7 +11,6 @@ import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.CourseService
 import com.sportpassword.bm.Services.MemberService
 import com.sportpassword.bm.Services.TeamService
-import com.sportpassword.bm.Utilities.Loading
 import com.sportpassword.bm.Utilities.setInfo
 import com.sportpassword.bm.databinding.ActivityMemberSignupListVcBinding
 import com.sportpassword.bm.member

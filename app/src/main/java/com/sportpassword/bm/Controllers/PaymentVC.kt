@@ -85,9 +85,6 @@ class PaymentVC : MyTableVC() {
         recyclerView = binding.paymentList
 //        refreshLayout = refresh
 
-        findViewById<FrameLayout>(R.id.mask) ?. let { mask ->
-            maskView = mask
-        }
         setRefreshListener()
 
         oneSectionAdapter = OneSectionAdapter(this, R.layout.cell_section, this, hashMapOf("product_icon_view" to "false"))

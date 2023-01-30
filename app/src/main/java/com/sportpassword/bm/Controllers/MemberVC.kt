@@ -50,9 +50,6 @@ class MemberVC : MyTableVC() {
 
         dataService = MemberService
 
-        view.findViewById<FrameLayout>(R.id.mask) ?. let { mask ->
-            maskView = mask
-        }
         val loginBtn = findViewById<LinearLayout>(R.id.loginBtn)
         loginBtn.setOnClickListener { loginBtnPressed() }
         val registerBtn = findViewById<LinearLayout>(R.id.registerBtn)

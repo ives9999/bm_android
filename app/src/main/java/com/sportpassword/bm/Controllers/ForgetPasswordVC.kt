@@ -10,7 +10,6 @@ import com.sportpassword.bm.Models.SuccessTable
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.MemberService
 import com.sportpassword.bm.Utilities.Alert
-import com.sportpassword.bm.Utilities.Loading
 import com.sportpassword.bm.databinding.ActivityForgetPasswordBinding
 import com.sportpassword.bm.databinding.MytablevcBinding
 

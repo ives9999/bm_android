@@ -52,9 +52,6 @@ class ArenaVC : MyTableVC() {
         recyclerView = binding.listContainer
         refreshLayout = binding.pageRefresh
 
-        findViewById<FrameLayout>(R.id.mask) ?. let {
-            maskView = it
-        }
         setRefreshListener()
 
         binding.topview1.topTitleLbl.setText("球館")

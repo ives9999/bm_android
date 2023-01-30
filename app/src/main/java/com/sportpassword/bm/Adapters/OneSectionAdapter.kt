@@ -536,7 +536,7 @@ class NumberViewHolder(val viewHolder: View): RecyclerView.ViewHolder(viewHolder
 
 class CartViewHolder(val viewHolder: View): RecyclerView.ViewHolder(viewHolder) {
 
-    val title: TextView = viewHolder.findViewById(R.id.title)
+    val title: TextView = viewHolder.findViewById(R.id.titleLbl)
     val featured: ImageView = viewHolder.findViewById(R.id.listFeatured)
     val attribute: TextView = viewHolder.findViewById(R.id.attributeLbl)
     val amount: TextView = viewHolder.findViewById(R.id.amountLbl)

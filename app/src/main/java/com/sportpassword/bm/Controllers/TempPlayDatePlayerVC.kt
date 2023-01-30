@@ -9,8 +9,6 @@ import com.sportpassword.bm.Adapters.TempPlayDatePlayerAdapter
 import com.sportpassword.bm.Models.TempPlayDatePlayers
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.TeamService
-import com.sportpassword.bm.Utilities.Loading
-import com.sportpassword.bm.databinding.ActivityTempPlayDateBinding
 import com.sportpassword.bm.databinding.ActivityTempPlayDatePlayerBinding
 import org.jetbrains.anko.*
 

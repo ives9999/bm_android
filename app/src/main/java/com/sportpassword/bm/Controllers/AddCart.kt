@@ -212,9 +212,6 @@ class AddCartVC : MyTableVC() {
 //    }
 
     override fun refresh() {
-        findViewById<FrameLayout>(R.id.mask) ?. let {
-            Loading.show(it)
-        }
 
         if (product_token != null) {
 //            adapter.clear()
@@ -223,11 +220,11 @@ class AddCartVC : MyTableVC() {
 
             update = false
             val params: HashMap<String, String> = hashMapOf("token" to product_token!!, "member_token" to member.token!!)
+
+            loadingAnimation.start()
             dataService.getOne(this, params) { success ->
                 runOnUiThread {
-                    findViewById<FrameLayout>(R.id.mask) ?. let {
-                        Loading.hide(it)
-                    }
+                    loadingAnimation.stop()
                 }
                 if (success) {
                     try {
@@ -264,11 +261,11 @@ class AddCartVC : MyTableVC() {
                 it.text = "更新購物車"
             }
             val params: HashMap<String, String> = hashMapOf("cart_item_token" to cartItem_token!!, "member_token" to member.token!!)
+
+            loadingAnimation.start()
             CartService.getOne(this, params) { success ->
                 runOnUiThread {
-                    findViewById<FrameLayout>(R.id.mask) ?. let {
-                        Loading.hide(it)
-                    }
+                    loadingAnimation.stop()
                 }
                 if (success) {
                     try {
@@ -486,18 +483,14 @@ class AddCartVC : MyTableVC() {
         }
 
         if (isAttribute) {
-            findViewById<FrameLayout>(R.id.mask) ?. let {
-                Loading.show(it)
-            }
+            loadingAnimation.start()
 
             params["attribute"] = selected_attributes.joinToString("|")
             //println(params)
 
             CartService.update(this, params) { success ->
                 runOnUiThread {
-                    findViewById<FrameLayout>(R.id.mask) ?. let {
-                        Loading.hide(it)
-                    }
+                    loadingAnimation.stop()
                 }
                 var msg: String = "成功加入購物車了"
                 if (success) {

@@ -60,9 +60,6 @@ open class ManagerVC : MyTableVC() {
             refreshLayout = it
         }
 
-        findViewById<FrameLayout>(R.id.mask) ?. let { mask ->
-            maskView = mask
-        }
         setRefreshListener()
 
         if (able_type == "team") {

@@ -7,7 +7,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.sportpassword.bm.Adapters.TempPlayDateAdapter
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.TeamService
-import com.sportpassword.bm.Utilities.Loading
 import com.sportpassword.bm.databinding.ActivityTempPlayDateBinding
 import org.jetbrains.anko.contentView
 

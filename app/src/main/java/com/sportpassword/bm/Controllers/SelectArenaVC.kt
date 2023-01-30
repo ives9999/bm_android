@@ -8,7 +8,6 @@ import com.sportpassword.bm.Models.ArenaTable
 import com.sportpassword.bm.Services.TeamService
 import com.sportpassword.bm.Utilities.ARENA_KEY
 import com.sportpassword.bm.Utilities.Global
-import com.sportpassword.bm.Utilities.Loading
 
 class SelectArenaVC : SingleSelectVC() {
 

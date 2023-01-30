@@ -10,7 +10,6 @@ import com.google.gson.JsonParseException
 import com.sportpassword.bm.Models.SuccessTable
 import com.sportpassword.bm.Services.MemberService
 import com.sportpassword.bm.Utilities.Alert
-import com.sportpassword.bm.Utilities.Loading
 import com.sportpassword.bm.databinding.ActivityUpdatePasswordBinding
 
 class UpdatePasswordVC : BaseActivity() {

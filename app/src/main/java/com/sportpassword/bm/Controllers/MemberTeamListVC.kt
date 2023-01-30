@@ -17,7 +17,6 @@ import com.sportpassword.bm.Models.TeamMemberTable
 import com.sportpassword.bm.Models.TeamTable
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.MemberService
-import com.sportpassword.bm.Utilities.Loading
 import com.sportpassword.bm.Utilities.noSec
 import com.sportpassword.bm.Utilities.setInfo
 import com.sportpassword.bm.Utilities.then

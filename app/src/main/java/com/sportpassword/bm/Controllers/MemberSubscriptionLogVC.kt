@@ -13,7 +13,6 @@ import com.sportpassword.bm.Models.MemberSubscriptionLogTable
 import com.sportpassword.bm.Models.Tables2
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.MemberService
-import com.sportpassword.bm.Utilities.Loading
 import com.sportpassword.bm.Utilities.noSec
 import com.sportpassword.bm.Utilities.setInfo
 import com.sportpassword.bm.databinding.ActivityMemberSubscriptionLogVcBinding

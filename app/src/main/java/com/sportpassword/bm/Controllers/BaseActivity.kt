@@ -179,14 +179,12 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener,
     //var vcResult: VCResult = VCResult()
 
     private fun _addBlackList(reason: String, memberToken: String, teamToken: String) {
-        findViewById<FrameLayout>(R.id.mask) ?. let {
-            Loading.show(it)
-        }
+        loadingAnimation.start()
         val token = member.token
         if (token != null) {
             TeamService.addBlackList(this, teamToken, memberToken, token, reason) { success ->
-                findViewById<FrameLayout>(R.id.mask) ?. let {
-                    Loading.hide(it)
+                runOnUiThread {
+                    loadingAnimation.stop()
                 }
                 if (success) {
                     info("加入黑名單成功")
@@ -211,9 +209,6 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener,
     }
 
     protected fun _getTeamManagerList(completion: CompletionHandler) {
-        findViewById<FrameLayout>(R.id.mask) ?. let {
-            Loading.show(it)
-        }
         val filter1: Array<Any> = arrayOf("channel", "=", CHANNEL)
         val filter2: Array<Any> = arrayOf("manager_id", "=", member.id)
         val filter: Array<Array<Any>> = arrayOf(filter1, filter2)
@@ -558,9 +553,7 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener,
     fun getAreasFromCity(city_id: Int, complete: (rows: ArrayList<HashMap<String, String>>) -> Unit): ArrayList<HashMap<String, String>> {
         val rows: ArrayList<HashMap<String, String>> = session.getAreasFromCity(city_id)
         if (rows.count() == 0) {
-            findViewById<FrameLayout>(R.id.mask) ?. let {
-                Loading.show(it)
-            }
+            loadingAnimation.start()
             val city_ids: ArrayList<Int> = arrayListOf(city_id)
             dataService.getAreaByCityIDs(this, city_ids, "all") { success ->
                 if (success) {
@@ -590,8 +583,8 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener,
                 }
             }
 
-            findViewById<FrameLayout>(R.id.mask) ?. let {
-                Loading.hide(it)
+            runOnUiThread {
+                loadingAnimation.stop()
             }
         }
 
@@ -601,9 +594,7 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener,
     fun getCitys(complete: (rows: ArrayList<HashMap<String, String>>)-> Unit): ArrayList<HashMap<String, String>> {
         var rows: ArrayList<HashMap<String, String>> = session.getAllCitys()
         if (rows.count() == 0) {
-            findViewById<FrameLayout>(R.id.mask) ?. let {
-                Loading.show(it)
-            }
+            loadingAnimation.start()
             dataService.getCitys(this, "all", false) { success ->
                 if (success) {
                     val citys = dataService.citys
@@ -626,8 +617,8 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener,
                 }
             }
 
-            findViewById<FrameLayout>(R.id.mask) ?. let {
-                Loading.hide(it)
+            runOnUiThread {
+                loadingAnimation.stop()
             }
         }
         return rows

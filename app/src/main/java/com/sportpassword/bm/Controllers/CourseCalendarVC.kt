@@ -51,10 +51,6 @@ class CourseCalendarVC: MyTableVC() {
         recyclerView = binding.listContainer
         refreshLayout = binding.tabRefresh
 
-        view.findViewById<FrameLayout>(R.id.mask) ?. let { mask ->
-            maskView = mask
-        }
-
 //        initAdapter()
         recyclerView.setHasFixedSize(true)
         setRecyclerViewScrollListener()
@@ -70,12 +66,13 @@ class CourseCalendarVC: MyTableVC() {
 //    }
 
     override fun getDataStart(_page: Int, _perPage: Int, token: String?) {
-        Loading.show(maskView)
+        loadingAnimation.start()
         loading = true
 
         val res = MemberService.memberSignupCalendar(y, m, member.token, "course", _page, _perPage) { success ->
 
         }
+
 //        if (!res.first) {
 //            Loading.hide(maskView)
 //            loading = false
@@ -98,7 +95,9 @@ class CourseCalendarVC: MyTableVC() {
             page++
         }
 //        mask?.let { mask?.dismiss() }
-        Loading.hide(maskView)
+        runOnUiThread {
+            loadingAnimation.stop()
+        }
         loading = false
 //        println("page:$page")
 //        println("perPage:$perPage")

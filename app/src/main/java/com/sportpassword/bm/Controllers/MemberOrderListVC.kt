@@ -36,9 +36,6 @@ class MemberOrderListVC : MyTableVC() {
         recyclerView = binding.orderList
         refreshLayout = binding.orderListRefresh
 
-        view.findViewById<FrameLayout>(R.id.mask) ?. let { mask ->
-            maskView = mask
-        }
         setRefreshListener()
         setRecyclerViewScrollListener()
 

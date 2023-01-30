@@ -9,10 +9,10 @@ import com.sportpassword.bm.Models.BlackLists
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.MemberService
 import com.sportpassword.bm.Services.TeamService
-import com.sportpassword.bm.Utilities.Loading
 import com.sportpassword.bm.databinding.ActivityBlackListVcBinding
 import com.sportpassword.bm.member
 import org.jetbrains.anko.contentView
+import org.jetbrains.anko.runOnUiThread
 
 class BlackListVC : BaseActivity() {
 
@@ -40,9 +40,11 @@ class BlackListVC : BaseActivity() {
 
     override fun refresh() {
         super.refresh()
-        Loading.show(this.view)
+        loadingAnimation.start()
         MemberService.blacklist(this, memberToken) { success ->
-            Loading.hide(this.view)
+            runOnUiThread {
+                loadingAnimation.stop()
+            }
             if (success) {
                 blackLists = MemberService.blackLists
                 if (blackLists.rows.size > 0) {
@@ -72,9 +74,11 @@ class BlackListVC : BaseActivity() {
 
         val token = member.token
         if (token != null) {
-            Loading.show(this.view)
+            loadingAnimation.start()
             TeamService.removeBlackList(this, teamToken, memberToken, token) { success ->
-                Loading.hide(this.view)
+                runOnUiThread {
+                    loadingAnimation.stop()
+                }
                 if (success) {
                     info("移除黑名單成功")
                     refresh()

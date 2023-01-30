@@ -41,9 +41,6 @@ class ProductVC : MyTableVC() {
         recyclerView = binding.productList
         refreshLayout = binding.productRefresh
 
-        findViewById<FrameLayout>(R.id.mask) ?. let { mask ->
-            maskView = mask
-        }
 
         //initAdapter()
 //        adapter = GroupAdapter()

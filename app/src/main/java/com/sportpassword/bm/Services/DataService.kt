@@ -440,7 +440,7 @@ open class DataService {
     open fun getOne(context: Context, params: HashMap<String, String>, complete: CompletionHandler) {
 
         val url = getOneURL()
-        //println(url)
+        println(url)
 
 //        val header: MutableList<Pair<String, String>> = mutableListOf()
 //        header.add(Pair("Accept","application/json"))
@@ -450,7 +450,7 @@ open class DataService {
         params.put("device", "app")
 //        val objectMapper = ObjectMapper()
 //        val body: String = objectMapper.writeValueAsString(params)
-        //println(params)
+        println(params)
 
         val request: okhttp3.Request = getRequest(url, params)
         okHttpClient.newCall(request).enqueue(object : Callback {

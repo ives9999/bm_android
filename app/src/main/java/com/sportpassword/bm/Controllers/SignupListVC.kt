@@ -5,7 +5,6 @@ import android.view.View
 import android.view.ViewGroup
 import com.sportpassword.bm.Models.CourseTable
 import com.sportpassword.bm.Services.CourseService
-import com.sportpassword.bm.Utilities.Loading
 import com.sportpassword.bm.databinding.ActivitySignupListVcBinding
 import com.sportpassword.bm.member
 
