@@ -70,12 +70,12 @@ class MemberSubscriptionKindVC : BaseActivity(), MyTable2IF, List1CellDelegate {
     }
 
     private fun getDataFromServer(page: Int) {
-        Loading.show(view)
+        loadingAnimation.start()
         loading = true
 
         MemberService.subscriptionKind(this, member.token!!, page, tableView.perPage) { success ->
             runOnUiThread {
-                Loading.hide(view)
+                loadingAnimation.stop()
 
                 //MyTable2IF
                 val b: Boolean = showTableView(tableView, MemberService.jsonString)

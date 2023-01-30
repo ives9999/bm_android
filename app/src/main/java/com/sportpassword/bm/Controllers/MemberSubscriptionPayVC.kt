@@ -77,10 +77,10 @@ class MemberSubscriptionPayVC : BaseActivity() {
                     }
                 } else {
 
-                    Loading.show(view)
+                    loadingAnimation.start()
                     MemberService.subscription(this, kind) { success ->
                         runOnUiThread {
-                            Loading.hide(view)
+                            loadingAnimation.stop()
                         }
 
                         if (success) {

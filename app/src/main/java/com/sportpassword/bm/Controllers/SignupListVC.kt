@@ -52,7 +52,7 @@ class SignupListVC : MyTableVC() {
 
     override fun getDataStart(_page: Int, _perPage: Int, token: String?) {
         //println("page: $_page")
-        Loading.show(view)
+        loadingAnimation.start()
 //        dataService.signup_list(this, able_token, _page, _perPage) { success ->
 //            getDataEnd(success)
 //        }
@@ -89,7 +89,7 @@ class SignupListVC : MyTableVC() {
 
             page++
         }
-        Loading.hide(view)
+        loadingAnimation.stop()
         //recyclerView.smoothScrollToPosition(scrollerPos + 1)
 //        println("page:$page")
 //        println("perPage:$perPage")

@@ -62,10 +62,10 @@ class ValidateVC : BaseActivity() {
         if (code.length == 0) {
             Alert.show(this, "警告", "請填寫認證碼")
         } else {
-            Loading.show(view)
+            loadingAnimation.start()
             MemberService.validate(this, type, code, member.token!!) { success ->
                 runOnUiThread {
-                    Loading.hide(view)
+                    loadingAnimation.stop()
                 }
                 if (success) {
 
@@ -112,10 +112,10 @@ class ValidateVC : BaseActivity() {
             }
             Alert.show(this, "警告", msg)
         } else {
-            Loading.show(view)
+            loadingAnimation.start()
             MemberService.sendVaildateCode(this, type, value, member.token!!) { success ->
                 runOnUiThread {
-                    Loading.hide(view)
+                    loadingAnimation.stop()
                 }
                 if (success) {
 

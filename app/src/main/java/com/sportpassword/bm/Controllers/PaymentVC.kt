@@ -163,7 +163,7 @@ class PaymentVC : MyTableVC() {
 
     override fun refresh() {
         runOnUiThread {
-            Loading.show(view)
+            loadingAnimation.start()
         }
         val params: HashMap<String, String> = hashMapOf("token" to order_token, "member_token" to member.token!!)
         dataService.getOne(this, params) { success ->
@@ -177,7 +177,7 @@ class PaymentVC : MyTableVC() {
             }
             closeRefresh()
             runOnUiThread {
-                Loading.hide(view)
+                loadingAnimation.stop()
             }
         }
     }
@@ -698,10 +698,10 @@ class PaymentVC : MyTableVC() {
 
     fun backBtnPressed() {
         if (order_token.isNotEmpty()) {
-            Loading.show(view)
+            loadingAnimation.start()
             OrderService.ezshipReturnCode(this, order_token) { success ->
                 runOnUiThread {
-                    Loading.hide(view)
+                    loadingAnimation.stop()
                     try {
                         val successTable: BackResTable = Gson().fromJson<BackResTable>(
                             OrderService.jsonString,

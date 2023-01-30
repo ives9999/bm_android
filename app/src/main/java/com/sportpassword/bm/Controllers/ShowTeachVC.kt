@@ -20,6 +20,7 @@ import kotlin.reflect.full.memberProperties
 import com.sportpassword.bm.Data.ShowRow
 import com.sportpassword.bm.Services.DataService
 import com.sportpassword.bm.Utilities.Loading
+import com.sportpassword.bm.Utilities.LoadingAnimation
 import com.sportpassword.bm.Utilities.hideKeyboard
 import com.sportpassword.bm.databinding.ActivityShowTeachVcBinding
 import com.sportpassword.bm.member
@@ -48,6 +49,9 @@ class ShowTeachVC : YouTubeBaseActivity(), YouTubePlayer.OnInitializedListener {
     var apiKey = ""
 
     var youTubePlayer: YouTubePlayer? = null
+
+    //loading
+    lateinit var loadingAnimation: LoadingAnimation
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -78,6 +82,8 @@ class ShowTeachVC : YouTubeBaseActivity(), YouTubePlayer.OnInitializedListener {
         apiKey = getString(R.string.youtube_api_key)
         binding.youtube.initialize(apiKey, this)
 
+        loadingAnimation = LoadingAnimation(this)
+
         init()
         refresh()
     }
@@ -102,7 +108,7 @@ class ShowTeachVC : YouTubeBaseActivity(), YouTubePlayer.OnInitializedListener {
         showRows.clear()
         if (token != null) {
             runOnUiThread {
-                Loading.show(view)
+                loadingAnimation.start()
             }
             val params: HashMap<String, String> = hashMapOf("token" to token!!, "member_token" to member.token!!)
             dataService.getOne(this, params) { success ->
@@ -138,7 +144,7 @@ class ShowTeachVC : YouTubeBaseActivity(), YouTubePlayer.OnInitializedListener {
                 }
                 runOnUiThread {
                     closeRefresh()
-                    Loading.hide(view)
+                    loadingAnimation.stop()
                 }
             }
         }

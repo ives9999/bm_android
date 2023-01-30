@@ -45,9 +45,9 @@ class ForgetPasswordVC : BaseActivity() {
             Alert.show(this, "警告", "EMail沒填")
         }
 
-        Loading.show(view)
+        loadingAnimation.start()
         MemberService.forgetPassword(this, email) { success ->
-            Loading.hide(view)
+            loadingAnimation.stop()
             if (success) {
 
                 var t: SuccessTable? = null

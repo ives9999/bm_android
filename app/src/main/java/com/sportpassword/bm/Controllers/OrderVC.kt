@@ -165,7 +165,7 @@ class OrderVC : MyTableVC() {
     }
 
     override fun getDataStart(_page: Int, _perPage: Int, token: String?) {
-        Loading.show(view)
+        loadingAnimation.start()
         loading = true
 
         //單一品項購買，沒有使用購物車，直接結帳
@@ -207,7 +207,7 @@ class OrderVC : MyTableVC() {
         }
 //        mask?.let { mask?.dismiss() }
         runOnUiThread {
-            Loading.hide(view)
+            loadingAnimation.stop()
         }
         loading = false
         refreshLayout!!.isRefreshing = false
@@ -656,7 +656,7 @@ class OrderVC : MyTableVC() {
 
     fun submitButtonPressed(view: View) {
 
-        Loading.show(view)
+        loadingAnimation.start()
         val params: HashMap<String, String> = hashMapOf()
         params["device"] = "app"
         params["do"] = "update"
@@ -727,7 +727,7 @@ class OrderVC : MyTableVC() {
 
         OrderService.update(this, params) { success ->
             runOnUiThread {
-                Loading.hide(view)
+                loadingAnimation.stop()
             }
             if (success) {
                 if (OrderService.jsonString.isNotEmpty()) {

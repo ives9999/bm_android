@@ -114,6 +114,6 @@
 
     <include layout="@layout/bottom_view_general" />
 
-    <include layout="@layout/mask" />
+
 
 </RelativeLayout>

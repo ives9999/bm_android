@@ -25,7 +25,5 @@
 
         </androidx.recyclerview.widget.RecyclerView>
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
-    <include layout="@layout/mask" />
-    <include layout="@layout/pure_mask" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

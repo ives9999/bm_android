@@ -131,7 +131,7 @@ class TimeTableVC : BaseActivity() {
 
     override fun refresh() {
         //super.refresh()
-        Loading.show(view)
+        loadingAnimation.start()
         dataService.getTT(this, token, source) { success ->
             if (success) {
                 refreshEvent(binding.container)
@@ -140,7 +140,7 @@ class TimeTableVC : BaseActivity() {
             }
             runOnUiThread {
                 closeRefresh()
-                Loading.hide(view)
+                loadingAnimation.stop()
             }
         }
     }
@@ -639,9 +639,9 @@ class TimeTableVC : BaseActivity() {
             params["id"] = form.id!!.toString()
         }
         //print(params)
-        Loading.show(view)
+        loadingAnimation.start()
         dataService.updateTT(this, source, params) { success ->
-                Loading.hide(view)
+                loadingAnimation.stop()
             if (success) {
                 unmask()
                 refreshEvent(binding.container)
@@ -685,9 +685,9 @@ class TimeTableVC : BaseActivity() {
         }
         //print(params)
         unmask()
-        Loading.show(view)
+        loadingAnimation.start()
         dataService.deleteTT(this, "coach", params) { success ->
-            Loading.hide(view)
+            loadingAnimation.stop()
             if (success) {
                 refreshEvent(binding.container)
             } else {

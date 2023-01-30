@@ -111,12 +111,12 @@ open class ManagerTeamMemberVC : BaseActivity(), MyTable2IF {
     }
 
     private fun getDataFromServer(page: Int) {
-        Loading.show(view)
+        loadingAnimation.start()
         loading = true
 
         TeamService.teamMemberList(this, token!!, tableView.page, tableView.perPage) { success ->
             runOnUiThread {
-                Loading.hide(view)
+                loadingAnimation.stop()
 
                 //MyTable2IF
                 val b: Boolean = showTableView(tableView, TeamService.jsonString)
@@ -133,12 +133,12 @@ open class ManagerTeamMemberVC : BaseActivity(), MyTable2IF {
     }
 
     private fun addTeamMember(member_token: String) {
-        Loading.show(view)
+        loadingAnimation.start()
         loading = true
 
         TeamService.addTeamMember(this, token!!, member_token, member.token!!) { success ->
             runOnUiThread {
-                Loading.hide(view)
+                loadingAnimation.stop()
                 if (success) {
                     var successTable: SuccessTable? = null
                     try {
@@ -167,12 +167,12 @@ open class ManagerTeamMemberVC : BaseActivity(), MyTable2IF {
 
     fun deleteTeamMember(row: TeamMemberTable) {
         warning("確定要刪除嗎？", true, "刪除") {
-            Loading.show(view)
+            loadingAnimation.start()
             loading = true
 
             TeamService.deleteTeamMember(this, row.token) { success ->
                 runOnUiThread {
-                    Loading.hide(view)
+                    loadingAnimation.stop()
                     if (success) {
                         refresh()
                     } else {

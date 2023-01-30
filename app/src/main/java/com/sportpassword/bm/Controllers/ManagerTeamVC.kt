@@ -69,10 +69,10 @@ class ManagerTeamVC : ManagerVC() {
 
         msg = "是否確定要刪除此球隊？"
         warning(msg, true, "刪除") {
-            Loading.show(view)
+            loadingAnimation.start()
             dataService.delete(this, able_type, row.token, "trash") { success ->
                 runOnUiThread {
-                    Loading.hide(view)
+                    loadingAnimation.stop()
                 }
 
                 if (success) {

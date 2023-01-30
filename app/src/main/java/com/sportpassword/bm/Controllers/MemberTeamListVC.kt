@@ -99,12 +99,12 @@ class MemberTeamListVC : BaseActivity(), MyTable2IF {
 //    }
 
     private fun getDataFromServer(page: Int) {
-        Loading.show(view)
+        loadingAnimation.start()
         loading = true
 
         MemberService.teamlist(this, member.token!!, page, tableView.perPage) { success ->
             runOnUiThread {
-                Loading.hide(view)
+                loadingAnimation.stop()
 
                 //MyTable2IF
 //                println(MemberService.jsonString)
@@ -132,11 +132,11 @@ class MemberTeamListVC : BaseActivity(), MyTable2IF {
 //        println(row.id)
         warning("確定要退出嗎？", "取消", "退出") {
 
-            Loading.show(view)
+            loadingAnimation.start()
             loading = true
             MemberService.deleteMemberTeam(this, row.token) { success ->
                 runOnUiThread {
-                    Loading.hide(view)
+                    loadingAnimation.stop()
                     refresh()
                     //val b: Boolean = showTableView(tableView, MemberService.jsonString)
 //                        if (b) {

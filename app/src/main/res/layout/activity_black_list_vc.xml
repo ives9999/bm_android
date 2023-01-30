@@ -50,6 +50,6 @@
         </RelativeLayout>
 
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
-    <include layout="@layout/mask" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

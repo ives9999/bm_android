@@ -63,12 +63,12 @@ class MemberSubscriptionLogVC : BaseActivity(), MyTable2IF {
     }
 
     private fun getDataFromServer(page: Int) {
-        Loading.show(view)
+        loadingAnimation.start()
         loading = true
 
         MemberService.subscriptionLog(this, member.token!!, page, tableView.perPage) { success ->
             runOnUiThread {
-                Loading.hide(view)
+                loadingAnimation.stop()
 
                 //MyTable2IF
                 val b: Boolean = showTableView(tableView, MemberService.jsonString)

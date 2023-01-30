@@ -44,10 +44,10 @@ class TempPlayDateVC : BaseActivity() {
 
     override fun refresh() {
         super.refresh()
-        Loading.show(view)
+        loadingAnimation.start()
         TeamService.tempPlay_date(this, token) { success ->
             runOnUiThread {
-                Loading.hide(view)
+                loadingAnimation.stop()
             }
             if (success) {
                 rows = TeamService.tempPlayDate.rows

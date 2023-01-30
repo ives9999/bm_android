@@ -83,7 +83,7 @@ class LoginVC : BaseActivity() {
     fun loginSubmit(view: View) {
 
         _hideKeyboard(binding.root)
-        Loading.show(view)
+        loadingAnimation.start()
         val email = binding.loginEmailTxt.text.toString()
         if (email.isEmpty()) {
             Alert.show(this, "警告", "EMail沒填")
@@ -98,7 +98,7 @@ class LoginVC : BaseActivity() {
 
         MemberService.login(this, email, password, playerID) { success ->
             runOnUiThread {
-                Loading.hide(view)
+                loadingAnimation.stop()
             }
             //println(success)
             if (success) {

@@ -50,10 +50,10 @@ class UpdatePasswordVC : BaseActivity() {
         if (newPwd != rePwd) {
             Alert.show(this, "警告", "新密碼不符合")
         }
-        Loading.show(view)
+        loadingAnimation.start()
         MemberService.changePassword(this, oldPwd, newPwd, rePwd) { success ->
             runOnUiThread {
-                Loading.hide(view)
+                loadingAnimation.stop()
             }
             if (success) {
 

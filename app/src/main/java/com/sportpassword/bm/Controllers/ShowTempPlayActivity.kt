@@ -77,7 +77,7 @@ class ShowTempPlayActivity : BaseActivity() {
 //                setMyTitle(name)
 //            }
 //        }
-        Loading.hide(view)
+        loadingAnimation.stop()
     }
 
     fun plusOne(view: View) {
@@ -103,9 +103,9 @@ class ShowTempPlayActivity : BaseActivity() {
     }
 
     private fun _plusOne() {
-        Loading.show(view)
+        loadingAnimation.start()
         TeamService.plusOne(this, name, nearDate, memberToken) { success ->
-            Loading.hide(view)
+            loadingAnimation.stop()
             val msg: String = "報名臨打成功"
             if (success) {
                 Alert.show(this, "成功", msg)
@@ -124,9 +124,9 @@ class ShowTempPlayActivity : BaseActivity() {
             return
         }
 
-        Loading.show(view)
+        loadingAnimation.start()
         TeamService.cancelPlusOne(this, name, nearDate, memberToken) { success ->
-            Loading.hide(view)
+            loadingAnimation.stop()
             var msg: String = "取消報名臨打成功"
             if (success) {
                 Alert.show(this, "成功", msg)

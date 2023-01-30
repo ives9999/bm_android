@@ -213,7 +213,7 @@ class ShowTeamVC: ShowVC() {
 //            signupRows.clear()
 //            showRows.clear()
             initData()
-            Loading.show(view)
+            loadingAnimation.start()
             val params: HashMap<String, String> = hashMapOf("token" to token!!, "member_token" to member.token!!)
             dataService.getOne(this, params) { success ->
                 if (success) {
@@ -243,7 +243,7 @@ class ShowTeamVC: ShowVC() {
                 }
                 runOnUiThread {
                     closeRefresh()
-                    Loading.hide(view)
+                    loadingAnimation.stop()
                 }
             }
         }
@@ -282,12 +282,12 @@ class ShowTeamVC: ShowVC() {
     }
 
     private fun getTeamMemberList(page: Int, perPage: Int) {
-        Loading.show(view)
+        loadingAnimation.start()
         loading = true
 
         TeamService.teamMemberList(this, token!!, page, perPage) { success ->
             runOnUiThread {
-                Loading.hide(view)
+                loadingAnimation.stop()
 
                 val tableType: Type = object : TypeToken<Tables2<TeamMemberTable>>() {}.type
                 val tables2: Tables2<TeamMemberTable>? = jsonToModels2<Tables2<TeamMemberTable>, TeamMemberTable>(TeamService.jsonString, tableType)
@@ -552,11 +552,11 @@ class ShowTeamVC: ShowVC() {
                 return
             }
 
-            Loading.show(view)
+            loadingAnimation.start()
             dataService.signup(this, myTable!!.token, member.token!!, myTable!!.signupDate!!.token) { success->
 
                 runOnUiThread {
-                    Loading.hide(view)
+                    loadingAnimation.stop()
                 }
 
                 if (success) {

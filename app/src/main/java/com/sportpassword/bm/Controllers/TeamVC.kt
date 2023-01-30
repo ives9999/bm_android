@@ -96,27 +96,6 @@ class TeamVC : MyTableVC() {
         }
     }
 
-//    override fun generateItems(): ArrayList<Item> {
-//        if (mysTable != null) {
-//            for (row in mysTable!!.rows) {
-//                //row.print()
-//                row.filterRow()
-//                val myItem = TeamItem(this, row)
-//                myItem.list1CellDelegate = this
-//                items.add(myItem)
-//            }
-//        }
-//
-//        return items
-//    }
-//
-//    override fun rowClick(item: com.xwray.groupie.Item<com.xwray.groupie.GroupieViewHolder>, view: View) {
-//
-//        val myItem = item as TeamItem
-//        val table = myItem.row
-//        toShowTeam(table.token)
-//    }
-
     override fun cellArena(row: Table) {
 
 //        val myTable: TeamTable? = row as? TeamTable

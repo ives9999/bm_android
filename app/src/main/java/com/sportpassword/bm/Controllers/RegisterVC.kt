@@ -288,7 +288,7 @@ class RegisterVC : MyTableVC() {
         if (msg.length > 0) {
             warning(msg)
         } else {
-            Loading.show(view)
+            loadingAnimation.start()
             val params: HashMap<String, String> = hashMapOf()
             for (section in oneSections) {
                 for (row in section.items) {
@@ -310,7 +310,7 @@ class RegisterVC : MyTableVC() {
             //this is execute DataService update
             MemberService.update(this, params, filePath) { success ->
                 runOnUiThread {
-                    Loading.hide(view)
+                    loadingAnimation.stop()
                 }
                 if (success) {
                     if (MemberService.success) {

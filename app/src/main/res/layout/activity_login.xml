@@ -126,6 +126,6 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <include layout="@layout/mask" />
+
 
 </RelativeLayout>

@@ -84,10 +84,10 @@ class SelectManagerVC : SelectVC() {
     fun getMemberOne(token: String) {
 
         params = hashMapOf("token" to token)
-        Loading.show(view)
+        loadingAnimation.start()
         MemberService.getOne(this, params) { success ->
             runOnUiThread {
-                Loading.hide(view)
+                loadingAnimation.stop()
             }
             if (success) {
                 var successTable: SuccessTable? = null

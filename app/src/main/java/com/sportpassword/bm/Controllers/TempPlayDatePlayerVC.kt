@@ -53,10 +53,10 @@ class TempPlayDatePlayerVC : BaseActivity() {
 
     override fun refresh() {
         super.refresh()
-        Loading.show(view)
+        loadingAnimation.start()
         TeamService.tempPlay_datePlayer(this, date, teamToken) { success ->
             runOnUiThread {
-                Loading.hide(view)
+                loadingAnimation.stop()
             }
             if (success) {
                 tempPlayDatePlayers = TeamService.tempPlayDatePlayers

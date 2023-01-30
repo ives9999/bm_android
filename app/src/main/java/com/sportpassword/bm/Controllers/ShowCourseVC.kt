@@ -546,10 +546,10 @@ class ShowCourseVC : ShowVC() {
             warning("請先登入會員")
             return
         }
-        Loading.show(view)
+        loadingAnimation.start()
         CourseService.signup_date(this, token!!, member.token!!, myTable!!.dateTable!!.token) { success ->
             runOnUiThread {
-                Loading.hide(view)
+                loadingAnimation.stop()
             }
 
             if (success) {
@@ -632,10 +632,10 @@ class ShowCourseVC : ShowVC() {
             warning("請先登入會員")
             return
         }
-        Loading.show(view)
+        loadingAnimation.start()
         CourseService.signup(this, token!!, member.token!!, myTable!!.dateTable!!.token) { success ->
             runOnUiThread {
-                Loading.hide(view)
+                loadingAnimation.stop()
             }
 
             if (success) {

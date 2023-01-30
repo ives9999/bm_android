@@ -42,10 +42,10 @@ class SelectArenaVC : SingleSelectVC() {
 //        tableView.adapter = adapter
 
         if (city_id != null) {
-            Loading.show(view)
+            loadingAnimation.start()
             TeamService.getArenaByCityID(this, city_id) { success ->
 
-                Loading.hide(view)
+                loadingAnimation.stop()
                 if (success) {
                     arenas1 = TeamService.arenas
                     if (arenas1 != null) {

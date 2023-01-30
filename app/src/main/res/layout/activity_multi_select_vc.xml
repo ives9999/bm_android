@@ -62,6 +62,6 @@
             android:onClick="cancel"
             android:text="取消" />
     </LinearLayout>
-    <include layout="@layout/mask" />
+
 
 </RelativeLayout>

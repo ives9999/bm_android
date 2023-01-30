@@ -268,5 +268,5 @@
         </LinearLayout>
 
     </LinearLayout>
-    <include layout="@layout/mask" />
+
 </RelativeLayout>

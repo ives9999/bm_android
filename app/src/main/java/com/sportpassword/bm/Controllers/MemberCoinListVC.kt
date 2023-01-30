@@ -82,12 +82,12 @@ class MemberCoinListVC: BaseActivity(), MyTable2IF {
     }
 
     private fun getDataFromServer(page: Int) {
-        Loading.show(view)
+        loadingAnimation.start()
         loading = true
 
         MemberService.coinlist(this, member.token!!, page, tableView.perPage) { success ->
             runOnUiThread {
-                Loading.hide(view)
+                loadingAnimation.stop()
 
                 //MyTable2IF
                 val b: Boolean = showTableView(tableView, MemberService.jsonString)
@@ -104,12 +104,12 @@ class MemberCoinListVC: BaseActivity(), MyTable2IF {
     }
 
     fun getDataFromServer() {
-        Loading.show(view)
+        loadingAnimation.start()
         loading = true
 
         MemberService.coinlist(this, member.token!!, tableView.page, tableView.perPage) { success ->
             runOnUiThread {
-                Loading.hide(view)
+                loadingAnimation.stop()
 
                 //MyTable2IF
                 val b: Boolean = showTableView(tableView, MemberService.jsonString)
@@ -251,11 +251,11 @@ class MemberCoinListVC: BaseActivity(), MyTable2IF {
         }
 
         if (msg.isEmpty()) {
-            Loading.show(view)
+            loadingAnimation.start()
             loading = true
 
             MemberService.coinReturn(this, member.token!!) { success ->
-                Loading.hide(view)
+                loadingAnimation.stop()
                 jsonString = MemberService.jsonString
                 if (success) {
                     if (jsonString != null && jsonString!!.isNotEmpty()) {

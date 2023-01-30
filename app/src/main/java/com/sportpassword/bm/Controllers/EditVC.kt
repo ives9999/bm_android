@@ -153,7 +153,7 @@ open class EditVC : MyTableVC() {
     open fun initData() {}
 
     override fun refresh() {
-        //Loading.show(view)
+        //loadingAnimation.start()
         val params: HashMap<String, String> = hashMapOf("token" to token)
         dataService.getOne(this, params) { success ->
             if (success) {
@@ -171,7 +171,7 @@ open class EditVC : MyTableVC() {
                 closeRefresh()
             }
             runOnUiThread {
-                //Loading.hide(view)
+                //loadingAnimation.stop()
             }
         }
     }
@@ -349,7 +349,7 @@ open class EditVC : MyTableVC() {
         if (msg.isNotEmpty()) {
             warning(msg)
         } else {
-            Loading.show(view)
+            loadingAnimation.start()
             //val params: HashMap<String, String> = hashMapOf()
             for (section in oneSections) {
                 for (row in section.items) {
@@ -374,7 +374,7 @@ open class EditVC : MyTableVC() {
             //println(params)
 
             dataService.update(this, params, filePath) { success ->
-                Loading.hide(view)
+                loadingAnimation.stop()
                 if (success) {
                     if (dataService.success) {
                         runOnUiThread {

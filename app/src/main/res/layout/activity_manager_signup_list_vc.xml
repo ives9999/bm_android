@@ -40,6 +40,6 @@
             </androidx.recyclerview.widget.RecyclerView>
         </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
     </LinearLayout>
-    <include layout="@layout/mask" />
+
 
 </RelativeLayout>

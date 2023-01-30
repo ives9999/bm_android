@@ -92,7 +92,7 @@ class ManagerSignupListVC : MyTableVC() {
     }
 
     override fun getDataStart(_page: Int, _perPage: Int, token: String?) {
-        Loading.show(view)
+        loadingAnimation.start()
         loading = true
 
         dataService.managerSignupList(able_type, able_token, _page, _perPage) { success ->
@@ -112,7 +112,7 @@ class ManagerSignupListVC : MyTableVC() {
             page++
         }
         runOnUiThread {
-            Loading.hide(view)
+            loadingAnimation.stop()
             closeRefresh()
         }
         loading = false

@@ -157,6 +157,9 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener,
     var blackView: RelativeLayout? = null
     var layerTableView: RecyclerView? = null
 
+    //loading
+    lateinit var loadingAnimation: LoadingAnimation
+
 
 
     //for search
@@ -948,6 +951,8 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener,
 
         myColorGreen = ContextCompat.getColor(context, R.color.MY_GREEN)
         delegate = this
+
+        loadingAnimation = LoadingAnimation(this)
 
         //MyOneSignal.clear()
 

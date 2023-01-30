@@ -255,8 +255,6 @@
             android:text="取消臨打" />
 
     </LinearLayout>
-
-    <include layout="@layout/mask" />
 </RelativeLayout>
 
 

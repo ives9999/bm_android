@@ -77,7 +77,7 @@ class MemberSignupListVC : MyTableVC() {
     }
 
     override fun getDataStart(_page: Int, _perPage: Int, token: String?) {
-        Loading.show(view)
+        loadingAnimation.start()
         loading = true
 
         MemberService.memberSignupCalendar(2021, 1, member.token!!, able_type, _page, _perPage) { success ->
@@ -97,7 +97,7 @@ class MemberSignupListVC : MyTableVC() {
             page++
         }
         runOnUiThread {
-            Loading.hide(view)
+            loadingAnimation.stop()
             closeRefresh()
         }
         loading = false

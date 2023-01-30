@@ -45,9 +45,6 @@ abstract class MyTableVC : BaseActivity() {
 
     var member_like: Boolean = false
 
-    //loading
-    lateinit var loadingAnimation: LoadingAnimation
-
     //protected lateinit var superModels: SuperModel
 
     //取代superDataLists(define in BaseActivity)，放置所有拿到的SuperModel，分頁時會使用到
@@ -62,8 +59,6 @@ abstract class MyTableVC : BaseActivity() {
 
         recyclerView = RecyclerView(this)
         recyclerView.setHasFixedSize(true)
-
-        loadingAnimation = LoadingAnimation(this)
     }
 
     override fun init() {

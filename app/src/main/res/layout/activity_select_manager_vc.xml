@@ -236,6 +236,6 @@
                 android:text="取消" />
         </LinearLayout>
     </LinearLayout>
-    <include layout="@layout/mask" />
+
 
 </RelativeLayout>

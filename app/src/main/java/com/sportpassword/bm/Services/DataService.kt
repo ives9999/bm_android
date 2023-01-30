@@ -433,30 +433,6 @@ open class DataService {
                 complete(success)
             }
         })
-
-//        val objectMapper = ObjectMapper()
-//        val body: String = objectMapper.writeValueAsString(params)
-//        MyHttpClient.instance.post(context, url, body) { success ->
-//            if (success) {
-//                val response = MyHttpClient.instance.response
-//                if (response != null) {
-//                    try {
-//                        this.jsonString = response.toString()
-//                        this.success = true
-//                    } catch (e: Exception) {
-//                        this.success = false
-//                        msg = "parse json failed，請洽管理員"
-//                        println(e.localizedMessage)
-//                    }
-//                    complete(this.success)
-//                } else {
-//                    println("response is null")
-//                }
-//            } else {
-//                msg = "網路錯誤，無法跟伺服器更新資料"
-//                complete(success)
-//            }
-//        }
     }
 
     open fun getListURL(): String {return URL_LIST}

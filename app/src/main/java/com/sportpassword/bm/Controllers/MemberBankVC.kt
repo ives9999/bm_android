@@ -98,9 +98,9 @@ class MemberBankVC : BaseActivity() {
             return
         }
 
-        Loading.show(view)
+        loadingAnimation.start()
         MemberService.bank(this, params) { success ->
-            Loading.hide(view)
+            loadingAnimation.stop()
             if (success) {
                 try {
                     val successTable: SuccessTable? = jsonToModel<SuccessTable>(MemberService.jsonString)

@@ -101,12 +101,12 @@ class  TempPlaySignupOneVC : BaseActivity() {
     override fun refresh() {
         super.refresh()
         initMemberOne()
-        Loading.show(view)
+        loadingAnimation.start()
         initGetMemberValue { success ->
             if (success) {
                 initIsTeamManager { success ->
                     runOnUiThread {
-                        Loading.hide(view)
+                        loadingAnimation.stop()
                     }
                     if (status == "off") {
                         memberOne.add(hashMapOf("temp_play_status" to hashMapOf("title" to "取消", "value" to off_at.noSec() as Any)))

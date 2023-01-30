@@ -48,7 +48,6 @@ open class ShowVC: BaseActivity() {
     var bottom_button_count: Int = 1
     val button_width: Int = 400
 
-    lateinit var loadingAnimation: LoadingAnimation
     var layoutInt: Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {

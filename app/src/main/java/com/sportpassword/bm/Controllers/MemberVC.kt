@@ -92,10 +92,10 @@ class MemberVC : MyTableVC() {
 
     override fun refresh() {
         if (member.isLoggedIn) {
-            Loading.show(view)
+            loadingAnimation.start()
             dataService.getOne(this, hashMapOf("token" to member.token!!)) { success ->
                 runOnUiThread {
-                    Loading.hide(view)
+                    loadingAnimation.stop()
                 }
                 if (success) {
                     //println(MemberService.jsonString)
@@ -448,10 +448,10 @@ class MemberVC : MyTableVC() {
 
     fun delete() {
         warning("是否確定要刪除自己的會員資料？", true, "刪除") {
-            Loading.show(view)
+            loadingAnimation.start()
             dataService.delete(this, "member", member.token!!, "trash") { success ->
                 runOnUiThread {
-                    Loading.hide(view)
+                    loadingAnimation.stop()
                 }
 
                 if (success) {

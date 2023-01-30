@@ -48,7 +48,4 @@
 
     <include layout="@layout/bottom_view_three" />
 
-    <include layout="@layout/mask" />
-    <include layout="@layout/pure_mask" />
-
 </RelativeLayout>

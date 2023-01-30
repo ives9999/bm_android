@@ -198,6 +198,6 @@
         </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
     </LinearLayout>
 
-    <include layout="@layout/mask" />
+
 
 </LinearLayout>

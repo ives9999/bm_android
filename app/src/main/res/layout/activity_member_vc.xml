@@ -78,5 +78,5 @@
         <include layout="@layout/bottom_view" />
 
     </LinearLayout>
-    <include layout="@layout/mask" />
+
 </RelativeLayout>

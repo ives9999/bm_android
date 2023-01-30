@@ -141,7 +141,7 @@ class RequestManagerTeamVC : BaseActivity() {
             warning("請填球隊名稱")
         } else {
 
-            Loading.show(view)
+            loadingAnimation.start()
             dataService.isNameExist(this, team_name) { success ->
 
                 if (success) {
@@ -167,7 +167,7 @@ class RequestManagerTeamVC : BaseActivity() {
                 }
                 runOnUiThread {
                     closeRefresh()
-                    Loading.hide(view)
+                    loadingAnimation.stop()
                 }
             }
         }
@@ -180,7 +180,7 @@ class RequestManagerTeamVC : BaseActivity() {
             warning("請填管理者金鑰")
         } else {
 
-            Loading.show(view)
+            loadingAnimation.start()
             MemberService.getOne(this, hashMapOf("token" to manager_token)) { success ->
 
                 if (success) {
@@ -215,7 +215,7 @@ class RequestManagerTeamVC : BaseActivity() {
                 }
                 runOnUiThread {
                     closeRefresh()
-                    Loading.hide(view)
+                    loadingAnimation.stop()
                 }
             }
         }
@@ -284,9 +284,9 @@ class RequestManagerTeamVC : BaseActivity() {
             return
         }
 
-        Loading.show(view)
+        loadingAnimation.start()
         dataService.requestManager(this, params, images) { success ->
-            Loading.hide(view)
+            loadingAnimation.stop()
             if (success) {
                 try {
                     val successTable: SuccessTable? = jsonToModel<SuccessTable>(dataService.jsonString)

@@ -118,6 +118,5 @@
             android:text="報名"
             />
     </LinearLayout>
-    <include layout="@layout/mask" />
 
 </RelativeLayout>
