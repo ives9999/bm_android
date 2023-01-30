@@ -51,6 +51,8 @@ class ShowCourseVC : ShowVC() {
         view = binding.root
         setContentView(view)
 
+        layoutInt = R.layout.activity_show_course_vc
+
         dataService = CourseService
 
         refreshLayout = binding.refresh

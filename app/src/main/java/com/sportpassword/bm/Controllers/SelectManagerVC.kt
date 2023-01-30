@@ -19,7 +19,7 @@ import com.sportpassword.bm.databinding.ActivitySelectManagerVcBinding
 class SelectManagerVC : SelectVC() {
 
     private lateinit var binding: ActivitySelectManagerVcBinding
-    private lateinit var view: ViewGroup
+    //private lateinit var view: ViewGroup
 
     var selected: Int = 0
     var manager_id: Int = 0

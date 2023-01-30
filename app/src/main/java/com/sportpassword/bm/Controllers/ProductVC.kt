@@ -15,7 +15,7 @@ import com.sportpassword.bm.databinding.ActivityProductVcBinding
 class ProductVC : MyTableVC() {
 
     private lateinit var binding: ActivityProductVcBinding
-    private lateinit var view: ViewGroup
+    //private lateinit var view: ViewGroup
 
     var mysTable: ProductsTable? = null
     lateinit var tableAdapter: ProductAdapter

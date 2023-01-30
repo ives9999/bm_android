@@ -12,7 +12,7 @@ import com.sportpassword.bm.databinding.MytablevcBinding
 class ColorSelectVC: MyTableVC() {
 
     private lateinit var binding: MytablevcBinding
-    private lateinit var view: ViewGroup
+    //private lateinit var view: ViewGroup
 
     lateinit var key: String
     lateinit var all: ArrayList<HashMap<String, Any>>

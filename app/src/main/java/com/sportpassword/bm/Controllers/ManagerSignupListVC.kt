@@ -23,7 +23,7 @@ import com.sportpassword.bm.member
 class ManagerSignupListVC : MyTableVC() {
 
     private lateinit var binding: ActivityManagerSignupListVcBinding
-    private lateinit var view: ViewGroup
+    //private lateinit var view: ViewGroup
 
     var able_token: String = ""
     var able_title: String = ""

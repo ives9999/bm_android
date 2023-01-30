@@ -25,7 +25,7 @@ import com.sportpassword.bm.databinding.ActivityOrderVcBinding
 class OrderVC : MyTableVC() {
 
     private lateinit var binding: ActivityOrderVcBinding
-    private lateinit var view: ViewGroup
+    //private lateinit var view: ViewGroup
 
     var product_token: String? = null
     var productTable: ProductTable? = null

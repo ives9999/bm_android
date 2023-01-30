@@ -26,7 +26,6 @@ import org.jetbrains.anko.sdk27.coroutines.onClick
 class RegisterVC : MyTableVC() {
 
     private lateinit var binding: ActivityRegisterBinding
-    private lateinit var view: ViewGroup
 
     private var originW: Int = 0
     private var originH: Int = 0
@@ -73,7 +72,6 @@ class RegisterVC : MyTableVC() {
         binding = ActivityRegisterBinding.inflate(layoutInflater)
         view = binding.root
         setContentView(view)
-        setContentView(R.layout.activity_register)
 
         //setMyTitle("註冊")
         if (member.isLoggedIn) {
@@ -242,84 +240,6 @@ class RegisterVC : MyTableVC() {
                 row.show = Global.zoneIDToName(value.toInt())
             }
         }
-
-//        if (member.isLoggedIn) {
-
-//            form.removeItems(arrayListOf(PASSWORD_KEY, REPASSWORD_KEY, PRIVACY_KEY))
-//            form.formItems.removeAt(form.formItems.size - 1)
-//            sections.removeAt(sections.size - 1)
-//
-//            val keys: ArrayList<String> = arrayListOf()
-//            for (formItem in form.formItems) {
-//                if (formItem.name != null) {
-//                    keys.add(formItem.name!!)
-//                }
-//            }
-
-
-//            for (key in keys) {
-//
-//                if (key == "section") { continue }
-//
-//                val formItem = getFormItemFromKey(key)
-//                var value: String = ""
-//                val items = MemberTable::class.memberProperties.iterator()
-//                for (it in items) {
-//
-//                    val name = it.name
-//                    if (key == name) {
-//                        val t = it.returnType
-//                        if (t == String::class.createType()) {
-//                            value = session.getString(name, "")!!
-//                        } else if (t == Int::class.createType()) {
-//                            val tmp = session.getInt(name, 0)
-//                            value = tmp.toString()
-//                            if (key == AREA_KEY) {
-//                                val cityFormItem: CityFormItem = getFormItemFromKey(CITY_KEY) as CityFormItem
-//                                val areaFormItem: AreaFormItem = formItem as AreaFormItem
-//                                if (cityFormItem.value != null && cityFormItem.value!!.isNotEmpty()) {
-//                                    areaFormItem.city_id = (cityFormItem.value)?.toInt()
-//                            }
-//                        }
-//
-//                        } else if (t == Boolean::class.createType()) {
-//                            val tmp = session.getBoolean(name, false)
-//                            value = tmp.toString()
-//                        }
-//                        break
-//                    }
-//                }
-//
-//                formItem?.value = value
-//                formItem?.make()
-//            }
-//            old_selected_city = member.city.toString()
-//            if (member.avatar!!.length > 0) {
-//                //println(member.avatar)
-//                val avatar: String = member.avatar!!
-//                //val avatar: String = BASE_URL + member.avatar
-//                setImage(null, avatar)
-//                isFeaturedChange = false
-//            }
-//        } else {
-//            if (testData.count() > 0) {
-//                for ((key, value) in testData) {
-//                    val formItem = getFormItemFromKey(key)
-//                    if (formItem != null) {
-//                        if (key == AREA_KEY && testData.containsKey("area_name")) {
-//                            val _formItem = formItem as AreaFormItem
-//                            _formItem.selected_area_names = arrayListOf(testData["area_name"]!!)
-//                        } else if (key == CITY_KEY && testData.containsKey("city_name")) { // test data session has, so not implement.
-//                            //val _formItem = formItem as CityFormItem
-//                            //_formItem.selected_city_names = arrayListOf(testData["city_name"]!!)
-//                        }
-//                        formItem.value = value
-//                        formItem.make()
-//                    }
-//                }
-//                old_selected_city = testData[CITY_KEY]!!
-//            }
-//        }
     }
 
     fun setBottomButtonPadding() {

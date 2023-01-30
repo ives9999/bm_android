@@ -23,7 +23,7 @@ import tw.com.ecpay.paymentgatewaykit.manager.*
 class PaymentVC : MyTableVC() {
 
     private lateinit var binding: ActivityPaymentVcBinding
-    private lateinit var view: ViewGroup
+    //private lateinit var view: ViewGroup
 
     var ecpay_token: String = ""
     var order_token: String = ""

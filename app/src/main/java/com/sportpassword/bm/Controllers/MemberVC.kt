@@ -33,7 +33,7 @@ lateinit var qrEncoder: QRGEncoder
 class MemberVC : MyTableVC() {
 
     private lateinit var binding: ActivityMemberVcBinding
-    private lateinit var view: ViewGroup
+    //private lateinit var view: ViewGroup
 
     override fun onCreate(savedInstanceState: Bundle?) {
 

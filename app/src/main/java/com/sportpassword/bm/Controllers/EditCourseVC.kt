@@ -16,7 +16,7 @@ import com.sportpassword.bm.databinding.MytablevcBinding
 class EditCourseVC : EditVC() {
 
     private lateinit var binding: ActivityEditCourseVcBinding
-    private lateinit var view: ViewGroup
+    //private lateinit var view: ViewGroup
 
     var coach_token: String? = null
 

@@ -12,7 +12,7 @@ import com.sportpassword.bm.databinding.ActivityTempPlayVcBinding
 class TempPlayVC : MyTableVC() {
 
     private lateinit var binding: ActivityTempPlayVcBinding
-    private lateinit var view: ViewGroup
+    //private lateinit var view: ViewGroup
 
     var mysTable: TeamsTable? = null
 

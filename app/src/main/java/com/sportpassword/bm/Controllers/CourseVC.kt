@@ -19,7 +19,7 @@ import com.sportpassword.bm.databinding.MytablevcBinding
 class CourseVC : MyTableVC() {
 
     private lateinit var binding: ActivityCourseVcBinding
-    private lateinit var view: ViewGroup
+    //private lateinit var view: ViewGroup
 
     var mysTable: CoursesTable? = null
     lateinit var tableAdapter: CourseAdapter

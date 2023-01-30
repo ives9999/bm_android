@@ -14,7 +14,7 @@ import com.sportpassword.bm.databinding.ActivityTeachVcBinding
 class TeachVC : MyTableVC() {
 
     private lateinit var binding: ActivityTeachVcBinding
-    private lateinit var view: ViewGroup
+    //private lateinit var view: ViewGroup
 
     //lateinit var collectionAdapter: CollectionAdapter
     var mysTable: TeachesTable? = null

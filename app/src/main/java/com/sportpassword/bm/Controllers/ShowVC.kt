@@ -48,6 +48,9 @@ open class ShowVC: BaseActivity() {
     var bottom_button_count: Int = 1
     val button_width: Int = 400
 
+    lateinit var loadingAnimation: LoadingAnimation
+    var layoutInt: Int = 0
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -69,6 +72,8 @@ open class ShowVC: BaseActivity() {
         setBottomButtonPadding()
         //initAdapter()
         //refresh()
+
+        loadingAnimation = LoadingAnimation(this)
     }
 
 //    open fun initAdapter() {
@@ -94,6 +99,7 @@ open class ShowVC: BaseActivity() {
 //            signupRows.clear()
 //            showRows.clear()
             initData()
+            loadingAnimation.start()
             //Loading.show(mask)
             val params: HashMap<String, String> = hashMapOf("token" to token!!, "member_token" to member.token!!)
             dataService.getOne(this, params) { success ->
@@ -123,6 +129,7 @@ open class ShowVC: BaseActivity() {
                 runOnUiThread {
                     closeRefresh()
                     //Loading.hide(mask)
+                    loadingAnimation.stop()
                 }
             }
         }

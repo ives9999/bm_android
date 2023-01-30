@@ -22,7 +22,7 @@ import org.jetbrains.anko.*
 class CourseCalendarVC: MyTableVC() {
 
     private lateinit var binding: TabCourseCalendarBinding
-    private lateinit var view: ViewGroup
+    //private lateinit var view: ViewGroup
 
     var superCourses: CoursesTable? = null
 

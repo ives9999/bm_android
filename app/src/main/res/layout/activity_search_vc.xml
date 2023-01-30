@@ -22,7 +22,6 @@
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_below="@id/topView"
-        android:background="@color/MY_BLACK"
         android:orientation="horizontal" />
 
     <LinearLayout
@@ -38,7 +37,6 @@
         android:layout_height="wrap_content"
         android:layout_above="@id/footer"
         android:layout_below="@+id/line"
-        android:background="@color/MY_BLACK"
         android:orientation="vertical">
 
         <LinearLayout
@@ -97,5 +95,4 @@
 
     </LinearLayout>
 
-    <include layout="@layout/mask" />
 </RelativeLayout>

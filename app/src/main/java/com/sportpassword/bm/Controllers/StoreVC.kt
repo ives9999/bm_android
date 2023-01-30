@@ -16,7 +16,7 @@ import kotlin.collections.ArrayList
 class StoreVC : MyTableVC() {
 
     private lateinit var binding: ActivityStoreVcBinding
-    private lateinit var view: ViewGroup
+    //private lateinit var view: ViewGroup
 
     var mysTable: StoresTable? = null
     lateinit var tableAdapter: StoreAdapter

@@ -18,7 +18,7 @@ import com.sportpassword.bm.databinding.MytablevcBinding
 class ManagerSignupVC : MyTableVC() {
 
     private lateinit var binding: ActivityManagerSignupVcBinding
-    private lateinit var view: ViewGroup
+    //private lateinit var view: ViewGroup
 
     var able_token: String = ""
     var able_title: String = ""

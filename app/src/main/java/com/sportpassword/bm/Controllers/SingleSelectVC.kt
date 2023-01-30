@@ -14,7 +14,7 @@ interface SingleSelectDelegate {
 open class SingleSelectVC : SelectVC() {
 
     private lateinit var binding: ActivitySingleSelectVcBinding
-    lateinit var view: ViewGroup
+    //lateinit var view: ViewGroup
 
     var selected: String? = null
     lateinit var tableAdapter: SingleSelectAdapter

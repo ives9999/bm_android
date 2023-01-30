@@ -17,7 +17,7 @@ import com.sportpassword.bm.databinding.MytablevcBinding
 class MemberCartListVC : MyTableVC() {
 
     private lateinit var binding: ActivityMemberCartListVcBinding
-    private lateinit var view: ViewGroup
+    //private lateinit var view: ViewGroup
 
     var mysTable: CartsTable? = null
     lateinit var tableAdapter: MemberCartAdapter

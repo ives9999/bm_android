@@ -19,7 +19,7 @@ import com.sportpassword.bm.member
 class MemberSignupListVC : MyTableVC() {
 
     private lateinit var binding: ActivityMemberSignupListVcBinding
-    private lateinit var view: ViewGroup
+    //private lateinit var view: ViewGroup
 
     lateinit var adapter: MemberSignupListAdapter
 

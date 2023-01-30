@@ -12,7 +12,7 @@ import com.sportpassword.bm.member
 class SignupListVC : MyTableVC() {
 
     private lateinit var binding: ActivitySignupListVcBinding
-    private lateinit var view: ViewGroup
+    //private lateinit var view: ViewGroup
 
     var memberToken: String = ""
     var able: String = ""

@@ -1,6 +1,7 @@
 package com.sportpassword.bm.Controllers
 
 import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
 import android.view.Gravity
 import android.view.View
@@ -32,7 +33,6 @@ import org.jetbrains.anko.backgroundColor
 class SearchVC : MyTableVC() {
 
     private lateinit var binding: ActivitySearchVcBinding
-    private lateinit var view: ViewGroup
 
     var mysTable: TeamsTable? = null
     lateinit var tableAdapter: TeamAdapter
@@ -69,9 +69,6 @@ class SearchVC : MyTableVC() {
         //remain.visibility = View.GONE
 
         recyclerView = binding.listContainer
-        findViewById<FrameLayout>(R.id.mask) ?. let { mask ->
-            maskView = mask
-        }
         recyclerView.setHasFixedSize(true)
 
         tableAdapter = TeamAdapter(R.layout.team_list_cell, this)
@@ -146,7 +143,7 @@ class SearchVC : MyTableVC() {
         }
         updateTabSelected(selectedTagIdx)
     }
-    
+
     private fun initTag() {
 
 //        val w = (this.screenWidth.toFloat() / this.density).toInt()

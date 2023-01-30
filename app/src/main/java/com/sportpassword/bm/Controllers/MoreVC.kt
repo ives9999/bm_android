@@ -14,7 +14,7 @@ import com.sportpassword.bm.databinding.ActivityMoreVcBinding
 open class MoreVC : MyTableVC() {
 
     private lateinit var binding: ActivityMoreVcBinding
-    private lateinit var view: ViewGroup
+    //private lateinit var view: ViewGroup
 
     lateinit var tableAdapter: MoreAdapter
     var moreRows: ArrayList<MoreRow> = arrayListOf()

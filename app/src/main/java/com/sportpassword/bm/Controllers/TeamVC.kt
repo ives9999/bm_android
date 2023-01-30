@@ -15,7 +15,7 @@ import com.sportpassword.bm.databinding.ActivityTeamVcBinding
 class TeamVC : MyTableVC() {
 
     private lateinit var binding: ActivityTeamVcBinding
-    private lateinit var view: ViewGroup
+    //private lateinit var view: ViewGroup
 
     var mysTable: TeamsTable? = null
     lateinit var tableAdapter: TeamAdapter

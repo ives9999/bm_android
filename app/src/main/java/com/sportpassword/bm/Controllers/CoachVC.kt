@@ -14,7 +14,7 @@ import com.sportpassword.bm.databinding.ActivityCoachVcBinding
 class CoachVC : MyTableVC() {
 
     private lateinit var binding: ActivityCoachVcBinding
-    private lateinit var view: ViewGroup
+    //private lateinit var view: ViewGroup
 
     var mysTable: CoachesTable? = null
     lateinit var tableAdapter: CoachAdapter

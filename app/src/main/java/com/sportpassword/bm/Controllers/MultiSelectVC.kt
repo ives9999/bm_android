@@ -18,7 +18,7 @@ import com.sportpassword.bm.databinding.ActivityMultiSelectVcBinding
 open class MultiSelectVC : SelectVC() {
 
     private lateinit var binding: ActivityMultiSelectVcBinding
-    private lateinit var view: ViewGroup
+    //private lateinit var view: ViewGroup
 
     var selecteds: ArrayList<String> = arrayListOf()
     lateinit var tableAdapter: MultiSelectAdapter

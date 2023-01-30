@@ -18,7 +18,7 @@ import com.sportpassword.bm.member
 class MemberOrderListVC : MyTableVC() {
 
     private lateinit var binding: ActivityMemberOrderListVcBinding
-    private lateinit var view: ViewGroup
+    //private lateinit var view: ViewGroup
 
     var mysTable: OrdersTable? = null
     lateinit var tableAdapter: MemberOrderAdapter

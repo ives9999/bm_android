@@ -10,7 +10,7 @@ import com.sportpassword.bm.R
 
 open class ManagerVC : MyTableVC() {
 
-    lateinit var view: ViewGroup
+    //lateinit var view: ViewGroup
 //    var source: String = "team"
     var manager_token: String? = null
     var resource: Int = 0

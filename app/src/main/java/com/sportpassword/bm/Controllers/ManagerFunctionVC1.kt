@@ -10,7 +10,7 @@ import com.sportpassword.bm.databinding.MytablevcBinding
 class ManagerFunctionVC1 : MyTableVC() {
 
     private lateinit var binding: ManagerFunctionVcBinding
-    private lateinit var view: ViewGroup
+    //private lateinit var view: ViewGroup
 
     var token: String = ""
     var title: String = ""

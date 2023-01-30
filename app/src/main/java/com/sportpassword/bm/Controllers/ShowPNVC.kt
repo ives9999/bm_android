@@ -21,7 +21,7 @@ import java.lang.Exception
 class ShowPNVC : MyTableVC(), OSPermissionObserver {
 
     private lateinit var binding: ActivityShowPnvcBinding
-    private lateinit var view: ViewGroup
+    //private lateinit var view: ViewGroup
 
     var pnArr: JSONArray = JSONArray()
     var isReceive: Boolean = false
