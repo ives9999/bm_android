@@ -444,7 +444,7 @@ object MemberService: DataService() {
 
     fun memberSignupCalendar(year: Int, month: Int, member_token: String?=null, able_type: String="course", page: Int, perPage: Int, complete: CompletionHandler) {
         val url: String = URL_MEMBER_SIGNUPLIST
-        //println(url)
+        println(url)
 
         val params: HashMap<String, String> = hashMapOf(
             "channel" to CHANNEL,
@@ -456,7 +456,7 @@ object MemberService: DataService() {
             "page" to page.toString(),
             "perPage" to perPage.toString()
         )
-        //println(params)
+        println(params)
 
         val request: okhttp3.Request = getRequest(url, params)
 

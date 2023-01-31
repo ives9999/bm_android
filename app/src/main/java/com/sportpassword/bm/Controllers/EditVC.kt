@@ -153,7 +153,7 @@ open class EditVC : MyTableVC() {
     open fun initData() {}
 
     override fun refresh() {
-        //loadingAnimation.start()
+        loadingAnimation.start()
         val params: HashMap<String, String> = hashMapOf("token" to token)
         dataService.getOne(this, params) { success ->
             if (success) {
@@ -171,7 +171,7 @@ open class EditVC : MyTableVC() {
                 closeRefresh()
             }
             runOnUiThread {
-                //loadingAnimation.stop()
+                loadingAnimation.stop()
             }
         }
     }

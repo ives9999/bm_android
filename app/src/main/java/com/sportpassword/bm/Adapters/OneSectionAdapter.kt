@@ -31,7 +31,12 @@ import com.squareup.picasso.Picasso
 import org.jetbrains.anko.backgroundColor
 import java.lang.IllegalArgumentException
 
-class OneSectionAdapter(val context: Context, private val resource: Int, var delegate: List1CellDelegate, val others: HashMap<String, String>): RecyclerView.Adapter<OneSectionViewHolder>() {
+class OneSectionAdapter(
+    val context: Context,
+    private val resource: Int,
+    var delegate: List1CellDelegate,
+    val others: HashMap<String, String>
+) : RecyclerView.Adapter<OneSectionViewHolder>() {
     private var oneSections: ArrayList<OneSection> = arrayListOf()
     //lateinit var adapter: TeamSearchItemAdapter
 
@@ -54,7 +59,8 @@ class OneSectionAdapter(val context: Context, private val resource: Int, var del
         val adapter =
             OneItemAdapter(context, position, oneSections[position], delegate, others)
 //            holder.recyclerView.setHasFixedSize(true)
-        holder.recyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+        holder.recyclerView.layoutManager =
+            LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         holder.recyclerView.adapter = adapter
 
 //        var iconID: Int = 0
@@ -74,14 +80,20 @@ class OneSectionAdapter(val context: Context, private val resource: Int, var del
     }
 }
 
-class OneSectionViewHolder(val viewHolder: View): RecyclerView.ViewHolder(viewHolder) {
+class OneSectionViewHolder(val viewHolder: View) : RecyclerView.ViewHolder(viewHolder) {
 
     var titleLbl: TextView = viewHolder.findViewById(R.id.titleLbl)
     var greater: ImageView = viewHolder.findViewById(R.id.greater)
     var recyclerView: RecyclerView = viewHolder.findViewById(R.id.recyclerView)
 }
 
-class OneItemAdapter(val context: Context, private val sectionIdx: Int, private val oneSection: OneSection, var delegate: List1CellDelegate, val others: HashMap<String, String>): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class OneItemAdapter(
+    val context: Context,
+    private val sectionIdx: Int,
+    private val oneSection: OneSection,
+    var delegate: List1CellDelegate,
+    val others: HashMap<String, String>
+) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     var oneRows: ArrayList<OneRow> = oneSection.items
     var rowIdx: Int = 0
@@ -95,7 +107,13 @@ class OneItemAdapter(val context: Context, private val sectionIdx: Int, private 
                 return PlainViewHolder(inflater.inflate(R.layout.formitem_plain, parent, false))
             }
             CELL_TYPE.TEXTFIELD.toInt() -> {
-                return TextFieldViewHolder(inflater.inflate(R.layout.formitem_textfield, parent, false))
+                return TextFieldViewHolder(
+                    inflater.inflate(
+                        R.layout.formitem_textfield,
+                        parent,
+                        false
+                    )
+                )
             }
             CELL_TYPE.TAG.toInt() -> {
                 return TagViewHolder(inflater.inflate(R.layout.formitem_tag, parent, false))
@@ -119,7 +137,13 @@ class OneItemAdapter(val context: Context, private val sectionIdx: Int, private 
                 return SexViewHolder(inflater.inflate(R.layout.formitem_sex, parent, false))
             }
             CELL_TYPE.PASSWORD.toInt() -> {
-                return PasswordViewHolder(inflater.inflate(R.layout.formitem_password, parent, false))
+                return PasswordViewHolder(
+                    inflater.inflate(
+                        R.layout.formitem_password,
+                        parent,
+                        false
+                    )
+                )
             }
             CELL_TYPE.PRIVACY.toInt() -> {
                 return PrivacyViewHolder(inflater.inflate(R.layout.formitem_privacy, parent, false))
@@ -179,9 +203,13 @@ class OneItemAdapter(val context: Context, private val sectionIdx: Int, private 
             holder.value.hint = row.placeholder
             holder.value.inputType = row.keyboard.toSwift()
 
-            holder.required.visibility = if (row.isRequired) { View.VISIBLE } else { View.INVISIBLE }
+            holder.required.visibility = if (row.isRequired) {
+                View.VISIBLE
+            } else {
+                View.INVISIBLE
+            }
 
-            holder.value.addTextChangedListener(object: TextWatcher {
+            holder.value.addTextChangedListener(object : TextWatcher {
                 override fun afterTextChanged(p0: Editable?) {
                 }
 
@@ -204,7 +232,7 @@ class OneItemAdapter(val context: Context, private val sectionIdx: Int, private 
                 val rowIdx: Int = tag.tag as Int
                 tag.setOnClickListener {
                     holder.handleTap(tag)
-                    delegate.cellSetTag(this.sectionIdx, tag.tag as Int, tag.value, tag.isChecked)
+                    delegate.cellSetTag(this.sectionIdx, this.rowIdx, tag.value, tag.isChecked)
                 }
             }
         } else if (holder is NumberViewHolder) {
@@ -283,7 +311,11 @@ class OneItemAdapter(val context: Context, private val sectionIdx: Int, private 
             holder.show.visibility = View.VISIBLE
             holder.prompt.visibility = (row.prompt.isNotEmpty()) then { View.VISIBLE } ?: View.GONE
 
-            holder.required.visibility = if (row.isRequired) { View.VISIBLE } else { View.INVISIBLE }
+            holder.required.visibility = if (row.isRequired) {
+                View.VISIBLE
+            } else {
+                View.INVISIBLE
+            }
 
             holder.viewHolder.setOnClickListener {
                 delegate.cellMoreClick(sectionIdx, position)
@@ -317,7 +349,11 @@ class OneItemAdapter(val context: Context, private val sectionIdx: Int, private 
             )
         } else if (holder is SexViewHolder) {
             holder.title.text = row.title
-            holder.required.visibility = if (row.isRequired) { View.VISIBLE } else { View.INVISIBLE }
+            holder.required.visibility = if (row.isRequired) {
+                View.VISIBLE
+            } else {
+                View.INVISIBLE
+            }
             holder.sex.setOnCheckedChangeListener { _, i ->
                 val radio = holder.sex.findViewById<RadioButton>(i)
                 val sex = radio.tag.toString()
@@ -331,9 +367,13 @@ class OneItemAdapter(val context: Context, private val sectionIdx: Int, private 
             holder.value.setText(row.value)
             holder.value.hint = row.placeholder
 
-            holder.required.visibility = if (row.isRequired) { View.VISIBLE } else { View.INVISIBLE }
+            holder.required.visibility = if (row.isRequired) {
+                View.VISIBLE
+            } else {
+                View.INVISIBLE
+            }
 
-            holder.value.addTextChangedListener(object: TextWatcher {
+            holder.value.addTextChangedListener(object : TextWatcher {
                 override fun afterTextChanged(p0: Editable?) {
                 }
 
@@ -350,7 +390,11 @@ class OneItemAdapter(val context: Context, private val sectionIdx: Int, private 
             }
         } else if (holder is PrivacyViewHolder) {
             holder.checkBox.setText(row.show)
-            holder.required.visibility = if (row.isRequired) { View.VISIBLE } else { View.INVISIBLE }
+            holder.required.visibility = if (row.isRequired) {
+                View.VISIBLE
+            } else {
+                View.INVISIBLE
+            }
 
             holder.checkBox.setOnCheckedChangeListener { buttonView, isChecked ->
                 delegate.cellPrivacyChanged(sectionIdx, position, isChecked)
@@ -383,14 +427,14 @@ class OneItemAdapter(val context: Context, private val sectionIdx: Int, private 
 //    abstract fun bind(row: OneRow)
 //}
 
-class PlainViewHolder(val viewHolder: View): RecyclerView.ViewHolder(viewHolder) {
+class PlainViewHolder(val viewHolder: View) : RecyclerView.ViewHolder(viewHolder) {
 
 
     val title: TextView = viewHolder.findViewById(R.id.title)
     val show: TextView = viewHolder.findViewById(R.id.detail)
 }
 
-class TextFieldViewHolder(val viewHolder: View): RecyclerView.ViewHolder(viewHolder) {
+class TextFieldViewHolder(val viewHolder: View) : RecyclerView.ViewHolder(viewHolder) {
 
     val title: TextView = viewHolder.findViewById(R.id.title)
     val prompt: ImageView = viewHolder.findViewById(R.id.promptBtn)
@@ -400,7 +444,7 @@ class TextFieldViewHolder(val viewHolder: View): RecyclerView.ViewHolder(viewHol
     val clear: ImageView = viewHolder.findViewById(R.id.clear)
 }
 
-class TagViewHolder(val viewHolder: View): RecyclerView.ViewHolder(viewHolder) {
+class TagViewHolder(val viewHolder: View) : RecyclerView.ViewHolder(viewHolder) {
 
     val title: TextView = viewHolder.findViewById(R.id.title)
     val tag_container: TableLayout = viewHolder.findViewById(R.id.tag_container)
@@ -414,7 +458,11 @@ class TagViewHolder(val viewHolder: View): RecyclerView.ViewHolder(viewHolder) {
         val count: Int = attributes.size
 
         val (q, r) = count.quotientAndRemainder(columnNum)
-        rowNum = if (r > 0) { q + 1 } else { q }
+        rowNum = if (r > 0) {
+            q + 1
+        } else {
+            q
+        }
         tag_container.removeAllViews()
 
         var tableRow: LinearLayout? = null
@@ -430,7 +478,10 @@ class TagViewHolder(val viewHolder: View): RecyclerView.ViewHolder(viewHolder) {
                 tableRow.layoutParams = lp
                 tag_container.addView(tableRow)
             }
-            val lp_tag = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT)
+            val lp_tag = LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT
+            )
             lp_tag.gravity = Gravity.CENTER
             lp_tag.weight = 1F
 
@@ -441,7 +492,7 @@ class TagViewHolder(val viewHolder: View): RecyclerView.ViewHolder(viewHolder) {
             tag.key = attribute
             tag.value = attribute
 
-            tag.findViewById<TextView>(R.id.tag_view) ?. let {
+            tag.findViewById<TextView>(R.id.tag_view)?.let {
                 it.text = attribute
             }
 
@@ -477,7 +528,7 @@ class TagViewHolder(val viewHolder: View): RecyclerView.ViewHolder(viewHolder) {
     }
 }
 
-class NumberViewHolder(val viewHolder: View): RecyclerView.ViewHolder(viewHolder) {
+class NumberViewHolder(val viewHolder: View) : RecyclerView.ViewHolder(viewHolder) {
 
     val title: TextView = viewHolder.findViewById(R.id.title)
     val minus: Button = viewHolder.findViewById(R.id.minus)
@@ -503,7 +554,7 @@ class NumberViewHolder(val viewHolder: View): RecyclerView.ViewHolder(viewHolder
         numberLbl.text = value.toString()
     }
 
-    fun plusClick (): Int {
+    fun plusClick(): Int {
 
         if (!minus.isEnabled) {
             minus.isEnabled = true
@@ -518,7 +569,7 @@ class NumberViewHolder(val viewHolder: View): RecyclerView.ViewHolder(viewHolder
         return number
     }
 
-    fun minusClick (): Int {
+    fun minusClick(): Int {
 
         if (!plus.isEnabled) {
             plus.isEnabled = true
@@ -534,7 +585,7 @@ class NumberViewHolder(val viewHolder: View): RecyclerView.ViewHolder(viewHolder
     }
 }
 
-class CartViewHolder(val viewHolder: View): RecyclerView.ViewHolder(viewHolder) {
+class CartViewHolder(val viewHolder: View) : RecyclerView.ViewHolder(viewHolder) {
 
     val title: TextView = viewHolder.findViewById(R.id.titleLbl)
     val featured: ImageView = viewHolder.findViewById(R.id.listFeatured)
@@ -548,7 +599,7 @@ class CartViewHolder(val viewHolder: View): RecyclerView.ViewHolder(viewHolder) 
     val refreshIcon: ImageView = viewHolder.findViewById(R.id.refreshIcon)
 }
 
-class RadioViewHolder(val viewHolder: View): RecyclerView.ViewHolder(viewHolder) {
+class RadioViewHolder(val viewHolder: View) : RecyclerView.ViewHolder(viewHolder) {
 
     fun init(context: Context, row: OneRow): RadioGroup {
 
@@ -565,11 +616,14 @@ class RadioViewHolder(val viewHolder: View): RecyclerView.ViewHolder(viewHolder)
             )
         )
 
-        viewHolder.findViewById<LinearLayout>(R.id.radioContainer) ?. let {
+        viewHolder.findViewById<LinearLayout>(R.id.radioContainer)?.let {
             it.removeAllViews()
         }
 
-        val lp = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT)
+        val lp = LinearLayout.LayoutParams(
+            LinearLayout.LayoutParams.MATCH_PARENT,
+            LinearLayout.LayoutParams.MATCH_PARENT
+        )
         lp.setMargins(18, 24, 0, 24)
 
         val group = RadioGroup(context)
@@ -605,7 +659,7 @@ class RadioViewHolder(val viewHolder: View): RecyclerView.ViewHolder(viewHolder)
             radioButtons.add(radioButton)
         }
 
-        viewHolder.findViewById<LinearLayout>(R.id.radioContainer) ?. let {
+        viewHolder.findViewById<LinearLayout>(R.id.radioContainer)?.let {
             it.addView(group)
         }
 
@@ -613,7 +667,7 @@ class RadioViewHolder(val viewHolder: View): RecyclerView.ViewHolder(viewHolder)
     }
 }
 
-class MoreViewHolder(val viewHolder: View): RecyclerView.ViewHolder(viewHolder) {
+class MoreViewHolder(val viewHolder: View) : RecyclerView.ViewHolder(viewHolder) {
     val title: TextView = viewHolder.findViewById(R.id.title)
     val show: TextView = viewHolder.findViewById(R.id.detail)
     val prompt: ImageView = viewHolder.findViewById(R.id.promptBtn)
@@ -622,14 +676,20 @@ class MoreViewHolder(val viewHolder: View): RecyclerView.ViewHolder(viewHolder) 
     val clear: ImageView = viewHolder.findViewById(R.id.clear)
 }
 
-class BarcodeViewHolder(val viewHolder: View): RecyclerView.ViewHolder(viewHolder) {
+class BarcodeViewHolder(val viewHolder: View) : RecyclerView.ViewHolder(viewHolder) {
     val title: TextView = viewHolder.findViewById(R.id.title)
     val barcode: ImageView = viewHolder.findViewById(R.id.barcode)
 
-    fun createBarcodeBitmap(value: String, @ColorInt barcodeColor: Int, @ColorInt backgroundColor: Int, width: Int, height: Int): Bitmap {
+    fun createBarcodeBitmap(
+        value: String,
+        @ColorInt barcodeColor: Int,
+        @ColorInt backgroundColor: Int,
+        width: Int,
+        height: Int
+    ): Bitmap {
 
         val bitMatrix = Code128Writer().encode(
-            value, BarcodeFormat.CODE_128,width,height
+            value, BarcodeFormat.CODE_128, width, height
         )
         val pixels = IntArray(bitMatrix.width * bitMatrix.height)
 
@@ -660,14 +720,14 @@ class BarcodeViewHolder(val viewHolder: View): RecyclerView.ViewHolder(viewHolde
     }
 }
 
-class SexViewHolder(val viewHolder: View): RecyclerView.ViewHolder(viewHolder) {
+class SexViewHolder(val viewHolder: View) : RecyclerView.ViewHolder(viewHolder) {
     val title: TextView = viewHolder.findViewById(R.id.title)
     val required: ImageView = viewHolder.findViewById(R.id.required)
 
     val sex: RadioGroup = viewHolder.findViewById(R.id.sex)
 }
 
-class PasswordViewHolder(val viewHolder: View): RecyclerView.ViewHolder(viewHolder) {
+class PasswordViewHolder(val viewHolder: View) : RecyclerView.ViewHolder(viewHolder) {
     val title: TextView = viewHolder.findViewById(R.id.title)
     val prompt: ImageView = viewHolder.findViewById(R.id.promptBtn)
     val value: EditText = viewHolder.findViewById(R.id.manager_tokenTF)
@@ -676,20 +736,20 @@ class PasswordViewHolder(val viewHolder: View): RecyclerView.ViewHolder(viewHold
     val clear: ImageView = viewHolder.findViewById(R.id.clear)
 }
 
-class PrivacyViewHolder(val viewHolder: View): RecyclerView.ViewHolder(viewHolder) {
+class PrivacyViewHolder(val viewHolder: View) : RecyclerView.ViewHolder(viewHolder) {
     val title: TextView = viewHolder.findViewById(R.id.title)
     val checkBox: CheckBox = viewHolder.findViewById(R.id.privacyBox)
 
     val required: ImageView = viewHolder.findViewById(R.id.required)
 }
 
-class SwitchViewHolder(val viewHolder: View): RecyclerView.ViewHolder(viewHolder) {
+class SwitchViewHolder(val viewHolder: View) : RecyclerView.ViewHolder(viewHolder) {
 
     val title: TextView = viewHolder.findViewById(R.id.title)
     val switch: SwitchCompat = viewHolder.findViewById(R.id.search_switch)
 }
 
-class ContentViewHolder(val viewHolder: View): RecyclerView.ViewHolder(viewHolder) {
+class ContentViewHolder(val viewHolder: View) : RecyclerView.ViewHolder(viewHolder) {
 
     val title: TextView = viewHolder.findViewById(R.id.title)
     val content: TextView = viewHolder.findViewById(R.id.detail)

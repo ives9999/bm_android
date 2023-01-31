@@ -20,6 +20,7 @@ import org.jetbrains.anko.textColor
 
 class LoadingAnimation constructor(private val context: Activity, private val animationName: String = "loading.json") {
 
+    //現有視圖中最底層的視圖
     var rootView: ViewGroup = context.window.decorView.findViewById<ViewGroup>(android.R.id.content)
 
     //畫面的layout與設定layout的參數

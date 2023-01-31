@@ -1115,7 +1115,7 @@ open class DataService {
 
         jsonString = ""
         val url: String = getUpdateURL()
-        //println(url)
+        println(url)
 
 //        val header: MutableList<Pair<String, String>> = mutableListOf()
 //        header.add(Pair("Accept","application/json"))
@@ -1138,7 +1138,7 @@ open class DataService {
 
                 try {
                     jsonString = response.body!!.string()
-//                    println(jsonString)
+                    //println(jsonString)
                     success = true
                 } catch (e: Exception) {
                     success = false

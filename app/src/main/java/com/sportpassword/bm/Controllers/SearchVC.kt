@@ -57,7 +57,7 @@ class SearchVC : MyTableVC() {
         setContentView(view)
 
         setBottomTabFocus()
-        //topTitleLbl.setText("球隊")
+        binding.topViewInclude.topTitleLbl.setText("球隊")
 
         dataService = TeamService
         delegate = this
