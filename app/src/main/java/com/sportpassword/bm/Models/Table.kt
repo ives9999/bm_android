@@ -14,6 +14,24 @@ class Tables2<T: Table> {
     var totalCount: Int = 0
     var perPage: Int = 0
     var rows: ArrayList<T> = arrayListOf()
+    var nextDate: String = ""
+    var nextDateWeek: String = ""
+    var play_start: String = ""
+    var play_end: String = ""
+
+    var play_start_show: String = ""
+    var play_end_show: String = ""
+
+    fun filterRow() {
+
+        if (play_start.length > 0) {
+            play_start_show = play_start.noSec()
+        }
+
+        if (play_end.length > 0) {
+            play_end_show = play_end.noSec()
+        }
+    }
 }
 
 abstract class Tables {

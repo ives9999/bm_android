@@ -13,6 +13,11 @@ class TeamMemberTable: Table() {
     var isLeave: Boolean = false
     var leaveTime: String = ""
 
+    var nextDate: String = ""
+    var nextDateWeek: String = ""
+    var play_start: String = ""
+    var play_end: String = ""
+
     override fun filterRow() {
         super.filterRow()
 

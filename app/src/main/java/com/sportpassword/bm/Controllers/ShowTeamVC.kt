@@ -64,6 +64,14 @@ class ShowTeamVC: ShowVC() {
     protected lateinit var teamMemberScrollListener: MemberTeamScrollListener
     var teamMemberPage: Int = 1
     var teamMemberPerpage: Int = PERPAGE
+    var nextDate: String = ""
+    var nextDateWeek: String = ""
+    var play_start: String = ""
+    var play_end: String = ""
+    //會員是否為球隊隊友
+    var isTeamMember: Boolean = false
+    //會員為隊友，會員是否已經請假
+    var isTeapMemberLeave: Boolean = false
 
     //temp play
     lateinit var tempPlayAdapter: SignupAdapter
@@ -295,6 +303,7 @@ class ShowTeamVC: ShowVC() {
                     msg = "無法從伺服器取得正確的json資料，請洽管理員"
                 } else {
                     if (tables2.success) {
+                        tables2.filterRow()
                         if (tables2.rows.size > 0) {
 
                             for ((idx, row) in tables2.rows.withIndex()) {
@@ -316,13 +325,21 @@ class ShowTeamVC: ShowVC() {
                                 val _totalPage: Int = totalCount / perPage
                                 totalPage = if (totalCount % perPage > 0) _totalPage + 1 else _totalPage
                                 countTeamMemberTotalPage()
+
+                                nextDate = tables2.nextDate
+                                nextDateWeek = tables2.nextDateWeek
+                                play_start = tables2.play_start_show
+                                play_end = tables2.play_end_show
                             }
 
                             binding.teamMemberDataLbl.visibility = View.VISIBLE
                             binding.teamMemberDataLbl.text = "總人數${totalCount}位"
+                            binding.nextDateLbl.text = "下次打球時間：${nextDate}" + " ( " + nextDateWeek + " )" + "  " + "${play_start} ~ ${play_end}"
                             teamMemberAdapter.rows = teamMemberRows
                             teamMemberAdapter.notifyDataSetChanged()
                         } else {
+                            binding.teamMemberDataLbl.visibility = View.INVISIBLE
+                            binding.nextDateLbl.visibility = View.INVISIBLE
                             val rootView: ViewGroup = getRootView()
                             rootView.setInfo(this, "目前暫無資料")
                         }
@@ -660,7 +677,7 @@ class ShowTeamVC: ShowVC() {
                     isTeamMemberLoaded = true
                 }
 
-                showBottom?.showButton(false, true, false)
+                this.setTeamMemberBottom()
             }
             2-> {
                 tempPlayContainerLL?.visibility = View.VISIBLE
@@ -737,6 +754,18 @@ class ShowTeamVC: ShowVC() {
             }
             //getTeamMemberList(page, teamMemberPerpage)
         }
+    }
+}
+
+fun ShowTeamVC.setTeamMemberBottom() {
+    if (this.isTeamMember && !this.isTeapMemberLeave) {
+        showBottom!!.showButton(true, true, false)
+        showBottom!!.setSubmitBtnTitle("請假")
+    } else if (this.isTeamMember && this.isTeamMember) {
+        showBottom!!.showButton(true, true, false)
+        showBottom!!.setSubmitBtnTitle("取消")
+    } else {
+        showBottom!!.showButton(false, true, false)
     }
 }
 
