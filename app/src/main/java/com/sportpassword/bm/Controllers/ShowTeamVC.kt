@@ -12,6 +12,7 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.google.gson.JsonParseException
 import com.google.gson.reflect.TypeToken
 import com.sportpassword.bm.Adapters.SignupAdapter
@@ -292,6 +293,9 @@ class ShowTeamVC: ShowVC() {
     }
 
     fun getTeamMemberList(page: Int, perPage: Int) {
+        if (page == 1) {
+            teamMemberRows.clear()
+        }
         loadingAnimation.start()
         loading = true
 
@@ -763,9 +767,14 @@ class ShowTeamVC: ShowVC() {
         }
     }
 
-//    override fun didSelectRowAt(view: View, position: Int) {
-//
-//    }
+    override fun setRefreshListener() {
+        if (refreshLayout != null) {
+            refreshListener = SwipeRefreshLayout.OnRefreshListener {
+                refresh()
+            }
+            refreshLayout!!.setOnRefreshListener(refreshListener)
+        }
+    }
 
     inner class MemberTeamScrollListener(recyelerViewLinearLayoutManager: LinearLayoutManager): EndlessRecyclerViewScrollListener(recyelerViewLinearLayoutManager) {
 
@@ -820,7 +829,7 @@ fun ShowTeamVC.teamMemberLeave(doLeave: Boolean) {
             val successTable: SuccessTable? = jsonToModel(jsonString)
             if (successTable != null && successTable.success) {
                 runOnUiThread {
-                    this.info(doLeaveWarning, "關閉", "取消") {
+                    this.info(doLeaveWarning, "關閉") {
                         this.getTeamMemberList(1, PERPAGE)
                     }
                 }

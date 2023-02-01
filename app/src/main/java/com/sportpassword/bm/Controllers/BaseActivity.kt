@@ -722,6 +722,10 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener,
         Alert.show(this, "訊息", msg, closeButtonTitle, buttonTitle, buttonAction)
     }
 
+    fun info(msg: String, buttonTitle: String, buttonAction: () -> Unit) {
+        Alert.show(this, "訊息", msg, "", buttonTitle, buttonAction)
+    }
+
     open fun init() {
 
         var prevIcon: ImageButton? = null
