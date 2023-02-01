@@ -78,6 +78,15 @@ object TeamService: DataService() {
         _simpleService(context, url, params, complete)
     }
 
+    fun leave(context: Context, team_member_token: String, play_date: String, complete: CompletionHandler) {
+        val url: String = URL_TEAM_MEMBER_LEAVE
+        val params: HashMap<String, String> = hashMapOf("device" to "app", "channel" to CHANNEL, "team_member_token" to team_member_token, "play_date" to play_date)
+        //println(url)
+        //println(params)
+
+        _simpleService(context, url, params, complete)
+    }
+
     fun teamMemberList(context: Context, token: String, page:Int, perPage: Int, complete: CompletionHandler) {
         val url: String = URL_TEAM_MEMBER_LIST
         val params: HashMap<String, String> = hashMapOf(

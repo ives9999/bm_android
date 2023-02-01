@@ -304,6 +304,7 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener,
         URL_TEAM_LIST = URL_HOME + "team/list"
         URL_TEAM_MEMBER_ADD = URL_HOME + "team/addTeamMember"
         URL_TEAM_MEMBER_DELETE = URL_HOME + "team/deleteTeamMember"
+        URL_TEAM_MEMBER_LEAVE = URL_HOME + "team/leave"
         URL_TEAM_MEMBER_LIST = URL_HOME + "team/teamMemberList"
         URL_TEAM_TEMP_PLAY = URL_TEAM + "tempPlay/onoff"
         URL_TEAM_TEMP_PLAY_LIST = URL_TEAM + "tempPlay/list"

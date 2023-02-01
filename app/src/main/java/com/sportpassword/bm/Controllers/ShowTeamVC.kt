@@ -50,7 +50,7 @@ class ShowTeamVC: ShowVC() {
     )
     var focusTabIdx: Int = 0
     var isTeamMemberLoaded: Boolean = false
-    var teamMemberRows: ArrayList<SignupRow> = arrayListOf()
+    var teamMemberRows: ArrayList<TeamMemberTable> = arrayListOf()
 
     var introduceContainerLL: LinearLayout? = null
     var teamMemberContainerLL: LinearLayout? = null
@@ -72,6 +72,8 @@ class ShowTeamVC: ShowVC() {
     var isTeamMember: Boolean = false
     //會員為隊友，會員是否已經請假
     var isTeapMemberLeave: Boolean = false
+    //此會員的team member token
+    var teamMemberToken: String? = null
 
     //temp play
     lateinit var tempPlayAdapter: SignupAdapter
@@ -289,7 +291,7 @@ class ShowTeamVC: ShowVC() {
         }
     }
 
-    private fun getTeamMemberList(page: Int, perPage: Int) {
+    fun getTeamMemberList(page: Int, perPage: Int) {
         loadingAnimation.start()
         loading = true
 
@@ -314,8 +316,14 @@ class ShowTeamVC: ShowVC() {
                                     ((row.memberTable != null) then { row.memberTable!!.nickname })
                                         ?: ""
                                 val token: String = ((row.memberTable != null) then { row.memberTable!!.token }) ?: ""
-                                val signupRow: SignupRow = SignupRow((baseIdx + idx + 1).toString(), nickname, token)
-                                teamMemberRows.add(signupRow)
+                                teamMemberRows.add(row)
+
+                                //取得會員是否為隊友與會員是否已經請假
+                                if (row.memberTable!!.token == member.token) {
+                                    this.teamMemberToken = row.token
+                                    this.isTeamMember = true
+                                    this.isTeapMemberLeave = row.isLeave
+                                }
                             }
 
                             if (this.teamMemberPage == 1) {
@@ -326,17 +334,19 @@ class ShowTeamVC: ShowVC() {
                                 totalPage = if (totalCount % perPage > 0) _totalPage + 1 else _totalPage
                                 countTeamMemberTotalPage()
 
-                                nextDate = tables2.nextDate
-                                nextDateWeek = tables2.nextDateWeek
-                                play_start = tables2.play_start_show
-                                play_end = tables2.play_end_show
+                                //取得下次打球時間
+                                this.nextDate = tables2.nextDate
+                                this.nextDateWeek = tables2.nextDateWeek
+                                this.play_start = tables2.play_start_show
+                                this.play_end = tables2.play_end_show
                             }
 
                             binding.teamMemberDataLbl.visibility = View.VISIBLE
                             binding.teamMemberDataLbl.text = "總人數${totalCount}位"
                             binding.nextDateLbl.text = "下次打球時間：${nextDate}" + " ( " + nextDateWeek + " )" + "  " + "${play_start} ~ ${play_end}"
-                            teamMemberAdapter.rows = teamMemberRows
-                            teamMemberAdapter.notifyDataSetChanged()
+
+                            this.teamMemberAdapter.rows = this.teamMemberRows
+                            this.teamMemberAdapter.notifyDataSetChanged()
                         } else {
                             binding.teamMemberDataLbl.visibility = View.INVISIBLE
                             binding.nextDateLbl.visibility = View.INVISIBLE
@@ -347,6 +357,7 @@ class ShowTeamVC: ShowVC() {
                         msg = "解析JSON字串時，沒有成功，系統傳回值錯誤，請洽管理員"
                     }
                 }
+                this.setTeamMemberBottom()
             }
         }
     }
@@ -546,49 +557,75 @@ class ShowTeamVC: ShowVC() {
             return
         }
 
-        if (myTable != null && myTable!!.signupDate != null) {
-
-            var deadline_time: Date? = null
-            myTable!!.signupDate!!.deadline.toDate("yyyy-MM-dd HH:mm:ss")?.let {
-                deadline_time = it
-            }
-
-            if (deadline_time != null) {
-                val now: Date = Date()
-                if (now.after(deadline_time)) {
-
-                    msg = "已經超過報名截止時間，請下次再報名"
-                    if (myTable!!.isSignup) {
-                        msg = "已經超過取消報名截止時間，無法取消報名"
+        if (focusTabIdx == 1) {
+            //如果要請假
+            if (!isTeapMemberLeave) {
+                warning("是否確定要請假？", "取消", "是") {
+                    if (this.teamMemberToken != null) {
+                        this.teamMemberLeave(true)
                     }
-                    warning(msg)
+                }
+            }
+            // 如果要取消請假
+            else {
+                warning("是否確定要取消請假？", "關閉", "取消請假") {
+                    if (this.teamMemberToken != null) {
+                        this.teamMemberLeave(false)
+                    }
+                }
+            }
+        }
+        else {
+
+            if (myTable != null && myTable!!.signupDate != null) {
+
+                var deadline_time: Date? = null
+                myTable!!.signupDate!!.deadline.toDate("yyyy-MM-dd HH:mm:ss")?.let {
+                    deadline_time = it
+                }
+
+                if (deadline_time != null) {
+                    val now: Date = Date()
+                    if (now.after(deadline_time)) {
+
+                        msg = "已經超過報名截止時間，請下次再報名"
+                        if (myTable!!.isSignup) {
+                            msg = "已經超過取消報名截止時間，無法取消報名"
+                        }
+                        warning(msg)
+                        return
+                    }
+                } else {
+                    warning("無法取得報名截止時間，無法報名，請洽管理員")
                     return
                 }
-            } else {
-                warning("無法取得報名截止時間，無法報名，請洽管理員")
-                return
-            }
 
-            loadingAnimation.start()
-            dataService.signup(this, myTable!!.token, member.token!!, myTable!!.signupDate!!.token) { success->
+                loadingAnimation.start()
+                dataService.signup(
+                    this,
+                    myTable!!.token,
+                    member.token!!,
+                    myTable!!.signupDate!!.token
+                ) { success ->
 
-                runOnUiThread {
-                    loadingAnimation.stop()
-                }
+                    runOnUiThread {
+                        loadingAnimation.stop()
+                    }
 
-                if (success) {
-                    val jsonString: String = dataService.jsonString
-                    val successTable: SuccessTable? = jsonToModel(jsonString)
-                    if (successTable != null && successTable.success) {
-                        runOnUiThread {
-                            info(successTable.msg, "", "確定") {
-                                refresh()
-                            }
-                        }
-                    } else {
-                        if (successTable != null) {
+                    if (success) {
+                        val jsonString: String = dataService.jsonString
+                        val successTable: SuccessTable? = jsonToModel(jsonString)
+                        if (successTable != null && successTable.success) {
                             runOnUiThread {
-                                warning(successTable.msg)
+                                info(successTable.msg, "", "確定") {
+                                    refresh()
+                                }
+                            }
+                        } else {
+                            if (successTable != null) {
+                                runOnUiThread {
+                                    warning(successTable.msg)
+                                }
                             }
                         }
                     }
@@ -671,7 +708,7 @@ class ShowTeamVC: ShowVC() {
                 introduceContainerLL?.visibility = View.GONE
                 tempPlayContainerLL?.visibility = View.GONE
 
-                signupRows.clear()
+                teamMemberRows.clear()
                 if (!isTeamMemberLoaded) {
                     getTeamMemberList(this.teamMemberPage, this.teamMemberPerpage)
                     isTeamMemberLoaded = true
@@ -695,7 +732,7 @@ class ShowTeamVC: ShowVC() {
     override fun teamMemberInfo(idx: Int) {
         if (myTable != null) {
             if (myTable!!.manager_token == member.token) {
-                val teamMemberRow: SignupRow = teamMemberRows[idx]
+                val teamMemberRow: TeamMemberTable = teamMemberRows[idx]
                 getMemberOne(teamMemberRow.token)
             } else {
                 warning("只有球隊管理員可以檢視報名者資訊")
@@ -769,33 +806,79 @@ fun ShowTeamVC.setTeamMemberBottom() {
     }
 }
 
-class TeamMemberAdapter(val context: Context, val delegate: BaseActivity?=null): RecyclerView.Adapter<SignupViewHolder>() {
+fun ShowTeamVC.teamMemberLeave(doLeave: Boolean) {
+    val doLeaveWarning: String = ((doLeave) then {"已經請假了"}) ?: "已經取消請假了"
+    loadingAnimation.start()
 
-    var rows: ArrayList<SignupRow> = arrayListOf()
+    TeamService.leave(this, this.teamMemberToken!!, this.nextDate) { success ->
+        runOnUiThread {
+            loadingAnimation.stop()
+        }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SignupViewHolder {
+        if (success) {
+            val jsonString: String = TeamService.jsonString
+            val successTable: SuccessTable? = jsonToModel(jsonString)
+            if (successTable != null && successTable.success) {
+                runOnUiThread {
+                    this.info(doLeaveWarning, "關閉", "取消") {
+                        this.getTeamMemberList(1, PERPAGE)
+                    }
+                }
+            } else {
+                if (successTable != null) {
+                    runOnUiThread {
+                        warning(successTable.msg)
+                    }
+                }
+            }
+        }
+    }
+}
+
+class TeamMemberAdapter(val context: Context, val delegate: BaseActivity?=null): RecyclerView.Adapter<TeamMemberShowViewHolder>() {
+
+    var rows: ArrayList<TeamMemberTable> = arrayListOf()
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TeamMemberShowViewHolder {
         val inflater = LayoutInflater.from(parent.context)
-        val viewHolder = inflater.inflate(R.layout.olcell, parent, false)
+        val viewHolder = inflater.inflate(R.layout.team_member_list_show_cell, parent, false)
 
-        return SignupViewHolder(viewHolder)
+        return TeamMemberShowViewHolder(viewHolder)
     }
 
-    override fun onBindViewHolder(holder: SignupViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: TeamMemberShowViewHolder, position: Int) {
 
-        val row: SignupRow = rows[position]
-        holder.number.text = row.number
-        holder.name.text = row.name
+        val row: TeamMemberTable = rows[position]
+        holder.noTV?.text = (position + 1).toString()
+        holder.nameTV?.text = row.memberTable?.nickname
+        holder.leaveTV?.visibility = ((row.isLeave) then {View.VISIBLE}) ?: View.INVISIBLE
 
         holder.viewHolder.setOnClickListener {
 
-            if (delegate != null) {
-                delegate.teamMemberInfo(position)
-            }
+            delegate?.teamMemberInfo(position)
         }
     }
 
     override fun getItemCount(): Int {
         return rows.size
     }
+}
 
+class TeamMemberShowViewHolder(val viewHolder: View): RecyclerView.ViewHolder(viewHolder) {
+
+    var noTV: TextView? = null
+    var nameTV: TextView? = null
+    var leaveTV: TextView? = null
+
+    init {
+        viewHolder.findViewById<TextView>(R.id.noTV) ?. let {
+            noTV = it
+        }
+        viewHolder.findViewById<TextView>(R.id.nameTV) ?. let {
+            nameTV = it
+        }
+        viewHolder.findViewById<TextView>(R.id.leaveTV) ?. let {
+            leaveTV = it
+        }
+    }
 }
