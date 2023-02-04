@@ -7,30 +7,15 @@ import kotlin.reflect.full.memberProperties
 //因為 data class 不太適用於繼承，所以這邊就不用 data class的宣告
 //class Tables<T: Table> {
 
-class Tables2<T: Table> {
+open class Tables2<T: Table> {
     var success: Boolean = true
     var msg: String = ""
     var page: Int = 0
     var totalCount: Int = 0
     var perPage: Int = 0
-    var rows: ArrayList<T> = arrayListOf()
-    var nextDate: String = ""
-    var nextDateWeek: String = ""
-    var play_start: String = ""
-    var play_end: String = ""
+    open var rows: ArrayList<T> = arrayListOf()
 
-    var play_start_show: String = ""
-    var play_end_show: String = ""
-
-    fun filterRow() {
-
-        if (play_start.length > 0) {
-            play_start_show = play_start.noSec()
-        }
-
-        if (play_end.length > 0) {
-            play_end_show = play_end.noSec()
-        }
+    open fun filterRow() {
     }
 }
 

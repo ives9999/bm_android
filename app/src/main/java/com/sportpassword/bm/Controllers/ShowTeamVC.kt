@@ -29,6 +29,8 @@ import com.sportpassword.bm.Views.TabSearch
 import com.sportpassword.bm.Views.Top
 import com.sportpassword.bm.databinding.ActivityShowTeamVcBinding
 import com.sportpassword.bm.member
+import com.squareup.picasso.Picasso
+import org.jetbrains.anko.image
 import java.util.*
 import java.lang.reflect.Type
 import kotlin.collections.ArrayList
@@ -62,7 +64,16 @@ class ShowTeamVC: ShowVC() {
     //team member
     lateinit var teamMemberAdapter: TeamMemberAdapter
     private lateinit var teamMemberLinearLayoutManager: LinearLayoutManager
-    protected lateinit var teamMemberScrollListener: MemberTeamScrollListener
+    private lateinit var teamMemberScrollListener: MemberTeamScrollListener
+    private lateinit var teamMemberTotalTV: TextView
+    private lateinit var teamMemberPlayTV: TextView
+    private lateinit var teamMemberLeaveTV: TextView
+    private lateinit var nextDateIV: ImageView
+    private lateinit var nextDateTV: TextView
+    private lateinit var nextTimeIV: ImageView
+    private lateinit var nextTimeTV: TextView
+    private lateinit var likeIconIV: ImageView
+
     var teamMemberPage: Int = 1
     var teamMemberPerpage: Int = PERPAGE
     var nextDate: String = ""
@@ -132,6 +143,38 @@ class ShowTeamVC: ShowVC() {
 
         findViewById<LinearLayout>(R.id.teamMemberContainerLL) ?. let {
             teamMemberContainerLL = it
+        }
+
+        findViewById<TextView>(R.id.teamMemberTotalTV) ?. let {
+            teamMemberTotalTV = it
+        }
+
+        findViewById<TextView>(R.id.teamMemberPlayTV) ?. let {
+            teamMemberPlayTV = it
+        }
+
+        findViewById<TextView>(R.id.teamMemberLeaveTV) ?. let {
+            teamMemberLeaveTV = it
+        }
+
+        findViewById<ImageView>(R.id.nextDateIV) ?. let {
+            nextDateIV = it
+        }
+
+        findViewById<TextView>(R.id.nextDateTV) ?. let {
+            nextDateTV = it
+        }
+
+        findViewById<ImageView>(R.id.nextTimeIV) ?. let {
+            nextTimeIV = it
+        }
+
+        findViewById<TextView>(R.id.nextTimeTV) ?. let {
+            nextTimeTV = it
+        }
+
+        findViewById<ImageView>(R.id.likeIconIV) ?. let {
+            likeIconIV = it
         }
 
         findViewById<LinearLayout>(R.id.tempPlayContainerLL) ?. let {
@@ -303,8 +346,8 @@ class ShowTeamVC: ShowVC() {
             runOnUiThread {
                 loadingAnimation.stop()
 
-                val tableType: Type = object : TypeToken<Tables2<TeamMemberTable>>() {}.type
-                val tables2: Tables2<TeamMemberTable>? = jsonToModels2<Tables2<TeamMemberTable>, TeamMemberTable>(TeamService.jsonString, tableType)
+                val tableType: Type = object : TypeToken<TeamMemberSuccessTables2<TeamMemberTable>>() {}.type
+                val tables2: TeamMemberSuccessTables2<TeamMemberTable>? = jsonToModels2<TeamMemberSuccessTables2<TeamMemberTable>, TeamMemberTable>(TeamService.jsonString, tableType)
                 if (tables2 == null) {
                     msg = "無法從伺服器取得正確的json資料，請洽管理員"
                 } else {
@@ -345,15 +388,24 @@ class ShowTeamVC: ShowVC() {
                                 this.play_end = tables2.play_end_show
                             }
 
-                            binding.teamMemberDataLbl.visibility = View.VISIBLE
-                            binding.teamMemberDataLbl.text = "總人數${totalCount}位"
-                            binding.nextDateLbl.text = "下次打球時間：${nextDate}" + " ( " + nextDateWeek + " )" + "  " + "${play_start} ~ ${play_end}"
+                            binding.teamMemberDataTV.visibility = View.VISIBLE
+                            teamMemberTotalTV.text = "全部：${totalCount}位"
+                            teamMemberPlayTV.text = "打球：${totalCount - tables2.leaveCount}位"
+                            teamMemberLeaveTV.text = "請假：${tables2.leaveCount}位"
+
+
+                            nextDateIV.setImage("calendar_svg")
+                            nextDateTV.text = "${nextDate}" + " ( " + nextDateWeek + " )"
+                            nextTimeIV.setImage("clock_svg")
+                            nextTimeTV.text = "${play_start} ~ ${play_end}"
+
+                            likeIconIV.setImage("like_in_svg")
 
                             this.teamMemberAdapter.rows = this.teamMemberRows
                             this.teamMemberAdapter.notifyDataSetChanged()
                         } else {
-                            binding.teamMemberDataLbl.visibility = View.INVISIBLE
-                            binding.nextDateLbl.visibility = View.INVISIBLE
+                            binding.teamMemberDataTV.visibility = View.INVISIBLE
+                            nextDateTV.visibility = View.INVISIBLE
                             val rootView: ViewGroup = getRootView()
                             rootView.setInfo(this, "目前暫無資料")
                         }
@@ -858,7 +910,7 @@ class TeamMemberAdapter(val context: Context, val delegate: BaseActivity?=null):
     override fun onBindViewHolder(holder: TeamMemberShowViewHolder, position: Int) {
 
         val row: TeamMemberTable = rows[position]
-        holder.noTV?.text = (position + 1).toString()
+        holder.noTV?.text = (position + 1).toString() + "."
         holder.nameTV?.text = row.memberTable?.nickname
         holder.leaveTV?.visibility = ((row.isLeave) then {View.VISIBLE}) ?: View.INVISIBLE
 
@@ -888,6 +940,28 @@ class TeamMemberShowViewHolder(val viewHolder: View): RecyclerView.ViewHolder(vi
         }
         viewHolder.findViewById<TextView>(R.id.leaveTV) ?. let {
             leaveTV = it
+        }
+    }
+}
+
+class TeamMemberSuccessTables2<T: TeamMemberTable>: Tables2<T>() {
+    var leaveCount: Int = -1
+    var nextDate: String = ""
+    var nextDateWeek: String = ""
+    var play_start: String = ""
+    var play_end: String = ""
+
+    var play_start_show: String = ""
+    var play_end_show: String = ""
+
+    override fun filterRow() {
+
+        if (play_start.length > 0) {
+            play_start_show = play_start.noSec()
+        }
+
+        if (play_end.length > 0) {
+            play_end_show = play_end.noSec()
         }
     }
 }

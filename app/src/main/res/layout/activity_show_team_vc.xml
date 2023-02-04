@@ -106,31 +106,163 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginTop="24dp"
                     android:visibility="gone">
 
-                    <TextView
-                        android:id="@+id/teamMemberDataLbl"
-                        style="@style/list_text_title"
+                    <RelativeLayout
+                        android:id="@+id/teamMemberAllContainer"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <LinearLayout
+                            android:id="@+id/teamMemberLeftContainer"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+                            <TextView
+                                android:id="@+id/teamMemberDataTV"
+                                style="@style/list_text_title"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="打球人數統計"
+                                 />
+                            <LinearLayout
+                                android:id="@+id/teamMemberSummaryContainer"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="8dp"
+                                android:orientation="horizontal">
+
+                                <TextView
+                                    android:id="@+id/teamMemberTotalTV"
+                                    style="@style/list_text_general"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:background="@drawable/button_rc"
+                                    android:paddingStart="15dp"
+                                    android:paddingTop="3dp"
+                                    android:paddingEnd="15dp"
+                                    android:paddingBottom="3dp"
+                                    android:textColor="@color/BLACK" />
+
+                                <TextView
+                                    android:id="@+id/teamMemberPlayTV"
+                                    style="@style/list_text_general"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:paddingStart="15dp"
+                                    android:paddingTop="3dp"
+                                    android:paddingEnd="15dp"
+                                    android:paddingBottom="3dp"
+                                    />
+
+                                <TextView
+                                    android:id="@+id/teamMemberLeaveTV"
+                                    style="@style/list_text_general"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:paddingStart="15dp"
+                                    android:paddingTop="3dp"
+                                    android:paddingEnd="15dp"
+                                    android:paddingBottom="3dp"
+                                    />
+
+                            </LinearLayout>
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/likeContainer"
+                            android:layout_width="48dp"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentEnd="true"
+                            android:layout_marginEnd="12dp"
+                            android:orientation="vertical">
+
+                            <LinearLayout
+                                android:layout_width="48dp"
+                                android:layout_height="48dp"
+                                android:background="@drawable/circle"
+                                android:gravity="center">
+
+                                <ImageView
+                                    android:id="@+id/likeIconIV"
+                                    android:layout_width="24dp"
+                                    android:layout_height="24dp"
+                                    android:layout_gravity="center_vertical"
+                                    app:srcCompat="@drawable/like_in_svg" />
+                            </LinearLayout>
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_marginTop="5dp"
+                                style="@style/list_text_general"
+                                android:text="16" />
+
+                        </LinearLayout>
+                    </RelativeLayout>
+
+
+                    <LinearLayout
+                        android:id="@+id/nextDataContainerLL"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="24dp"
-                        android:text=""
-                        android:textAlignment="center" />
+                        android:orientation="horizontal"
+                        android:layout_marginTop="10dp">
+
+                        <ImageView
+                            android:id="@+id/nextDateIV"
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                             />
+
+                        <TextView
+                            android:id="@+id/nextDateTV"
+                            style="@style/list_text_general"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginStart="24dp"
+                            android:text="" />
+                    </LinearLayout>
+                    <LinearLayout
+                        android:id="@+id/nextTimeContainerLL"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginTop="10dp">
+
+                        <ImageView
+                            android:id="@+id/nextTimeIV"
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            />
+
+                        <TextView
+                            android:id="@+id/nextTimeTV"
+                            style="@style/list_text_general"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginStart="24dp"
+                            android:text="" />
+                    </LinearLayout>
 
                     <TextView
-                        android:id="@+id/nextDateLbl"
-                        style="@style/list_text_general"
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        android:text=""
-                        />
+                        style="@style/list_text_title"
+                        android:layout_marginTop="30dp"
+                        android:text="隊員：" />
 
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/teamMemberTableView"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="12dp"
+                        android:layout_marginTop="10dp"
                         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
                 </LinearLayout>
 
