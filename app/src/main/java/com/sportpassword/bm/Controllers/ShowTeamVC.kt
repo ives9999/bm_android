@@ -132,7 +132,7 @@ class ShowTeamVC: ShowVC() {
 
         findViewById<Bottom>(R.id.bottom) ?. let {
             showBottom = it
-            it.showButton(false, true, false)
+            //it.showButton(false, true, false)
             it.setOnSubmitClickListener(signup)
             it.setOnLikeClickListener(like)
             it.setOnCancelClickListener(cancel)
@@ -858,13 +858,13 @@ class ShowTeamVC: ShowVC() {
 
 fun ShowTeamVC.setTeamMemberBottom() {
     if (this.isTeamMember && !this.isTeapMemberLeave) {
-        showBottom!!.showButton(true, true, false)
+        showBottom!!.showButton(true, false, false)
         showBottom!!.setSubmitBtnTitle("請假")
     } else if (this.isTeamMember && this.isTeamMember) {
-        showBottom!!.showButton(true, true, false)
+        showBottom!!.showButton(true, false, false)
         showBottom!!.setSubmitBtnTitle("取消")
     } else {
-        showBottom!!.showButton(false, true, false)
+        showBottom!!.showButton(false, false, false)
     }
 }
 
@@ -919,10 +919,15 @@ class TeamMemberAdapter(val context: Context, val delegate: BaseActivity?=null):
         if (row.created_at != null) {
             holder.createdTV?.text = row.created_at.noSec()
         }
-        holder.leaveTV?.visibility = ((row.isLeave) then {View.VISIBLE}) ?: View.INVISIBLE
+
+        if (row.isLeave && holder.leaveTV != null) {
+            holder.leaveTV!!.visibility = View.VISIBLE
+            holder.leaveTV!!.text = "請假\n${row.leaveTime.noSec().noYear()}"
+        } else {
+            holder.leaveTV?.visibility = View.INVISIBLE
+        }
 
         holder.viewHolder.setOnClickListener {
-
             delegate?.teamMemberInfo(position)
         }
     }

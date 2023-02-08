@@ -11,6 +11,7 @@ import android.widget.TextView
 import com.sportpassword.bm.Controllers.BaseActivity
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Utilities.Global.getScreenWidth
+import com.sportpassword.bm.Utilities.dpToPx
 import com.sportpassword.bm.Utilities.then
 
 class Bottom@JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0):
@@ -27,7 +28,7 @@ class Bottom@JvmOverloads constructor(context: Context, attrs: AttributeSet? = n
 
     var bottom_button_count = 3
     var screenWidth: Int = 0
-    var button_width: Int = 400
+    val button_width: Int = 120
 
     var isShowSubmitBtn: Boolean = true
     var isShowLikeBtn: Boolean = true
@@ -135,7 +136,8 @@ class Bottom@JvmOverloads constructor(context: Context, attrs: AttributeSet? = n
     }
 
     private fun getBottomButtonPadding(): Int {
-        val padding: Int = (screenWidth - bottom_button_count * button_width) / (bottom_button_count + 1)
+        val width = button_width.dpToPx(context)
+        val padding: Int = (screenWidth - bottom_button_count * width) / (bottom_button_count + 1)
 
         return padding
     }

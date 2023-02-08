@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/MY_BOTTOM_BACKGROUND"
+    android:background="@color/MY_BLACK"
     tools:context=".Controllers.ShowTeamVC">
 
     <com.sportpassword.bm.Views.Top
@@ -148,7 +148,7 @@
 
                                 <TextView
                                     android:id="@+id/teamMemberPlayTV"
-                                    style="@style/list_text_general"
+                                    style="@style/list_text_small"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:paddingStart="15dp"
@@ -159,7 +159,7 @@
 
                                 <TextView
                                     android:id="@+id/teamMemberLeaveTV"
-                                    style="@style/list_text_general"
+                                    style="@style/list_text_small"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:paddingStart="15dp"
@@ -172,37 +172,7 @@
 
                         </LinearLayout>
 
-                        <LinearLayout
-                            android:id="@+id/likeContainer"
-                            android:layout_width="48dp"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentEnd="true"
-                            android:layout_marginEnd="12dp"
-                            android:orientation="vertical">
 
-                            <LinearLayout
-                                android:layout_width="48dp"
-                                android:layout_height="48dp"
-                                android:background="@drawable/circle"
-                                android:gravity="center">
-
-                                <ImageView
-                                    android:id="@+id/likeIconIV"
-                                    android:layout_width="24dp"
-                                    android:layout_height="24dp"
-                                    android:layout_gravity="center_vertical"
-                                    app:srcCompat="@drawable/like_in_svg" />
-                            </LinearLayout>
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="center"
-                                android:layout_marginTop="5dp"
-                                style="@style/list_text_general"
-                                android:text="16" />
-
-                        </LinearLayout>
                     </RelativeLayout>
 
 

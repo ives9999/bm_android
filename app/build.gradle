@@ -129,6 +129,7 @@ dependencies {
     //    implementation project(':vimeo-networking')
     implementation 'com.beust:klaxon:3.0.1'
     implementation 'androidx.core:core-ktx:1.9.0'
+    implementation 'androidx.core:core-ktx:+'
 //    implementation 'com.github.lisawray.groupie:groupie:2.9.0'
     //implementation 'com.github.lisawray.groupie:groupie-viewbinding:2.9.0'
 //    implementation "com.github.lisawray.groupie:groupie-kotlin-android-extensions:2.9.0"

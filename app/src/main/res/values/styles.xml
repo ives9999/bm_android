@@ -99,7 +99,7 @@
 
     <style name="cancel_button">
         <item name="android:background">@drawable/button_cancel</item>
-        <item name="android:textColor">@color/MY_WHITE</item>
+        <item name="android:textColor">@color/MY_GREEN</item>
         <item name="android:paddingStart">12dp</item>
         <item name="android:paddingEnd">12dp</item>
     </style>
@@ -153,9 +153,16 @@
         <item name="android:textStyle">bold</item>
     </style>
 
-    <style name="list_text_general">
-        <item name="android:textColor">@color/TEXT_WHITE</item>
-        <item name="android:textSize">13dp</item>
+    <style name="list_text_small">
+        <item name="android:textColor">@color/TEXT_WHITE99</item>
+        <item name="android:textSize">10dp</item>
+        <item name="android:fontFamily">sans-serif-light</item>
+        <item name="android:textStyle">normal</item>
+    </style>
+
+    <style name="list_text_leave">
+        <item name="android:textColor">@color/TEXT_LEAVE</item>
+        <item name="android:textSize">12dp</item>
         <item name="android:fontFamily">sans-serif-light</item>
         <item name="android:textStyle">normal</item>
     </style>

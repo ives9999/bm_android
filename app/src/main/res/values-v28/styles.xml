@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="list_text_general">
+        <item name="android:textColor">@color/TEXT_WHITE</item>
+        <item name="android:textSize">13dp</item>
+        <item name="android:fontFamily">sans-serif-light</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:textFontWeight">700</item>
+    </style>
+</resources>

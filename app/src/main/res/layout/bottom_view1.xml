@@ -5,7 +5,6 @@
     android:layout_width="match_parent"
     android:layout_height="50dp"
     android:layout_alignParentBottom="true"
-    android:background="@color/MY_BOTTOM_BACKGROUND"
     android:gravity="center_vertical"
     android:orientation="horizontal">
 
@@ -23,6 +22,7 @@
         android:layout_width="120dp"
         android:layout_height="30dp"
         android:onClick="likeButtonPressed"
+        android:background="@color/MY_GREY"
         android:orientation="horizontal">
 
         <ImageView
