@@ -4,8 +4,6 @@
     android:id="@+id/likeContainer"
     android:layout_width="48dp"
     android:layout_height="wrap_content"
-    android:layout_alignParentEnd="true"
-    android:layout_marginEnd="12dp"
     android:orientation="vertical">
 
 
@@ -20,10 +18,11 @@
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:layout_gravity="center_vertical"
-                app:srcCompat="@drawable/like_in_svg" />
+                app:srcCompat="@drawable/like_out_svg" />
         </LinearLayout>
 
         <TextView
+            android:id="@+id/likeCountTV"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"

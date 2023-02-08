@@ -23,10 +23,7 @@ import com.sportpassword.bm.Models.*
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.TeamService
 import com.sportpassword.bm.Utilities.*
-import com.sportpassword.bm.Views.Bottom
-import com.sportpassword.bm.Views.EndlessRecyclerViewScrollListener
-import com.sportpassword.bm.Views.TabSearch
-import com.sportpassword.bm.Views.Top
+import com.sportpassword.bm.Views.*
 import com.sportpassword.bm.databinding.ActivityShowTeamVcBinding
 import com.sportpassword.bm.extensions.avatar
 import com.sportpassword.bm.member
@@ -43,6 +40,8 @@ class ShowTeamVC: ShowVC() {
 
     var top: Top? = null
     var showBottom: Bottom? = null
+    var showLike: ShowLike2? = null
+
     var myTable: TeamTable? = null
 
     var isTempPlay: Boolean = true
@@ -136,6 +135,11 @@ class ShowTeamVC: ShowVC() {
             it.setOnSubmitClickListener(signup)
             it.setOnLikeClickListener(like)
             it.setOnCancelClickListener(cancel)
+        }
+
+        findViewById<ShowLike2>(R.id.showLike2) ?. let {
+            showLike = it
+            it.setOnThisClickListener(like)
         }
 
         findViewById<LinearLayout>(R.id.introduceContainerLL) ?. let {
@@ -291,6 +295,7 @@ class ShowTeamVC: ShowVC() {
                             isLike = table!!.like
                             likeCount = table!!.like_count
                             setLike()
+                            showLike?.setLike(isLike, likeCount)
 
                             _tabPressed(focusTabIdx)
                         }
