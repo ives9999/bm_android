@@ -28,6 +28,7 @@ import com.sportpassword.bm.Views.EndlessRecyclerViewScrollListener
 import com.sportpassword.bm.Views.TabSearch
 import com.sportpassword.bm.Views.Top
 import com.sportpassword.bm.databinding.ActivityShowTeamVcBinding
+import com.sportpassword.bm.extensions.avatar
 import com.sportpassword.bm.member
 import com.squareup.picasso.Picasso
 import org.jetbrains.anko.image
@@ -346,8 +347,8 @@ class ShowTeamVC: ShowVC() {
             runOnUiThread {
                 loadingAnimation.stop()
 
-                val tableType: Type = object : TypeToken<TeamMemberSuccessTables2<TeamMemberTable>>() {}.type
-                val tables2: TeamMemberSuccessTables2<TeamMemberTable>? = jsonToModels2<TeamMemberSuccessTables2<TeamMemberTable>, TeamMemberTable>(TeamService.jsonString, tableType)
+                val tableType: Type = object : TypeToken<TeamMemberSuccessTables2>() {}.type
+                val tables2: TeamMemberSuccessTables2? = jsonToModels2<TeamMemberSuccessTables2, TeamMemberTable>(TeamService.jsonString, tableType)
                 if (tables2 == null) {
                     msg = "無法從伺服器取得正確的json資料，請洽管理員"
                 } else {
@@ -911,7 +912,13 @@ class TeamMemberAdapter(val context: Context, val delegate: BaseActivity?=null):
 
         val row: TeamMemberTable = rows[position]
         holder.noTV?.text = (position + 1).toString() + "."
+        if (row.memberTable != null && row.memberTable!!.featured_path != null) {
+            holder.avatarIV?.avatar(row.memberTable!!.featured_path)
+        }
         holder.nameTV?.text = row.memberTable?.nickname
+        if (row.created_at != null) {
+            holder.createdTV?.text = row.created_at.noSec()
+        }
         holder.leaveTV?.visibility = ((row.isLeave) then {View.VISIBLE}) ?: View.INVISIBLE
 
         holder.viewHolder.setOnClickListener {
@@ -928,15 +935,23 @@ class TeamMemberAdapter(val context: Context, val delegate: BaseActivity?=null):
 class TeamMemberShowViewHolder(val viewHolder: View): RecyclerView.ViewHolder(viewHolder) {
 
     var noTV: TextView? = null
+    var avatarIV: ImageView? = null
     var nameTV: TextView? = null
+    var createdTV: TextView? = null
     var leaveTV: TextView? = null
 
     init {
         viewHolder.findViewById<TextView>(R.id.noTV) ?. let {
             noTV = it
         }
+        viewHolder.findViewById<com.github.siyamed.shapeimageview.CircularImageView>(R.id.avatarIV) ?. let {
+            avatarIV = it
+        }
         viewHolder.findViewById<TextView>(R.id.nameTV) ?. let {
             nameTV = it
+        }
+        viewHolder.findViewById<TextView>(R.id.createdATTV) ?. let {
+            createdTV = it
         }
         viewHolder.findViewById<TextView>(R.id.leaveTV) ?. let {
             leaveTV = it
@@ -944,7 +959,7 @@ class TeamMemberShowViewHolder(val viewHolder: View): RecyclerView.ViewHolder(vi
     }
 }
 
-class TeamMemberSuccessTables2<T: TeamMemberTable>: Tables2<T>() {
+class TeamMemberSuccessTables2 : Tables2<TeamMemberTable>() {
     var leaveCount: Int = -1
     var nextDate: String = ""
     var nextDateWeek: String = ""

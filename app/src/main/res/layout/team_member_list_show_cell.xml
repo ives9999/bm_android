@@ -11,8 +11,10 @@
 
         <LinearLayout
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="60dp"
             android:layout_centerVertical="true"
+            android:layout_marginTop="12dp"
+            android:layout_marginBottom="12dp"
             android:orientation="horizontal">
 
             <TextView
@@ -20,19 +22,47 @@
                 style="@style/list_text_general"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="8dp"
+                android:layout_gravity="center_vertical"
                 android:textAlignment="viewStart"
                 android:textSize="18sp"
                 tools:text="1." />
 
-            <TextView
-                android:id="@+id/nameTV"
-                style="@style/list_text_general"
+            <com.github.siyamed.shapeimageview.CircularImageView
+                android:id="@+id/avatarIV"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="12dp" />
+
+            <RelativeLayout
+                android:id="@+id/dataContainer"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="18dp"
-                android:textSize="18sp"
-                tools:text="name" />
+                android:layout_marginStart="18dp"
+                android:layout_marginTop="6dp"
+                android:layout_marginBottom="6dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/nameTV"
+                    style="@style/list_text_general"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentTop="true"
+                    android:layout_gravity="top"
+                    android:textSize="18dp"
+                    tools:text="name" />
+
+                <TextView
+                    android:id="@+id/createdATTV"
+                    style="@style/list_text_general"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:text="02-08 14:00"
+                    android:textSize="12dp" />
+
+            </RelativeLayout>
         </LinearLayout>
 
         <TextView

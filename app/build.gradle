@@ -175,6 +175,9 @@ dependencies {
 
     //loading
     implementation 'com.airbnb.android:lottie:4.1.0'
+
+    //circle image
+    implementation 'com.github.siyamed:android-shape-imageview:0.9.+@aar'
 }
 
 //configurations.all {
