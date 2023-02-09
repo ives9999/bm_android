@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="@dimen/top_height"
-    android:background="@color/TOP"
+    android:background="@color/MY_BLACK"
     android:gravity="center_vertical">
 
     <ImageButton
@@ -15,7 +15,7 @@
         android:layout_marginStart="12dp"
         android:background="@android:color/transparent"
         android:scaleType="fitCenter"
-        android:src="@drawable/prev_black"
+        android:src="@drawable/prev_svg"
         android:visibility="gone"
         tools:visibility="visible" />
 
@@ -23,9 +23,10 @@
         android:id="@+id/titleTV"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
+        android:layout_centerVertical="true"
+        android:layout_marginStart="60dp"
         android:text="xxxx"
-        android:textColor="@color/MY_BLACK"
+        android:textColor="@color/MY_WHITE"
         android:textSize="@dimen/top_title"
         android:textStyle="bold"
         tools:text="標題" />

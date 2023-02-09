@@ -14,7 +14,7 @@
         <item name="windowNoTitle">true</item>
         <item name="android:actionButtonStyle">@style/MyActionBarButtonStyle</item>
         <item name="actionButtonStyle">@style/MyActionBarButtonStyle</item>
-        <item name="colorPrimaryDark">@color/MY_GREEN</item>
+        <item name="colorPrimaryDark">@color/MY_BLACK</item>
 
         <!--<item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
