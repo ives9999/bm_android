@@ -16,7 +16,6 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.google.gson.JsonParseException
 import com.google.gson.reflect.TypeToken
 import com.sportpassword.bm.Adapters.SignupAdapter
-import com.sportpassword.bm.Adapters.SignupViewHolder
 import com.sportpassword.bm.Data.ShowRow
 import com.sportpassword.bm.Data.SignupRow
 import com.sportpassword.bm.Models.*
@@ -27,8 +26,6 @@ import com.sportpassword.bm.Views.*
 import com.sportpassword.bm.databinding.ActivityShowTeamVcBinding
 import com.sportpassword.bm.extensions.avatar
 import com.sportpassword.bm.member
-import com.squareup.picasso.Picasso
-import org.jetbrains.anko.image
 import java.util.*
 import java.lang.reflect.Type
 import kotlin.collections.ArrayList
@@ -53,7 +50,8 @@ class ShowTeamVC: ShowVC() {
     )
     var focusTabIdx: Int = 0
     var isTeamMemberLoaded: Boolean = false
-    var teamMemberRows: ArrayList<TeamMemberTable> = arrayListOf()
+    var items: ArrayList<TeamMemberTable> = arrayListOf()
+    var filterItems: ArrayList<TeamMemberTable> = arrayListOf()
 
     var introduceContainerLL: LinearLayout? = null
     var teamMemberContainerLL: LinearLayout? = null
@@ -65,9 +63,9 @@ class ShowTeamVC: ShowVC() {
     lateinit var teamMemberAdapter: TeamMemberAdapter
     private lateinit var teamMemberLinearLayoutManager: LinearLayoutManager
     private lateinit var teamMemberScrollListener: MemberTeamScrollListener
-    private lateinit var teamMemberTotalTV: TextView
-    private lateinit var teamMemberPlayTV: TextView
-    private lateinit var teamMemberLeaveTV: TextView
+    private lateinit var teamMemberTotalTV: TapTextView
+    private lateinit var teamMemberPlayTV: TapTextView
+    private lateinit var teamMemberLeaveTV: TapTextView
     private lateinit var nextDateIV: ImageView
     private lateinit var nextDateTV: TextView
     private lateinit var nextTimeIV: ImageView
@@ -86,6 +84,7 @@ class ShowTeamVC: ShowVC() {
     var isTeapMemberLeave: Boolean = false
     //此會員的team member token
     var teamMemberToken: String? = null
+    var countTaps: ArrayList<TapTextView> = arrayListOf()
 
     //temp play
     lateinit var tempPlayAdapter: SignupAdapter
@@ -150,16 +149,26 @@ class ShowTeamVC: ShowVC() {
             teamMemberContainerLL = it
         }
 
-        findViewById<TextView>(R.id.teamMemberTotalTV) ?. let {
+        findViewById<TapTextView>(R.id.teamMemberTotalTV) ?. let {
             teamMemberTotalTV = it
+            it.setOnThisClickListener(tapPressed)
+            it.on()
+
+            countTaps.add(it)
         }
 
-        findViewById<TextView>(R.id.teamMemberPlayTV) ?. let {
+        findViewById<TapTextView>(R.id.teamMemberPlayTV) ?. let {
             teamMemberPlayTV = it
+            it.setOnThisClickListener(tapPressed)
+
+            countTaps.add(it)
         }
 
-        findViewById<TextView>(R.id.teamMemberLeaveTV) ?. let {
+        findViewById<TapTextView>(R.id.teamMemberLeaveTV) ?. let {
             teamMemberLeaveTV = it
+            it.setOnThisClickListener(tapPressed)
+
+            countTaps.add(it)
         }
 
         findViewById<ImageView>(R.id.nextDateIV) ?. let {
@@ -343,7 +352,7 @@ class ShowTeamVC: ShowVC() {
 
     fun getTeamMemberList(page: Int, perPage: Int) {
         if (page == 1) {
-            teamMemberRows.clear()
+            items.clear()
         }
         loadingAnimation.start()
         loading = true
@@ -369,7 +378,7 @@ class ShowTeamVC: ShowVC() {
                                     ((row.memberTable != null) then { row.memberTable!!.nickname })
                                         ?: ""
                                 val token: String = ((row.memberTable != null) then { row.memberTable!!.token }) ?: ""
-                                teamMemberRows.add(row)
+                                items.add(row)
 
                                 //取得會員是否為隊友與會員是否已經請假
                                 if (row.memberTable!!.token == member.token) {
@@ -378,6 +387,7 @@ class ShowTeamVC: ShowVC() {
                                     this.isTeapMemberLeave = row.isLeave
                                 }
                             }
+                            filterItems = items.clone() as ArrayList<TeamMemberTable>
 
                             if (this.teamMemberPage == 1) {
                                 this.teamMemberPage = tables2.page
@@ -395,19 +405,16 @@ class ShowTeamVC: ShowVC() {
                             }
 
                             binding.teamMemberDataTV.visibility = View.VISIBLE
-                            teamMemberTotalTV.text = "全部：${totalCount}位"
-                            teamMemberPlayTV.text = "打球：${totalCount - tables2.leaveCount}位"
-                            teamMemberLeaveTV.text = "請假：${tables2.leaveCount}位"
-
+                            teamMemberTotalTV.setText("全部：${totalCount}位")
+                            teamMemberPlayTV.setText("打球：${totalCount - tables2.leaveCount}位")
+                            teamMemberLeaveTV.setText("請假：${tables2.leaveCount}位")
 
                             nextDateIV.setImage("calendar_svg")
                             nextDateTV.text = "${nextDate}" + " ( " + nextDateWeek + " )"
                             nextTimeIV.setImage("clock_svg")
                             nextTimeTV.text = "${play_start} ~ ${play_end}"
 
-                            likeIconIV.setImage("like_in_svg")
-
-                            this.teamMemberAdapter.rows = this.teamMemberRows
+                            this.teamMemberAdapter.rows = this.filterItems
                             this.teamMemberAdapter.notifyDataSetChanged()
                         } else {
                             binding.teamMemberDataTV.visibility = View.INVISIBLE
@@ -598,8 +605,25 @@ class ShowTeamVC: ShowVC() {
         likeButtonPressed()
     }
 
-    val signup: () ->Unit = {
+    val signup: () -> Unit = {
         signupButtonPressed()
+    }
+
+    private val tapPressed: (Int) -> Unit = { idx ->
+        for ((i, tap) in countTaps.withIndex()) {
+            ((i == idx) then { tap.on() }) ?: tap.off()
+        }
+
+        this.filterItems.clear()
+        if (idx == 0) {
+            this.filterItems = items.clone() as ArrayList<TeamMemberTable>
+        } else if (idx == 1) {
+            this.filterItems = items.filter { !it.isLeave } as ArrayList<TeamMemberTable>
+        } else if (idx == 2) {
+            this.filterItems = items.filter { it.isLeave } as ArrayList<TeamMemberTable>
+        }
+        this.teamMemberAdapter.rows = this.filterItems
+        this.teamMemberAdapter.notifyDataSetChanged()
     }
 
     private fun signupButtonPressed() {
@@ -770,11 +794,13 @@ class ShowTeamVC: ShowVC() {
                 introduceContainerLL?.visibility = View.GONE
                 tempPlayContainerLL?.visibility = View.GONE
 
-                teamMemberRows.clear()
+                items.clear()
                 if (!isTeamMemberLoaded) {
                     getTeamMemberList(this.teamMemberPage, this.teamMemberPerpage)
                     isTeamMemberLoaded = true
                 }
+
+                //teamMemberTotalTV.on()
 
                 this.setTeamMemberBottom()
             }
@@ -794,7 +820,7 @@ class ShowTeamVC: ShowVC() {
     override fun teamMemberInfo(idx: Int) {
         if (myTable != null) {
             if (myTable!!.manager_token == member.token) {
-                val teamMemberRow: TeamMemberTable = teamMemberRows[idx]
+                val teamMemberRow: TeamMemberTable = items[idx]
                 getMemberOne(teamMemberRow.token)
             } else {
                 warning("只有球隊管理員可以檢視報名者資訊")

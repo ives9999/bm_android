@@ -18,7 +18,7 @@
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:layout_gravity="center_vertical"
-                app:srcCompat="@drawable/like_out_svg" />
+                />
         </LinearLayout>
 
         <TextView

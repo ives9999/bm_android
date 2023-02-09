@@ -9,7 +9,6 @@ import android.widget.TextView
 import com.sportpassword.bm.Controllers.BaseActivity
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Utilities.setImage
-import com.sportpassword.bm.Utilities.then
 
 class ShowLike2@JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0):
     LinearLayout(context, attrs, defStyleAttr) {
@@ -25,15 +24,12 @@ class ShowLike2@JvmOverloads constructor(context: Context, attrs: AttributeSet? 
     //var count: Int = 0
 
     init {
-        (context as? BaseActivity)?.let { delegate ->
+        view.findViewById<ImageView>(R.id.likeIconIV) ?. let {
+            likeIconIV = it
+        }
 
-            view.findViewById<ImageView>(R.id.likeIconIV) ?. let {
-                likeIconIV = it
-            }
-
-            view.findViewById<TextView>(R.id.likeCountTV) ?. let {
-                likeCountTV = it
-            }
+        view.findViewById<TextView>(R.id.likeCountTV) ?. let {
+            likeCountTV = it
         }
     }
 
@@ -46,11 +42,11 @@ class ShowLike2@JvmOverloads constructor(context: Context, attrs: AttributeSet? 
 
     fun setIcon(isLike: Boolean) {
 
-        var res: Int = R.drawable.like_out_svg
+        var res: String = "like_out_svg"
         if (isLike) {
-            res = R.drawable.like_in_svg
+            res = "like_in_svg"
         }
-        likeIconIV?.setImageResource(res)
+        likeIconIV?.setImage(res)
     }
 
     fun setCount(count: Int) {
@@ -62,8 +58,13 @@ class ShowLike2@JvmOverloads constructor(context: Context, attrs: AttributeSet? 
             val oldIsLike: Boolean = this.isLike
             this.isLike = !this.isLike
             setIcon(this.isLike)
-            val count: Int = ((oldIsLike) then {this.initCount--}) ?: this.initCount++
-            setCount(count)
+            if (oldIsLike) {
+                this.initCount--
+            } else {
+                this.initCount++
+            }
+            //val count: Int = ((oldIsLike) then {this.initCount--}) ?: this.initCount++
+            setCount(initCount)
             lambda.invoke()
         }
     }

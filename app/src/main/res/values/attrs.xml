@@ -7,4 +7,9 @@
         <attr name="fullscreenBackgroundColor" format="color" />
         <attr name="fullscreenTextColor" format="color" />
     </declare-styleable>
+
+    <declare-styleable name="TapTextView">
+        <attr name="tapTextViewOnOff" format="string" />
+        <attr name="tapTextViewTag" format="integer" />
+    </declare-styleable>
 </resources>

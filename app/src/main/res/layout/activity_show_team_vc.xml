@@ -134,38 +134,25 @@
                                 android:layout_marginTop="8dp"
                                 android:orientation="horizontal">
 
-                                <TextView
+                                <com.sportpassword.bm.Views.TapTextView
                                     android:id="@+id/teamMemberTotalTV"
-                                    style="@style/list_text_general"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:background="@drawable/button_rc"
-                                    android:paddingStart="15dp"
-                                    android:paddingTop="3dp"
-                                    android:paddingEnd="15dp"
-                                    android:paddingBottom="3dp"
-                                    android:textColor="@color/BLACK" />
-
-                                <TextView
-                                    android:id="@+id/teamMemberPlayTV"
-                                    style="@style/list_text_small"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:paddingStart="15dp"
-                                    android:paddingTop="3dp"
-                                    android:paddingEnd="15dp"
-                                    android:paddingBottom="3dp"
+                                    app:tapTextViewTag="0"
                                     />
 
-                                <TextView
-                                    android:id="@+id/teamMemberLeaveTV"
-                                    style="@style/list_text_small"
+                                <com.sportpassword.bm.Views.TapTextView
+                                    android:id="@+id/teamMemberPlayTV"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:paddingStart="15dp"
-                                    android:paddingTop="3dp"
-                                    android:paddingEnd="15dp"
-                                    android:paddingBottom="3dp"
+                                    app:tapTextViewTag="1"
+                                    />
+
+                                <com.sportpassword.bm.Views.TapTextView
+                                    android:id="@+id/teamMemberLeaveTV"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    app:tapTextViewTag="2"
                                     />
 
                             </LinearLayout>

@@ -1,6 +1,7 @@
 package tw.com.bluemobile.hbc.utilities
 
 import android.content.Context
+import android.graphics.drawable.Drawable
 import androidx.core.content.ContextCompat
 import androidx.core.content.pm.PackageInfoCompat
 import com.google.gson.Gson
@@ -112,6 +113,10 @@ fun getPropertyValue(instance: Any, propertyName: String): String {
 
 fun getColor(context: Context, color: Int): Int {
     return ContextCompat.getColor(context, color)
+}
+
+fun getDrawable(context: Context, drawable: Int): Drawable? {
+    return ContextCompat.getDrawable(context, drawable)
 }
 
 fun version(context: Context): String {

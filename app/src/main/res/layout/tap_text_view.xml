@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@color/MY_BLACK">
+
+    <TextView
+        android:id="@+id/tapTV"
+        style="@style/list_text_general"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingStart="15dp"
+        android:paddingTop="3dp"
+        android:paddingEnd="15dp"
+        android:paddingBottom="3dp"
+        android:text="請假人數"
+        android:textColor="@color/MY_WHITE"
+         />
+
+</LinearLayout>
