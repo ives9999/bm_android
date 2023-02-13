@@ -5,7 +5,7 @@
     android:id="@+id/topViewRL"
     android:layout_width="match_parent"
     android:layout_height="54dp"
-    android:background="@color/MY_GREEN">
+    android:background="@color/MY_BLACK">
 
     <LinearLayout
         android:layout_width="wrap_content"
@@ -23,9 +23,9 @@
             android:background="@android:color/transparent"
             android:onClick="prev"
             android:scaleType="fitCenter"
-            android:src="@drawable/prev_black"
+            android:src="@drawable/prev"
             android:visibility="invisible"
-            tools:visibility="visible"/>
+            tools:visibility="visible" />
     </LinearLayout>
 
     <TextView
@@ -36,7 +36,7 @@
         android:layout_centerInParent="true"
         android:text="標題"
         android:textAlignment="center"
-        android:textColor="@color/BLACK"
+        android:textColor="@color/MY_WHITE"
         tools:text="標題" />
 
     <LinearLayout
@@ -57,7 +57,7 @@
             android:onClick="addPressed"
             android:scaleType="fitCenter"
             android:visibility="invisible"
-            app:srcCompat="@drawable/add"
+            app:srcCompat="@drawable/add_white"
             tools:visibility="visible" />
 
         <ImageButton
@@ -69,7 +69,7 @@
             android:onClick="cartPressed"
             android:scaleType="fitCenter"
             android:visibility="invisible"
-            app:srcCompat="@drawable/cart1"
+            app:srcCompat="@drawable/cart"
             tools:visibility="visible" />
 
         <ImageButton
@@ -79,7 +79,7 @@
             android:background="@android:color/transparent"
             android:onClick="searchPressed"
             android:scaleType="fitCenter"
-            android:src="@drawable/search1"
+            android:src="@drawable/search_w"
             android:visibility="invisible"
             tools:visibility="visible" />
     </LinearLayout>

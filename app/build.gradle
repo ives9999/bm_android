@@ -42,8 +42,8 @@ android {
         applicationId "com.sportpassword.bm"
         minSdkVersion 21
         targetSdkVersion 33
-        versionCode 79
-        versionName "2.3.5"
+        versionCode 78
+        versionName "2.3.4"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
         manifestPlaceholders = [
@@ -129,7 +129,6 @@ dependencies {
     //    implementation project(':vimeo-networking')
     implementation 'com.beust:klaxon:3.0.1'
     implementation 'androidx.core:core-ktx:1.9.0'
-    implementation 'androidx.core:core-ktx:+'
 
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test:runner:1.5.2'
