@@ -12,31 +12,27 @@
         android:layout_width="match_parent"
         android:layout_height="54dp" />
 
-    <LinearLayout
-        android:id="@+id/tag_container"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
+    <com.sportpassword.bm.Views.ShowTab2
+        android:id="@+id/showTap2"
         android:layout_below="@id/top"
-        android:background="@color/MY_BLACK"
-        android:orientation="horizontal" />
-
-    <LinearLayout
-        android:id="@+id/line"
         android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_below="@id/tag_container"
-        android:background="@color/MY_GREY"
-        android:orientation="horizontal" />
+        android:layout_height="wrap_content"
+        app:showTab2TV1="介紹"
+        app:showTab2TV2="隊員"
+        app:showTab2TV3="臨打"
+        />
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/refresh"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@id/bottom"
-        android:layout_below="@id/line"
+        android:layout_below="@id/showTap2"
         android:background="@color/MY_BLACK"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
         android:focusable="true"
-        android:paddingTop="12dp"
+        android:paddingTop="20dp"
 
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
@@ -106,8 +102,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:layout_marginStart="20dp"
-                    android:layout_marginTop="24dp"
                     android:visibility="gone">
 
                     <RelativeLayout
@@ -134,21 +128,21 @@
                                 android:layout_marginTop="8dp"
                                 android:orientation="horizontal">
 
-                                <com.sportpassword.bm.Views.TapTextView
+                                <com.sportpassword.bm.Views.TapTextView2
                                     android:id="@+id/teamMemberTotalTV"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     app:tapTextViewTag="0"
                                     />
 
-                                <com.sportpassword.bm.Views.TapTextView
+                                <com.sportpassword.bm.Views.TapTextView2
                                     android:id="@+id/teamMemberPlayTV"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     app:tapTextViewTag="1"
                                     />
 
-                                <com.sportpassword.bm.Views.TapTextView
+                                <com.sportpassword.bm.Views.TapTextView2
                                     android:id="@+id/teamMemberLeaveTV"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
@@ -163,10 +157,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_alignParentEnd="true"
-                            android:layout_marginEnd="12dp"
                             />
-
-
 
                     </RelativeLayout>
 

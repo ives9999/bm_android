@@ -1,32 +1,27 @@
 package com.sportpassword.bm.Views
 
 import android.content.Context
-import android.content.res.Resources
 import android.graphics.Color
-import android.os.Build
 import android.util.AttributeSet
 import android.view.View
 import android.widget.LinearLayout
 import android.widget.TextView
-import androidx.annotation.RequiresApi
-import androidx.core.content.ContextCompat
-import androidx.core.content.res.ResourcesCompat
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Utilities.then
 import org.jetbrains.anko.backgroundColor
-import org.jetbrains.anko.custom.style
-import org.jetbrains.anko.textColor
 import tw.com.bluemobile.hbc.utilities.getColor
 import tw.com.bluemobile.hbc.utilities.getDrawable
 
-class TapTextView@JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0):
+class TapTextView2@JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0):
     LinearLayout(context, attrs, defStyleAttr) {
 
-    val view: View = View.inflate(context, R.layout.tap_text_view, this)
+    val view: View = View.inflate(context, R.layout.tap_text_view2, this)
 
     var tapTV: TextView? = null
     var isOn: Boolean = false
     var tag: Int = 0
+
+    var delegate: TapTextViewDelegate? = null
 
     init {
         attrs ?. let {
@@ -76,12 +71,18 @@ class TapTextView@JvmOverloads constructor(context: Context, attrs: AttributeSet
         tapTV?.text = value
     }
 
-    fun setOnThisClickListener(lambda: (Int)-> Unit) {
+    fun setOnThisClickListener() {
         this.setOnClickListener {
-            this.isOn = !this.isOn
-            ((this.isOn) then { this.on() }) ?: this.off()
+            if (!isOn) {
+                this.isOn = !this.isOn
+                ((this.isOn) then { this.on() }) ?: this.off()
 
-            lambda(tag)
+                delegate?.tapPressed(tag)
+            }
         }
     }
+}
+
+interface TapTextViewDelegate {
+    fun tapPressed(idx: Int)
 }

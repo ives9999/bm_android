@@ -12,4 +12,10 @@
         <attr name="tapTextViewOnOff" format="string" />
         <attr name="tapTextViewTag" format="integer" />
     </declare-styleable>
+
+    <declare-styleable name="ShowTab2">
+        <attr name="showTab2TV1" format="string" />
+        <attr name="showTab2TV2" format="string" />
+        <attr name="showTab2TV3" format="string" />
+    </declare-styleable>
 </resources>

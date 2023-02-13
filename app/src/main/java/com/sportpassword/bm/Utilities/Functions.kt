@@ -10,6 +10,8 @@ import java.lang.Exception
 import java.lang.reflect.Type
 import kotlin.reflect.KProperty1
 import kotlin.reflect.full.memberProperties
+import android.view.View
+
 
 infix fun <T: Any?> Boolean?.then(block: () -> T): T? = if (this == true) block() else null
 
@@ -117,6 +119,10 @@ fun getColor(context: Context, color: Int): Int {
 
 fun getDrawable(context: Context, drawable: Int): Drawable? {
     return ContextCompat.getDrawable(context, drawable)
+}
+
+fun getResourceID(context: Context, string: String, source: String): Int {
+    return context.resources.getIdentifier(string, source, context.packageName)
 }
 
 fun version(context: Context): String {

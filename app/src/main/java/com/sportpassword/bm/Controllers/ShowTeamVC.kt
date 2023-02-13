@@ -2,7 +2,6 @@ package com.sportpassword.bm.Controllers
 
 import android.content.Context
 import android.os.Bundle
-import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -30,14 +29,15 @@ import java.util.*
 import java.lang.reflect.Type
 import kotlin.collections.ArrayList
 
-class ShowTeamVC: ShowVC() {
+class ShowTeamVC: ShowVC(), ShowTab2Delegate, TapTextViewDelegate {
 
     private lateinit var binding: ActivityShowTeamVcBinding
     private lateinit var view: ViewGroup
 
     var top: Top? = null
     var showBottom: Bottom? = null
-    var showLike: ShowLike2? = null
+    var showLike2: ShowLike2? = null
+    var showTab2: ShowTab2? = null
 
     var myTable: TeamTable? = null
 
@@ -63,9 +63,9 @@ class ShowTeamVC: ShowVC() {
     lateinit var teamMemberAdapter: TeamMemberAdapter
     private lateinit var teamMemberLinearLayoutManager: LinearLayoutManager
     private lateinit var teamMemberScrollListener: MemberTeamScrollListener
-    private lateinit var teamMemberTotalTV: TapTextView
-    private lateinit var teamMemberPlayTV: TapTextView
-    private lateinit var teamMemberLeaveTV: TapTextView
+    private lateinit var teamMemberTotalTV: TapTextView2
+    private lateinit var teamMemberPlayTV: TapTextView2
+    private lateinit var teamMemberLeaveTV: TapTextView2
     private lateinit var nextDateIV: ImageView
     private lateinit var nextDateTV: TextView
     private lateinit var nextTimeIV: ImageView
@@ -84,7 +84,7 @@ class ShowTeamVC: ShowVC() {
     var isTeapMemberLeave: Boolean = false
     //此會員的team member token
     var teamMemberToken: String? = null
-    var countTaps: ArrayList<TapTextView> = arrayListOf()
+    var countTaps: ArrayList<TapTextView2> = arrayListOf()
 
     //temp play
     lateinit var tempPlayAdapter: SignupAdapter
@@ -136,8 +136,14 @@ class ShowTeamVC: ShowVC() {
             it.setOnCancelClickListener(cancel)
         }
 
+        findViewById<ShowTab2>(R.id.showTap2) ?. let {
+            showTab2 = it
+            it.delegate = this
+            it.setOnClickListener()
+        }
+
         findViewById<ShowLike2>(R.id.showLike2) ?. let {
-            showLike = it
+            showLike2 = it
             it.setOnThisClickListener(like)
         }
 
@@ -149,24 +155,27 @@ class ShowTeamVC: ShowVC() {
             teamMemberContainerLL = it
         }
 
-        findViewById<TapTextView>(R.id.teamMemberTotalTV) ?. let {
+        findViewById<TapTextView2>(R.id.teamMemberTotalTV) ?. let {
             teamMemberTotalTV = it
-            it.setOnThisClickListener(tapPressed)
+            it.delegate = this
+            it.setOnThisClickListener()
             it.on()
 
             countTaps.add(it)
         }
 
-        findViewById<TapTextView>(R.id.teamMemberPlayTV) ?. let {
+        findViewById<TapTextView2>(R.id.teamMemberPlayTV) ?. let {
             teamMemberPlayTV = it
-            it.setOnThisClickListener(tapPressed)
+            it.delegate = this
+            it.setOnThisClickListener()
 
             countTaps.add(it)
         }
 
-        findViewById<TapTextView>(R.id.teamMemberLeaveTV) ?. let {
+        findViewById<TapTextView2>(R.id.teamMemberLeaveTV) ?. let {
             teamMemberLeaveTV = it
-            it.setOnThisClickListener(tapPressed)
+            it.delegate = this
+            it.setOnThisClickListener()
 
             countTaps.add(it)
         }
@@ -223,56 +232,6 @@ class ShowTeamVC: ShowVC() {
 
     override fun init() {
         super.init()
-        initTopTab()
-    }
-
-    private fun initTopTab() {
-
-        val lp_tag = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT)
-        lp_tag.gravity = Gravity.CENTER
-        lp_tag.weight = 1F
-        val textSize: Float = 16F
-
-        for ((i, topTag) in topTags.withIndex()) {
-            val tab: TabSearch = TabSearch(this)
-            tab.layoutParams = lp_tag
-            tab.gravity = Gravity.CENTER
-
-            var idx: Int = 1000
-            if (topTag.containsKey("tag")) {
-                idx = topTag["tag"] as Int
-            }
-            tab.tag = idx
-
-            var icon: String = "like"
-            if (topTag.containsKey("icon")) {
-                icon = topTag["icon"] as String
-            }
-
-            tab.findViewById<ImageView>(R.id.icon) ?. let {
-                it.setImage(icon)
-            }
-
-            var text: String = "預設"
-            if (topTag.containsKey("text")) {
-                text = topTag["text"] as String
-            }
-
-            tab.findViewById<TextView>(R.id.text) ?. let {
-                it.text = text
-                it.textSize = textSize
-            }
-            topTags[i]["class"] = tab
-
-            findViewById<LinearLayout>(R.id.tag_container) ?. let {
-                it.addView(tab)
-            }
-
-            tab.setOnClickListener {
-                tabPressed(it)
-            }
-        }
-        updateTabSelected(focusTabIdx)
     }
 
     override fun refresh() {
@@ -304,7 +263,7 @@ class ShowTeamVC: ShowVC() {
                             isLike = table!!.like
                             likeCount = table!!.like_count
                             setLike()
-                            showLike?.setLike(isLike, likeCount)
+                            showLike2?.setLike(isLike, likeCount)
 
                             _tabPressed(focusTabIdx)
                         }
@@ -609,23 +568,6 @@ class ShowTeamVC: ShowVC() {
         signupButtonPressed()
     }
 
-    private val tapPressed: (Int) -> Unit = { idx ->
-        for ((i, tap) in countTaps.withIndex()) {
-            ((i == idx) then { tap.on() }) ?: tap.off()
-        }
-
-        this.filterItems.clear()
-        if (idx == 0) {
-            this.filterItems = items.clone() as ArrayList<TeamMemberTable>
-        } else if (idx == 1) {
-            this.filterItems = items.filter { !it.isLeave } as ArrayList<TeamMemberTable>
-        } else if (idx == 2) {
-            this.filterItems = items.filter { it.isLeave } as ArrayList<TeamMemberTable>
-        }
-        this.teamMemberAdapter.rows = this.filterItems
-        this.teamMemberAdapter.notifyDataSetChanged()
-    }
-
     private fun signupButtonPressed() {
 
         if (!member.isLoggedIn) {
@@ -765,20 +707,6 @@ class ShowTeamVC: ShowVC() {
         }
     }
 
-    private fun tabPressed(view: View) {
-        val tab: TabSearch = view as TabSearch
-        val idx: Int? = tab.tag as? Int
-        if (idx != null) {
-            val focusTag: HashMap<String, Any> = topTags[idx]
-            val focused: Boolean = focusTag["focus"] as? Boolean == true
-            if (!focused) {
-                updateTabSelected(idx)
-                focusTabIdx = idx
-                _tabPressed(focusTabIdx)
-            }
-        }
-    }
-
     private fun _tabPressed(idx: Int) {
 
         when (focusTabIdx) {
@@ -828,29 +756,6 @@ class ShowTeamVC: ShowVC() {
         }
     }
 
-    private fun updateTabSelected(idx: Int) {
-
-        // set user click which tag, set tag selected is true
-        for ((i, topTag) in topTags.withIndex()) {
-            topTag["focus"] = i == idx
-            topTags[i] = topTag
-        }
-        setTabSelectedStyle()
-    }
-
-    private fun setTabSelectedStyle() {
-
-        for (topTag in topTags) {
-            if (topTag.containsKey("class")) {
-                val tag: TabSearch? = topTag["class"] as? TabSearch
-                if (tag != null) {
-                    tag.isChecked = topTag["focus"] as Boolean
-                    tag.setSelectedStyle()
-                }
-            }
-        }
-    }
-
     override fun setRefreshListener() {
         if (refreshLayout != null) {
             refreshListener = SwipeRefreshLayout.OnRefreshListener {
@@ -884,6 +789,30 @@ class ShowTeamVC: ShowVC() {
             }
             //getTeamMemberList(page, teamMemberPerpage)
         }
+    }
+
+    override fun tabPressed(idx: Int) {
+        //println(idx)
+        focusTabIdx = idx
+        _tabPressed(idx)
+    }
+
+    override fun tapPressed(idx: Int) {
+
+        for ((i, tap) in countTaps.withIndex()) {
+            ((i == idx) then { tap.on() }) ?: tap.off()
+        }
+
+        this.filterItems.clear()
+        if (idx == 0) {
+            this.filterItems = items.clone() as ArrayList<TeamMemberTable>
+        } else if (idx == 1) {
+            this.filterItems = items.filter { !it.isLeave } as ArrayList<TeamMemberTable>
+        } else if (idx == 2) {
+            this.filterItems = items.filter { it.isLeave } as ArrayList<TeamMemberTable>
+        }
+        this.teamMemberAdapter.rows = this.filterItems
+        this.teamMemberAdapter.notifyDataSetChanged()
     }
 }
 
