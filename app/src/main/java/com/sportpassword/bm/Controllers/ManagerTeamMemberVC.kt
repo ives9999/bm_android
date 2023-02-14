@@ -26,6 +26,7 @@ import com.sportpassword.bm.Utilities.*
 import com.sportpassword.bm.Views.Top
 import com.sportpassword.bm.databinding.ActivityManagerTeamMemberBinding
 import com.sportpassword.bm.databinding.MytablevcBinding
+import com.sportpassword.bm.extensions.avatar
 import com.sportpassword.bm.member
 import java.lang.reflect.Type
 
@@ -206,33 +207,74 @@ open class ManagerTeamMemberVC : BaseActivity(), MyTable2IF {
 
 class TeamMemberViewHolder(
     context: Context,
-    view: View,
+    viewHolder: View,
     delegate: ManagerTeamMemberVC
-): MyViewHolder2<TeamMemberTable, ManagerTeamMemberVC>(context, view, delegate) {
+): MyViewHolder2<TeamMemberTable, ManagerTeamMemberVC>(context, viewHolder, delegate) {
+
+    var noTV: TextView? = null
+    var avatarIV: ImageView? = null
+    var nameTV: TextView? = null
+    var createdTV: TextView? = null
+    var deleteIV: ImageView? = null
+
+    init {
+        viewHolder.findViewById<TextView>(R.id.noTV) ?. let {
+            noTV = it
+        }
+        viewHolder.findViewById<com.github.siyamed.shapeimageview.CircularImageView>(R.id.avatarIV) ?. let {
+            avatarIV = it
+        }
+        viewHolder.findViewById<TextView>(R.id.nameTV) ?. let {
+            nameTV = it
+        }
+        viewHolder.findViewById<TextView>(R.id.createdATTV) ?. let {
+            createdTV = it
+        }
+        viewHolder.findViewById<ImageView>(R.id.deleteIV) ?. let {
+            deleteIV = it
+        }
+    }
 
     override fun bind(row: TeamMemberTable, idx: Int) {
 
         super.bind(row, idx)
 
         row.filterRow()
-        val no: String = (idx + 1).toString() + "."
 
-        view.findViewById<TextView>(R.id.noTV) ?. let {
-            it.text = no
+        noTV?.text = (idx + 1).toString() + "."
+
+        if (row.memberTable != null && row.memberTable!!.featured_path != null) {
+            avatarIV?.avatar(row.memberTable!!.featured_path)
         }
 
-        view.findViewById<TextView>(R.id.nameTV) ?. let {
-            it.text = row.memberTable?.nickname
+        nameTV?.text = row.memberTable?.nickname
+
+        if (row.created_at != null) {
+            createdTV?.text = row.created_at.noSec()
         }
 
-        view.findViewById<TextView>(R.id.dateTV) ?. let {
-            it.text = row.created_at.noSec()
+        deleteIV?.setOnClickListener {
+            delegate.deleteTeamMember(row)
         }
 
-        view.findViewById<ImageView>(R.id.deleteIV) ?. let {
-            it.setOnClickListener {
-                delegate.deleteTeamMember(row)
-            }
-        }
+//        val no: String = (idx + 1).toString() + "."
+//
+//        view.findViewById<TextView>(R.id.noTV) ?. let {
+//            it.text = no
+//        }
+//
+//        view.findViewById<TextView>(R.id.nameTV) ?. let {
+//            it.text = row.memberTable?.nickname
+//        }
+
+//        view.findViewById<TextView>(R.id.createdATTV) ?. let {
+//            it.text = row.created_at.noSec()
+//        }
+
+//        view.findViewById<ImageView>(R.id.deleteIV) ?. let {
+//            it.setOnClickListener {
+//                delegate.deleteTeamMember(row)
+//            }
+//        }
     }
 }

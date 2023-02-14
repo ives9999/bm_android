@@ -73,7 +73,6 @@
             android:background="@drawable/leave_bk"
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
-            android:layout_marginEnd="20dp"
             android:paddingStart="15dp"
             android:paddingTop="3dp"
             android:paddingEnd="15dp"
