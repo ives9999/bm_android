@@ -18,6 +18,7 @@ class ShowTab2@JvmOverloads constructor(context: Context, attrs: AttributeSet? =
 
     val view: View = View.inflate(context, R.layout.show_tab2, this)
 
+    //代理人，按下每一個tab時，要接收事件的代理人
     var delegate: ShowTab2Delegate? = null
 
     var LL1: LinearLayout? = null
@@ -28,8 +29,10 @@ class ShowTab2@JvmOverloads constructor(context: Context, attrs: AttributeSet? =
     var TV2: TextView? = null
     var TV3: TextView? = null
 
+    //存放所有tab view的陣列
     var views: ArrayList<LinearLayout> = arrayListOf()
 
+    //記錄目前按下的事那一個tab
     var onIdx: Int = 0
 
     init {
@@ -68,6 +71,7 @@ class ShowTab2@JvmOverloads constructor(context: Context, attrs: AttributeSet? =
             on(this.LL1!!)
         }
 
+        //直接由xml設定tab的標籤文字
         attrs ?. let {
             val typedArray = context.obtainStyledAttributes(it, R.styleable.ShowTab2, 0, 0)
 
@@ -86,21 +90,21 @@ class ShowTab2@JvmOverloads constructor(context: Context, attrs: AttributeSet? =
 
     }
 
+    //tab被點選時外觀的變化
     fun on(linearLayout: LinearLayout) {
 
         if (linearLayout.tag != null && linearLayout.tag.toString().isInt()) {
             val tag: Int = linearLayout.tag.toString().toInt()
             val str: String = "show_tab2_view${tag + 1}_on"
             val resource: Int = getResourceID(context, str, "drawable")
-            //val resource: Int = resources.getIdentifier(str, "drawable", context.packageName)
             linearLayout.background = getDrawable(context, resource)
-            //linearLayout.background = getDrawable(context, R.drawable.show_tab2_view1_on)
         }
 
-        val a = linearLayout.getChildAt(0) as? TextView
-        a?.textColor = getColor(context, R.color.MY_BLACK)
+        val tv: TextView? = linearLayout.getChildAt(0) as? TextView
+        tv?.textColor = getColor(context, R.color.MY_BLACK)
     }
 
+    //tab失去被點選時外觀的變化
     fun off(linearLayout: LinearLayout) {
 
         if (linearLayout.tag != null && linearLayout.tag.toString().isInt()) {
@@ -110,49 +114,40 @@ class ShowTab2@JvmOverloads constructor(context: Context, attrs: AttributeSet? =
             linearLayout.background = getDrawable(context, resource)
         }
 
-        val a = linearLayout.getChildAt(0) as? TextView
-        a?.textColor = getColor(context, R.color.MY_WHITE)
+        val tv: TextView? = linearLayout.getChildAt(0) as? TextView
+        tv?.textColor = getColor(context, R.color.MY_WHITE)
     }
 
+    //設定每一個tab要執行按下的函數
     fun setOnClickListener() {
 
         LL1?.setOnClickListener {
-            toggle(it)
-//            onIdx = 0
-//            if (onIdx != oldIdx) {
-//                delegate?.tabPressed(onIdx)
-//            }
+            pressed(it)
         }
 
         LL2?.setOnClickListener {
-            toggle(it)
-//            onIdx = 1
-//            if (onIdx != oldIdx) {
-//                delegate?.tabPressed(1)
-//            }
+            pressed(it)
         }
 
         LL3?.setOnClickListener {
-            toggle(it)
-//            onIdx = 2
-//            if (onIdx != oldIdx) {
-//                delegate?.tabPressed(2)
-//            }
+            pressed(it)
         }
     }
 
-    private fun toggle(sender: View) {
+    //tab被點選時要執行的動作
+    private fun pressed(sender: View) {
 
         if (sender.tag != null && sender.tag.toString().isInt()) {
             val oldIdx: Int = onIdx
             onIdx = sender.tag.toString().toInt()
             //按下不同的選項才執行
             if (onIdx != oldIdx) {
-                delegate?.tabPressed(onIdx)
 
                 for (view in views) {
                     ((view == sender) then { on(view) }) ?: off(view)
                 }
+
+                delegate?.tabPressed(onIdx)
             }
         }
     }

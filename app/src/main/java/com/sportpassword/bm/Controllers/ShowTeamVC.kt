@@ -42,12 +42,6 @@ class ShowTeamVC: ShowVC(), ShowTab2Delegate, TapTextViewDelegate {
     var myTable: TeamTable? = null
 
     var isTempPlay: Boolean = true
-
-    var topTags: ArrayList<HashMap<String, Any>> = arrayListOf (
-        hashMapOf("key" to "introduce", "focus" to true, "tag" to 0, "icon" to "admin", "text" to "介紹", "class" to ""),
-        hashMapOf("key" to "teammember", "focus" to false, "tag" to 1, "icon" to "team", "text" to "隊員", "class" to ""),
-        hashMapOf("key" to "tempplay", "focus" to false, "tag" to 2, "icon" to "tempplay", "text" to "臨打", "class" to "")
-    )
     var focusTabIdx: Int = 0
     var isTeamMemberLoaded: Boolean = false
     var items: ArrayList<TeamMemberTable> = arrayListOf()
