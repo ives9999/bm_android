@@ -41,6 +41,7 @@ class EditTeamVC : EditVC() {
 //            myTable!!.weekdays = arrayListOf<Team_WeekdaysTable>(weekdays1, weekdays2)
 //            myTable!!.play_start = "19:00:00"
 //            myTable!!.play_end = "21:00:00"
+//            myTable!.number = 16
 //            myTable!!.degree = "high,soso"
 //            myTable!!.ball = "RSL4號"
 //            myTable!!.temp_fee_M = 300
@@ -176,6 +177,14 @@ class EditTeamVC : EditVC() {
         row.msg = "沒有選擇結束時間"
         rows.add(row)
         row = OneRow(
+            "人數",
+            myTable!!.number.toString(),
+            myTable!!.number.toString(),
+            NUMBER_KEY,
+            "textField",
+            KEYBOARD.numberPad
+        )
+        row = OneRow(
             "程度",
             myTable!!.degree,
             myTable!!.degree_show,
@@ -214,14 +223,14 @@ class EditTeamVC : EditVC() {
             "switch"
         )
         rows.add(row)
-        row = OneRow(
-            "臨打日期",
-            myTable!!.last_signup_date,
-            myTable!!.last_signup_date,
-            TEAM_TEMP_DATE_KEY,
-            "more"
-        )
-        rows.add(row)
+//        row = OneRow(
+//            "臨打日期",
+//            myTable!!.last_signup_date,
+//            myTable!!.last_signup_date,
+//            TEAM_TEMP_DATE_KEY,
+//            "more"
+//        )
+//        rows.add(row)
 
         val people_limit: String = (myTable!!.people_limit > 0) then { myTable!!.people_limit.toString()} ?: ""
         row = OneRow(
@@ -366,19 +375,22 @@ class EditTeamVC : EditVC() {
     override fun cellSwitchChanged(sectionIdx: Int, rowIdx: Int, b: Boolean) {
 
         val row: OneRow = getOneRowFromIdx(sectionIdx, rowIdx)
-        row.value = b then { "online" } ?: "offline"
-        row.show = b then { "上線" } ?: "下線"
+        row.value = (b then { "online" }) ?: "offline"
+        row.show = (b then { "上線" }) ?: "下線"
     }
 
     override fun submitValidate() {
 
-        val row: OneRow = getOneRowFromKey(TEAM_TEMP_DATE_KEY)
-        val temp_date_string: String = row.value
-        val temp_date: Date? = temp_date_string.toDate()
-        if (temp_date != null) {
+        var row: OneRow = getOneRowFromKey(TEAM_TEMP_STATUS_KEY)
+        if (row.value == "online") {
+            row = getOneRowFromKey(TEAM_TEMP_DATE_KEY)
+            val temp_date_string: String = row.value
+            val temp_date: Date? = temp_date_string.toDate()
+            if (temp_date != null) {
 //            if (temp_date.isSmallerThan(Date()) {
 //                msg = "臨打日期必須在明天之後\n"
 //            }
+            }
         }
     }
 

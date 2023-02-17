@@ -22,6 +22,7 @@ class TeamTable: Table() {
     //var arena_name: String = ""
     var play_start: String = ""
     var play_end: String = ""
+    var number: Int = 0
     var ball: String = ""
     var degree: String = ""
     var charge: String = ""

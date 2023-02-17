@@ -374,7 +374,9 @@ open class EditVC : MyTableVC() {
             //println(params)
 
             dataService.update(this, params, filePath) { success ->
-                loadingAnimation.stop()
+                runOnUiThread {
+                    loadingAnimation.stop()
+                }
                 if (success) {
                     if (dataService.success) {
                         runOnUiThread {
