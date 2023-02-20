@@ -19,9 +19,7 @@ import com.sportpassword.bm.Services.MemberService
 import com.sportpassword.bm.Services.TeamService
 import com.sportpassword.bm.Utilities.jsonToModels
 import com.sportpassword.bm.Utilities.setInfo
-import com.sportpassword.bm.Views.ShowButton2
-import com.sportpassword.bm.Views.ShowButton2Delegate
-import com.sportpassword.bm.Views.ShowTop2
+import com.sportpassword.bm.Views.*
 import com.sportpassword.bm.databinding.ActivityManagerTeamVcBinding
 import com.sportpassword.bm.databinding.ActivityShowTeamVcBinding
 import com.sportpassword.bm.member
@@ -114,12 +112,12 @@ class ManagerTeamVC : BaseActivity(), MyTable2IF {
         }
     }
 
-    override fun cellEdit(row: Table) {
+    fun cellEdit(row: TeamTable) {
 
         toEditTeam(row.token, this)
     }
 
-    override fun cellDelete(row: Table) {
+    fun cellDelete(row: TeamTable) {
 
         msg = "是否確定要刪除此球隊？"
         warning(msg, true, "刪除") {
@@ -155,12 +153,12 @@ class ManagerTeamVC : BaseActivity(), MyTable2IF {
         }
     }
 
-    override fun cellSignup(row: Table) {
+    fun cellSignup(row: TeamTable) {
 
         toManagerSignup(able_type, row.token, row.name)
     }
 
-    override fun cellTeamMember(row: Table) {
+    fun cellTeamMember(row: TeamTable) {
         //println("aaa")
         toManagerTeamMember(row.token)
     }
@@ -181,10 +179,12 @@ class ManagerTeamViewHolder(
     context: Context,
     view: View,
     delegate: ManagerTeamVC
-): MyViewHolder2<TeamTable, ManagerTeamVC>(context, view, delegate), ShowButton2Delegate {
+): MyViewHolder2<TeamTable, ManagerTeamVC>(context, view, delegate), ShowButton2Delegate, IconView2Delegate {
 
+    var item: TeamTable? = null
     override fun bind(row: TeamTable, idx: Int) {
 
+        this.item = row
         setTV(R.id.noTV, "${idx+1}.")
 
         setTV(R.id.playWeekTV, row.weekdays_show)
@@ -199,6 +199,31 @@ class ManagerTeamViewHolder(
         view.findViewById<ShowButton2>(R.id.showButton2) ?. let {
             it.delegate = this
             it.idx = idx
+        }
+
+        view.findViewById<IconView2>(R.id.editIcon) ?. let {
+            it.delegate = this
+        }
+        view.findViewById<IconView2>(R.id.deleteIcon) ?. let {
+            it.delegate = this
+        }
+        view.findViewById<IconView2>(R.id.signupIcon) ?. let {
+            it.delegate = this
+        }
+        view.findViewById<IconView2>(R.id.teamMemberIcon) ?. let {
+            it.delegate = this
+        }
+    }
+
+    override fun iconPressed(icon: String) {
+        if (item != null) {
+            when (icon) {
+                "ic_edit_svg" -> delegate.cellEdit(item!!)
+                "ic_delete_svg" -> delegate.cellDelete(item!!)
+                "ic_check_svg" -> delegate.cellSignup(item!!)
+                "ic_member_svg" -> delegate.cellTeamMember(item!!)
+                else -> delegate.cellEdit(item!!)
+            }
         }
     }
 
