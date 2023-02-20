@@ -22,7 +22,7 @@
             android:background="@android:color/transparent"
             android:onClick="prev"
             android:scaleType="fitCenter"
-            android:src="@drawable/prev"
+            android:src="@drawable/ic_prev_svg"
             android:visibility="invisible"
             tools:visibility="visible" />
     </LinearLayout>

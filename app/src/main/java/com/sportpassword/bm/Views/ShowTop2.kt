@@ -10,10 +10,10 @@ import com.sportpassword.bm.Controllers.BaseActivity
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Utilities.then
 
-class Top @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0):
+class ShowTop2 @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0):
     RelativeLayout(context, attrs, defStyleAttr) {
 
-    val view = View.inflate(context, R.layout.top_view1, this)
+    val view = View.inflate(context, R.layout.show_top2, this)
     private var prevIB: ImageButton? = null
     private var editIB: ImageButton? = null
     private var cartIB: ImageButton? = null

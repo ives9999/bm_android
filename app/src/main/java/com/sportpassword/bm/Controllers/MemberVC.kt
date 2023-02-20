@@ -228,11 +228,11 @@ class MemberVC : MyTableVC() {
     private fun initSectionRow(): ArrayList<MemberSection> {
         val sections: ArrayList<MemberSection> = arrayListOf()
 
+        sections.add(makeSection4Row())
         sections.add(makeSection0Row1())
         sections.add(makeSection1Row())
         sections.add(makeSection2Row(false))
         sections.add(makeSection3Row())
-        sections.add(makeSection4Row())
         sections.add(makeSectionBankRow())
         sections.add(makeSectionXRow())
 

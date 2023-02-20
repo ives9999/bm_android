@@ -11,12 +11,14 @@
     <color name="colorPrimaryDark">#658501</color>
     <color name="FBBLUE">#3e64a2</color>
     <color name="grey">#808080</color>
+    <color name="ICONVIEW">#11FFFFFF</color>
     <color name="LAYER">#f0e4e4</color>
     <color name="light_blue_600">#FF039BE5</color>
     <color name="light_blue_900">#FF01579B</color>
     <color name="light_blue_A200">#FF40C4FF</color>
     <color name="light_blue_A400">#FF00B0FF</color>
     <color name="LIKEBUTTON">#a6d903</color>
+    <color name="LINE">#33FFFFFF</color>
     <color name="LISTTITLE">#265b03</color>
     <color name="MEMBER_COIN_BUY">#0D8504</color>
     <color name="MEMBER_COIN_GIFT">#0794EA</color>

@@ -47,6 +47,9 @@ class TeamTable: Table() {
     @SerializedName("signup_normal_models") var signupNormalTables: ArrayList<SignupNormalTable> = arrayListOf()
     @SerializedName("signup_standby_models") var signupStandbyTables: ArrayList<SignupStandbyTable> = arrayListOf()
 
+    var nextDate: String = ""
+    var leaveCount: Int = 0
+
     var play_start_show: String = ""
     var play_end_show: String = ""
     var weekdays_show: String = ""

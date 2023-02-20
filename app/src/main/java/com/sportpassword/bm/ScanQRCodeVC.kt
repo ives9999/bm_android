@@ -13,14 +13,14 @@ import com.google.android.gms.vision.Detector
 import com.google.android.gms.vision.barcode.Barcode
 import com.google.android.gms.vision.barcode.BarcodeDetector
 import com.sportpassword.bm.R
-import com.sportpassword.bm.Views.Top
+import com.sportpassword.bm.Views.ShowTop2
 import java.io.IOException
 import android.view.ViewTreeObserver.OnGlobalLayoutListener
 
 @SuppressLint("MissingPermission")
 class ScanQRCodeVC : BaseActivity() {
 
-    var top: Top? = null
+    var top: ShowTop2? = null
     var scanHolder: SurfaceHolder? = null
 
     private lateinit var scanSV: SurfaceView
@@ -33,7 +33,7 @@ class ScanQRCodeVC : BaseActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_scan_qrcode_vc)
 
-        findViewById<Top>(R.id.top) ?. let {
+        findViewById<ShowTop2>(R.id.top) ?. let {
             top = it
             it.showPrev(true)
             it.setTitle("掃描QRCode")

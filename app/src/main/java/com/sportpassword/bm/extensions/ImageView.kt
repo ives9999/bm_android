@@ -11,3 +11,11 @@ fun ImageView.avatar(path: String) {
         .error(R.drawable.loading_square_120)
         .into(this)
 }
+
+fun ImageView.featured(path: String) {
+    Picasso.with(context)
+        .load(path)
+        .placeholder(R.drawable.loading_square_120)
+        .error(R.drawable.loading_square_120)
+        .into(this)
+}

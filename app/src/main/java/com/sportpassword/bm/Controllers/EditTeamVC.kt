@@ -182,8 +182,13 @@ class EditTeamVC : EditVC() {
             myTable!!.number.toString(),
             NUMBER_KEY,
             "textField",
-            KEYBOARD.numberPad
+            KEYBOARD.numberPad,
+            "請填寫球隊人數",
+            "",
+            true
         )
+        row.msg = "沒有填寫球隊人數"
+        rows.add(row)
         row = OneRow(
             "程度",
             myTable!!.degree,

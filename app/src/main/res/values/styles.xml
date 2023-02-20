@@ -153,6 +153,13 @@
         <item name="android:textStyle">bold</item>
     </style>
 
+    <style name="list_text_12">
+        <item name="android:textColor">@color/TEXT_WHITE99</item>
+        <item name="android:textSize">12dp</item>
+        <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="android:textStyle">normal</item>
+    </style>
+
     <style name="list_text_small">
         <item name="android:textColor">@color/TEXT_WHITE99</item>
         <item name="android:textSize">10dp</item>
@@ -167,11 +174,25 @@
         <item name="android:textStyle">normal</item>
     </style>
 
+    <style name="list_text_no">
+        <item name="android:textColor">@color/MY_GREEN</item>
+        <item name="android:textSize">10dp</item>
+        <item name="android:fontFamily">sans-serif-black</item>
+        <item name="android:textStyle">normal</item>
+    </style>
+
     <style name="highlight">
         <item name="android:textColor">@color/MY_WEIGHT_RED</item>
         <item name="android:textSize">18dp</item>
         <item name="android:fontFamily">sans-serif-light</item>
         <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="show_button">
+        <item name="android:textColor">@color/MY_BLACK</item>
+        <item name="android:textSize">18dp</item>
+        <item name="android:fontFamily">sans-serif</item>
+        <item name="android:textStyle">normal</item>
     </style>
 
     <style name="Widget.AppTheme.ActionBar.Fullscreen" parent="Widget.AppCompat.ActionBar">

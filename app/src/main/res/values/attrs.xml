@@ -3,14 +3,31 @@
     <declare-styleable name="divider">
 
     </declare-styleable>
+    <declare-styleable name="dot">
+
+    </declare-styleable>
     <declare-styleable name="FullscreenAttrs">
         <attr name="fullscreenBackgroundColor" format="color" />
         <attr name="fullscreenTextColor" format="color" />
     </declare-styleable>
 
+    <declare-styleable name="IconView">
+        <attr name="iconViewIcon" format="string" />
+    </declare-styleable>
+
+    <declare-styleable name="line">
+
+    </declare-styleable>
+
     <declare-styleable name="TapTextView">
         <attr name="tapTextViewOnOff" format="string" />
         <attr name="tapTextViewTag" format="integer" />
+    </declare-styleable>
+
+    <declare-styleable name="ShowButton2">
+        <attr name="showButtonTV" format="string" />
+        <attr name="showButtonWidth" format="integer" />
+        <attr name="showButtonHeight" format="integer" />
     </declare-styleable>
 
     <declare-styleable name="ShowTab2">

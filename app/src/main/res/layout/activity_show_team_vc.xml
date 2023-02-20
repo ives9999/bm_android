@@ -7,7 +7,7 @@
     android:background="@color/MY_BLACK"
     tools:context=".Controllers.ShowTeamVC">
 
-    <com.sportpassword.bm.Views.Top
+    <com.sportpassword.bm.Views.ShowTop2
         android:id="@+id/top"
         android:layout_width="match_parent"
         android:layout_height="54dp" />

@@ -34,7 +34,7 @@ class ShowTeamVC: ShowVC(), ShowTab2Delegate, TapTextViewDelegate {
     private lateinit var binding: ActivityShowTeamVcBinding
     private lateinit var view: ViewGroup
 
-    var top: Top? = null
+    var showTop2: ShowTop2? = null
     var showBottom: Bottom? = null
     var showLike2: ShowLike2? = null
     var showTab2: ShowTab2? = null
@@ -117,8 +117,8 @@ class ShowTeamVC: ShowVC(), ShowTab2Delegate, TapTextViewDelegate {
 //            "created_at_show" to hashMapOf("icon" to "calendar","title" to "建立日期","content" to "")
 //        )
 
-        findViewById<Top>(R.id.top) ?. let {
-            top = it
+        findViewById<ShowTop2>(R.id.top) ?. let {
+            showTop2 = it
             it.showPrev(true)
         }
 
@@ -285,7 +285,7 @@ class ShowTeamVC: ShowVC(), ShowTab2Delegate, TapTextViewDelegate {
         if (table != null) {
             myTable = table as TeamTable
             myTable!!.filterRow()
-            top?.setTitle(myTable!!.name)
+            showTop2?.setTitle(myTable!!.name)
             showBottom?.setLike(myTable!!.like, myTable!!.like_count)
         } else {
             runOnUiThread {

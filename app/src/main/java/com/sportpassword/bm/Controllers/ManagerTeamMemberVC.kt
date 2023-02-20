@@ -1,7 +1,6 @@
 package com.sportpassword.bm.Controllers
 
 import android.Manifest
-import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
@@ -23,9 +22,8 @@ import com.sportpassword.bm.Models.TeamMemberTable
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.TeamService
 import com.sportpassword.bm.Utilities.*
-import com.sportpassword.bm.Views.Top
+import com.sportpassword.bm.Views.ShowTop2
 import com.sportpassword.bm.databinding.ActivityManagerTeamMemberBinding
-import com.sportpassword.bm.databinding.MytablevcBinding
 import com.sportpassword.bm.extensions.avatar
 import com.sportpassword.bm.member
 import java.lang.reflect.Type
@@ -36,7 +34,7 @@ open class ManagerTeamMemberVC : BaseActivity(), MyTable2IF {
     private lateinit var view: ViewGroup
 
     var token: String? = null
-    var top: Top? = null
+    var top: ShowTop2? = null
     private var infoTV: TextView? = null
 
     private val tableType: Type = object : TypeToken<Tables2<TeamMemberTable>>() {}.type
@@ -54,7 +52,7 @@ open class ManagerTeamMemberVC : BaseActivity(), MyTable2IF {
         }
 
         //setMyTitle("球隊隊員")
-        findViewById<Top>(R.id.top) ?. let {
+        findViewById<ShowTop2>(R.id.top) ?. let {
             top = it
             it.showPrev(true)
             it.setTitle("參加球隊")

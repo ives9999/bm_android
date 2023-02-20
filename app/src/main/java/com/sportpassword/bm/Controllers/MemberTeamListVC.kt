@@ -20,7 +20,7 @@ import com.sportpassword.bm.Services.MemberService
 import com.sportpassword.bm.Utilities.noSec
 import com.sportpassword.bm.Utilities.setInfo
 import com.sportpassword.bm.Utilities.then
-import com.sportpassword.bm.Views.Top
+import com.sportpassword.bm.Views.ShowTop2
 import com.sportpassword.bm.databinding.ActivityMemberTeamListVcBinding
 import com.sportpassword.bm.member
 import com.squareup.picasso.MemoryPolicy
@@ -32,7 +32,7 @@ class MemberTeamListVC : BaseActivity(), MyTable2IF {
     private lateinit var binding: ActivityMemberTeamListVcBinding
     private lateinit var view: ViewGroup
 
-    var top: Top? = null
+    var top: ShowTop2? = null
     private var infoTV: TextView? = null
 
     private val tableType: Type = object : TypeToken<Tables2<TeamMemberTable>>() {}.type
@@ -45,7 +45,7 @@ class MemberTeamListVC : BaseActivity(), MyTable2IF {
         view = binding.root
         setContentView(view)
 
-        findViewById<Top>(R.id.top) ?. let {
+        findViewById<ShowTop2>(R.id.top) ?. let {
             top = it
             it.showPrev(true)
             it.setTitle("加入球隊")

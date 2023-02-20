@@ -4,6 +4,8 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -13,7 +15,9 @@ import com.sportpassword.bm.Models.Tables2
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Utilities.PERPAGE
 import com.sportpassword.bm.Utilities.jsonToModels2
+import com.sportpassword.bm.Utilities.setImage
 import com.sportpassword.bm.Views.EndlessRecyclerViewScrollListener
+import com.sportpassword.bm.extensions.featured
 import org.jetbrains.anko.backgroundColor
 import java.lang.reflect.Type
 
@@ -196,5 +200,23 @@ open class MyViewHolder2<U: Table, V: BaseActivity>(
             color = ContextCompat.getColor(context, R.color.CELL_SELECTED)
         }
         view.backgroundColor = color
+    }
+
+    fun setIV(res: Int, name: String) {
+        view.findViewById<ImageView>(res) ?. let {
+            it.setImage(name)
+        }
+    }
+
+    fun setFeatured(res: Int, url: String) {
+        view.findViewById<ImageView>(res) ?. let {
+            it.featured(url)
+        }
+    }
+
+    fun setTV(res: Int, value: String) {
+        view.findViewById<TextView>(res) ?. let {
+            it.setText(value)
+        }
     }
 }

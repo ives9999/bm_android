@@ -15,7 +15,7 @@
         android:layout_marginStart="12dp"
         android:background="@android:color/transparent"
         android:scaleType="fitCenter"
-        android:src="@drawable/prev_svg"
+        android:src="@drawable/ic_prev_svg"
         android:visibility="gone"
         tools:visibility="visible" />
 
