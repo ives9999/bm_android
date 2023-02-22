@@ -146,6 +146,13 @@
         <item name="windowNoTitle">true</item>
     </style>
 
+    <style name="list_text_general_black">
+        <item name="android:textColor">@color/MY_BLACK</item>
+        <item name="android:textSize">13dp</item>
+        <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
     <style name="list_text_title">
         <item name="android:textColor">@color/TEXT_WHITE</item>
         <item name="android:textSize">21dp</item>

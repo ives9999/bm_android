@@ -865,7 +865,8 @@ class TeamMemberAdapter(val context: Context, val delegate: BaseActivity?=null):
     override fun onBindViewHolder(holder: TeamMemberShowViewHolder, position: Int) {
 
         val row: TeamMemberTable = rows[position]
-        holder.noTV?.text = (position + 1).toString() + "."
+
+        holder.noTV?.setNO(position + 1)
         if (row.memberTable != null && row.memberTable!!.featured_path != null) {
             holder.avatarIV?.avatar(row.memberTable!!.featured_path)
         }
@@ -893,14 +894,14 @@ class TeamMemberAdapter(val context: Context, val delegate: BaseActivity?=null):
 
 class TeamMemberShowViewHolder(val viewHolder: View): RecyclerView.ViewHolder(viewHolder) {
 
-    var noTV: TextView? = null
+    var noTV: NOTV2? = null
     var avatarIV: ImageView? = null
     var nameTV: TextView? = null
     var createdTV: TextView? = null
     var leaveTV: TextView? = null
 
     init {
-        viewHolder.findViewById<TextView>(R.id.noTV) ?. let {
+        viewHolder.findViewById<NOTV2>(R.id.noTV) ?. let {
             noTV = it
         }
         viewHolder.findViewById<com.github.siyamed.shapeimageview.CircularImageView>(R.id.avatarIV) ?. let {

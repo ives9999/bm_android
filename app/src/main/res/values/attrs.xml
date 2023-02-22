@@ -19,6 +19,10 @@
 
     </declare-styleable>
 
+    <declare-styleable name="NOTV2">
+        <attr name="no" format="integer" />
+    </declare-styleable>
+
     <declare-styleable name="TapTextView">
         <attr name="tapTextViewOnOff" format="string" />
         <attr name="tapTextViewTag" format="integer" />

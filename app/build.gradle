@@ -129,6 +129,8 @@ dependencies {
     //    implementation project(':vimeo-networking')
     implementation 'com.beust:klaxon:3.0.1'
     implementation 'androidx.core:core-ktx:1.9.0'
+    implementation 'androidx.core:core-ktx:+'
+    implementation 'androidx.core:core-ktx:+'
 
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test:runner:1.5.2'
