@@ -1,6 +1,7 @@
 package com.sportpassword.bm.Views
 
 import android.content.Context
+import android.graphics.drawable.Drawable
 import android.util.AttributeSet
 import android.view.View
 import android.widget.Button
@@ -13,6 +14,8 @@ import com.sportpassword.bm.R
 import com.sportpassword.bm.Utilities.Global.getScreenWidth
 import com.sportpassword.bm.Utilities.dpToPx
 import com.sportpassword.bm.Utilities.then
+import tw.com.bluemobile.hbc.utilities.getColor
+import tw.com.bluemobile.hbc.utilities.getDrawable
 
 class Bottom@JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0):
     RelativeLayout(context, attrs, defStyleAttr) {
@@ -147,5 +150,17 @@ class Bottom@JvmOverloads constructor(context: Context, attrs: AttributeSet? = n
         val p: MarginLayoutParams = view.layoutParams as MarginLayoutParams
         p.marginStart = padding
         view.layoutParams = p
+    }
+
+    fun changeSubmitToCancelBtn() {
+        val style: Drawable? = getDrawable(context, R.drawable.button_cancel)
+        submitBtn?.background = style
+        submitBtn?.setTextColor(getColor(context, R.color.MY_GREEN))
+    }
+
+    fun changeSubmitToNormalBtn() {
+        val style: Drawable? = getDrawable(context, R.drawable.button_rc)
+        submitBtn?.background = style
+        submitBtn?.setTextColor(getColor(context, R.color.MY_BLACK))
     }
 }

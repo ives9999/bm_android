@@ -12,7 +12,7 @@
         android:layout_width="@dimen/prev_width"
         android:layout_height="@dimen/prev_height"
         android:layout_centerVertical="true"
-        android:layout_marginStart="12dp"
+        android:layout_marginStart="20dp"
         android:background="@android:color/transparent"
         android:scaleType="fitCenter"
         android:src="@drawable/ic_prev_svg"
@@ -36,7 +36,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:layout_centerInParent="true"
-        android:layout_marginEnd="12dp"
+        android:layout_marginEnd="20dp"
         android:orientation="horizontal">
 
         <ImageButton

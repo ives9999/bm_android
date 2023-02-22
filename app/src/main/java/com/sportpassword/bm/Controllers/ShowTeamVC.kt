@@ -1,6 +1,7 @@
 package com.sportpassword.bm.Controllers
 
 import android.content.Context
+import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -25,6 +26,7 @@ import com.sportpassword.bm.Views.*
 import com.sportpassword.bm.databinding.ActivityShowTeamVcBinding
 import com.sportpassword.bm.extensions.avatar
 import com.sportpassword.bm.member
+import tw.com.bluemobile.hbc.utilities.getColor
 import java.util.*
 import java.lang.reflect.Type
 import kotlin.collections.ArrayList
@@ -740,10 +742,10 @@ class ShowTeamVC: ShowVC(), ShowTab2Delegate, TapTextViewDelegate {
     }
 
     override fun teamMemberInfo(idx: Int) {
-        if (myTable != null) {
+        if (myTable != null && (focusTabIdx == 1 || focusTabIdx == 2)) {
             if (myTable!!.manager_token == member.token) {
                 val teamMemberRow: TeamMemberTable = items[idx]
-                getMemberOne(teamMemberRow.token)
+                getMemberOne(teamMemberRow.memberTable!!.token)
             } else {
                 warning("只有球隊管理員可以檢視報名者資訊")
             }
@@ -814,9 +816,11 @@ fun ShowTeamVC.setTeamMemberBottom() {
     if (this.isTeamMember && !this.isTeapMemberLeave) {
         showBottom!!.showButton(true, false, false)
         showBottom!!.setSubmitBtnTitle("請假")
+        showBottom!!.changeSubmitToNormalBtn()
     } else if (this.isTeamMember && this.isTeamMember) {
         showBottom!!.showButton(true, false, false)
         showBottom!!.setSubmitBtnTitle("取消")
+        showBottom!!.changeSubmitToCancelBtn()
     } else {
         showBottom!!.showButton(false, false, false)
     }
@@ -853,6 +857,7 @@ fun ShowTeamVC.teamMemberLeave(doLeave: Boolean) {
 
 class TeamMemberAdapter(val context: Context, val delegate: BaseActivity?=null): RecyclerView.Adapter<TeamMemberShowViewHolder>() {
 
+    private var selectedItemPosition: Int = 0
     var rows: ArrayList<TeamMemberTable> = arrayListOf()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TeamMemberShowViewHolder {
@@ -883,7 +888,15 @@ class TeamMemberAdapter(val context: Context, val delegate: BaseActivity?=null):
         }
 
         holder.viewHolder.setOnClickListener {
+            selectedItemPosition = position
+            notifyDataSetChanged()
             delegate?.teamMemberInfo(position)
+        }
+
+        if (selectedItemPosition == position) {
+            holder.viewHolder.setBackgroundColor(getColor(context, R.color.CELL_SELECTED))
+        } else {
+            holder.viewHolder.setBackgroundColor(getColor(context, R.color.MY_BLACK))
         }
     }
 

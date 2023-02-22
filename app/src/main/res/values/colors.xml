@@ -3,7 +3,7 @@
     <color name="BLACK">#000000</color>
     <color name="black_overlay">#66000000</color>
     <color name="CANCEL_BUTTON">#7A7A7A</color>
-    <color name="CELL_SELECTED">#444444</color>
+    <color name="CELL_SELECTED">#3B3C43</color>
     <color name="CELL_SELECTED1">#402424</color>
     <color name="CITY_BUTTON">#5d5d5d</color>
     <color name="colorAccent">#FF4081</color>
@@ -52,6 +52,7 @@
     <color name="TEXT_LEAVE_BK">#44FF4C4C</color>
     <color name="TEXT_WHITE">#d1d1d1</color>
     <color name="TEXT_WHITE99">#99FFFFFF</color>
+    <color name="TEXT_WHITE22">#22FFFFFF</color>
     <color name="THREE_BUTTON">#8618f5</color>
     <color name="TOP">#a6d903</color>
 </resources>

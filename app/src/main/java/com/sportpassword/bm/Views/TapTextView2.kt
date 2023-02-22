@@ -44,13 +44,13 @@ class TapTextView2@JvmOverloads constructor(context: Context, attrs: AttributeSe
     }
 
     fun on() {
-        tapTV?.background = getDrawable(context, R.drawable.button_rc)
+        tapTV?.background = getDrawable(context, R.drawable.tap_text_view_on)
 //        if (Build.VERSION.SDK_INT < 23) {
 //            tapTV?.setTextAppearance(context, R.style.list_text_general)
 //        } else {
 //            tapTV?.setTextAppearance(R.style.list_text_general)
 //        }
-        tapTV?.setTextColor(getColor(context, R.color.MY_BLACK))
+        tapTV?.setTextColor(getColor(context, R.color.MY_GREEN))
 
         this.isOn = true
     }

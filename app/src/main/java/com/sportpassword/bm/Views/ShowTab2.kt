@@ -95,7 +95,7 @@ class ShowTab2@JvmOverloads constructor(context: Context, attrs: AttributeSet? =
 
         if (linearLayout.tag != null && linearLayout.tag.toString().isInt()) {
             val tag: Int = linearLayout.tag.toString().toInt()
-            val str: String = "show_tab2_view${tag + 1}_on"
+            val str: String = "show_tab2_view_on"
             val resource: Int = getResourceID(context, str, "drawable")
             linearLayout.background = getDrawable(context, resource)
         }
@@ -109,7 +109,7 @@ class ShowTab2@JvmOverloads constructor(context: Context, attrs: AttributeSet? =
 
         if (linearLayout.tag != null && linearLayout.tag.toString().isInt()) {
             val tag: Int = linearLayout.tag.toString().toInt()
-            val str: String = "show_tab2_view${tag + 1}_off"
+            val str: String = "show_tab2_view_off"
             val resource: Int = getResourceID(context, str, "drawable")
             linearLayout.background = getDrawable(context, resource)
         }

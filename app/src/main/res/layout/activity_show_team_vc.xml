@@ -31,8 +31,6 @@
         android:layout_above="@id/bottom"
         android:layout_below="@id/showTap2"
         android:background="@color/MY_BLACK"
-        android:layout_marginStart="20dp"
-        android:layout_marginEnd="20dp"
         android:focusable="true"
         android:paddingTop="20dp"
 
@@ -109,12 +107,16 @@
                     <RelativeLayout
                         android:id="@+id/teamMemberAllContainer"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="20dp"
+                        android:layout_marginEnd="20dp"
+                        >
 
                         <LinearLayout
                             android:id="@+id/teamMemberLeftContainer"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_marginTop="14dp"
                             android:orientation="vertical">
                             <TextView
                                 android:id="@+id/teamMemberDataTV"
@@ -127,7 +129,7 @@
                                 android:id="@+id/teamMemberSummaryContainer"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_marginTop="8dp"
+                                android:layout_marginTop="16dp"
                                 android:orientation="horizontal">
 
                                 <com.sportpassword.bm.Views.TapTextView2
@@ -169,7 +171,9 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
-                        android:layout_marginTop="10dp">
+                        android:layout_marginStart="20dp"
+                        android:layout_marginEnd="20dp"
+                        android:layout_marginTop="24dp">
 
                         <ImageView
                             android:id="@+id/nextDateIV"
@@ -191,6 +195,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
+                        android:layout_marginStart="20dp"
+                        android:layout_marginEnd="20dp"
                         android:layout_marginTop="10dp">
 
                         <ImageView
@@ -213,6 +219,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         style="@style/list_text_title"
+                        android:layout_marginStart="20dp"
+                        android:layout_marginEnd="20dp"
                         android:layout_marginTop="30dp"
                         android:text="隊員：" />
 

@@ -10,9 +10,9 @@
 
     <Button
         android:id="@+id/submitBtn"
-        style="@style/signup_button"
+        style="@style/submit_button"
         android:layout_width="120dp"
-        android:layout_height="30dp"
+        android:layout_height="40dp"
         android:text="報名" />
 
 
@@ -48,7 +48,7 @@
         android:id="@+id/cancelBtn"
         style="@style/cancel_button"
         android:layout_width="120dp"
-        android:layout_height="30dp"
+        android:layout_height="40dp"
         android:text="取消" />
 
 </LinearLayout>
