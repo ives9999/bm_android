@@ -99,171 +99,27 @@ object TeamService: DataService() {
         _simpleService(context, url, params, complete)
     }
 
-//    fun tempPlay_list(context: Context, params: HashMap<String,Any>, page:Int, perPage:Int, complete: CompletionHandler) {
-//        val url = URL_TEAM_TEMP_PLAY_LIST
-////        println(url)
-//
-//        val body = JSONObject()
-//        body.put("source", "app")
-//        body.put("channel", "bm")
-//        body.put("page", page.toString())
-//        body.put("perPage", perPage.toString())
-//
-////        println(params)
-//        for ((key, value) in params) {
-//            when (key) {
-//                "city_id" -> {
-//                    var arr: JSONArray = JSONArray(value as ArrayList<Int>)
-//                    body.put(key, arr)
-//                }
-//                "city_type" -> {
-//                    body.put(key, value)
-//                }
-//                "play_days" -> {
-//                    var arr: JSONArray = JSONArray(value as ArrayList<Int>)
-//                    body.put(key, arr)
-//                }
-//                "play_time" -> {
-//                    body.put(key, value)
-//                }
-//                "use_date_range" -> {
-//                    body.put(key, value)
-//                }
-//                "arena_id" -> {
-//                    var arr: JSONArray = JSONArray(value as ArrayList<Int>)
-//                    body.put(key, arr)
-//                }
-//                "degree" -> {
-//                    var arr: JSONArray = JSONArray(value as ArrayList<String>)
-//                    body.put(key, arr)
-//                }
-//                "k" -> {
-//                    body.put(key, value)
-//                }
-//            }
-//        }
-//
-//        val requestBody = body.toString()
-//        //println(requestBody)
-//        //println("coach getList refresh: $refresh")
-//        tempPlayLists = arrayListOf()
-//
-//        val request = object : JsonObjectRequest(Request.Method.POST, url, null, Response.Listener { json ->
-////            println(json)
-//            try {
-//                success = true
-//                this.totalCount = json.getInt("totalCount")
-//                this.page = json.getInt("page")
-//                this.perPage = json.getInt("perPage")
-//                val rows = json.getJSONArray("rows")
-//                for (i in 0..rows.length()-1) {
-//                    val obj = rows.getJSONObject(i)
-//                    model.dataReset()
-//                    for ((key, value) in model.data) {
-//                        if (obj.has(key)) {
-//                            _jsonToData(obj, key, value)
-//                        }
-//                    }
-//                    //println(model.data)
-//                    model.initTimeData()
-//
-//                    var data = model.data
-//
-//                    var near_date: MutableMap<String, Any> = mutableMapOf()
-//                    near_date = data[TEAM_NEAR_DATE_KEY]!!
-//                    val n1: String = obj.getString("near_date")
-//                    val n2: String = obj.getString("near_date_w")
-//                    near_date["value"] = n1
-//                    near_date["value1"] = n2
-//                    near_date["show"] = "$n1($n2)"
-//                    data[TEAM_NEAR_DATE_KEY] = near_date
-//
-//                    var city: MutableMap<String, Any> = mutableMapOf()
-//                    city = data[CITY_KEY]!!
-//                    city["value"] = 0
-//                    try {
-//                        city["value"] = obj.getInt("city_id")
-//                    } catch (e: Exception) {
-//
-//                    }
-//                    city["show"] = obj.getString("city_name")
-//                    data[CITY_KEY] = city
-//
-//                    var arena: MutableMap<String, Any> = mutableMapOf()
-//                    arena = data[ARENA_KEY]!!
-//                    arena["value"] = 0
-//                    try {
-//                        arena["value"] = obj.getInt("arena_id")
-//                    } catch (e: Exception) {
-//
-//                    }
-//                    arena["show"] = obj.getString("arena_name")
-//                    data[ARENA_KEY] = arena
-//
-//                    var count: MutableMap<String, Any> = mutableMapOf()
-//                    count["quantity"] = 0
-//                    try {
-//                        count["quantity"] = obj.getInt(TEAM_TEMP_QUANTITY_KEY)
-//                    } catch (e: Exception) {
-//                    }
-//                    count["signup"] = 0
-//                    try {
-//                        count["signup"] = obj.getInt("temp_signup_count")
-//                    } catch (e: Exception) {
-//                    }
-//                    data["count"] = count
-//                    //println(data)
-//
-//                    //model.lists.add(data)
-//                    tempPlayLists.add(data)
-//                }
-//                //tempPlayLists = model.lists
-//                //println(tempPlayLists.size)
-//                //println(tempPlayLists)
-//            } catch (e: JSONException) {
-//                println(e.localizedMessage)
-//                success = false
-//                msg = "無法getList，沒有傳回成功值 " + e.localizedMessage
-//            }
-//            if (this.success) {
-//                //jsonToMember(json)
-//            } else {
-//                //DataService.makeErrorMsg(json)
-//            }
-//            complete(true)
-//        }, Response.ErrorListener { error ->
-//            //Log.d("ERROR", "Could not register user: $error")
-//            println(error.localizedMessage)
-//            this.msg = "取得失敗，網站或網路錯誤"
-//            complete(false)
-//        }) {
-//            override fun getBodyContentType(): String {
-//                return HEADER
-//            }
-//
-//            override fun getBody(): ByteArray {
-//                return requestBody.toByteArray()
-//            }
-//        }
-//
-////        val request = object: StringRequest(Request.Method.GET, url,
-////                Response.Listener { response ->
-////                    println(response)
-////                }, Response.ErrorListener { error ->
-////                    println(error.localizedMessage)
-////        }) {
-////            override fun getBodyContentType(): String {
-////                return HEADER
-////            }
-////
-////            override fun getBody(): ByteArray {
-////                println("parameter")
-////                return requestBody.toByteArray()
-////            }
-////        }
-//
-//        Volley.newRequestQueue(context).add(request)
-//    }
+    fun tempPlayAdd(context: Context, token: String, member_token: String, play_date: String, complete: CompletionHandler) {
+        val url: String = URL_TEAM_TEMP_PLAY_ADD
+        val params: HashMap<String, String> = hashMapOf("device" to "app", "channel" to CHANNEL, "token" to token, "member_token" to member_token, "play_date" to play_date)
+        //println(url)
+        //println(params)
+
+        _simpleService(context, url, params, complete)
+    }
+
+    fun tempPlayList(context: Context, token: String, playDate: String, page:Int, perPage: Int, complete: CompletionHandler) {
+        val url: String = URL_TEAM_TEMP_PLAY_LIST
+        val params: HashMap<String, String> = hashMapOf(
+            "device" to "app", "channel" to CHANNEL, "page" to page.toString(), "perPage" to perPage.toString(), "token" to token, "playDate" to playDate
+        )
+
+//        println(url)
+//        println(params)
+
+        _simpleService(context, url, params, complete)
+    }
+
     fun tempPlay_onoff(context: Context, token: String, complete: CompletionHandler) {
         val url = URL_TEAM_TEMP_PLAY
         //println(url)

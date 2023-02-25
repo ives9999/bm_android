@@ -142,7 +142,6 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener,
     var weekdays: ArrayList<Int> = arrayListOf()
 
     //for tableView
-    protected var loading: Boolean = false
     var jsonString: String? = null
 
     protected var theFirstTime: Boolean = true
@@ -158,6 +157,7 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener,
     var layerTableView: RecyclerView? = null
 
     //loading
+    protected var loading: Boolean = false
     lateinit var loadingAnimation: LoadingAnimation
 
 
@@ -307,6 +307,7 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener,
         URL_TEAM_MEMBER_LEAVE = URL_HOME + "team/leave"
         URL_TEAM_MEMBER_LIST = URL_HOME + "team/teamMemberList"
         URL_TEAM_TEMP_PLAY = URL_TEAM + "tempPlay/onoff"
+        URL_TEAM_TEMP_PLAY_ADD = URL_TEAM + "tempPlay/add"
         URL_TEAM_TEMP_PLAY_LIST = URL_TEAM + "tempPlay/list"
         URL_TEAM_TEMP_PLAY_BLACKLIST = URL_TEAM + "tempPlay/blacklist"
         URL_TEAM_PLUSONE = BASE_URL + "/team/tempPlay/plusOne/"

@@ -51,7 +51,7 @@
                     android:layout_alignParentTop="true"
                     android:layout_gravity="top"
                     android:textSize="18dp"
-                    tools:text="name" />
+                    tools:text="" />
 
                 <TextView
                     android:id="@+id/createdATTV"
@@ -60,7 +60,7 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentBottom="true"
                     android:paddingBottom="3dp"
-                    android:text="02-08 14:00"
+                    android:text=""
                     android:textSize="12dp" />
 
             </RelativeLayout>

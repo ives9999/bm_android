@@ -39,26 +39,25 @@ class ShowTeamVC: ShowVC(), ShowTab2Delegate, TapTextViewDelegate {
     var showTop2: ShowTop2? = null
     var showBottom: Bottom? = null
     var showLike2: ShowLike2? = null
-    var showTab2: ShowTab2? = null
+    private var showTab2: ShowTab2? = null
 
     var myTable: TeamTable? = null
 
-    var isTempPlay: Boolean = true
-    var focusTabIdx: Int = 0
-    var isTeamMemberLoaded: Boolean = false
-    var items: ArrayList<TeamMemberTable> = arrayListOf()
-    var filterItems: ArrayList<TeamMemberTable> = arrayListOf()
+    private var focusTabIdx: Int = 0
+    var countTaps: ArrayList<TapTextView2> = arrayListOf()
 
     var introduceContainerLL: LinearLayout? = null
     var teamMemberContainerLL: LinearLayout? = null
-    var tempPlayContainerLL: LinearLayout? = null
+    //var tempPlayContainerLL: LinearLayout? = null
     var teamMemberTableView: RecyclerView? = null
-    var tempPlayTableView: RecyclerView? = null
+    //var tempPlayTableView: RecyclerView? = null
+    private lateinit var linearLayoutManager: LinearLayoutManager
+
 
     //team member
     lateinit var teamMemberAdapter: TeamMemberAdapter
-    private lateinit var teamMemberLinearLayoutManager: LinearLayoutManager
-    private lateinit var teamMemberScrollListener: MemberTeamScrollListener
+    private var teamMemberScrollListener: MemberTeamScrollListener? = null
+
     private lateinit var teamMemberTotalTV: TapTextView2
     private lateinit var teamMemberPlayTV: TapTextView2
     private lateinit var teamMemberLeaveTV: TapTextView2
@@ -68,26 +67,52 @@ class ShowTeamVC: ShowVC(), ShowTab2Delegate, TapTextViewDelegate {
     private lateinit var nextTimeTV: TextView
     private lateinit var likeIconIV: ImageView
 
-    var teamMemberPage: Int = 1
-    var teamMemberPerpage: Int = PERPAGE
+    private var teamMemberPage: Int = 1
+    var teamMemberPerPage: Int = PERPAGE
+    var teamMemberTotalCount: Int = 0
+    var teamMemberTotalPage: Int = 0
+    var leaveCount: Int = 0
+
+    //此會員的team member token
+    var teamMemberToken: String? = null
+
     var nextDate: String = ""
     var nextDateWeek: String = ""
-    var play_start: String = ""
-    var play_end: String = ""
+    var playInterval: String = ""
+//    var play_start: String = ""
+//    var play_end: String = ""
+
     //會員是否為球隊隊友
     var isTeamMember: Boolean = false
     //會員為隊友，會員是否已經請假
-    var isTeapMemberLeave: Boolean = false
-    //此會員的team member token
-    var teamMemberToken: String? = null
-    var countTaps: ArrayList<TapTextView2> = arrayListOf()
+    var isTeamMemberLeave: Boolean = false
+    //是否已經擷取網路隊員資料
+    var isTeamMemberLoaded: Boolean = false
+
+    var items1: ArrayList<TeamMemberTable> = arrayListOf()
+    var filterItems: ArrayList<TeamMemberTable> = arrayListOf()
 
     //temp play
-    lateinit var tempPlayAdapter: SignupAdapter
-    private lateinit var tempPlayLinearLayoutManager: LinearLayoutManager
-    protected lateinit var tempPlayScrollListener: TempPlayScrollListener
+    lateinit var tempPlayAdapter: TempPlayAdapter
+    //lateinit var tempPlayAdapter: SignupAdapter
+    //private lateinit var tempPlayLinearLayoutManager: LinearLayoutManager
+    private var tempPlayScrollListener: TempPlayScrollListener? = null
+
+    //是否開放臨打
+    var isTempPlay: Boolean = true
+    //會員是否已經加入臨打
+    var isAddTempPlay: Boolean = false
+    //臨打列表資料是否經輸入
+    var isTempPlayLoaded: Boolean = false
+
     var tempPlayPage: Int = 1
-    var tempPlayPerpage: Int = PERPAGE
+    var tempPlayPerPage: Int = PERPAGE
+    var tempPlayTotalCount: Int = 1
+    var tempPlayTotalPage: Int = 0
+
+    var tempPlayCount: Int = 0
+
+    var items2: ArrayList<TeamTempPlayTable> = arrayListOf()
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -182,10 +207,12 @@ class ShowTeamVC: ShowVC(), ShowTab2Delegate, TapTextViewDelegate {
 
         findViewById<TextView>(R.id.nextDateTV) ?. let {
             nextDateTV = it
+            nextDateIV.setImage("calendar_svg")
         }
 
         findViewById<ImageView>(R.id.nextTimeIV) ?. let {
             nextTimeIV = it
+            nextTimeIV.setImage("clock_svg")
         }
 
         findViewById<TextView>(R.id.nextTimeTV) ?. let {
@@ -196,31 +223,31 @@ class ShowTeamVC: ShowVC(), ShowTab2Delegate, TapTextViewDelegate {
             likeIconIV = it
         }
 
-        findViewById<LinearLayout>(R.id.tempPlayContainerLL) ?. let {
-            tempPlayContainerLL = it
+//        findViewById<LinearLayout>(R.id.tempPlayContainerLL) ?. let {
+//            tempPlayContainerLL = it
+//        }
+
+        findViewById<RecyclerView>(R.id.teamMemberTableView) ?. let {
+            teamMemberTableView = it
+            //it.adapter = teamMemberAdapter
+            linearLayoutManager = LinearLayoutManager(this)
+            teamMemberTableView!!.layoutManager = linearLayoutManager
+
+//            teamMemberLinearLayoutManager = LinearLayoutManager(this)
+//            teamMemberTableView!!.layoutManager = teamMemberLinearLayoutManager
         }
 
         teamMemberAdapter = TeamMemberAdapter(this, this)
-        findViewById<RecyclerView>(R.id.teamMemberTableView) ?. let {
-            teamMemberTableView = it
-            it.adapter = teamMemberAdapter
-
-            teamMemberLinearLayoutManager = LinearLayoutManager(this)
-            it.layoutManager = teamMemberLinearLayoutManager
-            teamMemberScrollListener = MemberTeamScrollListener(teamMemberLinearLayoutManager)
-            it.addOnScrollListener(teamMemberScrollListener)
-        }
-
-        tempPlayAdapter = SignupAdapter(this, this)
-        findViewById<RecyclerView>(R.id.tempPlayTableView) ?. let {
-            tempPlayTableView = it
-            it.adapter = tempPlayAdapter
-
-            tempPlayLinearLayoutManager = LinearLayoutManager(this)
-            it.layoutManager = tempPlayLinearLayoutManager
-            tempPlayScrollListener = TempPlayScrollListener(tempPlayLinearLayoutManager)
-            it.addOnScrollListener(tempPlayScrollListener)
-        }
+        tempPlayAdapter = TempPlayAdapter(this, this)
+//        findViewById<RecyclerView>(R.id.tempPlayTableView) ?. let {
+//            tempPlayTableView = it
+//            it.adapter = tempPlayAdapter
+//
+//            tempPlayLinearLayoutManager = LinearLayoutManager(this)
+//            it.layoutManager = tempPlayLinearLayoutManager
+//            tempPlayScrollListener = TempPlayScrollListener(tempPlayLinearLayoutManager)
+//            it.addOnScrollListener(tempPlayScrollListener)
+//        }
 
         init()
         refresh()
@@ -289,6 +316,16 @@ class ShowTeamVC: ShowVC(), ShowTab2Delegate, TapTextViewDelegate {
             myTable!!.filterRow()
             showTop2?.setTitle(myTable!!.name)
             showBottom?.setLike(myTable!!.like, myTable!!.like_count)
+
+            tempPlayCount = myTable!!.people_limit + myTable!!.leaveCount
+
+            this.nextDate = myTable!!.nextDate
+            this.nextDateWeek = myTable!!.nextDateWeek
+            this.playInterval = myTable!!.interval_show
+
+            nextDateTV.text = "${nextDate} ( ${nextDateWeek} )"
+            nextTimeTV.text = playInterval
+
         } else {
             runOnUiThread {
                 warning("解析伺服器所傳的字串失敗，請洽管理員")
@@ -296,18 +333,27 @@ class ShowTeamVC: ShowVC(), ShowTab2Delegate, TapTextViewDelegate {
         }
     }
 
-    protected fun countTeamMemberTotalPage() {
-        val _totalPage: Int = totalCount / teamMemberPerpage
-        totalPage = if (totalCount % teamMemberPerpage > 0) _totalPage+1 else _totalPage
+    fun countTeamMemberTotalPage() {
+        val _totalPage: Int = teamMemberTotalCount / teamMemberPerPage
+        teamMemberTotalPage = if (teamMemberTotalCount % teamMemberPerPage > 0) _totalPage+1 else _totalPage
 
-        if (totalPage <= 1) {
-            teamMemberTableView?.removeOnScrollListener(teamMemberScrollListener)
+        if (teamMemberTotalPage <= 1 && teamMemberScrollListener != null) {
+            teamMemberTableView?.removeOnScrollListener(teamMemberScrollListener!!)
+        }
+    }
+
+    fun countTempPlayTotalPage() {
+        val _totalPage: Int = tempPlayTotalCount / teamMemberPerPage
+        tempPlayTotalPage = if (tempPlayTotalCount % tempPlayPage > 0) _totalPage+1 else _totalPage
+
+        if (tempPlayTotalPage <= 1 && tempPlayScrollListener != null) {
+            teamMemberTableView?.removeOnScrollListener(tempPlayScrollListener!!)
         }
     }
 
     fun getTeamMemberList(page: Int, perPage: Int) {
         if (page == 1) {
-            items.clear()
+            items1.clear()
         }
         loadingAnimation.start()
         loading = true
@@ -333,47 +379,37 @@ class ShowTeamVC: ShowVC(), ShowTab2Delegate, TapTextViewDelegate {
                                     ((row.memberTable != null) then { row.memberTable!!.nickname })
                                         ?: ""
                                 val token: String = ((row.memberTable != null) then { row.memberTable!!.token }) ?: ""
-                                items.add(row)
+                                items1.add(row)
 
                                 //取得會員是否為隊友與會員是否已經請假
                                 if (row.memberTable!!.token == member.token) {
                                     this.teamMemberToken = row.token
                                     this.isTeamMember = true
-                                    this.isTeapMemberLeave = row.isLeave
+                                    this.isTeamMemberLeave = row.isLeave
                                 }
                             }
-                            filterItems = items.clone() as ArrayList<TeamMemberTable>
+                            filterItems = items1.clone() as ArrayList<TeamMemberTable>
 
                             if (this.teamMemberPage == 1) {
                                 this.teamMemberPage = tables2.page
-                                this.teamMemberPerpage = tables2.perPage
-                                totalCount = tables2.totalCount
-                                val _totalPage: Int = totalCount / perPage
-                                totalPage = if (totalCount % perPage > 0) _totalPage + 1 else _totalPage
+                                this.teamMemberPerPage = tables2.perPage
+                                teamMemberTotalCount = tables2.totalCount
+                                val _totalPage: Int = teamMemberTotalCount / teamMemberPerPage
+                                teamMemberTotalPage = if (teamMemberTotalCount % teamMemberPerPage > 0) _totalPage + 1 else _totalPage
                                 countTeamMemberTotalPage()
-
-                                //取得下次打球時間
-                                this.nextDate = tables2.nextDate
-                                this.nextDateWeek = tables2.nextDateWeek
-                                this.play_start = tables2.play_start_show
-                                this.play_end = tables2.play_end_show
                             }
 
                             binding.teamMemberDataTV.visibility = View.VISIBLE
-                            teamMemberTotalTV.setText("全部：${totalCount}位")
-                            teamMemberPlayTV.setText("打球：${totalCount - tables2.leaveCount}位")
-                            teamMemberLeaveTV.setText("請假：${tables2.leaveCount}位")
 
-                            nextDateIV.setImage("calendar_svg")
-                            nextDateTV.text = "${nextDate}" + " ( " + nextDateWeek + " )"
-                            nextTimeIV.setImage("clock_svg")
-                            nextTimeTV.text = "${play_start} ~ ${play_end}"
+                            teamMemberTotalTV.setText("全部：${teamMemberTotalCount}位")
+                            teamMemberPlayTV.setText("打球：${teamMemberTotalCount - tables2.leaveCount}位")
+                            teamMemberLeaveTV.setText("請假：${tables2.leaveCount}位")
 
                             this.teamMemberAdapter.rows = this.filterItems
                             this.teamMemberAdapter.notifyDataSetChanged()
                         } else {
-                            binding.teamMemberDataTV.visibility = View.INVISIBLE
-                            nextDateTV.visibility = View.INVISIBLE
+//                            binding.teamMemberDataTV.visibility = View.INVISIBLE
+//                            nextDateTV.visibility = View.INVISIBLE
                             val rootView: ViewGroup = getRootView()
                             rootView.setInfo(this, "目前暫無資料")
                         }
@@ -381,7 +417,93 @@ class ShowTeamVC: ShowVC(), ShowTab2Delegate, TapTextViewDelegate {
                         msg = "解析JSON字串時，沒有成功，系統傳回值錯誤，請洽管理員"
                     }
                 }
-                this.setTeamMemberBottom()
+                //this.setTeamMemberBottom()
+            }
+        }
+    }
+
+    fun getTempPlayList(page: Int, perPage: Int) {
+        if (page == 1) {
+            items2.clear()
+        }
+        loadingAnimation.start()
+        loading = true
+
+        TeamService.tempPlayList(this, token!!, myTable!!.nextDate, page, perPage) { success ->
+            runOnUiThread {
+                loadingAnimation.stop()
+
+                val tableType: Type = object : TypeToken<TempPlaySuccessTables2>() {}.type
+                val tables2: TempPlaySuccessTables2? = jsonToModels2<TempPlaySuccessTables2, TeamTempPlayTable>(TeamService.jsonString, tableType)
+                if (tables2 == null) {
+                    msg = "無法從伺服器取得正確的json資料，請洽管理員"
+                } else {
+                    if (tables2.success) {
+                        tables2.filterRow()
+                        if (tables2.rows.size > 0) {
+
+                            for ((idx, row) in tables2.rows.withIndex()) {
+                                row.filterRow()
+                                val baseIdx: Int = (page-1)*perPage
+
+                                val nickname: String =
+                                    ((row.memberTable != null) then { row.memberTable!!.nickname })
+                                        ?: ""
+                                val token: String = ((row.memberTable != null) then { row.memberTable!!.token }) ?: ""
+                                items2.add(row)
+
+                                //取得會員是否為隊友與會員是否已經請假
+//                                if (row.memberTable!!.token == member.token) {
+//                                    this.teamMemberToken = row.token
+//                                    this.isTeamMember = true
+//                                    this.isTeapMemberLeave = row.isLeave
+//                                }
+                            }
+
+                            if (this.tempPlayPage == 1) {
+                                this.tempPlayPage = tables2.page
+                                this.tempPlayPerPage = tables2.perPage
+                                tempPlayTotalCount = tables2.totalCount
+                                val _totalPage: Int = tempPlayTotalCount / perPage
+                                tempPlayTotalPage = if (tempPlayTotalCount % perPage > 0) _totalPage + 1 else _totalPage
+                                countTempPlayTotalPage()
+                            }
+
+                            if (tempPlayPage == 1) {
+                                items2.clear()
+                            }
+
+                            isAddTempPlay = false
+                            for (item in items2) {
+                                if (item.memberTable != null) {
+                                    if (item.memberTable!!.token == member.token) {
+                                        isAddTempPlay = true
+                                        break
+                                    }
+                                }
+                            }
+
+//                            binding.teamMemberDataTV.visibility = View.VISIBLE
+//                            teamMemberTotalTV.setText("全部：${totalCount}位")
+//                            teamMemberPlayTV.setText("打球：${totalCount - tables2.leaveCount}位")
+//                            teamMemberLeaveTV.setText("請假：${tables2.leaveCount}位")
+
+                            this.tempPlayAdapter.rows = items2
+                        } else {
+                            items2.clear()
+                            isAddTempPlay = false
+//                            binding.teamMemberDataTV.visibility = View.INVISIBLE
+//                            nextDateTV.visibility = View.INVISIBLE
+//                            val rootView: ViewGroup = getRootView()
+//                            rootView.setInfo(this, "目前暫無資料")
+                        }
+                        this.tempPlayAdapter.count = tempPlayCount
+                        this.tempPlayAdapter.notifyDataSetChanged()
+                    } else {
+                        msg = "解析JSON字串時，沒有成功，系統傳回值錯誤，請洽管理員"
+                    }
+                }
+                //this.setTempPlayBottom()
             }
         }
     }
@@ -455,48 +577,50 @@ class ShowTeamVC: ShowVC(), ShowTab2Delegate, TapTextViewDelegate {
         isTempPlayOnline()
 
         if (!isTempPlay) {
-            binding.tempPlayDataLbl.text = "目前球隊不開放臨打"
-            binding.tempPlayDateLbl.visibility = View.INVISIBLE
-            binding.tempPlayDeadlineLbl.visibility = View.INVISIBLE
-            tempPlayTableView?.visibility = View.GONE
+//            binding.tempPlayDataLbl.text = "目前球隊不開放臨打"
+//            binding.tempPlayDateLbl.visibility = View.INVISIBLE
+//            binding.tempPlayDeadlineLbl.visibility = View.INVISIBLE
+//            tempPlayTableView?.visibility = View.GONE
+//            showBottom!!.showButton(false, false, false)
         } else {
-            if (myTable != null && myTable!!.signupDate != null) {
-                binding.tempPlayDataLbl.text = "報名資料"
-                binding.tempPlayDateLbl.text =
-                    "下次臨打時間：" + myTable!!.signupDate!!.date + " " + myTable!!.interval_show
-                binding.tempPlayDeadlineLbl.text = "報名截止時間：" + myTable!!.signupDate!!.deadline.noSec()
-            }
+            teamMemberTotalTV.setText("全部：${teamMemberTotalCount}")
+//            if (myTable != null && myTable!!.signupDate != null) {
+//                binding.tempPlayDataLbl.text = "報名資料"
+//                binding.tempPlayDateLbl.text =
+//                    "下次臨打時間：" + myTable!!.signupDate!!.date + " " + myTable!!.interval_show
+//                binding.tempPlayDeadlineLbl.text = "報名截止時間：" + myTable!!.signupDate!!.deadline.noSec()
+//            }
         }
 
         if (myTable!!.people_limit == 0) {
-            showBottom?.submitBtn?.visibility = View.GONE
-            setBottomButtonPadding()
+//            showBottom?.submitBtn?.visibility = View.GONE
+//            setBottomButtonPadding()
         } else {
-            signupRows.clear()
-            for (i in 0..myTable!!.people_limit - 1) {
-                var name = ""
-                if (myTable!!.signupNormalTables.count() > i) {
-                    val tmp = myTable!!.signupNormalTables[i].member_name.let {
-                        name = it
-                    }
-                }
-                val signupRow: SignupRow = SignupRow((i+1).toString()+".", name)
-                signupRows.add(signupRow)
-            }
+//            signupRows.clear()
+//            for (i in 0..myTable!!.people_limit - 1) {
+//                var name = ""
+//                if (myTable!!.signupNormalTables.count() > i) {
+//                    val tmp = myTable!!.signupNormalTables[i].member_name.let {
+//                        name = it
+//                    }
+//                }
+//                val signupRow: SignupRow = SignupRow((i+1).toString()+".", name)
+//                signupRows.add(signupRow)
+//            }
+//
+//            if (myTable!!.signupStandbyTables.count() > 0) {
+//                for (i in 0 until myTable!!.signupStandbyTables.count()) {
+//                    var name = ""
+//                    val tmp = myTable!!.signupStandbyTables[i].member_name.let {
+//                        name = it
+//                    }
+//                    val signupRow: SignupRow = SignupRow("候補" + (i+1).toString()+".", name)
+//                    signupRows.add(signupRow)
+//                }
+//            }
 
-            if (myTable!!.signupStandbyTables.count() > 0) {
-                for (i in 0 until myTable!!.signupStandbyTables.count()) {
-                    var name = ""
-                    val tmp = myTable!!.signupStandbyTables[i].member_name.let {
-                        name = it
-                    }
-                    val signupRow: SignupRow = SignupRow("候補" + (i+1).toString()+".", name)
-                    signupRows.add(signupRow)
-                }
-            }
-
-            tempPlayAdapter.rows = signupRows
-            tempPlayAdapter.notifyDataSetChanged()
+//            tempPlayAdapter.rows = signupRows
+//            tempPlayAdapter.notifyDataSetChanged()
         }
 
         if (myTable!!.isSignup) {
@@ -519,32 +643,32 @@ class ShowTeamVC: ShowVC(), ShowTab2Delegate, TapTextViewDelegate {
         }
 
         //2.如果沒有設定臨打日期，關閉臨打
-        if (myTable!!.signupDate != null) {
-            val temp_date_string: String = myTable!!.signupDate!!.date
-
-            //3.如果臨打日期超過現在的日期，關閉臨打
-            var temp_date: Date = Date()
-            temp_date_string.toDate("yyyy-MM-dd")?.let {
-                temp_date = it
-            }
-
-            val now_string: String = Date().toMyString("yyyy-MM-dd")
-            var now: Date = Date()
-            now_string.toDate("yyyy-MM-dd")?.let {
-                now = it
-            }
-
-            //(1)如果報名日期剛好也是臨打日期則可以報名
-            if (temp_date.equals(now)) {
-                isTempPlay = true
-            } else {
-                //(2)如果報名日期已經過了臨打日期則無法報名
-                //(3)如果報名日期還沒過了臨打日期則無法報名
-                isTempPlay = !temp_date.before(now)
-            }
-        } else {
-            isTempPlay = false
-        }
+//        if (myTable!!.signupDate != null) {
+//            val temp_date_string: String = myTable!!.signupDate!!.date
+//
+//            //3.如果臨打日期超過現在的日期，關閉臨打
+//            var temp_date: Date = Date()
+//            temp_date_string.toDate("yyyy-MM-dd")?.let {
+//                temp_date = it
+//            }
+//
+//            val now_string: String = Date().toMyString("yyyy-MM-dd")
+//            var now: Date = Date()
+//            now_string.toDate("yyyy-MM-dd")?.let {
+//                now = it
+//            }
+//
+//            //(1)如果報名日期剛好也是臨打日期則可以報名
+//            if (temp_date.equals(now)) {
+//                isTempPlay = true
+//            } else {
+//                //(2)如果報名日期已經過了臨打日期則無法報名
+//                //(3)如果報名日期還沒過了臨打日期則無法報名
+//                isTempPlay = !temp_date.before(now)
+//            }
+//        } else {
+//            isTempPlay = false
+//        }
 
         //3.如果管理者設定報名臨打名額是0，關閉臨打
         if (myTable!!.people_limit == 0) {
@@ -561,10 +685,10 @@ class ShowTeamVC: ShowVC(), ShowTab2Delegate, TapTextViewDelegate {
     }
 
     val signup: () -> Unit = {
-        signupButtonPressed()
+        submit()
     }
 
-    private fun signupButtonPressed() {
+    private fun submit() {
 
         if (!member.isLoggedIn) {
             warning("請先登入會員")
@@ -582,80 +706,89 @@ class ShowTeamVC: ShowVC(), ShowTab2Delegate, TapTextViewDelegate {
         }
 
         if (focusTabIdx == 1) {
-            //如果要請假
-            if (!isTeapMemberLeave) {
-                warning("是否確定要請假？", "取消", "是") {
-                    if (this.teamMemberToken != null) {
-                        this.teamMemberLeave(true)
-                    }
-                }
-            }
-            // 如果要取消請假
-            else {
-                warning("是否確定要取消請假？", "關閉", "取消請假") {
-                    if (this.teamMemberToken != null) {
-                        this.teamMemberLeave(false)
-                    }
+            submitLeave()
+        }
+        else if (focusTabIdx == 2) {
+
+            submitTempPlay()
+//            if (myTable != null && myTable!!.signupDate != null) {
+//
+//                var deadline_time: Date? = null
+//                myTable!!.signupDate!!.deadline.toDate("yyyy-MM-dd HH:mm:ss")?.let {
+//                    deadline_time = it
+//                }
+//
+//                if (deadline_time != null) {
+//                    val now: Date = Date()
+//                    if (now.after(deadline_time)) {
+//
+//                        msg = "已經超過報名截止時間，請下次再報名"
+//                        if (myTable!!.isSignup) {
+//                            msg = "已經超過取消報名截止時間，無法取消報名"
+//                        }
+//                        warning(msg)
+//                        return
+//                    }
+//                } else {
+//                    warning("無法取得報名截止時間，無法報名，請洽管理員")
+//                    return
+//                }
+//
+//                loadingAnimation.start()
+//                dataService.signup(
+//                    this,
+//                    myTable!!.token,
+//                    member.token!!,
+//                    myTable!!.signupDate!!.token
+//                ) { success ->
+//
+//                    runOnUiThread {
+//                        loadingAnimation.stop()
+//                    }
+//
+//                    if (success) {
+//                        val jsonString: String = dataService.jsonString
+//                        val successTable: SuccessTable? = jsonToModel(jsonString)
+//                        if (successTable != null && successTable.success) {
+//                            runOnUiThread {
+//                                info(successTable.msg, "", "確定") {
+//                                    refresh()
+//                                }
+//                            }
+//                        } else {
+//                            if (successTable != null) {
+//                                runOnUiThread {
+//                                    warning(successTable.msg)
+//                                }
+//                            }
+//                        }
+//                    }
+//                }
+//            }
+        }
+    }
+
+    fun submitLeave() {
+        //如果要請假
+        if (!isTeamMemberLeave) {
+            warning("是否確定要請假？", "取消", "是") {
+                if (this.teamMemberToken != null) {
+                    this.teamMemberLeave(true)
                 }
             }
         }
+        // 如果要取消請假
         else {
-
-            if (myTable != null && myTable!!.signupDate != null) {
-
-                var deadline_time: Date? = null
-                myTable!!.signupDate!!.deadline.toDate("yyyy-MM-dd HH:mm:ss")?.let {
-                    deadline_time = it
-                }
-
-                if (deadline_time != null) {
-                    val now: Date = Date()
-                    if (now.after(deadline_time)) {
-
-                        msg = "已經超過報名截止時間，請下次再報名"
-                        if (myTable!!.isSignup) {
-                            msg = "已經超過取消報名截止時間，無法取消報名"
-                        }
-                        warning(msg)
-                        return
-                    }
-                } else {
-                    warning("無法取得報名截止時間，無法報名，請洽管理員")
-                    return
-                }
-
-                loadingAnimation.start()
-                dataService.signup(
-                    this,
-                    myTable!!.token,
-                    member.token!!,
-                    myTable!!.signupDate!!.token
-                ) { success ->
-
-                    runOnUiThread {
-                        loadingAnimation.stop()
-                    }
-
-                    if (success) {
-                        val jsonString: String = dataService.jsonString
-                        val successTable: SuccessTable? = jsonToModel(jsonString)
-                        if (successTable != null && successTable.success) {
-                            runOnUiThread {
-                                info(successTable.msg, "", "確定") {
-                                    refresh()
-                                }
-                            }
-                        } else {
-                            if (successTable != null) {
-                                runOnUiThread {
-                                    warning(successTable.msg)
-                                }
-                            }
-                        }
-                    }
+            warning("是否確定要取消請假？", "關閉", "取消請假") {
+                if (this.teamMemberToken != null) {
+                    this.teamMemberLeave(false)
                 }
             }
         }
+    }
+
+    fun submitTempPlay() {
+
     }
 
     override fun setIcon() {
@@ -705,22 +838,36 @@ class ShowTeamVC: ShowVC(), ShowTab2Delegate, TapTextViewDelegate {
 
     private fun _tabPressed(idx: Int) {
 
+        focusTabIdx = idx
+
         when (focusTabIdx) {
             0-> {
-                introduceContainerLL?.visibility = View.VISIBLE
                 teamMemberContainerLL?.visibility = View.GONE
-                tempPlayContainerLL?.visibility = View.GONE
+                introduceContainerLL?.visibility = View.VISIBLE
+                //tempPlayContainerLL?.visibility = View.GONE
 
                 showBottom?.showButton(false, true, false)
             }
             1-> {
-                teamMemberContainerLL?.visibility = View.VISIBLE
                 introduceContainerLL?.visibility = View.GONE
-                tempPlayContainerLL?.visibility = View.GONE
+                teamMemberContainerLL?.visibility = View.VISIBLE
+                //tempPlayContainerLL?.visibility = View.GONE
 
-                items.clear()
+                teamMemberTableView!!.adapter = teamMemberAdapter
+
+                if (teamMemberScrollListener != null) {
+                    teamMemberTableView!!.removeOnScrollListener(teamMemberScrollListener!!)
+                }
+                if (tempPlayScrollListener != null) {
+                    teamMemberTableView!!.removeOnScrollListener(tempPlayScrollListener!!)
+                }
+
+                teamMemberScrollListener = MemberTeamScrollListener(linearLayoutManager)
+                teamMemberTableView!!.addOnScrollListener(teamMemberScrollListener!!)
+
+                //items1.clear()
                 if (!isTeamMemberLoaded) {
-                    getTeamMemberList(this.teamMemberPage, this.teamMemberPerpage)
+                    getTeamMemberList(this.teamMemberPage, this.teamMemberPerPage)
                     isTeamMemberLoaded = true
                 }
 
@@ -729,14 +876,32 @@ class ShowTeamVC: ShowVC(), ShowTab2Delegate, TapTextViewDelegate {
                 this.setTeamMemberBottom()
             }
             2-> {
-                tempPlayContainerLL?.visibility = View.VISIBLE
                 introduceContainerLL?.visibility = View.GONE
-                teamMemberContainerLL?.visibility = View.GONE
+                //tempPlayContainerLL?.visibility = View.VISIBLE
+                teamMemberContainerLL?.visibility = View.VISIBLE
 
-                signupRows.clear()
-                setSignupData()
+                //signupRows.clear()
+                teamMemberTableView!!.adapter = tempPlayAdapter
 
-                showBottom?.showButton(true, true, false)
+                if (teamMemberScrollListener != null) {
+                    teamMemberTableView!!.removeOnScrollListener(teamMemberScrollListener!!)
+                }
+                if (tempPlayScrollListener != null) {
+                    teamMemberTableView!!.removeOnScrollListener(tempPlayScrollListener!!)
+                }
+
+                tempPlayScrollListener = TempPlayScrollListener(linearLayoutManager)
+                teamMemberTableView!!.addOnScrollListener(tempPlayScrollListener!!)
+
+                //items2.clear()
+                if (!isTempPlayLoaded) {
+
+                    getTempPlayList(this.tempPlayPage, this.tempPlayPerPage)
+                    isTempPlayLoaded = true
+                }
+                //setSignupData()
+
+                setTempPlayBottom()
             }
         }
     }
@@ -744,7 +909,7 @@ class ShowTeamVC: ShowVC(), ShowTab2Delegate, TapTextViewDelegate {
     override fun teamMemberInfo(idx: Int) {
         if (myTable != null && (focusTabIdx == 1 || focusTabIdx == 2)) {
             if (myTable!!.manager_token == member.token) {
-                val teamMemberRow: TeamMemberTable = items[idx]
+                val teamMemberRow: TeamMemberTable = items1[idx]
                 getMemberOne(teamMemberRow.memberTable!!.token)
             } else {
                 warning("只有球隊管理員可以檢視報名者資訊")
@@ -767,10 +932,10 @@ class ShowTeamVC: ShowVC(), ShowTab2Delegate, TapTextViewDelegate {
         //totalItemCount: 已經下載幾頁
         override fun onLoadMore(page: Int, totalItemsCount: Int, view: RecyclerView?) {
             //page已經+1了
-            if (page == totalPage) {
-                teamMemberTableView?.removeOnScrollListener(teamMemberScrollListener)
+            if (page == teamMemberTotalPage && teamMemberScrollListener != null) {
+                teamMemberTableView?.removeOnScrollListener(teamMemberScrollListener!!)
             }
-            getTeamMemberList(page, teamMemberPerpage)
+            getTeamMemberList(page, teamMemberPerPage)
         }
     }
 
@@ -780,16 +945,15 @@ class ShowTeamVC: ShowVC(), ShowTab2Delegate, TapTextViewDelegate {
         //totalItemCount: 已經下載幾頁
         override fun onLoadMore(page: Int, totalItemsCount: Int, view: RecyclerView?) {
             //page已經+1了
-            if (page == totalPage) {
-                tempPlayTableView?.removeOnScrollListener(tempPlayScrollListener)
+            if (page == tempPlayTotalPage && tempPlayScrollListener != null) {
+                teamMemberTableView?.removeOnScrollListener(tempPlayScrollListener!!)
             }
-            //getTeamMemberList(page, teamMemberPerpage)
+            getTempPlayList(page, tempPlayPerPage)
         }
     }
 
     override fun tabPressed(idx: Int) {
         //println(idx)
-        focusTabIdx = idx
         _tabPressed(idx)
     }
 
@@ -801,11 +965,11 @@ class ShowTeamVC: ShowVC(), ShowTab2Delegate, TapTextViewDelegate {
 
         this.filterItems.clear()
         if (idx == 0) {
-            this.filterItems = items.clone() as ArrayList<TeamMemberTable>
+            this.filterItems = items1.clone() as ArrayList<TeamMemberTable>
         } else if (idx == 1) {
-            this.filterItems = items.filter { !it.isLeave } as ArrayList<TeamMemberTable>
+            this.filterItems = items1.filter { !it.isLeave } as ArrayList<TeamMemberTable>
         } else if (idx == 2) {
-            this.filterItems = items.filter { it.isLeave } as ArrayList<TeamMemberTable>
+            this.filterItems = items1.filter { it.isLeave } as ArrayList<TeamMemberTable>
         }
         this.teamMemberAdapter.rows = this.filterItems
         this.teamMemberAdapter.notifyDataSetChanged()
@@ -813,7 +977,7 @@ class ShowTeamVC: ShowVC(), ShowTab2Delegate, TapTextViewDelegate {
 }
 
 fun ShowTeamVC.setTeamMemberBottom() {
-    if (this.isTeamMember && !this.isTeapMemberLeave) {
+    if (this.isTeamMember && !this.isTeamMemberLeave) {
         showBottom!!.showButton(true, false, false)
         showBottom!!.setSubmitBtnTitle("請假")
         showBottom!!.changeSubmitToNormalBtn()
@@ -823,6 +987,18 @@ fun ShowTeamVC.setTeamMemberBottom() {
         showBottom!!.changeSubmitToCancelBtn()
     } else {
         showBottom!!.showButton(false, false, false)
+    }
+}
+
+fun ShowTeamVC.setTempPlayBottom() {
+    if (this.isAddTempPlay) {
+        showBottom!!.showButton(true, false, false)
+        showBottom!!.setSubmitBtnTitle("取消")
+        showBottom!!.changeSubmitToCancelBtn()
+    } else {
+        showBottom!!.showButton(true, false, false)
+        showBottom!!.setSubmitBtnTitle("報名")
+        showBottom!!.changeSubmitToNormalBtn()
     }
 }
 
@@ -857,7 +1033,7 @@ fun ShowTeamVC.teamMemberLeave(doLeave: Boolean) {
 
 class TeamMemberAdapter(val context: Context, val delegate: BaseActivity?=null): RecyclerView.Adapter<TeamMemberShowViewHolder>() {
 
-    private var selectedItemPosition: Int = 0
+    private var selectedItemPosition: Int = -1
     var rows: ArrayList<TeamMemberTable> = arrayListOf()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TeamMemberShowViewHolder {
@@ -905,6 +1081,60 @@ class TeamMemberAdapter(val context: Context, val delegate: BaseActivity?=null):
     }
 }
 
+class TempPlayAdapter(val context: Context, val delegate: BaseActivity?=null): RecyclerView.Adapter<TeamMemberShowViewHolder>() {
+
+    private var selectedItemPosition: Int = -1
+    var count: Int = 0
+    var rows: ArrayList<TeamTempPlayTable> = arrayListOf()
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TeamMemberShowViewHolder {
+        val inflater = LayoutInflater.from(parent.context)
+        val viewHolder = inflater.inflate(R.layout.team_member_list_show_cell, parent, false)
+
+        return TeamMemberShowViewHolder(viewHolder)
+    }
+
+    override fun onBindViewHolder(holder: TeamMemberShowViewHolder, position: Int) {
+
+        holder.noTV?.setNO(position + 1)
+
+        if (position < rows.size) {
+            val row: TeamTempPlayTable = rows[position]
+
+            if (row.memberTable != null && row.memberTable!!.featured_path != null) {
+                holder.avatarIV?.avatar(row.memberTable!!.featured_path)
+            }
+            holder.nameTV?.text = row.memberTable?.nickname
+            if (row.created_at != null) {
+                holder.createdTV?.text = row.created_at.noSec()
+            }
+
+//            if (row.isLeave && holder.leaveTV != null) {
+//                holder.leaveTV!!.visibility = View.VISIBLE
+//                holder.leaveTV!!.text = "請假\n${row.leaveTime.noSec().noYear()}"
+//            } else {
+//                holder.leaveTV?.visibility = View.INVISIBLE
+//            }
+
+            holder.viewHolder.setOnClickListener {
+                selectedItemPosition = position
+                notifyDataSetChanged()
+                delegate?.teamMemberInfo(position)
+            }
+
+            if (selectedItemPosition == position) {
+                holder.viewHolder.setBackgroundColor(getColor(context, R.color.CELL_SELECTED))
+            } else {
+                holder.viewHolder.setBackgroundColor(getColor(context, R.color.MY_BLACK))
+            }
+        }
+    }
+
+    override fun getItemCount(): Int {
+        return count
+    }
+}
+
 class TeamMemberShowViewHolder(val viewHolder: View): RecyclerView.ViewHolder(viewHolder) {
 
     var noTV: NOTV2? = null
@@ -934,22 +1164,11 @@ class TeamMemberShowViewHolder(val viewHolder: View): RecyclerView.ViewHolder(vi
 
 class TeamMemberSuccessTables2 : Tables2<TeamMemberTable>() {
     var leaveCount: Int = -1
-    var nextDate: String = ""
-    var nextDateWeek: String = ""
-    var play_start: String = ""
-    var play_end: String = ""
-
-    var play_start_show: String = ""
-    var play_end_show: String = ""
 
     override fun filterRow() {
-
-        if (play_start.length > 0) {
-            play_start_show = play_start.noSec()
-        }
-
-        if (play_end.length > 0) {
-            play_end_show = play_end.noSec()
-        }
     }
+}
+
+class TempPlaySuccessTables2: Tables2<TeamTempPlayTable>() {
+
 }
