@@ -216,6 +216,7 @@
                     </LinearLayout>
 
                     <TextView
+                        android:id="@+id/teamMemberListTV"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         style="@style/list_text_title"
@@ -282,7 +283,7 @@
 
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
-    <com.sportpassword.bm.Views.Bottom
+    <com.sportpassword.bm.Views.Bottom2
         android:id="@+id/bottom"
         android:layout_width="match_parent"
         android:layout_height="50dp"

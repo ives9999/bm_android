@@ -1,7 +1,6 @@
 package com.sportpassword.bm.Controllers
 
 import android.content.Context
-import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -15,9 +14,7 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.google.gson.JsonParseException
 import com.google.gson.reflect.TypeToken
-import com.sportpassword.bm.Adapters.SignupAdapter
 import com.sportpassword.bm.Data.ShowRow
-import com.sportpassword.bm.Data.SignupRow
 import com.sportpassword.bm.Models.*
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.TeamService
@@ -37,7 +34,7 @@ class ShowTeamVC: ShowVC(), ShowTab2Delegate, TapTextViewDelegate {
     private lateinit var view: ViewGroup
 
     var showTop2: ShowTop2? = null
-    var showBottom: Bottom? = null
+    var showBottom: Bottom2? = null
     var showLike2: ShowLike2? = null
     private var showTab2: ShowTab2? = null
 
@@ -66,6 +63,7 @@ class ShowTeamVC: ShowVC(), ShowTab2Delegate, TapTextViewDelegate {
     private lateinit var nextTimeIV: ImageView
     private lateinit var nextTimeTV: TextView
     private lateinit var likeIconIV: ImageView
+    private lateinit var teamMemberListTV: TextView
 
     private var teamMemberPage: Int = 1
     var teamMemberPerPage: Int = PERPAGE
@@ -149,7 +147,7 @@ class ShowTeamVC: ShowVC(), ShowTab2Delegate, TapTextViewDelegate {
             it.showPrev(true)
         }
 
-        findViewById<Bottom>(R.id.bottom) ?. let {
+        findViewById<Bottom2>(R.id.bottom) ?. let {
             showBottom = it
             //it.showButton(false, true, false)
             it.setOnSubmitClickListener(signup)
@@ -226,6 +224,9 @@ class ShowTeamVC: ShowVC(), ShowTab2Delegate, TapTextViewDelegate {
 //        findViewById<LinearLayout>(R.id.tempPlayContainerLL) ?. let {
 //            tempPlayContainerLL = it
 //        }
+        findViewById<TextView>(R.id.teamMemberListTV) ?. let {
+            teamMemberListTV = it
+        }
 
         findViewById<RecyclerView>(R.id.teamMemberTableView) ?. let {
             teamMemberTableView = it
@@ -390,13 +391,15 @@ class ShowTeamVC: ShowVC(), ShowTab2Delegate, TapTextViewDelegate {
                             }
                             filterItems = items1.clone() as ArrayList<TeamMemberTable>
 
-                            if (this.teamMemberPage == 1) {
+                            if (page == 1) {
                                 this.teamMemberPage = tables2.page
                                 this.teamMemberPerPage = tables2.perPage
                                 teamMemberTotalCount = tables2.totalCount
                                 val _totalPage: Int = teamMemberTotalCount / teamMemberPerPage
                                 teamMemberTotalPage = if (teamMemberTotalCount % teamMemberPerPage > 0) _totalPage + 1 else _totalPage
                                 countTeamMemberTotalPage()
+                            } else {
+                                this.teamMemberPage = page
                             }
 
                             binding.teamMemberDataTV.visibility = View.VISIBLE
@@ -416,8 +419,8 @@ class ShowTeamVC: ShowVC(), ShowTab2Delegate, TapTextViewDelegate {
                     } else {
                         msg = "解析JSON字串時，沒有成功，系統傳回值錯誤，請洽管理員"
                     }
+                    this.setTeamMemberBottom()
                 }
-                //this.setTeamMemberBottom()
             }
         }
     }
@@ -440,6 +443,18 @@ class ShowTeamVC: ShowVC(), ShowTab2Delegate, TapTextViewDelegate {
                 } else {
                     if (tables2.success) {
                         tables2.filterRow()
+
+                        if (page == 1) {
+                            this.tempPlayPage = tables2.page
+                            this.tempPlayPerPage = tables2.perPage
+                            tempPlayTotalCount = tables2.totalCount
+                            val _totalPage: Int = tempPlayTotalCount / perPage
+                            tempPlayTotalPage = if (tempPlayTotalCount % perPage > 0) _totalPage + 1 else _totalPage
+                            countTempPlayTotalPage()
+                        } else {
+                            this.tempPlayPage = page
+                        }
+
                         if (tables2.rows.size > 0) {
 
                             for ((idx, row) in tables2.rows.withIndex()) {
@@ -451,26 +466,6 @@ class ShowTeamVC: ShowVC(), ShowTab2Delegate, TapTextViewDelegate {
                                         ?: ""
                                 val token: String = ((row.memberTable != null) then { row.memberTable!!.token }) ?: ""
                                 items2.add(row)
-
-                                //取得會員是否為隊友與會員是否已經請假
-//                                if (row.memberTable!!.token == member.token) {
-//                                    this.teamMemberToken = row.token
-//                                    this.isTeamMember = true
-//                                    this.isTeapMemberLeave = row.isLeave
-//                                }
-                            }
-
-                            if (this.tempPlayPage == 1) {
-                                this.tempPlayPage = tables2.page
-                                this.tempPlayPerPage = tables2.perPage
-                                tempPlayTotalCount = tables2.totalCount
-                                val _totalPage: Int = tempPlayTotalCount / perPage
-                                tempPlayTotalPage = if (tempPlayTotalCount % perPage > 0) _totalPage + 1 else _totalPage
-                                countTempPlayTotalPage()
-                            }
-
-                            if (tempPlayPage == 1) {
-                                items2.clear()
                             }
 
                             isAddTempPlay = false
@@ -502,8 +497,8 @@ class ShowTeamVC: ShowVC(), ShowTab2Delegate, TapTextViewDelegate {
                     } else {
                         msg = "解析JSON字串時，沒有成功，系統傳回值錯誤，請洽管理員"
                     }
+                    this.setTempPlayBottom()
                 }
-                //this.setTempPlayBottom()
             }
         }
     }
@@ -768,7 +763,7 @@ class ShowTeamVC: ShowVC(), ShowTab2Delegate, TapTextViewDelegate {
         }
     }
 
-    fun submitLeave() {
+    private fun submitLeave() {
         //如果要請假
         if (!isTeamMemberLeave) {
             warning("是否確定要請假？", "取消", "是") {
@@ -787,8 +782,19 @@ class ShowTeamVC: ShowVC(), ShowTab2Delegate, TapTextViewDelegate {
         }
     }
 
-    fun submitTempPlay() {
-
+    private fun submitTempPlay() {
+        //如果要報名
+        if (!isAddTempPlay) {
+            warning("是否確定要加入臨打？", "取消", "是") {
+                this.tempPlayAdd(true)
+            }
+        }
+        // 如果要取消請假
+        else {
+            warning("是否確定要取消臨打？", "關閉", "取消臨打") {
+                this.tempPlayAdd(false)
+            }
+        }
     }
 
     override fun setIcon() {
@@ -854,19 +860,20 @@ class ShowTeamVC: ShowVC(), ShowTab2Delegate, TapTextViewDelegate {
                 //tempPlayContainerLL?.visibility = View.GONE
 
                 teamMemberTableView!!.adapter = teamMemberAdapter
-
-                if (teamMemberScrollListener != null) {
-                    teamMemberTableView!!.removeOnScrollListener(teamMemberScrollListener!!)
-                }
-                if (tempPlayScrollListener != null) {
-                    teamMemberTableView!!.removeOnScrollListener(tempPlayScrollListener!!)
-                }
-
-                teamMemberScrollListener = MemberTeamScrollListener(linearLayoutManager)
-                teamMemberTableView!!.addOnScrollListener(teamMemberScrollListener!!)
+                teamMemberListTV.text = "正式隊員："
 
                 //items1.clear()
                 if (!isTeamMemberLoaded) {
+                    if (teamMemberScrollListener != null) {
+                        teamMemberTableView!!.removeOnScrollListener(teamMemberScrollListener!!)
+                    }
+                    if (tempPlayScrollListener != null) {
+                        teamMemberTableView!!.removeOnScrollListener(tempPlayScrollListener!!)
+                    }
+
+                    teamMemberScrollListener = MemberTeamScrollListener(linearLayoutManager)
+                    teamMemberTableView!!.addOnScrollListener(teamMemberScrollListener!!)
+
                     getTeamMemberList(this.teamMemberPage, this.teamMemberPerPage)
                     isTeamMemberLoaded = true
                 }
@@ -882,20 +889,21 @@ class ShowTeamVC: ShowVC(), ShowTab2Delegate, TapTextViewDelegate {
 
                 //signupRows.clear()
                 teamMemberTableView!!.adapter = tempPlayAdapter
+                teamMemberListTV.text = "臨打隊員："
 
-                if (teamMemberScrollListener != null) {
-                    teamMemberTableView!!.removeOnScrollListener(teamMemberScrollListener!!)
-                }
-                if (tempPlayScrollListener != null) {
-                    teamMemberTableView!!.removeOnScrollListener(tempPlayScrollListener!!)
-                }
-
-                tempPlayScrollListener = TempPlayScrollListener(linearLayoutManager)
-                teamMemberTableView!!.addOnScrollListener(tempPlayScrollListener!!)
 
                 //items2.clear()
                 if (!isTempPlayLoaded) {
 
+                    if (teamMemberScrollListener != null) {
+                        teamMemberTableView!!.removeOnScrollListener(teamMemberScrollListener!!)
+                    }
+                    if (tempPlayScrollListener != null) {
+                        teamMemberTableView!!.removeOnScrollListener(tempPlayScrollListener!!)
+                    }
+
+                    tempPlayScrollListener = TempPlayScrollListener(linearLayoutManager)
+                    teamMemberTableView!!.addOnScrollListener(tempPlayScrollListener!!)
                     getTempPlayList(this.tempPlayPage, this.tempPlayPerPage)
                     isTempPlayLoaded = true
                 }
@@ -1031,6 +1039,35 @@ fun ShowTeamVC.teamMemberLeave(doLeave: Boolean) {
     }
 }
 
+fun ShowTeamVC.tempPlayAdd(doAdd: Boolean) {
+    val doAddWarning: String = ((doAdd) then {"報名臨打成功"}) ?: "已經取消臨打"
+    loadingAnimation.start()
+
+    TeamService.tempPlayAdd(this, token!!, member.token!!, this.nextDate) { success ->
+        runOnUiThread {
+            loadingAnimation.stop()
+        }
+
+        if (success) {
+            val jsonString: String = TeamService.jsonString
+            val successTable: SuccessTable? = jsonToModel(jsonString)
+            if (successTable != null && successTable.success) {
+                runOnUiThread {
+                    this.info(doAddWarning, "關閉") {
+                        this.getTempPlayList(1, PERPAGE)
+                    }
+                }
+            } else {
+                if (successTable != null) {
+                    runOnUiThread {
+                        warning(successTable.msg)
+                    }
+                }
+            }
+        }
+    }
+}
+
 class TeamMemberAdapter(val context: Context, val delegate: BaseActivity?=null): RecyclerView.Adapter<TeamMemberShowViewHolder>() {
 
     private var selectedItemPosition: Int = -1
@@ -1102,19 +1139,15 @@ class TempPlayAdapter(val context: Context, val delegate: BaseActivity?=null): R
             val row: TeamTempPlayTable = rows[position]
 
             if (row.memberTable != null && row.memberTable!!.featured_path != null) {
-                holder.avatarIV?.avatar(row.memberTable!!.featured_path)
+                if (holder.avatarIV != null) {
+                    holder.avatarIV?.avatar(row.memberTable!!.featured_path)
+                }
             }
+
             holder.nameTV?.text = row.memberTable?.nickname
             if (row.created_at != null) {
                 holder.createdTV?.text = row.created_at.noSec()
             }
-
-//            if (row.isLeave && holder.leaveTV != null) {
-//                holder.leaveTV!!.visibility = View.VISIBLE
-//                holder.leaveTV!!.text = "請假\n${row.leaveTime.noSec().noYear()}"
-//            } else {
-//                holder.leaveTV?.visibility = View.INVISIBLE
-//            }
 
             holder.viewHolder.setOnClickListener {
                 selectedItemPosition = position

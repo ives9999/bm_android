@@ -17,10 +17,10 @@ import com.sportpassword.bm.Utilities.then
 import tw.com.bluemobile.hbc.utilities.getColor
 import tw.com.bluemobile.hbc.utilities.getDrawable
 
-class Bottom@JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0):
+class Bottom2@JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0):
     RelativeLayout(context, attrs, defStyleAttr) {
 
-    val view = View.inflate(context, R.layout.bottom_view1, this)
+    val view = View.inflate(context, R.layout.bottom2, this)
 
     var submitBtn: Button? = null
     private var likeLL: LinearLayout? = null

@@ -7,8 +7,8 @@ import com.squareup.picasso.Picasso
 fun ImageView.avatar(path: String) {
     Picasso.with(context)
         .load(path)
-        .placeholder(R.drawable.loading_square_120)
-        .error(R.drawable.loading_square_120)
+        .placeholder(R.drawable.noavatar)
+        .error(R.drawable.noavatar)
         .into(this)
 }
 
