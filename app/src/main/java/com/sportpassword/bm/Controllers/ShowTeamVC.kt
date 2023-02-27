@@ -55,9 +55,9 @@ class ShowTeamVC: ShowVC(), ShowTab2Delegate, TapTextViewDelegate {
     lateinit var teamMemberAdapter: TeamMemberAdapter
     private var teamMemberScrollListener: MemberTeamScrollListener? = null
 
-    private lateinit var teamMemberTotalTV: TapTextView2
-    private lateinit var teamMemberPlayTV: TapTextView2
-    private lateinit var teamMemberLeaveTV: TapTextView2
+    lateinit var teamMemberTotalTV: TapTextView2
+    lateinit var teamMemberPlayTV: TapTextView2
+    lateinit var teamMemberLeaveTV: TapTextView2
     private lateinit var nextDateIV: ImageView
     private lateinit var nextDateTV: TextView
     private lateinit var nextTimeIV: ImageView
@@ -404,9 +404,7 @@ class ShowTeamVC: ShowVC(), ShowTab2Delegate, TapTextViewDelegate {
 
                             binding.teamMemberDataTV.visibility = View.VISIBLE
 
-                            teamMemberTotalTV.setText("全部：${teamMemberTotalCount}位")
-                            teamMemberPlayTV.setText("打球：${teamMemberTotalCount - tables2.leaveCount}位")
-                            teamMemberLeaveTV.setText("請假：${tables2.leaveCount}位")
+                            setTeamMemberSummary()
 
                             this.teamMemberAdapter.rows = this.filterItems
                             this.teamMemberAdapter.notifyDataSetChanged()
@@ -478,10 +476,7 @@ class ShowTeamVC: ShowVC(), ShowTab2Delegate, TapTextViewDelegate {
                                 }
                             }
 
-//                            binding.teamMemberDataTV.visibility = View.VISIBLE
-//                            teamMemberTotalTV.setText("全部：${totalCount}位")
-//                            teamMemberPlayTV.setText("打球：${totalCount - tables2.leaveCount}位")
-//                            teamMemberLeaveTV.setText("請假：${tables2.leaveCount}位")
+                            setTeamMemberSummary()
 
                             this.tempPlayAdapter.rows = items2
                         } else {
@@ -876,6 +871,8 @@ class ShowTeamVC: ShowVC(), ShowTab2Delegate, TapTextViewDelegate {
 
                     getTeamMemberList(this.teamMemberPage, this.teamMemberPerPage)
                     isTeamMemberLoaded = true
+                } else {
+                    setTeamMemberSummary()
                 }
 
                 //teamMemberTotalTV.on()
@@ -906,6 +903,8 @@ class ShowTeamVC: ShowVC(), ShowTab2Delegate, TapTextViewDelegate {
                     teamMemberTableView!!.addOnScrollListener(tempPlayScrollListener!!)
                     getTempPlayList(this.tempPlayPage, this.tempPlayPerPage)
                     isTempPlayLoaded = true
+                } else {
+                    setTempPlaySummary()
                 }
                 //setSignupData()
 
@@ -1008,6 +1007,18 @@ fun ShowTeamVC.setTempPlayBottom() {
         showBottom!!.setSubmitBtnTitle("報名")
         showBottom!!.changeSubmitToNormalBtn()
     }
+}
+
+fun ShowTeamVC.setTeamMemberSummary() {
+    teamMemberTotalTV.setText("全部：${teamMemberTotalCount}位")
+    teamMemberPlayTV.setText("打球：${teamMemberTotalCount - leaveCount}位")
+    teamMemberLeaveTV.setText("請假：${leaveCount}位")
+}
+
+fun ShowTeamVC.setTempPlaySummary() {
+    teamMemberTotalTV.setText("全部：${tempPlayCount}位")
+    teamMemberPlayTV.setText("報名：${items2.size}位")
+    teamMemberLeaveTV.setText("候補：0位")
 }
 
 fun ShowTeamVC.teamMemberLeave(doLeave: Boolean) {
