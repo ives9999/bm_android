@@ -374,12 +374,6 @@ class ShowTeamVC: ShowVC(), ShowTab2Delegate, TapTextViewDelegate {
 
                             for ((idx, row) in tables2.rows.withIndex()) {
                                 row.filterRow()
-                                val baseIdx: Int = (page-1)*perPage
-
-                                val nickname: String =
-                                    ((row.memberTable != null) then { row.memberTable!!.nickname })
-                                        ?: ""
-                                val token: String = ((row.memberTable != null) then { row.memberTable!!.token }) ?: ""
                                 items1.add(row)
 
                                 //取得會員是否為隊友與會員是否已經請假
@@ -397,14 +391,14 @@ class ShowTeamVC: ShowVC(), ShowTab2Delegate, TapTextViewDelegate {
                                 teamMemberTotalCount = tables2.totalCount
                                 val _totalPage: Int = teamMemberTotalCount / teamMemberPerPage
                                 teamMemberTotalPage = if (teamMemberTotalCount % teamMemberPerPage > 0) _totalPage + 1 else _totalPage
-                                countTeamMemberTotalPage()
+                                countTempPlayTotalPage()
+
+                                this.leaveCount = tables2.leaveCount
                             } else {
                                 this.teamMemberPage = page
                             }
 
                             binding.teamMemberDataTV.visibility = View.VISIBLE
-
-                            setTeamMemberSummary()
 
                             this.teamMemberAdapter.rows = this.filterItems
                             this.teamMemberAdapter.notifyDataSetChanged()
@@ -417,6 +411,7 @@ class ShowTeamVC: ShowVC(), ShowTab2Delegate, TapTextViewDelegate {
                     } else {
                         msg = "解析JSON字串時，沒有成功，系統傳回值錯誤，請洽管理員"
                     }
+                    this.setTeamMemberSummary()
                     this.setTeamMemberBottom()
                 }
             }
@@ -476,8 +471,6 @@ class ShowTeamVC: ShowVC(), ShowTab2Delegate, TapTextViewDelegate {
                                 }
                             }
 
-                            setTeamMemberSummary()
-
                             this.tempPlayAdapter.rows = items2
                         } else {
                             items2.clear()
@@ -492,6 +485,7 @@ class ShowTeamVC: ShowVC(), ShowTab2Delegate, TapTextViewDelegate {
                     } else {
                         msg = "解析JSON字串時，沒有成功，系統傳回值錯誤，請洽管理員"
                     }
+                    this.setTempPlaySummary()
                     this.setTempPlayBottom()
                 }
             }
