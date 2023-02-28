@@ -528,31 +528,31 @@ class ShowTeamVC: ShowVC(), ShowTab2Delegate, TapTextViewDelegate {
 
         showRows.clear()
         showRows.addAll(arrayListOf(
-            ShowRow("arena", "arena1", "球館", myTable!!.arena!!.name),
+            ShowRow("arena", "ic_arena_svg", "球館", myTable!!.arena!!.name),
         ))
         if (myTable!!.arena != null) {
             showRows.addAll(arrayListOf(
-                ShowRow("city_show", "map", "縣市", myTable!!.arena!!.city_show),
-                ShowRow("area_show", "map", "區域", myTable!!.arena!!.area_show)
+                ShowRow("city_show", "ic_city_svg", "縣市", myTable!!.arena!!.city_show),
+                ShowRow("area_show", "ic_area_svg", "區域", myTable!!.arena!!.area_show)
             ))
         }
         showRows.addAll(arrayListOf(
-            ShowRow("weekday", "date", "星期", myTable!!.weekdays_show),
-            ShowRow("interval_show", "clock", "時段", myTable!!.interval_show),
-            ShowRow("ball", "ball", "球種", myTable!!.ball),
-            ShowRow("degree", "degree", "程度", myTable!!.degree_show),
-            ShowRow("block_show", "arena1", "場地", myTable!!.block_show),
-            ShowRow("temp_fee_M_show", "money", "費用-男", myTable!!.temp_fee_M_show),
-            ShowRow("temp_fee_F_show", "money", "費用-女", myTable!!.temp_fee_F_show),
-            ShowRow("leader", "group", "管理者", myTable!!.manager_nickname),
-            ShowRow("mobile_show", "mobile", "行動電話", myTable!!.mobile_show),
-            ShowRow("line", "line", "line", myTable!!.line),
-            ShowRow("fb", "fb", "FB", myTable!!.fb),
-            ShowRow("youtube", "youtube", "Youtube", myTable!!.youtube),
+            ShowRow("weekday", "calendar_svg", "星期", myTable!!.weekdays_show),
+            ShowRow("interval_show", "clock_svg", "時段", myTable!!.interval_show),
+            ShowRow("ball", "ic_ball_svg", "球種", myTable!!.ball),
+            ShowRow("degree", "ic_degree_svg", "程度", myTable!!.degree_show),
+            ShowRow("block_show", "ic_block_svg", "場地", myTable!!.block_show),
+            ShowRow("temp_fee_M_show", "ic_fee_svg", "費用-男", myTable!!.temp_fee_M_show),
+            ShowRow("temp_fee_F_show", "ic_fee_svg", "費用-女", myTable!!.temp_fee_F_show),
+            ShowRow("leader", "ic_manager_svg", "管理者", myTable!!.manager_nickname),
+            ShowRow("mobile_show", "ic_mobile_svg", "行動電話", myTable!!.mobile_show),
+            ShowRow("line", "ic_line_svg", "line", myTable!!.line),
+            ShowRow("fb", "ic_fb_svg", "FB", myTable!!.fb),
+            ShowRow("youtube", "ic_youtube_svg", "Youtube", myTable!!.youtube),
 //            ShowRow("website", "website", "網站", myTable!!.website),
-            ShowRow("email", "email1", "EMail", myTable!!.email),
-            ShowRow("pv", "pv", "瀏覽數", myTable!!.pv.toString()),
-            ShowRow("created_at_show", "date", "建立日期", myTable!!.created_at_show)
+            ShowRow("email", "ic_email_svg", "EMail", myTable!!.email),
+            ShowRow("pv", "ic_pv_svg", "瀏覽數", myTable!!.pv.toString()),
+            ShowRow("created_at_show", "ic_createdat_svg", "建立日期", myTable!!.created_at_show)
         ))
     }
 

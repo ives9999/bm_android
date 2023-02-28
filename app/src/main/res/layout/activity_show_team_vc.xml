@@ -54,17 +54,16 @@
                     <ImageView
                         android:id="@+id/featured"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="@color/MY_BOTTOM_BACKGROUND"
-                        android:scaleType="fitCenter"
+                        android:layout_height="200dp"
+                        android:layout_marginStart="20dp"
+                        android:layout_marginEnd="20dp"
+                        android:scaleType="centerInside"
                         app:srcCompat="@drawable/loading_square" />
 
                     <LinearLayout
                         android:id="@+id/data_container"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:layout_marginTop="-30dp"
-                        android:background="@drawable/show_data_container"
                         android:orientation="vertical">
 
                         <androidx.recyclerview.widget.RecyclerView

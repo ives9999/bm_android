@@ -22,6 +22,7 @@ import com.sportpassword.bm.Models.Table
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.MemberService
 import com.sportpassword.bm.Utilities.*
+import com.sportpassword.bm.extensions.featured
 import com.sportpassword.bm.member
 import com.squareup.picasso.Picasso
 import java.io.InputStream
@@ -177,57 +178,59 @@ open class ShowVC: BaseActivity() {
                     featured_path = BASE_URL + featured_path
                 }
 
+                featured.featured(featured_path, false, 100)
+
                 // get device dimensions
                 //val displayMetrics: DisplayMetrics = Resources.getSystem().displayMetrics
 
-                val url: URL = URL(featured_path)
-                val connection: URLConnection = url.openConnection()
-                var inputStream: InputStream? = null
-                try {
-                    inputStream = connection.getInputStream()
-                } catch (e: Exception) {
-                    println(e.localizedMessage)
-                }
-                if (inputStream != null) {
-                    val bmp: Bitmap = BitmapFactory.decodeStream(inputStream)
-                    val image_width: Float = bmp.width.toFloat()
-                    val image_height: Float = bmp.height.toFloat()
-
-                    val featured_w: Float =
-                        (image_width >= screenWidth.toFloat()) then { screenWidth.toFloat() } ?: image_width
-                    var featured_h: Float = image_height
-                    var marginStart: Int = 0
-                    if (image_width > 0 && image_height > 0) {
-                        if (image_width > screenWidth.toFloat()) {
-                            val scale: Float =
-                                ((image_width > image_height) then { screenWidth / image_width })
-                                    ?: (screenWidth / image_height)
-                            featured_h = image_height * scale
-                        } else {
-                            marginStart = ((screenWidth - featured_w) / 2).toInt()
-                        }
-                    }
-
-                    val params: ViewGroup.MarginLayoutParams =
-                        featured.layoutParams as ViewGroup.MarginLayoutParams
-                    params.width = featured_w.toInt()
-                    params.height = featured_h.toInt()
-                    if (marginStart > 0) {
-                        params.marginStart = marginStart
-                    }
-                    featured.layoutParams = params
-
-//                    val dataContainerConstraintTop: Int = ((featured_h - 30) * -1).toInt()
-//                    params = data_container.layoutParams as ViewGroup.MarginLayoutParams
-//                    params.topMargin = dataContainerConstraintTop
-//                    data_container.layoutParams = params
-                }
-
-                Picasso.with(context)
-                    .load(featured_path)
-                    .placeholder(R.drawable.loading_square_120)
-                    .error(R.drawable.loading_square_120)
-                    .into(featured)
+//                val url: URL = URL(featured_path)
+//                val connection: URLConnection = url.openConnection()
+//                var inputStream: InputStream? = null
+//                try {
+//                    inputStream = connection.getInputStream()
+//                } catch (e: Exception) {
+//                    println(e.localizedMessage)
+//                }
+//                if (inputStream != null) {
+//                    val bmp: Bitmap = BitmapFactory.decodeStream(inputStream)
+//                    val image_width: Float = bmp.width.toFloat()
+//                    val image_height: Float = bmp.height.toFloat()
+//
+//                    val featured_w: Float =
+//                        (image_width >= screenWidth.toFloat()) then { screenWidth.toFloat() } ?: image_width
+//                    var featured_h: Float = image_height
+//                    var marginStart: Int = 0
+//                    if (image_width > 0 && image_height > 0) {
+//                        if (image_width > screenWidth.toFloat()) {
+//                            val scale: Float =
+//                                ((image_width > image_height) then { screenWidth / image_width })
+//                                    ?: (screenWidth / image_height)
+//                            featured_h = image_height * scale
+//                        } else {
+//                            marginStart = ((screenWidth - featured_w) / 2).toInt()
+//                        }
+//                    }
+//
+//                    val params: ViewGroup.MarginLayoutParams =
+//                        featured.layoutParams as ViewGroup.MarginLayoutParams
+//                    params.width = featured_w.toInt()
+//                    params.height = featured_h.toInt()
+//                    if (marginStart > 0) {
+//                        params.marginStart = marginStart
+//                    }
+//                    featured.layoutParams = params
+//
+////                    val dataContainerConstraintTop: Int = ((featured_h - 30) * -1).toInt()
+////                    params = data_container.layoutParams as ViewGroup.MarginLayoutParams
+////                    params.topMargin = dataContainerConstraintTop
+////                    data_container.layoutParams = params
+//                }
+//
+//                Picasso.with(context)
+//                    .load(featured_path)
+//                    .placeholder(R.drawable.loading_square_120)
+//                    .error(R.drawable.loading_square_120)
+//                    .into(featured)
             } else {
                 featured.setImageResource(R.drawable.loading_square_120)
             }

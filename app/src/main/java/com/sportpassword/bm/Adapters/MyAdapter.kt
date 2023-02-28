@@ -15,6 +15,7 @@ import com.sportpassword.bm.Controllers.List1CellDelegate
 import com.sportpassword.bm.Models.Table
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Utilities.setImage
+import com.sportpassword.bm.extensions.featured
 import com.sportpassword.bm.member
 import com.squareup.picasso.Picasso
 import jp.wasabeef.picasso.transformations.RoundedCornersTransformation
@@ -76,12 +77,14 @@ open class MyViewHolder(val context: Context, val viewHolder: View, val list1Cel
 
         if (listFeatured != null && row.featured_path.isNotEmpty()) {
 
-            Picasso.with(context)
-                .load(row.featured_path)
-                .transform(RoundedCornersTransformation(100, 0))
-                //.placeholder(R.drawable.loading_square_120)
-                .error(R.drawable.loading_square_120)
-                .into(listFeatured)
+            listFeatured!!.featured(row.featured_path, true)
+
+//            Picasso.with(context)
+//                .load(row.featured_path)
+//                .transform(RoundedCornersTransformation(100, 0))
+//                .placeholder(R.drawable.loading_square_120)
+//                .error(R.drawable.loading_square_120)
+//                .into(listFeatured)
         }
 
         if (city != null) {
