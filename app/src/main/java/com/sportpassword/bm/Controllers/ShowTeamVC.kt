@@ -405,8 +405,8 @@ class ShowTeamVC: ShowVC(), ShowTab2Delegate, TapTextViewDelegate {
                         } else {
 //                            binding.teamMemberDataTV.visibility = View.INVISIBLE
 //                            nextDateTV.visibility = View.INVISIBLE
-                            val rootView: ViewGroup = getRootView()
-                            rootView.setInfo(this, "目前暫無資料")
+                            //val rootView: ViewGroup = getRootView()
+                            //rootView.setInfo(this, "目前暫無資料")
                         }
                     } else {
                         msg = "解析JSON字串時，沒有成功，系統傳回值錯誤，請洽管理員"
@@ -992,14 +992,19 @@ fun ShowTeamVC.setTeamMemberBottom() {
 }
 
 fun ShowTeamVC.setTempPlayBottom() {
-    if (this.isAddTempPlay) {
-        showBottom!!.showButton(true, false, false)
-        showBottom!!.setSubmitBtnTitle("取消")
-        showBottom!!.changeSubmitToCancelBtn()
+
+    if (this.tempPlayCount == 0) {
+        showBottom!!.showButton(false, false, false)
     } else {
-        showBottom!!.showButton(true, false, false)
-        showBottom!!.setSubmitBtnTitle("報名")
-        showBottom!!.changeSubmitToNormalBtn()
+        if (this.isAddTempPlay) {
+            showBottom!!.showButton(true, false, false)
+            showBottom!!.setSubmitBtnTitle("取消")
+            showBottom!!.changeSubmitToCancelBtn()
+        } else {
+            showBottom!!.showButton(true, false, false)
+            showBottom!!.setSubmitBtnTitle("報名")
+            showBottom!!.changeSubmitToNormalBtn()
+        }
     }
 }
 
