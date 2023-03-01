@@ -18,7 +18,7 @@ class IconView2@JvmOverloads constructor(context: Context, attrs: AttributeSet? 
     var iconIV: ImageView? = null
     var containerLL: LinearLayout? = null
 
-    var icon: String = "noPhont"
+    var iconStr: String = "noPhont"
     var delegate: IconView2Delegate? = null
 
     init {
@@ -36,16 +36,23 @@ class IconView2@JvmOverloads constructor(context: Context, attrs: AttributeSet? 
             if (typedArray.hasValue(R.styleable.IconView_iconViewIcon)) {
 
                 typedArray.getString(R.styleable.IconView_iconViewIcon) ?. let { it1 ->
-                    this.icon = it1
-                    val res: Int = getResourceID(context, it1, "drawable")
-                    iconIV?.image = getDrawable(context, res)
+                    setIcon(it1)
+//                    this.icon = it1
+//                    val res: Int = getResourceID(context, it1, "drawable")
+//                    iconIV?.image = getDrawable(context, res)
                 }
             }
         }
 
         this.setOnClickListener {
-            delegate?.iconPressed(icon)
+            delegate?.iconPressed(iconStr)
         }
+    }
+
+    fun setIcon(icon: String) {
+        this.iconStr = icon
+        val res: Int = getResourceID(context, icon, "drawable")
+        iconIV?.image = getDrawable(context, res)
     }
 }
 

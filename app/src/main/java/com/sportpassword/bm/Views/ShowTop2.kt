@@ -3,22 +3,30 @@ package com.sportpassword.bm.Views
 import android.content.Context
 import android.util.AttributeSet
 import android.view.View
+import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.RelativeLayout
 import android.widget.TextView
+import androidx.recyclerview.widget.RecyclerView.LayoutManager
 import com.sportpassword.bm.Controllers.BaseActivity
 import com.sportpassword.bm.R
+import com.sportpassword.bm.Utilities.dpToPx
 import com.sportpassword.bm.Utilities.then
+import org.jetbrains.anko.backgroundColor
 
 class ShowTop2 @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0):
     RelativeLayout(context, attrs, defStyleAttr) {
 
     val view = View.inflate(context, R.layout.show_top2, this)
+
+    private var rootRL: RelativeLayout? = null
     private var prevIB: ImageButton? = null
     private var editIB: ImageButton? = null
     private var cartIB: ImageButton? = null
     private var searchIB: ImageButton? = null
     private var titleTV: TextView? = null
+
+    private var refreshIcon: IconView2? = null
 
     init {
         (context as? BaseActivity) ?. let { delegate->
@@ -27,6 +35,10 @@ class ShowTop2 @JvmOverloads constructor(context: Context, attrs: AttributeSet? 
                 it.setOnClickListener {
                     delegate.prev()
                 }
+            }
+
+            view.findViewById<RelativeLayout>(R.id.rootRL) ?. let {
+                rootRL = it
             }
 
             view.findViewById<ImageButton>(R.id.editIB) ?. let {
@@ -65,5 +77,18 @@ class ShowTop2 @JvmOverloads constructor(context: Context, attrs: AttributeSet? 
 
     fun setTitle(title: String) {
         titleTV?.text = title
+    }
+
+    fun showRefresh() {
+
+        refreshIcon = IconView2(context)
+        refreshIcon!!.setIcon("ic_refresh_svg")
+
+        val lp: RelativeLayout.LayoutParams = RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT)
+        lp.addRule(RelativeLayout.ALIGN_PARENT_END)
+        lp.addRule(RelativeLayout.CENTER_VERTICAL)
+        lp.marginEnd = 20.toInt().dpToPx(context)
+
+        rootRL?.addView(refreshIcon, lp)
     }
 }

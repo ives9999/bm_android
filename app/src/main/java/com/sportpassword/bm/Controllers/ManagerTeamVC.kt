@@ -60,6 +60,7 @@ class ManagerTeamVC : BaseActivity(), MyTable2IF {
             showTop2 = it
             it.setTitle("我的球隊")
             it.showPrev(true)
+            it.showRefresh()
         }
 
         init()
