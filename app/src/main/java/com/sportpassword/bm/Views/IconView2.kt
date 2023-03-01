@@ -18,7 +18,7 @@ class IconView2@JvmOverloads constructor(context: Context, attrs: AttributeSet? 
     var iconIV: ImageView? = null
     var containerLL: LinearLayout? = null
 
-    var iconStr: String = "noPhont"
+    var iconStr: String = "noPhoto"
     var delegate: IconView2Delegate? = null
 
     init {

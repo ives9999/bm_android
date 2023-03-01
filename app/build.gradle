@@ -132,6 +132,7 @@ dependencies {
     implementation 'androidx.core:core-ktx:+'
     implementation 'androidx.core:core-ktx:+'
     implementation 'androidx.core:core-ktx:+'
+    implementation 'androidx.core:core-ktx:+'
 
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test:runner:1.5.2'
@@ -147,7 +148,7 @@ dependencies {
 
     // view pager 2
     implementation "androidx.viewpager2:viewpager2:1.0.0"
-    implementation 'com.google.android.material:material:1.9.0-alpha01'
+    implementation 'com.google.android.material:material:1.9.0-alpha02'
 
     //for ecpay
     implementation "tw.com.ecpay.paymentgatewaykit:ECPayPaymentGatewayKit:1.0.3"

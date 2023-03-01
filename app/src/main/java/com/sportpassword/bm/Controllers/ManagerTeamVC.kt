@@ -25,7 +25,7 @@ import com.sportpassword.bm.databinding.ActivityShowTeamVcBinding
 import com.sportpassword.bm.member
 import java.lang.reflect.Type
 
-class ManagerTeamVC : BaseActivity(), MyTable2IF {
+class ManagerTeamVC : BaseActivity(), MyTable2IF, ShowTop2Delegate {
 
     private lateinit var binding: ActivityManagerTeamVcBinding
 
@@ -58,9 +58,11 @@ class ManagerTeamVC : BaseActivity(), MyTable2IF {
 
         findViewById<ShowTop2>(R.id.top) ?. let {
             showTop2 = it
+            it.delegate = this
             it.setTitle("我的球隊")
             it.showPrev(true)
             it.showRefresh()
+            it.showAdd(72)
         }
 
         init()
@@ -170,8 +172,16 @@ class ManagerTeamVC : BaseActivity(), MyTable2IF {
         toShowTeam(row.token)
     }
 
-    override fun addPressed(view: View) {
+//    override fun addPressed(view: View) {
+//
+//        toEditTeam(null, this)
+//    }
 
+    override fun showTop2Refresh() {
+        this.refresh()
+    }
+
+    override fun showTop2Add() {
         toEditTeam(null, this)
     }
 }

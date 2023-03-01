@@ -27,6 +27,9 @@ class ShowTop2 @JvmOverloads constructor(context: Context, attrs: AttributeSet? 
     private var titleTV: TextView? = null
 
     private var refreshIcon: IconView2? = null
+    private var addIconText: IconText2? = null
+
+    var delegate: ShowTop2Delegate? = null
 
     init {
         (context as? BaseActivity) ?. let { delegate->
@@ -90,5 +93,34 @@ class ShowTop2 @JvmOverloads constructor(context: Context, attrs: AttributeSet? 
         lp.marginEnd = 20.toInt().dpToPx(context)
 
         rootRL?.addView(refreshIcon, lp)
+
+        refreshIcon!!.setOnClickListener {
+            delegate?.showTop2Refresh()
+        }
     }
+
+    fun showAdd(marginEnd: Int) {
+        addIconText = IconText2(context)
+        addIconText!!.setIcon("ic_add_svg")
+        addIconText!!.setText("新增")
+
+        val lp: RelativeLayout.LayoutParams = RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT)
+//        if (refreshIcon != null) {
+//            lp.addRule(RelativeLayout.LEFT_OF, refreshIcon!!.id)
+//        }
+        lp.addRule(RelativeLayout.ALIGN_PARENT_END)
+        lp.addRule(RelativeLayout.CENTER_VERTICAL)
+        lp.marginEnd = marginEnd.dpToPx(context)
+
+        rootRL?.addView(addIconText, lp)
+
+        addIconText!!.setOnClickListener {
+            delegate?.showTop2Add()
+        }
+    }
+}
+
+interface ShowTop2Delegate {
+    fun showTop2Refresh()
+    fun showTop2Add()
 }
