@@ -214,16 +214,35 @@
                             android:layout_marginStart="24dp"
                             android:text="" />
                     </LinearLayout>
-
-                    <TextView
-                        android:id="@+id/teamMemberListTV"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        style="@style/list_text_title"
+                    
+                    <RelativeLayout
+                        android:id="@+id/teamMemberListContainer"
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
                         android:layout_marginStart="20dp"
                         android:layout_marginEnd="20dp"
                         android:layout_marginTop="30dp"
-                        android:text="隊員：" />
+                        >
+
+                        <TextView
+                            android:id="@+id/teamMemberListTV"
+                            style="@style/list_text_title"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:text="隊員：" />
+
+                        <com.sportpassword.bm.Views.IconText2
+                            android:id="@+id/addIconText2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentEnd="true"
+                            android:layout_centerVertical="true"
+                            app:iconText2Icon="ic_add_svg"
+                            app:iconText2Text="新增" />
+
+
+                    </RelativeLayout>
 
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/teamMemberTableView"

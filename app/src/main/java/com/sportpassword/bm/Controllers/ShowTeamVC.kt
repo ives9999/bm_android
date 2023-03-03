@@ -28,7 +28,7 @@ import java.util.*
 import java.lang.reflect.Type
 import kotlin.collections.ArrayList
 
-class ShowTeamVC: ShowVC(), ShowTab2Delegate, TapTextViewDelegate {
+class ShowTeamVC: ShowVC(), ShowTab2Delegate, TapTextViewDelegate, IconText2Delegate {
 
     private lateinit var binding: ActivityShowTeamVcBinding
     private lateinit var view: ViewGroup
@@ -64,6 +64,7 @@ class ShowTeamVC: ShowVC(), ShowTab2Delegate, TapTextViewDelegate {
     private lateinit var nextTimeTV: TextView
     private lateinit var likeIconIV: ImageView
     private lateinit var teamMemberListTV: TextView
+    private lateinit var addIconText2: IconText2
 
     private var teamMemberPage: Int = 1
     var teamMemberPerPage: Int = PERPAGE
@@ -226,6 +227,12 @@ class ShowTeamVC: ShowVC(), ShowTab2Delegate, TapTextViewDelegate {
 //        }
         findViewById<TextView>(R.id.teamMemberListTV) ?. let {
             teamMemberListTV = it
+        }
+
+        findViewById<IconText2>(R.id.addIconText2) ?. let {
+            addIconText2 = it
+            it.delegate = this
+            it.setOnThisClickListener()
         }
 
         findViewById<RecyclerView>(R.id.teamMemberTableView) ?. let {
@@ -974,6 +981,18 @@ class ShowTeamVC: ShowVC(), ShowTab2Delegate, TapTextViewDelegate {
         }
         this.teamMemberAdapter.rows = this.filterItems
         this.teamMemberAdapter.notifyDataSetChanged()
+    }
+
+    override fun iconText2Pressed(iconStr: String) {
+        if (iconStr == "ic_add_svg") {
+            if (myTable != null) {
+                if (myTable!!.manager_token == member.token) {
+                    toManagerTeamMember(token!!)
+                } else {
+                    warning("只有球隊管理員可以新增隊員")
+                }
+            }
+        }
     }
 }
 

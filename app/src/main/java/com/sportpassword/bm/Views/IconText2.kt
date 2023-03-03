@@ -52,6 +52,8 @@ class IconText2 @JvmOverloads constructor(context: Context, attrs: AttributeSet?
                 }
             }
         }
+
+        this.setOnThisClickListener()
     }
 
     fun setIcon(icon: String) {
@@ -62,6 +64,12 @@ class IconText2 @JvmOverloads constructor(context: Context, attrs: AttributeSet?
 
     fun setText(text: String) {
         this.textTV?.text = text
+    }
+
+    fun setOnThisClickListener() {
+        this.setOnClickListener {
+            delegate?.iconText2Pressed(iconStr)
+        }
     }
 }
 
