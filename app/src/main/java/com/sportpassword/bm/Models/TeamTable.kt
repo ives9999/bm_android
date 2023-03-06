@@ -32,10 +32,10 @@ class TeamTable: Table() {
     var manager_nickname: String = ""
     var temp_fee_M: Int = -1
     var temp_fee_F: Int = -1
-    var people_limit: Int = 0
+    //var people_limit: Int = 0
     var temp_content: String = ""
     var temp_status: String = ""
-    var temp_signup_count: Int = 0
+    //var temp_signup_count: Int = 0
     var color: String = ""
     var weekdays: ArrayList<Team_WeekdaysTable> = arrayListOf()
     var arena: ArenaTable? = null
@@ -49,6 +49,7 @@ class TeamTable: Table() {
 
     var nextDate: String = ""
     var nextDateWeek: String = ""
+    var teamMemberCount: Int = 0
     var leaveCount: Int = 0
 
     var play_start_show: String = ""
@@ -93,13 +94,13 @@ class TeamTable: Table() {
 
         if (temp_status != null) {
             temp_status_show = STATUS.from(temp_status).value
-            if (temp_status == "online") {
-                people_limit_show = "臨打：${people_limit}位"
-                temp_signup_count_show = "報名：${temp_signup_count}位"
-            } else {
-                people_limit_show = "臨打：未開放"
-                temp_signup_count_show = ""
-            }
+//            if (temp_status == "online") {
+//                people_limit_show = "臨打：${people_limit}位"
+//                temp_signup_count_show = "報名：${temp_signup_count}位"
+//            } else {
+//                people_limit_show = "臨打：未開放"
+//                temp_signup_count_show = ""
+//            }
         }
 
         if (weekdays.size > 0) {
@@ -136,14 +137,14 @@ class TeamTable: Table() {
             last_signup_date = signupDate!!.date
         }
 
-        if (isTempPlay) {
-        //if (temp_status == "online" && temp_signup_count > 0) {
-            people_limit_show = "臨打：${people_limit}位"
-            temp_signup_count_show = "報名：${temp_signup_count}位"
-        } else {
-            people_limit_show = "本週未提供臨打"
-            temp_signup_count_show = ""
-        }
+//        if (isTempPlay) {
+//        //if (temp_status == "online" && temp_signup_count > 0) {
+//            people_limit_show = "臨打：${people_limit}位"
+//            temp_signup_count_show = "報名：${temp_signup_count}位"
+//        } else {
+//            people_limit_show = "本週未提供臨打"
+//            temp_signup_count_show = ""
+//        }
 
         if (temp_fee_M >= 0) {
             temp_fee_M_show = "${temp_fee_M}元"

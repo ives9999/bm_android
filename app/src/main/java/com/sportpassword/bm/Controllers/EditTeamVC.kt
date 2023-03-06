@@ -237,16 +237,16 @@ class EditTeamVC : EditVC() {
 //        )
 //        rows.add(row)
 
-        val people_limit: String = (myTable!!.people_limit > 0) then { myTable!!.people_limit.toString()} ?: ""
-        row = OneRow(
-            "臨打名額",
-            people_limit,
-            people_limit,
-            PEOPLE_LIMIT_KEY,
-            "textField",
-            KEYBOARD.numberPad
-        )
-        rows.add(row)
+//        val people_limit: String = (myTable!!.people_limit > 0) then { myTable!!.people_limit.toString()} ?: ""
+//        row = OneRow(
+//            "臨打名額",
+//            people_limit,
+//            people_limit,
+//            PEOPLE_LIMIT_KEY,
+//            "textField",
+//            KEYBOARD.numberPad
+//        )
+//        rows.add(row)
 
         val temp_fee_M: String = (myTable!!.temp_fee_M >= 0) then { myTable!!.temp_fee_M.toString() } ?: ""
         row = OneRow(

@@ -325,7 +325,7 @@ class ShowTeamVC: ShowVC(), ShowTab2Delegate, TapTextViewDelegate, IconText2Dele
             showTop2?.setTitle(myTable!!.name)
             showBottom?.setLike(myTable!!.like, myTable!!.like_count)
 
-            tempPlayCount = myTable!!.people_limit + myTable!!.leaveCount
+            tempPlayCount = myTable!!.number - myTable!!.teamMemberCount +  + myTable!!.leaveCount
 
             this.nextDate = myTable!!.nextDate
             this.nextDateWeek = myTable!!.nextDateWeek
@@ -583,10 +583,10 @@ class ShowTeamVC: ShowVC(), ShowTab2Delegate, TapTextViewDelegate, IconText2Dele
 //            }
         }
 
-        if (myTable!!.people_limit == 0) {
+//        if (myTable!!.people_limit == 0) {
 //            showBottom?.submitBtn?.visibility = View.GONE
 //            setBottomButtonPadding()
-        } else {
+//        } else {
 //            signupRows.clear()
 //            for (i in 0..myTable!!.people_limit - 1) {
 //                var name = ""
@@ -612,13 +612,13 @@ class ShowTeamVC: ShowVC(), ShowTab2Delegate, TapTextViewDelegate, IconText2Dele
 
 //            tempPlayAdapter.rows = signupRows
 //            tempPlayAdapter.notifyDataSetChanged()
-        }
+//        }
 
         if (myTable!!.isSignup) {
             showBottom?.setSubmitBtnTitle("取消報名")
         } else {
             val count = myTable!!.signupNormalTables.size
-            if (count >= myTable!!.people_limit) {
+            if (count >= this.tempPlayCount) {
                 showBottom?.setSubmitBtnTitle("候補")
             } else {
                 showBottom?.setSubmitBtnTitle("報名")
@@ -661,8 +661,8 @@ class ShowTeamVC: ShowVC(), ShowTab2Delegate, TapTextViewDelegate, IconText2Dele
 //            isTempPlay = false
 //        }
 
-        //3.如果管理者設定報名臨打名額是0，關閉臨打
-        if (myTable!!.people_limit == 0) {
+        //3.如果沒有臨打名額是0，關閉臨打
+        if (this.tempPlayCount == 0) {
             isTempPlay = false
         }
     }
@@ -820,7 +820,7 @@ class ShowTeamVC: ShowVC(), ShowTab2Delegate, TapTextViewDelegate, IconText2Dele
         if (myTable != null) {
             if (myTable!!.manager_token == member.token) {
                 val signupNormalCount: Int = myTable!!.signupNormalTables.size
-                val people_limit = myTable!!.people_limit
+                //val people_limit = myTable!!.people_limit
 
                 if (position < signupNormalCount) {
                     val signup_normal_model = myTable!!.signupNormalTables[position]
@@ -828,7 +828,7 @@ class ShowTeamVC: ShowVC(), ShowTab2Delegate, TapTextViewDelegate, IconText2Dele
                     getMemberOne(signup_normal_model.member_token)
 
                 }
-                if (position > people_limit) {
+                if (position > this.tempPlayCount) {
                     val signup_standby_model = myTable!!.signupStandbyTables[position]
                     getMemberOne(signup_standby_model.member_token)
                 }
@@ -853,20 +853,19 @@ class ShowTeamVC: ShowVC(), ShowTab2Delegate, TapTextViewDelegate, IconText2Dele
             1-> {
                 introduceContainerLL?.visibility = View.GONE
                 teamMemberContainerLL?.visibility = View.VISIBLE
-                //tempPlayContainerLL?.visibility = View.GONE
+                addIconText2.visibility = View.VISIBLE
 
                 teamMemberTableView!!.adapter = teamMemberAdapter
                 teamMemberListTV.text = "正式隊員："
 
-                //items1.clear()
-                if (!isTeamMemberLoaded) {
-                    if (teamMemberScrollListener != null) {
-                        teamMemberTableView!!.removeOnScrollListener(teamMemberScrollListener!!)
-                    }
-                    if (tempPlayScrollListener != null) {
-                        teamMemberTableView!!.removeOnScrollListener(tempPlayScrollListener!!)
-                    }
+                if (teamMemberScrollListener != null) {
+                    teamMemberTableView!!.removeOnScrollListener(teamMemberScrollListener!!)
+                }
+                if (tempPlayScrollListener != null) {
+                    teamMemberTableView!!.removeOnScrollListener(tempPlayScrollListener!!)
+                }
 
+                if (!isTeamMemberLoaded) {
                     teamMemberScrollListener = MemberTeamScrollListener(linearLayoutManager)
                     teamMemberTableView!!.addOnScrollListener(teamMemberScrollListener!!)
 
@@ -882,23 +881,21 @@ class ShowTeamVC: ShowVC(), ShowTab2Delegate, TapTextViewDelegate, IconText2Dele
             }
             2-> {
                 introduceContainerLL?.visibility = View.GONE
-                //tempPlayContainerLL?.visibility = View.VISIBLE
                 teamMemberContainerLL?.visibility = View.VISIBLE
+                addIconText2.visibility = View.GONE
 
-                //signupRows.clear()
                 teamMemberTableView!!.adapter = tempPlayAdapter
                 teamMemberListTV.text = "臨打隊員："
 
 
-                //items2.clear()
-                if (!isTempPlayLoaded) {
+                if (teamMemberScrollListener != null) {
+                    teamMemberTableView!!.removeOnScrollListener(teamMemberScrollListener!!)
+                }
+                if (tempPlayScrollListener != null) {
+                    teamMemberTableView!!.removeOnScrollListener(tempPlayScrollListener!!)
+                }
 
-                    if (teamMemberScrollListener != null) {
-                        teamMemberTableView!!.removeOnScrollListener(teamMemberScrollListener!!)
-                    }
-                    if (tempPlayScrollListener != null) {
-                        teamMemberTableView!!.removeOnScrollListener(tempPlayScrollListener!!)
-                    }
+                if (!isTempPlayLoaded) {
 
                     tempPlayScrollListener = TempPlayScrollListener(linearLayoutManager)
                     teamMemberTableView!!.addOnScrollListener(tempPlayScrollListener!!)
