@@ -65,7 +65,86 @@
                         android:id="@+id/data_container"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
+                        android:layout_marginTop="20dp"
                         android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/introduceNameTV"
+                            style="@style/list_text_title"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="20dp"
+                            android:text="打球人數統計"
+                            />
+
+                        <RelativeLayout
+                            android:id="@+id/introduceAllContainer"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="12dp"
+                            android:layout_marginStart="20dp"
+                            android:layout_marginEnd="20dp"
+                            >
+
+                            <LinearLayout
+                                android:id="@+id/introduceLeftContainer"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:orientation="vertical">
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginEnd="20dp"
+                                    android:orientation="horizontal">
+
+                                    <ImageView
+                                        android:id="@+id/introduceNextDateIV"
+                                        android:layout_width="24dp"
+                                        android:layout_height="24dp"
+                                        app:srcCompat="@drawable/calendar_svg" />
+
+                                    <TextView
+                                        android:id="@+id/introduceNextDateTV"
+                                        style="@style/list_text_general"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="center_vertical"
+                                        android:layout_marginStart="24dp"
+                                        android:text="" />
+                                </LinearLayout>
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="10dp"
+                                    android:layout_marginEnd="20dp"
+                                    android:orientation="horizontal">
+
+                                    <ImageView
+                                        android:id="@+id/introduceNextTimeIV"
+                                        android:layout_width="24dp"
+                                        android:layout_height="24dp"
+                                        app:srcCompat="@drawable/clock_svg" />
+
+                                    <TextView
+                                        android:id="@+id/introduceNextTimeTV"
+                                        style="@style/list_text_general"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="center_vertical"
+                                        android:layout_marginStart="24dp"
+                                        android:text="" />
+                                </LinearLayout>
+
+                            </LinearLayout>
+                            <com.sportpassword.bm.Views.ShowLike2
+                                android:id="@+id/showLike21"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentEnd="true"
+                                />
+                        </RelativeLayout>
 
                         <androidx.recyclerview.widget.RecyclerView
                             android:id="@+id/tableView"

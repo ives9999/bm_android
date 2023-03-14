@@ -35,6 +35,11 @@ class ShowTeamVC: ShowVC(), ShowTab2Delegate, TapTextViewDelegate, IconText2Dele
 
     var showTop2: ShowTop2? = null
     var showBottom: Bottom2? = null
+
+    //in introduce container
+    var showLike21: ShowLike2? = null
+
+    //in teamMember and tempPlay container
     var showLike2: ShowLike2? = null
     private var showTab2: ShowTab2? = null
 
@@ -44,6 +49,7 @@ class ShowTeamVC: ShowVC(), ShowTab2Delegate, TapTextViewDelegate, IconText2Dele
     var countTaps: ArrayList<TapTextView2> = arrayListOf()
 
     var introduceContainerLL: LinearLayout? = null
+    var introduceNameTV: TextView? = null
     var teamMemberContainerLL: LinearLayout? = null
     //var tempPlayContainerLL: LinearLayout? = null
     var teamMemberTableView: RecyclerView? = null
@@ -58,10 +64,17 @@ class ShowTeamVC: ShowVC(), ShowTab2Delegate, TapTextViewDelegate, IconText2Dele
     lateinit var teamMemberTotalTV: TapTextView2
     lateinit var teamMemberPlayTV: TapTextView2
     lateinit var teamMemberLeaveTV: TapTextView2
+
+    var introduceNextDateIV: ImageView? = null
     private lateinit var nextDateIV: ImageView
+    var introduceNextDateTV: TextView? = null
     private lateinit var nextDateTV: TextView
+
+    var introduceNextTimeIV: ImageView? = null
     private lateinit var nextTimeIV: ImageView
+    var introduceNextTimeTV: TextView? = null
     private lateinit var nextTimeTV: TextView
+
     private lateinit var likeIconIV: ImageView
     private lateinit var teamMemberListTV: TextView
     private lateinit var addIconText2: IconText2
@@ -162,13 +175,40 @@ class ShowTeamVC: ShowVC(), ShowTab2Delegate, TapTextViewDelegate, IconText2Dele
             it.setOnClickListener()
         }
 
+        findViewById<ImageView>(R.id.introduceNextDateIV) ?. let {
+            introduceNextDateIV =it
+            it.setImage("calendar_svg")
+        }
+
+        findViewById<TextView>(R.id.introduceNextDateTV) ?. let {
+            introduceNextDateTV = it
+        }
+
+        findViewById<ImageView>(R.id.introduceNextTimeIV) ?. let {
+            introduceNextTimeIV = it
+            it.setImage("clock_svg")
+        }
+
+        findViewById<TextView>(R.id.introduceNextTimeTV) ?. let {
+            introduceNextTimeTV = it
+        }
+
         findViewById<ShowLike2>(R.id.showLike2) ?. let {
             showLike2 = it
             it.setOnThisClickListener(like)
         }
 
+        findViewById<ShowLike2>(R.id.showLike21) ?. let {
+            showLike21 = it
+            it.setOnThisClickListener(like)
+        }
+
         findViewById<LinearLayout>(R.id.introduceContainerLL) ?. let {
             introduceContainerLL = it
+        }
+
+        findViewById<TextView>(R.id.introduceNameTV) ?. let {
+            introduceNameTV = it
         }
 
         findViewById<LinearLayout>(R.id.teamMemberContainerLL) ?. let {
@@ -282,8 +322,10 @@ class ShowTeamVC: ShowVC(), ShowTab2Delegate, TapTextViewDelegate, IconText2Dele
 
                             if (table!!.name.isNotEmpty()) {
                                 setMyTitle(table!!.name)
+                                introduceNameTV?.text = table!!.name
                             } else if (table!!.title.isNotEmpty()) {
                                 setMyTitle(table!!.title)
+                                introduceNameTV?.text = table!!.title
                             }
                             setFeatured()
                             setData()
@@ -293,7 +335,8 @@ class ShowTeamVC: ShowVC(), ShowTab2Delegate, TapTextViewDelegate, IconText2Dele
 
                             isLike = table!!.like
                             likeCount = table!!.like_count
-                            setLike()
+//                            setLike()
+                            showLike21?.setLike(isLike, likeCount)
                             showLike2?.setLike(isLike, likeCount)
 
                             _tabPressed(focusTabIdx)
@@ -330,6 +373,9 @@ class ShowTeamVC: ShowVC(), ShowTab2Delegate, TapTextViewDelegate, IconText2Dele
             this.nextDate = myTable!!.nextDate
             this.nextDateWeek = myTable!!.nextDateWeek
             this.playInterval = myTable!!.interval_show
+
+            introduceNextDateTV?.text = "${nextDate} ( ${nextDateWeek} )"
+            introduceNextTimeTV?.text = playInterval
 
             nextDateTV.text = "${nextDate} ( ${nextDateWeek} )"
             nextTimeTV.text = playInterval
@@ -848,7 +894,7 @@ class ShowTeamVC: ShowVC(), ShowTab2Delegate, TapTextViewDelegate, IconText2Dele
                 introduceContainerLL?.visibility = View.VISIBLE
                 //tempPlayContainerLL?.visibility = View.GONE
 
-                showBottom?.showButton(false, true, false)
+                showBottom?.showButton(false, false, false)
             }
             1-> {
                 introduceContainerLL?.visibility = View.GONE
