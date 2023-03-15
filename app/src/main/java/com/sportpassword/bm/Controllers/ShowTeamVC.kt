@@ -80,7 +80,7 @@ class ShowTeamVC: ShowVC(), ShowTab2Delegate, TapTextViewDelegate, IconText2Dele
     private lateinit var addIconText2: IconText2
 
     private var teamMemberPage: Int = 1
-    var teamMemberPerPage: Int = PERPAGE
+    var teamMemberPerPage: Int = 50
     var teamMemberTotalCount: Int = 0
     var teamMemberTotalPage: Int = 0
     var leaveCount: Int = 0
@@ -118,7 +118,7 @@ class ShowTeamVC: ShowVC(), ShowTab2Delegate, TapTextViewDelegate, IconText2Dele
     var isTempPlayLoaded: Boolean = false
 
     var tempPlayPage: Int = 1
-    var tempPlayPerPage: Int = PERPAGE
+    var tempPlayPerPage: Int = 50
     var tempPlayTotalCount: Int = 1
     var tempPlayTotalPage: Int = 0
 
@@ -1097,7 +1097,7 @@ fun ShowTeamVC.teamMemberLeave(doLeave: Boolean) {
             if (successTable != null && successTable.success) {
                 runOnUiThread {
                     this.info(doLeaveWarning, "關閉") {
-                        this.getTeamMemberList(1, PERPAGE)
+                        this.getTeamMemberList(1, teamMemberPerPage)
                     }
                 }
             } else {
@@ -1126,7 +1126,7 @@ fun ShowTeamVC.tempPlayAdd(doAdd: Boolean) {
             if (successTable != null && successTable.success) {
                 runOnUiThread {
                     this.info(doAddWarning, "關閉") {
-                        this.getTempPlayList(1, PERPAGE)
+                        this.getTempPlayList(1, tempPlayPerPage)
                     }
                 }
             } else {
