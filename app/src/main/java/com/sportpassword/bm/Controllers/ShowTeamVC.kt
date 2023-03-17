@@ -581,7 +581,7 @@ class ShowTeamVC: ShowVC(), ShowTab2Delegate, TapTextViewDelegate, IconText2Dele
 
         showRows.clear()
         showRows.addAll(arrayListOf(
-            ShowRow("arena", "ic_arena_svg", "球館", myTable!!.arena!!.name),
+            ShowRow("arena", "ic_arena_on_svg", "球館", myTable!!.arena!!.name),
         ))
         if (myTable!!.arena != null) {
             showRows.addAll(arrayListOf(
