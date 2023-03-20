@@ -1,39 +1,57 @@
 package com.sportpassword.bm.Controllers
 
-import android.Manifest
+import android.content.Context
 import android.content.Intent import android.graphics.Bitmap
 import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
-import android.widget.FrameLayout
+import android.view.ViewGroup.MarginLayoutParams
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.RelativeLayout
+import android.widget.TextView
 import androidmads.library.qrgenearator.QRGContents
 import androidmads.library.qrgenearator.QRGEncoder
+import androidx.recyclerview.widget.RecyclerView
 import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import com.sportpassword.bm.Adapters.MemberSectionAdapter
 import com.sportpassword.bm.Data.MemberRow
 import com.sportpassword.bm.Data.MemberSection
-import com.sportpassword.bm.Models.MemberTable
-import com.sportpassword.bm.Models.SuccessTable
+import com.sportpassword.bm.Models.*
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.MemberService
 import com.sportpassword.bm.Utilities.*
+import com.sportpassword.bm.Views.IconTextVertical2
+import com.sportpassword.bm.Views.IconView2
+import com.sportpassword.bm.Views.IconView2Delegate
 import com.sportpassword.bm.databinding.ActivityMemberVcBinding
+import com.sportpassword.bm.extensions.avatar
 import com.sportpassword.bm.member
 import com.squareup.picasso.Picasso
 import java.lang.Exception
+import java.lang.reflect.Type
 
-var memberSections: ArrayList<MemberSection> = arrayListOf()
-lateinit var memberSectionAdapter: MemberSectionAdapter
+class MemberVC : MyTableVC(), IconView2Delegate {
 
-lateinit var qrEncoder: QRGEncoder
-
-class MemberVC : MyTableVC() {
+    var memberSections: ArrayList<MemberSection> = arrayListOf()
+    lateinit var memberSectionAdapter: MemberSectionAdapter
 
     private lateinit var binding: ActivityMemberVcBinding
     //private lateinit var view: ViewGroup
+    var qrcodeIV2: IconView2? = null
+    var logoutIV2: IconView2? = null
+    var avatarIV: ImageView? = null
+    var nameTV: TextView? = null
+    var pointIconText: IconTextVertical2? = null
+    var levelIconText: IconTextVertical2? = null
+
+    private val tableType: Type = object : TypeToken<Tables2<MemberCoinTable>>() {}.type
+    lateinit var tableView: MyTable2VC<MainMemberViewHolder, MainMemberTable, MemberVC>
+
+    //var rows: ArrayList<MainMemberTable> = arrayListOf()
+
+    lateinit var qrEncoder: QRGEncoder
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -50,39 +68,97 @@ class MemberVC : MyTableVC() {
 
         dataService = MemberService
 
-        val loginBtn = findViewById<LinearLayout>(R.id.loginBtn)
-        loginBtn.setOnClickListener { loginBtnPressed() }
-        val registerBtn = findViewById<LinearLayout>(R.id.registerBtn)
-        registerBtn.setOnClickListener { registerBtnPressed() }
-        val forgetPasswordBtn = findViewById<LinearLayout>(R.id.forgetPasswordBtn)
-        forgetPasswordBtn.setOnClickListener { forgetpasswordBtnPressed() }
+        findViewById<IconView2>(R.id.qrcodeIV2) ?. let {
+            qrcodeIV2 = it
+            it.delegate = this
+        }
 
-        memberSections = initSectionRow()
-        init()
+        findViewById<IconView2>(R.id.logoutIV2) ?. let {
+            logoutIV2 = it
+            it.delegate = this
+        }
+
+        findViewById<ImageView>(R.id.avatarIV) ?. let {
+            avatarIV = it
+        }
+
+        findViewById<TextView>(R.id.nameTV) ?. let {
+            nameTV = it
+        }
+
+        //level margin = 螢幕寬度 - container區塊padding - level區塊寬度 - 中間divide寬度
+        val levelContainerPadding: Int = 20
+        val levelWidth: Int = 87
+        val dividerWidth: Int = 2
+        val allPadding: Int = (levelContainerPadding*2+levelWidth*2+dividerWidth).dpToPx(context)
+        val margin: Int = (screenWidth - allPadding) / 4
+
+        findViewById<IconTextVertical2>(R.id.pointIconText) ?. let {
+            pointIconText = it
+            val lp: ViewGroup.MarginLayoutParams = it.layoutParams as MarginLayoutParams
+            lp.marginStart = margin
+            it.layoutParams = lp
+        }
+
+        findViewById<IconTextVertical2>(R.id.levelIconText) ?. let {
+            levelIconText = it
+            val lp: ViewGroup.MarginLayoutParams = it.layoutParams as MarginLayoutParams
+            lp.marginEnd = margin
+            it.layoutParams = lp
+        }
+
+        val recyclerView: RecyclerView = findViewById(R.id.list_container)
+        tableView = MyTable2VC(recyclerView, null, R.layout.main_member_cell, ::MainMemberViewHolder, tableType, this::tableViewSetSelected, this::getDataFromServer, this)
+
+        tableView.rows.addAll(
+            arrayListOf(
+                MainMemberTable("會員資料", "ic_info_svg"),
+                MainMemberTable("訂單查詢", "ic_truck_svg"),
+                MainMemberTable("喜歡", "like_in_svg"),
+                MainMemberTable("參加", "ic_join_svg"),
+                MainMemberTable("管理", "ic_manager1_svg"),
+                MainMemberTable("銀行帳號", "ic_bank_account_svg"),
+                MainMemberTable("刪除帳號", "ic_account_delete_svg")
+            )
+        )
+        tableView.setItems()
+        tableView.notifyDataSetChanged()
+
+        refresh()
+
+//        val loginBtn = findViewById<LinearLayout>(R.id.loginBtn)
+//        loginBtn.setOnClickListener { loginBtnPressed() }
+//        val registerBtn = findViewById<LinearLayout>(R.id.registerBtn)
+//        registerBtn.setOnClickListener { registerBtnPressed() }
+//        val forgetPasswordBtn = findViewById<LinearLayout>(R.id.forgetPasswordBtn)
+//        forgetPasswordBtn.setOnClickListener { forgetpasswordBtnPressed() }
+
+//        memberSections = initSectionRow()
+//        init()
     }
 
     override fun init() {
         super.init()
 
-        recyclerView = binding.listContainer
+        //recyclerView = binding.listContainer
         //refreshLayout = page_refresh
 
 
         //setRecyclerViewRefreshListener()
 
-        memberSectionAdapter = MemberSectionAdapter(this, R.layout.cell_section, this)
-        memberSections = initSectionRow()
-        memberSectionAdapter.setMyTableSection(memberSections)
-        recyclerView.adapter = memberSectionAdapter
+//        memberSectionAdapter = MemberSectionAdapter(this, R.layout.cell_section, this)
+//        memberSections = initSectionRow()
+//        memberSectionAdapter.setMyTableSection(memberSections)
+//        recyclerView.adapter = memberSectionAdapter
 
         //println(member.avatar)
-        if (member.avatar!!.isNotEmpty()) {
-            Picasso.with(context)
-                .load(member.avatar)
-                .placeholder(R.drawable.loading_square_120)
-                .error(R.drawable.loading_square_120)
-                .into(binding.navDrawerHeaderInclude.avatarView)
-        }
+//        if (member.avatar!!.isNotEmpty()) {
+//            Picasso.with(context)
+//                .load(member.avatar)
+//                .placeholder(R.drawable.loading_square_120)
+//                .error(R.drawable.loading_square_120)
+//                .into(binding.navDrawerHeaderInclude.avatarView)
+//        }
 
         loginout()
     }
@@ -98,13 +174,17 @@ class MemberVC : MyTableVC() {
                     //println(MemberService.jsonString)
                     val table = jsonToModel<MemberTable>(MemberService.jsonString)
                     table?.toSession(this, true)
-                    //session.dump()
-                    memberSections = initSectionRow()
-                    memberSectionAdapter.setMyTableSection(memberSections)
                     runOnUiThread {
-                        memberSectionAdapter.notifyDataSetChanged()
-                        loginout()
+                        avatarIV?.avatar(member.avatar!!)
+                        nameTV?.text = member.nickname
                     }
+//                    //session.dump()
+//                    memberSections = initSectionRow()
+//                    memberSectionAdapter.setMyTableSection(memberSections)
+//                    runOnUiThread {
+//                        memberSectionAdapter.notifyDataSetChanged()
+//                        loginout()
+//                    }
                 } else {
                     warning("無法從伺服器取得會員資料，請稍後再試或聯絡管理員")
                 }
@@ -135,31 +215,31 @@ class MemberVC : MyTableVC() {
     
     private fun _loginBlock() {
         //_loginAdapter()
-        memberSections = initSectionRow()
-        memberSectionAdapter.setMyTableSection(memberSections)
-        memberSectionAdapter.notifyDataSetChanged()
+//        memberSections = initSectionRow()
+//        memberSectionAdapter.setMyTableSection(memberSections)
+//        memberSectionAdapter.notifyDataSetChanged()
 
-        binding.navDrawerHeaderInclude.nameLbl.text = member.nickname
-        if (member.avatar!!.isNotEmpty()) {
-            member.avatar!!.image(this, binding.navDrawerHeaderInclude.avatarView)
-        }
+//        binding.navDrawerHeaderInclude.nameLbl.text = member.nickname
+//        if (member.avatar!!.isNotEmpty()) {
+//            member.avatar!!.image(this, binding.navDrawerHeaderInclude.avatarView)
+//        }
 
-        binding.loginOutInclude.loginTV.text = "登出"
-        binding.loginOutInclude.registerBtn.visibility = View.INVISIBLE
-        binding.loginOutInclude.forgetPasswordBtn.visibility = View.INVISIBLE
-        binding.listContainer.visibility = View.VISIBLE
+//        binding.loginOutInclude.loginTV.text = "登出"
+//        binding.loginOutInclude.registerBtn.visibility = View.INVISIBLE
+//        binding.loginOutInclude.forgetPasswordBtn.visibility = View.INVISIBLE
+//        binding.listContainer.visibility = View.VISIBLE
         //menu_team_container.visibility = View.VISIBLE
 //        refreshLayout = page_refresh
 //        initMemberFunction()
     }
     
     private fun _logoutBlock() {
-        binding.navDrawerHeaderInclude.nameLbl.text = "未登入"
-        binding.loginOutInclude.loginTV.text = "登入"
-        binding.loginOutInclude.registerBtn.visibility = View.VISIBLE
-        binding.loginOutInclude.forgetPasswordBtn.visibility = View.VISIBLE
-        binding.listContainer.visibility = View.INVISIBLE
-        binding.navDrawerHeaderInclude.avatarView.setImageResource(R.drawable.menuprofileicon)
+        //binding.navDrawerHeaderInclude.nameLbl.text = "未登入"
+//        binding.loginOutInclude.loginTV.text = "登入"
+//        binding.loginOutInclude.registerBtn.visibility = View.VISIBLE
+//        binding.loginOutInclude.forgetPasswordBtn.visibility = View.VISIBLE
+//        binding.listContainer.visibility = View.INVISIBLE
+        //binding.navDrawerHeaderInclude.avatarView.setImageResource(R.drawable.menuprofileicon)
         //menu_team_container.visibility = View.INVISIBLE
     }
 
@@ -477,6 +557,8 @@ class MemberVC : MyTableVC() {
         }
     }
 
+    private fun getDataFromServer(page: Int) {}
+
     private fun deleteEnd() {
         info("您的帳號已經被刪除，羽球密碼感謝您的支持", "", "關閉") {
             logout()
@@ -514,5 +596,55 @@ class MemberVC : MyTableVC() {
         }
 
         return bitmap
+    }
+
+    fun didSelect(row: MainMemberTable, idx: Int) {}
+
+    fun tableViewSetSelected(row: MainMemberTable): Boolean { return false }
+    override fun iconPressed(icon: String) {
+        if (icon == "ic_qrcode_svg") {
+            val qrcodeIV: ImageView = makeQrcodeLayer()
+            val qrcode: Bitmap? = generateQRCode(member.token!!)
+            qrcodeIV.setImageBitmap(qrcode)
+        } else if (icon == "ic_logout_svg") {
+            warning("是否真的要登出？", true, "登出") {
+                this.logout()
+            }
+        }
+    }
+}
+
+class MainMemberViewHolder(
+    context: Context,
+    viewHolder: View,
+    delegate: MemberVC
+): MyViewHolder2<MainMemberTable, MemberVC>(context, viewHolder, delegate) {
+
+    var iconIV: ImageView? = null
+    var textTV: TextView? = null
+
+    init {
+        viewHolder.findViewById<ImageView>(R.id.iconIV) ?. let {
+            iconIV = it
+        }
+
+        viewHolder.findViewById<TextView>(R.id.textTV) ?. let {
+            textTV = it
+        }
+    }
+
+    override fun bind(row: MainMemberTable, idx: Int) {
+        super.bind(row, idx)
+
+        iconIV?.setImage(row.icon)
+        textTV?.text = row.title
+    }
+}
+
+class MainMemberTable(title: String, icon: String): Table() {
+    var icon: String = "nophoto"
+    init {
+        this.title = title
+        this.icon = icon
     }
 }

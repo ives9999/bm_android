@@ -1755,7 +1755,7 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener,
         }
 
         findViewById<ImageView>(tabIconID) ?. let {
-            it.setImage(able_type + "_g")
+            it.setImage("ic_${able_type}_on_svg")
         }
     }
 

@@ -1,0 +1,10 @@
+
+<shape xmlns:android="http://schemas.android.com/apk/res/android" android:shape="rectangle" >
+    <!-- View background color -->
+    <solid
+        android:color="@color/TAB_BOTTOM_BACKGROUND">
+    </solid>
+    <corners
+        android:radius="22dp"   >
+    </corners>
+</shape>

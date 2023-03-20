@@ -3,7 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="50dp">
+    android:layout_height="50dp"
+    android:background="@color/TAB_BOTTOM_BACKGROUND">
 
 
     <LinearLayout
@@ -17,14 +18,14 @@
 
         <ImageView
             android:id="@+id/teamTabIcon"
-            android:layout_width="18dp"
-            android:layout_height="18dp"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
             android:layout_weight="1"
-            app:srcCompat="@drawable/team" />
+            app:srcCompat="@drawable/ic_team_off_svg" />
 
         <TextView
             android:id="@+id/teamTabTitle"
-            style="@style/list_text_general"
+            style="@style/list_text_12"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -49,14 +50,14 @@
 
         <ImageView
             android:id="@+id/courseTabIcon"
-            android:layout_width="18dp"
-            android:layout_height="18dp"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
             android:layout_weight="1"
-            app:srcCompat="@drawable/course" />
+            app:srcCompat="@drawable/ic_course_off_svg" />
 
         <TextView
             android:id="@+id/courseTabTitle"
-            style="@style/list_text_general"
+            style="@style/list_text_12"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -82,14 +83,14 @@
 
         <ImageView
             android:id="@+id/memberTabIcon"
-            android:layout_width="18dp"
-            android:layout_height="18dp"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
             android:layout_weight="1"
-            app:srcCompat="@drawable/member" />
+            app:srcCompat="@drawable/ic_member_off_svg" />
 
         <TextView
             android:id="@+id/memberTabTitle"
-            style="@style/list_text_general"
+            style="@style/list_text_12"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -114,14 +115,14 @@
 
         <ImageView
             android:id="@+id/arenaTabIcon"
-            android:layout_width="18dp"
-            android:layout_height="18dp"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
             android:layout_weight="1"
-            app:srcCompat="@drawable/arena" />
+            app:srcCompat="@drawable/ic_arena_off_svg" />
 
         <TextView
             android:id="@+id/arenaTabTitle"
-            style="@style/list_text_general"
+            style="@style/list_text_12"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -146,14 +147,14 @@
 
         <ImageView
             android:id="@+id/moreTabIcon"
-            android:layout_width="18dp"
-            android:layout_height="18dp"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
             android:layout_weight="1"
-            app:srcCompat="@drawable/more" />
+            app:srcCompat="@drawable/ic_more_off_svg" />
 
         <TextView
             android:id="@+id/moreTabTitle"
-            style="@style/list_text_general"
+            style="@style/list_text_12"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"

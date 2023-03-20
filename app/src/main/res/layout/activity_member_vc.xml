@@ -4,73 +4,154 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/MY_BLACK"
     android:id="@+id/allLayout"
     tools:context=".Controllers.MemberVC">
 
-    <RelativeLayout
-        android:id="@+id/topView"
+    <LinearLayout
+        android:id="@+id/topContainer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
-        android:background="@color/MY_GREEN">
+        android:orientation="vertical">
 
-        <include layout="@layout/top_view" />
+        <RelativeLayout
+            android:id="@+id/featuredContainer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            >
 
-    </RelativeLayout>
+            <com.sportpassword.bm.Views.IconView2
+                android:id="@+id/qrcodeIV2"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_marginStart="20dp"
+                android:gravity="center"
+                app:iconViewIcon="ic_qrcode_svg" />
 
-    <LinearLayout
-        android:id="@+id/page_refresh"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_above="@id/loginout"
-        android:layout_below="@id/topView"
-        android:background="@color/MY_BLACK"
-        >
+            <ImageView
+                android:id="@+id/avatarIV"
+                android:layout_width="112dp"
+                android:layout_height="112dp"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="12dp"
+                app:srcCompat="@drawable/ic_noavatar_svg" />
+
+            <com.sportpassword.bm.Views.IconView2
+                android:id="@+id/logoutIV2"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="20dp"
+                android:gravity="center"
+                app:iconViewIcon="ic_logout_svg" />
+
+        </RelativeLayout>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
-            <LinearLayout
-                android:layout_width="match_parent"
+            android:layout_marginTop="12dp"
+            android:gravity="center">
+
+            <TextView
+                android:id="@+id/nameTV"
+                style="@style/list_text_title"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/member_data">
-                <include
-                    android:id="@+id/nav_drawer_header_include"
-                    layout="@layout/nav_header_main"
+                android:text="ives" />
+        </LinearLayout>
+
+        <RelativeLayout
+            android:id="@+id/levelContainer"
+            android:layout_width="match_parent"
+            android:layout_height="85dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="20dp"
+            android:background="@drawable/member_level"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:id="@+id/levelLeftContainer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_centerInParent="true"
+                android:orientation="vertical">
+
+                <com.sportpassword.bm.Views.IconTextVertical2
+                    android:id="@+id/pointIconText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:IconTextVertical2Icon="ic_point_svg"
+                    app:IconTextVertical2Text="500 點"
                     />
+
+
             </LinearLayout>
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/list_container"
-                android:layout_width="match_parent"
+            <LinearLayout
+                android:layout_width="2dp"
                 android:layout_height="match_parent"
-                android:scrollbars="vertical"
-                app:layoutManager="androidx.recyclerview.widget.GridLayoutManager">
+                android:layout_centerHorizontal="true"
+                android:layout_centerInParent="true"
+                android:layout_centerVertical="true"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:background="@color/TEXT_WHITE33" />
 
-            </androidx.recyclerview.widget.RecyclerView>
-        </LinearLayout>
+            <LinearLayout
+                android:id="@+id/levelRightContainer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_centerInParent="true"
+                android:layout_centerHorizontal="false"
+                android:orientation="vertical">
+
+                <com.sportpassword.bm.Views.IconTextVertical2
+                    android:id="@+id/levelIconText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:IconTextVertical2Icon="ic_level_svg"
+                    app:IconTextVertical2Text="金牌"
+                    />
+
+            </LinearLayout>
+
+        </RelativeLayout>
+
     </LinearLayout>
 
-    <LinearLayout
-        android:id="@+id/loginout"
-        android:layout_above="@id/bottomView"
+    <TextView
+        android:id="@+id/titleTV"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/topContainer"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="20dp"
+        style="@style/list_text_title"
+        android:text="功能" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/list_container"
         android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:background="@color/MY_RED"
-        android:clickable="true"
-        android:orientation="vertical">
+        android:layout_height="match_parent"
+        android:layout_below="@id/titleTV"
+        android:layout_above="@id/bottomView"
+        android:layout_marginTop="3dp"
+        android:scrollbars="vertical"
+        app:layoutManager="androidx.recyclerview.widget.GridLayoutManager">
 
-        <include layout="@layout/login_out"
-            android:id="@+id/loginOutInclude"
-            />
-    </LinearLayout>
+    </androidx.recyclerview.widget.RecyclerView>
 
     <LinearLayout
         android:id="@+id/bottomView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:background="@color/TAB_BOTTOM_BACKGROUND"
         android:orientation="horizontal"
         android:paddingTop="3dp"
         android:paddingBottom="0dp">
