@@ -64,7 +64,7 @@ class MemberVC : MyTableVC(), IconView2Delegate {
         setContentView(view)
 
         setBottomTabFocus()
-        setMyTitle("會員")
+        //setMyTitle("會員")
 
         dataService = MemberService
 
@@ -110,17 +110,20 @@ class MemberVC : MyTableVC(), IconView2Delegate {
         val recyclerView: RecyclerView = findViewById(R.id.list_container)
         tableView = MyTable2VC(recyclerView, null, R.layout.main_member_cell, ::MainMemberViewHolder, tableType, this::tableViewSetSelected, this::getDataFromServer, this)
 
-        tableView.rows.addAll(
-            arrayListOf(
-                MainMemberTable("會員資料", "ic_info_svg"),
-                MainMemberTable("訂單查詢", "ic_truck_svg"),
-                MainMemberTable("喜歡", "like_in_svg"),
-                MainMemberTable("參加", "ic_join_svg"),
-                MainMemberTable("管理", "ic_manager1_svg"),
-                MainMemberTable("銀行帳號", "ic_bank_account_svg"),
-                MainMemberTable("刪除帳號", "ic_account_delete_svg")
-            )
-        )
+        for (mainMemberEnum in MainMemberEnum.allValues) {
+            tableView.rows.add(MainMemberTable(mainMemberEnum.chineseName, mainMemberEnum.getIcon()))
+        }
+//        tableView.rows.addAll(
+//            arrayListOf(
+//                MainMemberTable("會員資料", "ic_info_svg"),
+//                MainMemberTable("訂單查詢", "ic_truck_svg"),
+//                MainMemberTable("喜歡", "like_in_svg"),
+//                MainMemberTable("參加", "ic_join_svg"),
+//                MainMemberTable("管理", "ic_manager1_svg"),
+//                MainMemberTable("銀行帳號", "ic_bank_account_svg"),
+//                MainMemberTable("刪除帳號", "ic_account_delete_svg")
+//            )
+//        )
         tableView.setItems()
         tableView.notifyDataSetChanged()
 
@@ -160,7 +163,7 @@ class MemberVC : MyTableVC(), IconView2Delegate {
 //                .into(binding.navDrawerHeaderInclude.avatarView)
 //        }
 
-        loginout()
+//        loginout()
     }
 
     override fun refresh() {
@@ -190,30 +193,30 @@ class MemberVC : MyTableVC(), IconView2Delegate {
                 }
             }
         } else {
-            _logoutBlock()
+            //_logoutBlock()
         }
     }
 
-    private fun login() {
-        toLogin()
-    }
+//    private fun login() {
+//        toLogin()
+//    }
 
-    private fun logout() {
+    fun logout() {
         member.isLoggedIn = false
         member.reset()
-        loginout()
+        //loginout()
     }
 
-    fun loginout() {
-        //println(member.isLoggedIn)
-        if (member.isLoggedIn) {
-            _loginBlock()
-        } else {
-            _logoutBlock()
-        }
-    }
+//    fun loginout() {
+//        //println(member.isLoggedIn)
+//        if (member.isLoggedIn) {
+//            _loginBlock()
+//        } else {
+//            _logoutBlock()
+//        }
+//    }
     
-    private fun _loginBlock() {
+//    private fun _loginBlock() {
         //_loginAdapter()
 //        memberSections = initSectionRow()
 //        memberSectionAdapter.setMyTableSection(memberSections)
@@ -231,9 +234,9 @@ class MemberVC : MyTableVC(), IconView2Delegate {
         //menu_team_container.visibility = View.VISIBLE
 //        refreshLayout = page_refresh
 //        initMemberFunction()
-    }
+//    }
     
-    private fun _logoutBlock() {
+//    private fun _logoutBlock() {
         //binding.navDrawerHeaderInclude.nameLbl.text = "未登入"
 //        binding.loginOutInclude.loginTV.text = "登入"
 //        binding.loginOutInclude.registerBtn.visibility = View.VISIBLE
@@ -241,6 +244,13 @@ class MemberVC : MyTableVC(), IconView2Delegate {
 //        binding.listContainer.visibility = View.INVISIBLE
         //binding.navDrawerHeaderInclude.avatarView.setImageResource(R.drawable.menuprofileicon)
         //menu_team_container.visibility = View.INVISIBLE
+//    }
+
+    override fun cellClick(row: Table) {
+        val _row: MainMemberTable? = row as? MainMemberTable
+        _row.let {
+            println(it?.title)
+        }
     }
 
     override fun cellClick(sectionIdx: Int, rowIdx: Int) {
@@ -270,7 +280,7 @@ class MemberVC : MyTableVC(), IconView2Delegate {
             "email" -> this.toValidate("email")
             "mobile" -> this.toValidate("mobile")
 //            "blacklist" -> goBlackList()
-            "calendar_course_signup" -> toCalendarCourseSignup()
+            //"calendar_course_signup" -> toCalendarCourseSignup()
             "refresh" -> refresh()
 
             TO_MEMBER_ORDER_LIST -> this.toMemberOrderList()
@@ -305,223 +315,219 @@ class MemberVC : MyTableVC(), IconView2Delegate {
         }
     }
 
-    private fun initSectionRow(): ArrayList<MemberSection> {
-        val sections: ArrayList<MemberSection> = arrayListOf()
+//    private fun initSectionRow(): ArrayList<MemberSection> {
+//        val sections: ArrayList<MemberSection> = arrayListOf()
+//
+//        sections.add(makeSection4Row())
+//        sections.add(makeSection0Row1())
+//        sections.add(makeSection1Row())
+//        sections.add(makeSection2Row(false))
+//        sections.add(makeSection3Row())
+//        sections.add(makeSectionBankRow())
+//        sections.add(makeSectionXRow())
+//
+//        return sections
+//    }
 
-        sections.add(makeSection4Row())
-        sections.add(makeSection0Row1())
-        sections.add(makeSection1Row())
-        sections.add(makeSection2Row(false))
-        sections.add(makeSection3Row())
-        sections.add(makeSectionBankRow())
-        sections.add(makeSectionXRow())
+//    fun makeSection0Row1(isExpanded: Boolean=true): MemberSection {
+//        val rows: ArrayList<MemberRow> = arrayListOf()
+//
+//        //if (isExpanded) {
+//        val fixedRows = makeSection0FixRow()
+//        rows.addAll(fixedRows)
+//
+//        val validateRows = makeSection0ValidateRow()
+//        rows.addAll(validateRows)
+//
+//        val refreshRows = makeSection0RefreshRow()
+//        rows.addAll(refreshRows)
+//        //}
+//
+//        val s: MemberSection = MemberSection("會員資料", true)
+//        //val s: MemberSection = MemberSection("會員資料", isExpanded)
+//        s.items.addAll(rows)
+//
+//        return s
+//    }
+//
+//    private fun makeSection0FixRow(): ArrayList<MemberRow> {
+//        val rows: ArrayList<MemberRow> = arrayListOf()
+//        var r: MemberRow = MemberRow("解碼點數", "coin", "", TO_MEMBER_COIN_LIST)
+//        r.show = member.coin.formattedWithSeparator() + " 點"
+//        rows.add(r)
+//        r = MemberRow("訂閱會員", "member_level_up", "", TO_MEMBER_SURIPTION_KIND)
+//        member.subscription?.let {
+//            if (it.isNotEmpty()) {
+//                val subscription: MEMBER_SUBSCRIPTION_KIND =
+//                    MEMBER_SUBSCRIPTION_KIND.stringToEnum(it)
+//                r.show = subscription.chineseName
+//            }
+//        }
+//        rows.add(r)
+//        r = MemberRow("帳戶資料", "account", "", TO_PROFILE)
+//        rows.add(r)
+//        r = MemberRow("QRCode", "qrcode", "", "qrcode")
+//        rows.add(r)
+//        r = MemberRow("更改密碼", "password", "", TO_PASSWORD)
+//        rows.add(r)
+//        return rows
+//    }
+//
+//    private fun makeSection0RefreshRow(): ArrayList<MemberRow> {
+//        val rows: ArrayList<MemberRow> = arrayListOf()
+//        val r1: MemberRow = MemberRow("重新整理", "refresh", "", "refresh")
+//        rows.add(r1)
+//        return rows
+//    }
+//
+//    private fun makeSection0ValidateRow(): ArrayList<MemberRow> {
+//        val rows: ArrayList<MemberRow> = arrayListOf()
+//        val validate: Int = member.validate
+//        if (validate and EMAIL_VALIDATE <= 0) {
+//            val r: MemberRow = MemberRow("email認證", "email", "", "email")
+//            rows.add(r)
+//        }
+//        if (validate and MOBILE_VALIDATE <= 0) {
+//            val r: MemberRow = MemberRow("手機認證", "mobile", "", "mobile")
+//            rows.add(r)
+//        }
+//        return rows
+//    }
+//
+//    private fun makeSection1Row(isExpanded: Boolean=true): MemberSection {
+//        val rows: ArrayList<MemberRow> = arrayListOf()
+//
+//        //if (isExpanded) {
+//
+//        val r1: MemberRow = MemberRow("購物車", "cart", "", TO_MEMBER_CART_LIST)
+//        rows.add(r1)
+//        val r2: MemberRow = MemberRow("訂單查詢", "order", "", TO_MEMBER_ORDER_LIST)
+//        rows.add(r2)
+//        //}
+//
+//        val s: MemberSection = MemberSection("訂單查詢", true)
+//        //val s: MemberSection = MemberSection("訂單查詢", isExpanded)
+//        s.items.addAll(rows)
+//
+//        return s
+//    }
+//
+//    private fun makeSection2Row(isExpanded: Boolean=true): MemberSection {
+//        val rows: ArrayList<MemberRow> = arrayListOf()
+//
+//        //if (isExpanded) {
+//        val r1: MemberRow = MemberRow("球隊", "team", "", TO_LIKE, "team")
+//        rows.add(r1)
+//        val r2: MemberRow = MemberRow("球館", "arena", "", TO_LIKE, "arena")
+//        rows.add(r2)
+//        val r3: MemberRow = MemberRow("教學", "teach", "", TO_LIKE, "teach")
+//        rows.add(r3)
+//        val r4: MemberRow = MemberRow("教練", "coach", "", TO_LIKE, "coach")
+//        rows.add(r4)
+//        val r5: MemberRow = MemberRow("課程", "course", "", TO_LIKE, "course")
+//        rows.add(r5)
+//        val r6: MemberRow = MemberRow("商品", "product", "", TO_LIKE, "product")
+//        rows.add(r6)
+//        val r7: MemberRow = MemberRow("體育用品店", "store", "", TO_LIKE, "store")
+//        rows.add(r7)
+//        //}
+//
+//        val s: MemberSection = MemberSection("喜歡", true)
+//        //val s: MemberSection = MemberSection("喜歡", isExpanded)
+//        s.items.addAll(rows)
+//
+//        return s
+//    }
+//    private fun makeSection3Row(isExpanded: Boolean=true): MemberSection {
+//        val rows: ArrayList<MemberRow> = arrayListOf()
+//
+//        val r1: MemberRow = MemberRow("球隊", "team", "", "toMemberTeamList", "team")
+//        rows.add(r1)
+//        val r2: MemberRow = MemberRow("臨打", "tempplay", "", TO_MEMBER_SIGNUP_LIST, "team")
+//        rows.add(r2)
+//        val r3: MemberRow = MemberRow("課程", "course", "", TO_MEMBER_SIGNUP_LIST, "course")
+//        rows.add(r3)
+//
+//        val s: MemberSection = MemberSection("參加", true)
+//        //val s: MemberSection = MemberSection("報名", isExpanded)
+//        s.items.addAll(rows)
+//
+//        return s
+//    }
+//
+//    private fun makeSection4Row(isExpanded: Boolean=true): MemberSection {
+//        val rows: ArrayList<MemberRow> = arrayListOf()
+//
+//        val r1: MemberRow = MemberRow("球隊", "team", "", "manager_team", "team")
+//        rows.add(r1)
+//        val r2: MemberRow = MemberRow("球隊申請管理權", "team", "", "toRequestManagerTeam", "team")
+//        rows.add(r2)
+//        val r3: MemberRow = MemberRow("課程", "course", "", "manager_course", "course")
+//        rows.add(r3)
+//
+//        val s: MemberSection = MemberSection("管理", true)
+//        //val s: MemberSection = MemberSection("管理", isExpanded)
+//        s.items.addAll(rows)
+//
+//        return s
+//    }
+//
+//    private fun makeSectionBankRow(isExpanded: Boolean=true): MemberSection {
+//        val rows: ArrayList<MemberRow> = arrayListOf()
+//
+//        val r1: MemberRow = MemberRow("銀行帳號", "bank", "", TO_MEMBER_BANK, "member")
+//        rows.add(r1)
+//
+//        val s: MemberSection = MemberSection("銀行帳號", true)
+//        s.items.addAll(rows)
+//
+//        return s
+//    }
+//
+//    private fun makeSectionXRow(isExpanded: Boolean=true): MemberSection {
+//        val rows: ArrayList<MemberRow> = arrayListOf()
+//
+//        val r1: MemberRow = MemberRow("刪除會員", "delete", "", "delete", "member")
+//        rows.add(r1)
+//
+//        val s: MemberSection = MemberSection("刪除", true)
+//        //val s: MemberSection = MemberSection("刪除", isExpanded)
+//        s.items.addAll(rows)
+//
+//        return s
+//    }
+//
+//    private fun loginBtnPressed() {
+//        if (member.isLoggedIn) {
+//            logout()
+//            //MemberService.logout(this)
+//            //refresh()
+//        } else {
+//            login()
+//        }
+//    }
 
-        return sections
-    }
-
-    fun makeSection0Row1(isExpanded: Boolean=true): MemberSection {
-        val rows: ArrayList<MemberRow> = arrayListOf()
-
-        //if (isExpanded) {
-        val fixedRows = makeSection0FixRow()
-        rows.addAll(fixedRows)
-
-        val validateRows = makeSection0ValidateRow()
-        rows.addAll(validateRows)
-
-        val refreshRows = makeSection0RefreshRow()
-        rows.addAll(refreshRows)
-        //}
-
-        val s: MemberSection = MemberSection("會員資料", true)
-        //val s: MemberSection = MemberSection("會員資料", isExpanded)
-        s.items.addAll(rows)
-
-        return s
-    }
-
-    private fun makeSection0FixRow(): ArrayList<MemberRow> {
-        val rows: ArrayList<MemberRow> = arrayListOf()
-        var r: MemberRow = MemberRow("解碼點數", "coin", "", TO_MEMBER_COIN_LIST)
-        r.show = member.coin.formattedWithSeparator() + " 點"
-        rows.add(r)
-        r = MemberRow("訂閱會員", "member_level_up", "", TO_MEMBER_SURIPTION_KIND)
-        member.subscription?.let {
-            if (it.isNotEmpty()) {
-                val subscription: MEMBER_SUBSCRIPTION_KIND =
-                    MEMBER_SUBSCRIPTION_KIND.stringToEnum(it)
-                r.show = subscription.chineseName
-            }
-        }
-        rows.add(r)
-        r = MemberRow("帳戶資料", "account", "", TO_PROFILE)
-        rows.add(r)
-        r = MemberRow("QRCode", "qrcode", "", "qrcode")
-        rows.add(r)
-        r = MemberRow("更改密碼", "password", "", TO_PASSWORD)
-        rows.add(r)
-        return rows
-    }
-
-    private fun makeSection0RefreshRow(): ArrayList<MemberRow> {
-        val rows: ArrayList<MemberRow> = arrayListOf()
-        val r1: MemberRow = MemberRow("重新整理", "refresh", "", "refresh")
-        rows.add(r1)
-        return rows
-    }
-
-    private fun makeSection0ValidateRow(): ArrayList<MemberRow> {
-        val rows: ArrayList<MemberRow> = arrayListOf()
-        val validate: Int = member.validate
-        if (validate and EMAIL_VALIDATE <= 0) {
-            val r: MemberRow = MemberRow("email認證", "email", "", "email")
-            rows.add(r)
-        }
-        if (validate and MOBILE_VALIDATE <= 0) {
-            val r: MemberRow = MemberRow("手機認證", "mobile", "", "mobile")
-            rows.add(r)
-        }
-        return rows
-    }
-
-    private fun makeSection1Row(isExpanded: Boolean=true): MemberSection {
-        val rows: ArrayList<MemberRow> = arrayListOf()
-
-        //if (isExpanded) {
-
-        val r1: MemberRow = MemberRow("購物車", "cart", "", TO_MEMBER_CART_LIST)
-        rows.add(r1)
-        val r2: MemberRow = MemberRow("訂單查詢", "order", "", TO_MEMBER_ORDER_LIST)
-        rows.add(r2)
-        //}
-
-        val s: MemberSection = MemberSection("訂單查詢", true)
-        //val s: MemberSection = MemberSection("訂單查詢", isExpanded)
-        s.items.addAll(rows)
-
-        return s
-    }
-
-    private fun makeSection2Row(isExpanded: Boolean=true): MemberSection {
-        val rows: ArrayList<MemberRow> = arrayListOf()
-
-        //if (isExpanded) {
-        val r1: MemberRow = MemberRow("球隊", "team", "", TO_LIKE, "team")
-        rows.add(r1)
-        val r2: MemberRow = MemberRow("球館", "arena", "", TO_LIKE, "arena")
-        rows.add(r2)
-        val r3: MemberRow = MemberRow("教學", "teach", "", TO_LIKE, "teach")
-        rows.add(r3)
-        val r4: MemberRow = MemberRow("教練", "coach", "", TO_LIKE, "coach")
-        rows.add(r4)
-        val r5: MemberRow = MemberRow("課程", "course", "", TO_LIKE, "course")
-        rows.add(r5)
-        val r6: MemberRow = MemberRow("商品", "product", "", TO_LIKE, "product")
-        rows.add(r6)
-        val r7: MemberRow = MemberRow("體育用品店", "store", "", TO_LIKE, "store")
-        rows.add(r7)
-        //}
-
-        val s: MemberSection = MemberSection("喜歡", true)
-        //val s: MemberSection = MemberSection("喜歡", isExpanded)
-        s.items.addAll(rows)
-
-        return s
-    }
-    private fun makeSection3Row(isExpanded: Boolean=true): MemberSection {
-        val rows: ArrayList<MemberRow> = arrayListOf()
-
-        val r1: MemberRow = MemberRow("球隊", "team", "", "toMemberTeamList", "team")
-        rows.add(r1)
-        val r2: MemberRow = MemberRow("臨打", "tempplay", "", TO_MEMBER_SIGNUP_LIST, "team")
-        rows.add(r2)
-        val r3: MemberRow = MemberRow("課程", "course", "", TO_MEMBER_SIGNUP_LIST, "course")
-        rows.add(r3)
-
-        val s: MemberSection = MemberSection("參加", true)
-        //val s: MemberSection = MemberSection("報名", isExpanded)
-        s.items.addAll(rows)
-
-        return s
-    }
-
-    private fun makeSection4Row(isExpanded: Boolean=true): MemberSection {
-        val rows: ArrayList<MemberRow> = arrayListOf()
-
-        val r1: MemberRow = MemberRow("球隊", "team", "", "manager_team", "team")
-        rows.add(r1)
-        val r2: MemberRow = MemberRow("球隊申請管理權", "team", "", "toRequestManagerTeam", "team")
-        rows.add(r2)
-        val r3: MemberRow = MemberRow("課程", "course", "", "manager_course", "course")
-        rows.add(r3)
-
-        val s: MemberSection = MemberSection("管理", true)
-        //val s: MemberSection = MemberSection("管理", isExpanded)
-        s.items.addAll(rows)
-
-        return s
-    }
-
-    private fun makeSectionBankRow(isExpanded: Boolean=true): MemberSection {
-        val rows: ArrayList<MemberRow> = arrayListOf()
-
-        val r1: MemberRow = MemberRow("銀行帳號", "bank", "", TO_MEMBER_BANK, "member")
-        rows.add(r1)
-
-        val s: MemberSection = MemberSection("銀行帳號", true)
-        s.items.addAll(rows)
-
-        return s
-    }
-
-    private fun makeSectionXRow(isExpanded: Boolean=true): MemberSection {
-        val rows: ArrayList<MemberRow> = arrayListOf()
-
-        val r1: MemberRow = MemberRow("刪除會員", "delete", "", "delete", "member")
-        rows.add(r1)
-
-        val s: MemberSection = MemberSection("刪除", true)
-        //val s: MemberSection = MemberSection("刪除", isExpanded)
-        s.items.addAll(rows)
-
-        return s
-    }
-
-    private fun loginBtnPressed() {
-        if (member.isLoggedIn) {
-            logout()
-            //MemberService.logout(this)
-            //refresh()
-        } else {
-            login()
-        }
-    }
-
-    private fun registerBtnPressed(){
-        this.toRegister(this)
-//        val registerIntent: Intent = Intent(activity, RegisterActivity::class.java)
-//        startActivityForResult(registerIntent, this.REGISTER_REQUEST_CODE)
-    }
-    private fun forgetpasswordBtnPressed() {
-        this.toForgetPassword()
-//        val forgetPasswordIntent = Intent(activity, ForgetPasswordActivity::class.java)
-//        startActivity(forgetPasswordIntent)
-    }
-
-    private fun toCalendarCourseSignup() {
-        val intent = Intent(activity, CourseCalendarVC::class.java)
-        startActivity(intent)
-    }
-
-    override fun handleMemberSectionExpanded(idx: Int) {
-        //println(idx)
-        val memberSection = memberSections[idx]
-        var isExpanded: Boolean = memberSection.isExpanded
-        isExpanded = !isExpanded
-        memberSections[idx].isExpanded = isExpanded
-        memberSectionAdapter.setMyTableSection(memberSections)
-        memberSectionAdapter.notifyDataSetChanged()
-    }
+//    private fun registerBtnPressed(){
+//        this.toRegister(this)
+//    }
+//    private fun forgetpasswordBtnPressed() {
+//        this.toForgetPassword()
+//    }
+//
+//    private fun toCalendarCourseSignup() {
+//        val intent = Intent(activity, CourseCalendarVC::class.java)
+//        startActivity(intent)
+//    }
+//
+//    override fun handleMemberSectionExpanded(idx: Int) {
+//        //println(idx)
+//        val memberSection = memberSections[idx]
+//        var isExpanded: Boolean = memberSection.isExpanded
+//        isExpanded = !isExpanded
+//        memberSections[idx].isExpanded = isExpanded
+//        memberSectionAdapter.setMyTableSection(memberSections)
+//        memberSectionAdapter.notifyDataSetChanged()
+//    }
 
     fun delete() {
         warning("是否確定要刪除自己的會員資料？", true, "刪除") {
@@ -610,6 +616,44 @@ class MemberVC : MyTableVC(), IconView2Delegate {
             warning("是否真的要登出？", true, "登出") {
                 this.logout()
             }
+        }
+    }
+}
+
+enum class MainMemberEnum(val chineseName: String) {
+    info("會員資料"),
+    order("訂單查詢"),
+    like("喜歡"),
+    join("參加"),
+    manager("管理"),
+    bank("銀行帳號"),
+    delete("刪除帳號");
+
+    companion object {
+        val allValues: ArrayList<MainMemberEnum> = arrayListOf(info, order, like, join, manager, bank, delete)
+        fun chineseGetEnum(text: String): MainMemberEnum {
+            when (text) {
+                "會員資料"-> return info
+                "訂單查詢"-> return order
+                "喜歡"-> return like
+                "參加"-> return join
+                "管理"-> return manager
+                "銀行帳號"-> return bank
+                "刪除帳號"-> return delete
+                else-> return info
+            }
+        }
+    }
+
+    fun getIcon(): String {
+        when (this) {
+            info-> return "ic_info_svg"
+            order-> return "ic_truck_svg"
+            like-> return "ic_like_in_svg"
+            join-> return "ic_join_svg"
+            manager-> return "ic_manager1_svg"
+            bank-> return "ic_bank_account_svg"
+            delete-> return "ic_account_delete_svg"
         }
     }
 }

@@ -833,7 +833,7 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener,
 
                     if (delegate != null) {
                         val d: MemberVC = delegate as MemberVC
-                        d.loginout()
+                        //d.loginout()
                     }
                 }
             }
@@ -2004,7 +2004,7 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener,
                         val m: MemberVC = delegate as MemberVC
                         member.isLoggedIn = false
                         member.reset()
-                        m.loginout()
+                        m.logout()
                     }
                     //refresh()
                 }
