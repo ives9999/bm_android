@@ -110,7 +110,7 @@ class MemberVC : MyTableVC(), IconView2Delegate {
         val recyclerView: RecyclerView = findViewById(R.id.list_container)
         tableView = MyTable2VC(recyclerView, null, R.layout.main_member_cell, ::MainMemberViewHolder, tableType, this::tableViewSetSelected, this::getDataFromServer, this)
 
-        for (mainMemberEnum in MainMemberEnum.allValues) {
+        for (mainMemberEnum in MainMemberEnum.values()) {
             tableView.rows.add(MainMemberTable(mainMemberEnum.chineseName, mainMemberEnum.getIcon()))
         }
 //        tableView.rows.addAll(
@@ -249,7 +249,14 @@ class MemberVC : MyTableVC(), IconView2Delegate {
     override fun cellClick(row: Table) {
         val _row: MainMemberTable? = row as? MainMemberTable
         _row.let {
-            toMemberItem(it!!.title)
+            val mainMemberEnum: MainMemberEnum = MainMemberEnum.chineseGetEnum(it!!.title)
+            if (mainMemberEnum == MainMemberEnum.bank) {
+                toMemberBank()
+            } else if (mainMemberEnum == MainMemberEnum.delete) {
+                delete()
+            } else {
+                toMemberItem(it.title)
+            }
         }
     }
 
@@ -629,7 +636,7 @@ enum class MainMemberEnum(val chineseName: String) {
     delete("刪除帳號");
 
     companion object {
-        val allValues: ArrayList<MainMemberEnum> = arrayListOf(info, order, like, join, manager, bank, delete)
+        //val allValues: ArrayList<MainMemberEnum> = arrayListOf(info, order, like, join, manager, bank, delete)
         fun chineseGetEnum(text: String): MainMemberEnum {
             when (text) {
                 "會員資料"-> return info

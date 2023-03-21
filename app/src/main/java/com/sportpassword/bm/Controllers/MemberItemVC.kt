@@ -7,6 +7,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.google.gson.reflect.TypeToken
+import com.sportpassword.bm.Models.Table
 import com.sportpassword.bm.Models.Tables2
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Utilities.setImage
@@ -69,6 +70,13 @@ class MemberItemVC : BaseActivity() {
         }
     }
 
+    override fun cellClick(row: Table) {
+        val _row: MainMemberTable? = row as? MainMemberTable
+        _row.let {
+
+        }
+    }
+
     private fun getDataFromServer(page: Int) {}
     private fun tableViewSetSelected(row: MainMemberTable): Boolean { return false }
 }
@@ -111,6 +119,16 @@ enum class MemberItemEnum(val chineseName: String) {
                 }
             }
         }
+
+//        fun toEnum(rawValue: String): MemberItemEnum? {
+//            val thisEnum: MemberItemEnum = MemberItemEnum(rawValue: rawValue)
+//
+//            {
+//                return thisEnum
+//            } else {
+//                return nil
+//            }
+//        }
     }
 
     fun getIcon(): String {
