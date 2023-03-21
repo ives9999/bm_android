@@ -34,8 +34,8 @@ import java.lang.reflect.Type
 
 class MemberVC : MyTableVC(), IconView2Delegate {
 
-    var memberSections: ArrayList<MemberSection> = arrayListOf()
-    lateinit var memberSectionAdapter: MemberSectionAdapter
+   // var memberSections: ArrayList<MemberSection> = arrayListOf()
+    //lateinit var memberSectionAdapter: MemberSectionAdapter
 
     private lateinit var binding: ActivityMemberVcBinding
     //private lateinit var view: ViewGroup
@@ -46,7 +46,7 @@ class MemberVC : MyTableVC(), IconView2Delegate {
     var pointIconText: IconTextVertical2? = null
     var levelIconText: IconTextVertical2? = null
 
-    private val tableType: Type = object : TypeToken<Tables2<MemberCoinTable>>() {}.type
+    private val tableType: Type = object : TypeToken<Tables2<MainMemberTable>>() {}.type
     lateinit var tableView: MyTable2VC<MainMemberViewHolder, MainMemberTable, MemberVC>
 
     //var rows: ArrayList<MainMemberTable> = arrayListOf()
@@ -125,7 +125,7 @@ class MemberVC : MyTableVC(), IconView2Delegate {
 //            )
 //        )
         tableView.setItems()
-        tableView.notifyDataSetChanged()
+        //tableView.notifyDataSetChanged()
 
         refresh()
 
@@ -249,16 +249,17 @@ class MemberVC : MyTableVC(), IconView2Delegate {
     override fun cellClick(row: Table) {
         val _row: MainMemberTable? = row as? MainMemberTable
         _row.let {
-            println(it?.title)
+            toMemberItem(it!!.title)
         }
     }
 
     override fun cellClick(sectionIdx: Int, rowIdx: Int) {
 //        println(sectionIdx)
 //        println(rowIdx)
-        val memberSection = memberSections[sectionIdx]
-        val row = memberSection.items[rowIdx]
-        val segue = row.segue
+//        val memberSection = memberSections[sectionIdx]
+//        val row = memberSection.items[rowIdx]
+        //val segue = row.segue
+        val segue = ""
         when(segue) {
             TO_PROFILE -> this.toRegister()
 //            TO_PROFILE -> {
@@ -285,12 +286,12 @@ class MemberVC : MyTableVC(), IconView2Delegate {
 
             TO_MEMBER_ORDER_LIST -> this.toMemberOrderList()
             TO_MEMBER_CART_LIST -> this.toMemberCartList("member")
-            TO_MEMBER_SIGNUP_LIST -> this.toMemberSignupList(row.able_type)
+            //TO_MEMBER_SIGNUP_LIST -> this.toMemberSignupList(row.able_type)
             "manager_team" -> this.toManager("team")
             "toRequestManagerTeam" -> this.toRequestManagerTeam()
             "manager_course" -> this.toManager("course")
             TO_LIKE -> {
-                val able_type: String = row.able_type
+                //val able_type: String = row.able_type
                 when(able_type) {
                     "team" -> this.toTeam(null, true, true, true)
                     "arena" -> this.toArena(true, true, true)
@@ -603,8 +604,6 @@ class MemberVC : MyTableVC(), IconView2Delegate {
 
         return bitmap
     }
-
-    fun didSelect(row: MainMemberTable, idx: Int) {}
 
     fun tableViewSetSelected(row: MainMemberTable): Boolean { return false }
     override fun iconPressed(icon: String) {

@@ -28,13 +28,15 @@
         tools:replace="android:allowBackup"
         tools:targetApi="m">
         <activity
+            android:name=".Controllers.MemberItemVC"
+            android:exported="false" />
+        <activity
             android:name=".Controllers.MemberTeamListVC"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
-        </activity>
-        <!-- <activity -->
+        </activity> <!-- <activity -->
         <!-- android:name=".Controllers" -->
         <!-- android:exported="false" /> -->
         <activity

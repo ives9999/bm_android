@@ -214,6 +214,12 @@ interface ToInterface {
         mainDelegate.startActivity(i)
     }
 
+    fun toMemberItem(item: String) {
+        val i = Intent(mainDelegate, MemberItemVC::class.java)
+        i.putExtra("item", item)
+        mainDelegate.startActivity(i)
+    }
+
     fun toMemberSuriptionKind() {
         val i = Intent(mainDelegate, MemberSubscriptionKindVC::class.java)
         mainDelegate.memberSubscriptionKindVC.launch(i)

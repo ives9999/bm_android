@@ -35,6 +35,7 @@
             tools:text="會員資料" />
 
         <ImageView
+            android:id="@+id/greaterIV"
             android:layout_width="20dp"
             android:layout_height="20dp"
             android:layout_alignParentEnd="true"
