@@ -32,7 +32,7 @@ import com.squareup.picasso.Picasso
 import java.lang.Exception
 import java.lang.reflect.Type
 
-class MemberVC : MyTableVC(), IconView2Delegate {
+class MemberVC : BaseActivity(), IconView2Delegate {
 
    // var memberSections: ArrayList<MemberSection> = arrayListOf()
     //lateinit var memberSectionAdapter: MemberSectionAdapter
@@ -60,7 +60,7 @@ class MemberVC : MyTableVC(), IconView2Delegate {
         super.onCreate(savedInstanceState)
 
         binding = ActivityMemberVcBinding.inflate(layoutInflater)
-        view = binding.root
+        val view = binding.root
         setContentView(view)
 
         setBottomTabFocus()

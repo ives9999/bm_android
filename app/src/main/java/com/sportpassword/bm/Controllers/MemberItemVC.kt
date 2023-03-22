@@ -7,12 +7,16 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.google.gson.reflect.TypeToken
+import com.sportpassword.bm.Data.MemberRow
 import com.sportpassword.bm.Models.Table
 import com.sportpassword.bm.Models.Tables2
 import com.sportpassword.bm.R
+import com.sportpassword.bm.Utilities.EMAIL_VALIDATE
+import com.sportpassword.bm.Utilities.MOBILE_VALIDATE
 import com.sportpassword.bm.Utilities.setImage
 import com.sportpassword.bm.Views.ShowTop2
 import com.sportpassword.bm.databinding.ActivityMemberItemVcBinding
+import com.sportpassword.bm.member
 import java.lang.reflect.Type
 
 class MemberItemVC : BaseActivity() {
@@ -71,9 +75,61 @@ class MemberItemVC : BaseActivity() {
     }
 
     override fun cellClick(row: Table) {
-        val _row: MainMemberTable? = row as? MainMemberTable
+        val _row: MainMemberTable = row as MainMemberTable
         _row.let {
+            val memberItemEnum: MemberItemEnum? = MemberItemEnum(it.title)
+            if (memberItemEnum != null) {
+                to(mainMemberEnum, memberItemEnum)
+            }
 
+        }
+    }
+
+    private fun to(mainMemberEnum: MainMemberEnum, memberItemEnum: MemberItemEnum) {
+        if (mainMemberEnum == MainMemberEnum.info) {
+            if (memberItemEnum == MemberItemEnum.info) {
+                toRegister()
+            } else if (memberItemEnum == MemberItemEnum.change_password) {
+                toUpdatePassword()
+            }
+        } else if (mainMemberEnum == MainMemberEnum.order) {
+            if (memberItemEnum == MemberItemEnum.cart) {
+                toMemberCartList("member")
+            } else if (memberItemEnum == MemberItemEnum.order) {
+                toMemberOrderList()
+            }
+        } else if (mainMemberEnum == MainMemberEnum.like) {
+            if (memberItemEnum == MemberItemEnum.team) {
+                this.toTeam(null, true, true, true)
+            } else if (memberItemEnum == MemberItemEnum.arena) {
+                this.toArena(true, true, true)
+            } else if (memberItemEnum == MemberItemEnum.teach) {
+                toTeach(true)
+            } else if (memberItemEnum == MemberItemEnum.coach) {
+                toCoach(true)
+            } else if (memberItemEnum == MemberItemEnum.course) {
+                this.toCourse(true, true, true)
+            } else if (memberItemEnum == MemberItemEnum.product) {
+                toProduct(true)
+            } else if (memberItemEnum == MemberItemEnum.store) {
+                toStore(true)
+            }
+        } else if (mainMemberEnum == MainMemberEnum.join) {
+            if (memberItemEnum == MemberItemEnum.team) {
+                toMemberTeamList()
+            } else if (memberItemEnum == MemberItemEnum.tempPlay) {
+                //toMemberSignuplist("temp")
+            } else if (memberItemEnum == MemberItemEnum.course) {
+                //toMemberSignuplist("course")
+            }
+        } else if (mainMemberEnum == MainMemberEnum.manager) {
+            if (memberItemEnum == MemberItemEnum.team) {
+                this.toManager("team")
+            } else if (memberItemEnum == MemberItemEnum.requestManager) {
+                toRequestManagerTeam()
+            } else if (memberItemEnum == MemberItemEnum.course) {
+                this.toManager("course")
+            }
         }
     }
 
@@ -84,6 +140,8 @@ class MemberItemVC : BaseActivity() {
 enum class MemberItemEnum(val chineseName: String) {
     info("帳戶資料"),
     change_password("更改密碼"),
+    email_validate("EMail認證"),
+    mobile_validate("手機認證"),
     cart("購物車"),
     order("訂單查詢"),
     team("球隊"),
@@ -97,10 +155,20 @@ enum class MemberItemEnum(val chineseName: String) {
     requestManager("球隊申請管理權");
 
     companion object {
+
+        operator fun invoke(rawValue: String) = MemberItemEnum.values().find { it.chineseName == rawValue }
         fun allValues(mainMemberEnum: MainMemberEnum): ArrayList<MemberItemEnum> {
             when (mainMemberEnum) {
                 MainMemberEnum.info-> {
-                    return arrayListOf(info, change_password)
+                    val arr: ArrayList<MemberItemEnum> = arrayListOf(info, change_password)
+                    val validate: Int = member.validate
+                    if (validate and EMAIL_VALIDATE <= 0) {
+                        arr.add(email_validate)
+                    }
+                    if (validate and MOBILE_VALIDATE <= 0) {
+                        arr.add(mobile_validate)
+                    }
+                    return arr
                 }
                 MainMemberEnum.order-> {
                     return arrayListOf(cart, order)
@@ -134,14 +202,16 @@ enum class MemberItemEnum(val chineseName: String) {
     fun getIcon(): String {
         when (this) {
             info-> return "ic_info_svg"
+            email_validate-> return "ic_validate_svg"
+            mobile_validate-> return "ic_validate_svg"
             change_password-> return "ic_order_svg"
             cart-> return "ic_cart_svg"
             order-> return "ic_truck_svg"
-            team-> return "ic_team_in_svg"
-            arena-> return "ic_arena_in_svg"
+            team-> return "ic_team_on_svg"
+            arena-> return "ic_arena_on_svg"
             teach-> return "ic_teach_svg"
             coach-> return "ic_coach_svg"
-            course-> return "ic_course_svg"
+            course-> return "ic_course_on_svg"
             product-> return "ic_product_svg"
             store-> return "ic_store_svg"
             tempPlay-> return "ic_tempPlay_svg"
