@@ -214,7 +214,7 @@ enum class MemberItemEnum(val chineseName: String) {
             course-> return "ic_course_on_svg"
             product-> return "ic_product_svg"
             store-> return "ic_store_svg"
-            tempPlay-> return "ic_tempPlay_svg"
+            tempPlay-> return "ic_tempplay_svg"
             requestManager-> return "ic_request_manager_svg"
         }
     }

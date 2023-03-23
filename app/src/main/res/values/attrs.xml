@@ -29,6 +29,10 @@
 
     </declare-styleable>
 
+    <declare-styleable name="MainEditText2">
+
+    </declare-styleable>
+
     <declare-styleable name="NOTV2">
         <attr name="no" format="integer" />
     </declare-styleable>

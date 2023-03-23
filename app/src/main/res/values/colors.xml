@@ -9,6 +9,7 @@
     <color name="colorAccent">#FF4081</color>
     <color name="colorPrimary">#a6d903</color>
     <color name="colorPrimaryDark">#658501</color>
+    <color name="EDIT_TEXT_BACKGROUND">#11D9D9D9</color>
     <color name="FBBLUE">#3e64a2</color>
     <color name="grey">#808080</color>
     <color name="ICONVIEW">#11FFFFFF</color>

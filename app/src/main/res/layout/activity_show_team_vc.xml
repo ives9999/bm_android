@@ -125,7 +125,7 @@
                                         android:id="@+id/introduceNextTimeIV"
                                         android:layout_width="24dp"
                                         android:layout_height="24dp"
-                                        app:srcCompat="@drawable/clock_svg" />
+                                        app:srcCompat="@drawable/ic_clock_svg" />
 
                                     <TextView
                                         android:id="@+id/introduceNextTimeTV"

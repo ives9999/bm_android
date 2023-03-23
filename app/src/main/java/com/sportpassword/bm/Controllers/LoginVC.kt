@@ -14,6 +14,7 @@ import com.sportpassword.bm.R
 import com.sportpassword.bm.Models.SuccessTable
 import com.sportpassword.bm.Services.MemberService
 import com.sportpassword.bm.Utilities.*
+import com.sportpassword.bm.Views.ShowTop2
 import com.sportpassword.bm.databinding.ActivityLoginBinding
 import com.sportpassword.bm.databinding.MytablevcBinding
 
@@ -21,6 +22,8 @@ class LoginVC : BaseActivity() {
 
     private lateinit var binding: ActivityLoginBinding
     private lateinit var view: ViewGroup
+
+    var showTop2: ShowTop2? = null
 
     var table: MemberTable? = null
 
@@ -32,6 +35,12 @@ class LoginVC : BaseActivity() {
         setContentView(view)
         setMyTitle("登入")
         hidekeyboard(binding.root)
+
+        findViewById<ShowTop2>(R.id.top) ?. let {
+            showTop2 = it
+            it.setTitle("登入")
+            it.showPrev(true)
+        }
 
         init()
         //loginEmailTxt.requestFocus()
@@ -50,49 +59,41 @@ class LoginVC : BaseActivity() {
         val margin: Int = (screenWidth - width) / 2
         //val margin: Int = 100
 
-        val constraintLayout: ConstraintLayout = findViewById<ConstraintLayout>(R.id.otherContainer)
-
-        findViewById<TextView>(R.id.forget_password) ?. let {
-
-            val set: ConstraintSet = ConstraintSet()
-            set.clone(constraintLayout)
-            set.connect(it.id, ConstraintSet.START, ConstraintSet.PARENT_ID, ConstraintSet.START, margin)
-            //c.connect(R.id.forget_password, ConstraintSet.TOP, R.id.otherContainer, ConstraintSet.TOP, 0)
-            set.applyTo(constraintLayout)
-
-//            val params: ViewGroup.MarginLayoutParams = it.layoutParams as ViewGroup.MarginLayoutParams
-//            params.marginStart = margin
-//            it.layoutParams = params
-        }
-
-        findViewById<TextView>(R.id.register) ?. let {
-
-            val set: ConstraintSet = ConstraintSet()
-            set.clone(constraintLayout)
-            set.connect(it.id, ConstraintSet.END, ConstraintSet.PARENT_ID, ConstraintSet.END, margin)
-            set.applyTo(constraintLayout)
-
-
-//            val params: ViewGroup.MarginLayoutParams = it.layoutParams as ViewGroup.MarginLayoutParams
-//            params.marginEnd
-//            params.rightMargin = margin
-//            it.layoutParams = params
-        }
+//        val constraintLayout: ConstraintLayout = findViewById<ConstraintLayout>(R.id.otherContainer)
+//
+//        findViewById<TextView>(R.id.forget_password) ?. let {
+//
+//            val set: ConstraintSet = ConstraintSet()
+//            set.clone(constraintLayout)
+//            set.connect(it.id, ConstraintSet.START, ConstraintSet.PARENT_ID, ConstraintSet.START, margin)
+//            //c.connect(R.id.forget_password, ConstraintSet.TOP, R.id.otherContainer, ConstraintSet.TOP, 0)
+//            set.applyTo(constraintLayout)
+//        }
+//
+//        findViewById<TextView>(R.id.register) ?. let {
+//
+//            val set: ConstraintSet = ConstraintSet()
+//            set.clone(constraintLayout)
+//            set.connect(it.id, ConstraintSet.END, ConstraintSet.PARENT_ID, ConstraintSet.END, margin)
+//            set.applyTo(constraintLayout)
+//        }
     }
 
     fun loginSubmit(view: View) {
 
         _hideKeyboard(binding.root)
         loadingAnimation.start()
-        val email = binding.loginEmailTxt.text.toString()
-        if (email.isEmpty()) {
-            Alert.show(this, "警告", "EMail沒填")
-        }
-        val password = binding.loginPasswordTxt.text.toString()
-        if (password.isEmpty()) {
-            Alert.show(this, "警告", "密碼沒填")
-        }
+//        val email = binding.loginEmailTxt.text.toString()
+//        if (email.isEmpty()) {
+//            Alert.show(this, "警告", "EMail沒填")
+//        }
+//        val password = binding.loginPasswordTxt.text.toString()
+//        if (password.isEmpty()) {
+//            Alert.show(this, "警告", "密碼沒填")
+//        }
 
+        val email = ""
+        val password = ""
         val playerID = _getPlayerID();
         //println(playerID)
 

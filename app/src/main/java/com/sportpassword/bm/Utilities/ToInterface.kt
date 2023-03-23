@@ -194,7 +194,12 @@ interface ToInterface {
     }
 
     fun toMember() {
-        val i = Intent(mainDelegate, MemberVC::class.java)
+        var i: Intent? = null
+        if (!member.isLoggedIn) {
+            i = Intent(mainDelegate, LoginVC::class.java)
+        } else {
+            i = Intent(mainDelegate, MemberVC::class.java)
+        }
         mainDelegate.startActivity(i)
     }
 

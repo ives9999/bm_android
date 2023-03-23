@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/login_layout"
@@ -8,124 +8,39 @@
     android:background="@color/MY_BLACK"
     android:clickable="false"
     android:focusableInTouchMode="false"
-    tools:context="com.sportpassword.bm.Controllers.LoginVC">
+    android:orientation="vertical"
+    tools:context=".Controllers.LoginVC">
 
-    <RelativeLayout
-        android:id="@+id/topView"
+    <com.sportpassword.bm.Views.ShowTop2
+        android:id="@+id/top"
+        android:layout_width="match_parent"
+        android:layout_height="54dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="@style/list_text_title"
+        android:layout_marginTop="100dp"
+        android:layout_marginStart="20dp"
+        android:text="登入" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="@style/list_text_general"
+        android:layout_marginTop="16dp"
+        android:layout_marginStart="20dp"
+        android:text="請輸入email與密碼來登入" />
+
+    <com.sportpassword.bm.Views.MainEditText2
+        android:id="@+id/emailET2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:background="@color/MY_GREEN">
-
-        <include layout="@layout/top_view" />
-
-    </RelativeLayout>
-
-    <LinearLayout
-        android:id="@+id/login_container"
-        android:layout_width="match_parent"
-        android:layout_height="370dp"
-        android:layout_below="@id/topView"
-        android:background="@android:color/transparent"
-        android:gravity="center_horizontal"
-        android:orientation="vertical"
-        android:paddingTop="32dp"
-        android:paddingBottom="16dp">
-
-        <EditText
-            android:id="@+id/loginEmailTxt"
-            style="@android:style/Widget.DeviceDefault.Light.EditText"
-            android:layout_width="300dp"
-            android:layout_height="50dp"
-            android:layout_marginTop="80dp"
-            android:layout_marginBottom="24dp"
-            android:background="@drawable/search_linearlayout"
-            android:drawablePadding="12dp"
-            android:ems="10"
-            android:hint="email"
-            android:inputType="textEmailAddress"
-            android:paddingStart="12dp"
-            android:singleLine="false"
-            android:textColor="@color/MY_GREEN"
-            android:textColorHint="@color/grey"
-            android:textSize="18sp" />
-
-        <EditText
-            android:id="@+id/loginPasswordTxt"
-            style="@android:style/Widget.DeviceDefault.Light.EditText"
-            android:layout_width="300dp"
-            android:layout_height="50dp"
-            android:layout_marginBottom="24dp"
-            android:background="@drawable/search_linearlayout"
-            android:drawablePadding="12dp"
-            android:ems="10"
-            android:hint="密碼"
-            android:inputType="textPassword"
-            android:paddingStart="12dp"
-            android:singleLine="false"
-            android:textColor="@color/MY_GREEN"
-            android:textColorHint="@color/grey"
-            android:textSize="18sp" />
-
-        <Button
-            android:id="@+id/button"
-            android:layout_width="300dp"
-            android:layout_height="40dp"
-            android:layout_centerInParent="true"
-            android:layout_marginTop="50dp"
-            android:background="@drawable/button_signup"
-            android:onClick="loginSubmit"
-            android:text="登入"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            app:layout_constraintTop_toBottomOf="@+id/loginPasswordTxt" />
-
-    </LinearLayout>
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/otherContainer"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/login_container"
-        android:layout_centerInParent="false"
-        android:layout_centerVertical="false"
-        android:orientation="horizontal">
-
-        <TextView
-            android:id="@+id/forget_password"
-            style="@style/Widget.AppCompat.Button.Borderless"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="58dp"
-            android:layout_marginTop="2dp"
-            android:onClick="loginForgetPassword"
-            android:text="忘記密碼"
-            android:textAlignment="textStart"
-            android:textColor="@color/MY_GREY"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-
-        <TextView
-            android:id="@+id/register"
-            style="@style/Widget.AppCompat.Button.Borderless"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="2dp"
-            android:layout_marginEnd="58dp"
-            android:onClick="loginRegister"
-            android:text="註冊"
-            android:textAlignment="textEnd"
-            android:textColor="@color/MY_GREEN"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginEnd="20dp" />
 
 
 
-</RelativeLayout>
+
+</LinearLayout>

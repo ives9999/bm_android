@@ -204,6 +204,7 @@ class MemberVC : BaseActivity(), IconView2Delegate {
     fun logout() {
         member.isLoggedIn = false
         member.reset()
+        toLogin()
         //loginout()
     }
 
