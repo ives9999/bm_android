@@ -14,11 +14,14 @@ import com.sportpassword.bm.R
 import com.sportpassword.bm.Models.SuccessTable
 import com.sportpassword.bm.Services.MemberService
 import com.sportpassword.bm.Utilities.*
+import com.sportpassword.bm.Views.MainEditText2
 import com.sportpassword.bm.Views.ShowTop2
+import com.sportpassword.bm.Views.SubmitDelegate
+import com.sportpassword.bm.Views.SubmitOnly
 import com.sportpassword.bm.databinding.ActivityLoginBinding
 import com.sportpassword.bm.databinding.MytablevcBinding
 
-class LoginVC : BaseActivity() {
+class LoginVC : BaseActivity(), SubmitDelegate {
 
     private lateinit var binding: ActivityLoginBinding
     private lateinit var view: ViewGroup
@@ -26,6 +29,9 @@ class LoginVC : BaseActivity() {
     var showTop2: ShowTop2? = null
 
     var table: MemberTable? = null
+
+    var emailET2: MainEditText2? = null
+    var passwordET2: MainEditText2? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,6 +48,14 @@ class LoginVC : BaseActivity() {
             it.showPrev(true)
         }
 
+        findViewById<MainEditText2>(R.id.emailET2) ?. let {
+            emailET2 = it
+        }
+
+        findViewById<MainEditText2>(R.id.passwordET2) ?. let {
+            passwordET2 = it
+        }
+
         findViewById<TextView>(R.id.forgetPasswordTV) ?. let {
             it.setOnClickListener {
                 toForgetPassword()
@@ -52,6 +66,10 @@ class LoginVC : BaseActivity() {
             it.setOnClickListener {
                 toRegister()
             }
+        }
+
+        findViewById<SubmitOnly>(R.id.submitSO) ?. let {
+            it.delegate = this
         }
 
         init()
@@ -91,25 +109,25 @@ class LoginVC : BaseActivity() {
 //        }
     }
 
-    fun loginSubmit(view: View) {
+    override fun submit2() {
 
         _hideKeyboard(binding.root)
-        loadingAnimation.start()
-//        val email = binding.loginEmailTxt.text.toString()
-//        if (email.isEmpty()) {
-//            Alert.show(this, "警告", "EMail沒填")
-//        }
-//        val password = binding.loginPasswordTxt.text.toString()
-//        if (password.isEmpty()) {
-//            Alert.show(this, "警告", "密碼沒填")
-//        }
+        val email: String = emailET2?.text!!
+        if (email.isEmpty()) {
+            Alert.show(this, "警告", "Email沒填")
+            return
+        }
+        val password = passwordET2?.text!!
+        if (password.isEmpty()) {
+            Alert.show(this, "警告", "密碼沒填")
+            return
+        }
 
-        val email = ""
-        val password = ""
         val playerID = _getPlayerID();
         //println(playerID)
 
-        MemberService.login(this, email, password, playerID) { success ->
+        loadingAnimation.start()
+        MemberService.login(this, email!!, password!!, playerID) { success ->
             runOnUiThread {
                 loadingAnimation.stop()
             }
@@ -142,9 +160,8 @@ class LoginVC : BaseActivity() {
 //                        session.dump()
                         //val a = member.isLoggedIn
                         //val b = member.name
-                        val intent = Intent()
-                        setResult(Activity.RESULT_OK, intent)
-                        finish()
+                        finishAffinity()
+                        toMember()
                     } else {
                         runOnUiThread {
                             warning(MemberService.msg)

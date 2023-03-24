@@ -2,6 +2,8 @@ package com.sportpassword.bm.Views
 
 import android.content.Context
 import android.graphics.drawable.Drawable
+import android.text.Editable
+import android.text.TextWatcher
 import android.text.method.HideReturnsTransformationMethod
 import android.text.method.PasswordTransformationMethod
 import android.util.AttributeSet
@@ -30,6 +32,8 @@ class MainEditText2 @JvmOverloads constructor(context: Context, attrs: Attribute
 
     private var isPasswordShow: Boolean = false
 
+    var text: String = ""
+
     init {
         view.findViewById<TextView>(R.id.titleTV) ?. let {
             titleTV = it
@@ -37,6 +41,19 @@ class MainEditText2 @JvmOverloads constructor(context: Context, attrs: Attribute
 
         view.findViewById<EditText>(R.id.contentET) ?. let {
             contentET = it
+            it.addTextChangedListener(object : TextWatcher {
+                override fun afterTextChanged(editable: Editable?) {
+
+                }
+
+                override fun beforeTextChanged(string: CharSequence?, start: Int, count: Int, after: Int) {
+
+                }
+
+                override fun onTextChanged(string: CharSequence?, start: Int, before: Int, count: Int) {
+                    text = string.toString()
+                }
+            })
         }
 
         view.findViewById<ImageView>(R.id.iconIV) ?. let {
