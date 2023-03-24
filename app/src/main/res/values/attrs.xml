@@ -30,7 +30,10 @@
     </declare-styleable>
 
     <declare-styleable name="MainEditText2">
-
+        <attr name="MainEditText2Title" format="string" />
+        <attr name="MainEditText2Icon" format="string" />
+        <attr name="MainEditText2Hint" format="string" />
+        <attr name="MainEditText2Keyobard" format="string" />
     </declare-styleable>
 
     <declare-styleable name="NOTV2">

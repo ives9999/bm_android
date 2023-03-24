@@ -29,6 +29,7 @@ import com.sportpassword.bm.databinding.ActivityMemberVcBinding
 import com.sportpassword.bm.extensions.avatar
 import com.sportpassword.bm.member
 import com.squareup.picasso.Picasso
+import org.jetbrains.anko.runOnUiThread
 import java.lang.Exception
 import java.lang.reflect.Type
 
@@ -189,7 +190,9 @@ class MemberVC : BaseActivity(), IconView2Delegate {
 //                        loginout()
 //                    }
                 } else {
-                    warning("無法從伺服器取得會員資料，請稍後再試或聯絡管理員")
+                    runOnUiThread {
+                        warning("無法從伺服器取得會員資料，請稍後再試或聯絡管理員")
+                    }
                 }
             }
         } else {

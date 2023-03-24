@@ -38,9 +38,81 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
         android:layout_marginTop="30dp"
-        android:layout_marginEnd="20dp" />
+        android:layout_marginEnd="20dp"
+        app:MainEditText2Title="Email"
+        app:MainEditText2Icon="ic_email_svg"
+        app:MainEditText2Hint="davie@gmail.com"
+        app:MainEditText2Keyobard="emailAddress"
+        />
 
+    <com.sportpassword.bm.Views.MainEditText2
+        android:id="@+id/passwordET2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginTop="26dp"
+        app:MainEditText2Title="密碼"
+        app:MainEditText2Icon="ic_password_svg"
+        app:MainEditText2Hint="密碼"
+        app:MainEditText2Keyobard="password"
+        />
 
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:orientation="horizontal">
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
 
+        <TextView
+            android:id="@+id/forgetPasswordTV"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="20dp"
+            android:text="忘記密碼？"
+            android:textColor="@color/TEXT_WHITE33" />
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/submitIV"
+        style="@style/show_button"
+        android:layout_width="match_parent"
+        android:layout_height="52dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="65dp"
+        android:layout_marginEnd="20dp"
+        android:background="@drawable/button_rc_green"
+        android:gravity="center_vertical"
+        android:text="登入"
+        android:textAlignment="center" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="25dp"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="還沒有帳號？"
+            android:textColor="@color/TEXT_WHITE33" />
+
+        <TextView
+            android:id="@+id/registerTV"
+            style="@style/list_text_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:text="註冊"
+            android:textColor="@color/MY_GREEN" />
+    </LinearLayout>
 
 </LinearLayout>

@@ -662,7 +662,8 @@ enum class KEYBOARD(val type: String) {
     default("default"),
     emailAddress("emailAddress"),
     numberPad("numberPad"),
-    URL("URL");
+    URL("URL"),
+    password("password");
 
     override fun toString(): String {
         return type
@@ -674,6 +675,7 @@ enum class KEYBOARD(val type: String) {
             emailAddress -> return InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS
             numberPad -> return InputType.TYPE_CLASS_NUMBER
             URL -> return InputType.TYPE_TEXT_VARIATION_URI
+            password -> return InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD
         }
     }
 
@@ -681,12 +683,15 @@ enum class KEYBOARD(val type: String) {
 
         fun stringToSwift(str: String): Int {
 
+            //val n = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD
+
             when(str) {
 
                 "default"-> return InputType.TYPE_CLASS_TEXT
                 "emailAddress"-> return InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS
                 "numberPad"-> return InputType.TYPE_CLASS_NUMBER
                 "URL"-> return InputType.TYPE_TEXT_VARIATION_URI
+                "password"-> return (InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD)
             }
             return InputType.TYPE_CLASS_TEXT
         }

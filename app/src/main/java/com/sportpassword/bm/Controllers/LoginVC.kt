@@ -42,6 +42,18 @@ class LoginVC : BaseActivity() {
             it.showPrev(true)
         }
 
+        findViewById<TextView>(R.id.forgetPasswordTV) ?. let {
+            it.setOnClickListener {
+                toForgetPassword()
+            }
+        }
+
+        findViewById<TextView>(R.id.registerTV) ?. let {
+            it.setOnClickListener {
+                toRegister()
+            }
+        }
+
         init()
         //loginEmailTxt.requestFocus()
 
