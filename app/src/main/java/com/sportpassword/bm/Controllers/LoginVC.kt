@@ -39,7 +39,7 @@ class LoginVC : BaseActivity(), SubmitDelegate {
         binding = ActivityLoginBinding.inflate(layoutInflater)
         view = binding.root
         setContentView(view)
-        setMyTitle("登入")
+        //setMyTitle("登入")
         hidekeyboard(binding.root)
 
         findViewById<ShowTop2>(R.id.top) ?. let {
@@ -72,7 +72,7 @@ class LoginVC : BaseActivity(), SubmitDelegate {
             it.delegate = this
         }
 
-        init()
+        //init()
         //loginEmailTxt.requestFocus()
 
 //        loginEmailTxt.setText("ives@housetube.tw")
@@ -80,34 +80,14 @@ class LoginVC : BaseActivity(), SubmitDelegate {
 
     }
 
-    override fun init() {
-        isPrevIconShow = true
-        super.init()
-
-        val dp: Int = 300
-        val width: Int = dp.dpToPx(this)
-        val margin: Int = (screenWidth - width) / 2
-        //val margin: Int = 100
-
-//        val constraintLayout: ConstraintLayout = findViewById<ConstraintLayout>(R.id.otherContainer)
+//    override fun init() {
+//        isPrevIconShow = true
+//        super.init()
 //
-//        findViewById<TextView>(R.id.forget_password) ?. let {
-//
-//            val set: ConstraintSet = ConstraintSet()
-//            set.clone(constraintLayout)
-//            set.connect(it.id, ConstraintSet.START, ConstraintSet.PARENT_ID, ConstraintSet.START, margin)
-//            //c.connect(R.id.forget_password, ConstraintSet.TOP, R.id.otherContainer, ConstraintSet.TOP, 0)
-//            set.applyTo(constraintLayout)
-//        }
-//
-//        findViewById<TextView>(R.id.register) ?. let {
-//
-//            val set: ConstraintSet = ConstraintSet()
-//            set.clone(constraintLayout)
-//            set.connect(it.id, ConstraintSet.END, ConstraintSet.PARENT_ID, ConstraintSet.END, margin)
-//            set.applyTo(constraintLayout)
-//        }
-    }
+//        val dp: Int = 300
+//        val width: Int = dp.dpToPx(this)
+//        val margin: Int = (screenWidth - width) / 2
+//    }
 
     override fun submit2() {
 

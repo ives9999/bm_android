@@ -5,15 +5,14 @@ import org.json.JSONObject
 import com.sportpassword.bm.Utilities.*
 import com.sportpassword.bm.member
 import com.sportpassword.bm.Models.*
-import okhttp3.Call
-import okhttp3.Callback
+import okhttp3.*
 import okhttp3.MediaType.Companion.toMediaType
-import okhttp3.MultipartBody
-import okhttp3.RequestBody
 import okhttp3.RequestBody.Companion.asRequestBody
 import java.io.File
 import java.io.IOException
 import java.lang.Exception
+import java.util.*
+import kotlin.collections.HashMap
 
 /**
  * Created by ives on 2018/2/4.
@@ -159,33 +158,35 @@ object MemberService: DataService() {
         params.put("password_old", oldPassword)
         params.put("password", newPassword)
         params.put("repassword", rePassword)
-        params.put("source", "app")
+        params.put("device", "app")
         params.put("token", member.token!!)
         //val requestBody = body.toString()
         //println(requestBody)
 
-        val request: okhttp3.Request = getRequest(url, params)
+        _simpleService(context, url, params, complete)
 
-        okHttpClient.newCall(request).enqueue(object : Callback {
-            override fun onFailure(call: Call, e: IOException) {
-                msg = "網路錯誤，無法跟伺服器更新資料"
-                complete(success)
-            }
-
-            override fun onResponse(call: Call, response: okhttp3.Response) {
-
-                try {
-                    jsonString = response.body!!.string()
-//                    println(jsonString)
-                    success = true
-                } catch (e: Exception) {
-                    success = false
-                    msg = "parse json failed，請洽管理員"
-                    println(e.localizedMessage)
-                }
-                complete(success)
-            }
-        })
+//        val request: okhttp3.Request = getRequest(url, params)
+//
+//        okHttpClient.newCall(request).enqueue(object : Callback {
+//            override fun onFailure(call: Call, e: IOException) {
+//                msg = "網路錯誤，無法跟伺服器更新資料"
+//                complete(success)
+//            }
+//
+//            override fun onResponse(call: Call, response: okhttp3.Response) {
+//
+//                try {
+//                    jsonString = response.body!!.string()
+////                    println(jsonString)
+//                    success = true
+//                } catch (e: Exception) {
+//                    success = false
+//                    msg = "parse json failed，請洽管理員"
+//                    println(e.localizedMessage)
+//                }
+//                complete(success)
+//            }
+//        })
     }
 
     fun coinlist(context: Context, member_token: String?, page: Int=1, perPage: Int=20, complete: CompletionHandler) {
@@ -263,39 +264,41 @@ object MemberService: DataService() {
     }
 
     fun forgetPassword(context: Context, email: String, complete: CompletionHandler) {
-        val lowerCaseEmail = email.toLowerCase()
+        val lowerCaseEmail = email.lowercase(Locale.ROOT)
         val url = URL_FORGETPASSWORD
         //println(url)
 
         val params: HashMap<String, String> = hashMapOf()
 //        val body = JSONObject()
-        params.put("email", email)
-        params.put("source", "app")
-//        val requestBody = body.toString()
-        //println(requestBody)
+        params.put("email", lowerCaseEmail)
+        params.put("device", "app")
+        //val requestBody = body.toString()
+        //println(params)
 
-        val request: okhttp3.Request = getRequest(url, params)
+        _simpleService(context, url, params, complete)
 
-        okHttpClient.newCall(request).enqueue(object : Callback {
-            override fun onFailure(call: Call, e: IOException) {
-                msg = "網路錯誤，無法跟伺服器更新資料"
-                complete(success)
-            }
-
-            override fun onResponse(call: Call, response: okhttp3.Response) {
-
-                try {
-                    jsonString = response.body!!.string()
-//                    println(jsonString)
-                    success = true
-                } catch (e: Exception) {
-                    success = false
-                    msg = "parse json failed，請洽管理員"
-                    println(e.localizedMessage)
-                }
-                complete(success)
-            }
-        })
+//        val request: Request = getRequest(url, params)
+//
+//        okHttpClient.newCall(request).enqueue(object : Callback {
+//            override fun onFailure(call: Call, e: IOException) {
+//                msg = "網路錯誤，無法跟伺服器更新資料"
+//                complete(success)
+//            }
+//
+//            override fun onResponse(call: Call, response: Response) {
+//
+//                try {
+//                    jsonString = response.body!!.string()
+////                    println(jsonString)
+//                    success = true
+//                } catch (e: Exception) {
+//                    success = false
+//                    msg = "parse json failed，請洽管理員"
+//                    println(e.localizedMessage)
+//                }
+//                complete(success)
+//            }
+//        })
     }
 
     override fun getOneURL(): String {

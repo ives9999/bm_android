@@ -10,13 +10,20 @@ import com.sportpassword.bm.Models.SuccessTable
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.MemberService
 import com.sportpassword.bm.Utilities.Alert
+import com.sportpassword.bm.Views.MainEditText2
+import com.sportpassword.bm.Views.ShowTop2
+import com.sportpassword.bm.Views.SubmitDelegate
+import com.sportpassword.bm.Views.SubmitOnly
 import com.sportpassword.bm.databinding.ActivityForgetPasswordBinding
 import com.sportpassword.bm.databinding.MytablevcBinding
 
-class ForgetPasswordVC : BaseActivity() {
+class ForgetPasswordVC : BaseActivity(), SubmitDelegate {
 
     private lateinit var binding: ActivityForgetPasswordBinding
     private lateinit var view: ViewGroup
+
+    var showTop2: ShowTop2? = null
+    var emailET2: MainEditText2? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -25,28 +32,47 @@ class ForgetPasswordVC : BaseActivity() {
         view = binding.root
         setContentView(view)
 
-        setMyTitle("忘記密碼")
+        //setMyTitle("忘記密碼")
         hidekeyboard(binding.root)
         //forgetPasswordEmailTxt.setText("ives@housetube.tw")
-        binding.forgetPasswordEmailTxt.requestFocus()
 
-        init()
+        findViewById<ShowTop2>(R.id.top) ?. let {
+            showTop2 = it
+            it.setTitle("忘記密碼")
+            it.showPrev(true)
+        }
+
+        findViewById<MainEditText2>(R.id.emailET2) ?. let {
+            emailET2 = it
+            it.requestFocus()
+        }
+
+        findViewById<SubmitOnly>(R.id.submitSO) ?. let {
+            it.delegate = this
+        }
+
+        //binding.forgetPasswordEmailTxt.requestFocus()
+
+        //init()
     }
 
-    override fun init() {
-        isPrevIconShow = true
-        super.init()
-    }
+//    override fun init() {
+//        isPrevIconShow = true
+//        super.init()
+//    }
 
-    fun forgetPasswordSubmit(view: View) {
-        val email = binding.forgetPasswordEmailTxt.text.toString()
+    override fun submit2() {
+        val email: String = emailET2!!.text
         if (email.isEmpty()) {
             Alert.show(this, "警告", "EMail沒填")
+            return
         }
 
         loadingAnimation.start()
         MemberService.forgetPassword(this, email) { success ->
-            loadingAnimation.stop()
+            runOnUiThread {
+                loadingAnimation.stop()
+            }
             if (success) {
 
                 var t: SuccessTable? = null
@@ -62,7 +88,7 @@ class ForgetPasswordVC : BaseActivity() {
                     if (t.success) {
                         runOnUiThread {
                             info(t.msg, "", "關閉") {
-                                finish()
+                                toLogin()
                             }
                         }
                     } else {
