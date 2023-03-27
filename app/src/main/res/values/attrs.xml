@@ -34,6 +34,7 @@
         <attr name="MainEditText2Icon" format="string" />
         <attr name="MainEditText2Hint" format="string" />
         <attr name="MainEditText2Keyobard" format="string" />
+        <attr name="MainEditText2Required" format="boolean" />
     </declare-styleable>
 
     <declare-styleable name="NOTV2">

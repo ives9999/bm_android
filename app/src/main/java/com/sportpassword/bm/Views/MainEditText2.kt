@@ -25,18 +25,24 @@ class MainEditText2 @JvmOverloads constructor(context: Context, attrs: Attribute
     val view: View = View.inflate(context, R.layout.main_edit_text2, this)
 
     private var titleTV: TextView? = null
+    private var requiredTV: TextView? = null
     private var contentET: EditText? = null
     private var iconIV: ImageView? = null
     private var deleteIV: ImageView? = null
     private var eyeIV: ImageView? = null
 
     private var isPasswordShow: Boolean = false
+    private var isRequired: Boolean = false
 
     var text: String = ""
 
     init {
         view.findViewById<TextView>(R.id.titleTV) ?. let {
             titleTV = it
+        }
+
+        view.findViewById<TextView>(R.id.requiredTV) ?. let {
+            requiredTV = it
         }
 
         view.findViewById<EditText>(R.id.contentET) ?. let {
@@ -104,6 +110,15 @@ class MainEditText2 @JvmOverloads constructor(context: Context, attrs: Attribute
                     eyeIV?.visibility = View.VISIBLE
                 } else {
                     eyeIV?.visibility = View.INVISIBLE
+                }
+            }
+
+            if (typedArray.hasValue(R.styleable.MainEditText2_MainEditText2Required)) {
+                val isRequired: Boolean = typedArray.getBoolean(R.styleable.MainEditText2_MainEditText2Required, false)
+                if (isRequired) {
+                    requiredTV?.visibility = View.VISIBLE
+                } else {
+                    requiredTV?.visibility = View.GONE
                 }
             }
         }
