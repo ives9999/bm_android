@@ -91,6 +91,10 @@ class MemberItemVC : BaseActivity() {
                 toRegister()
             } else if (memberItemEnum == MemberItemEnum.change_password) {
                 toUpdatePassword()
+            } else if (memberItemEnum == MemberItemEnum.email_validate) {
+                toValidate("email")
+            } else if (memberItemEnum == MemberItemEnum.mobile_validate) {
+                toValidate("mobile")
             }
         } else if (mainMemberEnum == MainMemberEnum.order) {
             if (memberItemEnum == MemberItemEnum.cart) {

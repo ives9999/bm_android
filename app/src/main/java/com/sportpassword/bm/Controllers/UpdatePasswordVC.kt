@@ -36,7 +36,7 @@ class UpdatePasswordVC : BaseActivity(), SubmitDelegate {
 
         findViewById<ShowTop2>(R.id.top) ?. let {
             showTop2 = it
-            it.setTitle("忘記密碼")
+            it.setTitle("更改密碼")
             it.showPrev(true)
         }
 

@@ -56,4 +56,8 @@
         <attr name="showTab2TV2" format="string" />
         <attr name="showTab2TV3" format="string" />
     </declare-styleable>
+
+    <declare-styleable name="SubmitOnly">
+        <attr name="submitOnlyTV" format="string" />
+    </declare-styleable>
 </resources>

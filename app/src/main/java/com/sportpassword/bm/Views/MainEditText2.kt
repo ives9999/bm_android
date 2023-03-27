@@ -130,6 +130,18 @@ class MainEditText2 @JvmOverloads constructor(context: Context, attrs: Attribute
 //        }
     }
 
+    fun setLabel(label: String) {
+        titleTV ?. let {
+            it.text = label
+        }
+    }
+
+    fun setValue(value: String) {
+        contentET ?. let {
+            it.setText(value)
+        }
+    }
+
     private fun setHint(hint: String) {
         contentET ?. let {
             it.hint = hint

@@ -16,9 +16,17 @@ class SubmitOnly @JvmOverloads constructor(context: Context, attrs: AttributeSet
     var submitTV: TextView? = null
 
     init {
-        view.findViewById<TextView>(R.id.submitTV) ?. let {
+        view.findViewById<TextView>(R.id.submitTV)?.let {
             submitTV = it
             setOnClickListener()
+        }
+
+        attrs?.let {
+            val typedArray = context.obtainStyledAttributes(it, R.styleable.SubmitOnly, 0, 0)
+
+            if (typedArray.hasValue(R.styleable.SubmitOnly_submitOnlyTV)) {
+                setText(typedArray.getString(R.styleable.SubmitOnly_submitOnlyTV)!!)
+            }
         }
     }
 
@@ -28,6 +36,10 @@ class SubmitOnly @JvmOverloads constructor(context: Context, attrs: AttributeSet
                 delegate?.submit2()
             }
         }
+    }
+
+    fun setText(text: String) {
+        submitTV?.text = text
     }
 }
 

@@ -14,7 +14,7 @@
         android:layout_marginEnd="20dp"
         android:background="@drawable/button_rc_green"
         android:gravity="center_vertical"
-        android:text="登入"
+        android:text="送出"
         android:textAlignment="center" />
 
 </LinearLayout>
