@@ -60,9 +60,11 @@ class ValidateVC : BaseActivity(), SubmitDelegate {
             if (type == "email") {
                 it.setLabel("Email")
                 it.setValue(member.email!!)
+                it.setIcon("ic_email_svg")
             } else if (type == "mobile") {
                 it.setLabel("手機號碼")
                 it.setValue(member.mobile!!)
+                it.setIcon("ic_mobile_svg")
             }
         }
 

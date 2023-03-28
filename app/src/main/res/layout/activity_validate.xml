@@ -25,6 +25,7 @@
         app:MainEditText2Icon="ic_email_svg"
         app:MainEditText2Hint="davie@gmail.com"
         app:MainEditText2Keyobard="emailAddress"
+        app:MainEditText2Required="true"
         />
 
     <com.sportpassword.bm.Views.MainEditText2
@@ -37,6 +38,7 @@
         app:MainEditText2Title="認證碼"
         app:MainEditText2Icon="ic_password_svg"
         app:MainEditText2Hint="請填寫收到的認證碼"
+        app:MainEditText2Required="true"
         />
 
     <com.sportpassword.bm.Views.SubmitOnly

@@ -10,15 +10,24 @@ import com.sportpassword.bm.Models.SuccessTable
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.MemberService
 import com.sportpassword.bm.Utilities.jsonToModel
+import com.sportpassword.bm.Views.MainEditText2
+import com.sportpassword.bm.Views.ShowTop2
+import com.sportpassword.bm.Views.SubmitDelegate
+import com.sportpassword.bm.Views.SubmitOnly
 import com.sportpassword.bm.databinding.ActivityMemberBankVcBinding
 import com.sportpassword.bm.databinding.MytablevcBinding
 import com.sportpassword.bm.member
 
-class MemberBankVC : BaseActivity() {
+class MemberBankVC : BaseActivity(), SubmitDelegate {
 
     private lateinit var binding: ActivityMemberBankVcBinding
     private lateinit var view: ViewGroup
 
+    var showTop2: ShowTop2? = null
+    var nameET2: MainEditText2? = null
+    var branchET2: MainEditText2? = null
+    var codeET2: MainEditText2? = null
+    var accountET2: MainEditText2? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -26,68 +35,95 @@ class MemberBankVC : BaseActivity() {
         view = binding.root
         setContentView(view)
 
-        setMyTitle("會員銀行帳戶資訊")
-
-        findViewById<ImageView>(R.id.clear_bank) ?. let { clear ->
-            clear.setOnClickListener {
-                clearButtonPressed(binding.clearBank)
-            }
+        findViewById<ShowTop2>(R.id.top) ?. let {
+            showTop2 = it
+            it.showPrev(true)
+            it.setTitle("會員銀行帳戶")
         }
 
-        findViewById<ImageView>(R.id.clear_branch) ?. let { clear ->
-            clear.setOnClickListener {
-                clearButtonPressed(clear)
-            }
+        findViewById<MainEditText2>(R.id.nameET2) ?. let {
+            nameET2 = it
+            it.requestFocus()
         }
 
-        findViewById<ImageView>(R.id.clear_bank_code) ?. let { clear ->
-            clear.setOnClickListener {
-                clearButtonPressed(clear)
-            }
+        findViewById<MainEditText2>(R.id.branchET2) ?. let {
+            branchET2 = it
         }
 
-        findViewById<ImageView>(R.id.clear_account) ?. let { clear ->
-            clear.setOnClickListener {
-                clearButtonPressed(clear)
-            }
+        findViewById<MainEditText2>(R.id.codeET2) ?. let {
+            codeET2 = it
         }
+
+        findViewById<MainEditText2>(R.id.accountET2) ?. let {
+            accountET2 = it
+        }
+
+        findViewById<SubmitOnly>(R.id.submitSO) ?. let {
+            it.delegate = this
+        }
+
+
+
+//        setMyTitle("會員銀行帳戶資訊")
+
+//        findViewById<ImageView>(R.id.clear_bank) ?. let { clear ->
+//            clear.setOnClickListener {
+//                clearButtonPressed(binding.clearBank)
+//            }
+//        }
+//
+//        findViewById<ImageView>(R.id.clear_branch) ?. let { clear ->
+//            clear.setOnClickListener {
+//                clearButtonPressed(clear)
+//            }
+//        }
+//
+//        findViewById<ImageView>(R.id.clear_bank_code) ?. let { clear ->
+//            clear.setOnClickListener {
+//                clearButtonPressed(clear)
+//            }
+//        }
+//
+//        findViewById<ImageView>(R.id.clear_account) ?. let { clear ->
+//            clear.setOnClickListener {
+//                clearButtonPressed(clear)
+//            }
+//        }
 
         init()
     }
 
     override fun init() {
-        isPrevIconShow = true
-        super.init()
 
-        binding.bankTF.setText(member.bank)
-        binding.branchTF.setText(member.branch)
+        nameET2?.setValue(member.bank!!)
+        branchET2?.setValue(member.branch!!)
         if (member.bank_code != null) {
-            binding.bankCodeTF.setText(member.bank_code!!.toString())
+            codeET2?.setValue(member.bank_code!!.toString())
         }
-        binding.accountTF.setText(member.account)
+        accountET2?.setValue(member.account!!)
     }
 
-    fun submitButtonPressed(view: View) {
+    override fun submit2() {
 
         msg = ""
 
-        if (binding.bankTF.text.isEmpty()) {
+        if (nameET2!!.text.isEmpty()) {
             msg += "沒有填寫銀行名稱\n"
         }
-        if (binding.branchTF.text.isEmpty()) {
+        if (branchET2!!.text.isEmpty()) {
             msg += "沒有填寫分行名稱\n"
         }
-        if (binding.bankCodeTF.text.isEmpty()) {
+        if (codeET2!!.text.isEmpty()) {
             msg += "沒有填寫銀行代碼\n"
         }
-        if (binding.accountTF.text.isEmpty()) {
+        if (accountET2!!.text.isEmpty()) {
             msg += "沒有填寫銀行帳號\n"
         }
 
-        params["bank"] = binding.bankTF.text.toString()
-        params["branch"] = binding.branchTF.text.toString()
-        params["bank_code"] = binding.bankCodeTF.text.toString()
-        params["account"] = binding.accountTF.text.toString()
+        params["bank"] = nameET2!!.text.toString()
+        params["branch"] = branchET2!!.text.toString()
+        params["bank_code"] = codeET2!!.text.toString()
+        params["account"] = accountET2!!.text.toString()
         params["member_token"] = member.token!!
 
         params["do"] = "update"
@@ -99,7 +135,9 @@ class MemberBankVC : BaseActivity() {
 
         loadingAnimation.start()
         MemberService.bank(this, params) { success ->
-            loadingAnimation.stop()
+            runOnUiThread {
+                loadingAnimation.stop()
+            }
             if (success) {
                 try {
                     val successTable: SuccessTable? = jsonToModel<SuccessTable>(MemberService.jsonString)
@@ -127,26 +165,26 @@ class MemberBankVC : BaseActivity() {
 
     }
 
-    fun cancelButtonPressed(view: View) {
-        prev()
-    }
-
-    private fun clearButtonPressed(view: View) {
-        val tag = view.tag
-
-        when (tag) {
-            "1" -> {
-                binding.bankTF.setText("")
-            }
-            "2" -> {
-                binding.branchTF.setText("")
-            }
-            "3"-> {
-                binding.bankCodeTF.setText("")
-            }
-            "4"-> {
-                binding.accountTF.setText("")
-            }
-        }
-    }
+//    fun cancelButtonPressed(view: View) {
+//        prev()
+//    }
+//
+//    private fun clearButtonPressed(view: View) {
+//        val tag = view.tag
+//
+//        when (tag) {
+//            "1" -> {
+//                binding.bankTF.setText("")
+//            }
+//            "2" -> {
+//                binding.branchTF.setText("")
+//            }
+//            "3"-> {
+//                binding.bankCodeTF.setText("")
+//            }
+//            "4"-> {
+//                binding.accountTF.setText("")
+//            }
+//        }
+//    }
 }

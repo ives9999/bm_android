@@ -124,7 +124,7 @@ class MainEditText2 @JvmOverloads constructor(context: Context, attrs: Attribute
         }
     }
 
-    private fun setIcon(icon: String) {
+    fun setIcon(icon: String) {
         val resourceID1: Int = getResourceID(context, icon, "drawable")
         val drawAbleLeft: Drawable = getDrawable(context, resourceID1)!!
         iconIV?.image = drawAbleLeft
