@@ -12,7 +12,6 @@ import android.widget.EditText
 import android.widget.ImageView
 import android.widget.RelativeLayout
 import android.widget.TextView
-import androidx.core.content.ContextCompat
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Utilities.KEYBOARD
 import org.jetbrains.anko.image
