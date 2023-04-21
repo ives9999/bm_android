@@ -95,7 +95,7 @@ abstract class MyTableVC : BaseActivity() {
         } else {
             dataService.getList(this, token, params, _page, _perPage) { success ->
                 jsonString = dataService.jsonString
-                //println(jsonString)
+                println(jsonString)
                 getDataEnd(success)
             }
         }
