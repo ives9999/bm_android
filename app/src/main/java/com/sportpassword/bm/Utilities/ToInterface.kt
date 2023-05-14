@@ -601,6 +601,12 @@ interface ToInterface {
         mainDelegate.startActivity(i)
     }
 
+    fun toMatch(member_like: Boolean = false) {
+        val i = Intent(mainDelegate, MatchVC::class.java)
+        i.putExtra("member_like", member_like)
+        mainDelegate.startActivity(i)
+    }
+
     fun toTeach(member_like: Boolean = false) {
         val i = Intent(mainDelegate, TeachVC::class.java)
         i.putExtra("member_like", member_like)

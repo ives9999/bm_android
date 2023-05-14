@@ -29,8 +29,10 @@ open class MoreVC : MyTableVC() {
         rows.add(r3)
         val r4: MoreRow = MoreRow("體育用品店", "store", "store", R.color.MY_WHITE)
         rows.add(r4)
-        val r5: MoreRow = MoreRow("推播訊息", "pn", "push", R.color.MY_WHITE)
+        val r5: MoreRow = MoreRow("賽事", "match", "match", R.color.MY_WHITE)
         rows.add(r5)
+        val r6: MoreRow = MoreRow("推播訊息", "pn", "push", R.color.MY_WHITE)
+        rows.add(r6)
 
 
         val p = context.applicationContext.packageManager.getPackageInfo(
@@ -41,8 +43,8 @@ open class MoreVC : MyTableVC() {
         val n = p.versionName
         val version: String = "$n#$v"
 
-        val r6: MoreRow = MoreRow("版本", "version", "version", R.color.MY_WHITE, version)
-        rows.add(r6)
+        val r7: MoreRow = MoreRow("版本", "version", "version", R.color.MY_WHITE, version)
+        rows.add(r7)
 
         return rows
     }
@@ -80,15 +82,16 @@ open class MoreVC : MyTableVC() {
         val row: MoreRow = moreRows[idx]
         val key: String = row.key
         when (key) {
-            "product"-> this.toProduct()
-            "coach"-> this.toCoach()
-            "teach"-> this.toTeach()
-            "store"-> this.toStore()
-            "pn"-> {
+            "product" -> this.toProduct()
+            "coach" -> this.toCoach()
+            "teach" -> this.toTeach()
+            "store" -> this.toStore()
+            "match" -> this.toMatch()
+            "pn" -> {
                 val intent = Intent(activity, ShowPNVC::class.java)
                 startActivity(intent)
             }
-            "version"-> {
+            "version" -> {
                 val p = context.applicationContext.packageManager.getPackageInfo(
                     context.packageName,
                     0

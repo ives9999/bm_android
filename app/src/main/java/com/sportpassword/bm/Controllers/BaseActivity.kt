@@ -319,6 +319,7 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener,
         URL_TT_DELETE = URL_HOME + "%s/tt/delete"
         URL_TT_UPDATE = URL_HOME + "%s/tt/update"
         URL_UPDATE = URL_HOME + "%s/update"
+        URL_MATCH_LIST = URL_HOME + "match/list"
 
         FEATURED_PATH = BASE_URL + FEATURED_PATH
     }
