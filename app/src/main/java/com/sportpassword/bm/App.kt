@@ -1,15 +1,25 @@
 package com.sportpassword.bm
 
-import android.app.Activity
 import android.app.Application
 import android.content.Context
+import androidx.lifecycle.SavedStateHandle
+import com.facebook.stetho.Stetho
+import com.google.gson.Gson
 import com.onesignal.OSNotificationOpenedResult
-import com.onesignal.OneSignal
-import com.sportpassword.bm.Utilities.*
 import com.onesignal.OSNotificationReceivedEvent
+import com.onesignal.OneSignal
 import com.sportpassword.bm.Controllers.BaseActivity
 import com.sportpassword.bm.Models.Member
-import org.jetbrains.anko.runOnUiThread
+import com.sportpassword.bm.Utilities.MyOneSignal
+import com.sportpassword.bm.bm_new.data.remote_source.NetworkModule
+import com.sportpassword.bm.bm_new.data.repo.match.MatchRepo
+import com.sportpassword.bm.bm_new.data.repo.match.MatchRepoImpl
+import com.sportpassword.bm.bm_new.ui.match.MatchVM
+import org.koin.android.ext.koin.androidContext
+import org.koin.androidx.viewmodel.dsl.viewModel
+import org.koin.core.context.GlobalContext.startKoin
+import org.koin.dsl.module
+import timber.log.Timber
 
 /**
  * Created by ives on 2018/2/6.
@@ -19,7 +29,7 @@ val member: Member by lazy {
     App.member!!
 }
 
-class App: Application() {
+class App : Application() {
 
     companion object {
         var ctx: Context? = null
@@ -56,7 +66,13 @@ class App: Application() {
         super.onCreate()
         ctx = applicationContext
 
-
+        /** kai */
+        setupKoin()
+        if (BuildConfig.DEBUG) {
+            Timber.plant(Timber.DebugTree())
+            Stetho.initializeWithDefaults(this)
+        }
+        /** kai */
 
         //registerActivityLifecycleCallbacks()
 //        val session: SharedPreferences = this.getSharedPreferences(SESSION_FILENAME, 0)
@@ -86,7 +102,6 @@ class App: Application() {
 //            MyOneSignal.openHandler(applicationContext, result)
 
 
-
 //            val builder = AlertDialog.Builder(applicationContext)
 //            builder.setTitle(title)
 //            builder.setMessage(content)
@@ -97,10 +112,10 @@ class App: Application() {
             //no.remoteNotificationReceived(this, result.notification)
             //val launchUrl = result.notification.launchURL
             //if (launchUrl != null) {
-                //val intent: Intent = Intent(applicationContext, ShowPNVC::class.java)
-                //intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT or Intent.FLAG_ACTIVITY_NEW_TASK)
-                //intent.putExtra("openURL", launchUrl)
-                //startActivity(intent)
+            //val intent: Intent = Intent(applicationContext, ShowPNVC::class.java)
+            //intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT or Intent.FLAG_ACTIVITY_NEW_TASK)
+            //intent.putExtra("openURL", launchUrl)
+            //startActivity(intent)
             //}
 
         }
@@ -187,6 +202,40 @@ class App: Application() {
 
         return null
     }
+
+    /** kai */
+    private fun setupKoin() {
+        val utilModule = module {
+            single<Gson> {
+                Gson()
+            }
+        }
+        val remoteModule = module {
+            single { NetworkModule.provideOkHttpClient() }
+            single { NetworkModule.provideRetrofit(get()) }
+            single { NetworkModule.provideMatchApi(get()) }
+        }
+
+        val repoModule = module {
+            single<MatchRepo> { MatchRepoImpl(get()) }
+        }
+
+        val vmModule = module {
+            viewModel { (handle: SavedStateHandle) -> MatchVM(handle, get()) }
+
+        }
+
+        startKoin {
+            androidContext(this@App)
+            modules(
+                utilModule,
+                remoteModule,
+                repoModule,
+                vmModule
+            )
+        }
+    }
+    /** kai */
 
 //    val accessTokenBuilder: Configuration.Builder
 //        get() {

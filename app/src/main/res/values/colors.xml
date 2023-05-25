@@ -52,6 +52,8 @@
     <color name="TEXTGRAY">#BFBFBF</color>
     <color name="TEXT_LEAVE">#FF4C4C</color>
     <color name="TEXT_LEAVE_BK">#44FF4C4C</color>
+    <color name="WHITE_70">#B3FFFFFF</color>
+    <color name="WHITE_26">#42FFFFFF</color>
     <color name="TEXT_WHITE">#d1d1d1</color>
     <color name="TEXT_WHITE99">#99FFFFFF</color>
     <color name="TEXT_WHITE77">#77FFFFFF</color>

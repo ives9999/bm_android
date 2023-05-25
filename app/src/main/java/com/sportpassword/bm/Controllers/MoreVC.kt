@@ -1,14 +1,13 @@
 package com.sportpassword.bm.Controllers
 
-import android.app.Activity
 import android.app.AlertDialog
 import android.content.Intent
 import android.os.Bundle
-import android.view.ViewGroup
 import androidx.core.content.pm.PackageInfoCompat
 import com.sportpassword.bm.Adapters.MoreAdapter
 import com.sportpassword.bm.Data.MoreRow
 import com.sportpassword.bm.R
+import com.sportpassword.bm.bm_new.ui.match.MatchActivity
 import com.sportpassword.bm.databinding.ActivityMoreVcBinding
 
 open class MoreVC : MyTableVC() {
@@ -29,8 +28,10 @@ open class MoreVC : MyTableVC() {
         rows.add(r3)
         val r4: MoreRow = MoreRow("體育用品店", "store", "store", R.color.MY_WHITE)
         rows.add(r4)
-        val r5: MoreRow = MoreRow("推播訊息", "pn", "push", R.color.MY_WHITE)
+        val r5: MoreRow = MoreRow("賽事", "match", "match", R.color.MY_WHITE)
         rows.add(r5)
+        val r6: MoreRow = MoreRow("推播訊息", "pn", "push", R.color.MY_WHITE)
+        rows.add(r6)
 
 
         val p = context.applicationContext.packageManager.getPackageInfo(
@@ -41,8 +42,8 @@ open class MoreVC : MyTableVC() {
         val n = p.versionName
         val version: String = "$n#$v"
 
-        val r6: MoreRow = MoreRow("版本", "version", "version", R.color.MY_WHITE, version)
-        rows.add(r6)
+        val r7: MoreRow = MoreRow("版本", "version", "version", R.color.MY_WHITE, version)
+        rows.add(r7)
 
         return rows
     }
@@ -80,15 +81,20 @@ open class MoreVC : MyTableVC() {
         val row: MoreRow = moreRows[idx]
         val key: String = row.key
         when (key) {
-            "product"-> this.toProduct()
-            "coach"-> this.toCoach()
-            "teach"-> this.toTeach()
-            "store"-> this.toStore()
-            "pn"-> {
+            "product" -> this.toProduct()
+            "coach" -> this.toCoach()
+            "teach" -> this.toTeach()
+            "store" -> this.toStore()
+            "match" -> {
+                Intent(this, MatchActivity::class.java).apply {
+                    startActivity(this)
+                }
+            }
+            "pn" -> {
                 val intent = Intent(activity, ShowPNVC::class.java)
                 startActivity(intent)
             }
-            "version"-> {
+            "version" -> {
                 val p = context.applicationContext.packageManager.getPackageInfo(
                     context.packageName,
                     0
