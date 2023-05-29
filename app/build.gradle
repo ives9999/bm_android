@@ -14,6 +14,9 @@ plugins {
     id 'kotlin-android'
     //id 'kotlin-android-extensions'
     id 'org.jetbrains.kotlin.android'
+
+    //for fcm
+    id 'com.google.gms.google-services'
 }
 
 //repositories {
@@ -174,6 +177,9 @@ dependencies {
 
     //circle image
     implementation 'com.github.siyamed:android-shape-imageview:0.9.+@aar'
+
+    // Import the Firebase BoM
+    implementation 'com.google.firebase:firebase-messaging-ktx:23.1.2'
 }
 
 //configurations.all {

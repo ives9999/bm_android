@@ -27,6 +27,7 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import com.google.firebase.messaging.FirebaseMessaging
 import com.google.gson.internal.LinkedTreeMap
 import com.onesignal.OneSignal
 import com.sportpassword.bm.Adapters.OneSectionAdapter
@@ -950,6 +951,12 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener,
         delegate = this
 
         loadingAnimation = LoadingAnimation(this)
+
+        FirebaseMessaging.getInstance().token.addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                println("APNs device token: ${task.result}")
+            }
+        }
 
         //MyOneSignal.clear()
 
