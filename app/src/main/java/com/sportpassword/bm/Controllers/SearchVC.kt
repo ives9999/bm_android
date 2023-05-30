@@ -13,6 +13,7 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
+import com.google.firebase.messaging.FirebaseMessaging
 import com.google.gson.JsonParseException
 import com.sportpassword.bm.Adapters.TeamAdapter
 import com.sportpassword.bm.Data.OneRow
@@ -83,6 +84,12 @@ class SearchVC : MyTableVC() {
         member_like = true
 
         init()
+
+        FirebaseMessaging.getInstance().token.addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                println("fcm token: ${task.result}")
+            }
+        }
     }
 
     override fun init() {
