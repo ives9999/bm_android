@@ -6,13 +6,14 @@
     android:layout_height="wrap_content"
     android:background="@color/MY_BLACK"
     android:paddingStart="20dp"
-    android:paddingEnd="20dp">
+    android:paddingTop="16dp"
+    android:paddingEnd="20dp"
+    android:paddingBottom="21dp">
 
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/tv_num"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
         android:textColor="@color/MY_GREEN"
         android:textSize="14sp"
         android:textStyle="bold"
@@ -46,91 +47,202 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_num" />
 
-    <com.google.android.material.imageview.ShapeableImageView
-        android:id="@+id/iv_coverPhoto"
-        android:layout_width="56dp"
-        android:layout_height="56dp"
-        android:layout_marginTop="10dp"
-        android:scaleType="centerCrop"
-        android:src="@drawable/ic_noavatar_svg"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/line1"
-        app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.Oval"
-        app:strokeColor="@null"
-        tools:src="@tools:sample/avatars" />
-
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/tv_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
+        android:layout_marginTop="10dp"
         android:ellipsize="end"
-        android:maxLines="2"
+        android:maxLines="1"
         android:textColor="@color/MY_WHITE"
         android:textSize="20sp"
         android:textStyle="bold"
         app:layout_constrainedWidth="true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0"
-        app:layout_constraintStart_toEndOf="@+id/iv_coverPhoto"
-        app:layout_constraintTop_toTopOf="@+id/iv_coverPhoto"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/line1"
         app:layout_constraintVertical_chainStyle="spread_inside"
         tools:text="Badminton Password Cup Competition 123" />
 
-    <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/tv_city"
+    <ImageView
+        android:id="@+id/iv_start_time"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="12dp"
+        android:layout_marginTop="5dp"
+        android:contentDescription="@null"
+        android:scaleType="centerCrop"
+        android:src="@drawable/ic_calendar_start_svg"
+        app:layout_constraintHorizontal_chainStyle="spread_inside"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_name" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/tv_start_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="7dp"
         android:textColor="@color/WHITE_70"
         android:textSize="14sp"
         app:layout_constrainedWidth="true"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0"
-        app:layout_constraintStart_toEndOf="@+id/iv_coverPhoto"
-        app:layout_constraintTop_toBottomOf="@+id/tv_name"
+        app:layout_constraintBottom_toBottomOf="@+id/iv_start_time"
+        app:layout_constraintStart_toEndOf="@+id/iv_start_time"
+        app:layout_constraintTop_toTopOf="@+id/iv_start_time"
+        app:layout_constraintVertical_bias="1.0"
         app:layout_constraintVertical_chainStyle="spread_inside"
-        tools:text="Tainan City" />
+        tools:text="Wednesday, 11-01-2023" />
+
 
     <ImageView
-        android:id="@+id/iv_dot"
+        android:id="@+id/iv_dot_start"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="9dp"
+        android:layout_marginStart="6dp"
         android:contentDescription="@null"
-        android:src="@drawable/ic_dot_green"
-        app:layout_constraintBottom_toBottomOf="@+id/tv_city"
-        app:layout_constraintStart_toEndOf="@+id/tv_city"
-        app:layout_constraintTop_toTopOf="@+id/tv_city" />
+        android:src="@drawable/ic_dot_greed_svg"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_start_date"
+        app:layout_constraintStart_toEndOf="@+id/tv_start_date"
+        app:layout_constraintTop_toTopOf="@+id/tv_start_date" />
 
     <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/tv_arena"
+        android:id="@+id/tv_start_time"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="3dp"
+        android:layout_marginStart="6dp"
         android:textColor="@color/WHITE_70"
         android:textSize="14sp"
         app:layout_constrainedWidth="true"
-        app:layout_constraintBottom_toBottomOf="@+id/tv_city"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0"
-        app:layout_constraintStart_toEndOf="@+id/iv_dot"
-        app:layout_constraintTop_toTopOf="@+id/tv_city"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_start_date"
+        app:layout_constraintStart_toEndOf="@+id/iv_dot_start"
+        app:layout_constraintTop_toTopOf="@+id/tv_start_date"
         app:layout_constraintVertical_chainStyle="spread_inside"
-        tools:text="arena" />
+        tools:text="08:00" />
+
+    <ImageView
+        android:id="@+id/iv_end_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:contentDescription="@null"
+        android:scaleType="centerCrop"
+        android:src="@drawable/ic_calendar_end_svg"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/iv_start_time" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/tv_end_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="7dp"
+        android:textColor="@color/WHITE_70"
+        android:textSize="14sp"
+        app:layout_constrainedWidth="true"
+        app:layout_constraintBottom_toBottomOf="@+id/iv_end_time"
+        app:layout_constraintStart_toEndOf="@+id/iv_end_time"
+        app:layout_constraintTop_toTopOf="@+id/iv_end_time"
+        app:layout_constraintVertical_bias="1.0"
+        app:layout_constraintVertical_chainStyle="spread_inside"
+        tools:text="Wednesday, 11-01-2023" />
+
+
+    <ImageView
+        android:id="@+id/iv_dot_end"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="6dp"
+        android:contentDescription="@null"
+        android:src="@drawable/ic_dot_greed_svg"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_end_date"
+        app:layout_constraintStart_toEndOf="@+id/tv_end_date"
+        app:layout_constraintTop_toTopOf="@+id/tv_end_date" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/tv_end_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="6dp"
+        android:textColor="@color/WHITE_70"
+        android:textSize="14sp"
+        app:layout_constrainedWidth="true"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_end_date"
+        app:layout_constraintStart_toEndOf="@+id/iv_dot_end"
+        app:layout_constraintTop_toTopOf="@+id/tv_end_date"
+        app:layout_constraintVertical_chainStyle="spread_inside"
+        tools:text="08:00" />
+
+    <ImageView
+        android:id="@+id/iv_location"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:contentDescription="@null"
+        android:scaleType="centerCrop"
+        android:src="@drawable/ic_location_svg"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/iv_end_time" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/tv_location"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="7dp"
+        android:textColor="@color/WHITE_70"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toBottomOf="@+id/iv_location"
+        app:layout_constraintStart_toEndOf="@+id/iv_location"
+        app:layout_constraintTop_toTopOf="@+id/iv_location"
+        tools:text="球館" />
 
     <Button
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:id="@+id/btn_detail"
+        android:layout_width="0dp"
+        android:layout_height="45dp"
+        android:layout_marginStart="12dp"
         android:background="@drawable/shape_bg_green_40"
-        android:text="報名"
+        android:text="詳細"
+        android:textColor="@color/MY_BLACK"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="@+id/btn_signUp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/btn_signUp"
+        app:layout_constraintTop_toTopOf="@+id/btn_signUp" />
+
+    <Button
+        android:id="@+id/btn_signUp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="19dp"
+        android:background="@drawable/ic_button_blue"
         android:textColor="@color/MY_BLACK"
         android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/btn_detail"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_chainStyle="spread_inside"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_arena" />
+        app:layout_constraintTop_toBottomOf="@+id/iv_location" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/tv_sign_up_price"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="112dp"
+        android:text="$暫時金額"
+        android:textColor="@color/MY_WHITE"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        app:layout_constrainedWidth="true"
+        app:layout_constraintBottom_toBottomOf="@+id/btn_signUp"
+        app:layout_constraintEnd_toEndOf="@+id/btn_signUp"
+        app:layout_constraintHorizontal_bias="0"
+        app:layout_constraintStart_toStartOf="@+id/btn_signUp"
+        app:layout_constraintTop_toTopOf="@+id/btn_signUp"
+        app:layout_constraintVertical_chainStyle="spread_inside"
+        tools:text="$1000 - $1400" />
+
+
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

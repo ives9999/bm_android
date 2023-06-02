@@ -20,20 +20,39 @@ class MatchListAdapter :
     inner class ViewHolder(binding: ItemMatchBinding) : RecyclerView.ViewHolder(binding.root) {
         private val tvNumber = binding.tvNum
         private val tvName = binding.tvName
-        private val tvCity = binding.tvCity
-        private val tvArena = binding.tvArena
-        private val ivCover = binding.ivCoverPhoto
+        private val tvStartDate = binding.tvStartDate
+        private val tvStartTime = binding.tvStartTime
+        private val tvEndDate = binding.tvEndDate
+        private val tvEndTime = binding.tvEndTime
+        private val tvLocation = binding.tvLocation
 
         init {
+            binding.apply {
+
+                btnDetail.setOnClickListener {
+                    getItem(bindingAdapterPosition)?.let { data ->
+                        listener?.onDetailClick(data)
+                    }
+                }
+
+                btnSignUp.setOnClickListener {
+                    getItem(bindingAdapterPosition)?.let { data ->
+                        listener?.onSignUpClick(data)
+                    }
+                }
+            }
         }
 
         fun bind(data: MatchListDto.Row) {
             tvNumber.text = (bindingAdapterPosition + 1).toString()
-
-
             tvName.text = data.name
-//            Glide.with(ivCover).load("https://bm.sportpassword.com${data.featuredPath}")
-//                .into(ivCover)
+            val start = data.matchStart.split(" ")
+            val end = data.matchEnd.split(" ")
+            tvStartDate.text = start.getOrNull(0)
+            tvStartTime.text = start.getOrNull(1)
+            tvEndDate.text = end.getOrNull(0)
+            tvEndTime.text = end.getOrNull(1)
+            tvLocation.text = data.arenaName
         }
     }
 
@@ -69,6 +88,7 @@ class MatchListAdapter :
     }
 
     interface Listener {
-        fun onPhoneClick(num: String?)
+        fun onDetailClick(data: MatchListDto.Row)
+        fun onSignUpClick(data: MatchListDto.Row)
     }
 }

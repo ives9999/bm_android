@@ -2,7 +2,6 @@ package com.sportpassword.bm.bm_new.ui.match
 
 import android.nfc.tech.MifareUltralight
 import androidx.lifecycle.SavedStateHandle
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
@@ -12,10 +11,11 @@ import com.sportpassword.bm.bm_new.data.dto.MatchListDto
 import com.sportpassword.bm.bm_new.data.dto.PostListDto
 import com.sportpassword.bm.bm_new.data.repo.match.MatchPagingSource
 import com.sportpassword.bm.bm_new.data.repo.match.MatchRepo
+import com.sportpassword.bm.bm_new.ui.base.BaseViewModel
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.catch
 
-class MatchVM(private val state: SavedStateHandle, private val repo: MatchRepo) : ViewModel(),
+class MatchVM(private val state: SavedStateHandle, private val repo: MatchRepo) :
+    BaseViewModel(state),
     MatchPagingSource.Listener {
 
     fun getMatchList(): Flow<PagingData<MatchListDto.Row>> {
@@ -40,9 +40,7 @@ class MatchVM(private val state: SavedStateHandle, private val repo: MatchRepo) 
         post.perPage = perPage.toString()
         post.page = nextPageNumber.toString()
 
-        repo.getMatchList(post).catch {
-
-        }.collect {
+        repo.getMatchList(post).setupBase().collect {
             callback.invoke(it)
         }
     }
