@@ -268,9 +268,9 @@
             android:textColor="@color/WHITE_70"
             android:textSize="16sp"
             app:layout_constrainedWidth="true"
-            app:layout_constraintHorizontal_bias="0"
             app:layout_constraintBottom_toBottomOf="@+id/iv_arena"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0"
             app:layout_constraintStart_toEndOf="@+id/iv_arena"
             app:layout_constraintTop_toTopOf="@+id/iv_arena"
             app:layout_constraintVertical_chainStyle="spread_inside"
@@ -303,6 +303,168 @@
             app:layout_constraintTop_toTopOf="@+id/iv_address"
             app:layout_constraintVertical_chainStyle="spread_inside"
             tools:text="No. 116, Wenshen Street 717, Rende Distric, Taiwan City" />
+
+        <ImageView
+            android:id="@+id/iv_location_phone"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_marginTop="16dp"
+            android:contentDescription="@null"
+            android:scaleType="centerCrop"
+            android:src="@drawable/ic_phone_svg"
+            app:layout_constraintHorizontal_chainStyle="spread_inside"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/iv_address" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/tv_location_phone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:textColor="@color/WHITE_70"
+            android:textSize="16sp"
+            app:layout_constrainedWidth="true"
+            app:layout_constraintBottom_toBottomOf="@+id/iv_location_phone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0"
+            app:layout_constraintStart_toEndOf="@+id/iv_location_phone"
+            app:layout_constraintTop_toTopOf="@+id/iv_location_phone"
+            app:layout_constraintVertical_chainStyle="spread_inside"
+            tools:text="06-2495-339" />
+
+        <ImageView
+            android:id="@+id/iv_badminton"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_marginTop="16dp"
+            android:contentDescription="@null"
+            android:scaleType="centerCrop"
+            android:src="@drawable/ic_badminton_svg"
+            app:layout_constraintHorizontal_chainStyle="spread_inside"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/iv_location_phone" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/tv_badminton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:textColor="@color/WHITE_70"
+            android:textSize="16sp"
+            app:layout_constrainedWidth="true"
+            app:layout_constraintBottom_toBottomOf="@+id/iv_badminton"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0"
+            app:layout_constraintStart_toEndOf="@+id/iv_badminton"
+            app:layout_constraintTop_toTopOf="@+id/iv_badminton"
+            app:layout_constraintVertical_chainStyle="spread_inside"
+            tools:text="YY0 AS-50" />
+
+        <View
+            android:id="@+id/line2"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_marginTop="24dp"
+            android:background="@color/WHITE_26"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/iv_badminton" />
+
+        <TextView
+            android:id="@+id/tv_contact_person"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:text="Contact person"
+            android:textColor="@color/MY_WHITE"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/line2" />
+
+        <ImageView
+            android:id="@+id/iv_person"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_marginTop="16dp"
+            android:contentDescription="@null"
+            android:scaleType="centerCrop"
+            android:src="@drawable/ic_person_svg"
+            app:layout_constraintHorizontal_chainStyle="spread_inside"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_contact_person" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/tv_person"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:textColor="@color/WHITE_70"
+            android:textSize="16sp"
+            app:layout_constrainedWidth="true"
+            app:layout_constraintBottom_toBottomOf="@+id/iv_person"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0"
+            app:layout_constraintStart_toEndOf="@+id/iv_person"
+            app:layout_constraintTop_toTopOf="@+id/iv_person"
+            app:layout_constraintVertical_chainStyle="spread_inside"
+            tools:text="Sun Zhihuang" />
+
+        <ImageView
+            android:id="@+id/iv_person_phone"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_marginTop="16dp"
+            android:contentDescription="@null"
+            android:scaleType="centerCrop"
+            android:src="@drawable/ic_phone_svg"
+            app:layout_constraintHorizontal_chainStyle="spread_inside"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/iv_person" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/tv_person_phone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:textColor="@color/WHITE_70"
+            android:textSize="16sp"
+            app:layout_constrainedWidth="true"
+            app:layout_constraintBottom_toBottomOf="@+id/iv_person_phone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0"
+            app:layout_constraintStart_toEndOf="@+id/iv_person_phone"
+            app:layout_constraintTop_toTopOf="@+id/iv_person_phone"
+            app:layout_constraintVertical_chainStyle="spread_inside"
+            tools:text="0911 - 299 - 994" />
+
+        <ImageView
+            android:id="@+id/iv_email"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_marginTop="16dp"
+            android:contentDescription="@null"
+            android:scaleType="centerCrop"
+            android:src="@drawable/ic_email_svg"
+            app:layout_constraintHorizontal_chainStyle="spread_inside"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/iv_person_phone" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/tv_email"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:textColor="@color/WHITE_70"
+            android:textSize="16sp"
+            app:layout_constrainedWidth="true"
+            app:layout_constraintBottom_toBottomOf="@+id/iv_email"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0"
+            app:layout_constraintStart_toEndOf="@+id/iv_email"
+            app:layout_constraintTop_toTopOf="@+id/iv_email"
+            app:layout_constraintVertical_chainStyle="spread_inside"
+            tools:text="ives@bluemobile.com.tw" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
