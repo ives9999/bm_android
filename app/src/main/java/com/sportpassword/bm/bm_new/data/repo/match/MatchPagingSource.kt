@@ -2,7 +2,7 @@ package com.sportpassword.bm.bm_new.data.repo.match
 
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
-import com.sportpassword.bm.bm_new.data.dto.MatchListDto
+import com.sportpassword.bm.bm_new.data.dto.match.MatchListDto
 import timber.log.Timber
 
 class MatchPagingSource(
@@ -27,7 +27,7 @@ class MatchPagingSource(
         var nextKey: Int? = null
         val teamList = mutableListOf<MatchListDto.Row>()
         Timber.d("paging source $nextPageNumber")
-        listener?.getTeamList(nextPageNumber, perPage) {
+        listener?.getMatchList(nextPageNumber, perPage) {
             it.rows.let { data -> teamList.addAll(data) }
             nextKey = if (it.rows.isNotEmpty()) nextPageNumber + 1 else null
         }
@@ -39,6 +39,6 @@ class MatchPagingSource(
     }
 
     interface Listener {
-        suspend fun getTeamList(nextPageNumber: Int, perPage: Int, callback: (MatchListDto) -> Unit)
+        suspend fun getMatchList(nextPageNumber: Int, perPage: Int, callback: (MatchListDto) -> Unit)
     }
 }

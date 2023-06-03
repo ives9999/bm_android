@@ -5,11 +5,11 @@ import android.os.Bundle
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.sportpassword.bm.R
-import com.sportpassword.bm.bm_new.data.dto.MatchListDto
+import com.sportpassword.bm.bm_new.data.dto.match.MatchListDto
 import com.sportpassword.bm.bm_new.ui.base.BaseActivity
 import com.sportpassword.bm.bm_new.ui.base.BaseViewModel
 import com.sportpassword.bm.bm_new.ui.match.detail.MatchDetailActivity
-import com.sportpassword.bm.bm_new.ui.match.detail.MatchDetailActivity.Companion.MATCH_TITLE
+import com.sportpassword.bm.bm_new.ui.match.detail.MatchDetailActivity.Companion.MATCH_ROW
 import com.sportpassword.bm.bm_new.ui.util.LinearItemDecoration
 import com.sportpassword.bm.databinding.ActivityMatchBinding
 import kotlinx.coroutines.flow.launchIn
@@ -57,7 +57,7 @@ class MatchActivity : BaseActivity<ActivityMatchBinding>(), MatchListAdapter.Lis
 
     override fun onDetailClick(data: MatchListDto.Row) {
         Intent(this, MatchDetailActivity::class.java).apply {
-            putExtra(MATCH_TITLE, data.name)
+            putExtra(MATCH_ROW, data)
             startActivity(this)
         }
     }

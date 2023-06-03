@@ -5,7 +5,7 @@ import android.view.ViewGroup
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import com.sportpassword.bm.bm_new.data.dto.MatchListDto
+import com.sportpassword.bm.bm_new.data.dto.match.MatchListDto
 import com.sportpassword.bm.databinding.ItemMatchBinding
 
 class MatchListAdapter :

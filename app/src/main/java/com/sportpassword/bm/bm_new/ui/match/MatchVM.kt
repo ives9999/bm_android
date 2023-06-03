@@ -7,7 +7,7 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
-import com.sportpassword.bm.bm_new.data.dto.MatchListDto
+import com.sportpassword.bm.bm_new.data.dto.match.MatchListDto
 import com.sportpassword.bm.bm_new.data.dto.PostListDto
 import com.sportpassword.bm.bm_new.data.repo.match.MatchPagingSource
 import com.sportpassword.bm.bm_new.data.repo.match.MatchRepo
@@ -31,7 +31,7 @@ class MatchVM(private val state: SavedStateHandle, private val repo: MatchRepo) 
         }.flow.cachedIn(viewModelScope)
     }
 
-    override suspend fun getTeamList(
+    override suspend fun getMatchList(
         nextPageNumber: Int,
         perPage: Int,
         callback: (MatchListDto) -> Unit
