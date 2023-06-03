@@ -225,6 +225,11 @@
         <item name="android:textColor">@color/MY_BLACK</item>
     </style>
 
+    <style name="TabLayoutTextStyle">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
 
     <style name="BaseTextAppearance.Large">
         <item name="android:textSize">24sp</item>

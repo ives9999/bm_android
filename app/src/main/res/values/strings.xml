@@ -30,4 +30,11 @@
     <string name="dummy_button">Dummy Button</string>
     <string name="dummy_content">DUMMY\nCONTENT</string>
 
+    <!--    賽事 match-->
+    <string name="match">賽事</string>
+    <string name="match_detail">詳細</string>
+    <string name="match_content">內容</string>
+    <string name="match_brochure">簡章</string>
+    <string name="match_sign_up">報名</string>
+
 </resources>

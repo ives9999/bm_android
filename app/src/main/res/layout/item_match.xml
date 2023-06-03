@@ -199,7 +199,7 @@
         android:layout_height="45dp"
         android:layout_marginStart="12dp"
         android:background="@drawable/shape_bg_green_40"
-        android:text="詳細"
+        android:text="@string/match_detail"
         android:textColor="@color/MY_BLACK"
         android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="@+id/btn_signUp"
@@ -241,8 +241,6 @@
         app:layout_constraintTop_toTopOf="@+id/btn_signUp"
         app:layout_constraintVertical_chainStyle="spread_inside"
         tools:text="$1000 - $1400" />
-
-
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

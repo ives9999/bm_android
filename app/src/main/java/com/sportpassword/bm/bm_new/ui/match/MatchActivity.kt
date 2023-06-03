@@ -1,5 +1,6 @@
 package com.sportpassword.bm.bm_new.ui.match
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -7,6 +8,8 @@ import com.sportpassword.bm.R
 import com.sportpassword.bm.bm_new.data.dto.MatchListDto
 import com.sportpassword.bm.bm_new.ui.base.BaseActivity
 import com.sportpassword.bm.bm_new.ui.base.BaseViewModel
+import com.sportpassword.bm.bm_new.ui.match.content.MatchContentActivity
+import com.sportpassword.bm.bm_new.ui.match.content.MatchContentActivity.Companion.MATCH_TITLE
 import com.sportpassword.bm.bm_new.ui.util.LinearItemDecoration
 import com.sportpassword.bm.databinding.ActivityMatchBinding
 import kotlinx.coroutines.flow.launchIn
@@ -53,7 +56,10 @@ class MatchActivity : BaseActivity<ActivityMatchBinding>(), MatchListAdapter.Lis
     override fun getViewModel(): BaseViewModel = vm
 
     override fun onDetailClick(data: MatchListDto.Row) {
-        Timber.d("detail $data")
+        Intent(this, MatchContentActivity::class.java).apply {
+            putExtra(MATCH_TITLE, data.name)
+            startActivity(this)
+        }
     }
 
     override fun onSignUpClick(data: MatchListDto.Row) {
