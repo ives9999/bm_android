@@ -84,7 +84,6 @@ abstract class BaseActivity<VB : ViewBinding> : AppCompatActivity() {
                 event.message?.let {
                     Toast.makeText(this, it, Toast.LENGTH_SHORT).show()
                 }
-                startActivity(intent)
             }
             else -> {}
         }
