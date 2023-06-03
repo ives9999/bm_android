@@ -36,6 +36,7 @@
         tools:text="Event list" />
 
     <View
+        android:id="@+id/view_outer"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginStart="-5dp"
@@ -67,5 +68,13 @@
         app:tabTextAppearance="@style/TabLayoutTextStyle"
         app:tabTextColor="@color/WHITE_80" />
 
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/vp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/view_outer" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

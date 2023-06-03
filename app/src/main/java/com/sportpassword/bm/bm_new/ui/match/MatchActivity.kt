@@ -8,8 +8,8 @@ import com.sportpassword.bm.R
 import com.sportpassword.bm.bm_new.data.dto.MatchListDto
 import com.sportpassword.bm.bm_new.ui.base.BaseActivity
 import com.sportpassword.bm.bm_new.ui.base.BaseViewModel
-import com.sportpassword.bm.bm_new.ui.match.content.MatchContentActivity
-import com.sportpassword.bm.bm_new.ui.match.content.MatchContentActivity.Companion.MATCH_TITLE
+import com.sportpassword.bm.bm_new.ui.match.detail.MatchDetailActivity
+import com.sportpassword.bm.bm_new.ui.match.detail.MatchDetailActivity.Companion.MATCH_TITLE
 import com.sportpassword.bm.bm_new.ui.util.LinearItemDecoration
 import com.sportpassword.bm.databinding.ActivityMatchBinding
 import kotlinx.coroutines.flow.launchIn
@@ -56,7 +56,7 @@ class MatchActivity : BaseActivity<ActivityMatchBinding>(), MatchListAdapter.Lis
     override fun getViewModel(): BaseViewModel = vm
 
     override fun onDetailClick(data: MatchListDto.Row) {
-        Intent(this, MatchContentActivity::class.java).apply {
+        Intent(this, MatchDetailActivity::class.java).apply {
             putExtra(MATCH_TITLE, data.name)
             startActivity(this)
         }
