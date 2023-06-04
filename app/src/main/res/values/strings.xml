@@ -32,9 +32,11 @@
 
     <!--    賽事 match-->
     <string name="match">賽事</string>
-    <string name="match_detail">詳細</string>
     <string name="match_content">內容</string>
     <string name="match_brochure">簡章</string>
     <string name="match_sign_up">報名</string>
+    <string name="match_num_person">人數: %1$d 人</string>
+    <string name="match_sign_group">報名組數: %1$d 組</string>
+    <string name="match_limit_group">限制組數: %1$d 組</string>
 
 </resources>
