@@ -45,6 +45,8 @@ class MatchDetailActivity : BaseActivity<ActivityMatchDetailBinding>() {
                 ).apply {
                     matchPagerAdapter = this
                 }
+
+                isUserInputEnabled = false
             }
 
             TabLayoutMediator(tblMatch, vp) { tab, position ->
