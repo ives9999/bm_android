@@ -65,5 +65,6 @@
     <color name="TEXT_WHITE22">#22FFFFFF</color>
     <color name="THREE_BUTTON">#8618f5</color>
     <color name="TOP">#a6d903</color>
+    <color name="blue_bg">#033BD9</color>
 </resources>
 

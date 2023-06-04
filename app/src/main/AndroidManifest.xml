@@ -157,8 +157,15 @@
         <activity android:name=".Controllers.SingleSelectVC" />
         <activity android:name=".Controllers.EditCourseVC" />
         <activity android:name=".Controllers.ShowPNVC" />
-        <activity android:name=".bm_new.ui.match.MatchActivity" />
-        <activity android:name=".bm_new.ui.match.detail.MatchDetailActivity" />
+        <activity
+            android:name=".bm_new.ui.match.MatchActivity"
+            android:launchMode="singleTask" />
+        <activity
+            android:name=".bm_new.ui.match.detail.MatchDetailActivity"
+            android:launchMode="singleTask" />
+        <activity
+            android:name=".bm_new.ui.match.sign_up.MatchSignUpActivity"
+            android:launchMode="singleTask" />
 
         <uses-library
             android:name="org.apache.http.legacy"

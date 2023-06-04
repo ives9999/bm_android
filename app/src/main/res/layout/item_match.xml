@@ -193,54 +193,75 @@
         app:layout_constraintTop_toTopOf="@+id/iv_location"
         tools:text="球館" />
 
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guild_line"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.67" />
+
     <Button
         android:id="@+id/btn_detail"
         android:layout_width="0dp"
-        android:layout_height="40dp"
-        android:layout_marginStart="12dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
         android:background="@drawable/shape_bg_green_40"
+        android:paddingVertical="10dp"
         android:text="@string/match_content"
         android:textColor="@color/MY_BLACK"
         android:textSize="16sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="@+id/btn_signUp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/btn_signUp"
-        app:layout_constraintTop_toTopOf="@+id/btn_signUp" />
+        app:layout_constraintStart_toStartOf="@+id/guild_line"
+        app:layout_constraintTop_toBottomOf="@+id/iv_location" />
 
-    <Button
+    <View
+        android:id="@+id/sign_up_bg"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginEnd="12dp"
+        android:background="@drawable/ic_bg_match_sign_svg"
+        app:layout_constraintBottom_toBottomOf="@+id/btn_detail"
+        app:layout_constraintEnd_toStartOf="@+id/btn_detail"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/btn_detail" />
+
+    <TextView
         android:id="@+id/btn_signUp"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="19dp"
-        android:background="@drawable/ic_button_blue"
-        android:textColor="@color/MY_BLACK"
+        android:layout_height="0dp"
+        android:layout_marginTop="6dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="6dp"
+        android:background="@drawable/shape_bg_blue_32"
+        android:gravity="center"
+        android:paddingHorizontal="30dp"
+        android:paddingVertical="4dp"
+        android:text="@string/match_sign_up"
+        android:textColor="@color/MY_WHITE"
         android:textSize="16sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/btn_detail"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintHorizontal_chainStyle="spread_inside"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/iv_location" />
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/sign_up_bg"
+        app:layout_constraintEnd_toEndOf="@+id/sign_up_bg"
+        app:layout_constraintTop_toTopOf="@+id/sign_up_bg" />
 
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/tv_sign_up_price"
         android:layout_width="0dp"
         android:layout_height="40dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="112dp"
+        android:gravity="center"
+        android:paddingHorizontal="16dp"
         android:text="$暫時金額"
         android:textColor="@color/MY_WHITE"
         android:textSize="14sp"
         android:textStyle="bold"
         app:layout_constrainedWidth="true"
         app:layout_constraintBottom_toBottomOf="@+id/btn_signUp"
-        app:layout_constraintEnd_toEndOf="@+id/btn_signUp"
+        app:layout_constraintEnd_toStartOf="@+id/btn_signUp"
         app:layout_constraintHorizontal_bias="0"
-        app:layout_constraintStart_toStartOf="@+id/btn_signUp"
+        app:layout_constraintStart_toStartOf="@+id/sign_up_bg"
         app:layout_constraintTop_toTopOf="@+id/btn_signUp"
-        app:layout_constraintVertical_chainStyle="spread_inside"
         tools:text="$1000 - $1400" />
 
 
