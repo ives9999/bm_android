@@ -1,7 +1,17 @@
 package com.sportpassword.bm.Controllers
 
+import android.Manifest
+import android.annotation.SuppressLint
+import android.app.Notification
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.app.PendingIntent
+import android.app.TaskStackBuilder
+import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.graphics.Color
+import android.os.Build
 import android.os.Bundle
 import android.view.Gravity
 import android.view.View
@@ -11,6 +21,9 @@ import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.core.app.ActivityCompat
+import androidx.core.app.NotificationCompat
+import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.messaging.FirebaseMessaging
@@ -47,6 +60,14 @@ class SearchVC : MyTableVC() {
 
     var mustLoginLbl: TextView? = null
 
+//    val CHANNEL_ID = "order"
+//    val CHANNEL_NAME = "order"
+//    val NOTIF_ID = 0
+//    val REQUEST_NOTIFICATION = 20
+//
+//    lateinit var notifManager: NotificationManagerCompat
+//    lateinit var notif: Notification
+
     override fun onCreate(savedInstanceState: Bundle?) {
 
         able_type = "team"
@@ -57,6 +78,35 @@ class SearchVC : MyTableVC() {
         view = binding.root
         setContentView(view)
 
+        val p: Boolean = isPermissionGranted(this, Manifest.permission.POST_NOTIFICATIONS)
+        if (!p) {
+            askForPermission(this, Manifest.permission.POST_NOTIFICATIONS, 500)
+        }
+
+//        createNotifChannel()
+//
+//        val intent: Intent = Intent(this, SearchVC::class.java)
+//        val pendingIntent = androidx.core.app.TaskStackBuilder.create(this).run {
+//            addNextIntentWithParentStack(intent)
+//            getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT)
+//        }
+//
+//        notifManager = NotificationManagerCompat.from(this)
+//        val notifBuilder = NotificationCompat.Builder(this, CHANNEL_ID)
+//
+//        notif = notifBuilder.setSmallIcon(R.drawable.ic_pv_svg)
+//            .setContentTitle("羽球密碼")
+//            .setContentText("您已經完成訂購")
+//            .setContentIntent(pendingIntent)
+//            .build()
+//
+//        val p: Boolean = isPermissionGranted(this, Manifest.permission.POST_NOTIFICATIONS)
+//        if (!p) {
+//            askForPermission(this, Manifest.permission.POST_NOTIFICATIONS, REQUEST_NOTIFICATION)
+//        } else {
+//            notifManager.notify(NOTIF_ID, notif)
+//        }
+//
         setBottomTabFocus()
         binding.topViewInclude.topTitleLbl.setText("球隊")
 
@@ -91,6 +141,37 @@ class SearchVC : MyTableVC() {
             }
         }
     }
+
+//    @SuppressLint("MissingPermission")
+//    override fun onRequestPermissionsResult(
+//        requestCode: Int,
+//        permissions: Array<out String>,
+//        grantResults: IntArray
+//    ) {
+//        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+//
+//        if (requestCode == REQUEST_NOTIFICATION && grantResults.isNotEmpty()) {
+//            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+//                notifManager.notify(NOTIF_ID, notif)
+//            }
+//        }
+//    }
+//
+//    private fun createNotifChannel(): NotificationManager? {
+//
+//        var manager: NotificationManager? = null
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+//            val channel = NotificationChannel(CHANNEL_ID, CHANNEL_NAME, NotificationManager.IMPORTANCE_DEFAULT).apply {
+//                lightColor = Color.BLUE
+//                enableLights(true)
+//            }
+//
+//            manager = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
+//            manager.createNotificationChannel(channel)
+//        }
+//
+//        return manager
+//    }
 
     override fun init() {
         super.init()
