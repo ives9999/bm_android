@@ -38,5 +38,6 @@
     <string name="match_num_person">人數: %1$d 人</string>
     <string name="match_sign_group">報名組數: %1$d 組</string>
     <string name="match_limit_group">限制組數: %1$d 組</string>
+    <string name="match_cancel">取消</string>
 
 </resources>
