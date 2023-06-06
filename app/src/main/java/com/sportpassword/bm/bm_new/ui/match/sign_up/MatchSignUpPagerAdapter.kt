@@ -5,8 +5,6 @@ import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Lifecycle
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.sportpassword.bm.bm_new.ui.error.BlankFragment
-import com.sportpassword.bm.bm_new.ui.match.detail.content.MatchContentFragment
-import com.sportpassword.bm.bm_new.ui.match.detail.groups.MatchGroupsFragment
 
 class MatchSignUpPagerAdapter(
     fragmentManager: FragmentManager, lifecycle: Lifecycle,
@@ -15,9 +13,9 @@ class MatchSignUpPagerAdapter(
 
     override fun createFragment(position: Int): Fragment {
         return when (items[position]) {
-            0 -> MatchContentFragment.newInstance()
+            0 -> BlankFragment.newInstance()
             1 -> BlankFragment.newInstance()
-            else -> MatchGroupsFragment.newInstance()
+            else -> BlankFragment.newInstance()
         }
     }
 

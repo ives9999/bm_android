@@ -58,5 +58,5 @@ class MatchDetailActivity : BaseActivity<ActivityMatchDetailBinding>() {
         }
     }
 
-    override fun getViewModel(): BaseViewModel? = null
+    override fun getViewModel(): BaseViewModel = vm
 }

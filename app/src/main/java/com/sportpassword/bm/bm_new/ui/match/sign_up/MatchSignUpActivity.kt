@@ -19,6 +19,11 @@ class MatchSignUpActivity : BaseActivity<ActivityMatchSignUpBinding>() {
     override fun initView(savedInstanceState: Bundle?) {
         binding?.apply {
             btnClose.setOnClickListener { finish() }
+            btnCancel.setOnClickListener { finish() }
+
+            btnSignUp.setOnClickListener {
+                //todo 報名動作
+            }
 
             val signUpPages = listOf(0, 1, 2)
             indicator.addIndicator(signUpPages.size - 1)
