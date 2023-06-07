@@ -1,7 +1,6 @@
 package com.sportpassword.bm.bm_new.ui.match.detail.groups
 
 import android.content.Context
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -11,11 +10,10 @@ import com.sportpassword.bm.bm_new.data.dto.match.MatchDetailDto
 import com.sportpassword.bm.bm_new.ui.base.BaseFragment
 import com.sportpassword.bm.bm_new.ui.base.BaseViewModel
 import com.sportpassword.bm.bm_new.ui.match.detail.MatchDetailVM
-import com.sportpassword.bm.bm_new.ui.match.sign_up.MatchSignUpActivity
 import com.sportpassword.bm.bm_new.ui.util.LinearItemDecoration
+import com.sportpassword.bm.bm_new.ui.util.toMatchSignUp
 import com.sportpassword.bm.databinding.FragmentMatchGroupsBinding
 import org.koin.androidx.viewmodel.ext.android.sharedStateViewModel
-import timber.log.Timber
 
 class MatchGroupsFragment : BaseFragment<FragmentMatchGroupsBinding>(),
     MatchGroupsAdapter.Listener {
@@ -70,9 +68,6 @@ class MatchGroupsFragment : BaseFragment<FragmentMatchGroupsBinding>(),
     override fun getViewModel(): BaseViewModel? = null
 
     override fun onSignUpClick(data: MatchDetailDto.MatchGroup) {
-        Timber.d("sign up, $data")
-        Intent(requireContext(), MatchSignUpActivity::class.java).apply {
-            startActivity(this)
-        }
+        requireContext().toMatchSignUp(data.token)
     }
 }

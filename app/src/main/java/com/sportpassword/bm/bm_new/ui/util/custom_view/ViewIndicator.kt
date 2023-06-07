@@ -16,10 +16,10 @@ class ViewIndicator @JvmOverloads constructor(
         ViewIndicatorBinding.inflate(LayoutInflater.from(context), this, true)
 
     private val indicators = mutableListOf(binding.indicatorOne).also {
-        it[0].isSelected = true
+        it.getOrNull(0)?.isSelected = true
     }
 
-    private var preSelectedIndicators = indicators[0]
+    private var preSelectedIndicators = indicators.getOrNull(0)
 
     fun addIndicator(num: Int) {
         binding.apply {
@@ -42,20 +42,20 @@ class ViewIndicator @JvmOverloads constructor(
     }
 
     fun setIndicatorSelected(position: Int) {
-        preSelectedIndicators.isSelected = false
+        preSelectedIndicators?.isSelected = false
         when (position) {
             indicators.size -> {    //這會是第一個
-                indicators[0].isSelected = true
-                preSelectedIndicators = indicators[0]
+                indicators.getOrNull(0)?.isSelected = true
+                preSelectedIndicators = indicators.getOrNull(0)
             }
             indicators.size + 1 -> {        //這會是第二個
-                indicators[1].isSelected = true
-                preSelectedIndicators = indicators[1]
+                indicators.getOrNull(1)?.isSelected = true
+                preSelectedIndicators = indicators.getOrNull(1)
             }
             in 0 until indicators.size -> {     //第二個有2種position,爲size + 1與index 0
                 Timber.d("")
-                indicators[position].isSelected = true
-                preSelectedIndicators = indicators[position]
+                indicators.getOrNull(position)?.isSelected = true
+                preSelectedIndicators = indicators.getOrNull(position)
             }
         }
 

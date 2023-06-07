@@ -16,6 +16,7 @@ import com.sportpassword.bm.bm_new.data.repo.match.MatchRepo
 import com.sportpassword.bm.bm_new.data.repo.match.MatchRepoImpl
 import com.sportpassword.bm.bm_new.ui.match.MatchVM
 import com.sportpassword.bm.bm_new.ui.match.detail.MatchDetailVM
+import com.sportpassword.bm.bm_new.ui.match.sign_up.MatchSignUpVM
 import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.core.context.GlobalContext.startKoin
@@ -224,6 +225,7 @@ class App : Application() {
         val vmModule = module {
             viewModel { (handle: SavedStateHandle) -> MatchVM(handle, get()) }
             viewModel { (handle: SavedStateHandle) -> MatchDetailVM(handle, get()) }
+            viewModel { (handle: SavedStateHandle) -> MatchSignUpVM(handle, get()) }
         }
 
         startKoin {

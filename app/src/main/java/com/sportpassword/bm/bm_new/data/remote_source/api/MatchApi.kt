@@ -3,6 +3,7 @@ package com.sportpassword.bm.bm_new.data.remote_source.api
 import com.google.gson.JsonObject
 import com.sportpassword.bm.bm_new.data.dto.match.MatchDetailDto
 import com.sportpassword.bm.bm_new.data.dto.match.MatchListDto
+import com.sportpassword.bm.bm_new.data.dto.match.MatchSignUpDto
 import retrofit2.http.Body
 import retrofit2.http.POST
 
@@ -19,4 +20,10 @@ interface MatchApi {
     suspend fun getMatchDetail(
         @Body data: JsonObject
     ): MatchDetailDto
+
+    //match team get one, 賽事內容
+    @POST("/app/match_team/one")
+    suspend fun getMatchSignUp(
+        @Body data: JsonObject
+    ): MatchSignUpDto
 }

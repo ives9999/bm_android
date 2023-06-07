@@ -10,13 +10,12 @@ import com.sportpassword.bm.bm_new.ui.base.BaseActivity
 import com.sportpassword.bm.bm_new.ui.base.BaseViewModel
 import com.sportpassword.bm.bm_new.ui.match.detail.MatchDetailActivity
 import com.sportpassword.bm.bm_new.ui.match.detail.MatchDetailActivity.Companion.MATCH_ROW
-import com.sportpassword.bm.bm_new.ui.match.sign_up.MatchSignUpActivity
 import com.sportpassword.bm.bm_new.ui.util.LinearItemDecoration
+import com.sportpassword.bm.bm_new.ui.util.toMatchSignUp
 import com.sportpassword.bm.databinding.ActivityMatchBinding
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import org.koin.androidx.viewmodel.ext.android.stateViewModel
-import timber.log.Timber
 
 class MatchActivity : BaseActivity<ActivityMatchBinding>(), MatchListAdapter.Listener {
 
@@ -64,9 +63,6 @@ class MatchActivity : BaseActivity<ActivityMatchBinding>(), MatchListAdapter.Lis
     }
 
     override fun onSignUpClick(data: MatchListDto.Row) {
-        Timber.d("sign up $data")
-        Intent(this, MatchSignUpActivity::class.java).apply {
-            startActivity(this)
-        }
+        toMatchSignUp(data.token)
     }
 }

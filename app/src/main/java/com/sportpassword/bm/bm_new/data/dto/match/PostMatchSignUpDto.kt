@@ -3,14 +3,16 @@ package com.sportpassword.bm.bm_new.data.dto.match
 import com.google.gson.annotations.SerializedName
 import com.sportpassword.bm.bm_new.data.AppConfig
 
-//發request用，match get one 取得賽事內容
-data class PostMatchDetailDto(
+//發request用，match team get one 取得賽事報名
+data class PostMatchSignUpDto(
     @SerializedName("strip_html")
     val stripHtml: Boolean = false,
     @SerializedName("device")
     val device: String = "app", // app
     @SerializedName("member_token")
     val memberToken: String = AppConfig.memberToken,
+    @SerializedName("match_group_token")
+    val matchGroupToken: String? = null,   //新增賽事報名資料，欄位名是match_group_token
     @SerializedName("token")
-    val token: String   //從MatchListDto取得的token
+    val token: String? = null,   //要取得已存在的賽事報名資料時，欄位名是token
 )
