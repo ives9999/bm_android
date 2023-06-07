@@ -31,6 +31,7 @@ class MemberTable: Table() {
     var pid: String = ""
     var avatar: String = ""
     var player_id: String = ""
+    var device_token: String = ""
     var type: Int = 0
     var social: String = ""
     var fb: String = ""
