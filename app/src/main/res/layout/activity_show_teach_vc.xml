@@ -7,24 +7,17 @@
     android:background="@color/MY_BLACK"
     tools:context=".Controllers.ShowTeachVC">
 
-    <RelativeLayout
-        android:id="@+id/topView"
+    <com.sportpassword.bm.Views.ShowTop2
+        android:id="@+id/top"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:background="@color/MY_GREEN">
-
-        <include layout="@layout/top_view"
-            android:id="@+id/topViewInclude"
-            />
-
-    </RelativeLayout>
+        android:layout_height="54dp"
+        />
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/refresh"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/topView"
+        android:layout_below="@id/top"
         android:layout_above="@id/footer"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
         android:clickable="true"

@@ -10,12 +10,15 @@ import com.sportpassword.bm.Models.StoreTable
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.StoreService
 import com.sportpassword.bm.Utilities.*
+import com.sportpassword.bm.Views.ShowTop2
 import com.sportpassword.bm.databinding.ActivityShowStoreVcBinding
 
 class ShowStoreVC : ShowVC() {
 
     private lateinit var binding: ActivityShowStoreVcBinding
     private lateinit var view: ViewGroup
+
+    var showTop2: ShowTop2? = null
 
     var myTable: StoreTable? = null
 
@@ -47,6 +50,11 @@ class ShowStoreVC : ShowVC() {
 //            "created_at_show" to hashMapOf( "icon" to "calendar","title" to "建立日期","content" to "")
 //        )
 
+        findViewById<ShowTop2>(R.id.top) ?. let {
+            showTop2 = it
+            it.showPrev(true)
+        }
+
         findViewById<Button>(R.id.signupButton) ?. let {
             it.visibility = View.GONE
         }
@@ -74,6 +82,7 @@ class ShowStoreVC : ShowVC() {
         if (table != null) {
             myTable = table as StoreTable
             myTable!!.filterRow()
+            showTop2!!.setTitle(myTable!!.name)
         } else {
             warning("解析伺服器所傳的字串失敗，請洽管理員")
         }

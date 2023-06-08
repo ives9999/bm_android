@@ -10,12 +10,15 @@ import com.sportpassword.bm.Models.ArenaTable
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.ArenaService
 import com.sportpassword.bm.Utilities.jsonToModel
+import com.sportpassword.bm.Views.ShowTop2
 import com.sportpassword.bm.databinding.ActivityShowArenaVcBinding
 
 class ShowArenaVC: ShowVC() {
 
     private lateinit var binding: ActivityShowArenaVcBinding
     private lateinit var view: ViewGroup
+
+    var showTop2: ShowTop2? = null
 
     var myTable: ArenaTable? = null
 
@@ -49,6 +52,11 @@ class ShowArenaVC: ShowVC() {
 
         findViewById<Button>(R.id.signupButton) ?. let {
             it.visibility = View.GONE
+        }
+
+        findViewById<ShowTop2>(R.id.top) ?. let {
+            showTop2 = it
+            it.showPrev(true)
         }
 
         init()
@@ -86,6 +94,7 @@ class ShowArenaVC: ShowVC() {
         if (table != null) {
             myTable = table as ArenaTable
             myTable!!.filterRow()
+            showTop2!!.setTitle(myTable!!.name)
         } else {
             warning("解析伺服器所傳的字串失敗，請洽管理員")
         }

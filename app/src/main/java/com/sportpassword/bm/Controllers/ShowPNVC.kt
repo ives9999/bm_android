@@ -12,6 +12,7 @@ import com.onesignal.OSPermissionObserver
 import com.onesignal.OSPermissionStateChanges
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Utilities.*
+import com.sportpassword.bm.Views.ShowTop2
 import com.sportpassword.bm.databinding.ActivityShowPnvcBinding
 import me.leolin.shortcutbadger.ShortcutBadger
 import org.json.JSONArray
@@ -22,6 +23,7 @@ class ShowPNVC : MyTableVC(), OSPermissionObserver {
 
     private lateinit var binding: ActivityShowPnvcBinding
     //private lateinit var view: ViewGroup
+    var showTop2: ShowTop2? = null
 
     var pnArr: JSONArray = JSONArray()
     var isReceive: Boolean = false
@@ -34,7 +36,6 @@ class ShowPNVC : MyTableVC(), OSPermissionObserver {
         view = binding.root
         setContentView(view)
         setContentView(R.layout.activity_show_pnvc)
-        setMyTitle("推播訊息")
 
         //val notificationServiceExtension = NotificationServiceExtension()
 
@@ -61,6 +62,12 @@ class ShowPNVC : MyTableVC(), OSPermissionObserver {
 //        isReceive = status.permissionStatus.enabled
 //        //println("hasPrompt status is $hasPrompt")
 //        setupSwitch.isChecked = isReceive
+
+        findViewById<ShowTop2>(R.id.top) ?. let {
+            showTop2 = it
+            showTop2!!.setTitle("推播訊息")
+            it.showPrev(true)
+        }
 
         binding.setupSwitch.setOnCheckedChangeListener { compoundButton, b ->
             //println(b)

@@ -21,6 +21,7 @@ import com.sportpassword.bm.Data.ShowRow
 import com.sportpassword.bm.Services.DataService
 import com.sportpassword.bm.Utilities.LoadingAnimation
 import com.sportpassword.bm.Utilities.hideKeyboard
+import com.sportpassword.bm.Views.ShowTop2
 import com.sportpassword.bm.databinding.ActivityShowTeachVcBinding
 import com.sportpassword.bm.member
 
@@ -28,6 +29,8 @@ class ShowTeachVC : YouTubeBaseActivity(), YouTubePlayer.OnInitializedListener {
 
     private lateinit var binding: ActivityShowTeachVcBinding
     private lateinit var view: ViewGroup
+
+    var showTop2: ShowTop2? = null
 
     var dataService: DataService = DataService()
     var refreshLayout: SwipeRefreshLayout? = null
@@ -118,12 +121,12 @@ class ShowTeachVC : YouTubeBaseActivity(), YouTubePlayer.OnInitializedListener {
 
                         if (table!!.name.isNotEmpty()) {
                             runOnUiThread {
-                                binding.topViewInclude.topTitleLbl.text = table!!.name
+                                showTop2!!.setTitle(myTable!!.name)
                             }
                             //setMyTitle(table!!.name)
                         } else if (table!!.title.isNotEmpty()) {
                             runOnUiThread {
-                                binding.topViewInclude.topTitleLbl.text = table!!.title
+                                showTop2!!.setTitle(myTable!!.title)
                             }
                             //setMyTitle(table!!.title)
                         }

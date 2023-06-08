@@ -16,6 +16,7 @@ import com.sportpassword.bm.Models.*
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.CourseService
 import com.sportpassword.bm.Utilities.*
+import com.sportpassword.bm.Views.ShowTop2
 import com.sportpassword.bm.databinding.ActivityShowCourseVcBinding
 import com.sportpassword.bm.member
 import org.json.JSONObject
@@ -24,6 +25,8 @@ class ShowCourseVC : ShowVC() {
 
     private lateinit var binding: ActivityShowCourseVcBinding
     private lateinit var view: ViewGroup
+
+    var showTop2: ShowTop2? = null
 
     var myTable: CourseTable? = null
     var coachTable: CoachTable? = null
@@ -73,6 +76,11 @@ class ShowCourseVC : ShowVC() {
 //            "pv" to hashMapOf( "icon" to "pv","title" to "瀏覽數","content" to ""),
 //            "created_at_show" to hashMapOf( "icon" to "calendar","title" to "建立日期","content" to "")
 //        )
+
+        findViewById<ShowTop2>(R.id.top) ?. let {
+            showTop2 = it
+            it.showPrev(true)
+        }
 
         courseCoachAdapter = ShowAdapter(this)
         binding.coachTableView.adapter = courseCoachAdapter
@@ -128,6 +136,7 @@ class ShowCourseVC : ShowVC() {
         if (table != null) {
             myTable = table as CourseTable
             myTable!!.filterRow()
+            showTop2!!.setTitle(myTable!!.name)
         } else {
             runOnUiThread {
                 warning("解析伺服器所傳的字串失敗，請洽管理員")

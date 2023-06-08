@@ -21,6 +21,7 @@ import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.CoachService
 import com.sportpassword.bm.Services.CourseService
 import com.sportpassword.bm.Utilities.*
+import com.sportpassword.bm.Views.ShowTop2
 import com.sportpassword.bm.databinding.ActivityShowCoachVcBinding
 import org.jetbrains.anko.backgroundColor
 import org.jetbrains.anko.textColor
@@ -29,6 +30,8 @@ class ShowCoachVC: ShowVC() {
 
     private lateinit var binding: ActivityShowCoachVcBinding
     private lateinit var view: ViewGroup
+
+    var showTop2: ShowTop2? = null
 
     var myTable: CoachTable? = null
     var coursesTable: CoursesTable? = null
@@ -92,6 +95,11 @@ class ShowCoachVC: ShowVC() {
         coachCourseAdapter = ManagerAdapter(this, courseRows, this)
         binding.courseTableView.adapter = coachCourseAdapter
 
+        findViewById<ShowTop2>(R.id.top) ?. let {
+            showTop2 = it
+            it.showPrev(true)
+        }
+
         findViewById<Button>(R.id.signupButton) ?. let {
             it.visibility = View.GONE
         }
@@ -127,6 +135,7 @@ class ShowCoachVC: ShowVC() {
         if (table != null) {
             myTable = table as CoachTable
             myTable!!.filterRow()
+            showTop2!!.setTitle(myTable!!.name)
         } else {
             warning("解析伺服器所傳的字串失敗，請洽管理員")
         }

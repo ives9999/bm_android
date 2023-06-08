@@ -4,12 +4,16 @@ import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.ImageButton
+import android.widget.ImageView
 import android.widget.LinearLayout
+import android.widget.TextView
 import com.google.gson.JsonParseException
 import com.sportpassword.bm.Models.ProductTable
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.ProductService
 import com.sportpassword.bm.Utilities.*
+import com.sportpassword.bm.Views.ShowTop2
 import com.sportpassword.bm.databinding.ActivityShowProductVcBinding
 
 class ShowProductVC: ShowVC() {
@@ -18,6 +22,8 @@ class ShowProductVC: ShowVC() {
     private lateinit var view: ViewGroup
 
     var myTable: ProductTable? = null
+
+    var showTop2: ShowTop2? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -33,6 +39,11 @@ class ShowProductVC: ShowVC() {
 
         refreshLayout = binding.refresh
         setRefreshListener()
+
+        findViewById<ShowTop2>(R.id.top) ?. let {
+            showTop2 = it
+            it.showPrev(true)
+        }
 
         findViewById<Button>(R.id.signupButton) ?. let {
             it.text = "放入購物車"
@@ -111,6 +122,7 @@ class ShowProductVC: ShowVC() {
         if (table != null) {
             myTable = table as ProductTable
             myTable!!.filterRow()
+            showTop2!!.setTitle(myTable!!.name)
         } else {
             warning("解析伺服器所傳的字串失敗，請洽管理員")
         }
@@ -118,7 +130,9 @@ class ShowProductVC: ShowVC() {
 
     fun setImages() {
         val images: ArrayList<String> = myTable!!.images
-        binding.imageContainerView.showImages(images, this)
+        findViewById<LinearLayout>(R.id.imageContainerView) ?. let {
+            it.showImages(images, this)
+        }
     }
 
     fun submitButtonPressed(view: View) {
