@@ -134,12 +134,6 @@ class SearchVC : MyTableVC() {
         member_like = true
 
         init()
-
-        FirebaseMessaging.getInstance().token.addOnCompleteListener { task ->
-            if (task.isSuccessful) {
-                println("fcm token: ${task.result}")
-            }
-        }
     }
 
 //    @SuppressLint("MissingPermission")

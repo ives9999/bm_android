@@ -3,6 +3,7 @@ package com.sportpassword.bm
 import android.app.Activity
 import android.app.Application
 import android.content.Context
+import com.google.firebase.messaging.FirebaseMessaging
 import com.onesignal.OSNotificationOpenedResult
 import com.onesignal.OneSignal
 import com.sportpassword.bm.Utilities.*
@@ -24,6 +25,7 @@ class App: Application() {
     companion object {
         var ctx: Context? = null
         var member: Member? = null
+
 
 //        private val SCOPE = "private public create edit delete interact"
 //        private val IS_DEBUG_BUILD = false
@@ -56,6 +58,11 @@ class App: Application() {
         super.onCreate()
         ctx = applicationContext
 
+        FirebaseMessaging.getInstance().token.addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                println("fcm token: ${task.result}")
+            }
+        }
 
 
         //registerActivityLifecycleCallbacks()
@@ -70,72 +77,30 @@ class App: Application() {
 
         // OneSignal Initialization
         //OneSignal.setLogLevel(OneSignal.LOG_LEVEL.VERBOSE, OneSignal.LOG_LEVEL.NONE)
-        OneSignal.initWithContext(this)
-        OneSignal.setAppId("856c8fdb-79fb-418d-a397-d58b9c6b880b")
+
+        //mark disable OneSignal ives 2022/06/09
+        //OneSignal.initWithContext(this)
+        //OneSignal.setAppId("856c8fdb-79fb-418d-a397-d58b9c6b880b")
 
         //當app不在工作狀態時，會呼叫這個函式
-        OneSignal.setNotificationOpenedHandler { result: OSNotificationOpenedResult ->
-//            OneSignal.onesignalLog(
-//                OneSignal.LOG_LEVEL.VERBOSE,
-//                "OSNotificationOpenedResult result: $result"
-//            )
+        //OneSignal.setNotificationOpenedHandler { result: OSNotificationOpenedResult ->
 
-
-            val activity: BaseActivity? = getActivity()
-            MyOneSignal.getOneSignalHandler(activity, result.notification)
-//            MyOneSignal.openHandler(applicationContext, result)
+            //val activity: BaseActivity? = getActivity()
+            //MyOneSignal.getOneSignalHandler(activity, result.notification)
 
 
 
-//            val builder = AlertDialog.Builder(applicationContext)
-//            builder.setTitle(title)
-//            builder.setMessage(content)
-//            runOnUiThread {
-//                builder.show()
-//            }
-            //val no = NotificationServiceExtension()
-            //no.remoteNotificationReceived(this, result.notification)
-            //val launchUrl = result.notification.launchURL
-            //if (launchUrl != null) {
-                //val intent: Intent = Intent(applicationContext, ShowPNVC::class.java)
-                //intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT or Intent.FLAG_ACTIVITY_NEW_TASK)
-                //intent.putExtra("openURL", launchUrl)
-                //startActivity(intent)
-            //}
-
-        }
+        //}
 
         //當app在工作狀態時，會呼叫這個函式
-        OneSignal.setNotificationWillShowInForegroundHandler { notificationReceivedEvent: OSNotificationReceivedEvent ->
-//            OneSignal.onesignalLog(
-//                OneSignal.LOG_LEVEL.VERBOSE, "NotificationWillShowInForegroundHandler fired!" +
-//                        " with notification event: " + notificationReceivedEvent.toString()
-//            )
-//            val notificationServiceExtension = NotificationServiceExtension()
-//            notificationServiceExtension.remoteNotificationReceived(applicationContext, notificationReceivedEvent)
-
-            val activity = getActivity()
-            MyOneSignal.getOneSignalHandler(activity, notificationReceivedEvent.notification, true)
-//            runOnUiThread {
-//                activity.info(content)
-//            }
-
-
-//            MyOneSignal.showInForegroundHandler(applicationContext, notificationReceivedEvent)
-
-            //val no = NotificationServiceExtension()
-            //no.remoteNotificationReceived(this, notificationReceivedEvent)
-            //Alert.show(this, "訊息", "您有一則新訊息")
-//            val alert = AlertDialog.Builder(applicationContext).create()
-//            alert.setTitle("訊息")
-//            alert.setMessage("您有一則新訊息")
-//            alert.show()
-
-        }
-
-        OneSignal.unsubscribeWhenNotificationsAreDisabled(true)
-        OneSignal.pauseInAppMessages(true)
-        OneSignal.setLocationShared(false)
+//        OneSignal.setNotificationWillShowInForegroundHandler { notificationReceivedEvent: OSNotificationReceivedEvent ->
+//            val activity = getActivity()
+//            MyOneSignal.getOneSignalHandler(activity, notificationReceivedEvent.notification, true)
+//        }
+//
+//        OneSignal.unsubscribeWhenNotificationsAreDisabled(true)
+//        OneSignal.pauseInAppMessages(true)
+//        OneSignal.setLocationShared(false)
 
 
 //        OneSignal.startInit(this)
@@ -163,30 +128,30 @@ class App: Application() {
 //        VimeoClient.initialize(configBuilder.build())
     }
 
-    fun getActivity(): BaseActivity? {
-
-        val activityThreadClass = Class.forName("android.app.ActivityThread")
-        val activityThread = activityThreadClass.getMethod("currentActivityThread").invoke(null)
-        val activytyField = activityThreadClass.getDeclaredField("mActivities")
-        activytyField.isAccessible = true
-
-        val activities = activytyField.get(activityThread) as Map<Object, Object>
-
-        for (activityRecord in activities.values) {
-            val activityRecordClass = activityRecord.`class`
-            val pausedField = activityRecordClass.getDeclaredField("paused");
-            pausedField.isAccessible = true
-
-            if (!pausedField.getBoolean(activityRecord)) {
-                val activityField = activityRecordClass.getDeclaredField("activity")
-                activityField.isAccessible = true
-                val activity = activityField.get(activityRecord) as BaseActivity
-                return activity
-            }
-        }
-
-        return null
-    }
+//    fun getActivity(): BaseActivity? {
+//
+//        val activityThreadClass = Class.forName("android.app.ActivityThread")
+//        val activityThread = activityThreadClass.getMethod("currentActivityThread").invoke(null)
+//        val activytyField = activityThreadClass.getDeclaredField("mActivities")
+//        activytyField.isAccessible = true
+//
+//        val activities = activytyField.get(activityThread) as Map<Object, Object>
+//
+//        for (activityRecord in activities.values) {
+//            val activityRecordClass = activityRecord.`class`
+//            val pausedField = activityRecordClass.getDeclaredField("paused");
+//            pausedField.isAccessible = true
+//
+//            if (!pausedField.getBoolean(activityRecord)) {
+//                val activityField = activityRecordClass.getDeclaredField("activity")
+//                activityField.isAccessible = true
+//                val activity = activityField.get(activityRecord) as BaseActivity
+//                return activity
+//            }
+//        }
+//
+//        return null
+//    }
 
 //    val accessTokenBuilder: Configuration.Builder
 //        get() {
