@@ -182,6 +182,48 @@ open class DataService {
         Volley.newRequestQueue(context).add(request)
     }
 
+    fun deviceToken(device_token: String, member_token: String? = null) {
+        var _member_token: String? = null
+        if (member_token != null) {
+            _member_token = member_token
+        } else {
+            _member_token = ((member.token!!.isNotEmpty()) then { member_token })
+        }
+
+        val url: String = URL_DEVICE_TOKEN
+        val params: HashMap<String, String> = hashMapOf(
+            "device" to "app",
+            "channel" to CHANNEL,
+            "device_token" to device_token
+        )
+
+        if (_member_token != null) {
+            params["member_token"] = _member_token
+        }
+
+        println(url)
+        println(params)
+
+        val request: okhttp3.Request = getRequest(url, params)
+        okHttpClient.newCall(request).enqueue(object : Callback {
+            override fun onFailure(call: Call, e: IOException) {
+                msg = "網路錯誤，無法跟伺服器更新資料"
+                println(msg)
+            }
+
+            override fun onResponse(call: Call, response: okhttp3.Response) {
+
+                try {
+                    println("device token ok!!")
+                } catch (e: Exception) {
+                    success = false
+                    msg = "parse json failed，請洽管理員"
+                    println(e.localizedMessage)
+                }
+            }
+        })
+    }
+
     fun ezshipReturnCode(context: Context, token: String, complete: CompletionHandler) {
         val url: String = URL_ORDER_RETURN
         val params: HashMap<String, String> = hashMapOf(
