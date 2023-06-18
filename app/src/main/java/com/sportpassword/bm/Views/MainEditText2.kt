@@ -25,7 +25,7 @@ class MainEditText2 @JvmOverloads constructor(context: Context, attrs: Attribute
 
     private var titleTV: TextView? = null
     private var requiredTV: TextView? = null
-    private var contentET: EditText? = null
+    var contentET: EditText? = null
     private var iconIV: ImageView? = null
     private var deleteIV: ImageView? = null
     private var eyeIV: ImageView? = null

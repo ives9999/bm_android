@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/MY_BLACK"
+    android:paddingHorizontal="20dp">
+
+    <ImageView
+        android:id="@+id/btn_close"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginTop="16dp"
+        android:scaleType="center"
+        android:src="@drawable/ic_arrow_left"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/tv_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:text="@string/match_sign_team_information"
+        android:textColor="@color/MY_WHITE"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constrainedWidth="true"
+        app:layout_constraintBottom_toBottomOf="@+id/btn_close"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0"
+        app:layout_constraintStart_toEndOf="@+id/btn_close"
+        app:layout_constraintTop_toTopOf="@+id/btn_close" />
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:fillViewport="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btn_close">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <com.sportpassword.bm.Views.MainEditText2
+                android:id="@+id/edt_team_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="40dp"
+                app:MainEditText2Hint="@string/match_sign_team_name"
+                app:MainEditText2Icon="ic_person_svg"
+                app:MainEditText2Keyobard="emailAddress"
+                app:MainEditText2Required="true"
+                app:MainEditText2Title="@string/match_sign_team_name"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <com.sportpassword.bm.Views.MainEditText2
+                android:id="@+id/edt_captain_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                app:MainEditText2Hint="@string/match_sign_captain_name"
+                app:MainEditText2Icon="ic_person_svg"
+                app:MainEditText2Keyobard="emailAddress"
+                app:MainEditText2Required="true"
+                app:MainEditText2Title="@string/match_sign_captain_name"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/edt_team_name" />
+
+            <com.sportpassword.bm.Views.MainEditText2
+                android:id="@+id/edt_captain_phone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                app:MainEditText2Hint="@string/match_sign_captain_phone"
+                app:MainEditText2Icon="ic_phone_svg"
+                app:MainEditText2Keyobard="phone"
+                app:MainEditText2Required="true"
+                app:MainEditText2Title="@string/match_sign_captain_phone"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/edt_captain_name" />
+
+            <com.sportpassword.bm.Views.MainEditText2
+                android:id="@+id/edt_captain_email"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                app:MainEditText2Hint="@string/match_sign_captain_email"
+                app:MainEditText2Icon="ic_email_svg"
+                app:MainEditText2Keyobard="emailAddress"
+                app:MainEditText2Required="true"
+                app:MainEditText2Title="@string/match_sign_captain_email"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/edt_captain_phone" />
+
+            <com.sportpassword.bm.Views.MainEditText2
+                android:id="@+id/edt_captain_line"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                app:MainEditText2Hint="@string/match_sign_captain_line"
+                app:MainEditText2Icon="ic_line_svg"
+                app:MainEditText2Keyobard="emailAddress"
+                app:MainEditText2Required="false"
+                app:MainEditText2Title="@string/match_sign_captain_line"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/edt_captain_email" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    </androidx.core.widget.NestedScrollView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

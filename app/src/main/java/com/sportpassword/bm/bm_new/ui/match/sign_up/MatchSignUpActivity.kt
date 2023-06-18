@@ -2,6 +2,8 @@ package com.sportpassword.bm.bm_new.ui.match.sign_up
 
 import android.os.Bundle
 import androidx.viewpager2.widget.ViewPager2
+import com.sportpassword.bm.R
+import com.sportpassword.bm.Utilities.Alert
 import com.sportpassword.bm.bm_new.ui.base.BaseActivity
 import com.sportpassword.bm.bm_new.ui.base.BaseViewModel
 import com.sportpassword.bm.databinding.ActivityMatchSignUpBinding
@@ -28,12 +30,7 @@ class MatchSignUpActivity : BaseActivity<ActivityMatchSignUpBinding>() {
 
     override fun initView(savedInstanceState: Bundle?) {
         binding?.apply {
-            btnClose.setOnClickListener { finish() }
             btnCancel.setOnClickListener { finish() }
-
-            btnSignUp.setOnClickListener {
-                //todo post報名動作
-            }
 
             vm.matchSignUp.observe(this@MatchSignUpActivity) {
                 indicator.addIndicator(it.matchGroup.number)
@@ -64,6 +61,29 @@ class MatchSignUpActivity : BaseActivity<ActivityMatchSignUpBinding>() {
                             indicator.setIndicatorSelected(position)
                         }
                     })
+                }
+
+                vm.initSignUpInfo(it.matchGroup.number)
+
+                btnSignUp.setOnClickListener {
+                    val requiredBlankList =
+                        (vm.signUpList.filter { it.value.isBlank() && it.isRequired })
+
+                    when (requiredBlankList.isEmpty()) {
+                        true -> {
+                            //todo post報名動作
+                        }
+
+                        false -> {      //有必填欄位空白時，show alert
+                            val stringBuilder = StringBuilder()
+                            requiredBlankList.forEach {
+                                stringBuilder.append(getString(it.titleStringRes))
+                                stringBuilder.append(getString(R.string.match_sign_cannot_blank))
+                                stringBuilder.append("\n")
+                            }
+                            Alert.show(this@MatchSignUpActivity, "警告", "$stringBuilder")
+                        }
+                    }
                 }
             }
         }

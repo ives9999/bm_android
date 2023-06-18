@@ -10,6 +10,7 @@ import com.sportpassword.bm.bm_new.ui.match.detail.MatchDetailVM
 import com.sportpassword.bm.databinding.FragmentMatchBrochureBinding
 import org.koin.androidx.viewmodel.ext.android.sharedStateViewModel
 
+//報名-簡章
 class MatchBrochureFragment : BaseFragment<FragmentMatchBrochureBinding>() {
 
     companion object {

@@ -39,5 +39,12 @@
     <string name="match_sign_group">報名組數: %1$d 組</string>
     <string name="match_limit_group">限制組數: %1$d 組</string>
     <string name="match_cancel">取消</string>
+    <string name="match_sign_team_information">組隊資料</string>
+    <string name="match_sign_team_name">隊名</string>
+    <string name="match_sign_captain_name">隊長姓名</string>
+    <string name="match_sign_captain_phone">隊長手機</string>
+    <string name="match_sign_captain_email">隊長Email</string>
+    <string name="match_sign_captain_line">隊長Line</string>
+    <string name="match_sign_cannot_blank">不能爲空白</string>
 
 </resources>

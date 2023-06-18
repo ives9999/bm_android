@@ -13,7 +13,7 @@ class MatchSignUpPagerAdapter(
 
     override fun createFragment(position: Int): Fragment {
         return when (position) {
-            0 -> BlankFragment.newInstance()
+            0 -> MatchTeamInformationFragment.newInstance()
             1 -> BlankFragment.newInstance()
             else -> BlankFragment.newInstance()
         }

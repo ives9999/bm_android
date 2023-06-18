@@ -29,6 +29,12 @@ class MatchListAdapter :
         init {
             binding.apply {
 
+                itemView .setOnClickListener {
+                    getItem(bindingAdapterPosition)?.let { data ->
+                        listener?.onDetailClick(data)
+                    }
+                }
+
                 btnDetail.setOnClickListener {
                     getItem(bindingAdapterPosition)?.let { data ->
                         listener?.onDetailClick(data)
