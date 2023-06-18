@@ -8,8 +8,6 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.onesignal.OSPermissionObserver
-import com.onesignal.OSPermissionStateChanges
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Utilities.*
 import com.sportpassword.bm.Views.ShowTop2
@@ -19,7 +17,7 @@ import org.json.JSONArray
 import org.json.JSONObject
 import java.lang.Exception
 
-class ShowPNVC : MyTableVC(), OSPermissionObserver {
+class ShowPNVC : MyTableVC() {
 
     private lateinit var binding: ActivityShowPnvcBinding
     //private lateinit var view: ViewGroup
@@ -140,10 +138,10 @@ class ShowPNVC : MyTableVC(), OSPermissionObserver {
     }
 
     fun cellRemove(id: String) {
-        warning("是否確定要刪除此訊息？", "關閉", "刪除") {
-            MyOneSignal.remove(id)
-            refresh()
-        }
+//        warning("是否確定要刪除此訊息？", "關閉", "刪除") {
+//            MyOneSignal.remove(id)
+//            refresh()
+//        }
     }
 
 //    override fun generateItems(): ArrayList<Item> {
@@ -178,18 +176,10 @@ class ShowPNVC : MyTableVC(), OSPermissionObserver {
 
     fun clear(view: View) {
         //println("clear")
-        warning("是否確定要刪除全部訊息？", "關閉", "刪除") {
-            MyOneSignal.clear()
-            refresh()
-        }
-    }
-
-    override fun onOSPermissionChanged(stateChanges: OSPermissionStateChanges?) {
-        if (stateChanges != null) {
-            //isReceive = stateChanges.from.enabled
-            //switch change status
-            //setupSwitch.isChecked = isReceive
-        }
+//        warning("是否確定要刪除全部訊息？", "關閉", "刪除") {
+//            MyOneSignal.clear()
+//            refresh()
+//        }
     }
 
     private fun getArr() {

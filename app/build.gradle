@@ -158,8 +158,8 @@ dependencies {
     //barcode
     implementation 'com.google.zxing:core:3.4.0'
 
-    //onesignal
-    implementation ('com.onesignal:OneSignal:[4.0.0, 4.99.99]')
+    //onesignal 2023/06/17 ives cancel
+//    implementation ('com.onesignal:OneSignal:[4.0.0, 4.99.99]')
     implementation 'com.google.android.gms:play-services-maps:[17.0.0, 17.99.99]'
 
     //youtube

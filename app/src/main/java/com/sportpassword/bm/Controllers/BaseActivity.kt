@@ -29,7 +29,6 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.google.firebase.messaging.FirebaseMessaging
 import com.google.gson.internal.LinkedTreeMap
-import com.onesignal.OneSignal
 import com.sportpassword.bm.Adapters.OneSectionAdapter
 import com.sportpassword.bm.App
 import com.sportpassword.bm.Data.*
@@ -196,18 +195,15 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener,
         }
     }
 
-    protected fun _getPlayerID(): String {
-        var playerID = ""
-        val deviceState = OneSignal.getDeviceState()
-        if (deviceState != null) {
-            playerID = deviceState.userId
-        }
-
-//        OneSignal.idsAvailable { userId, registrationId ->
-//            playerID = userId
+//    protected fun _getPlayerID(): String {
+//        var playerID = ""
+//        val deviceState = OneSignal.getDeviceState()
+//        if (deviceState != null) {
+//            playerID = deviceState.userId
 //        }
-        return playerID
-    }
+//
+//        return playerID
+//    }
 
     protected fun _getTeamManagerList(completion: CompletionHandler) {
         val filter1: Array<Any> = arrayOf("channel", "=", CHANNEL)
@@ -865,36 +861,6 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener,
 
     override fun onResume() {
         super.onResume()
-
-//        MyOneSignal.dump()
-//        val unShowPushs: JSONArray = MyOneSignal.getUnShowRows()
-//        var rows = MyOneSignal.getAllRows()
-//        val rows1: JSONArray = JSONArray()
-//        for (i in 0 until rows.length()) {
-//            val row: JSONObject = rows.getJSONObject(i)
-//            row.put("isShow", false)
-//            rows1.put(row)
-//        }
-//        MyOneSignal.updateAll(rows1)
-
-
-
-        //if has new push show the push
-        val rows = MyOneSignal.getAllRows()
-        val pnArr1 = JSONArray()
-
-        for (i in 0 until rows.length()) {
-//        for (i in 0 until unShowPushs.length()) {
-            val row: JSONObject = rows.getJSONObject(i)
-            //val row: JSONObject = unShowPushs.getJSONObject(i)
-            if (row.has("isShow") && !row.getBoolean("isShow")) {
-                val content: String = row.getString("content")
-                info(content)
-                row.put("isShow", true)
-            }
-            pnArr1.put(row)
-        }
-        MyOneSignal.updateAll(pnArr1)
     }
 
     override fun onSupportNavigateUp(): Boolean {

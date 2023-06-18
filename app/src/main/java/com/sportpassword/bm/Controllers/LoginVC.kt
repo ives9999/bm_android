@@ -103,11 +103,11 @@ class LoginVC : BaseActivity(), SubmitDelegate {
             return
         }
 
-        val playerID = _getPlayerID();
+        //val playerID = _getPlayerID();
         //println(playerID)
 
         loadingAnimation.start()
-        MemberService.login(this, email!!, password!!, playerID) { success ->
+        MemberService.login(this, email, password) { success ->
             runOnUiThread {
                 loadingAnimation.stop()
             }

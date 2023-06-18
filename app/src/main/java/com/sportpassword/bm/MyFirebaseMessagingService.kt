@@ -51,7 +51,7 @@ class MyFirebaseMessagingService: FirebaseMessagingService() {
 
         remoteViews.setTextViewText(R.id.titleTV, title)
         remoteViews.setTextViewText(R.id.messageTV, message)
-        remoteViews.setImageViewResource(R.id.logoIV, R.drawable.no_word_logo)
+        remoteViews.setImageViewResource(R.id.logoIV, R.drawable.ic_notification)
 
         return remoteViews
     }
@@ -70,7 +70,8 @@ class MyFirebaseMessagingService: FirebaseMessagingService() {
         notifManager = NotificationManagerCompat.from(this)
         val notifBuilder = NotificationCompat.Builder(this, CHANNEL_ID)
 
-        notif = notifBuilder.setSmallIcon(R.drawable.ic_pv_svg)
+        notif = notifBuilder
+            .setSmallIcon(getNotificationIcon(notifBuilder))
             .setContentTitle(title)
             .setContentText(message)
 //            .setContentIntent(pendingIntent)
@@ -122,6 +123,16 @@ class MyFirebaseMessagingService: FirebaseMessagingService() {
         }
 
         return manager
+    }
+
+    override fun onNewToken(token: String) {
+        super.onNewToken(token)
+    }
+
+    private fun getNotificationIcon(notificationBuilder: NotificationCompat.Builder): Int {
+        val color: Int = 0xffffff
+        notificationBuilder.color = color
+        return R.drawable.ic_notification
     }
 }
 

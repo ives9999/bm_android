@@ -1,19 +1,13 @@
 package com.sportpassword.bm
 
-import android.app.Activity
 import android.app.Application
 import android.content.Context
 import android.os.Build
 import com.google.firebase.messaging.FirebaseMessaging
-import com.onesignal.OSNotificationOpenedResult
-import com.onesignal.OneSignal
 import com.sportpassword.bm.Utilities.*
-import com.onesignal.OSNotificationReceivedEvent
-import com.sportpassword.bm.Controllers.BaseActivity
 import com.sportpassword.bm.Controllers.SystemProperties
 import com.sportpassword.bm.Models.Member
 import com.sportpassword.bm.Services.MemberService
-import org.jetbrains.anko.runOnUiThread
 
 /**
  * Created by ives on 2018/2/6.
