@@ -15,7 +15,7 @@ buildscript {
     dependencies {
         classpath 'com.android.tools.build:gradle:7.4.2'
         classpath 'org.jetbrains.kotlin:kotlin-gradle-plugin:1.8.20-Beta'
-        classpath 'gradle.plugin.com.onesignal:onesignal-gradle-plugin:0.13.4'
+        //classpath 'gradle.plugin.com.onesignal:onesignal-gradle-plugin:0.13.4'
 
         //for fcm
         classpath 'com.google.gms:google-services:4.3.15'

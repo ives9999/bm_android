@@ -1,15 +1,15 @@
-buildscript {
+//buildscript {
 //    repositories {
 //        google()
 //        mavenCenter()
 //    }
-    dependencies {
-        classpath 'gradle.plugin.com.onesignal:onesignal-gradle-plugin:0.13.4'
-    }
-}
+//    dependencies {
+//        classpath 'gradle.plugin.com.onesignal:onesignal-gradle-plugin:0.13.4'
+//    }
+//}
 
 plugins {
-    id 'com.onesignal.androidsdk.onesignal-gradle-plugin'
+    //id 'com.onesignal.androidsdk.onesignal-gradle-plugin'
     id 'com.android.application'
     id 'kotlin-android'
     //id 'kotlin-android-extensions'
@@ -49,11 +49,11 @@ android {
         versionName "2.3.9"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
-        manifestPlaceholders = [
-                onesignal_app_id               : '856c8fdb-79fb-418d-a397-d58b9c6b880b',
-                // Project number pulled from dashboard, local value is ignored.
-                onesignal_google_project_number: 'REMOTE'
-        ]
+//        manifestPlaceholders = [
+//                onesignal_app_id               : '856c8fdb-79fb-418d-a397-d58b9c6b880b',
+//                // Project number pulled from dashboard, local value is ignored.
+//                onesignal_google_project_number: 'REMOTE'
+//        ]
     }
     buildTypes {
         release {
