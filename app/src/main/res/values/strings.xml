@@ -46,5 +46,8 @@
     <string name="match_sign_captain_email">隊長Email</string>
     <string name="match_sign_captain_line">隊長Line</string>
     <string name="match_sign_cannot_blank">不能爲空白</string>
+    <string name="match_start_date">比賽開始日期:</string>
+    <string name="match_end_date">比賽結束日期:</string>
+    <string name="match_location">比賽球館:</string>
 
 </resources>

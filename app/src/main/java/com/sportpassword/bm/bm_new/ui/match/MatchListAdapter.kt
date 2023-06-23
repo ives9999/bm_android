@@ -20,16 +20,14 @@ class MatchListAdapter :
     inner class ViewHolder(binding: ItemMatchBinding) : RecyclerView.ViewHolder(binding.root) {
         private val tvNumber = binding.tvNum
         private val tvName = binding.tvName
-        private val tvStartDate = binding.tvStartDate
-        private val tvStartTime = binding.tvStartTime
-        private val tvEndDate = binding.tvEndDate
-        private val tvEndTime = binding.tvEndTime
-        private val tvLocation = binding.tvLocation
+        private val startDate = binding.startDate
+        private val endDate = binding.endDate
+        private val location = binding.location
 
         init {
             binding.apply {
 
-                itemView .setOnClickListener {
+                itemView.setOnClickListener {
                     getItem(bindingAdapterPosition)?.let { data ->
                         listener?.onDetailClick(data)
                     }
@@ -52,13 +50,9 @@ class MatchListAdapter :
         fun bind(data: MatchListDto.Row) {
             tvNumber.text = (bindingAdapterPosition + 1).toString()
             tvName.text = data.name
-            val start = data.matchStart.split(" ")
-            val end = data.matchEnd.split(" ")
-            tvStartDate.text = start.getOrNull(0)
-            tvStartTime.text = start.getOrNull(1)
-            tvEndDate.text = end.getOrNull(0)
-            tvEndTime.text = end.getOrNull(1)
-            tvLocation.text = data.arenaName
+            startDate.setContent(data.matchStart.dropLast(3))
+            endDate.setContent(data.matchEnd.dropLast(3))
+            location.setContent(data.arenaName)
         }
     }
 

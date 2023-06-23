@@ -1,5 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- 自定義 圖示/title/內容  -->
+    <declare-styleable name="IconTitleText">
+        <attr name="src" format="reference" />
+        <attr name="titleText" format="string" />
+        <attr name="contentText" format="string" />
+    </declare-styleable>
+
     <declare-styleable name="divider">
 
     </declare-styleable>
