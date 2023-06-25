@@ -18,213 +18,56 @@
             android:id="@+id/tv_competition_date"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Competition date"
+            android:text="@string/match_match_date_time"
             android:textColor="@color/MY_WHITE"
             android:textSize="20sp"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <ImageView
-            android:id="@+id/iv_game_start"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:layout_marginTop="16dp"
-            android:contentDescription="@null"
-            android:scaleType="centerCrop"
-            android:src="@drawable/ic_calendar_start_svg"
-            app:layout_constraintHorizontal_chainStyle="spread_inside"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_competition_date" />
-
-        <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/tv_game_start_date"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:textColor="@color/MY_WHITE"
-            android:textSize="16sp"
-            app:layout_constrainedWidth="true"
-            app:layout_constraintBottom_toBottomOf="@+id/iv_game_start"
-            app:layout_constraintStart_toEndOf="@+id/iv_game_start"
-            app:layout_constraintTop_toTopOf="@+id/iv_game_start"
-            app:layout_constraintVertical_bias="1.0"
-            app:layout_constraintVertical_chainStyle="spread_inside"
-            tools:text="Wednesday, 11-01-2023" />
-
-
-        <ImageView
-            android:id="@+id/iv_game_dot_start"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="6dp"
-            android:contentDescription="@null"
-            android:src="@drawable/ic_dot_greed_svg"
-            app:layout_constraintBottom_toBottomOf="@+id/tv_game_start_date"
-            app:layout_constraintStart_toEndOf="@+id/tv_game_start_date"
-            app:layout_constraintTop_toTopOf="@+id/tv_game_start_date" />
-
-        <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/tv_game_start_time"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="6dp"
-            android:textColor="@color/MY_WHITE"
-            android:textSize="16sp"
-            app:layout_constrainedWidth="true"
-            app:layout_constraintBottom_toBottomOf="@+id/tv_game_start_date"
-            app:layout_constraintStart_toEndOf="@+id/iv_game_dot_start"
-            app:layout_constraintTop_toTopOf="@+id/tv_game_start_date"
-            app:layout_constraintVertical_chainStyle="spread_inside"
-            tools:text="08:00" />
-
-        <ImageView
-            android:id="@+id/iv_game_end"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:layout_marginTop="16dp"
-            android:contentDescription="@null"
-            android:scaleType="centerCrop"
-            android:src="@drawable/ic_calendar_end_svg"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/iv_game_start" />
-
-        <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/tv_game_end_date"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:textColor="@color/MY_WHITE"
-            android:textSize="16sp"
-            app:layout_constrainedWidth="true"
-            app:layout_constraintBottom_toBottomOf="@+id/iv_game_end"
-            app:layout_constraintStart_toEndOf="@+id/iv_game_end"
-            app:layout_constraintTop_toTopOf="@+id/iv_game_end"
-            app:layout_constraintVertical_bias="1.0"
-            app:layout_constraintVertical_chainStyle="spread_inside"
-            tools:text="Wednesday, 11-01-2023" />
-
-
-        <ImageView
-            android:id="@+id/iv_game_dot_end"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="6dp"
-            android:contentDescription="@null"
-            android:src="@drawable/ic_dot_greed_svg"
-            app:layout_constraintBottom_toBottomOf="@+id/tv_game_end_date"
-            app:layout_constraintStart_toEndOf="@+id/tv_game_end_date"
-            app:layout_constraintTop_toTopOf="@+id/tv_game_end_date" />
-
-        <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/tv_game_end_time"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="6dp"
-            android:textColor="@color/MY_WHITE"
-            android:textSize="16sp"
-            app:layout_constrainedWidth="true"
-            app:layout_constraintBottom_toBottomOf="@+id/tv_game_end_date"
-            app:layout_constraintStart_toEndOf="@+id/iv_game_dot_end"
-            app:layout_constraintTop_toTopOf="@+id/tv_game_end_date"
-            app:layout_constraintVertical_chainStyle="spread_inside"
-            tools:text="08:00" />
-
-        <ImageView
-            android:id="@+id/iv_sign_start"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:layout_marginTop="16dp"
-            android:contentDescription="@null"
-            android:scaleType="centerCrop"
-            android:src="@drawable/ic_sign_start_svg"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/iv_game_end" />
-
-        <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/tv_sign_start_date"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:textColor="@color/MY_WHITE"
-            android:textSize="16sp"
-            app:layout_constraintBottom_toBottomOf="@+id/iv_sign_start"
-            app:layout_constraintStart_toEndOf="@+id/iv_sign_start"
-            app:layout_constraintTop_toTopOf="@+id/iv_sign_start"
-            tools:text="Sunday, 23-04-2023" />
-
-        <ImageView
-            android:id="@+id/iv_sign_dot_start"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="6dp"
-            android:contentDescription="@null"
-            android:src="@drawable/ic_dot_greed_svg"
-            app:layout_constraintBottom_toBottomOf="@+id/tv_sign_start_date"
-            app:layout_constraintStart_toEndOf="@+id/tv_sign_start_date"
-            app:layout_constraintTop_toTopOf="@+id/tv_sign_start_date" />
-
-        <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/tv_sign_start_time"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="6dp"
-            android:textColor="@color/MY_WHITE"
-            android:textSize="16sp"
-            app:layout_constrainedWidth="true"
-            app:layout_constraintBottom_toBottomOf="@+id/iv_sign_dot_start"
-            app:layout_constraintStart_toEndOf="@+id/iv_sign_dot_start"
-            app:layout_constraintTop_toTopOf="@+id/iv_sign_dot_start"
-            app:layout_constraintVertical_chainStyle="spread_inside"
-            tools:text="08:00" />
-
-        <ImageView
-            android:id="@+id/iv_sign_end"
-            android:layout_width="wrap_content"
+        <com.sportpassword.bm.bm_new.ui.util.custom_view.IconTitleText
+            android:id="@+id/match_start_date"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:contentDescription="@null"
-            android:scaleType="centerCrop"
-            android:src="@drawable/ic_sign_end_svg"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/iv_sign_start" />
+            app:layout_constraintTop_toBottomOf="@+id/tv_competition_date"
+            app:src="@drawable/ic_calendar_start_svg"
+            app:titleText="@string/match_start_date" />
 
-        <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/tv_sign_end_date"
-            android:layout_width="wrap_content"
+        <com.sportpassword.bm.bm_new.ui.util.custom_view.IconTitleText
+            android:id="@+id/match_end_date"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:textColor="@color/MY_WHITE"
-            android:textSize="16sp"
-            app:layout_constraintBottom_toBottomOf="@+id/iv_sign_end"
-            app:layout_constraintStart_toEndOf="@+id/iv_sign_end"
-            app:layout_constraintTop_toTopOf="@+id/iv_sign_end"
-            tools:text="Sunday, 23-04-2023" />
+            android:layout_marginTop="16dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/match_start_date"
+            app:src="@drawable/ic_calendar_end_svg"
+            app:titleText="@string/match_end_date" />
 
-        <ImageView
-            android:id="@+id/iv_sign_dot_end"
-            android:layout_width="wrap_content"
+        <com.sportpassword.bm.bm_new.ui.util.custom_view.IconTitleText
+            android:id="@+id/sign_start_date"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="6dp"
-            android:contentDescription="@null"
-            android:src="@drawable/ic_dot_greed_svg"
-            app:layout_constraintBottom_toBottomOf="@+id/tv_sign_end_date"
-            app:layout_constraintStart_toEndOf="@+id/tv_sign_end_date"
-            app:layout_constraintTop_toTopOf="@+id/tv_sign_end_date" />
+            android:layout_marginTop="16dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/match_end_date"
+            app:src="@drawable/ic_sign_start_svg"
+            app:titleText="@string/match_sign_start_date" />
 
-        <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/tv_sign_end_time"
-            android:layout_width="wrap_content"
+        <com.sportpassword.bm.bm_new.ui.util.custom_view.IconTitleText
+            android:id="@+id/sign_end_date"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="6dp"
-            android:textColor="@color/MY_WHITE"
-            android:textSize="16sp"
-            app:layout_constrainedWidth="true"
-            app:layout_constraintBottom_toBottomOf="@+id/iv_sign_dot_end"
-            app:layout_constraintStart_toEndOf="@+id/iv_sign_dot_end"
-            app:layout_constraintTop_toTopOf="@+id/iv_sign_dot_end"
-            app:layout_constraintVertical_chainStyle="spread_inside"
-            tools:text="08:00" />
+            android:layout_marginTop="16dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/sign_start_date"
+            app:src="@drawable/ic_sign_end_svg"
+            app:titleText="@string/match_sign_end_date" />
 
         <View
             android:id="@+id/line1"
@@ -234,131 +77,74 @@
             android:background="@color/WHITE_26"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/iv_sign_end" />
+            app:layout_constraintTop_toBottomOf="@+id/sign_end_date" />
 
         <TextView
             android:id="@+id/tv_competition_location"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
-            android:text="Competition Location"
+            android:text="@string/match_location"
             android:textColor="@color/MY_WHITE"
             android:textSize="20sp"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/line1" />
 
-        <ImageView
-            android:id="@+id/iv_arena"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:layout_marginTop="16dp"
-            android:contentDescription="@null"
-            android:scaleType="centerCrop"
-            android:src="@drawable/ic_arena_svg"
-            app:layout_constraintHorizontal_chainStyle="spread_inside"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_competition_location" />
-
-        <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/tv_arena"
-            android:layout_width="wrap_content"
+        <com.sportpassword.bm.bm_new.ui.util.custom_view.IconTitleText
+            android:id="@+id/match_city"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:textColor="@color/MY_WHITE"
-            android:textSize="16sp"
-            app:layout_constrainedWidth="true"
-            app:layout_constraintBottom_toBottomOf="@+id/iv_arena"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0"
-            app:layout_constraintStart_toEndOf="@+id/iv_arena"
-            app:layout_constraintTop_toTopOf="@+id/iv_arena"
-            app:layout_constraintVertical_chainStyle="spread_inside"
-            tools:text="球館" />
-
-        <ImageView
-            android:id="@+id/iv_address"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
             android:layout_marginTop="16dp"
-            android:contentDescription="@null"
-            android:scaleType="centerCrop"
-            android:src="@drawable/ic_location_svg"
-            app:layout_constraintHorizontal_chainStyle="spread_inside"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/iv_arena" />
-
-        <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/tv_address"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:textColor="@color/MY_WHITE"
-            android:textSize="16sp"
-            app:layout_constrainedWidth="true"
-            app:layout_constraintBottom_toBottomOf="@+id/iv_address"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0"
-            app:layout_constraintStart_toEndOf="@+id/iv_address"
-            app:layout_constraintTop_toTopOf="@+id/iv_address"
-            app:layout_constraintVertical_chainStyle="spread_inside"
-            tools:text="No. 116, Wenshen Street 717, Rende Distric, Taiwan City" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_competition_location"
+            app:src="@drawable/ic_location_svg"
+            app:titleText="@string/match_location_city" />
 
-        <ImageView
-            android:id="@+id/iv_location_phone"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
+        <com.sportpassword.bm.bm_new.ui.util.custom_view.IconTitleText
+            android:id="@+id/match_arena"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:contentDescription="@null"
-            android:scaleType="centerCrop"
-            android:src="@drawable/ic_phone_svg"
-            app:layout_constraintHorizontal_chainStyle="spread_inside"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/iv_address" />
-
-        <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/tv_location_phone"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:textColor="@color/MY_WHITE"
-            android:textSize="16sp"
-            app:layout_constrainedWidth="true"
-            app:layout_constraintBottom_toBottomOf="@+id/iv_location_phone"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0"
-            app:layout_constraintStart_toEndOf="@+id/iv_location_phone"
-            app:layout_constraintTop_toTopOf="@+id/iv_location_phone"
-            app:layout_constraintVertical_chainStyle="spread_inside"
-            tools:text="06-2495-339" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/match_city"
+            app:src="@drawable/ic_arena_svg"
+            app:titleText="@string/match_location_arena" />
 
-        <ImageView
-            android:id="@+id/iv_badminton"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
+        <com.sportpassword.bm.bm_new.ui.util.custom_view.IconTitleText
+            android:id="@+id/match_arena_address"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:contentDescription="@null"
-            android:scaleType="centerCrop"
-            android:src="@drawable/ic_badminton_svg"
-            app:layout_constraintHorizontal_chainStyle="spread_inside"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/iv_location_phone" />
-
-        <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/tv_badminton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:textColor="@color/MY_WHITE"
-            android:textSize="16sp"
-            app:layout_constrainedWidth="true"
-            app:layout_constraintBottom_toBottomOf="@+id/iv_badminton"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0"
-            app:layout_constraintStart_toEndOf="@+id/iv_badminton"
-            app:layout_constraintTop_toTopOf="@+id/iv_badminton"
-            app:layout_constraintVertical_chainStyle="spread_inside"
-            tools:text="YY0 AS-50" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/match_arena"
+            app:src="@drawable/ic_location_svg"
+            app:titleText="@string/match_location_arena_address" />
+
+        <com.sportpassword.bm.bm_new.ui.util.custom_view.IconTitleText
+            android:id="@+id/match_arena_phone"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/match_arena_address"
+            app:src="@drawable/ic_phone_svg"
+            app:titleText="@string/match_location_arena_phone" />
+
+        <com.sportpassword.bm.bm_new.ui.util.custom_view.IconTitleText
+            android:id="@+id/match_ball"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/match_arena_phone"
+            app:src="@drawable/ic_ball_svg"
+            app:titleText="@string/match_ball" />
 
         <View
             android:id="@+id/line2"
@@ -368,103 +154,52 @@
             android:background="@color/WHITE_26"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/iv_badminton" />
+            app:layout_constraintTop_toBottomOf="@+id/match_ball" />
 
         <TextView
             android:id="@+id/tv_contact_person"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
-            android:text="Contact person"
+            android:text="@string/match_contact_person"
             android:textColor="@color/MY_WHITE"
             android:textSize="20sp"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/line2" />
 
-        <ImageView
-            android:id="@+id/iv_person"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:layout_marginTop="16dp"
-            android:contentDescription="@null"
-            android:scaleType="centerCrop"
-            android:src="@drawable/ic_person_svg"
-            app:layout_constraintHorizontal_chainStyle="spread_inside"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_contact_person" />
-
-        <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/tv_person"
-            android:layout_width="wrap_content"
+        <com.sportpassword.bm.bm_new.ui.util.custom_view.IconTitleText
+            android:id="@+id/match_contact_person"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:textColor="@color/MY_WHITE"
-            android:textSize="16sp"
-            app:layout_constrainedWidth="true"
-            app:layout_constraintBottom_toBottomOf="@+id/iv_person"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0"
-            app:layout_constraintStart_toEndOf="@+id/iv_person"
-            app:layout_constraintTop_toTopOf="@+id/iv_person"
-            app:layout_constraintVertical_chainStyle="spread_inside"
-            tools:text="Sun Zhihuang" />
-
-        <ImageView
-            android:id="@+id/iv_person_phone"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
             android:layout_marginTop="16dp"
-            android:contentDescription="@null"
-            android:scaleType="centerCrop"
-            android:src="@drawable/ic_phone_svg"
-            app:layout_constraintHorizontal_chainStyle="spread_inside"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/iv_person" />
-
-        <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/tv_person_phone"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:textColor="@color/MY_WHITE"
-            android:textSize="16sp"
-            app:layout_constrainedWidth="true"
-            app:layout_constraintBottom_toBottomOf="@+id/iv_person_phone"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0"
-            app:layout_constraintStart_toEndOf="@+id/iv_person_phone"
-            app:layout_constraintTop_toTopOf="@+id/iv_person_phone"
-            app:layout_constraintVertical_chainStyle="spread_inside"
-            tools:text="0911 - 299 - 994" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_contact_person"
+            app:src="@drawable/ic_person_svg"
+            app:titleText="@string/match_sign_name" />
 
-        <ImageView
-            android:id="@+id/iv_email"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
+        <com.sportpassword.bm.bm_new.ui.util.custom_view.IconTitleText
+            android:id="@+id/match_contact_phone"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:contentDescription="@null"
-            android:scaleType="centerCrop"
-            android:src="@drawable/ic_email_svg"
-            app:layout_constraintHorizontal_chainStyle="spread_inside"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/iv_person_phone" />
-
-        <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/tv_email"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:textColor="@color/MY_WHITE"
-            android:textSize="16sp"
-            app:layout_constrainedWidth="true"
-            app:layout_constraintBottom_toBottomOf="@+id/iv_email"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0"
-            app:layout_constraintStart_toEndOf="@+id/iv_email"
-            app:layout_constraintTop_toTopOf="@+id/iv_email"
-            app:layout_constraintVertical_chainStyle="spread_inside"
-            tools:text="ives@bluemobile.com.tw" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/match_contact_person"
+            app:src="@drawable/ic_phone_svg"
+            app:titleText="@string/match_sign_phone" />
+
+        <com.sportpassword.bm.bm_new.ui.util.custom_view.IconTitleText
+            android:id="@+id/match_contact_email"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/match_contact_phone"
+            app:src="@drawable/ic_email_svg"
+            app:titleText="@string/match_sign_email" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

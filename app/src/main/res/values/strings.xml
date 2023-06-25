@@ -54,8 +54,17 @@
     <string name="match_sign_line">Line</string>
     <string name="match_sign_age">年齡</string>
     <string name="match_sign_giveaway">贈品</string>
+    <string name="match_match_date_time">賽事日期時間</string>
     <string name="match_start_date">比賽開始日期:</string>
     <string name="match_end_date">比賽結束日期:</string>
-    <string name="match_location">比賽球館:</string>
+    <string name="match_sign_start_date">報名開始日期:</string>
+    <string name="match_sign_end_date">報名結束日期:</string>
+    <string name="match_location">賽事地點</string>
+    <string name="match_location_city">比賽地點:</string>
+    <string name="match_location_arena">比賽球館:</string>
+    <string name="match_location_arena_address">球館地址:</string>
+    <string name="match_location_arena_phone">球館電話:</string>
+    <string name="match_ball">比賽用球:</string>
+    <string name="match_contact_person">賽事聯絡人:</string>
 
 </resources>
