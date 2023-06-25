@@ -13,9 +13,11 @@ class MatchDetailActivity : BaseActivity<ActivityMatchDetailBinding>() {
 
     companion object {
         const val MATCH_ROW = "match_row"
+        const val SIGN_UP = "sign_up"
     }
 
     private var title: String? = null
+    private var isSignUp = false
     private var matchPagerAdapter: MatchPagerAdapter? = null
     private val tabs = MatchTab.values().toList()
     private val vm by stateViewModel<MatchDetailVM>()
@@ -28,6 +30,8 @@ class MatchDetailActivity : BaseActivity<ActivityMatchDetailBinding>() {
             title = it.name
             vm.getMatchDetail(it.token)
         }
+
+        isSignUp = data.getBoolean(SIGN_UP)
     }
 
     override fun initView(savedInstanceState: Bundle?) {
@@ -47,6 +51,10 @@ class MatchDetailActivity : BaseActivity<ActivityMatchDetailBinding>() {
                 }
 
                 isUserInputEnabled = false
+
+                if (isSignUp) {
+                    vp.currentItem = 2
+                }
             }
 
             TabLayoutMediator(tblMatch, vp) { tab, position ->

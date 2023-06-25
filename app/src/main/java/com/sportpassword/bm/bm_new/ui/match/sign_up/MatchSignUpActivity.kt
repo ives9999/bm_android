@@ -76,8 +76,26 @@ class MatchSignUpActivity : BaseActivity<ActivityMatchSignUpBinding>() {
 
                         false -> {      //有必填欄位空白時，show alert
                             val stringBuilder = StringBuilder()
-                            requiredBlankList.forEach {
-                                stringBuilder.append(getString(it.titleStringRes))
+                            requiredBlankList.forEach { signUpInfo ->
+                                val title = getString(signUpInfo.titleStringRes)
+                                when {
+                                    signUpInfo.type.contains("player_one") -> {
+                                        stringBuilder.append(
+                                            "${getString(R.string.match_sign_player_one)} $title"
+                                        )
+                                    }
+
+                                    signUpInfo.type.contains("player_two") -> {
+                                        stringBuilder.append(
+                                            "${getString(R.string.match_sign_player_two)} $title"
+                                        )
+                                    }
+
+                                    else -> {
+                                        stringBuilder.append(title)
+                                    }
+                                }
+
                                 stringBuilder.append(getString(R.string.match_sign_cannot_blank))
                                 stringBuilder.append("\n")
                             }

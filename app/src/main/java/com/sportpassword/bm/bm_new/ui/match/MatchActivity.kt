@@ -10,6 +10,7 @@ import com.sportpassword.bm.bm_new.ui.base.BaseActivity
 import com.sportpassword.bm.bm_new.ui.base.BaseViewModel
 import com.sportpassword.bm.bm_new.ui.match.detail.MatchDetailActivity
 import com.sportpassword.bm.bm_new.ui.match.detail.MatchDetailActivity.Companion.MATCH_ROW
+import com.sportpassword.bm.bm_new.ui.match.detail.MatchDetailActivity.Companion.SIGN_UP
 import com.sportpassword.bm.bm_new.ui.util.LinearItemDecoration
 import com.sportpassword.bm.bm_new.ui.util.toMatchSignUp
 import com.sportpassword.bm.databinding.ActivityMatchBinding
@@ -63,6 +64,10 @@ class MatchActivity : BaseActivity<ActivityMatchBinding>(), MatchListAdapter.Lis
     }
 
     override fun onSignUpClick(data: MatchListDto.Row) {
-        toMatchSignUp(data.token)
+        Intent(this, MatchDetailActivity::class.java).apply {
+            putExtra(MATCH_ROW, data)
+            putExtra(SIGN_UP, true)     //tab直接到報名
+            startActivity(this)
+        }
     }
 }

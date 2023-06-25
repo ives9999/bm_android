@@ -13,6 +13,16 @@ import com.sportpassword.bm.bm_new.ui.match.sign_up.MatchTeamInformationFragment
 import com.sportpassword.bm.bm_new.ui.match.sign_up.MatchTeamInformationFragment.Companion.CAPTAIN_NAME
 import com.sportpassword.bm.bm_new.ui.match.sign_up.MatchTeamInformationFragment.Companion.CAPTAIN_PHONE
 import com.sportpassword.bm.bm_new.ui.match.sign_up.MatchTeamInformationFragment.Companion.TEAM_NAME
+import com.sportpassword.bm.bm_new.ui.match.sign_up.MatchTeamPlayerFragment.Companion.PLAYER_ONE_AGE
+import com.sportpassword.bm.bm_new.ui.match.sign_up.MatchTeamPlayerFragment.Companion.PLAYER_ONE_EMAIL
+import com.sportpassword.bm.bm_new.ui.match.sign_up.MatchTeamPlayerFragment.Companion.PLAYER_ONE_LINE
+import com.sportpassword.bm.bm_new.ui.match.sign_up.MatchTeamPlayerFragment.Companion.PLAYER_ONE_NAME
+import com.sportpassword.bm.bm_new.ui.match.sign_up.MatchTeamPlayerFragment.Companion.PLAYER_ONE_PHONE
+import com.sportpassword.bm.bm_new.ui.match.sign_up.MatchTeamPlayerFragment.Companion.PLAYER_TWO_AGE
+import com.sportpassword.bm.bm_new.ui.match.sign_up.MatchTeamPlayerFragment.Companion.PLAYER_TWO_EMAIL
+import com.sportpassword.bm.bm_new.ui.match.sign_up.MatchTeamPlayerFragment.Companion.PLAYER_TWO_LINE
+import com.sportpassword.bm.bm_new.ui.match.sign_up.MatchTeamPlayerFragment.Companion.PLAYER_TWO_NAME
+import com.sportpassword.bm.bm_new.ui.match.sign_up.MatchTeamPlayerFragment.Companion.PLAYER_TWO_PHONE
 import com.sportpassword.bm.bm_new.ui.vo.SignUpInfo
 import kotlinx.coroutines.launch
 import timber.log.Timber
@@ -38,7 +48,7 @@ class MatchSignUpVM(
         signUpList.clear()
 
         signUpList.addAll(
-            mutableListOf(
+            listOf(
                 SignUpInfo(TEAM_NAME, R.string.match_sign_team_name, "", true),    //隊名
                 SignUpInfo(CAPTAIN_NAME, R.string.match_sign_captain_name, "", true),    //隊長姓名
                 SignUpInfo(CAPTAIN_PHONE, R.string.match_sign_captain_phone, "", true),    //隊長手機
@@ -46,6 +56,22 @@ class MatchSignUpVM(
                 SignUpInfo(CAPTAIN_LINE, R.string.match_sign_captain_line, ""),    //隊長line
             )
         )
+        if (number == 2) {
+            signUpList.addAll(
+                listOf(
+                    SignUpInfo(PLAYER_ONE_NAME, R.string.match_sign_name, "", true),
+                    SignUpInfo(PLAYER_ONE_PHONE, R.string.match_sign_phone, "", true),
+                    SignUpInfo(PLAYER_ONE_EMAIL, R.string.match_sign_email, "", true),
+                    SignUpInfo(PLAYER_ONE_LINE, R.string.match_sign_line, ""),
+                    SignUpInfo(PLAYER_ONE_AGE, R.string.match_sign_age, ""),
+                    SignUpInfo(PLAYER_TWO_NAME, R.string.match_sign_name, "", true),
+                    SignUpInfo(PLAYER_TWO_PHONE, R.string.match_sign_phone, "", true),
+                    SignUpInfo(PLAYER_TWO_EMAIL, R.string.match_sign_email, "", true),
+                    SignUpInfo(PLAYER_TWO_LINE, R.string.match_sign_line, ""),
+                    SignUpInfo(PLAYER_TWO_AGE, R.string.match_sign_age, ""),
+                )
+            )
+        }
 
     }
 

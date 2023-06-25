@@ -23,7 +23,7 @@
         android:layout_marginStart="16dp"
         android:ellipsize="end"
         android:maxLines="1"
-        android:text="@string/match_sign_team_information"
+        android:text="@string/match_sign_player_one"
         android:textColor="@color/MY_WHITE"
         android:textSize="16sp"
         android:textStyle="bold"
@@ -45,78 +45,98 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginBottom="12dp">
+            android:layout_height="match_parent">
 
             <com.sportpassword.bm.Views.MainEditText2
-                android:id="@+id/edt_team_name"
+                android:id="@+id/edt_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="40dp"
-                app:MainEditText2Hint="@string/match_sign_team_name"
+                android:layout_marginTop="16dp"
+                app:MainEditText2Hint="@string/match_sign_name"
                 app:MainEditText2Icon="ic_person_svg"
                 app:MainEditText2Keyobard="emailAddress"
                 app:MainEditText2Required="true"
-                app:MainEditText2Title="@string/match_sign_team_name"
+                app:MainEditText2Title="@string/match_sign_name"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <com.sportpassword.bm.Views.MainEditText2
-                android:id="@+id/edt_captain_name"
+                android:id="@+id/edt_phone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                app:MainEditText2Hint="@string/match_sign_captain_name"
-                app:MainEditText2Icon="ic_person_svg"
-                app:MainEditText2Keyobard="emailAddress"
-                app:MainEditText2Required="true"
-                app:MainEditText2Title="@string/match_sign_captain_name"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/edt_team_name" />
-
-            <com.sportpassword.bm.Views.MainEditText2
-                android:id="@+id/edt_captain_phone"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                app:MainEditText2Hint="@string/match_sign_captain_phone"
+                app:MainEditText2Hint="@string/match_sign_phone"
                 app:MainEditText2Icon="ic_phone_svg"
                 app:MainEditText2Keyobard="phone"
                 app:MainEditText2Required="true"
-                app:MainEditText2Title="@string/match_sign_captain_phone"
+                app:MainEditText2Title="@string/match_sign_phone"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/edt_captain_name" />
+                app:layout_constraintTop_toBottomOf="@+id/edt_name" />
 
             <com.sportpassword.bm.Views.MainEditText2
-                android:id="@+id/edt_captain_email"
+                android:id="@+id/edt_email"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                app:MainEditText2Hint="@string/match_sign_captain_email"
+                app:MainEditText2Hint="@string/match_sign_email"
                 app:MainEditText2Icon="ic_email_svg"
                 app:MainEditText2Keyobard="emailAddress"
                 app:MainEditText2Required="true"
-                app:MainEditText2Title="@string/match_sign_captain_email"
+                app:MainEditText2Title="@string/match_sign_email"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/edt_captain_phone" />
+                app:layout_constraintTop_toBottomOf="@+id/edt_phone" />
 
             <com.sportpassword.bm.Views.MainEditText2
-                android:id="@+id/edt_captain_line"
+                android:id="@+id/edt_line"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                app:MainEditText2Hint="@string/match_sign_captain_line"
+                app:MainEditText2Hint="@string/match_sign_line"
                 app:MainEditText2Icon="ic_line_svg"
                 app:MainEditText2Keyobard="emailAddress"
                 app:MainEditText2Required="false"
-                app:MainEditText2Title="@string/match_sign_captain_line"
+                app:MainEditText2Title="@string/match_sign_line"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/edt_captain_email" />
+                app:layout_constraintTop_toBottomOf="@+id/edt_email" />
+
+            <com.sportpassword.bm.Views.MainEditText2
+                android:id="@+id/edt_age"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                app:MainEditText2Hint="@string/match_sign_age"
+                app:MainEditText2Icon="ic_line_svg"
+                app:MainEditText2Keyobard="emailAddress"
+                app:MainEditText2Required="false"
+                app:MainEditText2Title="@string/match_sign_age"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/edt_line" />
+
+            <View
+                android:id="@+id/line1"
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_marginTop="24dp"
+                android:background="@color/WHITE_26"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/edt_age" />
+
+            <TextView
+                android:id="@+id/tv_giveaway"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:text="@string/match_sign_giveaway"
+                android:textColor="@color/TEXT_WHITE"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/line1" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
