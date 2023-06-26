@@ -8,7 +8,8 @@ import jp.wasabeef.picasso.transformations.CropCircleTransformation
 import jp.wasabeef.picasso.transformations.RoundedCornersTransformation
 
 fun ImageView.avatar(path: String, isCircle: Boolean = true, rounded: Int = 0) {
-    var res: RequestCreator = Picasso.with(context).load(path)
+    var res: RequestCreator = if (path.isNotEmpty()) Picasso.with(context).load(path)
+    else Picasso.with(context).load(R.drawable.loading_square_120)
 
     if (isCircle) {
         res = res.transform(CropCircleTransformation())

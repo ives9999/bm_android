@@ -6,6 +6,7 @@ import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.sportpassword.bm.bm_new.data.dto.match.MatchListDto
+import com.sportpassword.bm.bm_new.ui.util.Zone
 import com.sportpassword.bm.databinding.ItemMatchBinding
 
 class MatchListAdapter :
@@ -23,6 +24,7 @@ class MatchListAdapter :
         private val startDate = binding.startDate
         private val endDate = binding.endDate
         private val location = binding.location
+        private val city = binding.tvCity
 
         init {
             binding.apply {
@@ -53,6 +55,7 @@ class MatchListAdapter :
             startDate.setContent(data.matchStart.dropLast(3))
             endDate.setContent(data.matchEnd.dropLast(3))
             location.setContent(data.arenaName)
+            city.text = Zone.cityIdToString(data.cityId)
         }
     }
 

@@ -1,4 +1,5 @@
 package com.sportpassword.bm.bm_new.data.dto.match
+
 import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
 import kotlinx.parcelize.Parcelize
@@ -22,6 +23,8 @@ data class MatchListDto(
         val arenaId: Int, // 5
         @SerializedName("arena_name")
         val arenaName: String, // 華中羽球館
+        @SerializedName("arena_city_id")
+        val cityId: Int,
         @SerializedName("id")
         val id: Int, // 6
         @SerializedName("match_end")
@@ -38,5 +41,5 @@ data class MatchListDto(
         val status: String, // online
         @SerializedName("token")
         val token: String // Hm0k2OvzOyZntkHvYikj1oEJR1BW5pD
-    ):Parcelable
+    ) : Parcelable
 }

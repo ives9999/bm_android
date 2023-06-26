@@ -156,6 +156,7 @@ enum class MemberItemEnum(val chineseName: String) {
     product("商品"),
     store("體育用品店"),
     tempPlay("臨打"),
+    match("賽事"),
     requestManager("球隊申請管理權");
 
     companion object {
@@ -184,7 +185,7 @@ enum class MemberItemEnum(val chineseName: String) {
                     return arrayListOf(team, tempPlay, course)
                 }
                 MainMemberEnum.manager-> {
-                    return arrayListOf(team, requestManager, course)
+                    return arrayListOf(team, requestManager, course, match)
                 }
                 else-> {
                     return arrayListOf(info, change_password)
@@ -219,6 +220,7 @@ enum class MemberItemEnum(val chineseName: String) {
             product-> return "ic_product_svg"
             store-> return "ic_store_svg"
             tempPlay-> return "ic_tempplay_svg"
+            match-> return "ic_ball_svg"
             requestManager-> return "ic_request_manager_svg"
         }
     }

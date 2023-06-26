@@ -24,7 +24,7 @@
         tools:text="01" />
 
     <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/tv_pro_play"
+        android:id="@+id/tv_city"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Badminton Hall"
