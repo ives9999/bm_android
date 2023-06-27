@@ -7,7 +7,6 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.google.gson.reflect.TypeToken
-import com.sportpassword.bm.Data.MemberRow
 import com.sportpassword.bm.Models.Table
 import com.sportpassword.bm.Models.Tables2
 import com.sportpassword.bm.R
@@ -17,6 +16,7 @@ import com.sportpassword.bm.Utilities.setImage
 import com.sportpassword.bm.Views.ShowTop2
 import com.sportpassword.bm.databinding.ActivityMemberItemVcBinding
 import com.sportpassword.bm.member
+import timber.log.Timber
 import java.lang.reflect.Type
 
 class MemberItemVC : BaseActivity() {
@@ -133,6 +133,8 @@ class MemberItemVC : BaseActivity() {
                 toRequestManagerTeam()
             } else if (memberItemEnum == MemberItemEnum.course) {
                 this.toManager("course")
+            } else if (memberItemEnum == MemberItemEnum.match) {
+                Timber.d("賽事-報名隊伍列表")
             }
         }
     }

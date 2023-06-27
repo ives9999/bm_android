@@ -32,6 +32,7 @@
 
     <!--    賽事 match-->
     <string name="match">賽事</string>
+    <string name="match_manage">管理賽事</string>
     <string name="match_content">內容</string>
     <string name="match_brochure">簡章</string>
     <string name="match_sign_up">報名</string>
@@ -66,5 +67,9 @@
     <string name="match_location_arena_phone">球館電話:</string>
     <string name="match_ball">比賽用球:</string>
     <string name="match_contact_person">賽事聯絡人:</string>
+    <string name="match_team_group">賽事組別:</string>
+    <string name="match_team_sign_fee">報名費:</string>
+    <string name="match_team_limit_group">限制組數:</string>
+    <string name="match_team_sign_date">報名日期:</string>
 
 </resources>

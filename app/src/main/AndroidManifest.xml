@@ -158,6 +158,9 @@
         <activity android:name=".Controllers.EditCourseVC" />
         <activity android:name=".Controllers.ShowPNVC" />
         <activity
+            android:name=".bm_new.ui.match.team_list.MatchTeamListActivity"
+            android:launchMode="singleTask" />
+        <activity
             android:name=".bm_new.ui.match.MatchActivity"
             android:launchMode="singleTask" />
         <activity
