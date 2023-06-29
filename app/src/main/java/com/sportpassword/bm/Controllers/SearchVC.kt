@@ -60,6 +60,10 @@ class SearchVC : MyTableVC() {
 
     var mustLoginLbl: TextView? = null
 
+    private val notificationManager: NotificationManager by lazy {
+        getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+    }
+
 //    val CHANNEL_ID = "order"
 //    val CHANNEL_NAME = "order"
 //    val NOTIF_ID = 0
@@ -77,6 +81,9 @@ class SearchVC : MyTableVC() {
         binding = ActivitySearchVcBinding.inflate(layoutInflater)
         view = binding.root
         setContentView(view)
+
+        //val isNotificationEnabled: Boolean = notificationManager.areNotificationsEnabled()
+        val permissionManager = PermissionManager(this)
 
         val p: Boolean = isPermissionGranted(this, Manifest.permission.POST_NOTIFICATIONS)
         if (!p) {
