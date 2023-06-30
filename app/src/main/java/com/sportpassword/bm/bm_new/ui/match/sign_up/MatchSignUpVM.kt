@@ -5,6 +5,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import com.sportpassword.bm.R
 import com.sportpassword.bm.bm_new.data.dto.match.MatchSignUpDto
+import com.sportpassword.bm.bm_new.data.dto.match.MatchTeamInsertDto
 import com.sportpassword.bm.bm_new.data.dto.match.PostMatchSignUpDto
 import com.sportpassword.bm.bm_new.data.repo.match.MatchRepo
 import com.sportpassword.bm.bm_new.ui.base.BaseViewModel
@@ -24,6 +25,7 @@ import com.sportpassword.bm.bm_new.ui.match.sign_up.MatchTeamPlayerFragment.Comp
 import com.sportpassword.bm.bm_new.ui.match.sign_up.MatchTeamPlayerFragment.Companion.PLAYER_TWO_NAME
 import com.sportpassword.bm.bm_new.ui.match.sign_up.MatchTeamPlayerFragment.Companion.PLAYER_TWO_PHONE
 import com.sportpassword.bm.bm_new.ui.vo.SignUpInfo
+import com.sportpassword.bm.member
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
@@ -35,11 +37,15 @@ class MatchSignUpVM(
 
     val matchSignUp = MutableLiveData<MatchSignUpDto>()
     val signUpList = mutableListOf<SignUpInfo>()
+    private var matchGroupId: String? = null
+    private var matchId: String? = null
 
-    fun getMatchSignUp(token: String) {
+    fun getMatchSignUp(matchGroupId: Int, matchId: Int, token: String) {
         viewModelScope.launch {
             repo.getMatchSignUp(PostMatchSignUpDto(matchGroupToken = token)).setupBase().collect {
                 matchSignUp.value = it
+                this@MatchSignUpVM.matchGroupId = matchGroupId.toString()
+                this@MatchSignUpVM.matchId = matchId.toString()
             }
         }
     }
@@ -78,5 +84,59 @@ class MatchSignUpVM(
     fun setSignUpInfo(type: String, name: String) {
         signUpList.find { it.type == type }?.value = name
         Timber.d("signUpInfo, $signUpList")
+    }
+
+    fun signUp() {
+        viewModelScope.launch {
+            getMatchTeamInsertInfo()?.let {
+                repo.insertMatchTeam(it).setupBase().collect {
+                    Timber.d("報名完成 $it")
+                }
+            }
+
+        }
+    }
+
+    private fun getMatchTeamInsertInfo(): MatchTeamInsertDto? {
+        return with(signUpList) {
+            MatchTeamInsertDto(
+                doX = "update",
+                name = find { it.type == TEAM_NAME }?.value ?: return null,
+                managerToken = member.token ?: return null,
+                memberToken = member.token ?: return null,
+                managerName = find { it.type == CAPTAIN_NAME }?.value ?: return null,
+                managerMobile = find { it.type == CAPTAIN_PHONE }?.value ?: return null,
+                managerEmail = find { it.type == CAPTAIN_EMAIL }?.value ?: return null,
+                managerLine = find { it.type == CAPTAIN_LINE }?.value,
+                matchGroupId = matchGroupId ?: return null,
+                matchId = matchId ?: return null,
+                players = listOf(
+                    //第一個隊員
+                    MatchTeamInsertDto.Player(
+                        name = find { it.type == PLAYER_ONE_NAME }?.value ?: return null,
+                        mobile = find { it.type == PLAYER_ONE_PHONE }?.value ?: return null,
+                        email = find { it.type == PLAYER_ONE_EMAIL }?.value ?: return null,
+                        line = find { it.type == PLAYER_ONE_LINE }?.value,
+                        age = find { it.type == PLAYER_ONE_AGE }?.value,
+                        gift = MatchTeamInsertDto.Player.Gift(
+                            attributes = "",
+                            matchGiftId = ""
+                        )    //todo 贈品
+                    ),
+                    //第二個隊員
+                    MatchTeamInsertDto.Player(
+                        name = find { it.type == PLAYER_TWO_NAME }?.value ?: return null,
+                        mobile = find { it.type == PLAYER_TWO_PHONE }?.value ?: return null,
+                        email = find { it.type == PLAYER_TWO_EMAIL }?.value ?: return null,
+                        line = find { it.type == PLAYER_TWO_LINE }?.value,
+                        age = find { it.type == PLAYER_TWO_AGE }?.value,
+                        gift = MatchTeamInsertDto.Player.Gift(
+                            attributes = "",
+                            matchGiftId = ""
+                        )    //todo 贈品
+                    )
+                )
+            )
+        }
     }
 }

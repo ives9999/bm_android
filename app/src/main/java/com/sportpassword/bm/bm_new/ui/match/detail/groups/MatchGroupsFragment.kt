@@ -68,6 +68,6 @@ class MatchGroupsFragment : BaseFragment<FragmentMatchGroupsBinding>(),
     override fun getViewModel(): BaseViewModel? = null
 
     override fun onSignUpClick(data: MatchDetailDto.MatchGroup) {
-        requireContext().toMatchSignUp(data.token)
+        requireContext().toMatchSignUp(data.id, data.matchId, data.token)
     }
 }

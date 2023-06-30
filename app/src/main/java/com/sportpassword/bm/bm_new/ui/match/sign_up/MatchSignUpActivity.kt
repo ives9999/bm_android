@@ -7,6 +7,7 @@ import com.sportpassword.bm.Utilities.Alert
 import com.sportpassword.bm.bm_new.ui.base.BaseActivity
 import com.sportpassword.bm.bm_new.ui.base.BaseViewModel
 import com.sportpassword.bm.databinding.ActivityMatchSignUpBinding
+import com.sportpassword.bm.member
 import org.koin.androidx.viewmodel.ext.android.stateViewModel
 import timber.log.Timber
 
@@ -14,6 +15,8 @@ class MatchSignUpActivity : BaseActivity<ActivityMatchSignUpBinding>() {
 
     companion object {
         const val MATCH_GROUP_TOKEN = "matchGroupToken"
+        const val MATCH_GROUP_ID = "matchGroupId"
+        const val MATCH_ID = "matchId"
     }
 
     private var signUpPagerAdapter: MatchSignUpPagerAdapter? = null
@@ -24,7 +27,11 @@ class MatchSignUpActivity : BaseActivity<ActivityMatchSignUpBinding>() {
 
     override fun initParam(data: Bundle) {
         data.getString(MATCH_GROUP_TOKEN)?.let {
-            vm.getMatchSignUp(it)
+            vm.getMatchSignUp(
+                data.getInt(MATCH_GROUP_ID),
+                data.getInt(MATCH_ID),
+                it
+            )
         }
     }
 
@@ -66,12 +73,13 @@ class MatchSignUpActivity : BaseActivity<ActivityMatchSignUpBinding>() {
                 vm.initSignUpInfo(it.matchGroup.number)
 
                 btnSignUp.setOnClickListener {
+                    Timber.d("member token, ${member.token}")
                     val requiredBlankList =
                         (vm.signUpList.filter { it.value.isBlank() && it.isRequired })
 
                     when (requiredBlankList.isEmpty()) {
                         true -> {
-                            //todo post報名動作
+                            vm.signUp()
                         }
 
                         false -> {      //有必填欄位空白時，show alert

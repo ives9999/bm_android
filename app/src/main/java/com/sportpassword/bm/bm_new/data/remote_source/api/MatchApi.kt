@@ -4,6 +4,7 @@ import com.google.gson.JsonObject
 import com.sportpassword.bm.bm_new.data.dto.match.MatchDetailDto
 import com.sportpassword.bm.bm_new.data.dto.match.MatchListDto
 import com.sportpassword.bm.bm_new.data.dto.match.MatchSignUpDto
+import com.sportpassword.bm.bm_new.data.dto.match.MatchTeamInsertResDto
 import com.sportpassword.bm.bm_new.data.dto.match.MatchTeamListDto
 import retrofit2.http.Body
 import retrofit2.http.POST
@@ -33,4 +34,10 @@ interface MatchApi {
     suspend fun getMatchTeamList(
         @Body data: JsonObject
     ): MatchTeamListDto
+
+    //match team insert 新增賽事隊伍
+    @POST("/app/match_team/list")
+    suspend fun insertMatchTeam(
+        @Body data: JsonObject
+    ): MatchTeamInsertResDto
 }
