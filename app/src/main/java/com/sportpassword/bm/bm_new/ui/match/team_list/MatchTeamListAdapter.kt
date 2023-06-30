@@ -5,12 +5,11 @@ import android.view.ViewGroup
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import com.sportpassword.bm.bm_new.data.dto.match.MatchListDto
-import com.sportpassword.bm.bm_new.ui.util.Zone
+import com.sportpassword.bm.bm_new.data.dto.match.MatchTeamListDto
 import com.sportpassword.bm.databinding.ItemMatchTeamBinding
 
 class MatchTeamListAdapter :
-    PagingDataAdapter<MatchListDto.Row, MatchTeamListAdapter.ViewHolder>(DiffCallback) {
+    PagingDataAdapter<MatchTeamListDto.Row, MatchTeamListAdapter.ViewHolder>(DiffCallback) {
 
     private var listener: Listener? = null
 
@@ -19,12 +18,7 @@ class MatchTeamListAdapter :
     }
 
     inner class ViewHolder(binding: ItemMatchTeamBinding) : RecyclerView.ViewHolder(binding.root) {
-        private val tvNumber = binding.tvNum
-        private val tvName = binding.tvName
-        private val startDate = binding.startDate
-        private val endDate = binding.endDate
-        private val location = binding.location
-        private val city = binding.tvCity
+        private val viewBinding = binding
 
         init {
             binding.apply {
@@ -40,22 +34,21 @@ class MatchTeamListAdapter :
                         listener?.onDetailClick(data)
                     }
                 }
-
-                btnSignUp.setOnClickListener {
-                    getItem(bindingAdapterPosition)?.let { data ->
-                        listener?.onSignUpClick(data)
-                    }
-                }
             }
         }
 
-        fun bind(data: MatchListDto.Row) {
-            tvNumber.text = (bindingAdapterPosition + 1).toString()
-            tvName.text = data.name
-            startDate.setContent(data.matchStart.dropLast(3))
-            endDate.setContent(data.matchEnd.dropLast(3))
-            location.setContent(data.arenaName)
-            city.text = Zone.cityIdToString(data.cityId)
+        fun bind(data: MatchTeamListDto.Row) {
+            viewBinding.apply {
+                tvNum.text = (bindingAdapterPosition + 1).toString()
+                tvMatchName.text = data.match.name
+                tvTeamName.text = data.name
+                startDate.setContent(data.match.matchStart.dropLast(3))
+                endDate.setContent(data.match.matchEnd.dropLast(3))
+                teamGroup.setContent(data.matchGroup.name)
+                signFee.setContent("NT$${data.matchGroup.price}")
+                limitGroups.setContent(data.matchGroup.limit.toString())
+                signDate.setContent(data.createdAt.dropLast(3))
+            }
         }
     }
 
@@ -73,25 +66,25 @@ class MatchTeamListAdapter :
         getItem(position)?.let { holder.bind(it) }
     }
 
-    companion object DiffCallback : DiffUtil.ItemCallback<MatchListDto.Row>() {
+    companion object DiffCallback : DiffUtil.ItemCallback<MatchTeamListDto.Row>() {
 
         override fun areItemsTheSame(
-            oldItem: MatchListDto.Row,
-            newItem: MatchListDto.Row
+            oldItem: MatchTeamListDto.Row,
+            newItem: MatchTeamListDto.Row
         ): Boolean {
             return oldItem.id == newItem.id
         }
 
         override fun areContentsTheSame(
-            oldItem: MatchListDto.Row,
-            newItem: MatchListDto.Row
+            oldItem: MatchTeamListDto.Row,
+            newItem: MatchTeamListDto.Row
         ): Boolean {
             return oldItem == newItem
         }
     }
 
     interface Listener {
-        fun onDetailClick(data: MatchListDto.Row)
-        fun onSignUpClick(data: MatchListDto.Row)
+        fun onDetailClick(data: MatchTeamListDto.Row)
+        fun onSignUpClick(data: MatchTeamListDto.Row)
     }
 }

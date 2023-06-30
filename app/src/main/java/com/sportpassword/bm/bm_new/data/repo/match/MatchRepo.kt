@@ -7,6 +7,7 @@ import kotlinx.coroutines.flow.Flow
 interface MatchRepo {
 
     suspend fun getMatchList(data: PostListDto): Flow<MatchListDto>
+    suspend fun getMatchTeamList(data: PostMatchTeamListDto): Flow<MatchTeamListDto>
     suspend fun getMatchDetail(data: PostMatchDetailDto): Flow<MatchDetailDto>
     suspend fun getMatchSignUp(data: PostMatchSignUpDto): Flow<MatchSignUpDto>
 
