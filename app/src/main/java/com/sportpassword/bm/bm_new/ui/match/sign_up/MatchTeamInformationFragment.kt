@@ -37,6 +37,10 @@ class MatchTeamInformationFragment : BaseFragment<FragmentMatchTeamInformationBi
 
     override fun initView(savedInstanceState: Bundle?) {
         binding?.apply {
+            btnClose.setOnClickListener {
+                requireActivity().finish()
+            }
+
             listOf(
                 Pair(edtTeamName, TEAM_NAME),
                 Pair(edtCaptainName, CAPTAIN_NAME),

@@ -37,7 +37,7 @@ interface MatchApi {
     ): MatchTeamListDto
 
     //match team insert 新增賽事隊伍
-    @POST("/app/match_team/list")
+    @POST("/app/match_team/update")
     suspend fun insertMatchTeam(
         @Body data: JsonObject
     ): MatchTeamInsertResDto

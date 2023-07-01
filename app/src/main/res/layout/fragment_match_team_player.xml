@@ -111,7 +111,7 @@
                 app:MainEditText2Hint="@string/match_sign_age"
                 app:MainEditText2Icon="ic_line_svg"
                 app:MainEditText2Keyobard="emailAddress"
-                app:MainEditText2Required="false"
+                app:MainEditText2Required="true"
                 app:MainEditText2Title="@string/match_sign_age"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"

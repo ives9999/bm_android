@@ -69,12 +69,12 @@ class MatchSignUpVM(
                     SignUpInfo(PLAYER_ONE_PHONE, R.string.match_sign_phone, "", true),
                     SignUpInfo(PLAYER_ONE_EMAIL, R.string.match_sign_email, "", true),
                     SignUpInfo(PLAYER_ONE_LINE, R.string.match_sign_line, ""),
-                    SignUpInfo(PLAYER_ONE_AGE, R.string.match_sign_age, ""),
+                    SignUpInfo(PLAYER_ONE_AGE, R.string.match_sign_age, "", true),
                     SignUpInfo(PLAYER_TWO_NAME, R.string.match_sign_name, "", true),
                     SignUpInfo(PLAYER_TWO_PHONE, R.string.match_sign_phone, "", true),
                     SignUpInfo(PLAYER_TWO_EMAIL, R.string.match_sign_email, "", true),
                     SignUpInfo(PLAYER_TWO_LINE, R.string.match_sign_line, ""),
-                    SignUpInfo(PLAYER_TWO_AGE, R.string.match_sign_age, ""),
+                    SignUpInfo(PLAYER_TWO_AGE, R.string.match_sign_age, "", true),
                 )
             )
         }

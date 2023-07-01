@@ -50,6 +50,11 @@ class MatchTeamPlayerFragment : BaseFragment<FragmentMatchTeamPlayerBinding>() {
 
     override fun initView(savedInstanceState: Bundle?) {
         binding?.apply {
+
+            btnClose.setOnClickListener {
+                requireActivity().finish()
+            }
+
             tvTitle.text = getString(
                 if (isPlayerOne) R.string.match_sign_player_one
                 else R.string.match_sign_player_two
