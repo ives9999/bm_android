@@ -6,6 +6,7 @@ import com.sportpassword.bm.bm_new.data.dto.match.MatchListDto
 import com.sportpassword.bm.bm_new.data.dto.match.MatchSignUpDto
 import com.sportpassword.bm.bm_new.data.dto.match.MatchTeamInsertResDto
 import com.sportpassword.bm.bm_new.data.dto.match.MatchTeamListDto
+import com.sportpassword.bm.bm_new.data.dto.match.SuccessResDto
 import retrofit2.http.Body
 import retrofit2.http.POST
 
@@ -40,4 +41,10 @@ interface MatchApi {
     suspend fun insertMatchTeam(
         @Body data: JsonObject
     ): MatchTeamInsertResDto
+
+    //match team delete 刪除參賽隊伍
+    @POST("/app/match_team/delete")
+    suspend fun delMatchTeam(
+        @Body data: JsonObject
+    ): SuccessResDto
 }

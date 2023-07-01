@@ -7,12 +7,15 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
+import com.sportpassword.bm.bm_new.data.dto.match.DelMatchTeamDto
 import com.sportpassword.bm.bm_new.data.dto.match.MatchTeamListDto
 import com.sportpassword.bm.bm_new.data.dto.match.PostMatchTeamListDto
 import com.sportpassword.bm.bm_new.data.repo.match.MatchRepo
 import com.sportpassword.bm.bm_new.data.repo.match.MatchTeamListPagingSource
 import com.sportpassword.bm.bm_new.ui.base.BaseViewModel
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.launch
+import timber.log.Timber
 
 class MatchTeamListVM(private val state: SavedStateHandle, private val repo: MatchRepo) :
     BaseViewModel(state),
@@ -42,6 +45,14 @@ class MatchTeamListVM(private val state: SavedStateHandle, private val repo: Mat
 
         repo.getMatchTeamList(post).setupBase().collect {
             callback.invoke(it)
+        }
+    }
+
+    fun delMatchTeamList(token: String) {
+        viewModelScope.launch {
+            repo.delMatchTeam(DelMatchTeamDto(token = token)).setupBase().collect {
+                Timber.d("del match team $it")
+            }
         }
     }
 }

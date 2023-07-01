@@ -1,6 +1,7 @@
 package com.sportpassword.bm.bm_new.data.repo.match
 
 import com.sportpassword.bm.bm_new.data.dto.PostListDto
+import com.sportpassword.bm.bm_new.data.dto.match.DelMatchTeamDto
 import com.sportpassword.bm.bm_new.data.dto.match.MatchDetailDto
 import com.sportpassword.bm.bm_new.data.dto.match.MatchListDto
 import com.sportpassword.bm.bm_new.data.dto.match.MatchSignUpDto
@@ -10,6 +11,7 @@ import com.sportpassword.bm.bm_new.data.dto.match.MatchTeamListDto
 import com.sportpassword.bm.bm_new.data.dto.match.PostMatchDetailDto
 import com.sportpassword.bm.bm_new.data.dto.match.PostMatchSignUpDto
 import com.sportpassword.bm.bm_new.data.dto.match.PostMatchTeamListDto
+import com.sportpassword.bm.bm_new.data.dto.match.SuccessResDto
 import com.sportpassword.bm.bm_new.data.remote_source.api.MatchApi
 import com.sportpassword.bm.bm_new.data.remote_source.util.dataToJsonObject
 import kotlinx.coroutines.flow.Flow
@@ -34,5 +36,9 @@ class MatchRepoImpl(private val source: MatchApi) : MatchRepo {
 
     override suspend fun insertMatchTeam(data: MatchTeamInsertDto): Flow<MatchTeamInsertResDto> {
         return flow { emit(source.insertMatchTeam(dataToJsonObject(data))) }
+    }
+
+    override suspend fun delMatchTeam(data: DelMatchTeamDto): Flow<SuccessResDto> {
+        return flow { emit(source.delMatchTeam(dataToJsonObject(data))) }
     }
 }

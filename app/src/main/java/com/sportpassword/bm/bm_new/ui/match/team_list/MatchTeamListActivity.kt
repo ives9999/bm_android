@@ -13,6 +13,7 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import org.koin.androidx.viewmodel.ext.android.stateViewModel
 
+//管理賽事
 class MatchTeamListActivity : BaseActivity<ActivityMatchBinding>(),
     MatchTeamListAdapter.Listener {
 
@@ -53,6 +54,10 @@ class MatchTeamListActivity : BaseActivity<ActivityMatchBinding>(),
     }
 
     override fun getViewModel(): BaseViewModel? = null
+
+    override fun onDelClick(data: MatchTeamListDto.Row) {
+        vm.delMatchTeamList(data.token)
+    }
 
     override fun onDetailClick(data: MatchTeamListDto.Row) {
     }

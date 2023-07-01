@@ -29,6 +29,12 @@ class MatchTeamListAdapter :
                     }
                 }
 
+                btnDel.setOnClickListener {
+                    getItem(bindingAdapterPosition)?.let { data ->
+                        listener?.onDelClick(data)
+                    }
+                }
+
                 btnDetail.setOnClickListener {
                     getItem(bindingAdapterPosition)?.let { data ->
                         listener?.onDetailClick(data)
@@ -84,6 +90,7 @@ class MatchTeamListAdapter :
     }
 
     interface Listener {
+        fun onDelClick(data: MatchTeamListDto.Row)
         fun onDetailClick(data: MatchTeamListDto.Row)
         fun onSignUpClick(data: MatchTeamListDto.Row)
     }

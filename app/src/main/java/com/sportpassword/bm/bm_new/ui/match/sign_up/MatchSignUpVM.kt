@@ -119,9 +119,9 @@ class MatchSignUpVM(
                         line = find { it.type == PLAYER_ONE_LINE }?.value,
                         age = find { it.type == PLAYER_ONE_AGE }?.value,
                         gift = MatchTeamInsertDto.Player.Gift(
-                            attributes = "",
-                            matchGiftId = ""
-                        )    //todo 贈品
+                            attributes = "{name:顏色,alias:color,value:經典白}|{name:尺寸,alias:size,value:M}",
+                            matchGiftId = "1"
+                        )    //todo 贈品假資料,待刪除
                     ),
                     //第二個隊員
                     MatchTeamInsertDto.Player(
@@ -131,9 +131,9 @@ class MatchSignUpVM(
                         line = find { it.type == PLAYER_TWO_LINE }?.value,
                         age = find { it.type == PLAYER_TWO_AGE }?.value,
                         gift = MatchTeamInsertDto.Player.Gift(
-                            attributes = "",
-                            matchGiftId = ""
-                        )    //todo 贈品
+                            attributes = "{name:顏色,alias:color,value:湖水綠}|{name:尺寸,alias:size,value:XS}",
+                            matchGiftId = "1"
+                        )    //todo 贈品假資料,待刪除
                     )
                 )
             )
