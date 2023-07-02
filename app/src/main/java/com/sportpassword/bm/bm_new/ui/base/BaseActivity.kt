@@ -1,6 +1,5 @@
 package com.sportpassword.bm.bm_new.ui.base
 
-import android.net.ConnectivityManager
 import android.os.Bundle
 import android.widget.Toast
 import androidx.annotation.IdRes
@@ -64,28 +63,36 @@ abstract class BaseActivity<VB : ViewBinding> : AppCompatActivity() {
             is ViewEvent.Loading -> {
                 showLoadingAnim()
             }
+
             is ViewEvent.Done -> {
                 finishLoadingAnim()
             }
+
             is ViewEvent.NormalError -> {
                 finishLoadingAnim()
                 Toast.makeText(this, event.msg, Toast.LENGTH_SHORT).show()
                 Timber.d("error:${this.javaClass.name}, ${event.msg} ")
             }
+
             is ViewEvent.UnknownError -> {
                 finishLoadingAnim()
             }
+
             is ViewEvent.ServerError -> {
                 Toast.makeText(this, "伺服器錯誤", Toast.LENGTH_SHORT).show()
                 finishLoadingAnim()
             }
+
             is ViewEvent.SignOut -> {
                 finishLoadingAnim()
                 event.message?.let {
                     Toast.makeText(this, it, Toast.LENGTH_SHORT).show()
                 }
             }
-            else -> {}
+
+            else -> {
+                finishLoadingAnim()
+            }
         }
 
     }

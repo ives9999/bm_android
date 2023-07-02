@@ -1,12 +1,14 @@
-package com.sportpassword.bm.bm_new.ui.match.team_list
+package com.sportpassword.bm.bm_new.ui.match.manage_team_list
 
 import android.os.Bundle
+import android.widget.Toast
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.sportpassword.bm.R
 import com.sportpassword.bm.bm_new.data.dto.match.MatchTeamListDto
 import com.sportpassword.bm.bm_new.ui.base.BaseActivity
 import com.sportpassword.bm.bm_new.ui.base.BaseViewModel
+import com.sportpassword.bm.bm_new.ui.base.ViewEvent
 import com.sportpassword.bm.bm_new.ui.util.LinearItemDecoration
 import com.sportpassword.bm.databinding.ActivityMatchBinding
 import kotlinx.coroutines.flow.launchIn
@@ -14,11 +16,11 @@ import kotlinx.coroutines.flow.onEach
 import org.koin.androidx.viewmodel.ext.android.stateViewModel
 
 //管理賽事
-class MatchTeamListActivity : BaseActivity<ActivityMatchBinding>(),
-    MatchTeamListAdapter.Listener {
+class MatchManageActivity : BaseActivity<ActivityMatchBinding>(),
+    MatchManageListAdapter.Listener {
 
-    private val vm by stateViewModel<MatchTeamListVM>()
-    private var matchTeamListAdapter: MatchTeamListAdapter? = null
+    private val vm by stateViewModel<MatchManageVM>()
+    private var matchManageListAdapter: MatchManageListAdapter? = null
 
     override fun initViewBinding(): ActivityMatchBinding =
         ActivityMatchBinding.inflate(layoutInflater)
@@ -32,10 +34,10 @@ class MatchTeamListActivity : BaseActivity<ActivityMatchBinding>(),
             btnClose.setOnClickListener { finish() }
 
             rv.run {
-                layoutManager = LinearLayoutManager(this@MatchTeamListActivity)
-                adapter = MatchTeamListAdapter().apply {
-                    setListener(this@MatchTeamListActivity)
-                    matchTeamListAdapter = this
+                layoutManager = LinearLayoutManager(this@MatchManageActivity)
+                adapter = MatchManageListAdapter().apply {
+                    setListener(this@MatchManageActivity)
+                    matchManageListAdapter = this
                 }
                 val spacing = resources.getDimension(R.dimen.dp_8).toInt()
                 val top = resources.getDimension(R.dimen.dp_16).toInt()
@@ -48,12 +50,26 @@ class MatchTeamListActivity : BaseActivity<ActivityMatchBinding>(),
             }
 
             vm.getMatchTeamList().onEach {
-                matchTeamListAdapter?.submitData(it)
+                matchManageListAdapter?.submitData(it)
             }.launchIn(lifecycleScope)
         }
     }
 
-    override fun getViewModel(): BaseViewModel? = null
+    override fun getViewModel(): BaseViewModel = vm
+
+    override fun handleViewEvent(event: ViewEvent) {
+        super.handleViewEvent(event)
+        when (event) {
+            is MatchManageVM.MatchManageEvent.Delete -> {
+                if (event.isSuccess) {
+                    matchManageListAdapter?.refresh()
+                    Toast.makeText(this, "報名已刪除", Toast.LENGTH_LONG).show()
+                }
+            }
+
+            else -> {}
+        }
+    }
 
     override fun onDelClick(data: MatchTeamListDto.Row) {
         vm.delMatchTeamList(data.token)
@@ -62,7 +78,4 @@ class MatchTeamListActivity : BaseActivity<ActivityMatchBinding>(),
     override fun onDetailClick(data: MatchTeamListDto.Row) {
     }
 
-    override fun onSignUpClick(data: MatchTeamListDto.Row) {
-        //
-    }
 }

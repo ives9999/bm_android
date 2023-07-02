@@ -1,4 +1,4 @@
-package com.sportpassword.bm.bm_new.ui.match.team_list
+package com.sportpassword.bm.bm_new.ui.match.manage_team_list
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -8,8 +8,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.sportpassword.bm.bm_new.data.dto.match.MatchTeamListDto
 import com.sportpassword.bm.databinding.ItemMatchTeamBinding
 
-class MatchTeamListAdapter :
-    PagingDataAdapter<MatchTeamListDto.Row, MatchTeamListAdapter.ViewHolder>(DiffCallback) {
+class MatchManageListAdapter :
+    PagingDataAdapter<MatchTeamListDto.Row, MatchManageListAdapter.ViewHolder>(DiffCallback) {
 
     private var listener: Listener? = null
 
@@ -92,6 +92,5 @@ class MatchTeamListAdapter :
     interface Listener {
         fun onDelClick(data: MatchTeamListDto.Row)
         fun onDetailClick(data: MatchTeamListDto.Row)
-        fun onSignUpClick(data: MatchTeamListDto.Row)
     }
 }

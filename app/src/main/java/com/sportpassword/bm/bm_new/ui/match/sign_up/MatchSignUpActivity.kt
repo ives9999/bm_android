@@ -1,11 +1,13 @@
 package com.sportpassword.bm.bm_new.ui.match.sign_up
 
 import android.os.Bundle
+import android.widget.Toast
 import androidx.viewpager2.widget.ViewPager2
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Utilities.Alert
 import com.sportpassword.bm.bm_new.ui.base.BaseActivity
 import com.sportpassword.bm.bm_new.ui.base.BaseViewModel
+import com.sportpassword.bm.bm_new.ui.base.ViewEvent
 import com.sportpassword.bm.databinding.ActivityMatchSignUpBinding
 import com.sportpassword.bm.member
 import org.koin.androidx.viewmodel.ext.android.stateViewModel
@@ -116,5 +118,19 @@ class MatchSignUpActivity : BaseActivity<ActivityMatchSignUpBinding>() {
     }
 
     override fun getViewModel(): BaseViewModel = vm
+
+    override fun handleViewEvent(event: ViewEvent) {
+        super.handleViewEvent(event)
+        when (event) {
+            is MatchSignUpVM.SignUpEvent.SignUp -> {
+                if (event.isSuccess) {
+                    Toast.makeText(this, "報名完成", Toast.LENGTH_LONG).show()
+                    finish()
+                }
+            }
+
+            else -> {}
+        }
+    }
 
 }

@@ -15,7 +15,7 @@ import com.sportpassword.bm.Utilities.EMAIL_VALIDATE
 import com.sportpassword.bm.Utilities.MOBILE_VALIDATE
 import com.sportpassword.bm.Utilities.setImage
 import com.sportpassword.bm.Views.ShowTop2
-import com.sportpassword.bm.bm_new.ui.match.team_list.MatchTeamListActivity
+import com.sportpassword.bm.bm_new.ui.match.manage_team_list.MatchManageActivity
 import com.sportpassword.bm.databinding.ActivityMemberItemVcBinding
 import com.sportpassword.bm.member
 import timber.log.Timber
@@ -137,7 +137,7 @@ class MemberItemVC : BaseActivity() {
                 this.toManager("course")
             } else if (memberItemEnum == MemberItemEnum.match) {
                 Timber.d("賽事-報名隊伍列表")
-                Intent(this, MatchTeamListActivity::class.java).apply {
+                Intent(this, MatchManageActivity::class.java).apply {
                     startActivity(this)
                 }
             }

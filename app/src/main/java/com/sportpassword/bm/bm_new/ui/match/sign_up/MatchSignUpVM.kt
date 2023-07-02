@@ -9,6 +9,7 @@ import com.sportpassword.bm.bm_new.data.dto.match.MatchTeamInsertDto
 import com.sportpassword.bm.bm_new.data.dto.match.PostMatchSignUpDto
 import com.sportpassword.bm.bm_new.data.repo.match.MatchRepo
 import com.sportpassword.bm.bm_new.ui.base.BaseViewModel
+import com.sportpassword.bm.bm_new.ui.base.ViewEvent
 import com.sportpassword.bm.bm_new.ui.match.sign_up.MatchTeamInformationFragment.Companion.CAPTAIN_EMAIL
 import com.sportpassword.bm.bm_new.ui.match.sign_up.MatchTeamInformationFragment.Companion.CAPTAIN_LINE
 import com.sportpassword.bm.bm_new.ui.match.sign_up.MatchTeamInformationFragment.Companion.CAPTAIN_NAME
@@ -39,6 +40,10 @@ class MatchSignUpVM(
     val signUpList = mutableListOf<SignUpInfo>()
     private var matchGroupId: String? = null
     private var matchId: String? = null
+
+    sealed class SignUpEvent {
+        data class SignUp(val isSuccess: Boolean) : ViewEvent.ViewEventData<Boolean>()
+    }
 
     fun getMatchSignUp(matchGroupId: Int, matchId: Int, token: String) {
         viewModelScope.launch {
@@ -83,7 +88,6 @@ class MatchSignUpVM(
 
     fun setSignUpInfo(type: String, name: String) {
         signUpList.find { it.type == type }?.value = name
-        Timber.d("signUpInfo, $signUpList")
     }
 
     fun signUp() {
@@ -91,6 +95,7 @@ class MatchSignUpVM(
             getMatchTeamInsertInfo()?.let {
                 repo.insertMatchTeam(it).setupBase().collect {
                     Timber.d("報名完成 $it")
+                    eventChannel.send(SignUpEvent.SignUp(it.success))
                 }
             }
 
