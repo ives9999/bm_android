@@ -58,14 +58,15 @@ class PermissionManager constructor(private val activity: AppCompatActivity) {
                 sendPositiveResult()
             shouldShowPermissionRationale() ->
                 displayRationale()
-            else -> requestPermissions()
+            else ->
+                requestPermissions()
         }
     }
 
     private fun displayRationale() {
         val customDialog = AlertDialog.Builder(activity)
         customDialog.setTitle("請求權限")
-            .setMessage(rationale ?: "是否允許拍照的權限？")
+            .setMessage(rationale ?: "是否允許接收通知的權限？")
             .setIcon(ContextCompat.getDrawable(activity, R.drawable.ic_like_in_svg))
             .setPositiveButton("同意",
             DialogInterface.OnClickListener { dialogInterface, i ->

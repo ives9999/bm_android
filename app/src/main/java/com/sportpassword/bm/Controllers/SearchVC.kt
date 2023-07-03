@@ -144,6 +144,16 @@ class SearchVC : MyTableVC() {
 
         member_like = true
 
+
+//        val b1 = PackageManager.PERMISSION_GRANTED
+//        val b = ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
+//
+//        val b2 = shouldShowRequestPermissionRationale(Manifest.permission.CAMERA)
+//        val n = 6
+
+
+
+
 //        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
 //            if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.CAMERA)) {
 //
@@ -156,10 +166,9 @@ class SearchVC : MyTableVC() {
 //
 //            }
 
-        //init()
         val permissionManager = PermissionManager(this)
         permissionManager
-            .request(Permission.Camera)
+            .request(Permission.Notification)
             .checkPermission { granted ->
                 if (granted) {
                     println("access granted!!")
@@ -167,6 +176,8 @@ class SearchVC : MyTableVC() {
                     println("We couldn't access the post notification")
                 }
             }
+
+        init()
     }
 
 //    @SuppressLint("MissingPermission")
