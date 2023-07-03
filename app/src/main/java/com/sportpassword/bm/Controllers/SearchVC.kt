@@ -1,6 +1,5 @@
 package com.sportpassword.bm.Controllers
 
-import android.Manifest
 import android.annotation.SuppressLint
 import android.app.Notification
 import android.app.NotificationChannel
@@ -170,11 +169,11 @@ class SearchVC : MyTableVC() {
         permissionManager
             .request(Permission.Notification)
             .checkPermission { granted ->
-                if (granted) {
-                    println("access granted!!")
-                } else {
-                    println("We couldn't access the post notification")
-                }
+//                if (granted) {
+//                    println("access granted!!")
+//                } else {
+//                    println("We couldn't access the post notification")
+//                }
             }
 
         init()
