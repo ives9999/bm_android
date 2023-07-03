@@ -40,9 +40,11 @@ class MatchSignUpVM(
     val signUpList = mutableListOf<SignUpInfo>()
     private var matchGroupId: String? = null
     private var matchId: String? = null
+    private var teamToken: String? = null
 
     sealed class SignUpEvent {
-        data class SignUp(val isSuccess: Boolean) : ViewEvent.ViewEventData<Boolean>()
+        class SignUp(val isSuccess: Boolean) : ViewEvent.ViewEventData<Boolean>()
+        class Edit(val isSuccess: Boolean) : ViewEvent.ViewEventData<Boolean>()
     }
 
     fun getMatchSignUp(matchGroupId: Int, matchId: Int, token: String) {
@@ -95,8 +97,12 @@ class MatchSignUpVM(
         viewModelScope.launch {
             getMatchTeamInsertInfo()?.let {
                 repo.insertMatchTeam(it).setupBase().collect {
-                    Timber.d("報名完成 $it")
-                    eventChannel.send(SignUpEvent.SignUp(it.success))
+                    //新增報名或修改
+                    if (teamToken == null) {
+                        eventChannel.send(SignUpEvent.SignUp(it.success))
+                    } else {
+                        eventChannel.send(SignUpEvent.Edit(it.success))
+                    }
                 }
             }
 
@@ -107,6 +113,7 @@ class MatchSignUpVM(
         Timber.d("signUpList $signUpList")
         return with(signUpList) {
             MatchTeamInsertDto(
+                token = teamToken,
                 doX = "update",
                 name = find { it.type == TEAM_NAME }?.value ?: return null,
                 managerToken = member.token ?: return null,
@@ -148,10 +155,14 @@ class MatchSignUpVM(
     }
 
     fun editSignedMatch(token: String) {
+        teamToken = token
+
         viewModelScope.launch {
             repo.getMatchSignUp(PostMatchSignUpDto(token = token)).setupBase().collect {
                 Timber.d("已報名資料 $it")
                 matchSignUp.value = it
+                matchId = it.matchId.toString()
+                matchGroupId = it.matchGroupId.toString()
             }
         }
     }

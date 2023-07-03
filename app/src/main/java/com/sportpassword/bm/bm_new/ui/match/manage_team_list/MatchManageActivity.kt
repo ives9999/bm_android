@@ -1,8 +1,11 @@
 package com.sportpassword.bm.bm_new.ui.match.manage_team_list
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
+import androidx.activity.result.ActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.sportpassword.bm.R
@@ -24,6 +27,13 @@ class MatchManageActivity : BaseActivity<ActivityMatchBinding>(),
 
     private val vm by stateViewModel<MatchManageVM>()
     private var matchManageListAdapter: MatchManageListAdapter? = null
+    private val editLauncher =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { it: ActivityResult ->
+            if (it.resultCode == Activity.RESULT_OK) {
+                matchManageListAdapter?.refresh()
+            }
+        }
+
 
     override fun initViewBinding(): ActivityMatchBinding =
         ActivityMatchBinding.inflate(layoutInflater)
@@ -78,7 +88,7 @@ class MatchManageActivity : BaseActivity<ActivityMatchBinding>(),
     override fun onEditClick(data: MatchTeamListDto.Row) {
         Intent(this, MatchSignUpActivity::class.java).apply {
             putExtra(MatchSignUpActivity.MATCH_TEAM_TOKEN, data.token)
-            startActivity(this)
+            editLauncher.launch(this)
         }
     }
 
@@ -93,5 +103,4 @@ class MatchManageActivity : BaseActivity<ActivityMatchBinding>(),
             startActivity(this)
         }
     }
-
 }

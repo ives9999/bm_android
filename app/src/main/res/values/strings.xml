@@ -73,6 +73,7 @@
     <string name="match_team_limit_group">限制組數:</string>
     <string name="match_team_sign_date">報名日期:</string>
     <string name="match_sign_success">報名完成</string>
+    <string name="match_sign_edit_success">報名修改完成</string>
     <string name="match_manage_delete">報名已刪除</string>
 
 </resources>

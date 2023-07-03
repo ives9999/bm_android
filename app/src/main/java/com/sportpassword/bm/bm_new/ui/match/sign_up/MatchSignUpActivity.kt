@@ -1,5 +1,6 @@
 package com.sportpassword.bm.bm_new.ui.match.sign_up
 
+import android.app.Activity
 import android.os.Bundle
 import android.widget.Toast
 import androidx.viewpager2.widget.ViewPager2
@@ -138,8 +139,19 @@ class MatchSignUpActivity : BaseActivity<ActivityMatchSignUpBinding>() {
                 }
             }
 
+            is MatchSignUpVM.SignUpEvent.Edit -> {
+                if (event.isSuccess) {
+                    Toast.makeText(
+                        this,
+                        getString(R.string.match_sign_edit_success),
+                        Toast.LENGTH_LONG
+                    ).show()
+                    setResult(Activity.RESULT_OK)
+                    finish()
+                }
+            }
+
             else -> {}
         }
     }
-
 }

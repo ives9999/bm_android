@@ -1,4 +1,5 @@
 package com.sportpassword.bm.bm_new.data.dto.match
+
 import com.google.gson.annotations.SerializedName
 
 
@@ -24,7 +25,8 @@ data class MatchTeamInsertDto(
     @SerializedName("name")
     val name: String, // 測試隊
     @SerializedName("players")
-    val players: List<Player>
+    val players: List<Player>,
+    val token: String? = null //編輯更新時要加此token
 ) {
     data class Player(
         @SerializedName("age")
