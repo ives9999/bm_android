@@ -21,6 +21,8 @@ import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.annotation.RequiresApi
 import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
@@ -72,6 +74,7 @@ class SearchVC : MyTableVC() {
 //    lateinit var notifManager: NotificationManagerCompat
 //    lateinit var notif: Notification
 
+    @RequiresApi(Build.VERSION_CODES.M)
     override fun onCreate(savedInstanceState: Bundle?) {
 
         able_type = "team"
@@ -83,12 +86,13 @@ class SearchVC : MyTableVC() {
         setContentView(view)
 
         //val isNotificationEnabled: Boolean = notificationManager.areNotificationsEnabled()
-        val permissionManager = PermissionManager(this)
 
-        val p: Boolean = isPermissionGranted(this, Manifest.permission.POST_NOTIFICATIONS)
-        if (!p) {
-            askForPermission(this, Manifest.permission.POST_NOTIFICATIONS, 500)
-        }
+
+
+//        val p: Boolean = isPermissionGranted(this, Manifest.permission.POST_NOTIFICATIONS)
+//        if (!p) {
+//            askForPermission(this, Manifest.permission.POST_NOTIFICATIONS, 500)
+//        }
 
 //        createNotifChannel()
 //
@@ -140,7 +144,29 @@ class SearchVC : MyTableVC() {
 
         member_like = true
 
-        init()
+//        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+//            if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.CAMERA)) {
+//
+//            } else {
+//                ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.CAMERA), 202)
+//            }
+//        }
+//        val requestPermissionLauncher =
+//            registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted: Boolean ->
+//
+//            }
+
+        //init()
+        val permissionManager = PermissionManager(this)
+        permissionManager
+            .request(Permission.Camera)
+            .checkPermission { granted ->
+                if (granted) {
+                    println("access granted!!")
+                } else {
+                    println("We couldn't access the post notification")
+                }
+            }
     }
 
 //    @SuppressLint("MissingPermission")
