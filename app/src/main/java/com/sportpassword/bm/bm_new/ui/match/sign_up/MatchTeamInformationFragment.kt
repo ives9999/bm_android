@@ -50,6 +50,14 @@ class MatchTeamInformationFragment : BaseFragment<FragmentMatchTeamInformationBi
             ).forEach {
                 editSignUpInfo(it.first, it.second)
             }
+
+            vm.matchSignUp.observe(viewLifecycleOwner) {
+                edtTeamName.contentET?.setText(it.name)
+                edtCaptainName.contentET?.setText(it.managerName)
+                edtCaptainPhone.contentET?.setText(it.managerMobile)
+                edtCaptainEmail.contentET?.setText(it.managerEmail)
+                edtCaptainLine.contentET?.setText(it.managerLine)
+            }
         }
     }
 

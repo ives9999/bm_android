@@ -29,6 +29,12 @@ class MatchManageListAdapter :
                     }
                 }
 
+                btnEdit.setOnClickListener {
+                    getItem(bindingAdapterPosition)?.let { data ->
+                        listener?.onEditClick(data)
+                    }
+                }
+
                 btnDel.setOnClickListener {
                     getItem(bindingAdapterPosition)?.let { data ->
                         listener?.onDelClick(data)
@@ -90,6 +96,7 @@ class MatchManageListAdapter :
     }
 
     interface Listener {
+        fun onEditClick(data: MatchTeamListDto.Row)
         fun onDelClick(data: MatchTeamListDto.Row)
         fun onDetailClick(data: MatchTeamListDto.Row)
     }

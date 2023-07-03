@@ -87,6 +87,7 @@ class MatchSignUpVM(
     }
 
     fun setSignUpInfo(type: String, name: String) {
+        Timber.d("報名資料輸入 $type, $name")
         signUpList.find { it.type == type }?.value = name
     }
 
@@ -103,6 +104,7 @@ class MatchSignUpVM(
     }
 
     private fun getMatchTeamInsertInfo(): MatchTeamInsertDto? {
+        Timber.d("signUpList $signUpList")
         return with(signUpList) {
             MatchTeamInsertDto(
                 doX = "update",
@@ -142,6 +144,15 @@ class MatchSignUpVM(
                     )
                 )
             )
+        }
+    }
+
+    fun editSignedMatch(token: String) {
+        viewModelScope.launch {
+            repo.getMatchSignUp(PostMatchSignUpDto(token = token)).setupBase().collect {
+                Timber.d("已報名資料 $it")
+                matchSignUp.value = it
+            }
         }
     }
 }

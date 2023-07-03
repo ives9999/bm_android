@@ -17,6 +17,7 @@ class MatchSignUpActivity : BaseActivity<ActivityMatchSignUpBinding>() {
 
     companion object {
         const val MATCH_GROUP_TOKEN = "matchGroupToken"
+        const val MATCH_TEAM_TOKEN = "matchTeamToken"
         const val MATCH_GROUP_ID = "matchGroupId"
         const val MATCH_ID = "matchId"
     }
@@ -34,6 +35,11 @@ class MatchSignUpActivity : BaseActivity<ActivityMatchSignUpBinding>() {
                 data.getInt(MATCH_ID),
                 it
             )
+        }
+
+        //從編輯過來時
+        data.getString(MATCH_TEAM_TOKEN)?.let {
+            vm.editSignedMatch(it)
         }
     }
 
@@ -70,6 +76,8 @@ class MatchSignUpActivity : BaseActivity<ActivityMatchSignUpBinding>() {
                             indicator.setIndicatorSelected(position)
                         }
                     })
+
+                    offscreenPageLimit = 2
                 }
 
                 vm.initSignUpInfo(it.matchGroup.number)

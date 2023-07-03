@@ -16,14 +16,13 @@ import com.sportpassword.bm.bm_new.ui.base.BaseViewModel
 import com.sportpassword.bm.bm_new.ui.base.ViewEvent
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
-import timber.log.Timber
 
 class MatchManageVM(private val state: SavedStateHandle, private val repo: MatchRepo) :
     BaseViewModel(state),
     MatchTeamListPagingSource.Listener {
 
     sealed class MatchManageEvent {
-        data class Delete(val isSuccess: Boolean) : ViewEvent.ViewEventData<Boolean>()
+        class Delete(val isSuccess: Boolean) : ViewEvent.ViewEventData<Boolean>()
     }
 
     fun getMatchTeamList(): Flow<PagingData<MatchTeamListDto.Row>> {
@@ -56,7 +55,6 @@ class MatchManageVM(private val state: SavedStateHandle, private val repo: Match
     fun delMatchTeamList(token: String) {
         viewModelScope.launch {
             repo.delMatchTeam(DelMatchTeamDto(token = token)).setupBase().collect {
-                Timber.d("del match team $it")
                 eventChannel.send(MatchManageEvent.Delete(it.success))
             }
         }

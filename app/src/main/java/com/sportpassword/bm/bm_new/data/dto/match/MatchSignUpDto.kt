@@ -1,19 +1,50 @@
 package com.sportpassword.bm.bm_new.data.dto.match
+
 import com.google.gson.annotations.SerializedName
 
 data class MatchSignUpDto(
+    @SerializedName("created_at")
+    val createdAt: String, // 2023-07-03 11:10:14
+    @SerializedName("id")
+    val id: Int, // 40
+    @SerializedName("isPaid")
+    val isPaid: Int, // 0
+    @SerializedName("manager_email")
+    val managerEmail: String, // njhh
+    @SerializedName("manager_id")
+    val managerId: Int, // 9016
+    @SerializedName("manager_line")
+    val managerLine: String?, // null
+    @SerializedName("manager_mobile")
+    val managerMobile: String, // hvhh
+    @SerializedName("manager_name")
+    val managerName: String, // gvhh
     @SerializedName("match")
     val match: Match,
     @SerializedName("match_gifts")
     val matchGifts: List<MatchGift>,
     @SerializedName("match_group")
     val matchGroup: MatchGroup,
+    @SerializedName("match_group_id")
+    val matchGroupId: Int, // 1
+    @SerializedName("match_id")
+    val matchId: Int, // 6
     @SerializedName("match_players")
-    val matchPlayers: List<Any>,
+    val matchPlayers: List<MatchPlayer>,
+    @SerializedName("name")
+    val name: String, // jbhh
     @SerializedName("order")
     val order: Any?, // null
+    @SerializedName("order_id")
+    val orderId: Any?, // null
     @SerializedName("product_token")
-    val productToken: String // FhAxb6qWYnKuUAQoTp0GwEETr57IJLB
+    val productToken: String, // FhAxb6qWYnKuUAQoTp0GwEETr57IJLB
+    @SerializedName("sort_order")
+    val sortOrder: Int, // 1688353814
+    @SerializedName("token")
+    val token: String, // 7rYgfuO1GqVvPWr97GSBf9rr0GcnRwT
+    @SerializedName("updated_at")
+    val updatedAt: String // 2023-07-03 11:10:14
 ) {
     data class Match(
         @SerializedName("arena_id")
@@ -192,5 +223,49 @@ data class MatchSignUpDto(
                 val weight: Any? // null
             )
         }
+    }
+
+    data class MatchPlayer(
+        @SerializedName("age")
+        val age: Int, // 33
+        @SerializedName("created_at")
+        val createdAt: String, // 2023-07-03 11:10:14
+        @SerializedName("email")
+        val email: String, // ffgg
+        @SerializedName("id")
+        val id: Int, // 50
+        @SerializedName("line")
+        val line: String,
+        @SerializedName("match_group_id")
+        val matchGroupId: Int, // 1
+        @SerializedName("match_id")
+        val matchId: Int, // 6
+        @SerializedName("match_player_gifts")
+        val matchPlayerGifts: List<MatchPlayerGift>,
+        @SerializedName("match_team_id")
+        val matchTeamId: Int, // 40
+        @SerializedName("member_id")
+        val memberId: Any?, // null
+        @SerializedName("mobile")
+        val mobile: String, // hvhh
+        @SerializedName("name")
+        val name: String, // jbjvh
+        @SerializedName("sort_order")
+        val sortOrder: Int, // 1688353814
+        @SerializedName("token")
+        val token: String, // cxj32Q7x1GBSR8cgrlz1EDzsN9INYY8
+        @SerializedName("updated_at")
+        val updatedAt: String // 2023-07-03 11:10:14
+    ) {
+        data class MatchPlayerGift(
+            @SerializedName("attributes")
+            val attributes: String, // {name:顏色,alias:color,value:經典白}|{name:尺寸,alias:size,value:M}
+            @SerializedName("id")
+            val id: Int, // 33
+            @SerializedName("match_gift_id")
+            val matchGiftId: Int, // 1
+            @SerializedName("match_player_id")
+            val matchPlayerId: Int // 50
+        )
     }
 }

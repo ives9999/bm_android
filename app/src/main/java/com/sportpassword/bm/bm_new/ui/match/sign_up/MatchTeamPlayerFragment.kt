@@ -69,6 +69,26 @@ class MatchTeamPlayerFragment : BaseFragment<FragmentMatchTeamPlayerBinding>() {
             ).forEach {
                 editSignUpInfo(it.first, it.second)
             }
+
+            vm.matchSignUp.observe(viewLifecycleOwner) {
+                if (isPlayerOne) {
+                    it.matchPlayers.getOrNull(0)?.let { playerOne ->
+                        edtName.contentET?.setText(playerOne.name)
+                        edtPhone.contentET?.setText(playerOne.mobile)
+                        edtEmail.contentET?.setText(playerOne.email)
+                        edtLine.contentET?.setText(playerOne.line)
+                        edtAge.contentET?.setText(playerOne.age.toString())
+                    }
+                } else {
+                    it.matchPlayers.getOrNull(1)?.let { playerTwo ->
+                        edtName.contentET?.setText(playerTwo.name)
+                        edtPhone.contentET?.setText(playerTwo.mobile)
+                        edtEmail.contentET?.setText(playerTwo.email)
+                        edtLine.contentET?.setText(playerTwo.line)
+                        edtAge.contentET?.setText(playerTwo.age.toString())
+                    }
+                }
+            }
         }
     }
 

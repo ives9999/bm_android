@@ -11,6 +11,7 @@ import com.sportpassword.bm.bm_new.ui.base.BaseActivity
 import com.sportpassword.bm.bm_new.ui.base.BaseViewModel
 import com.sportpassword.bm.bm_new.ui.base.ViewEvent
 import com.sportpassword.bm.bm_new.ui.match.detail.MatchDetailActivity
+import com.sportpassword.bm.bm_new.ui.match.sign_up.MatchSignUpActivity
 import com.sportpassword.bm.bm_new.ui.util.LinearItemDecoration
 import com.sportpassword.bm.databinding.ActivityMatchBinding
 import kotlinx.coroutines.flow.launchIn
@@ -71,6 +72,13 @@ class MatchManageActivity : BaseActivity<ActivityMatchBinding>(),
             }
 
             else -> {}
+        }
+    }
+
+    override fun onEditClick(data: MatchTeamListDto.Row) {
+        Intent(this, MatchSignUpActivity::class.java).apply {
+            putExtra(MatchSignUpActivity.MATCH_TEAM_TOKEN, data.token)
+            startActivity(this)
         }
     }
 
