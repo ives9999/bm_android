@@ -24,12 +24,12 @@
         tools:text="01" />
 
     <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/tv_pro_play"
+        android:id="@+id/tv_price"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Badminton Hall"
-        android:textColor="@color/MY_GREEN"
+        android:textColor="@color/MY_RED"
         android:textSize="14sp"
+        android:textStyle="bold"
         app:layout_constrainedWidth="true"
         app:layout_constraintBottom_toBottomOf="@+id/tv_num"
         app:layout_constraintEnd_toEndOf="parent"

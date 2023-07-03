@@ -124,7 +124,8 @@ class MatchSignUpActivity : BaseActivity<ActivityMatchSignUpBinding>() {
         when (event) {
             is MatchSignUpVM.SignUpEvent.SignUp -> {
                 if (event.isSuccess) {
-                    Toast.makeText(this, "報名完成", Toast.LENGTH_LONG).show()
+                    Toast.makeText(this, getString(R.string.match_sign_success), Toast.LENGTH_LONG)
+                        .show()
                     finish()
                 }
             }

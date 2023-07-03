@@ -2,7 +2,6 @@ package com.sportpassword.bm.bm_new.ui.match.detail
 
 import android.os.Bundle
 import com.google.android.material.tabs.TabLayoutMediator
-import com.sportpassword.bm.bm_new.data.dto.match.MatchListDto
 import com.sportpassword.bm.bm_new.ui.base.BaseActivity
 import com.sportpassword.bm.bm_new.ui.base.BaseViewModel
 import com.sportpassword.bm.bm_new.ui.vo.MatchTab
@@ -12,7 +11,8 @@ import org.koin.androidx.viewmodel.ext.android.stateViewModel
 class MatchDetailActivity : BaseActivity<ActivityMatchDetailBinding>() {
 
     companion object {
-        const val MATCH_ROW = "match_row"
+        const val MATCH_TITLE = "match_title"
+        const val MATCH_TOKEN = "match_token"
         const val SIGN_UP = "sign_up"
     }
 
@@ -26,9 +26,9 @@ class MatchDetailActivity : BaseActivity<ActivityMatchDetailBinding>() {
         ActivityMatchDetailBinding.inflate(layoutInflater)
 
     override fun initParam(data: Bundle) {
-        data.getParcelable<MatchListDto.Row>(MATCH_ROW)?.let {
-            title = it.name
-            vm.getMatchDetail(it.token)
+        title = data.getString(MATCH_TITLE)
+        data.getString(MATCH_TOKEN)?.let {
+            vm.getMatchDetail(it)
         }
 
         isSignUp = data.getBoolean(SIGN_UP)

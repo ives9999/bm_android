@@ -1,5 +1,6 @@
 package com.sportpassword.bm.bm_new.ui.match.manage_team_list
 
+import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
 import androidx.lifecycle.lifecycleScope
@@ -9,6 +10,7 @@ import com.sportpassword.bm.bm_new.data.dto.match.MatchTeamListDto
 import com.sportpassword.bm.bm_new.ui.base.BaseActivity
 import com.sportpassword.bm.bm_new.ui.base.BaseViewModel
 import com.sportpassword.bm.bm_new.ui.base.ViewEvent
+import com.sportpassword.bm.bm_new.ui.match.detail.MatchDetailActivity
 import com.sportpassword.bm.bm_new.ui.util.LinearItemDecoration
 import com.sportpassword.bm.databinding.ActivityMatchBinding
 import kotlinx.coroutines.flow.launchIn
@@ -63,7 +65,8 @@ class MatchManageActivity : BaseActivity<ActivityMatchBinding>(),
             is MatchManageVM.MatchManageEvent.Delete -> {
                 if (event.isSuccess) {
                     matchManageListAdapter?.refresh()
-                    Toast.makeText(this, "報名已刪除", Toast.LENGTH_LONG).show()
+                    Toast.makeText(this, getString(R.string.match_manage_delete), Toast.LENGTH_LONG)
+                        .show()
                 }
             }
 
@@ -76,6 +79,11 @@ class MatchManageActivity : BaseActivity<ActivityMatchBinding>(),
     }
 
     override fun onDetailClick(data: MatchTeamListDto.Row) {
+        Intent(this, MatchDetailActivity::class.java).apply {
+            putExtra(MatchDetailActivity.MATCH_TITLE, data.match.name)
+            putExtra(MatchDetailActivity.MATCH_TOKEN, data.match.token)
+            startActivity(this)
+        }
     }
 
 }

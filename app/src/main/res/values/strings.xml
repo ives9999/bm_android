@@ -36,6 +36,7 @@
     <string name="match_content">內容</string>
     <string name="match_brochure">簡章</string>
     <string name="match_sign_up">報名</string>
+    <string name="match_sign_price">NT$ %1$d 元</string>
     <string name="match_num_person">人數: %1$d 人</string>
     <string name="match_sign_group">報名組數: %1$d 組</string>
     <string name="match_limit_group">限制組數: %1$d 組</string>
@@ -71,5 +72,7 @@
     <string name="match_team_sign_fee">報名費:</string>
     <string name="match_team_limit_group">限制組數:</string>
     <string name="match_team_sign_date">報名日期:</string>
+    <string name="match_sign_success">報名完成</string>
+    <string name="match_manage_delete">報名已刪除</string>
 
 </resources>

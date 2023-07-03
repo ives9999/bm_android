@@ -20,6 +20,7 @@ class MatchGroupsAdapter :
 
     inner class ViewHolder(binding: ItemMatchGroupBinding) : RecyclerView.ViewHolder(binding.root) {
         private val tvNumber = binding.tvNum
+        private val tvPrice = binding.tvPrice
         private val tvName = binding.tvName
         private val tvNumPerson = binding.tvPersons
         private val tvSignGroups = binding.tvGroups
@@ -38,6 +39,7 @@ class MatchGroupsAdapter :
 
         fun bind(data: MatchDetailDto.MatchGroup) {
             tvNumber.text = (bindingAdapterPosition + 1).toString()
+            tvPrice.text = context.getString(R.string.match_sign_price, data.price)
             tvName.text = data.name
             tvNumPerson.text = context.getString(R.string.match_num_person, data.number)
             tvSignGroups.text = context.getString(R.string.match_sign_group, data.number)
