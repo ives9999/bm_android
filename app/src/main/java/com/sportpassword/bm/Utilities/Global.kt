@@ -535,7 +535,7 @@ fun HashMap<String, Any>.toJSONString(): String {
 
 fun <T1, T2> Map<T1, T2>.print() {
     for ((key, value) in this) {
-        //println("${key} => ${value}")
+        println("$key => $value")
     }
 }
 

@@ -12,13 +12,16 @@ import android.graphics.Color
 import android.media.RingtoneManager
 import android.os.Build
 import android.widget.RemoteViews
+import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
+import androidx.core.app.TaskStackBuilder
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
+import com.sportpassword.bm.Controllers.MemberOrderListVC
 import com.sportpassword.bm.Controllers.SearchVC
-import com.sportpassword.bm.Utilities.askForPermission
 import com.sportpassword.bm.Utilities.isPermissionGranted
+import com.sportpassword.bm.Utilities.print
 import org.jetbrains.anko.notificationManager
 
 const val channelId = "notification_channel"
@@ -30,8 +33,8 @@ class MyFirebaseMessagingService: FirebaseMessagingService() {
     // attach the notification created with the custom layout
     // show the notification
 
-    val CHANNEL_ID = "order"
-    val CHANNEL_NAME = "order"
+    //val CHANNEL_ID = "order"
+    //val CHANNEL_NAME = "order"
     val NOTIF_ID = 0
     val REQUEST_NOTIFICATION = 20
 
@@ -39,11 +42,20 @@ class MyFirebaseMessagingService: FirebaseMessagingService() {
     lateinit var notif: Notification
 
 
+    @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     override fun onMessageReceived(remoteMessage: RemoteMessage) {
 
         if (remoteMessage.notification != null) {
-            generateNotification(remoteMessage.notification!!.title!!, remoteMessage.notification!!.body!!)
+            val data: Map<String, String> = remoteMessage.data
+
+            var type: String = ""
+            if (data.containsKey("type")) {
+                type = data["type"]!!
+            }
+            generateNotification(remoteMessage.notification!!.title!!, remoteMessage.notification!!.body!!, type)
         }
+        //data.print()
+        //println("message: ${}")
     }
 
     fun getRemoteView(title: String, message: String): RemoteViews {
@@ -51,30 +63,35 @@ class MyFirebaseMessagingService: FirebaseMessagingService() {
 
         remoteViews.setTextViewText(R.id.titleTV, title)
         remoteViews.setTextViewText(R.id.messageTV, message)
-        remoteViews.setImageViewResource(R.id.logoIV, R.drawable.ic_notification)
+        remoteViews.setImageViewResource(R.id.logoIV, R.drawable.ic_bell_svg)
 
         return remoteViews
     }
 
+    @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     @SuppressLint("MissingPermission")
-    fun generateNotification(title: String, message: String) {
+    fun generateNotification(title: String, message: String, type: String) {
 
-        createNotifChannel()
+        createNotifChannel(type)
 
-//        val intent: Intent = Intent(this, SearchVC::class.java)
+        val intent: Intent = Intent(this, MemberOrderListVC::class.java)
+        val stackBuilder = TaskStackBuilder.create(this)
+        stackBuilder.addParentStack(SearchVC::class.java)
+        stackBuilder.addNextIntent(intent)
+        val pendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_MUTABLE)
 //        val pendingIntent = androidx.core.app.TaskStackBuilder.create(this).run {
 //            addNextIntentWithParentStack(intent)
-//            getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT)
+//            getPendingIntent(0, PendingIntent.FLAG_MUTABLE)
 //        }
 
         notifManager = NotificationManagerCompat.from(this)
-        val notifBuilder = NotificationCompat.Builder(this, CHANNEL_ID)
+        val notifBuilder = NotificationCompat.Builder(this, type)
 
         notif = notifBuilder
             .setSmallIcon(getNotificationIcon(notifBuilder))
             .setContentTitle(title)
             .setContentText(message)
-//            .setContentIntent(pendingIntent)
+            .setContentIntent(pendingIntent)
             .build()
 
         val p: Boolean = isPermissionGranted(this, Manifest.permission.POST_NOTIFICATIONS)
@@ -109,11 +126,17 @@ class MyFirebaseMessagingService: FirebaseMessagingService() {
 //        notificationManager.notify(0, builder.build())
     }
 
-    private fun createNotifChannel(): NotificationManager? {
+    private fun createNotifChannel(type: String): NotificationManager? {
 
         var manager: NotificationManager? = null
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val channel = NotificationChannel(CHANNEL_ID, CHANNEL_NAME, NotificationManager.IMPORTANCE_DEFAULT).apply {
+            var name = "一般"
+            when (type) {
+                "order" -> name = "訂單"
+                "course" -> name = "課程"
+                else -> name = "一般"
+            }
+            val channel = NotificationChannel(type, name, NotificationManager.IMPORTANCE_DEFAULT).apply {
                 lightColor = Color.BLUE
                 enableLights(true)
             }
