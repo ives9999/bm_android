@@ -30,6 +30,11 @@ class MemberOrderListVC : MyTableVC() {
         view = binding.root
         setContentView(view)
 
+        var source = ""
+        if (intent.hasExtra("source")) {
+            source = intent.getStringExtra("source")!!
+        }
+
         setMyTitle("會員訂單")
 
         dataService = OrderService

@@ -75,6 +75,7 @@ class MyFirebaseMessagingService: FirebaseMessagingService() {
         createNotifChannel(type)
 
         val intent: Intent = Intent(this, MemberOrderListVC::class.java)
+        intent.putExtra("source", "notification")
         val stackBuilder = TaskStackBuilder.create(this)
         stackBuilder.addParentStack(SearchVC::class.java)
         stackBuilder.addNextIntent(intent)
