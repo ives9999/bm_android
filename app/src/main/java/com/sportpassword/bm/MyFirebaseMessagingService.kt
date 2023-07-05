@@ -21,8 +21,6 @@ import com.google.firebase.messaging.RemoteMessage
 import com.sportpassword.bm.Controllers.MemberOrderListVC
 import com.sportpassword.bm.Controllers.SearchVC
 import com.sportpassword.bm.Utilities.isPermissionGranted
-import com.sportpassword.bm.Utilities.print
-import org.jetbrains.anko.notificationManager
 
 const val channelId = "notification_channel"
 const val channelName = "com.sportpassword.bm.fcmpushnotification"
@@ -54,8 +52,26 @@ class MyFirebaseMessagingService: FirebaseMessagingService() {
             }
             generateNotification(remoteMessage.notification!!.title!!, remoteMessage.notification!!.body!!, type)
         }
-        //data.print()
-        //println("message: ${}")
+
+//        if (remoteMessage.data != null) {
+//            val data: Map<String, String> = remoteMessage.data
+//
+//            var type: String = ""
+//            if (data.containsKey("type")) {
+//                type = data["type"]!!
+//            }
+//
+//            var title: String = ""
+//            if (data.containsKey("title")) {
+//                title = data["title"]!!
+//            }
+//
+//            var body: String = ""
+//            if (data.containsKey("body")) {
+//                body = data["body"]!!
+//            }
+//            generateNotification(title, body, type)
+//        }
     }
 
     fun getRemoteView(title: String, message: String): RemoteViews {
@@ -76,14 +92,14 @@ class MyFirebaseMessagingService: FirebaseMessagingService() {
 
         val intent: Intent = Intent(this, MemberOrderListVC::class.java)
         intent.putExtra("source", "notification")
-        val stackBuilder = TaskStackBuilder.create(this)
-        stackBuilder.addParentStack(SearchVC::class.java)
-        stackBuilder.addNextIntent(intent)
-        val pendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_MUTABLE)
-//        val pendingIntent = androidx.core.app.TaskStackBuilder.create(this).run {
-//            addNextIntentWithParentStack(intent)
-//            getPendingIntent(0, PendingIntent.FLAG_MUTABLE)
-//        }
+//        val stackBuilder = TaskStackBuilder.create(this)
+//        stackBuilder.addParentStack(SearchVC::class.java)
+//        stackBuilder.addNextIntent(intent)
+//        val pendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT)
+        val pendingIntent = androidx.core.app.TaskStackBuilder.create(this).run {
+            addNextIntentWithParentStack(intent)
+            getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_MUTABLE)
+        }
 
         notifManager = NotificationManagerCompat.from(this)
         val notifBuilder = NotificationCompat.Builder(this, type)
@@ -101,30 +117,6 @@ class MyFirebaseMessagingService: FirebaseMessagingService() {
         } else {
             notifManager.notify(NOTIF_ID, notif)
         }
-
-//        val intent: Intent = Intent(this, SearchVC::class.java)
-//        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-//
-//        val paddingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_IMMUTABLE)
-//
-//        // channel id, channel name
-//        var builder: NotificationCompat.Builder = NotificationCompat.Builder(applicationContext, channelId)
-//            .setSmallIcon(R.drawable.no_word_logo)
-//            .setAutoCancel(true)
-//            .setVibrate(longArrayOf(1000, 1000, 1000, 1000))
-//            .setOnlyAlertOnce(true)
-//            .setContentIntent(paddingIntent)
-//
-//        builder = builder.setContent(getRemoteView(title, message))
-//
-//        val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-//
-//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-//            val notificationChannel = NotificationChannel(channelId, channelName, NotificationManager.IMPORTANCE_HIGH)
-//            notificationManager.createNotificationChannel(notificationChannel)
-//        }
-//
-//        notificationManager.notify(0, builder.build())
     }
 
     private fun createNotifChannel(type: String): NotificationManager? {
