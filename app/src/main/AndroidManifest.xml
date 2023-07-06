@@ -144,10 +144,9 @@
         <activity android:name=".Controllers.CourseVC" />
         <activity android:name=".Controllers.TeamVC" />
         <activity android:name=".Controllers.HomeTotalAdVC" />
-        <activity android:name=".Controllers.MemberOrderListVC"
-            android:parentActivityName=".Controllers.SearchVC"
-
-            />
+        <activity android:name=".Controllers.MemberOrderListVC" />
+<!--            android:parentActivityName=".Controllers.SearchVC"-->
+<!--            />-->
         <activity android:name=".Controllers.PaymentVC" />
         <activity android:name=".Controllers.AddCartVC" />
         <activity android:name=".Controllers.ShowStoreVC" />

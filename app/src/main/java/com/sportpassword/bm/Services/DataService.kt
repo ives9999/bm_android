@@ -193,7 +193,8 @@ open class DataService {
         val params: HashMap<String, String> = hashMapOf(
             "device" to "app",
             "channel" to CHANNEL,
-            "device_token" to device_token
+            "device_token" to device_token,
+            "device_type" to "android"
         )
 
         if (_member_token != null) {

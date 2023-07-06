@@ -53,25 +53,25 @@ class MyFirebaseMessagingService: FirebaseMessagingService() {
             generateNotification(remoteMessage.notification!!.title!!, remoteMessage.notification!!.body!!, type)
         }
 
-//        if (remoteMessage.data != null) {
-//            val data: Map<String, String> = remoteMessage.data
-//
-//            var type: String = ""
-//            if (data.containsKey("type")) {
-//                type = data["type"]!!
-//            }
-//
-//            var title: String = ""
-//            if (data.containsKey("title")) {
-//                title = data["title"]!!
-//            }
-//
-//            var body: String = ""
-//            if (data.containsKey("body")) {
-//                body = data["body"]!!
-//            }
-//            generateNotification(title, body, type)
-//        }
+        else if (remoteMessage.data != null) {
+            val data: Map<String, String> = remoteMessage.data
+
+            var type: String = ""
+            if (data.containsKey("type")) {
+                type = data["type"]!!
+            }
+
+            var title: String = ""
+            if (data.containsKey("title")) {
+                title = data["title"]!!
+            }
+
+            var body: String = ""
+            if (data.containsKey("body")) {
+                body = data["body"]!!
+            }
+            generateNotification(title, body, type)
+        }
     }
 
     fun getRemoteView(title: String, message: String): RemoteViews {
