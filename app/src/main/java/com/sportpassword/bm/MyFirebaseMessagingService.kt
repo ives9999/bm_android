@@ -18,6 +18,7 @@ import androidx.core.app.NotificationManagerCompat
 import androidx.core.app.TaskStackBuilder
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
+import com.sportpassword.bm.Controllers.CourseVC
 import com.sportpassword.bm.Controllers.MemberOrderListVC
 import com.sportpassword.bm.Controllers.SearchVC
 import com.sportpassword.bm.Utilities.isPermissionGranted
@@ -90,7 +91,12 @@ class MyFirebaseMessagingService: FirebaseMessagingService() {
 
         createNotifChannel(type)
 
-        val intent: Intent = Intent(this, MemberOrderListVC::class.java)
+        var cls: Class<*> = MemberOrderListVC::class.java
+        if (type == "course") {
+            cls = CourseVC::class.java
+        }
+
+        val intent: Intent = Intent(this, cls)
         intent.putExtra("source", "notification")
 //        val stackBuilder = TaskStackBuilder.create(this)
 //        stackBuilder.addParentStack(SearchVC::class.java)
