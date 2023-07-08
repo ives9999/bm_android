@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/MY_BLACK"
+        android:paddingHorizontal="20dp"
+        android:paddingVertical="24dp"
+        tools:context=".bm_new.ui.match.detail.content.MatchContentFragment">
+
+        <TextView
+            android:id="@+id/tv_competition_date"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/match_match_date_time"
+            android:textColor="@color/MY_WHITE"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <com.sportpassword.bm.bm_new.ui.util.custom_view.IconTitleText
+            android:id="@+id/match_start_date"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_competition_date"
+            app:src="@drawable/ic_calendar_start_svg"
+            app:titleText="@string/match_start_date" />
+
+        <com.sportpassword.bm.bm_new.ui.util.custom_view.IconTitleText
+            android:id="@+id/match_end_date"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/match_start_date"
+            app:src="@drawable/ic_calendar_end_svg"
+            app:titleText="@string/match_end_date" />
+
+        <com.sportpassword.bm.bm_new.ui.util.custom_view.IconTitleText
+            android:id="@+id/sign_start_date"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/match_end_date"
+            app:src="@drawable/ic_sign_start_svg"
+            app:titleText="@string/match_sign_start_date" />
+
+        <com.sportpassword.bm.bm_new.ui.util.custom_view.IconTitleText
+            android:id="@+id/sign_end_date"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/sign_start_date"
+            app:src="@drawable/ic_sign_end_svg"
+            app:titleText="@string/match_sign_end_date" />
+
+        <View
+            android:id="@+id/line1"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_marginTop="24dp"
+            android:background="@color/WHITE_26"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/sign_end_date" />
+
+        <TextView
+            android:id="@+id/tv_competition_location"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:text="@string/match_location"
+            android:textColor="@color/MY_WHITE"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/line1" />
+
+        <com.sportpassword.bm.bm_new.ui.util.custom_view.IconTitleText
+            android:id="@+id/match_city"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_competition_location"
+            app:src="@drawable/ic_location_svg"
+            app:titleText="@string/match_location_city" />
+
+        <com.sportpassword.bm.bm_new.ui.util.custom_view.IconTitleText
+            android:id="@+id/match_arena"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/match_city"
+            app:src="@drawable/ic_arena_svg"
+            app:titleText="@string/match_location_arena" />
+
+        <com.sportpassword.bm.bm_new.ui.util.custom_view.IconTitleText
+            android:id="@+id/match_arena_address"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/match_arena"
+            app:src="@drawable/ic_location_svg"
+            app:titleText="@string/match_location_arena_address" />
+
+        <com.sportpassword.bm.bm_new.ui.util.custom_view.IconTitleText
+            android:id="@+id/match_arena_phone"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/match_arena_address"
+            app:src="@drawable/ic_phone_svg"
+            app:titleText="@string/match_location_arena_phone" />
+
+        <com.sportpassword.bm.bm_new.ui.util.custom_view.IconTitleText
+            android:id="@+id/match_ball"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/match_arena_phone"
+            app:src="@drawable/ic_ball_svg"
+            app:titleText="@string/match_ball" />
+
+        <View
+            android:id="@+id/line2"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_marginTop="24dp"
+            android:background="@color/WHITE_26"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/match_ball" />
+
+        <TextView
+            android:id="@+id/tv_contact_person"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:text="@string/match_contact_person"
+            android:textColor="@color/MY_WHITE"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/line2" />
+
+        <com.sportpassword.bm.bm_new.ui.util.custom_view.IconTitleText
+            android:id="@+id/match_contact_person"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_contact_person"
+            app:src="@drawable/ic_person_svg"
+            app:titleText="@string/match_sign_name" />
+
+        <com.sportpassword.bm.bm_new.ui.util.custom_view.IconTitleText
+            android:id="@+id/match_contact_phone"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/match_contact_person"
+            app:src="@drawable/ic_phone_svg"
+            app:titleText="@string/match_sign_phone" />
+
+        <com.sportpassword.bm.bm_new.ui.util.custom_view.IconTitleText
+            android:id="@+id/match_contact_email"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/match_contact_phone"
+            app:src="@drawable/ic_email_svg"
+            app:titleText="@string/match_sign_email" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.core.widget.NestedScrollView>

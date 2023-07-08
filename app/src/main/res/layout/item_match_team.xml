@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/MY_BLACK"
+    android:paddingStart="20dp"
+    android:paddingTop="16dp"
+    android:paddingEnd="20dp"
+    android:paddingBottom="21dp">
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/tv_num"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/MY_GREEN"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        app:layout_constrainedWidth="true"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_chainStyle="spread_inside"
+        tools:text="01" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/tv_team_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Badminton Hall"
+        android:textColor="@color/MY_GREEN"
+        android:textSize="14sp"
+        app:layout_constrainedWidth="true"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_num"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/tv_num"
+        app:layout_constraintVertical_chainStyle="spread_inside"
+        tools:text="Pro Player is currently not available" />
+
+    <View
+        android:id="@+id/line1"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:layout_marginTop="12dp"
+        android:background="@color/WHITE_26"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_num" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/tv_match_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:textColor="@color/MY_WHITE"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constrainedWidth="true"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/line1"
+        app:layout_constraintVertical_chainStyle="spread_inside"
+        tools:text="Badminton Password Cup Competition 123" />
+
+
+    <com.sportpassword.bm.bm_new.ui.util.custom_view.IconTitleText
+        android:id="@+id/start_date"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_match_name"
+        app:src="@drawable/ic_calendar_start_svg"
+        app:titleText="@string/match_start_date" />
+
+
+    <com.sportpassword.bm.bm_new.ui.util.custom_view.IconTitleText
+        android:id="@+id/end_date"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/start_date"
+        app:src="@drawable/ic_calendar_end_svg"
+        app:titleText="@string/match_end_date" />
+
+    <com.sportpassword.bm.bm_new.ui.util.custom_view.IconTitleText
+        android:id="@+id/team_group"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/end_date"
+        app:layout_constraintTop_toBottomOf="@+id/end_date"
+        app:src="@drawable/ic_ball_svg"
+        app:titleText="@string/match_team_group" />
+
+    <com.sportpassword.bm.bm_new.ui.util.custom_view.IconTitleText
+        android:id="@+id/sign_fee"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/team_group"
+        app:layout_constraintTop_toBottomOf="@+id/team_group"
+        app:src="@drawable/ic_dollar_svg"
+        app:titleText="@string/match_team_sign_fee" />
+
+    <com.sportpassword.bm.bm_new.ui.util.custom_view.IconTitleText
+        android:id="@+id/limit_groups"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/sign_fee"
+        app:layout_constraintTop_toBottomOf="@+id/sign_fee"
+        app:src="@drawable/ic_group_svg"
+        app:titleText="@string/match_team_limit_group" />
+
+    <com.sportpassword.bm.bm_new.ui.util.custom_view.IconTitleText
+        android:id="@+id/sign_date"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/limit_groups"
+        app:layout_constraintTop_toBottomOf="@+id/limit_groups"
+        app:src="@drawable/ic_sign_date_svg"
+        app:titleText="@string/match_team_sign_date" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:gravity="center"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/sign_date">
+
+        <com.sportpassword.bm.Views.IconView2
+            android:id="@+id/btn_edit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:iconViewIcon="ic_edit_svg" />
+
+        <com.sportpassword.bm.Views.IconView2
+            android:id="@+id/btn_del"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            app:iconViewIcon="ic_delete_svg" />
+
+        <ImageView
+            android:id="@+id/btn_wallet"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:src="@drawable/ic_wallet_svg" />
+
+        <Button
+            android:id="@+id/btn_detail"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_weight="1"
+            android:background="@drawable/shape_bg_green_40"
+            android:paddingVertical="10dp"
+            android:text="@string/match_content"
+            android:textColor="@color/MY_BLACK"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+    </LinearLayout>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/MY_BLACK">
+
+    <ImageView
+        android:id="@+id/btn_close"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginStart="28dp"
+        android:layout_marginTop="16dp"
+        android:scaleType="center"
+        android:src="@drawable/ic_arrow_left"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/tv_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:textColor="@color/MY_WHITE"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constrainedWidth="true"
+        app:layout_constraintBottom_toBottomOf="@+id/btn_close"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0"
+        app:layout_constraintStart_toEndOf="@+id/btn_close"
+        app:layout_constraintTop_toTopOf="@+id/btn_close"
+        tools:text="Event list" />
+
+    <View
+        android:id="@+id/view_outer"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="-5dp"
+        android:layout_marginTop="-4dp"
+        android:layout_marginEnd="-5dp"
+        android:layout_marginBottom="-4dp"
+        android:background="@drawable/bg_match_tab"
+        app:layout_constraintBottom_toBottomOf="@+id/tbl_match"
+        app:layout_constraintEnd_toEndOf="@+id/tbl_match"
+        app:layout_constraintStart_toStartOf="@+id/tbl_match"
+        app:layout_constraintTop_toTopOf="@+id/tbl_match" />
+
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/tbl_match"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="25dp"
+        android:layout_marginTop="20dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btn_close"
+        app:tabBackground="@drawable/sel_match_tab"
+        app:tabGravity="fill"
+        app:tabIndicatorColor="@android:color/transparent"
+        app:tabIndicatorHeight="0dp"
+        app:tabMode="fixed"
+        app:tabRippleColor="@null"
+        app:tabSelectedTextColor="@color/MY_BLACK"
+        app:tabTextAppearance="@style/TabLayoutTextStyle"
+        app:tabTextColor="@color/WHITE_80" />
+
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/vp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/view_outer" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -2,12 +2,36 @@ package com.sportpassword.bm
 
 import android.app.Application
 import android.content.Context
+<<<<<<< HEAD
 import android.os.Build
 import com.google.firebase.messaging.FirebaseMessaging
 import com.sportpassword.bm.Utilities.*
 import com.sportpassword.bm.Controllers.SystemProperties
 import com.sportpassword.bm.Models.Member
 import com.sportpassword.bm.Services.MemberService
+=======
+import androidx.lifecycle.SavedStateHandle
+import com.facebook.stetho.Stetho
+import com.google.gson.Gson
+import com.onesignal.OSNotificationOpenedResult
+import com.onesignal.OSNotificationReceivedEvent
+import com.onesignal.OneSignal
+import com.sportpassword.bm.Controllers.BaseActivity
+import com.sportpassword.bm.Models.Member
+import com.sportpassword.bm.Utilities.MyOneSignal
+import com.sportpassword.bm.bm_new.data.remote_source.NetworkModule
+import com.sportpassword.bm.bm_new.data.repo.match.MatchRepo
+import com.sportpassword.bm.bm_new.data.repo.match.MatchRepoImpl
+import com.sportpassword.bm.bm_new.ui.match.MatchVM
+import com.sportpassword.bm.bm_new.ui.match.detail.MatchDetailVM
+import com.sportpassword.bm.bm_new.ui.match.sign_up.MatchSignUpVM
+import com.sportpassword.bm.bm_new.ui.match.manage_team_list.MatchManageVM
+import org.koin.android.ext.koin.androidContext
+import org.koin.androidx.viewmodel.dsl.viewModel
+import org.koin.core.context.GlobalContext.startKoin
+import org.koin.dsl.module
+import timber.log.Timber
+>>>>>>> origin/match_new
 
 /**
  * Created by ives on 2018/2/6.
@@ -17,7 +41,7 @@ val member: Member by lazy {
     App.member!!
 }
 
-class App: Application() {
+class App : Application() {
 
     companion object {
         var ctx: Context? = null
@@ -55,6 +79,7 @@ class App: Application() {
         super.onCreate()
         ctx = applicationContext
 
+<<<<<<< HEAD
         gSimulate = isEmulator()
         _setURLConstants()
 
@@ -65,6 +90,15 @@ class App: Application() {
             }
         }
 
+=======
+        /** kai */
+        setupKoin()
+        if (BuildConfig.DEBUG) {
+            Timber.plant(Timber.DebugTree())
+            Stetho.initializeWithDefaults(this)
+        }
+        /** kai */
+>>>>>>> origin/match_new
 
         //registerActivityLifecycleCallbacks()
 //        val session: SharedPreferences = this.getSharedPreferences(SESSION_FILENAME, 0)
@@ -90,8 +124,28 @@ class App: Application() {
             //MyOneSignal.getOneSignalHandler(activity, result.notification)
 
 
+<<<<<<< HEAD
 
         //}
+=======
+//            val builder = AlertDialog.Builder(applicationContext)
+//            builder.setTitle(title)
+//            builder.setMessage(content)
+//            runOnUiThread {
+//                builder.show()
+//            }
+            //val no = NotificationServiceExtension()
+            //no.remoteNotificationReceived(this, result.notification)
+            //val launchUrl = result.notification.launchURL
+            //if (launchUrl != null) {
+            //val intent: Intent = Intent(applicationContext, ShowPNVC::class.java)
+            //intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT or Intent.FLAG_ACTIVITY_NEW_TASK)
+            //intent.putExtra("openURL", launchUrl)
+            //startActivity(intent)
+            //}
+
+        }
+>>>>>>> origin/match_new
 
         //當app在工作狀態時，會呼叫這個函式
 //        OneSignal.setNotificationWillShowInForegroundHandler { notificationReceivedEvent: OSNotificationReceivedEvent ->
@@ -221,6 +275,7 @@ class App: Application() {
         FEATURED_PATH = BASE_URL + FEATURED_PATH
     }
 
+<<<<<<< HEAD
     private fun isEmulator(): Boolean {
 
 //        println(Build.FINGERPRINT.startsWith("google/sdk_gphone_")
@@ -293,6 +348,43 @@ class App: Application() {
 //
 //        return null
 //    }
+=======
+    /** kai */
+    private fun setupKoin() {
+        val utilModule = module {
+            single<Gson> {
+                Gson()
+            }
+        }
+        val remoteModule = module {
+            single { NetworkModule.provideOkHttpClient() }
+            single { NetworkModule.provideRetrofit(get()) }
+            single { NetworkModule.provideMatchApi(get()) }
+        }
+
+        val repoModule = module {
+            single<MatchRepo> { MatchRepoImpl(get()) }
+        }
+
+        val vmModule = module {
+            viewModel { (handle: SavedStateHandle) -> MatchVM(handle, get()) }
+            viewModel { (handle: SavedStateHandle) -> MatchDetailVM(handle, get()) }
+            viewModel { (handle: SavedStateHandle) -> MatchSignUpVM(handle, get()) }
+            viewModel { (handle: SavedStateHandle) -> MatchManageVM(handle, get()) }
+        }
+
+        startKoin {
+            androidContext(this@App)
+            modules(
+                utilModule,
+                remoteModule,
+                repoModule,
+                vmModule
+            )
+        }
+    }
+    /** kai */
+>>>>>>> origin/match_new
 
 //    val accessTokenBuilder: Configuration.Builder
 //        get() {

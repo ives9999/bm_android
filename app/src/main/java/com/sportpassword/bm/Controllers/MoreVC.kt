@@ -1,14 +1,13 @@
 package com.sportpassword.bm.Controllers
 
-import android.app.Activity
 import android.app.AlertDialog
 import android.content.Intent
 import android.os.Bundle
-import android.view.ViewGroup
 import androidx.core.content.pm.PackageInfoCompat
 import com.sportpassword.bm.Adapters.MoreAdapter
 import com.sportpassword.bm.Data.MoreRow
 import com.sportpassword.bm.R
+import com.sportpassword.bm.bm_new.ui.match.MatchActivity
 import com.sportpassword.bm.databinding.ActivityMoreVcBinding
 
 open class MoreVC : MyTableVC() {
@@ -86,7 +85,15 @@ open class MoreVC : MyTableVC() {
             "coach" -> this.toCoach()
             "teach" -> this.toTeach()
             "store" -> this.toStore()
+<<<<<<< HEAD
             "match" -> this.toMatch()
+=======
+            "match" -> {
+                Intent(this, MatchActivity::class.java).apply {
+                    startActivity(this)
+                }
+            }
+>>>>>>> origin/match_new
             "pn" -> {
                 val intent = Intent(activity, ShowPNVC::class.java)
                 startActivity(intent)

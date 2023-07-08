@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/MY_BLACK"
+    android:paddingStart="20dp"
+    android:paddingTop="16dp"
+    android:paddingEnd="20dp"
+    android:paddingBottom="21dp">
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/tv_num"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/MY_GREEN"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        app:layout_constrainedWidth="true"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_chainStyle="spread_inside"
+        tools:text="01" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/tv_price"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/MY_RED"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        app:layout_constrainedWidth="true"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_num"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/tv_num"
+        app:layout_constraintVertical_chainStyle="spread_inside"
+        tools:text="Pro Player is currently not available" />
+
+    <View
+        android:id="@+id/line1"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:layout_marginTop="12dp"
+        android:background="@color/WHITE_26"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_num" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/tv_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:textColor="@color/MY_WHITE"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constrainedWidth="true"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/line1"
+        app:layout_constraintVertical_chainStyle="spread_inside"
+        tools:text="社會組男雙" />
+
+    <ImageView
+        android:id="@+id/iv_persons"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_marginTop="12dp"
+        android:contentDescription="@null"
+        android:scaleType="centerCrop"
+        android:src="@drawable/ic_person_svg"
+        app:layout_constraintHorizontal_chainStyle="spread_inside"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_name" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/tv_persons"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="7dp"
+        android:textColor="@color/WHITE_70"
+        android:textSize="14sp"
+        app:layout_constrainedWidth="true"
+        app:layout_constraintBottom_toBottomOf="@+id/iv_persons"
+        app:layout_constraintStart_toEndOf="@+id/iv_persons"
+        app:layout_constraintTop_toTopOf="@+id/iv_persons"
+        app:layout_constraintVertical_bias="1.0"
+        app:layout_constraintVertical_chainStyle="spread_inside"
+        tools:text="人數" />
+
+
+    <ImageView
+        android:id="@+id/iv_groups"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_marginTop="12dp"
+        android:contentDescription="@null"
+        android:scaleType="centerCrop"
+        android:src="@drawable/ic_person_svg"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/iv_persons" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/tv_groups"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="7dp"
+        android:textColor="@color/WHITE_70"
+        android:textSize="14sp"
+        app:layout_constrainedWidth="true"
+        app:layout_constraintBottom_toBottomOf="@+id/iv_groups"
+        app:layout_constraintStart_toEndOf="@+id/iv_groups"
+        app:layout_constraintTop_toTopOf="@+id/iv_groups"
+        app:layout_constraintVertical_bias="1.0"
+        app:layout_constraintVertical_chainStyle="spread_inside"
+        tools:text="組數" />
+
+
+    <ImageView
+        android:id="@+id/iv_limit_groups"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_marginTop="12dp"
+        android:contentDescription="@null"
+        android:scaleType="centerCrop"
+        android:src="@drawable/ic_person_svg"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/iv_groups" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/tv_limit_grous"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="7dp"
+        android:textColor="@color/WHITE_70"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toBottomOf="@+id/iv_limit_groups"
+        app:layout_constraintStart_toEndOf="@+id/iv_limit_groups"
+        app:layout_constraintTop_toTopOf="@+id/iv_limit_groups"
+        tools:text="限制組數" />
+
+    <Button
+        android:id="@+id/btn_sign_up"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="18dp"
+        android:background="@drawable/shape_bg_green_40"
+        android:paddingVertical="10dp"
+        android:text="@string/match_sign_up"
+        android:textColor="@color/MY_BLACK"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/iv_limit_groups" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

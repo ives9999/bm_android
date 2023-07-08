@@ -26,6 +26,7 @@
     <color name="MEMBER_COIN_PAY">#893FFF</color>
     <color name="MEMBER_LEVEL_BACKGROUND">#3B3C43</color>
     <color name="MY_BLACK">#000000</color>
+    <color name="TAB_BACKGROUND">#242529</color>
     <color name="MY_BOTTOM_BACKGROUND">#5d5d5d</color>
     <color name="MY_GREEN">#a6d903</color>
     <color name="MY_GREY">#717171</color>
@@ -52,6 +53,10 @@
     <color name="TEXTGRAY">#BFBFBF</color>
     <color name="TEXT_LEAVE">#FF4C4C</color>
     <color name="TEXT_LEAVE_BK">#44FF4C4C</color>
+    <color name="WHITE_80">#CCFFFFFF</color>
+    <color name="WHITE_70">#B3FFFFFF</color>
+    <color name="WHITE_26">#42FFFFFF</color>
+    <color name="WHITE_10">#1AFFFFFF</color>
     <color name="TEXT_WHITE">#d1d1d1</color>
     <color name="TEXT_WHITE99">#99FFFFFF</color>
     <color name="TEXT_WHITE77">#77FFFFFF</color>
@@ -61,5 +66,6 @@
     <color name="TEXT_WHITE22">#22FFFFFF</color>
     <color name="THREE_BUTTON">#8618f5</color>
     <color name="TOP">#a6d903</color>
+    <color name="blue_bg">#033BD9</color>
 </resources>
 
