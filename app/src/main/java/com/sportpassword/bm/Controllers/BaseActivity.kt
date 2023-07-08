@@ -229,8 +229,6 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener,
         }
     }
 
-<<<<<<< HEAD
-=======
     private fun _setURLConstants() {
         BASE_URL = if (gSimulate) LOCALHOST_BASE_URL else REMOTE_BASE_URL
         //println("os: " + BASE_URL)
@@ -323,7 +321,6 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener,
         FEATURED_PATH = BASE_URL + FEATURED_PATH
     }
 
->>>>>>> origin/match
     protected fun _showKeyboard(view: View) {
         val inputManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         inputManager.toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY);

@@ -85,15 +85,11 @@ open class MoreVC : MyTableVC() {
             "coach" -> this.toCoach()
             "teach" -> this.toTeach()
             "store" -> this.toStore()
-<<<<<<< HEAD
-            "match" -> this.toMatch()
-=======
             "match" -> {
                 Intent(this, MatchActivity::class.java).apply {
                     startActivity(this)
                 }
             }
->>>>>>> origin/match_new
             "pn" -> {
                 val intent = Intent(activity, ShowPNVC::class.java)
                 startActivity(intent)
