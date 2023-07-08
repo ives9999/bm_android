@@ -22,10 +22,12 @@ const val phonePad = InputType.TYPE_CLASS_PHONE
 const val emailPad = InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS
 
 // URL Constants
-const val REMOTE_BASE_URL = "https://bm.sportpassword.com"
-//const val REMOTE_BASE_URL = "https://sandbox.sportpassword.com"
+//const val REMOTE_BASE_URL = "https://bm.sportpassword.com"
+const val REMOTE_BASE_URL = "https://sandbox.sportpassword.com"   //todo, 正式版要修改掉 test url
+
 //const val REMOTE_BASE_URL = "http://192.168.100.120"
 const val LOCALHOST_BASE_URL = "http://10.0.2.2"
+
 //const val LOCALHOST_BASE_URL = "http://bm.sportpassword.localhost"
 //const val LOCALHOST_BASE_URL = "http://192.168.100.120"
 //const val LOCALHOST_BASE_URL = "http://192.168.100.33"
@@ -114,6 +116,7 @@ var URL_TT = ""
 var URL_TT_DELETE = ""
 var URL_TT_UPDATE = ""
 var URL_UPDATE = ""
+var URL_MATCH_LIST = ""
 
 val TO_ADD_CART: String = "toAddCart"
 val TO_AREA: String = "toArea"
@@ -399,31 +402,41 @@ val STATUS_SELECT_KEY: String = "status_select"
 
 // member
 val MEMBER_ARRAY: Map<String, Map<String, String>> = mapOf(
-        ID_KEY to hashMapOf("type" to "Int","default" to "0"),
-        TOKEN_KEY to hashMapOf("type" to "String", "default" to ""),
-        EMAIL_KEY to hashMapOf("text" to "email","type" to "String", "default" to "","icon" to "email1"),
-        NICKNAME_KEY to hashMapOf("text" to "暱稱","type" to "String", "default" to ""),
-        ISLOGGEDIN_KEY to hashMapOf("type" to "Boolean", "default" to "false"),
-        UID_KEY to hashMapOf("type" to "String", "default" to ""),
-        NAME_KEY to hashMapOf("text" to "姓名","type" to "String", "default" to "","icon" to "name"),
-        CHANNEL_KEY to hashMapOf("type" to "String", "default" to "bm"),
-        DOB_KEY to hashMapOf("text" to "生日","type" to "String", "default" to ""),
-        SEX_KEY to hashMapOf("text" to "性別","type" to "String", "default" to "M"),
-        TEL_KEY to hashMapOf("text" to "電話","type" to "String", "default" to ""),
-        MOBILE_KEY to hashMapOf("text" to "手機","type" to "String", "default" to "","icon" to "mobile"),
-        CITY_KEY to hashMapOf("text" to "縣市","type" to "Int","default" to "0"),
-        AREA_KEY to hashMapOf("text" to "區域","type" to "Int","default" to "0"),
-        ROAD_KEY to hashMapOf("text" to "路名","type" to "String", "default" to ""),
-        ZIP_KEY to hashMapOf("text" to "郵遞區號","type" to "Int","default" to "0"),
-        FB_KEY to hashMapOf("text" to "Facebook","type" to "String", "default" to ""),
-        LINE_KEY to hashMapOf("text" to "Line","type" to "String", "default" to ""),
-        PID_KEY to hashMapOf("text" to "身分證字號","type" to "String", "default" to ""),
-        AVATAR_KEY to hashMapOf("type" to "String", "default" to ""),
-        MEMBER_TYPE_KEY to hashMapOf("text" to "會員類型","type" to "Int", "default" to "0"),
-        SOCIAL_KEY to hashMapOf("type" to "String", "default" to ""),
-        MEMBER_ROLE_KEY to mapOf("text" to "會員身份","type" to "String", "default" to "member"),
-        VALIDATE_KEY to mapOf("text" to "驗證","type" to "Int", "default" to "0"),
-        TYPE_KEY to mapOf("text" to "類型","type" to "Int", "default" to "0")
+    ID_KEY to hashMapOf("type" to "Int", "default" to "0"),
+    TOKEN_KEY to hashMapOf("type" to "String", "default" to ""),
+    EMAIL_KEY to hashMapOf(
+        "text" to "email",
+        "type" to "String",
+        "default" to "",
+        "icon" to "email1"
+    ),
+    NICKNAME_KEY to hashMapOf("text" to "暱稱", "type" to "String", "default" to ""),
+    ISLOGGEDIN_KEY to hashMapOf("type" to "Boolean", "default" to "false"),
+    UID_KEY to hashMapOf("type" to "String", "default" to ""),
+    NAME_KEY to hashMapOf("text" to "姓名", "type" to "String", "default" to "", "icon" to "name"),
+    CHANNEL_KEY to hashMapOf("type" to "String", "default" to "bm"),
+    DOB_KEY to hashMapOf("text" to "生日", "type" to "String", "default" to ""),
+    SEX_KEY to hashMapOf("text" to "性別", "type" to "String", "default" to "M"),
+    TEL_KEY to hashMapOf("text" to "電話", "type" to "String", "default" to ""),
+    MOBILE_KEY to hashMapOf(
+        "text" to "手機",
+        "type" to "String",
+        "default" to "",
+        "icon" to "mobile"
+    ),
+    CITY_KEY to hashMapOf("text" to "縣市", "type" to "Int", "default" to "0"),
+    AREA_KEY to hashMapOf("text" to "區域", "type" to "Int", "default" to "0"),
+    ROAD_KEY to hashMapOf("text" to "路名", "type" to "String", "default" to ""),
+    ZIP_KEY to hashMapOf("text" to "郵遞區號", "type" to "Int", "default" to "0"),
+    FB_KEY to hashMapOf("text" to "Facebook", "type" to "String", "default" to ""),
+    LINE_KEY to hashMapOf("text" to "Line", "type" to "String", "default" to ""),
+    PID_KEY to hashMapOf("text" to "身分證字號", "type" to "String", "default" to ""),
+    AVATAR_KEY to hashMapOf("type" to "String", "default" to ""),
+    MEMBER_TYPE_KEY to hashMapOf("text" to "會員類型", "type" to "Int", "default" to "0"),
+    SOCIAL_KEY to hashMapOf("type" to "String", "default" to ""),
+    MEMBER_ROLE_KEY to mapOf("text" to "會員身份", "type" to "String", "default" to "member"),
+    VALIDATE_KEY to mapOf("text" to "驗證", "type" to "Int", "default" to "0"),
+    TYPE_KEY to mapOf("text" to "類型", "type" to "Int", "default" to "0")
 )
 
 val MEMBER_MUST_ARRAY: ArrayList<String> = arrayListOf(
@@ -459,13 +472,13 @@ val VIMEO_PREFIX: String = "/videos/"
 val YOUTUBE_PREFIX: String = "https://youtu.be/"
 
 val DAYS: Array<Map<String, Any>> = arrayOf(
-        mapOf("value" to 1, "text" to "星期一", "checked" to false),
-        mapOf("value" to 2, "text" to "星期二", "checked" to false),
-        mapOf("value" to 3, "text" to "星期三", "checked" to false),
-        mapOf("value" to 4, "text" to "星期四", "checked" to false),
-        mapOf("value" to 5, "text" to "星期五", "checked" to false),
-        mapOf("value" to 6, "text" to "星期六", "checked" to false),
-        mapOf("value" to 7, "text" to "星期日", "checked" to false)
+    mapOf("value" to 1, "text" to "星期一", "checked" to false),
+    mapOf("value" to 2, "text" to "星期二", "checked" to false),
+    mapOf("value" to 3, "text" to "星期三", "checked" to false),
+    mapOf("value" to 4, "text" to "星期四", "checked" to false),
+    mapOf("value" to 5, "text" to "星期五", "checked" to false),
+    mapOf("value" to 6, "text" to "星期六", "checked" to false),
+    mapOf("value" to 7, "text" to "星期日", "checked" to false)
 )
 
 // vimeo
