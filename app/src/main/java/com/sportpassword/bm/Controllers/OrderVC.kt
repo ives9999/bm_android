@@ -27,6 +27,8 @@ class OrderVC : MyTableVC() {
     private lateinit var binding: ActivityOrderVcBinding
     //private lateinit var view: ViewGroup
 
+    var able_id: Int? = null
+
     var product_token: String? = null
     var productTable: ProductTable? = null
     var cartsTable: CartsTable? = null
@@ -96,6 +98,14 @@ class OrderVC : MyTableVC() {
 
         if (intent.hasExtra("product_token")) {
             product_token = intent.getStringExtra("product_token")
+        }
+
+        if (intent.hasExtra("able_type")) {
+            able_type = intent.getStringExtra("able_type")!!
+        }
+
+        if (intent.hasExtra("able_id")) {
+            able_id = intent.getIntExtra("able_id", 0)
         }
 
         //initAdapter(true)
@@ -722,6 +732,14 @@ class OrderVC : MyTableVC() {
         params["order_address"] = getRowValue(ADDRESS_KEY)
 
         params[MEMO_KEY] = getRowValue(MEMO_KEY)
+
+        if (able_type.length > 0) {
+            params["able_type"] = able_type
+        }
+
+        if (able_id != null && able_id!! > 0) {
+            params["able_id"] = able_id.toString()
+        }
 
         //println(params)
 
