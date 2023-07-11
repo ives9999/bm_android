@@ -10,3 +10,11 @@ fun Int.toTwoString(): String {
         else -> s
     }
 }
+
+fun Int.quotientAndRemainder(dividingBy: Int): Pair<Int, Int> {
+    val quotient = this / dividingBy
+    val remainder = this % dividingBy
+    val res: Pair<Int, Int> = quotient to remainder
+
+    return res
+}

@@ -68,4 +68,14 @@
     <declare-styleable name="SubmitOnly">
         <attr name="submitOnlyTV" format="string" />
     </declare-styleable>
+
+    <declare-styleable name="AttributesView">
+        <attr name="attributesViewName" format="string" />
+        <attr name="attributesViewAlias" format="string" />
+        <attr name="attributesViewColumn" format="integer" />
+        <attr name="attributesViewLabelWidth" format="integer" />
+        <attr name="attributesViewLabelHeight" format="integer" />
+        <attr name="attributesViewLabelHorizonMergin" format="integer" />
+        <attr name="attributesViewLabelVerticalMergin" format="integer" />
+    </declare-styleable>
 </resources>
