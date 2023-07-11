@@ -11,6 +11,7 @@ import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.MemberService
 import com.sportpassword.bm.Utilities.*
 import com.sportpassword.bm.databinding.ActivityMemberSubscriptionPayVcBinding
+import com.sportpassword.bm.extensions.numberToChinese
 import com.sportpassword.bm.member
 
 class MemberSubscriptionPayVC : BaseActivity() {

@@ -27,6 +27,7 @@ import com.sportpassword.bm.Views.IconView2
 import com.sportpassword.bm.Views.IconView2Delegate
 import com.sportpassword.bm.databinding.ActivityMemberVcBinding
 import com.sportpassword.bm.extensions.avatar
+import com.sportpassword.bm.extensions.dpToPx
 import com.sportpassword.bm.member
 import com.squareup.picasso.Picasso
 import org.jetbrains.anko.runOnUiThread

@@ -21,6 +21,7 @@ import com.sportpassword.bm.Adapters.OneSectionAdapter
 import com.sportpassword.bm.Data.*
 import com.sportpassword.bm.Services.ProductService
 import com.sportpassword.bm.databinding.ActivityOrderVcBinding
+import com.sportpassword.bm.extensions.formattedWithSeparator
 
 class OrderVC : MyTableVC() {
 

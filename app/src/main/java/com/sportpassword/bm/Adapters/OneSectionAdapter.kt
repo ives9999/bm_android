@@ -27,6 +27,7 @@ import com.sportpassword.bm.Data.OneSection
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Utilities.*
 import com.sportpassword.bm.Views.Tag
+import com.sportpassword.bm.extensions.quotientAndRemainder
 import com.squareup.picasso.Picasso
 import org.jetbrains.anko.backgroundColor
 import java.lang.IllegalArgumentException

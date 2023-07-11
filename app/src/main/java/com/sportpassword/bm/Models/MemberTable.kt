@@ -5,6 +5,7 @@ import com.sportpassword.bm.Utilities.*
 import android.content.Context
 import android.content.SharedPreferences
 import android.preference.PreferenceManager
+import com.sportpassword.bm.extensions.formattedWithSeparator
 import com.sportpassword.bm.member
 import java.lang.reflect.Field
 import kotlin.reflect.KClass

@@ -10,7 +10,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView.LayoutManager
 import com.sportpassword.bm.Controllers.BaseActivity
 import com.sportpassword.bm.R
-import com.sportpassword.bm.Utilities.dpToPx
+import com.sportpassword.bm.extensions.dpToPx
 import com.sportpassword.bm.Utilities.then
 import org.jetbrains.anko.backgroundColor
 

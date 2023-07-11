@@ -374,52 +374,6 @@ fun String.isInt(): Boolean {
     return true
 }
 
-fun Int.quotientAndRemainder(dividingBy: Int): Pair<Int, Int> {
-    val q: Int = this / dividingBy
-    val r: Int = this % dividingBy
-    return Pair(q, r)
-}
-
-fun Int.formattedWithSeparator(): String {
-    return NumberFormat.getNumberInstance().format(this)
-}
-
-fun Int.dpToPx(context: Context): Int {
-
-    return (TypedValue.applyDimension(
-        TypedValue.COMPLEX_UNIT_DIP,
-        toFloat(),
-        context.displayMetrics
-    )).toInt()
-}
-
-fun Int.numberToChinese(): String {
-    when (this) {
-        1->
-        return "一"
-        2->
-        return "二"
-        3->
-        return "三"
-        4->
-        return "四"
-        5->
-        return "五"
-        6->
-        return "六"
-        7->
-        return "七"
-        8->
-        return "八"
-        9->
-        return "九"
-        10->
-        return "十"
-        else->
-        return ""
-    }
-}
-
 fun Date.toMyString(pattern: String = "yyyy-MM-dd HH:mm:ss"): String {
     val formatter = SimpleDateFormat(pattern)
     return formatter.format(this)

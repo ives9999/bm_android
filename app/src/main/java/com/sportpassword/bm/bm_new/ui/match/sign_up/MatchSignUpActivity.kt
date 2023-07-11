@@ -51,6 +51,10 @@ class MatchSignUpActivity : BaseActivity<ActivityMatchSignUpBinding>() {
             vm.matchSignUp.observe(this@MatchSignUpActivity) {
                 indicator.addIndicator(it.matchGroup.number)
 
+                val gifts = it.matchGifts
+
+
+
                 vp.run {
                     adapter = MatchSignUpPagerAdapter(
                         supportFragmentManager,

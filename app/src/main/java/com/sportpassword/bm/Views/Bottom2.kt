@@ -12,8 +12,8 @@ import android.widget.TextView
 import com.sportpassword.bm.Controllers.BaseActivity
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Utilities.Global.getScreenWidth
-import com.sportpassword.bm.Utilities.dpToPx
 import com.sportpassword.bm.Utilities.then
+import com.sportpassword.bm.extensions.dpToPx
 import tw.com.bluemobile.hbc.utilities.getColor
 import tw.com.bluemobile.hbc.utilities.getDrawable
 

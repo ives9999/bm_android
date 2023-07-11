@@ -1,6 +1,7 @@
 package com.sportpassword.bm.Models
 
-import com.sportpassword.bm.Utilities.formattedWithSeparator
+import com.sportpassword.bm.extensions.formattedWithSeparator
+
 
 class CartsTable: Tables() {
 

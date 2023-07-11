@@ -71,6 +71,11 @@ class MatchTeamPlayerFragment : BaseFragment<FragmentMatchTeamPlayerBinding>() {
             }
 
             vm.matchSignUp.observe(viewLifecycleOwner) {
+
+                val gifts = it.matchGifts
+                val gift = gifts[0].product.productAttributes[0].attribute
+                tagContainer.setAttributes(gift)
+
                 if (isPlayerOne) {
                     it.matchPlayers.getOrNull(0)?.let { playerOne ->
                         edtName.contentET?.setText(playerOne.name)

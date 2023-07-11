@@ -9,7 +9,7 @@ import com.sportpassword.bm.Controllers.ProductVC
 import com.sportpassword.bm.Models.ProductTable
 import com.sportpassword.bm.Models.Table
 import com.sportpassword.bm.R
-import com.sportpassword.bm.Utilities.formattedWithSeparator
+import com.sportpassword.bm.extensions.formattedWithSeparator
 
 class ProductAdapter(resource: Int, list1CellDelegate: List1CellDelegate?): MyAdapter<ProductViewHolder>(resource, ::ProductViewHolder, list1CellDelegate) {}
 

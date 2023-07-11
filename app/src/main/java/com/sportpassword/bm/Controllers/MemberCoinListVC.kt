@@ -20,9 +20,8 @@ import com.sportpassword.bm.Models.Tables2
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.MemberService
 import com.sportpassword.bm.Utilities.*
-import com.sportpassword.bm.databinding.ActivityBlackListVcBinding
 import com.sportpassword.bm.databinding.ActivityMemberCoinListVcBinding
-import com.sportpassword.bm.databinding.MytablevcBinding
+import com.sportpassword.bm.extensions.formattedWithSeparator
 import com.sportpassword.bm.member
 import java.lang.reflect.Type
 

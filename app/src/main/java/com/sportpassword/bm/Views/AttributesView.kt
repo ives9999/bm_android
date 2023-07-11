@@ -2,9 +2,11 @@ package com.sportpassword.bm.Views
 
 import android.content.Context
 import android.util.AttributeSet
+import android.view.Gravity
 import android.view.View
 import android.widget.ImageView
 import android.widget.LinearLayout
+import android.widget.TextView
 import com.sportpassword.bm.R
 import com.sportpassword.bm.extensions.quotientAndRemainder
 
@@ -80,15 +82,58 @@ class AttributesView@JvmOverloads constructor(context: Context, attrs: Attribute
 
     fun setAttributes(attribute: String) {
         val attributeList: List<String> = parseAttributes(attribute)
+        val count: Int = attributeList.size
+
+        val (q, r) = count.quotientAndRemainder(column)
+        row = if (r > 0) {
+            q + 1
+        } else {
+            q
+        }
+
+        this.removeAllViews()
+
+        var tableRow: LinearLayout? = null
         for (idx in attributeList.indices) {
+
+            var (_, columnCount) = idx.quotientAndRemainder(column)
+            columnCount++
+
+            //如果換下一行，則new 一個新的row
+            if (columnCount == 1) {
+                tableRow = LinearLayout(context)
+                tableRow.orientation = LinearLayout.HORIZONTAL
+                val lp = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 180)
+                tableRow.layoutParams = lp
+                this.addView(tableRow)
+            }
+
+            val lp_tag = LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT
+            )
+            lp_tag.gravity = Gravity.CENTER
+            lp_tag.weight = 1F
+
             val attributeString: String = attributeList[idx]
             val tag: Tag = Tag(context)
-            this.addView(tag)
+            tag.layoutParams = lp_tag
+            tableRow!!.addView(tag)
 
-            val (quotient, remainder) = idx.quotientAndRemainder(column)
-            //商是第幾列row，餘數是第幾排column
-            val leftPadding: Int = remainder * (labelWidth + horizonMergin)
-            val topPadding: Int = quotient * (labelHeight + verticalMergin)
+            tag.tag = idx
+            tag.key = attributeString
+            tag.value = attributeString
+
+            tag.findViewById<TextView>(R.id.tag_view)?.let {
+                it.text = attributeString
+            }
+
+            tagLabels.add(tag)
+
+            if (attributeString == selected) {
+                tag.isChecked = true
+                tag.setSelectedStyle()
+            }
         }
     }
 
