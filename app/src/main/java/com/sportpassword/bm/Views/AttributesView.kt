@@ -9,6 +9,7 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import com.sportpassword.bm.R
 import com.sportpassword.bm.extensions.quotientAndRemainder
+import org.jetbrains.anko.backgroundColor
 
 class AttributesView@JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0):
     LinearLayout(context, attrs, defStyleAttr) {
@@ -106,7 +107,11 @@ class AttributesView@JvmOverloads constructor(context: Context, attrs: Attribute
                 val lp = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 180)
                 tableRow.layoutParams = lp
                 this.addView(tableRow)
+
+                tableRow.backgroundColor = R.color.MY_PURPLE
             }
+
+            val tag: Tag = Tag(context)
 
             val lp_tag = LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
@@ -115,11 +120,10 @@ class AttributesView@JvmOverloads constructor(context: Context, attrs: Attribute
             lp_tag.gravity = Gravity.CENTER
             lp_tag.weight = 1F
 
-            val attributeString: String = attributeList[idx]
-            val tag: Tag = Tag(context)
             tag.layoutParams = lp_tag
             tableRow!!.addView(tag)
 
+            val attributeString: String = attributeList[idx]
             tag.tag = idx
             tag.key = attributeString
             tag.value = attributeString
