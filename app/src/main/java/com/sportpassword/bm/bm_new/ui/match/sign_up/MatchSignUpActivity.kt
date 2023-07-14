@@ -9,10 +9,9 @@ import com.sportpassword.bm.Utilities.Alert
 import com.sportpassword.bm.bm_new.ui.base.BaseActivity
 import com.sportpassword.bm.bm_new.ui.base.BaseViewModel
 import com.sportpassword.bm.bm_new.ui.base.ViewEvent
+import com.sportpassword.bm.bm_new.ui.match.sign_up.MatchTeamInformationFragment.Companion.CAPTAIN
 import com.sportpassword.bm.databinding.ActivityMatchSignUpBinding
-import com.sportpassword.bm.member
 import org.koin.androidx.viewmodel.ext.android.stateViewModel
-import timber.log.Timber
 
 class MatchSignUpActivity : BaseActivity<ActivityMatchSignUpBinding>() {
 
@@ -21,6 +20,11 @@ class MatchSignUpActivity : BaseActivity<ActivityMatchSignUpBinding>() {
         const val MATCH_TEAM_TOKEN = "matchTeamToken"
         const val MATCH_GROUP_ID = "matchGroupId"
         const val MATCH_ID = "matchId"
+        const val PLAYER_NAME = "player_name"
+        const val PLAYER_PHONE = "player_phone"
+        const val PLAYER_EMAIL = "player_email"
+        const val PLAYER_LINE = "player_line"
+        const val PLAYER_AGE = "player_age"
     }
 
     private var signUpPagerAdapter: MatchSignUpPagerAdapter? = null
@@ -51,10 +55,6 @@ class MatchSignUpActivity : BaseActivity<ActivityMatchSignUpBinding>() {
             vm.matchSignUp.observe(this@MatchSignUpActivity) {
                 indicator.addIndicator(it.matchGroup.number)
 
-                val gifts = it.matchGifts
-
-
-
                 vp.run {
                     adapter = MatchSignUpPagerAdapter(
                         supportFragmentManager,
@@ -77,7 +77,6 @@ class MatchSignUpActivity : BaseActivity<ActivityMatchSignUpBinding>() {
 
                         override fun onPageSelected(position: Int) {
                             super.onPageSelected(position)
-                            Timber.d("page selected position, $position")
                             indicator.setIndicatorSelected(position)
                         }
                     })
@@ -88,9 +87,8 @@ class MatchSignUpActivity : BaseActivity<ActivityMatchSignUpBinding>() {
                 vm.initSignUpInfo(it.matchGroup.number)
 
                 btnSignUp.setOnClickListener {
-                    Timber.d("member token, ${member.token}")
                     val requiredBlankList =
-                        (vm.signUpList.filter { it.value.isBlank() && it.isRequired })
+                        (vm.playerInfoList.filter { it.value.isBlank() && it.isRequired })
 
                     when (requiredBlankList.isEmpty()) {
                         true -> {
@@ -101,20 +99,19 @@ class MatchSignUpActivity : BaseActivity<ActivityMatchSignUpBinding>() {
                             val stringBuilder = StringBuilder()
                             requiredBlankList.forEach { signUpInfo ->
                                 val title = getString(signUpInfo.titleStringRes)
-                                when {
-                                    signUpInfo.type.contains("player_one") -> {
-                                        stringBuilder.append(
-                                            "${getString(R.string.match_sign_player_one)} $title"
-                                        )
+
+                                when (signUpInfo.playerNum) {
+                                    CAPTAIN -> {
+                                        stringBuilder.append(title)
                                     }
 
-                                    signUpInfo.type.contains("player_two") -> {
+                                    else -> {   //隊員
                                         stringBuilder.append(
-                                            "${getString(R.string.match_sign_player_two)} $title"
+                                            getString(
+                                                R.string.match_sign_player_num,
+                                                signUpInfo.playerNum
+                                            )
                                         )
-                                    }
-
-                                    else -> {
                                         stringBuilder.append(title)
                                     }
                                 }

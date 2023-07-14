@@ -15,6 +15,7 @@ class MatchTeamInformationFragment : BaseFragment<FragmentMatchTeamInformationBi
 
     companion object {
         const val TEAM_NAME = "teamName"
+        const val CAPTAIN = 0
         const val CAPTAIN_NAME = "captainName"
         const val CAPTAIN_PHONE = "captainPhone"
         const val CAPTAIN_EMAIL = "captainEmail"
@@ -70,7 +71,7 @@ class MatchTeamInformationFragment : BaseFragment<FragmentMatchTeamInformationBi
         type: String
     ) {
         editText.contentET?.doAfterTextChanged {
-            vm.setSignUpInfo(type, it.toString())
+            vm.setSignUpInfo(CAPTAIN, type, it.toString())
         }
     }
 }

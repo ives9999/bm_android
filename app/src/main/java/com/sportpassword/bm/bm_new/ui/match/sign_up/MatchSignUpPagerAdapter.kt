@@ -13,14 +13,13 @@ class MatchSignUpPagerAdapter(
     override fun createFragment(position: Int): Fragment {
         return when (position) {
             0 -> MatchTeamInformationFragment.newInstance()
-            1 -> MatchTeamPlayerFragment.newInstance(isPlayerOne = true)
-            else -> MatchTeamPlayerFragment.newInstance(isPlayerOne = false)
+            else -> MatchTeamPlayerFragment.newInstance(position)
         }
     }
 
     override fun getItemCount(): Int {
         return number + 1
         //number爲1時，應有隊名/隊員1，共2頁
-        //number爲2時，應有隊名/隊員1/隊員2，共3頁
+        //number爲2時，應有隊名/隊員1/隊員2，共3頁...類推
     }
 }

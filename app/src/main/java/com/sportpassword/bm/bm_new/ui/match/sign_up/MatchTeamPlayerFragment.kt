@@ -9,33 +9,28 @@ import com.sportpassword.bm.R
 import com.sportpassword.bm.Views.MainEditText2
 import com.sportpassword.bm.bm_new.ui.base.BaseFragment
 import com.sportpassword.bm.bm_new.ui.base.BaseViewModel
+import com.sportpassword.bm.bm_new.ui.match.sign_up.MatchSignUpActivity.Companion.PLAYER_AGE
+import com.sportpassword.bm.bm_new.ui.match.sign_up.MatchSignUpActivity.Companion.PLAYER_EMAIL
+import com.sportpassword.bm.bm_new.ui.match.sign_up.MatchSignUpActivity.Companion.PLAYER_LINE
+import com.sportpassword.bm.bm_new.ui.match.sign_up.MatchSignUpActivity.Companion.PLAYER_NAME
+import com.sportpassword.bm.bm_new.ui.match.sign_up.MatchSignUpActivity.Companion.PLAYER_PHONE
 import com.sportpassword.bm.databinding.FragmentMatchTeamPlayerBinding
 import org.koin.androidx.viewmodel.ext.android.sharedStateViewModel
 
 class MatchTeamPlayerFragment : BaseFragment<FragmentMatchTeamPlayerBinding>() {
 
     companion object {
-        const val IS_PLAYER_ONE = "is_player_one"
-        const val PLAYER_ONE_NAME = "player_one_name"
-        const val PLAYER_ONE_PHONE = "player_one_phone"
-        const val PLAYER_ONE_EMAIL = "player_one_email"
-        const val PLAYER_ONE_LINE = "player_one_line"
-        const val PLAYER_ONE_AGE = "player_one_age"
-        const val PLAYER_TWO_NAME = "player_two_name"
-        const val PLAYER_TWO_PHONE = "player_two_phone"
-        const val PLAYER_TWO_EMAIL = "player_two_email"
-        const val PLAYER_TWO_LINE = "player_two_line"
-        const val PLAYER_TWO_AGE = "player_two_age"
+        private const val PLAYER_NUM = "player_number"
 
-        fun newInstance(isPlayerOne: Boolean) = MatchTeamPlayerFragment().apply {
+        fun newInstance(playerNum: Int) = MatchTeamPlayerFragment().apply {
             arguments = Bundle().apply {
-                putBoolean(IS_PLAYER_ONE, isPlayerOne)
+                putInt(PLAYER_NUM, playerNum)
             }
         }
     }
 
     private val vm by sharedStateViewModel<MatchSignUpVM>()
-    private var isPlayerOne = true
+    private val playerNum get() = requireArguments().getInt(PLAYER_NUM, 1)
 
     override fun initViewBinding(
         inflater: LayoutInflater,
@@ -44,9 +39,7 @@ class MatchTeamPlayerFragment : BaseFragment<FragmentMatchTeamPlayerBinding>() {
     ): FragmentMatchTeamPlayerBinding =
         FragmentMatchTeamPlayerBinding.inflate(layoutInflater)
 
-    override fun initParam(data: Bundle) {
-        isPlayerOne = data.getBoolean(IS_PLAYER_ONE)
-    }
+    override fun initParam(data: Bundle) {}
 
     override fun initView(savedInstanceState: Bundle?) {
         binding?.apply {
@@ -55,43 +48,29 @@ class MatchTeamPlayerFragment : BaseFragment<FragmentMatchTeamPlayerBinding>() {
                 requireActivity().finish()
             }
 
-            tvTitle.text = getString(
-                if (isPlayerOne) R.string.match_sign_player_one
-                else R.string.match_sign_player_two
-            )
+            tvTitle.text = getString(R.string.match_sign_player_num, playerNum)
 
             listOf(
-                Pair(edtName, if (isPlayerOne) PLAYER_ONE_NAME else PLAYER_TWO_NAME),
-                Pair(edtPhone, if (isPlayerOne) PLAYER_ONE_PHONE else PLAYER_TWO_PHONE),
-                Pair(edtEmail, if (isPlayerOne) PLAYER_ONE_EMAIL else PLAYER_TWO_EMAIL),
-                Pair(edtLine, if (isPlayerOne) PLAYER_ONE_LINE else PLAYER_TWO_LINE),
-                Pair(edtAge, if (isPlayerOne) PLAYER_ONE_AGE else PLAYER_TWO_AGE),
+                Pair(edtName, PLAYER_NAME),
+                Pair(edtPhone, PLAYER_PHONE),
+                Pair(edtEmail, PLAYER_EMAIL),
+                Pair(edtLine, PLAYER_LINE),
+                Pair(edtAge, PLAYER_AGE),
             ).forEach {
-                editSignUpInfo(it.first, it.second)
+                editSignUpInfo(playerNum, it.first, it.second)
             }
 
             vm.matchSignUp.observe(viewLifecycleOwner) {
-
                 val gifts = it.matchGifts
                 val gift = gifts[0].product.productAttributes[0].attribute
                 tagContainer.setAttributes(gift)
 
-                if (isPlayerOne) {
-                    it.matchPlayers.getOrNull(0)?.let { playerOne ->
-                        edtName.contentET?.setText(playerOne.name)
-                        edtPhone.contentET?.setText(playerOne.mobile)
-                        edtEmail.contentET?.setText(playerOne.email)
-                        edtLine.contentET?.setText(playerOne.line)
-                        edtAge.contentET?.setText(playerOne.age.toString())
-                    }
-                } else {
-                    it.matchPlayers.getOrNull(1)?.let { playerTwo ->
-                        edtName.contentET?.setText(playerTwo.name)
-                        edtPhone.contentET?.setText(playerTwo.mobile)
-                        edtEmail.contentET?.setText(playerTwo.email)
-                        edtLine.contentET?.setText(playerTwo.line)
-                        edtAge.contentET?.setText(playerTwo.age.toString())
-                    }
+                it.matchPlayers.getOrNull(playerNum - 1)?.let { player ->
+                    edtName.contentET?.setText(player.name)
+                    edtPhone.contentET?.setText(player.mobile)
+                    edtEmail.contentET?.setText(player.email)
+                    edtLine.contentET?.setText(player.line)
+                    edtAge.contentET?.setText(player.age.toString())
                 }
             }
         }
@@ -102,11 +81,12 @@ class MatchTeamPlayerFragment : BaseFragment<FragmentMatchTeamPlayerBinding>() {
     override fun getViewModel(): BaseViewModel? = null
 
     private fun editSignUpInfo(
+        playerNum: Int,
         editText: MainEditText2,
         type: String
     ) {
         editText.contentET?.doAfterTextChanged {
-            vm.setSignUpInfo(type, it.toString())
+            vm.setSignUpInfo(playerNum, type, it.toString())
         }
     }
 }
