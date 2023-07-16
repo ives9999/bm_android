@@ -6,11 +6,13 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.sportpassword.bm.R
+import com.sportpassword.bm.Utilities.Alert
 import com.sportpassword.bm.bm_new.data.dto.match.MatchDetailDto
 import com.sportpassword.bm.bm_new.ui.base.BaseFragment
 import com.sportpassword.bm.bm_new.ui.base.BaseViewModel
 import com.sportpassword.bm.bm_new.ui.match.detail.MatchDetailVM
 import com.sportpassword.bm.bm_new.ui.util.LinearItemDecoration
+import com.sportpassword.bm.bm_new.ui.util.canSignUp
 import com.sportpassword.bm.bm_new.ui.util.toMatchSignUp
 import com.sportpassword.bm.databinding.FragmentMatchGroupsBinding
 import org.koin.androidx.viewmodel.ext.android.sharedStateViewModel
@@ -68,6 +70,20 @@ class MatchGroupsFragment : BaseFragment<FragmentMatchGroupsBinding>(),
     override fun getViewModel(): BaseViewModel? = null
 
     override fun onSignUpClick(data: MatchDetailDto.MatchGroup) {
-        requireContext().toMatchSignUp(data.id, data.matchId, data.token)
+        vm.matchDetail.value?.let {
+            if (canSignUp(
+                    signupStart = it.signupStart,
+                    signupEnd = it.signupEnd
+                )
+            ) {
+                requireContext().toMatchSignUp(data.id, data.matchId, data.token)
+            } else {
+                Alert.show(
+                    requireContext(),
+                    "警告",
+                    getString(R.string.match_sign_up_stop)
+                )
+            }
+        }
     }
 }
