@@ -1,11 +1,17 @@
 package com.sportpassword.bm.bm_new.ui.match.sign_up
 
+import android.annotation.SuppressLint
 import android.content.Context
+import android.graphics.Typeface
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.LinearLayout
+import android.widget.TextView
 import androidx.core.widget.doAfterTextChanged
+import com.google.android.material.internal.ViewUtils.dpToPx
 import com.sportpassword.bm.R
+import com.sportpassword.bm.Views.AttributesView
 import com.sportpassword.bm.Views.MainEditText2
 import com.sportpassword.bm.bm_new.ui.base.BaseFragment
 import com.sportpassword.bm.bm_new.ui.base.BaseViewModel
@@ -16,8 +22,11 @@ import com.sportpassword.bm.bm_new.ui.match.sign_up.MatchSignUpActivity.Companio
 import com.sportpassword.bm.bm_new.ui.match.sign_up.MatchSignUpActivity.Companion.PLAYER_PHONE
 import com.sportpassword.bm.databinding.FragmentMatchTeamPlayerBinding
 import org.koin.androidx.viewmodel.ext.android.sharedStateViewModel
+import timber.log.Timber
+import tw.com.bluemobile.hbc.utilities.getColor
 
-class MatchTeamPlayerFragment : BaseFragment<FragmentMatchTeamPlayerBinding>() {
+class MatchTeamPlayerFragment : BaseFragment<FragmentMatchTeamPlayerBinding>(),
+    AttributesView.Listener {
 
     companion object {
         private const val PLAYER_NUM = "player_number"
@@ -41,6 +50,7 @@ class MatchTeamPlayerFragment : BaseFragment<FragmentMatchTeamPlayerBinding>() {
 
     override fun initParam(data: Bundle) {}
 
+    @SuppressLint("RestrictedApi")
     override fun initView(savedInstanceState: Bundle?) {
         binding?.apply {
 
@@ -61,9 +71,29 @@ class MatchTeamPlayerFragment : BaseFragment<FragmentMatchTeamPlayerBinding>() {
             }
 
             vm.matchSignUp.observe(viewLifecycleOwner) {
-                val gifts = it.matchGifts
-                val gift = gifts[0].product.productAttributes[0].attribute
-                tagContainer.setAttributes(gift)
+                it.matchGifts.getOrNull(0)?.let { matchGift ->
+                    val marginTopInPixels = dpToPx(requireContext(), 16)
+                    val linearParams = LinearLayout.LayoutParams(
+                        LinearLayout.LayoutParams.MATCH_PARENT,
+                        LinearLayout.LayoutParams.WRAP_CONTENT
+                    )
+                    matchGift.product.productAttributes.forEach { gift ->
+                        //加Gift name
+                        TextView(requireContext()).apply {
+                            setTextColor(getColor(requireContext(), R.color.TEXT_WHITE))
+                            setTypeface(null, Typeface.BOLD)
+                            text = gift.name
+                            linearParams.topMargin = marginTopInPixels.toInt()
+                            layoutParams = linearParams
+                            llGift.addView(this)
+                        }
+                        //加Gift選項
+                        AttributesView(requireContext()).apply {
+                            setAttributes(gift, this@MatchTeamPlayerFragment)
+                            llGift.addView(this)
+                        }
+                    }
+                }
 
                 it.matchPlayers.getOrNull(playerNum - 1)?.let { player ->
                     edtName.contentET?.setText(player.name)
@@ -88,5 +118,9 @@ class MatchTeamPlayerFragment : BaseFragment<FragmentMatchTeamPlayerBinding>() {
         editText.contentET?.doAfterTextChanged {
             vm.setSignUpInfo(playerNum, type, it.toString())
         }
+    }
+
+    override fun onTagSelected(alias: String, giftData: String) {
+        Timber.d("gift data $giftData")
     }
 }

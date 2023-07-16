@@ -139,10 +139,10 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/line1" />
 
-            <com.sportpassword.bm.Views.AttributesView
-                android:id="@+id/tagContainer"
+            <LinearLayout
+                android:id="@+id/ll_gift"
                 android:layout_width="match_parent"
-                android:layout_height="300dp"
+                android:layout_height="wrap_content"
                 android:orientation="vertical"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"

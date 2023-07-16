@@ -8,8 +8,10 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import com.sportpassword.bm.R
+import com.sportpassword.bm.bm_new.data.dto.match.MatchSignUpDto
 import com.sportpassword.bm.extensions.quotientAndRemainder
 import org.jetbrains.anko.backgroundColor
+import timber.log.Timber
 
 class AttributesView@JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0):
     LinearLayout(context, attrs, defStyleAttr) {
@@ -34,12 +36,15 @@ class AttributesView@JvmOverloads constructor(context: Context, attrs: Attribute
     var horizonMergin: Int = 30
     var verticalMergin: Int = 16
 
+    private var listener: Listener? = null
+
     //var parent: UIView = UIView()
     var attributes: ArrayList<String> = arrayListOf()
 
     var tagLabels: ArrayList<Tag> = arrayListOf()
 
     init {
+        orientation = VERTICAL
         attrs ?. let {
             val typedArray = context.obtainStyledAttributes(it, R.styleable.AttributesView, 0, 0)
 
@@ -81,8 +86,11 @@ class AttributesView@JvmOverloads constructor(context: Context, attrs: Attribute
 //        }
     }
 
-    fun setAttributes(attribute: String) {
-        val attributeList: List<String> = parseAttributes(attribute)
+    fun setAttributes(gift: MatchSignUpDto.MatchGift.Product.ProductAttribute, listener:Listener) {
+        this.listener = listener
+        name = gift.name
+        alias = gift.alias
+        val attributeList: List<String> = parseAttributes(gift.attribute)
         val count: Int = attributeList.size
 
         val (q, r) = count.quotientAndRemainder(column)
@@ -134,9 +142,34 @@ class AttributesView@JvmOverloads constructor(context: Context, attrs: Attribute
 
             tagLabels.add(tag)
 
+            tag.setOnClick()
+
             if (attributeString == selected) {
                 tag.isChecked = true
                 tag.setSelectedStyle()
+            }
+        }
+    }
+
+    private fun Tag.setOnClick() {
+        setOnClickListener {
+            Timber.d("alias $alias, name $name")
+            if (selected == value) {
+                selected = ""
+                isChecked = false
+            } else {
+                selected = value
+                isChecked = true
+                listener?.onTagSelected(
+                    alias,
+                    "{name:$name,alias:$alias,value:$selected}"
+                )
+            }
+            tagLabels.forEach {
+                if (selected != it.value) {
+                    it.isChecked = false
+                }
+                it.setSelectedStyle()
             }
         }
     }
@@ -151,6 +184,10 @@ class AttributesView@JvmOverloads constructor(context: Context, attrs: Attribute
         res = tmp.split(",")
 
         return res
+    }
+
+    interface Listener {
+        fun onTagSelected(alias: String, giftData:String)
     }
 }
 
