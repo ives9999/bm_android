@@ -84,7 +84,7 @@ class MatchSignUpActivity : BaseActivity<ActivityMatchSignUpBinding>() {
                     offscreenPageLimit = 2
                 }
 
-                vm.initSignUpInfo(it.matchGroup.number)
+                vm.initSignUpInfo(it)
 
                 btnSignUp.setOnClickListener {
                     val requiredBlankList =
@@ -98,7 +98,9 @@ class MatchSignUpActivity : BaseActivity<ActivityMatchSignUpBinding>() {
                         false -> {      //有必填欄位空白時，show alert
                             val stringBuilder = StringBuilder()
                             requiredBlankList.forEach { signUpInfo ->
-                                val title = getString(signUpInfo.titleStringRes)
+                                val title =
+                                    signUpInfo.titleStringRes?.let { title -> getString(title) }
+                                        ?: signUpInfo.giftTitle   //贈品title字串由api取得
 
                                 when (signUpInfo.playerNum) {
                                     CAPTAIN -> {
@@ -112,6 +114,10 @@ class MatchSignUpActivity : BaseActivity<ActivityMatchSignUpBinding>() {
                                                 signUpInfo.playerNum
                                             )
                                         )
+                                        if (title == signUpInfo.giftTitle) {
+                                            //如果是贈品時，加上"贈品"
+                                            stringBuilder.append(getString(R.string.match_sign_giveaway))
+                                        }
                                         stringBuilder.append(title)
                                     }
                                 }

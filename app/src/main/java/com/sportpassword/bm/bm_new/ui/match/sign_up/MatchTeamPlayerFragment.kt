@@ -21,6 +21,7 @@ import com.sportpassword.bm.bm_new.ui.match.sign_up.MatchSignUpActivity.Companio
 import com.sportpassword.bm.bm_new.ui.match.sign_up.MatchSignUpActivity.Companion.PLAYER_NAME
 import com.sportpassword.bm.bm_new.ui.match.sign_up.MatchSignUpActivity.Companion.PLAYER_PHONE
 import com.sportpassword.bm.databinding.FragmentMatchTeamPlayerBinding
+import org.json.JSONObject
 import org.koin.androidx.viewmodel.ext.android.sharedStateViewModel
 import timber.log.Timber
 import tw.com.bluemobile.hbc.utilities.getColor
@@ -67,7 +68,7 @@ class MatchTeamPlayerFragment : BaseFragment<FragmentMatchTeamPlayerBinding>(),
                 Pair(edtLine, PLAYER_LINE),
                 Pair(edtAge, PLAYER_AGE),
             ).forEach {
-                editSignUpInfo(playerNum, it.first, it.second)
+                editSignUpInfo(it.first, it.second)
             }
 
             vm.matchSignUp.observe(viewLifecycleOwner) {
@@ -89,7 +90,28 @@ class MatchTeamPlayerFragment : BaseFragment<FragmentMatchTeamPlayerBinding>(),
                         }
                         //加Gift選項
                         AttributesView(requireContext()).apply {
-                            setAttributes(gift, this@MatchTeamPlayerFragment)
+                            if (it.matchPlayers.isNotEmpty()) {
+                                //有已報名隊員資料，爲修改
+                                it.matchPlayers.getOrNull(playerNum - 1)?.let { player ->
+                                    player.matchPlayerGifts.getOrNull(0)?.let { matchPlayerGift ->
+                                        matchPlayerGift.attributes.split("|")
+                                            .find { it.contains(gift.alias) }?.let { attribute ->
+                                            //設置已選贈品
+                                            vm.setSignUpInfo(playerNum, gift.alias, attribute)
+                                            findValue(attribute)?.let {
+                                                setAttributes(
+                                                    gift,
+                                                    selected = it,
+                                                    listener = this@MatchTeamPlayerFragment
+                                                )
+                                            }
+                                        }
+                                    }
+                                }
+                            } else {
+                                //新的報名
+                                setAttributes(gift, listener = this@MatchTeamPlayerFragment)
+                            }
                             llGift.addView(this)
                         }
                     }
@@ -111,7 +133,6 @@ class MatchTeamPlayerFragment : BaseFragment<FragmentMatchTeamPlayerBinding>(),
     override fun getViewModel(): BaseViewModel? = null
 
     private fun editSignUpInfo(
-        playerNum: Int,
         editText: MainEditText2,
         type: String
     ) {
@@ -120,7 +141,18 @@ class MatchTeamPlayerFragment : BaseFragment<FragmentMatchTeamPlayerBinding>(),
         }
     }
 
-    override fun onTagSelected(alias: String, giftData: String) {
-        Timber.d("gift data $giftData")
+    override fun onTagClick(alias: String, giftData: String) {
+        Timber.d("onTagClick() $giftData")
+        vm.setSignUpInfo(playerNum, alias, giftData)
+    }
+
+    private fun findValue(input: String): String? {
+        try {
+            val jsonObject = JSONObject(input)
+            return jsonObject.getString("value")
+        } catch (e: Exception) {
+            Timber.d("findValue error:$e")
+        }
+        return null
     }
 }

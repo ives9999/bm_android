@@ -4,16 +4,18 @@ import android.content.Context
 import android.util.AttributeSet
 import android.view.Gravity
 import android.view.View
-import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import com.sportpassword.bm.R
 import com.sportpassword.bm.bm_new.data.dto.match.MatchSignUpDto
 import com.sportpassword.bm.extensions.quotientAndRemainder
 import org.jetbrains.anko.backgroundColor
-import timber.log.Timber
 
-class AttributesView@JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0):
+class AttributesView @JvmOverloads constructor(
+    context: Context,
+    attrs: AttributeSet? = null,
+    defStyleAttr: Int = 0
+) :
     LinearLayout(context, attrs, defStyleAttr) {
 
     val view: View = View.inflate(context, R.layout.attributes_view, this)
@@ -45,16 +47,16 @@ class AttributesView@JvmOverloads constructor(context: Context, attrs: Attribute
 
     init {
         orientation = VERTICAL
-        attrs ?. let {
+        attrs?.let {
             val typedArray = context.obtainStyledAttributes(it, R.styleable.AttributesView, 0, 0)
 
             if (typedArray.hasValue(R.styleable.AttributesView_attributesViewName)) {
 
-                typedArray.getString(R.styleable.AttributesView_attributesViewName) ?. let { it1 ->
+                typedArray.getString(R.styleable.AttributesView_attributesViewName)?.let { it1 ->
                     this.name = it1
                 }
 
-                typedArray.getString(R.styleable.AttributesView_attributesViewAlias) ?. let { it1 ->
+                typedArray.getString(R.styleable.AttributesView_attributesViewAlias)?.let { it1 ->
                     this.alias = it1
                 }
 
@@ -62,22 +64,25 @@ class AttributesView@JvmOverloads constructor(context: Context, attrs: Attribute
                     this.column = it1
                 }
 
-                typedArray.getInt(R.styleable.AttributesView_attributesViewLabelWidth, 80).let { it1 ->
-                    this.labelWidth = it1
-                }
+                typedArray.getInt(R.styleable.AttributesView_attributesViewLabelWidth, 80)
+                    .let { it1 ->
+                        this.labelWidth = it1
+                    }
 
                 typedArray.getInt(R.styleable.AttributesView_attributesViewLabelHeight, 30)
                     .let { it1 ->
                         this.labelHeight = it1
                     }
 
-                typedArray.getInt(R.styleable.AttributesView_attributesViewLabelHorizonMergin, 30) . let { it1 ->
-                    this.horizonMergin = it1
-                }
+                typedArray.getInt(R.styleable.AttributesView_attributesViewLabelHorizonMergin, 30)
+                    .let { it1 ->
+                        this.horizonMergin = it1
+                    }
 
-                typedArray.getInt(R.styleable.AttributesView_attributesViewLabelVerticalMergin, 16) . let { it1 ->
-                    this.verticalMergin = it1
-                }
+                typedArray.getInt(R.styleable.AttributesView_attributesViewLabelVerticalMergin, 16)
+                    .let { it1 ->
+                        this.verticalMergin = it1
+                    }
             }
         }
 
@@ -86,7 +91,12 @@ class AttributesView@JvmOverloads constructor(context: Context, attrs: Attribute
 //        }
     }
 
-    fun setAttributes(gift: MatchSignUpDto.MatchGift.Product.ProductAttribute, listener:Listener) {
+    fun setAttributes(
+        gift: MatchSignUpDto.MatchGift.Product.ProductAttribute,
+        selected: String = "",
+        listener: Listener
+    ) {
+        this.selected = selected
         this.listener = listener
         name = gift.name
         alias = gift.alias
@@ -153,18 +163,19 @@ class AttributesView@JvmOverloads constructor(context: Context, attrs: Attribute
 
     private fun Tag.setOnClick() {
         setOnClickListener {
-            Timber.d("alias $alias, name $name")
             if (selected == value) {
                 selected = ""
                 isChecked = false
             } else {
                 selected = value
                 isChecked = true
-                listener?.onTagSelected(
-                    alias,
-                    "{name:$name,alias:$alias,value:$selected}"
-                )
             }
+
+            listener?.onTagClick(
+                alias,
+                if (isChecked) "{name:$name,alias:$alias,value:$selected}" else "",
+            )
+
             tagLabels.forEach {
                 if (selected != it.value) {
                     it.isChecked = false
@@ -180,14 +191,14 @@ class AttributesView@JvmOverloads constructor(context: Context, attrs: Attribute
         var res: List<String> = arrayListOf()
         var tmp = attribute.replace("{", "")
         tmp = tmp.replace("}", "")
-        tmp = tmp.replace( "\"", "")
+        tmp = tmp.replace("\"", "")
         res = tmp.split(",")
 
         return res
     }
 
     interface Listener {
-        fun onTagSelected(alias: String, giftData:String)
+        fun onTagClick(alias: String, giftData: String)
     }
 }
 

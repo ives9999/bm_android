@@ -52,40 +52,99 @@ class MatchSignUpVM(
         }
     }
 
-    fun initSignUpInfo(number: Int) {
+    fun initSignUpInfo(signUpDto: MatchSignUpDto) {
         playerInfoList.clear()
         //隊名與隊長
         playerInfoList.addAll(
             listOf(
-                PlayerInfo(0, TEAM_NAME, R.string.match_sign_team_name, "", true),    //隊名
-                PlayerInfo(0, CAPTAIN_NAME, R.string.match_sign_captain_name, "", true),    //隊長姓名
-                PlayerInfo(0, CAPTAIN_PHONE, R.string.match_sign_captain_phone, "", true),    //隊長手機
+                PlayerInfo(
+                    0,
+                    TEAM_NAME,
+                    R.string.match_sign_team_name,
+                    value = "",
+                    isRequired = true
+                ),    //隊名
+                PlayerInfo(
+                    0,
+                    CAPTAIN_NAME,
+                    R.string.match_sign_captain_name,
+                    value = "",
+                    isRequired = true
+                ),    //隊長姓名
+                PlayerInfo(
+                    0,
+                    CAPTAIN_PHONE,
+                    R.string.match_sign_captain_phone,
+                    value = "",
+                    isRequired = true
+                ),    //隊長手機
                 PlayerInfo(
                     0,
                     CAPTAIN_EMAIL,
                     R.string.match_sign_captain_email,
-                    "",
-                    true
+                    value = "", isRequired = true
                 ),    //隊長email
-                PlayerInfo(0, CAPTAIN_LINE, R.string.match_sign_captain_line, ""),    //隊長line
+                PlayerInfo(
+                    0,
+                    CAPTAIN_LINE,
+                    R.string.match_sign_captain_line,
+                    value = ""
+                ),    //隊長line
             )
         )
         //隊員
-        for (i in 1..number) {
+        for (i in 1..signUpDto.matchGroup.number) {
             playerInfoList.addAll(
                 listOf(
-                    PlayerInfo(i, PLAYER_NAME, R.string.match_sign_name, "", true),
-                    PlayerInfo(i, PLAYER_PHONE, R.string.match_sign_phone, "", true),
-                    PlayerInfo(i, PLAYER_EMAIL, R.string.match_sign_email, "", true),
-                    PlayerInfo(i, PLAYER_LINE, R.string.match_sign_line, ""),
-                    PlayerInfo(i, PLAYER_AGE, R.string.match_sign_age, "", true),
+                    PlayerInfo(
+                        i,
+                        PLAYER_NAME,
+                        R.string.match_sign_name,
+                        value = "",
+                        isRequired = true
+                    ),
+                    PlayerInfo(
+                        i,
+                        PLAYER_PHONE,
+                        R.string.match_sign_phone,
+                        value = "",
+                        isRequired = true
+                    ),
+                    PlayerInfo(
+                        i,
+                        PLAYER_EMAIL,
+                        R.string.match_sign_email,
+                        value = "",
+                        isRequired = true
+                    ),
+                    PlayerInfo(i, PLAYER_LINE, R.string.match_sign_line, value = ""),
+                    PlayerInfo(
+                        i,
+                        PLAYER_AGE,
+                        R.string.match_sign_age,
+                        value = "",
+                        isRequired = true
+                    ),
                 )
             )
+            //隊員-贈品
+            signUpDto.matchGifts.getOrNull(0)?.let {
+                it.product.productAttributes.forEach { gift ->
+                    playerInfoList.add(
+                        PlayerInfo(
+                            i,
+                            gift.alias,
+                            giftTitle = gift.name,
+                            value = "",
+                            isRequired = true
+                        )
+                    )
+                }
+            }
         }
     }
 
     fun setSignUpInfo(num: Int, type: String, name: String) {
-        Timber.d("報名資料輸入 $type, $name")
         playerInfoList.find { it.playerNum == num && it.type == type }?.value = name
     }
 
@@ -125,9 +184,9 @@ class MatchSignUpVM(
 
     private fun MutableList<PlayerInfo>.players(): List<MatchTeamInsertDto.Player>? {
         val players = mutableListOf<MatchTeamInsertDto.Player>()
-        matchSignUp.value?.let { signedMatch ->
+        matchSignUp.value?.let { matchSign ->
             //隊長除外
-            for (i in 1..signedMatch.matchPlayers.size) {
+            for (i in 1..matchSign.matchGroup.number) {
                 filter { it.playerNum == i }.also { playInfo ->
                     players.add(
                         MatchTeamInsertDto.Player(
@@ -138,17 +197,35 @@ class MatchSignUpVM(
                             email = playInfo.find { it.type == PLAYER_EMAIL }?.value
                                 ?: return null,
                             line = playInfo.find { it.type == PLAYER_LINE }?.value,
-                            age = playInfo.find { it.type == PLAYER_AGE }?.value,
+                            age = playInfo.find { it.type == PLAYER_AGE }?.value ?: return null,
                             gift = MatchTeamInsertDto.Player.Gift(
-                                attributes = "{name:顏色,alias:color,value:經典白}|{name:尺寸,alias:size,value:M}",
+                                attributes = setGifts(matchSign, playInfo),
                                 matchGiftId = "1"
-                            )    //todo 贈品假資料,待刪除
+                            )
                         )
                     )
                 }
             }
+            if (players.size != matchSign.matchGroup.number) return null
         }
         return players
+    }
+
+    private fun setGifts(
+        signedMatch: MatchSignUpDto,
+        playInfo: List<PlayerInfo>
+    ): String {
+        val gifts = mutableListOf<String>()
+        signedMatch.matchGifts.getOrNull(0)?.let { matchGift ->
+            matchGift.product.productAttributes.forEach { gift ->
+                playInfo.find { it.type == gift.alias }?.value?.let {
+                    gifts.add(it)
+                }
+            }
+            Timber.d("giftsInfo ${gifts.joinToString("|")}")
+        }
+        //回傳格式爲"{name:顏色,alias:color,value:經典白}|{name:尺寸,alias:size,value:M}"
+        return gifts.joinToString("|")
     }
 
     fun editSignedMatch(token: String) {
