@@ -110,7 +110,7 @@ class MemberSubscriptionKindVC : BaseActivity(), MyTable2IF, List1CellDelegate {
         findViewById<Button>(R.id.submitBtn) ?. let {
             it.text = "查詢"
             it.setOnClickListener {
-                toMemberSuriptionLog()
+                toMemberSubscriptionLog()
             }
         }
 

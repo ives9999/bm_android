@@ -225,12 +225,12 @@ interface ToInterface {
         mainDelegate.startActivity(i)
     }
 
-    fun toMemberSuriptionKind() {
+    fun toMemberSubscriptionKind() {
         val i = Intent(mainDelegate, MemberSubscriptionKindVC::class.java)
         mainDelegate.memberSubscriptionKindVC.launch(i)
     }
 
-    fun toMemberSuriptionLog() {
+    fun toMemberSubscriptionLog() {
         val i = Intent(mainDelegate, MemberSubscriptionLogVC::class.java)
         mainDelegate.memberSubscriptionLogVC.launch(i)
     }

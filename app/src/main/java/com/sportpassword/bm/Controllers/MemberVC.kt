@@ -109,6 +109,12 @@ class MemberVC : BaseActivity(), IconView2Delegate {
             it.layoutParams = lp
         }
 
+        findViewById<LinearLayout>(R.id.levelRightContainer) ?. let {
+            it.setOnClickListener {
+                toMemberSubscriptionLog()
+            }
+        }
+
         val recyclerView: RecyclerView = findViewById(R.id.list_container)
         tableView = MyTable2VC(recyclerView, null, R.layout.main_member_cell, ::MainMemberViewHolder, tableType, this::tableViewSetSelected, this::getDataFromServer, this)
 
@@ -321,7 +327,7 @@ class MemberVC : BaseActivity(), IconView2Delegate {
             TO_MEMBER_BANK -> this.toMemberBank()
             "delete" -> delete()
             TO_MEMBER_COIN_LIST -> this.toMemberCoinList()
-            TO_MEMBER_SURIPTION_KIND -> this.toMemberSuriptionKind()
+            TO_MEMBER_SURIPTION_KIND -> this.toMemberSubscriptionKind()
             "qrcode" -> {
 
                 val qrcodeIV: ImageView = makeQrcodeLayer()
