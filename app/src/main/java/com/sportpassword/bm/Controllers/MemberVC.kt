@@ -269,74 +269,77 @@ class MemberVC : BaseActivity(), IconView2Delegate {
                 toMemberBank()
             } else if (mainMemberEnum == MainMemberEnum.delete) {
                 delete()
+            } else if (mainMemberEnum == MainMemberEnum.refresh) {
+                refresh()
             } else {
                 toMemberItem(it.title)
             }
         }
     }
 
-    override fun cellClick(sectionIdx: Int, rowIdx: Int) {
-//        println(sectionIdx)
-//        println(rowIdx)
+//    override fun cellClick(sectionIdx: Int, rowIdx: Int) {
+////        println(sectionIdx)
+////        println(rowIdx)
 //        val memberSection = memberSections[sectionIdx]
 //        val row = memberSection.items[rowIdx]
-        //val segue = row.segue
-        val segue = ""
-        when(segue) {
-            TO_PROFILE -> this.toRegister()
-//            TO_PROFILE -> {
-//                var isGrant: Boolean = true
-//                //val b1 = ContextCompat.checkSelfPermission(activity, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED
-//                val b2 = ContextCompat.checkSelfPermission(activity, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED
-//                if (!b2) {
-//                    ActivityCompat.requestPermissions(
-//                        this,
-//                        arrayOf(
-//                            //Manifest.permission.WRITE_EXTERNAL_STORAGE
-//                            Manifest.permission.CAMERA
-//                        ),
-//                        500
-//                    )
+//        val segue = row.segue
+//        //val segue = ""
+//        when(segue) {
+//            TO_PROFILE -> this.toRegister()
+////            TO_PROFILE -> {
+////                var isGrant: Boolean = true
+////                //val b1 = ContextCompat.checkSelfPermission(activity, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED
+////                val b2 = ContextCompat.checkSelfPermission(activity, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED
+////                if (!b2) {
+////                    ActivityCompat.requestPermissions(
+////                        this,
+////                        arrayOf(
+////                            //Manifest.permission.WRITE_EXTERNAL_STORAGE
+////                            Manifest.permission.CAMERA
+////                        ),
+////                        500
+////                    )
+////                }
+////            }
+//            TO_PASSWORD -> toUpdatePassword()
+//            "email" -> this.toValidate("email")
+//            "mobile" -> this.toValidate("mobile")
+////            "blacklist" -> goBlackList()
+//            //"calendar_course_signup" -> toCalendarCourseSignup()
+//            "refresh" -> refresh()
+//
+//            TO_MEMBER_ORDER_LIST -> this.toMemberOrderList()
+//            TO_MEMBER_CART_LIST -> this.toMemberCartList("member")
+//            //TO_MEMBER_SIGNUP_LIST -> this.toMemberSignupList(row.able_type)
+//            "manager_team" -> this.toManager("team")
+//            "toRequestManagerTeam" -> this.toRequestManagerTeam()
+//            "manager_course" -> this.toManager("course")
+//            TO_LIKE -> {
+//                //val able_type: String = row.able_type
+//                when(able_type) {
+//                    "team" -> this.toTeam(null, true, true, true)
+//                    "arena" -> this.toArena(true, true, true)
+//                    "teach" -> this.toTeach(true)
+//                    "coach" -> this.toCoach(true)
+//                    "course" -> this.toCourse(true, true, true)
+//                    "product" -> this.toProduct(true)
+//                    "store" -> this.toStore(true)
 //                }
 //            }
-            TO_PASSWORD -> toUpdatePassword()
-            "email" -> this.toValidate("email")
-            "mobile" -> this.toValidate("mobile")
-//            "blacklist" -> goBlackList()
-            //"calendar_course_signup" -> toCalendarCourseSignup()
-            "refresh" -> refresh()
-
-            TO_MEMBER_ORDER_LIST -> this.toMemberOrderList()
-            TO_MEMBER_CART_LIST -> this.toMemberCartList("member")
-            //TO_MEMBER_SIGNUP_LIST -> this.toMemberSignupList(row.able_type)
-            "manager_team" -> this.toManager("team")
-            "toRequestManagerTeam" -> this.toRequestManagerTeam()
-            "manager_course" -> this.toManager("course")
-            TO_LIKE -> {
-                //val able_type: String = row.able_type
-                when(able_type) {
-                    "team" -> this.toTeam(null, true, true, true)
-                    "arena" -> this.toArena(true, true, true)
-                    "teach" -> this.toTeach(true)
-                    "coach" -> this.toCoach(true)
-                    "course" -> this.toCourse(true, true, true)
-                    "product" -> this.toProduct(true)
-                    "store" -> this.toStore(true)
-                }
-            }
-            TO_MEMBER_BANK -> this.toMemberBank()
-            "delete" -> delete()
-            TO_MEMBER_COIN_LIST -> this.toMemberCoinList()
-            TO_MEMBER_SURIPTION_KIND -> this.toMemberSubscriptionKind()
-            "qrcode" -> {
-
-                val qrcodeIV: ImageView = makeQrcodeLayer()
-                val qrcode: Bitmap? = generateQRCode(member.token!!)
-                qrcodeIV.setImageBitmap(qrcode)
-            }
-            "toMemberTeamList" -> this.toMemberTeamList()
-        }
-    }
+//            TO_MEMBER_BANK -> this.toMemberBank()
+//            "delete" -> delete()
+//            TO_MEMBER_COIN_LIST -> this.toMemberCoinList()
+//            TO_MEMBER_SURIPTION_KIND -> this.toMemberSubscriptionKind()
+//            "qrcode" -> {
+//
+//                val qrcodeIV: ImageView = makeQrcodeLayer()
+//                val qrcode: Bitmap? = generateQRCode(member.token!!)
+//                qrcodeIV.setImageBitmap(qrcode)
+//            }
+//            "toMemberTeamList" -> this.toMemberTeamList()
+//            "refresh" -> this.refresh()
+//        }
+//    }
 
 //    private fun initSectionRow(): ArrayList<MemberSection> {
 //        val sections: ArrayList<MemberSection> = arrayListOf()
@@ -648,7 +651,8 @@ enum class MainMemberEnum(val chineseName: String) {
     join("參加"),
     manager("管理"),
     bank("銀行帳號"),
-    delete("刪除帳號");
+    delete("刪除帳號"),
+    refresh("重新整理");
 
     companion object {
         //val allValues: ArrayList<MainMemberEnum> = arrayListOf(info, order, like, join, manager, bank, delete)
@@ -661,6 +665,7 @@ enum class MainMemberEnum(val chineseName: String) {
                 "管理"-> return manager
                 "銀行帳號"-> return bank
                 "刪除帳號"-> return delete
+                "重新整理"-> return refresh
                 else-> return info
             }
         }
@@ -675,6 +680,7 @@ enum class MainMemberEnum(val chineseName: String) {
             manager-> return "ic_manager1_svg"
             bank-> return "ic_bank_account_svg"
             delete-> return "ic_account_delete_svg"
+            refresh-> return "ic_refresh_g_svg"
         }
     }
 }
