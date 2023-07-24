@@ -90,10 +90,27 @@ class MemberSubscriptionKindVC : BaseActivity(), MyTable2IF, List1CellDelegate {
         }
     }
 
+    //1.如果按下原本訂閱的選項，不動作
+    //2.如果已經有訂閱需要先退訂
+    //3.如果按下「基本」表示要退訂
     override fun cellClick(row: Table) {
-        val row1: MemberSubscriptionKindTable? = row as? MemberSubscriptionKindTable?
-        if (row1 != null) {
-            toMemberSubscriptionPay(row.name, row.price, row.eng_name)
+
+        val _row: MemberSubscriptionKindTable? = row as? MemberSubscriptionKindTable?
+        if (_row != null) {
+            if (_row.eng_name == member.subscription) {
+                return
+            }
+
+            if (MEMBER_SUBSCRIPTION_KIND.stringToEnum(member.subscription!!) == MEMBER_SUBSCRIPTION_KIND.basic) {
+                return
+            }
+
+            if (member.subscription != MEMBER_SUBSCRIPTION_KIND.basic.englishName) {
+                warning("您已經有訂閱，如果要更改，請先執行「退訂」，再重新訂閱，謝謝")
+                return
+            }
+
+            toMemberSubscriptionPay(_row.name, _row.price, _row.eng_name)
         }
     }
 
@@ -172,12 +189,14 @@ class MemberSubscriptionKindViewHolder(
 ): MyViewHolder2<MemberSubscriptionKindTable, MemberSubscriptionKindVC>(context, view, delegate) {
 
     val titleLbl: TextView = view.findViewById(R.id.titleLbl)
+    val lotteryTV: TextView = view.findViewById(R.id.lotteryTV)
     val priceLbl: TextView = view.findViewById(R.id.priceLbl)
 
     override fun bind(row: MemberSubscriptionKindTable, idx: Int) {
         super.bind(row, idx)
 
         titleLbl.text = row.name
+        lotteryTV.text = "每次開箱球拍券：${row.lottery}張"
         priceLbl.text = "NT$: " + row.price.toString() + " 元/月"
     }
 }

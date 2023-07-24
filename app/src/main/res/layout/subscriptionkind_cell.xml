@@ -25,6 +25,15 @@
             tools:text="100." />
 
         <TextView
+            android:id="@+id/lotteryTV"
+            style="@style/list_text_general"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="20dp"
+            android:layout_toEndOf="@id/titleLbl" />
+
+        <TextView
             android:id="@+id/priceLbl"
             style="@style/list_text_general"
             android:layout_width="wrap_content"
