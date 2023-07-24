@@ -111,7 +111,7 @@ class MemberVC : BaseActivity(), IconView2Delegate {
 
         findViewById<LinearLayout>(R.id.levelRightContainer) ?. let {
             it.setOnClickListener {
-                toMemberSubscriptionLog()
+                toMemberSubscriptionKind()
             }
         }
 
@@ -188,9 +188,9 @@ class MemberVC : BaseActivity(), IconView2Delegate {
                     runOnUiThread {
                         avatarIV?.avatar(member.avatar!!)
                         nameTV?.text = member.nickname
-                        pointIconText?.text = "${member.coin} 點"
+                        pointIconText?.setText("${member.coin} 點")
                         val goldEnum: MEMBER_SUBSCRIPTION_KIND = MEMBER_SUBSCRIPTION_KIND.stringToEnum(member.subscription!!)
-                        levelIconText?.text = goldEnum.chineseName
+                        levelIconText?.setText(goldEnum.chineseName)
                     }
 //                    //session.dump()
 //                    memberSections = initSectionRow()

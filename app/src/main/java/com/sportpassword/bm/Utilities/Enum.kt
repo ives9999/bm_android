@@ -738,7 +738,7 @@ enum class MEMBER_SUBSCRIPTION_KIND(val englishName: String, val chineseName: St
     silver("silver", "銀牌"),
     copper("copper", "銅牌"),
     steal("steal", "鐵牌"),
-    normal("normal", "基本");
+    basic("basic", "基本");
 
     fun toChineseString(): String {
         return chineseName
@@ -750,7 +750,7 @@ enum class MEMBER_SUBSCRIPTION_KIND(val englishName: String, val chineseName: St
 
     fun lottery(): Int {
         when (this) {
-            normal-> return 0
+            basic-> return 0
             copper -> return 1
             silver -> return 2
             gold-> return 3
@@ -769,7 +769,7 @@ enum class MEMBER_SUBSCRIPTION_KIND(val englishName: String, val chineseName: St
         fun stringToEnum(str: String): MEMBER_SUBSCRIPTION_KIND {
 
             when(str) {
-                "normal"-> return normal
+                "basic"-> return basic
                 "steal"-> return steal
                 "copper"-> return copper
                 "silver"-> return silver
@@ -777,7 +777,7 @@ enum class MEMBER_SUBSCRIPTION_KIND(val englishName: String, val chineseName: St
                 "white_gold"-> return white_gold
                 "diamond"-> return diamond
             }
-            return normal
+            return basic
         }
     }
 }

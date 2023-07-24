@@ -402,7 +402,7 @@ object MemberService: DataService() {
     }
 
     fun login(context: Context, email: String, password: String, complete: CompletionHandler) {
-        val lowerCaseEmail = email.toLowerCase()
+        val lowerCaseEmail = email.lowercase(Locale.ROOT)
         val url = URL_LOGIN
 //        println(url)
 
@@ -415,14 +415,14 @@ object MemberService: DataService() {
         params.put("email", email)
         params.put("password", password)
 
-        val request: okhttp3.Request = getRequest(url, params)
+        val request: Request = getRequest(url, params)
         okHttpClient.newCall(request).enqueue(object : Callback {
             override fun onFailure(call: Call, e: IOException) {
                 msg = "網路錯誤，無法跟伺服器更新資料"
                 complete(success)
             }
 
-            override fun onResponse(call: Call, response: okhttp3.Response) {
+            override fun onResponse(call: Call, response: Response) {
 
                 try {
                     jsonString = response.body!!.string()

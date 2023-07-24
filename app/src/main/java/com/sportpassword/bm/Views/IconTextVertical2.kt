@@ -22,7 +22,7 @@ class IconTextVertical2@JvmOverloads constructor(context: Context, attrs: Attrib
     var textTV: TextView? = null
 
     var iconStr: String = "noPhoto"
-    var text: String = "100 點"
+    //var text: String = "100 點"
     var delegate: IconTextVertical2Delegate? = null
 
     init {
@@ -43,15 +43,14 @@ class IconTextVertical2@JvmOverloads constructor(context: Context, attrs: Attrib
             val typedArray = context.obtainStyledAttributes(it, R.styleable.IconTextVertical2, 0, 0)
             if (typedArray.hasValue(R.styleable.IconText2_iconText2Icon)) {
                 typedArray.getString(R.styleable.IconText2_iconText2Icon) ?. let { it1 ->
-                    iconStr = it1
+                    this.iconStr = it1
                     setIcon(it1)
                 }
             }
 
             if (typedArray.hasValue(R.styleable.IconText2_iconText2Text)) {
                 typedArray.getString(R.styleable.IconText2_iconText2Text) ?. let { it1 ->
-                    text = it1
-                    textTV?.text = it1
+                    this.textTV?.text = it1
                 }
             }
         }
@@ -63,6 +62,10 @@ class IconTextVertical2@JvmOverloads constructor(context: Context, attrs: Attrib
         if (res > 0) {
             iconIV?.image = getDrawable(context, res)
         }
+    }
+
+    fun setText(text: String) {
+        this.textTV?.text = text
     }
 }
 

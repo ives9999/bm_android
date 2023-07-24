@@ -86,7 +86,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     app:IconTextVertical2Icon="ic_point_svg"
-                    app:IconTextVertical2Text="500 點"
+                    app:IconTextVertical2Text=""
                     />
 
 
@@ -116,7 +116,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     app:IconTextVertical2Icon="ic_level_svg"
-                    app:IconTextVertical2Text="基本"
+                    app:IconTextVertical2Text=""
                     />
 
             </LinearLayout>
