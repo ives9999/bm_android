@@ -751,11 +751,12 @@ enum class MEMBER_SUBSCRIPTION_KIND(val englishName: String, val chineseName: St
     fun lottery(): Int {
         when (this) {
             basic-> return 0
+            steal->return 0
             copper -> return 1
             silver -> return 2
             gold-> return 3
-            white_gold-> return 4
-            diamond-> return 5
+            white_gold-> return 7
+            diamond-> return 12
             else -> return 0
         }
     }
