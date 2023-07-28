@@ -551,6 +551,18 @@ object MemberService: DataService() {
         _simpleService(context, url, params, complete)
     }
 
+    fun unSubscription(context: Context, complete: CompletionHandler) {
+        val params = hashMapOf<String, String>(
+            "device" to "app",
+            "channel" to CHANNEL,
+            "member_token" to member.token!!
+        )
+
+        val url: String = URL_MEMBER_UNSUBSCRIPTION
+        //println(url)
+
+        _simpleService(context, url, params, complete)
+    }
     fun validate(context: Context, type: String, code: String, token: String, complete: CompletionHandler) {
         var url: String = ""
         if (type == "email") {

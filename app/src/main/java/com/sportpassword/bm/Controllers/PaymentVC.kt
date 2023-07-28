@@ -153,8 +153,8 @@ class PaymentVC : MyTableVC() {
 
     fun toECPay() {
 
-        //PaymentkitManager.initialize(this, ServerType.Stage)
-        PaymentkitManager.initialize(this, ServerType.Prod)
+        PaymentkitManager.initialize(this, ServerType.Stage)
+        //PaymentkitManager.initialize(this, ServerType.Prod)
         PaymentkitManager.createPayment(this, ecpay_token, LanguageCode.zhTW, true, title, PaymentkitManager.RequestCode_CreatePayment)
     }
 
@@ -232,7 +232,7 @@ class PaymentVC : MyTableVC() {
 
         setMyTitle(orderTable!!.order_no)
 
-        var rows: ArrayList<OneRow> = arrayListOf()
+        val rows: ArrayList<OneRow> = arrayListOf()
 
         if (source == "member") {
             findViewById<Button>(R.id.cancelBtn) ?. let {

@@ -8,6 +8,7 @@ import android.widget.Button
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.sportpassword.bm.Interface.MyTable2IF
 import com.sportpassword.bm.Models.*
@@ -97,27 +98,31 @@ class MemberSubscriptionKindVC : BaseActivity(), MyTable2IF, List1CellDelegate {
 
         val _row: MemberSubscriptionKindTable? = row as? MemberSubscriptionKindTable?
         if (_row != null) {
-            if (_row.eng_name == member.subscription) {
+            val kind: MEMBER_SUBSCRIPTION_KIND = MEMBER_SUBSCRIPTION_KIND.stringToEnum(_row.eng_name)
+
+            //如果點選原來訂閱的選項，不做任何動作
+            if (kind == MEMBER_SUBSCRIPTION_KIND.stringToEnum(member.subscription!!)) {
                 return
             }
 
-            if (MEMBER_SUBSCRIPTION_KIND.stringToEnum(member.subscription!!) == MEMBER_SUBSCRIPTION_KIND.basic) {
+            //如果點選基本選項，執行退訂
+            if (kind == MEMBER_SUBSCRIPTION_KIND.basic) {
+                unScbscription()
                 return
             }
 
-            if (member.subscription != MEMBER_SUBSCRIPTION_KIND.basic.englishName) {
+            //如果點選其他選項，警告要先退訂
+            if (MEMBER_SUBSCRIPTION_KIND.stringToEnum(member.subscription!!) != MEMBER_SUBSCRIPTION_KIND.basic) {
                 warning("您已經有訂閱，如果要更改，請先執行「退訂」，再重新訂閱，謝謝")
                 return
             }
 
-            toMemberSubscriptionPay(_row.name, _row.price, _row.eng_name)
+            warning("確定要訂閱${kind.chineseName}嗎？", "取消", "確定") {
+                subscription(kind)
+                //toMemberSubscriptionPay(_row.name, _row.price, _row.eng_name)
+            }
         }
     }
-
-
-//    fun didSelect(row: MemberSubscriptionKindTable, idx: Int) {
-//        toMemberSubscriptionPay(row.name, row.price, row.eng_name)
-//    }
 
     private fun tableViewSetSelected(row: MemberSubscriptionKindTable): Boolean {
         return row.eng_name == member.subscription
@@ -134,7 +139,7 @@ class MemberSubscriptionKindVC : BaseActivity(), MyTable2IF, List1CellDelegate {
         findViewById<Button>(R.id.threeBtn) ?. let {
             it.text = "退訂"
             it.setOnClickListener {
-                //toProduct()
+                unScbscription()
             }
         }
 
@@ -146,6 +151,90 @@ class MemberSubscriptionKindVC : BaseActivity(), MyTable2IF, List1CellDelegate {
         }
 
         setBottomButtonPadding()
+    }
+
+    private fun subscription(kind: MEMBER_SUBSCRIPTION_KIND) {
+        loadingAnimation.start()
+        MemberService.subscription(this, kind.englishName) { success ->
+            runOnUiThread {
+                loadingAnimation.stop()
+            }
+
+            if (success) {
+                if (MemberService.jsonString.isNotEmpty()) {
+                    //println(MemberService.jsonString)
+                    try {
+                        val table: OrderUpdateResTable = Gson().fromJson(
+                            MemberService.jsonString,
+                            OrderUpdateResTable::class.java
+                        )
+
+                        if (!table.success) {
+                            runOnUiThread {
+                                warning(table.msg)
+                            }
+                        } else {
+                            val orderTable: OrderTable? = table.model
+                            if (orderTable != null) {
+                                orderTable.filterRow()
+                                val ecpay_token: String = orderTable.ecpay_token
+                                val ecpay_token_ExpireDate: String =
+                                    orderTable.ecpay_token_ExpireDate
+
+                                runOnUiThread {
+                                    info("訂閱已經成立，是否前往付款？", "關閉", "付款") {
+                                        toPayment(
+                                            orderTable.token,
+                                            ecpay_token,
+                                            ecpay_token_ExpireDate
+                                        )
+                                    }
+                                }
+
+                            } else {
+                                runOnUiThread {
+                                    warning("無法拿到伺服器傳回值")
+                                }
+                            }
+                        }
+                    } catch (e: java.lang.Exception) {
+                        runOnUiThread {
+                            warning(e.localizedMessage!!)
+                        }
+                    }
+                }
+            } else {
+                runOnUiThread {
+                    warning(MemberService.msg)
+                }
+            }
+        }
+    }
+
+    private fun unScbscription() {
+        if (MEMBER_SUBSCRIPTION_KIND.stringToEnum(member.subscription!!) == MEMBER_SUBSCRIPTION_KIND.basic) {
+            warning("基本會員無法退訂")
+        } else {
+            warning("是否真的要退訂？", "取消", "確定") {
+                runOnUiThread {
+                    loadingAnimation.start()
+                }
+                MemberService.unSubscription(this) { success ->
+                    runOnUiThread {
+                        loadingAnimation.stop()
+                        val table: OrderUpdateResTable = Gson().fromJson(
+                            MemberService.jsonString,
+                            OrderUpdateResTable::class.java
+                        )
+                        if (!table.success) {
+                            warning(table.msg)
+                        } else {
+                            info("已經完成退訂")
+                        }
+                    }
+                }
+            }
+        }
     }
 
     fun setBottomButtonPadding() {
@@ -198,5 +287,9 @@ class MemberSubscriptionKindViewHolder(
         titleLbl.text = row.name
         lotteryTV.text = "每次開箱球拍券：${row.lottery}張"
         priceLbl.text = "NT$: " + row.price.toString() + " 元/月"
+
+        view.setOnClickListener {
+            delegate.cellClick(row)
+        }
     }
 }

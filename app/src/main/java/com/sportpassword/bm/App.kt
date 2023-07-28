@@ -202,14 +202,15 @@ class App : Application() {
         URL_MEMBER_COINLIST = "${URL_HOME}member/coinlist"
         URL_MEMBER_COINRETURN = "${URL_HOME}member/coinReturn"
         URL_MEMBER_DELETE = URL_HOME + "member/delete"
-        URL_MEMBER_SUBSCRIPTION_KIND = "${URL_HOME}member/subscriptionKind"
-        URL_MEMBER_SUBSCRIPTION_LOG = "${URL_HOME}member/subscriptionLog"
         URL_MEMBER_LIKELIST = "${URL_HOME}member/likelist"
         URL_MEMBER_BANK = URL_HOME + "member/bank"
         URL_MEMBER_BLACKLIST = URL_HOME + "member/blacklist"
         URL_MEMBER_GETONE = URL_HOME + "member/getOne"
         URL_MEMBER_SIGNUPLIST = "${URL_HOME}member/signup_calendar"
         URL_MEMBER_SUBSCRIPTION = "${URL_HOME}member/subscription"
+        URL_MEMBER_SUBSCRIPTION_KIND = "${URL_HOME}member/subscriptionKind"
+        URL_MEMBER_SUBSCRIPTION_LOG = "${URL_HOME}member/subscriptionLog"
+        URL_MEMBER_UNSUBSCRIPTION = "${URL_HOME}member/unSubscription"
         URL_MEMBER_TEAM_DELETE = "${URL_HOME}member/deleteMemberTeam"
         URL_MEMBER_TEAM_LIST = "${URL_HOME}member/teamlist"
         URL_MEMBER_UPDATE = URL_HOME + "member/update"
@@ -254,6 +255,7 @@ class App : Application() {
         URL_TT_DELETE = URL_HOME + "%s/tt/delete"
         URL_TT_UPDATE = URL_HOME + "%s/tt/update"
         URL_UPDATE = URL_HOME + "%s/update"
+        URL_MATCH_LIST = URL_HOME + "match/list"
 
         FEATURED_PATH = BASE_URL + FEATURED_PATH
     }
