@@ -17,7 +17,7 @@ class MatchDetailActivity : BaseActivity<ActivityMatchDetailBinding>() {
     }
 
     private var title: String? = null
-    private var isSignUp = false
+    private var directToSignUp = false
     private var matchPagerAdapter: MatchPagerAdapter? = null
     private val tabs = MatchTab.values().toList()
     private val vm by stateViewModel<MatchDetailVM>()
@@ -31,7 +31,7 @@ class MatchDetailActivity : BaseActivity<ActivityMatchDetailBinding>() {
             vm.getMatchDetail(it)
         }
 
-        isSignUp = data.getBoolean(SIGN_UP)
+        directToSignUp = data.getBoolean(SIGN_UP)
     }
 
     override fun initView(savedInstanceState: Bundle?) {
@@ -52,8 +52,8 @@ class MatchDetailActivity : BaseActivity<ActivityMatchDetailBinding>() {
 
                 isUserInputEnabled = false
 
-                if (isSignUp) {
-                    vp.currentItem = 2
+                if (directToSignUp) {
+                    setCurrentItem(2, false)
                 }
             }
 

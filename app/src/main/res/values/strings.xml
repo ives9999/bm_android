@@ -36,6 +36,8 @@
     <string name="match_content">內容</string>
     <string name="match_brochure">簡章</string>
     <string name="match_sign_up">報名</string>
+    <string name="match_sign_up_stop">未在報名時間內，無法報名</string>
+    <string name="match_sign_up_stop_modify">未在報名時間內，無法修改</string>
     <string name="match_sign_price">NT$ %1$d 元</string>
     <string name="match_num_person">人數: %1$d 人</string>
     <string name="match_sign_group">報名組數: %1$d 組</string>
@@ -48,8 +50,7 @@
     <string name="match_sign_captain_email">隊長Email</string>
     <string name="match_sign_captain_line">隊長Line</string>
     <string name="match_sign_cannot_blank">不能爲空白</string>
-    <string name="match_sign_player_one">隊員 1</string>
-    <string name="match_sign_player_two">隊員 2</string>
+    <string name="match_sign_player_num">隊員 %1$d \u0020</string>
     <string name="match_sign_name">姓名</string>
     <string name="match_sign_phone">手機</string>
     <string name="match_sign_email">Email</string>

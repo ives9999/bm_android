@@ -4,14 +4,18 @@ import android.content.Context
 import android.util.AttributeSet
 import android.view.Gravity
 import android.view.View
-import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import com.sportpassword.bm.R
+import com.sportpassword.bm.bm_new.data.dto.match.MatchSignUpDto
 import com.sportpassword.bm.extensions.quotientAndRemainder
 import org.jetbrains.anko.backgroundColor
 
-class AttributesView@JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0):
+class AttributesView @JvmOverloads constructor(
+    context: Context,
+    attrs: AttributeSet? = null,
+    defStyleAttr: Int = 0
+) :
     LinearLayout(context, attrs, defStyleAttr) {
 
     val view: View = View.inflate(context, R.layout.attributes_view, this)
@@ -34,22 +38,25 @@ class AttributesView@JvmOverloads constructor(context: Context, attrs: Attribute
     var horizonMergin: Int = 30
     var verticalMergin: Int = 16
 
+    private var listener: Listener? = null
+
     //var parent: UIView = UIView()
     var attributes: ArrayList<String> = arrayListOf()
 
     var tagLabels: ArrayList<Tag> = arrayListOf()
 
     init {
-        attrs ?. let {
+        orientation = VERTICAL
+        attrs?.let {
             val typedArray = context.obtainStyledAttributes(it, R.styleable.AttributesView, 0, 0)
 
             if (typedArray.hasValue(R.styleable.AttributesView_attributesViewName)) {
 
-                typedArray.getString(R.styleable.AttributesView_attributesViewName) ?. let { it1 ->
+                typedArray.getString(R.styleable.AttributesView_attributesViewName)?.let { it1 ->
                     this.name = it1
                 }
 
-                typedArray.getString(R.styleable.AttributesView_attributesViewAlias) ?. let { it1 ->
+                typedArray.getString(R.styleable.AttributesView_attributesViewAlias)?.let { it1 ->
                     this.alias = it1
                 }
 
@@ -57,22 +64,25 @@ class AttributesView@JvmOverloads constructor(context: Context, attrs: Attribute
                     this.column = it1
                 }
 
-                typedArray.getInt(R.styleable.AttributesView_attributesViewLabelWidth, 80).let { it1 ->
-                    this.labelWidth = it1
-                }
+                typedArray.getInt(R.styleable.AttributesView_attributesViewLabelWidth, 80)
+                    .let { it1 ->
+                        this.labelWidth = it1
+                    }
 
                 typedArray.getInt(R.styleable.AttributesView_attributesViewLabelHeight, 30)
                     .let { it1 ->
                         this.labelHeight = it1
                     }
 
-                typedArray.getInt(R.styleable.AttributesView_attributesViewLabelHorizonMergin, 30) . let { it1 ->
-                    this.horizonMergin = it1
-                }
+                typedArray.getInt(R.styleable.AttributesView_attributesViewLabelHorizonMergin, 30)
+                    .let { it1 ->
+                        this.horizonMergin = it1
+                    }
 
-                typedArray.getInt(R.styleable.AttributesView_attributesViewLabelVerticalMergin, 16) . let { it1 ->
-                    this.verticalMergin = it1
-                }
+                typedArray.getInt(R.styleable.AttributesView_attributesViewLabelVerticalMergin, 16)
+                    .let { it1 ->
+                        this.verticalMergin = it1
+                    }
             }
         }
 
@@ -81,8 +91,16 @@ class AttributesView@JvmOverloads constructor(context: Context, attrs: Attribute
 //        }
     }
 
-    fun setAttributes(attribute: String) {
-        val attributeList: List<String> = parseAttributes(attribute)
+    fun setAttributes(
+        gift: MatchSignUpDto.MatchGift.Product.ProductAttribute,
+        selected: String = "",
+        listener: Listener
+    ) {
+        this.selected = selected
+        this.listener = listener
+        name = gift.name
+        alias = gift.alias
+        val attributeList: List<String> = parseAttributes(gift.attribute)
         val count: Int = attributeList.size
 
         val (q, r) = count.quotientAndRemainder(column)
@@ -134,9 +152,35 @@ class AttributesView@JvmOverloads constructor(context: Context, attrs: Attribute
 
             tagLabels.add(tag)
 
+            tag.setOnClick()
+
             if (attributeString == selected) {
                 tag.isChecked = true
                 tag.setSelectedStyle()
+            }
+        }
+    }
+
+    private fun Tag.setOnClick() {
+        setOnClickListener {
+            if (selected == value) {
+                selected = ""
+                isChecked = false
+            } else {
+                selected = value
+                isChecked = true
+            }
+
+            listener?.onTagClick(
+                alias,
+                if (isChecked) "{name:$name,alias:$alias,value:$selected}" else "",
+            )
+
+            tagLabels.forEach {
+                if (selected != it.value) {
+                    it.isChecked = false
+                }
+                it.setSelectedStyle()
             }
         }
     }
@@ -147,10 +191,14 @@ class AttributesView@JvmOverloads constructor(context: Context, attrs: Attribute
         var res: List<String> = arrayListOf()
         var tmp = attribute.replace("{", "")
         tmp = tmp.replace("}", "")
-        tmp = tmp.replace( "\"", "")
+        tmp = tmp.replace("\"", "")
         res = tmp.split(",")
 
         return res
+    }
+
+    interface Listener {
+        fun onTagClick(alias: String, giftData: String)
     }
 }
 

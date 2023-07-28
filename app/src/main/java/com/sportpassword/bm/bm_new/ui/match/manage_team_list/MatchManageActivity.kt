@@ -9,6 +9,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.sportpassword.bm.R
+import com.sportpassword.bm.Utilities.Alert
 import com.sportpassword.bm.bm_new.data.dto.match.MatchTeamListDto
 import com.sportpassword.bm.bm_new.ui.base.BaseActivity
 import com.sportpassword.bm.bm_new.ui.base.BaseViewModel
@@ -16,6 +17,7 @@ import com.sportpassword.bm.bm_new.ui.base.ViewEvent
 import com.sportpassword.bm.bm_new.ui.match.detail.MatchDetailActivity
 import com.sportpassword.bm.bm_new.ui.match.sign_up.MatchSignUpActivity
 import com.sportpassword.bm.bm_new.ui.util.LinearItemDecoration
+import com.sportpassword.bm.bm_new.ui.util.canSignUp
 import com.sportpassword.bm.databinding.ActivityMatchBinding
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -86,9 +88,21 @@ class MatchManageActivity : BaseActivity<ActivityMatchBinding>(),
     }
 
     override fun onEditClick(data: MatchTeamListDto.Row) {
-        Intent(this, MatchSignUpActivity::class.java).apply {
-            putExtra(MatchSignUpActivity.MATCH_TEAM_TOKEN, data.token)
-            editLauncher.launch(this)
+        if (canSignUp(
+                signupStart = data.match.signupStart,
+                signupEnd = data.match.signupEnd
+            )
+        ) {
+            Intent(this, MatchSignUpActivity::class.java).apply {
+                putExtra(MatchSignUpActivity.MATCH_TEAM_TOKEN, data.token)
+                editLauncher.launch(this)
+            }
+        } else {
+            Alert.show(
+                this,
+                "警告",
+                getString(R.string.match_sign_up_stop_modify)
+            )
         }
     }
 
