@@ -143,6 +143,28 @@
         app:layout_constraintTop_toTopOf="@+id/iv_limit_groups"
         tools:text="限制組數" />
 
+    <com.sportpassword.bm.Views.IconTextText2
+        android:id="@+id/signupStartITT"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        app:layout_constraintTop_toBottomOf="@+id/tv_limit_grous"
+        app:iconTextText2Icon="ic_calendar_start_svg"
+        app:iconTextText2IconWidth="20"
+        app:iconTextText2IconHeight="20"
+        app:iconTextText2Title="報名開始時間" />
+
+    <com.sportpassword.bm.Views.IconTextText2
+        android:id="@+id/signupEndITT"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        app:layout_constraintTop_toBottomOf="@+id/signupStartITT"
+        app:iconTextText2Icon="ic_calendar_end_svg"
+        app:iconTextText2IconWidth="20"
+        app:iconTextText2IconHeight="20"
+        app:iconTextText2Title="報名結束時間" />
+
     <Button
         android:id="@+id/btn_sign_up"
         android:layout_width="0dp"
@@ -156,7 +178,7 @@
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/iv_limit_groups" />
+        app:layout_constraintTop_toBottomOf="@+id/signupEndITT" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

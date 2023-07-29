@@ -46,6 +46,11 @@ class MatchGroupsFragment : BaseFragment<FragmentMatchGroupsBinding>(),
             rv.run {
                 layoutManager = LinearLayoutManager(requireContext())
                 adapter = MatchGroupsAdapter().apply {
+
+                    vm.matchDetail.value?.let {
+                        this.signupStartShow = it.signupStart
+                        this.signupEndShow = it.signupEnd
+                    }
                     setListener(this@MatchGroupsFragment)
                     matchGroupsAdapter = this
                 }

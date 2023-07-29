@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/rootLL"
+    android:layout_width="match_parent"
+    android:layout_height="20dp"
+    android:gravity="center_vertical"
+    android:orientation="horizontal">
+
+    <ImageView
+        android:id="@+id/iconIV"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_marginStart="12dp" />
+
+    <TextView
+        android:id="@+id/titleTV"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/WHITE_70"
+        android:textSize="14sp"
+        android:layout_marginStart="7dp" />
+
+    <TextView
+        android:id="@+id/commonTV"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/WHITE_70"
+        android:textSize="14sp"
+        android:layout_marginStart="2dp"
+        android:text=":"/>
+
+    <TextView
+        android:id="@+id/showTV"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/WHITE_70"
+        android:textSize="14sp"
+        android:layout_marginStart="12dp" />
+
+</LinearLayout>

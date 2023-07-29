@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.sportpassword.bm.R
+import com.sportpassword.bm.Views.IconTextText2
 import com.sportpassword.bm.bm_new.data.dto.match.MatchDetailDto
 import com.sportpassword.bm.databinding.ItemMatchGroupBinding
 
@@ -13,6 +14,8 @@ class MatchGroupsAdapter :
     ListAdapter<MatchDetailDto.MatchGroup, MatchGroupsAdapter.ViewHolder>(DiffCallback) {
 
     private var listener: Listener? = null
+    var signupStartShow: String = ""
+    var signupEndShow: String = ""
 
     fun setListener(listener: Listener) {
         this.listener = listener
@@ -25,6 +28,8 @@ class MatchGroupsAdapter :
         private val tvNumPerson = binding.tvPersons
         private val tvSignGroups = binding.tvGroups
         private val tvLimitGroups = binding.tvLimitGrous
+        private val signupStartITT: IconTextText2 = binding.signupStartITT
+        private val signupEndITT: IconTextText2 = binding.signupEndITT
         private val context = itemView.context
 
         init {
@@ -44,6 +49,9 @@ class MatchGroupsAdapter :
             tvNumPerson.text = context.getString(R.string.match_num_person, data.number)
             tvSignGroups.text = context.getString(R.string.match_sign_group, data.number)
             tvLimitGroups.text = context.getString(R.string.match_limit_group, data.limit)
+
+            signupStartITT.setShow(signupStartShow)
+            signupEndITT.setShow(signupEndShow)
         }
     }
 

@@ -27,6 +27,14 @@
         <attr name="iconText2Text" format="string" />
     </declare-styleable>
 
+    <declare-styleable name="IconTextText2">
+        <attr name="iconTextText2Icon" format="string" />
+        <attr name="iconTextText2Title" format="string" />
+        <attr name="iconTextText2Show" format="string" />
+        <attr name="iconTextText2IconWidth" format="integer" />
+        <attr name="iconTextText2IconHeight" format="integer" />
+    </declare-styleable>
+
     <declare-styleable name="IconTextVertical2">
         <attr name="IconTextVertical2Icon" format="string" />
         <attr name="IconTextVertical2Text" format="string" />
