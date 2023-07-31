@@ -50,8 +50,8 @@ class MatchGroupsAdapter :
             tvSignGroups.text = context.getString(R.string.match_sign_group, data.number)
             tvLimitGroups.text = context.getString(R.string.match_limit_group, data.limit)
 
-            signupStartITT.setShow(signupStartShow)
-            signupEndITT.setShow(signupEndShow)
+            signupStartITT.setShow(signupStartShow.dropLast(3))
+            signupEndITT.setShow(signupEndShow.dropLast(3))
         }
     }
 

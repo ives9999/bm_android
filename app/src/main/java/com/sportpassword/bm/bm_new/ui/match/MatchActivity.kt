@@ -5,7 +5,6 @@ import android.os.Bundle
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.sportpassword.bm.R
-import com.sportpassword.bm.Utilities.Alert
 import com.sportpassword.bm.bm_new.data.dto.match.MatchListDto
 import com.sportpassword.bm.bm_new.ui.base.BaseActivity
 import com.sportpassword.bm.bm_new.ui.base.BaseViewModel
@@ -14,7 +13,6 @@ import com.sportpassword.bm.bm_new.ui.match.detail.MatchDetailActivity.Companion
 import com.sportpassword.bm.bm_new.ui.match.detail.MatchDetailActivity.Companion.MATCH_TOKEN
 import com.sportpassword.bm.bm_new.ui.match.detail.MatchDetailActivity.Companion.SIGN_UP
 import com.sportpassword.bm.bm_new.ui.util.LinearItemDecoration
-import com.sportpassword.bm.bm_new.ui.util.canSignUp
 import com.sportpassword.bm.databinding.ActivityMatchBinding
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -67,23 +65,11 @@ class MatchActivity : BaseActivity<ActivityMatchBinding>(), MatchListAdapter.Lis
     }
 
     override fun onSignUpClick(data: MatchListDto.Row) {
-        if (canSignUp(
-                signupStart = data.signupStart ?: return,
-                signupEnd = data.signupEnd ?: return
-            )
-        ) {
-            Intent(this, MatchDetailActivity::class.java).apply {
-                putExtra(MATCH_TITLE, data.name)
-                putExtra(MATCH_TOKEN, data.token)
-                putExtra(SIGN_UP, true)     //tab直接到報名
-                startActivity(this)
-            }
-        } else {
-            Alert.show(
-                this,
-                "警告",
-                getString(R.string.match_sign_up_stop)
-            )
+        Intent(this, MatchDetailActivity::class.java).apply {
+            putExtra(MATCH_TITLE, data.name)
+            putExtra(MATCH_TOKEN, data.token)
+            putExtra(SIGN_UP, true)     //直接到報名tab
+            startActivity(this)
         }
     }
 }

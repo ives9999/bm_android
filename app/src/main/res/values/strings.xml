@@ -36,8 +36,10 @@
     <string name="match_content">內容</string>
     <string name="match_brochure">簡章</string>
     <string name="match_sign_up">報名</string>
-    <string name="match_sign_up_stop">未在報名時間內，無法報名</string>
-    <string name="match_sign_up_stop_modify">未在報名時間內，無法修改</string>
+    <string name="match_sign_up_not_start">還沒到報名時間，無法報名</string>
+    <string name="match_sign_up_finish">已超過報名時間，無法報名</string>
+    <string name="match_sign_up_group_limited">已超過報名組數，無法報名</string>
+    <string name="match_sign_up_stop_modify">已經超過報名時間，無法修改報名資料</string>
     <string name="match_sign_price">NT$ %1$d 元</string>
     <string name="match_num_person">人數: %1$d 人</string>
     <string name="match_sign_group">報名組數: %1$d 組</string>

@@ -46,11 +46,6 @@ class MatchGroupsFragment : BaseFragment<FragmentMatchGroupsBinding>(),
             rv.run {
                 layoutManager = LinearLayoutManager(requireContext())
                 adapter = MatchGroupsAdapter().apply {
-
-                    vm.matchDetail.value?.let {
-                        this.signupStartShow = it.signupStart
-                        this.signupEndShow = it.signupEnd
-                    }
                     setListener(this@MatchGroupsFragment)
                     matchGroupsAdapter = this
                 }
@@ -64,7 +59,11 @@ class MatchGroupsFragment : BaseFragment<FragmentMatchGroupsBinding>(),
                 addItemDecoration(linearItemDecoration)
             }
             vm.matchDetail.observe(viewLifecycleOwner) {
-                matchGroupsAdapter?.submitList(it.matchGroups)
+                matchGroupsAdapter?.apply {
+                    signupStartShow = it.signupStart
+                    signupEndShow = it.signupEnd
+                    submitList(it.matchGroups)
+                }
             }
         }
     }
@@ -76,18 +75,14 @@ class MatchGroupsFragment : BaseFragment<FragmentMatchGroupsBinding>(),
 
     override fun onSignUpClick(data: MatchDetailDto.MatchGroup) {
         vm.matchDetail.value?.let {
-            if (canSignUp(
-                    signupStart = it.signupStart,
-                    signupEnd = it.signupEnd
-                )
-            ) {
+            canSignUp(
+                signupStart = it.signupStart,
+                signupEnd = it.signupEnd,
+                it.matchGroups.size >= data.limit
+            )?.let { stringRes ->
+                Alert.show(requireContext(), "警告", getString(stringRes))
+            } ?: run {
                 requireContext().toMatchSignUp(data.id, data.matchId, data.token)
-            } else {
-                Alert.show(
-                    requireContext(),
-                    "警告",
-                    getString(R.string.match_sign_up_stop)
-                )
             }
         }
     }
