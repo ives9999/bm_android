@@ -38,7 +38,7 @@ data class MatchTeamListDto(
         @SerializedName("order_token")
         val orderToken: String?, // VmXYmDDlbrPoqwOzVDQUTZkD4RXDCcb
         @SerializedName("token")
-        val token: String // p0GJtmg9Rqyh4ydOp7oqRnB1uQOJA8v
+        val token: String, // p0GJtmg9Rqyh4ydOp7oqRnB1uQOJA8v
     ) {
         data class Match(
             @SerializedName("arena_id")

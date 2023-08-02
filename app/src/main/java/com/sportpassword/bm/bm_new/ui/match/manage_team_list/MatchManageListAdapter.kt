@@ -41,6 +41,12 @@ class MatchManageListAdapter :
                     }
                 }
 
+                btnWallet.setOnClickListener {
+                    getItem(bindingAdapterPosition)?.let { data ->
+                        listener?.onPaymentClick(data)
+                    }
+                }
+
                 btnDetail.setOnClickListener {
                     getItem(bindingAdapterPosition)?.let { data ->
                         listener?.onDetailClick(data)
@@ -99,5 +105,6 @@ class MatchManageListAdapter :
         fun onEditClick(data: MatchTeamListDto.Row)
         fun onDelClick(data: MatchTeamListDto.Row)
         fun onDetailClick(data: MatchTeamListDto.Row)
+        fun onPaymentClick(data: MatchTeamListDto.Row)
     }
 }

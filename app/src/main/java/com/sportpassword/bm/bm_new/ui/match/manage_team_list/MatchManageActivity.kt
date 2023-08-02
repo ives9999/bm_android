@@ -111,4 +111,16 @@ class MatchManageActivity : BaseActivity<ActivityMatchBinding>(),
             startActivity(this)
         }
     }
+
+    override fun onPaymentClick(data: MatchTeamListDto.Row) {
+        //println(data)
+        val matchTable  = data.match
+        val signupStart: String = matchTable.signupStart
+        val signupEnd: String = matchTable.signupEnd
+        val order_id: Int? = data.orderId
+
+        if (order_id != null) {
+
+        }
+    }
 }
