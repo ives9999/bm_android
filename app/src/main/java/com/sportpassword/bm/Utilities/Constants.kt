@@ -22,12 +22,12 @@ const val phonePad = InputType.TYPE_CLASS_PHONE
 const val emailPad = InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS
 
 // URL Constants
-//const val REMOTE_BASE_URL = "https://bm.sportpassword.com"
-const val REMOTE_BASE_URL = "https://sandbox.sportpassword.com"   //todo, 正式版要修改掉 test url
+const val REMOTE_BASE_URL = "https://bm.sportpassword.com"
+//const val REMOTE_BASE_URL = "https://sandbox.sportpassword.com"   //todo, 正式版要修改掉 test url
 
 //const val REMOTE_BASE_URL = "http://192.168.100.120"
-//const val LOCALHOST_BASE_URL = "http://10.0.2.2"
-const val LOCALHOST_BASE_URL = "https://sandbox.sportpassword.com"   //todo, 正式版要修改掉 test url
+const val LOCALHOST_BASE_URL = "http://10.0.2.2"
+//const val LOCALHOST_BASE_URL = "https://sandbox.sportpassword.com"   //todo, 正式版要修改掉 test url
 
 //const val LOCALHOST_BASE_URL = "http://bm.sportpassword.localhost"
 //const val LOCALHOST_BASE_URL = "http://192.168.100.120"

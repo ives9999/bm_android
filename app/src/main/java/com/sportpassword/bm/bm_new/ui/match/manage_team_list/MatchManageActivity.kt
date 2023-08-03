@@ -3,13 +3,19 @@ package com.sportpassword.bm.bm_new.ui.match.manage_team_list
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.provider.ContactsContract.RawContacts.Data
 import android.widget.Toast
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.sportpassword.bm.Controllers.PaymentVC
+import com.sportpassword.bm.Models.OrderTable
+import com.sportpassword.bm.Models.OrdersTable
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Utilities.Alert
+import com.sportpassword.bm.Utilities.ToInterface
+import com.sportpassword.bm.Utilities.toDate
 import com.sportpassword.bm.bm_new.data.dto.match.MatchTeamListDto
 import com.sportpassword.bm.bm_new.ui.base.BaseActivity
 import com.sportpassword.bm.bm_new.ui.base.BaseViewModel
@@ -22,6 +28,7 @@ import com.sportpassword.bm.databinding.ActivityMatchBinding
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import org.koin.androidx.viewmodel.ext.android.stateViewModel
+import java.util.Date
 
 //管理賽事
 class MatchManageActivity : BaseActivity<ActivityMatchBinding>(),
@@ -118,9 +125,28 @@ class MatchManageActivity : BaseActivity<ActivityMatchBinding>(),
         val signupStart: String = matchTable.signupStart
         val signupEnd: String = matchTable.signupEnd
         val order_id: Int? = data.orderId
+        val orderTable: OrderTable = data.orderTable
 
         if (order_id != null) {
-
+            toPayment(data.orderTable.token, null, null, "match")
+        } else {
+            var isInterval: Boolean = false
+            val signupStartDate: Date? = signupStart.toDate()
+            val signupEndDate: Date? = signupEnd.toDate()
         }
+    }
+
+    fun toPayment(order_token: String, ecpay_token: String?=null, ecpay_token_ExpireDate: String?=null, source: String="order") {
+        //mainDelegate.finish()
+        val i = Intent(this, PaymentVC::class.java)
+        i.putExtra("order_token", order_token)
+        i.putExtra("source", source)
+        if (ecpay_token != null) {
+            i.putExtra("ecpay_token", ecpay_token)
+        }
+        if (ecpay_token_ExpireDate != null) {
+            i.putExtra("ecpay_token_ExpireDate", ecpay_token_ExpireDate)
+        }
+        this.startActivity(i)
     }
 }

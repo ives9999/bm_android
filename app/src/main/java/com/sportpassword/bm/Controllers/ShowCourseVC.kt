@@ -698,7 +698,8 @@ class ShowCourseVC : ShowVC() {
                     getMemberOne(signup_normal_model.member_token)
 
                 } else {
-                    val signup_standby_model = myTable!!.signupStandbyTables[position]
+                    val idx: Int = position - myTable!!.signupNormalTables.size
+                    val signup_standby_model = myTable!!.signupStandbyTables[idx]
                     getMemberOne(signup_standby_model.member_token)
                 }
             } else {
