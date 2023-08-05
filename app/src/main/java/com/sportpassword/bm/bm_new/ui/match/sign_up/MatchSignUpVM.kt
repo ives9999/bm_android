@@ -198,10 +198,11 @@ class MatchSignUpVM(
                                 ?: return null,
                             line = playInfo.find { it.type == PLAYER_LINE }?.value,
                             age = playInfo.find { it.type == PLAYER_AGE }?.value ?: return null,
-                            gift = MatchTeamInsertDto.Player.Gift(
-                                attributes = setGifts(matchSign, playInfo),
-                                matchGiftId = "1"
-                            )
+                            gift = if (matchSign.matchGifts.isEmpty()) null else
+                                MatchTeamInsertDto.Player.Gift(
+                                    attributes = setGifts(matchSign, playInfo),
+                                    matchGiftId = "1"
+                                )
                         )
                     )
                 }

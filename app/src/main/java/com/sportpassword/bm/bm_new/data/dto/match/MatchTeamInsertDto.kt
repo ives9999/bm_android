@@ -34,7 +34,7 @@ data class MatchTeamInsertDto(
         @SerializedName("email")
         val email: String, // david@gmail.com
         @SerializedName("gift")
-        val gift: Gift,
+        val gift: Gift?,
         @SerializedName("line")
         val line: String?, // davidline
         @SerializedName("mobile")
