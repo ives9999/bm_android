@@ -1,4 +1,5 @@
 package com.sportpassword.bm.bm_new.data.dto.match
+
 import com.google.gson.annotations.SerializedName
 import com.sportpassword.bm.Models.OrderTable
 
@@ -41,7 +42,7 @@ data class MatchTeamListDto(
         @SerializedName("token")
         val token: String, // p0GJtmg9Rqyh4ydOp7oqRnB1uQOJA8v
         @SerializedName("order")
-        val orderTable: OrderTable
+        val orderTable: OrderTable?
     ) {
         data class Match(
             @SerializedName("arena_id")

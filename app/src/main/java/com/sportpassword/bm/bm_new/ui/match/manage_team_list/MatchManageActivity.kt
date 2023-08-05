@@ -1,9 +1,9 @@
 package com.sportpassword.bm.bm_new.ui.match.manage_team_list
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
-import android.provider.ContactsContract.RawContacts.Data
 import android.widget.Toast
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
@@ -11,10 +11,8 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.sportpassword.bm.Controllers.PaymentVC
 import com.sportpassword.bm.Models.OrderTable
-import com.sportpassword.bm.Models.OrdersTable
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Utilities.Alert
-import com.sportpassword.bm.Utilities.ToInterface
 import com.sportpassword.bm.Utilities.toDate
 import com.sportpassword.bm.bm_new.data.dto.match.MatchTeamListDto
 import com.sportpassword.bm.bm_new.ui.base.BaseActivity
@@ -28,6 +26,7 @@ import com.sportpassword.bm.databinding.ActivityMatchBinding
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import org.koin.androidx.viewmodel.ext.android.stateViewModel
+import java.text.SimpleDateFormat
 import java.util.Date
 
 //管理賽事
@@ -107,8 +106,26 @@ class MatchManageActivity : BaseActivity<ActivityMatchBinding>(),
         }
     }
 
+    @SuppressLint("SimpleDateFormat")
     override fun onDelClick(data: MatchTeamListDto.Row) {
-        vm.delMatchTeamList(data.token)
+        val currentTime = Date()
+        val dateTimeFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
+        val stopTime = dateTimeFormat.parse(data.match.signupEnd)
+
+        when {
+            //已經報名且繳費，無法刪除隊伍
+            data.orderTable?.process == "complete" -> {
+                Alert.show(this, "警告", getString(R.string.match_manage_cant_delete_paid))
+            }
+            //已經超過報名截止時間，無法刪除隊伍
+            currentTime.after(stopTime) -> {
+                Alert.show(this, "警告", getString(R.string.match_manage_cant_delete_expired))
+            }
+
+            else -> {
+                vm.delMatchTeamList(data.token)
+            }
+        }
     }
 
     override fun onDetailClick(data: MatchTeamListDto.Row) {
@@ -121,14 +138,14 @@ class MatchManageActivity : BaseActivity<ActivityMatchBinding>(),
 
     override fun onPaymentClick(data: MatchTeamListDto.Row) {
         //println(data)
-        val matchTable  = data.match
+        val matchTable = data.match
         val signupStart: String = matchTable.signupStart
         val signupEnd: String = matchTable.signupEnd
         val order_id: Int? = data.orderId
-        val orderTable: OrderTable = data.orderTable
+        val orderTable: OrderTable? = data.orderTable
 
         if (order_id != null) {
-            toPayment(data.orderTable.token, null, null, "match")
+            data.orderTable?.let { toPayment(it.token, null, null, "match") }
         } else {
             var isInterval: Boolean = false
             val signupStartDate: Date? = signupStart.toDate()
@@ -136,7 +153,12 @@ class MatchManageActivity : BaseActivity<ActivityMatchBinding>(),
         }
     }
 
-    fun toPayment(order_token: String, ecpay_token: String?=null, ecpay_token_ExpireDate: String?=null, source: String="order") {
+    fun toPayment(
+        order_token: String,
+        ecpay_token: String? = null,
+        ecpay_token_ExpireDate: String? = null,
+        source: String = "order"
+    ) {
         //mainDelegate.finish()
         val i = Intent(this, PaymentVC::class.java)
         i.putExtra("order_token", order_token)

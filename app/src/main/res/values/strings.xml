@@ -78,5 +78,7 @@
     <string name="match_sign_success">報名完成</string>
     <string name="match_sign_edit_success">報名修改完成</string>
     <string name="match_manage_delete">報名已刪除</string>
+    <string name="match_manage_cant_delete_paid">已經報名且繳費，無法刪除隊伍，只能棄權</string>
+    <string name="match_manage_cant_delete_expired">已經超過報名截止時間，無法刪除隊伍</string>
 
 </resources>
