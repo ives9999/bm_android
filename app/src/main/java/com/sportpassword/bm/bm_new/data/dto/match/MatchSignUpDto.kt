@@ -22,7 +22,7 @@ data class MatchSignUpDto(
     @SerializedName("match")
     val match: Match,
     @SerializedName("match_gifts")
-    val matchGifts: List<MatchGift>,
+    val matchGifts: List<MatchGift>?,
     @SerializedName("match_group")
     val matchGroup: MatchGroup,
     @SerializedName("match_group_id")

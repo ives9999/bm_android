@@ -76,12 +76,12 @@ class MatchTeamPlayerFragment : BaseFragment<FragmentMatchTeamPlayerBinding>(),
 
                 //add by ives 2023/08/02
                 //當賽事沒有贈品時，贈品與分隔線就不出現
-                if (it.matchGifts.isEmpty()) {
+                if (it.matchGifts.isNullOrEmpty()) {
                     line1.visibility = View.GONE
                     tvGiveaway.visibility = View.GONE
                 }
 
-                it.matchGifts.getOrNull(0)?.let { matchGift ->
+                it.matchGifts?.getOrNull(0)?.let { matchGift ->
                     val marginTopInPixels = dpToPx(requireContext(), 16)
                     val linearParams = LinearLayout.LayoutParams(
                         LinearLayout.LayoutParams.MATCH_PARENT,

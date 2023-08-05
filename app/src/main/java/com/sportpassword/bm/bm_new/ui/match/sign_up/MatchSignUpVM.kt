@@ -128,7 +128,7 @@ class MatchSignUpVM(
                 )
             )
             //隊員-贈品
-            signUpDto.matchGifts.getOrNull(0)?.let {
+            signUpDto.matchGifts?.getOrNull(0)?.let {
                 it.product.productAttributes.forEach { gift ->
                     playerInfoList.add(
                         PlayerInfo(
@@ -198,7 +198,7 @@ class MatchSignUpVM(
                                 ?: return null,
                             line = playInfo.find { it.type == PLAYER_LINE }?.value,
                             age = playInfo.find { it.type == PLAYER_AGE }?.value ?: return null,
-                            gift = if (matchSign.matchGifts.isEmpty()) null else
+                            gift = if (matchSign.matchGifts.isNullOrEmpty()) null else
                                 MatchTeamInsertDto.Player.Gift(
                                     attributes = setGifts(matchSign, playInfo),
                                     matchGiftId = "1"
@@ -217,7 +217,7 @@ class MatchSignUpVM(
         playInfo: List<PlayerInfo>
     ): String {
         val gifts = mutableListOf<String>()
-        signedMatch.matchGifts.getOrNull(0)?.let { matchGift ->
+        signedMatch.matchGifts?.getOrNull(0)?.let { matchGift ->
             matchGift.product.productAttributes.forEach { gift ->
                 playInfo.find { it.type == gift.alias }?.value?.let {
                     gifts.add(it)
