@@ -40,6 +40,10 @@ data class MatchListDto(
         @SerializedName("status")
         val status: String, // online
         @SerializedName("token")
-        val token: String // Hm0k2OvzOyZntkHvYikj1oEJR1BW5pD
+        val token: String, // Hm0k2OvzOyZntkHvYikj1oEJR1BW5pD
+        @SerializedName("priceMin")
+        val priceMin: Int,
+        @SerializedName("priceMax")
+        val priceMax: Int
     ) : Parcelable
 }

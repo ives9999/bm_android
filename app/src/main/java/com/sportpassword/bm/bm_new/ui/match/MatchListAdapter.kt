@@ -25,6 +25,7 @@ class MatchListAdapter :
         private val endDate = binding.endDate
         private val location = binding.location
         private val city = binding.tvCity
+        private val signUpPrice = binding.tvSignUpPrice
 
         init {
             binding.apply {
@@ -56,6 +57,10 @@ class MatchListAdapter :
             endDate.setContent(data.matchEnd.dropLast(3))
             location.setContent(data.arenaName)
             city.text = Zone.cityIdToString(data.cityId)
+            with(data) {
+                signUpPrice.text =
+                    if (priceMin == priceMax) "$$priceMax" else "$$priceMin - $$priceMax"
+            }
         }
     }
 
