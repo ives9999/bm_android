@@ -9,6 +9,8 @@ import com.sportpassword.bm.R
 import com.sportpassword.bm.Views.IconTextText2
 import com.sportpassword.bm.bm_new.data.dto.match.MatchDetailDto
 import com.sportpassword.bm.databinding.ItemMatchGroupBinding
+import com.sportpassword.bm.extensions.formattedWithSeparator
+import com.sportpassword.bm.extensions.toTwoString
 
 class MatchGroupsAdapter :
     ListAdapter<MatchDetailDto.MatchGroup, MatchGroupsAdapter.ViewHolder>(DiffCallback) {
@@ -43,8 +45,11 @@ class MatchGroupsAdapter :
         }
 
         fun bind(data: MatchDetailDto.MatchGroup) {
-            tvNumber.text = (bindingAdapterPosition + 1).toString()
-            tvPrice.text = context.getString(R.string.match_sign_price, data.price)
+            //add by ives 2023/08/06 如果只有個位數則捕0
+            tvNumber.text = (bindingAdapterPosition + 1).toTwoString() + "."
+            //add by ives 2023/08/06 金額加入會計符號
+            tvPrice.text = "NT$ ${data.price.formattedWithSeparator()} 元"
+            //tvPrice.text = context.getString(R.string.match_sign_price, data.price)
             tvName.text = data.name
             tvNumPerson.text = context.getString(R.string.match_num_person, data.number)
             tvSignGroups.text = context.getString(R.string.match_sign_group, data.number)

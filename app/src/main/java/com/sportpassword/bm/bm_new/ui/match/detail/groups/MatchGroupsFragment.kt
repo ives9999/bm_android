@@ -1,10 +1,15 @@
 package com.sportpassword.bm.bm_new.ui.match.detail.groups
 
+import android.app.Activity
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.sportpassword.bm.Controllers.LoginVC
+import com.sportpassword.bm.Controllers.MemberVC
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Utilities.Alert
 import com.sportpassword.bm.bm_new.data.dto.match.MatchDetailDto
@@ -15,6 +20,7 @@ import com.sportpassword.bm.bm_new.ui.util.LinearItemDecoration
 import com.sportpassword.bm.bm_new.ui.util.canSignUp
 import com.sportpassword.bm.bm_new.ui.util.toMatchSignUp
 import com.sportpassword.bm.databinding.FragmentMatchGroupsBinding
+import com.sportpassword.bm.member
 import org.koin.androidx.viewmodel.ext.android.sharedStateViewModel
 
 class MatchGroupsFragment : BaseFragment<FragmentMatchGroupsBinding>(),
@@ -74,16 +80,28 @@ class MatchGroupsFragment : BaseFragment<FragmentMatchGroupsBinding>(),
     override fun getViewModel(): BaseViewModel? = null
 
     override fun onSignUpClick(data: MatchDetailDto.MatchGroup) {
-        vm.matchDetail.value?.let {
-            canSignUp(
-                signupStart = it.signupStart,
-                signupEnd = it.signupEnd,
-                it.matchGroups.size >= data.limit
-            )?.let { stringRes ->
-                Alert.show(requireContext(), "警告", getString(stringRes))
-            } ?: run {
-                requireContext().toMatchSignUp(data.id, data.matchId, data.token)
+
+        //add by ives 2023/08/06 報名註冊前先檢查是否登入，如果沒有登入則導到登入頁
+        if (!member.isLoggedIn) {
+            toLogin()
+        } else {
+
+            vm.matchDetail.value?.let {
+                canSignUp(
+                    signupStart = it.signupStart,
+                    signupEnd = it.signupEnd,
+                    it.matchGroups.size >= data.limit
+                )?.let { stringRes ->
+                    Alert.show(requireContext(), "警告", getString(stringRes))
+                } ?: run {
+                    requireContext().toMatchSignUp(data.id, data.matchId, data.token)
+                }
             }
         }
+    }
+
+    fun toLogin() {
+        val i: Intent = Intent(requireContext(), LoginVC::class.java)
+        requireContext().startActivity(i)
     }
 }

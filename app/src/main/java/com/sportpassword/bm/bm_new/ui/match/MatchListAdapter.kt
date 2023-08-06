@@ -8,6 +8,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.sportpassword.bm.bm_new.data.dto.match.MatchListDto
 import com.sportpassword.bm.bm_new.ui.util.Zone
 import com.sportpassword.bm.databinding.ItemMatchBinding
+import com.sportpassword.bm.extensions.formattedWithSeparator
+import com.sportpassword.bm.extensions.toTwoString
 
 class MatchListAdapter :
     PagingDataAdapter<MatchListDto.Row, MatchListAdapter.ViewHolder>(DiffCallback) {
@@ -51,7 +53,8 @@ class MatchListAdapter :
         }
 
         fun bind(data: MatchListDto.Row) {
-            tvNumber.text = (bindingAdapterPosition + 1).toString()
+            //add by ives 2023/08/06 如果只有個位數則捕0
+            tvNumber.text = (bindingAdapterPosition + 1).toTwoString() + "."
             tvName.text = data.name
             startDate.setContent(data.matchStart.dropLast(3))
             endDate.setContent(data.matchEnd.dropLast(3))
@@ -59,7 +62,8 @@ class MatchListAdapter :
             city.text = Zone.cityIdToString(data.cityId)
             with(data) {
                 signUpPrice.text =
-                    if (priceMin == priceMax) "$$priceMax" else "$$priceMin - $$priceMax"
+                    //add by ives 2023/08/06 金額加入會計符號
+                    if (priceMin == priceMax) "NT$ $${priceMax.formattedWithSeparator()}" else "NT$ $${priceMin.formattedWithSeparator()} - $${priceMax.formattedWithSeparator()}"
             }
         }
     }
