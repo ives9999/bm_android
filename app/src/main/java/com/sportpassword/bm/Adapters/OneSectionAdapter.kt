@@ -310,7 +310,11 @@ class OneItemAdapter(
             holder.title.text = row.title
             holder.show.text = row.show
             holder.show.visibility = View.VISIBLE
-            holder.prompt.visibility = (row.prompt.isNotEmpty()) then { View.VISIBLE } ?: View.GONE
+            if (row.prompt.isNotEmpty()) {
+                holder.prompt.visibility = View.VISIBLE
+            } else {
+                holder.prompt.visibility = View.GONE
+            }
 
             holder.required.visibility = if (row.isRequired) {
                 View.VISIBLE

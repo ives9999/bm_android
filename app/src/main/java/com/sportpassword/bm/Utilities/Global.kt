@@ -1,6 +1,5 @@
 package com.sportpassword.bm.Utilities
 
-import android.Manifest
 import android.animation.Animator
 import android.app.Activity
 import android.app.AlertDialog
@@ -14,13 +13,11 @@ import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
 import android.net.Uri
-import android.text.InputType
 import android.text.SpannableString
 import android.text.Spanned
 import android.text.style.AbsoluteSizeSpan
 import android.text.style.ForegroundColorSpan
 import android.text.style.StyleSpan
-import android.util.TypedValue
 import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
@@ -39,12 +36,10 @@ import com.sportpassword.bm.Controllers.BaseActivity
 import com.sportpassword.bm.Models.*
 import com.squareup.picasso.Picasso
 import org.jetbrains.anko.backgroundColor
-import org.jetbrains.anko.displayMetrics
 import org.jetbrains.anko.makeCall
 import org.jetbrains.anko.sdk27.coroutines.onClick
 import org.jetbrains.anko.textColor
 import java.lang.reflect.Type
-import java.text.NumberFormat
 import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.*

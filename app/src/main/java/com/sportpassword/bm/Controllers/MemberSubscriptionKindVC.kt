@@ -2,11 +2,15 @@ package com.sportpassword.bm.Controllers
 
 import android.content.Context
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Adapter
 import android.widget.Button
 import android.widget.TextView
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
@@ -26,14 +30,19 @@ class MemberSubscriptionKindVC : BaseActivity(), MyTable2IF, List1CellDelegate {
     private lateinit var view: ViewGroup
 
     private val tableType: Type = object : TypeToken<Tables2<MemberSubscriptionKindTable>>() {}.type
-    lateinit var tableView: MyTable2VC<MemberSubscriptionKindViewHolder, MemberSubscriptionKindTable, MemberSubscriptionKindVC>
+    //lateinit var tableView: MyTable2VC<MemberSubscriptionKindViewHolder, MemberSubscriptionKindTable, MemberSubscriptionKindVC>
     //lateinit var tableAdapter: MyAdapter2<MemberLevelUpViewHolder<MemberLevelKindTable>, MemberLevelKindTable>
-    //var rows: ArrayList<MemberLevelKindTable> = arrayListOf()
+    var items: ArrayList<MemberSubscriptionKindTable> = arrayListOf()
+
+    var recyclerView: RecyclerView? = null
+    lateinit var adapter: MemberSubscriptionKindAdapter
 
     var bottom_button_count: Int = 3
     val button_width: Int = 300
 
     //var mysTable: Tables2<MemberLevelKindTable>? = null
+
+    var descTV: TextView? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -45,9 +54,14 @@ class MemberSubscriptionKindVC : BaseActivity(), MyTable2IF, List1CellDelegate {
         setContentView(view)
 
         setMyTitle("訂閱會員")
-        init()
 
-        refresh()
+        findViewById<RecyclerView>(R.id.list) ?. let {
+            recyclerView = it
+            adapter = MemberSubscriptionKindAdapter(this, this)
+            it.adapter = adapter
+        }
+
+        init()
     }
 
     override fun init() {
@@ -58,30 +72,40 @@ class MemberSubscriptionKindVC : BaseActivity(), MyTable2IF, List1CellDelegate {
             refreshLayout = it
         }
 
-        val recyclerView: RecyclerView = findViewById(R.id.list)
-        tableView = MyTable2VC(recyclerView, refreshLayout, R.layout.subscriptionkind_cell, ::MemberSubscriptionKindViewHolder, tableType, this::tableViewSetSelected, this::getDataFromServer, this)
+//        val recyclerView: RecyclerView = findViewById(R.id.list)
+//        tableView = MyTable2VC(recyclerView, refreshLayout, R.layout.subscriptionkind_cell, ::MemberSubscriptionKindViewHolder, tableType, this::tableViewSetSelected, this::getDataFromServer, this)
 
         setBottomThreeView()
+
+        refresh()
     }
 
     override fun refresh() {
 
-        tableView.page = 1
-        tableView.getDataFromServer(page)
+        //tableView.page = 1
+        //tableView.getDataFromServer(page)
+        page = 1
+        items.clear()
+        getDataFromServer(page)
     }
 
     private fun getDataFromServer(page: Int) {
-        loadingAnimation.start()
         loading = true
+        //loadingAnimation.start()
 
-        MemberService.subscriptionKind(this, member.token!!, page, tableView.perPage) { success ->
+        MemberService.subscriptionKind(this, member.token!!, page, 20) { success ->
             runOnUiThread {
-                loadingAnimation.stop()
+                //loadingAnimation.stop()
 
                 //MyTable2IF
-                val b: Boolean = showTableView(tableView, MemberService.jsonString)
-                if (b) {
-                    this.totalPage = tableView.totalPage
+                this.items = parseJSON(MemberService.jsonString)
+                //val b: Boolean = showTableView(tableView, MemberService.jsonString)
+                if (this.items.size > 0) {
+                    adapter.items = this.items
+                    //refreshLayout?.isRefreshing = false
+                    adapter.notifyDataSetChanged()
+
+                    //this.totalPage = tableView.totalPage
                     refreshLayout?.isRefreshing = false
                 } else {
                     val rootView: ViewGroup = getRootView()
@@ -89,6 +113,54 @@ class MemberSubscriptionKindVC : BaseActivity(), MyTable2IF, List1CellDelegate {
                 }
             }
         }
+    }
+
+    fun parseJSON(jsonString: String): ArrayList<MemberSubscriptionKindTable> {
+        var res: Boolean = true
+        val rows: ArrayList<MemberSubscriptionKindTable> = arrayListOf()
+        val tables2: Tables2<MemberSubscriptionKindTable>? = jsonToModels2<Tables2<MemberSubscriptionKindTable>, MemberSubscriptionKindTable>(jsonString, tableType)
+
+        if (tables2 == null) {
+            msg = "無法從伺服器取得正確的json資料，請洽管理員"
+        } else {
+            if (tables2.success) {
+                if (tables2.rows.size > 0) {
+
+                    for ((idx, row) in tables2.rows.withIndex()) {
+                        row.filterRow()
+
+                        row.no = idx + 1 + (page - 1)*perPage
+
+//                        selected ?. let {
+//                            it(row)
+//                        } .let {
+//                            row.selected = it!!
+//                        }
+                    }
+
+                    if (page == 1) {
+                        page = tables2.page
+                        perPage = tables2.perPage
+                        totalCount = tables2.totalCount
+                        val _totalPage: Int = totalCount / perPage
+                        totalPage = if (totalCount % perPage > 0) _totalPage + 1 else _totalPage
+
+                        if (totalPage > 1) {
+                            val layoutManager = LinearLayoutManager(delegate)
+                            recyclerView?.layoutManager = layoutManager
+                            //scrollListener = ScrollListener(layoutManager)
+                            //recyclerView.addOnScrollListener(scrollListener!!)
+                        }
+                    }
+
+                    rows.addAll(tables2.rows)
+                }
+            } else {
+                msg = "解析JSON字串時，沒有成功，系統傳回值錯誤，請洽管理員"
+            }
+        }
+
+        return rows
     }
 
     //1.如果按下原本訂閱的選項，不動作
@@ -268,6 +340,82 @@ class MemberSubscriptionKindVC : BaseActivity(), MyTable2IF, List1CellDelegate {
             params.marginStart = padding
             it.layoutParams = params
         }
+    }
+}
+
+class MemberSubscriptionKindAdapter(val context: Context, val delegate: MemberSubscriptionKindVC): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+
+    var items: ArrayList<MemberSubscriptionKindTable> = arrayListOf()
+
+    companion object {
+        const val DESC: Int = 1
+        const val LIST: Int = 2
+    }
+
+    override fun getItemViewType(position: Int): Int {
+        //println("position: ${position}")
+        val i = if (position == 0) DESC else LIST
+        return i
+    }
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+        if (viewType == DESC) {
+            val view: View = LayoutInflater.from(context).inflate(R.layout.desc_cell, parent, false)
+            return DescViewHolder(view)
+        } else {
+            val view: View = LayoutInflater.from(context).inflate(R.layout.subscriptionkind_cell, parent, false)
+            return MemberSubscriptionKindViewHolder(context, view, delegate)
+        }
+    }
+
+    override fun getItemCount(): Int {
+        val n = items.size
+        if (items.size > 0) {
+            return items.size + 1
+        } else {
+            return 0
+        }
+    }
+
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+        if (holder is DescViewHolder) {
+            holder.bind("", "")
+        } else if (holder is MemberSubscriptionKindViewHolder) {
+            if (position < items.size) {
+                holder.bind(items[position], position)
+            }
+        }
+    }
+
+}
+
+class DescViewHolder(view: View): ViewHolder(view) {
+
+    var titleTV: TextView? = null
+    var descTV: TextView? = null
+
+    init {
+        view.findViewById<TextView>(R.id.titleTV) ?. let {
+            titleTV = it
+            it.text = "訂閱會員介紹"
+        }
+
+        view.findViewById<TextView>(R.id.descTV) ?. let {
+            descTV = it
+            val text: String = "訂閱會員將享有羽球密碼的各種優惠\n" +
+                    "1.鑽石會員享有12張開箱球拍券。\n" +
+                    "2.白金會員享有7張開箱球拍券。\n" +
+                    "3.金牌會員享有3張開箱球拍券。\n" +
+                    "4.銀牌會員享有2張開箱球拍券。\n" +
+                    "5.銅牌會員享有1張開箱球拍券。\n" +
+                    "6.鐵盤會員沒有開箱球拍券。\n" +
+                    "7.基本會員沒有開箱球拍券。\n"
+            it.text = text
+        }
+    }
+
+    fun bind(title: String, desc: String) {
+//        titleTV?.text = title
+//        descTV?.text = desc
     }
 }
 
