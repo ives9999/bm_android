@@ -4,29 +4,23 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/top"
     android:background="@color/MY_BLACK"
     tools:context=".Controllers.MemberSubscriptionKindVC"
     android:orientation="vertical">
 
-    <RelativeLayout
-        android:id="@+id/topView"
+    <com.sportpassword.bm.Views.ShowTop2
+        android:id="@+id/top"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:background="@color/MY_GREEN">
-
-        <include layout="@layout/top_view" />
-
-    </RelativeLayout>
+        android:layout_height="54dp" />
 
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/descTV"
+        android:layout_below="@id/top"
         android:layout_above="@id/footer"
         android:background="@color/MY_BLACK"
+        android:layout_marginBottom="20dp"
         android:orientation="vertical">
 
         <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
@@ -40,7 +34,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:scrollbars="vertical"
-                app:layoutManager="androidx.recyclerview.widget.GridLayoutManager">
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager">
 
             </androidx.recyclerview.widget.RecyclerView>
         </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

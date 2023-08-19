@@ -19,6 +19,7 @@ import com.sportpassword.bm.Models.*
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.MemberService
 import com.sportpassword.bm.Utilities.*
+import com.sportpassword.bm.Views.ShowTop2
 import com.sportpassword.bm.databinding.ActivityMemberSubscriptionKindVcBinding
 import com.sportpassword.bm.databinding.MytablevcBinding
 import com.sportpassword.bm.member
@@ -32,9 +33,10 @@ class MemberSubscriptionKindVC : BaseActivity(), MyTable2IF, List1CellDelegate {
     private val tableType: Type = object : TypeToken<Tables2<MemberSubscriptionKindTable>>() {}.type
     //lateinit var tableView: MyTable2VC<MemberSubscriptionKindViewHolder, MemberSubscriptionKindTable, MemberSubscriptionKindVC>
     //lateinit var tableAdapter: MyAdapter2<MemberLevelUpViewHolder<MemberLevelKindTable>, MemberLevelKindTable>
-    var items: ArrayList<AdapterData> = arrayListOf()
+    var items: ArrayList<MemberSubscriptionKindTable> = arrayListOf()
 
-    var recyclerView: RecyclerView? = null
+    var showTop2: ShowTop2? = null
+    lateinit var recyclerView: RecyclerView
     lateinit var adapter: MemberSubscriptionKindAdapter
 
     var bottom_button_count: Int = 3
@@ -42,36 +44,24 @@ class MemberSubscriptionKindVC : BaseActivity(), MyTable2IF, List1CellDelegate {
 
     //var mysTable: Tables2<MemberLevelKindTable>? = null
 
-    var descTV: TextView? = null
-
     override fun onCreate(savedInstanceState: Bundle?) {
 
         dataService = MemberService
         super.onCreate(savedInstanceState)
 
         binding = ActivityMemberSubscriptionKindVcBinding.inflate(layoutInflater)
-        view = binding.root
-        setContentView(view)
+        setContentView(binding.root)
 
-        setMyTitle("訂閱會員")
-
-        val adapterData1: AdapterData = AdapterData(true)
-        items.add(adapterData1)
-        val k: MemberSubscriptionKindTable = MemberSubscriptionKindTable()
-        k.name = "金牌"
-        val adapterData2: AdapterData = AdapterData(false, k)
-        items.add(adapterData2)
-
-        findViewById<RecyclerView>(R.id.list) ?. let {
-            recyclerView = it
-            adapter = MemberSubscriptionKindAdapter(this, this)
-            adapter.items = items
-            it.adapter = adapter
+        binding.top.apply {
+            setTitle("訂閱會員")
+            showPrev(true)
         }
 
+        recyclerView = binding.list
+        adapter = MemberSubscriptionKindAdapter(this, this)
+        recyclerView.adapter = adapter
+        
         init()
-
-        //refresh()
     }
 
     override fun init() {
@@ -86,42 +76,44 @@ class MemberSubscriptionKindVC : BaseActivity(), MyTable2IF, List1CellDelegate {
 //        tableView = MyTable2VC(recyclerView, refreshLayout, R.layout.subscriptionkind_cell, ::MemberSubscriptionKindViewHolder, tableType, this::tableViewSetSelected, this::getDataFromServer, this)
 
         setBottomThreeView()
+
+        refresh()
     }
 
-//    override fun refresh() {
-//
-//        //tableView.page = 1
-//        //tableView.getDataFromServer(page)
-//        page = 1
-//        items.clear()
-//        getDataFromServer(page)
-//    }
-//
-//    private fun getDataFromServer(page: Int) {
-//        loading = true
-//        //loadingAnimation.start()
-//
-//        MemberService.subscriptionKind(this, member.token!!, page, 20) { success ->
-//            runOnUiThread {
-//                //loadingAnimation.stop()
-//
-//                //MyTable2IF
-//                this.items = parseJSON(MemberService.jsonString)
-//                //val b: Boolean = showTableView(tableView, MemberService.jsonString)
-//                if (this.items.size > 0) {
-//                    adapter.items = this.items
-//                    //refreshLayout?.isRefreshing = false
-//                    adapter.notifyDataSetChanged()
-//
-//                    //this.totalPage = tableView.totalPage
-//                    refreshLayout?.isRefreshing = false
-//                } else {
-//                    val rootView: ViewGroup = getRootView()
-//                    rootView.setInfo(this, "目前暫無資料")
-//                }
-//            }
-//        }
-//    }
+    override fun refresh() {
+
+        //tableView.page = 1
+        //tableView.getDataFromServer(page)
+        page = 1
+        items.clear()
+        getDataFromServer(page)
+    }
+
+    private fun getDataFromServer(page: Int) {
+        loading = true
+        //loadingAnimation.start()
+
+        MemberService.subscriptionKind(this, member.token!!, page, 20) { success ->
+            runOnUiThread {
+                //loadingAnimation.stop()
+
+                //MyTable2IF
+                this.items = parseJSON(MemberService.jsonString)
+                //val b: Boolean = showTableView(tableView, MemberService.jsonString)
+                if (this.items.size > 0) {
+                    adapter.items = this.items
+                    //refreshLayout?.isRefreshing = false
+                    adapter.notifyDataSetChanged()
+
+                    //this.totalPage = tableView.totalPage
+                    refreshLayout?.isRefreshing = false
+                } else {
+                    val rootView: ViewGroup = getRootView()
+                    rootView.setInfo(this, "目前暫無資料")
+                }
+            }
+        }
+    }
 
     fun parseJSON(jsonString: String): ArrayList<MemberSubscriptionKindTable> {
         var res: Boolean = true
@@ -153,12 +145,12 @@ class MemberSubscriptionKindVC : BaseActivity(), MyTable2IF, List1CellDelegate {
                         val _totalPage: Int = totalCount / perPage
                         totalPage = if (totalCount % perPage > 0) _totalPage + 1 else _totalPage
 
-                        if (totalPage > 1) {
-                            val layoutManager = LinearLayoutManager(delegate)
-                            recyclerView?.layoutManager = layoutManager
-                            //scrollListener = ScrollListener(layoutManager)
-                            //recyclerView.addOnScrollListener(scrollListener!!)
-                        }
+//                        if (totalPage > 1) {
+//                            val layoutManager = LinearLayoutManager(delegate)
+//                            recyclerView.layoutManager = layoutManager
+//                            scrollListener = ScrollListener(layoutManager)
+//                            recyclerView.addOnScrollListener(scrollListener!!)
+//                        }
                     }
 
                     rows.addAll(tables2.rows)
@@ -351,31 +343,19 @@ class MemberSubscriptionKindVC : BaseActivity(), MyTable2IF, List1CellDelegate {
     }
 }
 
-data class AdapterData (
-    val isDesc: Boolean = false,
-    val memberSubscriptionKindTable: MemberSubscriptionKindTable? = null
-)
-
 class MemberSubscriptionKindAdapter(val context: Context, val delegate: MemberSubscriptionKindVC): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    var items: ArrayList<AdapterData> = arrayListOf()
+    var items: ArrayList<MemberSubscriptionKindTable> = arrayListOf()
 
     companion object {
-        const val DESC: Int = 0
-        const val LIST: Int = 1
+        const val DESC: Int = 1
+        const val LIST: Int = 2
     }
 
     override fun getItemViewType(position: Int): Int {
         //println("position: ${position}")
-        val a = items[position].isDesc
-        return if (a) DESC else LIST
-//        when (items[position].isDesc) {
-//            true -> return DESC
-//            else -> return LIST
-//        }
-//        val i = if (position == 0) DESC else LIST
-//        return i
-//        return 2
+        val i = if (position == 0) DESC else LIST
+        return i
     }
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         if (viewType == DESC) {
@@ -389,21 +369,19 @@ class MemberSubscriptionKindAdapter(val context: Context, val delegate: MemberSu
 
     override fun getItemCount(): Int {
         val n = items.size
-//        if (items.size > 0) {
-//            return items.size + 1
-//        } else {
-//            return 0
-//        }
-
-        return n
+        if (items.size > 0) {
+            return items.size + 1
+        } else {
+            return 0
+        }
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        if (getItemViewType(position) == DESC) {
-            (holder as DescViewHolder).bind("", "")
-        } else {
-            if (position < items.size) {
-                (holder as MemberSubscriptionKindViewHolder).bind(items[position].memberSubscriptionKindTable!!, position)
+        if (holder is DescViewHolder) {
+            holder.bind("", "")
+        } else if (holder is MemberSubscriptionKindViewHolder) {
+            if (items.size >= position) {
+                holder.bind(items[position-1])
             }
         }
     }
@@ -451,8 +429,7 @@ class MemberSubscriptionKindViewHolder(
     val lotteryTV: TextView = view.findViewById(R.id.lotteryTV)
     val priceLbl: TextView = view.findViewById(R.id.priceLbl)
 
-    override fun bind(row: MemberSubscriptionKindTable, idx: Int) {
-        super.bind(row, idx)
+    fun bind(row: MemberSubscriptionKindTable) {
 
         titleLbl.text = row.name
         lotteryTV.text = "每次開箱球拍券：${row.lottery}張"
