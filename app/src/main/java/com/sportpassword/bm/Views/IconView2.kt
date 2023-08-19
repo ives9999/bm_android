@@ -31,15 +31,12 @@ class IconView2@JvmOverloads constructor(context: Context, attrs: AttributeSet? 
             iconIV = it
         }
         attrs ?. let {
-            val typedArray = context.obtainStyledAttributes(it, R.styleable.IconView, 0, 0)
+            val typedArray = context.obtainStyledAttributes(it, R.styleable.IconView2, 0, 0)
 
-            if (typedArray.hasValue(R.styleable.IconView_iconViewIcon)) {
+            if (typedArray.hasValue(R.styleable.IconView2_iconView2Icon)) {
 
-                typedArray.getString(R.styleable.IconView_iconViewIcon) ?. let { it1 ->
+                typedArray.getString(R.styleable.IconView2_iconView2Icon) ?. let { it1 ->
                     setIcon(it1)
-//                    this.icon = it1
-//                    val res: Int = getResourceID(context, it1, "drawable")
-//                    iconIV?.image = getDrawable(context, res)
                 }
             }
         }

@@ -154,7 +154,7 @@
             android:id="@+id/editIcon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:iconViewIcon="ic_edit_svg"
+            app:iconView2Icon="ic_edit_svg"
             />
 
         <com.sportpassword.bm.Views.IconView2
@@ -162,7 +162,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            app:iconViewIcon="ic_delete_svg"
+            app:iconView2Icon="ic_delete_svg"
             />
 
         <com.sportpassword.bm.Views.IconView2
@@ -170,7 +170,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            app:iconViewIcon="ic_check_svg"
+            app:iconView2Icon="ic_check_svg"
             />
 
         <com.sportpassword.bm.Views.IconView2
@@ -178,7 +178,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            app:iconViewIcon="ic_member_svg"
+            app:iconView2Icon="ic_member_svg"
             />
 
         <View

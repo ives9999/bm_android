@@ -19,6 +19,8 @@ import com.sportpassword.bm.Models.*
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.MemberService
 import com.sportpassword.bm.Utilities.*
+import com.sportpassword.bm.Views.IconView2
+import com.sportpassword.bm.Views.IconWithBGCircle
 import com.sportpassword.bm.Views.ShowTop2
 import com.sportpassword.bm.databinding.ActivityMemberSubscriptionKindVcBinding
 import com.sportpassword.bm.databinding.MytablevcBinding
@@ -60,7 +62,7 @@ class MemberSubscriptionKindVC : BaseActivity(), MyTable2IF, List1CellDelegate {
         recyclerView = binding.list
         adapter = MemberSubscriptionKindAdapter(this, this)
         recyclerView.adapter = adapter
-        
+
         init()
     }
 
@@ -425,12 +427,14 @@ class MemberSubscriptionKindViewHolder(
     delegate: MemberSubscriptionKindVC
 ): MyViewHolder2<MemberSubscriptionKindTable, MemberSubscriptionKindVC>(context, view, delegate) {
 
+    val iconBG: IconWithBGCircle = view.findViewById(R.id.iconBG)
     val titleLbl: TextView = view.findViewById(R.id.titleLbl)
     val lotteryTV: TextView = view.findViewById(R.id.lotteryTV)
     val priceLbl: TextView = view.findViewById(R.id.priceLbl)
 
     fun bind(row: MemberSubscriptionKindTable) {
 
+        iconBG.setIcon("ic_subscription_diamond")
         titleLbl.text = row.name
         lotteryTV.text = "每次開箱球拍券：${row.lottery}張"
         priceLbl.text = "NT$: " + row.price.toString() + " 元/月"

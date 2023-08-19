@@ -18,8 +18,14 @@
         <attr name="fullscreenTextColor" format="color" />
     </declare-styleable>
 
-    <declare-styleable name="IconView">
-        <attr name="iconViewIcon" format="string" />
+    <declare-styleable name="IconView2">
+        <attr name="iconView2Icon" format="string" />
+    </declare-styleable>
+
+    <declare-styleable name="IconWithBGCircle">
+        <attr name="iconWithBGCircleIcon" format="string" />
+        <attr name="iconWithBGCircleFrameWidth" format="integer" />
+        <attr name="iconWithBGCircleIconWidth" format="integer" />
     </declare-styleable>
 
     <declare-styleable name="IconText2">
