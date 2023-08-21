@@ -18,7 +18,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/top"
-        android:layout_above="@id/footer"
+        android:layout_above="@id/bottom2"
         android:background="@color/MY_BLACK"
         android:layout_marginBottom="20dp"
         android:orientation="vertical">
@@ -40,6 +40,10 @@
         </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
     </LinearLayout>
 
-    <include layout="@layout/bottom_view_three" />
+    <com.sportpassword.bm.Views.Bottom2
+        android:id="@+id/bottom2"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_alignParentBottom="true" />
 
 </RelativeLayout>

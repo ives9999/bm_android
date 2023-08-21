@@ -382,7 +382,7 @@
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
     <com.sportpassword.bm.Views.Bottom2
-        android:id="@+id/bottom"
+        android:id="@+id/bottom2"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_alignParentBottom="true" />

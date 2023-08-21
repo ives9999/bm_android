@@ -1,0 +1,13 @@
+
+<shape xmlns:android="http://schemas.android.com/apk/res/android" android:shape="rectangle" >
+    <!-- View background color -->
+    <solid
+        android:color="@color/CELL_SELECTED">
+    </solid>
+    <stroke
+        android:color="@color/MY_GREEN" android:width="1dp">
+    </stroke>
+    <corners
+        android:radius="22dp"   >
+    </corners>
+</shape>

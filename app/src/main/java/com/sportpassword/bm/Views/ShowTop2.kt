@@ -28,6 +28,7 @@ class ShowTop2 @JvmOverloads constructor(context: Context, attrs: AttributeSet? 
 
     private var refreshIcon: IconView2? = null
     private var addIconText: IconText2? = null
+    private var logIconText: IconText2? = null
 
     var delegate: ShowTop2Delegate? = null
 
@@ -118,9 +119,27 @@ class ShowTop2 @JvmOverloads constructor(context: Context, attrs: AttributeSet? 
             delegate?.showTop2Add()
         }
     }
+
+    fun showLog(marginEnd: Int) {
+        logIconText = IconText2(context)
+        logIconText!!.setIcon("ic_log_svg")
+        logIconText!!.setText("查詢")
+
+        val lp: RelativeLayout.LayoutParams = RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT)
+        lp.addRule(RelativeLayout.ALIGN_PARENT_END)
+        lp.addRule(RelativeLayout.CENTER_VERTICAL)
+        lp.marginEnd = marginEnd.dpToPx(context)
+
+        rootRL?.addView(logIconText, lp)
+
+        logIconText!!.setOnClickListener {
+            delegate?.showTop2Log()
+        }
+    }
 }
 
 interface ShowTop2Delegate {
-    fun showTop2Refresh()
-    fun showTop2Add()
+    fun showTop2Refresh(){}
+    fun showTop2Add(){}
+    fun showTop2Log(){}
 }

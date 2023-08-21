@@ -1,13 +1,16 @@
 package com.sportpassword.bm.Controllers
 
 import android.content.Context
+import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Adapter
 import android.widget.Button
+import android.widget.RelativeLayout
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
@@ -19,15 +22,14 @@ import com.sportpassword.bm.Models.*
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.MemberService
 import com.sportpassword.bm.Utilities.*
-import com.sportpassword.bm.Views.IconView2
-import com.sportpassword.bm.Views.IconWithBGCircle
-import com.sportpassword.bm.Views.ShowTop2
+import com.sportpassword.bm.Views.*
 import com.sportpassword.bm.databinding.ActivityMemberSubscriptionKindVcBinding
 import com.sportpassword.bm.databinding.MytablevcBinding
 import com.sportpassword.bm.member
+import org.jetbrains.anko.backgroundColor
 import java.lang.reflect.Type
 
-class MemberSubscriptionKindVC : BaseActivity(), MyTable2IF, List1CellDelegate {
+class MemberSubscriptionKindVC : BaseActivity(), MyTable2IF, List1CellDelegate, ShowTop2Delegate {
 
     private lateinit var binding: ActivityMemberSubscriptionKindVcBinding
     private lateinit var view: ViewGroup
@@ -38,6 +40,7 @@ class MemberSubscriptionKindVC : BaseActivity(), MyTable2IF, List1CellDelegate {
     var items: ArrayList<MemberSubscriptionKindTable> = arrayListOf()
 
     var showTop2: ShowTop2? = null
+    var showBottom2: Bottom2? = null
     lateinit var recyclerView: RecyclerView
     lateinit var adapter: MemberSubscriptionKindAdapter
 
@@ -54,31 +57,49 @@ class MemberSubscriptionKindVC : BaseActivity(), MyTable2IF, List1CellDelegate {
         binding = ActivityMemberSubscriptionKindVcBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        binding.top.apply {
-            setTitle("訂閱會員")
-            showPrev(true)
-        }
-
-        recyclerView = binding.list
-        adapter = MemberSubscriptionKindAdapter(this, this)
-        recyclerView.adapter = adapter
+        initTop()
+        initRecyclerView()
+        initBottom()
 
         init()
     }
 
-    override fun init() {
+    fun initTop() {
         isPrevIconShow = true
-        super.init()
+        binding.top.delegate = this
+        binding.top.apply {
+            setTitle("${MEMBER_SUBSCRIPTION_KIND.stringToEnum(member.subscription!!).toChineseString()}會員")
+            showPrev(true)
+            showLog(20)
+        }
+    }
+
+    fun initRecyclerView() {
+        recyclerView = binding.list
+        adapter = MemberSubscriptionKindAdapter(this, this)
+        recyclerView.adapter = adapter
 
         findViewById<SwipeRefreshLayout>(R.id.refreshSR) ?. let {
             refreshLayout = it
         }
+    }
 
+    fun initBottom() {
+        bottom_button_count = 2
+        findViewById<Bottom2>(R.id.bottom2) ?. let {
+            showBottom2 = it
+            it.showButton(true, false, true)
+            it.setSubmitBtnTitle("取消訂閱")
+            it.setOnSubmitClickListener(submit)
+            it.setOnCancelClickListener(cancel)
+        }
+        //setBottomThreeView()
+    }
+
+    override fun init() {
+        super.init()
 //        val recyclerView: RecyclerView = findViewById(R.id.list)
 //        tableView = MyTable2VC(recyclerView, refreshLayout, R.layout.subscriptionkind_cell, ::MemberSubscriptionKindViewHolder, tableType, this::tableViewSetSelected, this::getDataFromServer, this)
-
-        setBottomThreeView()
-
         refresh()
     }
 
@@ -130,14 +151,7 @@ class MemberSubscriptionKindVC : BaseActivity(), MyTable2IF, List1CellDelegate {
 
                     for ((idx, row) in tables2.rows.withIndex()) {
                         row.filterRow()
-
-                        row.no = idx + 1 + (page - 1)*perPage
-
-//                        selected ?. let {
-//                            it(row)
-//                        } .let {
-//                            row.selected = it!!
-//                        }
+                        row.selected = tableViewSetSelected(row)
                     }
 
                     if (page == 1) {
@@ -202,30 +216,42 @@ class MemberSubscriptionKindVC : BaseActivity(), MyTable2IF, List1CellDelegate {
         return row.eng_name == member.subscription
     }
 
-    private fun setBottomThreeView() {
-        findViewById<Button>(R.id.submitBtn) ?. let {
-            it.text = "查詢"
-            it.setOnClickListener {
-                toMemberSubscriptionLog()
-            }
-        }
-
-        findViewById<Button>(R.id.threeBtn) ?. let {
-            it.text = "退訂"
-            it.setOnClickListener {
-                unScbscription()
-            }
-        }
-
-        findViewById<Button>(R.id.cancelBtn) ?. let {
-            it.text = "回上一頁"
-            it.setOnClickListener {
-                prev()
-            }
-        }
-
-        setBottomButtonPadding()
+    override fun showTop2Log() {
+        toMemberSubscriptionLog()
     }
+
+    val cancel: ()-> Unit = {
+        prev()
+    }
+
+    val submit: () -> Unit = {
+        unScbscription()
+    }
+
+//    private fun setBottomThreeView() {
+//        findViewById<Button>(R.id.submitBtn) ?. let {
+//            it.text = "查詢"
+//            it.setOnClickListener {
+//                toMemberSubscriptionLog()
+//            }
+//        }
+//
+//        findViewById<Button>(R.id.threeBtn) ?. let {
+//            it.text = "退訂"
+//            it.setOnClickListener {
+//                unScbscription()
+//            }
+//        }
+//
+//        findViewById<Button>(R.id.cancelBtn) ?. let {
+//            it.text = "回上一頁"
+//            it.setOnClickListener {
+//                prev()
+//            }
+//        }
+//
+//        setBottomButtonPadding()
+//    }
 
     private fun subscription(kind: MEMBER_SUBSCRIPTION_KIND) {
         loadingAnimation.start()
@@ -427,20 +453,27 @@ class MemberSubscriptionKindViewHolder(
     delegate: MemberSubscriptionKindVC
 ): MyViewHolder2<MemberSubscriptionKindTable, MemberSubscriptionKindVC>(context, view, delegate) {
 
+    val containerRL: RelativeLayout = view.findViewById(R.id.containerRL)
     val iconBG: IconWithBGCircle = view.findViewById(R.id.iconBG)
     val titleLbl: TextView = view.findViewById(R.id.titleLbl)
     val lotteryTV: TextView = view.findViewById(R.id.lotteryTV)
     val priceLbl: TextView = view.findViewById(R.id.priceLbl)
 
-    fun bind(row: MemberSubscriptionKindTable) {
+    fun bind(item: MemberSubscriptionKindTable) {
 
-        iconBG.setIcon("ic_subscription_diamond")
-        titleLbl.text = row.name
-        lotteryTV.text = "每次開箱球拍券：${row.lottery}張"
-        priceLbl.text = "NT$: " + row.price.toString() + " 元/月"
+        iconBG.setIcon("ic_subscription_${item.eng_name}")
+        titleLbl.text = item.name
+        lotteryTV.text = "每次開箱球拍券：${item.lottery}張"
+        priceLbl.text = if (item.price == 0) "免費" else "${item.price.toString()}/月"
+
+        if (item.selected) {
+            ContextCompat.getDrawable(context, R.drawable.cell_selected) ?. let {
+                containerRL.background = it
+            }
+        }
 
         view.setOnClickListener {
-            delegate.cellClick(row)
+            delegate.cellClick(item)
         }
     }
 }

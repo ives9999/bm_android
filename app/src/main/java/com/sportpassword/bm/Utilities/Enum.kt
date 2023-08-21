@@ -733,7 +733,7 @@ enum class SIGNUP_STATUS(val type: String) {
 enum class MEMBER_SUBSCRIPTION_KIND(val englishName: String, val chineseName: String) {
 
     diamond("diamond", "鑽石"),
-    white_gold("white_gold", "白金"),
+    premium("premium", "白金"),
     gold("gold", "金牌"),
     silver("silver", "銀牌"),
     copper("copper", "銅牌"),
@@ -755,7 +755,7 @@ enum class MEMBER_SUBSCRIPTION_KIND(val englishName: String, val chineseName: St
             copper -> return 1
             silver -> return 2
             gold-> return 3
-            white_gold-> return 7
+            premium-> return 7
             diamond-> return 12
             else -> return 0
         }
@@ -775,7 +775,7 @@ enum class MEMBER_SUBSCRIPTION_KIND(val englishName: String, val chineseName: St
                 "copper"-> return copper
                 "silver"-> return silver
                 "gold"-> return gold
-                "white_gold"-> return white_gold
+                "premium"-> return premium
                 "diamond"-> return diamond
             }
             return basic
