@@ -13,17 +13,20 @@ import com.sportpassword.bm.Models.MemberSubscriptionLogTable
 import com.sportpassword.bm.Models.Tables2
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.MemberService
+import com.sportpassword.bm.Utilities.MEMBER_SUBSCRIPTION_KIND
 import com.sportpassword.bm.Utilities.noSec
 import com.sportpassword.bm.Utilities.setInfo
+import com.sportpassword.bm.Views.ShowTop2
+import com.sportpassword.bm.Views.ShowTop2Delegate
 import com.sportpassword.bm.databinding.ActivityMemberSubscriptionLogVcBinding
 import com.sportpassword.bm.member
 import java.lang.reflect.Type
 
-class MemberSubscriptionLogVC : BaseActivity(), MyTable2IF {
+class MemberSubscriptionLogVC : BaseActivity(), MyTable2IF, ShowTop2Delegate {
 
     private lateinit var binding: ActivityMemberSubscriptionLogVcBinding
-    private lateinit var view: ViewGroup
 
+    var showTop2: ShowTop2? = null
     private val tableType: Type = object : TypeToken<Tables2<MemberSubscriptionLogTable>>() {}.type
     lateinit var tableView: MyTable2VC<MemberSubscriptionLogViewHolder, MemberSubscriptionLogTable, MemberSubscriptionLogVC>
 
@@ -33,27 +36,32 @@ class MemberSubscriptionLogVC : BaseActivity(), MyTable2IF {
         super.onCreate(savedInstanceState)
 
         binding = ActivityMemberSubscriptionLogVcBinding.inflate(layoutInflater)
-        view = binding.root
-        setContentView(view)
+        setContentView(binding.root)
 
-        setMyTitle("訂閱會員付款紀錄")
-
+        initTop()
+        initRecyclerView()
         init()
+    }
 
-        refresh()
+    private fun initTop() {
+        isPrevIconShow = true
+        binding.top.delegate = this
+        binding.top.apply {
+            setTitle("訂閱會員付款紀錄")
+            showPrev(true)
+        }
+    }
+
+    private fun initRecyclerView() {
+
+        refreshLayout = binding.refreshSR
+        tableView = MyTable2VC(binding.list, refreshLayout, R.layout.subscriptionlog_cell,
+            ::MemberSubscriptionLogViewHolder, tableType, this::tableViewSetSelected, this::getDataFromServer, this)
     }
 
     override fun init() {
-        isPrevIconShow = true
         super.init()
-
-        findViewById<SwipeRefreshLayout>(R.id.refreshSR) ?. let {
-            refreshLayout = it
-        }
-
-        val recyclerView: RecyclerView = findViewById(R.id.list)
-        tableView = MyTable2VC(recyclerView, refreshLayout, R.layout.subscriptionlog_cell,
-            ::MemberSubscriptionLogViewHolder, tableType, this::tableViewSetSelected, this::getDataFromServer, this)
+        refresh()
     }
 
     override fun refresh() {

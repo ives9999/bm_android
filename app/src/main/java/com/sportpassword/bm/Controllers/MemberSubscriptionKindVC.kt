@@ -64,7 +64,7 @@ class MemberSubscriptionKindVC : BaseActivity(), MyTable2IF, List1CellDelegate, 
         init()
     }
 
-    fun initTop() {
+    private fun initTop() {
         isPrevIconShow = true
         binding.top.delegate = this
         binding.top.apply {
@@ -74,7 +74,7 @@ class MemberSubscriptionKindVC : BaseActivity(), MyTable2IF, List1CellDelegate, 
         }
     }
 
-    fun initRecyclerView() {
+    private fun initRecyclerView() {
         recyclerView = binding.list
         adapter = MemberSubscriptionKindAdapter(this, this)
         recyclerView.adapter = adapter
@@ -84,7 +84,7 @@ class MemberSubscriptionKindVC : BaseActivity(), MyTable2IF, List1CellDelegate, 
         }
     }
 
-    fun initBottom() {
+    private fun initBottom() {
         bottom_button_count = 2
         findViewById<Bottom2>(R.id.bottom2) ?. let {
             showBottom2 = it
@@ -98,8 +98,6 @@ class MemberSubscriptionKindVC : BaseActivity(), MyTable2IF, List1CellDelegate, 
 
     override fun init() {
         super.init()
-//        val recyclerView: RecyclerView = findViewById(R.id.list)
-//        tableView = MyTable2VC(recyclerView, refreshLayout, R.layout.subscriptionkind_cell, ::MemberSubscriptionKindViewHolder, tableType, this::tableViewSetSelected, this::getDataFromServer, this)
         refresh()
     }
 
