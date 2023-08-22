@@ -29,7 +29,7 @@
         android:id="@+id/refresh"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@id/bottom"
+        android:layout_above="@id/bottom2"
         android:layout_below="@id/showTap2"
         android:background="@color/MY_BLACK"
         android:focusable="true"

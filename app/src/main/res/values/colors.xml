@@ -9,6 +9,7 @@
     <color name="colorAccent">#FF4081</color>
     <color name="colorPrimary">#a6d903</color>
     <color name="colorPrimaryDark">#658501</color>
+    <color name="DANGER">#FE4C4C</color>
     <color name="EDIT_TEXT_BACKGROUND">#11D9D9D9</color>
     <color name="FBBLUE">#3e64a2</color>
     <color name="grey">#808080</color>
@@ -58,6 +59,8 @@
     <color name="WHITE_26">#42FFFFFF</color>
     <color name="WHITE_10">#1AFFFFFF</color>
     <color name="TEXT_WHITE">#d1d1d1</color>
+    <color name="TEXT_WHITEBB">#BBFFFFFF</color>
+    <color name="TEXT_WHITEAA">#AAFFFFFF</color>
     <color name="TEXT_WHITE99">#99FFFFFF</color>
     <color name="TEXT_WHITE77">#77FFFFFF</color>
     <color name="TEXT_WHITE66">#66FFFFFF</color>

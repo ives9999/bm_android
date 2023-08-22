@@ -189,13 +189,20 @@
     </style>
 
     <style name="list_text_no">
-        <item name="android:textColor">@color/TEXT_WHITE77</item>
+        <item name="android:textColor">@color/MY_GREEN</item>
         <item name="android:textSize">14dp</item>
     </style>
 
     <style name="icon_text">
-        <item name="android:textColor">@color/MY_GREEN</item>
-        <item name="android:textSize">10dp</item>
+        <item name="android:textColor">@color/TEXT_WHITEBB</item>
+        <item name="android:textSize">14dp</item>
+        <item name="android:fontFamily">sans-serif-black</item>
+        <item name="android:textStyle">normal</item>
+    </style>
+
+    <style name="icon_text_danger">
+        <item name="android:textColor">@color/DANGER</item>
+        <item name="android:textSize">14dp</item>
         <item name="android:fontFamily">sans-serif-black</item>
         <item name="android:textStyle">normal</item>
     </style>

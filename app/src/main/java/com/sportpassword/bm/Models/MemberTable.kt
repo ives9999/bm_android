@@ -599,8 +599,9 @@ class MemberSubscriptionLogTable: Table() {
 
     var member_id: Int = 0
     var amount: Int = 0
+    var type: String = "pay"
     var invoice_no: String = ""
-    var orderTable: OrderTable? = null
+    @SerializedName("order") var orderTable: OrderTable? = null
 }
 
 enum class MEMBER_ROLE(val value: String) {

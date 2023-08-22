@@ -1,10 +1,12 @@
 package com.sportpassword.bm.Controllers
 
 import android.content.Context
+import android.graphics.Color
 import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.google.gson.reflect.TypeToken
@@ -21,8 +23,10 @@ import com.sportpassword.bm.Views.IconText2
 import com.sportpassword.bm.Views.ShowTop2
 import com.sportpassword.bm.Views.ShowTop2Delegate
 import com.sportpassword.bm.databinding.ActivityMemberSubscriptionLogVcBinding
+import com.sportpassword.bm.extensions.getMyColor
 import com.sportpassword.bm.extensions.toTwoString
 import com.sportpassword.bm.member
+import org.jetbrains.anko.textColor
 import java.lang.reflect.Type
 
 class MemberSubscriptionLogVC : BaseActivity(), MyTable2IF, ShowTop2Delegate {
@@ -126,16 +130,46 @@ class MemberSubscriptionLogViewHolder(
 ): MyViewHolder2<MemberSubscriptionLogTable, MemberSubscriptionLogVC>(context, view, delegate) {
 
     val noTV: TextView = view.findViewById(R.id.noTV)
+    val startOrEndTV: TextView = view.findViewById(R.id.startOrEndTV)
     val datetimeIT: IconText = view.findViewById(R.id.datetimeIT)
     val priceIT: IconText = view.findViewById(R.id.priceIT)
     val invoiceIT: IconText = view.findViewById(R.id.invoiceIT)
+    val orderTV: TextView = view.findViewById(R.id.orderTV)
 
     override fun bind(row: MemberSubscriptionLogTable, idx: Int) {
         super.bind(row, idx)
 
         noTV.text = row.no.toTwoString()
         datetimeIT.setText(row.created_at.noSec())
+
         priceIT.setText("NT$: ${row.amount} 元")
         invoiceIT.setText(row.invoice_no)
+
+        //開始訂閱
+        if (row.orderTable != null) {
+            startOrEndTV.visibility = View.VISIBLE
+            startOrEndTV.text = "訂閱開始"
+            startOrEndTV.textColor = context.getMyColor(R.color.MY_GREEN)
+
+            priceIT.visibility = View.VISIBLE
+            invoiceIT.visibility = View.VISIBLE
+
+            orderTV.text = "訂單編號：${row.orderTable!!.order_no}"
+        } else {
+            //繼續付款或取消訂閱
+            if (row.type == "stop") {
+                startOrEndTV.visibility = View.VISIBLE
+                startOrEndTV.text = "取消訂閱"
+                startOrEndTV.textColor = context.getMyColor(R.color.DANGER)
+
+                priceIT.visibility = View.GONE
+                invoiceIT.visibility = View.GONE
+            } else {
+                startOrEndTV.visibility = View.INVISIBLE
+                priceIT.visibility = View.VISIBLE
+                invoiceIT.visibility = View.VISIBLE
+            }
+            orderTV.visibility = View.GONE
+        }
     }
 }
