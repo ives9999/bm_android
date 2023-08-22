@@ -28,6 +28,11 @@
         <attr name="iconWithBGCircleIconWidth" format="integer" />
     </declare-styleable>
 
+    <declare-styleable name="IconText">
+        <attr name="iconTextIcon" format="string" />
+        <attr name="iconTextText" format="string" />
+    </declare-styleable>
+
     <declare-styleable name="IconText2">
         <attr name="iconText2Icon" format="string" />
         <attr name="iconText2Text" format="string" />

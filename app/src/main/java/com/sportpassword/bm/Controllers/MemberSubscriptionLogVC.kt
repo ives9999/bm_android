@@ -16,9 +16,12 @@ import com.sportpassword.bm.Services.MemberService
 import com.sportpassword.bm.Utilities.MEMBER_SUBSCRIPTION_KIND
 import com.sportpassword.bm.Utilities.noSec
 import com.sportpassword.bm.Utilities.setInfo
+import com.sportpassword.bm.Views.IconText
+import com.sportpassword.bm.Views.IconText2
 import com.sportpassword.bm.Views.ShowTop2
 import com.sportpassword.bm.Views.ShowTop2Delegate
 import com.sportpassword.bm.databinding.ActivityMemberSubscriptionLogVcBinding
+import com.sportpassword.bm.extensions.toTwoString
 import com.sportpassword.bm.member
 import java.lang.reflect.Type
 
@@ -122,15 +125,17 @@ class MemberSubscriptionLogViewHolder(
     delegate: MemberSubscriptionLogVC
 ): MyViewHolder2<MemberSubscriptionLogTable, MemberSubscriptionLogVC>(context, view, delegate) {
 
-    val noLbl: TextView = view.findViewById(R.id.noTV)
-    val priceLbl: TextView = view.findViewById(R.id.priceLbl)
-    val dateLbl: TextView = view.findViewById(R.id.dateLbl)
+    val noTV: TextView = view.findViewById(R.id.noTV)
+    val datetimeIT: IconText = view.findViewById(R.id.datetimeIT)
+    val priceIT: IconText = view.findViewById(R.id.priceIT)
+    val invoiceIT: IconText = view.findViewById(R.id.invoiceIT)
 
     override fun bind(row: MemberSubscriptionLogTable, idx: Int) {
         super.bind(row, idx)
 
-        noLbl.text = row.no.toString()
-        priceLbl.text = "NT$: " + row.amount.toString() + " 元"
-        dateLbl.text = row.created_at.noSec()
+        noTV.text = row.no.toTwoString()
+        datetimeIT.setText(row.created_at.noSec())
+        priceIT.setText("NT$: ${row.amount} 元")
+        invoiceIT.setText(row.invoice_no)
     }
 }

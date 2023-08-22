@@ -123,8 +123,9 @@ class SearchVC : MyTableVC() {
         dataService = TeamService
         delegate = this
 
-        val btn = findViewById<Button>(R.id.submit_btn)
-        btn.setOnClickListener { searchSubmit() }
+        findViewById<Button>(R.id.submit_btn) ?. let {
+            it.setOnClickListener { searchSubmit() }
+        }
 
         binding.footer.visibility = View.GONE
         //remain.visibility = View.GONE
