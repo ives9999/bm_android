@@ -1,4 +1,5 @@
 package com.sportpassword.bm.bm_new.data.dto.match
+
 import com.google.gson.annotations.SerializedName
 
 
@@ -131,6 +132,8 @@ data class MatchDetailDto(
         val name: String, // 社會組男雙
         @SerializedName("number")
         val number: Int, // 2
+        @SerializedName("signup_count")
+        val signupCount: Int,
         @SerializedName("price")
         val price: Int, // 1400
         @SerializedName("product_price_id")

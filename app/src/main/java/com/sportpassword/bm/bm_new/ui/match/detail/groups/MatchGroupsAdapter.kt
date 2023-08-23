@@ -52,7 +52,7 @@ class MatchGroupsAdapter :
             //tvPrice.text = context.getString(R.string.match_sign_price, data.price)
             tvName.text = data.name
             tvNumPerson.text = context.getString(R.string.match_num_person, data.number)
-            tvSignGroups.text = context.getString(R.string.match_sign_group, data.number)
+            tvSignGroups.text = context.getString(R.string.match_sign_group, data.signupCount)
             tvLimitGroups.text = context.getString(R.string.match_limit_group, data.limit)
 
             signupStartITT.setShow(signupStartShow.dropLast(3))
