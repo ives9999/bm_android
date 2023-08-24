@@ -1,8 +1,9 @@
 package com.sportpassword.bm.Controllers
 
 import android.content.Context
-import android.content.Intent import android.graphics.Bitmap
+import android.graphics.Bitmap
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.ViewGroup.MarginLayoutParams
@@ -13,11 +14,9 @@ import android.widget.TextView
 import androidmads.library.qrgenearator.QRGContents
 import androidmads.library.qrgenearator.QRGEncoder
 import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-import com.sportpassword.bm.Adapters.MemberSectionAdapter
-import com.sportpassword.bm.Data.MemberRow
-import com.sportpassword.bm.Data.MemberSection
 import com.sportpassword.bm.Models.*
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.MemberService
@@ -29,8 +28,6 @@ import com.sportpassword.bm.databinding.ActivityMemberVcBinding
 import com.sportpassword.bm.extensions.avatar
 import com.sportpassword.bm.extensions.dpToPx
 import com.sportpassword.bm.member
-import com.squareup.picasso.Picasso
-import org.jetbrains.anko.runOnUiThread
 import java.lang.Exception
 import java.lang.reflect.Type
 
@@ -49,7 +46,12 @@ class MemberVC : BaseActivity(), IconView2Delegate {
     var levelIconText: IconTextVertical2? = null
 
     private val tableType: Type = object : TypeToken<Tables2<MainMemberTable>>() {}.type
-    lateinit var tableView: MyTable2VC<MainMemberViewHolder, MainMemberTable, MemberVC>
+    //lateinit var tableView: MyTable2VC<MainMemberViewHolder, MainMemberTable, MemberVC>
+
+    lateinit var recyclerView: RecyclerView
+    lateinit var adapter: MemberAdapter
+
+    var items: ArrayList<MainMemberTable> = arrayListOf()
 
     //var rows: ArrayList<MainMemberTable> = arrayListOf()
 
@@ -115,32 +117,18 @@ class MemberVC : BaseActivity(), IconView2Delegate {
             }
         }
 
-        val recyclerView: RecyclerView = findViewById(R.id.list_container)
-        tableView = MyTable2VC(recyclerView, null, R.layout.main_member_cell, ::MainMemberViewHolder, tableType, this::tableViewSetSelected, this::getDataFromServer, this)
+        initRecyclerView()
 
-        binding.root.findViewById<ImageView>(R.id.bannerIV).apply {
-            this.setImage("banner_subscription")
-            this.setOnClickListener {
-                toMemberSubscriptionKind()
-            }
-        }
+//        val recyclerView: RecyclerView = findViewById(R.id.list_container)
+//        tableView = MyTable2VC(recyclerView, null, R.layout.main_member_cell, ::MainMemberViewHolder, tableType, this::tableViewSetSelected, this::getDataFromServer, this)
 
-        for (mainMemberEnum in MainMemberEnum.values()) {
-            tableView.rows.add(MainMemberTable(mainMemberEnum.chineseName, mainMemberEnum.getIcon()))
-        }
-//        tableView.rows.addAll(
-//            arrayListOf(
-//                MainMemberTable("會員資料", "ic_info_svg"),
-//                MainMemberTable("訂單查詢", "ic_truck_svg"),
-//                MainMemberTable("喜歡", "like_in_svg"),
-//                MainMemberTable("參加", "ic_join_svg"),
-//                MainMemberTable("管理", "ic_manager1_svg"),
-//                MainMemberTable("銀行帳號", "ic_bank_account_svg"),
-//                MainMemberTable("刪除帳號", "ic_account_delete_svg")
-//            )
-//        )
-        tableView.setItems()
-        //tableView.notifyDataSetChanged()
+//        binding.root.findViewById<ImageView>(R.id.bannerIV).apply {
+//            this.setImage("banner_subscription")
+//            this.setOnClickListener {
+//                toMemberSubscriptionKind()
+//            }
+//        }
+
 
         refresh()
 
@@ -157,28 +145,21 @@ class MemberVC : BaseActivity(), IconView2Delegate {
 
     override fun init() {
         super.init()
+    }
 
-        //recyclerView = binding.listContainer
-        //refreshLayout = page_refresh
+    fun initRecyclerView() {
+        recyclerView = binding.listContainer
+        adapter = MemberAdapter(this, this)
+        recyclerView.adapter = adapter
 
+        for (mainMemberEnum in MainMemberEnum.values()) {
+            items.add(MainMemberTable(mainMemberEnum.chineseName, mainMemberEnum.getIcon()))
+        }
+        adapter.items = items
+        adapter.onBannerClick = {
+            toMemberSubscriptionKind()
+        }
 
-        //setRecyclerViewRefreshListener()
-
-//        memberSectionAdapter = MemberSectionAdapter(this, R.layout.cell_section, this)
-//        memberSections = initSectionRow()
-//        memberSectionAdapter.setMyTableSection(memberSections)
-//        recyclerView.adapter = memberSectionAdapter
-
-        //println(member.avatar)
-//        if (member.avatar!!.isNotEmpty()) {
-//            Picasso.with(context)
-//                .load(member.avatar)
-//                .placeholder(R.drawable.loading_square_120)
-//                .error(R.drawable.loading_square_120)
-//                .into(binding.navDrawerHeaderInclude.avatarView)
-//        }
-
-//        loginout()
     }
 
     override fun refresh() {
@@ -229,45 +210,6 @@ class MemberVC : BaseActivity(), IconView2Delegate {
         //loginout()
     }
 
-//    fun loginout() {
-//        //println(member.isLoggedIn)
-//        if (member.isLoggedIn) {
-//            _loginBlock()
-//        } else {
-//            _logoutBlock()
-//        }
-//    }
-    
-//    private fun _loginBlock() {
-        //_loginAdapter()
-//        memberSections = initSectionRow()
-//        memberSectionAdapter.setMyTableSection(memberSections)
-//        memberSectionAdapter.notifyDataSetChanged()
-
-//        binding.navDrawerHeaderInclude.nameLbl.text = member.nickname
-//        if (member.avatar!!.isNotEmpty()) {
-//            member.avatar!!.image(this, binding.navDrawerHeaderInclude.avatarView)
-//        }
-
-//        binding.loginOutInclude.loginTV.text = "登出"
-//        binding.loginOutInclude.registerBtn.visibility = View.INVISIBLE
-//        binding.loginOutInclude.forgetPasswordBtn.visibility = View.INVISIBLE
-//        binding.listContainer.visibility = View.VISIBLE
-        //menu_team_container.visibility = View.VISIBLE
-//        refreshLayout = page_refresh
-//        initMemberFunction()
-//    }
-    
-//    private fun _logoutBlock() {
-        //binding.navDrawerHeaderInclude.nameLbl.text = "未登入"
-//        binding.loginOutInclude.loginTV.text = "登入"
-//        binding.loginOutInclude.registerBtn.visibility = View.VISIBLE
-//        binding.loginOutInclude.forgetPasswordBtn.visibility = View.VISIBLE
-//        binding.listContainer.visibility = View.INVISIBLE
-        //binding.navDrawerHeaderInclude.avatarView.setImageResource(R.drawable.menuprofileicon)
-        //menu_team_container.visibility = View.INVISIBLE
-//    }
-
     override fun cellClick(row: Table) {
         val _row: MainMemberTable? = row as? MainMemberTable
         _row.let {
@@ -283,284 +225,6 @@ class MemberVC : BaseActivity(), IconView2Delegate {
             }
         }
     }
-
-//    override fun cellClick(sectionIdx: Int, rowIdx: Int) {
-////        println(sectionIdx)
-////        println(rowIdx)
-//        val memberSection = memberSections[sectionIdx]
-//        val row = memberSection.items[rowIdx]
-//        val segue = row.segue
-//        //val segue = ""
-//        when(segue) {
-//            TO_PROFILE -> this.toRegister()
-////            TO_PROFILE -> {
-////                var isGrant: Boolean = true
-////                //val b1 = ContextCompat.checkSelfPermission(activity, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED
-////                val b2 = ContextCompat.checkSelfPermission(activity, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED
-////                if (!b2) {
-////                    ActivityCompat.requestPermissions(
-////                        this,
-////                        arrayOf(
-////                            //Manifest.permission.WRITE_EXTERNAL_STORAGE
-////                            Manifest.permission.CAMERA
-////                        ),
-////                        500
-////                    )
-////                }
-////            }
-//            TO_PASSWORD -> toUpdatePassword()
-//            "email" -> this.toValidate("email")
-//            "mobile" -> this.toValidate("mobile")
-////            "blacklist" -> goBlackList()
-//            //"calendar_course_signup" -> toCalendarCourseSignup()
-//            "refresh" -> refresh()
-//
-//            TO_MEMBER_ORDER_LIST -> this.toMemberOrderList()
-//            TO_MEMBER_CART_LIST -> this.toMemberCartList("member")
-//            //TO_MEMBER_SIGNUP_LIST -> this.toMemberSignupList(row.able_type)
-//            "manager_team" -> this.toManager("team")
-//            "toRequestManagerTeam" -> this.toRequestManagerTeam()
-//            "manager_course" -> this.toManager("course")
-//            TO_LIKE -> {
-//                //val able_type: String = row.able_type
-//                when(able_type) {
-//                    "team" -> this.toTeam(null, true, true, true)
-//                    "arena" -> this.toArena(true, true, true)
-//                    "teach" -> this.toTeach(true)
-//                    "coach" -> this.toCoach(true)
-//                    "course" -> this.toCourse(true, true, true)
-//                    "product" -> this.toProduct(true)
-//                    "store" -> this.toStore(true)
-//                }
-//            }
-//            TO_MEMBER_BANK -> this.toMemberBank()
-//            "delete" -> delete()
-//            TO_MEMBER_COIN_LIST -> this.toMemberCoinList()
-//            TO_MEMBER_SURIPTION_KIND -> this.toMemberSubscriptionKind()
-//            "qrcode" -> {
-//
-//                val qrcodeIV: ImageView = makeQrcodeLayer()
-//                val qrcode: Bitmap? = generateQRCode(member.token!!)
-//                qrcodeIV.setImageBitmap(qrcode)
-//            }
-//            "toMemberTeamList" -> this.toMemberTeamList()
-//            "refresh" -> this.refresh()
-//        }
-//    }
-
-//    private fun initSectionRow(): ArrayList<MemberSection> {
-//        val sections: ArrayList<MemberSection> = arrayListOf()
-//
-//        sections.add(makeSection4Row())
-//        sections.add(makeSection0Row1())
-//        sections.add(makeSection1Row())
-//        sections.add(makeSection2Row(false))
-//        sections.add(makeSection3Row())
-//        sections.add(makeSectionBankRow())
-//        sections.add(makeSectionXRow())
-//
-//        return sections
-//    }
-
-//    fun makeSection0Row1(isExpanded: Boolean=true): MemberSection {
-//        val rows: ArrayList<MemberRow> = arrayListOf()
-//
-//        //if (isExpanded) {
-//        val fixedRows = makeSection0FixRow()
-//        rows.addAll(fixedRows)
-//
-//        val validateRows = makeSection0ValidateRow()
-//        rows.addAll(validateRows)
-//
-//        val refreshRows = makeSection0RefreshRow()
-//        rows.addAll(refreshRows)
-//        //}
-//
-//        val s: MemberSection = MemberSection("會員資料", true)
-//        //val s: MemberSection = MemberSection("會員資料", isExpanded)
-//        s.items.addAll(rows)
-//
-//        return s
-//    }
-//
-//    private fun makeSection0FixRow(): ArrayList<MemberRow> {
-//        val rows: ArrayList<MemberRow> = arrayListOf()
-//        var r: MemberRow = MemberRow("解碼點數", "coin", "", TO_MEMBER_COIN_LIST)
-//        r.show = member.coin.formattedWithSeparator() + " 點"
-//        rows.add(r)
-//        r = MemberRow("訂閱會員", "member_level_up", "", TO_MEMBER_SURIPTION_KIND)
-//        member.subscription?.let {
-//            if (it.isNotEmpty()) {
-//                val subscription: MEMBER_SUBSCRIPTION_KIND =
-//                    MEMBER_SUBSCRIPTION_KIND.stringToEnum(it)
-//                r.show = subscription.chineseName
-//            }
-//        }
-//        rows.add(r)
-//        r = MemberRow("帳戶資料", "account", "", TO_PROFILE)
-//        rows.add(r)
-//        r = MemberRow("QRCode", "qrcode", "", "qrcode")
-//        rows.add(r)
-//        r = MemberRow("更改密碼", "password", "", TO_PASSWORD)
-//        rows.add(r)
-//        return rows
-//    }
-//
-//    private fun makeSection0RefreshRow(): ArrayList<MemberRow> {
-//        val rows: ArrayList<MemberRow> = arrayListOf()
-//        val r1: MemberRow = MemberRow("重新整理", "refresh", "", "refresh")
-//        rows.add(r1)
-//        return rows
-//    }
-//
-//    private fun makeSection0ValidateRow(): ArrayList<MemberRow> {
-//        val rows: ArrayList<MemberRow> = arrayListOf()
-//        val validate: Int = member.validate
-//        if (validate and EMAIL_VALIDATE <= 0) {
-//            val r: MemberRow = MemberRow("email認證", "email", "", "email")
-//            rows.add(r)
-//        }
-//        if (validate and MOBILE_VALIDATE <= 0) {
-//            val r: MemberRow = MemberRow("手機認證", "mobile", "", "mobile")
-//            rows.add(r)
-//        }
-//        return rows
-//    }
-//
-//    private fun makeSection1Row(isExpanded: Boolean=true): MemberSection {
-//        val rows: ArrayList<MemberRow> = arrayListOf()
-//
-//        //if (isExpanded) {
-//
-//        val r1: MemberRow = MemberRow("購物車", "cart", "", TO_MEMBER_CART_LIST)
-//        rows.add(r1)
-//        val r2: MemberRow = MemberRow("訂單查詢", "order", "", TO_MEMBER_ORDER_LIST)
-//        rows.add(r2)
-//        //}
-//
-//        val s: MemberSection = MemberSection("訂單查詢", true)
-//        //val s: MemberSection = MemberSection("訂單查詢", isExpanded)
-//        s.items.addAll(rows)
-//
-//        return s
-//    }
-//
-//    private fun makeSection2Row(isExpanded: Boolean=true): MemberSection {
-//        val rows: ArrayList<MemberRow> = arrayListOf()
-//
-//        //if (isExpanded) {
-//        val r1: MemberRow = MemberRow("球隊", "team", "", TO_LIKE, "team")
-//        rows.add(r1)
-//        val r2: MemberRow = MemberRow("球館", "arena", "", TO_LIKE, "arena")
-//        rows.add(r2)
-//        val r3: MemberRow = MemberRow("教學", "teach", "", TO_LIKE, "teach")
-//        rows.add(r3)
-//        val r4: MemberRow = MemberRow("教練", "coach", "", TO_LIKE, "coach")
-//        rows.add(r4)
-//        val r5: MemberRow = MemberRow("課程", "course", "", TO_LIKE, "course")
-//        rows.add(r5)
-//        val r6: MemberRow = MemberRow("商品", "product", "", TO_LIKE, "product")
-//        rows.add(r6)
-//        val r7: MemberRow = MemberRow("體育用品店", "store", "", TO_LIKE, "store")
-//        rows.add(r7)
-//        //}
-//
-//        val s: MemberSection = MemberSection("喜歡", true)
-//        //val s: MemberSection = MemberSection("喜歡", isExpanded)
-//        s.items.addAll(rows)
-//
-//        return s
-//    }
-//    private fun makeSection3Row(isExpanded: Boolean=true): MemberSection {
-//        val rows: ArrayList<MemberRow> = arrayListOf()
-//
-//        val r1: MemberRow = MemberRow("球隊", "team", "", "toMemberTeamList", "team")
-//        rows.add(r1)
-//        val r2: MemberRow = MemberRow("臨打", "tempplay", "", TO_MEMBER_SIGNUP_LIST, "team")
-//        rows.add(r2)
-//        val r3: MemberRow = MemberRow("課程", "course", "", TO_MEMBER_SIGNUP_LIST, "course")
-//        rows.add(r3)
-//
-//        val s: MemberSection = MemberSection("參加", true)
-//        //val s: MemberSection = MemberSection("報名", isExpanded)
-//        s.items.addAll(rows)
-//
-//        return s
-//    }
-//
-//    private fun makeSection4Row(isExpanded: Boolean=true): MemberSection {
-//        val rows: ArrayList<MemberRow> = arrayListOf()
-//
-//        val r1: MemberRow = MemberRow("球隊", "team", "", "manager_team", "team")
-//        rows.add(r1)
-//        val r2: MemberRow = MemberRow("球隊申請管理權", "team", "", "toRequestManagerTeam", "team")
-//        rows.add(r2)
-//        val r3: MemberRow = MemberRow("課程", "course", "", "manager_course", "course")
-//        rows.add(r3)
-//
-//        val s: MemberSection = MemberSection("管理", true)
-//        //val s: MemberSection = MemberSection("管理", isExpanded)
-//        s.items.addAll(rows)
-//
-//        return s
-//    }
-//
-//    private fun makeSectionBankRow(isExpanded: Boolean=true): MemberSection {
-//        val rows: ArrayList<MemberRow> = arrayListOf()
-//
-//        val r1: MemberRow = MemberRow("銀行帳號", "bank", "", TO_MEMBER_BANK, "member")
-//        rows.add(r1)
-//
-//        val s: MemberSection = MemberSection("銀行帳號", true)
-//        s.items.addAll(rows)
-//
-//        return s
-//    }
-//
-//    private fun makeSectionXRow(isExpanded: Boolean=true): MemberSection {
-//        val rows: ArrayList<MemberRow> = arrayListOf()
-//
-//        val r1: MemberRow = MemberRow("刪除會員", "delete", "", "delete", "member")
-//        rows.add(r1)
-//
-//        val s: MemberSection = MemberSection("刪除", true)
-//        //val s: MemberSection = MemberSection("刪除", isExpanded)
-//        s.items.addAll(rows)
-//
-//        return s
-//    }
-//
-//    private fun loginBtnPressed() {
-//        if (member.isLoggedIn) {
-//            logout()
-//            //MemberService.logout(this)
-//            //refresh()
-//        } else {
-//            login()
-//        }
-//    }
-
-//    private fun registerBtnPressed(){
-//        this.toRegister(this)
-//    }
-//    private fun forgetpasswordBtnPressed() {
-//        this.toForgetPassword()
-//    }
-//
-//    private fun toCalendarCourseSignup() {
-//        val intent = Intent(activity, CourseCalendarVC::class.java)
-//        startActivity(intent)
-//    }
-//
-//    override fun handleMemberSectionExpanded(idx: Int) {
-//        //println(idx)
-//        val memberSection = memberSections[idx]
-//        var isExpanded: Boolean = memberSection.isExpanded
-//        isExpanded = !isExpanded
-//        memberSections[idx].isExpanded = isExpanded
-//        memberSectionAdapter.setMyTableSection(memberSections)
-//        memberSectionAdapter.notifyDataSetChanged()
-//    }
 
     fun delete() {
         warning("是否確定要刪除自己的會員資料？", true, "刪除") {
@@ -604,7 +268,7 @@ class MemberVC : BaseActivity(), IconView2Delegate {
         }
     }
 
-    fun makeQrcodeLayer(): ImageView {
+    private fun makeQrcodeLayer(): ImageView {
         val view = window.decorView.rootView as ViewGroup
         val maskView: LinearLayout = view.mask(this)
 
@@ -622,7 +286,7 @@ class MemberVC : BaseActivity(), IconView2Delegate {
         return qrcodeIV
     }
 
-    fun generateQRCode(string: String): Bitmap? {
+    private fun generateQRCode(string: String): Bitmap? {
         var dimen = if (screenWidth < screenHeight) screenWidth else screenHeight
         dimen = dimen * 3 / 4
         qrEncoder = QRGEncoder(string, null, QRGContents.Type.TEXT, dimen)
@@ -688,6 +352,62 @@ enum class MainMemberEnum(val chineseName: String) {
             bank-> return "ic_bank_account_svg"
             delete-> return "ic_account_delete_svg"
             refresh-> return "ic_refresh_g_svg"
+        }
+    }
+}
+
+class MemberAdapter(val context: Context, val delegate: MemberVC):
+    RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+
+    var items: ArrayList<MainMemberTable> = arrayListOf()
+    var onBannerClick: (()-> Unit)? = null
+
+    companion object {
+        const val BANNER: Int = 1
+        const val ITEM: Int = 2
+    }
+
+    override fun getItemViewType(position: Int): Int {
+        //println("position: ${position}")
+        val i = if (position == 0) MemberAdapter.BANNER else MemberAdapter.ITEM
+        return i
+    }
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+        if (viewType == MemberAdapter.BANNER) {
+            val view: View = LayoutInflater.from(context).inflate(R.layout.member_banner_cell, parent, false)
+            return BannerViewHolder(view)
+        } else {
+            val view: View = LayoutInflater.from(context).inflate(R.layout.main_member_cell, parent, false)
+            return MainMemberViewHolder(context, view, delegate)
+        }
+    }
+
+    override fun getItemCount(): Int {
+        val n = items.size
+        if (items.size > 0) {
+            return items.size + 1
+        } else {
+            return 0
+        }
+    }
+
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        if (holder is MainMemberViewHolder) {
+            if (items.size >= position) {
+                holder.bind(items[position-1], position)
+            }
+        }
+    }
+
+    inner class BannerViewHolder(view: View): ViewHolder(view) {
+        init {
+            view.findViewById<ImageView>(R.id.bannerIV) ?. let {
+                it.setImage("banner_subscription")
+            }
+
+            view.setOnClickListener {
+                onBannerClick?.invoke()
+            }
         }
     }
 }
