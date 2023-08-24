@@ -119,7 +119,7 @@ class MemberVC : BaseActivity(), IconView2Delegate {
         tableView = MyTable2VC(recyclerView, null, R.layout.main_member_cell, ::MainMemberViewHolder, tableType, this::tableViewSetSelected, this::getDataFromServer, this)
 
         binding.root.findViewById<ImageView>(R.id.bannerIV).apply {
-            this.setImage("banner")
+            this.setImage("banner_subscription")
             this.setOnClickListener {
                 toMemberSubscriptionKind()
             }

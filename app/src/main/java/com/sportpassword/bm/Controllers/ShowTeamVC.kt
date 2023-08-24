@@ -161,7 +161,7 @@ class ShowTeamVC: ShowVC(), ShowTab2Delegate, TapTextViewDelegate, IconText2Dele
             it.showPrev(true)
         }
 
-        findViewById<Bottom2>(R.id.bottom) ?. let {
+        findViewById<Bottom2>(R.id.bottom2) ?. let {
             showBottom = it
             //it.showButton(false, true, false)
             it.setOnSubmitClickListener(signup)
