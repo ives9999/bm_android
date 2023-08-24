@@ -1,9 +1,13 @@
 package com.sportpassword.bm.bm_new.ui.match.sign_up
 
 import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
 import androidx.viewpager2.widget.ViewPager2
+import com.sportpassword.bm.Controllers.LoginVC
+import com.sportpassword.bm.Controllers.OrderVC
+import com.sportpassword.bm.Controllers.RegisterVC
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Utilities.Alert
 import com.sportpassword.bm.bm_new.ui.base.BaseActivity
@@ -11,6 +15,7 @@ import com.sportpassword.bm.bm_new.ui.base.BaseViewModel
 import com.sportpassword.bm.bm_new.ui.base.ViewEvent
 import com.sportpassword.bm.bm_new.ui.match.sign_up.MatchTeamInformationFragment.Companion.CAPTAIN
 import com.sportpassword.bm.databinding.ActivityMatchSignUpBinding
+import com.sportpassword.bm.member
 import org.koin.androidx.viewmodel.ext.android.stateViewModel
 
 class MatchSignUpActivity : BaseActivity<ActivityMatchSignUpBinding>() {
@@ -29,6 +34,7 @@ class MatchSignUpActivity : BaseActivity<ActivityMatchSignUpBinding>() {
 
     private var signUpPagerAdapter: MatchSignUpPagerAdapter? = null
     private val vm by stateViewModel<MatchSignUpVM>()
+    private var productToken: String? = null
 
     override fun initViewBinding(): ActivityMatchSignUpBinding =
         ActivityMatchSignUpBinding.inflate(layoutInflater)
@@ -54,7 +60,7 @@ class MatchSignUpActivity : BaseActivity<ActivityMatchSignUpBinding>() {
 
             vm.matchSignUp.observe(this@MatchSignUpActivity) {
                 indicator.addIndicator(it.matchGroup.number)
-
+                productToken = it.productToken
                 vp.run {
                     adapter = MatchSignUpPagerAdapter(
                         supportFragmentManager,
@@ -142,6 +148,7 @@ class MatchSignUpActivity : BaseActivity<ActivityMatchSignUpBinding>() {
                 if (event.isSuccess) {
                     Toast.makeText(this, getString(R.string.match_sign_success), Toast.LENGTH_LONG)
                         .show()
+                    toOrder(productToken = productToken, ableId = event.matchTeamId)
                     finish()
                 }
             }
@@ -159,6 +166,47 @@ class MatchSignUpActivity : BaseActivity<ActivityMatchSignUpBinding>() {
             }
 
             else -> {}
+        }
+    }
+
+    private fun toOrder(
+        productToken: String? = null,
+        ableType: String? = null,
+        ableId: Int? = null
+    ) {
+        var msg: String = ""
+        if (!member.isLoggedIn) {
+            Alert.show(this, "警告", "必須先登入會員，才能進行購買", true, "登入") {
+                Intent(this, LoginVC::class.java).apply {
+                    startActivity(this)
+                }
+            }
+        } else {
+            msg = member.checkMust()
+
+            if (msg.isNotEmpty()) {
+                Alert.show(this, "警告", "", true, "填寫") {
+                    Intent(this, RegisterVC::class.java).apply {
+                        startActivity(this)
+                    }
+                }
+            } else {
+
+                val i = Intent(this, OrderVC::class.java)
+                if (productToken != null) {
+                    i.putExtra("product_token", productToken)
+                }
+
+                if (ableType != null) {
+                    i.putExtra("able_type", ableType)
+                }
+
+                if (ableId != null) {
+                    i.putExtra("able_id", ableId)
+                }
+                //i.putExtra("title", title)
+                startActivity(i)
+            }
         }
     }
 }

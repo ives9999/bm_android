@@ -38,7 +38,9 @@ class MatchSignUpVM(
     private var teamToken: String? = null
 
     sealed class SignUpEvent {
-        class SignUp(val isSuccess: Boolean) : ViewEvent.ViewEventData<Boolean>()
+        class SignUp(val isSuccess: Boolean, val matchTeamId: Int) :
+            ViewEvent.ViewEventData<Boolean>()
+
         class Edit(val isSuccess: Boolean) : ViewEvent.ViewEventData<Boolean>()
     }
 
@@ -154,7 +156,7 @@ class MatchSignUpVM(
                 repo.insertMatchTeam(it).setupBase().collect {
                     //新增報名或修改
                     if (teamToken == null) {
-                        eventChannel.send(SignUpEvent.SignUp(it.success))
+                        eventChannel.send(SignUpEvent.SignUp(it.success, it.id))
                     } else {
                         eventChannel.send(SignUpEvent.Edit(it.success))
                     }
