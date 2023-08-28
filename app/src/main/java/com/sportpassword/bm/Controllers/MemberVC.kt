@@ -43,7 +43,7 @@ class MemberVC : BaseActivity(), IconView2Delegate {
     var avatarIV: ImageView? = null
     var nameTV: TextView? = null
     var pointIconText: IconTextVertical2? = null
-    var levelIconText: IconTextVertical2? = null
+    var subscriptionIconText: IconTextVertical2? = null
 
     private val tableType: Type = object : TypeToken<Tables2<MainMemberTable>>() {}.type
     //lateinit var tableView: MyTable2VC<MainMemberViewHolder, MainMemberTable, MemberVC>
@@ -104,11 +104,14 @@ class MemberVC : BaseActivity(), IconView2Delegate {
             it.layoutParams = lp
         }
 
-        findViewById<IconTextVertical2>(R.id.levelIconText) ?. let {
-            levelIconText = it
+        findViewById<IconTextVertical2>(R.id.subscriptionIconText) ?. let {
+            subscriptionIconText = it
             val lp: ViewGroup.MarginLayoutParams = it.layoutParams as MarginLayoutParams
             lp.marginEnd = margin
             it.layoutParams = lp
+            it.setOnClickListener {
+                toMemberSubscriptionKind()
+            }
         }
 
         findViewById<LinearLayout>(R.id.levelRightContainer) ?. let {
@@ -178,7 +181,8 @@ class MemberVC : BaseActivity(), IconView2Delegate {
                         nameTV?.text = member.nickname
                         pointIconText?.setText("${member.coin} 點")
                         val goldEnum: MEMBER_SUBSCRIPTION_KIND = MEMBER_SUBSCRIPTION_KIND.stringToEnum(member.subscription!!)
-                        levelIconText?.setText(goldEnum.chineseName)
+                        subscriptionIconText?.setText(goldEnum.chineseName)
+                        subscriptionIconText?.setIcon("ic_subscription_${member.subscription}")
                     }
 //                    //session.dump()
 //                    memberSections = initSectionRow()

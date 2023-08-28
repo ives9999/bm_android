@@ -112,10 +112,10 @@
                 android:orientation="vertical">
 
                 <com.sportpassword.bm.Views.IconTextVertical2
-                    android:id="@+id/levelIconText"
+                    android:id="@+id/subscriptionIconText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    app:IconTextVertical2Icon="ic_level_svg"
+                    app:IconTextVertical2Icon="ic_subscription_steal"
                     app:IconTextVertical2Text=""
                     />
 
