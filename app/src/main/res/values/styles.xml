@@ -207,6 +207,20 @@
         <item name="android:textStyle">normal</item>
     </style>
 
+    <style name="text_16_bold_white">
+        <item name="android:textColor">@color/MY_WHITE</item>
+        <item name="android:textSize">16dp</item>
+        <item name="android:fontFamily">sans-serif-black</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="text_12_white99">
+        <item name="android:textColor">@color/TEXT_WHITE99</item>
+        <item name="android:textSize">12dp</item>
+        <item name="android:fontFamily">sans-serif-black</item>
+        <item name="android:textStyle">normal</item>
+    </style>
+
     <style name="highlight">
         <item name="android:textColor">@color/MY_WEIGHT_RED</item>
         <item name="android:textSize">18dp</item>

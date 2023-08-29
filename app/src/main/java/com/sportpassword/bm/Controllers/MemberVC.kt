@@ -24,7 +24,9 @@ import com.sportpassword.bm.Utilities.*
 import com.sportpassword.bm.Views.IconTextVertical2
 import com.sportpassword.bm.Views.IconView2
 import com.sportpassword.bm.Views.IconView2Delegate
+import com.sportpassword.bm.Views.IconWithBGCircle
 import com.sportpassword.bm.databinding.ActivityMemberVcBinding
+import com.sportpassword.bm.databinding.IconWithBgCircleBinding
 import com.sportpassword.bm.extensions.avatar
 import com.sportpassword.bm.extensions.dpToPx
 import com.sportpassword.bm.member
@@ -42,8 +44,12 @@ class MemberVC : BaseActivity(), IconView2Delegate {
     var logoutIV2: IconView2? = null
     var avatarIV: ImageView? = null
     var nameTV: TextView? = null
-    var pointIconText: IconTextVertical2? = null
-    var subscriptionIconText: IconTextVertical2? = null
+    var pointIcon: IconWithBGCircle? = null
+    var pointTextTV: TextView? = null
+    var subscriptionIcon: IconWithBGCircle? = null
+    var subscriptionTextTV: TextView? = null
+//    var pointIconText: IconTextVertical2? = null
+//    var subscriptionIconText: IconTextVertical2? = null
 
     private val tableType: Type = object : TypeToken<Tables2<MainMemberTable>>() {}.type
     //lateinit var tableView: MyTable2VC<MainMemberViewHolder, MainMemberTable, MemberVC>
@@ -91,24 +97,35 @@ class MemberVC : BaseActivity(), IconView2Delegate {
         }
 
         //level margin = 螢幕寬度 - container區塊padding - level區塊寬度 - 中間divide寬度
-        val levelContainerPadding: Int = 20
-        val levelWidth: Int = 87
-        val dividerWidth: Int = 2
-        val allPadding: Int = (levelContainerPadding*2+levelWidth*2+dividerWidth).dpToPx(context)
-        val margin: Int = (screenWidth - allPadding) / 4
+//        val levelContainerPadding: Int = 20
+//        val levelWidth: Int = 87
+//        val dividerWidth: Int = 2
+//        val allPadding: Int = (levelContainerPadding*2+levelWidth*2+dividerWidth).dpToPx(context)
+//        val margin: Int = (screenWidth - allPadding) / 4
 
-        findViewById<IconTextVertical2>(R.id.pointIconText) ?. let {
-            pointIconText = it
-            val lp: ViewGroup.MarginLayoutParams = it.layoutParams as MarginLayoutParams
-            lp.marginStart = margin
-            it.layoutParams = lp
+        findViewById<IconWithBGCircle>(R.id.pointIcon) ?. let {
+            pointIcon = it
         }
 
-        findViewById<IconTextVertical2>(R.id.subscriptionIconText) ?. let {
-            subscriptionIconText = it
-            val lp: ViewGroup.MarginLayoutParams = it.layoutParams as MarginLayoutParams
-            lp.marginEnd = margin
-            it.layoutParams = lp
+        findViewById<TextView>(R.id.pointTextTV) ?. let {
+            pointTextTV = it
+        }
+
+        findViewById<IconWithBGCircle>(R.id.subscriptionIcon) ?. let {
+            subscriptionIcon = it
+            it.setOnClickListener {
+                toMemberSubscriptionKind()
+            }
+//            val lp: ViewGroup.MarginLayoutParams = it.layoutParams as MarginLayoutParams
+//            lp.marginEnd = margin
+//            it.layoutParams = lp
+//            it.setOnClickListener {
+//                toMemberSubscriptionKind()
+//            }
+        }
+
+        findViewById<TextView>(R.id.subscriptionTextTV) ?. let {
+            subscriptionTextTV = it
             it.setOnClickListener {
                 toMemberSubscriptionKind()
             }
@@ -179,10 +196,10 @@ class MemberVC : BaseActivity(), IconView2Delegate {
                     runOnUiThread {
                         avatarIV?.avatar(member.avatar!!)
                         nameTV?.text = member.nickname
-                        pointIconText?.setText("${member.coin} 點")
+                        pointTextTV?.setText("${member.coin} 點")
                         val goldEnum: MEMBER_SUBSCRIPTION_KIND = MEMBER_SUBSCRIPTION_KIND.stringToEnum(member.subscription!!)
-                        subscriptionIconText?.setText(goldEnum.chineseName)
-                        subscriptionIconText?.setIcon("ic_subscription_${member.subscription}")
+                        subscriptionTextTV?.setText("${goldEnum.chineseName}會員")
+                        subscriptionIcon?.setIcon("ic_subscription_${member.subscription}")
                     }
 //                    //session.dump()
 //                    memberSections = initSectionRow()
