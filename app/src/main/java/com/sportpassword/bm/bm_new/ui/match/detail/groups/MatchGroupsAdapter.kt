@@ -32,6 +32,7 @@ class MatchGroupsAdapter :
         private val tvLimitGroups = binding.tvLimitGrous
         private val signupStartITT: IconTextText2 = binding.signupStartITT
         private val signupEndITT: IconTextText2 = binding.signupEndITT
+        private val contentITT: IconTextText2 = binding.contentITT
         private val context = itemView.context
 
         init {
@@ -57,6 +58,7 @@ class MatchGroupsAdapter :
 
             signupStartITT.setShow(signupStartShow.dropLast(3))
             signupEndITT.setShow(signupEndShow.dropLast(3))
+            contentITT.setShow(data.content)
         }
     }
 

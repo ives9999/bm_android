@@ -110,7 +110,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 app:MainEditText2Hint="@string/match_sign_age"
-                app:MainEditText2Icon="ic_line_svg"
+                app:MainEditText2Icon="ic_birthday_svg"
                 app:MainEditText2Keyobard="emailAddress"
                 app:MainEditText2Required="true"
                 app:MainEditText2Title="@string/match_sign_age"
