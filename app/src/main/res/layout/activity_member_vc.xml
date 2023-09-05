@@ -27,6 +27,7 @@
                 android:layout_height="48dp"
                 android:layout_marginStart="20dp"
                 android:gravity="center"
+                app:iconView2Icon="ic_qrcode_svg"
                  />
 
             <ImageView
@@ -44,6 +45,7 @@
                 android:layout_alignParentEnd="true"
                 android:layout_marginEnd="20dp"
                 android:gravity="center"
+                app:iconView2Icon="ic_logout_svg"
                 />
 
         </RelativeLayout>

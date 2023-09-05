@@ -33,7 +33,8 @@
                 android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
                 app:iconWithBGCircleFrameWidth="48"
-                app:iconWithBGCircleIconWidth="32" />
+                app:iconWithBGCircleIconWidth="32"
+                app:iconWithBGCircleIcon="ic_subscription_basic"/>
 
         </RelativeLayout>
 
