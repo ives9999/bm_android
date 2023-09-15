@@ -33,33 +33,14 @@ import com.sportpassword.bm.member
 import java.lang.Exception
 import java.lang.reflect.Type
 
-class MemberVC : BaseActivity(), IconView2Delegate {
-
-   // var memberSections: ArrayList<MemberSection> = arrayListOf()
-    //lateinit var memberSectionAdapter: MemberSectionAdapter
+class MemberVC : BaseActivity() {
 
     private lateinit var binding: ActivityMemberVcBinding
-    //private lateinit var view: ViewGroup
-    var qrcodeIV2: IconView2? = null
-    var logoutIV2: IconView2? = null
-    var avatarIV: ImageView? = null
-    var nameTV: TextView? = null
-    var pointIcon: IconWithBGCircle? = null
-    var pointTextTV: TextView? = null
-    var subscriptionIcon: IconWithBGCircle? = null
-    var subscriptionTextTV: TextView? = null
-//    var pointIconText: IconTextVertical2? = null
-//    var subscriptionIconText: IconTextVertical2? = null
-
-    private val tableType: Type = object : TypeToken<Tables2<MainMemberTable>>() {}.type
-    //lateinit var tableView: MyTable2VC<MainMemberViewHolder, MainMemberTable, MemberVC>
 
     lateinit var recyclerView: RecyclerView
-    lateinit var adapter: MemberAdapter
+    //lateinit var adapter: MemberAdapter
 
-    var items: ArrayList<MainMemberTable> = arrayListOf()
-
-    //var rows: ArrayList<MainMemberTable> = arrayListOf()
+    var items: ArrayList<MainMemberItem> = arrayListOf()
 
     lateinit var qrEncoder: QRGEncoder
 
@@ -74,27 +55,9 @@ class MemberVC : BaseActivity(), IconView2Delegate {
         setContentView(view)
 
         setBottomTabFocus()
-        //setMyTitle("會員")
-
         dataService = MemberService
 
-        findViewById<IconView2>(R.id.qrcodeIV2) ?. let {
-            qrcodeIV2 = it
-            it.delegate = this
-        }
 
-        findViewById<IconView2>(R.id.logoutIV2) ?. let {
-            logoutIV2 = it
-            it.delegate = this
-        }
-
-        findViewById<ImageView>(R.id.avatarIV) ?. let {
-            avatarIV = it
-        }
-
-        findViewById<TextView>(R.id.nameTV) ?. let {
-            nameTV = it
-        }
 
         //level margin = 螢幕寬度 - container區塊padding - level區塊寬度 - 中間divide寬度
 //        val levelContainerPadding: Int = 20
@@ -103,77 +66,19 @@ class MemberVC : BaseActivity(), IconView2Delegate {
 //        val allPadding: Int = (levelContainerPadding*2+levelWidth*2+dividerWidth).dpToPx(context)
 //        val margin: Int = (screenWidth - allPadding) / 4
 
-        findViewById<IconWithBGCircle>(R.id.pointIcon) ?. let {
-            pointIcon = it
-        }
 
-        findViewById<TextView>(R.id.pointTextTV) ?. let {
-            pointTextTV = it
-        }
-
-        findViewById<IconWithBGCircle>(R.id.subscriptionIcon) ?. let {
-            subscriptionIcon = it
-            it.setOnClickListener {
-                toMemberSubscriptionKind()
-            }
-//            val lp: ViewGroup.MarginLayoutParams = it.layoutParams as MarginLayoutParams
-//            lp.marginEnd = margin
-//            it.layoutParams = lp
-//            it.setOnClickListener {
-//                toMemberSubscriptionKind()
-//            }
-        }
-
-        findViewById<TextView>(R.id.subscriptionTextTV) ?. let {
-            subscriptionTextTV = it
-            it.setOnClickListener {
-                toMemberSubscriptionKind()
-            }
-        }
-
-        findViewById<LinearLayout>(R.id.levelRightContainer) ?. let {
-            it.setOnClickListener {
-                toMemberSubscriptionKind()
-            }
-        }
 
         initRecyclerView()
-
-//        val recyclerView: RecyclerView = findViewById(R.id.list_container)
-//        tableView = MyTable2VC(recyclerView, null, R.layout.main_member_cell, ::MainMemberViewHolder, tableType, this::tableViewSetSelected, this::getDataFromServer, this)
-
-//        binding.root.findViewById<ImageView>(R.id.bannerIV).apply {
-//            this.setImage("banner_subscription")
-//            this.setOnClickListener {
-//                toMemberSubscriptionKind()
-//            }
-//        }
-
-
         refresh()
-
-//        val loginBtn = findViewById<LinearLayout>(R.id.loginBtn)
-//        loginBtn.setOnClickListener { loginBtnPressed() }
-//        val registerBtn = findViewById<LinearLayout>(R.id.registerBtn)
-//        registerBtn.setOnClickListener { registerBtnPressed() }
-//        val forgetPasswordBtn = findViewById<LinearLayout>(R.id.forgetPasswordBtn)
-//        forgetPasswordBtn.setOnClickListener { forgetpasswordBtnPressed() }
-
-//        memberSections = initSectionRow()
-//        init()
-    }
-
-    override fun init() {
-        super.init()
     }
 
     fun initRecyclerView() {
         recyclerView = binding.listContainer
-        adapter = MemberAdapter(this, this)
+        val adapter: MemberAdapter = MemberAdapter(this, this)
         recyclerView.adapter = adapter
 
         for (mainMemberEnum in MainMemberEnum.values()) {
-            items.add(MainMemberTable(mainMemberEnum.chineseName, mainMemberEnum.getIcon()))
+            items.add(MainMemberItem(mainMemberEnum.chineseName, mainMemberEnum.getIcon()))
         }
         adapter.items = items
         adapter.onBannerClick = {
@@ -193,14 +98,9 @@ class MemberVC : BaseActivity(), IconView2Delegate {
                     //println(MemberService.jsonString)
                     val table = jsonToModel<MemberTable>(MemberService.jsonString)
                     table?.toSession(this, true)
-                    runOnUiThread {
-                        avatarIV?.avatar(member.avatar!!)
-                        nameTV?.text = member.nickname
-                        pointTextTV?.setText("${member.coin} 點")
-                        val goldEnum: MEMBER_SUBSCRIPTION_KIND = MEMBER_SUBSCRIPTION_KIND.stringToEnum(member.subscription!!)
-                        subscriptionTextTV?.setText("${goldEnum.chineseName}會員")
-                        subscriptionIcon?.setIcon("ic_subscription_${member.subscription}")
-                    }
+                    //runOnUiThread {
+
+                    //}
 //                    //session.dump()
 //                    memberSections = initSectionRow()
 //                    memberSectionAdapter.setMyTableSection(memberSections)
@@ -224,17 +124,17 @@ class MemberVC : BaseActivity(), IconView2Delegate {
 //    }
 
     fun logout() {
-        member.isLoggedIn = false
-        member.reset()
-        finishAffinity()
-        toLogin()
-        //loginout()
+        warning("是否真的要登出？", true, "登出") {
+            member.isLoggedIn = false
+            member.reset()
+            finishAffinity()
+            toLogin()
+        }
     }
 
-    override fun cellClick(row: Table) {
-        val _row: MainMemberTable? = row as? MainMemberTable
-        _row.let {
-            val mainMemberEnum: MainMemberEnum = MainMemberEnum.chineseGetEnum(it!!.title)
+    fun cellClick(row: MainMemberItem) {
+        row.let {
+            val mainMemberEnum: MainMemberEnum = MainMemberEnum.chineseGetEnum(it.title)
             if (mainMemberEnum == MainMemberEnum.bank) {
                 toMemberBank()
             } else if (mainMemberEnum == MainMemberEnum.delete) {
@@ -281,12 +181,16 @@ class MemberVC : BaseActivity(), IconView2Delegate {
         }
     }
 
-    private fun getDataFromServer(page: Int) {}
-
     private fun deleteEnd() {
         info("您的帳號已經被刪除，羽球密碼感謝您的支持", "", "關閉") {
             logout()
         }
+    }
+
+    public fun showQRCode(from: String) {
+        val qrcodeIV = makeQrcodeLayer()
+        val qrcode = generateQRCode(from)
+        qrcodeIV.setImageBitmap(qrcode)
     }
 
     private fun makeQrcodeLayer(): ImageView {
@@ -322,18 +226,7 @@ class MemberVC : BaseActivity(), IconView2Delegate {
         return bitmap
     }
 
-    fun tableViewSetSelected(row: MainMemberTable): Boolean { return false }
-    override fun iconPressed(icon: String) {
-        if (icon == "ic_qrcode_svg") {
-            val qrcodeIV: ImageView = makeQrcodeLayer()
-            val qrcode: Bitmap? = generateQRCode(member.token!!)
-            qrcodeIV.setImageBitmap(qrcode)
-        } else if (icon == "ic_logout_svg") {
-            warning("是否真的要登出？", true, "登出") {
-                this.logout()
-            }
-        }
-    }
+    fun tableViewSetSelected(row: MainMemberItem): Boolean { return false }
 }
 
 enum class MainMemberEnum(val chineseName: String) {
@@ -380,43 +273,155 @@ enum class MainMemberEnum(val chineseName: String) {
 class MemberAdapter(val context: Context, val delegate: MemberVC):
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    var items: ArrayList<MainMemberTable> = arrayListOf()
+    var items: ArrayList<MainMemberItem> = arrayListOf()
     var onBannerClick: (()-> Unit)? = null
 
     companion object {
-        const val BANNER: Int = 1
-        const val ITEM: Int = 2
+        const val AVATAR: Int = 1
+        const val LEVEL: Int = 2
+        const val BANNER: Int = 3
+        const val ITEM: Int = 4
     }
 
     override fun getItemViewType(position: Int): Int {
         //println("position: ${position}")
-        val i = if (position == 0) MemberAdapter.BANNER else MemberAdapter.ITEM
-        return i
+        when (position) {
+            0 -> return AVATAR
+            1 -> return LEVEL
+            2 -> return BANNER
+            3 -> return ITEM
+            else -> return ITEM
+        }
     }
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        if (viewType == MemberAdapter.BANNER) {
+        if (viewType == AVATAR) {
+            val view: View = LayoutInflater.from(context).inflate(R.layout.member_avatar_cell, parent, false)
+            return AvatarViewHolder(view, delegate)
+        } else if (viewType == LEVEL) {
+            val view: View = LayoutInflater.from(context).inflate(R.layout.member_level_cell, parent, false)
+            return LevelViewHolder(view, delegate)
+        } else if (viewType == MemberAdapter.BANNER) {
             val view: View = LayoutInflater.from(context).inflate(R.layout.member_banner_cell, parent, false)
             return BannerViewHolder(view)
         } else {
             val view: View = LayoutInflater.from(context).inflate(R.layout.main_member_cell, parent, false)
-            return MainMemberViewHolder(context, view, delegate)
+            return MainMemberViewHolder(view, delegate)
         }
     }
 
     override fun getItemCount(): Int {
-        val n = items.size
+        //val n = items.size
         if (items.size > 0) {
-            return items.size + 1
+            return items.size + 3
         } else {
             return 0
         }
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        if (holder is MainMemberViewHolder) {
-            if (items.size >= position) {
-                holder.bind(items[position-1], position)
+        if (holder is AvatarViewHolder) {
+            holder.bind()
+        } else if (holder is LevelViewHolder) {
+            holder.bind()
+        } else if (holder is MainMemberViewHolder) {
+            if (items.size >= position - 3) {
+                holder.bind(items[position-3], position)
             }
+        }
+    }
+
+    inner class AvatarViewHolder(view: View, delegate: MemberVC): ViewHolder(view), IconView2Delegate {
+
+        var delegate: MemberVC? = null
+        var qrcodeIV2: IconView2? = null
+        var logoutIV2: IconView2? = null
+        var avatarIV: ImageView? = null
+        var nameTV: TextView? = null
+
+        init {
+            this.delegate = delegate
+            view.findViewById<IconView2>(R.id.qrcodeIV2) ?. let {
+                qrcodeIV2 = it
+                it.delegate = this
+            }
+
+            view.findViewById<IconView2>(R.id.logoutIV2) ?. let {
+                logoutIV2 = it
+                it.delegate = this
+            }
+
+            view.findViewById<ImageView>(R.id.avatarIV) ?. let {
+                avatarIV = it
+            }
+
+            view.findViewById<TextView>(R.id.nameTV) ?. let {
+                nameTV = it
+            }
+        }
+        fun bind() {
+            avatarIV?.avatar(member.avatar!!)
+            nameTV?.text = member.nickname
+        }
+
+        override fun iconPressed(icon: String) {
+            if (icon == "ic_qrcode_svg") {
+                delegate?.showQRCode(member.token!!)
+            } else if (icon == "ic_logout_svg") {
+                delegate?.logout()
+            }
+        }
+    }
+
+    inner class LevelViewHolder(view: View, delegate: MemberVC): ViewHolder(view) {
+
+        var pointIcon: IconWithBGCircle? = null
+        var pointTextTV: TextView? = null
+        var subscriptionIcon: IconWithBGCircle? = null
+        var subscriptionTextTV: TextView? = null
+        var delegate: MemberVC? = null
+
+        init {
+            this.delegate = delegate
+            view.findViewById<IconWithBGCircle>(R.id.pointIcon) ?. let {
+                pointIcon = it
+            }
+
+            view.findViewById<TextView>(R.id.pointTextTV) ?. let {
+                pointTextTV = it
+            }
+
+            view.findViewById<IconWithBGCircle>(R.id.subscriptionIcon) ?. let {
+                subscriptionIcon = it
+                it.setOnClickListener {
+                    delegate.toMemberSubscriptionKind()
+                }
+//            val lp: ViewGroup.MarginLayoutParams = it.layoutParams as MarginLayoutParams
+//            lp.marginEnd = margin
+//            it.layoutParams = lp
+//            it.setOnClickListener {
+//                toMemberSubscriptionKind()
+//            }
+            }
+
+            view.findViewById<TextView>(R.id.subscriptionTextTV) ?. let {
+                subscriptionTextTV = it
+                it.setOnClickListener {
+                    delegate.toMemberSubscriptionKind()
+                }
+            }
+
+            view.findViewById<LinearLayout>(R.id.levelRightContainer) ?. let {
+                it.setOnClickListener {
+                    delegate.toMemberSubscriptionKind()
+                }
+            }
+        }
+
+        fun bind() {
+            pointTextTV?.setText("${member.coin} 點")
+            val goldEnum: MEMBER_SUBSCRIPTION_KIND = MEMBER_SUBSCRIPTION_KIND.stringToEnum(member.subscription!!)
+            subscriptionTextTV?.setText("${goldEnum.chineseName}會員")
+            subscriptionIcon?.setIcon("ic_subscription_${member.subscription}")
         }
     }
 
@@ -431,36 +436,38 @@ class MemberAdapter(val context: Context, val delegate: MemberVC):
             }
         }
     }
-}
 
-class MainMemberViewHolder(
-    context: Context,
-    viewHolder: View,
-    delegate: MemberVC
-): MyViewHolder2<MainMemberTable, MemberVC>(context, viewHolder, delegate) {
+    inner class MainMemberViewHolder(val viewHolder: View, delegate: MemberVC): ViewHolder(viewHolder) {
 
-    var iconIV: ImageView? = null
-    var textTV: TextView? = null
+        var delegate: MemberVC? = null
+        var iconIV: ImageView? = null
+        var textTV: TextView? = null
 
-    init {
-        viewHolder.findViewById<ImageView>(R.id.iconIV) ?. let {
-            iconIV = it
+        init {
+            this.delegate = delegate
+            viewHolder.findViewById<ImageView>(R.id.iconIV) ?. let {
+                iconIV = it
+            }
+
+            viewHolder.findViewById<TextView>(R.id.textTV) ?. let {
+                textTV = it
+            }
         }
 
-        viewHolder.findViewById<TextView>(R.id.textTV) ?. let {
-            textTV = it
+        fun bind(row: MainMemberItem, idx: Int) {
+            iconIV?.setImage(row.icon)
+            textTV?.text = row.title
+
+            viewHolder.setOnClickListener {
+                delegate?.cellClick(row)
+            }
+
         }
-    }
-
-    override fun bind(row: MainMemberTable, idx: Int) {
-        super.bind(row, idx)
-
-        iconIV?.setImage(row.icon)
-        textTV?.text = row.title
     }
 }
 
-class MainMemberTable(title: String, icon: String): Table() {
+class MainMemberItem(title: String, icon: String) {
+    var title: String = ""
     var icon: String = "nophoto"
     init {
         this.title = title

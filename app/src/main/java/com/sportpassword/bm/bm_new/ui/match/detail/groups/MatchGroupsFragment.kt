@@ -82,10 +82,29 @@ class MatchGroupsFragment : BaseFragment<FragmentMatchGroupsBinding>(),
     override fun onSignUpClick(data: MatchDetailDto.MatchGroup) {
 
         //add by ives 2023/08/06 報名註冊前先檢查是否登入，如果沒有登入則導到登入頁
+        //add by ives 2023/09/15 報名註冊前還要檢查會員是否通過email與手機認證
+        var canSignup: Boolean = true
         if (!member.isLoggedIn) {
             toLogin()
-        } else {
+            canSignup = false
+        }
 
+        if (member.validate == 0) {
+            warning(msg: "請先完成email與手機驗證", closeButtonTitle: "取消", buttonTitle: "驗證") {
+                self.toValidate(type: "email")
+            }
+            canSignup = false
+        }
+
+        if (member.validate == 1) {
+            warning(msg: "請先完成手機驗證", closeButtonTitle: "取消", buttonTitle: "驗證") {
+                self.toValidate(type: "mobile")
+            }
+            canSignup = false
+        }
+
+
+        if (canSignup) {
             vm.matchDetail.value?.let {
                 canSignUp(
                     signupStart = it.signupStart,

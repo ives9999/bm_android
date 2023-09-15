@@ -264,3 +264,11 @@ class MemberItemViewHolder(
         textTV?.text = row.title
     }
 }
+
+class MainMemberTable(title: String, icon: String): Table() {
+    var icon: String = "nophoto"
+    init {
+        this.title = title
+        this.icon = icon
+    }
+}
