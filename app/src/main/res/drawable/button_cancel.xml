@@ -7,6 +7,6 @@
         android:color="@color/MY_GREEN" android:width="1dp">
     </stroke>
     <corners
-        android:radius="24dp">
+        android:radius="6dp">
     </corners>
 </shape>

@@ -38,9 +38,9 @@ class MemberVC : BaseActivity() {
     private lateinit var binding: ActivityMemberVcBinding
 
     lateinit var recyclerView: RecyclerView
-    //lateinit var adapter: MemberAdapter
+    lateinit var adapter: MemberAdapter
 
-    var items: ArrayList<MainMemberItem> = arrayListOf()
+    var rows: ArrayList<MainMemberItem> = arrayListOf()
 
     lateinit var qrEncoder: QRGEncoder
 
@@ -74,13 +74,10 @@ class MemberVC : BaseActivity() {
 
     fun initRecyclerView() {
         recyclerView = binding.listContainer
-        val adapter: MemberAdapter = MemberAdapter(this, this)
+        adapter = MemberAdapter(this, this)
         recyclerView.adapter = adapter
 
-        for (mainMemberEnum in MainMemberEnum.values()) {
-            items.add(MainMemberItem(mainMemberEnum.chineseName, mainMemberEnum.getIcon()))
-        }
-        adapter.items = items
+        adapter.items = rows
         adapter.onBannerClick = {
             toMemberSubscriptionKind()
         }
@@ -98,9 +95,22 @@ class MemberVC : BaseActivity() {
                     //println(MemberService.jsonString)
                     val table = jsonToModel<MemberTable>(MemberService.jsonString)
                     table?.toSession(this, true)
-                    //runOnUiThread {
 
-                    //}
+                    rows.clear()
+                    for (mainMemberEnum in MainMemberEnum.values()) {
+                        if (mainMemberEnum == MainMemberEnum.validate_email && (member.validate and EMAIL_VALIDATE > 0)) {
+                            continue
+                        }
+
+                        if (mainMemberEnum == MainMemberEnum.validate_mobile && (member.validate and MOBILE_VALIDATE > 0)) {
+                            continue
+                        }
+
+                        rows.add(MainMemberItem(mainMemberEnum.chineseName, mainMemberEnum.getIcon()))
+                    }
+                    runOnUiThread {
+                        adapter.notifyDataSetChanged()
+                    }
 //                    //session.dump()
 //                    memberSections = initSectionRow()
 //                    memberSectionAdapter.setMyTableSection(memberSections)
@@ -135,7 +145,11 @@ class MemberVC : BaseActivity() {
     fun cellClick(row: MainMemberItem) {
         row.let {
             val mainMemberEnum: MainMemberEnum = MainMemberEnum.chineseGetEnum(it.title)
-            if (mainMemberEnum == MainMemberEnum.bank) {
+            if (mainMemberEnum == MainMemberEnum.validate_email) {
+                toValidate("email")
+            } else if (mainMemberEnum == MainMemberEnum.validate_mobile) {
+                toValidate("mobile")
+            } else if (mainMemberEnum == MainMemberEnum.bank) {
                 toMemberBank()
             } else if (mainMemberEnum == MainMemberEnum.delete) {
                 delete()
@@ -230,6 +244,8 @@ class MemberVC : BaseActivity() {
 }
 
 enum class MainMemberEnum(val chineseName: String) {
+    validate_email("Email認證"),
+    validate_mobile("手機認證"),
     info("會員資料"),
     order("訂單查詢"),
     like("喜歡"),
@@ -243,6 +259,8 @@ enum class MainMemberEnum(val chineseName: String) {
         //val allValues: ArrayList<MainMemberEnum> = arrayListOf(info, order, like, join, manager, bank, delete)
         fun chineseGetEnum(text: String): MainMemberEnum {
             when (text) {
+                "Email認證"-> return validate_email
+                "手機認證"-> return validate_mobile
                 "會員資料"-> return info
                 "訂單查詢"-> return order
                 "喜歡"-> return like
@@ -258,6 +276,8 @@ enum class MainMemberEnum(val chineseName: String) {
 
     fun getIcon(): String {
         when (this) {
+            validate_email-> return "ic_validate_svg"
+            validate_mobile-> return "ic_validate_svg"
             info-> return "ic_info_svg"
             order-> return "ic_truck_svg"
             like-> return "ic_like_in_svg"
@@ -265,7 +285,7 @@ enum class MainMemberEnum(val chineseName: String) {
             manager-> return "ic_manager1_svg"
             bank-> return "ic_bank_account_svg"
             delete-> return "ic_account_delete_svg"
-            refresh-> return "ic_refresh_g_svg"
+            refresh-> return "ic_info_svg"
         }
     }
 }
@@ -285,12 +305,12 @@ class MemberAdapter(val context: Context, val delegate: MemberVC):
 
     override fun getItemViewType(position: Int): Int {
         //println("position: ${position}")
-        when (position) {
-            0 -> return AVATAR
-            1 -> return LEVEL
-            2 -> return BANNER
-            3 -> return ITEM
-            else -> return ITEM
+        return when (position) {
+            0 -> AVATAR
+            1 -> LEVEL
+            2 -> BANNER
+            3 -> ITEM
+            else -> ITEM
         }
     }
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -314,7 +334,7 @@ class MemberAdapter(val context: Context, val delegate: MemberVC):
         if (items.size > 0) {
             return items.size + 3
         } else {
-            return 0
+            return 3
         }
     }
 

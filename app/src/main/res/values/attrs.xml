@@ -87,6 +87,9 @@
     <declare-styleable name="SubmitOnly">
         <attr name="submitOnlyTV" format="string" />
     </declare-styleable>
+    <declare-styleable name="CancelOnly">
+        <attr name="cancelOnlyTV" format="string" />
+    </declare-styleable>
 
     <declare-styleable name="AttributesView">
         <attr name="attributesViewName" format="string" />

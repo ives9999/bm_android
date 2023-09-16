@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/MY_BLACK"
+    >
+
+    <TextView
+        android:id="@+id/cancelTV"
+        style="@style/cancel_button"
+        android:layout_width="match_parent"
+        android:layout_height="52dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:background="@drawable/button_cancel"
+        android:gravity="center_vertical"
+        android:text="取消"
+        android:textAlignment="center" />
+
+</LinearLayout>

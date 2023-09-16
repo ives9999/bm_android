@@ -10,6 +10,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.sportpassword.bm.Controllers.LoginVC
 import com.sportpassword.bm.Controllers.MemberVC
+import com.sportpassword.bm.Controllers.ValidateVC
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Utilities.Alert
 import com.sportpassword.bm.bm_new.data.dto.match.MatchDetailDto
@@ -83,38 +84,35 @@ class MatchGroupsFragment : BaseFragment<FragmentMatchGroupsBinding>(),
 
         //add by ives 2023/08/06 報名註冊前先檢查是否登入，如果沒有登入則導到登入頁
         //add by ives 2023/09/15 報名註冊前還要檢查會員是否通過email與手機認證
-        var canSignup: Boolean = true
         if (!member.isLoggedIn) {
             toLogin()
-            canSignup = false
+            return
         }
 
         if (member.validate == 0) {
-            warning(msg: "請先完成email與手機驗證", closeButtonTitle: "取消", buttonTitle: "驗證") {
-                self.toValidate(type: "email")
+            warning("請先完成email與手機驗證", "取消", "驗證") {
+                toValidate("email")
             }
-            canSignup = false
+            return
         }
 
         if (member.validate == 1) {
-            warning(msg: "請先完成手機驗證", closeButtonTitle: "取消", buttonTitle: "驗證") {
-                self.toValidate(type: "mobile")
+            warning("請先完成手機驗證", "取消", "驗證") {
+                toValidate("mobile")
             }
-            canSignup = false
+            return
         }
 
 
-        if (canSignup) {
-            vm.matchDetail.value?.let {
-                canSignUp(
-                    signupStart = it.signupStart,
-                    signupEnd = it.signupEnd,
-                    it.matchGroups.size >= data.limit
-                )?.let { stringRes ->
-                    Alert.show(requireContext(), "警告", getString(stringRes))
-                } ?: run {
-                    requireContext().toMatchSignUp(data.id, data.matchId, data.token)
-                }
+        vm.matchDetail.value?.let {
+            canSignUp(
+                signupStart = it.signupStart,
+                signupEnd = it.signupEnd,
+                it.matchGroups.size >= data.limit
+            )?.let { stringRes ->
+                Alert.show(requireContext(), "警告", getString(stringRes))
+            } ?: run {
+                requireContext().toMatchSignUp(data.id, data.matchId, data.token)
             }
         }
     }
@@ -122,5 +120,30 @@ class MatchGroupsFragment : BaseFragment<FragmentMatchGroupsBinding>(),
     fun toLogin() {
         val i: Intent = Intent(requireContext(), LoginVC::class.java)
         requireContext().startActivity(i)
+    }
+
+    fun toValidate(type: String) {
+
+        val i: Intent = Intent(requireContext(), ValidateVC::class.java)
+        i.putExtra("type", type)
+        //validateVC.launch(i)
+        requireContext().startActivity(i)
+    }
+
+//    val validateVC = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { res ->
+//        if (res.resultCode == Activity.RESULT_OK) {
+//
+//            if (res.data != null) {
+//                val i: Intent? = res.data
+//
+//                if (i != null) {
+//                    refresh()
+//                }
+//            }
+//        }
+//    }
+
+    fun warning(msg: String, closeButtonTitle: String, buttonTitle: String, buttonAction: () -> Unit) {
+        Alert.show(requireContext(), "警告", msg, closeButtonTitle, buttonTitle, buttonAction)
     }
 }

@@ -48,4 +48,12 @@
         android:layout_marginTop="65dp"
         app:submitOnlyTV="送出"
         />
+
+    <com.sportpassword.bm.Views.CancelOnly
+        android:id="@+id/cancelCO"
+        android:layout_width="match_parent"
+        android:layout_height="52dp"
+        android:layout_marginTop="20dp"
+        app:cancelOnlyTV="重送驗證碼"
+        />
 </LinearLayout>

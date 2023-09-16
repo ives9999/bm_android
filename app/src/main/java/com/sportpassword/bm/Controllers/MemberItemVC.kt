@@ -93,10 +93,6 @@ class MemberItemVC : BaseActivity() {
                 toRegister()
             } else if (memberItemEnum == MemberItemEnum.change_password) {
                 toUpdatePassword()
-            } else if (memberItemEnum == MemberItemEnum.email_validate) {
-                toValidate("email")
-            } else if (memberItemEnum == MemberItemEnum.mobile_validate) {
-                toValidate("mobile")
             }
         } else if (mainMemberEnum == MainMemberEnum.order) {
             if (memberItemEnum == MemberItemEnum.cart) {
@@ -151,8 +147,6 @@ class MemberItemVC : BaseActivity() {
 enum class MemberItemEnum(val chineseName: String) {
     info("帳戶資料"),
     change_password("更改密碼"),
-    email_validate("EMail認證"),
-    mobile_validate("手機認證"),
     cart("購物車"),
     order("訂單查詢"),
     team("球隊"),
@@ -173,13 +167,6 @@ enum class MemberItemEnum(val chineseName: String) {
             when (mainMemberEnum) {
                 MainMemberEnum.info-> {
                     val arr: ArrayList<MemberItemEnum> = arrayListOf(info, change_password)
-                    val validate: Int = member.validate
-                    if (validate and EMAIL_VALIDATE <= 0) {
-                        arr.add(email_validate)
-                    }
-                    if (validate and MOBILE_VALIDATE <= 0) {
-                        arr.add(mobile_validate)
-                    }
                     return arr
                 }
                 MainMemberEnum.order-> {
@@ -214,9 +201,7 @@ enum class MemberItemEnum(val chineseName: String) {
     fun getIcon(): String {
         when (this) {
             info-> return "ic_info_svg"
-            email_validate-> return "ic_validate_svg"
-            mobile_validate-> return "ic_validate_svg"
-            change_password-> return "ic_order_svg"
+            change_password-> return "ic_change_password_svg"
             cart-> return "ic_cart_svg"
             order-> return "ic_truck_svg"
             team-> return "ic_team_on_svg"

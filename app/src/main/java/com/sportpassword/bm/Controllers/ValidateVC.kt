@@ -1,10 +1,6 @@
 package com.sportpassword.bm.Controllers
 
-import android.app.Activity
-import android.content.Intent
 import android.os.Bundle
-import android.text.InputType
-import android.view.View
 import android.view.ViewGroup
 import com.google.gson.Gson
 import com.google.gson.JsonParseException
@@ -12,18 +8,13 @@ import com.sportpassword.bm.Models.MemberTable
 import com.sportpassword.bm.Models.SuccessTable
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.MemberService
-import com.sportpassword.bm.Utilities.Alert
 import com.sportpassword.bm.Utilities.dump
 import com.sportpassword.bm.Utilities.jsonToModel
-import com.sportpassword.bm.Views.MainEditText2
-import com.sportpassword.bm.Views.ShowTop2
-import com.sportpassword.bm.Views.SubmitDelegate
-import com.sportpassword.bm.Views.SubmitOnly
+import com.sportpassword.bm.Views.*
 import com.sportpassword.bm.databinding.ActivityValidateBinding
 import com.sportpassword.bm.member
-import org.jetbrains.anko.runOnUiThread
 
-class ValidateVC : BaseActivity(), SubmitDelegate {
+class ValidateVC : BaseActivity(), SubmitDelegate, CancelOnlyDelegate {
 
     private lateinit var binding: ActivityValidateBinding
     private lateinit var view: ViewGroup
@@ -77,6 +68,10 @@ class ValidateVC : BaseActivity(), SubmitDelegate {
             it.delegate = this
         }
 
+        findViewById<CancelOnly>(R.id.cancelCO) ?. let {
+            it.delegate = this
+        }
+
 //        if (type == "email") {
 //            setMyTitle("email認證")
 //            //typeTxt.text = "email"
@@ -99,88 +94,11 @@ class ValidateVC : BaseActivity(), SubmitDelegate {
 //        super.init()
 //    }
 
-    fun resend(view: View) {
-        val value = codeET2!!.text.toString()
-        if (value.isEmpty()) {
-//            var msg = ""
-//            if (type == "email") {
-//                msg = "請填寫email"
-//            } else if (type == "mobile") {
-//                msg = "請填寫手機號碼"
-//            }
-            Alert.show(this, "警告", "請填寫認證碼")
-        } else {
-            loadingAnimation.start()
-            MemberService.sendVaildateCode(this, type, value, member.token!!) { success ->
-                runOnUiThread {
-                    loadingAnimation.stop()
-                }
-                if (success) {
-
-                    if (success) {
-
-                        var t: SuccessTable? = null
-                        try {
-                            t = Gson().fromJson<SuccessTable>(
-                                MemberService.jsonString,
-                                SuccessTable::class.java
-                            )
-                        } catch (e: JsonParseException) {
-                            runOnUiThread {
-                                warning(e.localizedMessage!!)
-                            }
-                        }
-
-                        var msg = ""
-                        if (t != null) {
-                            if (t.success) {
-                                info("認證成功", "關閉") {
-                                    loadingAnimation.start()
-                                    dataService.getOne(this, hashMapOf("token" to member.token!!)) { success ->
-                                        runOnUiThread {
-                                            loadingAnimation.stop()
-                                        }
-                                        if (success) {
-                                            //println(MemberService.jsonString)
-                                            session.dump()
-                                            val table =
-                                                jsonToModel<MemberTable>(MemberService.jsonString)
-                                            table?.toSession(this, true)
-                                            session.dump()
-                                            toMemberItem(MainMemberEnum.info.chineseName)
-                                        }
-                                    }
-                                }
-                            } else {
-                                msg = "伺服器錯誤，無法解析伺服器傳回的訊息"
-                            }
-                        }
-                    }
-
-
-//                    var msg = ""
-//                    if (type == "email") {
-//                        msg = "已經將認證信寄到註冊的信箱了"
-//                    } else if (type == "mobile") {
-//                        msg = "已經將認證碼發送到註冊的手機了"
-//                    }
-//                    runOnUiThread {
-//                        Alert.show(this, "訊息", msg)
-//                    }
-                } else {
-                    runOnUiThread {
-                        Alert.show(this, "警告", MemberService.msg)
-                    }
-                }
-            }
-        }
-    }
-
     override fun submit2() {
         _hideKeyboard(binding.validateLayout)
         val code = codeET2!!.text.toString()
         if (code.isEmpty()) {
-            Alert.show(this, "警告", "請填寫認證碼")
+            warning("請填寫認證碼")
         } else {
             loadingAnimation.start()
             MemberService.validate(this, type, code, member.token!!) { success ->
@@ -209,7 +127,7 @@ class ValidateVC : BaseActivity(), SubmitDelegate {
                                             val table =
                                                 jsonToModel<MemberTable>(MemberService.jsonString)
                                             table?.toSession(this, true)
-                                            toMemberItem(MainMemberEnum.info.chineseName)
+                                            toMember()
                                         }
                                     }
                                 }
@@ -222,7 +140,42 @@ class ValidateVC : BaseActivity(), SubmitDelegate {
                     }
                 } else {
                     runOnUiThread {
-                        Alert.show(this, "警告", MemberService.msg)
+                        warning(MemberService.msg)
+                    }
+                }
+            }
+        }
+    }
+
+    override fun cancel2() {
+        val value = emailET2!!.text.toString()
+        if (value.isEmpty()) {
+            var msg = ""
+            if (type == "email") {
+                msg = "請填寫email"
+            } else if (type == "mobile") {
+                msg = "請填寫手機號碼"
+            }
+            warning(msg)
+        } else {
+            loadingAnimation.start()
+            MemberService.sendVaildateCode(this, type, value, member.token!!) { success ->
+                runOnUiThread {
+                    loadingAnimation.stop()
+                }
+                if (success) {
+                    var msg = ""
+                    if (type == "email") {
+                        msg = "已經將認證信寄到註冊的信箱了"
+                    } else if (type == "mobile") {
+                        msg = "已經將認證碼發送到註冊的手機了"
+                    }
+                    runOnUiThread {
+                        info(msg)
+                    }
+                } else {
+                    runOnUiThread {
+                        warning(MemberService.msg)
                     }
                 }
             }
