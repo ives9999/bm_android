@@ -21,6 +21,7 @@ class ProductViewHolder(context: Context, viewHolder: View, list1CellDelegate: L
         val row: ProductTable = _row as ProductTable
 
         viewHolder.findViewById<Button>(R.id.buyBtn) ?. let {
+            it.visibility = View.INVISIBLE
             it.setOnClickListener {
                 val vc: ProductVC = context as ProductVC
 

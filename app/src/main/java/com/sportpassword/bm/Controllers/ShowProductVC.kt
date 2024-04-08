@@ -32,7 +32,7 @@ class ShowProductVC: ShowVC() {
         setContentView(view)
         setContentView(R.layout.activity_show_product_vc)
 
-        bottom_button_count = 2
+        bottom_button_count = 1
 
         super.onCreate(savedInstanceState)
         dataService = ProductService
@@ -63,6 +63,7 @@ class ShowProductVC: ShowVC() {
         //val leading: Int = bottom_button_count * padding + (bottom_button_count - 1) * button_width
 
         findViewById<Button>(R.id.signupButton) ?. let {
+            it.visibility = View.GONE
             val params: ViewGroup.MarginLayoutParams = it.layoutParams as ViewGroup.MarginLayoutParams
             params.width = button_width
             params.marginStart = padding
