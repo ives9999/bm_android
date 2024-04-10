@@ -74,7 +74,7 @@ class MyMapVC : BaseActivity(), OnMapReadyCallback {
         // Add a marker in Sydney and move the camera
         val location = LatLng(lat, lng)
         val marker = mMap.addMarker(MarkerOptions().position(location).title(title))
-        marker.showInfoWindow()
+        marker?.showInfoWindow()
         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(location, 18f))
 //        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney))
     }
