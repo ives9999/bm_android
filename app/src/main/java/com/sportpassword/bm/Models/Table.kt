@@ -8,6 +8,9 @@ import kotlin.reflect.full.memberProperties
 //class Tables<T: Table> {
 
 open class Tables2<T: Table> {
+    var status: Int = 0
+    var data: DataTable<T>? = null
+
     var success: Boolean = true
     var msg: String = ""
     var page: Int = 0

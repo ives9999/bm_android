@@ -170,7 +170,7 @@ class App : Application() {
         BASE_URL = if (gSimulate) LOCALHOST_BASE_URL else REMOTE_BASE_URL
         //println("os: " + BASE_URL)
 
-        URL_HOME = BASE_URL + "/app/"
+        URL_HOME = BASE_URL + "/"
 
         URL_AREA_BY_CITY_IDS = URL_HOME + "area_by_citys"
         URL_ARENA_BY_CITY_ID = URL_HOME + "arena_by_city"
@@ -237,7 +237,7 @@ class App : Application() {
         URL_TEAM = URL_HOME + "team/"
         URL_TEAM_DELETE = URL_HOME + "team/delete"
         URL_TEAM_LIKE = URL_HOME + "team/like/%s"
-        URL_TEAM_LIST = URL_HOME + "team/list"
+        URL_TEAM_LIST = URL_HOME + "team/getRead"
         URL_TEAM_MEMBER_ADD = URL_HOME + "team/addTeamMember"
         URL_TEAM_MEMBER_DELETE = URL_HOME + "team/deleteTeamMember"
         URL_TEAM_MEMBER_LEAVE = URL_HOME + "team/leave"
