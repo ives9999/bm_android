@@ -14,7 +14,6 @@ import androidx.core.content.res.TypedArrayUtils.getResourceId
 //import com.sportpassword.bm.Views.EditTextWithDeleteButton
 import android.content.res.TypedArray
 import android.util.AttributeSet
-import com.sportpassword.bm.R.layout.activity_main
 import android.view.LayoutInflater
 import android.view.View
 import com.sportpassword.bm.R

@@ -221,7 +221,6 @@
         <activity android:name=".Controllers.ShowTempPlayActivity" />
         <activity android:name=".Controllers.TeamTempPlayEditActivity" />
         <activity android:name=".Controllers.TestActivity" />
-        <activity android:name=".Controllers.SplashActivity" />
         <activity android:name=".Controllers.ManagerVC" />
         <activity android:name=".Controllers.ManagerFunctionVC1" />
         <activity android:name=".Controllers.ManagerCourseVC" />
