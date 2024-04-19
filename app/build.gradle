@@ -18,6 +18,7 @@ plugins {
 
     //for fcm
     id 'com.google.gms.google-services'
+    id("kotlin-kapt")
 }
 
 //repositories {
@@ -74,11 +75,12 @@ android {
     }
 
     // is use by ecpay
-    dataBinding {
-        enabled = true
-    }
+//    dataBinding {
+//        enabled = true
+//    }
     buildFeatures {
         viewBinding = true
+        dataBinding = true
     }
     //////////////////////
 

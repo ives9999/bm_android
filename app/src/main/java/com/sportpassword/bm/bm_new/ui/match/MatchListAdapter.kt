@@ -16,7 +16,7 @@ class MatchListAdapter :
 
     private var listener: Listener? = null
 
-    fun --(listener: Listener) {
+    fun setListener(listener: Listener) {
         this.listener = listener
     }
 
