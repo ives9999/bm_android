@@ -4,7 +4,7 @@ import android.content.Intent
 import android.provider.MediaStore
 import android.view.View
 import com.sportpassword.bm.Controllers.*
-import com.sportpassword.bm.Controllers.ScanQRCodeVC
+import com.sportpassword.bm.v2.views.ArenaActivity
 import com.sportpassword.bm.member
 
 interface ToInterface {
@@ -52,10 +52,11 @@ interface ToInterface {
         }
     }
     fun toArena(member_like: Boolean = false, isPrevIconShow: Boolean = false, isSearchIconShow: Boolean = false) {
-        val i = Intent(mainDelegate, ArenaVC::class.java)
-        i.putExtra("member_like", member_like)
-        i.putExtra("isPrevIconShow", isPrevIconShow)
-        i.putExtra("isSearchIconShow", isSearchIconShow)
+        val i = Intent(mainDelegate, ArenaActivity::class.java)
+//        val i = Intent(mainDelegate, ArenaVC::class.java)
+//        i.putExtra("member_like", member_like)
+//        i.putExtra("isPrevIconShow", isPrevIconShow)
+//        i.putExtra("isSearchIconShow", isSearchIconShow)
 
         mainDelegate.startActivity(i)
     }
