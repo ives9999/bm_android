@@ -100,4 +100,8 @@
         <attr name="attributesViewLabelHorizonMergin" format="integer" />
         <attr name="attributesViewLabelVerticalMergin" format="integer" />
     </declare-styleable>
+
+    <declare-styleable name="MainTabBottom">
+        <attr name="teamContainer" format="string" />
+    </declare-styleable>
 </resources>
