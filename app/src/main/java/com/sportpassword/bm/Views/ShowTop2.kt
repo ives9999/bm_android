@@ -1,15 +1,20 @@
 package com.sportpassword.bm.Views
 
+import android.app.Activity
 import android.content.Context
+import android.content.Intent
 import android.util.AttributeSet
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import android.widget.ImageButton
 import android.widget.RelativeLayout
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView.LayoutManager
 import com.sportpassword.bm.Controllers.BaseActivity
 import com.sportpassword.bm.R
+import com.sportpassword.bm.Utilities.hideKeyboard
 import com.sportpassword.bm.extensions.dpToPx
 import com.sportpassword.bm.Utilities.then
 import org.jetbrains.anko.backgroundColor
@@ -33,11 +38,11 @@ class ShowTop2 @JvmOverloads constructor(context: Context, attrs: AttributeSet? 
     var delegate: ShowTop2Delegate? = null
 
     init {
-        (context as? BaseActivity) ?. let { delegate->
+        (context as? AppCompatActivity) ?. let { delegate->
             view.findViewById<ImageButton>(R.id.prevIB) ?. let {
                 prevIB = it
                 it.setOnClickListener {
-                    delegate.prev()
+                    prev(delegate)
                 }
             }
 
@@ -135,6 +140,17 @@ class ShowTop2 @JvmOverloads constructor(context: Context, attrs: AttributeSet? 
         logIconText!!.setOnClickListener {
             delegate?.showTop2Log()
         }
+    }
+
+    fun prev(activity: AppCompatActivity) {
+        val imm = activity.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        if (imm != null && activity.currentFocus != null) {
+            imm.hideSoftInputFromWindow(activity.currentFocus!!.windowToken, 0);
+        }
+
+        val intent = Intent()
+        activity.setResult(Activity.RESULT_CANCELED, intent)
+        activity.finish()
     }
 }
 
