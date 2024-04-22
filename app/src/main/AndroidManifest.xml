@@ -29,7 +29,7 @@
         tools:replace="android:allowBackup"
         tools:targetApi="m">
         <activity
-            android:name=".v2.views.ArenaActivity"
+            android:name=".v2.arena.read.ReadActivity"
             android:launchMode="singleTask" />
         <activity
             android:name=".Controllers.MemberItemVC"

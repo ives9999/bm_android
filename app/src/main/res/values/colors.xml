@@ -72,5 +72,7 @@
     <color name="THREE_BUTTON">#8618f5</color>
     <color name="TOP">#a6d903</color>
     <color name="blue_bg">#033BD9</color>
+
+    <color name="bg_gray_900">#111827</color>
 </resources>
 

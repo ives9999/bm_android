@@ -5,6 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/MY_BLACK"
     >
 
     <com.sportpassword.bm.Views.ShowTop2
@@ -12,12 +13,36 @@
         android:layout_width="match_parent"
         android:layout_height="54dp" />
 
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/top"
+        android:layout_above="@id/bottom"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+
+    <FrameLayout
+        android:id="@+id/empty"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/top"
+        android:layout_above="@id/bottom">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="尚無資料"
+            android:textSize="24dp"
+            android:textColor="@color/MY_WHITE"/>
+    </FrameLayout>
+
     <com.sportpassword.bm.Views.MainTabBottom
         android:id="@+id/bottom"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_alignParentBottom="true"
-        app:teamContainer=""
+        app:focus="arena"
     />
 
 </RelativeLayout>
