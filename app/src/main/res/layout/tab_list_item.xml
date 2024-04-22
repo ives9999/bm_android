@@ -88,7 +88,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginRight="12dp"
                         android:layout_weight="5"
-                        android:textColor="@color/MY_GREEN"
+                        android:textColor="@color/Primary_300"
                         android:textSize="18dp"
                         tools:text="球館" />
 
@@ -97,7 +97,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="4"
-                        android:textColor="@color/MY_GREEN"
+                        android:textColor="@color/Primary_300"
                         android:textSize="18dp"
                         tools:text="球種" />
 
@@ -132,7 +132,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginRight="12dp"
                         android:layout_weight="6"
-                        android:textColor="@color/MY_GREEN"
+                        android:textColor="@color/Primary_300"
                         android:textSize="18dp"
                         tools:text="星期" />
 
@@ -141,7 +141,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="4"
-                        android:textColor="@color/MY_GREEN"
+                        android:textColor="@color/Primary_300"
                         android:textSize="18dp"
                         tools:text="時段" />
 

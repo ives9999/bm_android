@@ -16,7 +16,7 @@
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="64dp"
-            android:background="@color/MY_GREEN"
+            android:background="@color/Primary_300"
             android:textAlignment="center"
             android:theme="@style/Theme.AppCompat.DayNight.DarkActionBar"
             app:popupTheme="@style/AppTheme.PopupOverlay">
@@ -46,9 +46,9 @@
         android:layout_height="wrap_content"
         app:tabTextAppearance="@style/tab"
         app:tabTextColor="@color/MY_WHITE"
-        app:tabSelectedTextColor="@color/MY_GREEN"
+        app:tabSelectedTextColor="@color/Primary_300"
         app:tabBackground="@color/TAB_BOTTOM_BACKGROUND"
-        app:tabIndicatorColor="@color/MY_GREEN"
+        app:tabIndicatorColor="@color/Primary_300"
         android:theme="@style/Theme.AppCompat.NoActionBar"
         >
 

@@ -60,7 +60,7 @@
             android:paddingTop="4dp"
             android:paddingBottom="4dp"
             android:textAlignment="textStart"
-            android:textColor="@color/MY_GREEN"
+            android:textColor="@color/Primary_300"
             android:textColorHint="#8b8f90"
             android:textSize="16dp" />
 

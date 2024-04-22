@@ -149,7 +149,7 @@ class MemberSubscriptionLogViewHolder(
         if (row.orderTable != null) {
             startOrEndTV.visibility = View.VISIBLE
             startOrEndTV.text = "訂閱開始"
-            startOrEndTV.textColor = context.getMyColor(R.color.MY_GREEN)
+            startOrEndTV.textColor = context.getMyColor(R.color.Primary_300)
 
             priceIT.visibility = View.VISIBLE
             invoiceIT.visibility = View.VISIBLE

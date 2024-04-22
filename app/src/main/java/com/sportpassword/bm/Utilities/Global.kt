@@ -641,7 +641,7 @@ fun ViewGroup.setInfo(context: Context, info: String): TextView {
 }
 
 fun TextView.selected() {
-    val checkedColor = ContextCompat.getColor(context, R.color.MY_GREEN)
+    val checkedColor = ContextCompat.getColor(context, R.color.Primary_300)
     this.setTextColor(checkedColor)
 }
 

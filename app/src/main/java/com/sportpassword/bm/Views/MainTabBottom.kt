@@ -56,7 +56,7 @@ class MainTabBottom: LinearLayout {
                     val tabIconID: Int = resources.getIdentifier(it + "TabIcon", "id", context.packageName)
 
                     view.findViewById<LinearLayout>(tabContainerID) ?. let { ll ->
-                        val myColorGreen = ContextCompat.getColor(context, R.color.MY_GREEN)
+                        val myColorGreen = ContextCompat.getColor(context, R.color.Primary_300)
                         ll.findViewById<TextView>(tabTitleID) ?. let {
                             it.textColor = myColorGreen
                         }

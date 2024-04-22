@@ -33,7 +33,7 @@
                     android:id="@+id/menu_team_list_edit"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:background="@color/MY_GREEN"
+                    android:background="@color/Primary_300"
                     android:orientation="vertical"
                     android:paddingLeft="24dp"
                     android:paddingRight="24dp">

@@ -34,13 +34,14 @@ class ReadActivity : AppCompatActivity() {
         adapter = Adapter(viewModel)
         binding.recyclerView.adapter = adapter
 
-        viewModel.status.observe(this, Observer {
-            println("status: $it")
-        })
+//        viewModel.status.observe(this, Observer {
+//            println("status: $it")
+//        })
 
-        viewModel.rows.observe(this, Observer {
-//            println("rows count: ${it.count()}")
-            adapter.rows = it
+        viewModel.readDao.observe(this, Observer {
+            println("rows: $it")
+
+            adapter.rows = it.data.rows
             adapter.notifyDataSetChanged()
         })
 

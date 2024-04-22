@@ -50,7 +50,7 @@ class TapTextView2@JvmOverloads constructor(context: Context, attrs: AttributeSe
 //        } else {
 //            tapTV?.setTextAppearance(R.style.list_text_general)
 //        }
-        tapTV?.setTextColor(getColor(context, R.color.MY_GREEN))
+        tapTV?.setTextColor(getColor(context, R.color.Primary_300))
 
         this.isOn = true
     }

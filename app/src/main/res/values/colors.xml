@@ -29,7 +29,8 @@
     <color name="MY_BLACK">#000000</color>
     <color name="TAB_BACKGROUND">#242529</color>
     <color name="MY_BOTTOM_BACKGROUND">#5d5d5d</color>
-    <color name="MY_GREEN">#a6d903</color>
+    <color name="Primary_300">#a9ff71</color>
+<!--    <color name="MY_GREEN">#a6d903</color>-->
     <color name="MY_GREY">#717171</color>
     <color name="MY_LIGHT_RED">#FF4081</color>
     <color name="MY_LIGHT_WHITE">#AAAAAA</color>

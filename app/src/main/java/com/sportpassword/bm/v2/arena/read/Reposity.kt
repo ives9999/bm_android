@@ -14,7 +14,7 @@ class Reposity : IRepository {
     override fun getRead(context: Context, page: Int, perpage: Int, callback: IRepository.IDaoCallback) {
         ArenaService.getList(context, null, null, page, 20) { success ->
             val jsonString = ArenaService.jsonString
-            println(jsonString)
+//            println(jsonString)
             try {
                 val t = Gson().fromJson<ReadDao>(jsonString, ReadDao::class.java)
                 println(t)

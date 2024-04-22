@@ -4,7 +4,9 @@ import android.text.Layout
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.sportpassword.bm.R
 import com.sportpassword.bm.databinding.ReadArenaBinding
+import com.squareup.picasso.Picasso
 
 class Adapter(private val viewModel: ViewModel): RecyclerView.Adapter<Adapter.ViewHolder>() {
 
@@ -15,7 +17,7 @@ class Adapter(private val viewModel: ViewModel): RecyclerView.Adapter<Adapter.Vi
     }
 
     override fun getItemCount(): Int {
-        println("rows count: ${rows?.count()}")
+        //println("rows count: ${rows?.count()}")
         return rows?.count() ?: 0
     }
 
@@ -36,6 +38,23 @@ class Adapter(private val viewModel: ViewModel): RecyclerView.Adapter<Adapter.Vi
 
         fun bind(viewModel: ViewModel, row: ReadDao.Arena) {
             binding.nameTV.text = row.name
+
+            val images: List<ReadDao.Image> = row.images
+            var featured_path: String? = null
+            for (image in images) {
+                if (image.isFeatured) {
+                    featured_path = image.path
+                }
+            }
+            if (featured_path != null) {
+                Picasso.with(viewModel.context)
+                    .load(featured_path)
+                    .placeholder(R.drawable.loading_square)
+                    .error(R.drawable.load_failed_square)
+                    .into(binding.featuredIV)
+            } else {
+                binding.featuredIV.setImageResource(R.drawable.loading_square)
+            }
         }
     }
 }

@@ -5,7 +5,7 @@
         android:color="@color/CELL_SELECTED">
     </solid>
     <stroke
-        android:color="@color/MY_GREEN" android:width="1dp">
+        android:color="@color/Primary_300" android:width="1dp">
     </stroke>
     <corners
         android:radius="22dp"   >

@@ -155,7 +155,7 @@ class Bottom2@JvmOverloads constructor(context: Context, attrs: AttributeSet? = 
     fun changeSubmitToCancelBtn() {
         val style: Drawable? = getDrawable(context, R.drawable.button_cancel)
         submitBtn?.background = style
-        submitBtn?.setTextColor(getColor(context, R.color.MY_GREEN))
+        submitBtn?.setTextColor(getColor(context, R.color.Primary_300))
     }
 
     fun changeSubmitToNormalBtn() {

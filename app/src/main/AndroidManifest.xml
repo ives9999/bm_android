@@ -260,7 +260,7 @@
         -->
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_color"
-            android:resource="@color/MY_GREEN" />
+            android:resource="@color/Primary_300" />
 
         <service
             android:name=".MyFirebaseMessagingService"

@@ -892,7 +892,7 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener,
         oneSectionAdapter = OneSectionAdapter(this, R.layout.cell_section, this, hashMapOf())
         oneSections = initSectionRows()
 
-        myColorGreen = ContextCompat.getColor(context, R.color.MY_GREEN)
+        myColorGreen = ContextCompat.getColor(context, R.color.Primary_300)
         delegate = this
 
         loadingAnimation = LoadingAnimation(this)
@@ -1669,7 +1669,7 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener,
         val tabIconID: Int = resources.getIdentifier(able_type + "TabIcon", "id", packageName)
 
         findViewById<TextView>(tabTitleID) ?. let {
-            it.textColor = ContextCompat.getColor(context, R.color.MY_GREEN)
+            it.textColor = ContextCompat.getColor(context, R.color.Primary_300)
         }
 
         findViewById<LinearLayout>(tabLineID) ?. let {

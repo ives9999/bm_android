@@ -67,7 +67,7 @@
 
     <style name="DialogSlideAnim" parent="@android:style/Theme.Dialog">
         <item name="android:windowAnimationStyle">@style/DialogAnimation_2</item>
-        <item name="android:windowBackground">@color/MY_GREEN</item>
+        <item name="android:windowBackground">@color/Primary_300</item>
         <item name="android:windowFrame">@null</item>
         <item name="android:windowNoTitle">true</item>
     </style>
@@ -99,7 +99,7 @@
 
     <style name="cancel_button">
         <item name="android:background">@drawable/button_cancel</item>
-        <item name="android:textColor">@color/MY_GREEN</item>
+        <item name="android:textColor">@color/Primary_300</item>
         <item name="android:paddingStart">12dp</item>
         <item name="android:paddingEnd">12dp</item>
     </style>
@@ -134,7 +134,7 @@
 
     <style name="like_button">
         <item name="android:background">@drawable/button_like</item>
-        <item name="android:textColor">@color/MY_GREEN</item>
+        <item name="android:textColor">@color/Primary_300</item>
         <item name="android:paddingStart">16dp</item>
         <item name="android:paddingEnd">16dp</item>
     </style>
@@ -189,7 +189,7 @@
     </style>
 
     <style name="list_text_no">
-        <item name="android:textColor">@color/MY_GREEN</item>
+        <item name="android:textColor">@color/Primary_300</item>
         <item name="android:textSize">14dp</item>
     </style>
 

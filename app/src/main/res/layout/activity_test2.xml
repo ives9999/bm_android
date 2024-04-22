@@ -9,7 +9,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/MY_GREEN">
+        android:background="@color/Primary_300">
 
         <include layout="@layout/top_view" />
 

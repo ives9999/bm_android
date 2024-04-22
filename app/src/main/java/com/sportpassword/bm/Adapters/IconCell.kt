@@ -22,7 +22,7 @@ class IconCell(val context: Context, val icon: String, val title: String, val co
 //        }
 //
 //        if (isPressed) {
-//            val color = ContextCompat.getColor(context, R.color.MY_GREEN)
+//            val color = ContextCompat.getColor(context, R.color.Primary_300)
 //            viewHolder.content.textColor = color
 //        }
 //    }

@@ -16,6 +16,7 @@
     >
 
         <ImageView
+            android:id="@+id/featuredIV"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             tools:srcCompat="@drawable/nophoto" />
@@ -25,7 +26,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:textColor="@color/MY_GREEN"
+            android:textColor="@color/Primary_300"
             android:textSize="24dp"
             android:text="xxx羽球隊" />
 

@@ -28,7 +28,7 @@ class TabSearch(context: Context) : LinearLayout(context) {
 
     fun selectedStyle() {
         val line: LinearLayout = findViewById(R.id.line)
-        line.setBackgroundColor(ContextCompat.getColor(context, R.color.MY_GREEN))
+        line.setBackgroundColor(ContextCompat.getColor(context, R.color.Primary_300))
     }
 
     fun unSelectedStyle() {

@@ -1,7 +1,7 @@
 <shape xmlns:android="http://schemas.android.com/apk/res/android" android:shape="rectangle" >
     <!-- View background color -->
     <solid
-        android:color="@color/MY_GREEN" >
+        android:color="@color/Primary_300" >
     </solid>
     <corners
         android:radius="200dp"   >

@@ -105,7 +105,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="32dp"
         android:layout_marginEnd="16dp"
-        android:background="@color/MY_GREEN"
+        android:background="@color/Primary_300"
         android:calendarTextColor="@color/MY_WHITE"
         android:headerBackground="@color/MY_RED"
         android:visibility="invisible"
