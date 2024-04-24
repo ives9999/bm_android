@@ -15,6 +15,8 @@ import com.sportpassword.bm.Services.CourseService
 import com.sportpassword.bm.Utilities.*
 import com.sportpassword.bm.databinding.ActivityCourseVcBinding
 import com.sportpassword.bm.databinding.MytablevcBinding
+import tw.com.bluemobile.hbc.extensions.setInfo
+import com.sportpassword.bm.functions.jsonToModels
 
 class CourseVC : MyTableVC() {
 

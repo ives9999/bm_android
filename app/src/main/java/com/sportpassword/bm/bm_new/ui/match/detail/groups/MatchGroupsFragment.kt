@@ -6,13 +6,10 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.sportpassword.bm.Controllers.LoginVC
-import com.sportpassword.bm.Controllers.MemberVC
 import com.sportpassword.bm.Controllers.ValidateVC
 import com.sportpassword.bm.R
-import com.sportpassword.bm.Utilities.Alert
 import com.sportpassword.bm.bm_new.data.dto.match.MatchDetailDto
 import com.sportpassword.bm.bm_new.ui.base.BaseFragment
 import com.sportpassword.bm.bm_new.ui.base.BaseViewModel
@@ -21,6 +18,7 @@ import com.sportpassword.bm.bm_new.ui.util.LinearItemDecoration
 import com.sportpassword.bm.bm_new.ui.util.canSignUp
 import com.sportpassword.bm.bm_new.ui.util.toMatchSignUp
 import com.sportpassword.bm.databinding.FragmentMatchGroupsBinding
+import com.sportpassword.bm.extensions.Alert
 import com.sportpassword.bm.member
 import org.koin.androidx.viewmodel.ext.android.sharedStateViewModel
 

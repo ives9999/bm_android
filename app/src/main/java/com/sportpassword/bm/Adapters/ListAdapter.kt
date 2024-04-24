@@ -67,7 +67,7 @@ class ListAdapter(val context: Context, val iden: String="team", val screenWidth
 //                //videoView.visibility = View.INVISIBLE
 //                nameView.text = superData.title
 //                if (superData.featured_path.isNotEmpty()) {
-//                    Picasso.with(context)
+//                    Picasso.get()
 //                            .load(superData.featured_path)
 //                            .placeholder(R.drawable.loading_square_120)
 //                            .error(R.drawable.loading_square_120)

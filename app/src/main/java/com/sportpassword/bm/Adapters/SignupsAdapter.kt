@@ -7,7 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import com.sportpassword.bm.R
-import com.sportpassword.bm.Utilities.noSec
+import com.sportpassword.bm.extensions.noSec
 
 /**
  * Created by ives on 2018/3/9.

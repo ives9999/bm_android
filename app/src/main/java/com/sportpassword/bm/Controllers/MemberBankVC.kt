@@ -1,22 +1,18 @@
 package com.sportpassword.bm.Controllers
 
-import android.app.Activity
 import android.os.Bundle
-import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import com.google.gson.JsonParseException
 import com.sportpassword.bm.Models.SuccessTable
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.MemberService
-import com.sportpassword.bm.Utilities.jsonToModel
 import com.sportpassword.bm.Views.MainEditText2
 import com.sportpassword.bm.Views.ShowTop2
 import com.sportpassword.bm.Views.SubmitDelegate
 import com.sportpassword.bm.Views.SubmitOnly
 import com.sportpassword.bm.databinding.ActivityMemberBankVcBinding
-import com.sportpassword.bm.databinding.MytablevcBinding
 import com.sportpassword.bm.member
+import com.sportpassword.bm.functions.jsonToModel
 
 class MemberBankVC : BaseActivity(), SubmitDelegate {
 

@@ -22,8 +22,14 @@ import com.sportpassword.bm.Utilities.*
 import com.sportpassword.bm.Views.*
 import com.sportpassword.bm.databinding.ActivityShowTeamVcBinding
 import com.sportpassword.bm.extensions.avatar
+import com.sportpassword.bm.extensions.noSec
+import com.sportpassword.bm.extensions.noYear
+import com.sportpassword.bm.extensions.setImage
 import com.sportpassword.bm.member
-import tw.com.bluemobile.hbc.utilities.getColor
+import com.sportpassword.bm.functions.getColor
+import com.sportpassword.bm.functions.jsonToModel
+import com.sportpassword.bm.functions.jsonToModels2
+import com.sportpassword.bm.functions.then
 import java.util.*
 import java.lang.reflect.Type
 import kotlin.collections.ArrayList

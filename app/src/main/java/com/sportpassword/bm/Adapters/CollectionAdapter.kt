@@ -11,12 +11,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import com.sportpassword.bm.Models.Table
-//import com.sportpassword.bm.Models.SuperData
 import com.sportpassword.bm.R
-import com.sportpassword.bm.Utilities.CREATED_AT_KEY
-import com.sportpassword.bm.Utilities.PV_KEY
-import com.sportpassword.bm.Utilities.toDateTime
-import com.sportpassword.bm.Utilities.toMyString
 import com.squareup.picasso.Picasso
 import java.net.URL
 
@@ -58,7 +53,7 @@ class CollectionAdapter(val context: Context, val iden: String="teach", val scre
             titleLbl.text = superData.title
 
             if (superData.featured_path.isNotEmpty()) {
-                Picasso.with(context)
+                Picasso.get()
                         .load(superData.featured_path)
                         .placeholder(R.drawable.loading_square)
                         .error(R.drawable.load_failed_square)

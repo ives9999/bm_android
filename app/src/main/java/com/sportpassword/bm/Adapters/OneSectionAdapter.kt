@@ -28,6 +28,7 @@ import com.sportpassword.bm.R
 import com.sportpassword.bm.Utilities.*
 import com.sportpassword.bm.Views.Tag
 import com.sportpassword.bm.extensions.quotientAndRemainder
+import com.sportpassword.bm.extensions.setTextLookColor
 import com.squareup.picasso.Picasso
 import org.jetbrains.anko.backgroundColor
 import java.lang.IllegalArgumentException
@@ -252,7 +253,7 @@ class OneItemAdapter(
         } else if (holder is CartViewHolder) {
             holder.title.text = row.title
             if (row.feature_path.isNotEmpty()) {
-                Picasso.with(context)
+                Picasso.get()
                     .load(row.feature_path)
                     .placeholder(R.drawable.loading_square_120)
                     .error(R.drawable.loading_square_120)

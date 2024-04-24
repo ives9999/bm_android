@@ -15,13 +15,34 @@ import com.sportpassword.bm.Data.OneRow
 import com.sportpassword.bm.Models.Area
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.MemberService
-import com.sportpassword.bm.Utilities.*
 import java.io.File
 import com.sportpassword.bm.Models.MemberTable
+import com.sportpassword.bm.Utilities.AREA_KEY
+import com.sportpassword.bm.Utilities.CITY_KEY
+import com.sportpassword.bm.Utilities.DOB_KEY
+import com.sportpassword.bm.Utilities.EMAIL_KEY
+import com.sportpassword.bm.Utilities.FB_KEY
+import com.sportpassword.bm.Utilities.KEYBOARD
+import com.sportpassword.bm.Utilities.LINE_KEY
+import com.sportpassword.bm.Utilities.MOBILE_KEY
+import com.sportpassword.bm.Utilities.NAME_KEY
+import com.sportpassword.bm.Utilities.NICKNAME_KEY
+import com.sportpassword.bm.Utilities.PASSWORD_KEY
+import com.sportpassword.bm.Utilities.PRIVACY_KEY
+import com.sportpassword.bm.Utilities.REPASSWORD_KEY
+import com.sportpassword.bm.Utilities.ROAD_KEY
+import com.sportpassword.bm.Utilities.SEX_KEY
+import com.sportpassword.bm.Utilities.TEL_KEY
+import com.sportpassword.bm.Utilities.TOKEN_KEY
 import com.sportpassword.bm.Views.MoreDialog
 import com.sportpassword.bm.databinding.ActivityRegisterBinding
+import com.sportpassword.bm.extensions.isInt
 import com.sportpassword.bm.member
 import org.jetbrains.anko.sdk27.coroutines.onClick
+import com.sportpassword.bm.functions.getAreasByCityID
+import com.sportpassword.bm.functions.then
+import com.sportpassword.bm.functions.zoneIDToName
+import com.sportpassword.bm.functions.getCitys
 
 class RegisterVC : MyTableVC() {
 
@@ -191,12 +212,12 @@ class RegisterVC : MyTableVC() {
         rows.add(row)
 
         val city: String = (member.city == 0) then { "" } ?: member.city.toString()
-        row = OneRow("縣市", city, Global.zoneIDToName(member.city), CITY_KEY, "more", KEYBOARD.default, "", "", true)
+        row = OneRow("縣市", city, zoneIDToName(member.city), CITY_KEY, "more", KEYBOARD.default, "", "", true)
         row.msg = "沒有選擇縣市"
         rows.add(row)
 
         val area: String = (member.area == 0) then { "" } ?: member.area.toString()
-        row = OneRow("區域", area, Global.zoneIDToName(member.area), AREA_KEY, "more", KEYBOARD.default, "", "", true)
+        row = OneRow("區域", area, zoneIDToName(member.area), AREA_KEY, "more", KEYBOARD.default, "", "", true)
         row.msg = "沒有選擇區域"
         rows.add(row)
         row = OneRow("住址", member.road!!, member.road!!, ROAD_KEY, "textField", KEYBOARD.default, "中山路60號", "", true)
@@ -237,7 +258,7 @@ class RegisterVC : MyTableVC() {
             if (key == DOB_KEY) {
                 row.show = value
             } else if (key == CITY_KEY || key == AREA_KEY) {
-                row.show = Global.zoneIDToName(value.toInt())
+                row.show = zoneIDToName(value.toInt())
             }
         }
     }
@@ -491,7 +512,7 @@ class RegisterVC : MyTableVC() {
             val row: OneRow = getOneRowFromKey(moreKey)
             if (moreKey == CITY_KEY) {
                 if (citys == null || citys.size == 0) {
-                    citys = Global.getCitys()
+                    citys = getCitys()
                 }
                 val city = citys[idx]
                 row.value = city.id.toString()
@@ -505,7 +526,7 @@ class RegisterVC : MyTableVC() {
             } else if (moreKey == AREA_KEY) {
                 val row1: OneRow = getOneRowFromKey(CITY_KEY)
                 val city_id: Int = (row1.value.isInt()) then { row1.value.toInt() } ?: 0
-                val areas: ArrayList<Area> = Global.getAreasByCityID(city_id)
+                val areas: ArrayList<Area> = getAreasByCityID(city_id)
                 row.value = areas[idx].id.toString()
                 row.show = areas[idx].name
             }
@@ -522,14 +543,14 @@ class RegisterVC : MyTableVC() {
         if (key == DOB_KEY) {
             row.show = selected
         } else if (key == CITY_KEY) {
-            row.show = Global.zoneIDToName(selected.toInt())
+            row.show = zoneIDToName(selected.toInt())
             if (selected != old_selected_city) {
                 val row1: OneRow = getOneRowFromKey(AREA_KEY)
                 row1.value = ""
                 row1.show = ""
             }
         } else if (key == AREA_KEY) {
-            row.show = Global.zoneIDToName(selected.toInt())
+            row.show = zoneIDToName(selected.toInt())
         }
 
         val sectionIdx: Int = getOneSectionIdxFromRowKey(key)

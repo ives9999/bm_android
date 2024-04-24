@@ -10,7 +10,7 @@ import com.sportpassword.bm.Controllers.List1CellDelegate
 import com.sportpassword.bm.Models.Table
 import com.sportpassword.bm.Models.TeamTable
 import com.sportpassword.bm.R
-import com.sportpassword.bm.Utilities.truncate
+import com.sportpassword.bm.extensions.truncate
 
 class TeamAdapter(resource: Int, list1CellDelegate: List1CellDelegate?): MyAdapter<TeamViewHolder>(resource, ::TeamViewHolder, list1CellDelegate) {}
 

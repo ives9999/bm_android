@@ -10,6 +10,8 @@ import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.TeachService
 import com.sportpassword.bm.Utilities.*
 import com.sportpassword.bm.databinding.ActivityTeachVcBinding
+import tw.com.bluemobile.hbc.extensions.setInfo
+import com.sportpassword.bm.functions.jsonToModels
 
 class TeachVC : MyTableVC() {
 

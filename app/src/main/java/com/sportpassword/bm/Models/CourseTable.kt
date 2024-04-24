@@ -2,6 +2,8 @@ package com.sportpassword.bm.Models
 
 import com.google.gson.annotations.SerializedName
 import com.sportpassword.bm.Utilities.*
+import com.sportpassword.bm.extensions.mobileShow
+import com.sportpassword.bm.extensions.noSec
 
 class CoursesTable: Tables() {
     var rows: ArrayList<CourseTable> = arrayListOf()

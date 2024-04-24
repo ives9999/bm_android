@@ -9,12 +9,12 @@ import com.sportpassword.bm.Controllers.LoginVC
 import com.sportpassword.bm.Controllers.OrderVC
 import com.sportpassword.bm.Controllers.RegisterVC
 import com.sportpassword.bm.R
-import com.sportpassword.bm.Utilities.Alert
 import com.sportpassword.bm.bm_new.ui.base.BaseActivity
 import com.sportpassword.bm.bm_new.ui.base.BaseViewModel
 import com.sportpassword.bm.bm_new.ui.base.ViewEvent
 import com.sportpassword.bm.bm_new.ui.match.sign_up.MatchTeamInformationFragment.Companion.CAPTAIN
 import com.sportpassword.bm.databinding.ActivityMatchSignUpBinding
+import com.sportpassword.bm.extensions.Alert
 import com.sportpassword.bm.member
 import org.koin.androidx.viewmodel.ext.android.stateViewModel
 

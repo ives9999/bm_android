@@ -8,17 +8,13 @@ import android.widget.Button
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.core.graphics.drawable.RoundedBitmapDrawable
-import androidx.core.graphics.drawable.RoundedBitmapDrawableFactory
 import androidx.recyclerview.widget.RecyclerView
 import com.sportpassword.bm.Controllers.List1CellDelegate
 import com.sportpassword.bm.Models.Table
 import com.sportpassword.bm.R
-import com.sportpassword.bm.Utilities.setImage
 import com.sportpassword.bm.extensions.featured
+import com.sportpassword.bm.extensions.setImage
 import com.sportpassword.bm.member
-import com.squareup.picasso.Picasso
-import jp.wasabeef.picasso.transformations.RoundedCornersTransformation
 
 abstract class MyAdapter<T: MyViewHolder>(private val resource: Int, private val viewHolderConstructor: (Context, View, List1CellDelegate?)-> T, val list1CellDelegate: List1CellDelegate?=null): RecyclerView.Adapter<T>() {
 
@@ -79,7 +75,7 @@ open class MyViewHolder(val context: Context, val viewHolder: View, val list1Cel
 
             listFeatured!!.featured(row.featured_path, true)
 
-//            Picasso.with(context)
+//            Picasso.get()
 //                .load(row.featured_path)
 //                .transform(RoundedCornersTransformation(100, 0))
 //                .placeholder(R.drawable.loading_square_120)

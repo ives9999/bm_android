@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.sportpassword.bm.Controllers.List1CellDelegate
 import com.sportpassword.bm.Data.MoreRow
 import com.sportpassword.bm.R
-import com.sportpassword.bm.Utilities.setImage
+import com.sportpassword.bm.extensions.setImage
 
 class MoreAdapter(val list1CellDelegate: List1CellDelegate?): RecyclerView.Adapter<MoreViewHolder1>() {
 

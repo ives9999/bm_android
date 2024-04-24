@@ -23,8 +23,11 @@ import com.sportpassword.bm.Services.CourseService
 import com.sportpassword.bm.Utilities.*
 import com.sportpassword.bm.Views.ShowTop2
 import com.sportpassword.bm.databinding.ActivityShowCoachVcBinding
+import com.sportpassword.bm.extensions.*
 import org.jetbrains.anko.backgroundColor
 import org.jetbrains.anko.textColor
+import com.sportpassword.bm.functions.jsonToModel
+import com.sportpassword.bm.functions.jsonToModels
 
 class ShowCoachVC: ShowVC() {
 
@@ -510,7 +513,7 @@ class CoachCourseViewHolder(val viewHolder: View): RecyclerView.ViewHolder(viewH
 //class CoachCourseItem(val context: Context, val courseTable: CourseTable): Item() {
 //    override fun bind(viewHolder: com.xwray.groupie.kotlinandroidextensions.GroupieViewHolder, position: Int) {
 //        viewHolder.title.text = courseTable.title
-//        Picasso.with(context)
+//        Picasso.get()
 //            .load(BASE_URL + courseTable.featured_path)
 //            .placeholder(R.drawable.loading_square)
 //            .error(R.drawable.load_failed_square)

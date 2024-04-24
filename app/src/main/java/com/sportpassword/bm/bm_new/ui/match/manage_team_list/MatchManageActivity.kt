@@ -12,8 +12,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.sportpassword.bm.Controllers.PaymentVC
 import com.sportpassword.bm.Models.OrderTable
 import com.sportpassword.bm.R
-import com.sportpassword.bm.Utilities.Alert
-import com.sportpassword.bm.Utilities.toDate
 import com.sportpassword.bm.bm_new.data.dto.match.MatchTeamListDto
 import com.sportpassword.bm.bm_new.ui.base.BaseActivity
 import com.sportpassword.bm.bm_new.ui.base.BaseViewModel
@@ -23,6 +21,8 @@ import com.sportpassword.bm.bm_new.ui.match.sign_up.MatchSignUpActivity
 import com.sportpassword.bm.bm_new.ui.util.LinearItemDecoration
 import com.sportpassword.bm.bm_new.ui.util.canEditSignUp
 import com.sportpassword.bm.databinding.ActivityMatchBinding
+import com.sportpassword.bm.extensions.Alert
+import com.sportpassword.bm.extensions.toDate
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import org.koin.androidx.viewmodel.ext.android.stateViewModel

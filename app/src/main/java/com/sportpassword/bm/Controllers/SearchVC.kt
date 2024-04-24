@@ -42,8 +42,12 @@ import com.sportpassword.bm.Utilities.*
 import com.sportpassword.bm.Views.TabSearch
 import com.sportpassword.bm.Views.Tag
 import com.sportpassword.bm.databinding.ActivitySearchVcBinding
+import com.sportpassword.bm.extensions.setImage
 import com.sportpassword.bm.member
 import org.jetbrains.anko.backgroundColor
+import tw.com.bluemobile.hbc.extensions.setInfo
+import com.sportpassword.bm.functions.jsonToModels
+import com.sportpassword.bm.functions.zoneIDToName
 
 class SearchVC : MyTableVC() {
 
@@ -567,7 +571,7 @@ class SearchVC : MyTableVC() {
 
         val row3: OneRow = getOneRowFromKey(CITY_KEY)
         row3.value = row1.arena!!.city_id.toString()
-        row3.show = Global.zoneIDToName(row1.arena!!.city_id)
+        row3.show = zoneIDToName(row1.arena!!.city_id)
 
         prepareParams()
         page = 1

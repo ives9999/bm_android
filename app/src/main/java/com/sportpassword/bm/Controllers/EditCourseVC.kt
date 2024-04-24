@@ -12,6 +12,7 @@ import com.sportpassword.bm.Utilities.*
 import com.sportpassword.bm.databinding.ActivityBlackListVcBinding
 import com.sportpassword.bm.databinding.ActivityEditCourseVcBinding
 import com.sportpassword.bm.databinding.MytablevcBinding
+import com.sportpassword.bm.functions.jsonToModel
 
 class EditCourseVC : EditVC() {
 

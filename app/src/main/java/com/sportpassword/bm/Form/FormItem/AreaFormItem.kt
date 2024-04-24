@@ -3,8 +3,7 @@ package com.sportpassword.bm.Form.FormItem
 import com.sportpassword.bm.Controllers.BaseActivity
 import com.sportpassword.bm.Form.FormItemCellType
 import com.sportpassword.bm.Utilities.AREA_KEY
-import com.sportpassword.bm.Utilities.AREA_KEY
-import com.sportpassword.bm.Utilities.Global
+import com.sportpassword.bm.functions.getAreasByCityID
 
 class AreaFormItem(isRequired: Boolean = false, delegate: BaseActivity? = null) : FormItem(AREA_KEY, "區域", "", null, null, isRequired, delegate) {
 
@@ -54,7 +53,7 @@ class AreaFormItem(isRequired: Boolean = false, delegate: BaseActivity? = null) 
 //            getAreas()
             val tmps = value!!.split(",")
             if (city_id != null) {
-                val areas = Global.getAreasByCityID(city_id!!)
+                val areas = getAreasByCityID(city_id!!)
                 for (tmp in tmps) {
                     for (area in areas) {
                         if (area.id == tmp.toInt()) {

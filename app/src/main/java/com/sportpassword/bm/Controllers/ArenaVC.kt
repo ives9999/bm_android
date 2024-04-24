@@ -17,6 +17,8 @@ import com.sportpassword.bm.databinding.ActivityAccountBinding
 import com.sportpassword.bm.databinding.ActivityArenaVcBinding
 import org.jetbrains.anko.backgroundColor
 import org.jetbrains.anko.textColor
+import tw.com.bluemobile.hbc.extensions.setInfo
+import com.sportpassword.bm.functions.jsonToModels
 
 class ArenaVC : MyTableVC() {
 

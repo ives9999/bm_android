@@ -8,10 +8,9 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
-import androidx.core.view.children
 import com.sportpassword.bm.R
-import com.sportpassword.bm.Utilities.setImage
 import com.sportpassword.bm.databinding.BottomViewBinding
+import com.sportpassword.bm.extensions.setImage
 import org.jetbrains.anko.backgroundColor
 import org.jetbrains.anko.textColor
 

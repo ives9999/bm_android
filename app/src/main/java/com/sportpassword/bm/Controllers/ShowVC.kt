@@ -23,8 +23,10 @@ import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.MemberService
 import com.sportpassword.bm.Utilities.*
 import com.sportpassword.bm.extensions.featured
+import com.sportpassword.bm.extensions.makeCall
 import com.sportpassword.bm.member
 import com.squareup.picasso.Picasso
+import com.sportpassword.bm.functions.jsonToModel
 import java.io.InputStream
 import java.net.URL
 import java.net.URLConnection
@@ -226,7 +228,7 @@ open class ShowVC: BaseActivity() {
 ////                    data_container.layoutParams = params
 //                }
 //
-//                Picasso.with(context)
+//                Picasso.get()
 //                    .load(featured_path)
 //                    .placeholder(R.drawable.loading_square_120)
 //                    .error(R.drawable.loading_square_120)

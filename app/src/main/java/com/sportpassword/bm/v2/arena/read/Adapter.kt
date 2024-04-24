@@ -1,32 +1,49 @@
 package com.sportpassword.bm.v2.arena.read
 
+import android.content.Context
 import android.text.Layout
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.sportpassword.bm.R
 import com.sportpassword.bm.databinding.ReadArenaBinding
+import com.sportpassword.bm.extensions.avatar
+import com.sportpassword.bm.extensions.formattedWithSeparator
+import com.sportpassword.bm.extensions.noSec
+import com.squareup.picasso.MemoryPolicy
+import com.squareup.picasso.NetworkPolicy
 import com.squareup.picasso.Picasso
 
 class Adapter(private val viewModel: ViewModel): RecyclerView.Adapter<Adapter.ViewHolder>() {
 
-    var rows: List<ReadDao.Arena>? = null
+    var readDao: ReadDao? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        return ViewHolder.from(parent)
+        val viewHolder = ViewHolder.from(parent)
+        viewHolder.context = parent.context
+        return viewHolder
     }
 
     override fun getItemCount(): Int {
-        //println("rows count: ${rows?.count()}")
-        return rows?.count() ?: 0
+        //println("rows count: ${readDao?.data?.rows?.count()}")
+        var count = 0
+        readDao ?. let {
+            count = it.data.rows.count()
+        }
+        return count
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val row = rows!![position]
-        holder.bind(viewModel, row)
+        readDao ?. let {
+            val row = it.data.rows[position]
+            val meta = it.data.meta
+            holder.bind(row, position, meta)
+        }
     }
 
     class ViewHolder private constructor(private val binding: ReadArenaBinding): RecyclerView.ViewHolder(binding.root) {
+        var context: Context? = null
         companion object {
             fun from(parent: ViewGroup): ViewHolder {
                 val layoutInflater = LayoutInflater.from(parent.context)
@@ -36,8 +53,10 @@ class Adapter(private val viewModel: ViewModel): RecyclerView.Adapter<Adapter.Vi
             }
         }
 
-        fun bind(viewModel: ViewModel, row: ReadDao.Arena) {
-            binding.nameTV.text = row.name
+        fun bind(row: ReadDao.Arena, position: Int, meta: ReadDao.Meta) {
+
+            val idx: Int = (meta.currentPage - 1)*meta.perpage + position + 1
+            binding.nameTV.text = "${idx.toString()}.${row.name}"
 
             val images: List<ReadDao.Image> = row.images
             var featured_path: String? = null
@@ -47,14 +66,35 @@ class Adapter(private val viewModel: ViewModel): RecyclerView.Adapter<Adapter.Vi
                 }
             }
             if (featured_path != null) {
-                Picasso.with(viewModel.context)
+                Glide.with(context!!)
                     .load(featured_path)
-                    .placeholder(R.drawable.loading_square)
+                    .placeholder(R.drawable.nophoto)
                     .error(R.drawable.load_failed_square)
                     .into(binding.featuredIV)
+//                Picasso.get()
+//                    .load(featured_path)
+//                    .networkPolicy(NetworkPolicy.NO_CACHE)
+//                    .memoryPolicy(MemoryPolicy.NO_CACHE)
+//                    .error(R.drawable.load_failed_square)
+//                    .into(binding.featuredIV)
             } else {
                 binding.featuredIV.setImageResource(R.drawable.loading_square)
             }
+
+//            binding.avatarIV.avatar(row.member.avatar)
+
+            Picasso.get()
+                .load(row.member.avatar)
+                .resize(36, 36)
+//                .placeholder(R.drawable.nophoto)
+//                .error(R.drawable.load_failed_square)
+                .into(binding.avatarIV)
+
+            binding.cityNameTV.text = row.zone.city_name
+            binding.pvTV.text = row.pv.formattedWithSeparator()
+
+            binding.memberNameTV.text = row.member.name
+            binding.createdATTV.text = row.created_at.noSec()
         }
     }
 }

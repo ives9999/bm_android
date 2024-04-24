@@ -1,6 +1,5 @@
 package com.sportpassword.bm.Models
 
-import com.sportpassword.bm.Utilities.toDateTime
 import org.json.JSONObject
 
 class TempPlayDatePlayer(data: JSONObject) {

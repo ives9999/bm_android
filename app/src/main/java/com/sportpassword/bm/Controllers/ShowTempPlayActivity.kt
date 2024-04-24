@@ -11,6 +11,7 @@ import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.TeamService
 import com.sportpassword.bm.Utilities.*
 import com.sportpassword.bm.databinding.ActivityShowTempPlayBinding
+import com.sportpassword.bm.extensions.Alert
 import com.sportpassword.bm.member
 import com.squareup.picasso.Picasso
 import org.jetbrains.anko.contentView
@@ -151,7 +152,7 @@ class ShowTempPlayActivity : BaseActivity() {
 
     override fun setTeamData(imageView: ImageView?) {
         if (imageView != null) {
-            Picasso.with(this)
+            Picasso.get()
                     .load(data[FEATURED_KEY]!!["value"] as String)
                     .placeholder(R.drawable.loading_square)
                     .error(R.drawable.load_failed_square)

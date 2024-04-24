@@ -11,7 +11,7 @@ import android.widget.TextView
 import com.sportpassword.bm.Models.BlackList
 import com.sportpassword.bm.Models.BlackLists
 import com.sportpassword.bm.R
-import com.sportpassword.bm.Utilities.noSec
+import com.sportpassword.bm.extensions.noSec
 
 class BlakListAdapter(val context: Context, val lists: ArrayList<BlackList>, val itemClick:(Int)->Unit, val call: (String)->Unit, val cancel:(Int)->Unit): RecyclerView.Adapter<BlakListAdapter.ViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {

@@ -4,7 +4,7 @@ import com.sportpassword.bm.Controllers.BaseActivity
 import com.sportpassword.bm.Form.FormItemCellType
 import com.sportpassword.bm.Models.City
 import com.sportpassword.bm.Utilities.CITY_KEY
-import com.sportpassword.bm.Utilities.Global
+import com.sportpassword.bm.functions.getCitys
 
 class CityFormItem(isRequired: Boolean = false, delegate: BaseActivity? = null) : FormItem(CITY_KEY, "縣市", "", null, null, isRequired, delegate) {
 
@@ -56,7 +56,7 @@ class CityFormItem(isRequired: Boolean = false, delegate: BaseActivity? = null) 
         //value is 1,2,3 or 1 is city id
         if (value != null && value!!.count() > 0) {
             val tmps = value!!.split(",")
-            val citys: ArrayList<City> = Global.getCitys()
+            val citys: ArrayList<City> = getCitys()
             for (tmp in tmps) {
                 for (city in citys) {
                     if (city.id == tmp.toInt()) {

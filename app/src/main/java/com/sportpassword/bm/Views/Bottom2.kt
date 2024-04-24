@@ -11,11 +11,11 @@ import android.widget.RelativeLayout
 import android.widget.TextView
 import com.sportpassword.bm.Controllers.BaseActivity
 import com.sportpassword.bm.R
-import com.sportpassword.bm.Utilities.Global.getScreenWidth
-import com.sportpassword.bm.Utilities.then
 import com.sportpassword.bm.extensions.dpToPx
-import tw.com.bluemobile.hbc.utilities.getColor
-import tw.com.bluemobile.hbc.utilities.getDrawable
+import com.sportpassword.bm.functions.getColor
+import com.sportpassword.bm.functions.getDrawable
+import com.sportpassword.bm.functions.getScreenWidth
+import com.sportpassword.bm.functions.then
 
 class Bottom2@JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0):
     RelativeLayout(context, attrs, defStyleAttr) {

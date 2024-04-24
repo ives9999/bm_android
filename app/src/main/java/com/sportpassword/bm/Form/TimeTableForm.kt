@@ -3,6 +3,7 @@ package com.sportpassword.bm.Form
 import android.text.InputType
 import com.sportpassword.bm.Form.FormItem.*
 import com.sportpassword.bm.Utilities.*
+import com.sportpassword.bm.extensions.toDateTime
 import java.util.*
 
 class TimeTableForm: BaseForm {

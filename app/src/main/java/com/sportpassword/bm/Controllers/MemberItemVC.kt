@@ -11,13 +11,10 @@ import com.google.gson.reflect.TypeToken
 import com.sportpassword.bm.Models.Table
 import com.sportpassword.bm.Models.Tables2
 import com.sportpassword.bm.R
-import com.sportpassword.bm.Utilities.EMAIL_VALIDATE
-import com.sportpassword.bm.Utilities.MOBILE_VALIDATE
-import com.sportpassword.bm.Utilities.setImage
 import com.sportpassword.bm.Views.ShowTop2
 import com.sportpassword.bm.bm_new.ui.match.manage_team_list.MatchManageActivity
 import com.sportpassword.bm.databinding.ActivityMemberItemVcBinding
-import com.sportpassword.bm.member
+import com.sportpassword.bm.extensions.setImage
 import timber.log.Timber
 import java.lang.reflect.Type
 

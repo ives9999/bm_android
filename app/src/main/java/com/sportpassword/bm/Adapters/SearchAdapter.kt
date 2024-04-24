@@ -16,7 +16,6 @@ import com.sportpassword.bm.Controllers.List1CellDelegate
 import com.sportpassword.bm.Data.SearchRow
 import com.sportpassword.bm.Data.SearchSection
 import com.sportpassword.bm.R
-import com.sportpassword.bm.Utilities.setImage
 
 class SearchSectionAdapter(val context: Context, private val resource: Int, var delegate: List1CellDelegate): RecyclerView.Adapter<SearchSectionViewHolder>() {
     private var searchSections: ArrayList<SearchSection> = arrayListOf()

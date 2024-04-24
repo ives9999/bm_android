@@ -15,18 +15,16 @@ import com.sportpassword.bm.Models.MemberSubscriptionLogTable
 import com.sportpassword.bm.Models.Tables2
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.MemberService
-import com.sportpassword.bm.Utilities.MEMBER_SUBSCRIPTION_KIND
-import com.sportpassword.bm.Utilities.noSec
-import com.sportpassword.bm.Utilities.setInfo
 import com.sportpassword.bm.Views.IconText
-import com.sportpassword.bm.Views.IconText2
 import com.sportpassword.bm.Views.ShowTop2
 import com.sportpassword.bm.Views.ShowTop2Delegate
 import com.sportpassword.bm.databinding.ActivityMemberSubscriptionLogVcBinding
 import com.sportpassword.bm.extensions.getMyColor
+import com.sportpassword.bm.extensions.noSec
 import com.sportpassword.bm.extensions.toTwoString
 import com.sportpassword.bm.member
 import org.jetbrains.anko.textColor
+import tw.com.bluemobile.hbc.extensions.setInfo
 import java.lang.reflect.Type
 
 class MemberSubscriptionLogVC : BaseActivity(), MyTable2IF, ShowTop2Delegate {

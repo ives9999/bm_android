@@ -6,7 +6,7 @@ import android.view.LayoutInflater
 import android.widget.LinearLayout
 import com.sportpassword.bm.R
 import com.sportpassword.bm.databinding.ViewIconTitleTextBinding
-import tw.com.bluemobile.hbc.utilities.getDrawable
+import com.sportpassword.bm.functions.getDrawable
 
 class IconTitleText @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0

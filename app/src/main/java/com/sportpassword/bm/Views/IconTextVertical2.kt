@@ -7,10 +7,9 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import com.sportpassword.bm.R
-import com.sportpassword.bm.Utilities.setImage
 import org.jetbrains.anko.image
-import tw.com.bluemobile.hbc.utilities.getDrawable
-import tw.com.bluemobile.hbc.utilities.getResourceID
+import com.sportpassword.bm.functions.getDrawable
+import com.sportpassword.bm.functions.getResourceID
 
 class IconTextVertical2@JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0):
     LinearLayout(context, attrs, defStyleAttr) {

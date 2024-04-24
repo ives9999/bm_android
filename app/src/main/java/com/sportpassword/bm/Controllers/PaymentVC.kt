@@ -18,6 +18,7 @@ import com.sportpassword.bm.Services.OrderService
 import com.sportpassword.bm.Utilities.*
 import com.sportpassword.bm.databinding.ActivityPaymentVcBinding
 import com.sportpassword.bm.member
+import com.sportpassword.bm.functions.then
 import tw.com.ecpay.paymentgatewaykit.manager.*
 
 class PaymentVC : MyTableVC() {

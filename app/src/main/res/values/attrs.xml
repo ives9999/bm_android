@@ -104,4 +104,8 @@
     <declare-styleable name="MainTabBottom">
         <attr name="focus" format="string" />
     </declare-styleable>
+
+    <declare-styleable name="RoundedCorner">
+        <attr name="radius" format="float" />
+    </declare-styleable>
 </resources>

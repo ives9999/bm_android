@@ -14,6 +14,8 @@ import com.sportpassword.bm.Utilities.*
 import com.sportpassword.bm.databinding.ActivityMemberOrderListVcBinding
 import com.sportpassword.bm.databinding.MytablevcBinding
 import com.sportpassword.bm.member
+import tw.com.bluemobile.hbc.extensions.setInfo
+import com.sportpassword.bm.functions.jsonToModels
 
 class MemberOrderListVC : MyTableVC() {
 

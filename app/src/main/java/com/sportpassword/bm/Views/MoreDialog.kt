@@ -15,6 +15,8 @@ import com.sportpassword.bm.Data.SelectRow
 import com.sportpassword.bm.Models.Area
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Utilities.*
+import com.sportpassword.bm.functions.getAreasByCityID
+import com.sportpassword.bm.functions.getCitys
 
 class MoreDialog(context: Context, val screenWidth: Int, var key: String? = null): Dialog(context) {
 
@@ -52,7 +54,7 @@ class MoreDialog(context: Context, val screenWidth: Int, var key: String? = null
     private fun rowBridgeForArea(): ArrayList<SelectRow> {
         val selectRows: ArrayList<SelectRow> = arrayListOf()
         if (city_id != null) {
-            val areas: ArrayList<Area> = Global.getAreasByCityID(city_id!!)
+            val areas: ArrayList<Area> = getAreasByCityID(city_id!!)
 
             for (area in areas) {
                 val title = area.name
@@ -65,7 +67,7 @@ class MoreDialog(context: Context, val screenWidth: Int, var key: String? = null
     }
 
     private fun rowBridgeForCity(): ArrayList<SelectRow> {
-        val citys = Global.getCitys()
+        val citys = getCitys()
 
         val selectRows: ArrayList<SelectRow> = arrayListOf()
 

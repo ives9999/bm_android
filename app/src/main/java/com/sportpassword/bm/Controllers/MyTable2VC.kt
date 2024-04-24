@@ -14,11 +14,11 @@ import com.sportpassword.bm.Models.Table
 import com.sportpassword.bm.Models.Tables2
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Utilities.PERPAGE
-import com.sportpassword.bm.Utilities.jsonToModels2
-import com.sportpassword.bm.Utilities.setImage
 import com.sportpassword.bm.Views.EndlessRecyclerViewScrollListener
 import com.sportpassword.bm.extensions.featured
+import com.sportpassword.bm.extensions.setImage
 import org.jetbrains.anko.backgroundColor
+import com.sportpassword.bm.functions.jsonToModels2
 import java.lang.reflect.Type
 
 typealias viewHolder<T, U, V> = (Context, View, V)-> T

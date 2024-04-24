@@ -8,8 +8,8 @@ import com.google.android.youtube.player.YouTubeBaseActivity
 import com.google.android.youtube.player.YouTubeInitializationResult
 import com.google.android.youtube.player.YouTubePlayer
 import com.sportpassword.bm.R
-import com.sportpassword.bm.Utilities.hideKeyboard
 import com.sportpassword.bm.databinding.ActivityYoutubePlayerVcBinding
+import com.sportpassword.bm.extensions.hideKeyboard
 
 class YoutubePlayerVC : YouTubeBaseActivity(), YouTubePlayer.OnInitializedListener {
 

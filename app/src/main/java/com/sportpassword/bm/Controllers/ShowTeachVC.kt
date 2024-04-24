@@ -15,15 +15,15 @@ import com.sportpassword.bm.Models.Table
 import com.sportpassword.bm.Models.TeachTable
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.TeachService
-import com.sportpassword.bm.Utilities.jsonToModel
 import kotlin.reflect.full.memberProperties
 import com.sportpassword.bm.Data.ShowRow
 import com.sportpassword.bm.Services.DataService
 import com.sportpassword.bm.Utilities.LoadingAnimation
-import com.sportpassword.bm.Utilities.hideKeyboard
 import com.sportpassword.bm.Views.ShowTop2
 import com.sportpassword.bm.databinding.ActivityShowTeachVcBinding
+import com.sportpassword.bm.extensions.hideKeyboard
 import com.sportpassword.bm.member
+import com.sportpassword.bm.functions.jsonToModel
 
 class ShowTeachVC : YouTubeBaseActivity(), YouTubePlayer.OnInitializedListener {
 

@@ -3,8 +3,7 @@ package com.sportpassword.bm.Controllers
 import android.os.Bundle
 import com.sportpassword.bm.Data.SelectRow
 import com.sportpassword.bm.Models.Area
-import com.sportpassword.bm.Models.City
-import com.sportpassword.bm.Utilities.Global
+import com.sportpassword.bm.functions.getAreasByCityID
 
 class SelectAreaVC: SingleSelectVC() {
 
@@ -24,7 +23,7 @@ class SelectAreaVC: SingleSelectVC() {
 //                rowsBridge(rows)
 //                notifyChanged()
 //            }
-            val areas: ArrayList<Area> = Global.getAreasByCityID(city_id!!)
+            val areas: ArrayList<Area> = getAreasByCityID(city_id!!)
             tableRows = rowsBridge(areas)
             tableAdapter.rows = tableRows
 //            notifyChanged()

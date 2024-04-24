@@ -12,8 +12,8 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Utilities.MOBILE_KEY
-import com.sportpassword.bm.Utilities.setImage
-import com.sportpassword.bm.Utilities.truncate
+import com.sportpassword.bm.extensions.setImage
+import com.sportpassword.bm.extensions.truncate
 
 class TempPlaySignupOneAdapter(val context: Context, val itemClick:(String, String)->Unit): RecyclerView.Adapter<TempPlaySignupOneAdapter.ViewHolder>() {
 

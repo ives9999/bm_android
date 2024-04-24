@@ -11,10 +11,10 @@ import com.sportpassword.bm.Models.SuccessTable
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.MemberService
 import com.sportpassword.bm.Services.TeamService
-import com.sportpassword.bm.Utilities.jsonToModel
-import com.sportpassword.bm.Utilities.website
 import com.sportpassword.bm.databinding.ActivityRequestManagerTeamVcBinding
+import com.sportpassword.bm.extensions.website
 import com.sportpassword.bm.member
+import com.sportpassword.bm.functions.jsonToModel
 import java.io.File
 
 

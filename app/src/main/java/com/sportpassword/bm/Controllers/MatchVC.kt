@@ -13,11 +13,11 @@ import com.sportpassword.bm.Models.TeamTable
 import com.sportpassword.bm.Models.TeamsTable
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.MatchService
-import com.sportpassword.bm.Utilities.jsonToModels
-import com.sportpassword.bm.Utilities.setInfo
 import com.sportpassword.bm.databinding.ActivitySearchVcBinding
 import com.sportpassword.bm.member
 import org.jetbrains.anko.backgroundColor
+import tw.com.bluemobile.hbc.extensions.setInfo
+import com.sportpassword.bm.functions.jsonToModels
 
 class MatchVC : MyTableVC() {
 

@@ -10,7 +10,10 @@ import com.sportpassword.bm.Models.Table
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.CourseService
 import com.sportpassword.bm.Utilities.*
+import com.sportpassword.bm.extensions.Alert
 import com.sportpassword.bm.member
+import tw.com.bluemobile.hbc.extensions.setInfo
+import com.sportpassword.bm.functions.jsonToModels
 
 class ManagerCourseVC: ManagerVC() {
 
@@ -233,7 +236,7 @@ class ManagerCourseVC: ManagerVC() {
 //class ManagerCourseItem(val context: Context, val courseTable: CourseTable): Item() {
 //    override fun bind(viewHolder: com.xwray.groupie.kotlinandroidextensions.GroupieViewHolder, position: Int) {
 //        viewHolder.title.text = courseTable.title
-//        Picasso.with(context)
+//        Picasso.get()
 //                .load(courseTable.featured_path)
 //                .placeholder(R.drawable.loading_square)
 //                .error(R.drawable.load_failed_square)

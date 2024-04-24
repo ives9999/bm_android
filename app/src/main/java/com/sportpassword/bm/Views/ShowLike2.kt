@@ -6,9 +6,8 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
-import com.sportpassword.bm.Controllers.BaseActivity
 import com.sportpassword.bm.R
-import com.sportpassword.bm.Utilities.setImage
+import com.sportpassword.bm.extensions.setImage
 
 class ShowLike2@JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0):
     LinearLayout(context, attrs, defStyleAttr) {

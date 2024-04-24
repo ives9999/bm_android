@@ -3,7 +3,7 @@ package com.sportpassword.bm.Form.FormItem
 import com.sportpassword.bm.Form.FormItemCellType
 import com.sportpassword.bm.Utilities.SELECT_TIME_TYPE
 import com.sportpassword.bm.Utilities.START_TIME_KEY
-import com.sportpassword.bm.Utilities.noSec
+import com.sportpassword.bm.extensions.noSec
 
 class TimeFormItem: FormItem {
 

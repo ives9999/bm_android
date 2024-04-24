@@ -10,6 +10,12 @@ import android.widget.DatePicker
 
 import android.widget.DatePicker.OnDateChangedListener
 import com.sportpassword.bm.databinding.SelectDateVcBinding
+import com.sportpassword.bm.extensions.getY
+import com.sportpassword.bm.extensions.getd
+import com.sportpassword.bm.extensions.getm
+import com.sportpassword.bm.extensions.isDate
+import com.sportpassword.bm.extensions.toDateTime
+import com.sportpassword.bm.functions.today
 
 
 class SelectDateVC : BaseActivity() {
@@ -46,7 +52,7 @@ class SelectDateVC : BaseActivity() {
         }
 
         setMyTitle(title!!)
-        var date = Global.today().toDateTime("yyyy-MM-dd")
+        var date = today().toDateTime("yyyy-MM-dd")
         if (selected != null && selected!!.isDate()) {
             date = selected!!.toDateTime("yyyy-MM-dd")
         }

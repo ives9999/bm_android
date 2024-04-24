@@ -1,9 +1,9 @@
 package com.sportpassword.bm.Models
 
 import com.sportpassword.bm.Utilities.MYCOLOR
-import com.sportpassword.bm.Utilities.getH
-import com.sportpassword.bm.Utilities.geti
-import com.sportpassword.bm.Utilities.toDateTime
+import com.sportpassword.bm.extensions.getH
+import com.sportpassword.bm.extensions.geti
+import com.sportpassword.bm.extensions.toDateTime
 import org.json.JSONObject
 
 class Timetables(data: JSONObject) {

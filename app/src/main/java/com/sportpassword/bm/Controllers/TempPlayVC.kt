@@ -8,6 +8,7 @@ import com.sportpassword.bm.Models.TeamsTable
 import com.sportpassword.bm.Services.TeamService
 import com.sportpassword.bm.Utilities.*
 import com.sportpassword.bm.databinding.ActivityTempPlayVcBinding
+import com.sportpassword.bm.functions.jsonToModels
 
 class TempPlayVC : MyTableVC() {
 

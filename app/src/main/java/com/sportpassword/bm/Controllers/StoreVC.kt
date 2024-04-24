@@ -11,6 +11,8 @@ import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.StoreService
 import com.sportpassword.bm.Utilities.*
 import com.sportpassword.bm.databinding.ActivityStoreVcBinding
+import tw.com.bluemobile.hbc.extensions.setInfo
+import com.sportpassword.bm.functions.jsonToModels
 import kotlin.collections.ArrayList
 
 class StoreVC : MyTableVC() {

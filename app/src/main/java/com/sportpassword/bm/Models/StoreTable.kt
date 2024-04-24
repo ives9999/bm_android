@@ -1,8 +1,7 @@
 package com.sportpassword.bm.Models
 
-import com.sportpassword.bm.Utilities.Global
-import com.sportpassword.bm.Utilities.noSec
-import com.sportpassword.bm.Utilities.telShow
+import com.sportpassword.bm.extensions.noSec
+import com.sportpassword.bm.functions.zoneIDToName
 
 class StoresTable: Tables() {
     var rows: ArrayList<StoreTable> = arrayListOf()
@@ -30,8 +29,8 @@ class StoreTable: Table() {
         super.filterRow()
 
         if (city_id > 0 && area_id > 0) {
-            val city_name = Global.zoneIDToName(city_id)
-            val area_name = Global.zoneIDToName(area_id)
+            val city_name = zoneIDToName(city_id)
+            val area_name = zoneIDToName(area_id)
             address = zip.toString() + city_name + area_name + road
         }
 

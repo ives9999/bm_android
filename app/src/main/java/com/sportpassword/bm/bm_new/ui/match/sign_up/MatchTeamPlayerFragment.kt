@@ -25,7 +25,7 @@ import com.sportpassword.bm.databinding.FragmentMatchTeamPlayerBinding
 import org.json.JSONObject
 import org.koin.androidx.viewmodel.ext.android.sharedStateViewModel
 import timber.log.Timber
-import tw.com.bluemobile.hbc.utilities.getColor
+import com.sportpassword.bm.functions.getColor
 
 class MatchTeamPlayerFragment : BaseFragment<FragmentMatchTeamPlayerBinding>(),
     AttributesView.Listener {

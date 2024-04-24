@@ -7,7 +7,7 @@ import com.sportpassword.bm.Data.SelectRow
 import com.sportpassword.bm.Models.ArenaTable
 import com.sportpassword.bm.Services.TeamService
 import com.sportpassword.bm.Utilities.ARENA_KEY
-import com.sportpassword.bm.Utilities.Global
+import com.sportpassword.bm.functions.zoneIDToName
 
 class SelectArenaVC : SingleSelectVC() {
 
@@ -77,7 +77,7 @@ class SelectArenaVC : SingleSelectVC() {
                     }
                 }
             }
-            setMyTitle(Global.zoneIDToName(city_id))
+            setMyTitle(zoneIDToName(city_id))
         } else {
             warning("沒有傳送縣市代碼，請洽管理員")
         }

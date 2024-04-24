@@ -13,11 +13,11 @@ import com.sportpassword.bm.Models.Table
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.CourseService
 import com.sportpassword.bm.Services.TeamService
-import com.sportpassword.bm.Utilities.setInfo
 import com.sportpassword.bm.databinding.ActivityBlackListVcBinding
 import com.sportpassword.bm.databinding.ActivityManagerSignupListVcBinding
 import com.sportpassword.bm.databinding.MytablevcBinding
 import com.sportpassword.bm.member
+import tw.com.bluemobile.hbc.extensions.setInfo
 
 class ManagerSignupListVC : MyTableVC() {
 

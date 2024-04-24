@@ -2,8 +2,7 @@ package com.sportpassword.bm.Form.FormItem
 
 import com.sportpassword.bm.Form.FormItemCellType
 import com.sportpassword.bm.Utilities.TEXT_INPUT_TYPE
-import com.sportpassword.bm.Utilities.TT_CONTENT
-import com.sportpassword.bm.Utilities.truncate
+import com.sportpassword.bm.extensions.truncate
 
 class ContentFormItem: FormItem {
 

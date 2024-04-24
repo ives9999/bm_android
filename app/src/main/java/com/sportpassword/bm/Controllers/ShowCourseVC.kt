@@ -18,8 +18,10 @@ import com.sportpassword.bm.Services.CourseService
 import com.sportpassword.bm.Utilities.*
 import com.sportpassword.bm.Views.ShowTop2
 import com.sportpassword.bm.databinding.ActivityShowCourseVcBinding
+import com.sportpassword.bm.extensions.*
 import com.sportpassword.bm.member
 import org.json.JSONObject
+import com.sportpassword.bm.functions.jsonToModel
 
 class ShowCourseVC : ShowVC() {
 

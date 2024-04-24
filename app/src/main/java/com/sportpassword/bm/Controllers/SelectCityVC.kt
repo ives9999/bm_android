@@ -4,7 +4,7 @@ import android.os.Bundle
 import com.sportpassword.bm.Data.SelectRow
 import com.sportpassword.bm.Models.City
 import com.sportpassword.bm.Utilities.CITY_KEY
-import com.sportpassword.bm.Utilities.Global
+import com.sportpassword.bm.functions.getCitys
 
 class SelectCityVC: SingleSelectVC() {
 
@@ -13,7 +13,7 @@ class SelectCityVC: SingleSelectVC() {
 
         key = CITY_KEY
 
-        val citys: ArrayList<City> = Global.getCitys()
+        val citys: ArrayList<City> = getCitys()
         tableRows = rowsBridge(citys)
         tableAdapter.rows = tableRows
         //notifyChanged()

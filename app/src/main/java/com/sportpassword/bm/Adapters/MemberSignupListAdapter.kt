@@ -10,7 +10,7 @@ import com.sportpassword.bm.Models.SignupNormalTable
 import com.sportpassword.bm.Models.Table
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Utilities.SIGNUP_STATUS
-import com.sportpassword.bm.Utilities.setImage
+import com.sportpassword.bm.extensions.setImage
 import com.squareup.picasso.Picasso
 
 class MemberSignupListAdapter(resource: Int, list1CellDelegate: List1CellDelegate?): MyAdapter<MemberSignupListViewHolder>(resource, ::MemberSignupListViewHolder, list1CellDelegate) {}
@@ -42,7 +42,7 @@ class MemberSignupListViewHolder(context: Context, viewHolder: View, list1CellDe
 
                 viewHolder.findViewById<ImageView>(R.id.listFeatured) ?.let {
                     if (row.ableTable!!.featured_path.isNotEmpty()) {
-                        Picasso.with(context)
+                        Picasso.get()
                             .load(row.ableTable!!.featured_path)
                             .placeholder(R.drawable.loading_square_120)
                             .error(R.drawable.loading_square_120)

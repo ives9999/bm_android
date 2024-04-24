@@ -39,7 +39,7 @@ class MemberCartViewHolder(context: Context, viewHolder: View, list1CellDelegate
         val productTable: ProductTable = _row.product!!
         titleLbl?.text = productTable.name
         if (productTable.featured_path.isNotEmpty()) {
-            Picasso.with(context)
+            Picasso.get()
                 .load(productTable.featured_path)
                 .placeholder(R.drawable.loading_square_120)
                 .error(R.drawable.loading_square_120)

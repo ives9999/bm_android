@@ -1,9 +1,9 @@
 package com.sportpassword.bm.Form.FormItem
 
 import com.sportpassword.bm.Form.FormItemCellType
-import com.sportpassword.bm.Utilities.Global
 import com.sportpassword.bm.Utilities.WEEKDAY
 import com.sportpassword.bm.Utilities.WEEKDAY_KEY
+import com.sportpassword.bm.functions.weekdaysParse
 
 class WeekdayFormItem: FormItem {
 
@@ -59,7 +59,7 @@ class WeekdayFormItem: FormItem {
 
     override fun valueToAnother() {
         if (value != null) {
-            weekdays = Global.weekdaysParse(value!!.toInt())
+            weekdays = weekdaysParse(value!!.toInt())
         }
     }
 }

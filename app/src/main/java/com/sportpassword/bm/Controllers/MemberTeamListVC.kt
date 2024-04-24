@@ -17,14 +17,14 @@ import com.sportpassword.bm.Models.TeamMemberTable
 import com.sportpassword.bm.Models.TeamTable
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.MemberService
-import com.sportpassword.bm.Utilities.noSec
-import com.sportpassword.bm.Utilities.setInfo
-import com.sportpassword.bm.Utilities.then
 import com.sportpassword.bm.Views.ShowTop2
 import com.sportpassword.bm.databinding.ActivityMemberTeamListVcBinding
+import com.sportpassword.bm.extensions.noSec
 import com.sportpassword.bm.member
 import com.squareup.picasso.MemoryPolicy
 import com.squareup.picasso.Picasso
+import tw.com.bluemobile.hbc.extensions.setInfo
+import com.sportpassword.bm.functions.then
 import java.lang.reflect.Type
 
 class MemberTeamListVC : BaseActivity(), MyTable2IF {
@@ -173,7 +173,7 @@ class MemberTeamViewHolder(
             val teamTable: TeamTable = row.teamTable!!
 
             view.findViewById<ImageView>(R.id.featuredIV) ?. let {
-                Picasso.with(context)
+                Picasso.get()
                     .load(teamTable.featured_path)
                     .memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE)
                     .into(it)

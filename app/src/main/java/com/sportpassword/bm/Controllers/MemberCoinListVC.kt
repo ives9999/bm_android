@@ -22,7 +22,13 @@ import com.sportpassword.bm.Services.MemberService
 import com.sportpassword.bm.Utilities.*
 import com.sportpassword.bm.databinding.ActivityMemberCoinListVcBinding
 import com.sportpassword.bm.extensions.formattedWithSeparator
+import com.sportpassword.bm.extensions.noSec
+import com.sportpassword.bm.extensions.setLook
+import com.sportpassword.bm.extensions.setTextLook
 import com.sportpassword.bm.member
+import tw.com.bluemobile.hbc.extensions.setInfo
+import tw.com.bluemobile.hbc.extensions.submitButton
+import com.sportpassword.bm.functions.then
 import java.lang.reflect.Type
 
 class MemberCoinListVC: BaseActivity(), MyTable2IF {

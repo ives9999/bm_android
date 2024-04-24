@@ -7,7 +7,6 @@ import android.view.View
 import com.sportpassword.bm.Data.SelectRow
 import com.sportpassword.bm.Utilities.DEGREE
 import com.sportpassword.bm.Utilities.DEGREE_KEY
-import com.sportpassword.bm.Utilities.Global
 
 class SelectDegreeVC : MultiSelectVC() {
 

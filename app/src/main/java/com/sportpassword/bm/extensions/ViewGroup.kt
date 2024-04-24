@@ -4,13 +4,20 @@ import android.content.Context
 import android.graphics.Color
 import android.view.Gravity
 import android.view.ViewGroup
+import android.widget.Button
+import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.core.content.ContextCompat
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.sportpassword.bm.Controllers.BaseActivity
 import com.sportpassword.bm.R
-import com.sportpassword.bm.Utilities.Global
-import tw.com.bluemobile.hbc.utilities.getColor
+import com.sportpassword.bm.extensions.image
+import org.jetbrains.anko.backgroundColor
+import org.jetbrains.anko.sdk27.coroutines.onClick
+import com.sportpassword.bm.functions.getColor
 
 fun ViewGroup.setInfo(context: Context, info: String): TextView {
 
@@ -67,15 +74,90 @@ fun ViewGroup.blackView(context: Context, left: Int, top: Int, width: Int, heigh
     return blackView
 }
 
-fun ViewGroup.blackView(context: Context, widthPadding: Int, height: Int): RelativeLayout {
-    val screenHeight: Int = Global.getScreenHeight(resources)
-    val screenWidth: Int = Global.getScreenWidth(resources)
-    val left: Int = widthPadding
-    val top: Int = (screenHeight - height)/2 + 100
-    val width: Int = screenWidth - 2*widthPadding
+fun ViewGroup.tableView(context: Context, top: Int = 0, bottom: Int = 0): RecyclerView {
 
-    return this.blackView(context, left, top, width, height)
+    val tableView = RecyclerView(context)
+    tableView.id = R.id.SearchRecycleItem
+    val lp1 = RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
+//        val lp1 = RecyclerView.LayoutParams(w - (2 * padding), 1000)
+    lp1.setMargins(top, 0, 0, bottom)
+    tableView.layoutParams = lp1
+    tableView.layoutManager = LinearLayoutManager(context)
+    tableView.backgroundColor = Color.TRANSPARENT
+    this.addView(tableView)
+
+    return tableView
 }
+
+fun ViewGroup.buttonPanel(context: Context, height: Int): LinearLayout {
+    val view = LinearLayout(context)
+    val lp = RelativeLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, height)
+    lp.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM)
+    view.layoutParams = lp
+    view.setPadding(20, 0, 20, 0)
+    val color = ContextCompat.getColor(context, R.color.SEARCH_BACKGROUND)
+    view.backgroundColor = color
+    view.gravity = Gravity.CENTER
+    view.orientation = LinearLayout.VERTICAL
+    this.addView(view)
+
+    return view
+}
+
+fun ViewGroup.submitButton(context: Context, height: Int, click: ()->Unit): Button {
+
+    val a = context as BaseActivity
+    val view = a.layoutInflater.inflate(R.layout.submit_button, null) as Button
+    val lp = LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, height)
+    //lp.weight = 1F
+    lp.setMargins(32, 12, 32, 24)
+    view.layoutParams = lp
+    view.onClick {
+        click()
+    }
+    this.addView(view)
+
+    return view
+}
+
+fun ViewGroup.cancelButton(context: Context, height: Int, click: ()->Unit): Button {
+
+    val a = context as BaseActivity
+    val view = a.layoutInflater.inflate(R.layout.cancel_button, null) as Button
+    val lp = LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, height)
+    //lp.weight = 1F
+    lp.setMargins(48, 24, 48, 12)
+    view.layoutParams = lp
+    view.onClick {
+        click()
+    }
+    this.addView(view)
+
+    return view
+}
+
+fun ViewGroup.showImages(images: ArrayList<String>, context: Context) {
+    images.forEachIndexed { _, s ->
+        val imageView: ImageView = ImageView(context)
+        this.addView(imageView)
+        imageView.scaleType = ImageView.ScaleType.FIT_START
+        imageView.adjustViewBounds = true
+        val lp = LinearLayout.LayoutParams(this.layoutParams.width, LinearLayout.LayoutParams.WRAP_CONTENT)
+        lp.setMargins(0, 0, 0, 16)
+        imageView.layoutParams = lp
+        s.image(context, imageView)
+    }
+}
+
+//fun ViewGroup.blackView(context: Context, widthPadding: Int, height: Int): RelativeLayout {
+//    val screenHeight: Int = Global.getScreenHeight(resources)
+//    val screenWidth: Int = Global.getScreenWidth(resources)
+//    val left: Int = widthPadding
+//    val top: Int = (screenHeight - height)/2 + 100
+//    val width: Int = screenWidth - 2*widthPadding
+//
+//    return this.blackView(context, left, top, width, height)
+//}
 
 //fun ViewGroup.bottomView(context: Context, height: Int): LinearLayout {
 //    val bottomView: LinearLayout = LinearLayout(context)

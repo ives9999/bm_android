@@ -29,7 +29,7 @@ class ReadActivity : AppCompatActivity() {
 
         }
 
-        viewModel = ViewModelProvider(this, ArenaViewModelFactory(this, Reposity())).get(
+        viewModel = ViewModelProvider(this, ArenaViewModelFactory(Reposity())).get(
             ViewModel::class.java)
         adapter = Adapter(viewModel)
         binding.recyclerView.adapter = adapter
@@ -41,7 +41,7 @@ class ReadActivity : AppCompatActivity() {
         viewModel.readDao.observe(this, Observer {
             println("rows: $it")
 
-            adapter.rows = it.data.rows
+            adapter.readDao = it
             adapter.notifyDataSetChanged()
         })
 

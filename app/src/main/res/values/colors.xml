@@ -75,5 +75,17 @@
     <color name="blue_bg">#033BD9</color>
 
     <color name="bg_gray_900">#111827</color>
+
+    <color name="bg_50">#f4f6fb</color>
+    <color name="bg_100">#e8ecf6</color>
+    <color name="bg_200">#cbd8ec</color>
+    <color name="bg_300">#9db6dc</color>
+    <color name="bg_400">#6990c7</color>
+    <color name="bg_500">#4672B1</color>
+    <color name="bg_600">#345995</color>
+    <color name="bg_700">#2b4779</color>
+    <color name="bg_800">#273e65</color>
+    <color name="bg_900">#253555</color>
+    <color name="bg_950">#111827</color>
 </resources>
 

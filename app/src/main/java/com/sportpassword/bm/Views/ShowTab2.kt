@@ -6,12 +6,12 @@ import android.view.View
 import android.widget.LinearLayout
 import android.widget.TextView
 import com.sportpassword.bm.R
-import com.sportpassword.bm.Utilities.isInt
+import com.sportpassword.bm.extensions.isInt
 import org.jetbrains.anko.textColor
-import tw.com.bluemobile.hbc.utilities.getColor
-import tw.com.bluemobile.hbc.utilities.getDrawable
-import tw.com.bluemobile.hbc.utilities.getResourceID
-import tw.com.bluemobile.hbc.utilities.then
+import com.sportpassword.bm.functions.getColor
+import com.sportpassword.bm.functions.getDrawable
+import com.sportpassword.bm.functions.getResourceID
+import com.sportpassword.bm.functions.then
 
 class ShowTab2@JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0):
     LinearLayout(context, attrs, defStyleAttr) {

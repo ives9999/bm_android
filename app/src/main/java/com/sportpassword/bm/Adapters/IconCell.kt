@@ -1,11 +1,6 @@
 package com.sportpassword.bm.Adapters
 
 import android.content.Context
-import androidx.core.content.ContextCompat
-import android.view.View
-import com.sportpassword.bm.R
-import com.sportpassword.bm.Utilities.setImage
-import org.jetbrains.anko.textColor
 
 class IconCell(val context: Context, val icon: String, val title: String, val content: String, val isPressed: Boolean=false) {
 

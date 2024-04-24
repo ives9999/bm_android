@@ -1,8 +1,7 @@
 package com.sportpassword.bm.Models
 
-import com.sportpassword.bm.Utilities.Global
-import com.sportpassword.bm.Utilities.noSec
-import com.sportpassword.bm.Utilities.telShow
+import com.sportpassword.bm.extensions.noSec
+import com.sportpassword.bm.functions.zoneIDToName
 
 class ArenasTable: Tables() {
     var rows: ArrayList<ArenaTable> = arrayListOf()
@@ -38,7 +37,7 @@ class ArenaTable: Table() {
         super.filterRow()
         
         if (area_id > 0) {
-            area_show = Global.zoneIDToName(area_id)
+            area_show = zoneIDToName(area_id)
         }
 
         if (open_time != null && close_time != null && open_time.length > 0 && close_time.length > 0) {

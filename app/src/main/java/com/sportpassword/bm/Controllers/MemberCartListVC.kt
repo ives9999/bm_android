@@ -8,11 +8,13 @@ import com.sportpassword.bm.Adapters.MemberCartAdapter
 import com.sportpassword.bm.Models.*
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.CartService
-import com.sportpassword.bm.Utilities.jsonToModels
 import com.sportpassword.bm.member
 import com.sportpassword.bm.Utilities.*
 import com.sportpassword.bm.databinding.ActivityMemberCartListVcBinding
 import com.sportpassword.bm.databinding.MytablevcBinding
+import tw.com.bluemobile.hbc.extensions.setInfo
+import com.sportpassword.bm.functions.jsonToModels
+import com.sportpassword.bm.functions.then
 
 class MemberCartListVC : MyTableVC() {
 
@@ -247,7 +249,7 @@ class MemberCartListVC : MyTableVC() {
 //
 //        //super.bind(viewHolder, position)
 //
-//        Picasso.with(context)
+//        Picasso.get()
 //            .load(featured_path)
 //            .placeholder(R.drawable.loading_square_120)
 //            .error(R.drawable.loading_square_120)

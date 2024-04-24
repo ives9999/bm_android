@@ -8,11 +8,10 @@ import com.sportpassword.bm.Models.MemberTable
 import com.sportpassword.bm.Models.SuccessTable
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.MemberService
-import com.sportpassword.bm.Utilities.dump
-import com.sportpassword.bm.Utilities.jsonToModel
 import com.sportpassword.bm.Views.*
 import com.sportpassword.bm.databinding.ActivityValidateBinding
 import com.sportpassword.bm.member
+import com.sportpassword.bm.functions.jsonToModel
 
 class ValidateVC : BaseActivity(), SubmitDelegate, CancelOnlyDelegate {
 

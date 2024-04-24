@@ -1,7 +1,10 @@
 package com.sportpassword.bm.Models
 
 import com.sportpassword.bm.Utilities.*
-import com.sportpassword.bm.Utilities.mobileShow
+import com.sportpassword.bm.extensions.mobileShow
+import com.sportpassword.bm.extensions.noTime
+import com.sportpassword.bm.extensions.telShow
+import com.sportpassword.bm.functions.zoneIDToName
 import kotlin.reflect.full.memberProperties
 
 //因為 data class 不太適用於繼承，所以這邊就不用 data class的宣告
@@ -87,7 +90,7 @@ abstract class Table {
         if (mobile == null) { mobile = "" }
 
         if (city_id > 0) {
-            city_show = Global.zoneIDToName(city_id)
+            city_show = zoneIDToName(city_id)
         }
 
         if (mobile != null && mobile.isNotEmpty()) {

@@ -4,7 +4,7 @@ import com.google.gson.annotations.SerializedName
 import com.sportpassword.bm.Utilities.DEGREE
 import com.sportpassword.bm.Utilities.STATUS
 import com.sportpassword.bm.Utilities.WEEKDAY
-import com.sportpassword.bm.Utilities.noSec
+import com.sportpassword.bm.extensions.noSec
 
 class TeamsTable: Tables() {
     var rows: ArrayList<TeamTable> = arrayListOf()

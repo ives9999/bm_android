@@ -4,6 +4,7 @@ import android.content.Intent
 import android.provider.MediaStore
 import android.view.View
 import com.sportpassword.bm.Controllers.*
+import com.sportpassword.bm.extensions.Alert
 import com.sportpassword.bm.v2.arena.read.ReadActivity
 import com.sportpassword.bm.member
 

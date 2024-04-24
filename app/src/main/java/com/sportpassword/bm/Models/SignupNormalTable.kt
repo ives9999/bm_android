@@ -1,6 +1,9 @@
 package com.sportpassword.bm.Models
 
 import com.sportpassword.bm.Utilities.*
+import com.sportpassword.bm.extensions.dateToWeekdayForChinese
+import com.sportpassword.bm.extensions.noSec
+import com.sportpassword.bm.extensions.toDateTime
 
 class SignupNormalTable: Table() {
 

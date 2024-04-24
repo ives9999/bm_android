@@ -15,14 +15,12 @@ import com.sportpassword.bm.Adapters.TeamAdapter
 import com.sportpassword.bm.Interface.MyTable2IF
 import com.sportpassword.bm.Models.*
 import com.sportpassword.bm.R
-import com.sportpassword.bm.Services.MemberService
 import com.sportpassword.bm.Services.TeamService
-import com.sportpassword.bm.Utilities.jsonToModels
-import com.sportpassword.bm.Utilities.setInfo
 import com.sportpassword.bm.Views.*
 import com.sportpassword.bm.databinding.ActivityManagerTeamVcBinding
 import com.sportpassword.bm.databinding.ActivityShowTeamVcBinding
 import com.sportpassword.bm.member
+import tw.com.bluemobile.hbc.extensions.setInfo
 import java.lang.reflect.Type
 
 class ManagerTeamVC : BaseActivity(), MyTable2IF, ShowTop2Delegate {

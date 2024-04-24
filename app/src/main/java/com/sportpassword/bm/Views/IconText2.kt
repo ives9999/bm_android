@@ -9,8 +9,8 @@ import android.widget.RelativeLayout
 import android.widget.TextView
 import com.sportpassword.bm.R
 import org.jetbrains.anko.image
-import tw.com.bluemobile.hbc.utilities.getDrawable
-import tw.com.bluemobile.hbc.utilities.getResourceID
+import com.sportpassword.bm.functions.getDrawable
+import com.sportpassword.bm.functions.getResourceID
 
 class IconText2 @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0):
     RelativeLayout(context, attrs, defStyleAttr) {

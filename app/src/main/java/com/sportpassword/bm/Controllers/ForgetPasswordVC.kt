@@ -9,13 +9,13 @@ import com.google.gson.JsonParseException
 import com.sportpassword.bm.Models.SuccessTable
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.MemberService
-import com.sportpassword.bm.Utilities.Alert
 import com.sportpassword.bm.Views.MainEditText2
 import com.sportpassword.bm.Views.ShowTop2
 import com.sportpassword.bm.Views.SubmitDelegate
 import com.sportpassword.bm.Views.SubmitOnly
 import com.sportpassword.bm.databinding.ActivityForgetPasswordBinding
 import com.sportpassword.bm.databinding.MytablevcBinding
+import com.sportpassword.bm.extensions.Alert
 
 class ForgetPasswordVC : BaseActivity(), SubmitDelegate {
 

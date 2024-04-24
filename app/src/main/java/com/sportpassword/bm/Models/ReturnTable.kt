@@ -1,6 +1,6 @@
 package com.sportpassword.bm.Models
 
-import com.sportpassword.bm.Utilities.noSec
+import com.sportpassword.bm.extensions.noSec
 
 class ReturnTable: Table() {
 

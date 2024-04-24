@@ -11,13 +11,9 @@ import android.widget.ImageButton
 import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.recyclerview.widget.RecyclerView.LayoutManager
-import com.sportpassword.bm.Controllers.BaseActivity
 import com.sportpassword.bm.R
-import com.sportpassword.bm.Utilities.hideKeyboard
 import com.sportpassword.bm.extensions.dpToPx
-import com.sportpassword.bm.Utilities.then
-import org.jetbrains.anko.backgroundColor
+import com.sportpassword.bm.functions.then
 
 class ShowTop2 @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0):
     RelativeLayout(context, attrs, defStyleAttr) {

@@ -11,13 +11,11 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.sportpassword.bm.Controllers.List1CellDelegate
 import com.sportpassword.bm.Controllers.SignupSection
-import com.sportpassword.bm.Data.OneRow
-import com.sportpassword.bm.Data.OneSection
 import com.sportpassword.bm.Models.SignupNormalTable
 import com.sportpassword.bm.Models.Table
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Utilities.SIGNUP_STATUS
-import com.sportpassword.bm.Utilities.setImage
+import com.sportpassword.bm.extensions.setImage
 import com.squareup.picasso.Picasso
 
 class ManagerSignupListAdapter(var delegate: List1CellDelegate): RecyclerView.Adapter<ManagerSignupListViewHolder>() {
@@ -121,7 +119,7 @@ class ManagerSignupListItemViewHolder(context: Context, viewHolder: View, list1C
 
                 viewHolder.findViewById<ImageView>(R.id.listFeatured) ?.let {
                     if (row.memberTable!!.featured_path != null && row.memberTable!!.featured_path.isNotEmpty()) {
-                        Picasso.with(context)
+                        Picasso.get()
                             .load(row.memberTable!!.featured_path)
                             .placeholder(R.drawable.loading_square_120)
                             .error(R.drawable.loading_square_120)

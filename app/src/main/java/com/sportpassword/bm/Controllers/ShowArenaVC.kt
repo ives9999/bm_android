@@ -9,9 +9,9 @@ import com.sportpassword.bm.Data.ShowRow
 import com.sportpassword.bm.Models.ArenaTable
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.ArenaService
-import com.sportpassword.bm.Utilities.jsonToModel
 import com.sportpassword.bm.Views.ShowTop2
 import com.sportpassword.bm.databinding.ActivityShowArenaVcBinding
+import com.sportpassword.bm.functions.jsonToModel
 
 class ShowArenaVC: ShowVC() {
 

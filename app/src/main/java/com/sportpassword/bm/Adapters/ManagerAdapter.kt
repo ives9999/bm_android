@@ -44,7 +44,7 @@ class ManagerAdapter(val context: Context, var rows: ArrayList<Table>, val deleg
             val data = rows[position]
             nameView.text = data.title
             if (data.featured_path.isNotEmpty()) {
-                Picasso.with(context)
+                Picasso.get()
                         .load(data.featured_path)
                         .placeholder(R.drawable.loading_square)
                         .error(R.drawable.load_failed_square)

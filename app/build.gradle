@@ -132,8 +132,9 @@ dependencies {
     //implementation 'com.github.babedev.dexter.dsl:dsl:0.1.2'
     implementation 'com.android.volley:volley:1.2.1'
 
-    implementation 'com.squareup.picasso:picasso:2.5.2'
-    implementation 'jp.wasabeef:picasso-transformations:2.1.0'
+    implementation 'com.squareup.picasso:picasso:2.8'
+    implementation 'jp.wasabeef:picasso-transformations:2.4.0'
+    implementation 'com.github.bumptech.glide:glide:4.16.0'
 
     //implementation 'com.github.franmontiel:PersistentCookieJar:v1.0.1'
     //implementation 'com.ohmerhe.kolley:kolley:0.3.1'

@@ -15,13 +15,11 @@ import android.widget.RemoteViews
 import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
-import androidx.core.app.TaskStackBuilder
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 import com.sportpassword.bm.Controllers.CourseVC
 import com.sportpassword.bm.Controllers.MemberOrderListVC
-import com.sportpassword.bm.Controllers.SearchVC
-import com.sportpassword.bm.Utilities.isPermissionGranted
+import com.sportpassword.bm.functions.isPermissionGranted
 
 const val channelId = "notification_channel"
 const val channelName = "com.sportpassword.bm.fcmpushnotification"

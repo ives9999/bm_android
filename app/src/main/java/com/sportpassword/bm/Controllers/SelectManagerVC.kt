@@ -11,9 +11,9 @@ import com.sportpassword.bm.Models.MemberTable
 import com.sportpassword.bm.Models.SuccessTable
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.MemberService
-import com.sportpassword.bm.Utilities.jsonToModel
-import com.sportpassword.bm.Utilities.website
 import com.sportpassword.bm.databinding.ActivitySelectManagerVcBinding
+import com.sportpassword.bm.extensions.website
+import com.sportpassword.bm.functions.jsonToModel
 
 class SelectManagerVC : SelectVC() {
 

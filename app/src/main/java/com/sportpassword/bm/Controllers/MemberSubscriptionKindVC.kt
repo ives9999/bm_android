@@ -27,6 +27,8 @@ import com.sportpassword.bm.databinding.ActivityMemberSubscriptionKindVcBinding
 import com.sportpassword.bm.databinding.MytablevcBinding
 import com.sportpassword.bm.member
 import org.jetbrains.anko.backgroundColor
+import tw.com.bluemobile.hbc.extensions.setInfo
+import com.sportpassword.bm.functions.jsonToModels2
 import java.lang.reflect.Type
 
 class MemberSubscriptionKindVC : BaseActivity(), MyTable2IF, List1CellDelegate, ShowTop2Delegate {

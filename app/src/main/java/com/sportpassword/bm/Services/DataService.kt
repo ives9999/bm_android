@@ -22,6 +22,8 @@ import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.RequestBody.Companion.asRequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
+import com.sportpassword.bm.functions.mergeWith
+import com.sportpassword.bm.functions.then
 import java.io.File
 import java.io.IOException
 

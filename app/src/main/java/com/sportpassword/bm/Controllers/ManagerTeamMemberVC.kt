@@ -25,7 +25,12 @@ import com.sportpassword.bm.Utilities.*
 import com.sportpassword.bm.Views.ShowTop2
 import com.sportpassword.bm.databinding.ActivityManagerTeamMemberBinding
 import com.sportpassword.bm.extensions.avatar
+import com.sportpassword.bm.extensions.noSec
 import com.sportpassword.bm.member
+import tw.com.bluemobile.hbc.extensions.setInfo
+import com.sportpassword.bm.functions.askForPermission
+import com.sportpassword.bm.functions.isPermissionGranted
+import com.sportpassword.bm.functions.jsonToModel
 import java.lang.reflect.Type
 
 open class ManagerTeamMemberVC : BaseActivity(), MyTable2IF {

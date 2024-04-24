@@ -18,6 +18,9 @@ import com.sportpassword.bm.R
 import com.sportpassword.bm.Services.CoachService
 import com.sportpassword.bm.Utilities.*
 import com.sportpassword.bm.databinding.ActivityTimeTableVcBinding
+import com.sportpassword.bm.extensions.noSec
+import com.sportpassword.bm.extensions.timeIntervalSince
+import com.sportpassword.bm.extensions.toDateTime
 import com.sportpassword.bm.member
 import org.jetbrains.anko.*
 import org.jetbrains.anko.sdk27.coroutines.onClick

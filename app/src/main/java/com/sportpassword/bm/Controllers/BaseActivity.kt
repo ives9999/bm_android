@@ -38,10 +38,27 @@ import com.sportpassword.bm.Services.*
 import com.sportpassword.bm.Utilities.*
 import com.sportpassword.bm.Views.ImagePicker
 import com.sportpassword.bm.Views.SearchPanel
+import com.sportpassword.bm.extensions.Alert
+import com.sportpassword.bm.extensions.getAllAreas
+import com.sportpassword.bm.extensions.getAllCitys
+import com.sportpassword.bm.extensions.getAreasFromCity
+import com.sportpassword.bm.extensions.hideKeyboard
+import com.sportpassword.bm.extensions.isInt
+import com.sportpassword.bm.extensions.noSec
+import com.sportpassword.bm.extensions.setImage
+import com.sportpassword.bm.extensions.website
 import com.sportpassword.bm.member
 import org.jetbrains.anko.*
 import org.json.JSONArray
 import org.json.JSONObject
+import tw.com.bluemobile.hbc.extensions.blackView
+import tw.com.bluemobile.hbc.extensions.buttonPanel
+import tw.com.bluemobile.hbc.extensions.cancelButton
+import tw.com.bluemobile.hbc.extensions.mask
+import tw.com.bluemobile.hbc.extensions.tableView
+import tw.com.bluemobile.hbc.extensions.unmask
+import com.sportpassword.bm.functions.then
+import com.sportpassword.bm.functions.zoneIDToName
 import java.io.BufferedReader
 import java.io.File
 import java.io.IOException
@@ -592,38 +609,38 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener,
         return rows
     }
 
-    fun getCitys(complete: (rows: ArrayList<HashMap<String, String>>)-> Unit): ArrayList<HashMap<String, String>> {
-        var rows: ArrayList<HashMap<String, String>> = session.getAllCitys()
-        if (rows.count() == 0) {
-            loadingAnimation.start()
-            dataService.getCitys(this, "all", false) { success ->
-                if (success) {
-                    val citys = dataService.citys
-                    val arr: JSONArray = JSONArray()
-                    rows = arrayListOf()
-                    for (city in citys) {
-                        val name = city.name
-                        val id = city.id.toString()
-                        rows.add(hashMapOf("title" to name, "value" to id))
-                        val obj = JSONObject()
-                        obj.put("name", name)
-                        obj.put("id", id)
-                        arr.put(obj)
-                    }
-
-                    if (arr.length() > 0) {
-                        session.edit().putString("citys", arr.toString()).apply()
-                    }
-                    complete(rows)
-                }
-            }
-
-            runOnUiThread {
-                loadingAnimation.stop()
-            }
-        }
-        return rows
-    }
+//    fun getCitys(complete: (rows: ArrayList<HashMap<String, String>>)-> Unit): ArrayList<HashMap<String, String>> {
+//        var rows: ArrayList<HashMap<String, String>> = session.getAllCitys()
+//        if (rows.count() == 0) {
+//            loadingAnimation.start()
+//            dataService.getCitys(this, "all", false) { success ->
+//                if (success) {
+//                    val citys = dataService.citys
+//                    val arr: JSONArray = JSONArray()
+//                    rows = arrayListOf()
+//                    for (city in citys) {
+//                        val name = city.name
+//                        val id = city.id.toString()
+//                        rows.add(hashMapOf("title" to name, "value" to id))
+//                        val obj = JSONObject()
+//                        obj.put("name", name)
+//                        obj.put("id", id)
+//                        arr.put(obj)
+//                    }
+//
+//                    if (arr.length() > 0) {
+//                        session.edit().putString("citys", arr.toString()).apply()
+//                    }
+//                    complete(rows)
+//                }
+//            }
+//
+//            runOnUiThread {
+//                loadingAnimation.stop()
+//            }
+//        }
+//        return rows
+//    }
 
     //open fun getDataFromServer(page: Int) {}
 
@@ -1838,7 +1855,7 @@ open class BaseActivity : AppCompatActivity(), View.OnFocusChangeListener,
         if (key == START_TIME_KEY || key == END_TIME_KEY || key == TEAM_PLAY_START_KEY || key == TEAM_PLAY_END_KEY) {
             show = selected.noSec()
         } else if (key == CITY_KEY || key == AREA_KEY) {
-            show = Global.zoneIDToName(selected.toInt())
+            show = zoneIDToName(selected.toInt())
         } else if (key == WEEKDAY_KEY || key == WEEKDAYS_KEY) {
             show = WEEKDAY.intToString(selected.toInt())
         } else if (key == PRICE_UNIT_KEY) {

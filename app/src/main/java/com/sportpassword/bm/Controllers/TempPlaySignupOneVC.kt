@@ -7,6 +7,7 @@ import com.sportpassword.bm.Adapters.TempPlaySignupOneAdapter
 import com.sportpassword.bm.R
 import com.sportpassword.bm.Utilities.*
 import com.sportpassword.bm.databinding.ActivityTempPlaySignupOneVcBinding
+import com.sportpassword.bm.extensions.noSec
 import org.jetbrains.anko.contentView
 import org.jetbrains.anko.runOnUiThread
 

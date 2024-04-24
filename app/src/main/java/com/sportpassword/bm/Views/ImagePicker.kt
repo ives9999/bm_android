@@ -242,13 +242,13 @@ interface ImagePicker {
 
     fun setImage(newFile: File?, url: String?){
         if (newFile != null) {
-            Picasso.with(context)
+            Picasso.get()
                     .load(newFile)
                     .memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE)
                     .into(imageView)
         } else {
             if (url != null) {
-                Picasso.with(context)
+                Picasso.get()
                         .load(url)
                         .memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE)
                         .into(imageView)
@@ -257,7 +257,7 @@ interface ImagePicker {
     }
 
     fun removeImage() {
-        Picasso.with(context)
+        Picasso.get()
                 .load(R.drawable.nophoto)
                 .into(imageView)
     }

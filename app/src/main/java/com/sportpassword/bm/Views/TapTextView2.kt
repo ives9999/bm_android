@@ -7,10 +7,10 @@ import android.view.View
 import android.widget.LinearLayout
 import android.widget.TextView
 import com.sportpassword.bm.R
-import com.sportpassword.bm.Utilities.then
 import org.jetbrains.anko.backgroundColor
-import tw.com.bluemobile.hbc.utilities.getColor
-import tw.com.bluemobile.hbc.utilities.getDrawable
+import com.sportpassword.bm.functions.getColor
+import com.sportpassword.bm.functions.getDrawable
+import com.sportpassword.bm.functions.then
 
 class TapTextView2@JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0):
     LinearLayout(context, attrs, defStyleAttr) {

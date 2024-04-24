@@ -11,9 +11,9 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.sportpassword.bm.Data.SelectRow
 import com.sportpassword.bm.R
-import com.sportpassword.bm.Utilities.selected
-import com.sportpassword.bm.Utilities.unSelected
 import com.sportpassword.bm.databinding.ActivityMultiSelectVcBinding
+import com.sportpassword.bm.extensions.selected
+import com.sportpassword.bm.extensions.unSelected
 
 open class MultiSelectVC : SelectVC() {
 

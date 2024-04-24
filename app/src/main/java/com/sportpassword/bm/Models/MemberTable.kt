@@ -7,6 +7,7 @@ import android.content.SharedPreferences
 import android.preference.PreferenceManager
 import com.sportpassword.bm.extensions.formattedWithSeparator
 import com.sportpassword.bm.member
+import com.sportpassword.bm.functions.zoneIDToName
 import java.lang.reflect.Field
 import kotlin.reflect.KClass
 import kotlin.reflect.full.createType
@@ -58,11 +59,11 @@ class MemberTable: Table() {
         }
 
         if (city > 0) {
-            city_show = Global.zoneIDToName(city)
+            city_show = zoneIDToName(city)
         }
 
         if (area > 0) {
-            area_show = Global.zoneIDToName(area)
+            area_show = zoneIDToName(area)
         }
 
         if (area_show.length > 0 && city_show.length > 0) {
