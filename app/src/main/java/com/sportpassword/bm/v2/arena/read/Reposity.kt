@@ -2,6 +2,7 @@ package com.sportpassword.bm.v2.arena.read
 
 import com.google.gson.Gson
 import com.sportpassword.bm.Utilities.URL_ARENA_LIST
+import com.sportpassword.bm.bm_new.data.remote_source.NetworkModule
 import com.sportpassword.bm.v2.base.IRepository
 import okhttp3.Call
 import okhttp3.Callback
@@ -20,6 +21,9 @@ class Reposity : IRepository {
             }
         }
         println(url)
+
+        val client = NetworkModule.provideOkHttpClient()
+        val retrofit = NetworkModule.provideRetrofit(client)
 
         val request: okhttp3.Request = okhttp3.Request.Builder()
             .url(url)
@@ -44,16 +48,5 @@ class Reposity : IRepository {
                 }
             }
         })
-//        ArenaService.getList(null, null, page, 20) { success ->
-//            val jsonString = ArenaService.jsonString
-////            println(jsonString)
-//            try {
-//                val t = Gson().fromJson<ReadDao>(jsonString, ReadDao::class.java)
-//                println(t)
-//                callback.onReadResult(t)
-//            } catch (e: java.lang.Exception) {
-//                println(e.localizedMessage)
-//            }
-//        }
     }
 }
