@@ -9,6 +9,7 @@ import com.bumptech.glide.Glide
 import com.sportpassword.bm.R
 import com.sportpassword.bm.databinding.ReadArenaBinding
 import com.sportpassword.bm.extensions.avatar
+import com.sportpassword.bm.extensions.featured
 import com.sportpassword.bm.extensions.formattedWithSeparator
 import com.sportpassword.bm.extensions.noSec
 import com.squareup.picasso.MemoryPolicy
@@ -66,11 +67,12 @@ class Adapter(private val viewModel: ViewModel): RecyclerView.Adapter<Adapter.Vi
                 }
             }
             if (featured_path != null) {
-                Glide.with(context!!)
-                    .load(featured_path)
-                    .placeholder(R.drawable.nophoto)
-                    .error(R.drawable.load_failed_square)
-                    .into(binding.featuredIV)
+                binding.featuredIV.featured(featured_path)
+//                Glide.with(context!!)
+//                    .load(featured_path)
+//                    .placeholder(R.drawable.nophoto)
+//                    .error(R.drawable.load_failed_square)
+//                    .into(binding.featuredIV)
 //                Picasso.get()
 //                    .load(featured_path)
 //                    .networkPolicy(NetworkPolicy.NO_CACHE)
@@ -81,14 +83,8 @@ class Adapter(private val viewModel: ViewModel): RecyclerView.Adapter<Adapter.Vi
                 binding.featuredIV.setImageResource(R.drawable.loading_square)
             }
 
-//            binding.avatarIV.avatar(row.member.avatar)
+            binding.avatarIV.avatar(row.member.avatar, true)
 
-            Picasso.get()
-                .load(row.member.avatar)
-                .resize(36, 36)
-//                .placeholder(R.drawable.nophoto)
-//                .error(R.drawable.load_failed_square)
-                .into(binding.avatarIV)
 
             binding.cityNameTV.text = row.zone.city_name
             binding.pvTV.text = row.pv.formattedWithSeparator()

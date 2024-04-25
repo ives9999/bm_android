@@ -8,7 +8,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.sportpassword.bm.v2.base.IRepository
 
-class ViewModel(private val repository: IRepository): ViewModel() {
+class ViewModel(private val repository: IRepository<ReadDao>): ViewModel() {
 
     var readDao: MutableLiveData<ReadDao> = MutableLiveData()
     val isEmpty: MutableLiveData<Boolean> = MutableLiveData(false)
@@ -20,12 +20,17 @@ class ViewModel(private val repository: IRepository): ViewModel() {
     private fun getRead() {
         val page: Int = 1
         val perpage: Int = 20
-        repository.getRead(page, perpage, null, object : IRepository.IDaoCallback {
+        repository.getRead(page, perpage, null, object : IRepository.IDaoCallback<ReadDao> {
 
-            override fun onReadResult(readDao: ReadDao) {
-                this@ViewModel.readDao.postValue(readDao)
-                isEmpty.value = !(readDao.status == 200 && readDao.data.rows.count() > 0)
+            override fun onSuccess(res: ReadDao) {
+                this@ViewModel.readDao.postValue(res)
+                isEmpty.value = !(res.status == 200 && res.data.rows.isNotEmpty())
 //                rows.postValue(readDao.data.rows)
+            }
+
+            override fun onFailure(status: Int, msg: String) {
+                println(status)
+                println(msg)
             }
         })
 

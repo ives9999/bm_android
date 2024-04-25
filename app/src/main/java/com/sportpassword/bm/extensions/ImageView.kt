@@ -1,6 +1,10 @@
 package com.sportpassword.bm.extensions
 
 import android.widget.ImageView
+import com.bumptech.glide.Glide
+import com.bumptech.glide.RequestBuilder
+import com.bumptech.glide.RequestManager
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.sportpassword.bm.R
 import com.squareup.picasso.Picasso
 import com.squareup.picasso.RequestCreator
@@ -8,44 +12,52 @@ import jp.wasabeef.picasso.transformations.CropCircleTransformation
 import jp.wasabeef.picasso.transformations.RoundedCornersTransformation
 
 
-fun ImageView.avatar(path: String, isCircle: Boolean = true, rounded: Int = 0) {
+fun ImageView.avatar(path: String, isCircle: Boolean = false, radius: Int = 0) {
 
-//    Picasso.get()
-//        .load(path)
-//        .placeholder(R.drawable.noavatar)
-//        .error(R.drawable.load_failed_square)
-//        .into(this)
-
-    var res: RequestCreator = if (path.isNotEmpty()) Picasso.get().load(path)
-    else Picasso.get().load(R.drawable.loading_square_120)
-
+    val requestManager: RequestManager = Glide.with(context)
+    var requestBuilder = requestManager.load(path)
     if (isCircle) {
-        res = res.transform(CropCircleTransformation())
-    } else {
-        if (rounded > 0) {
-            res = res.transform(RoundedCornersTransformation(rounded, 0))
-        }
+        requestBuilder = requestBuilder.circleCrop()
     }
 
-    res.placeholder(R.drawable.loading_square_120)
-        .error(R.drawable.loading_square_120)
+    if (radius > 0 && !isCircle) {
+        requestBuilder = requestBuilder.transform(RoundedCorners(radius))
+    }
+    requestBuilder.placeholder(R.drawable.nophoto)
+        .error(R.drawable.load_failed_square)
         .into(this)
+
+
+//
+//    var requestBuilder = if (path.isNotEmpty()) requestManager.load(path)
+//    else requestManager.load(R.drawable.loading_square_120)
+//
+//    if (isCircle) {
+//        requestBuilder = requestBuilder.centerCrop()
+//    } else {
+//        if (radius > 0) {
+//            requestBuilder = requestBuilder.transform(RoundedCorners(radius))
+//        }
+//    }
+//
+//    requestBuilder.placeholder(R.drawable.loading_square_120)
+//        .error(R.drawable.loading_square_120)
+//        .into(this)
 }
 
-fun ImageView.featured(path: String, isCircle: Boolean = true, rounded: Int = 0) {
+fun ImageView.featured(path: String, isCircle: Boolean = false, radius: Int = 0) {
 
-    var res: RequestCreator = Picasso.get().load(path)
-
+    val requestManager: RequestManager = Glide.with(context)
+    var requestBuilder = requestManager.load(path)
     if (isCircle) {
-        res = res.transform(CropCircleTransformation())
-    } else {
-        if (rounded > 0) {
-            res = res.transform(RoundedCornersTransformation(rounded, 0))
-        }
+        requestBuilder = requestBuilder.circleCrop()
     }
 
-    res.placeholder(R.drawable.loading_square_120)
-        .error(R.drawable.loading_square_120)
+    if (radius > 0 && !isCircle) {
+        requestBuilder = requestBuilder.transform(RoundedCorners(radius))
+    }
+    requestBuilder.placeholder(R.drawable.nophoto)
+        .error(R.drawable.load_failed_square)
         .into(this)
 }
 

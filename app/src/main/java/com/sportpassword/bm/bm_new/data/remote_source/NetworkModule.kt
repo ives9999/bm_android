@@ -29,7 +29,7 @@ object NetworkModule {
     fun provideRetrofit(okHttpClient: OkHttpClient): Retrofit {
         val gson = GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create()
         return Retrofit.Builder()
-            .baseUrl("https://bm.sportpassword.com/")
+            .baseUrl("https://10.0.0.1/")
             .client(okHttpClient)
             .addConverterFactory(GsonConverterFactory.create(gson))
             .build()

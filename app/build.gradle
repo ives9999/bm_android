@@ -100,8 +100,8 @@ android {
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
 
-    implementation 'androidx.core:core-ktx:1.12.0'
-    implementation 'androidx.activity:activity-ktx:1.8.2'
+    implementation 'androidx.core:core-ktx:1.13.0'
+    implementation 'androidx.activity:activity-ktx:1.9.0'
     implementation 'androidx.gridlayout:gridlayout:1.0.0'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'androidx.multidex:multidex:2.0.1'
@@ -151,8 +151,10 @@ dependencies {
     implementation 'com.beust:klaxon:3.0.1'
 
     testImplementation 'junit:junit:4.13.2'
-    implementation 'com.squareup.okhttp3:okhttp:4.10.0'
-    implementation "com.squareup.okhttp3:logging-interceptor:4.10.0"
+
+    implementation 'com.squareup.okhttp3:okhttp:4.12.0'
+    implementation "com.squareup.okhttp3:logging-interceptor:4.12.0"
+
     implementation "me.leolin:ShortcutBadger:1.1.22@aar"
     implementation "com.google.code.gson:gson:2.10.1"
 
@@ -205,7 +207,7 @@ dependencies {
     implementation "io.insert-koin:koin-core:3.1.2"
     implementation "io.insert-koin:koin-android:3.1.2"
     //Glide
-    implementation "com.github.bumptech.glide:glide:4.12.0"
+    implementation "com.github.bumptech.glide:glide:4.16.0"
     annotationProcessor "com.github.bumptech.glide:compiler:4.12.0"
     implementation 'jp.wasabeef:glide-transformations:4.3.0'
     //fragment ktx
