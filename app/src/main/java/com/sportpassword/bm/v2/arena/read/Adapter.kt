@@ -39,7 +39,7 @@ class Adapter(private val viewModel: ViewModel): RecyclerView.Adapter<Adapter.Vi
         readDao ?. let {
             val row = it.data.rows[position]
             val meta = it.data.meta
-            holder.bind(row, position, meta)
+            holder.bind(row, position, meta, viewModel)
         }
     }
 
@@ -54,7 +54,7 @@ class Adapter(private val viewModel: ViewModel): RecyclerView.Adapter<Adapter.Vi
             }
         }
 
-        fun bind(row: ReadDao.Arena, position: Int, meta: ReadDao.Meta) {
+        fun bind(row: ReadDao.Arena, position: Int, meta: ReadDao.Meta, viewModel: ViewModel) {
 
             val idx: Int = (meta.currentPage - 1)*meta.perpage + position + 1
             binding.nameTV.text = "${idx.toString()}.${row.name}"
@@ -91,6 +91,10 @@ class Adapter(private val viewModel: ViewModel): RecyclerView.Adapter<Adapter.Vi
 
             binding.memberNameTV.text = row.member.name
             binding.createdATTV.text = row.created_at.noSec()
+
+            binding.featuredIV.setOnClickListener{
+                viewModel.toShohw(true)
+            }
         }
     }
 }

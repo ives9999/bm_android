@@ -3,7 +3,8 @@ package com.sportpassword.bm.v2.arena.read
 import android.app.Application
 import android.content.Context
 import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.LiveData
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.*
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.sportpassword.bm.v2.base.IRepository
@@ -12,6 +13,8 @@ class ViewModel(private val repository: IRepository<ReadDao>): ViewModel() {
 
     var readDao: MutableLiveData<ReadDao> = MutableLiveData()
     val isEmpty: MutableLiveData<Boolean> = MutableLiveData(false)
+
+    var isToShow: MutableLiveData<Event<Boolean>> = MutableLiveData()
 
 
     init {
@@ -33,6 +36,9 @@ class ViewModel(private val repository: IRepository<ReadDao>): ViewModel() {
                 println(msg)
             }
         })
+    }
 
+    fun toShohw(bool: Boolean) {
+        isToShow.value = Event(bool)
     }
 }

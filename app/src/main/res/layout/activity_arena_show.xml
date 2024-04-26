@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/MY_BLACK"
+>
+    <com.sportpassword.bm.Views.ShowTop2
+        android:id="@+id/top"
+        android:layout_width="match_parent"
+        android:layout_height="54dp" />
+
+    <LinearLayout
+        android:id="@+id/dataLL"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/top"
+        android:layout_marginTop="16dp"
+        android:layout_marginStart="12dp"
+        android:layout_marginEnd="12dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/nameTV"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginTop="16dp"
+            android:textSize="24dp"
+            android:textColor="@color/MY_WHITE"
+            android:text="xxx"
+        />
+
+    </LinearLayout>
+
+</RelativeLayout>
