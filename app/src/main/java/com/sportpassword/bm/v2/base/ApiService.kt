@@ -4,6 +4,7 @@ import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.sportpassword.bm.Models.MemberSubscriptionKindTable
 import com.sportpassword.bm.Models.Tables2
+import com.sportpassword.bm.bm_new.ui.util.canEditSignUp
 import com.sportpassword.bm.v2.arena.read.ReadDao
 import okhttp3.Call
 import okhttp3.Callback
@@ -42,19 +43,24 @@ class ApiService<T>() {
         client.newCall(request).enqueue(object : Callback{
             override fun onFailure(call: Call, e: IOException) {
                 println(e.localizedMessage)
-                //e.localizedMessage?.let { callback.onFailure(500, it) }
+                e.localizedMessage?.let { callback.onFailure(500, it) }
             }
 
             override fun onResponse(call: Call, response: Response) {
                 try {
-                    val jsonString = response.body!!.string()
-                    val t = Gson().fromJson<T>(jsonString, typeToken)
-                    //val t = Gson().fromJson<T>(jsonString, object: TypeToken<T>() {}.type) as T
-                    println(t)
-                    callback.onSuccess(t)
+                    val status = response.code
+                    if (response.code != 200) {
+                        callback.onFailure(response.code, response.message)
+                    } else {
+                        val jsonString = response.body!!.string()
+                        val t = Gson().fromJson<T>(jsonString, typeToken) as T
+                        //val t = Gson().fromJson<T>(jsonString, object: TypeToken<T>() {}.type) as T
+                        println(t)
+                        callback.onSuccess(t)
+                    }
                 } catch (e: Exception) {
                     println(e.localizedMessage)
-                    //e.localizedMessage?.let { callback.onFailure(501, it) }
+                    e.localizedMessage?.let { callback.onFailure(501, it) }
                 }
             }
 

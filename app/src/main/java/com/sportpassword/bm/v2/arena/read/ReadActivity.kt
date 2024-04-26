@@ -7,14 +7,17 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.sportpassword.bm.databinding.ActivityArenaReadBinding
+import com.sportpassword.bm.extensions.Alert
 import com.sportpassword.bm.v2.arena.ArenaViewModelFactory
 import com.sportpassword.bm.v2.arena.show.ShowActivity
+import com.sportpassword.bm.v2.error.Error
 
 class ReadActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityArenaReadBinding
     private lateinit var viewModel: ViewModel
     private lateinit var adapter: Adapter
+    var error: Error = Error(0, "")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,7 +34,7 @@ class ReadActivity : AppCompatActivity() {
 
         }
 
-        viewModel = ViewModelProvider(this, ArenaViewModelFactory(Reposity())).get(
+        viewModel = ViewModelProvider(this, ArenaViewModelFactory(Reposity(), error)).get(
             ViewModel::class.java)
         adapter = Adapter(viewModel)
         binding.recyclerView.adapter = adapter
@@ -48,12 +51,19 @@ class ReadActivity : AppCompatActivity() {
         })
 
         viewModel.isEmpty.observe(this, Observer {
+            println(it)
             if (it) {
                 binding.recyclerView.visibility = View.INVISIBLE
                 binding.empty.visibility = View.INVISIBLE
             } else {
                 binding.recyclerView.visibility = View.VISIBLE
                 binding.empty.visibility = View.INVISIBLE
+            }
+        })
+
+        viewModel.isShowError.observe(this, Observer {
+            if (it) {
+                Alert.warning(this, error.msg)
             }
         })
 

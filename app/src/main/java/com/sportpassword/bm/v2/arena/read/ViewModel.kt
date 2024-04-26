@@ -1,21 +1,18 @@
 package com.sportpassword.bm.v2.arena.read
 
-import android.app.Application
-import android.content.Context
-import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.*
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.sportpassword.bm.v2.base.IRepository
+import com.sportpassword.bm.v2.error.Error
+import com.sportpassword.bm.v2.error.IError
 
-class ViewModel(private val repository: IRepository<ReadDao>): ViewModel() {
+class ViewModel(private val repository: IRepository<ReadDao>, val error: IError): ViewModel() {
 
     var readDao: MutableLiveData<ReadDao> = MutableLiveData()
-    val isEmpty: MutableLiveData<Boolean> = MutableLiveData(false)
+    var isEmpty: MutableLiveData<Boolean> = MutableLiveData(false)
+    var isShowError: MutableLiveData<Boolean> = MutableLiveData(false)
 
     var isToShow: MutableLiveData<Event<Boolean>> = MutableLiveData()
-
 
     init {
         getRead()
@@ -26,12 +23,20 @@ class ViewModel(private val repository: IRepository<ReadDao>): ViewModel() {
         repository.getRead(page, perpage, null, object : IRepository.IDaoCallback<ReadDao> {
 
             override fun onSuccess(res: ReadDao) {
-                this@ViewModel.readDao.postValue(res)
-                isEmpty.value = !(res.status == 200 && res.data.rows.isNotEmpty())
+                if (res.status != 200) {
+                    error.getNetworkNotExist()
+                    isShowError.postValue(true)
+                } else {
+                    this@ViewModel.readDao.postValue(res)
+                }
+                isEmpty.postValue(!(res.status == 200 && res.data.rows.isNotEmpty()))
 //                rows.postValue(readDao.data.rows)
             }
 
             override fun onFailure(status: Int, msg: String) {
+                error.id = status
+                error.msg = msg
+                isShowError.postValue(true)
                 println(status)
                 println(msg)
             }
