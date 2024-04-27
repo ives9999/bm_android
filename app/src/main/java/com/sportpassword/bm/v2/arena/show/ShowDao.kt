@@ -19,6 +19,9 @@ data class ShowDao(
         @SerializedName("name")
         val name: String,
 
+        @SerializedName("zone")
+        val zone: Zone,
+
         @SerializedName("token")
         val token: String,
 
@@ -27,5 +30,20 @@ data class ShowDao(
 
         @SerializedName("created_at")
         val created_at: String,
+    ): Parcelable
+
+    @Parcelize
+    data class Zone(
+        @SerializedName("city_id")
+        val city_id: Int,
+
+        @SerializedName("area_id")
+        val area_id: Int,
+
+        @SerializedName("city_name")
+        val city_name: String,
+
+        @SerializedName("area_name")
+        val area_name: String
     ): Parcelable
 }

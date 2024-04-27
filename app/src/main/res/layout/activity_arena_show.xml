@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -10,26 +11,48 @@
         android:layout_width="match_parent"
         android:layout_height="54dp" />
 
+    <TextView
+        android:id="@+id/nameTV"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/top"
+        android:layout_gravity="center_vertical"
+        android:layout_marginTop="12dp"
+        android:layout_marginBottom="12dp"
+        android:textSize="24dp"
+        android:textColor="@color/MY_WHITE"
+        android:text="xxx"
+    />
+
     <LinearLayout
         android:id="@+id/dataLL"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/top"
+        android:layout_below="@id/nameTV"
         android:layout_marginTop="16dp"
         android:layout_marginStart="12dp"
         android:layout_marginEnd="12dp"
         android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/nameTV"
+        <com.sportpassword.bm.Views.IconTextText2
+            android:id="@+id/cityNameTV"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_marginTop="16dp"
-            android:textSize="24dp"
-            android:textColor="@color/MY_WHITE"
-            android:text="xxx"
+            android:layout_marginBottom="16dp"
+            app:iconTextText2Icon="ic_check_svg"
+            app:iconTextText2Title="縣市"
         />
+        <com.sportpassword.bm.Views.IconTextText2
+            android:id="@+id/areaNameTV"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:iconTextText2Icon="ic_check_svg"
+            app:iconTextText2Title="區域"
+        />
+
+
+
+
 
     </LinearLayout>
 
