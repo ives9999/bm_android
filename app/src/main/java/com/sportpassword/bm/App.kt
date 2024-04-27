@@ -177,6 +177,7 @@ class App : Application() {
         URL_ARENA_BY_CITY_IDS = URL_HOME + "arena_by_citys"
         URL_ARENA_LIKE = URL_HOME + "arena/like/%s"
         URL_ARENA_LIST = URL_HOME + "arena/getRead"
+        URL_ARENA_ONE = URL_HOME + "arena/getOne"
         URL_CANCEL_SIGNUP = URL_HOME + "%s/cancelSignup/%d"
         URL_CART_DELETE = URL_HOME + "cart/delete"
         URL_CART_LIST = URL_HOME + "cart/list"

@@ -2,19 +2,28 @@ package com.sportpassword.bm.v2.arena.read
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.sportpassword.bm.v2.base.Event
 import com.sportpassword.bm.v2.base.IRepository
-import com.sportpassword.bm.v2.error.Error
+import com.sportpassword.bm.v2.base.IShowError
+import com.sportpassword.bm.v2.base.IShowLoading
+import com.sportpassword.bm.v2.base.ShowError
+import com.sportpassword.bm.v2.base.ShowLoading
 import com.sportpassword.bm.v2.error.IError
 
-class ViewModel(private val repository: IRepository<ReadDao>, val error: IError): ViewModel() {
+class ViewModel(private val repository: IRepository<ReadDao>, val error: IError):
+    ViewModel(),
+    IShowLoading by ShowLoading(MutableLiveData(false)),
+    IShowError by ShowError(MutableLiveData(false)) {
 
     var readDao: MutableLiveData<ReadDao> = MutableLiveData()
     var isEmpty: MutableLiveData<Boolean> = MutableLiveData(false)
-    var isShowError: MutableLiveData<Boolean> = MutableLiveData(false)
+//    var isShowError: MutableLiveData<Boolean> = MutableLiveData(false)
+//    var isShowLoading: MutableLiveData<Boolean> = MutableLiveData(false)
 
-    var isToShow: MutableLiveData<Event<Boolean>> = MutableLiveData()
+    var token: MutableLiveData<String> = MutableLiveData()
 
     init {
+        isShowLoading.value = true
         getRead()
     }
     private fun getRead() {
@@ -30,20 +39,21 @@ class ViewModel(private val repository: IRepository<ReadDao>, val error: IError)
                     this@ViewModel.readDao.postValue(res)
                 }
                 isEmpty.postValue(!(res.status == 200 && res.data.rows.isNotEmpty()))
-//                rows.postValue(readDao.data.rows)
+                isShowLoading.postValue(false)
             }
 
             override fun onFailure(status: Int, msg: String) {
                 error.id = status
                 error.msg = msg
                 isShowError.postValue(true)
-                println(status)
-                println(msg)
+//                println(status)
+//                println(msg)
+                isShowLoading.postValue(false)
             }
         })
     }
 
-    fun toShohw(bool: Boolean) {
-        isToShow.value = Event(bool)
+    fun toShohw(token: String) {
+        this@ViewModel.token.value = token
     }
 }

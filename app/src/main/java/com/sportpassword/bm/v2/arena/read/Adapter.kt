@@ -1,20 +1,15 @@
 package com.sportpassword.bm.v2.arena.read
 
 import android.content.Context
-import android.text.Layout
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
 import com.sportpassword.bm.R
 import com.sportpassword.bm.databinding.ReadArenaBinding
 import com.sportpassword.bm.extensions.avatar
 import com.sportpassword.bm.extensions.featured
 import com.sportpassword.bm.extensions.formattedWithSeparator
 import com.sportpassword.bm.extensions.noSec
-import com.squareup.picasso.MemoryPolicy
-import com.squareup.picasso.NetworkPolicy
-import com.squareup.picasso.Picasso
 
 class Adapter(private val viewModel: ViewModel): RecyclerView.Adapter<Adapter.ViewHolder>() {
 
@@ -93,7 +88,7 @@ class Adapter(private val viewModel: ViewModel): RecyclerView.Adapter<Adapter.Vi
             binding.createdATTV.text = row.created_at.noSec()
 
             binding.featuredIV.setOnClickListener{
-                viewModel.toShohw(true)
+                viewModel.toShohw(row.token)
             }
         }
     }

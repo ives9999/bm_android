@@ -1,4 +1,4 @@
-package com.sportpassword.bm.v2.arena.read
+package com.sportpassword.bm.v2.base
 
 /**
  * Used as a wrapper for data that is exposed via a LiveData that represents on event.

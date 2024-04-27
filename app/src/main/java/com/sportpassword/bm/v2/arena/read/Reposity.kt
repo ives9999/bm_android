@@ -3,10 +3,10 @@ package com.sportpassword.bm.v2.arena.read
 import com.google.gson.reflect.TypeToken
 import com.sportpassword.bm.Utilities.URL_ARENA_LIST
 import com.sportpassword.bm.v2.base.ApiService
-import com.sportpassword.bm.v2.base.BaseRpository
+import com.sportpassword.bm.v2.base.BaseRepository
 import com.sportpassword.bm.v2.base.IRepository
 
-class Reposity : BaseRpository<ReadDao>() {
+class Reposity : BaseRepository<ReadDao>() {
 //    private lateinit var apiService: APIService
     init {
 //        val client = NetworkModule.provideOkHttpClient()

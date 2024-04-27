@@ -29,6 +29,9 @@
         tools:replace="android:allowBackup"
         tools:targetApi="m">
         <activity
+            android:name=".v2.base.BaseActivity"
+            android:exported="false" />
+        <activity
             android:name=".v2.arena.show.ShowActivity"
             android:exported="false" />
         <activity

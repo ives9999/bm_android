@@ -3,27 +3,26 @@ package com.sportpassword.bm.v2.arena.read
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
-import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import com.sportpassword.bm.Utilities.LoadingAnimation
 import com.sportpassword.bm.databinding.ActivityArenaReadBinding
 import com.sportpassword.bm.extensions.Alert
-import com.sportpassword.bm.v2.arena.ArenaViewModelFactory
 import com.sportpassword.bm.v2.arena.show.ShowActivity
-import com.sportpassword.bm.v2.error.Error
+import com.sportpassword.bm.v2.base.BaseActivity
 
-class ReadActivity : AppCompatActivity() {
+class ReadActivity : BaseActivity() {
 
     private lateinit var binding: ActivityArenaReadBinding
     private lateinit var viewModel: ViewModel
     private lateinit var adapter: Adapter
-    var error: Error = Error(0, "")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         binding = ActivityArenaReadBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        loadingAnimation = LoadingAnimation(this)
 
         binding.top.apply {
             setTitle("球館")
@@ -34,7 +33,7 @@ class ReadActivity : AppCompatActivity() {
 
         }
 
-        viewModel = ViewModelProvider(this, ArenaViewModelFactory(Reposity(), error)).get(
+        viewModel = ViewModelProvider(this, ViewModelFactory(Reposity(), error)).get(
             ViewModel::class.java)
         adapter = Adapter(viewModel)
         binding.recyclerView.adapter = adapter
@@ -44,14 +43,13 @@ class ReadActivity : AppCompatActivity() {
 //        })
 
         viewModel.readDao.observe(this, Observer {
-            println("rows: $it")
+            //println("rows: $it")
 
             adapter.readDao = it
             adapter.notifyDataSetChanged()
         })
 
         viewModel.isEmpty.observe(this, Observer {
-            println(it)
             if (it) {
                 binding.recyclerView.visibility = View.INVISIBLE
                 binding.empty.visibility = View.INVISIBLE
@@ -67,13 +65,18 @@ class ReadActivity : AppCompatActivity() {
             }
         })
 
-        viewModel.isToShow.observe(this, Observer { event ->
-            event.getContentIfNotHandled() ?. let {
-                if (it) {
-                    val intent = Intent(this, ShowActivity::class.java)
-                    startActivity(intent)
-                }
+        viewModel.isShowLoading.observe(this, Observer {
+            if (it) {
+                loadingAnimation.start()
+            } else {
+                loadingAnimation.stop()
             }
+        })
+
+        viewModel.token.observe(this, Observer {
+            val intent = Intent(this, ShowActivity::class.java)
+            intent.putExtra("token", it)
+            startActivity(intent)
         })
     }
 }
