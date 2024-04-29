@@ -6,7 +6,7 @@ import com.android.volley.Request
 import com.android.volley.Response
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
-import com.beust.klaxon.Klaxon
+//import com.beust.klaxon.Klaxon
 import com.sportpassword.bm.Models.*
 import com.sportpassword.bm.Utilities.*
 import kotlinx.coroutines.GlobalScope
@@ -246,7 +246,8 @@ object TeamService: DataService() {
             val s = json.toString()
             //println(s)
             try {
-                tempPlayDate = Klaxon().parse<TempPlayDate>(s)!!
+               //
+                //tempPlayDate = Klaxon().parse<TempPlayDate>(s)!!
 //                tempPlayDate = TempPlayDate(json)
 //                println(tempPlayDate.success)
 //                println(tempPlayDate.rows)

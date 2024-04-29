@@ -9,7 +9,7 @@
         android:id="@+id/containerLL"
         android:layout_width="48dp"
         android:layout_height="48dp"
-        android:background="@drawable/icon_view"
+        android:background="@drawable/ic_view_svg"
         android:gravity="center"
         android:orientation="vertical">
 

@@ -8,6 +8,7 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.RelativeLayout
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import com.sportpassword.bm.R
 import com.sportpassword.bm.extensions.dpToPx
 import org.jetbrains.anko.image
@@ -25,6 +26,7 @@ class IconTextText2 @JvmOverloads constructor(context: Context, attrs: Attribute
     private var showTV: TextView? = null
 
     var iconStr: String = "noPhoto"
+    var iconColor: String = ""
     var iconWidth: Int = 24
     var iconHeight: Int = 24
     var delegate: IconTextText2Delegate? = null
@@ -48,6 +50,12 @@ class IconTextText2 @JvmOverloads constructor(context: Context, attrs: Attribute
 
         attrs ?. let {
             val typedArray = context.obtainStyledAttributes(it, R.styleable.IconTextText2, 0, 0)
+
+            if (typedArray.hasValue(R.styleable.IconTextText2_iconTextText2IconColor)) {
+                typedArray.getString(R.styleable.IconTextText2_iconTextText2IconColor) ?. let { it1 ->
+                    iconColor = it1
+                }
+            }
 
             if (typedArray.hasValue(R.styleable.IconTextText2_iconTextText2Icon)) {
                 typedArray.getString(R.styleable.IconTextText2_iconTextText2Icon) ?. let { it1 ->
@@ -86,6 +94,11 @@ class IconTextText2 @JvmOverloads constructor(context: Context, attrs: Attribute
         this.iconStr = icon
         val res: Int = getResourceID(context, icon, "drawable")
         iconIV?.image = getDrawable(context, res)
+
+        if (iconColor.isNotEmpty()) {
+            val color: Int = getResourceID(context, iconColor, "color")
+            iconIV?.setColorFilter(ContextCompat.getColor(context, color), android.graphics.PorterDuff.Mode.SRC_IN)
+        }
     }
 
     fun setTitle(text: String) {

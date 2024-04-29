@@ -28,12 +28,12 @@
                 android:textAlignment="viewStart"
                 tools:text="1." />
 
-            <com.github.siyamed.shapeimageview.CircularImageView
-                android:id="@+id/avatarIV"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:layout_gravity="center_vertical"
-                android:layout_marginLeft="12dp" />
+<!--            <com.github.siyamed.shapeimageview.CircularImageView-->
+<!--                android:id="@+id/avatarIV"-->
+<!--                android:layout_width="48dp"-->
+<!--                android:layout_height="48dp"-->
+<!--                android:layout_gravity="center_vertical"-->
+<!--                android:layout_marginLeft="12dp" />-->
 
             <RelativeLayout
                 android:id="@+id/dataContainer"

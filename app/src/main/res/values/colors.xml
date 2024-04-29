@@ -74,8 +74,6 @@
     <color name="TOP">#a6d903</color>
     <color name="blue_bg">#033BD9</color>
 
-    <color name="bg_gray_900">#111827</color>
-
     <color name="bg_50">#f4f6fb</color>
     <color name="bg_100">#e8ecf6</color>
     <color name="bg_200">#cbd8ec</color>
@@ -87,5 +85,20 @@
     <color name="bg_800">#273e65</color>
     <color name="bg_900">#253555</color>
     <color name="bg_950">#111827</color>
+
+    <color name="gray_700">#556581</color>
+    <color name="gray_900">#111827</color>
+    
+    <color name="PrimaryBlock_50">#f4f6fb</color>
+    <color name="PrimaryBlock_100">#e9edf5</color>
+    <color name="PrimaryBlock_200">#cedae9</color>
+    <color name="PrimaryBlock_300">#a2bad7</color>
+    <color name="PrimaryBlock_400">#7094c0</color>
+    <color name="PrimaryBlock_500">#4e78a9</color>
+    <color name="PrimaryBlock_600">#3c5f8d</color>
+    <color name="PrimaryBlock_700">#314d73</color>
+    <color name="PrimaryBlock_80">#2c4260</color>
+    <color name="PrimaryBlock_900">#293951</color>
+    <color name="PrimaryBlock_950">#1e293c</color>
 </resources>
 

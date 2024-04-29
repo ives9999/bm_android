@@ -62,7 +62,7 @@ class Adapter(private val viewModel: ViewModel): RecyclerView.Adapter<Adapter.Vi
                 }
             }
             if (featured_path != null) {
-                binding.featuredIV.featured(featured_path)
+                binding.featuredIV.featured(featured_path, false, 38)
 //                Glide.with(context!!)
 //                    .load(featured_path)
 //                    .placeholder(R.drawable.nophoto)

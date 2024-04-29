@@ -8,7 +8,7 @@
         android:id="@+id/containerLL"
         android:layout_width="40dp"
         android:layout_height="40dp"
-        android:background="@drawable/icon_view"
+        android:background="@drawable/ic_view_svg"
         android:gravity="center">
 
         <ImageView

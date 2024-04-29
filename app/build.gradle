@@ -139,7 +139,7 @@ dependencies {
 
     //implementation 'com.github.franmontiel:PersistentCookieJar:v1.0.1'
     //implementation 'com.ohmerhe.kolley:kolley:0.3.1'
-    implementation 'com.chauthai.swipereveallayout:swipe-reveal-layout:1.4.1'
+    //implementation 'com.chauthai.swipereveallayout:swipe-reveal-layout:1.4.1'
 //    implementation('org.apache.httpcomponents:httpmime:4.5.6') {
 //        exclude module: 'httpclient'
 //    }
@@ -149,7 +149,7 @@ dependencies {
     //        exclude group: 'com.intellij', module: 'annotations'
     //    }
     //    implementation project(':vimeo-networking')
-    implementation 'com.beust:klaxon:3.0.1'
+    //implementation 'com.beust:klaxon:3.0.1'
 
     testImplementation 'junit:junit:4.13.2'
 
@@ -191,7 +191,8 @@ dependencies {
     implementation 'com.airbnb.android:lottie:4.1.0'
 
     //circle image
-    implementation 'com.github.siyamed:android-shape-imageview:0.9.3'
+//    implementation 'com.github.siyamed:android-shape-imageview:0.9.3'
+    implementation 'com.github.denzcoskun:ImageSlideshow:0.1.2'
 
     // Import the Firebase BoM
     implementation 'com.google.firebase:firebase-messaging-ktx:23.4.1'

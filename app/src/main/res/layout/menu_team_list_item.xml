@@ -6,12 +6,12 @@
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
-    <com.chauthai.swipereveallayout.SwipeRevealLayout
-        android:id="@+id/swipe_layout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:dragEdge="left"
-        app:mode="same_level">
+<!--    <com.chauthai.swipereveallayout.SwipeRevealLayout-->
+<!--        android:id="@+id/swipe_layout"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        app:dragEdge="left"-->
+<!--        app:mode="same_level">-->
 
 
         <!-- Your secondary layout here -->
@@ -145,6 +145,6 @@
             </RelativeLayout>
         </FrameLayout>
 
-    </com.chauthai.swipereveallayout.SwipeRevealLayout>
+<!--    </com.chauthai.swipereveallayout.SwipeRevealLayout>-->
 
 </LinearLayout>

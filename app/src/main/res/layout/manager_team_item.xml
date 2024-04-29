@@ -64,14 +64,14 @@
         android:layout_marginEnd="20dp"
         android:orientation="horizontal">
 
-        <com.github.siyamed.shapeimageview.CircularImageView
-            android:id="@+id/featuredIV"
-            android:layout_width="56dp"
-            android:layout_height="56dp"
-            android:layout_marginTop="12dp"
-            android:layout_marginBottom="6dp"
-            android:background="@drawable/loading_square_120"
-            tools:srcCompat="@drawable/loading_square_120" />
+<!--        <com.github.siyamed.shapeimageview.CircularImageView-->
+<!--            android:id="@+id/featuredIV"-->
+<!--            android:layout_width="56dp"-->
+<!--            android:layout_height="56dp"-->
+<!--            android:layout_marginTop="12dp"-->
+<!--            android:layout_marginBottom="6dp"-->
+<!--            android:background="@drawable/loading_square_120"-->
+<!--            tools:srcCompat="@drawable/loading_square_120" />-->
 
         <LinearLayout
             android:layout_width="wrap_content"

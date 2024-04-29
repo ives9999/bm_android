@@ -22,6 +22,45 @@ data class ShowDao(
         @SerializedName("zone")
         val zone: Zone,
 
+        @SerializedName("zip")
+        val zip: String,
+
+        @SerializedName("road")
+        val road: String,
+
+        @SerializedName("tel")
+        val tel: String,
+
+        @SerializedName("open_time")
+        val open_time: String,
+
+        @SerializedName("close_time")
+        val close_time: String,
+
+        @SerializedName("block")
+        val block: Int,
+
+        @SerializedName("bathroom")
+        val bathroom: Int,
+
+        @SerializedName("air_condition")
+        val air_condition: Int,
+
+        @SerializedName("parking")
+        val parking: Int,
+
+        @SerializedName("fb")
+        val fb: String,
+
+        @SerializedName("youtube")
+        val youtube: String,
+
+        @SerializedName("line")
+        val line: String,
+
+        @SerializedName("website")
+        val website: String,
+
         @SerializedName("token")
         val token: String,
 
@@ -30,6 +69,10 @@ data class ShowDao(
 
         @SerializedName("created_at")
         val created_at: String,
+
+        @SerializedName("images")
+        val images: ArrayList<Image>,
+
     ): Parcelable
 
     @Parcelize
@@ -45,5 +88,11 @@ data class ShowDao(
 
         @SerializedName("area_name")
         val area_name: String
+    ): Parcelable
+
+    @Parcelize
+    data class Image(
+        @SerializedName("path")
+        val path: String,
     ): Parcelable
 }

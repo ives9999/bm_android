@@ -40,10 +40,11 @@
 
     <declare-styleable name="IconTextText2">
         <attr name="iconTextText2Icon" format="string" />
-        <attr name="iconTextText2Title" format="string" />
-        <attr name="iconTextText2Show" format="string" />
+        <attr name="iconTextText2IconColor" format="string" />
         <attr name="iconTextText2IconWidth" format="integer" />
         <attr name="iconTextText2IconHeight" format="integer" />
+        <attr name="iconTextText2Title" format="string" />
+        <attr name="iconTextText2Show" format="string" />
     </declare-styleable>
 
     <declare-styleable name="IconTextVertical2">

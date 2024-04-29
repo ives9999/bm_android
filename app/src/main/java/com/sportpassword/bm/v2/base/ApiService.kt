@@ -55,7 +55,7 @@ class ApiService<T>() {
                         val jsonString = response.body!!.string()
                         val t = Gson().fromJson<T>(jsonString, typeToken) as T
                         //val t = Gson().fromJson<T>(jsonString, object: TypeToken<T>() {}.type) as T
-                        println(t)
+                        //println(t)
                         callback.onSuccess(t)
                     }
                 } catch (e: Exception) {

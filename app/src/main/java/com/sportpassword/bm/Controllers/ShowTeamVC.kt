@@ -1258,9 +1258,9 @@ class TeamMemberShowViewHolder(val viewHolder: View): RecyclerView.ViewHolder(vi
         viewHolder.findViewById<NOTV2>(R.id.noTV) ?. let {
             noTV = it
         }
-        viewHolder.findViewById<com.github.siyamed.shapeimageview.CircularImageView>(R.id.avatarIV) ?. let {
-            avatarIV = it
-        }
+//        viewHolder.findViewById<com.github.siyamed.shapeimageview.CircularImageView>(R.id.avatarIV) ?. let {
+//            avatarIV = it
+//        }
         viewHolder.findViewById<TextView>(R.id.nameTV) ?. let {
             nameTV = it
         }

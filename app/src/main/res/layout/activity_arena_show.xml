@@ -1,59 +1,210 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/MY_BLACK"
+    android:background="@color/bg_950"
 >
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            >
+
     <com.sportpassword.bm.Views.ShowTop2
         android:id="@+id/top"
         android:layout_width="match_parent"
         android:layout_height="54dp" />
 
-    <TextView
-        android:id="@+id/nameTV"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/top"
-        android:layout_gravity="center_vertical"
-        android:layout_marginTop="12dp"
-        android:layout_marginBottom="12dp"
-        android:textSize="24dp"
-        android:textColor="@color/MY_WHITE"
-        android:text="xxx"
-    />
+        android:layout_margin="12dp"
+        android:orientation="vertical"
+    >
 
-    <LinearLayout
-        android:id="@+id/dataLL"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/nameTV"
-        android:layout_marginTop="16dp"
-        android:layout_marginStart="12dp"
-        android:layout_marginEnd="12dp"
-        android:orientation="vertical">
-
-        <com.sportpassword.bm.Views.IconTextText2
-            android:id="@+id/cityNameTV"
+        <TextView
+            android:id="@+id/nameTV"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
-            app:iconTextText2Icon="ic_check_svg"
-            app:iconTextText2Title="縣市"
+            android:layout_gravity="center_vertical"
+            android:textSize="24dp"
+            android:textColor="@color/MY_WHITE"
+            android:text="xxx"
         />
-        <com.sportpassword.bm.Views.IconTextText2
-            android:id="@+id/areaNameTV"
+
+        <LinearLayout
+            android:id="@+id/dataLL"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:iconTextText2Icon="ic_check_svg"
-            app:iconTextText2Title="區域"
-        />
+            android:layout_below="@id/nameTV"
+            android:layout_marginTop="24dp"
+            android:orientation="vertical">
 
+            <com.sportpassword.bm.Views.IconTextText2
+                android:id="@+id/cityNameTV"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="12dp"
+                app:iconTextText2Icon="ic_location_svg"
+                app:iconTextText2Title="縣市"
+            />
+            <com.sportpassword.bm.Views.IconTextText2
+                android:id="@+id/areaNameTV"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="12dp"
+                app:iconTextText2Icon="ic_location_svg"
+                app:iconTextText2Title="區域"
+            />
+            <com.sportpassword.bm.Views.IconTextText2
+                android:id="@+id/addressTV"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="12dp"
+                app:iconTextText2Icon="ic_location_svg"
+                app:iconTextText2Title="住址"
+            />
+            <com.sportpassword.bm.Views.IconTextText2
+                android:id="@+id/telTV"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="12dp"
+                app:iconTextText2Icon="ic_phone_svg"
+                app:iconTextText2Title="電話"
+            />
+            <com.sportpassword.bm.Views.IconTextText2
+                android:id="@+id/timeTV"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="12dp"
+                app:iconTextText2Icon="ic_clock_svg"
+                app:iconTextText2Title="營業時間"
+                />
+            <com.sportpassword.bm.Views.IconTextText2
+                android:id="@+id/blockTV"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="12dp"
+                app:iconTextText2Icon="ic_check_svg"
+                app:iconTextText2Title="場地"
+                />
+            <com.sportpassword.bm.Views.IconTextText2
+                android:id="@+id/bathroomTV"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="12dp"
+                app:iconTextText2Icon="ic_bathroom_svg"
+                app:iconTextText2Title="浴室"
+                />
+            <com.sportpassword.bm.Views.IconTextText2
+                android:id="@+id/airconditionTV"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="12dp"
+                app:iconTextText2Icon="ic_check_svg"
+                app:iconTextText2Title="空調"
+                />
+            <com.sportpassword.bm.Views.IconTextText2
+                android:id="@+id/parkingTV"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="12dp"
+                app:iconTextText2Icon="ic_check_svg"
+                app:iconTextText2Title="停車場"
+                />
+            <com.sportpassword.bm.Views.IconTextText2
+                android:id="@+id/fbTV"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="12dp"
+                app:iconTextText2Icon="ic_fb_svg"
+                app:iconTextText2Title="FB"
+                app:iconTextText2IconColor="light_blue_A400"
+                />
+            <com.sportpassword.bm.Views.IconTextText2
+                android:id="@+id/youtubeTV"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="12dp"
+                app:iconTextText2Icon="ic_youtube_svg"
+                app:iconTextText2Title="youtube"
+                app:iconTextText2IconColor="DANGER"
+                />
+            <com.sportpassword.bm.Views.IconTextText2
+                android:id="@+id/lineTV"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="12dp"
+                app:iconTextText2Icon="ic_line_svg"
+                app:iconTextText2Title="line"
+                />
+            <com.sportpassword.bm.Views.IconTextText2
+                android:id="@+id/websiteTV"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="12dp"
+                app:iconTextText2Icon="ic_website_svg"
+                app:iconTextText2Title="網站"
+                app:iconTextText2IconColor="bg_200"
+                />
+            <com.sportpassword.bm.Views.IconTextText2
+                android:id="@+id/pvTV"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="12dp"
+                app:iconTextText2Icon="ic_view_svg"
+                app:iconTextText2Title="瀏覽數"
+                />
 
+            <com.denzcoskun.imageslider.ImageSlider
+                android:id="@+id/images"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:layout_marginTop="16dp"
+                app:iss_auto_cycle="true"
+                app:iss_period="1000"
+                app:iss_delay="1000"
+                app:iss_text_align="CENTER" />
 
+            <com.sportpassword.bm.Views.Line2
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="16dp"/>
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/MY_WHITE"
+                    android:textSize="18dp"
+                    android:text="收費說明：" />
+
+            </LinearLayout>
+
+        </LinearLayout>
 
     </LinearLayout>
+        </RelativeLayout>
 
-</RelativeLayout>
+</ScrollView>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
