@@ -18,7 +18,7 @@ class Reposity : BaseRepository<ReadDao>() {
         val url: String = URL_ARENA_LIST
 
         val params: MutableMap<String, String> = mutableMapOf(
-            "pge" to page.toString(),
+            "page" to page.toString(),
             "perpage" to perpage.toString()
         )
 //        url += "?page=$page&perpage=$perpage"
