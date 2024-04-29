@@ -61,6 +61,12 @@ data class ShowDao(
         @SerializedName("website")
         val website: String,
 
+        @SerializedName("charge")
+        val charge: String,
+
+        @SerializedName("content")
+        val content: String,
+
         @SerializedName("token")
         val token: String,
 

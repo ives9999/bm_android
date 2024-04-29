@@ -8,15 +8,19 @@
     android:background="@color/PrimaryBlock_950"
     >
 
-    <com.sportpassword.bm.Views.RoundedCorner
+    <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="6dp"
-        android:background="@color/gray_900"
-        android:orientation="vertical"
-        android:padding="12dp"
-        app:radius="16"
+        android:layout_margin="12dp"
+        app:cardBackgroundColor="@color/gray_900"
+        app:cardCornerRadius="12dp"
     >
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="18dp"
+            >
 
         <ImageView
             android:id="@+id/featuredIV"
@@ -120,5 +124,6 @@
 
         </RelativeLayout>
 
-    </com.sportpassword.bm.Views.RoundedCorner>
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
 </LinearLayout>

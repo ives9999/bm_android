@@ -8,13 +8,18 @@ import android.graphics.Paint
 import android.graphics.PorterDuff
 import android.graphics.PorterDuffXfermode
 import android.graphics.RectF
+import android.graphics.Region
 import android.util.AttributeSet
 import android.util.DisplayMetrics
 import android.util.TypedValue
-import android.widget.LinearLayout
+import android.view.View
+import android.widget.FrameLayout
 import com.sportpassword.bm.R
+import kotlin.io.path.Path
 
-class RoundedCorner: LinearLayout {
+
+
+class RoundedCorner: FrameLayout {
 
     //var CORNER_RADIUS: Float = 10.0f
 
@@ -44,13 +49,13 @@ class RoundedCorner: LinearLayout {
 
     // 第一個被執行的區塊
     init {
-        val i = 3
     }
 
     // 第三個被執行的區塊
     private fun init(context: Context) {
         val metrics: DisplayMetrics = context.resources.displayMetrics
         cornerRadius = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, _cornerRadius, metrics)
+        setLayerType(View.LAYER_TYPE_SOFTWARE, null)
 
         paint = Paint(Paint.ANTI_ALIAS_FLAG)
         val maskPaint = Paint(Paint.ANTI_ALIAS_FLAG or Paint.FILTER_BITMAP_FLAG)
@@ -66,7 +71,7 @@ class RoundedCorner: LinearLayout {
         super.draw(offscreenCanvas)
         maskBitmap = createMask(width, height)
 
-        offscreenCanvas.drawBitmap(maskBitmap!!, 0f, 0f, maskPaint)
+        offscreenCanvas.drawBitmap(maskBitmap, 0f, 0f, maskPaint)
         canvas.drawBitmap(offscreenBitmap, 0f, 0f, paint)
     }
 
