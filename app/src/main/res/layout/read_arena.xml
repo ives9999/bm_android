@@ -15,7 +15,7 @@
         android:background="@color/gray_900"
         android:orientation="vertical"
         android:padding="12dp"
-        app:radius="16"
+        app:radius="24"
     >
 
         <ImageView
