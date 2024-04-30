@@ -1,6 +1,9 @@
 package com.sportpassword.bm.v2.arena.read
 
+import androidx.paging.PagedList
+import androidx.paging.PagingConfig
 import com.google.gson.reflect.TypeToken
+import com.sportpassword.bm.Utilities.PERPAGE
 import com.sportpassword.bm.Utilities.URL_ARENA_LIST
 import com.sportpassword.bm.v2.base.ApiService
 import com.sportpassword.bm.v2.base.BaseRepository
@@ -27,6 +30,8 @@ class Reposity : BaseRepository<ReadDao>() {
                 params[key] = value
             }
         }
+
+        val config = PagingConfig(perpage)
 
         val apiService: ApiService<ReadDao> = ApiService()
         apiService.get(url, params, object: TypeToken<ReadDao>() {}.type, callback)
