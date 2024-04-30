@@ -1,15 +1,13 @@
 package com.sportpassword.bm.v2.arena.read
 
-import androidx.paging.PagedList
 import androidx.paging.PagingConfig
 import com.google.gson.reflect.TypeToken
-import com.sportpassword.bm.Utilities.PERPAGE
 import com.sportpassword.bm.Utilities.URL_ARENA_LIST
 import com.sportpassword.bm.v2.base.ApiService
 import com.sportpassword.bm.v2.base.BaseRepository
 import com.sportpassword.bm.v2.base.IRepository
 
-class Reposity : BaseRepository<ReadDao>() {
+class Repository : BaseRepository<ReadDao>() {
 //    private lateinit var apiService: APIService
     init {
 //        val client = NetworkModule.provideOkHttpClient()
@@ -17,7 +15,7 @@ class Reposity : BaseRepository<ReadDao>() {
 //        apiService = retrofit.create(APIService::class.java)
     }
 
-    override fun getRead(page: Int, perpage: Int, otherParams: Map<String, String>?, callback: IRepository.IDaoCallback<ReadDao>) {
+    override suspend fun getRead(page: Int, perpage: Int, otherParams: Map<String, String>?, callback: IRepository.IDaoCallback<ReadDao>) {
         val url: String = URL_ARENA_LIST
 
         val params: MutableMap<String, String> = mutableMapOf(

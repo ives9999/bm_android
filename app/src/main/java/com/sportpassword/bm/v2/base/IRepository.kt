@@ -6,7 +6,7 @@ import com.sportpassword.bm.v2.arena.read.ReadDao
 
 interface IRepository<T> {
 
-    fun getRead(page: Int = 1, perpage: Int = PERPAGE, otherParams: Map<String, String>?, callback: IDaoCallback<T>)
+    suspend fun getRead(page: Int = 1, perpage: Int = PERPAGE, otherParams: Map<String, String>?, callback: IDaoCallback<T>)
     fun getOne(token: String, callback: IDaoCallback<T>)
 
     interface IDaoCallback<T> {

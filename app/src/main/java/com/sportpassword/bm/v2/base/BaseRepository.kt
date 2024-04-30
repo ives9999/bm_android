@@ -1,7 +1,7 @@
 package com.sportpassword.bm.v2.base
 
 open class BaseRepository<T>: IRepository<T> {
-    override fun getRead(
+    override suspend fun getRead(
         page: Int,
         perpage: Int,
         otherParams: Map<String, String>?,
