@@ -33,7 +33,7 @@ class ReadActivity : BaseActivity() {
 
         }
 
-        viewModel = ViewModelProvider(this, ViewModelFactory(Reposity(), error)).get(
+        viewModel = ViewModelProvider(this, ViewModelFactory(Repository(), error)).get(
             ViewModel::class.java)
         adapter = Adapter(viewModel)
         binding.recyclerView.adapter = adapter

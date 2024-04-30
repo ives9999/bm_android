@@ -117,7 +117,7 @@ dependencies {
     implementation "androidx.viewpager2:viewpager2:1.0.0"
     //paging 3
     implementation "androidx.paging:paging-runtime-ktx:3.2.1"
-    implementation 'androidx.activity:activity:1.8.0'
+    implementation 'androidx.activity:activity:1.9.0'
     testImplementation "androidx.paging:paging-common-ktx:3.2.1"
 
     //implementation "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"

@@ -64,6 +64,9 @@ class ShowActivity : BaseActivity() {
                 imageList.add(SlideModel(image.path, ScaleTypes.FIT))
             }
             binding.images.setImageList(imageList)
+
+            binding.chargeTV.text = it.data.charge
+            binding.contentTV.text = it.data.content
         })
     }
 }

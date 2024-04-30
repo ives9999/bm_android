@@ -8,14 +8,14 @@
     android:background="@color/PrimaryBlock_950"
     >
 
-    <com.sportpassword.bm.Views.RoundedCorner
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="6dp"
-        android:background="@color/gray_900"
-        android:orientation="vertical"
+        style="@style/read_block"
+        android:layout_margin="12dp"
         android:padding="12dp"
-        app:radius="24"
+        android:orientation="vertical"
+        android:background="@color/gray_900"
     >
 
         <ImageView
@@ -120,5 +120,5 @@
 
         </RelativeLayout>
 
-    </com.sportpassword.bm.Views.RoundedCorner>
+    </LinearLayout>
 </LinearLayout>
