@@ -1,15 +1,9 @@
 package com.sportpassword.bm.v2.base
 
 import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
-import com.sportpassword.bm.Models.MemberSubscriptionKindTable
-import com.sportpassword.bm.Models.Tables2
-import com.sportpassword.bm.bm_new.ui.util.canEditSignUp
-import com.sportpassword.bm.v2.arena.read.ReadDao
 import okhttp3.Call
 import okhttp3.Callback
 import okhttp3.Headers
-import okhttp3.HttpUrl
 import okhttp3.HttpUrl.Companion.toHttpUrl
 import okhttp3.OkHttpClient
 import okhttp3.Request

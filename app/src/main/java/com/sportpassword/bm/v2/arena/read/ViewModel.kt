@@ -26,7 +26,7 @@ class ViewModel(private val repository: IRepository<ReadDao>, val error: IError)
         isShowLoading.value = true
         getRead()
     }
-    private suspend fun getRead() {
+    private fun getRead() {
         val page: Int = 1
         val perpage: Int = 20
         repository.getRead(page, perpage, null, object : IRepository.IDaoCallback<ReadDao> {

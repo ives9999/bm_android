@@ -15,7 +15,7 @@ class Repository : BaseRepository<ReadDao>() {
 //        apiService = retrofit.create(APIService::class.java)
     }
 
-    override suspend fun getRead(page: Int, perpage: Int, otherParams: Map<String, String>?, callback: IRepository.IDaoCallback<ReadDao>) {
+    override fun getRead(page: Int, perpage: Int, otherParams: Map<String, String>?, callback: IRepository.IDaoCallback<ReadDao>) {
         val url: String = URL_ARENA_LIST
 
         val params: MutableMap<String, String> = mutableMapOf(
