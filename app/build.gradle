@@ -45,7 +45,7 @@ android {
 
     defaultConfig {
         applicationId "com.sportpassword.bm"
-        minSdkVersion 21
+        minSdkVersion 25
         targetSdkVersion 34
         versionCode 92
         versionName "2.4.8"

@@ -1,52 +1,47 @@
 package com.sportpassword.bm.v2.arena.read
 
+import android.net.http.HttpException
+import android.os.Build
+import androidx.annotation.RequiresExtension
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.sportpassword.bm.Utilities.PERPAGE
+import com.sportpassword.bm.v2.base.ApiService2
 import com.sportpassword.bm.v2.base.IRepository
+import java.io.IOException
 
-//class ArenaPagingSource(private val repository: IRepository<ReadDao>): PagingSource<Int, ReadDao>() {
+class ArenaPagingSource(private val apiService2: ApiService2): PagingSource<Int, ReadDao.Arena>() {
 
-//    override suspend fun load(params: LoadParams<Int>): LoadResult<Int, ReadDao> {
-//        // Start refresh at position 1 if undefined
-//        val position = params.key ?: 1
-//        val offset = if (params.key != null) ((position - 1) * PERPAGE) + 1 else 1
+    @RequiresExtension(extension = Build.VERSION_CODES.S, version = 7)
+    override suspend fun load(params: LoadParams<Int>): LoadResult<Int, ReadDao.Arena> {
+        // Start refresh at position 1 if undefined
+        val page = params.key ?: 1
+        val offset = if (params.key != null) ((page - 1) * PERPAGE) + 1 else 1
 
-//        repository.getRead(position, PERPAGE, null, object : IRepository.IDaoCallback<ReadDao> {
-//
-//            override fun onSuccess(res: ReadDao) {
-//
-////                if (res.status != 200) {
-////                    error.getNetworkNotExist()
-////                    isShowError.postValue(true)
-////                } else {
-////                    this@ViewModel.readDao.postValue(res)
-////                }
-////                isEmpty.postValue(!(res.status == 200 && res.data.rows.isNotEmpty()))
-////                isShowLoading.postValue(false)
-//            }
-//
-//            override fun onFailure(status: Int, msg: String) {
-//                //LoadResult.Error()
-//
-////                error.id = status
-////                error.msg = msg
-////                isShowError.postValue(true)
-////                isShowLoading.postValue(false)
-//            }
-//        })
-//    }
+        return try {
+            val response = apiService2.getRead(page, PERPAGE)
+            LoadResult.Page(
+                data = response.data.rows,
+                prevKey = if (page == 1) null else page - 1,
+                nextKey = if (response.data.meta.totalPage == page) null else page + 1
+            )
+        } catch (exception: IOException) {
+            return LoadResult.Error(exception)
+        } catch (exception: HttpException) {
+            return LoadResult.Error(exception)
+        }
+    }
 
-//    override fun getRefreshKey(state: PagingState<Int, ReadDao>): Int? {
-//        // We need to get the previous key (or next key if previous is null) of the page
-//        // that was closest to the most recently accessed index.
-//        // Anchor position is the most recently accessed index
-//        return state.anchorPosition?.let { anchorPosition ->
-//            state.closestPageToPosition(anchorPosition)?.prevKey?.plus(1)
-//                ?: state.closestPageToPosition(anchorPosition)?.nextKey?.minus(1)
-//        }
-//    }
-//}
+    override fun getRefreshKey(state: PagingState<Int, ReadDao.Arena>): Int? {
+        // We need to get the previous key (or next key if previous is null) of the page
+        // that was closest to the most recently accessed index.
+        // Anchor position is the most recently accessed index
+        return state.anchorPosition?.let { anchorPosition ->
+            state.closestPageToPosition(anchorPosition)?.prevKey?.plus(1)
+                ?: state.closestPageToPosition(anchorPosition)?.nextKey?.minus(1)
+        }
+    }
+}
 
 
 
