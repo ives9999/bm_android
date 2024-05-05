@@ -1,6 +1,8 @@
 package com.sportpassword.bm.v2.arena.read
 
+import androidx.paging.Pager
 import androidx.paging.PagingConfig
+import androidx.paging.PagingData
 import com.google.gson.reflect.TypeToken
 import com.sportpassword.bm.Utilities.PERPAGE
 import com.sportpassword.bm.Utilities.URL_ARENA_LIST
@@ -23,12 +25,21 @@ class Repository {
     }
     private val apiService2: ApiService2 = AppConfig.ApiService2()
 
-    suspend fun getRead2(page: Int = 1, perpage: Int = PERPAGE, otherParams: Map<String, String>?): Flow<ReadDao> {
-        return flow {
-            val readDao = apiService2.getRead(page, perpage)
-            emit(readDao)
-        }.flowOn(Dispatchers.IO)
+    private val defaultPagingConfig:PagingConfig = PagingConfig(1)
+
+    fun getRead2(pagingConfig: PagingConfig = defaultPagingConfig): Flow<PagingData<ReadDao.Arena>> {
+        return Pager(
+            config = pagingConfig,
+            pagingSourceFactory = { ArenaPagingSource(AppConfig.ApiService2()) }
+        ).flow
     }
+
+//    suspend fun getRead2(page: Int = 1, perpage: Int = PERPAGE, otherParams: Map<String, String>?): Flow<ReadDao> {
+//        return flow {
+//            val readDao = apiService2.getRead(page, perpage)
+//            emit(readDao)
+//        }.flowOn(Dispatchers.IO)
+//    }
 
 //    override fun getRead(page: Int, perpage: Int, otherParams: Map<String, String>?, callback: IRepository.IDaoCallback<ReadDao>) {
 //        val url: String = URL_ARENA_LIST

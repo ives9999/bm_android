@@ -1,20 +1,30 @@
 package com.sportpassword.bm.v2.arena.show
 
-import com.google.gson.reflect.TypeToken
-import com.sportpassword.bm.Utilities.URL_ARENA_ONE
-import com.sportpassword.bm.v2.base.ApiService
-import com.sportpassword.bm.v2.base.BaseRepository
-import com.sportpassword.bm.v2.base.IRepository
+import com.sportpassword.bm.v2.base.ApiService2
+import com.sportpassword.bm.v2.base.AppConfig
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOn
 
-class Repository: BaseRepository<ShowDao>() {
+class Repository {
 
-    override fun getOne(token: String, callback: IRepository.IDaoCallback<ShowDao>) {
-        val url = URL_ARENA_ONE
-        val params: MutableMap<String, String> = mutableMapOf(
-            "arena_token" to token,
-        )
+    private val apiService2: ApiService2 = AppConfig.ApiService2()
 
-        val apiService: ApiService<ShowDao> = ApiService()
-        apiService.get(url, params, object: TypeToken<ShowDao>() {}.type, callback)
+    suspend fun getOne(token: String): Flow<ShowDao> {
+        return flow {
+            val showDao = apiService2.getOne(token)
+            emit(showDao)
+        }.flowOn(Dispatchers.IO)
     }
+
+//    override fun getOne(token: String, callback: IRepository.IDaoCallback<ShowDao>) {
+//        val url = URL_ARENA_ONE
+//        val params: MutableMap<String, String> = mutableMapOf(
+//            "arena_token" to token,
+//        )
+//
+//        val apiService: ApiService<ShowDao> = ApiService()
+//        apiService.get(url, params, object: TypeToken<ShowDao>() {}.type, callback)
+//    }
 }
