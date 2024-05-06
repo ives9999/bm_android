@@ -30,7 +30,7 @@ class Repository {
     fun getRead2(pagingConfig: PagingConfig = defaultPagingConfig): Flow<PagingData<ReadDao.Arena>> {
         return Pager(
             config = pagingConfig,
-            pagingSourceFactory = { ArenaPagingSource(AppConfig.ApiService2()) }
+            pagingSourceFactory = { ArenaPagingSource(apiService2) }
         ).flow
     }
 
