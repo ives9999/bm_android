@@ -5,11 +5,14 @@ import android.os.Bundle
 import android.view.View
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import com.sportpassword.bm.Utilities.LoadingAnimation
 import com.sportpassword.bm.databinding.ActivityArenaReadBinding
 import com.sportpassword.bm.extensions.Alert
 import com.sportpassword.bm.v2.arena.show.ShowActivity
 import com.sportpassword.bm.v2.base.BaseActivity
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 
 class ReadActivity : BaseActivity() {
 
@@ -38,6 +41,10 @@ class ReadActivity : BaseActivity() {
         adapter = Adapter(viewModel)
         binding.recyclerView.adapter = adapter
 
+        viewModel.getRead().onEach {
+            adapter.submitData(it)
+        }.launchIn(lifecycleScope)
+
 //        viewModel.status.observe(this, Observer {
 //            println("status: $it")
 //        })
@@ -45,8 +52,8 @@ class ReadActivity : BaseActivity() {
         viewModel.readDao.observe(this, Observer {
             //println("rows: $it")
 
-            adapter.readDao = it
-            adapter.notifyDataSetChanged()
+            //adapter.readDao = it
+            //adapter.notifyDataSetChanged()
         })
 
         viewModel.isEmpty.observe(this, Observer {

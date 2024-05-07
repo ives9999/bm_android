@@ -3,6 +3,8 @@ package com.sportpassword.bm.v2.arena.read
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.paging.PagingDataAdapter
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.sportpassword.bm.R
 import com.sportpassword.bm.databinding.ReadArenaBinding
@@ -11,48 +13,49 @@ import com.sportpassword.bm.extensions.featured
 import com.sportpassword.bm.extensions.formattedWithSeparator
 import com.sportpassword.bm.extensions.noSec
 
-class Adapter(private val viewModel: ViewModel): RecyclerView.Adapter<Adapter.ViewHolder>() {
+class Adapter(private val viewModel: ViewModel): PagingDataAdapter<PageArena, Adapter.ViewHolder>(ReadDiffCallback()) {
 
-    var readDao: ReadDao? = null
+    //var readDao: ReadDao? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val viewHolder = ViewHolder.from(parent)
-        viewHolder.context = parent.context
-        return viewHolder
+        val inflater = LayoutInflater.from(parent.context)
+        val binding = ReadArenaBinding.inflate(inflater)
+        return ViewHolder(parent.context, binding)
     }
 
-    override fun getItemCount(): Int {
-        //println("rows count: ${readDao?.data?.rows?.count()}")
-        var count = 0
-        readDao ?. let {
-            count = it.data.rows.count()
-        }
-        return count
-    }
+//    override fun getItemCount(): Int {
+//        //println("rows count: ${readDao?.data?.rows?.count()}")
+//        var count = 0
+//        readDao ?. let {
+//            count = it.data.rows.count()
+//        }
+//        return count
+//    }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        readDao ?. let {
-            val row = it.data.rows[position]
-            val meta = it.data.meta
-            holder.bind(row, position, meta, viewModel)
+        val pageArena = getItem(position)
+        pageArena ?. let {
+//            val row = it.data.rows[position]
+//            val meta = it.data.meta
+            holder.bind(it, position, viewModel)
         }
     }
 
-    class ViewHolder private constructor(private val binding: ReadArenaBinding): RecyclerView.ViewHolder(binding.root) {
-        var context: Context? = null
-        companion object {
-            fun from(parent: ViewGroup): ViewHolder {
-                val layoutInflater = LayoutInflater.from(parent.context)
-                val binding = ReadArenaBinding.inflate(layoutInflater, parent, false)
+    class ViewHolder (val context: Context, val binding: ReadArenaBinding): RecyclerView.ViewHolder(binding.root) {
+//        companion object {
+//            fun from(parent: ViewGroup): ViewHolder {
+//                val layoutInflater = LayoutInflater.from(parent.context)
+//                val binding = ReadArenaBinding.inflate(layoutInflater, parent, false)
+//
+//                return ViewHolder(binding)
+//            }
+//        }
 
-                return ViewHolder(binding)
-            }
-        }
+        fun bind(row: PageArena, position: Int, viewModel: ViewModel) {
 
-        fun bind(row: ReadDao.Arena, position: Int, meta: ReadDao.Meta, viewModel: ViewModel) {
-
-            val idx: Int = (meta.currentPage - 1)*meta.perpage + position + 1
-            binding.nameTV.text = "${idx.toString()}.${row.name}"
+            //val idx: Int = (meta.currentPage - 1)*meta.perpage + position + 1
+            //binding.nameTV.text = "${idx.toString()}.${row.name}"
+            binding.nameTV.text = "${row.name}"
 
             val images: List<ReadDao.Image> = row.images
             var featured_path: String? = null
@@ -91,5 +94,16 @@ class Adapter(private val viewModel: ViewModel): RecyclerView.Adapter<Adapter.Vi
                 viewModel.toShohw(row.token)
             }
         }
+    }
+
+    class ReadDiffCallback: DiffUtil.ItemCallback<PageArena>() {
+        override fun areItemsTheSame(oldItem: PageArena, newItem: PageArena): Boolean {
+            return oldItem.id == newItem.id
+        }
+
+        override fun areContentsTheSame(oldItem: PageArena, newItem: PageArena): Boolean {
+            return oldItem == newItem
+        }
+
     }
 }

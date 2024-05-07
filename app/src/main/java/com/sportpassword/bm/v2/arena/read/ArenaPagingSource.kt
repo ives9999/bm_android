@@ -20,6 +20,11 @@ class ArenaPagingSource(private val apiService2: ApiService2): PagingSource<Int,
 
         return try {
             val response = apiService2.getRead(page, PERPAGE)
+            val data = response.data.rows.map {
+                val currentPage = response.data.meta.currentPage
+                PageArena(it.id, it.name, it.token, it.pv, it.created_at, it.images, it.zone, it.member, currentPage)
+            }
+            println(data)
             LoadResult.Page(
                 data = response.data.rows.map {
                     val currentPage = response.data.meta.currentPage

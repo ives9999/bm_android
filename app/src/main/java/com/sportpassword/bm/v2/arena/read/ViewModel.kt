@@ -33,14 +33,14 @@ class ViewModel(private val repository: Repository, val error: IError):
 
     var token: MutableLiveData<String> = MutableLiveData()
 
-    init {
-        isShowLoading.value = true
-        getRead()
-    }
+//    init {
+//        isShowLoading.value = true
+//        getRead()
+//    }
 
-    private fun getRead(): Flow<PagingData<PageArena>> {
-        return repository.getRead2()
-            .cachedIn(viewModelScope)
+    fun getRead(): Flow<PagingData<PageArena>> {
+        val flow = repository.getRead2()
+        return flow.cachedIn(viewModelScope)
     }
 //    private fun getRead() {
 //        viewModelScope.launch {
