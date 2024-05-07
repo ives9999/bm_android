@@ -38,7 +38,7 @@ class ViewModel(private val repository: Repository, val error: IError):
         getRead()
     }
 
-    private fun getRead(): Flow<PagingData<ReadDao.Arena>> {
+    private fun getRead(): Flow<PagingData<PageArena>> {
         return repository.getRead2()
             .cachedIn(viewModelScope)
     }

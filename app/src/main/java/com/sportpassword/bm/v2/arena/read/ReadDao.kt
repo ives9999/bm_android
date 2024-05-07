@@ -1,110 +1,122 @@
 package com.sportpassword.bm.v2.arena.read
 
-import android.os.Parcelable
-import com.google.gson.annotations.SerializedName
-import kotlinx.parcelize.Parcelize
-
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
+@Serializable
 data class ReadDao(
-    @SerializedName("status")
+    @SerialName("status")
     val status: Int,
 
-    @SerializedName("data")
+    @SerialName("data")
     val data: Data
 ) {
-    @Parcelize
+    @Serializable
     data class Data(
-        @SerializedName("_meta")
+        @SerialName("_meta")
         val meta: Meta,
 
-        @SerializedName("rows")
+        @SerialName("rows")
         val rows: List<Arena>
-    ): Parcelable
+    )
 
-    @Parcelize
+    @Serializable
     data class Meta(
-        @SerializedName("totalCount")
+        @SerialName("totalCount")
         val totalCount: Int,
 
-        @SerializedName("totalPage")
+        @SerialName("totalPage")
         val totalPage: Int,
 
-        @SerializedName("currentPage")
+        @SerialName("currentPage")
         val currentPage: Int,
 
-        @SerializedName("offset")
+        @SerialName("offset")
         val offset: Int,
 
-        @SerializedName("perPage")
+        @SerialName("perPage")
         val perpage: Int,
-    ): Parcelable
+    )
 
-    @Parcelize
+    @Serializable
     data class Arena(
-        @SerializedName("id")
+        @SerialName("id")
         val id: Int,
 
-        @SerializedName("name")
+        @SerialName("name")
         val name: String,
 
-        @SerializedName("images")
+        @SerialName("images")
         val images: List<Image>,
 
-        @SerializedName("zone")
+        @SerialName("zone")
         val zone: Zone,
 
-        @SerializedName("member")
+        @SerialName("member")
         val member: Member,
 
-        @SerializedName("token")
+        @SerialName("token")
         val token: String,
 
-        @SerializedName("pv")
+        @SerialName("pv")
         val pv: Int,
 
-        @SerializedName("created_at")
+        @SerialName("created_at")
         val created_at: String,
+    )
 
-    ): Parcelable
+    fun Arena.toArena(currentPage: Int): PageArena {
+        return PageArena(
+            id = id,
+            name = name,
+            token = token,
+            pv = pv,
+            created_at = created_at,
+            images = images,
+            zone = zone,
+            member = member,
+            currentPage = currentPage
+        )
+    }
 
-    @Parcelize
+    @Serializable
     data class Image(
-        @SerializedName("path")
+        @SerialName("path")
         val path: String,
 
-        @SerializedName("upload_id")
+        @SerialName("upload_id")
         val upload_id: Int,
 
-        @SerializedName("sort_order")
+        @SerialName("sort_order")
         val sort_order: Int,
 
-        @SerializedName("isFeatured")
+        @SerialName("isFeatured")
         val isFeatured: Boolean
-    ): Parcelable
+    )
 
-    @Parcelize
+    @Serializable
     data class Zone(
-        @SerializedName("city_id")
+        @SerialName("city_id")
         val city_id: Int,
 
-        @SerializedName("area_id")
+        @SerialName("area_id")
         val area_id: Int,
 
-        @SerializedName("city_name")
+        @SerialName("city_name")
         val city_name: String,
 
-        @SerializedName("area_name")
+        @SerialName("area_name")
         val area_name: String
-    ): Parcelable
+    )
 
-    @Parcelize
+    @Serializable
     data class Member(
-        @SerializedName("name")
+        @SerialName("name")
         val name: String,
 
-        @SerializedName("avatar")
+        @SerialName("avatar")
         val avatar: String,
 
-        @SerializedName("token")
+        @SerialName("token")
         val token: String,
-    ): Parcelable
+    )
 }

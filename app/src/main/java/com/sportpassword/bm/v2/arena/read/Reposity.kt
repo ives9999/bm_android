@@ -27,7 +27,7 @@ class Repository {
 
     private val defaultPagingConfig:PagingConfig = PagingConfig(1)
 
-    fun getRead2(pagingConfig: PagingConfig = defaultPagingConfig): Flow<PagingData<ReadDao.Arena>> {
+    fun getRead2(pagingConfig: PagingConfig = defaultPagingConfig): Flow<PagingData<PageArena>> {
         return Pager(
             config = pagingConfig,
             pagingSourceFactory = { ArenaPagingSource(apiService2) }
