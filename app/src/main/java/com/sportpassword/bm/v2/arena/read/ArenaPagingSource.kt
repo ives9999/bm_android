@@ -16,7 +16,7 @@ class ArenaPagingSource(private val apiService2: ApiService2): PagingSource<Int,
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, PageArena> {
         // Start refresh at position 1 if undefined
         val page = params.key ?: 1
-        val offset = if (params.key != null) ((page - 1) * PERPAGE) + 1 else 1
+        //val offset = if (params.key != null) ((page - 1) * PERPAGE) + 1 else 1
 
         return try {
             val response = apiService2.getRead(page, PERPAGE)

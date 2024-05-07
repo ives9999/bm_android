@@ -1,5 +1,7 @@
 package com.sportpassword.bm.v2.arena.read
 
+import com.sportpassword.bm.Utilities.PERPAGE
+
 data class PageArena(
     val id: Int,
     val name: String,
@@ -11,7 +13,7 @@ data class PageArena(
     val zone: ReadDao.Zone,
     val member: ReadDao.Member,
 
-    val currentPage: Int,
+    val currentPage: Int = 1,
 )
 
 //data class Image(

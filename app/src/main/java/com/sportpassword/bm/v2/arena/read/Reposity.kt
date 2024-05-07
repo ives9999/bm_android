@@ -25,7 +25,8 @@ class Repository {
     }
     private val apiService2: ApiService2 = AppConfig.ApiService2()
 
-    private val defaultPagingConfig:PagingConfig = PagingConfig(1)
+    // prefetchDistance = 15 表示滑到第15個時，就開始呼叫api
+    private val defaultPagingConfig:PagingConfig = PagingConfig(pageSize = PERPAGE, prefetchDistance = 15)
 
     fun getRead2(pagingConfig: PagingConfig = defaultPagingConfig): Flow<PagingData<PageArena>> {
         return Pager(

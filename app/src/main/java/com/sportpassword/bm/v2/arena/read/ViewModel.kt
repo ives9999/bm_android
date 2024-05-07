@@ -18,13 +18,11 @@ import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.launch
 
 //class ViewModel(private val repository: IRepository<ReadDao>, val error: IError):
-class ViewModel(private val repository: Repository, val error: IError):
-    ViewModel(),
-    IShowLoading by ShowLoading(MutableLiveData(false)),
-    IShowError by ShowError(MutableLiveData(false)) {
+class ViewModel(private val repository: Repository):
+    ViewModel() {
 
-    var readDao: MutableLiveData<ReadDao> = MutableLiveData()
-    var isEmpty: MutableLiveData<Boolean> = MutableLiveData(false)
+//    var readDao: MutableLiveData<ReadDao> = MutableLiveData()
+//    var isEmpty: MutableLiveData<Boolean> = MutableLiveData(false)
 
       // move to IShowError
 //    var isShowError: MutableLiveData<Boolean> = MutableLiveData(false)

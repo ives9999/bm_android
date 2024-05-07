@@ -53,9 +53,7 @@ class Adapter(private val viewModel: ViewModel): PagingDataAdapter<PageArena, Ad
 
         fun bind(row: PageArena, position: Int, viewModel: ViewModel) {
 
-            //val idx: Int = (meta.currentPage - 1)*meta.perpage + position + 1
-            //binding.nameTV.text = "${idx.toString()}.${row.name}"
-            binding.nameTV.text = "${row.name}"
+            binding.nameTV.text = "${position + 1}.${row.name}"
 
             val images: List<ReadDao.Image> = row.images
             var featured_path: String? = null
