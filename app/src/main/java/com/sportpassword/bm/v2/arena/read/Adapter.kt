@@ -91,6 +91,14 @@ class Adapter(private val viewModel: ViewModel): PagingDataAdapter<PageArena, Ad
             binding.featuredIV.setOnClickListener{
                 viewModel.toShohw(row.token)
             }
+
+            binding.nameTV.setOnClickListener {
+                viewModel.toShohw(row.token)
+            }
+
+            binding.moreTV.setOnClickListener {
+                viewModel.toShohw(row.token)
+            }
         }
     }
 
