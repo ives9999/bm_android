@@ -4,31 +4,34 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
     android:background="@color/PrimaryBlock_950"
-    >
+    android:orientation="vertical">
 
     <LinearLayout
+        style="@style/read_block"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        style="@style/read_block"
-        android:layout_margin="12dp"
-        android:padding="12dp"
-        android:orientation="vertical"
-        android:background="@color/gray_900"
-    >
+        android:layout_marginStart="14dp"
+        android:layout_marginTop="6dp"
+        android:layout_marginEnd="14dp"
+        android:layout_marginBottom="16dp"
+        android:paddingTop="12dp"
+        android:paddingBottom="12dp"
+        android:paddingStart="12dp"
+        android:paddingEnd="12dp"
+        android:orientation="vertical">
 
         <ImageView
             android:id="@+id/featuredIV"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-        />
+            android:adjustViewBounds="true"
+            android:scaleType="centerInside" />
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
-        >
+            android:layout_marginTop="12dp">
 
             <TextView
                 android:id="@+id/cityNameTV"
@@ -46,16 +49,17 @@
                 android:orientation="horizontal">
 
                 <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
                     android:layout_gravity="center_vertical"
-                    app:srcCompat="@drawable/account" />
+                    app:srcCompat="@drawable/account"
+                    app:tint="@color/bg_300" />
 
                 <TextView
                     android:id="@+id/pvTV"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="4dp"
+                    android:layout_marginStart="2dp"
                     android:text="xxx"
                     android:textColor="@color/bg_300"
                     android:textSize="16dp" />
@@ -71,7 +75,8 @@
             android:layout_marginTop="16dp"
             android:text="xxx羽球隊"
             android:textColor="@color/Primary_300"
-            android:textSize="24dp" />
+            android:textSize="18dp"
+            android:textStyle="bold" />
 
         <RelativeLayout
             android:layout_width="match_parent"
