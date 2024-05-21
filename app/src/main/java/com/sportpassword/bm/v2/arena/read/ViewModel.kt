@@ -88,7 +88,7 @@ class ViewModel(private val repository: Repository):
 //        })
 //    }
 
-    fun toShohw(token: String) {
+    fun toShow(token: String) {
         this@ViewModel.token.value = token
     }
 }
